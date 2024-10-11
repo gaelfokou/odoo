@@ -87,6 +87,7 @@
       <field name="arch" type="xml">
         <tree string="Configurations">
           <field name="intitule"/>
+          <field name="code"/>
           <field name="debut"/>
           <field name="fin"/>
         </tree>
