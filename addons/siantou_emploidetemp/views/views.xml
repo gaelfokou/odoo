@@ -1,0 +1,172 @@
+<odoo>
+  <data>
+    <!-- explicit list view definition -->
+
+    <record model="ir.ui.view" id="siantou_emploidetemp.emploidetemp_list">
+      <field name="name">Emploi de temps</field>
+      <field name="model">siantou_emploidetemp.emploidetemp</field>
+      <field name="arch" type="xml">
+        <tree string="Emploi de temps">
+          <field name="filiere_id"/>
+          <field name="niveau_id"/>
+          <field name="semestre_id"/>
+        </tree>
+      </field>
+    </record>
+
+    <record model="ir.ui.view" id="siantou_emploidetemp.niveau_list">
+      <field name="name">Niveaux</field>
+      <field name="model">siantou_emploidetemp.niveau</field>
+      <field name="arch" type="xml">
+        <tree string="Niveaux">
+          <field name="intitule"/>
+          <field name="valeur"/>
+        </tree>
+      </field>
+    </record>
+
+    <record model="ir.ui.view" id="siantou_emploidetemp.semestre_list">
+      <field name="name">Semestres</field>
+      <field name="model">siantou_emploidetemp.semestre</field>
+      <field name="arch" type="xml">
+        <tree string="Semestres">
+          <field name="annee"/>
+          <field name="valeur"/>
+          <field name="debut"/>
+          <field name="fin"/>
+          <field name="matiere_ids"/>
+          <button name="generator_page" type="object" string="Générer un emploi de temps" class="oe_link"/>
+        </tree>
+      </field>
+    </record>
+
+    <record model="ir.ui.view" id="siantou_emploidetemp.salledecour_list">
+      <field name="name">Salles de cours</field>
+      <field name="model">siantou_emploidetemp.salledecour</field>
+      <field name="arch" type="xml">
+        <tree string="Salles de cours">
+          <field name="intitule"/>
+          <field name="code"/>
+          <field name="capacite"/>
+        </tree>
+      </field>
+    </record>
+
+    <record model="ir.ui.view" id="siantou_emploidetemp.filiere_list">
+      <field name="name">Filieres</field>
+      <field name="model">siantou_emploidetemp.filiere</field>
+      <field name="arch" type="xml">
+        <tree string="Filieres">
+          <field name="intitule"/>
+          <field name="code"/>
+          <field name="niveau_id"/>
+          <field name="matiere_ids"/>
+        </tree>
+      </field>
+    </record>
+
+    <record model="ir.ui.view" id="siantou_emploidetemp.matiere_list">
+      <field name="name">Matieres</field>
+      <field name="model">siantou_emploidetemp.matiere</field>
+      <field name="arch" type="xml">
+        <tree string="Matieres">
+          <field name="intitule"/>
+          <field name="code"/>
+          <field name="tronccommun"/>
+          <field name="quotahoraire"/>
+          <field name="niveau_id"/>
+          <field name="filiere_ids"/>
+          <field name="semestre_ids"/>
+        </tree>
+      </field>
+    </record>
+
+    <record model="ir.ui.view" id="siantou_emploidetemp.configuration_list">
+      <field name="name">Configurations</field>
+      <field name="model">siantou_emploidetemp.configuration</field>
+      <field name="arch" type="xml">
+        <tree string="Configurations">
+          <field name="intitule"/>
+          <field name="debut"/>
+          <field name="fin"/>
+        </tree>
+      </field>
+    </record>
+
+
+    <!-- actions opening views on models -->
+
+    <record model="ir.actions.act_window" id="siantou_emploidetemp.emploidetemp_action_window">
+      <field name="name">Emploi de temps</field>
+      <field name="type">ir.actions.act_window</field>
+      <field name="res_model">siantou_emploidetemp.emploidetemp</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+    <record model="ir.actions.act_window" id="siantou_emploidetemp.niveau_action_window">
+      <field name="name">Niveaux</field>
+      <field name="type">ir.actions.act_window</field>
+      <field name="res_model">siantou_emploidetemp.niveau</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+    <record model="ir.actions.act_window" id="siantou_emploidetemp.semestre_action_window">
+      <field name="name">Semestres</field>
+      <field name="type">ir.actions.act_window</field>
+      <field name="res_model">siantou_emploidetemp.semestre</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+    <record model="ir.actions.act_window" id="siantou_emploidetemp.salledecour_action_window">
+      <field name="name">Salle de cours</field>
+      <field name="type">ir.actions.act_window</field>
+      <field name="res_model">siantou_emploidetemp.salledecour</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+    <record model="ir.actions.act_window" id="siantou_emploidetemp.filiere_action_window">
+      <field name="name">Filiere</field>
+      <field name="type">ir.actions.act_window</field>
+      <field name="res_model">siantou_emploidetemp.filiere</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+    <record model="ir.actions.act_window" id="siantou_emploidetemp.matiere_action_window">
+      <field name="name">Matiere</field>
+      <field name="type">ir.actions.act_window</field>
+      <field name="res_model">siantou_emploidetemp.matiere</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+    <record model="ir.actions.act_window" id="siantou_emploidetemp.configuration_action_window">
+      <field name="name">Configuration</field>
+      <field name="type">ir.actions.act_window</field>
+      <field name="res_model">siantou_emploidetemp.configuration</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+
+    <!-- Top menu item -->
+
+    <menuitem name="Emploi de temps" id="siantou_emploidetemp.menu_root"
+              action="siantou_emploidetemp.emploidetemp_action_window"/>
+
+    <!-- menu categories -->
+
+    <menuitem name="Emploi de temps" id="siantou_emploidetemp.menu_emploidetemp" parent="siantou_emploidetemp.menu_root"
+              action="siantou_emploidetemp.emploidetemp_action_window"/>
+    <menuitem name="Niveaux" id="siantou_emploidetemp.menu_niveau" parent="siantou_emploidetemp.menu_root"
+              action="siantou_emploidetemp.niveau_action_window"/>
+    <menuitem name="Semestres" id="siantou_emploidetemp.menu_semestre" parent="siantou_emploidetemp.menu_root"
+              action="siantou_emploidetemp.semestre_action_window"/>
+    <menuitem name="Salles de cours" id="siantou_emploidetemp.menu_salledecour" parent="siantou_emploidetemp.menu_root"
+              action="siantou_emploidetemp.salledecour_action_window"/>
+    <menuitem name="Filieres" id="siantou_emploidetemp.menu_filiere" parent="siantou_emploidetemp.menu_root"
+              action="siantou_emploidetemp.filiere_action_window"/>
+    <menuitem name="Matieres" id="siantou_emploidetemp.menu_matiere" parent="siantou_emploidetemp.menu_root"
+              action="siantou_emploidetemp.matiere_action_window"/>
+    <menuitem name="Configurations" id="siantou_emploidetemp.menu_configuration" parent="siantou_emploidetemp.menu_root"
+              action="siantou_emploidetemp.configuration_action_window"/>
+
+  </data>
+</odoo>

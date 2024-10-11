@@ -1,0 +1,84 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <record id="siantou_specialite_action" model="ir.actions.act_window">
+        <field name="name">Spécialités</field>
+        <field name="res_model">siantou.specialite</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[]</field>
+        <field name="context">{}</field>
+        <field name="help" type="html">
+            <p>Cliquez sur nouveau pour créer une nouvelle spécialité</p>
+        </field>
+    </record>
+
+    <record id="siantou_specialite_form" model="ir.ui.view">
+        <field name="name">siantou.specialite.form</field>
+        <field name="model">siantou.specialite</field>
+        <field name="arch" type="xml">
+            <form string="specialite">
+                <header>
+                </header>
+                <sheet>
+                <group>
+                    <group>
+                        <field name="code"/>
+                    </group>
+                    <group>
+                        <field name="name"/>
+                    </group>
+                    <group>
+                        <field name="filiere_id"/>
+                    </group>
+                    <notebook>
+                        <page name="specialite_option" string="Options">
+                            <field name="option_ids">
+                                <tree>
+                                    <field name="code"/>
+                                    <field name="name"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                    
+                </group>
+                    
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="siantou_specialite_tree" model="ir.ui.view">
+        <field name="name">siantou.specialite.tree</field>
+        <field name="model">siantou.specialite</field>
+        <field name="arch" type="xml">
+            <tree string="Filères">
+                <field name="code"/>
+                <field name="name"/>
+                <field name="filiere_id"/>
+            </tree>
+        </field>
+    </record>
+
+    <menuitem
+        id="siantou_menu"
+        name="Scolarité"
+        sequence="0"/>
+    
+    <!-- <menuite id="siantou_menu_config" 
+        name="Configurations" sequence="15" 
+        parent="siantou_menu">
+        <menuitem
+            id="siantou_specialite_menu"
+            name="Spécialités"
+            action="siantou_specialite_action"
+            sequence="1"/>
+    </menuite> -->
+
+    <menuitem
+        id="siantou_specialite_menu"
+        name="Spécialités"
+        action="siantou_specialite_action"
+        parent="siantou_menu"
+        sequence="8"/>
+
+</odoo>

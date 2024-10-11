@@ -1,0 +1,29 @@
+# docker-compose up -d
+# docker-compose down -v
+# docker ps -a
+# docker rm $(docker ps -aq)
+# docker-compose exec web odoo scaffold openacademy1 /mnt/extra-addons
+# docker exec -it odoo-web-1 odoo scaffold openacademy2 /mnt/extra-addons
+# docker exec -it odoo-web-1 bash -c "odoo scaffold openacademy31 /mnt/extra-addons"
+# docker exec -it odoo-web-1 bash -c "/usr/bin/odoo scaffold openacademy32 /mnt/extra-addons"
+version: '3.1'
+services:
+  web:
+    image: odoo:16.0
+    env_file: .env
+    depends_on:
+      - psql
+    ports:
+      - "8069:8069"
+    volumes:
+      - data:/var/lib/odoo
+      - ./config:/etc/odoo
+      - ./addons:/mnt/extra-addons
+  psql:
+    image: postgres:13
+    env_file: .env
+    volumes:
+      - db:/var/lib/pgsql/data/pgdata
+volumes:
+  data:
+  db:

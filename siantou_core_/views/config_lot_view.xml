@@ -1,0 +1,57 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <record id="siantou_config_lot_action" model="ir.actions.act_window">
+        <field name="name">Configuration des lots</field>
+        <field name="res_model">siantou.config_lot</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[]</field>
+        <field name="context">{}</field>
+        <field name="help" type="html">
+            <p>Cliquez sur nouveau pour créer un nouveau lot</p>
+        </field>
+    </record>
+
+    <record id="siantou_config_lot_form" model="ir.ui.view">
+        <field name="name">siantou.config_lot.form</field>
+        <field name="model">siantou.config_lot</field>
+        <field name="arch" type="xml">
+            <form string="config_lot">
+                <header>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                        </group>
+                        <group>
+                            <field name="nbre_place"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="siantou_config_lot_tree" model="ir.ui.view">
+        <field name="name">siantou.config_lot.tree</field>
+        <field name="model">siantou.config_lot</field>
+        <field name="arch" type="xml">
+            <tree string="Configuration des lots">
+                <field name="name"/>
+                <field name="nbre_place"/>
+            </tree>
+        </field>
+    </record>
+
+    <menuitem
+        id="siantou_menu"
+        name="Scolarité"
+        sequence="0"/>
+
+    <menuitem
+        id="siantou_config_lot_menu"
+        name="Configuration des lots"
+        action="siantou_config_lot_action"
+        parent="siantou_menu"
+        sequence="2"/>
+</odoo>

@@ -1,0 +1,72 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <record id="siantou_niveau_action" model="ir.actions.act_window">
+        <field name="name">Niveaux académiques</field>
+        <field name="res_model">siantou.niveau</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[]</field>
+        <field name="context">{}</field>
+        <field name="help" type="html">
+            <p>Cliquez sur nouveau pour créer un nouveau niveau</p>
+        </field>
+    </record>
+
+    <record id="siantou_niveau_form" model="ir.ui.view">
+        <field name="name">siantou.niveau.form</field>
+        <field name="model">siantou.niveau</field>
+        <field name="arch" type="xml">
+            <form string="niveau">
+                <header>
+                </header>
+                <sheet>
+                <group>
+                    <group>
+                        <field name="code"/>
+                    </group>
+                    <group>
+                        <field name="name"/>
+                    </group>
+                    <notebook>
+                        <page name="niveau_filire" string="Filières">
+                            <field name="filiere_ids">
+                                <tree>
+                                    <field name="code"/>
+                                    <field name="name"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                    
+                </group>
+                    
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+
+
+    <record id="siantou_niveau_tree" model="ir.ui.view">
+        <field name="name">siantou.niveau.tree</field>
+        <field name="model">siantou.niveau</field>
+        <field name="arch" type="xml">
+            <tree string="niveau">
+                <field name="code"/>
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+
+    <menuitem
+        id="siantou_menu"
+        name="Scolarité"
+        sequence="0"/>
+    
+    <menuitem
+        id="siantou_niveau_menu"
+        name="Niveaux"
+        action="siantou_niveau_action"
+        parent="siantou_menu"
+        sequence="10"/>
+</odoo>
