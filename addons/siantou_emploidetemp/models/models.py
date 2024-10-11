@@ -8,7 +8,7 @@ import re
 class siantou_emploidetemp_emploidetemp(models.Model):
     _name = 'siantou_emploidetemp.emploidetemp'
     _description = 'siantou_emploidetemp.emploidetemp'
-    _sql_constraints = [('siantou_emploidetemp_emploidetemp_filiere_niveau_semestre_unique', 'unique(filiere_id, niveau_id, semestre_id)', "Les champs Filiere, Niveau, Semestre sont uniques pour chaque Emploi de temps.!")]
+    _sql_constraints = [('siantou_emploidetemp_emploidetemp_filiere_id_niveau_id_semestre_id_unique', 'unique(filiere_id, niveau_id, semestre_id)', "Les champs Filiere, Niveau, Semestre sont uniques pour chaque Emploi de temps.!")]
 
     filiere_id = fields.Many2one('siantou_emploidetemp.filiere', string='Filiere', required=True)
     niveau_id = fields.Many2one('siantou_emploidetemp.niveau', string='Niveau', required=True)
@@ -24,7 +24,7 @@ class siantou_emploidetemp_emploidetemp(models.Model):
 class siantou_emploidetemp_programmationdecour(models.Model):
     _name = 'siantou_emploidetemp.programmationdecour'
     _description = 'siantou_emploidetemp.programmationdecour'
-    _sql_constraints = [('siantou_emploidetemp_programmationdecour_emploidetemp_matiere_unique', 'unique(emploidetemp_id, matiere_id)', "Les champs Emploi de temps, Matiere sont uniques pour chaque Programmation de cours.!")]
+    _sql_constraints = [('siantou_emploidetemp_programmationdecour_emploidetemp_id_matiere_id_configuration_id_unique', 'unique(emploidetemp_id, matiere_id, configuration_id)', "Les champs Emploi de temps, Matiere, Configuration sont uniques pour chaque Programmation de cours.!")]
 
     emploidetemp_id = fields.Many2one('siantou_emploidetemp.emploidetemp', string='Emploi de temps', required=True)
     matiere_id = fields.Many2one('siantou_emploidetemp.matiere', string='Matiere', required=True)
@@ -125,9 +125,10 @@ class siantou_emploidetemp_matiere(models.Model):
 class siantou_emploidetemp_configuration(models.Model):
     _name = 'siantou_emploidetemp.configuration'
     _description = 'siantou_emploidetemp.configuration'
-    _sql_constraints = [('siantou_emploidetemp_configuration_debut_fin_unique', 'unique(debut, fin)', "Les champs Heure debut, Heure fin sont uniques pour chaque Configuration.!")]
+    _sql_constraints = [('siantou_emploidetemp_configuration_code_unique', 'unique(code)', "Le champ Code est unique pour chaque Configuration.!")]
 
     intitule = fields.Char(string='Intitule', required=True)
+    code = fields.Char(string='Code', required=True)
     debut = fields.Char(string='Heure debut', required=True, default='12:30')
     fin = fields.Char(string='Heure fin', required=True, default='12:30')
 
