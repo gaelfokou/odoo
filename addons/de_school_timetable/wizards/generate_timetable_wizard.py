@@ -119,16 +119,20 @@ class GenerateTimetableWizard(models.TransientModel):
                                     heure_debut_string = date_heure_debut_cours.strftime(TIME_FORMAT).replace(':', '.')
                                     heure_fin_string = (date_heure_debut_cours + timedelta(days=0, hours=heures_par_semaine)).strftime(TIME_FORMAT).replace(':', '.')
                                     check_cours = self.env['school.room.scheduler'].check_course_for_room(classroom.id, date_debut_string, heure_debut_string, heure_fin_string)
+                                    _logger.info(f'----------- tototototototo course_id {course.id} -----------')
+                                    _logger.info(f'----------- tototototototo subject_id {subject.id} -----------')
+                                    _logger.info(f'----------- tototototototo classroom_id {classroom.id} -----------')
                                     _logger.info(f'----------- tototototototo date_debut_string {date_debut_string} -----------')
                                     _logger.info(f'----------- tototototototo date_heure_debut_cours {heure_debut_string} -----------')
                                     _logger.info(f'----------- tototototototo date_heure_fin_cours {heure_fin_string} -----------')
+                                    _logger.info(f'----------- tototototototo check_cours {check_cours} -----------')
                                     if check_cours:
                                         i += 1
                                         if n > i:
                                             heure_debut_cours = '07:30'
                                         else:
                                             i = 0
-                                            heure_debut_cours = check_cours.hour_to.replace('.', ':')
+                                            heure_debut_cours = str(check_cours.hour_to).replace('.', ':')
                                     else:
                                         self.env['oe.school.timetable'].create({
                                             'course_id': course.id,
