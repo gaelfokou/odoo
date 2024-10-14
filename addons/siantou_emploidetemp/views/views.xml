@@ -7,9 +7,39 @@
       <field name="model">siantou_emploidetemp.emploidetemp</field>
       <field name="arch" type="xml">
         <tree string="Emploi de temps">
-          <field name="filiere_id"/>
-          <field name="niveau_id"/>
-          <field name="semestre_id"/>
+          <field name="filiere_id" mode="tree">
+            <tree string="Filiere">
+              <field name="intitule"/>
+            </tree>
+          </field>
+          <field name="niveau_id" mode="tree">
+            <tree string="Niveau">
+              <field name="intitule"/>
+            </tree>
+          </field>
+          <field name="semestre_id" mode="tree">
+            <tree string="Semestre">
+              <field name="annee"/>
+            </tree>
+          </field>
+          <field name="salledecour_id" mode="tree">
+            <tree string="Salle de cours">
+              <field name="intitule"/>
+            </tree>
+          </field>
+          <!-- <field name="matiere_id" mode="tree">
+            <tree string="Matiere">
+              <field name="intitule"/>
+            </tree>
+          </field>
+          <field name="configuration_id" mode="tree">
+            <tree string="Configuration">
+              <field name="intitule"/>
+            </tree>
+          </field> -->
+          <field name="intitule"/>
+          <field name="debut"/>
+          <field name="fin"/>
         </tree>
       </field>
     </record>
@@ -30,7 +60,7 @@
       <field name="model">siantou_emploidetemp.semestre</field>
       <field name="arch" type="xml">
         <tree string="Semestres">
-          <field name="annee"/>
+          <field name="annee" placeholder="2023-2024"/>
           <field name="valeur"/>
           <field name="debut"/>
           <field name="fin"/>
@@ -59,7 +89,11 @@
         <tree string="Filieres">
           <field name="intitule"/>
           <field name="code"/>
-          <field name="niveau_id"/>
+          <field name="niveau_id" mode="tree">
+            <tree string="Niveau">
+              <field name="intitule"/>
+            </tree>
+          </field>
           <field name="matiere_ids"/>
         </tree>
       </field>
@@ -73,8 +107,14 @@
           <field name="intitule"/>
           <field name="code"/>
           <field name="tronccommun"/>
+          <field name="jour"/>
+          <field name="nuit"/>
           <field name="quotahoraire"/>
-          <field name="niveau_id"/>
+          <field name="niveau_id" mode="tree">
+            <tree string="Niveau">
+              <field name="intitule"/>
+            </tree>
+          </field>
           <field name="filiere_ids"/>
           <field name="semestre_ids"/>
         </tree>
@@ -88,8 +128,10 @@
         <tree string="Configurations">
           <field name="intitule"/>
           <field name="code"/>
-          <field name="debut"/>
-          <field name="fin"/>
+          <field name="debut" placeholder="12:30"/>
+          <field name="fin" placeholder="12:30"/>
+          <field name="jour"/>
+          <field name="date"/>
         </tree>
       </field>
     </record>
@@ -98,7 +140,7 @@
     <!-- actions opening views on models -->
 
     <record model="ir.actions.act_window" id="siantou_emploidetemp.emploidetemp_action_window">
-      <field name="name">Emploi de temps</field>
+      <field name="name">Emplois de temps</field>
       <field name="type">ir.actions.act_window</field>
       <field name="res_model">siantou_emploidetemp.emploidetemp</field>
       <field name="view_mode">tree,form</field>
@@ -119,28 +161,28 @@
     </record>
 
     <record model="ir.actions.act_window" id="siantou_emploidetemp.salledecour_action_window">
-      <field name="name">Salle de cours</field>
+      <field name="name">Salles de cours</field>
       <field name="type">ir.actions.act_window</field>
       <field name="res_model">siantou_emploidetemp.salledecour</field>
       <field name="view_mode">tree,form</field>
     </record>
 
     <record model="ir.actions.act_window" id="siantou_emploidetemp.filiere_action_window">
-      <field name="name">Filiere</field>
+      <field name="name">Filieres</field>
       <field name="type">ir.actions.act_window</field>
       <field name="res_model">siantou_emploidetemp.filiere</field>
       <field name="view_mode">tree,form</field>
     </record>
 
     <record model="ir.actions.act_window" id="siantou_emploidetemp.matiere_action_window">
-      <field name="name">Matiere</field>
+      <field name="name">Matieres</field>
       <field name="type">ir.actions.act_window</field>
       <field name="res_model">siantou_emploidetemp.matiere</field>
       <field name="view_mode">tree,form</field>
     </record>
 
     <record model="ir.actions.act_window" id="siantou_emploidetemp.configuration_action_window">
-      <field name="name">Configuration</field>
+      <field name="name">Configurations</field>
       <field name="type">ir.actions.act_window</field>
       <field name="res_model">siantou_emploidetemp.configuration</field>
       <field name="view_mode">tree,form</field>
@@ -149,12 +191,12 @@
 
     <!-- Top menu item -->
 
-    <menuitem name="Emploi de temps" id="siantou_emploidetemp.menu_root"
+    <menuitem name="Emplois de temps" id="siantou_emploidetemp.menu_root"
               action="siantou_emploidetemp.emploidetemp_action_window"/>
 
     <!-- menu categories -->
 
-    <menuitem name="Emploi de temps" id="siantou_emploidetemp.menu_emploidetemp" parent="siantou_emploidetemp.menu_root"
+    <menuitem name="Emplois de temps" id="siantou_emploidetemp.menu_emploidetemp" parent="siantou_emploidetemp.menu_root"
               action="siantou_emploidetemp.emploidetemp_action_window"/>
     <menuitem name="Niveaux" id="siantou_emploidetemp.menu_niveau" parent="siantou_emploidetemp.menu_root"
               action="siantou_emploidetemp.niveau_action_window"/>

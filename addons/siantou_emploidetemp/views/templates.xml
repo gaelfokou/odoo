@@ -13,8 +13,10 @@
 
         <template id="semestre_listing">
           <ul>
-            <li>
-              <t t-esc="semestre"/>
+            <li t-foreach="semestres" t-as="semestre">
+              <a t-attf-href="#">
+                <t t-esc="semestre"/>
+              </a>
             </li>
           </ul>
         </template>

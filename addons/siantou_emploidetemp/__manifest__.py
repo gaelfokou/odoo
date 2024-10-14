@@ -22,12 +22,12 @@
     # any module necessary for this one to work correctly
     'depends': [
         'base',
-        'siantou_core',
+        # 'siantou_lesson',
     ],
 
     # always loaded
     'data': [
-        # 'security/ir.model.access.csv',
+        'security/ir.model.access.csv',
         'views/views.xml',
         'views/templates.xml',
     ],

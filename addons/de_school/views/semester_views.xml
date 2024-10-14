@@ -1,0 +1,69 @@
+<odoo>
+	<data>
+		<!-- Academic Year -->
+		<record id="school_semester_tree_view" model="ir.ui.view">
+			<field name="name">school.semester.tree.view</field>
+			<field name="model">oe.school.year.semester</field>
+			<field name="arch" type="xml">
+				<tree string="Semestres" editable="bottom" edit="1">
+                    <field name="name"/>
+                    <field name="academic_year_id"/>
+					<field name="date_start"/>
+					<field name="date_end"/>
+                    <field name="number_of_week"/>
+				</tree>
+			</field>
+		</record>
+        
+		<record id="school_semester_form_view" model="ir.ui.view">
+			<field name="name">school.semester.form.view</field>
+			<field name="model">oe.school.year.semester</field>
+			<field name="arch" type="xml">
+				<form string="Semestres">
+					<sheet>
+                        <field name="academic_year_id"/>
+                        <div class="oe_title">
+                            <div class="oe_edit_only">
+								<label for="name" />
+							</div>
+							<h1>
+								<field name="name" />
+							</h1>
+						</div>
+                        <group>
+                            <group>
+                                <field name="date_start"/>
+                            </group>
+                                 
+                            <group>
+                                <field name="date_end"/>
+                            </group>
+
+                            <group>
+                                <field name="number_of_week"/>
+                            </group>
+                        </group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+        
+        <record id="action_school_semester" model="ir.actions.act_window">
+            <field name="name">Semestres</field>
+            <field name="res_model">oe.school.year.semester</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Créer un nouveau semestre.
+                </p>
+            </field>
+        </record>
+        
+        
+        <menuitem name="Semestres" id="menu_school_config_semester"
+                    parent="menu_school" action="action_school_semester"
+                    groups="group_school_manager" sequence="60"/>
+        
+        
+	</data>
+</odoo>

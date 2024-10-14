@@ -1,0 +1,121 @@
+<odoo>
+	<data>
+		<!-- Institute Setup -->
+		
+        <record id="view_company_form_inherit" model="ir.ui.view">
+            <field name="name">view.company.form.inherit</field>
+            <field name="model">res.company</field>
+            <field name="inherit_id" ref="base.view_company_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//group[1]/group[1]" position="inside">
+                    <field name="is_school" />
+                </xpath>
+                <xpath expr="//group[1]" position="after">
+                    <h2 invisible="not is_school">Fonctionnalités basiques</h2>
+                    <block class="row col-12" title="Fonctionnalités basiques" name="basic_features_setting_container" invisible="not is_school">
+                        <setting class="col-6" 
+                                string="Activer le mode école"
+                                title="Activer le mode école"
+                                help="Transformez votre entreprise en établissement d'enseignement"
+                            >
+                                <field name="is_school"/>
+                            </setting>
+                            <setting class="col-6"
+                                string="Horaires"
+                                title="Horaires"
+                                help="Gérer efficacement les emplois du temps pour une expérience académique harmonieuse."
+                                invisible="not is_school"
+                            >
+                                <field name="resource_calendar_id"
+                                    required="is_school == True"
+                                    invisible="not is_school"
+                                    />
+                            </setting>
+                            <setting class="col-6"
+                                string="Type d'école"
+                                title="Type d'école"
+                                help="Personnalisez votre type d'école pour adapter l'identité de votre institution"
+                                invisible="not is_school"
+                            >
+                                <field name="school_type"
+                                    required="is_school == True"
+                                    invisible="not is_school"
+                                    />
+                            </setting>
+                            <setting class="col-6"
+                                string="Gestion des lots"
+                                title="Gestion des lots"
+                                help="Organiser efficacement les classes et les étudiants grâce à la gestion des lots"
+                                invisible="not is_school"
+                            >
+                                <field name="use_batch"
+                                    invisible="not is_school"
+                                    />
+                            </setting>
+                            <setting class="col-6"
+                                string="Gestion des sections"
+                                title="Gestion des sections"
+                                help="Organiser efficacement les classes et les étudiants grâce à la gestion des sections"
+                                invisible="not is_school"
+                            >
+                                <field name="use_section"
+                                    invisible="not is_school"
+                                    />
+                            </setting>
+                    </block>
+                    <h2 invisible="not is_school">Fonctionnalités supplémentaires</h2>
+                    <block class="row col-12" title="Fonctionnalités supplémentaires" name="add_features_setting_container" invisible="not is_school">
+                        <setting help="Calendar" class="col-6">
+                            
+                        </setting>
+                        <setting class="col-6">
+                           
+                        </setting>
+                    </block>
+                    <h2 invisible="not is_school">Fonctionnalités avancées</h2>
+                    <block class="row col-12" title="Fonctionnalités avancées" name="addvanced_features_setting_container" invisible="not is_school">
+                        <setting help="Calendar" class="col-6">
+                            
+                        </setting>
+                        <setting class="col-6">
+                           
+                        </setting>
+                    </block>
+                </xpath>
+            </field>
+        </record>
+        
+        <record id="view_company_search_form" model="ir.ui.view">
+            <field name="name">company.search.form</field>
+            <field name="model">res.company</field>
+            <field name="arch" type="xml">
+                <search string="Emploi du temps">
+                    <field name="name" string="Company"/>
+                    <filter string="Universités" name="institutes" domain="[('is_school', '=', True)]"/>
+                </search>
+            </field>
+        </record>
+        
+        <record id="action_school_setup" model="ir.actions.act_window">
+            <field name="name">Université</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">res.company</field>
+            <field name="view_mode">tree,kanban,form</field>
+            <field name="search_view_id" ref="view_company_search_form"/>
+            <field name="context">{'search_default_institutes': 1, 'default_is_school':1}</field>
+            <field name="help" type="html">
+              <p class="o_view_nocontent_smiling_face">
+                Créer une nouvelle université.
+              </p><p>
+                Créer et gérer les instituts/collèges/écoles.
+              </p>
+            </field>
+        </record>
+        
+        <menuitem name="Université" id="menu_school_config_school_setup"
+                    parent="menu_school_config" action="action_school_setup"
+                    groups="group_school_manager" sequence="2"/>
+        
+        
+	</data>
+</odoo>

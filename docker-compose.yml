@@ -9,7 +9,7 @@
 version: '3.1'
 services:
   web:
-    image: odoo:16.0
+    image: odoo:17.0-20240812
     env_file: .env
     depends_on:
       - psql
@@ -20,7 +20,7 @@ services:
       - ./config:/etc/odoo
       - ./addons:/mnt/extra-addons
   psql:
-    image: postgres:13
+    image: postgres:latest
     env_file: .env
     volumes:
       - db:/var/lib/pgsql/data/pgdata

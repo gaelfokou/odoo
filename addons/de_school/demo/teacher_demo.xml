@@ -1,0 +1,251 @@
+<odoo>
+    <data noupdate="0">
+        <!--
+        Resource: res.partner.category
+        -->
+        
+        <record id="res_partner_category_teacher" model="res.partner.category">
+            <field name="name">Teacher</field>
+            <field name="color" eval="3"/>
+        </record>
+        
+        <!-- Teachers -->
+        <record id="res_partner_teacher_1" model="res.partner">
+            <field name="name">Walter FOPA</field>
+            <field eval="[Command.set([ref('res_partner_category_teacher')])]" name="category_id"/> 
+            <field name="is_company">0</field>
+            <field name="company_type">person</field>
+            <field name="street">Bastos</field>
+            <field name="city">Yaoundé</field>
+            <field name="country_id" ref="base.cm"/>
+            <field name="email">walter.fopa@example.com</field>
+            <field name="phone">+237655555555</field>  <field name="website"/>
+<!--            <field name="image_1920" type="base64" file="de_school/static/img/teacher_1.jpg"/>-->
+        </record>
+        <record id="res_partner_teacher_2" model="res.partner">
+            <field name="name">EYIKE EYIKE</field>
+            <field eval="[Command.set([ref('res_partner_category_teacher')])]" name="category_id"/>
+            <field name="is_company">0</field>
+            <field name="company_type">person</field>
+            <field name="street">Bastos</field>
+            <field name="city">Yaoundé</field>
+            <field name="country_id" ref="base.cm"/>
+            <field name="email">walter.fopa@example.com</field>
+            <field name="phone">+237655555555</field>  <field name="website"/>
+<!--            <field name="image_1920" type="base64" file="de_school/static/img/teacher_1.jpg"/>-->
+        </record>
+        <record id="res_partner_teacher_3" model="res.partner">
+            <field name="name">Françis NEMATCHOUA</field>
+            <field eval="[Command.set([ref('res_partner_category_teacher')])]" name="category_id"/>
+            <field name="is_company">0</field>
+            <field name="company_type">person</field>
+            <field name="street">Bastos</field>
+            <field name="city">Yaoundé</field>
+            <field name="country_id" ref="base.cm"/>
+            <field name="email">walter.fopa@example.com</field>
+            <field name="phone">+237655555555</field>  <field name="website"/>
+<!--            <field name="image_1920" type="base64" file="de_school/static/img/teacher_1.jpg"/>-->
+        </record>
+        <record id="res_partner_teacher_4" model="res.partner">
+            <field name="name">LEUDJEU</field>
+            <field eval="[Command.set([ref('res_partner_category_teacher')])]" name="category_id"/>
+            <field name="is_company">0</field>
+            <field name="company_type">person</field>
+            <field name="street">Bastos</field>
+            <field name="city">Yaoundé</field>
+            <field name="country_id" ref="base.cm"/>
+            <field name="email">walter.fopa@example.com</field>
+            <field name="phone">+237655555555</field>  <field name="website"/>
+<!--            <field name="image_1920" type="base64" file="de_school/static/img/teacher_1.jpg"/>-->
+        </record>
+        <record id="res_partner_teacher_5" model="res.partner">
+            <field name="name">DJEUYA</field>
+            <field eval="[Command.set([ref('res_partner_category_teacher')])]" name="category_id"/>
+            <field name="is_company">0</field>
+            <field name="company_type">person</field>
+            <field name="street">Bastos</field>
+            <field name="city">Yaoundé</field>
+            <field name="country_id" ref="base.cm"/>
+            <field name="email">walter.fopa@example.com</field>
+            <field name="phone">+237655555555</field>  <field name="website"/>
+<!--            <field name="image_1920" type="base64" file="de_school/static/img/teacher_1.jpg"/>-->
+        </record>
+        <record id="res_partner_teacher_6" model="res.partner">
+            <field name="name">Bernabe BATCHAKUI</field>
+            <field eval="[Command.set([ref('res_partner_category_teacher')])]" name="category_id"/>
+            <field name="is_company">0</field>
+            <field name="company_type">person</field>
+            <field name="street">Bastos</field>
+            <field name="city">Yaoundé</field>
+            <field name="country_id" ref="base.cm"/>
+            <field name="email">walter.fopa@example.com</field>
+            <field name="phone">+237655555555</field>  <field name="website"/>
+<!--            <field name="image_1920" type="base64" file="de_school/static/img/teacher_1.jpg"/>-->
+        </record>
+        <record id="res_partner_teacher_7" model="res.partner">
+            <field name="name">Fabrice PEGOFFA</field>
+            <field eval="[Command.set([ref('res_partner_category_teacher')])]" name="category_id"/>
+            <field name="is_company">0</field>
+            <field name="company_type">person</field>
+            <field name="street">Bastos</field>
+            <field name="city">Yaoundé</field>
+            <field name="country_id" ref="base.cm"/>
+            <field name="email">walter.fopa@example.com</field>
+            <field name="phone">+237655555555</field>  <field name="website"/>
+<!--            <field name="image_1920" type="base64" file="de_school/static/img/teacher_1.jpg"/>-->
+        </record>
+        <record id="res_partner_teacher_8" model="res.partner">
+            <field name="name">KOUAKAM</field>
+            <field eval="[Command.set([ref('res_partner_category_teacher')])]" name="category_id"/>
+            <field name="is_company">0</field>
+            <field name="company_type">person</field>
+            <field name="street">Bastos</field>
+            <field name="city">Yaoundé</field>
+            <field name="country_id" ref="base.cm"/>
+            <field name="email">walter.fopa@example.com</field>
+            <field name="phone">+237655555555</field>  <field name="website"/>
+<!--            <field name="image_1920" type="base64" file="de_school/static/img/teacher_1.jpg"/>-->
+        </record>
+        <record id="res_partner_teacher_9" model="res.partner">
+            <field name="name">TAKOU</field>
+            <field eval="[Command.set([ref('res_partner_category_teacher')])]" name="category_id"/>
+            <field name="is_company">0</field>
+            <field name="company_type">person</field>
+            <field name="street">Bastos</field>
+            <field name="city">Yaoundé</field>
+            <field name="country_id" ref="base.cm"/>
+            <field name="email">walter.fopa@example.com</field>
+            <field name="phone">+237655555555</field>  <field name="website"/>
+<!--            <field name="image_1920" type="base64" file="de_school/static/img/teacher_1.jpg"/>-->
+        </record>
+        <record id="res_partner_teacher_10" model="res.partner">
+            <field name="name">Anne Marie</field>
+            <field eval="[Command.set([ref('res_partner_category_teacher')])]" name="category_id"/>
+            <field name="is_company">0</field>
+            <field name="company_type">person</field>
+            <field name="street">Bastos</field>
+            <field name="city">Yaoundé</field>
+            <field name="country_id" ref="base.cm"/>
+            <field name="email">walter.fopa@example.com</field>
+            <field name="phone">+237655555555</field>  <field name="website"/>
+<!--            <field name="image_1920" type="base64" file="de_school/static/img/teacher_1.jpg"/>-->
+        </record>
+
+        
+        <!--Department-->
+        <record id="dep_foas" model="hr.department">
+            <field name="name">Faculté des sciences &amp; arts</field>
+            <field name="color" eval="5"/>
+        </record>
+        <record id="dep_foe" model="hr.department">
+            <field name="name">Faculté de l'éducation</field>
+            <field name="color" eval="5"/>
+        </record>
+        <record id="dep_cs" model="hr.department">
+            <field name="name">Département informatique</field>
+            <field name="color" eval="5"/>
+        </record>
+        <record id="dep_math" model="hr.department">
+            <field name="name">Département de mathématique</field>
+            <field name="color" eval="5"/>
+        </record>
+
+        <!-- Employee categories -->
+        <record id="employee_category_faculty" model="hr.employee.category">
+            <field name="name">Faculty</field>
+            <field name="color" eval="1"/>
+        </record>
+        
+        <!-- Teacher Employee Data -->
+        <record id="employee_teacher_1" model="hr.employee">
+            <field name="name">Walter FOPA</field>
+            <field name="department_id" ref="dep_foas"/>
+            <field name="address_id" ref="res_partner_teacher_1"/>
+            <field name="is_teacher">1</field>
+            <field name="job_title">Enseignant</field>
+            <field name="category_ids" eval="[Command.set([ref('employee_category_faculty')])]"/>
+<!--            <field name="image_1920" type="base64" file="de_school/static/img/teacher_1.jpg"/>-->
+        </record>
+        <record id="employee_teacher_2" model="hr.employee">
+            <field name="name">EYIKE EYIKE</field>
+            <field name="department_id" ref="dep_foas"/>
+            <field name="is_teacher">1</field>
+            <field name="address_id" ref="res_partner_teacher_2"/>
+            <field name="job_title">Enseignant</field>
+            <field name="category_ids" eval="[Command.set([ref('employee_category_faculty')])]"/>
+<!--            <field name="image_1920" type="base64" file="de_school/static/img/teacher_2.jpg"/>-->
+        </record>
+        <record id="employee_teacher_3" model="hr.employee">
+            <field name="name">Françis NEMATCHOUA</field>
+            <field name="department_id" ref="dep_foe"/>
+            <field name="address_id" ref="res_partner_teacher_3"/>
+            <field name="is_teacher">1</field>
+            <field name="job_title">Enseignant</field>
+            <field name="category_ids" eval="[Command.set([ref('employee_category_faculty')])]"/>
+<!--            <field name="image_1920" type="base64" file="de_school/static/img/teacher_3.jpg"/>-->
+        </record>
+        <record id="employee_teacher_4" model="hr.employee">
+            <field name="name">LEUDJEU</field>
+            <field name="department_id" ref="dep_foe"/>
+            <field name="address_id" ref="res_partner_teacher_4"/>
+            <field name="is_teacher">1</field>
+            <field name="job_title">Enseignant</field>
+            <field name="category_ids" eval="[Command.set([ref('employee_category_faculty')])]"/>
+<!--            <field name="image_1920" type="base64" file="de_school/static/img/teacher_4.jpg"/>-->
+        </record>
+        <record id="employee_teacher_5" model="hr.employee">
+            <field name="name">DJEUYA</field>
+            <field name="department_id" ref="dep_foe"/>
+            <field name="address_id" ref="res_partner_teacher_5"/>
+            <field name="is_teacher">1</field>
+            <field name="job_title">Enseignant</field>
+            <field name="category_ids" eval="[Command.set([ref('employee_category_faculty')])]"/>
+<!--            <field name="image_1920" type="base64" file="de_school/static/img/teacher_5.jpg"/>-->
+        </record>
+        <record id="employee_teacher_6" model="hr.employee">
+            <field name="name">Bernabe BATCHAKUI</field>
+            <field name="department_id" ref="dep_cs"/>
+            <field name="address_id" ref="res_partner_teacher_6"/>
+            <field name="is_teacher">1</field>
+            <field name="job_title">Enseignant</field>
+            <field name="category_ids" eval="[Command.set([ref('employee_category_faculty')])]"/>
+<!--            <field name="image_1920" type="base64" file="de_school/static/img/teacher_6.jpg"/>-->
+        </record>
+        <record id="employee_teacher_7" model="hr.employee">
+            <field name="name">Fabrice PEGOFFA</field>
+            <field name="department_id" ref="dep_cs"/>
+            <field name="address_id" ref="res_partner_teacher_7"/>
+            <field name="is_teacher">1</field>
+            <field name="job_title">Enseignant</field>
+            <field name="category_ids" eval="[Command.set([ref('employee_category_faculty')])]"/>
+<!--            <field name="image_1920" type="base64" file="de_school/static/img/teacher_7.jpg"/>-->
+        </record>
+        <record id="employee_teacher_8" model="hr.employee">
+            <field name="name">KOUAKAM</field>
+            <field name="department_id" ref="dep_cs"/>
+            <field name="address_id" ref="res_partner_teacher_8"/>
+            <field name="is_teacher">1</field>
+            <field name="job_title">Enseignant</field>
+            <field name="category_ids" eval="[Command.set([ref('employee_category_faculty')])]"/>
+<!--            <field name="image_1920" type="base64" file="de_school/static/img/teacher_8.jpg"/>-->
+        </record>
+        <record id="employee_teacher_9" model="hr.employee">
+            <field name="name">TAKOU</field>
+            <field name="department_id" ref="dep_math"/>
+            <field name="address_id" ref="res_partner_teacher_9"/>
+            <field name="is_teacher">1</field>
+            <field name="job_title">Enseignant</field>
+            <field name="category_ids" eval="[Command.set([ref('employee_category_faculty')])]"/>
+<!--            <field name="image_1920" type="base64" file="de_school/static/img/teacher_9.jpg"/>-->
+        </record>
+        <record id="employee_teacher_10" model="hr.employee">
+            <field name="name">Anne Marie</field>
+            <field name="department_id" ref="dep_math"/>
+            <field name="address_id" ref="res_partner_teacher_10"/>
+            <field name="is_teacher">1</field>
+            <field name="job_title">Enseignant</field>
+            <field name="category_ids" eval="[Command.set([ref('employee_category_faculty')])]"/>
+<!--            <field name="image_1920" type="base64" file="de_school/static/img/teacher_10.jpg"/>-->
+        </record>
+    </data>
+</odoo>
