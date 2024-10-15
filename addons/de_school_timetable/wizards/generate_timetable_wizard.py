@@ -80,76 +80,89 @@ class GenerateTimetableWizard(models.TransientModel):
         self.env['oe.school.timetable'].search([]).unlink()
         classrooms = self.env['oe.school.building.room'].search([])
         n = len(classrooms)
-        semesters = self.env['oe.school.year.semester'].search([
-            ('id', '=', self.semester_id.id)
-        ])
-        # Récupérer la liste des semestres
-        for semester in semesters:
-            number_of_week = semester.number_of_week
-            # Récupérer la liste des cursus
-            subjects = self.env['oe.school.subject'].search([])
-            for subject in subjects:
-                volume_horaire = subject.credit_hour
-                if volume_horaire <= 0:
-                    continue
-                # Récupérer la liste des cours du cursus spécifié liés au semestre spécifié
-                course_subjects = self.env['oe.school.course.subject.line'].search([
-                    ('subject_id', '=', subject.id)
-                ])
-                for course_subject in course_subjects:
-                    courses = self.env['oe.school.course'].search([
-                        ('id', '=', course_subject.course_id.id)
-                    ], limit=1)
-                    for course in courses:
-                        heures_par_semaine = volume_horaire / number_of_week
-                        heures_par_semaine = int(math.ceil(heures_par_semaine))
-                        date_debut = semester.date_start
-                        date_fin = semester.date_end
-                        heure_debut_cours = '07:30'
-                        heure_fin_cours = '16:00'
-                        i = 0
-                        while True:
-                            if n > i:
-                                classroom = classrooms[i]
-                                date_debut_string = datetime.strftime(date_debut, DATE_FORMAT)
-                                date_fin_string = datetime.strftime(date_fin, DATE_FORMAT)
-                                date_heure_debut_cours = datetime.strptime(f'{date_debut_string} {heure_debut_cours}', DATETIME_FORMAT)
-                                date_heure_fin_cours = datetime.strptime(f'{date_debut_string} {heure_fin_cours}', DATETIME_FORMAT)
-                                if date_heure_fin_cours > (date_heure_debut_cours + timedelta(days=0, hours=heures_par_semaine)):
-                                    heure_debut_string = date_heure_debut_cours.strftime(TIME_FORMAT).replace(':', '.')
-                                    heure_fin_string = (date_heure_debut_cours + timedelta(days=0, hours=heures_par_semaine)).strftime(TIME_FORMAT).replace(':', '.')
-                                    check_cours = self.env['school.room.scheduler'].check_course_for_room(classroom.id, date_debut_string, heure_debut_string, heure_fin_string)
-                                    _logger.info(f'----------- tototototototo course_id {course.id} -----------')
-                                    _logger.info(f'----------- tototototototo subject_id {subject.id} -----------')
-                                    _logger.info(f'----------- tototototototo classroom_id {classroom.id} -----------')
-                                    _logger.info(f'----------- tototototototo date_debut_string {date_debut_string} -----------')
-                                    _logger.info(f'----------- tototototototo date_heure_debut_cours {heure_debut_string} -----------')
-                                    _logger.info(f'----------- tototototototo date_heure_fin_cours {heure_fin_string} -----------')
-                                    _logger.info(f'----------- tototototototo check_cours {check_cours} -----------')
-                                    if check_cours:
-                                        i += 1
-                                        if n > i:
-                                            heure_debut_cours = '07:30'
+        if n > 0:
+            semesters = self.env['oe.school.year.semester'].search([
+                ('id', '=', self.semester_id.id)
+            ])
+            # Récupérer la liste des semestres
+            for semester in semesters:
+                classroom_date_heure = {}
+                number_of_week = semester.number_of_week
+                # Récupérer la liste des cursus
+                subjects = self.env['oe.school.subject'].search([])
+                for subject in subjects:
+                    volume_horaire = subject.credit_hour
+                    if volume_horaire <= 0:
+                        continue
+                    # Récupérer la liste des cours du cursus spécifié liés au semestre spécifié
+                    course_subjects = self.env['oe.school.course.subject.line'].search([
+                        ('subject_id', '=', subject.id)
+                    ])
+                    for course_subject in course_subjects:
+                        courses = self.env['oe.school.course'].search([
+                            ('id', '=', course_subject.course_id.id)
+                        ], limit=1)
+                        for course in courses:
+                            heures_par_semaine = volume_horaire / number_of_week
+                            heures_par_semaine = int(math.ceil(heures_par_semaine))
+                            date_debut = semester.date_start
+                            date_fin = semester.date_end
+                            heure_debut_cours = '07:30'
+                            heure_fin_cours = '16:00'
+                            i = 0
+                            while True:
+                                if n > i:
+                                    classroom = classrooms[i]
+                                    date_debut_string = datetime.strftime(date_debut, DATE_FORMAT)
+                                    date_fin_string = datetime.strftime(date_fin, DATE_FORMAT)
+                                    if f'{classroom.id}' in classroom_date_heure.keys():
+                                        if date_debut_string in classroom_date_heure[f'{classroom.id}'].keys():
+                                            m = len(classroom_date_heure[f'{classroom.id}'][date_debut_string])
+                                            heure_debut_cours = classroom_date_heure[f'{classroom.id}'][date_debut_string][m - 1]
                                         else:
-                                            i = 0
-                                            heure_debut_cours = str(check_cours.hour_to).replace('.', ':')
+                                            heure_debut_cours = '07:30'
                                     else:
-                                        self.env['oe.school.timetable'].create({
-                                            'course_id': course.id,
-                                            'subject_id': subject.id,
-                                            'classroom_id': classroom.id,
-                                            'date': date_debut_string,
-                                            'hour_from': date_heure_debut_cours.strftime(TIME_FORMAT).replace(':', '.'),
-                                            'hour_to': date_heure_fin_cours.strftime(TIME_FORMAT).replace(':', '.'),
-                                        })
-                                        break
+                                        heure_debut_cours = '07:30'
+                                    date_heure_debut_cours = datetime.strptime(f'{date_debut_string} {heure_debut_cours}', DATETIME_FORMAT)
+                                    date_heure_fin_cours = datetime.strptime(f'{date_debut_string} {heure_fin_cours}', DATETIME_FORMAT)
+                                    if date_heure_fin_cours > (date_heure_debut_cours + timedelta(hours=heures_par_semaine)):
+                                        heure_debut_string = date_heure_debut_cours.strftime(TIME_FORMAT)
+                                        heure_fin_string = (date_heure_debut_cours + timedelta(hours=heures_par_semaine)).strftime(TIME_FORMAT)
+                                        check_cours = self.env['school.room.scheduler'].check_course_for_room(classroom.id, date_debut_string, heure_debut_string.replace(':', '.'), heure_fin_string.replace(':', '.'))
+                                        _logger.info(f'----------- tototototototo classroom_date_heure {classroom_date_heure} -----------')
+                                        _logger.info(f'----------- tototototototo check_cours {check_cours} -----------')
+                                        if check_cours:
+                                            i += 1
+                                        else:
+                                            hour_from = float(heure_debut_string.replace(':', '.'))
+                                            hour_to = float(heure_fin_string.replace(':', '.'))
+                                            self.env['oe.school.timetable'].create({
+                                                'course_id': course.id,
+                                                'subject_id': subject.id,
+                                                'classroom_id': classroom.id,
+                                                'date': date_debut_string,
+                                                'hour_from': hour_from,
+                                                'hour_to': hour_to,
+                                            })
+                                            if f'{classroom.id}' in classroom_date_heure.keys():
+                                                if date_debut_string in classroom_date_heure[f'{classroom.id}'].keys():
+                                                    if heure_fin_string not in classroom_date_heure[f'{classroom.id}'][date_debut_string]:
+                                                        classroom_date_heure[f'{classroom.id}'][date_debut_string].append(heure_fin_string)
+                                                else:
+                                                    classroom_date_heure[f'{classroom.id}'][date_debut_string] = []
+                                                    classroom_date_heure[f'{classroom.id}'][date_debut_string].append(heure_fin_string)
+                                            else:
+                                                classroom_date_heure[f'{classroom.id}'] = {}
+                                                classroom_date_heure[f'{classroom.id}'][date_debut_string] = []
+                                                classroom_date_heure[f'{classroom.id}'][date_debut_string].append(heure_fin_string)
+                                            break
+                                    else:
+                                        if date_fin > (date_debut + timedelta(days=1)):
+                                            date_debut = date_debut + timedelta(days=1)
+                                        else:
+                                            break
                                 else:
-                                    if date_fin > (date_debut + timedelta(days=1)):
-                                        date_debut = date_debut + timedelta(days=1)
-                                    else:
-                                        break
-                            else:
-                                break
+                                    break
 
     # def action_create_timetable(self):
     #     # Check if dates are null
