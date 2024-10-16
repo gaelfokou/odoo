@@ -7,7 +7,11 @@
             <field name="model">hr.employee</field>
             <field name="inherit_id" ref="hr.view_employee_form" />
             <field name="arch" type="xml">
-                 <xpath expr="//sheet" position="inside">
+                <!-- Ajouter le champ après le champ "hours_credit" -->
+                <!-- <xpath expr="//field[@name='hours_credit']" position="after">
+                    <field name="priority" widget="priority" />
+                </xpath> -->
+                <xpath expr="//sheet" position="inside">
                     <field name="use_batch" column_invisible="1" />
                     <field name="use_section" column_invisible="1" />
                 </xpath>

@@ -37,7 +37,6 @@
 					<field name="name"/>
                     <field name="subject_group_id"/>
                     <field name="color" widget="color_picker"/>
-                    <field name="credit_hour" />
 				</tree>
 			</field>
 		</record>
@@ -60,7 +59,6 @@
                                 <field name="code" />
                                 <field name="subject_group_id" options="{'no_open_create':True}"/>
                                 <field name="color" widget="color_picker"/>
-                                <field name="credit_hour" />
                                 <field name="priority"/>
                             </group>
                             <group>
