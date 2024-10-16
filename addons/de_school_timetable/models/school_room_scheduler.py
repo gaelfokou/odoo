@@ -35,7 +35,6 @@ class SchoolRoomScheduler(models.Model):
             ('hour_to', '>', hour_from)   # La fin du cours est après le début de la plage
         ])
 
-        _logger.info(f'----------- tototototototo len {len(overlapping_courses)} -----------')
         if len(overlapping_courses) > 0:
             # raise UserError(_("Un cours est déjà prévu dans cette salle entre %s et %s à la date %s.") % (hour_from, hour_to, date))
             return True  # Un cours est déjà prévu dans cette salle
