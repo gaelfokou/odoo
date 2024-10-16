@@ -87,6 +87,7 @@ class GenerateTimetableWizard(models.TransientModel):
             # Récupérer la liste des semestres
             for semester in semesters:
                 classroom_date_heure = {}
+                volume_horaire_semaine_fin = {}
                 number_of_week = semester.number_of_week
                 if number_of_week <= 0:
                     continue
@@ -96,7 +97,12 @@ class GenerateTimetableWizard(models.TransientModel):
                     volume_horaire = subject.credit_hour
                     if volume_horaire <= 0:
                         continue
+                    heures_par_semaine = volume_horaire / number_of_week
+                    heures_par_semaine = int(math.ceil(heures_par_semaine))
                     _logger.info(f'----------- tototototototo subject {subject.name} -----------')
+                    _logger.info(f'----------- tototototototo volume_horaire {volume_horaire} -----------')
+                    _logger.info(f'----------- tototototototo number_of_week {number_of_week} -----------')
+                    _logger.info(f'----------- tototototototo heures_par_semaine {heures_par_semaine} -----------')
                     # Récupérer la liste des cours du cursus spécifié liés au semestre spécifié
                     course_subjects = self.env['oe.school.course.subject.line'].search([
                         ('subject_id', '=', subject.id)
@@ -107,12 +113,15 @@ class GenerateTimetableWizard(models.TransientModel):
                         ], limit=1)
                         if len(courses) > 0:
                             _logger.info(f'----------- tototototototo course {courses[0].name} -----------')
-                            heures_par_semaine = volume_horaire / number_of_week
-                            heures_par_semaine = int(math.ceil(heures_par_semaine))
                             date_debut = semester.date_start
                             date_fin = semester.date_end
                             date_semaine_debut = ''
                             date_semaine_fin = ''
+                            if f'{subject.id}' not in volume_horaire_semaine_fin.keys():
+                                volume_horaire_semaine_fin[f'{subject.id}'] = {}
+                                volume_horaire_semaine_fin[f'{subject.id}'][f'{courses[0].id}'] = heures_par_semaine
+                            elif f'{courses[0].id}' not in volume_horaire_semaine_fin[f'{subject.id}'].keys():
+                                volume_horaire_semaine_fin[f'{subject.id}'][f'{courses[0].id}'] = heures_par_semaine
                             for d in list(range(0, number_of_week)):
                                 date_semaine_debut = date_debut + timedelta(weeks=d)
                                 date_semaine_fin = date_semaine_debut + timedelta(days=-1, weeks=1)
@@ -120,6 +129,8 @@ class GenerateTimetableWizard(models.TransientModel):
                                 heure_cours_fin = '16:00'
                                 i = 0
                                 while True:
+                                    if volume_horaire_semaine_fin[f'{subject.id}'][f'{courses[0].id}'] > volume_horaire:
+                                        break
                                     if date_semaine_fin > date_semaine_debut:
                                         if n > i:
                                             classroom = classrooms[i]
@@ -178,6 +189,7 @@ class GenerateTimetableWizard(models.TransientModel):
                                                         classroom_date_heure[f'{classroom.id}'] = {}
                                                         classroom_date_heure[f'{classroom.id}'][date_semaine_debut_string] = []
                                                         classroom_date_heure[f'{classroom.id}'][date_semaine_debut_string].append(heure_fin_string)
+                                                    volume_horaire_semaine_fin[f'{subject.id}'][f'{courses[0].id}'] += heures_par_semaine
                                                     break
                                             else:
                                                 i += 1
