@@ -88,6 +88,8 @@ class GenerateTimetableWizard(models.TransientModel):
             for semester in semesters:
                 classroom_date_heure = {}
                 number_of_week = semester.number_of_week
+                if number_of_week <= 0:
+                    continue
                 # Récupérer la liste des cursus
                 subjects = self.env['oe.school.subject'].search([])
                 for subject in subjects:
@@ -173,6 +175,7 @@ class GenerateTimetableWizard(models.TransientModel):
                                         else:
                                             i += 1
                                     else:
+                                        heure_debut_cours = '07:30'
                                         date_debut = date_debut + timedelta(days=1)
                                 else:
                                     break
