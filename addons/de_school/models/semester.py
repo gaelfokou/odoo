@@ -57,11 +57,14 @@ class SchoolAcademicYearSemester(models.Model):
             if overlapping_semester:
                 raise ValidationError("Les semestres ne peuvent se supperposer.")
 
+    @api.depends('date_start', 'date_end')
     def _compute_number_of_week(self):
-        date_start = datetime.strptime(self.date_start, "%Y-%m-%d")
-        date_end = datetime.strptime(self.date_end, "%Y-%m-%d")
+        for semester in self:
+            if semester.date_start and semester.date_end:
+                # date_start = datetime.strptime(semester.date_start, "%Y-%m-%d")
+                # date_end = datetime.strptime(semester.date_end, "%Y-%m-%d")
 
-        diff = date_end - date_start
+                diff = semester.date_end - semester.date_start
 
-        weeks = diff.days / 7
-        return weeks
+                weeks = diff.days / 7
+                semester.number_of_week = weeks

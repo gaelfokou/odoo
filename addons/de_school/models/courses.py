@@ -165,5 +165,6 @@ class SchoolCourseSubjectLine(models.Model):
     max_weekly_class = fields.Integer('Nombre maximal de cours par semaine')
     credit_hours = fields.Float('Volume horaire')
     semester_id = fields.Many2one('oe.school.year.semester', string="Semestre")
+    volume_horaire = fields.Integer(string='Volume horaire', default=0)
 
     

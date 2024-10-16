@@ -14,7 +14,6 @@ class HrEmployee(models.Model):
     teacher_subject_line = fields.One2many('hr.employee.subjects.line', 'employee_id', 'Cours')
     teacher_availability = fields.One2many('hr.employee.availability','employee_id','Disponibilité')
     hours_credit = fields.Integer(string='Quota horaire hebdommadaire')
-    priority = fields.Integer(string='Niveau de priorité', default='0', required=False)
 
     use_batch = fields.Boolean(compute='_compute_use_batch_from_company')
     use_section = fields.Boolean(compute='_compute_use_section_from_company')
