@@ -136,14 +136,27 @@ class GenerateTimetableWizard(models.TransientModel):
                                         else:
                                             hour_from = float(heure_debut_string.replace(':', '.'))
                                             hour_to = float(heure_fin_string.replace(':', '.'))
-                                            self.env['oe.school.timetable'].create({
-                                                'course_id': course.id,
-                                                'subject_id': subject.id,
-                                                'classroom_id': classroom.id,
-                                                'date': date_debut_string,
-                                                'hour_from': hour_from,
-                                                'hour_to': hour_to,
-                                            })
+                                            teachers = self.env['school.teacher.scheduler'].find_best_teacher(date_debut, hour_from, hour_to, subject)
+                                            _logger.info(f'----------- tototototototo teachers {teachers} -----------')
+                                            if len(teachers) > 0:
+                                                self.env['oe.school.timetable'].create({
+                                                    'course_id': course.id,
+                                                    'subject_id': subject.id,
+                                                    'teacher_id': teachers[0].id,
+                                                    'classroom_id': classroom.id,
+                                                    'date': date_debut_string,
+                                                    'hour_from': hour_from,
+                                                    'hour_to': hour_to,
+                                                })
+                                            else:
+                                                self.env['oe.school.timetable'].create({
+                                                    'course_id': course.id,
+                                                    'subject_id': subject.id,
+                                                    'classroom_id': classroom.id,
+                                                    'date': date_debut_string,
+                                                    'hour_from': hour_from,
+                                                    'hour_to': hour_to,
+                                                })
                                             if f'{classroom.id}' in classroom_date_heure.keys():
                                                 if date_debut_string in classroom_date_heure[f'{classroom.id}'].keys():
                                                     if heure_fin_string not in classroom_date_heure[f'{classroom.id}'][date_debut_string]:
