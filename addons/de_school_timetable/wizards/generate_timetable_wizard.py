@@ -114,8 +114,8 @@ class GenerateTimetableWizard(models.TransientModel):
                             for d in list(range(0, number_of_week)):
                                 date_semaine_debut = date_debut + timedelta(weeks=d)
                                 date_semaine_fin = date_semaine_debut + timedelta(days=-1, weeks=1)
-                                heure_debut_cours = '07:30'
-                                heure_fin_cours = '16:00'
+                                heure_cours_debut = '07:30'
+                                heure_cours_fin = '16:00'
                                 i = 0
                                 while True:
                                     if date_semaine_fin > date_semaine_debut:
@@ -126,16 +126,16 @@ class GenerateTimetableWizard(models.TransientModel):
                                             if f'{classroom.id}' in classroom_date_heure.keys():
                                                 if date_semaine_debut_string in classroom_date_heure[f'{classroom.id}'].keys():
                                                     m = len(classroom_date_heure[f'{classroom.id}'][date_semaine_debut_string])
-                                                    heure_debut_cours = classroom_date_heure[f'{classroom.id}'][date_semaine_debut_string][m - 1]
+                                                    heure_cours_debut = classroom_date_heure[f'{classroom.id}'][date_semaine_debut_string][m - 1]
                                                 else:
-                                                    heure_debut_cours = '07:30'
+                                                    heure_cours_debut = '07:30'
                                             else:
-                                                heure_debut_cours = '07:30'
-                                            date_heure_debut_cours = datetime.strptime(f'{date_semaine_debut_string} {heure_debut_cours}', DATETIME_FORMAT)
-                                            date_heure_fin_cours = datetime.strptime(f'{date_semaine_debut_string} {heure_fin_cours}', DATETIME_FORMAT)
-                                            heure_debut_string = date_heure_debut_cours.strftime(TIME_FORMAT)
-                                            heure_fin_string = (date_heure_debut_cours + timedelta(hours=heures_par_semaine)).strftime(TIME_FORMAT)
-                                            if date_heure_fin_cours > date_heure_debut_cours:
+                                                heure_cours_debut = '07:30'
+                                            date_heure_cours_debut = datetime.strptime(f'{date_semaine_debut_string} {heure_cours_debut}', DATETIME_FORMAT)
+                                            date_heure_cours_fin = datetime.strptime(f'{date_semaine_debut_string} {heure_cours_fin}', DATETIME_FORMAT)
+                                            heure_debut_string = date_heure_cours_debut.strftime(TIME_FORMAT)
+                                            heure_fin_string = (date_heure_cours_debut + timedelta(hours=heures_par_semaine)).strftime(TIME_FORMAT)
+                                            if date_heure_cours_fin > date_heure_cours_debut:
                                                 check_cours = self.env['school.room.scheduler'].check_course_for_room(classroom.id, date_semaine_debut_string, heure_debut_string.replace(':', '.'), heure_fin_string.replace(':', '.'))
                                                 _logger.info(f'----------- tototototototo classroom_date_heure {classroom_date_heure} -----------')
                                                 _logger.info(f'----------- tototototototo check_cours {check_cours} -----------')
