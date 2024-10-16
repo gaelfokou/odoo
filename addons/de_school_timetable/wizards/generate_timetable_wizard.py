@@ -104,7 +104,7 @@ class GenerateTimetableWizard(models.TransientModel):
                         courses = self.env['oe.school.course'].search([
                             ('id', '=', course_subject.course_id.id)
                         ], limit=1)
-                        for course in courses:
+                        if len(courses) > 0:
                             heures_par_semaine = volume_horaire / number_of_week
                             heures_par_semaine = int(math.ceil(heures_par_semaine))
                             date_debut = semester.date_start
@@ -148,7 +148,7 @@ class GenerateTimetableWizard(models.TransientModel):
                                                     _logger.info(f'----------- tototototototo teachers {teachers} -----------')
                                                     if len(teachers) > 0:
                                                         self.env['oe.school.timetable'].create({
-                                                            'course_id': course.id,
+                                                            'course_id': courses[0].id,
                                                             'subject_id': subject.id,
                                                             'teacher_id': teachers[0].id,
                                                             'classroom_id': classroom.id,
@@ -158,7 +158,7 @@ class GenerateTimetableWizard(models.TransientModel):
                                                         })
                                                     else:
                                                         self.env['oe.school.timetable'].create({
-                                                            'course_id': course.id,
+                                                            'course_id': courses[0].id,
                                                             'subject_id': subject.id,
                                                             'classroom_id': classroom.id,
                                                             'date': date_debut_semaine_string,
