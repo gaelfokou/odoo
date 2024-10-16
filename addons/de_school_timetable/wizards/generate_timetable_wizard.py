@@ -175,7 +175,6 @@ class GenerateTimetableWizard(models.TransientModel):
                                         else:
                                             i += 1
                                     else:
-                                        heure_debut_cours = '07:30'
                                         date_debut = date_debut + timedelta(days=1)
                                 else:
                                     break
