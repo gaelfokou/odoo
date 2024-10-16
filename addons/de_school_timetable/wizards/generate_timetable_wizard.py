@@ -182,10 +182,10 @@ class GenerateTimetableWizard(models.TransientModel):
                                             else:
                                                 i += 1
                                         else:
+                                            i = 0
                                             date_semaine_debut = date_semaine_debut + timedelta(days=1)
                                     else:
                                         break
-                                break
 
     # def action_create_timetable(self):
     #     # Check if dates are null
