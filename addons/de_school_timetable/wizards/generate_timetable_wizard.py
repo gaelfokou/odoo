@@ -112,8 +112,8 @@ class GenerateTimetableWizard(models.TransientModel):
                             date_debut_semaine = ''
                             date_fin_semaine = ''
                             for d in list(range(0, number_of_week)):
-                                date_debut_semaine = date_debut + timedelta(days=(d*7))
-                                date_fin_semaine = date_debut_semaine + timedelta(days=7)
+                                date_debut_semaine = date_debut + timedelta(weeks=d)
+                                date_fin_semaine = date_debut_semaine + timedelta(days=-1, weeks=1)
                                 heure_debut_cours = '07:30'
                                 heure_fin_cours = '16:00'
                                 i = 0
