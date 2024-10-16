@@ -96,6 +96,7 @@ class GenerateTimetableWizard(models.TransientModel):
                     volume_horaire = subject.credit_hour
                     if volume_horaire <= 0:
                         continue
+                    _logger.info(f'----------- tototototototo subject {subject.name} -----------')
                     # Récupérer la liste des cours du cursus spécifié liés au semestre spécifié
                     course_subjects = self.env['oe.school.course.subject.line'].search([
                         ('subject_id', '=', subject.id)
@@ -105,6 +106,7 @@ class GenerateTimetableWizard(models.TransientModel):
                             ('id', '=', course_subject.course_id.id)
                         ], limit=1)
                         if len(courses) > 0:
+                            _logger.info(f'----------- tototototototo course {courses[0].name} -----------')
                             heures_par_semaine = volume_horaire / number_of_week
                             heures_par_semaine = int(math.ceil(heures_par_semaine))
                             date_debut = semester.date_start
