@@ -1,29 +1,47 @@
-# docker-compose up -d
-# docker-compose down -v
+# docker compose v2 (docker-compose v1)
+# docker compose up -d
+# docker compose exec web pip freeze
+# docker compose exec web pip install numpy
+# docker compose restart
+# docker compose down -v
 # docker ps -a
 # docker rm $(docker ps -aq)
-# docker-compose exec web odoo scaffold openacademy1 /mnt/extra-addons
-# docker exec -it odoo-web-1 odoo scaffold openacademy2 /mnt/extra-addons
-# docker exec -it odoo-web-1 bash -c "odoo scaffold openacademy31 /mnt/extra-addons"
-# docker exec -it odoo-web-1 bash -c "/usr/bin/odoo scaffold openacademy32 /mnt/extra-addons"
+# docker compose exec web odoo scaffold openacademy1 /mnt/extra-addons
+# docker exec -it odoo-container odoo scaffold openacademy2 /mnt/extra-addons
 version: '3.1'
 services:
   web:
-    image: odoo:17.0-20240812
+    container_name: odoo-container
+    # image: odoo:16.0
+    image: odoo:17.0
     env_file: .env
     depends_on:
       - psql
     ports:
       - "8069:8069"
     volumes:
-      - data:/var/lib/odoo
+      - odoo-data:/var/lib/odoo
       - ./config:/etc/odoo
       - ./addons:/mnt/extra-addons
+  # pgadmin:
+  #   container_name: pgadmin-container
+  #   image: dpage/pgadmin4:latest
+  #   env_file: .env
+  #   depends_on:
+  #     - psql
+  #   ports:
+  #     - "8080:80"
+  #   volumes:
+  #     - pgadmin-data:/var/lib/pgadmin
   psql:
-    image: postgres:latest
+    container_name: postgres-container
+    image: postgres:13
     env_file: .env
+    # ports:
+    #   - "5432:5432"
     volumes:
-      - db:/var/lib/pgsql/data/pgdata
+      - postgres-data:/var/lib/postgresql/data
 volumes:
-  data:
-  db:
+  odoo-data:
+  # pgadmin-data:
+  postgres-data:

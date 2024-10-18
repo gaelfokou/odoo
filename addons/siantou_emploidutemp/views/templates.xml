@@ -1,0 +1,36 @@
+<odoo>
+    <data>
+
+        <template id="emploidutemp_listing">
+          <ul>
+            <li t-foreach="emploidutemps" t-as="emploidutemp">
+              <a t-attf-href="#{ root }/#{ emploidutemp.id }">
+                <t t-esc="emploidutemp.display_name"/>
+              </a>
+            </li>
+          </ul>
+        </template>
+
+        <template id="semestre_listing">
+          <ul>
+            <li t-foreach="semestres" t-as="semestre">
+              <a t-attf-href="#">
+                <t t-esc="semestre"/>
+              </a>
+            </li>
+          </ul>
+        </template>
+
+
+        <template id="emploidutemp_object">
+          <h1><t t-esc="emploidutemp.display_name"/></h1>
+          <dl>
+            <t t-foreach="emploidutemp._fields" t-as="field">
+              <dt><t t-esc="field"/></dt>
+              <dd><t t-esc="emploidutemp[field]"/></dd>
+            </t>
+          </dl>
+        </template>
+
+    </data>
+</odoo>

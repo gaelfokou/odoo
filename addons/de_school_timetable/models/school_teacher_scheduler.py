@@ -22,16 +22,20 @@ class SchoolTeacherScheduler(models.Model):
         :param subject: Objet de la matière (oe.school.subject)
         :return: L'enseignant avec la priorité la plus élevée ou lève une erreur si aucun enseignant n'est disponible.
         """
-
+        _logger.info(f'----------- tototototototo subject_id {subject.id} -----------')
+        _logger.info(f'----------- tototototototo date {date} -----------')
+        _logger.info(f'----------- tototototototo hour_from {hour_from} -----------')
+        _logger.info(f'----------- tototototototo hour_to {hour_to} -----------')
         # Mapping des numéros de jours (0-6) à leurs noms en anglais
+
         day_of_week_map = {
-            0: 'monday',
-            1: 'tuesday',
-            2: 'wednesday',
-            3: 'thursday',
-            4: 'friday',
-            5: 'saturday',
-            6: 'sunday'
+            0: 'Lundi',
+            1: 'Mardi',
+            2: 'Mercredi',
+            3: 'Jeudi',
+            4: 'Vendredi',
+            5: 'Samedi',
+            6: 'Dimanche'
         }
 
         # Convertir la date en jour de la semaine (0 pour lundi, 6 pour dimanche)

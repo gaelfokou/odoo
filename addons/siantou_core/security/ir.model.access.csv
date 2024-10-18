@@ -1,9 +1,0 @@
-id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_siantou_site,access.siantou.site,model_siantou_site,,1,1,1,1
-access_siantou_batiment,access.siantou.batiment,model_siantou_batiment,,1,1,1,1
-access_siantou_config_lot,access.siantou.config_lot,model_siantou_config_lot,,1,1,1,1
-access_siantou_matiere,access.siantou.matiere,model_siantou_matiere,,1,1,1,1
-access_siantou_salle,access.siantou.salle,model_siantou_salle,,1,1,1,1
-access_siantou_specialite,access.siantou.specialite,model_siantou_specialite,,1,1,1,1
-access_siantou_option,access.siantou.option,model_siantou_option,,1,1,1,1
-access_siantou_filiere,access.siantou.filiere,model_siantou_filiere,,1,1,1,1
