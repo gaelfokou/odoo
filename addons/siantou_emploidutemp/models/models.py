@@ -46,12 +46,6 @@ class siantou_emploidutemp_emploidutemp(models.Model):
 
     @api.onchange('matiere_id', 'debut', 'fin')
     def _check_onchange(self):
-        try:
-            _logger.info(f'----------- tototototototo Your information log message {DATETIME_FORMAT} -----------')
-            _logger.warning(f'----------- tototototototo Your warning log message {DATETIME_FORMAT} -----------')
-            _logger.error(f'----------- tototototototo Your error log message {DATETIME_FORMAT} -----------')
-        except Exception as e:
-            _logger.exception(f'----------- tototototototo An error occurred : {e} -----------')
         for record in self:
             if (((not record.matiere_id.id) and (record.configuration_id.id)) or ((record.matiere_id.id) and (not record.configuration_id.id))):
                 if record.matiere_id.id:
@@ -90,6 +84,12 @@ class siantou_emploidutemp_semestre(models.Model):
     matiere_ids = fields.Many2many('siantou_emploidutemp.matiere', 'siantou_emploidutemp_semestre_matiere', 'semestre_id', 'matiere_id', string='Matiere', required=True)
 
     def generator_page(self):
+        try:
+            _logger.info(f'----------- tototototototo Your information log message {self.id} -----------')
+            _logger.warning(f'----------- tototototototo Your warning log message {self.id} -----------')
+            _logger.error(f'----------- tototototototo Your error log message {self.id} -----------')
+        except Exception as e:
+            _logger.exception(f'----------- tototototototo An error occurred : {e} -----------')
         return {
             'url': '/siantou_emploidutemp/semestre/%s' % (self.id),
             'type': 'ir.actions.act_url',

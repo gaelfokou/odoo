@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "openacademy1",
+    'name': "openacademy3",
 
     'summary': "Short (1 phrase/line) summary of the module's purpose",
 

@@ -19,3 +19,4 @@
 #         return http.request.render('openacademy1.object', {
 #             'object': obj
 #         })
+
