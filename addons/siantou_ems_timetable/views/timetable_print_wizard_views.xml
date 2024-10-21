@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <record id="view_timetable_print_wizard" model="ir.ui.view">
+            <field name="name">siantou.ems.timetable.timetable_print_wizard.form</field>
+            <field name="model">siantou.ems.timetable.timetable_print_wizard</field>
+            <field name="arch" type="xml">
+                <form string="Impression Emploi du Temps">
+                    <group>
+                        <field name="semester_id"/>
+                    </group>
+                    <footer>
+                        <button string="Imprimer" type="object" name="print_timetable" class="btn-primary"/>
+                        <button string="Annuler" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <!-- Define an action to open the form view -->
+        <record id="action_print_timetable_wizard" model="ir.actions.act_window">
+            <field name="name">Impression de l'emploi du temps</field>
+            <field name="res_model">siantou.ems.timetable.timetable_print_wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="view_id" ref="view_timetable_print_wizard"/>
+        </record>
+
+        <record id="action_report_timetable" model="ir.actions.report">
+            <field name="name">Emploi du temps PDF</field>
+            <field name="model">siantou.ems.timetable.timetable</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">siantou_ems_timetable.report_timetable</field>
+            <field name="report_file">siantou_ems_timetable.report_timetable</field>
+            <field name="binding_model_id" ref="model_siantou_ems_timetable_timetable"/>
+            <field name="binding_type">report</field>
+        </record>
+    </data>
+</odoo>

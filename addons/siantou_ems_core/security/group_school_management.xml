@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data noupdate="1">
+        <!-- Utilisateur du module de gestion scolaire -->
+        <record
+                id="group_school_user"
+                model="res.groups">
+            <field name="name">Utilisateur du module de gestion scolaire</field>
+            <field name="category_id" ref="module_category_school_management"/>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+            <field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+        </record>
+
+        <!-- Manager du module de gestion scolaire -->
+        <record
+                id="group_school_manager"
+                model="res.groups">
+            <field name="name">Administrateur du module de gestion scholaire</field>
+            <field name="category_id" ref="module_category_school_management"/>
+            <field name="implied_ids" eval="[(4, ref('group_school_user')),(4, ref('base.group_user')),(4, ref('base.group_erp_manager'))]"/>
+            <field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin')),(4, ref('base.group_erp_manager'))]"/>
+        </record>
+    </data>
+</odoo>

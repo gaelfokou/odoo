@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+	<data>
+		<!-- Affichage en vue liste -->
+		<record
+                id="year_tree_view"
+                model="ir.ui.view">
+            <field name="name">year.tree.view</field>
+			<field name="model">siantou.ems.core.year</field>
+			<field name="arch" type="xml">
+				<tree string="Années académiques" editable="bottom" edit="1">
+                    <field name="active"/>
+                    <field name="name"/>
+					<field name="start_time"/>
+					<field name="end_time"/>
+				</tree>
+			</field>
+		</record>
+
+        <!-- Affichage en vue formulaire -->
+		<record
+                id="year_form_view"
+                model="ir.ui.view">
+			<field name="name">year.form.view</field>
+			<field name="model">siantou.ems.core.year</field>
+			<field name="arch" type="xml">
+				<form string="Années académiques">
+					<sheet>
+                        <group>
+                            <field name="active"/>
+                            <field name="name"/>
+                            <field name="start_time"/>
+                            <field name="end_time"/>
+                        </group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+        <!-- Affichage en vue recherche -->
+         <record
+                 id="year_search_view"
+                 model="ir.ui.view">
+            <field name="name">year.search.view</field>
+            <field name="model">siantou.ems.core.year</field>
+            <field name="arch" type="xml">
+                <search string="Années académiques">
+                    <field name="name" string="Années académiques"/>
+                    <filter string="Actif" name="year_active" domain="[('active', '=', True)]"/>
+                    <separator/>
+                </search>
+             </field>
+        </record>
+
+        <!-- Action pour le menu d'affichage des années académiques -->
+        <record
+                id="action_show_year"
+                model="ir.actions.act_window">
+            <field name="name">Années académiques</field>
+            <field name="res_model">siantou.ems.core.year</field>
+            <field name="search_view_id" ref="year_search_view"/>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Créer une nouvelle année académique.
+                </p>
+            </field>
+        </record>
+
+        <!-- Menu pour les années académiques -->
+        <menuitem
+                id="menu_siantou_ems_core_config_year"
+                name="Années académiques"
+                parent="menu_siantou_ems_core_config"
+                action="action_show_year"
+                groups="group_school_manager"
+                sequence="2"/>
+	</data>
+</odoo>

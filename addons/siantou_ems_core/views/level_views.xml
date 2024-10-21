@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+	<data>
+		<!-- Affichage en vue liste -->
+		<record
+                id="level_tree_view"
+                model="ir.ui.view">
+            <field name="name">level.tree.view</field>
+			<field name="model">siantou.ems.core.level</field>
+			<field name="arch" type="xml">
+				<tree string="Niveaux" editable="bottom" edit="1">
+                    <field name="name"/>
+					<field name="description"/>
+				</tree>
+			</field>
+		</record>
+
+        <!-- Affichage en vue formulaire -->
+		<record
+                id="level_form_view"
+                model="ir.ui.view">
+			<field name="name">level.form.view</field>
+			<field name="model">siantou.ems.core.level</field>
+			<field name="arch" type="xml">
+				<form string="Niveau">
+					<sheet>
+                        <group string="Informations sur le niveau">
+                            <field name="name"/>
+                            <field name="description"/>
+                        </group>
+						<group string="Cours du niveau">
+							<field name="subject_ids"/>
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+        <!-- Action pour le menu s'affichage des programmes -->
+        <record
+                id="action_show_level"
+                model="ir.actions.act_window">
+            <field name="name">Niveau</field>
+            <field name="res_model">siantou.ems.core.level</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Créer un nouveau niveau.
+                </p>
+            </field>
+        </record>
+
+        <!-- Menu pour la gestion des filières -->
+        <menuitem
+                id="menu_siantou_ems_core_program_level"
+                name="Niveaux"
+                parent="menu_siantou_ems_core_program"
+                action="action_show_level"
+                groups="group_school_manager"
+                sequence="2"/>
+	</data>
+</odoo>

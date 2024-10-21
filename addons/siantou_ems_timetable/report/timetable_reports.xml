@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+<!--    <report-->
+<!--        id="action_report_timetable"-->
+<!--        model="siantou.ems.timetable.timetable_print_wizard"-->
+<!--        string="Imprimer l'Emploi du Temps"-->
+<!--        report_type="qweb-pdf"-->
+<!--        name="siantou_ems_timetable.report_timetable"-->
+<!--        file="siantou_ems_timetable.report_timetable"-->
+<!--        menu="False"/>-->
+</odoo>

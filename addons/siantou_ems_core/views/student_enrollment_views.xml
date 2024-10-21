@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="enrollment_history_tree_view" model="ir.ui.view">
+        <field name="name">enrollment.history.tree.view</field>
+        <field name="model">oe.school.student.enrollment</field>
+        <field name="arch" type="xml">
+            <tree string="Etudiants">
+                <field name="date_preins"/>
+                <field name="matricule"/>
+                <field name="full_name"/>
+                <field name="cycle_id"/>
+                <field name="specialite_id"/>
+                <field name="type_cour"/>
+                <field name="status_univ"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="enrollment_history_form_view" model="ir.ui.view">
+		<field name="name">enrollment.history.form.view</field>
+		<field name="model">oe.school.student.enrollment</field>
+		<field name="arch" type="xml">
+			<form string="Etudiant">
+                <header>
+                    <button invisible="status == 'broui'" 
+                        name="compute_preinscrip" 
+                        class="btn btn-success" 
+                        type="object" 
+                        string="Ajout des frais de préinscription"/>
+                    <field name="status" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <group>
+                        <field name="date_preins"/>
+                    </group>
+                    <group name="perso" string="Informations générales">
+                        <group>
+                            <field name="full_name" class="field-with-border"/>
+                        </group>
+                        <group>
+                            <field name="status_univ"/>
+                        </group>
+                        <group>
+                            <field name="date_naissance"/>
+                        </group>
+                        <group>
+                            <field name="lieu_naissance"/>
+                        </group>
+                        <group>
+                            <field name="sexe"  widget="radio"/>
+                        </group>
+                        <group>
+                            <field name="situat_matri"  widget="radio"/>
+                        </group>
+                        <group>
+                            <field name="nationalite"/>
+                        </group>
+                        <group>
+                            <field name="lieu_residence"/>
+                        </group>
+                        <group>
+                            <field name="email" widget="email"/>
+                        </group>
+                        <group>
+                            <field name="num_tel" widget="phone"/>
+                        </group>
+                    </group>
+                    <group  name="academique" string="Informations académiques">
+                        <group>
+                            <field name="matricule"/>
+                        </group>
+                        <group>
+                            <field name="cycle_id"/>
+                        </group>
+                        <group>
+                            <field name="specialite_id"/>
+                        </group>
+                        <group>
+                            <field name="type_cour" widget="radio"/>
+                        </group>
+                        
+                        <group>
+                            <field name="nbre_matiere"/>
+                        </group>
+                        
+                        <group>
+                            <field name="dipl_req"/>
+                        </group>
+                        <group>
+                            <field name="session_lieu_obt"/>
+                        </group>
+                        <group>
+                            <field name="dern_etab_freq"/>
+                        </group>
+                        <group>
+                            <field name="annee_acad"/>
+                        </group>
+                        <group>
+                            <field name="niveau"/>
+                        </group>
+                    </group>
+                    <group name="tuteur" string="Informations sur la personne à joindre en cas d'urgence">
+                        <group>
+                            <field name="full_name_tutor"/>
+                        </group>
+                        <group>
+                            <field name="num_tel_tutor"  widget="phone"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    
+    <record model="ir.actions.act_window" id="action_enrollment_history">
+        <field name="name">Préinscription</field>
+        <field name="res_model">oe.school.student.enrollment</field>
+        <field name="view_mode">tree,form</field>
+
+    </record>
+
+    <!-- <menuitem name="Préinscription" id="menu_siantou_ems_core_students_preinscription" 
+            sequence="1"
+            parent="menu_siantou_ems_core_students" 
+            action="action_enrollment_history"/> -->
+
+    <menuitem
+            id="menu_siantou_ems_core_students_preinscription"
+            name="Préinscription"
+            parent="menu_siantou_ems_core_students"
+            action="action_enrollment_history"
+            groups="group_school_user"/>
+    
+</odoo>

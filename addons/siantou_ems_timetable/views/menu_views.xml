@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Menu principal du module -->
+    <menuitem name="Emploi du temps"
+        id="menu_siantou_ems_timetable"
+              sequence="100"
+    />
+
+    <!-- Menu principal de gestion des filières -->
+    <menuitem
+            id="menu_siantou_ems_timetable_planning"
+            name="Planification"
+			parent="menu_siantou_ems_timetable"
+            sequence = "50" />
+</odoo>
