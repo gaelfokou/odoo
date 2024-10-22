@@ -9,11 +9,15 @@ const { Component, mount } = owl;
 
 const delay = ms => new Promise(res => setTimeout(res, ms));
 
-var videoElement = document.getElementById('siantou_emploidutemp.video_element');
-var canvasElement = document.getElementById('siantou_emploidutemp.canvas_element');
-var photoElement = document.getElementById('siantou_emploidutemp.photo_element');
-var startButton = document.getElementById('siantou_emploidutemp.start_button');
-var captureButton = document.getElementById('siantou_emploidutemp.capture_button');
+var width = 320;
+var height = 0;
+var streaming = false;
+
+var videoElement = null;
+var canvasElement = null;
+var photoElement = null;
+var startButton = null;
+var captureButton = null;
 var stream = null;
 
 console.log('Welcome to siantou_emploidutemp module');
@@ -30,31 +34,20 @@ export class CustomClientAction extends Component {
 				await delay(5000);
 				this.state.count += 1;
 			} else {
-				this.addEventElement();
+				this.addEventStartButton();
 			}
 			console.log('Component rendered');
 		});
 		onMounted(() => {
-			this.addEventElement();
+			this.addEventStartButton();
+			this.addEventCanPlayVideo();
+			console.log('Component mounted');
 		});
 		onWillUnmount(() => {
-			this.removeEventElement();
+			this.removeEventStartButton();
+			this.removeEventCanPlayVideo();
+			console.log('Component unmounted');
 		});
-	}
-	addEventElement() {
-		if(startButton) {
-			startButton.disabled = false;
-			startButton.addEventListener('click', this.startWebcam);
-			console.log('Add event listener on component');
-		}
-		console.log('Component mounted');
-	}
-	removeEventElement() {
-		if(startButton) {
-			startButton.removeEventListener('click', this.startWebcam);
-			console.log('Remove event listener on component');
-		}
-		console.log('Component unmounted');
 	}
 	getElements() {
 		videoElement = document.getElementById('siantou_emploidutemp.video_element');
@@ -64,6 +57,46 @@ export class CustomClientAction extends Component {
 		captureButton = document.getElementById('siantou_emploidutemp.capture_button');
 		stream = null;
 		console.log('Get all elements');
+	}
+	addEventCanPlayVideo() {
+		if(videoElement) {
+			videoElement.addEventListener('canplay', this.canPlayVideo);
+			console.log('Add event listener on video element');
+		}
+	}
+	removeEventCanPlayVideo() {
+		if(videoElement) {
+			videoElement.removeEventListener('canplay', this.canPlayVideo);
+			console.log('Remove event listener on video element');
+		}
+	}
+	canPlayVideo() {
+		if (!streaming) {
+			height = videoElement.videoHeight / (videoElement.videoWidth / width);
+
+			if (isNaN(height)) {
+				height = width / (4 / 3);
+			}
+
+			videoElement.setAttribute('width', width);
+			videoElement.setAttribute('height', height);
+			canvasElement.setAttribute('width', width);
+			canvasElement.setAttribute('height', height);
+			streaming = true;
+		}
+	}
+	addEventStartButton() {
+		if(startButton) {
+			startButton.disabled = false;
+			startButton.addEventListener('click', this.startWebcam);
+			console.log('Add event listener on start button');
+		}
+	}
+	removeEventStartButton() {
+		if(startButton) {
+			startButton.removeEventListener('click', this.startWebcam);
+			console.log('Remove event listener on start button');
+		}
 	}
 	async startWebcam() {
 		try {
