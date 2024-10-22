@@ -9,6 +9,13 @@ const { Component, mount } = owl;
 
 const delay = ms => new Promise(res => setTimeout(res, ms));
 
+var videoElement = document.getElementById('siantou_emploidutemp.video_element');
+var canvasElement = document.getElementById('siantou_emploidutemp.canvas_element');
+var photoElement = document.getElementById('siantou_emploidutemp.photo_element');
+var startButton = document.getElementById('siantou_emploidutemp.start_button');
+var captureButton = document.getElementById('siantou_emploidutemp.capture_button');
+var stream = null;
+
 console.log('Welcome to siantou_emploidutemp module');
 
 export class CustomClientAction extends Component {
@@ -17,7 +24,7 @@ export class CustomClientAction extends Component {
 			count: 0,
 		});
 		onRendered(async () => {
-			if(!this.videoElement || !this.canvasElement || !this.photoElement || !this.startButton || !this.captureButton) {
+			if(!videoElement || !canvasElement || !photoElement || !startButton || !captureButton) {
 				this.getElements();
 				console.log('Count :', this.state.count);
 				await delay(5000);
@@ -35,30 +42,31 @@ export class CustomClientAction extends Component {
 		});
 	}
 	addEventElement() {
-		if(this.startButton) {
-			this.startButton.disabled = false;
-			this.startButton.addEventListener('click', this.startWebcam);
+		if(startButton) {
+			startButton.disabled = false;
+			startButton.addEventListener('click', this.startWebcam);
 			console.log('Add event listener on component');
 		}
 		console.log('Component mounted');
 	}
 	removeEventElement() {
-		if(this.startButton) {
-			this.startButton.removeEventListener('click', this.startWebcam);
+		if(startButton) {
+			startButton.removeEventListener('click', this.startWebcam);
 			console.log('Remove event listener on component');
 		}
 		console.log('Component unmounted');
 	}
 	getElements() {
-		this.videoElement = document.getElementById('siantou_emploidutemp.video_element');
-		this.canvasElement = document.getElementById('siantou_emploidutemp.canvas_element');
-		this.photoElement = document.getElementById('siantou_emploidutemp.photo_element');
-		this.startButton = document.getElementById('siantou_emploidutemp.start_button');
-		this.captureButton = document.getElementById('siantou_emploidutemp.capture_button');
-		this.stream = null;
+		videoElement = document.getElementById('siantou_emploidutemp.video_element');
+		canvasElement = document.getElementById('siantou_emploidutemp.canvas_element');
+		photoElement = document.getElementById('siantou_emploidutemp.photo_element');
+		startButton = document.getElementById('siantou_emploidutemp.start_button');
+		captureButton = document.getElementById('siantou_emploidutemp.capture_button');
+		stream = null;
 		console.log('Get all elements');
 	}
 	async startWebcam() {
+		console.log('VideoElement :', videoElement);
 		try {
 			navigator.mediaDevices.getUserMedia = (
 				navigator.mediaDevices.getUserMedia ||
@@ -66,12 +74,12 @@ export class CustomClientAction extends Component {
 				navigator.mediaDevices.mozGetUserMedia ||
 				navigator.mediaDevices.msGetUserMedia
 			);
-			this.stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
-			if(this.stream) {
-				if(this.videoElement) {
-					this.videoElement.srcObject = this.stream;
-					this.startButton.disabled = true;
-					this.captureButton.disabled = false;
+			stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
+			if(stream) {
+				if(videoElement) {
+					videoElement.srcObject = stream;
+					startButton.disabled = true;
+					captureButton.disabled = false;
 					console.log('Successful accessing video streaming');
 				} else {
 					console.log('Error accessing video');
