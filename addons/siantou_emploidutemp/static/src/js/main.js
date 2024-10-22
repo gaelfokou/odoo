@@ -17,7 +17,7 @@ export class CustomClientAction extends Component {
 			count: 0,
 		});
 		onRendered(async () => {
-			if(!this.startButton) {
+			if(!this.videoElement || !this.canvasElement || !this.photoElement || !this.startButton || !this.captureButton) {
 				this.getElements();
 				console.log('Count :', this.state.count);
 				await delay(5000);
