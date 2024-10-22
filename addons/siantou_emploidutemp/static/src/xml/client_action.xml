@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<templates id="siantou_emploidutemp.custom_client_template" xml:space="preserve">
+  <t t-name="siantou_emploidutemp.custom_client">
+      <div id="camera-container">
+        <h5>Webcam Capture</h5>
+        <video id="videoElement" width="640" height="480" autoplay="1"></video>
+        <button id="startButton">Start Webcam</button>
+        <button id="captureButton">Capture Photo</button>
+        <canvas id="canvasElement" width="640" height="480"></canvas>
+        <img id="photoElement" style="display: none;"/>
+      </div>
+  </t>
+</templates>

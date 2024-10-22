@@ -91,9 +91,23 @@ class siantou_emploidutemp_semestre(models.Model):
         except Exception as e:
             _logger.exception(f'----------- tototototototo An error occurred : {e} -----------')
         return {
+            'name': 'Générer un emploi du temps',
             'url': '/siantou_emploidutemp/semestre/%s' % (self.id),
             'type': 'ir.actions.act_url',
             'target': 'self'
+        }
+
+    def scanner_document(self):
+        try:
+            _logger.info(f'----------- tototototototo Your information log message {self.id} -----------')
+            _logger.warning(f'----------- tototototototo Your warning log message {self.id} -----------')
+            _logger.error(f'----------- tototototototo Your error log message {self.id} -----------')
+        except Exception as e:
+            _logger.exception(f'----------- tototototototo An error occurred : {e} -----------')
+        return {
+            'name': 'Custom client action',
+            'type': 'ir.actions.client',
+            'tag': 'siantou_emploidutemp.custom_client_action'
         }
 
     @api.constrains('annee', 'debut', 'fin')
