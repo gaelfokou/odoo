@@ -66,7 +66,6 @@ export class CustomClientAction extends Component {
 		console.log('Get all elements');
 	}
 	async startWebcam() {
-		console.log('VideoElement :', videoElement);
 		try {
 			navigator.mediaDevices.getUserMedia = (
 				navigator.mediaDevices.getUserMedia ||
