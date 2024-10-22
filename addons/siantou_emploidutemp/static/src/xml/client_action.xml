@@ -4,8 +4,8 @@
       <div id="camera-container">
         <h5>Webcam Capture</h5>
         <video id="videoElement" width="640" height="480" autoplay="1"></video>
-        <button id="startButton">Start Webcam</button>
-        <button id="captureButton">Capture Photo</button>
+        <button id="startButton" disabled="1">Start Webcam</button>
+        <button id="captureButton" disabled="1">Capture Photo</button>
         <canvas id="canvasElement" width="640" height="480"></canvas>
         <img id="photoElement" style="display: none;"/>
       </div>
