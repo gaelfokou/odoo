@@ -2,7 +2,7 @@
 <templates id="siantou_emploidutemp.custom_client_template" xml:space="preserve">
   <t t-name="siantou_emploidutemp.custom_client">
       <div id="siantou_emploidutemp.camera_container">
-        <h5>Webcam Capture</h5>
+        <h5>Webcam Scanner</h5>
         <video id="siantou_emploidutemp.video_element" width="640" height="480" autoplay="1"></video>
         <button id="siantou_emploidutemp.start_button" disabled="1">Start Webcam</button>
         <button id="siantou_emploidutemp.capture_button" disabled="1">Capture Photo</button>

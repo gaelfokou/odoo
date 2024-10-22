@@ -66,6 +66,10 @@ export class CustomClientAction extends Component {
 			videoElement.addEventListener('canplay', this.canPlayVideo, false);
 			console.log('Add event listener on video element');
 		}
+		if(captureButton) {
+			captureButton.addEventListener('click', this.capturePhoto, false);
+			console.log('Add event listener on capture button');
+		}
 	}
 	removeEventElements() {
 		if(startButton) {
@@ -76,20 +80,9 @@ export class CustomClientAction extends Component {
 			videoElement.removeEventListener('canplay', this.canPlayVideo);
 			console.log('Remove event listener on video element');
 		}
-	}
-	canPlayVideo() {
-		if (!streaming) {
-			height = videoElement.videoHeight / (videoElement.videoWidth / width);
-
-			if (isNaN(height)) {
-				height = width / (4 / 3);
-			}
-
-			videoElement.setAttribute('width', width);
-			videoElement.setAttribute('height', height);
-			canvasElement.setAttribute('width', width);
-			canvasElement.setAttribute('height', height);
-			streaming = true;
+		if(captureButton) {
+			captureButton.removeEventListener('click', this.capturePhoto);
+			console.log('Remove event listener on capture button');
 		}
 	}
 	async startWebcam(event) {
@@ -116,6 +109,46 @@ export class CustomClientAction extends Component {
 			}
 		} catch (error) {
 			console.log('Error accessing webcam :', error);
+		}
+	}
+	canPlayVideo() {
+		if (!streaming) {
+			height = videoElement.videoHeight / (videoElement.videoWidth / width);
+
+			if (isNaN(height)) {
+				height = width / (4 / 3);
+			}
+
+			videoElement.setAttribute('width', width);
+			videoElement.setAttribute('height', height);
+			canvasElement.setAttribute('width', width);
+			canvasElement.setAttribute('height', height);
+			streaming = true;
+		}
+	}
+	clearPhoto() {
+		var context = canvasElement.getContext('2d');
+		context.fillStyle = "#AAA";
+		context.fillRect(0, 0, canvasElement.width, canvasElement.height);
+
+		const photoDataUrl = canvasElement.toDataURL('image/png');
+		photoElement.setAttribute('src', photoDataUrl);
+		/* photoElement.src = photoDataUrl;
+		photoElement.style.display = 'block'; */
+	}
+	capturePhoto() {
+		var context = canvasElement.getContext('2d');
+		if (width && height) {
+			canvasElement.width = width;
+			canvasElement.height = height;
+			context.drawImage(videoElement, 0, 0, width, height);
+
+			const photoDataUrl = canvasElement.toDataURL('image/png');
+			photoElement.setAttribute('src', photoDataUrl);
+			/* photoElement.src = photoDataUrl;
+			photoElement.style.display = 'block'; */
+		} else {
+			this.clearPhoto();
 		}
 	}
 }
