@@ -3,11 +3,15 @@
   <t t-name="siantou_emploidutemp.custom_client">
       <div id="siantou_emploidutemp.camera_container">
         <h5>Webcam Scanner</h5>
-        <video id="siantou_emploidutemp.video_element" width="320" height="0" autoplay="1"></video>
-        <button id="siantou_emploidutemp.start_button" disabled="1">Start Webcam</button>
-        <button id="siantou_emploidutemp.capture_button" disabled="1">Capture Document</button>
-        <canvas id="siantou_emploidutemp.canvas_element" width="320" height="0"></canvas>
-        <img id="siantou_emploidutemp.photo_element" style="display: none;"/>
+        <div>
+          <video id="siantou_emploidutemp.video_element" width="320" height="0" autoplay="1"></video>
+          <canvas id="siantou_emploidutemp.canvas_element" width="320" height="0"></canvas>
+          <img id="siantou_emploidutemp.photo_element" style="display: none;"/>
+        </div>
+        <div>
+          <button id="siantou_emploidutemp.start_button" disabled="1">Start Webcam</button>
+          <button id="siantou_emploidutemp.capture_button" disabled="1">Capture Document</button>
+        </div>
       </div>
   </t>
 </templates>

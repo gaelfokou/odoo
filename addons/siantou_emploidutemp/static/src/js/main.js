@@ -31,7 +31,7 @@ export class CustomClientAction extends Component {
 			if(!videoElement || !canvasElement || !photoElement || !startButton || !captureButton) {
 				this.getElements();
 				console.log('Count :', this.state.count);
-				await delay(5000);
+				await delay(2000);
 				this.state.count += 1;
 			} else {
 				this.addEventElements();
