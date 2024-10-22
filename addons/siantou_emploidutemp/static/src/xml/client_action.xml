@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <templates id="siantou_emploidutemp.custom_client_template" xml:space="preserve">
   <t t-name="siantou_emploidutemp.custom_client">
-      <div id="camera-container">
+      <div id="siantou_emploidutemp.camera_container">
         <h5>Webcam Capture</h5>
-        <video id="videoElement" width="640" height="480" autoplay="1"></video>
-        <button id="startButton" disabled="1">Start Webcam</button>
-        <button id="captureButton" disabled="1">Capture Photo</button>
-        <canvas id="canvasElement" width="640" height="480"></canvas>
-        <img id="photoElement" style="display: none;"/>
+        <video id="siantou_emploidutemp.video_element" width="640" height="480" autoplay="1"></video>
+        <button id="siantou_emploidutemp.start_button" disabled="1">Start Webcam</button>
+        <button id="siantou_emploidutemp.capture_button" disabled="1">Capture Photo</button>
+        <canvas id="siantou_emploidutemp.canvas_element" width="640" height="480"></canvas>
+        <img id="siantou_emploidutemp.photo_element" style="display: none;"/>
       </div>
   </t>
 </templates>

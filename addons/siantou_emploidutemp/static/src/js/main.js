@@ -50,11 +50,11 @@ export class CustomClientAction extends Component {
 		console.log('Component unmounted');
 	}
 	getElements() {
-		this.videoElement = document.getElementById('videoElement');
-		this.canvasElement = document.getElementById('canvasElement');
-		this.photoElement = document.getElementById('photoElement');
-		this.startButton = document.getElementById('startButton');
-		this.captureButton = document.getElementById('captureButton');
+		this.videoElement = document.getElementById('siantou_emploidutemp.video_element');
+		this.canvasElement = document.getElementById('siantou_emploidutemp.canvas_element');
+		this.photoElement = document.getElementById('siantou_emploidutemp.photo_element');
+		this.startButton = document.getElementById('siantou_emploidutemp.start_button');
+		this.captureButton = document.getElementById('siantou_emploidutemp.capture_button');
 		this.stream = null;
 		console.log('Get all elements');
 	}
