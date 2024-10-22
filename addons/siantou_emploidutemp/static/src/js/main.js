@@ -34,18 +34,16 @@ export class CustomClientAction extends Component {
 				await delay(5000);
 				this.state.count += 1;
 			} else {
-				this.addEventStartButton();
+				this.addEventElements();
 			}
 			console.log('Component rendered');
 		});
 		onMounted(() => {
-			this.addEventStartButton();
-			this.addEventCanPlayVideo();
+			this.addEventElements();
 			console.log('Component mounted');
 		});
 		onWillUnmount(() => {
-			this.removeEventStartButton();
-			this.removeEventCanPlayVideo();
+			this.removeEventElements();
 			console.log('Component unmounted');
 		});
 	}
@@ -58,13 +56,22 @@ export class CustomClientAction extends Component {
 		stream = null;
 		console.log('Get all elements');
 	}
-	addEventCanPlayVideo() {
+	addEventElements() {
+		if(startButton) {
+			startButton.disabled = false;
+			startButton.addEventListener('click', this.startWebcam, false);
+			console.log('Add event listener on start button');
+		}
 		if(videoElement) {
-			videoElement.addEventListener('canplay', this.canPlayVideo);
+			videoElement.addEventListener('canplay', this.canPlayVideo, false);
 			console.log('Add event listener on video element');
 		}
 	}
-	removeEventCanPlayVideo() {
+	removeEventElements() {
+		if(startButton) {
+			startButton.removeEventListener('click', this.startWebcam);
+			console.log('Remove event listener on start button');
+		}
 		if(videoElement) {
 			videoElement.removeEventListener('canplay', this.canPlayVideo);
 			console.log('Remove event listener on video element');
@@ -85,20 +92,8 @@ export class CustomClientAction extends Component {
 			streaming = true;
 		}
 	}
-	addEventStartButton() {
-		if(startButton) {
-			startButton.disabled = false;
-			startButton.addEventListener('click', this.startWebcam);
-			console.log('Add event listener on start button');
-		}
-	}
-	removeEventStartButton() {
-		if(startButton) {
-			startButton.removeEventListener('click', this.startWebcam);
-			console.log('Remove event listener on start button');
-		}
-	}
-	async startWebcam() {
+	async startWebcam(event) {
+		event.preventDefault();
 		try {
 			navigator.mediaDevices.getUserMedia = (
 				navigator.mediaDevices.getUserMedia ||
