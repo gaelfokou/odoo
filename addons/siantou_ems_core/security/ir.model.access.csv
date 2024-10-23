@@ -31,3 +31,5 @@ access_siantou_ems_core_building_classroom_manager,access.siantou.ems.core.build
 access_oe_school_student_enrollment,access.oe.school.student.enrollment,model_oe_school_student_enrollment,,1,1,1,1
 access_oe_school_course,access.oe.school.course,model_oe_school_course,,1,1,1,1
 
+access_oe_school_course_degree,access.oe.school.course.degree,model_oe_school_course_degree,,1,1,1,1
+

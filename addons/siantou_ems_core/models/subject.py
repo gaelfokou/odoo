@@ -79,6 +79,13 @@ class Subject(models.Model):
         column2='employee_id',
         string='Professeurs'
     )
+    
+    # Les priorités pour chaque enseignant sur ce cours
+    teacher_priority_ids = fields.One2many(
+        'siantou.ems.core.teacher.subject.priority',
+        'subject_id',
+        'Priorités des enseignants'
+    )
 
     # Contrainte SQL pour empêcher d'avoir le même code pour différentes filières
     _sql_constraints = [

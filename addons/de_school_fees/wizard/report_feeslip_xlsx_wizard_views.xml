@@ -1,0 +1,40 @@
+<odoo>
+    <!-- Form View For Wizard -->
+    <record id="fee_report_wizard_view" model="ir.ui.view">
+        <field name="name">report.feeslip.wizard.view</field>
+        <field name="model">oe.report.feeslip.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Attendance Report">
+                <group>
+                    <group>
+                         <field name="year_id" options="{'no_create': True}"/>
+                        
+                    </group>
+                    <group>
+                        <field name="course_ids" widget="many2many_tags" options="{'no_create': True}"/>
+                    </group>
+                </group>
+                <footer>
+                    <button name="generate_excel_report" string="Generate Report" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+    
+    <!--  Action  -->
+    <record id="action_feeslip_report_xlsx" model="ir.actions.act_window">
+        <field name="name">Fee Details Report</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">oe.report.feeslip.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="fee_report_wizard_view"/>
+        <field name="target">new</field>
+    </record>
+    <!--  Menu  -->
+    <menuitem name="Fee Details"
+            parent="menu_school_fees_menu_reports"
+        id="menu_report_fee_details_xlsx"
+        action="action_feeslip_report_xlsx"/>
+
+</odoo>

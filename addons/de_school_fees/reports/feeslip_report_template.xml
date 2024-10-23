@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<template id="report_feeslip">
+    <t t-call="web.external_layout">
+        <div class="page">
+            <h2 id="feeslip_name" t-field="o.name"/>
+            <t t-set="is_invalid" t-value="o._is_invalid()"/>
+            <t t-if="is_invalid">
+                <strong id="invalid_warning"><t t-esc="is_invalid"/></strong>
+            </t>
+            <table name="student-infos" id="student_info_table_1" class="table table-sm table-bordered">
+                <tr id="student_info_heading_1">
+                    <td class="w-25"><strong>Student</strong></td>
+                    <td class="w-25"><strong>Roll Number</strong></td>
+                    <td class="w-25"><strong>Admission No.</strong></td>
+                    <td class="w-25"><strong>Email</strong></td>
+                </tr>
+                <tr id="student_info_line_1">
+                    <td><span t-field="o.student_id"/></td>
+                    <td><span t-field="o.student_id.roll_no"/></td>
+                    <td><span t-field="o.student_id.admission_no"/></td>
+                    <td><span t-field="o.student_id.email"/></td>
+                </tr>
+                <tr id="student_info_heading_2">
+                    <td><strong>Course</strong></td>
+                    <td><strong>Batch</strong></td>
+                    <td><strong>Fee Structure</strong></td>
+                    <td><strong>Gaurdian</strong></td>
+                </tr>
+                <tr id="student_info_line_2">
+                    <td><span t-field="o.course_id.name"/></td>
+                    <td><span t-field="o.batch_id.name"/></td>
+                    <td><span t-field="o.fee_struct_id.name"/></td>
+                    <td><span t-field="o.student_id.name"/></td>
+                </tr>
+                <tr id="student_info_heading_3">
+                    <td colspan="4">
+                        <t t-if="o.student_id.street">
+                            <span t-field="o.student_id.street"/>
+                        </t>
+                        <t t-if="o.student_id.city">
+                            , <span t-field="o.student_id.city"/> 
+                        </t>
+                        <t t-if="o.student_id.zip">
+                            - <span t-field="o.student_id.zip"/>
+                        </t>
+                        <t t-if="o.student_id.state_id">
+                            , <span t-field="o.student_id.state_id.name"/>
+                        </t>
+                        <t t-if="o.student_id.country_id">
+                            - <span t-field="o.student_id.country_id.name"/>
+                        </t>
+                        
+                    </td>
+                </tr>
+                <tr id="student_info_heading_4">
+                    <td><strong>Enrollment Contract</strong></td>
+                    <td><strong>Compute On</strong></td>
+                    <td><strong>Slip Number</strong></td>
+                    <td></td>
+                </tr>
+                <tr id="student_info_line_4">
+                    <td><span t-field="o.enrol_order_id.name"/></td>
+                    <td><span t-field="o.compute_date"/></td>
+                    <td><span t-field="o.number"/></td>
+                    <td></td>
+                </tr>
+            </table>
+
+            <!-- YTI TODO master: Remove this horrible bidouille and add a field on the structure to display the basic
+                 feeslip report -->
+            <table class="table table8-sm" >
+                <tr>
+                    <td colspan="3"><strong>Total Fees</strong></td>
+                    <td style="color:#875A7B" class="w-25">
+                        <span t-esc="o.amount_total" t-options="{'widget': 'monetary', 'display_currency': o.company_id.currency_id}"/>
+                    </td>
+                    
+                </tr>
+            </table>
+            <div id="total">
+                <table class="table table-sm">
+                    <thead class="o_black_border">
+                        <tr>
+                            <th>Name</th>
+                            <th>Quantity</th>
+                            <th class="text-end">Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <span t-foreach="o.line_ids.filtered(lambda line: line.appears_on_feeslip)" t-as="line">
+                            <tr t-att-class="line_class" t-att-style="line_style" id="line_display">
+                                <td><span t-field="line.name"/></td>
+                                <td><span t-if="line.quantity > 1" t-esc="line.quantity"/></td>
+                                
+                                <td class="text-end"><span t-esc="line.total"
+                                        t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'
+                                        t-att-style="'color:#875A7B;' if line.total &lt; 0 else ''"/></td>
+                            </tr>
+                        </span>
+                    </tbody>
+                </table>
+            </div>
+            <!--
+            <p t-if="o.net_wage &gt;= 0">To pay on <b><span t-field="o.student_id"/></b> of <i><span t-field="o.student_id"/></i>: <span t-field="o.net_wage"/></p>
+            <p t-if="o.net_wage &lt; 0">The net amount will be recovered from the first positive remuneration established after this.</p>
+            -->
+        </div>
+    </t>
+</template>
+
+<template id="report_feeslip_lang">
+    <t t-call="web.html_container">
+        <t t-foreach="docs" t-as="o">
+            <t t-set="o" t-value="o.with_context(lang=o.student_id.lang or o.env.lang)"/>
+            <t t-call="de_school_fees.report_feeslip" t-lang="o.env.lang"/>
+        </t>
+    </t>
+</template>
+</odoo>

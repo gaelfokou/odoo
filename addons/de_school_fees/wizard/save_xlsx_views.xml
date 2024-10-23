@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="feeslip_save_xlsx_wizard_view" model="ir.ui.view">
+        <field name="name">feeslip.save.xlsx.wizard</field>
+        <field name="model">oe.feeslip.save.xlsx.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Feeslip Report">
+                        <group>
+                                <field name="file_name" readonly="1" filename="document_frame"/>
+                                <field name="document_frame" invisible="1"/>
+                        </group>
+                <footer>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+</odoo>

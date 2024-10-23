@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="feeslip_account_journal" model="account.journal">
+            <field name="name">Fee Journal</field>
+            <field name="code">FEE</field>
+            <field name="type">sale</field>
+            <!-- avoid being selected as default journal -->
+            <field name="sequence">99</field>
+        </record>
+    </data>
+</odoo>

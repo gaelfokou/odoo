@@ -2,8 +2,10 @@ from email.policy import default
 
 from odoo import models, fields, api
 from odoo.exceptions import ValidationError
+import logging
 
 
+_logger = logging.getLogger(__name__)
 class Timetable(models.Model):
     _name = 'siantou.ems.timetable.timetable'
     _description = 'Emplois du temps'
@@ -52,8 +54,13 @@ class Timetable(models.Model):
     employee_id = fields.Many2one(
         'hr.employee',
         'Professeur',
-        required=True,
         ondelete='restrict'
+    )
+
+    # Date du jour où le cours sera programmé
+    date = fields.Date(
+        'Date du jour',
+        required=True
     )
 
     # Jour où le cours est programmé
@@ -103,12 +110,13 @@ class Timetable(models.Model):
                 raise ValidationError("Cet enregistrement existe déjà")
 
     #Contrainte logique pour se rassurer que deux cours ne sont pas programmés dans la même salle au même moment
-    @api.constrains('classroom_id', 'day_of_week', 'start_time', 'end_time')
+    @api.constrains('classroom_id', 'date', 'day_of_week', 'start_time', 'end_time')
     def _check_classroom_is_free(self):
         for record in self:
             if self.search([
                 ('id', '!=', record.id),
                 ('classroom_id', '=', record.classroom_id.id),
+                ('date', '=', record.date),
                 ('day_of_week', '=', record.day_of_week),
                 ('start_time', '<=', record.end_time),
                 ('end_time', '>=', record.start_time),
@@ -137,6 +145,7 @@ class Timetable(models.Model):
             'type': 'ir.actions.act_window',
         })
         return action
+    
 
     def action_timetable_print(self):
         action = self.env.ref('siantou_ems_timetable.action_print_timetable_wizard').read()[0]
@@ -146,3 +155,16 @@ class Timetable(models.Model):
             'type': 'ir.actions.act_window',
         })
         return action
+    
+    def teacher_test_dispatch(self):
+        subject_id = 3  # ID du cours
+        day_of_week = '1'  # Mardi
+        start_time = 8.0  # 8h00
+        end_time = 12.0    # 12h00
+
+        teacher = self.env['siantou.ems.timetable.check_priority'].get_teacher_for_period(subject_id, day_of_week, start_time, end_time)
+
+        if teacher:
+            _logger.info('**************** L\'enseignant sélectionné est : %s  ****************', teacher.name)
+        else:
+            _logger.info('**************** Aucun enseignant disponible pour cette période.  ****************')

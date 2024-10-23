@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data noupdate="1">
+        <!-- Genre -->
+        <record model="oe.library.genre" id="library_genre_1">
+          <field name="name">Textbooks and Educational Materials</field>
+        </record>
+        <record model="oe.library.genre" id="library_genre_2">
+          <field name="name">Biographies</field>
+        </record>
+        <record model="oe.library.genre" id="library_genre_3">
+          <field name="name">Research Papers</field>
+        </record>
+        <record model="oe.library.genre" id="library_genre_4">
+          <field name="name">Reference Books</field>
+        </record>
+        <record model="oe.library.genre" id="library_genre_5">
+          <field name="name">Litrature</field>
+        </record>
+
+        <record id="recurrence_daily" model="oe.library.fees.period">
+            <field name="name">Daily</field>
+            <field name="duration">1</field>
+            <field name="unit">day</field>
+        </record>
+        <record id="recurrence_weekly" model="oe.library.fees.period">
+            <field name="name">Weekly</field>
+            <field name="duration">1</field>
+            <field name="unit">week</field>
+        </record>
+        <record id="recurrence_monthly" model="oe.library.fees.period">
+            <field name="name">Monthly</field>
+            <field name="duration">1</field>
+            <field name="unit">month</field>
+        </record>
+        
+    </data>
+</odoo>

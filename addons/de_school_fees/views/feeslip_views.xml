@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="feeslip_tree_view" model="ir.ui.view">
+        <field name="name">fee.slip.tree.view</field>
+        <field name="model">oe.feeslip</field>
+        <field name="arch" type="xml">
+            <tree string="Feeslips" js_class="hr_payroll_feeslip_tree" sample="1" multi_edit="1">
+                <field name="currency_id" column_invisible="1"/>
+                <field name="number" decoration-bf="1"/>
+                <field name="student_id" />
+                <!--
+                <field name="feeslip_run_id"/>
+                -->
+                <field name="fee_struct_id" optional="hide"/>
+                <field name="date_from" optional="hide"/>
+                <field name="date_to" optional="hide"/>
+                <field name="company_id" column_invisible="1"/>
+                <field name="company_id" groups="base.group_multi_company" options="{'no_create': True}"/>
+                <field name="state" widget="badge" decoration-info="state == 'draft'" decoration-warning="state == 'verify'" decoration-success="state in ('done','paid')"/>
+                <field name="amount_total" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="feeslip_kanban_view" model="ir.ui.view">
+        <field name="name">fee.slip.kanban.view</field>
+        <field name="model">oe.feeslip</field>
+        <field name="arch" type="xml">
+            <kanban class="o_kanban_mobile" sample="1">
+                <field name="currency_id"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div t-attf-class="oe_kanban_content oe_kanban_global_click">
+                            <div class="row">
+                                <div class="col-6">
+                                    <strong><field name="student_id"/></strong>
+                                </div>
+                                <div class="col-6">
+                                    <span class="float-right badge badge-secondary">
+                                        <field name="state"/>8
+                                    </span>
+                                </div>
+                                <div class="col-12">
+                                    <span>
+                                        <field name="date_from"/> - <field name="date_to"/>
+                                    </span>
+                                </div>
+                                <div class="col-12">
+                                    <span><field name="name"/></span>
+                                </div>
+                                <div class="col-12">
+                                    <span>Total Fee - amount_total</span>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="feeslip_form_view" model="ir.ui.view">
+        <field name="name">fee.slip.form.view</field>
+        <field name="model">oe.feeslip</field>
+        <field name="arch" type="xml">
+            <form string="Feeslip">
+                <header>
+                    <button string="Confirm" name="action_feeslip_done" type="object" invisible="state != 'verify'" class="oe_highlight" context="{'feeslip_generate_pdf': True}"/>
+
+                    <!--
+                    <button string="Mark as paid" name="action_feeslip_paid" type="object" invisible="state != 'done'" class="oe_highlight"/>
+                    -->
+                    
+                    <button string="Refund" name="refund_sheet" type="object" invisible="state not in ('paid')"/>
+                    <button string="Set to Draft" name="action_feeslip_draft" type="object" invisible="state !='cancel'"/>
+                    <button string="Compute Sheet" name="compute_sheet" type="object" invisible="state != 'draft'" class="oe_highlight" help="Recompute the feeslip lines only, not the worked days / input lines"/>
+                    
+                    <button string="Cancel" name="action_feeslip_cancel" type="object" invisible="state not in ('draft','done','verify')"/>
+                    <!--
+                    <button string="Print" name="action_print_feeslip" type="object"/>
+                    -->
+                    
+                    <button string="Export Feeslip" name="action_export_feeslip" type="object" invisible="is_superuser == False"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,done,paid"/>
+                </header>
+                <sheet>
+                    <!-- invisible Feilds -->
+                    <field name="use_enrol_contract_lines" invisible="1" />
+                    <field name="currency_id" invisible="1"/>
+                    <div class="oe_button_box" name="button_box">
+                        <!--
+                        <button type="object" class="oe_stat_button" id="open_work_entries"
+                            icon="fa-calendar" name="action_open_work_entries" string="Work Entries">
+                        </button>
+                        <button type="object" class="oe_stat_button" name="action_open_salary_attachments" id="open_salary_attachments"
+                            icon="fa-files-o" attrs="{'invisible': [('salary_attachment_count', '=', 0)]}">
+                            <field name="salary_attachment_count" widget="statinfo" string="Salary Attachments"/>
+                        </button>
+                        -->
+                    </div>
+                    <div class="row justify-content-between position-relative w-100 m-0">
+                        <div class="oe_title mw-75 ps-0 pe-2" name="title">
+                            <h1 class="d-flex flex-row align-items-center">
+                                <field name="student_id" 
+                                    placeholder="Student" 
+                                    readonly="state != 'draft'"
+                                />
+                            </h1>
+                            <h2 invisible="state == 'draft'">
+                                <field name="number" readonly="state != 'draft'"/></h2>
+                        </div>
+                        <div class="o_partner_avatar mw-25 m-0 p-0">
+                            <field name="image_1920" widget='image' class="oe_avatar m-0" options='{"zoom": true, "preview_image":"avatar_128"}'/>
+                        </div>
+                    </div>
+                    
+                    
+                    <group>
+                        <group>
+                            <field name="course_id" />
+                            <field name="batch_id" />
+                            
+                            <label for="date_from" string="Period" />
+                            <div>
+                                <field name="date_from" readonly="state != 'draft'" class="oe_inline"/> - <field name="date_to" readonly="state != 'draft'" class="oe_inline"/>
+                            </div>
+                        </group>
+                        <group>
+                        
+                            <field name="enrol_order_id" readonly="state != 'draft'" options="{'no_create': True}" context="{'form_view_ref':'de_school_enrollment.enrol_contract_primary_form_view'}"/>
+                            <field name="fee_struct_id" readonly="state != 'draft'" options="{'no_create': True}"/>
+                            <field name="currency_id" readonly="state != 'draft'" options="{'no_create': True}"/>
+                        
+                            
+                            <field name="credit_note" invisible="1"/>
+                            <field name="is_superuser" invisible="1"/>
+                            <field name="has_refund_slip" invisible="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Fee Lines" name="fee_lines">
+                            <separator string="Contract Lines"/>
+                                <field name="enrol_order_line_ids" invisible="not use_enrol_contract_lines" colspan="4" nolabel="1">
+                                    <tree string="Enrolment Lines" editable="bottom" create="0" delete="0">
+                                        <field name="name"/>
+                                        <field name="code"/>
+                                        <field name="quantity" />
+                                        <field name="price_unit" />
+                                        <field name="amount" />
+                                        <field name="qty_invoiced" optional="hide" />
+                                        <field name="qty_to_invoice" optional="hide" />
+                                        <field name="currency_id" column_invisible="1" />
+                                        <field name="order_line_id" column_invisible="1" />
+                                    </tree>
+                                </field>
+                            <!--
+                            <separator string="Invoice Lines"/>
+                                <field name="account_move_slip_line_ids" colspan="4" nolabel="1">
+                                    <tree string="Invoice Lines">
+                                        <field name="name"/>
+                                        <field name="amount_total_signed"/>
+                                        <field name="amount_total" optional="hide" />
+                                        <field name="amount_residual_signed"/>
+                                        <field name="amount_residual" optional="hide" />
+                                        <field name="currency_id" column_invisible="1" />
+                                    </tree>
+                                </field>
+                            -->
+                            <separator string="Other Fee Inputs"/>
+                            <field name="input_line_ids" readonly="state != 'draft'" colspan="4" nolabel="1">
+                                <tree string="Input Data" editable="bottom">
+                                    <field name="feeslip_id" column_invisible="1" required="0"/>
+                                    <field name="_allowed_input_type_ids" column_invisible="1"/>
+                                    <field name="input_type_id"/>
+                                    <field name="name"/>
+                                    <field name="amount"/>
+                                    <field name="sequence" column_invisible="True"/>
+                                </tree>
+                                <form string="Feeslip Line">
+                                    <group col="4">
+                                        <field name="feeslip_id" invisible="1"/>
+                                        <field name="_allowed_input_type_ids" invisible="1"/>
+                                        <field name="input_type_id"/>
+                                        <field name="name"/>
+                                        <field name="sequence"/>
+                                        <field name="amount"/>
+                                    </group>
+                                </form>
+                            </field>
+                        </page>
+                        <page string="Fee Computation" name="fee_computation">
+                            <field name="line_ids" colspan="4" nolabel="1">
+                                <tree string="Computation" >
+                                    <field name="name" string="Description"/>
+                                    <field name="code" column_invisible="True"/>
+                                    <field name="quantity" />
+                                    <field name="rate" />
+                                    <field name="amount" sum="amount"/>
+                                    <field name="sequence" column_invisible="True"/>
+                                    <field name="appears_on_feeslip" column_invisible="1"/>
+                                    <field name="fee_rule_id" column_invisible="1"/>
+                                    <field name="category_id" column_invisible="1"/>
+                                    <field name="feeslip_id" column_invisible="1"/>
+                                    <field name="currency_id" column_invisible="1"/>
+                                    <field name="total" sum="total"/>
+                                </tree>
+                                <form string="Feeslip Line">
+                                    <group col="4">
+                                        <field name="feeslip_id" invisible="1"/>
+                                        <field name="fee_rule_id"/>
+                                        <field name="name"/>
+                                        <field name="sequence"/>
+                                        <field name="code"/>
+                                        <field name="quantity"/>
+                                        <field name="rate"/>
+                                        <field name="amount"/>
+                                        <field name="total"/>
+                                    </group>
+                                </form>
+                            </field>
+                        </page>
+                        <page name="other_info" string="Other Info" invisible="state not in  ('done','paid')">
+                            <group>
+                                <group>
+                                    <field name="account_move_id" />
+                                    <field name="company_id" />
+                                </group>
+                                <group>
+                                    <field name="feeslip_run_id" string="Batch"/>
+                                </group>
+                            </group>
+                        </page>
+                        <!--
+                        <page string="Notes">
+                            <field name="note" nolabel="1"/>
+                        </page>
+                        <page string="Comments" name="comments">
+                            <field name="message_ids" nolabel="1">
+                                <tree string="Comments" editable="bottom">
+                                    <field name="date" />
+                                    <field name="user_id"/>
+                                    <field name="body" widget="html"/>
+                                </tree>
+                            </field>
+                            <field name="message_follower_ids" invisible="1"/>
+                            <field name="message_ids" invisible="1"/>
+                        </page>
+                        -->
+                        <!--
+                        <page string="History" name="history">
+                            <field name="audit_log_ids" nolabel="1" readonly="1">
+                                <tree string="Audit Log" create="0" delete="0">
+                                    <field name="create_date" string="Timestamp"/>
+                                    <field name="create_uid" string="User"/>
+                                    <field name="operation_type" string="Type"/>
+                                    <field name="old_value" string="Old Value"/>
+                                    <field name="new_value" string="New Value"/>
+                                </tree>
+                                <form string="Audit Log">
+                                    <group col="4">
+                                        <field name="create_date" string="Timestamp"/>
+                                        <field name="create_uid" string="User"/>
+                                        <field name="operation_type" string="Type"/>
+                                        <field name="old_value" string="Old Value"/>
+                                        <field name="new_value" string="New Value"/>
+                                    </group>
+                                </form>
+                            </field>
+                        </page>
+                        -->
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_feeslip" model="ir.actions.act_window">
+        <field name="name">Feeslips</field>
+        <field name="res_model">oe.feeslip</field>
+        <field name="view_mode">tree,kanban,form</field>
+    </record>
+
+    <record id="action_feeslip" model="ir.actions.act_window">
+            <field name="name">Feeslips</field>
+            <field name="res_model">oe.feeslip</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create a new fee slip
+                </p>
+            </field>
+        </record>
+    
+
+    <menuitem
+        id="menu_school_feeslip"
+        name="Feeslips"
+        parent="menu_school_fees_main"
+        sequence="2"
+        action="action_feeslip"
+        />
+
+</odoo>

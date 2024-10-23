@@ -1,0 +1,15 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_library_genre_user,access.library.genre.user,model_oe_library_genre,de_school_library.group_library_user,1,1,1,0
+access_library_genre_manager,access.library.genre.manager,model_oe_library_genre,de_school_library.group_library_user,1,1,1,1
+
+access_library_product_fees_user,access.library.product.fees.user,model_oe_library_product_fees,de_school_library.group_library_user,1,1,1,0
+access_library_product_fees_manager,access.library.product.fees.manager,model_oe_library_product_fees,de_school_library.group_library_user,1,1,1,1
+
+access_library_fee_period_user,access.library.fee.period.user,model_oe_library_fees_period,de_school_library.group_library_user,1,1,1,0
+access_library_fee_period_manager,access.library.fee.period.manager,model_oe_library_fees_period,de_school_library.group_library_manager,1,1,1,1
+
+access_library_report_user,access.library.report.user,model_oe_library_report,group_library_user,1,0,0,0
+access_library_report_manager,access.library.report.user,model_oe_library_report,group_library_manager,1,0,0,0
+
+access_library_process_wizard_user,access.library.process.wizard.user,model_oe_library_process_wizard,group_library_user,1,1,1,0
+access_library_process_wizard_line_user,access.library.process.wizard.line.user,model_oe_library_process_wizard_line,group_library_user,1,1,1,0

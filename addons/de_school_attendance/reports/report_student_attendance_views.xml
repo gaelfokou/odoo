@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="report_attendance_pivot_view" model="ir.ui.view">
+         <field name="name">report.student.attendance.pivot.view</field>
+         <field name="model">oe.report.student.attendance</field>
+         <field name="arch" type="xml">
+             <pivot string="Attendance Analysis" sample="1">
+                 <field name="date" type="col"/>
+                 <field name="student_id" type="row"/>
+                 <field name="attendance_status" type="measure"/>
+             </pivot>
+         </field>
+    </record>
+
+    <record id="report_attendance_graph_view" model="ir.ui.view">
+         <field name="name">report.student.attendance.graph.view</field>
+         <field name="model">oe.report.student.attendance</field>
+         <field name="arch" type="xml">
+             <graph string="Attendance Analysis" type="line" sample="1">
+                 <field name="date" interval="day"/>
+                 <field name="attendance_status" type="measure"/>
+             </graph>
+         </field>
+    </record>
+
+    <record id="report_attendance_tree_view" model="ir.ui.view">
+        <field name="name">report.student.attendance.tree.view</field>
+        <field name="model">oe.report.student.attendance</field>
+        <field name="arch" type="xml">
+            <tree string="Loan Analysis">
+                <field name="date" widget="date"/>
+                <field name="student_id" />
+                <field name="attendance_status" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="report_attendance_search_view" model="ir.ui.view">
+        <field name="name">report.student.attendance.search.view</field>
+        <field name="model">oe.report.student.attendance</field>
+        <field name="arch" type="xml">
+            <search string="Attendance Analysis">
+                <field name="student_id"/>
+                <field name="date"/>
+                <separator/>
+                <filter name="filter_date" date="date" default_period="this_month"/>
+                <separator/>
+                <group expand="1" string="Group By">
+                    <filter string="Student" name="group_student" context="{'group_by':'student_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_report_attendance" model="ir.actions.act_window">
+        <field name="name">Attendance Analysis</field>
+        <field name="res_model">oe.report.student.attendance</field>
+        <field name="view_mode">graph,pivot</field>
+        <field name="view_id"></field>  <!-- force empty -->
+        <field name="search_view_id" ref="report_attendance_search_view"/>
+        <field name="help">This report performs analysis on student attendance. </field>
+    </record>
+
+    <menuitem name="Attendance"
+        parent="menu_student_attendance_reports"
+        id="menu_report_loan_analysis"
+        action="action_report_attendance"
+        sequence="10"
+    />
+
+    
+</odoo>

@@ -11,6 +11,11 @@ class HrEmployee(models.Model):
         'Est un enseignant'
     )
 
+    # Variable booléenne pour identifier un employé permanent
+    is_permanent = fields.Boolean(
+        'Est un employé permanent'
+    )
+
     # Matricule de l'enseignant
     identifier = fields.Char(
         'Matricule',

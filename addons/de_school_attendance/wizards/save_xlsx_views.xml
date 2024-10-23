@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="attendance_save_xlsx" model="ir.ui.view">
+        <field name="name">attendance.save.xlsx</field>
+        <field name="model">oe.attendance.save.xlsx</field>
+        <field name="arch" type="xml">
+            <form string="Timesheet Excel Report">
+                        <group>
+                                <field name="file_name" readonly="1" filename="document_frame"/>
+                                <field name="document_frame" invisible="1"/>
+                        </group>
+                <footer>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+</odoo>

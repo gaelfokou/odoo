@@ -11,9 +11,12 @@
 				<tree string="Emploi du temps" editable="bottom" edit="1">
                     <header>
                         <button name="action_timetable_automatic" type="object" string="Génération automatique" class="oe_highlight" display="always"/>
+                        <!-- <button name="teacher_test_dispatch" type="object" string="Teacher test" class="oe_highlight" display="always"/> -->
                         <button name="action_timetable_print" type="object" string="Impression" class="oe_highlight" display="always"/>
                     </header>
+                    <field name="date"/>
                     <field name="field_of_study_id"/>
+                    <field name="semester_id"/>
                     <field name="level_id"/>
 					<field name="subject_id"/>
 					<field name="classroom_id"/>
@@ -35,7 +38,9 @@
 				<form string="Emploi du temps">
 					<sheet>
                         <group>
+                            <field name="date"/>
                             <field name="field_of_study_id"/>
+                            <field name="semester_id"/>
                             <field name="level_id"/>
                             <field name="subject_id"/>
                             <field name="classroom_id"/>

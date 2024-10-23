@@ -49,18 +49,29 @@ class StudentEnrollment(models.Model):
         ('celibat', 'Célibataire'),
         ('concub', 'Concubinage'),
     ], string="Situation matrimoniale", required=True)
-    nationalite = fields.Char(string="Nationalité", required=True)
+    nationalite = fields.Selection([
+        ('cam', 'Cameroun'),
+        ('rep_centr', 'République centrafricaine'),
+        ('tchad', 'Tchad'),
+        ('cong_braz', 'Congo-Brazzaville(République du Congo)'),
+        ('cong_kins', 'Congo-Kinshasa(République démocratique du Congo)'),
+        ('gabon', 'Gabon'),
+        ('guin_equat', 'Guinée équatoriale'),
+        ('sao_t', 'Sao Tomé-et-Principe'),
+        ('autre', 'Autre pays'),
+    ],string="Nationalité", required=True)
+    autre = fields.Char(string="Autre pays")
     lieu_residence = fields.Char(string="Lieu de résidence", required=True)
     email = fields.Char(string="E-mail", required=True)
     num_tel = fields.Char(string="N° de Téléphone", required=True)
-    dipl_req = fields.Char(string="Diplôme requis", required=True)
+    dipl_req_ids = fields.Many2many('oe.school.course.degree', string="Diplôme requis", required=True)
     session_lieu_obt = fields.Char(string="Session et lieu d'obtention", required=True)
     dern_etab_freq = fields.Char(string="Dernier établissement fréquenté", required=True)
     annee_acad = fields.Char(string="Année académique", required=True)
-    niveau = fields.Char(string="Niveau", required=True)
+    niveau_id = fields.Many2one("siantou.ems.core.level", string="Niveau", required=True)
     full_name_tutor = fields.Char(string="Nom(s) et prénom(s)", required=True)
     num_tel_tutor = fields.Char(string="N° de Téléphone", required=True)
-    date_preins = fields.Char(string="Date de préinscription", default=datetime.datetime.now())
+    date_preins = fields.Datetime(string="Date de préinscription", default=datetime.datetime.now())
     status = fields.Selection([
         ('broui', 'Brouillon'),
         ('preinscrip', 'Préinscrit'),
@@ -86,7 +97,7 @@ class StudentEnrollment(models.Model):
     # transcript_detail = fields.Text('Rélevé de note')
     # reason = fields.Text(string='Raison du départ')
     # address_school = fields.Text('Adresse de l\'école')
-
+    
     # def compute_inscrire(self):
     #     self.status = 'inscrip'
 

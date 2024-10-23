@@ -1,0 +1,27 @@
+<odoo>
+    <data>
+        <record id="view_feeslip_schedule_tree" model="ir.ui.view">
+            <field name="name">feeslip.schedule.tree</field>
+            <field name="model">oe.feeslip.schedule</field>
+            <field name="arch" type="xml">
+                <tree editable="bottom" string="Feeslip Schedules" sample="1">
+                    <field name="course_id"/>
+                    <field name="batch_id"/>
+                    <field name="fee_struct_id"/>
+                    <field name="date"/>
+                    <field name="date_from"/>
+                    <field name="date_to"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_feeslip_schedule" model="ir.actions.act_window">
+            <field name="name">Fee Schedule</field>
+            <field name="res_model">oe.feeslip.schedule</field>
+            <field name="view_mode">tree</field>
+        </record>
+
+        <menuitem id="menu_feeslip_schedule" name="Fee Schedules" sequence="20" parent="menu_feeslip_schedule_menu" action="action_feeslip_schedule"/>
+
+    </data>
+</odoo>

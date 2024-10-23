@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <template id="mangatheque" name="Mangathèque">
+        <t t-call="web.frontend_layout">
+            <ul>
+                <t t-foreach="mangas" t-as="manga">
+                    <li>
+                        <t t-out="manga.name" /> (<t t-out="manga.annee_parution" />)
+                        <p>
+                            <img t-attf-src="data:image/*;base64,{{manga.image_couverture}}"
+                                 style="max-height:200px;max-width:300px"
+                            />
+                        </p>
+                    </li>
+                </t>
+            </ul>
+        </t>
+    </template>
+</odoo>

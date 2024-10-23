@@ -13,7 +13,22 @@ class DeSchool(http.Controller):
     # @http.route('/de_school/de_school/',type="json", auth='public')
     # def index(self, **kw):
     #     return "Hello, world"
-    
+
+    @http.route('/api/v1/niveaux', type="http", auth='public', methods=['GET'], csrf=False, cors="*")
+    def list_niveaux(self, **kw):
+        data = []
+        niveaux = request.env['siantou.ems.core.level'].sudo().search([])
+        for niv in niveaux:
+            data.append({
+                'id': niv.id,
+                'name': niv.name,
+            })
+
+        _logger.info(f'Niveaux: {data}')
+
+        return Response(
+            json.dumps(data)
+        )
 
 
     @http.route('/api/v1/cycles', type="http", auth='public', methods=['GET'], csrf=False, cors="*")
@@ -22,13 +37,16 @@ class DeSchool(http.Controller):
         cycles = request.env['oe.school.course'].sudo().search([])
         for cycle in cycles:
             filieres = request.env['siantou.ems.core.field_of_study'].sudo().search([('cursus_id', '=', cycle.id)])
+            diplo_requis = request.env['oe.school.course.degree'].sudo().search([('cursus_id', '=', cycle.id)])
             data.append({
                 'id': cycle.id,
                 'code': cycle.code,
                 'name': cycle.name,
-                'filieres': [{'id': filiere.id, 'name': filiere.name} for filiere in filieres]
+                'filieres': [{'id': filiere.id, 'name': filiere.name} for filiere in filieres],
+                'diplo_requis': [{'id': diplo.id, 'name': diplo.name} for diplo in diplo_requis]
             })
-        # _logger.info(f'Cycle: {cycle}')
+
+        _logger.info(f'Cycles: {data}')
 
         return Response(
             json.dumps(data)
@@ -70,11 +88,11 @@ class DeSchool(http.Controller):
                 'lieu_residence': data.get('lieu_residence'),
                 'email': data.get('email'),
                 'num_tel': data.get('num_tel'),
-                'dipl_req': data.get('dipl_req'),
+                'dipl_req_ids': data.get('dipl_req_ids'),
                 'session_lieu_obt': data.get('session_lieu_obt'),
                 'dern_etab_freq': data.get('dern_etab_freq'),
                 'annee_acad': data.get('annee_acad'),
-                'niveau': data.get('niveau'),
+                'niveau_id': data.get('niveau_id'),
                 'full_name_tutor': data.get('full_name_tutor'),
                 'num_tel_tutor': data.get('num_tel_tutor'),
             })

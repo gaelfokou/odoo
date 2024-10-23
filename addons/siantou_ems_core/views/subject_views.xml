@@ -44,6 +44,14 @@
                         <group string="Enseignants du cours">
                             <field name="teacher_ids"/>
                         </group>
+                        <group string="Priorités des enseignants">
+                            <field name="teacher_priority_ids" widget="one2many_list">
+                                <tree editable="bottom">
+                                    <field name="employee_id" options="{'no_open': True}"/>
+                                    <field name="priority"/>
+                                </tree>
+                            </field>
+                        </group>
                     </sheet>
                 </form>
             </field>

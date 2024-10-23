@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="view_form_donner_note" model="ir.ui.view">
+        <field name="name">Donner une note</field>
+        <field name="model">donner.note</field>
+        <field name="arch" type="xml">
+            <form>
+                <group id="grp1" string="Donner une note svp">
+                    <field name="note" />
+                </group>
+               <footer>
+                    <button type="object" name="donner_note" string="Valider" />
+                    <button special="cancel" string="Annuler" />
+               </footer>
+           </form>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="action_donner_note" >
+        <field name="name">Donner une note</field>
+        <field name="res_model">donner.note</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>

@@ -5,7 +5,7 @@
         <field name="model">oe.school.student.enrollment</field>
         <field name="arch" type="xml">
             <tree string="Etudiants">
-                <field name="date_preins"/>
+                <field name="date_preins" widget="datetime"/>
                 <field name="matricule"/>
                 <field name="full_name"/>
                 <field name="cycle_id"/>
@@ -22,16 +22,18 @@
 		<field name="arch" type="xml">
 			<form string="Etudiant">
                 <header>
-                    <button invisible="status == 'broui'" 
+                    <button invisible="status in ['preinscrip', 'inscrip']" 
                         name="compute_preinscrip" 
                         class="btn btn-success" 
                         type="object" 
-                        string="Ajout des frais de préinscription"/>
+                        string="Valider la candidature"/>
+
                     <field name="status" widget="statusbar"/>
                 </header>
                 <sheet>
                     <group>
-                        <field name="date_preins"/>
+                        <field name="date_preins" readonly="1"/>
+                        <field name="status"/>
                     </group>
                     <group name="perso" string="Informations générales">
                         <group>
@@ -54,6 +56,7 @@
                         </group>
                         <group>
                             <field name="nationalite"/>
+                            <!-- <field invisible="nationalite!='autre'" name="autre"/> -->
                         </group>
                         <group>
                             <field name="lieu_residence"/>
@@ -84,7 +87,7 @@
                         </group>
                         
                         <group>
-                            <field name="dipl_req"/>
+                            <field name="dipl_req_ids" widget="many2many_tags"/>
                         </group>
                         <group>
                             <field name="session_lieu_obt"/>
@@ -96,7 +99,7 @@
                             <field name="annee_acad"/>
                         </group>
                         <group>
-                            <field name="niveau"/>
+                            <field name="niveau_id"/>
                         </group>
                     </group>
                     <group name="tuteur" string="Informations sur la personne à joindre en cas d'urgence">
@@ -116,7 +119,11 @@
         <field name="name">Préinscription</field>
         <field name="res_model">oe.school.student.enrollment</field>
         <field name="view_mode">tree,form</field>
-
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Créer une nouvelle candidature.
+            </p>
+        </field>
     </record>
 
     <!-- <menuitem name="Préinscription" id="menu_siantou_ems_core_students_preinscription" 

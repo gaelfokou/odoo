@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+        <record id="feeslip_by_students_form_view" model="ir.ui.view">
+            <field name="name">feeslip.students.form.view</field>
+            <field name="model">oe.feeslip.students</field>
+            <field name="arch" type="xml">
+                <form string="Feeslips by Students">
+                    <field name="feeslip_run_id" invisible="1"/>
+                    <field name="student_ids_domain" widget="man2many_tags" invisible="1"/>
+                    <span nolabel="1" colspan="2">This wizard will generate feeslips for all selected students(s) based on the dates and fee structure specified on Feeslips Run.</span>
+                    
+                    
+                    <notebook>
+                        <page string="Variations">
+                            <field name="wizard_line">
+                                <tree editable="bottom" create="0" delete="1">
+                                    <field name="wizard_id" column_invisible="1" />
+                                    <field name="input_type_id" column_invisible="1"/>
+                                    <field name="name" />
+                                    <field name="amount" />
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Students">
+                            <field name="student_ids" domain="[('id','in',student_ids_domain)]" nolabel="1">
+                                <tree>
+                                    <field name="name"/>
+                                    <field name="email"/>
+                                </tree>
+                            </field>
+                        </page>
+                        
+                    </notebook>
+                    <footer>
+                        <button string="Generate" name="compute_sheet" type="object" class="oe_highlight" data-hotkey="q"/>
+                        <button string="Cancel" class="btn btn-secondary" special="cancel" data-hotkey="z"/>
+                    </footer>
+               </form>
+            </field>
+        </record>
+
+        <record id="action_feeslip_by_students" model="ir.actions.act_window">
+            <field name="name">Generate Feeslips</field>
+            <field name="res_model">oe.feeslip.students</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="feeslip_by_students_form_view"/>
+            <field name="target">new</field>
+        </record>
+<!--
+        <record model="ir.actions.server" id="action_generate_feeslips_from_enrollment">
+            <field name="name">Generate payslips</field>
+            <field name="model_id" ref="model_feeslip_students"/>
+            <field name="binding_model_id" ref="model_feeslip_students"/>
+            <field name="state">code</field>
+            <field name="code">
+                action = env['oe.feeslip.students'].create({}).compute_sheet()
+            </field>
+        </record>
+-->
+</odoo>

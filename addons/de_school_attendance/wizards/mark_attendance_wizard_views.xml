@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="attendance_mark_wizard_form_view" model="ir.ui.view">
+        <field name="name">attendance.mark.wizard.form.view</field>
+        <field name="model">oe.attendance.mark.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Mark Attendance">
+                <field name="company_id" invisible="1" />
+                <group>
+                    <group>
+                        <field name="attendance_sheet_id" />
+                        <field name="attendance_status" widget="radio"/>
+                        <field name="is_late_arrival" invisible="attendance_status != 'present'" />
+                    </group>
+                    <group>
+                        <field name="company_id" groups="base.group_multi_company"/>
+                    </group>
+                </group>
+               <notebook>
+                   <page string="Student" name="student">
+                       <field name="student_ids">
+                            <tree editable="bottom">
+                                <field name="name"/>
+                                <field name="roll_no"/>
+                                <field name="admission_no"/>
+                                <field name="email"/>
+                            </tree>
+                        </field>
+                   </page>
+               </notebook>
+                <footer>
+                    <button string="Submit Attendance" name="action_process_attendance" type="object" class="btn-primary" data-hotkey="q"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel" data-hotkey="z"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

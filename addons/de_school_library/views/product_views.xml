@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <record id="catalog_product_form_view" model="ir.ui.view">
+            <field name="name">product.product.expense.form</field>
+            <field name="model">product.product</field>
+            <field name="arch" type="xml">
+                <form string="Product Book">
+                    <sheet>
+                        <field name="is_book" invisible="1" />
+                        <field name='product_variant_count' invisible='1'/>
+                        <field name="id" invisible="True"/>
+                        <field name="detailed_type" invisible="1"/>
+                        <field name="type" invisible="1"/>
+                        <field name="is_product_variant" invisible="1"/>
+                        <field name="active" invisible="1"/>
+
+                            
+                        <div class="oe_button_box" name="button_box">
+                            <button class="oe_stat_button" name="open_pricelist_rules" icon="fa-list-ul" groups="product.group_product_pricelist" type="object">
+                                   <div class="o_field_widget o_stat_info">
+                                        <span class="o_stat_value">
+                                            <field name="pricelist_item_count"/>
+                                        </span>
+                                        <span invisible= "pricelist_item_count ==1">
+                                            Extra Prices
+                                        </span>
+                                        <span invisible= "pricelist_item_count != 1">
+                                            Extra Price
+                                        </span>
+                                   </div>
+                            </button>
+
+                            <t groups="stock.group_stock_user">
+                                <field name="tracking" invisible="1"/>
+                                <field name="show_on_hand_qty_status_button" invisible="1"/>
+                                <field name="show_forecasted_qty_status_button" invisible="1"/>
+                                <button type="object" name="action_open_quants" invisible="show_on_hand_qty_status_button == False" class="oe_stat_button" icon="fa-cubes">
+                                    <div class="o_field_widget o_stat_info">
+                                        <span class="o_stat_value" widget="statinfo">
+                                            <field name="qty_available" widget="statinfo" nolabel="1" class="mr4"/>
+                                            <field name="uom_name"/>
+                                        </span>
+                                        <span class="o_stat_text">On Hand</span>
+                                    </div>
+                                </button>
+                                <button type="object" name="action_product_tmpl_forecast_report" invisible="show_forecasted_qty_status_button == False" context="{'default_product_tmpl_id': id}" class="oe_stat_button" icon="fa-cubes">
+                                    <div class="o_field_widget o_stat_info">
+                                        <span class="o_stat_value">
+                                            <field name="virtual_available" widget="statinfo" nolabel="1" class="mr4"/>
+                                            <field name="uom_name"/>
+                                        </span>
+                                        <span class="o_stat_text">Forecasted</span>
+                                    </div>
+                                </button>
+                                <button type="object" name="action_view_stock_move_lines" invisible="type not in ('product', 'consu')" class="oe_stat_button" icon="fa-exchange" groups="stock.group_stock_user">
+                                    <div class="o_field_widget o_stat_info mr4">
+                                        <span class="o_stat_text">In:</span>
+                                        <span class="o_stat_text">Out:</span>
+                                    </div>
+                                    <div class="o_field_widget o_stat_info">
+                                        <span class="o_stat_value"><field name="nbr_moves_in"/></span>
+                                        <span class="o_stat_value"><field name="nbr_moves_out"/></span>
+                                    </div>
+                                </button>
+                                <button type="object" name="action_view_orderpoints" invisible="type != 'product' or nbr_reordering_rules != 1" class="oe_stat_button" icon="fa-refresh">
+                                    <div class="o_field_widget o_stat_info mr4">
+                                        <span class="o_stat_text">Min:</span>
+                                        <span class="o_stat_text">Max:</span>
+                                    </div>
+                                    <div class="o_field_widget o_stat_info">
+                                        <span class="o_stat_value"><field name="reordering_min_qty"/></span>
+                                        <span class="o_stat_value"><field name="reordering_max_qty"/></span>
+                                    </div>
+                                </button>
+                                <button type="object" name="action_view_orderpoints" invisible="type != 'product' or nbr_reordering_rules == 1" class="oe_stat_button" icon="fa-refresh">
+                                    <field name="nbr_reordering_rules" widget="statinfo"/>
+                                </button>
+                                <button string="Lot/Serial Numbers" type="object" name="action_open_product_lot" invisible="tracking == 'none'" class="oe_stat_button" icon="fa-bars" groups="stock.group_production_lot"/>
+                                <button string="Putaway Rules" type="object" name="action_view_related_putaway_rules" class="oe_stat_button" icon="fa-random" groups="stock.group_stock_multi_locations" invisible="type == 'service'" context="{                                     'invisible_handle': True,                                     'single_product': product_variant_count == 1,                                 }"/>
+                                <button type="object" string="Storage Capacities" name="action_view_storage_category_capacity" groups="stock.group_stock_storage_categories" invisible="type == 'service'" class="oe_stat_button" icon="fa-cubes"/>
+                            </t>
+                        </div>
+                        
+                        <widget name="web_ribbon" title="Archived" bg_color="bg-danger" invisible="active == True"/>
+                        
+                        <field name="image_1920" widget="image" class="oe_avatar" options="{'image_preview': 'image_128'}"/>
+                        
+                        <div class="oe_title">
+                            <label for="name" string="Title" />
+                            <h1><field name="name" placeholder="e.g. The Enigmatic Chronicles: Secrets of the Lost City"/></h1>
+                        </div>
+                        <group name="product_details">
+                            <group string="General Information" name="general_info"> 
+                                <field name="genre_id" required="1" options="{'no_create':True,'no_open':True}" />
+                                <field name="isbn_no" required="1"/>
+                                <field name="edition_book" string="Edition" />
+                                <field name="default_code" help="Use this reference as a internal number of a book."/>
+                                <field name="book_lang_id" options="{'no_create':True}" />
+                                <field name="book_pages" />
+                                <field name="product_tag_ids" string="Keywords or Tags" widget="many2many_tags"/>
+                                
+                            </group>
+                            <group name="circulation_info">
+                                <field name="publisher_id" options="{'no_create':True}" />
+                                <field name="date_publish" />
+                                <field name="author_id" options="{'no_create':True}" />
+                                
+                                <field name="lst_price" help="sale price for the fee product"/>
+                                <field name="uom_id" groups="uom.group_uom" options="{'no_create': True}"/>
+                                <field name="uom_po_id" invisible="1"/>
+                                <field name="detailed_type"/>
+                                <field name="categ_id" options="{'no_create':True,'no_open':True}" help="Categorized books for inventory"/>
+                                
+                                <separator string="Accounting" />
+                                <field name="property_account_income_id" groups="account.group_account_readonly"/>
+                                <field name="taxes_id" widget="many2many_tags"
+                                       context="{'default_type_tax_use':'sale', 'default_price_include': 1}"
+                                       options="{'no_quick_create': True}"/>
+                                <field name="company_id" groups="base.group_multi_company"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Internal Note" name="internal_note">
+                                <field name="description" placeholder="This note will be shown to users when they select this expense product."/>
+                            </page>
+                            <page string="Library Fees" name="library_fees" invisible="is_book == False">
+                              <group>
+                                <group name="pricing">
+                                    <field name="product_fees_ids" nolabel="1" colspan="2">
+                                      <tree editable="bottom">
+                                        <control>
+                                            <create name="add_product_pricing" string="Add a price"/>
+                                        </control>
+                                        <field name="product_variant_ids" widget="many2many_tags"
+                                          groups="product.group_product_variant"
+                                          domain="[('product_tmpl_id', '=', parent.id)]"
+                                          column_invisible="parent.product_variant_count &lt; 2"/>
+                                        <field name="library_fee_period_id" string="Period"/>
+                                        <field name="pricelist_id" groups="product.group_product_pricelist"/>
+                                        <field name="currency_id" column_invisible="1"/>
+                                        <field name="price"/>
+                                      </tree>
+                                    </field>
+                                </group>
+                                  <group string="Late Charges" name="late_charges">
+                                       <field name="book_charge_hourly" widget="monetary"/>
+                                        <field name="book_charge_daily" widget="monetary"/>
+                                        <field name="currency_id" invisible="1"/>
+                                  </group>
+                              </group>
+                            </page>
+                            <page name="inventory" string="Inventory">
+                                <group>
+                                    <group name="group_lots_and_weight" string="Logistics" invisible="type not in ['product', 'consu']">
+                                        <label for="weight" invisible="product_variant_count &gt; 1 and is_product_variant == False"/>
+                                        <div class="o_row" name="weight" invisible="product_variant_count &gt; 1 and is_product_variant ==False">
+                                            <field name="weight" class="oe_inline"/>
+                                            <field name="weight_uom_name"/>
+                                        </div>
+                                        <label for="volume" invisible="product_variant_count &gt; 1 and is_product_variant ==False"/>
+                                        <div class="o_row" name="volume" invisible="product_variant_count &gt; 1 and is_product_variant ==False">
+                                            <field name="volume" string="Volume" class="oe_inline"/>
+                                            <field name="volume_uom_name"/>
+                                        </div>
+                                    </group>
+                                    <group string="Traceability" name="traceability" groups="stock.group_production_lot" invisible="type =='consu'">
+                                        <field name="tracking" widget="radio" invisible="type=='service'"/>
+                                    </group>
+                                    <group string="Description for Receipts">
+                                        <field name="description_pickingin" colspan="2" nolabel="1" placeholder="This note is added to receipt orders (e.g. where to store the product in the warehouse)."/>
+                                    </group>
+                                    <group string="Description for Delivery Orders">
+                                        <field name="description_pickingout" colspan="2" nolabel="1" placeholder="This note is added to delivery orders."/>
+                                    </group>
+                                    <group string="Description for Internal Transfers" groups="stock.group_stock_multi_locations">
+                                        <field name="description_picking" colspan="2" placeholder="This note is added to internal transfer orders (e.g. where to pick the product in the warehouse)." nolabel="1"/>
+                                    </group>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+    
+    <record model="ir.ui.view" id="catalog_product_tree_view">
+            <field name="name">catalog.product.tree.view</field>
+            <field name="model">product.product</field>
+            <field name="arch" type="xml">
+                <tree class="o_fee_products">
+                    <field name="name" readonly="1"/>
+                    <field name="default_code" optional="show" readonly="1"/>
+                    <field name="description" widget="html" string="Internal Note" optional="show" readonly="1"/>
+                    <field name="lst_price" optional="show" string="Sales Price"/>
+                    <field name="taxes_id" widget="many2many_tags" optional="show"/>
+                </tree>
+            </field>
+    </record>
+    
+    <record id="action_product_catalog" model="ir.actions.act_window">
+            <field name="name">Catalog</field>
+            <field name="res_model">product.product</field>
+            <field name="view_mode">tree,kanban,form</field>
+            <field name="search_view_id" ref="product.product_search_form_view"/>
+            <field name="context">{"default_is_book": 1, "default_sale_ok": 1, 'default_detailed_type': 'product', "default_type": 'product', "default_tracking": 'serial'}</field>
+            <field name="domain">[('is_book', '=', True)]</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    No Book found. Let's create one!
+                </p>
+                <p>
+                    Books can be circulate to patron.
+                </p>
+            </field>
+    </record>
+
+    <record id="catalog_product_tree" model="ir.actions.act_window.view">
+            <field name="sequence" eval="1"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="catalog_product_tree_view"/>
+            <field name="act_window_id" ref="action_product_catalog"/>
+    </record>
+     <record id="catalog_product_form" model="ir.actions.act_window.view">
+            <field name="sequence" eval="3"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="catalog_product_form_view"/>
+            <field name="act_window_id" ref="action_product_catalog"/>
+    </record>
+    
+    <menuitem id="menu_libarary_catalog_book" name="Books" parent="menu_library_catalog_main" sequence="1" action="action_product_catalog"/>
+
+</odoo>

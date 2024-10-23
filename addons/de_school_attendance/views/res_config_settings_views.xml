@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_config_settings_view_form_inherit_school_attendance" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.school.attendance</field>
+        <field name="model">res.config.settings</field>
+        <field name="priority" eval="90"/>
+        <field name="inherit_id" ref="de_school.res_config_settings_school_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//app[@name='de_school']" position="inside">
+                <block title="Attendance Management" class="mt0 mb0" name="attendance_setting_container">
+                    <setting id="use_period_setting" help="Define the way the user will be identified by the application" documentation="https://www.dynexcel.co/oe-doc#use_period">
+                        <field name="group_student_attendance_use_period"/>
+                    </setting>
+                    <setting id="attendance_mode_setting" help="Maintain check-in and check-out times along with attendance if 'True,' otherwise record only 'present' and 'absent' statuses." documentation="https://www.dynexcel.co/oe-doc#attendance_mode">
+                        <field name="student_attendance_mode" widget="radio" />
+                    </setting>
+                    <setting id="use_time_setting" help="Define the way the user will be identified by the application" documentation="https://www.dynexcel.co/oe-doc#use_time">
+                        <field name="group_student_attendance_use_time"/>
+                    </setting>
+
+                    <setting id="use_pin_setting" Title="PIN Code" string="Pin Code"
+                        help="Use PIN codes (defined on the Student's profile) to check-in." documentation="https://www.dynexcel.co/oe-doc#use_pin">
+                        <field name="group_student_attendance_use_pin"/>
+                    </setting>
+                </block>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="action_school_attendance_config_settings" model="ir.actions.act_window">
+        <field name="name">Settings</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">res.config.settings</field>
+        <field name="view_mode">form</field>
+        <field name="target">inline</field>
+        <field name="context">{'module' : 'de_school'}</field>
+    </record>
+    
+    <menuitem id="menu_school_attendance_general_settings"
+        name="Settings"
+        parent="menu_student_attendance_config_main"
+        sequence="0"
+        action="action_school_attendance_config_settings"
+        />
+    
+</odoo>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Top menu item -->
+    <menuitem name="Library"
+        id="menu_library_root"
+        groups="group_library_user,group_library_manager"
+        web_icon="de_school_library,static/description/icon.png"
+        sequence="57" />
+    
+    <menuitem name="Ciculation" id="menu_library_circulation_main"
+			parent="menu_library_root" 
+              sequence = "10"
+			groups="group_library_user" />
+
+    <menuitem name="Catalog" id="menu_library_catalog_main"
+			parent="menu_library_root" 
+              sequence = "20"
+			groups="group_library_user" />
+
+    <menuitem name="Patron" id="menu_library_patron_main"
+			parent="menu_library_root" 
+              sequence = "30"
+			groups="group_library_user" />
+    
+    <menuitem name="Reports" id="menu_library_menu_reports"
+			parent="menu_library_root" 
+              sequence = "90"
+			groups="group_library_user" />
+    
+    <menuitem name="Configuration" id="menu_library_menu_config"
+			parent="menu_library_root" 
+              sequence = "100"
+			groups="group_library_manager" />
+    
+   
+    
+</odoo>

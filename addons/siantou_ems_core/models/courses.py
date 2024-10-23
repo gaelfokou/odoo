@@ -4,7 +4,11 @@
 from odoo import api, fields, models, _
 from odoo.exceptions import UserError, AccessError
 from random import randint
+import logging
 
+
+
+_logger = logging.getLogger(__name__)
 
 # class CourseGradingType(models.Model):
 #     _name = 'oe.school.course.grading.type'
@@ -89,6 +93,7 @@ class OeSchoolCourse(models.Model):
 
     @api.model
     def create(self, vals):
+        _logger.info('**************** Vals ****************  %s', vals)
         sequence = self.env['ir.sequence'].create({
             'name': _('Sequence') + ' ' + vals['code'],
             'padding': 5,

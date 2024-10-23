@@ -6,5 +6,6 @@ from . import subject
 from . import teacher
 from . import university
 from . import year
+from . import degree_course_required
 from . import student_enrollment
 from . import courses

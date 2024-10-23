@@ -26,7 +26,7 @@
 
         'views/student_enrollment_views.xml',
         'views/course_views.xml',
-        # 'views/subject_group_views.xml',
+        'views/degree_course_views.xml',
     ],
     'license': 'LGPL-3',
     'installable': True,

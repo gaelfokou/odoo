@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- tree views -->
+    <record id="action_student_attendance_check_inout" model="ir.actions.client">
+        <field name="name">Attendance</field>
+        <field name="tag">de_school_attendance_my_attendances</field>
+        <field name="target">main</field>
+    </record>
+
+    <menuitem id="menu_school_attendance_check_inout"
+        name="Check In/Out"
+        parent="menu_school_attendance_main"
+        sequence="20"
+        action="action_student_attendance_check_inout"
+    />
+</odoo>
