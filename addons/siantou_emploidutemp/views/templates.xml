@@ -6,7 +6,7 @@
           <ul>
             <li t-foreach="emploidutemps" t-as="emploidutemp">
               <a t-attf-href="#{ root }/#{ emploidutemp.id }">
-                <t t-esc="emploidutemp.display_name"/>
+                <t t-esc="emploidutemp.intitule"/>
               </a>
             </li>
           </ul>
@@ -16,7 +16,7 @@
           <ul>
             <li t-foreach="semestres" t-as="semestre">
               <a t-attf-href="#{ root }/#{ semestre.id }">
-                <t t-esc="semestre.display_name"/>
+                <t t-esc="semestre.annee"/>
               </a>
             </li>
           </ul>
@@ -24,7 +24,7 @@
 
 
         <template id="emploidutemp_object">
-          <h1><t t-esc="emploidutemp.display_name"/></h1>
+          <h1><t t-esc="emploidutemp.intitule"/></h1>
           <dl>
             <t t-foreach="emploidutemp._fields" t-as="field">
               <dt><t t-esc="field"/></dt>
@@ -34,7 +34,7 @@
         </template>
 
         <template id="semestre_object">
-          <h1><t t-esc="semestre.display_name"/></h1>
+          <h1><t t-esc="semestre.annee"/></h1>
           <dl>
             <t t-foreach="semestre._fields" t-as="field">
               <dt><t t-esc="field"/></dt>

@@ -11,7 +11,7 @@ _logger = logging.getLogger(__name__)
 DATETIME_FORMAT = '%Y-%m-%d %H:%M:%S'
 
 
-class siantou_emploidutemp_emploidutemp(models.Model):
+class siantou_emploidutemp_emploidutemp_model(models.Model):
     _name = 'siantou_emploidutemp.emploidutemp'
     _description = 'siantou_emploidutemp.emploidutemp'
     _sql_constraints = [('siantou_emploidutemp_emploidutemp_filiere_id_niveau_id_semestre_id_salledecour_id_matiere_id_configuration_id_unique', 'unique(filiere_id, niveau_id, semestre_id, salledecour_id, matiere_id, configuration_id)', "Les champs Filiere, Niveau, Semestre, Salle de cours, Matiere, Configuration sont uniques pour chaque Emploi de temps.!")]
@@ -63,7 +63,7 @@ class siantou_emploidutemp_emploidutemp(models.Model):
                     record.intitule = record.configuration_id.intitule
 
 
-class siantou_emploidutemp_niveau(models.Model):
+class siantou_emploidutemp_niveau_model(models.Model):
     _name = 'siantou_emploidutemp.niveau'
     _description = 'siantou_emploidutemp.niveau'
     _sql_constraints = [('siantou_emploidutemp_niveau_valeur_unique', 'unique(valeur)', "Le champ Valeur est unique pour chaque Niveau.!")]
@@ -72,7 +72,7 @@ class siantou_emploidutemp_niveau(models.Model):
     valeur = fields.Selection(selection=[(f'{i}', f'{i}') for i in list(range(1, 9))], string='Valeur', required=True, default='1')
 
 
-class siantou_emploidutemp_semestre(models.Model):
+class siantou_emploidutemp_semestre_model(models.Model):
     _name = 'siantou_emploidutemp.semestre'
     _description = 'siantou_emploidutemp.semestre'
     _sql_constraints = [('siantou_emploidutemp_semestre_annee_valeur_unique', 'unique(annee, valeur)', "Les champs Annee scolaire, Valeur sont uniques pour chaque Semestre.!")]
@@ -105,9 +105,9 @@ class siantou_emploidutemp_semestre(models.Model):
         except Exception as e:
             _logger.exception(f'----------- tototototototo An error occurred : {e} -----------')
         return {
-            'name': 'Custom client action',
+            'name': 'Document scanner',
             'type': 'ir.actions.client',
-            'tag': 'siantou_emploidutemp.custom_client_action'
+            'tag': 'siantou_emploidutemp.document_scanner'
         }
 
     @api.constrains('annee', 'debut', 'fin')
@@ -121,7 +121,7 @@ class siantou_emploidutemp_semestre(models.Model):
                     raise ValidationError(f'Le champ Date fin > Date debut')
 
 
-class siantou_emploidutemp_salledecour(models.Model):
+class siantou_emploidutemp_salledecour_model(models.Model):
     _name = 'siantou_emploidutemp.salledecour'
     _description = 'siantou_emploidutemp.salledecour'
     _sql_constraints = [('siantou_emploidutemp_salledecour_code_unique', 'unique(code)', "Le champ Code est unique pour chaque Salle de cours.!")]
@@ -138,7 +138,7 @@ class siantou_emploidutemp_salledecour(models.Model):
                     raise ValidationError(f'Le champ Capacite est > 0')
 
 
-class siantou_emploidutemp_filiere(models.Model):
+class siantou_emploidutemp_filiere_model(models.Model):
     _name = 'siantou_emploidutemp.filiere'
     _description = 'siantou_emploidutemp.filiere'
     _inherits = {'siantou_emploidutemp.niveau': 'niveau_id'}
@@ -150,7 +150,7 @@ class siantou_emploidutemp_filiere(models.Model):
     matiere_ids = fields.Many2many('siantou_emploidutemp.matiere', 'siantou_emploidutemp_filiere_matiere', 'filiere_id', 'matiere_id', string='Matiere', required=True)
 
 
-class siantou_emploidutemp_matiere(models.Model):
+class siantou_emploidutemp_matiere_model(models.Model):
     _name = 'siantou_emploidutemp.matiere'
     _description = 'siantou_emploidutemp.matiere'
     _sql_constraints = [('siantou_emploidutemp_matiere_code_niveau_id_unique', 'unique(code, niveau_id)', "Les champs Code, Niveau sont uniques pour chaque Matiere.!")]
@@ -173,7 +173,7 @@ class siantou_emploidutemp_matiere(models.Model):
                     raise ValidationError(f'Le champ Quota horaire est > 0')
 
 
-class siantou_emploidutemp_configuration(models.Model):
+class siantou_emploidutemp_configuration_model(models.Model):
     _name = 'siantou_emploidutemp.configuration'
     _description = 'siantou_emploidutemp.configuration'
     _sql_constraints = [('siantou_emploidutemp_configuration_code_unique', 'unique(code)', "Le champ Code est unique pour chaque Configuration.!")]

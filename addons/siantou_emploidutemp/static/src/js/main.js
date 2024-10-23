@@ -7,31 +7,29 @@ import { useRef, useState, onRendered, onMounted, onWillUnmount } from "@odoo/ow
 import { BlockUI } from "@web/core/ui/block_ui";
 const { Component, mount } = owl;
 
-const delay = ms => new Promise(res => setTimeout(res, ms));
-
-var width = 320;
-var height = 0;
-var streaming = false;
-
-var videoElement = null;
-var canvasElement = null;
-var photoElement = null;
-var startButton = null;
-var captureButton = null;
-var stream = null;
-
 console.log('Welcome to siantou_emploidutemp module');
 
-export class CustomClientAction extends Component {
+var siantou_emploidutemp_document_scanner_width = 320;
+var siantou_emploidutemp_document_scanner_height = 0;
+var siantou_emploidutemp_document_scanner_streaming = false;
+var siantou_emploidutemp_document_scanner_video_element = null;
+var siantou_emploidutemp_document_scanner_canvas_element = null;
+var siantou_emploidutemp_document_photo_canvas_element = null;
+var siantou_emploidutemp_document_start_button = null;
+var siantou_emploidutemp_document_capture_button = null;
+var siantou_emploidutemp_document_stream = null;
+
+export class SiantouEmploidutempDocumentScannerComponent extends Component {
+	delay = ms => new Promise(res => setTimeout(res, ms));
 	setup() {
 		this.state = useState({
 			count: 0,
 		});
 		onRendered(async () => {
-			if(!videoElement || !canvasElement || !photoElement || !startButton || !captureButton) {
+			if(!siantou_emploidutemp_document_scanner_video_element || !siantou_emploidutemp_document_scanner_canvas_element || !siantou_emploidutemp_document_photo_canvas_element || !siantou_emploidutemp_document_start_button || !siantou_emploidutemp_document_capture_button) {
 				this.getElements();
 				console.log('Count :', this.state.count);
-				await delay(2000);
+				await this.delay(2000);
 				this.state.count += 1;
 			} else {
 				this.addEventElements();
@@ -43,46 +41,68 @@ export class CustomClientAction extends Component {
 			console.log('Component mounted');
 		});
 		onWillUnmount(() => {
+			this.stopWebcam();
 			this.removeEventElements();
+			this.resetElements();
 			console.log('Component unmounted');
 		});
 	}
 	getElements() {
-		videoElement = document.getElementById('siantou_emploidutemp.video_element');
-		canvasElement = document.getElementById('siantou_emploidutemp.canvas_element');
-		photoElement = document.getElementById('siantou_emploidutemp.photo_element');
-		startButton = document.getElementById('siantou_emploidutemp.start_button');
-		captureButton = document.getElementById('siantou_emploidutemp.capture_button');
-		stream = null;
+		siantou_emploidutemp_document_scanner_video_element = document.getElementById('siantou_emploidutemp.video_element');
+		siantou_emploidutemp_document_scanner_canvas_element = document.getElementById('siantou_emploidutemp.canvas_element');
+		siantou_emploidutemp_document_photo_canvas_element = document.getElementById('siantou_emploidutemp.photo_element');
+		siantou_emploidutemp_document_start_button = document.getElementById('siantou_emploidutemp.start_button');
+		siantou_emploidutemp_document_capture_button = document.getElementById('siantou_emploidutemp.capture_button');
+		siantou_emploidutemp_document_stream = null;
 		console.log('Get all elements');
 	}
+	resetElements() {
+		siantou_emploidutemp_document_scanner_streaming = false;
+		siantou_emploidutemp_document_scanner_video_element = null;
+		siantou_emploidutemp_document_scanner_canvas_element = null;
+		siantou_emploidutemp_document_photo_canvas_element = null;
+		siantou_emploidutemp_document_start_button = null;
+		siantou_emploidutemp_document_capture_button = null;
+		siantou_emploidutemp_document_stream = null;
+		console.log('Reset all elements');
+	}
 	addEventElements() {
-		if(startButton) {
-			startButton.disabled = false;
-			startButton.addEventListener('click', this.startWebcam, false);
+		if(siantou_emploidutemp_document_start_button) {
+			siantou_emploidutemp_document_start_button.disabled = false;
+			siantou_emploidutemp_document_start_button.addEventListener('click', this.startWebcam, false);
 			console.log('Add event listener on start button');
 		}
-		if(videoElement) {
-			videoElement.addEventListener('canplay', this.canPlayVideo, false);
+		if(siantou_emploidutemp_document_scanner_video_element) {
+			siantou_emploidutemp_document_scanner_video_element.addEventListener('canplay', this.canPlayVideo, false);
 			console.log('Add event listener on video element');
 		}
-		if(captureButton) {
-			captureButton.addEventListener('click', this.capturePhoto, false);
+		if(siantou_emploidutemp_document_capture_button) {
+			siantou_emploidutemp_document_capture_button.addEventListener('click', this.capturePhoto, false);
 			console.log('Add event listener on capture button');
 		}
 	}
 	removeEventElements() {
-		if(startButton) {
-			startButton.removeEventListener('click', this.startWebcam);
+		if(siantou_emploidutemp_document_start_button) {
+			siantou_emploidutemp_document_start_button.removeEventListener('click', this.startWebcam);
 			console.log('Remove event listener on start button');
 		}
-		if(videoElement) {
-			videoElement.removeEventListener('canplay', this.canPlayVideo);
+		if(siantou_emploidutemp_document_scanner_video_element) {
+			siantou_emploidutemp_document_scanner_video_element.removeEventListener('canplay', this.canPlayVideo);
 			console.log('Remove event listener on video element');
 		}
-		if(captureButton) {
-			captureButton.removeEventListener('click', this.capturePhoto);
+		if(siantou_emploidutemp_document_capture_button) {
+			siantou_emploidutemp_document_capture_button.removeEventListener('click', this.capturePhoto);
 			console.log('Remove event listener on capture button');
+		}
+	}
+	stopWebcam() {
+		if(siantou_emploidutemp_document_stream) {
+			var track = siantou_emploidutemp_document_stream.getTracks()[0];
+			track.stop();
+			siantou_emploidutemp_document_scanner_video_element.load();
+			console.log('Successful stoping video streaming');
+		} else {
+			console.log('Error stoping video');
 		}
 	}
 	async startWebcam(event) {
@@ -94,65 +114,66 @@ export class CustomClientAction extends Component {
 				navigator.mediaDevices.mozGetUserMedia ||
 				navigator.mediaDevices.msGetUserMedia
 			);
-			stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
-			if(stream) {
-				if(videoElement) {
-					videoElement.srcObject = stream;
-					startButton.disabled = true;
-					captureButton.disabled = false;
-					console.log('Successful accessing video streaming');
+			siantou_emploidutemp_document_stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
+			if(siantou_emploidutemp_document_stream) {
+				if(siantou_emploidutemp_document_scanner_video_element) {
+					siantou_emploidutemp_document_scanner_video_element.srcObject = siantou_emploidutemp_document_stream;
+					siantou_emploidutemp_document_scanner_video_element.play();
+					siantou_emploidutemp_document_start_button.disabled = true;
+					siantou_emploidutemp_document_capture_button.disabled = false;
+					console.log('Successful starting video streaming');
 				} else {
-					console.log('Error accessing video');
+					console.log('Error starting video');
 				}
 			} else {
-				console.log('Error accessing stream');
+				console.log('Error starting stream');
 			}
 		} catch (error) {
-			console.log('Error accessing webcam :', error);
+			console.log('Error starting webcam :', error);
 		}
 	}
 	canPlayVideo() {
-		if (!streaming) {
-			height = videoElement.videoHeight / (videoElement.videoWidth / width);
+		if (!siantou_emploidutemp_document_scanner_streaming) {
+			siantou_emploidutemp_document_scanner_height = siantou_emploidutemp_document_scanner_video_element.videoHeight / (siantou_emploidutemp_document_scanner_video_element.videoWidth / siantou_emploidutemp_document_scanner_width);
 
-			if (isNaN(height)) {
-				height = width / (4 / 3);
+			if (isNaN(siantou_emploidutemp_document_scanner_height)) {
+				siantou_emploidutemp_document_scanner_height = siantou_emploidutemp_document_scanner_width / (4 / 3);
 			}
 
-			videoElement.setAttribute('width', width);
-			videoElement.setAttribute('height', height);
-			canvasElement.setAttribute('width', width);
-			canvasElement.setAttribute('height', height);
-			streaming = true;
+			siantou_emploidutemp_document_scanner_video_element.setAttribute('width', siantou_emploidutemp_document_scanner_width);
+			siantou_emploidutemp_document_scanner_video_element.setAttribute('height', siantou_emploidutemp_document_scanner_height);
+			siantou_emploidutemp_document_scanner_canvas_element.setAttribute('width', siantou_emploidutemp_document_scanner_width);
+			siantou_emploidutemp_document_scanner_canvas_element.setAttribute('height', siantou_emploidutemp_document_scanner_height);
+			siantou_emploidutemp_document_scanner_streaming = true;
 		}
 	}
 	clearPhoto() {
-		var context = canvasElement.getContext('2d');
+		var context = siantou_emploidutemp_document_scanner_canvas_element.getContext('2d');
 		context.fillStyle = "#AAA";
-		context.fillRect(0, 0, canvasElement.width, canvasElement.height);
+		context.fillRect(0, 0, siantou_emploidutemp_document_scanner_canvas_element.width, siantou_emploidutemp_document_scanner_canvas_element.height);
 
-		const photoDataUrl = canvasElement.toDataURL('image/png');
-		photoElement.setAttribute('src', photoDataUrl);
-		/* photoElement.src = photoDataUrl;
-		photoElement.style.display = 'block'; */
+		const photoDataUrl = siantou_emploidutemp_document_scanner_canvas_element.toDataURL('image/png');
+		siantou_emploidutemp_document_photo_canvas_element.setAttribute('src', photoDataUrl);
+		/* siantou_emploidutemp_document_photo_canvas_element.src = photoDataUrl;
+		siantou_emploidutemp_document_photo_canvas_element.style.display = 'block'; */
 	}
 	capturePhoto() {
-		var context = canvasElement.getContext('2d');
-		if (width && height) {
-			canvasElement.width = width;
-			canvasElement.height = height;
-			context.drawImage(videoElement, 0, 0, width, height);
+		var context = siantou_emploidutemp_document_scanner_canvas_element.getContext('2d');
+		if (siantou_emploidutemp_document_scanner_width && siantou_emploidutemp_document_scanner_height) {
+			siantou_emploidutemp_document_scanner_canvas_element.width = siantou_emploidutemp_document_scanner_width;
+			siantou_emploidutemp_document_scanner_canvas_element.height = siantou_emploidutemp_document_scanner_height;
+			context.drawImage(siantou_emploidutemp_document_scanner_video_element, 0, 0, siantou_emploidutemp_document_scanner_width, siantou_emploidutemp_document_scanner_height);
 
-			const photoDataUrl = canvasElement.toDataURL('image/png');
-			photoElement.setAttribute('src', photoDataUrl);
-			/* photoElement.src = photoDataUrl;
-			photoElement.style.display = 'block'; */
+			const photoDataUrl = siantou_emploidutemp_document_scanner_canvas_element.toDataURL('image/png');
+			siantou_emploidutemp_document_photo_canvas_element.setAttribute('src', photoDataUrl);
+			/* siantou_emploidutemp_document_photo_canvas_element.src = photoDataUrl;
+			siantou_emploidutemp_document_photo_canvas_element.style.display = 'block'; */
 		} else {
 			this.clearPhoto();
 		}
 	}
 }
 
-CustomClientAction.template = 'siantou_emploidutemp.custom_client'
+SiantouEmploidutempDocumentScannerComponent.template = 'siantou_emploidutemp.document_scanner'
 
-registry.category('actions').add('siantou_emploidutemp.custom_client_action', CustomClientAction)
+registry.category('actions').add('siantou_emploidutemp.document_scanner', SiantouEmploidutempDocumentScannerComponent)

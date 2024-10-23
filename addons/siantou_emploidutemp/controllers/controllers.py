@@ -4,7 +4,7 @@ import logging
 
 _logger = logging.getLogger(__name__)
 
-class siantou_emploidutemp(http.Controller):
+class siantou_emploidutemp_emploidutemp_controller(http.Controller):
     # @http.route('/siantou_emploidutemp/emploidutemp', auth='public', type='http')
     # def index(self, **kw):
     #     return "Hello, world"
@@ -22,16 +22,18 @@ class siantou_emploidutemp(http.Controller):
             'emploidutemp': obj
         })
 
+class siantou_emploidutemp_semestre_controller(http.Controller):
     @http.route('/siantou_emploidutemp/semestre/<int:id>', auth='public', type='http', method=['GET'])
-    def generate(self, **kw):
+    def generate(self, id, **kw):
         try:
             _logger.info(f'----------- tototototototo Your information log message {id} -----------')
             _logger.warning(f'----------- tototototototo Your warning log message {id} -----------')
             _logger.error(f'----------- tototototototo Your error log message {id} -----------')
         except Exception as e:
             _logger.exception(f'----------- tototototototo An error occurred : {e} -----------')
-        semestres = []
-        semestres.append(id)
         return http.request.render('siantou_emploidutemp.semestre_listing', {
-            'semestres': semestres
+            'root': '/siantou_emploidutemp/semestre',
+            'semestres': http.request.env['siantou_emploidutemp.semestre'].search([
+                ('id', '=', id),
+            ])
         })

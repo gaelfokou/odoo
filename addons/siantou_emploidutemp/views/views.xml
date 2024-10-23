@@ -192,24 +192,24 @@
 
     <!-- Top menu item -->
 
-    <menuitem name="Emplois de temps" id="siantou_emploidutemp.menu_root"
+    <menuitem name="Emplois de temps" id="siantou_emploidutemp.root_menu_item"
               action="siantou_emploidutemp.emploidutemp_action_window"/>
 
     <!-- menu categories -->
 
-    <menuitem name="Emplois de temps" id="siantou_emploidutemp.menu_emploidutemp" parent="siantou_emploidutemp.menu_root"
+    <menuitem name="Emplois de temps" id="siantou_emploidutemp.emploidutemp_menu_item" parent="siantou_emploidutemp.root_menu_item"
               action="siantou_emploidutemp.emploidutemp_action_window"/>
-    <menuitem name="Niveaux" id="siantou_emploidutemp.menu_niveau" parent="siantou_emploidutemp.menu_root"
+    <menuitem name="Niveaux" id="siantou_emploidutemp.niveau_menu_item" parent="siantou_emploidutemp.root_menu_item"
               action="siantou_emploidutemp.niveau_action_window"/>
-    <menuitem name="Semestres" id="siantou_emploidutemp.menu_semestre" parent="siantou_emploidutemp.menu_root"
+    <menuitem name="Semestres" id="siantou_emploidutemp.semestre_menu_item" parent="siantou_emploidutemp.root_menu_item"
               action="siantou_emploidutemp.semestre_action_window"/>
-    <menuitem name="Salles de cours" id="siantou_emploidutemp.menu_salledecour" parent="siantou_emploidutemp.menu_root"
+    <menuitem name="Salles de cours" id="siantou_emploidutemp.salledecour_menu_item" parent="siantou_emploidutemp.root_menu_item"
               action="siantou_emploidutemp.salledecour_action_window"/>
-    <menuitem name="Filieres" id="siantou_emploidutemp.menu_filiere" parent="siantou_emploidutemp.menu_root"
+    <menuitem name="Filieres" id="siantou_emploidutemp.filiere_menu_item" parent="siantou_emploidutemp.root_menu_item"
               action="siantou_emploidutemp.filiere_action_window"/>
-    <menuitem name="Matieres" id="siantou_emploidutemp.menu_matiere" parent="siantou_emploidutemp.menu_root"
+    <menuitem name="Matieres" id="siantou_emploidutemp.matiere_menu_item" parent="siantou_emploidutemp.root_menu_item"
               action="siantou_emploidutemp.matiere_action_window"/>
-    <menuitem name="Configurations" id="siantou_emploidutemp.menu_configuration" parent="siantou_emploidutemp.menu_root"
+    <menuitem name="Configurations" id="siantou_emploidutemp.configuration_menu_item" parent="siantou_emploidutemp.root_menu_item"
               action="siantou_emploidutemp.configuration_action_window"/>
 
   </data>

@@ -30,7 +30,7 @@
         'security/ir.model.access.csv',
         'views/views.xml',
         'views/templates.xml',
-        'views/client_action_views.xml',
+        'views/action_client_views.xml',
     ],
     # only loaded in demonstration mode
     # 'demo': [
@@ -40,7 +40,7 @@
         'web.assets_backend': [
             'siantou_emploidutemp/static/src/css/main.css',
             'siantou_emploidutemp/static/src/js/main.js',
-            'siantou_emploidutemp/static/src/xml/client_action.xml',
+            'siantou_emploidutemp/static/src/xml/action_client.xml',
         ],
     },
 }
