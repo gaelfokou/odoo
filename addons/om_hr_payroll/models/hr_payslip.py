@@ -9,8 +9,7 @@ from odoo.exceptions import UserError, ValidationError
 import logging
 
 DATE_FORMAT = '%Y-%m-%d'
-TIME_FORMAT = '%H:%M'
-DATETIME_FORMAT = '%Y-%m-%d %H:%M'
+DATETIME_FORMAT = '%Y-%m-%d %H:%M:%S'
 
 _logger = logging.getLogger(__name__)
 
@@ -71,6 +70,98 @@ class HrPayslip(models.Model):
     total_hours = fields.Float(compute='_compute_total_hours', string='Total hours')
     code = fields.Char(help="The code that can be used in the salary rules")
 
+    def filter_daily_attendance(self, employee, current_date, end_time, start_time):
+        # Filtre des données biométriques de l'enseignant pour une période donnée
+        current_date = datetime.strftime(current_date, DATE_FORMAT)
+
+        end_time = str(end_time)
+        end_time = end_time.split('.')
+        if len(end_time[0]) == 1:
+            end_time[0] = '0{}'.format(end_time[0])
+        if len(end_time[1]) == 1:
+            end_time[1] = '0{}'.format(end_time[1])
+        end_time = ':'.join(end_time)
+        end_time = '{}:00'.format(end_time)
+
+        start_time = str(start_time)
+        start_time = start_time.split('.')
+        if len(start_time[0]) == 1:
+            start_time[0] = '0{}'.format(start_time[0])
+        if len(start_time[1]) == 1:
+            start_time[1] = '0{}'.format(start_time[1])
+        start_time = ':'.join(start_time)
+        start_time = '{}:00'.format(start_time)
+
+        datetime_to = datetime.strptime(f'{current_date} {end_time}', DATETIME_FORMAT)
+        datetime_from = datetime.strptime(f'{current_date} {start_time}', DATETIME_FORMAT)
+
+        datetime_before = datetime_from - timedelta(minutes=30)
+        datetime_from = datetime_from + timedelta(minutes=30)
+
+        datetime_after = datetime_to + timedelta(minutes=30)
+        datetime_to = datetime_to - timedelta(minutes=30)
+
+        datetime_before = datetime_before - timedelta(hours=1)
+        datetime_from = datetime_from - timedelta(hours=1)
+        datetime_after = datetime_after - timedelta(hours=1)
+        datetime_to = datetime_to - timedelta(hours=1)
+
+        # daily_attendances = self.env['hr.attendance'].search([
+        #     ('employee_id', '=', employee.id),
+        #     ('check_in', '>=', datetime_before),
+        #     ('check_in', '<=', datetime_from),
+        #     ('check_out', '>=', datetime_to),
+        #     ('check_out', '<=', datetime_after),
+        # ])
+
+        daily_attendances = self.env['hr.attendance'].search([
+            ('employee_id', '=', employee.id),
+        ]).filtered(lambda rec: rec.check_in >= datetime_before and rec.check_in <= datetime_from and rec.check_out >= datetime_to and rec.check_out <= datetime_after)
+
+        _logger.info(f'----------- tototototototo employee name {employee.name} -----------')
+        _logger.info(f'----------- tototototototo current_date {current_date} -----------')
+        _logger.info(f'----------- tototototototo check_in >= datetime_before {datetime.strftime(datetime_before, DATETIME_FORMAT)} -----------')
+        _logger.info(f'----------- tototototototo check_in <= datetime_from {datetime.strftime(datetime_from, DATETIME_FORMAT)} -----------')
+        _logger.info(f'----------- tototototototo check_out >= datetime_to {datetime.strftime(datetime_to, DATETIME_FORMAT)} -----------')
+        _logger.info(f'----------- tototototototo check_out <= datetime_after {datetime.strftime(datetime_after, DATETIME_FORMAT)} -----------')
+
+        for daily_attendance in daily_attendances:
+            _logger.info(f'----------- tototototototo daily_attendance check_in {datetime.strftime(daily_attendance.check_in, DATETIME_FORMAT)} -----------')
+            _logger.info(f'----------- tototototototo daily_attendance check_out {datetime.strftime(daily_attendance.check_out, DATETIME_FORMAT)} -----------')
+
+        if len(daily_attendances) > 0:
+            return True
+
+        return False
+
+    def employee_total_hours(self, line):
+        date_to = line.date_to
+        date_from = line.date_from
+
+        # Vérification de la validité de la période
+        if date_from > date_to:
+            raise ValidationError(_('Invalide période'))
+
+        if date_to > date.today():
+            date_to = date.today()
+
+        # Recherche des emplois du temps de l'enseignant pour une période donnée
+        employee_timetables = self.env['siantou.ems.timetable.timetable'].search([
+            ('employee_id', '=', line.employee_id.id),
+            ('date', '<=', date_to),
+            ('date', '>=', date_from),
+        ])
+
+        # Calcul de la duréee d'un cours
+        total_timetable_hours = float(0)
+        if line.employee_id.is_teacher:
+            for employee_timetable in employee_timetables:
+                # Vérification du temps de cours de l'enseignant en biométrie
+                if self.filter_daily_attendance(employee_timetable.employee_id, employee_timetable.date, employee_timetable.end_time, employee_timetable.start_time):
+                    timetable_hours = employee_timetable.end_time - employee_timetable.start_time
+                    total_timetable_hours += timetable_hours
+        line.total_hours = total_timetable_hours
+
     @api.model
     def create(self, vals):
         line = super(HrPayslip, self).create(vals)
@@ -84,77 +175,31 @@ class HrPayslip(models.Model):
             ('date', '>=', date_from),
         ])
 
-        _logger.info(f'----------- tototototototo employee_timetables {employee_timetables} -----------')
-
-        for employee_timetable in employee_timetables:
-            # Vérification du temps de cours de l'enseignant en biométrie
-            timetable_hours = employee_timetable.end_time - employee_timetable.start_time
-            self.env['hr.payslip.worked_days'].create({
-                'name': '{}, {}'.format(employee_timetable.subject_id.name, employee_timetable.subject_id.code),
-                'payslip_id': line.id,
-                'code': line.code,
-                'number_of_days': 1,
-                'number_of_hours': timetable_hours,
-                'contract_id': line.contract_id.id,
-            })
+        if line.employee_id.is_teacher:
+            for employee_timetable in employee_timetables:
+                # Vérification du temps de cours de l'enseignant en biométrie
+                if self.filter_daily_attendance(employee_timetable.employee_id, employee_timetable.date, employee_timetable.end_time, employee_timetable.start_time):
+                    timetable_hours = employee_timetable.end_time - employee_timetable.start_time
+                    self.env['hr.payslip.worked_days'].create({
+                        'name': '{}, {}'.format(employee_timetable.subject_id.name, employee_timetable.subject_id.code),
+                        'payslip_id': line.id,
+                        'code': line.code,
+                        'number_of_days': 1,
+                        'number_of_hours': timetable_hours,
+                        'contract_id': line.contract_id.id,
+                    })
 
         return line
 
     @api.depends('employee_id', 'date_to', 'date_from')
     def _compute_total_hours(self):
         for line in self:
-            date_to = line.date_to
-            date_from = line.date_from
-
-            # Vérification de la validité de la période
-            if date_from > date_to:
-                raise ValidationError(_('Invalide période'))
-
-            if date_to > date.today():
-                date_to = date.today()
-
-            # Recherche des emplois du temps de l'enseignant pour une période donnée
-            employee_timetables = self.env['siantou.ems.timetable.timetable'].search([
-                ('employee_id', '=', line.employee_id.id),
-                ('date', '<=', date_to),
-                ('date', '>=', date_from),
-            ])
-
-            # Calcul de la duréee d'un cours
-            total_timetable_hours = float(0)
-            for employee_timetable in employee_timetables:
-                # Vérification du temps de cours de l'enseignant en biométrie
-                timetable_hours = employee_timetable.end_time - employee_timetable.start_time
-                total_timetable_hours += timetable_hours
-            line.total_hours = total_timetable_hours
+            self.employee_total_hours(line)
 
     @api.onchange('employee_id', 'date_to', 'date_from')
     def onchange_employee_total_hours(self):
         for line in self:
-            date_to = line.date_to
-            date_from = line.date_from
-
-            # Vérification de la validité de la période
-            if date_from > date_to:
-                raise ValidationError(_('Invalide période'))
-
-            if date_to > date.today():
-                date_to = date.today()
-
-            # Recherche des emplois du temps de l'enseignant pour une période donnée
-            employee_timetables = self.env['siantou.ems.timetable.timetable'].search([
-                ('employee_id', '=', line.employee_id.id),
-                ('date', '<=', date_to),
-                ('date', '>=', date_from),
-            ])
-
-            # Calcul de la duréee d'un cours
-            total_timetable_hours = float(0)
-            for employee_timetable in employee_timetables:
-                # Vérification du temps de cours de l'enseignant en biométrie
-                timetable_hours = employee_timetable.end_time - employee_timetable.start_time
-                total_timetable_hours += timetable_hours
-            line.total_hours = total_timetable_hours
+            self.employee_total_hours(line)
 
     def _compute_details_by_salary_rule_category(self):
         for payslip in self:
