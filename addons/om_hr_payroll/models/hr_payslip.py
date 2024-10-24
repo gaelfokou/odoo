@@ -9,7 +9,18 @@ from odoo.exceptions import UserError, ValidationError
 import logging
 
 DATE_FORMAT = '%Y-%m-%d'
+DATE_FORMAT_FR = '%d-%m-%Y'
 DATETIME_FORMAT = '%Y-%m-%d %H:%M:%S'
+
+CURRENT_WEEKDAY = {
+    0: 'Lundi',
+    1: 'Mardi',
+    2: 'Mercredi',
+    3: 'Jeudi',
+    4: 'Vendredi',
+    5: 'Samedi',
+    6: 'Dimanche'
+}
 
 _logger = logging.getLogger(__name__)
 
@@ -70,7 +81,47 @@ class HrPayslip(models.Model):
     total_hours = fields.Float(compute='_compute_total_hours', string='Total hours')
     code = fields.Char(help="The code that can be used in the salary rules")
 
-    def filter_daily_attendance(self, employee, current_date, end_time, start_time):
+    def filter_daily_attendance(self, employee, end_date, start_date):
+        # Filtre des données biométriques de l'enseignant pour une période donnée
+        end_date = datetime.strftime(end_date, DATE_FORMAT)
+        start_date = datetime.strftime(start_date, DATE_FORMAT)
+
+        end_time = '22:00:00'
+        start_time = '08:00:00'
+
+        datetime_to = datetime.strptime(f'{end_date} {end_time}', DATETIME_FORMAT)
+        datetime_from = datetime.strptime(f'{start_date} {start_time}', DATETIME_FORMAT)
+
+        datetime_before = datetime_from - timedelta(minutes=30)
+        datetime_from = datetime_from + timedelta(minutes=30)
+
+        datetime_after = datetime_to + timedelta(minutes=30)
+        datetime_to = datetime_to - timedelta(minutes=30)
+
+        datetime_before = datetime_before - timedelta(hours=1)
+        datetime_from = datetime_from - timedelta(hours=1)
+        datetime_after = datetime_after - timedelta(hours=1)
+        datetime_to = datetime_to - timedelta(hours=1)
+
+        # daily_attendances = self.env['hr.attendance'].search([
+        #     ('employee_id', '=', employee.id),
+        #     ('check_in', '>=', datetime_before),
+        #     ('check_out', '<=', datetime_after),
+        # ])
+
+        daily_attendances = self.env['hr.attendance'].search([
+            ('employee_id', '=', employee.id),
+        ]).filtered(lambda rec: rec.check_in >= datetime_before and rec.check_out <= datetime_after)
+
+        _logger.info(f'----------- tototototototo employee name {employee.name} -----------')
+        _logger.info(f'----------- tototototototo check_in >= datetime_before {datetime.strftime(datetime_before, DATETIME_FORMAT)} -----------')
+        _logger.info(f'----------- tototototototo check_in <= datetime_from {datetime.strftime(datetime_from, DATETIME_FORMAT)} -----------')
+        _logger.info(f'----------- tototototototo check_out >= datetime_to {datetime.strftime(datetime_to, DATETIME_FORMAT)} -----------')
+        _logger.info(f'----------- tototototototo check_out <= datetime_after {datetime.strftime(datetime_after, DATETIME_FORMAT)} -----------')
+
+        return daily_attendances
+
+    def filter_daily_attendance_teacher(self, employee, current_date, end_time, start_time):
         # Filtre des données biométriques de l'enseignant pour une période donnée
         current_date = datetime.strftime(current_date, DATE_FORMAT)
 
@@ -125,10 +176,6 @@ class HrPayslip(models.Model):
         _logger.info(f'----------- tototototototo check_out >= datetime_to {datetime.strftime(datetime_to, DATETIME_FORMAT)} -----------')
         _logger.info(f'----------- tototototototo check_out <= datetime_after {datetime.strftime(datetime_after, DATETIME_FORMAT)} -----------')
 
-        for daily_attendance in daily_attendances:
-            _logger.info(f'----------- tototototototo daily_attendance check_in {datetime.strftime(daily_attendance.check_in, DATETIME_FORMAT)} -----------')
-            _logger.info(f'----------- tototototototo daily_attendance check_out {datetime.strftime(daily_attendance.check_out, DATETIME_FORMAT)} -----------')
-
         if len(daily_attendances) > 0:
             return True
 
@@ -157,9 +204,13 @@ class HrPayslip(models.Model):
         if line.employee_id.is_teacher:
             for employee_timetable in employee_timetables:
                 # Vérification du temps de cours de l'enseignant en biométrie
-                if self.filter_daily_attendance(employee_timetable.employee_id, employee_timetable.date, employee_timetable.end_time, employee_timetable.start_time):
+                if self.filter_daily_attendance_teacher(employee_timetable.employee_id, employee_timetable.date, employee_timetable.end_time, employee_timetable.start_time):
                     timetable_hours = employee_timetable.end_time - employee_timetable.start_time
                     total_timetable_hours += timetable_hours
+        else:
+            daily_attendances = self.filter_daily_attendance(line.employee_id, date_to, date_from)
+            for daily_attendance in daily_attendances:
+                total_timetable_hours += daily_attendance.worked_hours
         line.total_hours = total_timetable_hours
 
     @api.model
@@ -178,16 +229,27 @@ class HrPayslip(models.Model):
         if line.employee_id.is_teacher:
             for employee_timetable in employee_timetables:
                 # Vérification du temps de cours de l'enseignant en biométrie
-                if self.filter_daily_attendance(employee_timetable.employee_id, employee_timetable.date, employee_timetable.end_time, employee_timetable.start_time):
+                if self.filter_daily_attendance_teacher(employee_timetable.employee_id, employee_timetable.date, employee_timetable.end_time, employee_timetable.start_time):
                     timetable_hours = employee_timetable.end_time - employee_timetable.start_time
                     self.env['hr.payslip.worked_days'].create({
-                        'name': '{}, {}'.format(employee_timetable.subject_id.name, employee_timetable.subject_id.code),
+                        'name': 'Journée du {} {}, {} ({})'.format(CURRENT_WEEKDAY[employee_timetable.date.weekday()], datetime.strftime(employee_timetable.date, DATE_FORMAT_FR), employee_timetable.subject_id.name, employee_timetable.subject_id.code),
                         'payslip_id': line.id,
                         'code': line.code,
                         'number_of_days': 1,
                         'number_of_hours': timetable_hours,
                         'contract_id': line.contract_id.id,
                     })
+        else:
+            daily_attendances = self.filter_daily_attendance(line.employee_id, date_to, date_from)
+            for daily_attendance in daily_attendances:
+                self.env['hr.payslip.worked_days'].create({
+                    'name': 'Journée du {} {}'.format(CURRENT_WEEKDAY[daily_attendance.check_in.weekday()], datetime.strftime(daily_attendance.check_in, DATE_FORMAT_FR)),
+                    'payslip_id': line.id,
+                    'code': line.code,
+                    'number_of_days': 1,
+                    'number_of_hours': daily_attendance.worked_hours,
+                    'contract_id': line.contract_id.id,
+                })
 
         return line
 
