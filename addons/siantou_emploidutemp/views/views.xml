@@ -4,18 +4,18 @@
     <!-- explicit list view definition -->
 
     <record model="ir.ui.view" id="siantou_emploidutemp.emploidutemp_view_tree">
-      <field name="name">Emploi de temps</field>
+      <field name="name">Emploi du temps</field>
       <field name="model">siantou_emploidutemp.emploidutemp</field>
       <field name="arch" type="xml">
-        <tree string="Emploi de temps">
+        <tree string="Emploi du temps">
           <field name="filiere_id" mode="tree">
             <tree string="Filiere">
-              <field name="intitule"/>
+              <field name="name"/>
             </tree>
           </field>
           <field name="niveau_id" mode="tree">
             <tree string="Niveau">
-              <field name="intitule"/>
+              <field name="name"/>
             </tree>
           </field>
           <field name="semestre_id" mode="tree">
@@ -25,20 +25,20 @@
           </field>
           <field name="salledecour_id" mode="tree">
             <tree string="Salle de cours">
-              <field name="intitule"/>
+              <field name="name"/>
             </tree>
           </field>
           <!-- <field name="matiere_id" mode="tree">
             <tree string="Matiere">
-              <field name="intitule"/>
+              <field name="name"/>
             </tree>
           </field>
           <field name="configuration_id" mode="tree">
             <tree string="Configuration">
-              <field name="intitule"/>
+              <field name="name"/>
             </tree>
           </field> -->
-          <field name="intitule"/>
+          <field name="name"/>
           <field name="debut"/>
           <field name="fin"/>
         </tree>
@@ -50,7 +50,7 @@
       <field name="model">siantou_emploidutemp.niveau</field>
       <field name="arch" type="xml">
         <tree string="Niveaux">
-          <field name="intitule"/>
+          <field name="name"/>
           <field name="valeur"/>
         </tree>
       </field>
@@ -76,7 +76,7 @@
       <field name="model">siantou_emploidutemp.salledecour</field>
       <field name="arch" type="xml">
         <tree string="Salles de cours">
-          <field name="intitule"/>
+          <field name="name"/>
           <field name="code"/>
           <field name="capacite"/>
         </tree>
@@ -86,17 +86,50 @@
     <record model="ir.ui.view" id="siantou_emploidutemp.filiere_view_tree">
       <field name="name">Filieres</field>
       <field name="model">siantou_emploidutemp.filiere</field>
+      <field name="type">tree</field>
       <field name="arch" type="xml">
         <tree string="Filieres">
-          <field name="intitule"/>
+          <field name="name"/>
           <field name="code"/>
-          <field name="niveau_id" mode="tree">
-            <tree string="Niveau">
-              <field name="intitule"/>
-            </tree>
-          </field>
+          <field name="niveau_id"/>
           <field name="matiere_ids"/>
         </tree>
+      </field>
+    </record>
+
+    <record model="ir.ui.view" id="siantou_emploidutemp.filiere_view_search">
+      <field name="name">Filieres</field>
+      <field name="model">siantou_emploidutemp.filiere</field>
+      <field name="type">search</field>
+      <field name="arch" type="xml">
+        <search string="Filieres">
+          <field name="name"/>
+          <field name="code"/>
+          <field name="niveau_id"/>
+          <field name="matiere_ids"/>
+          <filter string="Filiere" name="code" domain="[('code', '=', 'GI')]"/>
+          <group expand="0" string="Group By">
+              <filter string="Niveau" name="niveau_id" context="{'group_by': 'niveau_id'}"/>
+          </group>
+        </search>
+      </field>
+    </record>
+
+    <record model="ir.ui.view" id="siantou_emploidutemp.filiere_view_form">
+      <field name="name">Filieres</field>
+      <field name="model">siantou_emploidutemp.filiere</field>
+      <field name="type">form</field>
+      <field name="arch" type="xml">
+        <form string="Filieres">
+          <sheet>
+            <group>
+              <field name="name"/>
+              <field name="code"/>
+              <field name="niveau_id"/>
+              <field name="matiere_ids"/>
+            </group>
+          </sheet>
+        </form>
       </field>
     </record>
 
@@ -105,7 +138,7 @@
       <field name="model">siantou_emploidutemp.matiere</field>
       <field name="arch" type="xml">
         <tree string="Matieres">
-          <field name="intitule"/>
+          <field name="name"/>
           <field name="code"/>
           <field name="tronccommun"/>
           <field name="jour"/>
@@ -113,7 +146,7 @@
           <field name="quotahoraire"/>
           <field name="niveau_id" mode="tree">
             <tree string="Niveau">
-              <field name="intitule"/>
+              <field name="name"/>
             </tree>
           </field>
           <field name="filiere_ids"/>
@@ -127,7 +160,7 @@
       <field name="model">siantou_emploidutemp.configuration</field>
       <field name="arch" type="xml">
         <tree string="Configurations">
-          <field name="intitule"/>
+          <field name="name"/>
           <field name="code"/>
           <field name="debut" placeholder="12:30"/>
           <field name="fin" placeholder="12:30"/>

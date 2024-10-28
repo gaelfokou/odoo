@@ -6,7 +6,7 @@
           <ul>
             <li t-foreach="emploidutemps" t-as="emploidutemp">
               <a t-attf-href="#{ root }/#{ emploidutemp.id }">
-                <t t-esc="emploidutemp.intitule"/>
+                <t t-esc="emploidutemp.name"/>
               </a>
             </li>
           </ul>
@@ -24,7 +24,7 @@
 
 
         <template id="emploidutemp_object">
-          <h1><t t-esc="emploidutemp.intitule"/></h1>
+          <h1><t t-esc="emploidutemp.name"/></h1>
           <dl>
             <t t-foreach="emploidutemp._fields" t-as="field">
               <dt><t t-esc="field"/></dt>
