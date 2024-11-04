@@ -120,11 +120,11 @@ class HrPayslip(models.Model):
         #     ('employee_id', '=', employee.id),
         #     ('punching_time', '>=', datetime_before),
         #     ('punching_time', '<=', datetime_after),
-        # ])
+        # ], order='punching_time asc')
 
         daily_attendances = self.env['daily.attendance'].search([
             ('employee_id', '=', employee.id),
-        ]).filtered(lambda rec: self.convert_datetime_timezone(rec.punching_time) >= datetime_before and self.convert_datetime_timezone(rec.punching_time) <= datetime_after)
+        ], order='punching_time asc').filtered(lambda rec: self.convert_datetime_timezone(rec.punching_time) >= datetime_before and self.convert_datetime_timezone(rec.punching_time) <= datetime_after)
 
         _logger.info(f'----------- tototototototo attendance punching_time >= datetime_before {datetime.strftime(datetime_before, DATETIME_FORMAT)} -----------')
         _logger.info(f'----------- tototototototo attendance punching_time <= datetime_from {datetime.strftime(datetime_from, DATETIME_FORMAT)} -----------')
@@ -181,11 +181,11 @@ class HrPayslip(models.Model):
         #     ('punching_time', '<=', datetime_from),
         #     ('punching_time', '>=', datetime_to),
         #     ('punching_time', '<=', datetime_after),
-        # ])
+        # ], order='punching_time asc')
 
         daily_attendances = self.env['daily.attendance'].search([
             ('employee_id', '=', employee.id),
-        ]).filtered(lambda rec: (self.convert_datetime_timezone(rec.punching_time) >= datetime_before and self.convert_datetime_timezone(rec.punching_time) <= datetime_from) or (self.convert_datetime_timezone(rec.punching_time) >= datetime_to and self.convert_datetime_timezone(rec.punching_time) <= datetime_after))
+        ], order='punching_time asc').filtered(lambda rec: (self.convert_datetime_timezone(rec.punching_time) >= datetime_before and self.convert_datetime_timezone(rec.punching_time) <= datetime_from) or (self.convert_datetime_timezone(rec.punching_time) >= datetime_to and self.convert_datetime_timezone(rec.punching_time) <= datetime_after))
 
         _logger.info(f'----------- tototototototo attendance teacher current_date {current_date} -----------')
         _logger.info(f'----------- tototototototo attendance teacher punching_time >= datetime_before {datetime.strftime(datetime_before, DATETIME_FORMAT)} -----------')
