@@ -116,20 +116,20 @@ class HrPayslip(models.Model):
         datetime_after = self.convert_datetime_timezone(datetime_after, employee.tz)
         datetime_to = self.convert_datetime_timezone(datetime_to, employee.tz)
 
-        # daily_attendances = self.env['hr.attendance'].search([
+        # daily_attendances = self.env['daily.attendance'].search([
         #     ('employee_id', '=', employee.id),
-        #     ('check_in', '>=', datetime_before),
-        #     ('check_out', '<=', datetime_after),
+        #     ('punching_time', '>=', datetime_before),
+        #     ('punching_time', '<=', datetime_after),
         # ])
 
-        daily_attendances = self.env['hr.attendance'].search([
+        daily_attendances = self.env['daily.attendance'].search([
             ('employee_id', '=', employee.id),
-        ]).filtered(lambda rec: self.convert_datetime_timezone(rec.check_in) >= datetime_before and self.convert_datetime_timezone(rec.check_out) <= datetime_after)
+        ]).filtered(lambda rec: self.convert_datetime_timezone(rec.punching_time) >= datetime_before and self.convert_datetime_timezone(rec.punching_time) <= datetime_after)
 
-        _logger.info(f'----------- tototototototo attendance check_in >= datetime_before {datetime.strftime(datetime_before, DATETIME_FORMAT)} -----------')
-        _logger.info(f'----------- tototototototo attendance check_in <= datetime_from {datetime.strftime(datetime_from, DATETIME_FORMAT)} -----------')
-        _logger.info(f'----------- tototototototo attendance check_out >= datetime_to {datetime.strftime(datetime_to, DATETIME_FORMAT)} -----------')
-        _logger.info(f'----------- tototototototo attendance check_out <= datetime_after {datetime.strftime(datetime_after, DATETIME_FORMAT)} -----------')
+        _logger.info(f'----------- tototototototo attendance punching_time >= datetime_before {datetime.strftime(datetime_before, DATETIME_FORMAT)} -----------')
+        _logger.info(f'----------- tototototototo attendance punching_time <= datetime_from {datetime.strftime(datetime_from, DATETIME_FORMAT)} -----------')
+        _logger.info(f'----------- tototototototo attendance punching_time >= datetime_to {datetime.strftime(datetime_to, DATETIME_FORMAT)} -----------')
+        _logger.info(f'----------- tototototototo attendance punching_time <= datetime_after {datetime.strftime(datetime_after, DATETIME_FORMAT)} -----------')
         _logger.info(f'----------- tototototototo attendance daily_attendances {daily_attendances} -----------')
 
         return daily_attendances
@@ -175,23 +175,23 @@ class HrPayslip(models.Model):
         datetime_after = self.convert_datetime_timezone(datetime_after, employee.tz)
         datetime_to = self.convert_datetime_timezone(datetime_to, employee.tz)
 
-        # daily_attendances = self.env['hr.attendance'].search([
+        # daily_attendances = self.env['daily.attendance'].search([
         #     ('employee_id', '=', employee.id),
-        #     ('check_in', '>=', datetime_before),
-        #     ('check_in', '<=', datetime_from),
-        #     ('check_out', '>=', datetime_to),
-        #     ('check_out', '<=', datetime_after),
+        #     ('punching_time', '>=', datetime_before),
+        #     ('punching_time', '<=', datetime_from),
+        #     ('punching_time', '>=', datetime_to),
+        #     ('punching_time', '<=', datetime_after),
         # ])
 
-        daily_attendances = self.env['hr.attendance'].search([
+        daily_attendances = self.env['daily.attendance'].search([
             ('employee_id', '=', employee.id),
-        ]).filtered(lambda rec: self.convert_datetime_timezone(rec.check_in) >= datetime_before and self.convert_datetime_timezone(rec.check_in) <= datetime_from and self.convert_datetime_timezone(rec.check_out) >= datetime_to and self.convert_datetime_timezone(rec.check_out) <= datetime_after)
+        ]).filtered(lambda rec: (self.convert_datetime_timezone(rec.punching_time) >= datetime_before and self.convert_datetime_timezone(rec.punching_time) <= datetime_from) or (self.convert_datetime_timezone(rec.punching_time) >= datetime_to and self.convert_datetime_timezone(rec.punching_time) <= datetime_after))
 
         _logger.info(f'----------- tototototototo attendance teacher current_date {current_date} -----------')
-        _logger.info(f'----------- tototototototo attendance teacher check_in >= datetime_before {datetime.strftime(datetime_before, DATETIME_FORMAT)} -----------')
-        _logger.info(f'----------- tototototototo attendance teacher check_in <= datetime_from {datetime.strftime(datetime_from, DATETIME_FORMAT)} -----------')
-        _logger.info(f'----------- tototototototo attendance teacher check_out >= datetime_to {datetime.strftime(datetime_to, DATETIME_FORMAT)} -----------')
-        _logger.info(f'----------- tototototototo attendance teacher check_out <= datetime_after {datetime.strftime(datetime_after, DATETIME_FORMAT)} -----------')
+        _logger.info(f'----------- tototototototo attendance teacher punching_time >= datetime_before {datetime.strftime(datetime_before, DATETIME_FORMAT)} -----------')
+        _logger.info(f'----------- tototototototo attendance teacher punching_time <= datetime_from {datetime.strftime(datetime_from, DATETIME_FORMAT)} -----------')
+        _logger.info(f'----------- tototototototo attendance teacher punching_time >= datetime_to {datetime.strftime(datetime_to, DATETIME_FORMAT)} -----------')
+        _logger.info(f'----------- tototototototo attendance teacher punching_time <= datetime_after {datetime.strftime(datetime_after, DATETIME_FORMAT)} -----------')
         _logger.info(f'----------- tototototototo attendance teacher daily_attendances {daily_attendances} -----------')
 
         return daily_attendances
@@ -224,19 +224,28 @@ class HrPayslip(models.Model):
             for employee_timetable in employee_timetables:
                 # Vérification du temps de cours de l'enseignant en biométrie
                 daily_attendances = self.filter_daily_attendance_teacher(employee_timetable.employee_id, employee_timetable.date, employee_timetable.end_time, employee_timetable.start_time)
-                for daily_attendance in daily_attendances:
-                    timetable_hours = employee_timetable.end_time - employee_timetable.start_time
-                    total_timetable_hours += timetable_hours
+                if len(daily_attendances) > 1:
+                    for daily_attendance in daily_attendances:
+                        timetable_hours = employee_timetable.end_time - employee_timetable.start_time
+                        total_timetable_hours += timetable_hours
+                        break
             # if line.employee_id.is_permanent:
-            #     daily_attendances = self.filter_daily_attendance(line.employee_id, date_to, date_from)
-            #     for daily_attendance in daily_attendances:
-            #         worked_hours = daily_attendance.worked_hours
-            #         total_timetable_hours += worked_hours
+            #     pass
         else:
+            # Vérification du temps de l'employé en biométrie
             daily_attendances = self.filter_daily_attendance(line.employee_id, date_to, date_from)
+            worked_hours = None
             for daily_attendance in daily_attendances:
-                worked_hours = daily_attendance.worked_hours
-                total_timetable_hours += worked_hours
+                if not worked_hours:
+                    worked_hours = daily_attendance.punching_time
+                else:
+                    if worked_hours >= daily_attendance.punching_time:
+                        worked_hours = worked_hours - daily_attendance.punching_time
+                    else:
+                        worked_hours = daily_attendance.punching_time - worked_hours
+                    worked_hours = worked_hours.total_seconds() / 3600.0
+                    total_timetable_hours += worked_hours
+                    worked_hours = None
         line.total_hours = total_timetable_hours
 
     @api.model
@@ -259,40 +268,42 @@ class HrPayslip(models.Model):
             for employee_timetable in employee_timetables:
                 # Vérification du temps de cours de l'enseignant en biométrie
                 daily_attendances = self.filter_daily_attendance_teacher(employee_timetable.employee_id, employee_timetable.date, employee_timetable.end_time, employee_timetable.start_time)
-                for daily_attendance in daily_attendances:
-                    timetable_hours = employee_timetable.end_time - employee_timetable.start_time
+                if len(daily_attendances) > 1:
+                    for daily_attendance in daily_attendances:
+                        timetable_hours = employee_timetable.end_time - employee_timetable.start_time
+                        self.env['hr.payslip.worked_days'].create({
+                            'name': 'Journée du {} {}, {}'.format(CURRENT_WEEKDAY[employee_timetable.date.weekday()], datetime.strftime(daily_attendance.punching_time, DATETIME_FORMAT_FR), employee_timetable.subject_id.name),
+                            'payslip_id': line.id,
+                            'code': line.code,
+                            'number_of_days': 1,
+                            'number_of_hours': timetable_hours,
+                            'contract_id': line.contract_id.id,
+                        })
+                        break
+            # if line.employee_id.is_permanent:
+            #     pass
+        else:
+            # Vérification du temps de l'employé en biométrie
+            daily_attendances = self.filter_daily_attendance(line.employee_id, date_to, date_from)
+            worked_hours = None
+            for daily_attendance in daily_attendances:
+                if not worked_hours:
+                    worked_hours = daily_attendance.punching_time
+                else:
+                    if worked_hours >= daily_attendance.punching_time:
+                        worked_hours = worked_hours - daily_attendance.punching_time
+                    else:
+                        worked_hours = daily_attendance.punching_time - worked_hours
+                    worked_hours = worked_hours.total_seconds() / 3600.0
                     self.env['hr.payslip.worked_days'].create({
-                        'name': 'Journée du {} {}, {}'.format(CURRENT_WEEKDAY[employee_timetable.date.weekday()], datetime.strftime(daily_attendance.check_in, DATETIME_FORMAT_FR), employee_timetable.subject_id.name),
+                        'name': 'Journée du {} {}'.format(CURRENT_WEEKDAY[daily_attendance.punching_time.weekday()], datetime.strftime(daily_attendance.punching_time, DATETIME_FORMAT_FR)),
                         'payslip_id': line.id,
                         'code': line.code,
                         'number_of_days': 1,
-                        'number_of_hours': timetable_hours,
+                        'number_of_hours': worked_hours,
                         'contract_id': line.contract_id.id,
                     })
-            # if line.employee_id.is_permanent:
-            #     daily_attendances = self.filter_daily_attendance(line.employee_id, date_to, date_from)
-            #     for daily_attendance in daily_attendances:
-            #         worked_hours = daily_attendance.worked_hours
-            #         self.env['hr.payslip.worked_days'].create({
-            #             'name': 'Journée du {} {}'.format(CURRENT_WEEKDAY[daily_attendance.check_in.weekday()], datetime.strftime(daily_attendance.check_in, DATETIME_FORMAT_FR)),
-            #             'payslip_id': line.id,
-            #             'code': line.code,
-            #             'number_of_days': 1,
-            #             'number_of_hours': worked_hours,
-            #             'contract_id': line.contract_id.id,
-            #         })
-        else:
-            daily_attendances = self.filter_daily_attendance(line.employee_id, date_to, date_from)
-            for daily_attendance in daily_attendances:
-                worked_hours = daily_attendance.worked_hours
-                self.env['hr.payslip.worked_days'].create({
-                    'name': 'Journée du {} {}'.format(CURRENT_WEEKDAY[daily_attendance.check_in.weekday()], datetime.strftime(daily_attendance.check_in, DATETIME_FORMAT_FR)),
-                    'payslip_id': line.id,
-                    'code': line.code,
-                    'number_of_days': 1,
-                    'number_of_hours': worked_hours,
-                    'contract_id': line.contract_id.id,
-                })
+                    worked_hours = None
 
         return line
 
