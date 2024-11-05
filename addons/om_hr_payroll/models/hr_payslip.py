@@ -108,8 +108,8 @@ class HrPayslip(models.Model):
         end_date = datetime.strftime(end_date, DATE_FORMAT)
         start_date = datetime.strftime(start_date, DATE_FORMAT)
 
-        end_time = '22:00:00'
-        start_time = '08:00:00'
+        end_time = '23:00:00'
+        start_time = '06:00:00'
 
         datetime_to = datetime.strptime(f'{end_date} {end_time}', DATETIME_FORMAT)
         datetime_from = datetime.strptime(f'{start_date} {start_time}', DATETIME_FORMAT)
@@ -141,6 +141,7 @@ class HrPayslip(models.Model):
         ], order='punching_time asc')
 
         for daily_attendance in daily_attendances:
+            _logger.info(f'----------- tototototototo daily_attendance id {daily_attendance.id} -----------')
             _logger.info(f'----------- tototototototo daily_attendance punching_time {daily_attendance.punching_time} -----------')
 
         daily_attendances = self.env['daily.attendance'].search([
@@ -209,6 +210,7 @@ class HrPayslip(models.Model):
         ], order='punching_time asc')
 
         for daily_attendance in daily_attendances:
+            _logger.info(f'----------- tototototototo daily_attendance id {daily_attendance.id} -----------')
             _logger.info(f'----------- tototototototo daily_attendance punching_time {daily_attendance.punching_time} -----------')
 
         daily_attendances = self.env['daily.attendance'].search([
@@ -228,12 +230,11 @@ class HrPayslip(models.Model):
         date_to = line.date_to
         date_from = line.date_from
 
-        # Vérification de la validité de la période
-        if date_from > date_to:
-            raise ValidationError(_('Invalide période'))
-
         if date_to > date.today():
             date_to = date.today()
+
+        if date_from > date_to:
+            date_from = date_to
 
         _logger.info(f'----------- tototototototo employee_id name {line.employee_id.name} -----------')
         _logger.info(f'----------- tototototototo employee_id is_teacher {line.employee_id.is_teacher} -----------')
@@ -278,6 +279,12 @@ class HrPayslip(models.Model):
         line = super(HrPayslip, self).create(vals)
         date_to = line.date_to
         date_from = line.date_from
+
+        if date_to > date.today():
+            date_to = date.today()
+
+        if date_from > date_to:
+            date_from = date_to
 
         _logger.info(f'----------- tototototototo employee_id name {line.employee_id.name} -----------')
         _logger.info(f'----------- tototototototo employee_id is_teacher {line.employee_id.is_teacher} -----------')
