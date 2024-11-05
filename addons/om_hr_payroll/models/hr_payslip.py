@@ -83,13 +83,11 @@ class HrPayslip(models.Model):
     code = fields.Char(help="The code that can be used in the salary rules")
 
     def convert_datetime_timezone(self, dt, tz=None):
-        # if tz and tz in pytz.all_timezones:
-        #     old_tz = pytz.timezone(tz)
-        # else:
-        #     old_tz = pytz.timezone(
-        #         self.env.user.partner_id.tz or 'GMT')
-        old_tz = pytz.timezone(
-            self.env.user.partner_id.tz or 'GMT')
+        if tz and tz in pytz.all_timezones:
+            old_tz = pytz.timezone(tz)
+        else:
+            tz = self.env.user.partner_id.tz or 'GMT'
+            old_tz = pytz.timezone(tz)
         new_tz = pytz.utc
         local_dt = old_tz.localize(dt)
         dt = local_dt.astimezone(new_tz)
@@ -137,7 +135,7 @@ class HrPayslip(models.Model):
 
         daily_attendances = self.env['daily.attendance'].search([
             ('employee_id', '=', employee.id),
-        ], order='punching_time asc').filtered(lambda rec: rec.punching_time >= datetime_before and rec.punching_time <= datetime_after)
+        ], order='punching_time asc').filtered(lambda rec: self.convert_datetime_timezone(rec.punching_time) >= datetime_before and self.convert_datetime_timezone(rec.punching_time) <= datetime_after)
 
         _logger.info(f'----------- tototototototo punching_time >= datetime_before {datetime.strftime(datetime_before, DATETIME_FORMAT)} -----------')
         _logger.info(f'----------- tototototototo punching_time <= datetime_from {datetime.strftime(datetime_from, DATETIME_FORMAT)} -----------')
@@ -205,7 +203,7 @@ class HrPayslip(models.Model):
 
         daily_attendances = self.env['daily.attendance'].search([
             ('employee_id', '=', employee.id),
-        ], order='punching_time asc').filtered(lambda rec: (rec.punching_time >= datetime_before and rec.punching_time <= datetime_from) or (rec.punching_time >= datetime_to and rec.punching_time <= datetime_after))
+        ], order='punching_time asc').filtered(lambda rec: (self.convert_datetime_timezone(rec.punching_time) >= datetime_before and self.convert_datetime_timezone(rec.punching_time) <= datetime_from) or (self.convert_datetime_timezone(rec.punching_time) >= datetime_to and self.convert_datetime_timezone(rec.punching_time) <= datetime_after))
 
         _logger.info(f'----------- tototototototo teacher current_date {current_date} -----------')
         _logger.info(f'----------- tototototototo teacher punching_time >= datetime_before {datetime.strftime(datetime_before, DATETIME_FORMAT)} -----------')
