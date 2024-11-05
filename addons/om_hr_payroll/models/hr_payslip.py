@@ -323,19 +323,22 @@ class HrPayslip(models.Model):
             # Vérification du temps de l'employé en biométrie
             daily_attendances = self.filter_daily_attendance(line.employee_id, date_to, date_from)
             worked_hours = {}
+            punching_time = None
             for daily_attendance in daily_attendances:
                 punching_day = datetime.strftime(daily_attendance.punching_time, DATE_FORMAT)
 
                 if punching_day not in worked_hours.keys():
                     worked_hours[punching_day] = None
+                    punching_time = None
 
                 if not worked_hours[punching_day]:
                     worked_hours[punching_day] = daily_attendance.punching_time
+                    punching_time = daily_attendance.punching_time
                 else:
                     worked_hours[punching_day] = daily_attendance.punching_time - worked_hours[punching_day]
                     worked_hours[punching_day] = worked_hours[punching_day].total_seconds() / 3600.0
                     self.env['hr.payslip.worked_days'].create({
-                        'name': 'Journée du {} {}'.format(CURRENT_WEEKDAY[daily_attendance.punching_time.weekday()], datetime.strftime(self.convert_datetime_from_utc(daily_attendance.punching_time), DATETIME_FORMAT_FR)),
+                        'name': 'Journée du {} {}'.format(CURRENT_WEEKDAY[punching_time.weekday()], datetime.strftime(self.convert_datetime_from_utc(punching_time), DATETIME_FORMAT_FR)),
                         'payslip_id': line.id,
                         'code': line.code,
                         'number_of_days': 1,
@@ -343,6 +346,7 @@ class HrPayslip(models.Model):
                         'contract_id': line.contract_id.id,
                     })
                     worked_hours[punching_day] = None
+                    punching_time = None
 
         return line
 
