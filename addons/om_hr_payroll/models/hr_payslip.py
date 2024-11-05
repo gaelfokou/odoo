@@ -82,7 +82,17 @@ class HrPayslip(models.Model):
     total_hours = fields.Float(compute='_compute_total_hours', string='Total hours')
     code = fields.Char(help="The code that can be used in the salary rules")
 
-    def convert_datetime_timezone(self, dt, tz=None):
+    def convert_datetime_from_utc(self, dt, tz=None):
+        if tz and tz in pytz.all_timezones:
+            new_tz = pytz.timezone(tz)
+        else:
+            new_tz = pytz.timezone('Africa/Douala')
+        old_tz = pytz.utc
+        local_dt = old_tz.localize(dt)
+        dt = local_dt.astimezone(new_tz)
+        return dt
+
+    def convert_datetime_to_utc(self, dt, tz=None):
         if tz and tz in pytz.all_timezones:
             old_tz = pytz.timezone(tz)
         else:
@@ -115,10 +125,10 @@ class HrPayslip(models.Model):
         # datetime_after = datetime_after - timedelta(hours=1)
         # datetime_to = datetime_to - timedelta(hours=1)
 
-        datetime_before = self.convert_datetime_timezone(datetime_before, employee.tz)
-        datetime_from = self.convert_datetime_timezone(datetime_from, employee.tz)
-        datetime_after = self.convert_datetime_timezone(datetime_after, employee.tz)
-        datetime_to = self.convert_datetime_timezone(datetime_to, employee.tz)
+        datetime_before = self.convert_datetime_to_utc(datetime_before, employee.tz)
+        datetime_from = self.convert_datetime_to_utc(datetime_from, employee.tz)
+        datetime_after = self.convert_datetime_to_utc(datetime_after, employee.tz)
+        datetime_to = self.convert_datetime_to_utc(datetime_to, employee.tz)
 
         # daily_attendances = self.env['daily.attendance'].search([
         #     ('employee_id', '=', employee.id),
@@ -135,7 +145,7 @@ class HrPayslip(models.Model):
 
         daily_attendances = self.env['daily.attendance'].search([
             ('employee_id', '=', employee.id),
-        ], order='punching_time asc').filtered(lambda rec: self.convert_datetime_timezone(rec.punching_time) >= datetime_before and self.convert_datetime_timezone(rec.punching_time) <= datetime_after)
+        ], order='punching_time asc').filtered(lambda rec: self.convert_datetime_to_utc(rec.punching_time) >= datetime_before and self.convert_datetime_to_utc(rec.punching_time) <= datetime_after)
 
         _logger.info(f'----------- tototototototo punching_time >= datetime_before {datetime.strftime(datetime_before, DATETIME_FORMAT)} -----------')
         _logger.info(f'----------- tototototototo punching_time <= datetime_from {datetime.strftime(datetime_from, DATETIME_FORMAT)} -----------')
@@ -181,10 +191,10 @@ class HrPayslip(models.Model):
         # datetime_after = datetime_after - timedelta(hours=1)
         # datetime_to = datetime_to - timedelta(hours=1)
 
-        datetime_before = self.convert_datetime_timezone(datetime_before, employee.tz)
-        datetime_from = self.convert_datetime_timezone(datetime_from, employee.tz)
-        datetime_after = self.convert_datetime_timezone(datetime_after, employee.tz)
-        datetime_to = self.convert_datetime_timezone(datetime_to, employee.tz)
+        datetime_before = self.convert_datetime_to_utc(datetime_before, employee.tz)
+        datetime_from = self.convert_datetime_to_utc(datetime_from, employee.tz)
+        datetime_after = self.convert_datetime_to_utc(datetime_after, employee.tz)
+        datetime_to = self.convert_datetime_to_utc(datetime_to, employee.tz)
 
         # daily_attendances = self.env['daily.attendance'].search([
         #     ('employee_id', '=', employee.id),
@@ -203,7 +213,7 @@ class HrPayslip(models.Model):
 
         daily_attendances = self.env['daily.attendance'].search([
             ('employee_id', '=', employee.id),
-        ], order='punching_time asc').filtered(lambda rec: (self.convert_datetime_timezone(rec.punching_time) >= datetime_before and self.convert_datetime_timezone(rec.punching_time) <= datetime_from) or (self.convert_datetime_timezone(rec.punching_time) >= datetime_to and self.convert_datetime_timezone(rec.punching_time) <= datetime_after))
+        ], order='punching_time asc').filtered(lambda rec: (self.convert_datetime_to_utc(rec.punching_time) >= datetime_before and self.convert_datetime_to_utc(rec.punching_time) <= datetime_from) or (self.convert_datetime_to_utc(rec.punching_time) >= datetime_to and self.convert_datetime_to_utc(rec.punching_time) <= datetime_after))
 
         _logger.info(f'----------- tototototototo teacher current_date {current_date} -----------')
         _logger.info(f'----------- tototototototo teacher punching_time >= datetime_before {datetime.strftime(datetime_before, DATETIME_FORMAT)} -----------')
@@ -287,7 +297,7 @@ class HrPayslip(models.Model):
                     for daily_attendance in daily_attendances:
                         timetable_hours = employee_timetable.end_time - employee_timetable.start_time
                         self.env['hr.payslip.worked_days'].create({
-                            'name': 'Journée du {} {}, {}'.format(CURRENT_WEEKDAY[employee_timetable.date.weekday()], datetime.strftime(daily_attendance.punching_time, DATETIME_FORMAT_FR), employee_timetable.subject_id.name),
+                            'name': 'Journée du {} {}, {}'.format(CURRENT_WEEKDAY[employee_timetable.date.weekday()], datetime.strftime(self.convert_datetime_from_utc(daily_attendance.punching_time), DATETIME_FORMAT_FR), employee_timetable.subject_id.name),
                             'payslip_id': line.id,
                             'code': line.code,
                             'number_of_days': 1,
@@ -308,7 +318,7 @@ class HrPayslip(models.Model):
                     worked_hours = daily_attendance.punching_time - worked_hours
                     worked_hours = worked_hours.total_seconds() / 3600.0
                     self.env['hr.payslip.worked_days'].create({
-                        'name': 'Journée du {} {}'.format(CURRENT_WEEKDAY[daily_attendance.punching_time.weekday()], datetime.strftime(daily_attendance.punching_time, DATETIME_FORMAT_FR)),
+                        'name': 'Journée du {} {}'.format(CURRENT_WEEKDAY[daily_attendance.punching_time.weekday()], datetime.strftime(self.convert_datetime_from_utc(daily_attendance.punching_time), DATETIME_FORMAT_FR)),
                         'payslip_id': line.id,
                         'code': line.code,
                         'number_of_days': 1,
