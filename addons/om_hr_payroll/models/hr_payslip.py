@@ -83,10 +83,16 @@ class HrPayslip(models.Model):
     code = fields.Char(help="The code that can be used in the salary rules")
 
     def convert_datetime_timezone(self, dt, tz='Africa/Douala'):
-        if tz in pytz.all_timezones:
-            old_tz = pytz.timezone(tz)
-            new_tz = pytz.timezone('Africa/Douala')
-            dt = old_tz.localize(dt).astimezone(new_tz)
+        # if tz in pytz.all_timezones:
+        #     old_tz = pytz.timezone(tz)
+        #     new_tz = pytz.timezone('Africa/Douala')
+        #     local_dt = old_tz.localize(dt)
+        #     dt = local_dt.astimezone(new_tz)
+        old_tz = pytz.timezone(
+            self.env.user.partner_id.tz or 'GMT')
+        new_tz = pytz.utc
+        local_dt = old_tz.localize(dt)
+        dt = local_dt.astimezone(new_tz)
         return dt
 
     def filter_daily_attendance(self, employee, end_date, start_date):
