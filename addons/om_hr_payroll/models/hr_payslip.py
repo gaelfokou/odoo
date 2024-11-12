@@ -249,6 +249,7 @@ class HrPayslip(models.Model):
                 ('employee_id', '=', line.employee_id.id),
                 ('date', '<=', date_to),
                 ('date', '>=', date_from),
+                ('status', '=', '1'),
             ])
             for employee_timetable in employee_timetables:
                 # Vérification du temps de cours de l'enseignant en biométrie
@@ -279,6 +280,12 @@ class HrPayslip(models.Model):
                     worked_hours[punching_day] = None
         line.total_hours = total_timetable_hours
 
+    def cron_download_attendance(self):
+        _logger.info(f'----------- tititititititi timetable_presence id {0} -----------')
+        machines = self.env['biometric.device.details'].search([])
+        for machine in machines:
+            machine.action_download_attendance()
+
     @api.model
     def create(self, vals):
         line = super(HrPayslip, self).create(vals)
@@ -301,6 +308,7 @@ class HrPayslip(models.Model):
                 ('employee_id', '=', line.employee_id.id),
                 ('date', '<=', date_to),
                 ('date', '>=', date_from),
+                ('status', '=', '1'),
             ])
             for employee_timetable in employee_timetables:
                 # Vérification du temps de cours de l'enseignant en biométrie
@@ -349,6 +357,28 @@ class HrPayslip(models.Model):
                     punching_time = None
 
         return line
+
+    @api.model
+    def cron_timetable_presence(self):
+        self.cron_download_attendance()
+
+        date_to = date.today()
+
+        # Recherche des emplois du temps de l'enseignant pour une période donnée
+        employee_timetables = self.env['siantou.ems.timetable.timetable'].search([
+            ('date', '<=', date_to),
+            ('status', '=', '0'),
+        ])
+        for employee_timetable in employee_timetables:
+            if employee_timetable.employee_id.is_teacher:
+                # Vérification du temps de cours de l'enseignant en biométrie
+                daily_attendances = self.filter_daily_attendance_teacher(employee_timetable.employee_id, employee_timetable.date, employee_timetable.end_time, employee_timetable.start_time)
+                if len(daily_attendances) > 1:
+                    employee_timetable.write({'status': '1'})
+                else:
+                    employee_timetable.write({'status': '2'})
+                # if employee_timetable.employee_id.is_permanent:
+                #     pass
 
     @api.depends('employee_id', 'date_to', 'date_from')
     def _compute_total_hours(self):
