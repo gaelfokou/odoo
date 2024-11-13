@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="enrollment_history_tree_view" model="ir.ui.view">
+        <field name="name">enrollment.history.tree.view</field>
+        <field name="model">oe.school.student.enrollment</field>
+        <field name="arch" type="xml">
+            <tree string="Etudiants">
+                <field name="date_preins" widget="datetime"/>
+                <field name="matricule"/>
+                <field name="code_enrol"/>
+                <field name="name"/>
+                <field name="cycle_id"/>
+                <field name="field_of_study_id"/>
+                <field name="type_cour"/>
+
+                <field 
+                    name="status_univ" 
+                    widget="badge"
+                    decoration-success="status_univ == 'new'"
+                    decoration-warning="status_univ == 'red'"
+                />
+                <field 
+                    name="status" 
+                    widget="badge" 
+                    decoration-primary="status == 'broui'"
+                    decoration-success="status == 'transfer'"
+                    decoration-info="status == 'inscrip'"
+                />
+
+            </tree>
+        </field>
+    </record>
+
+    <record id="enrollment_history_form_view" model="ir.ui.view">
+		<field name="name">oe.school.student.enrollment.form.view</field>
+		<field name="model">oe.school.student.enrollment</field>
+		<field name="arch" type="xml">
+			<form string="Etudiant">
+                <header>
+
+                    <button invisible="status in ['inscrip','transfer']" 
+                        name="action_preinscrip_wizard"
+                        class="btn btn-primary" 
+                        type="object" 
+                        string="Inscrire"/>
+
+                    <button invisible="status in ['broui', 'transfer']" 
+                        name="action_admission_enrollment_wizard" 
+                        class="btn btn-success" 
+                        type="object" 
+                        string="Transférer"/>
+                    
+                    <!-- <button  
+                        name="compute_rejected" 
+                        class="btn btn-danager" 
+                        type="object" 
+                        string="Rejeter cette candidature"/> -->
+                    
+                    <field name="status" widget="statusbar"/>
+                </header>
+                <sheet>
+
+                    <widget name="web_ribbon" title="Transférer" 
+                        invisible="status in ['broui', 'inscrip']"/>
+
+                    <div class="oe_title">
+                        <label for="date_preins" string="Date de préinscription" />
+                        <h1><field name="date_preins" readonly="1"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field 
+                                name="status" 
+                            />
+                        </group>
+                        <group>
+                            <field name="code_enrol" readonly="1"/>
+                        </group>
+                    </group>
+                    <group name="perso" string="Informations générales">
+                        <group>
+                            <field name="name" class="field-with-border"/>
+                        </group>
+                        <group>
+                            <field name="status_univ"/>
+                        </group>
+                        <group>
+                            <field name="date_naissance"/>
+                        </group>
+                        <group>
+                            <field name="lieu_naissance"/>
+                        </group>
+                        <group>
+                            <field name="sexe"  widget="radio"/>
+                        </group>
+                        <group>
+                            <field name="situat_matri"  widget="radio"/>
+                        </group>
+                        <group>
+                            <field name="nationalite"/>
+                            <!-- <field invisible="nationalite!='autre'" name="autre"/> -->
+                        </group>
+                        <group>
+                            <field name="region_id"/>
+                        </group>
+                        <group>
+                            <field name="city_id"/>
+                        </group>
+                        <group>
+                            <field name="quarter_id"/>
+                        </group>
+                        <group>
+                            <field name="lieu_residence"/>
+                        </group>
+                        <group>
+                            <field name="email" widget="email"/>
+                        </group>
+                        <group>
+                            <field name="num_tel" widget="phone"/>
+                        </group>
+                    </group>
+                    <group  name="academique" string="Informations académiques">
+                        <group>
+                            <field name="matricule"/>
+                        </group>
+                        <group>
+                            <field name="cycle_id"/>
+                        </group>
+                        <group>
+                            <field name="field_of_study_id"/>
+                        </group>
+                        <group>
+                            <field name="type_cour" widget="radio"/>
+                        </group>
+                        
+                        <group>
+                            <field name="nbre_matiere"/>
+                        </group>
+                        
+                        <group>
+                            <field name="dipl_req_ids" widget="many2many_tags"/>
+                        </group>
+                        <group>
+                            <field name="session_lieu_obt"/>
+                        </group>
+                        <group>
+                            <field name="dern_etab_freq"/>
+                        </group>
+                        <group>
+                            <field name="annee_acad"/>
+                        </group>
+                        <group>
+                            <field name="level_id"/>
+                        </group>
+                    </group>
+                    <group name="tuteur" string="Informations sur la personne à joindre en cas d'urgence">
+                        <group>
+                            <field name="full_name_tutor"/>
+                        </group>
+                        <group>
+                            <field name="num_tel_tutor"  widget="phone"/>
+                        </group>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="message_ids"/>
+                    <field name="activity_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="student_enrollment_search" model="ir.ui.view">
+        <field name="name">student_enrollment.search</field>
+        <field name="model">oe.school.student.enrollment</field>
+        <field name="arch" type="xml">
+            <search string="Recherche d'un candidat">
+                <field name="matricule"/>
+                <field name="code_enrol"/>
+                <field name="name"/>
+                <field name="type_cour"/>
+                <field name="status_univ"/>
+
+                <field name="status"/>
+
+            </search>
+        </field>
+    </record>
+    
+    <record model="ir.actions.act_window" id="action_enrollment_history">
+        <field name="name">Préinscriptions</field>
+        <field name="res_model">oe.school.student.enrollment</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Créer une nouvelle candidature.
+            </p>
+        </field>
+    </record>
+
+    <!-- <menuitem name="Préinscription" id="menu_siantou_ems_core_students_preinscription" 
+            sequence="1"
+            parent="menu_siantou_ems_core_students" 
+            action="action_enrollment_history"/> -->
+
+    <menuitem
+            id="menu_siantou_ems_core_students_preinscription"
+            name="Candidatures"
+            parent="menu_siantou_ems_core_students"
+            action="action_enrollment_history"
+            sequence="1"
+            groups="group_school_user"/>
+    
+</odoo>

@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="admis_history_tree_view" model="ir.ui.view">
+        <field name="name">studnt.tree.view</field>
+        <field name="model">oe.school.student</field>
+        <field name="arch" type="xml">
+            <tree string="Etudiants">
+                <field name="matricule"/>
+                <field name="name"/>
+                <field name="cycle_id"/>
+                <field name="field_of_study_id"/>
+                <field name="type_cour"/>
+                <field 
+                    name="status_univ" 
+                    widget="badge"
+                    decoration-success="status_univ == 'new'"
+                    decoration-warning="status_univ == 'red'"
+                />
+            </tree>
+        </field>
+    </record>
+
+    <record id="admis_history_form_view" model="ir.ui.view">
+		<field name="name">oe.school.student.form.view</field>
+		<field name="model">oe.school.student</field>
+		<field name="arch" type="xml">
+			<form string="Etudiant">
+                <header>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name" string="Nom(s) et prénom(s)" />
+                        <h1><field name="name"/></h1>
+                    </div>
+                    <group name="perso" string="Informations générales">
+                        <group>
+                            <field 
+                                name="status_univ"
+                            />
+                        </group>
+                        <group>
+                            <field name="annee_acad_current"/>
+                        </group>
+                        <group>
+                            <field name="date_naissance"/>
+                        </group>
+                        <group>
+                            <field name="lieu_naissance"/>
+                        </group>
+                        <group>
+                            <field name="sexe"  widget="radio"/>
+                        </group>
+                        <group>
+                            <field name="situat_matri"  widget="radio"/>
+                        </group>
+                        <group>
+                            <field name="nationalite"/>
+                            <!-- <field invisible="nationalite!='autre'" name="autre"/> -->
+                        </group>
+                        <group>
+
+                            <field name="region_id"/>
+                        </group>
+                        <group>
+                            <field name="city_id"/>
+                        </group>
+                        <group>
+                            <field name="quarter_id"/>
+                        </group>
+                        <group>
+
+                            <field name="lieu_residence"/>
+                        </group>
+                        <group>
+                            <field name="email" widget="email"/>
+                        </group>
+                        <group>
+                            <field name="num_tel" widget="phone"/>
+                        </group>
+                    </group>
+                    <group  name="academique" string="Informations académiques">
+                        <group>
+                            <field name="matricule"/>
+                        </group>
+                        <group>
+                            <field name="cycle_id"/>
+                        </group>
+
+                        <group>
+                            <field name="field_of_study_id"/>
+                        </group>
+                        <group>
+                            <field name="type_cour" widget="radio"/>
+                        </group>
+                        
+                        <!-- <group>
+                            <field name="dipl_req_ids" widget="many2many_tags"/>
+                        </group> -->
+                        <group>
+                            <field name="batch_id"/>
+                        </group>
+                        <group>
+                            <field name="level_id"/>
+                        </group>
+                    </group>
+                    <!-- <group name="tuteur" string="Informations sur la personne à joindre en cas d'urgence">
+                        <group>
+                            <field name="full_name_tutor"/>
+                        </group>
+                    </group> -->
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="message_ids"/>
+                    <field name="activity_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="student_search" model="ir.ui.view">
+        <field name="name">student.search</field>
+        <field name="model">oe.school.student</field>
+        <field name="arch" type="xml">
+            <search string="Recherche d'un etudiant">
+                <field name="matricule"/>
+                <field name="name"/>
+                <field name="type_cour"/>
+                <field name="status_univ"/>
+            </search>
+        </field>
+    </record>
+    
+    <record model="ir.actions.act_window" id="action_admis_history">
+        <field name="name">Etudiants</field>
+        <field name="res_model">oe.school.student</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Créer un nouveau étudiant.
+            </p>
+        </field>
+    </record>
+
+
+    <menuitem
+            id="menu_siantou_ems_core_students_student"
+            name="Etudiants"
+            parent="menu_siantou_ems_core_students"
+            action="action_admis_history"
+            sequence="2"
+            groups="group_school_user"/>
+
+</odoo>

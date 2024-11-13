@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_student_batch_form" model="ir.ui.view">
+        <field name="name">student.batch.form</field>
+        <field name="model">siantou.ems.core.student.batch</field>
+        <field name="arch" type="xml">
+            <form string="Lot d'étudiants">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="school_id"/>
+                        <field name="field_of_study_id"/>
+                        <field name="level_id"/>
+                    </group>
+                    <notebook>
+                        <page name="student_ids" string="Etudiants">
+                            <field name="student_ids" readonly="1"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_student_batch_tree" model="ir.ui.view">
+        <field name="name">student.batch.tree</field>
+        <field name="model">siantou.ems.core.student.batch</field>
+        <field name="arch" type="xml">
+            <tree string="Lots d'étudiants">
+                <field name="name"/>
+                <field name="school_id"/>
+                <field name="field_of_study_id"/>
+                <field name="level_id"/>
+                <field name="current_size"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_student_batch" model="ir.actions.act_window">
+        <field name="name">Lots d'étudiants</field>
+        <field name="res_model">siantou.ems.core.student.batch</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem
+            id="menu_siantou_ems_core_students_batch"
+            name="Lots d'étudiant"
+            parent="menu_siantou_ems_core_students"
+            action="action_student_batch"/>
+</odoo>

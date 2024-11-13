@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+	<data>
+		<!-- Affichage en vue liste -->
+		<record
+                id="city_tree_view"
+                model="ir.ui.view">
+            <field name="name">city.tree.view</field>
+			<field name="model">siantou.ems.core.city</field>
+			<field name="arch" type="xml">
+				<tree string="Villes" editable="bottom" edit="1">
+                    <field name="name"/>
+                    <field name="region_id"/>
+				</tree>
+			</field>
+		</record>
+
+        <!-- Affichage en vue formulaire -->
+		<record
+                id="city_form_view"
+                model="ir.ui.view">
+			<field name="name">city.form.view</field>
+			<field name="model">siantou.ems.core.city</field>
+			<field name="arch" type="xml">
+				<form string="Villes">
+					<sheet>
+                        <group>
+                            <field name="name"/>
+                        </group>
+                        <group>
+                            <field name="region_id"/>
+                        </group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+        <!-- Affichage en vue recherche -->
+         <record
+                 id="city_search_view"
+                 model="ir.ui.view">
+            <field name="name">city.search.view</field>
+            <field name="model">siantou.ems.core.city</field>
+            <field name="arch" type="xml">
+                <search string="Villes">
+                    <field name="name" string="Nom du Villes"/>
+                    <field name="region_id" string="Région"/>
+                    <separator/>
+                </search>
+             </field>
+        </record>
+
+        <!-- Action pour le menu d'affichage des Villes -->
+        <record
+                id="action_show_city"
+                model="ir.actions.act_window">
+            <field name="name">Villes</field>
+            <field name="res_model">siantou.ems.core.city</field>
+            <field name="search_view_id" ref="city_search_view"/>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Créer une nouvelle Villes.
+                </p>
+            </field>
+        </record>
+
+        <!-- Menu pour les Villes -->
+        <menuitem
+            id="menu_siantou_ems_core_config_city"
+            name="Villes"
+            parent="menu_siantou_ems_core_config"
+            action="action_show_city"
+            sequence="11"
+        />
+
+	</data>
+</odoo>

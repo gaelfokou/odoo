@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_school_form" model="ir.ui.view">
+        <field name="name">school.view.form</field>
+        <field name="model">siantou.ems.core.school</field>
+        <field name="arch" type="xml">
+            <form string="Ecole">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="code"/>
+                        </group>
+                        <group>
+                            <field name="name"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="max_students_per_batch"/>
+                    </group>
+                    <notebook>
+                        <page name="field_of_study_ids" string="Filières">
+                            <field name="field_of_study_ids"/>
+                        </page>
+                        <page name="student_ids" string="Etudiants">
+                            <field name="student_ids"/>
+                        </page>
+                        <page name="batch_ids" string="Lots">
+                            <field name="batch_ids"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_school_tree" model="ir.ui.view">
+        <field name="name">school.view.tree</field>
+        <field name="model">siantou.ems.core.school</field>
+        <field name="arch" type="xml">
+            <tree string="Ecoles">
+                <field name="code"/>
+                <field name="name"/>
+                <field name="max_students_per_batch"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_show_school" model="ir.actions.act_window">
+        <field name="name">Ecoles</field>
+        <field name="res_model">siantou.ems.core.school</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem
+            id="menu_siantou_ems_core_config_school"
+            name="Ecoles"
+            parent="menu_siantou_ems_core_config"
+            action="action_show_school"
+            sequence="2"/>
+</odoo>

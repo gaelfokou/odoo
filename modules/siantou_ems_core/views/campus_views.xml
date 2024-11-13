@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+	<data>
+		<!-- Affichage en vue liste -->
+		<record
+                id="campus_tree_view"
+                model="ir.ui.view">
+            <field name="name">campus.tree.view</field>
+			<field name="model">siantou.ems.core.campus</field>
+			<field name="arch" type="xml">
+				<tree string="Campus" editable="bottom" edit="1">
+                    <field name="code"/>
+					<field name="name"/>
+                    <field name="company_id"/>
+				</tree>
+			</field>
+		</record>
+
+        <!-- Affichage en vue formulaire -->
+		<record
+                id="campus_form_view"
+                model="ir.ui.view">
+			<field name="name">campus.form.view</field>
+			<field name="model">siantou.ems.core.campus</field>
+			<field name="arch" type="xml">
+				<form string="Bâtiment">
+					<sheet>
+                        <group>
+                            <field name="code"/>
+                            <field name="name"/>
+                            <field name="company_id"/>
+                        </group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+        <!-- Action pour le menu d'affichage des programmes -->
+        <record
+                id="action_show_campus"
+                model="ir.actions.act_window">
+            <field name="name">Campus</field>
+            <field name="res_model">siantou.ems.core.campus</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Créer un nouveau campus.
+                </p>
+            </field>
+        </record>
+
+        <!-- Menu pour la gestion des filières -->
+        <menuitem
+                id="menu_siantou_ems_core_campus"
+                name="Campus"
+                parent="menu_siantou_ems_core_config"
+                action="action_show_campus"
+                groups="group_school_manager"
+                sequence="4"/>
+	</data>
+</odoo>

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+	<data>
+		<!-- Affichage en vue liste -->
+		<record
+                id="country_tree_view"
+                model="ir.ui.view">
+            <field name="name">country.tree.view</field>
+			<field name="model">siantou.ems.core.country</field>
+			<field name="arch" type="xml">
+				<tree string="Pays" editable="bottom" edit="1">
+                    <field name="code"/>
+                    <field name="name"/>
+				</tree>
+			</field>
+		</record>
+
+        <!-- Affichage en vue formulaire -->
+		<record
+                id="country_form_view"
+                model="ir.ui.view">
+			<field name="name">country.form.view</field>
+			<field name="model">siantou.ems.core.country</field>
+			<field name="arch" type="xml">
+				<form string="Pays">
+					<sheet>
+                        <group>
+                            <field name="code"/>
+                            <field name="name"/>
+                        </group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+        <!-- Affichage en vue recherche -->
+         <record
+                 id="country_search_view"
+                 model="ir.ui.view">
+            <field name="name">country.search.view</field>
+            <field name="model">siantou.ems.core.country</field>
+            <field name="arch" type="xml">
+                <search string="Pays">
+                    <field name="name" string="Nom du pays"/>
+                    <separator/>
+                </search>
+             </field>
+        </record>
+
+        <!-- Action pour le menu d'affichage des pays -->
+        <record
+                id="action_show_country"
+                model="ir.actions.act_window">
+            <field name="name">Pays</field>
+            <field name="res_model">siantou.ems.core.country</field>
+            <field name="search_view_id" ref="country_search_view"/>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Créer un nouveau pays.
+                </p>
+            </field>
+        </record>
+
+        <!-- Menu pour les pays -->
+        <menuitem
+                id="menu_siantou_ems_core_config_country"
+                name="Pays"
+                parent="menu_siantou_ems_core_config"
+                action="action_show_country"
+                sequence="9"/>
+	</data>
+</odoo>

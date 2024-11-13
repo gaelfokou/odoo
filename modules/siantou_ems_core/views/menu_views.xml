@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Menu principal du module -->
+    <menuitem name="Université"
+        id="menu_siantou_ems_core"
+        groups="group_school_user,group_school_manager"
+        sequence="55"/>
+
+    <menuitem
+        id="menu_siantou_ems_core_students"
+        name="Etudiants"
+        parent="menu_siantou_ems_core"
+        groups="group_school_user"
+        sequence = "30" />
+
+    <!-- Menu principal de gestion des enseignants -->
+    <menuitem
+            id="menu_siantou_ems_core_employee"
+            name="Enseignants"
+			parent="menu_siantou_ems_core"
+			groups="group_school_user"
+            sequence = "40" />
+
+    <!-- Menu principal de gestion des filières -->
+    <menuitem
+            id="menu_siantou_ems_core_program"
+            name="Programmes"
+			parent="menu_siantou_ems_core"
+			groups="group_school_user"
+            sequence = "50" />
+
+    <!-- Menu principal de gestion des configurations -->
+    <menuitem
+            id="menu_siantou_ems_core_config"
+            name="Configurations"
+			parent="menu_siantou_ems_core"
+			groups="group_school_user"
+            sequence = "100" />
+    
+
+</odoo>

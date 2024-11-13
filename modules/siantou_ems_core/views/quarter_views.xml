@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+	<data>
+		<!-- Affichage en vue liste -->
+		<record
+                id="quarter_tree_view"
+                model="ir.ui.view">
+            <field name="name">quarter.tree.view</field>
+			<field name="model">siantou.ems.core.quarter</field>
+			<field name="arch" type="xml">
+				<tree string="Quartiers" editable="bottom" edit="1">
+                    <field name="name"/>
+                    <field name="city_id"/>
+				</tree>
+			</field>
+		</record>
+
+        <!-- Affichage en vue formulaire -->
+		<record
+                id="quarter_form_view"
+                model="ir.ui.view">
+			<field name="name">quarter.form.view</field>
+			<field name="model">siantou.ems.core.quarter</field>
+			<field name="arch" type="xml">
+				<form string="Quartiers">
+					<sheet>
+                        <group>
+                            <field name="name"/>
+                        </group>
+                        <group>
+                            <field name="city_id"/>
+                        </group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+        <!-- Affichage en vue recherche -->
+         <record
+                 id="quarter_search_view"
+                 model="ir.ui.view">
+            <field name="name">quarter.search.view</field>
+            <field name="model">siantou.ems.core.quarter</field>
+            <field name="arch" type="xml">
+                <search string="Quartiers">
+                    <field name="name" string="Nom du Quartiers"/>
+                    <field name="city_id" string="Nom de la ville"/>
+                    <separator/>
+                </search>
+             </field>
+        </record>
+
+        <!-- Action pour le menu d'affichage des Quartiers -->
+        <record
+                id="action_show_quarter"
+                model="ir.actions.act_window">
+            <field name="name">Quartiers</field>
+            <field name="res_model">siantou.ems.core.quarter</field>
+            <field name="search_view_id" ref="quarter_search_view"/>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Créer une nouvelle Quartiers.
+                </p>
+            </field>
+        </record>
+
+        <!-- Menu pour les Quartiers -->
+        <menuitem
+            id="menu_siantou_ems_core_config_quarter"
+            name="Quartiers"
+            parent="menu_siantou_ems_core_config"
+            action="action_show_quarter"
+            sequence="12"
+        />
+
+	</data>
+</odoo>

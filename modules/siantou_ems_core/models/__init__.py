@@ -1,0 +1,23 @@
+from . import batch
+from . import classroom
+from . import field_of_study
+from . import level
+from . import school
+from . import semester
+from . import student
+from . import subject
+from . import teacher
+from . import university
+from . import year
+from . import degree_course_required
+from . import student_enrollment
+from . import courses
+
+from . import fee_student
+from . import student
+from . import country
+from . import fee_enrollment
+
+from . import country
+from . import fee_student
+

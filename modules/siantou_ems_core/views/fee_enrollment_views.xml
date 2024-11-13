@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+	<data>
+        <record id="action_show_fee_enrollment" model="ir.actions.act_window">
+            <field name="name">Frais de préinscription</field>
+            <field name="res_model">siantou.ems.core.fee.enrollment</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+            <field name="help" type="html">
+                <p>Cliquez sur nouveau</p>
+            </field>
+        </record>
+
+        <record id="fee_enrollment_form" model="ir.ui.view">
+            <field name="name">siantou.ems.core.fee.enrollment.form</field>
+            <field name="model">siantou.ems.core.fee.enrollment</field>
+            <field name="arch" type="xml">
+                <form string="Frais de préinscription">
+                    <header>
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <label for="name" string="Nom" />
+                            <h1><field name="name" placeholder="Ex : frais du niveau 1"/></h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="code"/>
+                            </group>
+                            <group>
+                                <field name="year"/>
+                            </group>
+                            <group>
+                                <field name="journal_id"/>
+                            </group>
+                            <group>
+                                <field name="montant_paie" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                            </group>
+                            <group>
+                                <field name="active"/>
+                            </group>
+                            <notebook>
+                                <page name="niveau" string="Niveaux">
+                                    <field name="level_ids"/>
+                                </page>
+                                <page name="notes" string="Notes">
+                                    <field name="note"/>
+                                </page>
+                            </notebook>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="fee_enrollment_tree" model="ir.ui.view">
+            <field name="name">siantou.ems.core.fee.enrollment.tree</field>
+            <field name="model">siantou.ems.core.fee.enrollment</field>
+            <field name="arch" type="xml">
+                <tree string="Structure de frais">
+                    <field name="code"/>
+                    <field name="name"/>
+                    <field name="year"/>
+                    <field name="active"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Menu pour les Structure des frais d'inscription -->
+        <menuitem
+                id="menu_siantou_ems_core_config_fee_enrollment"
+                name="Frais de préinscription"
+                parent="menu_siantou_ems_core_config"
+                action="action_show_fee_enrollment"
+                sequence="8"/>
+	</data>
+</odoo>
+
+
+
+
+
+

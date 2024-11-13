@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_fee_enrollment_wizard" model="ir.ui.view">
+        <field name="name">siantou.ems.core.fee.enrollment.student.form</field>
+        <field name="model">siantou.ems.core.fee.enrollment.student</field>
+        <field name="arch" type="xml">
+            <form string="Paiement des frais d'inscription">
+                <sheet>
+                    <p>
+                        Vous êtes sur le point d'ajouter une pièce comptable d'enregistrement des frais d'inscription de 
+                        <b><field name="student_id" readonly="1"/></b>
+                    </p>
+                    <b>Montant à payer</b> : <field name="montant_paie" readonly="1"/>
+                    <!-- <group>
+                        <field name="fee_enroll_struct_id"/>
+                    </group> -->
+
+                </sheet>
+                <footer>
+                    <button string="Valider un paiement" type="object" name="enroll_student" class="btn-primary"/>
+                    <button string="Annuler" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_fee_enrollment_wizard" model="ir.actions.act_window">
+        <field name="name">Paiement des frais</field>
+        <field name="res_model">siantou.ems.core.fee.enrollment.student</field>
+        <field name="view_mode">form</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="target">new</field>
+        <field name="view_id" ref="view_fee_enrollment_wizard"/>
+    </record>
+
+    <!-- <menuitem
+        id="menu_siantou_ems_core_fee_students_preinscription"
+        name="testwizard"
+        parent="menu_siantou_ems_core_students"
+        action="action_fee_enrollment_wizard"
+        groups="group_school_user"/> -->
+</odoo>
