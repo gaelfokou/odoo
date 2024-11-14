@@ -281,10 +281,17 @@ class HrPayslip(models.Model):
         line.total_hours = total_timetable_hours
 
     def cron_download_attendance(self):
-        _logger.info(f'----------- tititititititi timetable_presence id {0} -----------')
+        _logger.info(f'----------- tititititititi cron_download_attendance -----------')
         machines = self.env['biometric.device.details'].search([])
         for machine in machines:
-            machine.action_download_attendance()
+            try:
+                machine.action_download_attendance()
+            except UserError as error:
+                _logger.info(f'----------- tititititititi UserError {error} -----------')
+            except ValidationError as error:
+                _logger.info(f'----------- tititititititi ValidationError {error} -----------')
+            except Exception as error:
+                _logger.info(f'----------- tititititititi Exception {error} -----------')
 
     @api.model
     def create(self, vals):

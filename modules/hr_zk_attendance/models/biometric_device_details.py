@@ -150,7 +150,14 @@ class BiometricDeviceDetails(models.Model):
     def cron_download(self):
         machines = self.env['biometric.device.details'].search([])
         for machine in machines:
-            machine.action_download_attendance()
+            try:
+                machine.action_download_attendance()
+            except UserError as error:
+                _logger.info(f'----------- tititititititi UserError {error} -----------')
+            except ValidationError as error:
+                _logger.info(f'----------- tititititititi ValidationError {error} -----------')
+            except Exception as error:
+                _logger.info(f'----------- tititititititi Exception {error} -----------')
 
     def action_download_attendance(self):
         """Function to download attendance records from the device"""
