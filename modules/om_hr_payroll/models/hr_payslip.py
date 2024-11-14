@@ -82,22 +82,15 @@ class HrPayslip(models.Model):
     total_hours = fields.Float(compute='_compute_total_hours', string='Total hours')
     code = fields.Char(help="The code that can be used in the salary rules")
 
-    def convert_datetime_from_utc(self, dt, tz=None):
-        if tz and tz in pytz.all_timezones:
-            new_tz = pytz.timezone(tz)
-        else:
-            new_tz = pytz.timezone('Africa/Douala')
+    def convert_datetime_from_utc(self, dt):
+        new_tz = pytz.timezone('Africa/Douala')
         old_tz = pytz.utc
         local_dt = old_tz.localize(dt)
         dt = local_dt.astimezone(new_tz)
         return dt
 
-    def convert_datetime_to_utc(self, dt, tz=None):
-        if tz and tz in pytz.all_timezones:
-            old_tz = pytz.timezone(tz)
-        else:
-            tz = self.env.user.partner_id.tz or 'GMT'
-            old_tz = pytz.timezone(tz)
+    def convert_datetime_to_utc(self, dt):
+        old_tz = pytz.timezone('Africa/Douala')
         new_tz = pytz.utc
         local_dt = old_tz.localize(dt)
         dt = local_dt.astimezone(new_tz)
@@ -120,21 +113,15 @@ class HrPayslip(models.Model):
         datetime_after = datetime_to + timedelta(minutes=15)
         datetime_to = datetime_to - timedelta(minutes=15)
 
-        # datetime_before = datetime_before - timedelta(hours=1)
-        # datetime_from = datetime_from - timedelta(hours=1)
-        # datetime_after = datetime_after - timedelta(hours=1)
-        # datetime_to = datetime_to - timedelta(hours=1)
+        datetime_before = self.convert_datetime_to_utc(datetime_before)
+        datetime_from = self.convert_datetime_to_utc(datetime_from)
+        datetime_after = self.convert_datetime_to_utc(datetime_after)
+        datetime_to = self.convert_datetime_to_utc(datetime_to)
 
-        datetime_before = self.convert_datetime_to_utc(datetime_before, employee.tz)
-        datetime_from = self.convert_datetime_to_utc(datetime_from, employee.tz)
-        datetime_after = self.convert_datetime_to_utc(datetime_after, employee.tz)
-        datetime_to = self.convert_datetime_to_utc(datetime_to, employee.tz)
-
-        # daily_attendances = self.env['daily.attendance'].search([
-        #     ('employee_id', '=', employee.id),
-        #     ('punching_time', '>=', datetime_before),
-        #     ('punching_time', '<=', datetime_after),
-        # ], order='punching_time asc')
+        _logger.info(f'----------- tototototototo punching_time >= datetime_before {datetime.strftime(datetime_before, DATETIME_FORMAT)} -----------')
+        _logger.info(f'----------- tototototototo punching_time <= datetime_from {datetime.strftime(datetime_from, DATETIME_FORMAT)} -----------')
+        _logger.info(f'----------- tototototototo punching_time >= datetime_to {datetime.strftime(datetime_to, DATETIME_FORMAT)} -----------')
+        _logger.info(f'----------- tototototototo punching_time <= datetime_after {datetime.strftime(datetime_after, DATETIME_FORMAT)} -----------')
 
         daily_attendances = self.env['daily.attendance'].search([
             ('employee_id', '=', employee.id),
@@ -144,14 +131,18 @@ class HrPayslip(models.Model):
             _logger.info(f'----------- tototototototo daily_attendance id {daily_attendance.id} -----------')
             _logger.info(f'----------- tototototototo daily_attendance punching_time {daily_attendance.punching_time} -----------')
 
+        # daily_attendances = self.env['daily.attendance'].search([
+        #     ('employee_id', '=', employee.id),
+        #     ('punching_time', '>=', datetime_before),
+        #     ('punching_time', '<=', datetime_after),
+        # ], order='punching_time asc')
+
+        utc_tz = pytz.utc
+
         daily_attendances = self.env['daily.attendance'].search([
             ('employee_id', '=', employee.id),
-        ], order='punching_time asc').filtered(lambda rec: self.convert_datetime_to_utc(rec.punching_time) >= datetime_before and self.convert_datetime_to_utc(rec.punching_time) <= datetime_after)
+        ], order='punching_time asc').filtered(lambda rec: utc_tz.localize(rec.punching_time) >= datetime_before and utc_tz.localize(rec.punching_time) <= datetime_after)
 
-        _logger.info(f'----------- tototototototo punching_time >= datetime_before {datetime.strftime(datetime_before, DATETIME_FORMAT)} -----------')
-        _logger.info(f'----------- tototototototo punching_time <= datetime_from {datetime.strftime(datetime_from, DATETIME_FORMAT)} -----------')
-        _logger.info(f'----------- tototototototo punching_time >= datetime_to {datetime.strftime(datetime_to, DATETIME_FORMAT)} -----------')
-        _logger.info(f'----------- tototototototo punching_time <= datetime_after {datetime.strftime(datetime_after, DATETIME_FORMAT)} -----------')
         _logger.info(f'----------- tototototototo daily_attendances {daily_attendances} -----------')
 
         return daily_attendances
@@ -187,23 +178,16 @@ class HrPayslip(models.Model):
         datetime_after = datetime_to + timedelta(minutes=15)
         datetime_to = datetime_to - timedelta(minutes=15)
 
-        # datetime_before = datetime_before - timedelta(hours=1)
-        # datetime_from = datetime_from - timedelta(hours=1)
-        # datetime_after = datetime_after - timedelta(hours=1)
-        # datetime_to = datetime_to - timedelta(hours=1)
+        datetime_before = self.convert_datetime_to_utc(datetime_before)
+        datetime_from = self.convert_datetime_to_utc(datetime_from)
+        datetime_after = self.convert_datetime_to_utc(datetime_after)
+        datetime_to = self.convert_datetime_to_utc(datetime_to)
 
-        datetime_before = self.convert_datetime_to_utc(datetime_before, employee.tz)
-        datetime_from = self.convert_datetime_to_utc(datetime_from, employee.tz)
-        datetime_after = self.convert_datetime_to_utc(datetime_after, employee.tz)
-        datetime_to = self.convert_datetime_to_utc(datetime_to, employee.tz)
-
-        # daily_attendances = self.env['daily.attendance'].search([
-        #     ('employee_id', '=', employee.id),
-        #     ('punching_time', '>=', datetime_before),
-        #     ('punching_time', '<=', datetime_from),
-        #     ('punching_time', '>=', datetime_to),
-        #     ('punching_time', '<=', datetime_after),
-        # ], order='punching_time asc')
+        _logger.info(f'----------- tototototototo teacher current_date {current_date} -----------')
+        _logger.info(f'----------- tototototototo teacher punching_time >= datetime_before {datetime.strftime(datetime_before, DATETIME_FORMAT)} -----------')
+        _logger.info(f'----------- tototototototo teacher punching_time <= datetime_from {datetime.strftime(datetime_from, DATETIME_FORMAT)} -----------')
+        _logger.info(f'----------- tototototototo teacher punching_time >= datetime_to {datetime.strftime(datetime_to, DATETIME_FORMAT)} -----------')
+        _logger.info(f'----------- tototototototo teacher punching_time <= datetime_after {datetime.strftime(datetime_after, DATETIME_FORMAT)} -----------')
 
         daily_attendances = self.env['daily.attendance'].search([
             ('employee_id', '=', employee.id),
@@ -213,15 +197,20 @@ class HrPayslip(models.Model):
             _logger.info(f'----------- tototototototo daily_attendance id {daily_attendance.id} -----------')
             _logger.info(f'----------- tototototototo daily_attendance punching_time {daily_attendance.punching_time} -----------')
 
+        # daily_attendances = self.env['daily.attendance'].search([
+        #     ('employee_id', '=', employee.id),
+        #     ('punching_time', '>=', datetime_before),
+        #     ('punching_time', '<=', datetime_from),
+        #     ('punching_time', '>=', datetime_to),
+        #     ('punching_time', '<=', datetime_after),
+        # ], order='punching_time asc')
+
+        utc_tz = pytz.utc
+
         daily_attendances = self.env['daily.attendance'].search([
             ('employee_id', '=', employee.id),
-        ], order='punching_time asc').filtered(lambda rec: (self.convert_datetime_to_utc(rec.punching_time) >= datetime_before and self.convert_datetime_to_utc(rec.punching_time) <= datetime_from) or (self.convert_datetime_to_utc(rec.punching_time) >= datetime_to and self.convert_datetime_to_utc(rec.punching_time) <= datetime_after))
+        ], order='punching_time asc').filtered(lambda rec: (utc_tz.localize(rec.punching_time) >= datetime_before and utc_tz.localize(rec.punching_time) <= datetime_from) or (utc_tz.localize(rec.punching_time) >= datetime_to and utc_tz.localize(rec.punching_time) <= datetime_after))
 
-        _logger.info(f'----------- tototototototo teacher current_date {current_date} -----------')
-        _logger.info(f'----------- tototototototo teacher punching_time >= datetime_before {datetime.strftime(datetime_before, DATETIME_FORMAT)} -----------')
-        _logger.info(f'----------- tototototototo teacher punching_time <= datetime_from {datetime.strftime(datetime_from, DATETIME_FORMAT)} -----------')
-        _logger.info(f'----------- tototototototo teacher punching_time >= datetime_to {datetime.strftime(datetime_to, DATETIME_FORMAT)} -----------')
-        _logger.info(f'----------- tototototototo teacher punching_time <= datetime_after {datetime.strftime(datetime_after, DATETIME_FORMAT)} -----------')
         _logger.info(f'----------- tototototototo teacher daily_attendances {daily_attendances} -----------')
 
         return daily_attendances
