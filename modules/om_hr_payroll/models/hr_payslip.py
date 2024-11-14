@@ -367,7 +367,7 @@ class HrPayslip(models.Model):
 
     @api.model
     def cron_timetable_presence(self):
-        self.cron_download_attendance()
+        # self.cron_download_attendance()
 
         date_to = date.today()
 
