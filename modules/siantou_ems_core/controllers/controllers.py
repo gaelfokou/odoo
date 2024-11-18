@@ -8,13 +8,13 @@ import base64
 import logging
 from odoo.http import request, content_disposition, Response
 from odoo.exceptions import ValidationError  # Import the ValidationError class
-
+import requests
 
 _logger = logging.getLogger("++++++++++++")
 
 class DeSchool(http.Controller):
 
-    @http.route('/api/v1/niveaux', type="http", auth='public', methods=['GET'], csrf=False, cors="*")
+    @http.route('/api/v1/niveaux', type="http", auth='none', methods=['GET'], csrf=False, cors="*")
     def list_niveaux(self, **kw):
         data = []
         niveaux = request.env['siantou.ems.core.level'].sudo().search([])
@@ -30,7 +30,7 @@ class DeSchool(http.Controller):
             json.dumps(data)
         )
 
-    @http.route('/api/v1/pays', type="http", auth='public', methods=['GET'], csrf=False, cors="*")
+    @http.route('/api/v1/pays', type="http", auth='none', methods=['GET'], csrf=False, cors="*")
     def list_country(self, **kw):
         data = []
         pays = request.env['siantou.ems.core.country'].sudo().search([])
@@ -43,7 +43,7 @@ class DeSchool(http.Controller):
         _logger.info(f'Pays: {data}')
 
 
-    @http.route('/api/v1/pays', type="http", auth='public', methods=['GET'], csrf=False, cors="*")
+    @http.route('/api/v1/pays', type="http", auth='none', methods=['GET'], csrf=False, cors="*")
     def list_country(self, **kwargs):
         datas = []
         pays = request.env['siantou.ems.core.country'].sudo().search([])
@@ -59,7 +59,7 @@ class DeSchool(http.Controller):
             json.dumps(datas)
         )
 
-    @http.route('/api/v1/pays/<int:id_country>/regions', type="http", auth='public', methods=['GET'], csrf=False, cors="*")
+    @http.route('/api/v1/pays/<int:id_country>/regions', type="http", auth='none', methods=['GET'], csrf=False, cors="*")
     def list_region_of_country(self, id_country):
         datas = []
         p = request.env['siantou.ems.core.country'].sudo().search([('id', '=', id_country)], limit=1)
@@ -74,7 +74,7 @@ class DeSchool(http.Controller):
         )
 
 
-    @http.route('/api/v1/regions/<int:id_region>/cities', type="http", auth='public', methods=['GET'], csrf=False, cors="*")
+    @http.route('/api/v1/regions/<int:id_region>/cities', type="http", auth='none', methods=['GET'], csrf=False, cors="*")
     def list_cities_of_region(self, id_region):
         datas = []
         reg = request.env['siantou.ems.core.region'].sudo().search([('id', '=', id_region)], limit=1)
@@ -88,7 +88,7 @@ class DeSchool(http.Controller):
         )
 
 
-    @http.route('/api/v1/cities/<int:id_city>/quarters', type="http", auth='public', methods=['GET'], csrf=False, cors="*")
+    @http.route('/api/v1/cities/<int:id_city>/quarters', type="http", auth='none', methods=['GET'], csrf=False, cors="*")
     def list_quarters_of_city(self, id_city):
         datas = []
         city = request.env['siantou.ems.core.city'].sudo().search([('id', '=', id_city)], limit=1)
@@ -104,7 +104,7 @@ class DeSchool(http.Controller):
             json.dumps(data)
         )
     
-    @http.route('/api/v1/cycles', type="http", auth='public', methods=['GET'], csrf=False, cors="*")
+    @http.route('/api/v1/cycles', type="http", auth='none', methods=['GET'], csrf=False, cors="*")
     def list_courses(self, **kw):
         data = []
         cycles = request.env['oe.school.course'].sudo().search([])
@@ -128,7 +128,8 @@ class DeSchool(http.Controller):
         )
 
 
-    @http.route('/api/v1/<int:id>/etudiants', type="http", auth='public', methods=['GET'], csrf=False, cors="*")
+
+    @http.route('/api/v1/<int:id>/etudiants', type="http", auth='none', methods=['GET'], csrf=False, cors="*")
     def get_etudiant_by_id(self, id,**kw):
         try:
             etudiant = request.env['oe.school.student.enrollment'].sudo().search([('id', '=', id)], limit=1)
@@ -165,11 +166,12 @@ class DeSchool(http.Controller):
         letters = ''.join(random.choices(string.ascii_uppercase, k=2))
         student_enroll = request.env['oe.school.student.enrollment'].sudo().search([])
         # Combine year and letters
-        code = f"{current_year}{letters}0000{len(student_enroll)}"
+        nbre = len(student_enroll) + 1
+        code = f"{current_year}{letters}0000{nbre}"
         return code
 
 
-    @http.route('/api/v1/save', type="http", auth='public', methods=['POST'], csrf=False, cors="*")
+    @http.route('/api/v1/save', type="http", auth='none', methods=['POST'], csrf=False, cors="*")
     def admission_form_submit(self,):
         _logger.info(request.httprequest.data)
         data = json.loads(request.httprequest.data)
@@ -193,7 +195,7 @@ class DeSchool(http.Controller):
             partner = request.env['res.partner'].sudo().create({
                 "name":data['name']
             })
-
+            
             _logger.info(partner.name)
             #=== Create a new student
             data['partner_id'] = partner.id

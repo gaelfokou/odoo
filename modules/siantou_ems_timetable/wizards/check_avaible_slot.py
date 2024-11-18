@@ -11,17 +11,18 @@ class CheckAvailableSlot(models.Model):
     _description = 'Déterminer un creneau pour un cours'
 
 
-    def find_available_slot(self, date, field_of_study_id, level_id, duration_hours=2):
+    def find_available_slot(self, date, field_of_study_id, level_id, batch_id, duration_hours=2):
         # Plages horaires disponibles
         available_slots = [(8, 10), (10, 12), (13, 15), (15, 17)]  # (heure de début, heure de fin)
         if duration_hours > 2 :
             available_slots = [(8, 12), (13, 17)]
 
-        # Rechercher tous les cours programmés pour la date donnée, en tenant compte du field_of_study_id et level_id
+        # Rechercher tous les cours programmés pour la date donnée, en tenant compte du field_of_study_id, level_id et du batch_id
         scheduled_classes = self.env['siantou.ems.timetable.timetable'].search([
             ('date', '=', date),
             ('field_of_study_id', '=', field_of_study_id),
-            ('level_id', '=', level_id)
+            ('level_id', '=', level_id),
+            ('batch_id', '=', batch_id)
         ])
       
 

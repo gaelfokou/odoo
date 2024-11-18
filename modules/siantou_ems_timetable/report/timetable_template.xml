@@ -82,7 +82,7 @@
                                                         <div>
                                                             <strong><t t-esc="timetable['subject_name']"/> (<t t-esc="timetable['subject_code']"/>)</strong><br/>
                                                             <t t-esc="timetable['classroom_name']"/> / <t t-esc="timetable['building_name']"/><br/>
-                                                            Ensg: <t t-esc="timetable['teacher_name']"/>
+                                                            <t t-esc="timetable['teacher_name']"/>
                                                         </div>
                                                     </t>
                                                 </t>

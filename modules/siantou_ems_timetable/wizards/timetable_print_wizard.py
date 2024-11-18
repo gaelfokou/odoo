@@ -132,7 +132,7 @@ class TimetablePrintWizard(models.TransientModel):
                         'day_of_week': self.convert_number_to_weekday(timetable.day_of_week),
                         'start_time': segment_start.strftime('%H:%M'),  # Formater l'heure
                         'end_time': segment_end.strftime('%H:%M'),      # Formater l'heure
-                        'teacher_name': timetable.employee_id.name
+                        'teacher_name': ' '.join(timetable.employee_id.name.split()[:2]) if timetable.employee_id.name else ""
                     })
             else:
                 # Ajouter les détails spécifiques de chaque emploi du temps
@@ -147,7 +147,7 @@ class TimetablePrintWizard(models.TransientModel):
                     'day_of_week': self.convert_number_to_weekday(timetable.day_of_week),
                     'start_time': start_time_str,
                     'end_time': end_time_str,
-                    'teacher_name': timetable.employee_id.name
+                    'teacher_name': ' '.join(timetable.employee_id.name.split()[:2]) if timetable.employee_id.name else ""
                 })
 
         # Créer un rapport pour chaque filière, niveau, semaine et lot
