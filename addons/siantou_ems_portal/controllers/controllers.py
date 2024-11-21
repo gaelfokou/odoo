@@ -1,6 +1,10 @@
 # -*- coding: utf-8 -*-
 from odoo import http
 from odoo.addons.portal.controllers import portal
+from odoo.exceptions import UserError, ValidationError
+import logging
+
+_logger = logging.getLogger(__name__)
 
 class PortalAccount(portal.CustomerPortal):
     def _prepare_home_portal_values(self, counters):
@@ -22,19 +26,23 @@ class PortalAccount(portal.CustomerPortal):
             'cours': {'label': 'Cours', 'input': 'cours', 'domain': [('subject_id.name', 'like', search)]},
             'enseignant': {'label': 'Enseignant', 'input': 'enseignant', 'domain': [('employee_id.name', 'like', search)]},
         }
+        if search_in not in searchbar_inputs.keys():
+            search_in = 'all'
         search_domain = searchbar_inputs[search_in]['domain']
+
         searchbar_sortings = {
             'date-desc': {'label': 'Date desc', 'order': 'date desc'},
             'date-asc': {'label': 'Date asc', 'order': 'date asc'},
         }
-        if not sortby:
+        if not sortby or sortby not in searchbar_sortings.keys():
             sortby = 'date-desc'
         order = searchbar_sortings[sortby]['order']
         # user = http.request.env.user.partner_id
         user = http.request.env.user.employee_id
-        timetable = http.request.env['siantou.ems.timetable.timetable'].sudo().search([
-            ('employee_id', '=', user.id)], order=order)
-        search_timetables = timetable.search(search_domain)
+        search_domain.insert(0, ('employee_id', '=', user.id))
+        search_timetables = http.request.env['siantou.ems.timetable.timetable'].sudo().search(search_domain, order=order)
+        _logger.info(f'----------- tototototototo user {user.id} -----------')
+        _logger.info(f'----------- tototototototo search_timetables {search_timetables} -----------')
         return http.request.render('siantou_ems_portal.portal_my_home_timetable_views',
                                 {
                                     'timetable': search_timetables,
