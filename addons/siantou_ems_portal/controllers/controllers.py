@@ -14,6 +14,8 @@ class PortalAccount(portal.CustomerPortal):
 
     @http.route(['/my/timetable', '/my/timetable/page/<int:page>'], type='http', auth="user", website=True)
     def portal_timetable(self, search=None, search_in='all', sortby=None):
+        if not search:
+            search = ''
         searchbar_inputs = {
             'all': {'label': 'Tout', 'input': 'all', 'domain': []},
             'filiere': {'label': 'Filière', 'input': 'filiere', 'domain': [('field_of_study_id.name', 'like', search)]},
