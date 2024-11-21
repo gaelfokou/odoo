@@ -8,8 +8,8 @@ class PortalAccount(portal.CustomerPortal):
         if 'portal_timetable' in counters:
             # user = http.request.env.user.partner_id
             user = http.request.env.user.employee_id
-            # values['portal_timetable'] = http.request.env['siantou.ems.timetable.timetable'].sudo().search_count([('employee_id', '=', user.id)])
-            values['portal_timetable'] = 1
+            count = http.request.env['siantou.ems.timetable.timetable'].sudo().search_count([('employee_id', '=', user.id)])
+            values['portal_timetable'] = count if count > 0 else 1
         return values
 
     @http.route(['/my/timetable', '/my/timetable/page/<int:page>'], type='http', auth="user", website=True)
