@@ -70,14 +70,32 @@
                         <tr>
                             <td class='text-left'>
                                 <span t-field="record.date"/>
+                            </td>
+                            <td class='text-left'>
                                 <span t-field="record.field_of_study_id.name"/>
+                            </td>
+                            <td class='text-left'>
                                 <span t-field="record.semester_id.name"/>
+                            </td>
+                            <td class='text-left'>
                                 <span t-field="record.level_id.name"/>
+                            </td>
+                            <td class='text-left'>
                                 <span t-field="record.subject_id.name"/>
+                            </td>
+                            <td class='text-left'>
                                 <span t-field="record.classroom_id.name"/>
+                            </td>
+                            <td class='text-left'>
                                 <span t-field="record.employee_id.name"/>
+                            </td>
+                            <td class='text-left'>
                                 <span t-field="record.day_of_week"/>
+                            </td>
+                            <td class='text-left'>
                                 <span t-field="record.start_time"/>
+                            </td>
+                            <td class='text-left'>
                                 <span t-field="record.end_time"/>
                             </td>
                         </tr>
