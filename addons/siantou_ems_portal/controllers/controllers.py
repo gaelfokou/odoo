@@ -10,10 +10,17 @@ class PortalAccount(portal.CustomerPortal):
     def _prepare_home_portal_values(self, counters):
         values = super()._prepare_home_portal_values(counters)
         if 'portal_timetable' in counters:
-            # user = http.request.env.user.partner_id
-            user = http.request.env.user.employee_id
-            count = http.request.env['siantou.ems.timetable.timetable'].sudo().search_count([('employee_id', '=', user.id)])
+            search_domain = []
+
+            if http.request.env.user.employee_id.id:
+                user = http.request.env.user.employee_id
+                search_domain.insert(0, ('employee_id', '=', user.id))
+            else:
+                user = http.request.env.user.partner_id
+
+            count = http.request.env['siantou.ems.timetable.timetable'].sudo().search_count(search_domain)
             values['portal_timetable'] = count if count > 0 else 1
+
         return values
 
     @http.route(['/my/timetable', '/my/timetable/page/<int:page>'], type='http', auth="user", website=True)
@@ -37,12 +44,18 @@ class PortalAccount(portal.CustomerPortal):
         if not sortby or sortby not in searchbar_sortings.keys():
             sortby = 'date-desc'
         order = searchbar_sortings[sortby]['order']
-        # user = http.request.env.user.partner_id
-        user = http.request.env.user.employee_id
-        search_domain.insert(0, ('employee_id', '=', user.id))
+
+        if http.request.env.user.employee_id.id:
+            user = http.request.env.user.employee_id
+            search_domain.insert(0, ('employee_id', '=', user.id))
+        else:
+            user = http.request.env.user.partner_id
+
         search_timetables = http.request.env['siantou.ems.timetable.timetable'].sudo().search(search_domain, order=order)
+
         _logger.info(f'----------- tototototototo user {user.id} -----------')
         _logger.info(f'----------- tototototototo search_timetables {search_timetables} -----------')
+
         return http.request.render('siantou_ems_portal.portal_my_home_timetable_views',
                                 {
                                     'timetable': search_timetables,
