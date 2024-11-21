@@ -1,0 +1,64 @@
+# -*- coding: utf-8 -*-
+from odoo import http
+from odoo.addons.portal.controllers import portal
+
+class PortalAccount(portal.CustomerPortal):
+    def _prepare_home_portal_values(self, counters):
+        values = super()._prepare_home_portal_values(counters)
+        if 'portal_timetable' in counters:
+            # user = http.request.env.user.partner_id
+            user = http.request.env.user.employee_id
+            # values['portal_timetable'] = http.request.env['siantou.ems.timetable.timetable'].sudo().search_count([('employee_id', '=', user.id)])
+            values['portal_timetable'] = 1
+        return values
+
+    @http.route(['/my/timetable', '/my/timetable/page/<int:page>'], type='http', auth="user", website=True)
+    def portal_timetable(self, search=None, search_in='all', sortby=None):
+        searchbar_inputs = {
+            'all': {'label': 'Tout', 'input': 'all', 'domain': []},
+            'filiere': {'label': 'Filière', 'input': 'filiere', 'domain': [('field_of_study_id.name', 'like', search)]},
+            'cours': {'label': 'Cours', 'input': 'cours', 'domain': [('subject_id.name', 'like', search)]},
+            'enseignant': {'label': 'Enseignant', 'input': 'enseignant', 'domain': [('employee_id.name', 'like', search)]},
+        }
+        search_domain = searchbar_inputs[search_in]['domain']
+        searchbar_sortings = {
+            'date-desc': {'label': 'Date desc', 'order': 'date desc'},
+            'date-asc': {'label': 'Date asc', 'order': 'date asc'},
+        }
+        if not sortby:
+            sortby = 'date-desc'
+        order = searchbar_sortings[sortby]['order']
+        # user = http.request.env.user.partner_id
+        user = http.request.env.user.employee_id
+        timetable = http.request.env['siantou.ems.timetable.timetable'].sudo().search([
+            ('employee_id', '=', user.id)], order=order)
+        search_timetables = timetable.search(search_domain)
+        return http.request.render('siantou_ems_portal.portal_my_home_timetable_views',
+                                {
+                                    'timetable': search_timetables,
+                                    'page_name': 'timetable',
+                                    'search': search,
+                                    'search_in': search_in,
+                                    'searchbar_inputs': searchbar_inputs,
+                                    'sortby': sortby,
+                                    'searchbar_sortings': searchbar_sortings,
+                                })
+
+# class CustomerPortalCustom(http.Controller):
+#     @http.route('/siantou_ems_portal/siantou_ems_portal', auth='public')
+#     def index(self, **kw):
+#         return "Hello, world"
+
+#     @http.route('/siantou_ems_portal/siantou_ems_portal/objects', auth='public')
+#     def list(self, **kw):
+#         return http.request.render('siantou_ems_portal.listing', {
+#             'root': '/siantou_ems_portal/siantou_ems_portal',
+#             'objects': http.request.env['siantou_ems_portal.siantou_ems_portal'].search([]),
+#         })
+
+#     @http.route('/siantou_ems_portal/siantou_ems_portal/objects/<model("siantou_ems_portal.siantou_ems_portal"):obj>', auth='public')
+#     def object(self, obj, **kw):
+#         return http.request.render('siantou_ems_portal.object', {
+#             'object': obj
+#         })
+

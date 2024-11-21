@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_siantou_ems_portal_siantou_ems_portal,siantou_ems_portal.siantou_ems_portal,model_siantou_ems_portal_siantou_ems_portal,base.group_user,1,1,1,1
