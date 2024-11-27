@@ -1,6 +1,10 @@
 from odoo import api, fields, models, _
 from odoo.exceptions import UserError, ValidationError
+import psycopg2
 from odoo.tools import unique
+import logging
+
+_logger = logging.getLogger(__name__)
 
 
 class HrEmployee(models.Model):
@@ -52,6 +56,79 @@ class HrEmployee(models.Model):
         'employee_id',
         'Disponibilité'
     )
+
+    def create_employee_user(self, employee_id):
+        try:
+            name = employee_id.name
+            # email = employee_id.work_email
+            email = name.replace(' ', '.').lower() + '@siantou.cm'
+            password = name.replace(' ', '.').lower()
+            user_ids = self.env['res.users'].search([
+                ('login', '=', email),
+            ])
+            user_ids = list(user_ids)
+            if len(user_ids) > 0:
+                user_id = user_ids[0]
+                user_id.write({
+                    'login': email,
+                    'name': name,
+                })
+            else:
+                group_id = self.env.ref('base.group_portal')
+                user_id = self.env['res.users'].create({
+                    'login': email,
+                    'name': name,
+                    'password' : password,
+                    'groups_id': [(6, 0, [group_id.id])],
+                })
+            employee_id.write({
+                'work_email': email,
+                'user_id': user_id.id,
+            })
+        except psycopg2.errors.NotNullViolation as error:
+            _logger.info(f'----------- tototototototo Exception {error} -----------')
+            raise ValidationError("L'adresse e-mail professionnelle n'est pas renseignée.")
+        except psycopg2.Error as error:
+            _logger.info(f'----------- tototototototo Exception {error} -----------')
+        except Exception as error:
+            _logger.info(f'----------- tototototototo Exception {error} -----------')
+
+    @api.model
+    def create(self, vals):
+        employee_id = super(HrEmployee, self).create(vals)
+
+        self.create_employee_user(employee_id)
+
+        return employee_id
+
+    def action_create_employee_user(self):
+        employee_ids = self.env['hr.employee'].search([
+            ('id', '=', self.id),
+        ])
+        employee_ids = list(employee_ids)
+        if len(employee_ids) > 0:
+            employee_id = employee_ids[0]
+            self.create_employee_user(employee_id)
+
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'reload',
+        }
+
+    def action_create_all_employee_user(self):
+        employee_ids = self.env['hr.employee'].search([])
+        for employee_id in employee_ids:
+            user_ids = self.env['res.users'].search([
+                ('employee_id', '=', employee_id.id),
+            ])
+            user_ids = list(user_ids)
+            if len(user_ids) == 0:
+                self.create_employee_user(employee_id)
+
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'reload',
+        }
 
     @api.depends('subject_priority_ids')
     def _compute_subject_ids(self):

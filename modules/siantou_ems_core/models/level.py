@@ -3,7 +3,7 @@ from odoo import models, fields
 
 class Level(models.Model):
     _name = 'siantou.ems.core.level'
-    _description = 'Niveaux'
+    _description = 'Gestion des niveaux'
 
     # Nom du niveau
     name = fields.Char(

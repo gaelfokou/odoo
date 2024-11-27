@@ -1,0 +1,3 @@
+id,category,name,code,structure_type,parent_id/id
+hr.dep_administration,Services Centraux,,,Secteur / Structure,
+hr.dep_sales,Services Déconcentrés,,,Secteur / Structure,

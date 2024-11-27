@@ -3,7 +3,7 @@ from odoo import models, fields
 
 class School(models.Model):
     _name = 'siantou.ems.core.school'
-    _description = 'Ecole'
+    _description = 'Gestion des écoles'
 
     code = fields.Char(
         string='Code',

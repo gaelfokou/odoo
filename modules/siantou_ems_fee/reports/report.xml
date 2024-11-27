@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="action_fees_class_list" model="ir.actions.report">
+            <field name="name">LIste des frais par classe</field>
+            <field name="model">siantou.ems.fee.classe</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">siantou_ems_fee.report_fees_classe</field>
+            <field name="report_file">siantou_ems_fee.report_fees_classe</field>
+            <field name="print_report_name">'FRAIS DE SCOLARITE - %s' % (object.name)</field>
+            <field name="binding_model_id" ref="model_education_fee_classe"/>
+        </record>
+
+        <record id="action_fees_student" model="ir.actions.report">
+            <field name="name">Facture de l'etudiant</field>
+            <field name="model">oe.school.student</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">siantou_ems_fee.report_student_fees</field>
+            <field name="report_file">siantou_ems_fee.report_student_fees</field>
+            <field name="print_report_name">'FACTURE SCOLARITE DE - %s' % (object.name)</field>
+            <field name="binding_model_id" ref="model_education_student"/>
+        </record>
+    </data>
+</odoo>

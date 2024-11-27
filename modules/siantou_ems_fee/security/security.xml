@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record model="ir.module.category" id="module_category_education_fee">
+        <field name="name">Gestion des frais de scolarité</field>
+        <field name="description">Module de gestion des frais de scolarité</field>
+        <field name="sequence">5</field>
+    </record>
+
+    <record id="group_fee_base" model="res.groups">
+        <field name="name">Lecteur</field>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        <field name="category_id" ref="module_category_education_fee"/>
+    </record>
+
+    <record id="group_fee_gest" model="res.groups">
+        <field name="name">Gestionnaire</field>
+        <field name="implied_ids" eval="[(4, ref('group_fee_base'))]"/>
+        <field name="category_id" ref="module_category_education_fee"/>
+        <field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+    </record>
+
+    <record id="group_fee_admin" model="res.groups">
+        <field name="name">Super administrateur</field>
+        <field name="category_id" ref="module_category_education_fee"/>
+        <field name="implied_ids" eval="[(4, ref('group_fee_gest'))]"/>
+        <field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+    </record>
+
+</odoo>
+

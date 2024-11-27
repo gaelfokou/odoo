@@ -6,18 +6,41 @@
         <field name="arch" type="xml">
             <form string="Paiement des frais d'inscription">
                 <sheet>
-                    <p>
+                    <!-- <group>
+                        <b><field name="student_id" readonly="1"/></b>
+                    </group> -->
+                    <group>
+                        <field name="structure_frais_name" readonly="1"/>
+                    </group>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                        </group>
+                        <group>
+                            <field name="reference"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group>
+                            <field name="amount" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="date_payment" />
+                        </group>
+                    </group>
+                    
+                    <!-- <p>
                         Vous êtes sur le point d'ajouter une pièce comptable d'enregistrement des frais d'inscription de 
                         <b><field name="student_id" readonly="1"/></b>
                     </p>
-                    <b>Montant à payer</b> : <field name="montant_paie" readonly="1"/>
-                    <!-- <group>
+                    <b>Montant à payer</b> : <field name="amount" readonly="1"/>
+                    <group>
                         <field name="fee_enroll_struct_id"/>
                     </group> -->
 
                 </sheet>
                 <footer>
-                    <button string="Valider un paiement" type="object" name="enroll_student" class="btn-primary"/>
+                    <button string="Enregistrer" type="object" name="enroll_student" class="btn-primary"/>
                     <button string="Annuler" class="btn-secondary" special="cancel"/>
                 </footer>
             </form>
@@ -38,5 +61,5 @@
         name="testwizard"
         parent="menu_siantou_ems_core_students"
         action="action_fee_enrollment_wizard"
-        groups="group_school_user"/> -->
+        /> -->
 </odoo>

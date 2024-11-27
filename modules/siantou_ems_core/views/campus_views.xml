@@ -55,7 +55,6 @@
                 name="Campus"
                 parent="menu_siantou_ems_core_config"
                 action="action_show_campus"
-                groups="group_school_manager"
                 sequence="4"/>
 	</data>
 </odoo>

@@ -62,7 +62,7 @@
                 name="Semestres"
                 parent="menu_siantou_ems_core_config"
                 action="action_show_semester"
-                groups="group_school_manager"
+                
                 sequence="3"/>
 	</data>
 </odoo>

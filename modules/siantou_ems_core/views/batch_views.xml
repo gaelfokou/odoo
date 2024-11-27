@@ -45,6 +45,6 @@
     <menuitem
             id="menu_siantou_ems_core_students_batch"
             name="Lots d'étudiant"
-            parent="menu_siantou_ems_core_students"
+            parent="menu_siantou_ems_core_config"
             action="action_student_batch"/>
 </odoo>

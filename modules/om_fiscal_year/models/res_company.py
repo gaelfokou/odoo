@@ -10,11 +10,11 @@ class ResCompany(models.Model):
     # RedirectWarning is changed with validation error to remove error of missing reconciliation view
     def _validate_fiscalyear_lock(self, values):
         if values.get('fiscalyear_lock_date'):
-            draft_entries = self.env['account.move'].search([
+            drsiantou_ems_entries = self.env['account.move'].search([
                 ('company_id', 'in', self.ids),
                 ('state', '=', 'draft'),
                 ('date', '<=', values['fiscalyear_lock_date'])])
-            if draft_entries:
+            if drsiantou_ems_entries:
                 error_msg = _(
                     'There are still unposted entries in the period you want to lock. You should either post or delete them.')
                 action_error = {
@@ -22,7 +22,7 @@ class ResCompany(models.Model):
                     'name': 'Unposted Entries',
                     'res_model': 'account.move',
                     'type': 'ir.actions.act_window',
-                    'domain': [('id', 'in', draft_entries.ids)],
+                    'domain': [('id', 'in', drsiantou_ems_entries.ids)],
                     'search_view_id': [self.env.ref('account.view_account_move_filter').id, 'search'],
                     'views': [[self.env.ref('account.view_move_tree').id, 'list'],
                               [self.env.ref('account.view_move_form').id, 'form']],

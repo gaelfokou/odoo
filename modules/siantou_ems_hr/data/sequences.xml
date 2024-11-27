@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <record id="seq_reclassements" model="ir.sequence">
+            <field name="name">Reclassements</field>
+            <field name="code">siantou_ems_hr.reclassement</field>
+            <field name="prefix">SIANTOU-RCL-%(y)s-</field>
+            <field name="padding">4</field>
+            <field name="company_id" eval="False" />
+        </record>
+
+        <record id="seq_avancements" model="ir.sequence">
+            <field name="name">Avancements</field>
+            <field name="code">siantou_ems_hr.avancement</field>
+            <field name="prefix">SIANTOU-AVN-%(y)s-</field>
+            <field name="padding">4</field>
+            <field name="company_id" eval="False" />
+        </record>
+
+        <record id="seq_affectations" model="ir.sequence">
+            <field name="name">Affectations</field>
+            <field name="code">siantou_ems_hr.affectation</field>
+            <field name="prefix">SIANTOU-AFFEC-%(y)s-</field>
+            <field name="padding">4</field>
+            <field name="company_id" eval="False" />
+        </record>
+
+        <record id="seq_promotion" model="ir.sequence">
+            <field name="name">Promotions</field>
+            <field name="code">siantou_ems_hr.promotion</field>
+            <field name="prefix">SIANTOU-PROMO-%(y)s-</field>
+            <field name="padding">4</field>
+            <field name="company_id" eval="False" />
+        </record>
+
+        <record id="seq_retrogradation" model="ir.sequence">
+            <field name="name">retrogradations</field>
+            <field name="code">siantou_ems_hr.retrogradation</field>
+            <field name="prefix">SIANTOU-RETRO-%(y)s-</field>
+            <field name="padding">4</field>
+            <field name="company_id" eval="False" />
+        </record>
+
+        <record id="seq_discipline" model="ir.sequence">
+            <field name="name">discipline</field>
+            <field name="code">siantou_ems_hr.discipline</field>
+            <field name="prefix">SIANTOU-DISC-%(y)s-</field>
+            <field name="padding">4</field>
+            <field name="company_id" eval="False" />
+        </record>
+
+
+        <record id="seq_matricule_dgd" model="ir.sequence">
+            <field name="name">ID-SIANTOU</field>
+            <field name="code">siantou_ems_hr.matricule_dgd</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False" />
+        </record>
+
+        <record id="seq_annul_suspension_dgd" model="ir.sequence">
+            <field name="name">Annuler suspension</field>
+            <field name="code">siantou_ems_hr.annul_suspension</field>
+            <field name="prefix">SIANTOU-AS-%(y)s-</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False" />
+        </record>
+
+        <record id="seq_licencier_dgd" model="ir.sequence">
+            <field name="name">Licencier</field>
+            <field name="code">siantou_ems_hr.licencier</field>
+            <field name="prefix">SIANTOU-LC-%(y)s-</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False" />
+        </record>
+
+        <record id="seq_retraite_dgd" model="ir.sequence">
+            <field name="name">Retraite</field>
+            <field name="code">siantou_ems_hr.retraite</field>
+            <field name="prefix">SIANTOU-RT-%(y)s-</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False" />
+        </record>
+
+        <record id="seq_annul_licenciement_dgd" model="ir.sequence">
+            <field name="name">Annuler un licenciement</field>
+            <field name="code">siantou_ems_hr.annuler_licenciement</field>
+            <field name="prefix">SIANTOU-AL-%(y)s-</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False" />
+        </record>
+
+        <record id="detachement_dgd" model="ir.sequence">
+            <field name="name">Détachement</field>
+            <field name="code">siantou_ems_hr.detachement_personnel</field>
+            <field name="prefix">SIANTOU-RF-%(y)s-</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False" />
+        </record>
+
+        <record id="en_disponibilite_dgd" model="ir.sequence">
+            <field name="name">Mise en disponibilite</field>
+            <field name="code">siantou_ems_hr.disponibilite_personnel</field>
+            <field name="prefix">SIANTOU-DI-%(y)s-</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False" />
+        </record>
+
+        <record id="en_disposition_dgd" model="ir.sequence">
+            <field name="name">Mise en disposition</field>
+            <field name="code">siantou_ems_hr.disposition_personnel</field>
+            <field name="prefix">SIANTOU-DP-%(y)s-</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False" />
+        </record>
+
+        <record id="demission_dgd" model="ir.sequence">
+            <field name="name">Demission</field>
+            <field name="code">siantou_ems_hr.demission_personnel</field>
+            <field name="prefix">SIANTOU-DM-%(y)s-</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False" />
+        </record>
+
+        <record id="prise_service_dgd" model="ir.sequence">
+            <field name="name">Prise service</field>
+            <field name="code">siantou_ems_hr.prise_service_personnel</field>
+            <field name="prefix">SIANTOU-PS-%(y)s-</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False" />
+        </record>
+
+        <record id="condanation_dgd" model="ir.sequence">
+            <field name="name">Condanation</field>
+            <field name="code">siantou_ems_hr.condanation_personnel</field>
+            <field name="prefix">SIANTOU-CP-%(y)s-</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False" />
+        </record>
+
+        <record id="aide_dgd" model="ir.sequence">
+            <field name="name">aide</field>
+            <field name="code">siantou_ems_hr.aide_personnel</field>
+            <field name="prefix">SIANTOU-HELP-%(y)s-</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False" />
+        </record>
+
+        <record id="stage_dgd" model="ir.sequence">
+            <field name="name">stage</field>
+            <field name="code">siantou_ems_hr.stage_personnel</field>
+            <field name="prefix">SIANTOU-SP-%(y)s-</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False" />
+        </record>
+
+        <record id="dece_dgd" model="ir.sequence">
+            <field name="name">dece</field>
+            <field name="code">siantou_ems_hr.dece_personnel</field>
+            <field name="prefix">SIANTOU-DC-%(y)s-</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False" />
+        </record>
+
+    </data>
+</odoo>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="hr_education_discipline_view_tree" model="ir.ui.view">
+        <field name="name">hr_education_discipline.view.tree</field>
+        <field name="model">hr.education.discipline</field>
+        <field name="arch" type="xml">
+            <tree string="Liste discipline" editable='bottom'>
+                <field name="name" />
+                <field name="code" />
+                <field name="active" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="hr_education_discipline_action" model="ir.actions.act_window">
+        <field name="name">Discipline des diplômes</field>
+        <field name="res_model">hr.education.discipline</field>
+        <field name="view_mode">tree</field>
+    </record>
+
+
+</odoo>

@@ -162,31 +162,44 @@
                                        help="Payslip Computation Details"/>
                             </button>
                         </div>
-                        <div class="oe_title">
-                            <label for="employee_id" class="oe_edit_only"/>
-                            <h1>
-                                <field name="employee_id" placeholder="Employee" readonly="state != 'draft'"/>
-                            </h1>
-                        </div>
                         <group col="4">
-                            <field name="total_hours" string="Total heures travaillées" readonly="1"/>
-                            <field name="code" string="Code règles salariales"/>
+                            <group colspan="2">
+                                <label for="employee_id" class="oe_edit_only"/>
+                                <h1>
+                                    <field name="employee_id" placeholder="Employee" readonly="state != 'draft'"/>
+                                </h1>
+                            </group>
+                            <group colspan="2">
+                                <field name="name" readonly="state != 'draft'"/>
+                            </group>
                         </group>
                         <group col="4">
-                            <label for="date_from" string="Period"/>
-                            <div>
-                                <field name="date_from" class="oe_inline" readonly="state != 'draft'"/>
-                                -
-                                <field name="date_to" class="oe_inline" readonly="state != 'draft'"/>
-                            </div>
-                            <field name="contract_id"
+                            <group colspan="2">
+                                <field name="total_hours" string="Total heures travaillées" readonly="1"/>
+                            </group>
+                            <group colspan="2">
+                                <field name="code" string="Code règles salariales"/>
+                            </group>
+                        </group>
+                        <group col="4">
+                            <group colspan="2">
+                                <label for="date_from" string="Period"/>
+                                <div>
+                                    <field name="date_from" class="oe_inline" readonly="state != 'draft'"/>
+                                    -
+                                    <field name="date_to" class="oe_inline" readonly="state != 'draft'"/>
+                                </div>
+                                <field name="contract_id"
                                    readonly="state != 'draft'"
                                    domain="[('employee_id','=',employee_id),('date_start','&lt;=',date_to),'|',('date_end','&gt;=',date_from),('date_end','=',False)]"
                                    context="{'default_employee_id': employee_id}"/>
-                            <field name="number" readonly="state != 'draft'"/>
-                            <field name="struct_id" required="contract_id != False" readonly="state != 'draft'"/>
-                            <field name="name" readonly="state != 'draft'"/>
-                            <field name="credit_note" readonly="state != 'draft'"/>
+                                <field name="credit_note" readonly="state != 'draft'"/>
+                            </group>
+                            
+                            <group colspan="2">
+                                <field name="number" readonly="state != 'draft'"/>
+                                <field name="struct_id" required="contract_id != False" readonly="state != 'draft'"/>
+                            </group>
                         </group>
                         <notebook>
                             <page string="Worked Days &amp; Inputs">
@@ -417,7 +430,7 @@
                     <header>
                         <button name="%(action_hr_payslip_by_employees)d" type="action" invisible="state != 'draft'"
                                 string="Generate Payslips" class="oe_highlight"/>
-                        <button string="Set to Draft" name="draft_payslip_run" type="object" invisible="state != 'close'"/>
+                        <button string="Set to Draft" name="drsiantou_ems_payslip_run" type="object" invisible="state != 'close'"/>
                         <button string="Mark As Done" name="done_payslip_run" type="object" invisible="state != 'draft'"
                                 class="oe_highlight"/>
                         <button name="close_payslip_run" type="object" string="Close" invisible="state != 'draft'"/>

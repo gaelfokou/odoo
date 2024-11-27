@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="hr_employer_type_sanction_tree" model="ir.ui.view">
+        <field name="name">hr_employee_type_sanction_.view.form</field>
+        <field name="model">hr.employee.type.sanction</field>
+        <field name="arch" type="xml">
+            <tree string="Liste des sanctions" editable="top">
+                <field name="name" />
+                <field name="code" />
+                <field name="type_sanction" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="hr_employer_type_sanction_view_action" model="ir.actions.act_window">
+        <field name="name">Type sanction</field>
+        <field name="res_model">hr.employee.type.sanction</field>
+        <field name="view_mode">tree</field>
+        
+    </record>
+
+</odoo>

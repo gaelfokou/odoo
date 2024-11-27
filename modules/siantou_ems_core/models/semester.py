@@ -7,7 +7,7 @@ from odoo.exceptions import ValidationError  # Import the ValidationError class
 
 class Semester(models.Model):
     _name = 'siantou.ems.core.year.semester'
-    _description = 'Semestres'
+    _description = 'Gestion des Semestres'
 
     # Nom du semestre
     name = fields.Char(

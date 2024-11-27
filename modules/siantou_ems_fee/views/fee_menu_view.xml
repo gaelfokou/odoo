@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="menu_education_fee_root" name="Paiements" sequence="2" groups="group_fee_base"/>
+    <!-- <menuitem  id="menu_education_budget"  parent="menu_education_fee_root" name="Gestion Budgetaire" sequence="3"/> -->
+
+    <!-- <menuitem parent="menu_education_budget"
+              id="menu_lignes_budget"
+              name="Lignes Budgetaires"
+              action="base_account_budget.act_budget_lines_view" sequence="20"/> -->
+
+    <!-- <menuitem action="base_account_budget.open_budget_post_form" id="menu_budget_posts_form" parent="menu_fees_configuration"
+              sequence="80"  name="Postes Budgetaires"/>
+
+    <menuitem parent="menu_education_budget"
+              id="menu_act_budgets_view"
+              name="Budgets"
+              action="base_account_budget.act_budget_view" sequence="5"
+              groups="account.group_account_user"/> -->
+
+</odoo>

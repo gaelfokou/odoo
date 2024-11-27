@@ -14,10 +14,14 @@ from . import student_enrollment
 from . import courses
 
 from . import fee_student
+from . import fee_school
 from . import student
 from . import country
 from . import fee_enrollment
 
+from . import register_enrollement
+
 from . import country
 from . import fee_student
+from . import timetable
 

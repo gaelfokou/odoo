@@ -20,64 +20,20 @@ from odoo.addons.base.models.res_partner import WARNING_MESSAGE, WARNING_HELP
 
 
 
+# class Student(models.Model):
+#     _inherit = 'res.partner'
+
+#     is_student = fields.Boolean(
+#         string='Est un étudiant',
+#         default=False
+#     )
+
+
 class Student(models.Model):
-    _inherit = 'res.partner'
-
-    is_student = fields.Boolean(
-        string='Est un étudiant',
-        default=False
-    )
-
-    # gender = fields.Selection([
-    #     ('male', 'Homme'),
-    #     ('female', 'Femme'),
-    #     ('other', 'Autre')
-    # ], string='Sexe',
-    # default='other')
-
-    # school_id = fields.Many2one(
-    #     'siantou.ems.core.school',
-    #     string='Ecole',
-    #     required=True
-    # )
-
-    # course_id = fields.Many2one(
-    #     'oe.school.course',
-    #     string='Cycle'
-    # )
-
-    # field_of_study_id = fields.Many2one(
-    #     'siantou.ems.core.field_of_study',
-    #     string='Filière',
-    #     # required=True
-    # )
-
-    # level_id = fields.Many2one(
-    #     'siantou.ems.core.level',
-    #     string='Niveau',
-    #     # required=True
-    # )
-
-    # batch_id = fields.Many2one(
-    #     'siantou.ems.core.student.batch',
-    #     string='Lot de l\'étudiant',
-    # )
-
-    # @api.model
-    # def create(self, vals):
-    #     print(f"\n\nvals['school_id'] : {vals['school_id']}")
-    #     print(f"vals['field_of_study_id'] : {vals['field_of_study_id']}")
-    #     print(f"vals['level_id'] : {vals['level_id']}\n\n")
-    #     batch = self.env['siantou.ems.core.student.batch'].assign_batch(vals['school_id'], vals['field_of_study_id'], vals['level_id'])
-    #     vals['batch_id'] = batch.id
-    #     return super(Student, self).create(vals)
-
-
-
-class StudentInscription(models.Model):
     _name = 'oe.school.student'
     _inherit=['mail.thread', 'mail.activity.mixin',]
-    _description = 'Student'
+    _description = 'Gestion des étudiants'
+    
 
     name = fields.Char(string="Nom(s) et prénom(s)", required=True)
     matricule = fields.Char(string="Matricule")
@@ -115,9 +71,18 @@ class StudentInscription(models.Model):
     ], required=True, string="Type de cours",)
     status_univ = fields.Selection([
             ('new', 'Nouveau'),
-            ('red', 'Redoublant'),
+            ('anc', 'Ancien'),
         ], required=True, 
+        default='anc',
         string="Statut universitaire"
+    )
+    redoublant = fields.Selection(
+        [
+            ('oui', 'OUI'), 
+            ('non', 'NON')
+        ],
+        'Redoublant?',
+        default="non"
     )
     date_naissance = fields.Date(string="Date de naissance", required=True)
     lieu_naissance = fields.Char(string="Lieu de naissance", required=True)
@@ -145,7 +110,27 @@ class StudentInscription(models.Model):
         "siantou.ems.core.year", 
         string="Année académique", 
         required=True,
-        default=lambda self: self.env['siantou.ems.core.year'].sudo().search([('active', '=', True)], limit=1)
+        default=lambda self: self.env['siantou.ems.core.year'].search([('active', '=', True)], limit=1)
+    )
+    # payment_ids = fields.Many2one(
+    #     "education.fee.payment", 
+    #     string="Paiements", 
+    #     readonly=True,
+    #     default=lambda self: self.env['education.fee.payment'].search([('student_id', '=', self.id)], limit=1)
+    # )
+    user_id = fields.Many2one(
+        'res.users',
+        string="Utilisateur lié",
+        readonly=True,
+        help="Compte utilisateur portail associé à cet étudiant"
+    )
+
+
+    user_id = fields.Many2one(
+        'res.users',
+        string="Utilisateur lié",
+        readonly=True,
+        help="Compte utilisateur portail associé à cet étudiant"
     )
 
 
@@ -155,9 +140,42 @@ class StudentInscription(models.Model):
         last_caract_year = str(current_year)[2:]
         students = self.env['oe.school.student'].sudo().search([])  
         nbre = len(students) + 1
-        code = f"{last_caract_year}IUS000000{nbre}"
+        code = f"{last_caract_year}IUS000{nbre}"
         _logger.info(f"Matricule généré : {code}")
         return code
+
+
+    def action_create_portal_user(self):
+        """Crée un compte utilisateur portail pour l'étudiant"""
+         
+        for student in self:
+            partner_id = student.student_enroll_id.partner_id
+            # Création de l'email
+            email = student.name.replace(' ', '.').lower() + '@siantou.cm'
+            if not partner_id:
+                partner_id = student.env['res.partner'].create({
+                    'name': student.name,
+                    'email': email,
+                    'phone': student.num_tel,
+                    'is_company': False,
+                })
+            if not student.user_id:
+                # Création du mot de passe
+                password = student.name.replace(' ', '.').lower()
+                user_vals = {
+                    'name': student.name,
+                    'login': email,
+                    'email': email,
+                    'password': password,
+                    'partner_id': partner_id.id,
+                    'groups_id': [(6, 0, [self.env.ref('base.group_portal').id])],
+                }
+                user = self.env['res.users'].create(user_vals)
+                student.user_id = user
+                _logger.info(user.email)
+            
+
+
 
 
     @api.model
@@ -170,6 +188,37 @@ class StudentInscription(models.Model):
         )
         vals['batch_id'] = batch.id
         vals['matricule'] = self.generate_matricule()
-        return super().create(vals)
+
+        # Création de l'étudiant
+        student = super().create(vals)
+        
+        # Appel de la fonction action_create_portal_user pour créer automatiquement un compte utilisateur
+        student.action_create_portal_user()
+        
+        return student
     
 
+    def action_create_portal_user(self):
+        """Crée un compte utilisateur portail pour l'étudiant"""
+        for student in self:
+            if not student.user_id:
+                # Création de l'email et du mot de passe
+                email = student.name.replace(' ', '.').lower() + '@siantou.cm'
+                password = student.name.replace(' ', '.').lower()
+                user_vals = {
+                    'name': student.name,
+                    'login': email,
+                    'email': email,
+                    'password': password,
+                    'partner_id': student.env['res.partner'].create({
+                        'name': student.name,
+                        'email': email,
+                        'phone': student.num_tel,
+                        'is_company': False,
+                    }).id,
+                    'groups_id': [(6, 0, [self.env.ref('base.group_portal').id])],
+                }
+                user = self.env['res.users'].sudo().create(user_vals)
+                student.user_id = user
+            else:
+                raise ValueError(_("Cet étudiant a déjà un compte utilisateur portail."))

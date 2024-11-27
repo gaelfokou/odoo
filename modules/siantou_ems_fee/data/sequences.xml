@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <!-- Sequences for education.fee.payment -->
+        <record id="seq_fees_payment" model="ir.sequence">
+            <field name="name">Fees Payment</field>
+            <field name="code">education.fees.payment</field>
+            <field name="prefix">VERS-</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+        </record>
+
+        <record id="seq_fees_special" model="ir.sequence">
+            <field name="name">Fees special</field>
+            <field name="code">siantou.ems.fee.special</field>
+            <field name="prefix">SPE-</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+        </record>
+
+    </data>
+</odoo>

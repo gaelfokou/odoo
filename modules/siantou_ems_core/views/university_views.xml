@@ -65,7 +65,7 @@
                 name="Universités"
                 parent="menu_siantou_ems_core_config"
                 action="action_school_setup"
-                groups="group_school_manager"
+                
                 sequence="1"/>
 	</data>
 </odoo>

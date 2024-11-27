@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="fees_student_inherit" model="ir.ui.view">
+        <field name="name">fees.student.view.form.inherit</field>
+        <field name="model">oe.school.student</field>
+        <field name="inherit_id" ref="siantou_ems_fee_view_education_student_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button type="object" class="oe_stat_button" icon="fa-pencil-square-o" name="student_fees"
+                    context="{'default_partner_id': active_id}">
+                    <div class="o_form_field o_stat_info">
+                        <span class="o_stat_value">
+                            <field name="currency_id" invisible="1" />
+                            <field name="amount_to_paid" widget='monetary' options="{'currency_field': 'currency_id'}" />
+                        </span>
+                        <span class="o_stat_text">À Payer</span>
+                    </div>
+                </button>
+                <button type="object" class="oe_stat_button" icon="fa-pencil-square-o" name="student_fees_paid"
+                    context="{'default_partner_id': active_id}">
+                    <div class="o_form_field o_stat_info">
+                        <span class="o_stat_value">
+                            <field name="currency_id" invisible="1" />
+                            <field name="amount_paid" widget='monetary' options="{'currency_field': 'currency_id'}" />
+                        </span>
+                        <span class="o_stat_text">Payées</span>
+                    </div>
+                </button>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="fees_studentss_inherit" model="ir.ui.view">
+        <field name="name">fees.student.views.form.inherit</field>
+        <field name="model">oe.school.student</field>
+        <field name="inherit_id" ref="siantou_ems_fee_view_education_student_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                        <button name="create_fees" type="object" class="oe_highlight" confirm="Souhaitez vous generer des factures?"
+                            states="draft"  string="Génerer Facture" groups="siantou_ems_fee.group_education_gest"/>
+            </xpath>
+        </field>
+    </record>
+
+
+    <record id="fees_filiere_inherits" model="ir.ui.view">
+        <field name="name">fees.filiere.view.form.inherit</field>
+        <field name="model">education.filiere</field>
+        <field name="inherit_id" ref="siantou_ems_fee_view_education_filiere_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='online']" position="after">
+                <field name="frais" widget="many2many_tags"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="res_config_settings_view_form" model="ir.ui.view">                                        
+        <field name="name">res.config.settings.view.form.inherit.siantou_ems_fee</field>                                        
+        <field name="model">res.config.settings</field>                                        
+        <field name="priority" eval="50"></field>                                        
+        <field name="inherit_id" ref="base.res_config_settings_view_form"></field>                                        
+        <field name="arch" type="xml">                                            
+        <xpath expr="//div[hasclass('settings')]" position="inside">                                                
+            <div class="app_settings_block" data-string="siantou_ems_fee" string="Scolarité" data-key="siantou_ems_fee">
+                <script data-ad-client="ca-pub-7357241631679316" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>                    
+                <ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-7357241631679316" data-ad-slot="7654326254"></ins>     
+                <script>     (adsbygoogle = window.adsbygoogle || []).push({});</script>                                                                                                         
+                <h2>configuration du Module</h2>                                                    
+                <div class="row mt16 o_settings_container">                                                        
+                    <div class="col-12 col-lg-6 o_setting_box" id="project">                                                            
+                        <div class="o_setting_left_pane">                                                                
+                            <field name="percent"></field>                                                            
+                        </div>                                                            
+                        <div class="o_setting_right_pane">                                                                
+                            <label for="percent"></label>                                                                
+                            <div class="text-muted" id="percent_module">Pourcentage pour le contrôle de la scolarité</div>                                                            
+                        </div>                                                        
+                    </div>                                                    
+                </div>                                                    
+            </div>                                                
+        </xpath>                                        
+        </field>                                    
+    </record>  
+
+    <record id="action_custom_config_settings" model="ir.actions.act_window">                                    
+        <field name="name">Settings</field>                                    
+        <field name="type">ir.actions.act_window</field>                                    
+        <field name="res_model">res.config.settings</field>                                    
+        <field name="view_id" ref="res_config_settings_view_form"></field>                                    
+        <field name="view_mode">form</field>                                    
+        <field name="target">inline</field>                                    
+        <field name="context">{'module' : 'siantou_ems_fee'}</field>                                
+    </record>
+
+    <menuitem id="configuration_menu_setting" 
+        name="Configurations" 
+        parent="menu_fees_configuration" 
+        action="action_custom_config_settings" sequence="0"/>
+
+</odoo>

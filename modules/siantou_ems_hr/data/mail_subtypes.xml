@@ -1,0 +1,34 @@
+<odoo>
+    <data>
+  
+          <!-- Reclassement subtypes -->
+          <record id="reclassement_brouillon" model="mail.message.subtype">
+            <field name="name">Nouvel reclassement personnel</field>
+            <field name="res_model">hr.carriere.reclassement</field>
+            <field name="default" eval="True"/>
+            <field name="description">Message envoyé lors de la création d'un nouvel reclassement</field>
+          </record>
+  
+          <record id="reclassement_confirme" model="mail.message.subtype">
+            <field name="name">reclassement confirmé</field>
+            <field name="res_model">hr.carriere.reclassement</field>
+            <field name="default" eval="True"/>
+            <field name="description">Message envoyé lors de la confirmation d'un reclassement</field>
+          </record>
+  
+          <record id="reclassement_termine" model="mail.message.subtype">
+            <field name="name">reclassement terminé</field>
+            <field name="res_model">hr.carriere.reclassement</field>
+            <field name="default" eval="True"/>
+            <field name="description">Message envoyé lors de la cloture d'un reclassement</field>
+          </record>
+  
+          <record id="reclassement_annule" model="mail.message.subtype">
+            <field name="name">reclassement annulé</field>
+            <field name="res_model">hr.carriere.reclassement</field>
+            <field name="default" eval="True"/>
+            <field name="description">Message envoyé lors de la cloture d'un reclassement</field>
+          </record>
+  
+      </data>
+  </odoo>

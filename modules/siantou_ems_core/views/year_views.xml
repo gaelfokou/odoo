@@ -73,7 +73,7 @@
                 name="Années académiques"
                 parent="menu_siantou_ems_core_config"
                 action="action_show_year"
-                groups="group_school_manager"
+                
                 sequence="2"/>
 	</data>
 </odoo>

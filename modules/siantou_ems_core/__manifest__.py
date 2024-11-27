@@ -5,6 +5,11 @@
     'version': '17.0.0.0',
     'depends': ['base','hr','account','mail'],
     'data': [
+        # Fichiers de datas
+        # 'data/email_template_preinscription.xml',
+        # 'data/email_template_preinscription_conditionnelle.xml',
+        # 'data/sequence_preinscription.xml',
+        
         # Fichiers de sécurité
         'security/module_category_school_management.xml',
         'security/group_school_management.xml',
@@ -27,6 +32,8 @@
         # 'views/student_views.xml',
         'views/batch_views.xml',
         'views/school_views.xml',
+        'views/admission_registre_view.xml',
+        'views/admission_session_view.xml',
 
         'views/student_enrollment_views.xml',
         'views/students_views.xml',
@@ -47,6 +54,15 @@
 
         'wizard/fee_student_wizard.xml',
         'wizard/student_enroll_admission_wizard.xml',
+
+
+        # Fichier de vue timetable
+        'views/timetable_views.xml',
+        'views/timetable_group_views.xml',
+        'views/timetable_wizard_views.xml',
+        'views/timetable_print_wizard_views.xml',
+        'report/timetable_reports.xml',
+        'report/timetable_template.xml',
     ],
     'license': 'LGPL-3',
     'installable': True,

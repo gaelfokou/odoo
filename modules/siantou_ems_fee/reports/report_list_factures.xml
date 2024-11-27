@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="report_fees_classe">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="web.external_layout">
+                        <div class="page">
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-12 text-center mb-2">
+                                        <h2>LISTE DES FACTURES</h2>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-12">
+                                        <h3>Information de facturation</h3>
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <p>Classe : <b>
+                                                        <span t-field="o.classe_id.name" />
+                                                    </b>
+                                                </p>
+                                            </div>
+                                            <div class="col-3">
+                                                 <p>Année academique : <b>
+                                                        <span t-field="o.academic_year.name" />
+                                                    </b>
+                                                </p>
+                                            </div>
+                                            <div class="col-3">
+                                                 <p>Nombre d'etudiants : <b>
+                                                        <span t-field="o.classe_id.student_count" />
+                                                    </b>
+                                                </p>
+                                            </div>
+                                            <div class="col-3">
+                                                 <p>Montant de la scolarite : <b>
+                                                        <span t-field="o.amount" widget="Monetary" />
+                                                    </b>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="row mt-3">
+                                    <div class="col-12">
+                                        <table classe="table table-striped" style="width: 90%; margin:auto;border-collapse: collapse;">
+                                            <thead>
+                                                <tr style="border: 1px solid black">
+                                                    <th scope="col">#</th>
+                                                    <th scope="col">Matricule</th>
+                                                    <th scope="col">Noms</th>
+                                                    <th scope="col">Montant à payer</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr t-foreach="students" t-as="student" style="border: 1px solid black">
+                                                    <td scope="row"><t t-esc="student_index + 1"/></td>
+                                                    <td><t t-esc="student.get('matricule')"/></td>
+                                                    <td><t t-esc="student.get('name')"/></td>
+                                                    <td><t t-esc="'{0:,.0f}'.format(int(student.get('amount'))).replace(',', ' ')" /> </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>

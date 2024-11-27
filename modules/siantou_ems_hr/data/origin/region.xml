@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="region_ad" model="hr.employee.origin.region">
+            <field name="code">AD</field>
+            <field name="name">Adamaoua</field>
+        </record>
+        <record id="region_ce" model="hr.employee.origin.region">
+            <field name="code">CE</field>
+            <field name="name">Centre</field>
+        </record>
+        <record id="region_es" model="hr.employee.origin.region">
+            <field name="code">ES</field>
+            <field name="name">Est</field>
+        </record>
+        <record id="region_en" model="hr.employee.origin.region">
+            <field name="code">EN</field>
+            <field name="name">Extrême-Nord</field>
+        </record>
+        <record id="region_lt" model="hr.employee.origin.region">
+            <field name="code">LT</field>
+            <field name="name">Littoral</field>
+        </record>
+        <record id="region_no" model="hr.employee.origin.region">
+            <field name="code">NO</field>
+            <field name="name">Nord</field>
+        </record>
+        <record id="region_nw" model="hr.employee.origin.region">
+            <field name="code">NW</field>
+            <field name="name">Nord-Ouest</field>
+        </record>
+        <record id="region_ou" model="hr.employee.origin.region">
+            <field name="code">OU</field>
+            <field name="name">Ouest</field>
+        </record>
+        <record id="region_su" model="hr.employee.origin.region">
+            <field name="code">SU</field>
+            <field name="name">SUD</field>
+        </record>
+        <record id="region_sw" model="hr.employee.origin.region">
+            <field name="code">SW</field>
+            <field name="name">Sud-Ouest</field>
+        </record>
+    </data>
+</odoo>

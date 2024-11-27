@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+		<!-- Affichage en vue liste -->
+		<record id="siantou_session_tree_view" model="ir.ui.view">
+            <field name="name">siantou.session.tree.view</field>
+			<field name="model">siantou.session</field>
+			<field name="arch" type="xml">
+				<tree string="Session d'admission">
+                    <field name="name"/>
+                    <!-- <field name="structure_frais_id"/> -->
+                    <field name="year_id"/>
+                    <field name="start_date"/>
+                    <field name="end_date"/>
+                    <!-- <field name="active"/> -->
+                    <field 
+                        name="state" 
+                        widget="badge" 
+                        decoration-primary="state == 'draft'"
+                        decoration-danger="state == 'cancel'"
+                        decoration-success="state == 'done'"
+                        decoration-info="state == 'admission'"
+                    />
+				</tree>
+			</field>
+		</record>
+
+        <!-- Affichage en vue formulaire -->
+		<record id="siantou_session_form_view" model="ir.ui.view">
+			<field name="name">siantou.session.form.view</field>
+			<field name="model">siantou.session</field>
+			<field name="arch" type="xml">
+				<form string="Session d'admission">
+                    <header>
+                        <button name="start_admission" invisible="state != 'draft'" type="object" string="Lancer la session d'admission"
+                                class="oe_highlight"/>
+                        <button name="close_register" invisible="state != 'admission'" type="object" string="Clôturer la session"
+                                class="oe_highlight"/>
+                        <button name="cancel_register" invisible="state != ['draft','confirm']" string="Annuler la Session" type="object"/>
+                        <button name="set_to_draft" invisible="state != 'cancel'" string="Remettre en brouillon" type="object"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,admission,done"/>
+                    </header>
+					<sheet>
+                        <!-- <field name="active" invisible="1"/> -->
+                        <!-- <widget name="web_ribbon" title="Archivé" bg_color="bg-danger"
+                                invisible="active == True"/> -->
+                        <group>
+                            <group>
+                                <field name="name"/>
+                            </group>
+                            <group>
+                                <field name="year_id"/>
+                            </group>
+                        </group>
+                        <group>
+                            <!-- <group>
+                                <field name="structure_frais_id"/>
+                            </group> -->
+                            <group>
+                                <field name="cycle_ids" widget="many2many_tags"/>
+                            </group>
+                        </group>
+                        
+                        <group>
+                            <group>
+                                <field name="start_date"/>
+                            </group>
+                            <group>
+                                <field name="end_date"/>
+                            </group>
+                        </group>
+                        <!-- <group string="Cycles concernés">
+                            <field name="cycle_ids" widget="many2many_tags"/>
+                        </group> -->
+                        <notebook>
+                            <page name="name" string="Liste des régistres">
+                                <field name="registre_ids"/>
+                            </page>
+                        </notebook>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+        <!-- Affichage en vue recherche -->
+         <record
+            id="siantou_session_search_view"
+            model="ir.ui.view">
+            <field name="name">session.search.view</field>
+            <field name="model">siantou.session</field>
+            <field name="arch" type="xml">
+                <search string="Session">
+                    <field name="name" string="Nom"/>
+                    <separator/>
+                </search>
+             </field>
+        </record>
+
+        <!-- Action pour le menu d'affichage des Régions -->
+        <record
+                id="action_show_session"
+                model="ir.actions.act_window">
+            <field name="name">Session d'admission</field>
+            <field name="res_model">siantou.session</field>
+            <field name="search_view_id" ref="siantou_session_search_view"/>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Créer une nouvelle session.
+                </p>
+            </field>
+        </record>
+
+        <!-- Menu pour -->
+        <menuitem
+            id="menu_siantou_ems_core_siantou_session_admission"
+            name="Session d'admission"
+            parent="menu_siantou_ems_core_adminssions"
+            action="action_show_session"
+            sequence="2"
+        />
+
+	</data>
+</odoo>

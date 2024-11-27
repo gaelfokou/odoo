@@ -26,6 +26,30 @@ class Campus(models.Model):
     )
     
 
+class Campus(models.Model):
+    _name = 'siantou.ems.core.campus'
+    _description = 'Campus'
+
+    # Code
+    code = fields.Char(
+        'Code',
+        required=True
+    )
+
+    # Nom
+    name = fields.Char(
+        string="Nom du campus",
+        required=True
+    )
+
+    # Université à laquelle appartient ce bâtiment
+    company_id = fields.Many2one(
+        'res.company',
+        required=True,
+        default=lambda self: self.env.company
+    )
+    
+
 class Building(models.Model):
     _name = 'siantou.ems.core.building'
     _description = 'Bâtiments'
@@ -86,6 +110,13 @@ class Classroom(models.Model):
         required=True,
         default=60
     )
+
+    # Ajout dans le modèle Classroom
+    # timetable_ids = fields.One2many(
+    #     'siantou.ems.timetable.timetable',  # Nom du modèle cible
+    #     inverse_name="classroom_id",                    # Champ de relation dans Timetable
+    #     string="Emplois du temps"
+    # )
 
     #Contrainte SQL pour s'assurer que la salle de classe est unique
     _sql_constraints = [

@@ -18,7 +18,7 @@ _logger = logging.getLogger(__name__)
     
 class OeSchoolCourse(models.Model):
     _name = 'oe.school.course'
-    _description = 'Cycles'
+    _description = 'Gestion des Cycles'
     _order = 'name'
 
     def _default_color(self):

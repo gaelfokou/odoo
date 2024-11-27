@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="fee_special_view_form" model="ir.ui.view">
+            <field name="name">fee_special.view.form</field>
+            <field name="model">siantou.ems.fee.special</field>
+            <field name="arch" type="xml">
+                <form string="Formulaire de paiement">
+                    <header groups="base.group_user">
+                        <button name="validate_special" invisible="state == 'done'" type="object" string="Valider"
+                            class="oe_highlight" confirm="Validez-vous cette facturation ?" />
+                        <button name="reset_special" invisible="state == 'draft'" type="object" string="Réinitoaliser" />
+                        <field name="state" widget="statusbar" statusbar_visible="draft,done" />
+                    </header>
+                    <sheet>
+                        <group col="4" colspan="4">
+                            <group col="2" colspan="2">
+                                <field name="name" invisible="1"/>
+                                <field name="student_id" options="{'no_open': True, 'no_create': True}"/>
+                                <field name="fee_structure_id" options="{'no_open': True, 'no_create': True}"/>
+                                <field name="amount" />
+                            </group>
+                            <group col="2" colspan="2">
+                                <field name="academic_year_id" options="{'no_open': True, 'no_create': True}"/>
+                                <field name="currency_id" invisible="1" />
+                                <field name="campus"  string="Campus"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page name="description" string="Description détaillé">
+                                <field name="description" placeholder="Une description des frais appliqué à l'étudiant"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+
+                        <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+        
+                        <field name="message_ids" widget="mail_thread"/>
+        
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="fee_special_view_tree" model="ir.ui.view">
+            <field name="name">siantou.ems.fee.special.view.tree</field>
+            <field name="model">siantou.ems.fee.special</field>
+            <field name="arch" type="xml">
+                <tree string="Liste des frais spéciaux">
+                    <field name="name" />
+                    <field name="academic_year_id" />
+                    <field name="student_id" />
+                    <field name="fee_structure_id" />
+                    <field name="amount" />
+                    <field name="state" />
+                </tree>
+            </field>
+        </record>
+
+        <record id="fee_special_action" model="ir.actions.act_window">
+            <field name="name">Frais spéciaux</field>
+            <field name="res_model">siantou.ems.fee.special</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Veuillez enregistrer les frais spéciaux pour chaque étudiants
+                </p>
+            </field>
+        </record>
+
+        <menuitem 
+            action="fee_special_action"
+            id="menu_fee_special_action"
+            parent="menu_student_fee_receipt"
+            sequence="30" />
+
+    </data>
+</odoo>

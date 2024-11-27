@@ -38,43 +38,51 @@
 			<form string="Etudiant">
                 <header>
 
-                    <button invisible="status in ['inscrip','transfer']" 
+                    <button invisible="status in ['inscrip','transfer','rej']" 
                         name="action_preinscrip_wizard"
                         class="btn btn-primary" 
                         type="object" 
                         string="Inscrire"/>
 
-                    <button invisible="status in ['broui', 'transfer']" 
+                    <button invisible="status in ['broui','transfer','rej']" 
                         name="action_admission_enrollment_wizard" 
-                        class="btn btn-success" 
+                        class="btn btn-success"
                         type="object" 
-                        string="Transférer"/>
+                        string="Accepter cette candidature"/>
                     
-                    <!-- <button  
+                    <button  invisible="status in ['broui', 'transfer', 'rej']"
                         name="compute_rejected" 
                         class="btn btn-danager" 
                         type="object" 
-                        string="Rejeter cette candidature"/> -->
+                        string="Rejeter cette candidature"/>
                     
-                    <field name="status" widget="statusbar"/>
+                    <field name="status" widget="statusbar" statusbar_visible="broui,inscrip,transfer"/>
                 </header>
                 <sheet>
 
-                    <widget name="web_ribbon" title="Transférer" 
-                        invisible="status in ['broui', 'inscrip']"/>
+                    <widget name="web_ribbon" title="Admis" 
+                        invisible="status in ['broui', 'inscrip', 'rej']"/>
 
                     <div class="oe_title">
                         <label for="date_preins" string="Date de préinscription" />
                         <h1><field name="date_preins" readonly="1"/></h1>
                     </div>
+
                     <group>
                         <group>
                             <field 
                                 name="status" 
+                                widget="badge" 
+                                decoration-primary="status == 'broui'"
+                                decoration-success="status == 'transfer'"
+                                decoration-info="status == 'inscrip'"
                             />
                         </group>
                         <group>
                             <field name="code_enrol" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="registre_id"/>
                         </group>
                     </group>
                     <group name="perso" string="Informations générales">
@@ -189,7 +197,7 @@
     </record>
     
     <record model="ir.actions.act_window" id="action_enrollment_history">
-        <field name="name">Préinscriptions</field>
+        <field name="name">Candidatures</field>
         <field name="res_model">oe.school.student.enrollment</field>
         <field name="view_mode">tree,form</field>
         <field name="help" type="html">
@@ -207,9 +215,9 @@
     <menuitem
             id="menu_siantou_ems_core_students_preinscription"
             name="Candidatures"
-            parent="menu_siantou_ems_core_students"
+            parent="menu_siantou_ems_core_adminssions"
             action="action_enrollment_history"
             sequence="1"
-            groups="group_school_user"/>
+            />
     
 </odoo>

@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<odoo>
+    <data noupdate="1">
+        <record id="email_template_preinscription_conditionnelle" model="mail.template">
+            <field name="name">Admission sous condition - Licence ou Master</field>
+            <field name="model_id" ref="your_module.model_student"/>
+            <field name="subject">Admission conditionnelle - ${object.name}</field>
+            <field name="email_from">${(object.company_id.email or 'info@votre_entreprise.com')|safe}</field>
+            <field name="email_to">${object.email|safe}</field>
+            <field name="body_html" type="html">
+                <![CDATA[
+                    <p>Bonjour ${object.name},</p>
+                    <p>Nous avons le plaisir de vous informer de votre admission dans notre programme ${object.programme_name}.</p>
+                    <p><strong>Admission sous condition :</strong></p>
+                    <p>Étant donné que vous avez été admis en ${object.programme_level} (${object.programme_name}), votre admission est conditionnée à la soumission de vos documents originaux ou certifiés dans un délai de 60 jours conformément aux modalités de notre établissement.</p>
+                    <p>Veuillez vous rendre dans votre espace étudiant pour plus de détails sur la procédure et les documents requis.</p>
+                    <p>Cordialement,</p>
+                    <p>L'équipe ${object.company_id.name}</p>
+                ]]>
+            </field>
+            <field name="auto_delete" eval="True"/>
+        </record>
+    </data>
+</odoo>

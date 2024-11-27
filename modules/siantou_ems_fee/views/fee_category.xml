@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="fee_category_form" model="ir.ui.view">
+            <field name="name">siantou.ems.fee.category.form</field>
+            <field name="model">siantou.ems.fee.category</field>
+            <field name="arch" type="xml">
+                <form string="Fee Category">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name" placeholder="Ex: Pension"/>
+                            </group>
+                            <group>
+                                <field name="journal_id"/>
+                                <!-- <field name="analytic_id"/> -->
+                            </group>
+                            <group>
+                                <field name="fee_structure"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="fee_category_tree" model="ir.ui.view">
+            <field name="name">siantou.ems.fee.category.tree</field>
+            <field name="model">siantou.ems.fee.category</field>
+            <field name="arch" type="xml">
+                <tree string="Fee Category">
+                    <field name="name"/>
+                    <field name="journal_id"/>
+                </tree>
+            </field>
+        </record>
+
+
+        <record id="action_fee_category" model="ir.actions.act_window">
+            <field name="name">Catégorie de frais</field>
+            <field name="res_model">siantou.ems.fee.category</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <menuitem 
+            id="menu_action_fee_category" 
+            action="action_fee_category"
+            parent="menu_fees_configuration"
+            sequence="3"
+        />
+    </data>
+</odoo>
+
+

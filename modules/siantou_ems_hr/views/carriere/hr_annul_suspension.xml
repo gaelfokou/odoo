@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Vue formulaire -->
+    <record id="annul_suspension_view_form" model="ir.ui.view">
+        <field name="name">annul_suspension.view.form</field>
+        <field name="model">hr.annul.suspension</field>
+        <field name="arch" type="xml">
+            <form string="Formulaire d'annulation d'une suspension">
+                <header>
+                    <button string="Valider" name="action_valider" type="object"
+                        class="btn-primary" icon="fa-check"
+                        invisible="state != 'draft'" />
+                    <button string="Confirmer" name="action_confirmer" type="object"
+                        class="btn-success" icon="fa-check-circle"
+                        invisible="state != 'validate'" />
+                    <button string="Annuler" name="action_annuler" type="object"
+                        class="btn-danger" icon="fa-times-circle"
+                        invisible="state not in ('validate', 'confirm')" 
+                        confirm="Êtes-vous sûr de vouloir annuler cette suspension ?" />
+                    <field name="state" widget="statusbar"
+                        statusbar_visible="draft,validate,confirm,cancel" />
+                </header>
+                <sheet>
+                    <div>
+                        <h2>
+                            <field name="name" nolabel="1" readonly="1" 
+                                invisible="state == 'draft'" />
+                        </h2>
+                    </div>
+                    <group>
+                        <group col="2" string="Informations générales">
+                            <field name="type_saction" />
+                            <field name="employee_id" required="1" 
+                                options="{'no_create': True, 'no_open': True}" />
+                            <field name="suspension_id" options="{'no_create': True, 'no_open': True}" />
+                        </group>
+                        <group col="2" string="Informations d'annulation">
+                            <field name="date" />
+                            <field name="description" />
+                            <field name="file_name" invisible="1" />
+                            <field name="document" filename="file_name" />
+                        </group>
+                    </group>
+                    <notebook>
+                        <page name="suspension_line" string="Informations sur la suspension">
+                            <group>
+                                <field name="name" />
+                                <field name="reference" />
+                                <field name="date_suspension" />
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" groups="hr.group_hr_manager"
+                        options="{'post_refresh': 'recipients'}" />
+                    <field name="activity_ids" />
+                    <field name="message_ids" />
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- Vue liste -->
+    <record id="annul_suspension_view_tree" model="ir.ui.view">
+        <field name="name">annul_suspension.view.tree</field>
+        <field name="model">hr.annul.suspension</field>
+        <field name="arch" type="xml">
+            <tree string="Liste des annulations de suspension">
+                <field name="employee_id" />
+                <field name="date" />
+                <field name="state" widget="badge" />
+            </tree>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="annul_suspension_action" model="ir.actions.act_window">
+        <field name="name">Annulations de suspension</field>
+        <field name="res_model">hr.annul.suspension</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>

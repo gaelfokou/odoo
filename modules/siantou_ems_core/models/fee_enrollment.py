@@ -7,7 +7,7 @@ from odoo.exceptions import UserError, AccessError, ValidationError
 
 class FeeEnrollment(models.Model):
     _name = 'siantou.ems.core.fee.enrollment'
-    _description = 'Frais de préinscription'
+    _description = "Gestion des Frais d'inscription"
 
     code = fields.Char(string="Code", required=True, index=True,)
     name = fields.Char(string="Nom", required=True, index=True,)
@@ -58,7 +58,7 @@ class FeeEnrollment(models.Model):
 
 class FeeEnrollStudent(models.Model):
     _name = 'siantou.ems.core.fee.student'
-    _description = "Frais d'inscription des étudiants"
+    _description = "Gestion des Frais d'inscription des étudiants"
     _order = 'name'
 
     fee_enroll_struct_id = fields.Many2one(

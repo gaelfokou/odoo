@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="hr_carriere_affectation_view_form" model="ir.ui.view">
+        <field name="name">hr_carriere_affectation.view.form</field>
+        <field name="model">hr.carriere.affectation</field>
+        <field name="arch" type="xml">
+            <form string="Formulaire d'enregistrement d'un affectation">
+                <header>
+                    <button string="Valider" name="action_valider" type="object" 
+                        class="btn-primary" icon="fa-check"
+                        invisible="state != 'draft'" />
+                    <button string="Confirmer" name="action_confirmer" type="object" 
+                        class="btn-primary" icon="fa-check-circle"
+                        invisible="state != 'valider'" />
+                    <field name="state" widget="statusbar"
+                        statusbar_visible="draft,valider,confirmer,annuler" />
+                </header>
+                <sheet>
+                    <div>
+                        <h2>
+                            <field name="name" nolabel="1" readonly="1" 
+                                invisible="state == 'draft'" />
+                        </h2>
+                    </div>
+                    <group col="4">
+                        <group colspan="2" string="Informations générales">
+                            <field name="reference"/>
+                            <field name="date_affectation"/>
+                            <field name="employee_id" required="1" options="{'no_create': True}"/>
+                            <field name="date_effective"/>
+                        </group>
+                        <group colspan="2" string="Information suppléméntaires">
+                            <field name="department_src_id" options="{'no_create': True}"/>
+                            <field name="department_dst_id" options="{'no_create': True}" required="1"/>
+                            <field name="file_name" invisible="1"/>
+                            <field name="document" filename="file_name"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page name="comment" string="Commentaires">
+                            <field name="description" nolabel="1" placeholder="Un commentaire sur cette affectation..."/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                        <field name="message_follower_ids" groups="base.group_user" />
+                        <field name="message_ids" />
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="hr_carriere_affectation_view_tree" model="ir.ui.view">
+        <field name="name">hr_carriere_affectation.view.tree</field>
+        <field name="model">hr.carriere.affectation</field>
+        <field name="arch" type="xml">
+            <tree string="Liste des affectation">
+                <field name="date_affectation"/>
+                <field name="employee_id"/>
+                <field name="department_src_id"/>
+                <field name="department_dst_id" />
+                <field name="state" widget="badge"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Action du menu de Affectations / Mutations -->
+    <record id="hr_carriere_affectation_action" model="ir.actions.act_window">
+        <field name="name">Affectations / Mutations</field>
+        <field name="res_model">hr.carriere.affectation</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                créer ici.
+            </p>
+        </field>
+    </record>
+
+</odoo>

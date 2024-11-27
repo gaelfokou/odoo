@@ -3,7 +3,7 @@ from odoo import models, fields
 
 class Country(models.Model):
     _name = 'siantou.ems.core.country'
-    _description = 'Pays'
+    _description = 'Gestion des pays'
 
     # code du pays
     code = fields.Char(
@@ -23,7 +23,7 @@ class Country(models.Model):
 
 class Region(models.Model):
     _name = 'siantou.ems.core.region'
-    _description = 'Pays'
+    _description = 'Gestion des régions'
 
     # Nom de la région
     name = fields.Char(
@@ -41,7 +41,7 @@ class Region(models.Model):
 
 class City(models.Model):
     _name = 'siantou.ems.core.city'
-    _description = 'Pays'
+    _description = 'Gestion des villes'
 
     # Nom de la ville
     name = fields.Char(
@@ -59,7 +59,7 @@ class City(models.Model):
 
 class Quarter(models.Model):
     _name = 'siantou.ems.core.quarter'
-    _description = 'Quartier'
+    _description = 'Gestion des quartiers'
 
     # Nom du quartsier
     name = fields.Char(

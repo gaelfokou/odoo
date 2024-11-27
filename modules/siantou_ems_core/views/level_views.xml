@@ -56,7 +56,7 @@
                 name="Niveaux"
                 parent="menu_siantou_ems_core_program"
                 action="action_show_level"
-                groups="group_school_manager"
+                
                 sequence="2"/>
 	</data>
 </odoo>

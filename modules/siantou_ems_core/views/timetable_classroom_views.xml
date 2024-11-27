@@ -1,0 +1,39 @@
+<odoo>
+    <data>
+        <!-- Action serveur pour exécuter populate_classrooms -->
+        <record id="action_populate_classrooms" model="ir.actions.server">
+            <field name="name">Remplir les TimetableClassrooms</field>
+            <field name="model_id" ref="model_siantou_ems_timetable_classroom"/>
+            <field name="binding_model_id" ref="model_siantou_ems_timetable_classroom"/>
+            <field name="state">code</field>
+            <field name="code">model.populate_classrooms()</field>
+        </record>
+
+        <!-- Vue Liste (Tree) pour TimetableClassroom -->
+        <record id="view_timetable_classroom_tree" model="ir.ui.view">
+            <field name="name">siantou.ems.timetable.classroom.tree</field>
+            <field name="model">siantou.ems.timetable.classroom</field>
+            <field name="arch" type="xml">
+                <tree string="Emplois du temps par salle">
+                    <field name="classroom_id"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Action pour afficher les classrooms avec l'action serveur -->
+        <record id="action_timetable_classroom" model="ir.actions.act_window">
+            <field name="name">Classrooms</field>
+            <field name="res_model">siantou.ems.timetable.classroom</field>
+            <field name="view_mode">tree</field>
+            
+            <field name="binding_model_id" ref="action_populate_classrooms"/>
+        </record>
+
+        <!-- Menu pour accéder à la vue de Classroom -->
+        <menuitem id="menu_siantou_ems_timetable_classroom"
+                  name="Emplois du temps par salle"
+                  parent="menu_siantou_ems_timetable_planning"
+                  action="action_timetable_classroom"
+                  sequence="3"/>
+    </data>
+</odoo>

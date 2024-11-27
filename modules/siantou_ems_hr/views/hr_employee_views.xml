@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="hr_employee_dgd_form_view" model="ir.ui.view">
+        <field name="name">hr.employee_dgd.view.form.inherit</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form" />
+        <field name="priority" eval="2000" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="after">
+                <button name="action_create_employee_user" type="object" string="Créer un utilisateur" class="btn btn-primary" invisible="not id or user_id"/>
+            </xpath>
+
+            <xpath expr="//notebook" position="before">
+                <div class="separator-notebook"></div>
+            </xpath>
+            <xpath
+                expr="//field[@name='parent_id']"
+                position="attributes">
+                <attribute name="string">Supérieur hiérarchique</attribute>
+            </xpath>
+            <xpath
+                expr="//field[@name='job_id']"
+                position="attributes">
+                <attribute name="string">Poste</attribute>
+            </xpath>
+            <xpath
+                expr="//field[@name='work_email']"
+                position="after">
+                <field name="rang_id" />
+            </xpath>
+             <xpath expr="//field[@name='job_title']" position="attributes">
+                <attribute name="invisible">1</attribute>
+             </xpath>
+             <xpath expr="//field[@name='category_ids']" position="attributes">
+                <attribute name="invisible">1</attribute>
+             </xpath>
+            
+
+            <field name="department_id" position="after">
+                <field name="type_personnel" />
+                <field name="qualite" invisible="type_personnel != 'elu'" />
+                <field name="class_type" invisible="type_personnel != 'classe'" />
+                <field name="class_type_b" invisible="type_personnel != 'classe_b'" />
+                <field name="expatrier" invisible='1' />
+                <field name="fonction_id" options="{'no_create': True}" />
+            </field>
+            <field name="children" position="before">
+                <field name="situation_conjoint" invisible="marital not in ['married', 'cohabitant']"/>
+            </field>
+
+            
+            <xpath expr="//page[@name='personal_information']/group/group[3]" position="replace">
+                <group string="Education">
+                    <field name="study_domaine" />
+                    <field name="study_discipline" />
+                    <separator name="origine_employee" string="Origine du personnel" />
+                </group>
+            </xpath>
+
+            <field name="identification_id" position='after'>
+                <field name="delivrance_cni" />
+                <field name="expiration_cni" />
+                <field name="lieu_cni" />
+            </field>
+
+            <xpath expr="//header" position="replace">
+                <header>
+                    <button string="Intégrer" name="action_integrer" type="object"
+                        class="oe_highlight" modifiers='{"invisible": [["state", "!=", "integration"]]}' />
+                    <field name="state" widget="statusbar"
+                        options="{'clickable': True, 'states': ['integration', 'actif', 'suspendu', 'liencie', 'retraite', 'archive']}" />
+                </header>
+            </xpath>
+
+
+            <xpath expr="//page[@name='personal_information']" position="after">
+                <page name="employee_discipline" string="Discipline">
+                    <field name="discipline_ids" readonly="1" nolabel="1">
+                        <tree>
+                            <field name="date" />
+                            <field name="reference" />
+                            <field name="type_sanction" />
+                        </tree>
+                    </field>
+                </page>
+            </xpath>
+
+
+            <xpath
+                expr="//page[@name='personal_information']/group/group[4]"
+                position="after">
+                <group string="Enfant(s)" colspan="4">
+                    <field name="children_ids">
+                        <tree editable='bottom'>
+                            <field name="nom_enfant" />
+                            <field name="date_naissance" />
+                            <field name="genre_enfant" />
+                            <field name="age_enfant" />
+                            <field name="school" />
+                        </tree>
+                    </field>
+                </group>
+            </xpath>
+
+            <xpath
+                expr="//page[@name='personal_information']/group/group[4]"
+                position="after">
+                <group string="Diplome (s)" colspan="4">
+                    <field name="diplome_ids">
+                        <tree editable='bottom'>
+                            <field name="nom_diplome" />
+                            <field name="equivalence_id" />
+                            <field name="ecole" />
+                            <field name="annee_obtention" />
+                        </tree>
+                    </field>
+                </group>
+            </xpath>
+
+            <xpath
+                expr="//page[@name='personal_information']/group/group[4]"
+                position="after">
+                <group string="Certificat (s)" colspan="4">
+                    <field name="certificat_ids">
+                        <tree editable='bottom'>
+                            <field name="nom_certificat" />
+                            <field name="equivalence_id" />
+                            <field name="ecole" />
+                            <field name="annee_obtention" />
+                        </tree>
+                    </field>
+                </group>
+            </xpath>
+
+        </field>
+    </record>
+
+</odoo>

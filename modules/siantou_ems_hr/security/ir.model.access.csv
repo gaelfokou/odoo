@@ -1,0 +1,33 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_hr_education_domaine_user,access user for education_domaine,model_hr_education_domaine,base.group_user,1,0,0,0
+access_hr_education_domaine_admin,access admin for education_domaine,model_hr_education_domaine,hr.group_hr_manager,1,1,1,1
+access_hr_education_discipline_user,access user for education_discipline,model_hr_education_discipline,base.group_user,1,0,0,0
+access_hr_education_discipline_admin,access admin for education_discipline,model_hr_education_discipline,hr.group_hr_manager,1,1,1,1
+acces_hr_eduction_certificat_admin,access admin for_education_certificat,model_hr_education_certificat,hr.group_hr_manager,1,1,1,1
+acces_hr_eduction_certificat_user,access user for_education_certificat,model_hr_education_certificat,base.group_user,1,0,0,0
+access_hr_education_domaine_user,access user for education_domaine,model_hr_education_domaine,base.group_user,1,0,0,0
+access_hr_education_domaine_admin,access admin for education_domaine,model_hr_education_domaine,hr.group_hr_manager,1,1,1,1
+access_hr_education_equivalence_user,access user for education_equivalence,model_hr_education_equivalence,base.group_user,1,0,0,0
+access_hr_education_equivalence_admin,access admin for education_equivalence,model_hr_education_equivalence,hr.group_hr_manager,1,1,1,1
+acces_hr_employee_family_admin,access admin for employee_family,model_hr_employee_family,hr.group_hr_manager,1,1,1,1
+acces_hr_employee_family_user,access user for employee_family,model_hr_employee_family,base.group_user,1,0,0,0
+access_hr_employee_discipline_admin,access admin from employee_discipline,model_hr_employee_discipline,hr.group_hr_manager,1,1,1,1
+access_hr_employee_discipline_user,access user from employee_discipline,model_hr_employee_discipline,base.group_user,1,0,0,0
+access_hr_employe_rang_admin,access admin from employe_rang,model_hr_employee_rang,hr.group_hr_manager,1,1,1,1
+access_hr_employe_rang_user,access user from employe_rang,model_hr_employee_rang,base.group_user,1,0,0,0
+access_hr_carriere_affectation_user,access user for carriere_affectation,model_hr_carriere_affectation,base.group_user,1,0,0,0
+access_hr_carriere_affectation_admin,access admin for carriere_affectation,model_hr_carriere_affectation,hr.group_hr_manager,1,1,1,1
+access_hr_employee_type_sanction_admin,access admin from employee_type_saction,model_hr_employee_type_sanction,hr.group_hr_manager,1,1,1,1
+access_hr_employee_type_sanction_user,access user from employee_type_saction,model_hr_employee_type_sanction,base.group_user,1,0,0,0
+access_hr_employee_fonction_user,acces user for employee_fonction,model_hr_employee_fonction,base.group_user,1,0,0,0
+access_hr_employee_fonction_admin,acces admin for employee_fonction,model_hr_employee_fonction,hr.group_hr_manager,1,1,1,1
+access_hr_annul_suspension_admin,access admin for annul_suspension,model_hr_annul_suspension,hr.group_hr_manager,1,1,1,1
+access_hr_annul_suspension_user,access user for annul_suspension,model_hr_annul_suspension,base.group_user,1,0,0,0
+access_hr_annuler_licenciement_admin,access admin for annul_licenciement,model_hr_annul_licenciement,hr.group_hr_manager,1,1,1,1
+access_hr_annuler_licenciement_user,access user for annul_licenciement,model_hr_annul_licenciement,base.group_user,1,0,0,0
+access_hr_carriere_licencier_admin,access admin for carriere_licencier,model_hr_carriere_licencier,hr.group_hr_manager,1,1,1,1
+access_hr_carriere_licencier_user,access user for carriere_licencier,model_hr_carriere_licencier,base.group_user,1,0,0,0
+acces_hr_eduction_diplome_admin,access admin for_education_diplome,model_hr_education_diplome,hr.group_hr_manager,1,1,1,1
+acces_hr_eduction_diplome_user,access user for_education_diplome,model_hr_education_diplome,base.group_user,1,0,0,0
+access_hr_motif_licenciement_admin,access admin for motif_licenciement,model_hr_motif_licenciement,hr.group_hr_manager,1,1,1,1
+access_hr_motif_licenciement_user,access user for motif_licenciement,model_hr_motif_licenciement,base.group_user,1,0,0,0

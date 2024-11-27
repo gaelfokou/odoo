@@ -3,39 +3,57 @@
     <!-- Menu principal du module -->
     <menuitem name="Université"
         id="menu_siantou_ems_core"
-        groups="group_school_user,group_school_manager"
-        sequence="55"/>
+        sequence="2"
+    />
 
     <menuitem
         id="menu_siantou_ems_core_students"
         name="Etudiants"
         parent="menu_siantou_ems_core"
-        groups="group_school_user"
-        sequence = "30" />
+        sequence="30"
+    />
+    
+    <menuitem
+        id="menu_siantou_ems_core_adminssions"
+        name="Admissions/Candidatures"
+        parent="menu_siantou_ems_core"
+        sequence="35"
+    />
 
     <!-- Menu principal de gestion des enseignants -->
     <menuitem
             id="menu_siantou_ems_core_employee"
             name="Enseignants"
 			parent="menu_siantou_ems_core"
-			groups="group_school_user"
             sequence = "40" />
 
-    <!-- Menu principal de gestion des filières -->
+    <!-- Menu principal de gestion des Programmes -->
+    <menuitem
+            id="menu_siantou_ems_timetable_planning"
+            name="Planning"
+			parent="menu_siantou_ems_core"
+            sequence = "45" />
+    
+    <!-- Menu principal de gestion des emplois de temps -->
     <menuitem
             id="menu_siantou_ems_core_program"
             name="Programmes"
 			parent="menu_siantou_ems_core"
-			groups="group_school_user"
             sequence = "50" />
+
+    <menuitem
+            id="menu_siantou_ems_timetable_planning"
+            name="Planification"
+			parent="menu_siantou_ems_core"
+            sequence = "60" />
+
 
     <!-- Menu principal de gestion des configurations -->
     <menuitem
             id="menu_siantou_ems_core_config"
             name="Configurations"
+            groups="siantou_ems_core.group_school_manager_sup_admin,siantou_ems_core.group_school_user_directeur,siantou_ems_core.group_school_base"
 			parent="menu_siantou_ems_core"
-			groups="group_school_user"
             sequence = "100" />
     
-
 </odoo>

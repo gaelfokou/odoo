@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Vue formulaire -->
+    <record id="carriere_licencier_view_form" model="ir.ui.view">
+        <field name="name">carriere_licencier.view.form</field>
+        <field name="model">hr.carriere.licencier</field>
+        <field name="arch" type="xml">
+            <form string="Formulaire de licenciement">
+                <header>
+                    <button string="Valider" name="action_valider" type="object"
+                        class="btn-primary" icon="fa-check"
+                        invisible="state != 'draft'" />
+                    <button string="Confirmer" name="action_confirmer" type="object"
+                        class="btn-success" icon="fa-check-circle"
+                        invisible="state != 'validate'" 
+                        confirm="Êtes-vous sûr de confirmer cette action ?" />
+                    <button string="Annuler" name="action_annuler" type="object"
+                        class="btn-danger" icon="fa-times-circle"
+                        invisible="state not in ('validate', 'confirm')"
+                        confirm="Voulez-vous annuler ce processus ?" />
+                    <field name="state" widget="statusbar"
+                        statusbar_visible="draft,validate,confirm,cancel" />
+                </header>
+                <sheet>
+                    <div>
+                        <h2>
+                            <field name="name" nolabel="1" readonly="1"
+                                invisible="state == 'draft'" />
+                        </h2>
+                    </div>
+                    <group col="4" string="Informations générales">
+                        <group colspan="2">
+                            <field name="employee_id" required="1" 
+                                options="{'no_create': True, 'no_open': True}" />
+                            <field name="motif_licenciement_ids" widget="many2many_tags" 
+                                string="Motifs de licenciement" placeholder="Sélectionnez les motifs" />
+                            <field name="description" />
+                        </group>
+                        <group colspan="2">
+                            <field name="date" required="1" />
+                            <field name="file_name" invisible="1" />
+                            <field name="document" filename="file_name" />
+                        </group>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                        <field name="message_follower_ids" groups="base.group_user" />
+                        <field name="message_ids" />
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- Vue liste -->
+    <record id="carrier_licencier_view_tree" model="ir.ui.view">
+        <field name="name">carrier_licencier.view.tree</field>
+        <field name="model">hr.carriere.licencier</field>
+        <field name="arch" type="xml">
+            <tree string="Liste des licenciements">
+                <field name="employee_id" />
+                <field name="date" />
+                <field name="motif_licenciement_ids" widget="many2many_tags" />
+                <field name="state" widget="badge" />
+            </tree>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="carrier_licencier_action" model="ir.actions.act_window">
+        <field name="name">Licenciements</field>
+        <field name="res_model">hr.carriere.licencier</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Enregistrez un licenciement ici.
+            </p>
+        </field>
+    </record>
+</odoo>

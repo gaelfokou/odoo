@@ -77,7 +77,7 @@
                 name="Cours"
                 parent="menu_siantou_ems_core_program"
                 action="action_show_subject"
-                groups="group_school_manager"
+                
                 sequence="3"/>
     </data>
 </odoo>

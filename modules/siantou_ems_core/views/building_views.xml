@@ -57,7 +57,6 @@
                 name="Bâtiments"
                 parent="menu_siantou_ems_core_config"
                 action="action_show_building"
-                groups="group_school_manager"
                 sequence="5"/>
 	</data>
 </odoo>

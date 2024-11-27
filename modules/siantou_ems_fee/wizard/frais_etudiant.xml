@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+	<!-- <record model="ir.ui.view" id="frais_etudiants_form_view">
+		<field name="name">assistant.liste.candidat</field>
+		<field name="model">wizard.frais.etudiant</field>
+		<field name="arch" type="xml">
+			<form string="Imprimer liste des Étudiants">
+				<group>
+					<field name ="frais"/>
+				</group>
+				<group>
+					<group>
+						<field name ="classe_ids" widget="many2many_tags"/>
+					</group>
+					<group>
+						<field name ="cat_ids" widget="many2many_tags"/>
+					</group>
+				</group>
+				<footer>
+					<button name="print_list" type="object" string="Imprimer" class="oe_highlight" />
+					ou
+					<button special="cancel" string="Annuler"/>
+				</footer>
+			</form>
+		</field>
+	</record>
+
+	<record id="assistant_frais_des_candidat" model="ir.actions.act_window">
+		<field name="name">Impression de la liste des élèves</field>
+		<field name="type">ir.actions.act_window</field>
+		<field name="res_model">wizard.frais.etudiant</field>
+		<field name="view_mode">form</field>
+		<field name="view_id" ref="frais_etudiants_form_view"/>
+		<field name="target">new</field>
+	</record> -->
+
+        <!-- <menuitem name="Frais de scolarité"
+                id="menu_frais_scolarite" parent="siantou.ems.fee.menu_application_reports" sequence="15"/> -->
+                        <!-- <menuitem action="assistant_frais_des_candidat" parent="menu_frais_scolarite"
+                                id="menu_frais_etudiant" name="Liste des Étudiants" sequence="10"/> -->
+
+	<record model="ir.ui.view" id="fscolarite_form_view">
+		<field name="name">assistant.etudiant.scolarite</field>
+		<field name="model">wizard.etudiant.scolarite</field>
+		<field name="arch" type="xml">
+			<form string="Scolarité étudiant">
+				<group>
+					<field name ="redoublant"/>
+				</group>
+				<group>
+					<field name="student_id" options="{'no_open': True, 'no_create': True}"/>
+					<field name ="scolarite" attrs="{'invisible': [('redoublant', '=', 'oui')],'required': [('redoublant', '=', 'non')]}"/>
+					<field name ="scolaritered" attrs="{'invisible': [('redoublant', '=', 'non')],'required': [('redoublant', '=', 'oui')]}"/>
+				</group>
+				<group>
+					<group>
+						<field name ="fee_structure_id" attrs="{'invisible': [('scolarite', '=', 'normal')],'required': [('scolarite', '!=', 'normal')]}"/>
+						<field name ="amount" attrs="{'invisible': [('scolarite', '=', 'normal')],'required': [('scolarite', '!=', 'normal')]}"/>
+					</group>
+					<group>
+						<field name="currency_id" invisible="1" />
+						<field name ="campus" />
+					</group>
+				</group>
+				<footer>
+					<button name="print_etudiant" type="object" string="Valider" confirm="Confirmer le statut de cette scolarité" class="oe_highlight" />
+					<!-- ou
+					<button special="cancel" string="Annuler"/> -->
+				</footer>
+			</form>
+		</field>
+	</record>
+
+	<!-- <record id="assistant_frais_des_candidat" model="ir.actions.act_window">
+		<field name="name">Impression de la liste des élèves</field>
+		<field name="type">ir.actions.act_window</field>
+		<field name="res_model">wizard.etudiant.scolarite</field>
+		<field name="view_mode">form</field>
+		<field name="view_id" ref="frais_etudiants_form_view"/>
+		<field name="target">new</field>
+	</record> -->
+
+</odoo>

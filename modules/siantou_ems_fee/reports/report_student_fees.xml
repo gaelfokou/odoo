@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="report_student_fees">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="web.external_layout">
+                        <div class="page">
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-6 text-left">
+                                        <span>Réf : SC/CP/SAF/DA/DIR/<span t-esc="date"
+                                            t-options='{"widget": "date","format": "MM_MMddyyyy"}' /></span>
+                                    </div>
+                                    <div class="col-6 text-right">
+                                        <span>Yaoundé, le <span t-esc="date"
+                                            t-options='{"widget": "date","format": "d/MM/Y"}' /></span>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-12 text-center">
+                                        <h2>FACTURE SCOLARITE</h2>
+                                        <span>N° <span t-field="o.matricule" /><span
+                                            t-field="o.class_id.academic_year_id.name" /></span>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-12">
+                                        <h3>I. Identification de l'étudiant</h3>
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <p>Matricule : <b>
+                                                        <span t-field="o.matricule" />
+                                                    </b>
+                                                </p>
+                                            </div>
+                                            <div class="col-9">
+                                                <p>Nom(s) et prénom(s) : <b>
+                                                        <span t-field="o.name" />
+                                                    </b>
+                                                </p>
+                                            </div>
+
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-8">
+                                                <p>Filière : <b>
+                                                        <span
+                                                            t-field="o.class_id.class_id.filiere_id.name" />
+                                                    </b>
+                                                </p>
+                                            </div>
+                                            <div class="col-4">
+                                                <p>Année académique : <b>
+                                                        <span
+                                                            t-field="o.class_id.academic_year_id.name" />
+                                                    </b>
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <!-- <div class="row">
+                                            <div class="col-6">
+                                                <p>Classe : <b>
+                                                        <span t-field="o.class_id.name" />
+                                                    </b>
+                                                </p>
+                                            </div>
+                                            <div class="col-3">
+                                                <p>Numéro : <b>
+                                                        <span t-field="o.mobile" />
+                                                    </b>
+                                                </p>
+                                            </div>
+                                            <div class="col-3">
+                                                <p>Email : <b>
+                                                        <span t-field="o.email" />
+                                                    </b>
+                                                </p>
+                                            </div>
+                                        </div> -->
+                                    </div>
+
+                                </div>
+
+                                <div class="row mt-3">
+                                    <div class="col-12">
+                                        <table classe="table table-striped"
+                                            style="width: 100%;">
+                                            <thead>
+                                                <tr
+                                                    style="border: 1px solid black;text-align: center">
+                                                    <th style="border: 1px solid black;padding: 4px; width: 5%">
+                                                        #</th>
+                                                    <th style="border: 1px solid black;padding: 4px; width: 70%">Type
+                                                        de frais</th>
+                                                    <th style="border: 1px solid black;padding: 4px; width: 25%">Montant
+                                                        à payer</th>
+                                                    <!-- <th style="border: 1px solid black;padding: 4px">Reste
+                                                        à payer</th> -->
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr t-foreach="lines" t-as="line"
+                                                    style="border: 1px solid black">
+                                                    <td style="border: 1px solid black;padding: 4px">
+                                                        <t t-esc="line_index + 1" />
+                                                    </td>
+                                                    <td style="border: 1px solid black;padding: 4px">
+                                                        <t t-esc="line.get('frais')" />
+                                                    </td>
+                                                    <td style="border: 1px solid black;padding: 4px;text-align: right">
+                                                        <t
+                                                            t-esc="'{0:,.0f}'.format(int(line.get('amount'))).replace(',', ' ')" />
+                                                    </td>
+                                                    <!-- <td style="border: 1px solid black;padding: 4px">
+                                                        <t
+                                                            t-esc="'{0:,.0f}'.format(int(line.get('reste'))).replace(',', ' ')" />
+                                                    </td> -->
+                                                </tr>
+                                                <tr style="border: 1px solid black">
+                                                    <td colspan="4"
+                                                        style="text-align: center; border: 1px solid black;padding: 4px">
+                                                        <h4><b>Montant total dû <t
+                                                                t-esc="'{0:,.0f}'.format(int(total)).replace(',', ' ')" />
+                                                            FCFA</b></h4>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+
+                                    </div>
+                                </div>
+
+                                <div class="row mt-3 mb-3">
+                                    <div class="col-12 text-center">
+                                        <h5> Arrête la présente facture à la somme de : <strong><span t-esc='lettre'/></strong>
+                                            au titre de l'année académique <span t-field="o.class_id.academic_year_id.name" />
+                                        </h5>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-12">
+                                        <h3>II. Nos coordonnées bancaires</h3>
+                                        <table
+                                            style="width: 100%;border-collapse: collapse;font-size:12px">
+                                            <thead>
+                                                <tr style="border: 1px solid black;padding: 4px">
+                                                    <th style="text-align: center;border: 1px solid black;padding: 4px"
+                                                        scope="col" colspan="6">Paiement nationaux</th>
+                                                    <th style="text-align: center;border: 1px solid black;padding: 4px"
+                                                        scope="col" colspan="2">Paiement internationaux</th>
+                                                </tr>
+                                                <tr style="border: 1px solid black;padding: 4px">
+                                                    <th style="text-align: center;border: 1px solid black;padding: 4px"
+                                                        scope="col">Dénomination</th>
+                                                    <th style="text-align: center;border: 1px solid black;padding: 4px"
+                                                        scope="col">Banque</th>
+                                                    <th style="text-align: center;border: 1px solid black;padding: 4px"
+                                                        scope="col">CIIE DNDLE</th>
+                                                    <th style="text-align: center;border: 1px solid black;padding: 4px"
+                                                        scope="col">TTE OU</th>
+                                                    <th style="text-align: center;border: 1px solid black;padding: 4px"
+                                                        scope="col">Numéro de compte</th>
+                                                    <th style="text-align: center;border: 1px solid black;padding: 4px"
+                                                        scope="col">Clé RIB</th>
+                                                    <th style="text-align: center;border: 1px solid black;padding: 4px"
+                                                        scope="col">Swift code</th>
+                                                    <th style="text-align: center;border: 1px solid black;padding:
+                                                    4px" scope="col" >IBAN</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td style="border: 1px solid black;padding: 4px"
+                                                        rowspan="3">Ecole des sciences de la santé</td>
+                                                    <td style="border: 1px solid black;padding: 4px">AFRILAND
+                                                        FIRST BANK</td>
+                                                    <td style="border: 1px solid black;padding: 4px">
+                                                        10005</td>
+                                                    <td style="border: 1px solid black;padding: 4px">
+                                                        00001</td>
+                                                    <td style="border: 1px solid black;padding: 4px">
+                                                        02853381001</td>
+                                                    <td style="border: 1px solid black;padding: 4px">
+                                                        06</td>
+                                                    <td style="border: 1px solid black;padding: 4px">
+                                                        ICLRCMCXXXX</td>
+                                                    <td style="border: 1px solid black;padding:
+                                                    4px" >CM21 10005 00001 02853381001-06</td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="border: 1px solid black;padding: 4px">
+                                                        UBA</td>
+                                                    <td style="border: 1px solid black;padding: 4px">
+                                                        10033</td>
+                                                    <td style="border: 1px solid black;padding: 4px">
+                                                        05218</td>
+                                                    <td style="border: 1px solid black;padding: 4px">
+                                                        18031000020</td>
+                                                    <td style="border: 1px solid black;padding: 4px">
+                                                        12</td>
+                                                    <td style="border: 1px solid black;padding: 4px">
+                                                        UNAFCMCX</td>
+                                                    <td style="border: 1px solid black;padding:
+                                                    4px" >CM21 10033 05218 18031000020-12</td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="border: 1px solid black;padding: 4px">
+                                                        BICEC</td>
+                                                    <td style="border: 1px solid black;padding: 4px">
+                                                        10001</td>
+                                                    <td style="border: 1px solid black;padding: 4px">
+                                                        06862</td>
+                                                    <td style="border: 1px solid black;padding: 4px">
+                                                        51856862001</td>
+                                                    <td style="border: 1px solid black;padding: 4px">
+                                                        42</td>
+                                                    <td style="border: 1px solid black;padding: 4px">
+                                                        CCEICMCX</td>
+                                                    <td style="border: 1px solid black;padding:
+                                                    4px" >CM21 10001 06862 51856862001-42</td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="border: 1px solid black;padding: 4px">Ecole
+                                                        privée catholique des infirmiers</td>
+                                                    <td style="border: 1px solid black;padding: 4px">
+                                                        ECOBANK</td>
+                                                    <td style="border: 1px solid black;padding: 4px">
+                                                        26011</td>
+                                                    <td style="border: 1px solid black;padding: 4px">
+                                                        26011</td>
+                                                    <td style="border: 1px solid black;padding: 4px">
+                                                        30830019020</td>
+                                                    <td style="border: 1px solid black;padding: 4px">
+                                                        90</td>
+                                                    <td style="border: 1px solid black;padding: 4px">
+                                                        ECOCCMCX</td>
+                                                    <td style="border: 1px solid black;padding:
+                                                    4px" >10029 26011 30830019020-90</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="row mt-5">
+                                    <div class="col-12 text-right">
+                                        <h5>LE CHEF SAF</h5>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>

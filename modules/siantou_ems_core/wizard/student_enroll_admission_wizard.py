@@ -52,13 +52,21 @@ class StudentEnrollmentAdmissionWizard(models.TransientModel):
         return code
 
 
-    def student_enroll_admission(self):
 
+
+
+    def student_enroll_admission(self):
         if self.student_enrollement_id:  
             matricule=self.student_enrollement_id.matricule
             if not matricule:
                 matricule = f'{self.generate_matricule()}'
 
+            # user = self.create_portal_user(
+            #     name=self.student_enrollement_id.name,
+            #     login=self.student_enrollement_id.email,
+            #     password=self.student_enrollement_id.email,
+            #     email=self.student_enrollement_id.email,
+            # )
             student = self.env['oe.school.student'].create({
                 'student_enroll_id': self.student_enrollement_id.id,
                 'name': self.student_enrollement_id.name,
@@ -73,7 +81,6 @@ class StudentEnrollmentAdmissionWizard(models.TransientModel):
                 'date_naissance': self.student_enrollement_id.date_naissance,
                 'lieu_naissance': self.student_enrollement_id.lieu_naissance,
                 'sexe': self.student_enrollement_id.sexe,
-
                 'situat_matri': self.student_enrollement_id.situat_matri,
                 'nationalite': self.student_enrollement_id.nationalite.id,
                 'autre': self.student_enrollement_id.autre,
@@ -90,12 +97,12 @@ class StudentEnrollmentAdmissionWizard(models.TransientModel):
             # _logger.info(student.field_of_study_id)
             # _logger.info(student.level_id.id)
 
-            batch = self.env['siantou.ems.core.student.batch'].assign_batch(
-                student.field_of_study_id.school_id.id, 
-                student.field_of_study_id.id, 
-                student.level_id.id, 
-            )
-            student.batch_id = batch.id
+            # batch = self.env['siantou.ems.core.student.batch'].assign_batch(
+            #     student.field_of_study_id.school_id.id, 
+            #     student.field_of_study_id.id, 
+            #     student.level_id.id, 
+            # )
+            # student.batch_id = batch.id
             # vals['batch_id'] = batch.id
 
         return {'type': 'ir.actions.act_window_close'}

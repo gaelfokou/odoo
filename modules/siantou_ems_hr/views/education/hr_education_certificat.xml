@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="certificat_view_form" model="ir.ui.view">
+        <field name="name">certificat_view_form.view.form</field>
+        <field name="model">hr.education.certificat</field>
+        <field name="arch" type="xml">
+            <form string="Formulaire d'ajout d'un certificat">
+                <sheet>
+                    <group col="4">
+                        <group colspan="2">
+                            <field name="nom_certificat" />
+                        </group>
+                        <group colspan="2">
+                            <field name="equivalence_id" />
+                        </group>
+                        <group colspan="2">
+                            <field name="annee_obtention" />
+                        </group>
+                        <group colspan="2">
+                            <field name="employee_id" />
+                        </group>
+                        <group colspan="2">
+                            <field name="ecole" />
+                        </group>
+                        <group colspan="2">
+                            <field name="file_name" invisible="1" />
+                            <field name="document" filename="file_name" />
+                        </group>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" groups="base.group_user" />
+                    <field name="message_ids" />
+                </div>
+            </form>
+        </field>
+    </record>
+    <record id="certificat_view_tree" model="ir.ui.view">
+        <field name="name">certificat_view_tree.view.tree</field>
+        <field name="model">hr.education.certificat</field>
+        <field name="arch" type="xml">
+            <tree string="">
+                <field name="employee_id" />
+                <field name="nom_certificat" />
+                <field name="equivalence_id" />
+                <field name="ecole" />
+                <field name="annee_obtention" />
+            </tree>
+        </field>
+    </record>
+
+    
+    <record id="certificat_action" model="ir.actions.act_window">
+        <field name="name">Certificat</field>
+        <field name="res_model">hr.education.certificat</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Enregistrer un certificat
+            </p>
+        </field>
+    </record>
+</odoo>

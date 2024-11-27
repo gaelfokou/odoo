@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Formulaire d'ajout -->
+    <record id="hr_employee_discipline_view_form" model="ir.ui.view">
+        <field name="name">hr_employee_discipline.view.form</field>
+        <field name="model">hr.employee.discipline</field>
+        <field name="arch" type="xml">
+            <form string="Discipline">
+                <header>
+                    <button string="Valider" name="action_valider" type="object"
+                        class="btn-primary"
+                        icon="fa-check"
+                        invisible="state != 'draft'" />
+                    <button string="Confirmer" name="action_confirmer" type="object"
+                        class="btn-primary"
+                        icon="fa-check-circle"
+                        invisible="state != 'valider'" />
+                    <button string="Annuler" name="action_annuler" type="object"
+                        class="btn-secondary"
+                        icon="fa-times-circle"
+                        invisible="state != 'valider'" />
+                    <field name="state" widget="statusbar"
+                        statusbar_visible="draft,valider,confirmer,annuler" />
+                </header>
+                <sheet>
+                    <div>
+                        <h2>
+                            <field name="name" nolabel="1" readonly="1"
+                                invisible="state == 'draft'" />
+                        </h2>
+                    </div>
+                    <group col="4" string="Informations générales">
+                        <group colspan="2">
+                            <field name="reference" />
+                            <field name="employee_id" options="{'no_create': True}" />
+                        </group>
+                        <group colspan="2">
+                            <field name="date" />
+                            <field name="fichier" />
+                        </group>
+                    </group>
+                    <group col="4" string="Sanction">
+                        <group colspan="2">
+                            <field name="categorie_sanction" />
+                        </group>
+                        <group colspan="2">
+                            <field name="type_sanction" options="{'no_create': True}" />
+                        </group>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                        <field name="message_follower_ids" groups="base.group_user" />
+                        <field name="message_ids" />
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- Formulaire d'affichage -->
+    <record id="hr_employee_discipline_view_tree" model="ir.ui.view">
+        <field name="name">hr_employee_discipline.view.tree</field>
+        <field name="model">hr.employee.discipline</field>
+        <field name="arch" type="xml">
+            <tree string="Liste des suspendus">
+                <field name="reference" />
+                <field name="employee_id" />
+                <field name="date" />
+                <field name="type_sanction" />
+            </tree>
+        </field>
+    </record>
+
+    <!-- Action du menu de discipline -->
+    <record id="hr_employee_discipline_view_action" model="ir.actions.act_window">
+        <field name="name">Discipline</field>
+        <field name="res_model">hr.employee.discipline</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                créer ici.
+            </p>
+        </field>
+    </record>
+
+</odoo>

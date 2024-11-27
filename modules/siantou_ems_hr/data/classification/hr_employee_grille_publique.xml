@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+    <!-- Catégories de la fonction publique -->
+    <record id="category_fp_a1" model="hr.employee.publique.categorie">
+        <field name="name">A1</field>
+        <field name="description">Catégorie A1</field>
+        <field name="num_ordre">1</field>
+    </record>
+    <record id="category_fp_a2" model="hr.employee.publique.categorie">
+        <field name="name">A2</field>
+        <field name="description">Catégorie A2</field>
+        <field name="num_ordre">2</field>
+    </record>
+    <record id="category_fp_b" model="hr.employee.publique.categorie">
+        <field name="name">B</field>
+        <field name="description">Catégorie B</field>
+        <field name="num_ordre">3</field>
+    </record>
+    <record id="category_fp_b2" model="hr.employee.publique.categorie">
+        <field name="name">B2</field>
+        <field name="description">Catégorie B2</field>
+        <field name="num_ordre">4</field>
+    </record>
+    <record id="category_fp_c" model="hr.employee.publique.categorie">
+        <field name="name">C</field>
+        <field name="description">Catégorie C</field>
+        <field name="num_ordre">5</field>
+    </record>
+    <record id="category_fp_d" model="hr.employee.publique.categorie">
+        <field name="name">D</field>
+        <field name="description">Catégorie D</field>
+        <field name="num_ordre">6</field>
+    </record>
+
+    <!-- Echelon de la fonction publique -->
+    <record id="echelon_fp_st" model="hr.employee.publique.echelon">
+        <field name="name">ST</field>
+        <field name="description">Stagiaire</field>
+        <field name="num_ordre">1</field>
+    </record>
+    <record id="echelon_fp_1" model="hr.employee.publique.echelon">
+        <field name="name">2/1</field>
+        <field name="description">Prémier Echelon 2ème Classe</field>
+        <field name="num_ordre">2</field>
+    </record>
+    <record id="echelon_fp_2" model="hr.employee.publique.echelon">
+        <field name="name">2/2</field>
+        <field name="description">Deuxième Echelon 2ème Classe</field>
+        <field name="num_ordre">3</field>
+    </record>
+    <record id="echelon_fp_3" model="hr.employee.publique.echelon">
+        <field name="name">2/3</field>
+        <field name="description">Troisième echelon 2ème Classe</field>
+        <field name="num_ordre">5</field>
+    </record>
+    <record id="echelon_fp_4" model="hr.employee.publique.echelon">
+        <field name="name">2/4</field>
+        <field name="description">Quatrième echelon 2ème Classe</field>
+        <field name="num_ordre">6</field>
+    </record>
+    <record id="echelon_fp_5" model="hr.employee.publique.echelon">
+        <field name="name">2/5</field>
+        <field name="description">Cinquième echelon 2ème Classe</field>
+        <field name="num_ordre">7</field>
+    </record>
+    <record id="echelon_fp_6" model="hr.employee.publique.echelon">
+        <field name="name">2/6</field>
+        <field name="description">Sixième echelon 2ème Classe</field>
+        <field name="num_ordre">8</field>
+    </record>
+    <record id="echelon_fp_7" model="hr.employee.publique.echelon">
+        <field name="name">2/7</field>
+        <field name="description">Septième echelon 2ème Classe</field>
+        <field name="num_ordre">9</field>
+    </record>
+    <record id="echelon_fp_8" model="hr.employee.publique.echelon">
+        <field name="name">1/1</field>
+        <field name="description">Prémier Echelon 1ère classe</field>
+        <field name="num_ordre">10</field>
+    </record>
+    <record id="echelon_fp_9" model="hr.employee.publique.echelon">
+        <field name="name">1/2</field>
+        <field name="description">Deuxième Echelon 1ère classe</field>
+        <field name="num_ordre">11</field>
+    </record>
+    <record id="echelon_fp_10" model="hr.employee.publique.echelon">
+        <field name="name">1/3</field>
+        <field name="description">Troisième Echelon 1ère classe</field>
+        <field name="num_ordre">12</field>
+    </record>
+    <record id="echelon_fp_clexc" model="hr.employee.publique.echelon">
+        <field name="name">Cl.Exc</field>
+        <field name="description">Classe exceptionnelle</field>
+        <field name="num_ordre">13</field>
+    </record>
+  </data>
+  
+</odoo>

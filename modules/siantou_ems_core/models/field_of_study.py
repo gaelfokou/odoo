@@ -5,7 +5,7 @@ from odoo import models, fields
 
 class FieldOfStudy(models.Model):
     _name = 'siantou.ems.core.field_of_study' #== cursus'
-    _description = 'Filières'
+    _description = 'Gestion des Filières'
 
     # Code du programme
     code = fields.Char(
@@ -45,6 +45,12 @@ class FieldOfStudy(models.Model):
     department_id = fields.Many2one(
         'hr.department',
         string='Département'
+    )
+
+    student_ids = fields.One2many(
+        'oe.school.student',
+        'field_of_study_id',
+        string='Liste des étudiants'
     )
 
     # Contrainte SQL pour empêcher d'avoir le même code pour différentes filières

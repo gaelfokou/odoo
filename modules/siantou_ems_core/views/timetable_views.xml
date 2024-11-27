@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+	<data>
+        <!-- Affichage en vue liste -->
+		<record
+                id="timetable_tree_view"
+                model="ir.ui.view">
+            <field name="name">timetable.tree.view</field>
+			<field name="model">siantou.ems.timetable.timetable</field>
+			<field name="arch" type="xml">
+				<tree delete="false" string="Emploi du temps" editable="bottom" edit="1">
+                    <header>
+                        <button name="action_timetable_automatic" groups="siantou_ems_core.group_school_manager_sup_admin" type="object" string="Génération automatique" class="oe_highlight" display="always"/>
+                        <!-- <button name="teacher_test_dispatch" type="object" string="Teacher test" class="oe_highlight" display="always"/> -->
+                        <button name="action_timetable_print" type="object" string="Impression" class="oe_highlight" display="always"/>
+                    </header>
+                    <field name="group_id"/>
+                    <field name="date"/>
+                    <field name="field_of_study_id"/>
+                    <field name="semester_id"/>
+                    <field name="batch_id"/>
+                    <field name="level_id"/>
+					<field name="subject_id"/>
+					<field name="classroom_id"/>
+					<field name="employee_id"/>
+					<field name="day_of_week"/>
+					<field name="start_time"/>
+					<field name="end_time"/>
+					<field name="status"/>
+				</tree>
+			</field>
+		</record>
+
+        <!-- Affichage en vue formulaire -->
+		<record
+                id="timetable_form_view"
+                model="ir.ui.view">
+			<field name="name">timetable.form.view</field>
+			<field name="model">siantou.ems.timetable.timetable</field>
+			<field name="arch" type="xml">
+				<form string="Emploi du temps">
+					<sheet>
+                        <group>
+                            <field name="group_id"/>
+                            <field name="date"/>
+                            <field name="field_of_study_id"/>
+                            <field name="semester_id"/>
+                            <field name="batch_id"/>
+                            <field name="level_id"/>
+                            <field name="subject_id"/>
+                            <field name="classroom_id"/>
+                            <field name="employee_id"/>
+                            <field name="day_of_week"/>
+                            <field name="start_time"/>
+                            <field name="end_time"/>
+        					<field name="status"/>
+                        </group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+        <!-- Action pour le menu d'affichage des années académiques -->
+        <record
+                id="action_show_timetable"
+                model="ir.actions.act_window">
+            <field name="name">Emploi du temps</field>
+            <field name="res_model">siantou.ems.timetable.timetable</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Créer une nouvelle programmation de cours.
+                </p>
+            </field>
+        </record>
+
+        
+        <menuitem
+            id="menu_timetable"
+            name="Emploi du temps"
+            parent="menu_siantou_ems_timetable_planning"
+            action="action_show_timetable"
+            sequence="1"/>
+        
+	</data>
+</odoo>

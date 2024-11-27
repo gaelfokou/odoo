@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="education_fee_class_view_form" model="ir.ui.view">
+            <field name="name">siantou.ems.fee.form</field>
+            <field name="model">siantou.ems.fee.classe</field>
+            <field name="arch" type="xml">
+                <form string="Formulaire de generation des factures">
+                    <header groups="base.group_user">
+                        <button name="generate_fees" states="draft" type="object" string="Générer les frais"
+                            class="oe_highlight" confirm="Confirmez-vous la génération des frais de scolarité de la classe ?"/>
+                        <button name="action_confirm" states="done" type="object" string="Valider"
+                            class="oe_highlight" confirm="Confirmez-vous cette facturation ? Action irreversible !!!" />
+                        <button name="send_fees_mail" states="confirm" type="object" string="Envoyer les mails" />
+                        <!-- <button name="print_fees" class="oe_highlight" states="confirm" type="object" string="Imprimer la liste des frais" /> -->
+                        <button name="action_draft" states="done" type="object" string="Réinitialiser" />
+                        <button name="action_cancel" states="done" type="object" string="Annuler facture" />
+                        <field name="state" widget="statusbar" statusbar_visible="draft,done,confirm,cancel" />
+                    </header>
+                    <sheet>
+                        <group col="4" colspan="4">
+                            <group col="2" colspan="2">
+                                <field name="name" readonly="1" />
+                                <field name="classe_id" />
+                                <field name="date" />
+                                <field name="amount" />
+                            </group>
+                            <group col="2" colspan="2">
+                                <field name="campus" />
+                                <field name="academic_year" />
+                                <field name="company_id" invisible="1"/>
+                                <field name="currency_id" invisible="1"/>
+                            </group>
+                        </group>
+                        <!-- <notebook>
+                            <page name="invoice" string="Liste factures">
+                                <field name="facture_ids">
+                                    <tree editable='bottom'>
+                                        <field name="fee_structure" />
+                                        <field name="amount_total" sum="Total"/>
+                                        <field name="amount_reste" sum="Reste à Payer"/>
+                                        <field name="to_pay" widget='checkbox' />
+                                        <field name='currency_id' invisible='1' />
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook> -->
+                    </sheet>
+                    <div class="oe_chatter">
+
+                        <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+        
+                        <field name="message_ids" widget="mail_thread"/>
+        
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="education_fee_class_view_tree" model="ir.ui.view">
+            <field name="name">education.fee.class.view.tree</field>
+            <field name="model">siantou.ems.fee.classe</field>
+            <field name="arch" type="xml">
+                <tree string="Liste des paiements">
+                    <field name="name" />
+                    <field name="date" />
+                    <field name="classe_id" />
+                    <field name="amount" />
+                    <field name="campus" />
+                    <field name="state" />
+                </tree>
+            </field>
+        </record>
+
+        <record id="education_fee_class_action" model="ir.actions.act_window">
+            <field name="name">Factures par classe</field>
+            <field name="res_model">siantou.ems.fee.classe</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Veuillez enregistrer les encaissements
+                </p>
+            </field>
+        </record>
+
+        <menuitem action="education_fee_class_action"
+            id="menu_education_fee_class_action"
+            parent="menu_student_fee_receipt"
+            sequence="1" />
+
+    </data>
+</odoo>

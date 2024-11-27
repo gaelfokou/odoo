@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Template d'email de confirmation de pré-inscription -->
+        <record id="email_template_preinscription" model="mail.template">
+            <field name="name">Confirmation de Pré-inscription</field>
+            <field name="model_id" ref="your_module.model_your_model"/> <!-- Remplacez par le modèle correspondant -->
+            <field name="subject">Confirmation de pré-inscription - ${object.student_id.name}</field>
+            <field name="email_from">${(object.company_id.email or 'francesca.mbouembe@iccsoft.cm')|safe}</field>
+            <field name="email_to">${object.student_id.partner_id.email|safe}</field>
+            <field name="body_html" type="html">
+                <![CDATA[
+                    <p>Bonjour ${object.student_id.name},</p>
+                    <p>Nous vous remercions pour votre pré-inscription. Voici les informations de votre dossier :</p>
+                    <ul>
+                        <li><strong>Numéro de dossier</strong> : ${dossier_number}</li>
+                        <li><strong>Date de pré-inscription</strong> : ${object.create_date}</li>
+                    </ul>
+                    <p>Nous vous contacterons prochainement pour les étapes suivantes de votre inscription.</p>
+                    <p>Merci et à bientôt,</p>
+                    <p>L'équipe ${object.company_id.name}</p>
+                ]]>
+            </field>
+            <field name="auto_delete" eval="True"/>
+        </record>
+    </data>
+</odoo>

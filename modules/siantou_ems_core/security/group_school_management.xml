@@ -1,24 +1,45 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
     <data noupdate="1">
-        <!-- Utilisateur du module de gestion scolaire -->
-        <record
-                id="group_school_user"
-                model="res.groups">
-            <field name="name">Utilisateur du module de gestion scolaire</field>
-            <field name="category_id" ref="module_category_school_management"/>
+
+        <record id="group_school_base" model="res.groups">
+            <field name="name">Lecteur</field>
             <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
-            <field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+            <field name="category_id" ref="module_category_school_management"/>
         </record>
 
-        <!-- Manager du module de gestion scolaire -->
-        <record
-                id="group_school_manager"
-                model="res.groups">
-            <field name="name">Administrateur du module de gestion scholaire</field>
+        <record id="group_school_dircom" model="res.groups">
+            <field name="name">Dircom</field>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
             <field name="category_id" ref="module_category_school_management"/>
-            <field name="implied_ids" eval="[(4, ref('group_school_user')),(4, ref('base.group_user')),(4, ref('base.group_erp_manager'))]"/>
-            <field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin')),(4, ref('base.group_erp_manager'))]"/>
         </record>
+
+        <record id="group_school_raac" model="res.groups">
+            <field name="name">RAAC</field>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+            <field name="category_id" ref="module_category_school_management"/>
+        </record>
+
+
+        <record id="group_school_other_employe" model="res.groups">
+            <field name="name">Autres employés</field>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+            <field name="category_id" ref="module_category_school_management"/>
+        </record>
+
+        <record id="group_school_user_directeur" model="res.groups">
+            <field name="name">Directeur</field>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+            <field name="category_id" ref="module_category_school_management"/>
+            <!-- <field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/> -->
+        </record>
+
+        <record id="group_school_manager_sup_admin" model="res.groups">
+            <field name="name">Super Administrateur</field>
+            <field name="category_id" ref="module_category_school_management"/>
+            <field name="implied_ids" eval="[(4, ref('group_school_base'))]"/>
+            <field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin')), (4, ref('base.group_erp_manager'))]"/>
+        </record>
+
     </data>
 </odoo>

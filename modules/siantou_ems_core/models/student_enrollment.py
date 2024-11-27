@@ -16,17 +16,23 @@ from odoo.addons.base.models.res_partner import WARNING_MESSAGE, WARNING_HELP
 
 _logger = logging.getLogger("++++++++++++")
 
+
 class StudentEnrollment(models.Model):
     _name = 'oe.school.student.enrollment'
-    _inherit=['mail.thread', 'mail.activity.mixin',]
-    _description = 'Student Enrollment'
+    _inherit=['mail.thread', 'mail.activity.mixin']
+    _description = 'Gestion des inscriptions des étudiants'
 
 
     partner_id = fields.Many2one(
         'res.partner',
         string='Employé',
     )
-
+    registre_id = fields.Many2one(
+        'siantou.session.registre', 
+        "Registre d'admission" ,
+        # domain="[('state', '=', 'application')]",
+        required=True
+    )
     name = fields.Char(
         string="Nom(s) et prénom(s)", 
         required=True,
@@ -36,7 +42,7 @@ class StudentEnrollment(models.Model):
         track_visibility='onchange'
     )
     matricule = fields.Char(string="Matricule")
-    code_enrol = fields.Char(string="Code de préinscription", required=True)
+    code_enrol = fields.Char(string="Code de préinscription", default="001485KOPLL")
     cycle_id = fields.Many2one(
         'oe.school.course',
         string='Cycle',
@@ -92,8 +98,8 @@ class StudentEnrollment(models.Model):
     status = fields.Selection([
             ('broui', 'Brouillon'),
             ('inscrip', 'Inscrit'),
-            # ('rej', 'Rejeter'),
-            ('transfer', 'Transféré'),
+            ('rej', 'Rejeté'),
+            ('transfer', 'Admis'),
         ],
         string="Status", 
         default="broui", 
@@ -137,7 +143,7 @@ class StudentEnrollment(models.Model):
     def action_preinscrip_wizard(self):
         action = self.env.ref('siantou_ems_core.action_fee_enrollment_wizard').read()[0]
         action.update({
-            'name': f"Frais d'inscription",
+            'name': f"Enregistrement des frais d'inscription de ===> {self.name}",
             'res_model': 'siantou.ems.core.fee.enrollment.student',
             'type': 'ir.actions.act_window',
         })
@@ -154,22 +160,15 @@ class StudentEnrollment(models.Model):
         return action
 
 
-   
-
-
-
     def compute_rejected(self):
-        self.status='preinscrip'
-        student_enrol = self.env['oe.school.student.enrollment'].sudo().search([('name', '=', self.name)], limit=1)
-        student = self.env['oe.school.student.enrollment'].sudo().search([('name', '=', self.name)], limit=1)
-        student.unlink()
-        student_enrol.unlink()
+        self.status='rej'
+
 
 
 
 class StudentEnrollmentAdmission(models.Model):
     _name = 'oe.school.student.enrollment.admission'
-    _description = 'Admission scolarité des étudiants'
+    _description = 'Gestion des Admission scolarité des étudiants'
 
     student_enrollemnt_id = fields.Many2one(
         'oe.school.student.enrollment', 

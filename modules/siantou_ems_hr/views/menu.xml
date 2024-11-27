@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data>
+  
+
+    <!-- Menu pour la configuration  élements sur les diplômes -->
+
+    <menuitem
+      id="hr_employee_education_menu"
+      name="Education"
+      groups="hr.group_hr_manager"
+      parent="hr.menu_human_resources_configuration"
+      sequence="45" />
+
+    <menuitem
+      id="hr_education_equivalence_menu"
+      name="Equivalences"
+      action="hr_education_equivalence_action"
+      parent="hr_employee_education_menu"
+      sequence="5" />
+
+    <menuitem
+      id="hr_education_domaine_menu"
+      name="Domaines"
+      action="hr_education_domaine_action"
+      parent="hr_employee_education_menu"
+      sequence="10" />
+
+    <menuitem
+      id="hr_education_discipline_menu"
+      name="Disciplines"
+      action="hr_education_discipline_action"
+      parent="hr_employee_education_menu"
+      sequence="15" />
+
+    <menuitem
+      id="hr_education_diplome_menu"
+      name="Diplome"
+      action="diplome_action"
+      parent="hr_employee_education_menu"
+      sequence="20" />
+      
+    <menuitem
+      id="hr_education_certificat_menu"
+      name="Certificat"
+      action="certificat_action"
+      parent="hr_employee_education_menu"
+      sequence="30" />
+
+    <!-- Employés configurations début -->
+
+    <menuitem
+      id="hr_employee_fonction_menu"
+      name="Fonctions"
+      action="hr_employee_fonction_action"
+      groups="hr.group_hr_manager"
+      parent="hr.menu_config_employee"
+      sequence="25" />
+      
+    <menuitem
+      id="hr_employee_rang_menu"
+      name="Rang"
+      action="hr_employee_rang_view_action"
+      groups="hr.group_hr_manager"
+      parent="hr.menu_config_employee"
+      sequence="45"
+    />
+
+    <menuitem
+      id="hr_employer_type_sanction_menu"
+      name="Type de sanction (s)"
+      action="hr_employer_type_sanction_view_action"
+      groups="hr.group_hr_manager"
+      parent="hr.menu_config_employee"
+      sequence="45"
+    />
+
+    <menuitem
+      id="hr_motif_licenciement_menu"
+      name="Motifs de licenciément"
+      action="motif_lienciement_action"
+      groups="hr.group_hr_manager"
+      parent="hr.menu_config_employee"
+      sequence="45"
+    />
+    
+    <!-- ==== menu de suivi de carriere -->
+    <menuitem
+      id="hr_employee_suivi_de_carriere_menu"
+      name="Suivi de carrière"
+      groups="hr.group_hr_manager"
+      parent="hr.menu_hr_root"
+      sequence="5"
+    />
+
+    <!-- positions -->
+    <menuitem
+      id="hr_employee_position_carriere_menu"
+      name="Positions du Personnel"
+      groups="hr.group_hr_manager"
+      parent="hr_employee_suivi_de_carriere_menu"
+      sequence="5"
+    />
+    
+    <menuitem
+      id="hr_carriere_affectation_menu"
+      name="Affectations / Mutations"
+      action="hr_carriere_affectation_action"
+      groups="hr.group_hr_manager"
+      parent="hr_employee_position_carriere_menu"
+      sequence="15"
+    />
+
+    <!-- Sanctions -->
+    <menuitem
+      id="hr_employee_sanction_carriere_menu"
+      name="Sanctions"
+      groups="hr.group_hr_manager"
+      parent="hr_employee_suivi_de_carriere_menu"
+      sequence="20"
+    />
+
+    <menuitem
+        id="hr_employer_discipline_menu"
+        name="Discipline du personnel"
+        action="hr_employee_discipline_view_action"
+        groups="hr.group_hr_manager"
+        parent="hr_employee_sanction_carriere_menu"
+        sequence="5"
+        />
+
+    <menuitem
+      id="hr_annuler_suspendu_menu"
+      name="Annuler une sanction"
+      action="annul_suspension_action"
+      groups="hr.group_hr_manager"
+      parent="hr_employee_sanction_carriere_menu"
+      sequence="10"
+    />
+    <menuitem
+      id="hr_carriere_licencier_menu"
+      name="Licenciement / Révocation"
+      action="carrier_licencier_action"
+      groups="hr.group_hr_manager"
+      parent="hr_employee_sanction_carriere_menu"
+      sequence="20"
+    />
+
+    <menuitem
+      id="hr_annuler_licenciement_menu"
+      name="Annuler un licenciement"
+      action="annul_licenciement_action"
+      groups="hr.group_hr_manager"
+      parent="hr_employee_sanction_carriere_menu"
+      sequence="30"
+    />
+  
+  </data>
+</odoo>

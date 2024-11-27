@@ -9,12 +9,11 @@
             <xpath expr="//sheet" position="inside">
                 <group string="Informations Étudiant">
                     <field name="is_student"/>
-                    <!-- <field name="gender"/> -->
-                    <!-- <field name="school_id"/> -->
-                    <!-- <field name="course_id"/> -->
-                    <!-- <field name="field_of_study_id"/>
-                    <field name="level_id"/>
-                    <field name="batch_id"/> -->
+                    <field name="user_id" readonly="1"/>
+                    <button name="action_create_portal_user"
+                            string="Créer un utilisateur"
+                            type="object"
+                            class="btn-primary"/>
                 </group>
             </xpath>
         </field>

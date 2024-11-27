@@ -62,7 +62,7 @@
                 name="Filères"
                 parent="menu_siantou_ems_core_program"
                 action="action_show_field_of_study"
-                groups="group_school_manager"
+                
                 sequence="1"/>
 	</data>
 </odoo>
