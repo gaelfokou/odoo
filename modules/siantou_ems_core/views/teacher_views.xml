@@ -53,8 +53,8 @@
             <field name="model">hr.employee</field>
             <field name="inherit_id" ref="hr.hr_kanban_view_employees" />
             <field name="arch" type="xml">
-                <xpath expr="//kanban" position="inside">
-                    <button name="action_create_all_employee_user" type="object" string="Créer tous les utilisateurs" class="btn btn-primary"/>
+                <xpath expr="//field[@name='category_ids']" position="before">
+                    <button name="action_create_all_employee_user" type="object" string="Créer tous les utilisateurs" class="btn btn-primary" invisible="work_email and work_email != ''"/>
                 </xpath>
             </field>
         </record>
@@ -65,7 +65,7 @@
             <field name="inherit_id" ref="hr.view_employee_tree" />
             <field name="arch" type="xml">
                 <xpath expr="//tree" position="inside">
-                    <button name="action_create_all_employee_user" type="object" string="Créer tous les utilisateurs" class="btn btn-primary"/>
+                    <button name="action_create_all_employee_user" type="object" string="Créer tous les utilisateurs" class="btn btn-primary" invisible="work_email and work_email != ''"/>
                 </xpath>
             </field>
         </record>

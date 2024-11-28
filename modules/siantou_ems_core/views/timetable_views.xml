@@ -26,7 +26,11 @@
 					<field name="day_of_week"/>
 					<field name="start_time"/>
 					<field name="end_time"/>
-					<field name="status"/>
+					<field name="status"
+                        decoration-success="status == '1'"
+                        decoration-info="status == '0'"
+                        decoration-danger="status == '2'"
+                        decoration-warning="status == '3'"/>
 				</tree>
 			</field>
 		</record>

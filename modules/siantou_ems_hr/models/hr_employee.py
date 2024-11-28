@@ -2,7 +2,8 @@
 from datetime import date
 
 from odoo import models, fields, api
-from odoo.exceptions import ValidationError, UserError
+from odoo.exceptions import UserError, ValidationError
+import psycopg2
 from dateutil.relativedelta import relativedelta
 from datetime import datetime, timedelta
 
@@ -134,21 +135,28 @@ class Employe(models.Model):
 
     def create_employee_user(self, employee_id):
         try:
-            name = employee_id.name
-            # email = employee_id.work_email
-            email = name.replace(' ', '.').lower() + '@siantou.cm'
-            password = name.replace(' ', '.').lower()
             user_ids = self.env['res.users'].search([
-                ('login', '=', email),
+                ('employee_id', '=', employee_id.id),
             ])
             user_ids = list(user_ids)
-            if len(user_ids) > 0:
-                user_id = user_ids[0]
-                user_id.write({
-                    'login': email,
-                    'name': name,
-                })
-            else:
+            if len(user_ids) == 0:
+                name = employee_id.name
+                # email = employee_id.work_email
+                username = name.replace(' ', '.').lower()
+                email = username + '@siantou.cm'
+                password = username
+                i = 0
+                while True:
+                    user_ids = self.env['res.users'].search([
+                        ('login', '=', email),
+                    ])
+                    user_ids = list(user_ids)
+                    if len(user_ids) > 0:
+                        i = i + 1
+                        email = username + f'.{i}' + '@siantou.cm'
+                        password = username + f'.{i}'
+                    else:
+                        break
                 group_id = self.env.ref('base.group_portal')
                 user_id = self.env['res.users'].create({
                     'login': email,
@@ -156,10 +164,10 @@ class Employe(models.Model):
                     'password' : password,
                     'groups_id': [(6, 0, [group_id.id])],
                 })
-            employee_id.write({
-                'work_email': email,
-                'user_id': user_id.id,
-            })
+                employee_id.write({
+                    'work_email': email,
+                    'user_id': user_id.id,
+                })
         except psycopg2.errors.NotNullViolation as error:
             _logger.info(f'----------- tototototototo Exception {error} -----------')
             raise ValidationError("L'adresse e-mail professionnelle n'est pas renseignée.")
@@ -168,13 +176,13 @@ class Employe(models.Model):
         except Exception as error:
             _logger.info(f'----------- tototototototo Exception {error} -----------')
 
-    @api.model
-    def create(self, vals):
-        employee_id = super(Employe, self).create(vals)
+    # @api.model
+    # def create(self, vals):
+    #     employee_id = super(Employe, self).create(vals)
 
-        self.create_employee_user(employee_id)
+    #     self.create_employee_user(employee_id)
 
-        return employee_id
+    #     return employee_id
 
     def action_create_employee_user(self):
         employee_ids = self.env['hr.employee'].search([
@@ -193,18 +201,12 @@ class Employe(models.Model):
     def action_create_all_employee_user(self):
         employee_ids = self.env['hr.employee'].search([])
         for employee_id in employee_ids:
-            user_ids = self.env['res.users'].search([
-                ('employee_id', '=', employee_id.id),
-            ])
-            user_ids = list(user_ids)
-            if len(user_ids) == 0:
-                self.create_employee_user(employee_id)
+            self.create_employee_user(employee_id)
 
         return {
             'type': 'ir.actions.client',
             'tag': 'reload',
         }
-
 
     def action_integrer(self):
             sequence_obj = self.env["ir.sequence"]
