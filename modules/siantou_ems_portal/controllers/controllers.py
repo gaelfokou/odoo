@@ -36,7 +36,7 @@ class PortalAccount(portal.CustomerPortal):
     @http.route(['/my/timetable/download', '/my/timetable/download/page/<int:page>'], type='http', auth="user", website=True)
     def portal_timetable_download(self, page=1, search=None, search_in='all', sortby=None, **kw):
         pdf_report = request.env['siantou.ems.timetable.timetable']
-        pdf, _ = request.env.ref('siantou_ems_core.action_report_timetable').sudo().with_context().render_qweb_pdf(pdf_report)
+        pdf, _ = request.env.ref('siantou_ems_core.action_report_timetable').sudo()._render_qweb_pdf(pdf_report)
         filename = 'report.pdf'
         content_type = 'application/pdf'
         pdfhttpheaders = [
