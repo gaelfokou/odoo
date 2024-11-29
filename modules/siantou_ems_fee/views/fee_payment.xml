@@ -18,12 +18,12 @@
                                 <field name="name" invisible="1" />
                                 <field name="student_id" />
                                 <field name="amount" />
+                                <field name="structure_frais_lines_ids"/>
                             </group>
                             <group col="2" colspan="2">
                                 <field name="structure_frais_id" />
                                 <field name="reference" />
                                 <field name="date_payment" />
-                                <!-- <field name="campus"  string="Campus"/> -->
                                 <field name="currency_id" invisible="1" />
                             </group>
                         </group>

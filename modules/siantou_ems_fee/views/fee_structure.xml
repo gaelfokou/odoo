@@ -30,14 +30,14 @@
                     <group>
                         <field name="is_scolarite"/>
                     </group>
-                    <notebook  invisible="type_paiement == 'pu'">
+                    <notebook invisible="type_paiement == 'pu'">
                         <page string="Frais">
-                            <field name="fee_type_ids" nolabel="1" widget="one2many_list" mode="tree">
+                            <field name="fee_type_ids" widget="one2many_list" mode="tree">
                                 <tree string="Fee Types" editable="bottom">
-                                    <field name="line_name"/>
+                                    <field name="name"/>
                                     <field name="fee_amount"/>
                                     <field name="fee_structure_id" placeholder="Eg: Quarterly"/>
-                                    <field name="echeance" required="1" widget="monetary"/>
+                                    <field name="echeance" widget="monetary"/>
                                 </tree>
                             </field>
                             <group class="oe_subtotal_footer oe_right">

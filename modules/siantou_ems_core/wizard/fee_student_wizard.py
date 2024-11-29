@@ -16,24 +16,17 @@ class FeeEnrollmentWizard(models.TransientModel):
     _name = 'siantou.ems.core.fee.enrollment.student'
     _description = 'modale pour valider un paiement'
 
-    def _get_structure_frais_name(self):
-
-        structure_frais_id = self.env['siantou.ems.fee.structure'].sudo().search(
-            [
-                ('field_of_study_id', '=',self.student_id.field_of_study_id.id),
-                ('level_id', '=',self.student_id.level_id.id),
-            ], 
-            limit=1)
-        _logger.info(self.student_id.field_of_study_id.id)
-        return structure_frais_id.fee_structure_name
         
     name = fields.Char('Réference', default='/')
+    year_id = fields.Many2one(
+        'siantou.ems.core.year', 
+        string='Année académique active'
+    )
     student_id = fields.Many2one(
         'oe.school.student.enrollment', 
         string='Etudiant', 
         required=True)
     structure_frais_name = fields.Char(
-        # default=lambda self: self._get_structure_frais_name(),
         string='Structure de frais'
     )
     amount = fields.Monetary('Montant versé', required=True, tracking=True)
@@ -46,15 +39,7 @@ class FeeEnrollmentWizard(models.TransientModel):
         related_sudo=False
     )
 
-    # fee_enroll_struct_id = fields.Many2one(
-    #     'siantou.ems.core.fee.enrollment',
-    #     string="Frais d'inscription",
-    #     default=lambda self: self.env['siantou.ems.core.fee.enrollment'].sudo().search([('active', '=',True)], limit=1)  
-    # )
-    
-    # montant_paie = fields.Integer(
-    #     string="Montant de paiement", 
-    # )
+
 
 
     @api.model
@@ -62,26 +47,34 @@ class FeeEnrollmentWizard(models.TransientModel):
         res = super(FeeEnrollmentWizard, self).default_get(fields)
         if self.env.context.get('active_id'):
             res['student_id'] = self.env.context.get('active_id')
+            year_id = self.env['siantou.ems.core.year'].sudo().search(
+                [('active', '=',True),], 
+                limit=1
+            )
             student_id = self.env['oe.school.student.enrollment'].sudo().search(
-                [('id', '=',res['student_id']),], 
+                [('id', '=',int(res['student_id'])),], 
                 limit=1
             )
             structure_frais_id = self.env['siantou.ems.fee.structure'].sudo().search(
                 [
                     ('field_of_study_id', '=',student_id.field_of_study_id.id),
                     ('level_id', '=',student_id.level_id.id),
+                    ('year_id', '=',year_id.id),
                 ], 
                 limit=1
             )
 
-            if not structure_frais_id:
-                raise ValidationError(f"Aucune structure de frais de paiement disponible pour {student_id.field_of_study_id.name} {student_id.level_id.name}")
+            if not year_id:
+                raise ValidationError(f"Aucune année active trouvé")
             
+            if not structure_frais_id:
+                raise ValidationError(f"Aucune structure de frais de paiement disponible pour {student_id.field_of_study_id.name} {student_id.level_id.name} pour l'année {year_id.name}")
             
             # _logger.info(student_id)
             # _logger.info(structure_frais_id)
             # _logger.info(res['student_id'])
             # _logger.info(res)
+            res['year_id'] = year_id
             res['amount'] = structure_frais_id.amount_total
             res['structure_frais_name'] = structure_frais_id.fee_structure_name
         return res
@@ -121,12 +114,11 @@ class FeeEnrollmentWizard(models.TransientModel):
                 [
                     ('field_of_study_id', '=',self.student_id.field_of_study_id.id),
                     ('level_id', '=',self.student_id.level_id.id),
+                    ('year_id', '=',self.year_id.id),
                 ], 
                 limit=1
             )
-            # if not structure_frais_id:
-            #     raise ValidationError(f"Aucune structure de frais de paiement disponible pour {self.student_id.field_of_study_id.name} {self.student_id.level_id.name}")
-            
+
             journal_id = structure_frais_id.type_frais_id.category_id.journal_id
             if not journal_id:
                 raise ValidationError("Le journal de paiement n'est pas configuré pour cette structure de frais")
@@ -155,51 +147,6 @@ class FeeEnrollmentWizard(models.TransientModel):
             }
             self.env['account.move'].create(mone_vals)
 
-            
-
-            #===== Ecrire dans le journal comptable
-            # lines = []
-            # values = {
-            #     'fee_category_id': structure_frais_id.type_frais_id.category_id.id,
-            #     'student_id': self.student_id.id,
-            #     'state': 'done',
-            #     'fee_structure': structure_frais_id.id,
-            #     'invoice_date': datetime.today(),
-            #     'class_division_id': self.student_id.field_of_study_id.id,
-            #     'is_fee': True,
-            #     'partner_id': self.student_id.partner_id.id,
-            #     'journal_id': structure_frais_id.type_frais_id.category_id.journal_id.id,
-            #     'student_name': self.student_id.partner_id.name,
-            #     'move_type': 'out_invoice'
-            # }
-            # fee_line1 = {
-            #     'credit': structure_frais_id.amount_total,
-            #     'partner_id': self.student_id.partner_id.id,
-            #     'price_unit': structure_frais_id.amount_total,
-            #     # 'price_subtotal': structure_frais_id.amount_total,
-            #     'price_total': structure_frais_id.amount_total,
-            #     'quantity': 1.0,
-            #     'product_id': structure_frais_id.type_frais_id.product_variant_id.id,
-            #     'name': f'Paiement de {self.student_id.name}',
-            #     # 'analytic_account_id': rec.class_id.class_id.analytic_id.id,
-            #     'account_id': structure_frais_id.type_frais_id.category_id.journal_id.default_account_id.id
-            # }
-            # lines.append((0, 0, fee_line1))
-            # fee_line2 = {
-            #     'debit': structure_frais_id.amount_total,
-            #     'partner_id': self.student_id.partner_id.id,
-            #     'price_unit': structure_frais_id.amount_total,
-            #     # 'price_subtotal': structure_frais_id.amount_total,
-            #     'price_total': structure_frais_id.amount_total,
-            #     'quantity': 1.00,
-            #     # 'analytic_account_id': rec.class_id.class_id.analytic_id.id,
-            #     'exclude_from_invoice_tab': True,
-            #     'account_id': self.student_id.partner_id.property_account_receivable_id.id
-            # }
-            # lines.append((0, 0, fee_line2))
-            # values['invoice_line_ids'] = lines
-            # values['line_ids'] = lines
-            # self.env['account.move'].create(values)
 
             # Créer un enregistrement de ligne de frais
             fee_payment = self.env['education.fee.payment.enrollment'].create({
@@ -215,101 +162,72 @@ class FeeEnrollmentWizard(models.TransientModel):
             _logger.info(f"montant_paie ::: {fee_payment.amount}")
 
 
-
-            # move = self.env['account.move'].create({
-            #     'move_type': 'out_invoice',  # ===== On informe la comptabilité que nous avons vendu une place
-            #     'partner_id': fee_payment.student_id.partner_id.id,
-            #     'journal_id': fee_payment.structure_frais_id.type_frais_id.category_id.journal_id.id,  # En supposant que l'identifiant journal_id existe dans la structure tarifaire
-            #     'invoice_date_due': fee_payment.date_payment,  # Ajout de la date d'échéance ici
-            #     'line_ids': [
-            #         (0, 0, {
-            #             'name': f'Paiement de {fee_payment.student_id.name}',
-            #             'partner_id': fee_payment.student_id.partner_id.id,
-            #             'account_id': fee_payment.structure_frais_id.type_frais_id.category_id.journal_id.id,  # S'assurer de l'existence du compte
-            #             'debit': fee_payment.amount,
-            #             'credit': 0.0,
-            #             'date': fee_payment.date_payment,  # Date d'échéance au niveau de la ligne
-            #         }),
-            #         (0, 0, {
-            #             'name': 'Revenue',
-            #             'partner_id': fee_payment.student_id.partner_id.id,
-            #             'account_id': fee_payment.structure_frais_id.type_frais_id.category_id.journal_id.id,  # S'assurer de l'existence du compte
-            #             'debit': 0.0,
-            #             'credit': fee_payment.amount,
-            #             'date': fee_payment.date_payment,  # Date d'échéance au niveau de la ligne
-            #         }),
-            #     ],
-            # })
-
-            # #Après le déménagement
-            # move.action_post()
-
             return {'type': 'ir.actions.act_window_close'}
 
 
 
-        #         # Créer l'écriture
-        #         move_vals = {
-        #             'date': due_date,
-        #             'journal_id': journal_id,
-        #             'line_ids': moves,
-        #             'move_type': 'out_invoice',
-        #             'ref': f'inscription: {fee_student.student_id.name}',
-        #         }
-        #         move = self.env['account.move'].create(move_vals)
-        #         move.action_post()  # Publiez le mouvement
-        #         return True
+        # #         # Créer l'écriture
+        # #         move_vals = {
+        # #             'date': due_date,
+        # #             'journal_id': journal_id,
+        # #             'line_ids': moves,
+        # #             'move_type': 'out_invoice',
+        # #             'ref': f'inscription: {fee_student.student_id.name}',
+        # #         }
+        # #         move = self.env['account.move'].create(move_vals)
+        # #         move.action_post()  # Publiez le mouvement
+        # #         return True
          
-        for rec in self:
-            if rec.student_id:
-                # Générer le numéro de dossier
-                dossier_number = self.generate_dossier_number()
+        # for rec in self:
+        #     if rec.student_id:
+        #         # Générer le numéro de dossier
+        #         dossier_number = self.generate_dossier_number()
                 
-                # Générer le nom d'utilisateur et le mot de passe de l'étudiant
-                username = rec.student_id.email  # Utilisez l'email comme nom d'utilisateur, par exemple
-                password = self.env['res.users'].generate_password()  # Fonction pour générer un mot de passe sécurisé
+        #         # Générer le nom d'utilisateur et le mot de passe de l'étudiant
+        #         username = rec.student_id.email  # Utilisez l'email comme nom d'utilisateur, par exemple
+        #         password = self.env['res.users'].generate_password()  # Fonction pour générer un mot de passe sécurisé
                 
-                # Créer un enregistrement de ligne de frais
-                fee_student = self.env['siantou.ems.core.fee.student'].create({
-                    'student_id': rec.student_id.id,
-                    'fee_enroll_struct_id': rec.fee_enroll_struct_id.id,
-                    'date_paiement': fields.Date.today()
-                })
+        #         # Créer un enregistrement de ligne de frais
+        #         fee_student = self.env['siantou.ems.core.fee.student'].create({
+        #             'student_id': rec.student_id.id,
+        #             'fee_enroll_struct_id': rec.fee_enroll_struct_id.id,
+        #             'date_paiement': fields.Date.today()
+        #         })
                 
-                # Récupérer le journal et ses comptes configurés
-                journal = rec.fee_enroll_struct_id.journal_id
-                if not journal:
-                    raise ValidationError("Le journal de paiement n'est pas configuré pour cette structure de frais.")
+        #         # Récupérer le journal et ses comptes configurés
+        #         journal = rec.fee_enroll_struct_id.journal_id
+        #         if not journal:
+        #             raise ValidationError("Le journal de paiement n'est pas configuré pour cette structure de frais.")
                 
-                # Utiliser les comptes configurés dans le journal
-                account_receivable = journal.default_account_id  # Compte de créance client configuré dans le journal
-                account_revenue = journal.default_account_id  # Compte de revenus configuré dans le journal
+        #         # Utiliser les comptes configurés dans le journal
+        #         account_receivable = journal.default_account_id  # Compte de créance client configuré dans le journal
+        #         account_revenue = journal.default_account_id  # Compte de revenus configuré dans le journal
                 
-                if not account_receivable or not account_revenue:
-                    raise ValidationError("Les comptes de créance ou de revenus ne sont pas configurés dans le journal. Veuillez vérifier la configuration.")
+        #         if not account_receivable or not account_revenue:
+        #             raise ValidationError("Les comptes de créance ou de revenus ne sont pas configurés dans le journal. Veuillez vérifier la configuration.")
                 
-                # Mise à jour du statut de l'étudiant
-                rec.student_id.status = 'inscrip'
-                due_date = fields.Date.today() + timedelta(days=30)
+        #         # Mise à jour du statut de l'étudiant
+        #         rec.student_id.status = 'inscrip'
+        #         due_date = fields.Date.today() + timedelta(days=30)
                 
-                # Création de la facture avec les lignes d'écriture
-                move_vals = {
-                    'move_type': 'out_invoice',
-                    'partner_id': rec.student_id.partner_id.id,
-                    'journal_id': journal.id,
-                    'invoice_date': fields.Date.today(),
-                    'invoice_date_due': due_date,
-                    'ref': f'Inscription: {rec.student_id.name}',
-                    'invoice_line_ids': [(0, 0, {
-                        'name': f"Frais d'inscription pour {rec.student_id.name}",
-                        'quantity': 1,
-                        'price_unit': rec.fee_enroll_struct_id.montant_paie,
-                        'account_id': account_revenue.id,  # Compte de revenu du journal
-                    })],
-                }
+        #         # Création de la facture avec les lignes d'écriture
+        #         move_vals = {
+        #             'move_type': 'out_invoice',
+        #             'partner_id': rec.student_id.partner_id.id,
+        #             'journal_id': journal.id,
+        #             'invoice_date': fields.Date.today(),
+        #             'invoice_date_due': due_date,
+        #             'ref': f'Inscription: {rec.student_id.name}',
+        #             'invoice_line_ids': [(0, 0, {
+        #                 'name': f"Frais d'inscription pour {rec.student_id.name}",
+        #                 'quantity': 1,
+        #                 'price_unit': rec.fee_enroll_struct_id.montant_paie,
+        #                 'account_id': account_revenue.id,  # Compte de revenu du journal
+        #             })],
+        #         }
                 
-                move = self.env['account.move'].create(move_vals)
-                move.action_post()
+        #         move = self.env['account.move'].create(move_vals)
+        #         move.action_post()
                 
-                # Envoyer l'email avec le numéro de dossier
-                rec.action_send_email(rec.student_id, dossier_number, username, password)
+        #         # Envoyer l'email avec le numéro de dossier
+        #         rec.action_send_email(rec.student_id, dossier_number, username, password)

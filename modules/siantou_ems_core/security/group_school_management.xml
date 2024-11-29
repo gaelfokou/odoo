@@ -20,9 +20,14 @@
             <field name="category_id" ref="module_category_school_management"/>
         </record>
 
-
         <record id="group_school_other_employe" model="res.groups">
             <field name="name">Autres employés</field>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+            <field name="category_id" ref="module_category_school_management"/>
+        </record>
+
+        <record id="group_school_other" model="res.groups">
+            <field name="name">Autres</field>
             <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
             <field name="category_id" ref="module_category_school_management"/>
         </record>

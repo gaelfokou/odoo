@@ -78,7 +78,26 @@ class DeSchool(http.Controller):
     @http.route('/api/v1/cycles', type="http", methods=['GET'], cors="*", auth="none")
     def list_courses(self, **kw):
         data = []
-        cycles = request.env['oe.school.course'].sudo().search([])
+        cycles = []
+        year_id = request.env['siantou.ems.core.year'].sudo().search(
+            [('active', '=',True),], 
+            limit=1
+        )
+
+        #=== récupération de la session d'admission active de l'année active
+        session_ids = request.env['siantou.session'].sudo().search(
+            [
+                ('active', '=', True),
+                ('year_id', '=', year_id.id),
+            ]
+        )
+        for session_id in session_ids:
+            for id in session_id.cycle_ids:
+                cycle_id = request.env['oe.school.course'].sudo().search([('id','=',id)])
+                cycles.append(cycle_id)
+                
+
+        # cycles = request.env['oe.school.course'].sudo().search([])
         for cycle in cycles:
             filieres = request.env['siantou.ems.core.field_of_study'].sudo().search([('cursus_id', '=', cycle.id)])
             diplo_requis = request.env['oe.school.course.degree'].sudo().search([('cursus_id', '=', cycle.id)])
@@ -175,11 +194,16 @@ class DeSchool(http.Controller):
             #=== Create a new student
             data['partner_id'] = partner.id
 
+            year_id = request.env['siantou.ems.core.year'].sudo().search(
+                [('active', '=',True),], 
+                limit=1
+            )
 
             #=== récupération de la session d'admission active
             session_id = request.env['siantou.session'].sudo().search(
                 [
                     ('active', '=', True),
+                    ('year_id', '=', year_id.id),
                     ('cycle_ids', 'in', int(data['cycle_id'])),
                 ], 
                 limit=1

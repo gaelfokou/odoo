@@ -4,6 +4,10 @@ from odoo import models, fields, api, _
 from odoo.exceptions import ValidationError
 
 
+import logging
+
+_logger = logging.getLogger("++++++++++++")
+
 
 class SessionEnrollment(models.Model):
     _name = "siantou.session"
@@ -86,6 +90,25 @@ class SessionEnrollment(models.Model):
     #             raise ValidationError("Il ne peut y avoir qu'une seule session active à la fois.")
 
 
+    @api.constrains('cycle_ids')
+    def check_cycle_id_existe_in_session(self):
+        session_ids = self.env['siantou.session'].sudo().search([
+            ('year_id','=',self.year_id.id)
+        ])
+        if len(session_ids)>=1:
+            for session_id in session_ids:
+                for id in self.cycle_ids.ids:
+                    # _logger.info(f"form {self.cycle_ids.ids}")
+                    # _logger.info(f"id {id}")
+                    # _logger.info(session_id.cycle_ids.ids)
+                    # _logger.info(id in session_id.cycle_ids.ids)
+                    if id in session_id.cycle_ids.ids:
+                        cycle_id = self.env['oe.school.course'].search([('id','=',id)], limit=1)
+                        raise ValidationError(
+                            _(f"Le cycle << {cycle_id.name} >> existe déjà dans une session d'admission de l'année {self.year_id.name}"))
+                    
+
+
     @api.constrains('start_date', 'end_date')
     def check_dates(self):
         for record in self:
@@ -99,8 +122,10 @@ class SessionEnrollment(models.Model):
     def set_to_draft(self):
         self.state = 'draft'
 
+
     def cancel_register(self):
         self.state = 'cancel'
+
 
     def start_admission(self):
         for rec in self:
@@ -118,6 +143,7 @@ class SessionEnrollment(models.Model):
                 })
         self.state = 'admission'
         self.active=True
+
 
     def close_register(self):
         for rec in self:

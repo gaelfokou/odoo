@@ -11,11 +11,11 @@ from . import university
 from . import year
 from . import degree_course_required
 from . import student_enrollment
+from . import student
 from . import courses
 
 from . import fee_student
 from . import fee_school
-from . import student
 from . import country
 from . import fee_enrollment
 

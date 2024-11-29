@@ -2,7 +2,7 @@ id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 
 access_siantou_ems_fee_structure_fee_admin,access.siantou.ems.fee.structure,model_siantou_ems_fee_structure,siantou_ems_fee.group_fee_admin,1,1,1,1
 access_siantou_ems_fee_category_fee_admin,access.siantou.ems.fee.category,model_siantou_ems_fee_category,siantou_ems_fee.group_fee_admin,1,1,1,1
-access_siantou_ems_fee_structure_lines_fee_admin,access.siantou.ems.fee.structure.lines,model_siantou_ems_fee_structure_lines,siantou_ems_fee.group_fee_admin,1,1,1,1
+access_siantou_ems_fee_structure_lines_fee_admin,access.siantou.ems.fee.structure.lines,model_siantou_ems_fee_structure_lines,siantou_ems_fee.group_fee_admin,1,0,1,1
 access_siantou_ems_fee_type_fee_admin,access.siantou.ems.fee.type,model_siantou_ems_fee_type,siantou_ems_fee.group_fee_admin,1,1,1,1
 access_siantou_ems_fee_payment_line_fee_admin,access.siantou.ems.fee.payment.line,model_siantou_ems_fee_payment_line,siantou_ems_fee.group_fee_admin,1,1,1,1
 access_education_fee_payment_fee_admin,access.education.fee.payment,model_education_fee_payment,siantou_ems_fee.group_fee_admin,1,1,1,1
@@ -26,7 +26,7 @@ access_education_fee_payment_enrollment_fee_base,access.education.fee.payment.en
 
 access_siantou_ems_fee_structure_fee_gest,access.siantou.ems.fee.structure,model_siantou_ems_fee_structure,siantou_ems_fee.group_fee_gest,1,1,1,0
 access_siantou_ems_fee_category_fee_gest,access.siantou.ems.fee.category,model_siantou_ems_fee_category,siantou_ems_fee.group_fee_gest,1,1,1,0
-access_siantou_ems_fee_structure_lines_fee_gest,access.siantou.ems.fee.structure.lines,model_siantou_ems_fee_structure_lines,siantou_ems_fee.group_fee_gest,1,1,1,0
+access_siantou_ems_fee_structure_lines_fee_gest,access.siantou.ems.fee.structure.lines,model_siantou_ems_fee_structure_lines,siantou_ems_fee.group_fee_gest,1,0,1,0
 access_siantou_ems_fee_type_fee_gest,access.siantou.ems.fee.type,model_siantou_ems_fee_type,siantou_ems_fee.group_fee_gest,1,1,1,0
 access_siantou_ems_fee_payment_line_fee_gest,access.siantou.ems.fee.payment.line,model_siantou_ems_fee_payment_line,siantou_ems_fee.group_fee_gest,1,1,1,0
 access_education_fee_payment_fee_gest,access.education.fee.payment,model_education_fee_payment,siantou_ems_fee.group_fee_gest,1,1,1,0

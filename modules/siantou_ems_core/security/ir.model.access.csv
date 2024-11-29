@@ -70,6 +70,10 @@ access_oe_school_student_directeur,access.oe.school.student,model_oe_school_stud
 access_siantou_ems_core_school_directeur,access.siantou.ems.core.school,model_siantou_ems_core_school,siantou_ems_core.group_school_user_directeur,1,0,0,0
 access_siantou_ems_core_field_of_study_directeur,access.siantou.ems.core.field_of_study,model_siantou_ems_core_field_of_study,siantou_ems_core.group_school_user_directeur,1,0,0,0
 access_siantou_ems_core_student_batch_directeur,access.siantou.ems.core.student.batch,model_siantou_ems_core_student_batch,siantou_ems_core.group_school_user_directeur,1,0,0,0
+access_siantou_ems_timetable_timetable_manager,access.siantou.ems.timetable.timetable,model_siantou_ems_timetable_timetable,siantou_ems_core.group_school_user_directeur,1,0,0,0
+access_siantou_ems_timetable_timetable_print_wizard_manager,access.siantou.ems.timetable.timetable_print_wizard,model_siantou_ems_timetable_timetable_print_wizard,siantou_ems_core.group_school_user_directeur,1,0,0,0
+access_siantou_ems_timetable_timetable_wizard_manager,access.siantou.ems.timetable.timetable_wizard,model_siantou_ems_timetable_timetable_wizard,siantou_ems_core.group_school_user_directeur,1,0,0,0
+access_siantou_ems_timetable_group_manager,access.siantou.ems.timetable.group,model_siantou_ems_timetable_group,siantou_ems_core.group_school_user_directeur,1,0,0,0
 
 
 access_siantou_ems_core_year_dircom,access.siantou.ems.core.year,model_siantou_ems_core_year,siantou_ems_core.group_school_dircom,1,0,0,0
@@ -101,7 +105,6 @@ access_siantou_session_registre_dircom,access.siantou.session.registre,model_sia
 access_siantou_ems_core_fee_enrollment_student_dircom,access.siantou.ems.core.fee.enrollment.student,model_siantou_ems_core_fee_enrollment_student,siantou_ems_core.group_school_dircom,1,0,0,0
 
 
-
 access_siantou_ems_core_year_raac,access.siantou.ems.core.year,model_siantou_ems_core_year,siantou_ems_core.group_school_raac,1,0,0,0
 access_siantou_ems_core_year_semester_raac,access.siantou.ems.core.year.semester,model_siantou_ems_core_year_semester,siantou_ems_core.group_school_raac,1,0,0,0
 access_siantou_ems_core_field_of_study_raac,access.siantou.ems.core.field_of_study,model_siantou_ems_core_field_of_study,siantou_ems_core.group_school_raac,1,0,0,0
@@ -131,7 +134,6 @@ access_siantou_session_registre_raac,access.siantou.session.registre,model_siant
 access_siantou_ems_core_fee_enrollment_student_raac,access.siantou.ems.core.fee.enrollment.student,model_siantou_ems_core_fee_enrollment_student,siantou_ems_core.group_school_raac,1,0,0,0
 
 
-
 access_siantou_ems_core_year_other_employe,access.siantou.ems.core.year,model_siantou_ems_core_year,siantou_ems_core.group_school_other_employe,1,0,0,0
 access_siantou_ems_core_year_semester_other_employe,access.siantou.ems.core.year.semester,model_siantou_ems_core_year_semester,siantou_ems_core.group_school_other_employe,1,0,0,0
 access_siantou_ems_core_field_of_study_other_employe,access.siantou.ems.core.field_of_study,model_siantou_ems_core_field_of_study,siantou_ems_core.group_school_other_employe,1,0,0,0
@@ -159,6 +161,9 @@ access_siantou_ems_core_fee_school_line_other_employe,access.s.e.core.fee.school
 access_siantou_session_other_employe,access.siantou.session,model_siantou_session,siantou_ems_core.group_school_other_employe,1,0,0,0
 access_siantou_session_registre_other_employe,access.siantou.session.registre,model_siantou_session_registre,siantou_ems_core.group_school_other_employe,1,0,0,0
 access_siantou_ems_core_fee_enrollment_student_other_employe,access.siantou.ems.core.fee.enrollment.student,model_siantou_ems_core_fee_enrollment_student,siantou_ems_core.group_school_other_employe,1,0,0,0
+
+
+
 
 
 

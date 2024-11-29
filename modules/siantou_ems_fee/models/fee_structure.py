@@ -3,7 +3,10 @@
 
 from odoo import models, fields, api
 from odoo.exceptions import ValidationError
+import logging
 
+
+_logger = logging.getLogger(__name__)
 
 class FeeStructure(models.Model):
     _name = 'siantou.ems.fee.structure'
@@ -21,7 +24,7 @@ class FeeStructure(models.Model):
 
     company_currency_id = fields.Many2one(
         'res.currency', compute='get_company_id', readonly=True, related_sudo=False)
-    fee_structure_name = fields.Char('Libellé', compute='_compute_fee_structure_name')
+    fee_structure_name = fields.Char('Libellé', compute='_compute_fee_structure_name',store=True)
     comment = fields.Text('Information additionnel')
     academic_year = fields.Many2one(
         'siantou.ems.core.year', string='Année académique', required=True)
@@ -48,26 +51,34 @@ class FeeStructure(models.Model):
         ],
         'Type de paiement', 
         required=True,
-        default='pu'
+        default='pu',
     )
     fee_type_ids = fields.One2many(
-        'siantou.ems.fee.structure.lines', 'fee_structure_id', string='Liste des tranches de paiement')
-    nbre_tranche = fields.Integer("Nombre de tranches", required=True, default=1)
+        'siantou.ems.fee.structure.lines', 
+        'fee_structure_id', 
+        string='Liste des tranches de paiement',
+        compute='_create_tranche',
+        store=True,
+    )
+    nbre_tranche = fields.Integer("Nombre de tranches", required=True, default=1,)
     sequence = fields.Integer('Priorité', default=1, required=True, store=True)
     fee_special = fields.Boolean('Inclure dans les frais spéciaux', default=False)
     active = fields.Boolean(default=True)
 
 
-    @api.depends('field_of_study_id', 'level_id', 'type_frais_id')
+    @api.depends('field_of_study_id', 'level_id', 'type_frais_id', 'type_paiement')
     def _compute_fee_structure_name(self):
         for record in self:
             # Calculer 'fee_structure_name' en fonction de 'field_of_study_id' et 'level_id'
             field_of_study_name = record.field_of_study_id.name
             level_name = record.level_id.name
             type_frais_name = record.type_frais_id.name
-            record.fee_structure_name = f"Frais_{type_frais_name}_{field_of_study_name or ''}_{level_name or ''}"
+            type_paiement = record.type_paiement
+            record.fee_structure_name = f"Frais_{type_frais_name or ''}_{field_of_study_name or ''}_{level_name or ''}_{type_paiement or ''}"
 
-    def diviser_montant(montant, nb_tranche):        
+
+
+    def diviser_montant(self, montant, nb_tranche):        
         # Calcule la part pour chaque partie
         part = montant / nb_tranche
         # Crée une liste avec toutes les parties égales
@@ -76,19 +87,33 @@ class FeeStructure(models.Model):
         return parties  
 
 
-    def create_tranche(self, id):
+    # @api.onchange('nbre_tranche')
+    @api.depends('type_paiement', 'amount_total', 'nbre_tranche')
+    def _create_tranche(self):
+        _logger.info("============= "+self.type_paiement)
         for rec in self:
+            _logger.info(f"============= {rec}")
             if rec.type_paiement == 'pt':
+                rec.fee_type_ids.unlink() 
                 if rec.nbre_tranche>1:
-                    parties = rec.diviser_montant(rec.amount_total, rec.nbre_tranche)
-                    for amount, i in enumerate(parties):
-                        rec.env['siantou.ems.fee.structure.lines'].create(
-                            line_name=f"{i} tranche",
-                            fee_structure_id=id,
-                            fee_amount=amount,
-                        )
+                    parties = self.diviser_montant(rec.amount_total, rec.nbre_tranche)
+                    for i, amount in enumerate(parties):
+                        rec.fee_type_ids = [(0, 0, {
+                            'name':f"{i+1}_tranche",
+                            'fee_structure_id':rec.id,
+                            'fee_amount':amount,
+                        })]
+                        # self.env['siantou.ems.fee.structure.lines'].create({
+                        #     'line_name':f"{i+1} tranche",
+                        #     # 'fee_structure_id':self.id,
+                        #     'fee_amount':amount,
+                        # })
                 if rec.nbre_tranche<=0:
                     raise ValidationError("""Aucune Le nombre de tranche doit être supérieur à 1""")
+            else:
+                pass
+        
+        
 
     # @api.depends("field_of_study_id", "level_id")
     # def _get_name(self):
@@ -97,7 +122,7 @@ class FeeStructure(models.Model):
     @api.model
     def create(self, vals):
         res = super().create(vals)
-        self.create_tranche(res.id)
+        # self._create_tranche(res)
         return res
 
 
@@ -106,18 +131,11 @@ class FeeStructureLines(models.Model):
     _name = 'siantou.ems.fee.structure.lines'
 
 
-    _sql_constraints = [
-        ('unique_line_name', 'unique(line_name)', 'Ce nom existe déjà'),
-    ]
-
-
-    line_name = fields.Char("Libellé", required=True)
+    name = fields.Char("Libellé", required=True)
     fee_structure_id = fields.Many2one(
-        'siantou.ems.fee.structure', string='Structure de frais', ondelete='cascade', index=True)
+        'siantou.ems.fee.structure', string='Structure de frais', ondelete='cascade', index=True, required=True)
     fee_amount = fields.Float('Montant',  required=True)
     echeance = fields.Date("Echeance de paiement")
-
-    
 
 
 

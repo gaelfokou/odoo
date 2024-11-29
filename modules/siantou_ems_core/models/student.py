@@ -126,12 +126,7 @@ class Student(models.Model):
     )
 
 
-    user_id = fields.Many2one(
-        'res.users',
-        string="Utilisateur lié",
-        readonly=True,
-        help="Compte utilisateur portail associé à cet étudiant"
-    )
+
 
 
     def generate_matricule(self):
@@ -197,28 +192,3 @@ class Student(models.Model):
         
         return student
     
-
-    def action_create_portal_user(self):
-        """Crée un compte utilisateur portail pour l'étudiant"""
-        for student in self:
-            if not student.user_id:
-                # Création de l'email et du mot de passe
-                email = student.name.replace(' ', '.').lower() + '@siantou.cm'
-                password = student.name.replace(' ', '.').lower()
-                user_vals = {
-                    'name': student.name,
-                    'login': email,
-                    'email': email,
-                    'password': password,
-                    'partner_id': student.env['res.partner'].create({
-                        'name': student.name,
-                        'email': email,
-                        'phone': student.num_tel,
-                        'is_company': False,
-                    }).id,
-                    'groups_id': [(6, 0, [self.env.ref('base.group_portal').id])],
-                }
-                user = self.env['res.users'].sudo().create(user_vals)
-                student.user_id = user
-            else:
-                raise ValueError(_("Cet étudiant a déjà un compte utilisateur portail."))

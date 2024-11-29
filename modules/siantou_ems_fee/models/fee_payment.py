@@ -53,6 +53,12 @@ class FeePayment(models.Model):
         string='Structure de frais',
         domain=[('is_scolarite', '=', True)],
     )
+    structure_frais_lines_ids = fields.Many2one(
+        'siantou.ems.fee.structure.lines',
+        string='Lignes de structure de frais',
+        # related='structure_frais_id.fee_type_ids'
+        # domain=[('id', '=',False)],
+    )
     amount = fields.Monetary('Montant versé', required=True, tracking=True)
 
     reference = fields.Char('Réference du reçu', required=True)
@@ -88,6 +94,32 @@ class FeePayment(models.Model):
     #                             Veuillez selectionner d'autres factures ou modifier le montant de versement
     #                             """)
 
+
+    @api.depends('structure_frais_id')
+    def _onchange_structure_frais_id(self):
+        for rec in self:
+            if rec.structure_frais_id:
+                lines_id = self.env['siantou.ems.fee.structure.lines'].search([
+                    ('fee_structure_id', '=', rec.structure_frais_id.id),
+                ])
+                _logger.info(lines_id)
+                return {'domain': {'structure_frais_lines_ids': [('id', 'in', lines_id.ids)]}}
+            else:
+                # Si aucune structure_frais_lines n'est pas sélectionnée, supprimer le domaine
+                return {'domain': {'structure_frais_lines_ids': []}}
+
+
+    # @api.onchange('structure_frais_id')
+    # def _onchange_structure_frais_id(self):
+    #     if self.structure_frais_id:
+    #         structure_frais_lines = self.structure_frais_id.fee_type_ids
+
+    #         _logger.info(structure_frais_lines)
+
+    #         self.structure_frais_lines_id = [structure_frais_lines]
+            
+
+
     def validate_payment(self):
         """Validate, create and match payment and invoice"""
         payment_obj = self.env['account.payment']
@@ -120,7 +152,6 @@ class FeePayment(models.Model):
 
     def reset_payment(self):
         """Cancel payment"""
-
         for rec in self:
             rec.state = 'draft'
 

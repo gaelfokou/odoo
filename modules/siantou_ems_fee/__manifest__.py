@@ -8,7 +8,7 @@
     "website": "http://www.iccsoft.com",
     'summary': 'Manage students fee',
     'description': """Manage students fee""",
-    "depends": ['base', 'account',],
+    "depends": ['base', 'account', 'siantou_ems_core'],
     "data": [
         'data/account_data.xml',
         'data/sequences.xml',
