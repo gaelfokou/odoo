@@ -20,7 +20,8 @@ class PortalAccount(portal.CustomerPortal):
                 if user:
                     is_user = 'is_student'
             values['portal_timetable'] = 1
-            values['portal_schoolfee'] = 0 if is_user == 'is_teacher' else (1 if is_user == 'is_student' else 0)
+            values['portal_schoolfee'] = 1 if is_user == 'is_student' else 0
+            values['portal_paymenthistory'] = 1 if is_user == 'is_teacher' else 0
         return values
 
     @http.route(['/my/timetable', '/my/timetable/page/<int:page>'], type='http', auth="user", website=True)
@@ -84,6 +85,21 @@ class PortalAccount(portal.CustomerPortal):
                                 {
                                     'schoolfee': search_schoolfees,
                                     'page_name': 'schoolfee',
+                                    'search': search,
+                                    'search_in': search_in,
+                                    'searchbar_inputs': searchbar_inputs,
+                                    'sortby': sortby,
+                                    'searchbar_sortings': searchbar_sortings,
+                                })
+
+    @http.route(['/my/paymenthistory', '/my/paymenthistory/page/<int:page>'], type='http', auth="user", website=True)
+    def portal_paymenthistory(self, page=1, search=None, search_in='all', sortby=None, **kw):
+        # Utilisation de la fonction du helper
+        search_paymenthistorys, searchbar_inputs, search_in, sortby, searchbar_sortings = TimeTableHelpers.timetable(search, search_in, sortby)
+        return request.render('siantou_ems_portal.siantou_ems_portal_my_home_paymenthistory_views',
+                                {
+                                    'paymenthistory': search_paymenthistorys,
+                                    'page_name': 'paymenthistory',
                                     'search': search,
                                     'search_in': search_in,
                                     'searchbar_inputs': searchbar_inputs,
