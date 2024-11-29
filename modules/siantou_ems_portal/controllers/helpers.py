@@ -50,3 +50,35 @@ class Helpers:
 
         
         return search_timetables, searchbar_inputs, search_in, sortby, searchbar_sortings
+
+    @staticmethod
+    def schoolfee(search=None, search_in='all', sortby=None):
+        if not search:
+            search = ''
+        searchbar_inputs = {
+            'all': {'label': 'Tout', 'input': 'all', 'domain': []},
+        }
+        if search_in not in searchbar_inputs.keys():
+            search_in = 'all'
+        search_domain = searchbar_inputs[search_in]['domain']
+
+        searchbar_sortings = {
+            'date-desc': {'label': 'Date desc', 'order': 'date_payment desc'},
+            'date-asc': {'label': 'Date asc', 'order': 'date_payment asc'},
+        }
+        if not sortby or sortby not in searchbar_sortings.keys():
+            sortby = 'date-desc'
+        order = searchbar_sortings[sortby]['order']
+
+        # Chercher l'étudiant en fonction de l'ID de l'utilisateur (user_id)
+        student = http.request.env['oe.school.student'].sudo().search([('user_id', '=', user.id)], limit=1)
+        if student:
+            # Si l'étudiant est trouvé, on filtre par cycle, niveau et filière
+            search_domain.append(('student_id', '=', student.id))
+
+        search_schoolfees = http.request.env['education.fee.payment'].sudo().search(search_domain, order=order)
+
+        _logger.info(f'----------- tototototototo search_schoolfees {search_schoolfees} -----------')
+
+        
+        return search_schoolfees, searchbar_inputs, search_in, sortby, searchbar_sortings
