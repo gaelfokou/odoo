@@ -191,7 +191,7 @@
                     <t t-set="icon" t-value="'/siantou_ems_portal/static/src/img/payment_grid.png'"/>
                     <t t-set="title">Historique des paiements</t>
                     <t t-set="url" t-value="'/my/paymenthistory'"/>
-                    <t t-set="text">Affichez vos frais de scolarité</t>
+                    <t t-set="text">Affichez l'historique de vos paiements</t>
                     <t t-set="placeholder_count" t-value="'portal_paymenthistory'"/>
                 </t>
             </div>
