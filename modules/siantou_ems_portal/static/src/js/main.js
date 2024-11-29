@@ -34,7 +34,7 @@ class PrintTimetableComponent extends Component {
 
 		console.log('Successful starting print timetable');
 	}
-	static template = xml`<button id="siantou_ems_portal.print_timetable_element" class="btn btn-primary" t-on-click="printTimetable">Impression</button>`;
+	static template = xml`<button id="siantou_ems_portal.print_timetable_element" class="btn btn-primary" t-on-click="printTimetable">Impression de l'emploi du temps</button>`;
 }
 
 registry.category('actions').add('siantou_ems_portal.print_timetable', PrintTimetableComponent)
