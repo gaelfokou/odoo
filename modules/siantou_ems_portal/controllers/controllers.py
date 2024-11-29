@@ -48,8 +48,20 @@ class PortalAccount(portal.CustomerPortal):
             'semester_id': semester_id.id,
             'group_id': group_id.id,
         })
-        data = report_data.print_timetable_report_data()
-        pdf, _ = pdf_report.sudo().with_context()._render_qweb_pdf(report_name, data=data)
+        user = None
+        is_user = None
+        if http.request.env.user.employee_id.id:
+            user = http.request.env.user.employee_id
+            is_user = 'is_teacher'
+        else:
+            user = http.request.env['oe.school.student'].sudo().search([('user_id', '=', http.request.env.user.id)], limit=1)
+            if user:
+                is_user = 'is_student'
+        if user:
+            data = report_data.print_timetable_report_data(user, is_user)
+            pdf, _ = pdf_report.sudo().with_context()._render_qweb_pdf(report_name, data=data)
+        else:
+            pdf = None
         filename = 'Emploi du temps PDF.pdf'
         content_type = 'application/pdf'
         pdfhttpheaders = [
