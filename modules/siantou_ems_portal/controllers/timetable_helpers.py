@@ -34,15 +34,15 @@ class TimeTableHelpers:
 
         if http.request.env.user.employee_id.id:
             user = http.request.env.user.employee_id
-            search_domain.insert(0, ('employee_id', '=', user.id))
+            search_domain.append(('employee_id', '=', user.id))
         else:
             user = http.request.env.user
             # Chercher l'étudiant en fonction de l'ID de l'utilisateur (user_id)
             student = http.request.env['oe.school.student'].sudo().search([('user_id', '=', user.id)], limit=1)
             if student:
                 # Si l'étudiant est trouvé, on filtre par cycle, niveau et filière
-                search_domain.insert(0, ('level_id', '=', student.level_id.id))
-                search_domain.insert(0, ('field_of_study_id', '=', student.field_of_study_id.id))
+                search_domain.append(('level_id', '=', student.level_id.id))
+                search_domain.append(('field_of_study_id', '=', student.field_of_study_id.id))
 
         search_timetables = http.request.env['siantou.ems.timetable.timetable'].sudo().search(search_domain, order=order)
 

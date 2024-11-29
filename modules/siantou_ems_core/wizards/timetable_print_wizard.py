@@ -86,6 +86,13 @@ class TimetablePrintWizard(models.TransientModel):
             domain.append(('date', '>=', self.period_from))
             domain.append(('date', '<=', self.period_to))
 
+        if user:
+            if is_user == 'is_teacher':
+                domain.append(('employee_id', '=', user.id))
+            elif is_user == 'is_student':
+                domain.append(('level_id', '=', user.level_id.id))
+                domain.append(('field_of_study_id', '=', user.field_of_study_id.id))
+
         timetables = self.env['siantou.ems.timetable.timetable'].search(domain)
 
         # Fonction pour diviser les horaires en segments d'une heure (hours est le nombre d'heure voulu)
