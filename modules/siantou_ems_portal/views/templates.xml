@@ -21,6 +21,8 @@
         </template>
 -->
 
+        <!-- Emploi du temps -->
+
         <template id="siantou_ems_portal_timetable" name="siantou_ems_portal.timetable" inherit_id="portal.portal_breadcrumbs" priority="30">
             <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
                 <li t-if="page_name == 'timetable'" t-attf-class="breadcrumb-item #{'active ' if timetable else ''}">
@@ -72,6 +74,93 @@
                     </thead>
                     <tbody>
                         <t t-foreach="timetable" t-as="record">
+                            <tr>
+                                <td class='text-left'>
+                                    <span t-field="record.date"/>
+                                </td>
+                                <td class='text-left'>
+                                    <span t-field="record.field_of_study_id.name"/>
+                                </td>
+                                <td class='text-left'>
+                                    <span t-field="record.semester_id.name"/>
+                                </td>
+                                <td class='text-left'>
+                                    <span t-field="record.level_id.name"/>
+                                </td>
+                                <td class='text-left'>
+                                    <span t-field="record.subject_id.name"/>
+                                </td>
+                                <td class='text-left'>
+                                    <span t-field="record.classroom_id.name"/>
+                                </td>
+                                <td class='text-left'>
+                                    <span t-field="record.employee_id.name"/>
+                                </td>
+                                <td class='text-left'>
+                                    <span t-field="record.day_of_week"/>
+                                </td>
+                                <td class='text-left'>
+                                    <span t-field="record.start_time"/>
+                                </td>
+                                <td class='text-left'>
+                                    <span t-field="record.end_time"/>
+                                </td>
+                            </tr>
+                        </t>
+                    </tbody>
+                </t>
+            </t>
+        </template>
+
+        <!-- Frais de scolarité -->
+
+        <template id="siantou_ems_portal_schoolfee" name="siantou_ems_portal.schoolfee" inherit_id="portal.portal_breadcrumbs" priority="30">
+            <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
+                <li t-if="page_name == 'schoolfee'" t-attf-class="breadcrumb-item #{'active ' if schoolfee else ''}">
+                    <a t-if="schoolfee" t-attf-href="/my/schoolfee?{{ keep_query() }}">Frais de scolarité</a>
+                    <t t-else="">Frais de scolarité</t>
+                </li>
+            </xpath>
+        </template>
+
+        <template id="siantou_ems_portal_my_home_menu_schoolfee" name="siantou_ems_portal.schoolfee" inherit_id="portal.portal_my_home" priority="30">
+            <xpath expr="//div[hasclass('o_portal_docs')]" position="before">
+                <t t-set="portal_client_category_enable" t-value="True"/>
+            </xpath>
+            <div id="portal_client_category" position="inside">
+                <t t-call="portal.portal_docs_entry">
+                    <t t-set="icon" t-value="'/siantou_ems_portal/static/src/img/fee_grid.png'"/>
+                    <t t-set="title">Frais de scolarité</t>
+                    <t t-set="url" t-value="'/my/schoolfee'"/>
+                    <t t-set="text">Affichez vos frais de scolarité</t>
+                    <t t-set="placeholder_count" t-value="'portal_schoolfee'"/>
+                </t>
+            </div>
+        </template>
+
+        <template id="siantou_ems_portal_my_home_schoolfee_views" name="siantou_ems_portal.print_schoolfee">
+            <t t-call="portal.portal_layout">
+                <t t-set="breadcrumbs_searchbar" t-value="True"/>
+                <t t-call="portal.portal_searchbar">
+                    <t t-set="title">Frais de scolarité</t>
+                </t>
+                <t t-call="portal.portal_table">
+                    <thead>
+                        <tr class="active">
+                            <th class="text-left">Date</th>
+                            <th class="text-left">Filière</th>
+                            <th class="text-left">Semestre</th>
+                            <th class="text-left">Niveau</th>
+                            <th class="text-left">Cours</th>
+                            <th class="text-left">Salle de classe</th>
+                            <th class="text-left">Enseignant</th>
+                            <th class="text-left">Jour de la semaine</th>
+                            <th class="text-left">Heure de début</th>
+                            <th class="text-left">Heure de fin</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-foreach="schoolfee" t-as="record">
                             <tr>
                                 <td class='text-left'>
                                     <span t-field="record.date"/>

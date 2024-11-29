@@ -12,10 +12,15 @@ class PortalAccount(portal.CustomerPortal):
     def _prepare_home_portal_values(self, counters):
         values = super()._prepare_home_portal_values(counters)
         if 'portal_timetable' in counters:
-            # user = request.env.user.partner_id
-            user = request.env.user.employee_id
-            count = request.env['siantou.ems.timetable.timetable'].sudo().search_count([('employee_id', '=', user.id)])
-            values['portal_timetable'] = count if count > 0 else 1
+            is_user = None
+            if http.request.env.user.employee_id.id:
+                is_user = 'is_teacher'
+            else:
+                user = http.request.env['oe.school.student'].sudo().search([('user_id', '=', http.request.env.user.id)], limit=1)
+                if user:
+                    is_user = 'is_student'
+            values['portal_timetable'] = 1
+            values['portal_schoolfee'] = 0 if is_user == 'is_teacher' else (1 if is_user == 'is_student' else 0)
         return values
 
     @http.route(['/my/timetable', '/my/timetable/page/<int:page>'], type='http', auth="user", website=True)
@@ -70,3 +75,18 @@ class PortalAccount(portal.CustomerPortal):
             ('Content-Disposition', content_disposition(filename)),
         ]
         return request.make_response(pdf, headers=pdfhttpheaders)
+
+    @http.route(['/my/schoolfee', '/my/schoolfee/page/<int:page>'], type='http', auth="user", website=True)
+    def portal_schoolfee(self, page=1, search=None, search_in='all', sortby=None, **kw):
+        # Utilisation de la fonction du helper
+        search_schoolfees, searchbar_inputs, search_in, sortby, searchbar_sortings = TimeTableHelpers.timetable(search, search_in, sortby)
+        return request.render('siantou_ems_portal.siantou_ems_portal_my_home_schoolfee_views',
+                                {
+                                    'schoolfee': search_schoolfees,
+                                    'page_name': 'schoolfee',
+                                    'search': search,
+                                    'search_in': search_in,
+                                    'searchbar_inputs': searchbar_inputs,
+                                    'sortby': sortby,
+                                    'searchbar_sortings': searchbar_sortings,
+                                })
