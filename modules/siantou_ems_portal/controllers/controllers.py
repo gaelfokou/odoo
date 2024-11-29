@@ -38,8 +38,19 @@ class PortalAccount(portal.CustomerPortal):
         report_name = 'siantou_ems_core.report_timetable'
         report_action = 'siantou_ems_core.action_report_timetable'
         pdf_report = request.env['ir.actions.report'].sudo()._get_report_from_name(report_action)
-        pdf, _ = pdf_report.sudo().with_context()._render_qweb_pdf(report_name)
-        filename = 'report.pdf'
+        semester_ids = request.env['siantou.ems.core.year.semester'].sudo().search([])
+        semester_ids = list(semester_ids)
+        semester_id = semester_ids[0]
+        group_ids = request.env['siantou.ems.timetable.group'].sudo().search([])
+        group_ids = list(group_ids)
+        group_id = group_ids[0]
+        report_data = request.env['siantou.ems.timetable.timetable_print_wizard'].sudo().create({
+            'semester_id': semester_id.id,
+            'group_id': group_id.id,
+        })
+        data = report_data.print_timetable_report_data()
+        pdf, _ = pdf_report.sudo().with_context()._render_qweb_pdf(report_name, data=data)
+        filename = 'Emploi du temps PDF.pdf'
         content_type = 'application/pdf'
         pdfhttpheaders = [
             ('Content-Type', content_type),
