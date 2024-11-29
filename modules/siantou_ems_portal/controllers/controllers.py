@@ -3,7 +3,7 @@ from odoo import http
 from odoo.http import request, content_disposition
 from odoo.addons.portal.controllers import portal
 from odoo.exceptions import UserError, ValidationError
-from .timetable_helpers import TimeTableHelpers  # Importer la classe helper
+from .helpers import Helpers  # Importer la classe helper
 import logging
 
 _logger = logging.getLogger(__name__)
@@ -27,7 +27,7 @@ class PortalAccount(portal.CustomerPortal):
     @http.route(['/my/timetable', '/my/timetable/page/<int:page>'], type='http', auth="user", website=True)
     def portal_timetable(self, page=1, search=None, search_in='all', sortby=None, **kw):
         # Utilisation de la fonction du helper
-        search_timetables, searchbar_inputs, search_in, sortby, searchbar_sortings = TimeTableHelpers.timetable(search, search_in, sortby)
+        search_timetables, searchbar_inputs, search_in, sortby, searchbar_sortings = Helpers.timetable(search, search_in, sortby)
         return request.render('siantou_ems_portal.siantou_ems_portal_my_home_timetable_views',
                                 {
                                     'timetable': search_timetables,
@@ -80,29 +80,17 @@ class PortalAccount(portal.CustomerPortal):
     @http.route(['/my/schoolfee', '/my/schoolfee/page/<int:page>'], type='http', auth="user", website=True)
     def portal_schoolfee(self, page=1, search=None, search_in='all', sortby=None, **kw):
         # Utilisation de la fonction du helper
-        search_schoolfees, searchbar_inputs, search_in, sortby, searchbar_sortings = TimeTableHelpers.timetable(search, search_in, sortby)
         return request.render('siantou_ems_portal.siantou_ems_portal_my_home_schoolfee_views',
                                 {
-                                    'schoolfee': search_schoolfees,
+                                    'schoolfee': [],
                                     'page_name': 'schoolfee',
-                                    'search': search,
-                                    'search_in': search_in,
-                                    'searchbar_inputs': searchbar_inputs,
-                                    'sortby': sortby,
-                                    'searchbar_sortings': searchbar_sortings,
                                 })
 
     @http.route(['/my/paymenthistory', '/my/paymenthistory/page/<int:page>'], type='http', auth="user", website=True)
     def portal_paymenthistory(self, page=1, search=None, search_in='all', sortby=None, **kw):
         # Utilisation de la fonction du helper
-        search_paymenthistorys, searchbar_inputs, search_in, sortby, searchbar_sortings = TimeTableHelpers.timetable(search, search_in, sortby)
         return request.render('siantou_ems_portal.siantou_ems_portal_my_home_paymenthistory_views',
                                 {
-                                    'paymenthistory': search_paymenthistorys,
+                                    'paymenthistory': [],
                                     'page_name': 'paymenthistory',
-                                    'search': search,
-                                    'search_in': search_in,
-                                    'searchbar_inputs': searchbar_inputs,
-                                    'sortby': sortby,
-                                    'searchbar_sortings': searchbar_sortings,
                                 })

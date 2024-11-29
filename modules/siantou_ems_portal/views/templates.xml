@@ -148,15 +148,8 @@
                     <thead>
                         <tr class="active">
                             <th class="text-left">Date</th>
-                            <th class="text-left">Filière</th>
-                            <th class="text-left">Semestre</th>
-                            <th class="text-left">Niveau</th>
-                            <th class="text-left">Cours</th>
-                            <th class="text-left">Salle de classe</th>
-                            <th class="text-left">Enseignant</th>
-                            <th class="text-left">Jour de la semaine</th>
-                            <th class="text-left">Heure de début</th>
-                            <th class="text-left">Heure de fin</th>
+                            <th class="text-left">Référence</th>
+                            <th class="text-left">Montant</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -170,27 +163,6 @@
                                 </td>
                                 <td class='text-left'>
                                     <span t-field="record.semester_id.name"/>
-                                </td>
-                                <td class='text-left'>
-                                    <span t-field="record.level_id.name"/>
-                                </td>
-                                <td class='text-left'>
-                                    <span t-field="record.subject_id.name"/>
-                                </td>
-                                <td class='text-left'>
-                                    <span t-field="record.classroom_id.name"/>
-                                </td>
-                                <td class='text-left'>
-                                    <span t-field="record.employee_id.name"/>
-                                </td>
-                                <td class='text-left'>
-                                    <span t-field="record.day_of_week"/>
-                                </td>
-                                <td class='text-left'>
-                                    <span t-field="record.start_time"/>
-                                </td>
-                                <td class='text-left'>
-                                    <span t-field="record.end_time"/>
                                 </td>
                             </tr>
                         </t>
@@ -235,15 +207,8 @@
                     <thead>
                         <tr class="active">
                             <th class="text-left">Date</th>
-                            <th class="text-left">Filière</th>
-                            <th class="text-left">Semestre</th>
-                            <th class="text-left">Niveau</th>
-                            <th class="text-left">Cours</th>
-                            <th class="text-left">Salle de classe</th>
-                            <th class="text-left">Enseignant</th>
-                            <th class="text-left">Jour de la semaine</th>
-                            <th class="text-left">Heure de début</th>
-                            <th class="text-left">Heure de fin</th>
+                            <th class="text-left">Référence</th>
+                            <th class="text-left">Montant</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -257,27 +222,6 @@
                                 </td>
                                 <td class='text-left'>
                                     <span t-field="record.semester_id.name"/>
-                                </td>
-                                <td class='text-left'>
-                                    <span t-field="record.level_id.name"/>
-                                </td>
-                                <td class='text-left'>
-                                    <span t-field="record.subject_id.name"/>
-                                </td>
-                                <td class='text-left'>
-                                    <span t-field="record.classroom_id.name"/>
-                                </td>
-                                <td class='text-left'>
-                                    <span t-field="record.employee_id.name"/>
-                                </td>
-                                <td class='text-left'>
-                                    <span t-field="record.day_of_week"/>
-                                </td>
-                                <td class='text-left'>
-                                    <span t-field="record.start_time"/>
-                                </td>
-                                <td class='text-left'>
-                                    <span t-field="record.end_time"/>
                                 </td>
                             </tr>
                         </t>

@@ -6,7 +6,7 @@ import logging
 
 _logger = logging.getLogger(__name__)
 
-class TimeTableHelpers:
+class Helpers:
     @staticmethod
     def timetable(search=None, search_in='all', sortby=None):
         if not search:
