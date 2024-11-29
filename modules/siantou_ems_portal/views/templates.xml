@@ -56,7 +56,7 @@
                 <t t-call="portal.portal_table">
                     <!-- <div id="siantou_ems_portal_print_timetable_container"></div> -->
                     <div>
-                        <a t-att-href="'/my/timetable/download'"><button class="btn btn-primary">Impression de l'emploi du temps</button></a>
+                        <a t-att-href="'/my/timetable/download'"><button class="btn btn-primary">Impression de l'emploi du temps</button></a><br/><br/>
                     </div>
                     <thead>
                         <tr class="active">
