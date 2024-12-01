@@ -70,6 +70,7 @@ class Helpers:
             sortby = 'date-desc'
         order = searchbar_sortings[sortby]['order']
 
+        user = http.request.env.user
         # Chercher l'étudiant en fonction de l'ID de l'utilisateur (user_id)
         student = http.request.env['oe.school.student'].sudo().search([('user_id', '=', user.id)], limit=1)
         if student:
