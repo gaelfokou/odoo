@@ -80,9 +80,10 @@ class PortalAccount(portal.CustomerPortal):
     @http.route(['/my/schoolfee', '/my/schoolfee/page/<int:page>'], type='http', auth="user", website=True)
     def portal_schoolfee(self, page=1, search=None, search_in='all', sortby=None, **kw):
         # Utilisation de la fonction du helper
+        search_schoolfees, searchbar_inputs, search_in, sortby, searchbar_sortings = Helpers.schoolfee(search, search_in, sortby)
         return request.render('siantou_ems_portal.siantou_ems_portal_my_home_schoolfee_views',
                                 {
-                                    'schoolfee': [],
+                                    'schoolfee': search_schoolfees,
                                     'page_name': 'schoolfee',
                                 })
 
