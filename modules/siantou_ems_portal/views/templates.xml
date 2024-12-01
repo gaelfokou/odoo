@@ -252,7 +252,7 @@
                                 </td>
                                 <td class='text-left'>
                                     <t t-set="amount" t-value="float_round(sum(record.line_ids.mapped('amount')), 2)"/>
-                                    <span t-field="amount"/>
+                                    <span t-esc="amount"/>
                                 </td>
                                 <td class='text-left'>
                                     <span t-field="record.total_hours"/>
