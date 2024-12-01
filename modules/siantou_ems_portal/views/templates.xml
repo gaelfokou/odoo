@@ -148,21 +148,39 @@
                     <thead>
                         <tr class="active">
                             <th class="text-left">Date</th>
-                            <th class="text-left">Référence</th>
-                            <th class="text-left">Montant</th>
+                            <th class="text-left">Réference</th>
+                            <th class="text-left">Réference du reçu</th>
+                            <th class="text-left">Type de paiement</th>
+                            <th class="text-left">Montant versé</th>
+                            <th class="text-left">Montant total</th>
+                            <th class="text-left">Statut</th>
                         </tr>
                     </thead>
                     <tbody>
                         <t t-foreach="schoolfee" t-as="record">
                             <tr>
                                 <td class='text-left'>
-                                    <span t-field="record.date"/>
+                                    <span t-field="record.date_payment"/>
                                 </td>
                                 <td class='text-left'>
-                                    <span t-field="record.field_of_study_id.name"/>
+                                    <span t-field="record.name"/>
                                 </td>
                                 <td class='text-left'>
-                                    <span t-field="record.semester_id.name"/>
+                                    <span t-field="record.reference"/>
+                                </td>
+                                <td class='text-left'>
+                                    <span t-field="record.structure_frais_id.type_paiement"/>
+                                </td>
+                                <td class='text-left'>
+                                    <span t-field="record.amount"/>
+                                    <span t-field="record.currency_id.name"/>
+                                </td>
+                                <td class='text-left'>
+                                    <span t-field="record.structure_frais_id.amount_total"/>
+                                    <span t-field="record.structure_frais_id.company_currency_id.name"/>
+                                </td>
+                                <td class='text-left'>
+                                    <span t-field="record.state"/>
                                 </td>
                             </tr>
                         </t>

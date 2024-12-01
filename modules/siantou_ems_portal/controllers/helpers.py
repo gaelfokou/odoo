@@ -76,7 +76,7 @@ class Helpers:
             # Si l'étudiant est trouvé, on filtre par cycle, niveau et filière
             search_domain.append(('student_id', '=', student.id))
 
-        search_schoolfees = http.request.env['education.fee.payment'].sudo().search(search_domain, order=order)
+        search_schoolfees = http.request.env['education.fee.payment.enrollment'].sudo().search(search_domain, order=order)
 
         _logger.info(f'----------- tototototototo search_schoolfees {search_schoolfees} -----------')
 
