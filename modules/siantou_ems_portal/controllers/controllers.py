@@ -90,8 +90,9 @@ class PortalAccount(portal.CustomerPortal):
     @http.route(['/my/paymenthistory', '/my/paymenthistory/page/<int:page>'], type='http', auth="user", website=True)
     def portal_paymenthistory(self, page=1, search=None, search_in='all', sortby=None, **kw):
         # Utilisation de la fonction du helper
+        search_paymenthistories, searchbar_inputs, search_in, sortby, searchbar_sortings = Helpers.paymenthistory(search, search_in, sortby)
         return request.render('siantou_ems_portal.siantou_ems_portal_my_home_paymenthistory_views',
                                 {
-                                    'paymenthistory': [],
+                                    'paymenthistory': search_paymenthistories,
                                     'page_name': 'paymenthistory',
                                 })

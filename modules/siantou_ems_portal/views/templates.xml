@@ -173,11 +173,9 @@
                                 </td>
                                 <td class='text-left'>
                                     <span t-field="record.amount"/>
-                                    <span t-field="record.currency_id.name"/>
                                 </td>
                                 <td class='text-left'>
                                     <span t-field="record.structure_frais_id.amount_total"/>
-                                    <span t-field="record.structure_frais_id.company_currency_id.name"/>
                                 </td>
                                 <td class='text-left'>
                                     <span t-field="record.state"/>
@@ -225,21 +223,42 @@
                     <thead>
                         <tr class="active">
                             <th class="text-left">Date</th>
-                            <th class="text-left">Référence</th>
-                            <th class="text-left">Montant</th>
+                            <th class="text-left">Description</th>
+                            <th class="text-left">Réference</th>
+                            <th class="text-left">Règles salariales</th>
+                            <th class="text-left">Contrat</th>
+                            <th class="text-left">Montant versé</th>
+                            <th class="text-left">Total heure</th>
+                            <th class="text-left">Statut</th>
                         </tr>
                     </thead>
                     <tbody>
                         <t t-foreach="paymenthistory" t-as="record">
                             <tr>
                                 <td class='text-left'>
-                                    <span t-field="record.date"/>
+                                    <span t-field="record.date_from"/>
                                 </td>
                                 <td class='text-left'>
-                                    <span t-field="record.field_of_study_id.name"/>
+                                    <span t-field="record.name"/>
                                 </td>
                                 <td class='text-left'>
-                                    <span t-field="record.semester_id.name"/>
+                                    <span t-field="record.number"/>
+                                </td>
+                                <td class='text-left'>
+                                    <span t-field="record.code"/>
+                                </td>
+                                <td class='text-left'>
+                                    <span t-field="record.contract_id.name"/>
+                                </td>
+                                <td class='text-left'>
+                                    <t t-set="amount" t-value="float_round(sum(record.line_ids.mapped('amount')), 2)"/>
+                                    <span t-field="amount"/>
+                                </td>
+                                <td class='text-left'>
+                                    <span t-field="record.total_hours"/>
+                                </td>
+                                <td class='text-left'>
+                                    <span t-field="record.state"/>
                                 </td>
                             </tr>
                         </t>

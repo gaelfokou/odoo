@@ -83,3 +83,33 @@ class Helpers:
 
         
         return search_schoolfees, searchbar_inputs, search_in, sortby, searchbar_sortings
+
+    @staticmethod
+    def paymenthistory(search=None, search_in='all', sortby=None):
+        if not search:
+            search = ''
+        searchbar_inputs = {
+            'all': {'label': 'Tout', 'input': 'all', 'domain': []},
+        }
+        if search_in not in searchbar_inputs.keys():
+            search_in = 'all'
+        search_domain = searchbar_inputs[search_in]['domain']
+
+        searchbar_sortings = {
+            'date-desc': {'label': 'Date desc', 'order': 'date_from desc'},
+            'date-asc': {'label': 'Date asc', 'order': 'date_from asc'},
+        }
+        if not sortby or sortby not in searchbar_sortings.keys():
+            sortby = 'date-desc'
+        order = searchbar_sortings[sortby]['order']
+
+        if http.request.env.user.employee_id.id:
+            user = http.request.env.user.employee_id
+            search_domain.append(('employee_id', '=', user.id))
+
+        search_paymenthistories = http.request.env['hr.payslip'].sudo().search(search_domain, order=order)
+
+        _logger.info(f'----------- tototototototo search_paymenthistories {search_paymenthistories} -----------')
+
+        
+        return search_paymenthistories, searchbar_inputs, search_in, sortby, searchbar_sortings
