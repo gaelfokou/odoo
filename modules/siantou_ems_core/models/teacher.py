@@ -81,13 +81,20 @@ class HrEmployee(models.Model):
                         password = username + f'.{i}'
                     else:
                         break
-                group_id = self.env.ref('base.group_portal')
-                user_id = self.env['res.users'].create({
-                    'login': email,
-                    'name': name,
-                    'password' : password,
-                    'groups_id': [(6, 0, [group_id.id])],
-                })
+                if employee_id.is_teacher:
+                    group_id = self.env.ref('base.group_portal')
+                    user_id = self.env['res.users'].create({
+                        'login': email,
+                        'name': name,
+                        'password' : password,
+                        'groups_id': [(6, 0, [group_id.id])],
+                    })
+                else:
+                    user_id = self.env['res.users'].create({
+                        'login': email,
+                        'name': name,
+                        'password' : password,
+                    })
                 employee_id.write({
                     'work_email': email,
                     'user_id': user_id.id,

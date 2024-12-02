@@ -6,10 +6,6 @@
         <field name="inherit_id" ref="hr.view_employee_form" />
         <field name="priority" eval="2000" />
         <field name="arch" type="xml">
-            <!-- <xpath expr="//field[@name='name']" position="after">
-                <button name="action_create_employee_user" type="object" string="Créer un utilisateur" class="btn btn-primary" invisible="not id or user_id"/>
-            </xpath> -->
-
             <xpath expr="//notebook" position="before">
                 <div class="separator-notebook"></div>
             </xpath>
@@ -134,27 +130,5 @@
 
         </field>
     </record>
-
-    <!-- <record id="hr_employee_dgd_kanban_view" model="ir.ui.view">
-        <field name="name">view.employee.kanban.inherit.teacher</field>
-        <field name="model">hr.employee</field>
-        <field name="inherit_id" ref="hr.hr_kanban_view_employees" />
-        <field name="arch" type="xml">
-            <xpath expr="//field[@name='category_ids']" position="before">
-                <button name="action_create_all_employee_user" type="object" string="Créer tous les utilisateurs" class="btn btn-primary" invisible="work_email and work_email != ''"/>
-            </xpath>
-        </field>
-    </record> -->
-
-    <!-- <record id="hr_employee_dgd_tree_view" model="ir.ui.view">
-        <field name="name">view.employee.tree.inherit.teacher</field>
-        <field name="model">hr.employee</field>
-        <field name="inherit_id" ref="hr.view_employee_tree" />
-        <field name="arch" type="xml">
-            <xpath expr="//tree" position="inside">
-                <button name="action_create_all_employee_user" type="object" string="Créer tous les utilisateurs" class="btn btn-primary" invisible="work_email and work_email != ''"/>
-            </xpath>
-        </field>
-    </record> -->
 
 </odoo>
