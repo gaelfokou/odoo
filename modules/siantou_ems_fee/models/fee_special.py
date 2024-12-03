@@ -1,5 +1,5 @@
 from odoo import fields, models, api, _
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
 from . import utils
 from datetime import date
 import logging
@@ -22,108 +22,97 @@ class FeeSpecial(models.Model):
         return year.id
 
     name = fields.Char('Réference', default='/')
-
     student_id = fields.Many2one(
-        'oe.school.student', string='Etudiant', required=True)
-
+        'oe.school.student', 
+        string='Etudiant', 
+        required=True
+    )
     partner_id = fields.Many2one(
-        'res.partner', string='partner', related="student_id.student_enroll_id.partner_id")
-
+        'res.partner', 
+        string='partner', 
+        related="student_id.student_enroll_id.partner_id"
+    )
     fee_structure_id = fields.Many2one('siantou.ems.fee.structure',
-                                       domain=[('fee_special', '=', True)],
-                                       string='Catégorie de frais', required=True, tracking=True)
-
-    facture_id = fields.Many2one('account.move',
-                                 string='Facture')
-
-    amount = fields.Monetary(
-        'Montant total', required=True, tracking=True)
-
-    currency_id = fields.Many2one(
-        'res.currency', default=lambda self: self.env.company.currency_id, readonly=True, related_sudo=False)
-
-    campus = fields.Many2one('siantou.ems.core.campus', string="Campus")
-
+        domain=[('type_inclusion_fee', '=', 'fee_spec')],
+        string='Structure de frais', 
+        required=True, 
+        tracking=True
+    )
+    facture_id = fields.Many2one('account.move', string='Facture')
+    # amount = fields.Monetary(
+    #     'Montant total', required=True, tracking=True)
+    # currency_id = fields.Many2one(
+    #     'res.currency', default=lambda self: self.env.company.currency_id, readonly=True, related_sudo=False)
     state = fields.Selection([
-        ('draft', 'Brouillon'),
-        ('done', 'Valider')
-    ], string='Etat', default='draft', tracking=True)
-
-    academic_year_id = fields.Many2one('siantou.ems.core.year',
-                                       string='Année Académique',
-                                       help="Séletionner l'Année Académique",
-                                       required=True, default=lambda self: self._get_default_acadmic_year())
-
+            ('draft', 'Brouillon'),
+            ('done', 'Valider')
+        ], string='Etat', 
+        default='draft', 
+        tracking=True
+    )
+    academic_year_id = fields.Many2one(
+        'siantou.ems.core.year',
+        string='Année Académique',
+        help="Séletionner l'Année Académique",
+        required=True, default=lambda self: self._get_default_acadmic_year()
+    )
     description = fields.Text('Description')
+
 
     @api.constrains('amount')
     def _constrains_amount(self):
         """Amount paid less or egal than amount of selected invoice"""
         for rec in self:
             if rec.amount <= 0:
-                raise UserError(""" Le montant du frais spécial ne peut être égal à 0
-                                """)
+                raise UserError("""Le montant du frais spécial ne peut être égal à 0""")
+
 
     def validate_special(self):
         """Validate, create and match payment and invoice"""
-        account_move_obj = self.env['account.move']
         for rec in self:
-            student = rec.student_id
-            cat = rec.fee_structure_id.category_id
-            # for struct in rec.fee_structure_id.fee_type_ids:
-            lines = []
-            values = {
-                'fee_category_id': cat.id,
-                'student_id': student.id,
-                'fee_structure': rec.fee_structure_id.id,
-                'invoice_date': date.today(),
-                'class_division_id': student.class_id.id,
-                'is_fee': True,
-                'partner_id': student.student_id.student_enroll_id.partner_id.id,
-                'journal_id': cat.journal_id.id,
-                'move_type': 'out_invoice'
+            journal_id = rec.fee_structure_id.type_frais_id.category_id.journal_id
+            if not journal_id:
+                raise ValidationError("Le journal de paiement n'est pas configuré pour cette structure de frais")
+            
+            account_receivable_id = journal_id.default_account_id
+            account_revenue_id = journal_id.default_account_id
+            _logger.info(account_receivable_id)
+            _logger.info(account_revenue_id)
+
+            if not account_receivable_id or not account_revenue_id:
+                raise ValidationError("Les comptes de créance ou de revenus ne sont pas configurés dans le journal. Veuillez vérifier la configuration")
+            
+            amount = 0
+            if rec.fee_structure_id.type_paiement=='pu':
+                amount = rec.fee_structure_id.amount_total
+            _logger.info(amount)
+
+            mone_vals = {
+                'move_type': 'out_invoice',
+                'partner_id': rec.student_id.student_enroll_id.partner_id.id,
+                'journal_id': journal_id.id,
+                'invoice_date': fields.Date.today(),
+                'invoice_date_due': fields.Date.today(),
+                'ref': f"AUTRES frais de {rec.student_id.name}",
+                'invoice_line_ids':[
+                    (0,0,{
+                        'name': f"Autre frais de {rec.student_id.name}",
+                        'quantity': 1.0,
+                        'price_unit': amount,
+                        'account_id': account_revenue_id.id,
+                    })
+                ]
             }
-
-
-            fee_line = {
-                'credit': rec.amount,
-                'partner_id': student.student_id.student_enroll_id.partner_id.id,
-                'price_unit': rec.amount,
-                'price_subtotal': rec.amount,
-                'price_total': rec.amount,
-                'quantity': 1.0,
-                # 'product_id': line.fee_type.product_id.id,
-                'name': rec.name,
-                'account_id': cat.journal_id.default_account_id.id
-            }
-            lines.append((0, 0, fee_line))
-            fee_line2 = {
-                'debit': rec.amount,
-                'partner_id': student.student_id.student_enroll_id.partner_id.id,
-                'price_unit': rec.amount,
-                'price_subtotal': rec.amount,
-                'price_total': rec.amount,
-                'quantity': 1.00,
-                'exclude_from_invoice_tab': True,
-                'account_id': student.partner_id.property_account_receivable_id.id
-            }
-            lines.append((0, 0, fee_line2))
-            _logger.info(lines)
-            values['invoice_line_ids'] = lines
-            values['line_ids'] = lines
-            move_id = account_move_obj.create(values)
-            move_id.action_post()
-            _logger.info(lines)
-            rec.facture_id = move_id.id
-
-        self.state = 'done'
-
+            move = self.env['account.move'].create(mone_vals)
+            rec.facture_id = move.id
+            rec.state = 'done'
 
 
     def reset_special(self):
         """Cancel payment"""
         for rec in self:
             rec.state = 'draft'
+
 
     @api.model
     def create(self, vals):

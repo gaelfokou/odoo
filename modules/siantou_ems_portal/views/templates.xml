@@ -236,29 +236,28 @@
                         <t t-foreach="paymenthistory" t-as="record">
                             <tr>
                                 <td class='text-left'>
-                                    <span t-field="record.date_from"/>
+                                    <span t-esc="record['date_from']"/>
                                 </td>
                                 <td class='text-left'>
-                                    <span t-field="record.name"/>
+                                    <span t-esc="record['name']"/>
                                 </td>
                                 <td class='text-left'>
-                                    <span t-field="record.number"/>
+                                    <span t-esc="record['number']"/>
                                 </td>
                                 <td class='text-left'>
-                                    <span t-field="record.code"/>
+                                    <span t-esc="record['code']"/>
                                 </td>
                                 <td class='text-left'>
-                                    <span t-field="record.contract_id.name"/>
+                                    <span t-esc="record['contract']"/>
                                 </td>
                                 <td class='text-left'>
-                                    <t t-set="amount" t-value="float_round(sum(record.line_ids.mapped('amount')), 2)"/>
-                                    <span t-esc="amount"/>
+                                    <span t-esc="record['amount']"/>
                                 </td>
                                 <td class='text-left'>
-                                    <span t-field="record.total_hours"/>
+                                    <span t-esc="record['number_of_hours']"/>
                                 </td>
                                 <td class='text-left'>
-                                    <span t-field="record.state"/>
+                                    <span t-esc="record['state']"/>
                                 </td>
                             </tr>
                         </t>

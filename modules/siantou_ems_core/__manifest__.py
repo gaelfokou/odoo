@@ -43,7 +43,7 @@
         # 'views/fee_struct_line_views.xml',
 
 
-        'views/fee_enrollment_views.xml',
+        # 'views/fee_enrollment_views.xml',
         'views/country_views.xml',
         'views/region_views.xml',
         'views/city_views.xml',

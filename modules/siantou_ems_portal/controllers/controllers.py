@@ -91,8 +91,23 @@ class PortalAccount(portal.CustomerPortal):
     def portal_paymenthistory(self, page=1, search=None, search_in='all', sortby=None, **kw):
         # Utilisation de la fonction du helper
         search_paymenthistories, searchbar_inputs, search_in, sortby, searchbar_sortings = Helpers.paymenthistory(search, search_in, sortby)
+        paymenthistories = []
+        for search_paymenthistory in search_paymenthistories:
+            paymenthistory = {}
+            paymenthistory['date_from'] = search_paymenthistory.date_from
+            paymenthistory['name'] = search_paymenthistory.name
+            paymenthistory['number'] = search_paymenthistory.number
+            paymenthistory['code'] = search_paymenthistory.code
+            paymenthistory['contract'] = search_paymenthistory.contract_id.name
+            if search_paymenthistory.code:
+                paymenthistory['amount'] = search_paymenthistory.line_ids.filtered(lambda line: line.salary_rule_id.code == search_paymenthistory.code).mapped('amount')[0] if len(list(search_paymenthistory.line_ids)) > 0 else 0.0
+            else:
+                paymenthistory['amount'] = search_paymenthistory.line_ids.mapped('amount')[0] if len(list(search_paymenthistory.line_ids)) > 0 else 0.0
+            paymenthistory['number_of_hours'] = sum(search_paymenthistory.worked_days_line_ids.mapped('number_of_hours')) if len(search_paymenthistory.worked_days_line_ids) > 0 else 0.0
+            paymenthistory['state'] = search_paymenthistory.state
+            paymenthistories.append(paymenthistory)
         return request.render('siantou_ems_portal.siantou_ems_portal_my_home_paymenthistory_views',
                                 {
-                                    'paymenthistory': search_paymenthistories,
+                                    'paymenthistory': paymenthistories,
                                     'page_name': 'paymenthistory',
                                 })

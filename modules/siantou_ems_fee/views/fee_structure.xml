@@ -16,7 +16,7 @@
                         <group>
                             <field name="fee_structure_name" placeholder="Eg:LKG and UKG"/>
                             <field name="type_frais_id"/>
-                            <field name="fee_special"/>
+                            <field name="type_inclusion_fee"/>
                             <field name="type_paiement"/>
                             <field name="nbre_tranche" invisible="type_paiement == 'pu'"/>
                         </group>
@@ -27,9 +27,9 @@
                             <field name="amount_total"/>
                         </group>
                     </group>
-                    <group>
+                    <!-- <group>
                         <field name="is_scolarite"/>
-                    </group>
+                    </group> -->
                     <notebook invisible="type_paiement == 'pu'">
                         <page string="Frais">
                             <field name="fee_type_ids" widget="one2many_list" mode="tree">
@@ -54,12 +54,12 @@
             <field name="name">siantou.ems.fee.structure.tree</field>
             <field name="model">siantou.ems.fee.structure</field>
             <field name="arch" type="xml">
-                <tree string="Fee Structure">
+                <tree string="Fee Structure" default_order="id desc" default_group_by="type_frais_id">
+                    <field name="type_frais_id"/>
+                    <field name="level_id"/>
                     <field name="fee_structure_name"/>
                     <field name="field_of_study_id"/>
-                    <field name="level_id"/>
                     <field name="academic_year"/>
-                    <field name="type_frais_id"/>
                     <field name="amount_total"  widget="monetary"/>
                 </tree>
             </field>

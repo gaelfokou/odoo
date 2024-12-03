@@ -24,10 +24,12 @@
 from . import fee_journal
 from . import fee_category
 from . import fee_structure
-from . import fee_receipt
-from . import fee_applicant
-from . import education_student
 from . import fee_payment
 from . import fee_special
-from . import education_fee_classe
 from . import config
+# from . import fee_receipt
+# from . import fee_applicant
+# from . import education_student
+
+# from . import education_fee_classe
+

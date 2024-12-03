@@ -126,9 +126,6 @@ class Student(models.Model):
     )
 
 
-
-
-
     def generate_matricule(self):
         # Get the current year
         current_year = datetime.datetime.now().year
@@ -169,8 +166,6 @@ class Student(models.Model):
                 student.user_id = user
                 _logger.info(user.email)
             
-
-
 
 
     @api.model

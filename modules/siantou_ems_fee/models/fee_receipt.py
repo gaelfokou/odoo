@@ -171,9 +171,9 @@ class InvoiceLineInherit(models.Model):
             return vals
 
 
-class PayedLinens(models.Model):
-    _name = 'payed.lines'
-    _inherit = 'account.move.line'
+# class PayedLinens(models.Model):
+#     _name = 'payed.lines'
+#     _inherit = 'account.move.line'
 
-    date = fields.Date(string='Date', readonly=True)
-    receipt_no = fields.Char('Reçu No')
+#     date = fields.Date(string='Date', readonly=True)
+#     receipt_no = fields.Char('Reçu No')

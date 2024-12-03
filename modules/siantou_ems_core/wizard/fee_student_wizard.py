@@ -47,22 +47,25 @@ class FeeEnrollmentWizard(models.TransientModel):
         res = super(FeeEnrollmentWizard, self).default_get(fields)
         if self.env.context.get('active_id'):
             res['student_id'] = self.env.context.get('active_id')
-            year_id = self.env['siantou.ems.core.year'].sudo().search(
+            year_id = self.env['siantou.ems.core.year'].search(
                 [('active', '=',True),], 
                 limit=1
             )
-            student_id = self.env['oe.school.student.enrollment'].sudo().search(
+            student_id = self.env['oe.school.student.enrollment'].search(
                 [('id', '=',int(res['student_id'])),], 
                 limit=1
             )
-            structure_frais_id = self.env['siantou.ems.fee.structure'].sudo().search(
-                [
-                    ('field_of_study_id', '=',student_id.field_of_study_id.id),
-                    ('level_id', '=',student_id.level_id.id),
-                    ('year_id', '=',year_id.id),
-                ], 
-                limit=1
-            )
+            try:
+                structure_frais_id = self.env['siantou.ems.fee.structure'].search(
+                    [
+                        ('field_of_study_id','=',student_id.field_of_study_id.id),
+                        ('level_id','=',student_id.level_id.id),
+                        ('academic_year','=',year_id.id),
+                    ], 
+                    limit=1
+                )
+            except Exception as e:
+                raise ValidationError(e.args)
 
             if not year_id:
                 raise ValidationError(f"Aucune année active trouvé")
@@ -74,7 +77,7 @@ class FeeEnrollmentWizard(models.TransientModel):
             # _logger.info(structure_frais_id)
             # _logger.info(res['student_id'])
             # _logger.info(res)
-            res['year_id'] = year_id
+            res['year_id'] = year_id.id
             res['amount'] = structure_frais_id.amount_total
             res['structure_frais_name'] = structure_frais_id.fee_structure_name
         return res
@@ -108,13 +111,14 @@ class FeeEnrollmentWizard(models.TransientModel):
     def enroll_student(self):
         if self.student_id:
             #==== self.student_id is instance od student
-            # _logger.info(f"Student In wizard ::: {self.student_id.name}")
-            # _logger.info(f"Niveau In wizard ::: {self.student_id.level_id.name}")
+            _logger.info(f"Student In wizard ::: {self.student_id.name}")
+            _logger.info(f"Niveau In wizard ::: {self.student_id.level_id.name}")
+            _logger.info(f"Niveau In wizard ::: {self.year_id.name}")
             structure_frais_id = self.env['siantou.ems.fee.structure'].sudo().search(
                 [
                     ('field_of_study_id', '=',self.student_id.field_of_study_id.id),
-                    ('level_id', '=',self.student_id.level_id.id),
-                    ('year_id', '=',self.year_id.id),
+                    ('level_id','=',self.student_id.level_id.id),
+                    ('academic_year','=',self.year_id.id),
                 ], 
                 limit=1
             )
@@ -160,7 +164,6 @@ class FeeEnrollmentWizard(models.TransientModel):
             
             self.student_id.status = 'inscrip'
             _logger.info(f"montant_paie ::: {fee_payment.amount}")
-
 
             return {'type': 'ir.actions.act_window_close'}
 

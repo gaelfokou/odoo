@@ -4,7 +4,7 @@
         <field name="name">enrollment.history.tree.view</field>
         <field name="model">oe.school.student.enrollment</field>
         <field name="arch" type="xml">
-            <tree string="Etudiants">
+            <tree string="Etudiants" default_order="id desc" default_group_by="cycle_id">
                 <field name="date_preins" widget="datetime"/>
                 <field name="matricule"/>
                 <field name="code_enrol"/>
@@ -12,7 +12,6 @@
                 <field name="cycle_id"/>
                 <field name="field_of_study_id"/>
                 <field name="type_cour"/>
-
                 <field 
                     name="status_univ" 
                     widget="badge"
@@ -26,7 +25,6 @@
                     decoration-success="status == 'transfer'"
                     decoration-info="status == 'inscrip'"
                 />
-
             </tree>
         </field>
     </record>
@@ -37,37 +35,30 @@
 		<field name="arch" type="xml">
 			<form string="Etudiant">
                 <header>
-
                     <button invisible="status in ['inscrip','transfer','rej']" 
                         name="action_preinscrip_wizard"
                         class="btn btn-primary" 
                         type="object" 
                         string="Inscrire"/>
-
                     <button invisible="status in ['broui','transfer','rej']" 
                         name="action_admission_enrollment_wizard" 
                         class="btn btn-success"
                         type="object" 
                         string="Accepter cette candidature"/>
-                    
                     <button  invisible="status in ['broui', 'transfer', 'rej']"
                         name="compute_rejected" 
                         class="btn btn-danager" 
                         type="object" 
                         string="Rejeter cette candidature"/>
-                    
                     <field name="status" widget="statusbar" statusbar_visible="broui,inscrip,transfer"/>
                 </header>
                 <sheet>
-
                     <widget name="web_ribbon" title="Admis" 
                         invisible="status in ['broui', 'inscrip', 'rej']"/>
-
                     <div class="oe_title">
                         <label for="date_preins" string="Date de préinscription" />
                         <h1><field name="date_preins" readonly="1"/></h1>
                     </div>
-
                     <group>
                         <group>
                             <field 
@@ -189,9 +180,7 @@
                 <field name="name"/>
                 <field name="type_cour"/>
                 <field name="status_univ"/>
-
                 <field name="status"/>
-
             </search>
         </field>
     </record>
@@ -213,11 +202,11 @@
             action="action_enrollment_history"/> -->
 
     <menuitem
-            id="menu_siantou_ems_core_students_preinscription"
-            name="Candidatures"
-            parent="menu_siantou_ems_core_adminssions"
-            action="action_enrollment_history"
-            sequence="1"
-            />
+        id="menu_siantou_ems_core_students_preinscription"
+        name="Candidatures"
+        parent="menu_siantou_ems_core_adminssions"
+        action="action_enrollment_history"
+        sequence="1"
+    />
     
 </odoo>

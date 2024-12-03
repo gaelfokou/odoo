@@ -59,7 +59,17 @@ class DeSchool(http.Controller):
             json.dumps(datas)
         )
 
+    @http.route('/api/v1/regions/<int:id_region>/cities', type="http", methods=['GET'], cors="*", auth="none")
+    def list_cities_of_region(self, id_region):
+        datas = []
+        region_id = request.env['siantou.ems.core.region'].sudo().search([('id','=',id_region)], limit=1)
+        if region_id:
+            cities = request.env['siantou.ems.core.city'].sudo().search([('region_id', '=', region_id.id)])
+            datas=[{'id':city.id, 'name': city.name} for city in cities]
 
+        return Response(
+            json.dumps(datas)
+        )
 
     @http.route('/api/v1/cities/<int:id_city>/quarters', type="http", methods=['GET'], cors="*", auth="none")
     def list_quarters_of_city(self, id_city):
@@ -68,7 +78,6 @@ class DeSchool(http.Controller):
         if len(city)>0:
             quarters = request.env['siantou.ems.core.quarter'].sudo().search([('city_id', '=', city.id)])
             datas=[{'id':quart.id, 'name': quart.name} for quart in quarters]
-
 
         return Response(
             json.dumps(datas)
@@ -92,8 +101,8 @@ class DeSchool(http.Controller):
             ]
         )
         for session_id in session_ids:
-            for id in session_id.cycle_ids:
-                cycle_id = request.env['oe.school.course'].sudo().search([('id','=',id)])
+            for cycle_id in session_id.cycle_ids:
+                # cycle_id = request.env['oe.school.course'].sudo().search([('id','=',id)], limit=1)
                 cycles.append(cycle_id)
                 
 
@@ -102,7 +111,7 @@ class DeSchool(http.Controller):
             filieres = request.env['siantou.ems.core.field_of_study'].sudo().search([('cursus_id', '=', cycle.id)])
             diplo_requis = request.env['oe.school.course.degree'].sudo().search([('cursus_id', '=', cycle.id)])
 
-            if len(diplo_requis)>0:
+            if len(diplo_requis)>0 and len(filieres)>0:
                 data.append({
                     'id': cycle.id,
                     'code': cycle.code,

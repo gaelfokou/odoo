@@ -43,7 +43,6 @@ class FeeStructure(models.Model):
     
     # is_assurance = fields.Boolean('Est un frais d\'assurance ?', default=False)
     # is_inscription = fields.Boolean("Est un frais d'inscription ?", default=False)
-    is_scolarite = fields.Boolean("Est un frais de scolarité ?", default=False)
     type_paiement = fields.Selection(
         [
             ('pu', 'Paiement unique'), 
@@ -52,6 +51,16 @@ class FeeStructure(models.Model):
         'Type de paiement', 
         required=True,
         default='pu',
+    )
+    type_inclusion_fee = fields.Selection(
+        [
+            ('fee_inscrip', "Inclure dans les frais d'inscription"),
+            ('fee_scol', 'Inclure dans les frais de scolarité'),
+            ('fee_spec', 'Inclure dans les frais spéciaux'), 
+        ],
+        "Visibilité de la structure de frais", 
+        required=True,
+        default='fee_inscrip',
     )
     fee_type_ids = fields.One2many(
         'siantou.ems.fee.structure.lines', 
@@ -62,7 +71,8 @@ class FeeStructure(models.Model):
     )
     nbre_tranche = fields.Integer("Nombre de tranches", required=True, default=1,)
     sequence = fields.Integer('Priorité', default=1, required=True, store=True)
-    fee_special = fields.Boolean('Inclure dans les frais spéciaux', default=False)
+    # fee_special = fields.Boolean('Inclure dans les frais spéciaux', default=False)
+    # is_scolarite = fields.Boolean("Est un frais de scolarité ?", default=False) 
     active = fields.Boolean(default=True)
 
 

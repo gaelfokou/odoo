@@ -45,10 +45,10 @@ class Helpers:
                 search_domain.append(('field_of_study_id', '=', student.field_of_study_id.id))
 
         search_timetables = http.request.env['siantou.ems.timetable.timetable'].sudo().search(search_domain, order=order)
+        search_timetables = list(search_timetables)
 
         _logger.info(f'----------- tototototototo search_timetables {search_timetables} -----------')
 
-        
         return search_timetables, searchbar_inputs, search_in, sortby, searchbar_sortings
 
     @staticmethod
@@ -73,15 +73,25 @@ class Helpers:
         user = http.request.env.user
         # Chercher l'étudiant en fonction de l'ID de l'utilisateur (user_id)
         student = http.request.env['oe.school.student'].sudo().search([('user_id', '=', user.id)], limit=1)
+        search_schoolfees = []
         if student:
             # Si l'étudiant est trouvé, on filtre par cycle, niveau et filière
             search_domain.append(('student_id', '=', student.id))
 
-        search_schoolfees = http.request.env['education.fee.payment.enrollment'].sudo().search(search_domain, order=order)
+            schoolfees = http.request.env['education.fee.payment'].sudo().search(search_domain, order=order)
+            schoolfees = list(schoolfees)
+            search_schoolfees += schoolfees
 
-        _logger.info(f'----------- tototototototo search_schoolfees {search_schoolfees} -----------')
+            _logger.info(f'----------- tototototototo schoolfees 1 {schoolfees} -----------')
 
-        
+            search_domain = searchbar_inputs[search_in]['domain']
+            search_domain.append(('id', '=', student.student_enroll_id.id))
+            schoolfees = http.request.env['education.fee.payment.enrollment'].sudo().search(search_domain, order=order)
+            schoolfees = list(schoolfees)
+            search_schoolfees += schoolfees
+
+            _logger.info(f'----------- tototototototo schoolfees 2 {schoolfees} -----------')
+
         return search_schoolfees, searchbar_inputs, search_in, sortby, searchbar_sortings
 
     @staticmethod
@@ -108,8 +118,8 @@ class Helpers:
             search_domain.append(('employee_id', '=', user.id))
 
         search_paymenthistories = http.request.env['hr.payslip'].sudo().search(search_domain, order=order)
+        search_paymenthistories = list(search_paymenthistories)
 
         _logger.info(f'----------- tototototototo search_paymenthistories {search_paymenthistories} -----------')
 
-        
         return search_paymenthistories, searchbar_inputs, search_in, sortby, searchbar_sortings

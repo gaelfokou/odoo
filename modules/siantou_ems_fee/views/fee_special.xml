@@ -6,7 +6,7 @@
             <field name="model">siantou.ems.fee.special</field>
             <field name="arch" type="xml">
                 <form string="Formulaire de paiement">
-                    <header groups="base.group_user">
+                    <header>
                         <button name="validate_special" invisible="state == 'done'" type="object" string="Valider"
                             class="oe_highlight" confirm="Validez-vous cette facturation ?" />
                         <button name="reset_special" invisible="state == 'draft'" type="object" string="Réinitoaliser" />
@@ -18,12 +18,11 @@
                                 <field name="name" invisible="1"/>
                                 <field name="student_id" options="{'no_open': True, 'no_create': True}"/>
                                 <field name="fee_structure_id" options="{'no_open': True, 'no_create': True}"/>
-                                <field name="amount" />
+                                <!-- <field name="amount" /> -->
                             </group>
                             <group col="2" colspan="2">
                                 <field name="academic_year_id" options="{'no_open': True, 'no_create': True}"/>
-                                <field name="currency_id" invisible="1" />
-                                <field name="campus"  string="Campus"/>
+                                <!-- <field name="currency_id" invisible="1" /> -->
                             </group>
                         </group>
                         <notebook>
@@ -47,12 +46,12 @@
             <field name="name">siantou.ems.fee.special.view.tree</field>
             <field name="model">siantou.ems.fee.special</field>
             <field name="arch" type="xml">
-                <tree string="Liste des frais spéciaux">
+                <tree string="Liste des frais spéciaux" default_group_by="student_id">
                     <field name="name" />
                     <field name="academic_year_id" />
                     <field name="student_id" />
                     <field name="fee_structure_id" />
-                    <field name="amount" />
+                    <!-- <field name="amount" /> -->
                     <field name="state" />
                 </tree>
             </field>

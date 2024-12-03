@@ -4,7 +4,7 @@
         <field name="name">studnt.tree.view</field>
         <field name="model">oe.school.student</field>
         <field name="arch" type="xml">
-            <tree string="Etudiants">
+            <tree string="Etudiants" default_order="id desc">
                 <field name="matricule"/>
                 <field name="name"/>
                 <field name="cycle_id"/>
@@ -141,9 +141,6 @@
         <field name="name">Etudiants</field>
         <field name="res_model">oe.school.student</field>
         <field name="view_mode">tree,form</field>
-        <!-- <field name="domain">
-            [('field_of_study_id.department_id','=',context.get('id').employ_id.department_id.id)]
-        </field> -->
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
                 Créer un nouveau étudiant.
