@@ -143,7 +143,7 @@ class Student(models.Model):
         for student in self:
             partner_id = student.student_enroll_id.partner_id
             # Création de l'email
-            email = student.name.replace(' ', '.').lower() + '@siantou.cm'
+            email = student.name.replace(' ', '.').lower() + '@siantou.net'
             if not partner_id:
                 partner_id = student.env['res.partner'].create({
                     'name': student.name,

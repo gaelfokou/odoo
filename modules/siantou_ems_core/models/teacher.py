@@ -67,7 +67,7 @@ class HrEmployee(models.Model):
                 name = employee_id.name
                 # email = employee_id.work_email
                 username = name.replace(' ', '.').lower()
-                email = username + '@siantou.cm'
+                email = username + '@siantou.net'
                 password = username
                 i = 0
                 while True:
@@ -77,7 +77,7 @@ class HrEmployee(models.Model):
                     user_ids = list(user_ids)
                     if len(user_ids) > 0:
                         i = i + 1
-                        email = username + f'.{i}' + '@siantou.cm'
+                        email = username + f'.{i}' + '@siantou.net'
                         password = username + f'.{i}'
                     else:
                         break
