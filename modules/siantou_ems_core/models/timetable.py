@@ -115,7 +115,7 @@ class Timetable(models.Model):
     status = fields.Selection([
         ('0', 'En attente'),
         ('1', 'Présent'),
-        ('2', 'Abscent'),
+        ('2', 'Absent'),
         ('3', 'Permissionnaire'),
     ], 'Statut',
         default='0',
