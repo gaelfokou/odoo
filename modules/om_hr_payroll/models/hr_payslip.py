@@ -348,9 +348,9 @@ class HrPayslip(models.Model):
                 # Vérification du temps de cours de l'enseignant en biométrie
                 daily_attendances = self.filter_daily_attendance_teacher(employee_timetable.employee_id, employee_timetable.date, employee_timetable.end_time, employee_timetable.start_time)
                 if len(daily_attendances) > 1:
-                    employee_timetable.write({'status': '1'})
+                    employee_timetable.sudo().write({'status': '1'})
                 else:
-                    employee_timetable.write({'status': '2'})
+                    employee_timetable.sudo().write({'status': '2'})
                 # if employee_timetable.employee_id.is_permanent:
                 #     pass
 
