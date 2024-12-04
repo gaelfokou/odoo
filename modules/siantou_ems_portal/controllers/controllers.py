@@ -100,7 +100,7 @@ class PortalAccount(portal.CustomerPortal):
             paymenthistory['code'] = search_paymenthistory.code
             paymenthistory['contract'] = search_paymenthistory.contract_id.name
             if search_paymenthistory.code:
-                paymenthistory['amount'] = search_paymenthistory.line_ids.filtered(lambda line: line.salary_rule_id.code == search_paymenthistory.code).mapped('amount')[0] if len(list(search_paymenthistory.line_ids)) > 0 else 0.0
+                paymenthistory['amount'] = search_paymenthistory.line_ids.filtered(lambda line: line.salary_rule_id.code == search_paymenthistory.code).mapped('amount')[0] if (len(search_paymenthistory.worked_days_line_ids) > 0 and len(search_paymenthistory.line_ids.filtered(lambda line: line.salary_rule_id.code == search_paymenthistory.code)) > 0) else 0.0
             else:
                 paymenthistory['amount'] = search_paymenthistory.line_ids.mapped('amount')[0] if len(list(search_paymenthistory.line_ids)) > 0 else 0.0
             paymenthistory['number_of_hours'] = sum(search_paymenthistory.worked_days_line_ids.mapped('number_of_hours')) if len(search_paymenthistory.worked_days_line_ids) > 0 else 0.0
