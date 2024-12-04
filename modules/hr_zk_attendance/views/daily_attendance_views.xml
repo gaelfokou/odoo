@@ -5,7 +5,8 @@
         <field name="name">daily.attendance.view.tree</field>
         <field name="model">daily.attendance</field>
         <field name="arch" type="xml">
-            <tree string="Attendance" create="false" delete="false">
+            <!-- <tree string="Attendance" create="false" delete="false"> -->
+            <tree string="Attendance" create="true" delete="true" editable="bottom">
                 <field name="punching_day"/>
                 <field name="employee_id"/>
                 <field name="punch_type"/>
