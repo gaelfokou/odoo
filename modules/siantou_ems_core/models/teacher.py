@@ -57,6 +57,14 @@ class HrEmployee(models.Model):
         'Disponibilité'
     )
 
+    # Relation avec les emplois du temps
+    timetable_ids = fields.One2many(
+        'siantou.ems.timetable.timetable',  # Nom du modèle cible
+        'employee_id',                     # Champ de relation dans le modèle Timetable
+        string='Emplois du temps',
+        help="Liste des emplois du temps associés à l'enseignant."
+    )
+
     def create_employee_user(self, employee_id):
         try:
             user_ids = self.env['res.users'].search([

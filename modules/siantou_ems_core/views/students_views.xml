@@ -20,11 +20,11 @@
         </field>
     </record>
 
-    <record id="admis_history_form_view" model="ir.ui.view">
-		<field name="name">oe.school.student.form.view</field>
-		<field name="model">oe.school.student</field>
-		<field name="arch" type="xml">
-			<form string="Etudiant">
+     <record id="admis_history_form_view" model="ir.ui.view">
+        <field name="name">oe.school.student.form.view</field>
+        <field name="model">oe.school.student</field>
+        <field name="arch" type="xml">
+            <form string="Etudiant">
                 <header>
                     <button name="action_create_portal_user" 
                             type="object" 
@@ -38,82 +38,97 @@
                         <label for="name" string="Nom(s) et prénom(s)" />
                         <h1><field name="name"/></h1>
                     </div>
-                    <group name="perso" string="Informations générales">
-                        <group>
-                            <field 
-                                name="status_univ"
-                            />
-                        </group>
-                        <group>
-                            <field name="annee_acad_current"/>
-                        </group>
-                        <group>
-                            <field name="date_naissance"/>
-                        </group>
-                        <group>
-                            <field name="lieu_naissance"/>
-                        </group>
-                        <group>
-                            <field name="sexe"  widget="radio"/>
-                        </group>
-                        <group>
-                            <field name="situat_matri"  widget="radio"/>
-                        </group>
-                        <group>
-                            <field name="nationalite"/>
-                        </group>
-                        <group>
-
-                            <field name="region_id"/>
-                        </group>
-                        <group>
-                            <field name="city_id"/>
-                        </group>
-                        <group>
-                            <field name="quarter_id"/>
-                        </group>
-                        <group>
-
-                            <field name="lieu_residence"/>
-                        </group>
-                        <group>
-                            <field name="email" widget="email"/>
-                        </group>
-                        <group>
-                            <field name="num_tel" widget="phone"/>
-                        </group>
-                    </group>
-                    <group  name="academique" string="Informations académiques">
-                        <group>
-                            <field name="matricule"/>
-                        </group>
-                        <group>
-                            <field name="cycle_id"/>
-                        </group>
-
-                        <group>
-                            <field name="field_of_study_id"/>
-                        </group>
-                        <group>
-                            <field name="type_cour" widget="radio"/>
-                        </group>
-                        
-                        <!-- <group>
-                            <field name="dipl_req_ids" widget="many2many_tags"/>
-                        </group> -->
-                        <group>
-                            <field name="batch_id"/>
-                        </group>
-                        <group>
-                            <field name="level_id"/>
-                        </group>
-                    </group>
-                    <!-- <group name="tuteur" string="Informations sur la personne à joindre en cas d'urgence">
-                        <group>
-                            <field name="full_name_tutor"/>
-                        </group>
-                    </group> -->
                     
+                    <!-- Informations générales en vue page -->
+                    <notebook>
+                        <page string="Informations générales">
+                            <group name="perso" string="Informations générales">
+                                <group>
+                                    <field name="status_univ"/>
+                                </group>
+                                <group>
+                                    <field name="annee_acad_current"/>
+                                </group>
+                                <group>
+                                    <field name="date_naissance"/>
+                                </group>
+                                <group>
+                                    <field name="lieu_naissance"/>
+                                </group>
+                                <group>
+                                    <field name="sexe"  widget="radio"/>
+                                </group>
+                                <group>
+                                    <field name="situat_matri"  widget="radio"/>
+                                </group>
+                                <group>
+                                    <field name="nationalite"/>
+                                </group>
+                                <group>
+                                    <field name="region_id"/>
+                                </group>
+                                <group>
+                                    <field name="city_id"/>
+                                </group>
+                                <group>
+                                    <field name="quarter_id"/>
+                                </group>
+                                <group>
+                                    <field name="lieu_residence"/>
+                                </group>
+                                <group>
+                                    <field name="email" widget="email"/>
+                                </group>
+                                <group>
+                                    <field name="num_tel" widget="phone"/>
+                                </group>
+                            </group>
+                        </page>
+
+                        <!-- Informations académiques en vue page -->
+                        <page string="Informations académiques">
+                            <group name="academique" string="Informations académiques">
+                                <group>
+                                    <field name="matricule"/>
+                                </group>
+                                <group>
+                                    <field name="cycle_id"/>
+                                </group>
+                                <group>
+                                    <field name="field_of_study_id"/>
+                                </group>
+                                <group>
+                                    <field name="type_cour" widget="radio"/>
+                                </group>
+                                <group>
+                                    <field name="batch_id"/>
+                                </group>
+                                <group>
+                                    <field name="level_id"/>
+                                </group>
+                            </group>
+                        </page>
+
+                        <!-- Informations sur l'emplois de temps en vue page -->
+                        <page string="Emplois de temps">
+                        
+                            <field name="timetable_ids">
+                                <tree string="Emplois du temps">
+                                    <field name="subject_id" string="Cours"/>
+                                    <field name="classroom_id" string="Salle de classe"/>
+                                    <field name="employee_id" string="Professeur"/>
+                                    <field name="field_of_study_id" string="Filière"/>
+                                    <field name="level_id" string="Niveau"/>
+                                    <field name="semester_id" string="Semestre"/>
+                                    <field name="day_of_week" string="Jour de la semaine"/>
+                                    <field name="date" string="Date"/>
+                                    <field name="start_time" string="Heure de début"/>
+                                    <field name="end_time" string="Heure de fin"/>
+                                    <field name="status" string="Statut"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
                 </sheet>
                 <div class="oe_chatter">
                     <field name="message_follower_ids"/>

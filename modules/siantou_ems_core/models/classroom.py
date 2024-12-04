@@ -25,29 +25,6 @@ class Campus(models.Model):
         default=lambda self: self.env.company
     )
     
-
-class Campus(models.Model):
-    _name = 'siantou.ems.core.campus'
-    _description = 'Campus'
-
-    # Code
-    code = fields.Char(
-        'Code',
-        required=True
-    )
-
-    # Nom
-    name = fields.Char(
-        string="Nom du campus",
-        required=True
-    )
-
-    # Université à laquelle appartient ce bâtiment
-    company_id = fields.Many2one(
-        'res.company',
-        required=True,
-        default=lambda self: self.env.company
-    )
     
 
 class Building(models.Model):
@@ -84,48 +61,53 @@ class Classroom(models.Model):
 
     # Code de la salle de classe
     code = fields.Char(
-        'Code',
-        required=True
+        string='Code',
+        required=True,
+        help="Code unique pour identifier la salle de classe."
     )
 
     # Nom de la salle de classe
     name = fields.Char(
-        'Nom de la salle',
+        string='Nom de la salle',
         required=True,
         index=True,
-        translate=True
+        translate=True,
+        help="Nom descriptif de la salle de classe."
     )
 
     # Bâtiment auquel appartient la salle de classe
     building_id = fields.Many2one(
         'siantou.ems.core.building',
-        'Bâtiment',
+        string='Bâtiment',
         required=True,
         index=True,
+        help="Bâtiment auquel cette salle de classe est associée."
     )
 
     # Capacité de la salle de classe
     capacity = fields.Integer(
-        'Capacité',
+        string='Capacité',
         required=True,
-        default=60
+        default=60,
+        help="Nombre maximal d'étudiants pouvant être accueillis dans cette salle."
     )
 
-    # Ajout dans le modèle Classroom
-    # timetable_ids = fields.One2many(
-    #     'siantou.ems.timetable.timetable',  # Nom du modèle cible
-    #     inverse_name="classroom_id",                    # Champ de relation dans Timetable
-    #     string="Emplois du temps"
-    # )
+    # Relation avec les emplois du temps
+    timetable_ids = fields.One2many(
+        'siantou.ems.timetable.timetable',  # Nom du modèle cible
+        'classroom_id',                     # Champ de relation dans le modèle Timetable
+        string='Emplois du temps',
+        help="Liste des emplois du temps associés à cette salle de classe."
+    )
 
-    #Contrainte SQL pour s'assurer que la salle de classe est unique
+    # Contrainte SQL pour garantir que le code de la salle de classe est unique
     _sql_constraints = [
-        ('unique_code', 'unique(code)', 'La salle de classe doit être unique')
+        ('unique_code', 'unique(code)', 'Le code de la salle de classe doit être unique.')
     ]
 
-    # Contrainte logique pour s'assurer que la date de fin est supérieure à la date de début
+    # Contrainte logique pour vérifier que la capacité est strictement positive
     @api.constrains('capacity')
     def _check_capacity(self):
         for record in self:
             if record.capacity <= 0:
-                raise ValidationError("La capacité doit être strictement supérieur à 0.")
+                raise ValidationError("La capacité doit être strictement supérieure à 0.")

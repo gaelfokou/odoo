@@ -125,6 +125,27 @@ class Student(models.Model):
         help="Compte utilisateur portail associé à cet étudiant"
     )
 
+    timetable_ids = fields.One2many(
+        'siantou.ems.timetable.timetable', 
+        string="Emplois du temps", 
+        compute="_compute_timetables", 
+        store=False
+    )
+    
+    @api.depends('field_of_study_id', 'level_id')
+    def _compute_timetables(self):
+        """Méthode pour récupérer les emplois du temps en fonction de la filière et du niveau"""
+        Timetable = self.env['siantou.ems.timetable.timetable']
+    
+        # Recherche des emplois du temps qui correspondent à la filière et au niveau de l'étudiant
+        for student in self:
+            timetables = Timetable.search([
+                ('field_of_study_id', '=', student.field_of_study_id.id),
+                ('level_id', '=', student.level_id.id)
+            ])
+            
+            # Affecter les emplois du temps trouvés à l'attribut timetable_ids
+            student.timetable_ids = timetables
 
     def generate_matricule(self):
         # Get the current year

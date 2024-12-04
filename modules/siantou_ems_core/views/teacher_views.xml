@@ -44,6 +44,23 @@
                             </tree>
                         </field>
                     </page>
+                    <page string="Emplois de temps" name="emplois_de_temps"
+                        invisible="is_teacher == False">
+                        <field name="timetable_ids" widget="one2many_list">
+                            <tree string="Horaires" delete="false">
+                                <field name="subject_id" string="Cours"/>
+                                <field name="classroom_id" string="Salle de classe"/>
+                                <field name="field_of_study_id" string="Filière"/>
+                                <field name="level_id" string="Niveau"/>
+                                <field name="semester_id" string="Semestre"/>
+                                <field name="day_of_week" string="Jour de la semaine"/>
+                                <field name="date" string="Date"/>
+                                <field name="start_time" string="Heure de début"/>
+                                <field name="end_time" string="Heure de fin"/>
+                                <field name="status" string="Statut"/>
+                            </tree>
+                        </field>
+                    </page>
                 </xpath>
             </field>
         </record>
