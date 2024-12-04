@@ -96,6 +96,17 @@ class HrPayslip(models.Model):
         dt = local_dt.astimezone(new_tz)
         return dt
 
+    def convert_float_to_time(self, tm):
+        tm = str(tm)
+        tm = tm.split('.')
+        if len(tm[0]) == 1:
+            tm[0] = '0{}'.format(tm[0])
+        if len(tm[1]) == 1:
+            tm[1] = '0{}'.format(tm[1])
+        tm = ':'.join(tm)
+        tm = '{}:00'.format(tm)
+        return tm
+
     def filter_daily_attendance(self, employee, end_date, start_date):
         # Filtre des données biométriques de l'enseignant pour une période donnée
         end_date = datetime.strftime(end_date, DATE_FORMAT)
@@ -136,23 +147,8 @@ class HrPayslip(models.Model):
         # Filtre des données biométriques de l'enseignant pour une période donnée
         current_date = datetime.strftime(current_date, DATE_FORMAT)
 
-        end_time = str(end_time)
-        end_time = end_time.split('.')
-        if len(end_time[0]) == 1:
-            end_time[0] = '0{}'.format(end_time[0])
-        if len(end_time[1]) == 1:
-            end_time[1] = '0{}'.format(end_time[1])
-        end_time = ':'.join(end_time)
-        end_time = '{}:00'.format(end_time)
-
-        start_time = str(start_time)
-        start_time = start_time.split('.')
-        if len(start_time[0]) == 1:
-            start_time[0] = '0{}'.format(start_time[0])
-        if len(start_time[1]) == 1:
-            start_time[1] = '0{}'.format(start_time[1])
-        start_time = ':'.join(start_time)
-        start_time = '{}:00'.format(start_time)
+        end_time = self.convert_float_to_time(end_time)
+        start_time = self.convert_float_to_time(start_time)
 
         datetime_to = datetime.strptime(f'{current_date} {end_time}', DATETIME_FORMAT)
         datetime_from = datetime.strptime(f'{current_date} {start_time}', DATETIME_FORMAT)
@@ -203,12 +199,15 @@ class HrPayslip(models.Model):
                 ('employee_id', '=', payslip.employee_id.id),
                 ('date', '<=', date_to),
                 ('date', '>=', date_from),
-                ('status', '=', '1'),
+                ('status', 'in', ['1', '3']),
             ])
             for employee_timetable in employee_timetables:
                 # Vérification du temps de cours de l'enseignant en biométrie
                 daily_attendances = self.filter_daily_attendance_teacher(employee_timetable.employee_id, employee_timetable.date, employee_timetable.end_time, employee_timetable.start_time)
-                if len(daily_attendances) > 1:
+                if employee_timetable.status == '3':
+                    timetable_hours = employee_timetable.end_time - employee_timetable.start_time
+                    total_timetable_hours += timetable_hours
+                elif len(daily_attendances) > 1:
                     for daily_attendance in daily_attendances:
                         timetable_hours = employee_timetable.end_time - employee_timetable.start_time
                         total_timetable_hours += timetable_hours
@@ -246,18 +245,6 @@ class HrPayslip(models.Model):
             except Exception as error:
                 _logger.info(f'----------- tototototototo Exception {error} -----------')
 
-    def cron_download_attendance(self):
-        machines = self.env['biometric.device.details'].search([])
-        for machine in machines:
-            try:
-                machine.action_download_attendance()
-            except UserError as error:
-                _logger.info(f'----------- tototototototo UserError {error} -----------')
-            except ValidationError as error:
-                _logger.info(f'----------- tototototototo ValidationError {error} -----------')
-            except Exception as error:
-                _logger.info(f'----------- tototototototo Exception {error} -----------')
-
     @api.model
     def create(self, vals):
         payslip_id = super(HrPayslip, self).create(vals)
@@ -277,16 +264,34 @@ class HrPayslip(models.Model):
                 ('employee_id', '=', payslip_id.employee_id.id),
                 ('date', '<=', date_to),
                 ('date', '>=', date_from),
-                ('status', '=', '1'),
+                ('status', 'in', ['1', '3']),
             ])
             for employee_timetable in employee_timetables:
                 # Vérification du temps de cours de l'enseignant en biométrie
                 daily_attendances = self.filter_daily_attendance_teacher(employee_timetable.employee_id, employee_timetable.date, employee_timetable.end_time, employee_timetable.start_time)
-                if len(daily_attendances) > 1:
+                if employee_timetable.status == '3':
+                    end_time = self.convert_float_to_time(employee_timetable.end_time)
+                    start_time = self.convert_float_to_time(employee_timetable.start_time)
+                    datetime_to = datetime.strptime(f'{employee_timetable.date} {end_time}', DATETIME_FORMAT)
+                    datetime_from = datetime.strptime(f'{employee_timetable.date} {start_time}', DATETIME_FORMAT)
+                    timetable_hours = employee_timetable.end_time - employee_timetable.start_time
+                    self.env['hr.payslip.worked_days'].create({
+                        'name': 'Journée du {} {}, {}, Permissionnaire'.format(CURRENT_WEEKDAY[employee_timetable.date.weekday()], datetime.strftime(datetime_from, DATETIME_FORMAT_FR), employee_timetable.subject_id.name),
+                        'payslip_id': payslip_id.id,
+                        'code': payslip_id.code,
+                        'number_of_days': 1,
+                        'number_of_hours': timetable_hours,
+                        'contract_id': payslip_id.contract_id.id,
+                    })
+                elif len(daily_attendances) > 1:
                     for daily_attendance in daily_attendances:
+                        end_time = self.convert_float_to_time(employee_timetable.end_time)
+                        start_time = self.convert_float_to_time(employee_timetable.start_time)
+                        datetime_to = datetime.strptime(f'{employee_timetable.date} {end_time}', DATETIME_FORMAT)
+                        datetime_from = datetime.strptime(f'{employee_timetable.date} {start_time}', DATETIME_FORMAT)
                         timetable_hours = employee_timetable.end_time - employee_timetable.start_time
                         self.env['hr.payslip.worked_days'].create({
-                            'name': 'Journée du {} {}, {}'.format(CURRENT_WEEKDAY[employee_timetable.date.weekday()], datetime.strftime(self.convert_datetime_from_utc(daily_attendance.punching_time), DATETIME_FORMAT_FR), employee_timetable.subject_id.name),
+                            'name': 'Journée du {} {}, {}'.format(CURRENT_WEEKDAY[employee_timetable.date.weekday()], datetime.strftime(datetime_from, DATETIME_FORMAT_FR), employee_timetable.subject_id.name),
                             'payslip_id': payslip_id.id,
                             'code': payslip_id.code,
                             'number_of_days': 1,
@@ -326,28 +331,6 @@ class HrPayslip(models.Model):
                     punching_time = None
 
         return payslip_id
-
-    @api.model
-    def cron_timetable_presence(self):
-        # self.cron_download_attendance()
-
-        date_to = date.today()
-
-        # Recherche des emplois du temps de l'enseignant pour une période donnée
-        employee_timetables = self.env['siantou.ems.timetable.timetable'].search([
-            ('date', '<=', date_to),
-            ('status', '=', '0'),
-        ])
-        for employee_timetable in employee_timetables:
-            if employee_timetable.employee_id.is_teacher:
-                # Vérification du temps de cours de l'enseignant en biométrie
-                daily_attendances = self.filter_daily_attendance_teacher(employee_timetable.employee_id, employee_timetable.date, employee_timetable.end_time, employee_timetable.start_time)
-                if len(daily_attendances) > 1:
-                    employee_timetable.write({'status': '1'})
-                else:
-                    employee_timetable.write({'status': '2'})
-                # if employee_timetable.employee_id.is_permanent:
-                #     pass
 
     @api.model
     def cron_timetable_presence(self):
