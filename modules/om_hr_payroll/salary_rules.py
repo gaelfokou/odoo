@@ -16,6 +16,20 @@
 
 # result = worked_days.WORK100.number_of_hours
 
+# Structure des salaires :
+
+# Salaire enseignant permanent SALENSPER
+# Salaire enseignant temporaire SALENSTEM
+# Salaire employé permanent SALEMPPER
+# Salaire employé temporaire SALEMPTEM
+
+# Règles salariales :
+
+# Salaire de base enseignant permanent BASICENSPER
+# Salaire de base enseignant temporaire BASICENSTEM
+# Salaire de base employé permanent BASICEMPPER
+# Salaire de base employé temporaire BASICEMPTEM
+
 result = 0
 
 for line in payslip.worked_days_line_ids:
