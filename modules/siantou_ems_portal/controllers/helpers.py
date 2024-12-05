@@ -32,9 +32,16 @@ class Helpers:
             sortby = 'date-desc'
         order = searchbar_sortings[sortby]['order']
 
+        search_timetables = []
         if http.request.env.user.employee_id.id:
             user = http.request.env.user.employee_id
             search_domain.append(('employee_id', '=', user.id))
+
+            _logger.info(f'----------- tototototototo search_domain {search_domain} -----------')
+
+            timetables = http.request.env['siantou.ems.timetable.timetable'].sudo().search(search_domain, order=order)
+            timetables = list(timetables)
+            search_timetables = timetables
         else:
             user = http.request.env.user
             # Chercher l'étudiant en fonction de l'ID de l'utilisateur (user_id)
@@ -44,8 +51,11 @@ class Helpers:
                 search_domain.append(('level_id', '=', student.level_id.id))
                 search_domain.append(('field_of_study_id', '=', student.field_of_study_id.id))
 
-        search_timetables = http.request.env['siantou.ems.timetable.timetable'].sudo().search(search_domain, order=order)
-        search_timetables = list(search_timetables)
+                _logger.info(f'----------- tototototototo search_domain {search_domain} -----------')
+
+                timetables = http.request.env['siantou.ems.timetable.timetable'].sudo().search(search_domain, order=order)
+                timetables = list(timetables)
+                search_timetables = timetables
 
         _logger.info(f'----------- tototototototo search_timetables {search_timetables} -----------')
 
@@ -78,14 +88,20 @@ class Helpers:
             # Si l'étudiant est trouvé, on filtre par cycle, niveau et filière
             search_domain.append(('student_id', '=', student.id))
 
+            _logger.info(f'----------- tototototototo search_domain 1 {search_domain} -----------')
+
             schoolfees = http.request.env['education.fee.payment'].sudo().search(search_domain, order=order)
             schoolfees = list(schoolfees)
-            search_schoolfees += schoolfees
+            search_schoolfees = schoolfees
 
             _logger.info(f'----------- tototototototo schoolfees 1 {schoolfees} -----------')
 
             search_domain = searchbar_inputs[search_in]['domain']
+
             search_domain.append(('student_id', '=', student.student_enroll_id.id))
+
+            _logger.info(f'----------- tototototototo search_domain 2 {search_domain} -----------')
+
             schoolfees = http.request.env['education.fee.payment.enrollment'].sudo().search(search_domain, order=order)
             schoolfees = list(schoolfees)
             search_schoolfees += schoolfees
@@ -113,13 +129,17 @@ class Helpers:
             sortby = 'date-desc'
         order = searchbar_sortings[sortby]['order']
 
+        search_paymenthistories = []
         if http.request.env.user.employee_id.id:
             user = http.request.env.user.employee_id
             search_domain.append(('employee_id', '=', user.id))
 
-        search_paymenthistories = http.request.env['hr.payslip'].sudo().search(search_domain, order=order)
-        search_paymenthistories = list(search_paymenthistories)
+            _logger.info(f'----------- tototototototo search_domain {search_domain} -----------')
 
-        _logger.info(f'----------- tototototototo search_paymenthistories {search_paymenthistories} -----------')
+            paymenthistories = http.request.env['hr.payslip'].sudo().search(search_domain, order=order)
+            paymenthistories = list(paymenthistories)
+            search_paymenthistories = paymenthistories
+
+            _logger.info(f'----------- tototototototo search_paymenthistories {search_paymenthistories} -----------')
 
         return search_paymenthistories, searchbar_inputs, search_in, sortby, searchbar_sortings
