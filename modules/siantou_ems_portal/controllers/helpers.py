@@ -96,7 +96,7 @@ class Helpers:
 
             _logger.info(f'----------- tototototototo schoolfees 1 {schoolfees} -----------')
 
-            search_domain = searchbar_inputs[search_in]['domain']
+            search_domain = []
 
             search_domain.append(('student_id', '=', student.student_enroll_id.id))
 
