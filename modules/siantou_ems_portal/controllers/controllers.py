@@ -122,7 +122,7 @@ class PortalAccount(portal.CustomerPortal):
             schoolfee['structure_frais_type_paiement'] = search_schoolfee.structure_frais_id.type_paiement
             schoolfee['amount'] = search_schoolfee.amount
             schoolfee['structure_frais_amount_total'] = search_schoolfee.structure_frais_id.amount_total
-            schoolfee['state'] = search_schoolfee.state
+            schoolfee['state'] = search_schoolfee.state if hasattr(search_schoolfee, 'state') else ''
             schoolfees.append(schoolfee)
         return request.render('siantou_ems_portal.siantou_ems_portal_my_home_schoolfee_views',
                                 {
