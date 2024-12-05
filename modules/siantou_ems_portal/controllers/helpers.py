@@ -85,7 +85,7 @@ class Helpers:
             _logger.info(f'----------- tototototototo schoolfees 1 {schoolfees} -----------')
 
             search_domain = searchbar_inputs[search_in]['domain']
-            search_domain.append(('id', '=', student.student_enroll_id.id))
+            search_domain.append(('student_id', '=', student.student_enroll_id.id))
             schoolfees = http.request.env['education.fee.payment.enrollment'].sudo().search(search_domain, order=order)
             schoolfees = list(schoolfees)
             search_schoolfees += schoolfees
