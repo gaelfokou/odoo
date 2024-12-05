@@ -23,6 +23,11 @@ CURRENT_WEEKDAY = {
     6: 'Dimanche'
 }
 
+TYPE_PAIEMENT = {
+    'pu': 'Paiement unique',
+    'pt': 'Paiement par tranches',
+}
+
 _logger = logging.getLogger(__name__)
 
 class PortalAccount(portal.CustomerPortal):
@@ -116,10 +121,10 @@ class PortalAccount(portal.CustomerPortal):
         schoolfees = []
         for search_schoolfee in search_schoolfees:
             schoolfee = {}
-            schoolfee['date_payment'] = search_schoolfee.date_payment
+            schoolfee['date_payment'] = date.strftime(search_schoolfee.date_payment, DATE_FORMAT_FR)
             schoolfee['name'] = search_schoolfee.name
             schoolfee['reference'] = search_schoolfee.reference
-            schoolfee['structure_frais_type_paiement'] = search_schoolfee.structure_frais_id.type_paiement
+            schoolfee['structure_frais_type_paiement'] = TYPE_PAIEMENT[search_schoolfee.structure_frais_id.type_paiement]
             schoolfee['amount'] = search_schoolfee.amount
             schoolfee['structure_frais_amount_total'] = search_schoolfee.structure_frais_id.amount_total
             schoolfee['state'] = search_schoolfee.state if hasattr(search_schoolfee, 'state') else ''
@@ -137,7 +142,7 @@ class PortalAccount(portal.CustomerPortal):
         paymenthistories = []
         for search_paymenthistory in search_paymenthistories:
             paymenthistory = {}
-            paymenthistory['date_from'] = search_paymenthistory.date_from
+            paymenthistory['date_from'] = date.strftime(search_paymenthistory.date_from, DATE_FORMAT_FR)
             paymenthistory['name'] = search_paymenthistory.name
             paymenthistory['number'] = search_paymenthistory.number
             paymenthistory['code'] = search_paymenthistory.code
