@@ -3,8 +3,25 @@ from odoo import http
 from odoo.http import request, content_disposition
 from odoo.addons.portal.controllers import portal
 from odoo.exceptions import UserError, ValidationError
-from .helpers import Helpers  # Importer la classe helper
+from datetime import date, datetime, timedelta, time
+from dateutil.relativedelta import relativedelta
+from .helpers import Helpers
 import logging
+
+DATE_FORMAT = '%Y-%m-%d'
+DATE_FORMAT_FR = '%d/%m/%Y'
+DATETIME_FORMAT = '%Y-%m-%d %H:%M:%S'
+DATETIME_FORMAT_FR = '%d/%m/%Y %H:%M:%S'
+
+CURRENT_WEEKDAY = {
+    0: 'Lundi',
+    1: 'Mardi',
+    2: 'Mercredi',
+    3: 'Jeudi',
+    4: 'Vendredi',
+    5: 'Samedi',
+    6: 'Dimanche'
+}
 
 _logger = logging.getLogger(__name__)
 
@@ -31,14 +48,15 @@ class PortalAccount(portal.CustomerPortal):
         timetables = []
         for search_timetable in search_timetables:
             timetable = {}
-            timetable['date'] = search_timetable.date
+            timetable['date'] = date.strftime(search_timetable.date, DATE_FORMAT_FR)
             timetable['field_of_study_name'] = search_timetable.field_of_study_id.name
             timetable['semester_name'] = search_timetable.semester_id.name
             timetable['level_name'] = search_timetable.level_id.name
             timetable['subject_name'] = search_timetable.subject_id.name
             timetable['classroom_name'] = search_timetable.classroom_id.name
             timetable['employee_name'] = search_timetable.employee_id.name
-            timetable['day_of_week'] = search_timetable.day_of_week
+            # timetable['day_of_week'] = CURRENT_WEEKDAY[search_timetable.day_of_week]
+            timetable['day_of_week'] = CURRENT_WEEKDAY[search_timetable.date.weekday()]
             timetable['start_time'] = search_timetable.start_time
             timetable['end_time'] = search_timetable.end_time
             timetables.append(timetable)
