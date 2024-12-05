@@ -76,34 +76,34 @@
                         <t t-foreach="timetable" t-as="record">
                             <tr>
                                 <td class='text-left'>
-                                    <span t-field="record.date"/>
+                                    <span t-esc="record['date']"/>
                                 </td>
                                 <td class='text-left'>
-                                    <span t-field="record.field_of_study_id.name"/>
+                                    <span t-esc="record['field_of_study_name']"/>
                                 </td>
                                 <td class='text-left'>
-                                    <span t-field="record.semester_id.name"/>
+                                    <span t-esc="record['semester_name']"/>
                                 </td>
                                 <td class='text-left'>
-                                    <span t-field="record.level_id.name"/>
+                                    <span t-esc="record['level_name']"/>
                                 </td>
                                 <td class='text-left'>
-                                    <span t-field="record.subject_id.name"/>
+                                    <span t-esc="record['subject_name']"/>
                                 </td>
                                 <td class='text-left'>
-                                    <span t-field="record.classroom_id.name"/>
+                                    <span t-esc="record['classroom_name']"/>
                                 </td>
                                 <td class='text-left'>
-                                    <span t-field="record.employee_id.name"/>
+                                    <span t-esc="record['employee_name']"/>
                                 </td>
                                 <td class='text-left'>
-                                    <span t-field="record.day_of_week"/>
+                                    <span t-esc="record['day_of_week']"/>
                                 </td>
                                 <td class='text-left'>
-                                    <span t-field="record.start_time"/>
+                                    <span t-esc="record['start_time']"/>
                                 </td>
                                 <td class='text-left'>
-                                    <span t-field="record.end_time"/>
+                                    <span t-esc="record['end_time']"/>
                                 </td>
                             </tr>
                         </t>
@@ -160,25 +160,25 @@
                         <t t-foreach="schoolfee" t-as="record">
                             <tr>
                                 <td class='text-left'>
-                                    <span t-field="record.date_payment"/>
+                                    <span t-esc="record['date_payment']"/>
                                 </td>
                                 <td class='text-left'>
-                                    <span t-field="record.name"/>
+                                    <span t-esc="record['name']"/>
                                 </td>
                                 <td class='text-left'>
-                                    <span t-field="record.reference"/>
+                                    <span t-esc="record['reference']"/>
                                 </td>
                                 <td class='text-left'>
-                                    <span t-field="record.structure_frais_id.type_paiement"/>
+                                    <span t-esc="record['structure_frais_type_paiement']"/>
                                 </td>
                                 <td class='text-left'>
-                                    <span t-field="record.amount"/>
+                                    <span t-esc="record['amount']"/>
                                 </td>
                                 <td class='text-left'>
-                                    <span t-field="record.structure_frais_id.amount_total"/>
+                                    <span t-esc="record['structure_frais_amount_total']"/>
                                 </td>
                                 <td class='text-left'>
-                                    <span t-field="record.state"/>
+                                    <span t-esc="record['state']"/>
                                 </td>
                             </tr>
                         </t>

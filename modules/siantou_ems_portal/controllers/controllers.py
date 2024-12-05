@@ -28,9 +28,23 @@ class PortalAccount(portal.CustomerPortal):
     def portal_timetable(self, page=1, search=None, search_in='all', sortby=None, **kw):
         # Utilisation de la fonction du helper
         search_timetables, searchbar_inputs, search_in, sortby, searchbar_sortings = Helpers.timetable(search, search_in, sortby)
+        timetables = []
+        for search_timetable in search_timetables:
+            timetable = {}
+            timetable['date'] = search_timetable.date
+            timetable['field_of_study_name'] = search_timetable.field_of_study_id.name
+            timetable['semester_name'] = search_timetable.semester_id.name
+            timetable['level_name'] = search_timetable.level_id.name
+            timetable['subject_name'] = search_timetable.subject_id.name
+            timetable['classroom_name'] = search_timetable.classroom_id.name
+            timetable['employee_name'] = search_timetable.employee_id.name
+            timetable['day_of_week'] = search_timetable.day_of_week
+            timetable['start_time'] = search_timetable.start_time
+            timetable['end_time'] = search_timetable.end_time
+            timetables.append(timetable)
         return request.render('siantou_ems_portal.siantou_ems_portal_my_home_timetable_views',
                                 {
-                                    'timetable': search_timetables,
+                                    'timetable': timetables,
                                     'page_name': 'timetable',
                                     'search': search,
                                     'search_in': search_in,
@@ -81,9 +95,20 @@ class PortalAccount(portal.CustomerPortal):
     def portal_schoolfee(self, page=1, search=None, search_in='all', sortby=None, **kw):
         # Utilisation de la fonction du helper
         search_schoolfees, searchbar_inputs, search_in, sortby, searchbar_sortings = Helpers.schoolfee(search, search_in, sortby)
+        schoolfees = []
+        for search_schoolfee in search_schoolfees:
+            schoolfee = {}
+            schoolfee['date_payment'] = search_schoolfee.date_payment
+            schoolfee['name'] = search_schoolfee.name
+            schoolfee['reference'] = search_schoolfee.reference
+            schoolfee['structure_frais_type_paiement'] = search_schoolfee.structure_frais_id.type_paiement
+            schoolfee['amount'] = search_schoolfee.amount
+            schoolfee['structure_frais_amount_total'] = search_schoolfee.structure_frais_id.amount_total
+            schoolfee['state'] = search_schoolfee.state
+            schoolfees.append(schoolfee)
         return request.render('siantou_ems_portal.siantou_ems_portal_my_home_schoolfee_views',
                                 {
-                                    'schoolfee': search_schoolfees,
+                                    'schoolfee': schoolfees,
                                     'page_name': 'schoolfee',
                                 })
 
