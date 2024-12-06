@@ -151,6 +151,7 @@
                             <th class="text-left">Réference</th>
                             <th class="text-left">Réference du reçu</th>
                             <th class="text-left">Type de paiement</th>
+                            <th class="text-left">Description</th>
                             <th class="text-left">Montant payé</th>
                             <th class="text-left">Net à payer</th>
                             <th class="text-left">Statut</th>
@@ -172,6 +173,9 @@
                                     <span t-esc="record['structure_frais_type_paiement']"/>
                                 </td>
                                 <td class='text-left'>
+                                    <span t-esc="record['structure_frais_name']"/>
+                                </td>
+                                <td class='text-left'>
                                     <span t-esc="record['amount']"/>
                                 </td>
                                 <td class='text-left'>
@@ -191,6 +195,7 @@
                             <th class="text-left"><span t-esc="total_structure_amount"/></th>
                             <th class="text-left" colspan="1">Total reste à payer</th>
                             <th class="text-left"><span t-esc="total_rest_amount"/></th>
+                            <th class="text-left"></th>
                             <th class="text-left"></th>
                         </tr>
                     </tfooter>

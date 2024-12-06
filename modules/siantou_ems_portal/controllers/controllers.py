@@ -135,6 +135,7 @@ class PortalAccount(portal.CustomerPortal):
             schoolfee['name'] = search_schoolfee.name
             schoolfee['reference'] = search_schoolfee.reference
             schoolfee['structure_frais_type_paiement'] = TYPE_PAIEMENT[search_schoolfee.structure_frais_id.type_paiement]
+            schoolfee['structure_frais_name'] = search_schoolfee.structure_frais_id.name
             schoolfee['amount'] = search_schoolfee.amount
             schoolfee['structure_frais_amount_total'] = search_schoolfee.structure_frais_id.amount_total
             schoolfee['state'] = search_schoolfee.state if hasattr(search_schoolfee, 'state') else ''
