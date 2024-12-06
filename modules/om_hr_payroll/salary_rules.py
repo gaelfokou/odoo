@@ -43,7 +43,7 @@ for line in payslip.worked_days_line_ids:
     worked_days += line.number_of_days
 
 if worked_days < 20:
-    result = ((contract.wage / 20) * worked_days) - (((contract.wage / 20) * worked_days) * 0.1)
+    result = ((contract.wage / 20) * worked_days) - (((contract.wage / 20) * worked_days) * 0.10)
 else:
     # result = (contract.wage / 20) * worked_days
     result = contract.wage
@@ -56,6 +56,6 @@ for line in payslip.worked_days_line_ids:
     worked_hours += line.number_of_hours
 
 if worked_hours < 160:
-    result = ((contract.wage / 160) * worked_hours) - (((contract.wage / 160) * worked_hours) * 0.1)
+    result = ((contract.wage / 160) * worked_hours) - (((contract.wage / 160) * worked_hours) * 0.10)
 else:
     result = (contract.wage / 160) * worked_hours
