@@ -280,10 +280,12 @@
                     </tbody>
                     <tfooter>
                         <tr>
-                            <th class="text-left" colspan="2">Total montant payé</th>
+                            <th class="text-left" colspan="1">Total montant payé</th>
                             <th class="text-left"><span t-esc="total_amount"/></th>
-                            <th class="text-left" colspan="2">Total nombre d'heure</th>
+                            <th class="text-left"></th>
+                            <th class="text-left" colspan="1">Total nombre d'heure</th>
                             <th class="text-left"><span t-esc="total_number_of_hours"/></th>
+                            <th class="text-left"></th>
                             <th class="text-left"></th>
                             <th class="text-left"></th>
                         </tr>
