@@ -151,8 +151,8 @@
                             <th class="text-left">Réference</th>
                             <th class="text-left">Réference du reçu</th>
                             <th class="text-left">Type de paiement</th>
-                            <th class="text-left">Montant versé</th>
-                            <th class="text-left">Montant total</th>
+                            <th class="text-left">Montant payé</th>
+                            <th class="text-left">Net à payer</th>
                             <th class="text-left">Statut</th>
                         </tr>
                     </thead>
@@ -227,7 +227,7 @@
                             <th class="text-left">Réference</th>
                             <th class="text-left">Règles salariales</th>
                             <th class="text-left">Contrat</th>
-                            <th class="text-left">Montant</th>
+                            <th class="text-left">Montant payé</th>
                             <th class="text-left">Total heure</th>
                             <th class="text-left">Statut</th>
                         </tr>

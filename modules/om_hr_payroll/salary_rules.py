@@ -30,12 +30,32 @@
 # Salaire de base employé permanent BASICEMPPER
 # Salaire de base employé temporaire BASICEMPTEM
 
-result = 0
+# 8h -- 1jr
+# 40h -- 5jr -- 1week
+# 160h -- 20jr -- 4week -- 1month
+# contract.wage -- 160h -- 20jr -- 4week -- 1month
+
+# Permanent
+
+worked_days = 0
 
 for line in payslip.worked_days_line_ids:
-    result += line.number_of_hours
+    worked_days += line.number_of_days
 
-if result > 2:
-    result = result + 2
+if worked_days < 20:
+    result = ((contract.wage / 20) * worked_days) - (((contract.wage / 20) * worked_days) * 0.1)
+else:
+    # result = (contract.wage / 20) * worked_days
+    result = contract.wage
 
-result = contract.wage * result
+# Temporaire
+
+worked_hours = 0
+
+for line in payslip.worked_days_line_ids:
+    worked_hours += line.number_of_hours
+
+if worked_hours < 160:
+    result = ((contract.wage / 160) * worked_hours) - (((contract.wage / 160) * worked_hours) * 0.1)
+else:
+    result = (contract.wage / 160) * worked_hours

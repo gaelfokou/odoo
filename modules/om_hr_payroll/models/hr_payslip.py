@@ -200,12 +200,12 @@ class HrPayslip(models.Model):
                 ('employee_id', '=', payslip.employee_id.id),
                 ('date', '<=', date_to),
                 ('date', '>=', date_from),
-                ('status', 'in', ['1', '3']),
+                ('status', 'in', ['1', '3', '4']),
             ])
             for employee_timetable in employee_timetables:
                 # Vérification du temps de cours de l'enseignant en biométrie
                 daily_attendances = self.filter_daily_attendance_teacher(employee_timetable.employee_id, employee_timetable.date, employee_timetable.end_time, employee_timetable.start_time)
-                if employee_timetable.status == '3':
+                if employee_timetable.status in ['3', '4']:
                     timetable_hours = employee_timetable.end_time - employee_timetable.start_time
                     total_timetable_hours += timetable_hours
                 elif len(daily_attendances) > 1:
@@ -265,19 +265,24 @@ class HrPayslip(models.Model):
                 ('employee_id', '=', payslip_id.employee_id.id),
                 ('date', '<=', date_to),
                 ('date', '>=', date_from),
-                ('status', 'in', ['1', '3']),
+                ('status', 'in', ['1', '3', '4']),
             ])
             for employee_timetable in employee_timetables:
                 # Vérification du temps de cours de l'enseignant en biométrie
                 daily_attendances = self.filter_daily_attendance_teacher(employee_timetable.employee_id, employee_timetable.date, employee_timetable.end_time, employee_timetable.start_time)
-                if employee_timetable.status == '3':
+                if employee_timetable.status in ['3', '4']:
                     end_time = self.convert_float_to_time(employee_timetable.end_time)
                     start_time = self.convert_float_to_time(employee_timetable.start_time)
                     datetime_to = datetime.strptime(f'{employee_timetable.date} {end_time}', DATETIME_FORMAT)
                     datetime_from = datetime.strptime(f'{employee_timetable.date} {start_time}', DATETIME_FORMAT)
                     timetable_hours = employee_timetable.end_time - employee_timetable.start_time
+                    timetable_message = ''
+                    if employee_timetable.status == '3':
+                        timetable_message = 'Permissionnaire'
+                    elif employee_timetable.status == '4':
+                        timetable_message = 'Exception'
                     self.env['hr.payslip.worked_days'].create({
-                        'name': 'Journée du {} {}, {}, Permissionnaire'.format(CURRENT_WEEKDAY[employee_timetable.date.weekday()], datetime.strftime(datetime_from, DATETIME_FORMAT_FR), employee_timetable.subject_id.name),
+                        'name': 'Journée du {} {}, {}, {}'.format(CURRENT_WEEKDAY[employee_timetable.date.weekday()], datetime.strftime(datetime_from, DATETIME_FORMAT_FR), employee_timetable.subject_id.name, timetable_message),
                         'payslip_id': payslip_id.id,
                         'code': payslip_id.code,
                         'number_of_days': 1,
