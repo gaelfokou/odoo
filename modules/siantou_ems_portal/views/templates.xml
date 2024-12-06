@@ -152,8 +152,8 @@
                             <th class="text-left">Réference du reçu</th>
                             <th class="text-left">Type de paiement</th>
                             <th class="text-left">Description</th>
-                            <th class="text-left">Montant payé</th>
                             <th class="text-left">Net à payer</th>
+                            <th class="text-left">Montant payé</th>
                             <th class="text-left">Statut</th>
                         </tr>
                     </thead>
@@ -176,10 +176,10 @@
                                     <span t-esc="record['structure_frais_name']"/>
                                 </td>
                                 <td class='text-left'>
-                                    <span t-esc="record['amount']"/>
+                                    <span t-esc="record['structure_frais_amount_total']"/>
                                 </td>
                                 <td class='text-left'>
-                                    <span t-esc="record['structure_frais_amount_total']"/>
+                                    <span t-esc="record['amount']"/>
                                 </td>
                                 <td class='text-left'>
                                     <span t-esc="record['state']"/>
@@ -189,12 +189,15 @@
                     </tbody>
                     <tfooter>
                         <tr>
-                            <th class="text-left" colspan="1">Total montant payé</th>
-                            <th class="text-left" colspan="7"><span t-esc="total_amount"/></th>
+                            <th class="text-left" colspan="8"><br/></th>
                         </tr>
                         <tr>
                             <th class="text-left" colspan="1">Total net à payer</th>
                             <th class="text-left" colspan="7"><span t-esc="total_structure_amount"/></th>
+                        </tr>
+                        <tr>
+                            <th class="text-left" colspan="1">Total montant payé</th>
+                            <th class="text-left" colspan="7"><span t-esc="total_amount"/></th>
                         </tr>
                         <tr>
                             <th class="text-left" colspan="1">Total restant à payer</th>
@@ -281,6 +284,9 @@
                         </t>
                     </tbody>
                     <tfooter>
+                        <tr>
+                            <th class="text-left" colspan="8"><br/></th>
+                        </tr>
                         <tr>
                             <th class="text-left" colspan="1">Total montant payé</th>
                             <th class="text-left" colspan="7"><span t-esc="total_amount"/></th>
