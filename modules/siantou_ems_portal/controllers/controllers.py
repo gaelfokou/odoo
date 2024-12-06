@@ -140,8 +140,8 @@ class PortalAccount(portal.CustomerPortal):
             schoolfee['structure_frais_amount_total'] = search_schoolfee.structure_frais_id.amount_total
             schoolfee['state'] = search_schoolfee.state if hasattr(search_schoolfee, 'state') else ''
             schoolfees.append(schoolfee)
-            total_amount += search_schoolfee.amount
-            total_structure_amount += search_schoolfee.structure_frais_id.amount_total
+            total_amount += schoolfee['amount']
+            total_structure_amount += schoolfee['structure_frais_amount_total']
             total_rest_amount = total_structure_amount - total_amount
         return request.render('siantou_ems_portal.siantou_ems_portal_my_home_schoolfee_views',
                                 {
@@ -156,6 +156,8 @@ class PortalAccount(portal.CustomerPortal):
     def portal_paymenthistory(self, page=1, search=None, search_in='all', sortby=None, **kw):
         # Utilisation de la fonction du helper
         search_paymenthistories, searchbar_inputs, search_in, sortby, searchbar_sortings = Helpers.paymenthistory(search, search_in, sortby)
+        total_amount = 0.0
+        total_number_of_hours = 0.0
         paymenthistories = []
         for search_paymenthistory in search_paymenthistories:
             paymenthistory = {}
@@ -171,6 +173,8 @@ class PortalAccount(portal.CustomerPortal):
             paymenthistory['number_of_hours'] = sum(search_paymenthistory.worked_days_line_ids.mapped('number_of_hours')) if len(list(search_paymenthistory.worked_days_line_ids)) > 0 else 0.0
             paymenthistory['state'] = search_paymenthistory.state
             paymenthistories.append(paymenthistory)
+            total_amount += paymenthistory['amount']
+            total_number_of_hours += paymenthistory['number_of_hours']
         return request.render('siantou_ems_portal.siantou_ems_portal_my_home_paymenthistory_views',
                                 {
                                     'paymenthistory': paymenthistories,
