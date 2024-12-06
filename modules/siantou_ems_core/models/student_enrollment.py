@@ -31,7 +31,13 @@ class StudentEnrollment(models.Model):
         'siantou.session.registre', 
         "Registre d'admission" ,
         # domain="[('state', '=', 'application')]",
-        required=True
+        # required=True
+    )
+    year_id = fields.Many2one(
+        "siantou.ems.core.year", 
+        string="Année académique", 
+        required=True,
+        default=lambda self: self.env['siantou.ems.core.year'].search([('active', '=', True)], limit=1)
     )
     name = fields.Char(
         string="Nom(s) et prénom(s)", 

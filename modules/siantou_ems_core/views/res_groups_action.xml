@@ -1,0 +1,8 @@
+<odoo>
+    <record id="action_groups" model="ir.actions.act_window">
+        <field name="name">Groupes</field>
+        <field name="res_model">res.groups</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[]</field>
+    </record>
+</odoo>

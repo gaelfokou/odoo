@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="owl.OwlSalesDashboard" owl="1">
+        <div class="vh-100 overflow-auto bg-muted">
+            <div class="row m-3">
+                <div class="col-lg-12">
+                    <div class="row">
+                        <div class="col m-0 p-0">
+                            <div class="shadow-sm border m-2 p-4 bg-white">
+                                <div class="d-flex align-items-center justify-content-between">
+                                    <h1 class="text-primary fw-bold">Tableau de bord</h1>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <KpiCard name="'Etudiants'" value="state.students.value" icon="'user'"/>
+                        <KpiCard name="'Enseignants'" value="state.teachers.value" icon="'group'"/>
+                        <KpiCard name="'Filières'" value="state.filieres.value" icon="'level-up'"/>
+                        <KpiCard name="'Cycles'" value="state.cycles.value" icon="'repeat'"/>
+                        <KpiCard name="'Ecoles'" value="state.ecoles.value" icon="'cogs'"/>
+                        <KpiCard name="'Campus'" value="state.campus.value" icon="'building'"/>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="row">
+                    
+                        <div class="col-md-4 m-0 p-0">
+                            <div class="shadow-sm border m-2 p-4 bg-white">
+                                <div class="d-flex align-items-center justify-content-between">
+                                    <h3 class="text-primary fw-bold">Enseignants</h3>
+                                    <div class="px-3 py-1 bg-primary cursor-pointer">
+                                        <span class="fa fa-arrow-right text-white"/>
+                                    </div>
+                                </div>
+                                <t t-if="state.doughTearchers.length>0">
+                                    <DoughnutRenderer type="'doughnut'" title="'Enseignants'" datas="state.doughTearchers"/>
+                                </t>
+                            </div>
+                        </div>
+                        <div class="col-md-4 m-0 p-0">
+                            <div class="shadow-sm border m-2 p-4 bg-white">
+                                <div class="d-flex align-items-center justify-content-between">
+                                    <h3 class="text-primary fw-bold">Effectif par école</h3>
+                                    <div class="px-3 py-1 bg-primary cursor-pointer">
+                                        <span class="fa fa-arrow-right text-white"/>
+                                    </div>
+                                </div>
+                                <t t-if="state.doughEcoles.length>0">
+                                    <DoughnutRenderer type="'doughnut'" title="'Ecoles'" datas="state.doughEcoles"/>
+                                </t>
+                            </div>
+                        </div>
+                        <div class="col-md-4 m-0 p-0">
+                            <div class="shadow-sm border m-2 p-4 bg-white">
+                                <div class="d-flex align-items-center justify-content-between">
+                                    <h3 class="text-primary fw-bold">Effectif par filière</h3>
+                                    <div class="px-3 py-1 bg-primary cursor-pointer">
+                                        <span class="fa fa-arrow-right text-white"/>
+                                    </div>
+                                </div>
+                                <t t-if="state.doughFilieres.length>0">
+                                    <DoughnutRenderer type="'doughnut'" title="'Filières'" datas="state.doughFilieres"/>
+                                </t>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="row">
+                        <div class="col-md-12 m-0 p-0">
+                            <div class="shadow-sm border m-2 p-4 bg-white">
+                                <div class="d-flex align-items-center justify-content-between">
+                                    <h3 class="text-primary fw-bold">Effectif par cyle</h3>
+                                    <div class="px-3 py-1 bg-primary cursor-pointer">
+                                        <span class="fa fa-arrow-right text-white"/>
+                                    </div>
+                                </div>
+                                <ChartRenderer type="'bar'" title="'Effectif par cyles'" datas="state.datas"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t>
+</templates>

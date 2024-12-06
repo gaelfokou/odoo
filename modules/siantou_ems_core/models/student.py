@@ -71,9 +71,9 @@ class Student(models.Model):
     ], required=True, string="Type de cours",)
     status_univ = fields.Selection([
             ('new', 'Nouveau'),
-            ('anc', 'Ancien'),
+            ('red', 'Ancien'),
         ], required=True, 
-        default='anc',
+        default='red',
         string="Statut universitaire"
     )
     redoublant = fields.Selection(
@@ -207,4 +207,35 @@ class Student(models.Model):
         student.action_create_portal_user()
         
         return student
+
+
+
+class StudentCareer(models.Model):
+    _name = 'oe.school.student.career'
+    _description = 'Gestion du parcours des étudiants'
     
+
+    name = fields.Char(string="Libellé", required=True)
+    student_id = fields.Many2one(
+        'oe.school.student',
+        string='Etudiant',
+        ondelete='cascade',
+        required=True
+    )
+    year_id = fields.Many2one(
+        "siantou.ems.core.year", 
+        string="Année académique", 
+        required=True
+    )
+    level_id = fields.Many2one("siantou.ems.core.level", string="Niveau", required=True)
+    field_of_study_id = fields.Many2one(
+        'siantou.ems.core.field_of_study',
+        string='Filière',
+        required=True,
+    )
+    cycle_id = fields.Many2one(
+        'oe.school.course',
+        string='Cycle',
+        required=True
+    )
+    observations = fields.Html(string="Observations")

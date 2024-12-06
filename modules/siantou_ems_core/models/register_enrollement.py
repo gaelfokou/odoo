@@ -26,9 +26,9 @@ class SessionEnrollment(models.Model):
             raise ValidationError("""Aucune annéé academique activé""")
         return year.id
 
-    @api.depends("end_date")
+    @api.depends("year_id")
     def _get_name(self):
-        self.name = "Session_" + str(self.end_date.strftime("%d-%B-%Y"))
+        self.name = "Session_" + str(self.year_id.name)
         return self.name
 
 
@@ -42,7 +42,11 @@ class SessionEnrollment(models.Model):
         for record in self:
             record.end_date = record.year_id.end_time
 
-    name = fields.Char(string="Nom de la session", required=True)
+    name = fields.Char(
+        string="Nom de la session", 
+        required=True,
+        default=lambda self: self._get_name()
+    )
     start_date = fields.Date('Date debut', required=True,
         compute="_compute_fee_start_date")
     end_date = fields.Date(
@@ -154,7 +158,7 @@ class SessionEnrollment(models.Model):
                         raise ValidationError(
                         _("Veuillez d'abord valider les candidatures présentent les registres de cette session d'admission"))
             rec.state = 'done'
-            rec.active = False
+            rec.active = True
 
 
 
@@ -195,12 +199,13 @@ class SessionRegisterEnrollment(models.Model):
     )
     state = fields.Selection(
         [
-        ('draft', 'Brouillon'), 
-        ('application', 'Candidature en cours'),
-        ('cancel', 'Annulé'), 
-        ('admission', 'Admission En cours'), 
-        ('done', 'Fait'), 
-        ('archive', 'Archivé')],
+            ('draft', 'Brouillon'), 
+            ('application', 'Candidature en cours'),
+            ('cancel', 'Annulé'), 
+            ('admission', 'Admission En cours'), 
+            ('done', 'Fait'), 
+            ('archive', 'Archivé')
+        ],
         'Status', 
         default='draft', 
         tracking=True

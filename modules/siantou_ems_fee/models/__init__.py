@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 ###################################################################################
-#    A part of Educational ERP Project <http://www.afreetech.com>
+#    A part of Educational ERP Project 
 #
 #    Cybrosys Technologies Pvt. Ltd.
 #    Copyright (C) 2018-TODAY Cybrosys Technologies (<https://www.cybrosys.com>).
@@ -20,16 +20,18 @@
 #    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #
 ###################################################################################
-
 from . import fee_journal
 from . import fee_category
 from . import fee_structure
 from . import fee_payment
 from . import fee_special
 from . import config
+
 # from . import fee_receipt
 # from . import fee_applicant
 # from . import education_student
-
 # from . import education_fee_classe
+
+
+
 

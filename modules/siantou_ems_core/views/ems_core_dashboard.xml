@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <record id="action_owl_ems_core_dashboard" model="ir.actions.client">
+            <field name="name">Tableau de bord</field>
+            <field name="tag">owl.ems_core_dashboard</field>
+        </record>
+        <menuitem 
+            name="Tableau de bord" 
+            id="menu_owl_ems_core_dashboard" 
+            parent="menu_siantou_ems_core" 
+            sequence="10" 
+            action="action_owl_ems_core_dashboard" 
+        />
+    </data>
+</odoo>

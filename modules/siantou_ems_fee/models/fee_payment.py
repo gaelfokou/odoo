@@ -81,7 +81,7 @@ class FeePayment(models.Model):
     )
     state = fields.Selection([
         ('draft', 'Brouillon'),
-        ('done', 'Valider')
+        ('done', 'Validé')
     ], string='Etat', default='draft', tracking=True)
 
 

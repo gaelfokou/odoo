@@ -4,7 +4,7 @@
         <field name="name">enrollment.history.tree.view</field>
         <field name="model">oe.school.student.enrollment</field>
         <field name="arch" type="xml">
-            <tree string="Etudiants" default_order="id desc" default_group_by="cycle_id">
+            <tree string="Etudiants" default_order="id desc" default_group_by="year_id">
                 <field name="date_preins" widget="datetime"/>
                 <field name="matricule"/>
                 <field name="code_enrol"/>
@@ -159,6 +159,9 @@
                         <group>
                             <field name="num_tel_tutor"  widget="phone"/>
                         </group>
+                    </group>
+                    <group name="raisons" string="Raisons d'acceptation ou de rejet de la candidature">
+                        <field name="observations" />
                     </group>
                 </sheet>
                 <div class="oe_chatter">

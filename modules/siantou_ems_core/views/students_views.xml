@@ -151,7 +151,7 @@
             </search>
         </field>
     </record>
-    
+
     <record model="ir.actions.act_window" id="action_admis_history">
         <field name="name">Etudiants</field>
         <field name="res_model">oe.school.student</field>
@@ -162,7 +162,6 @@
             </p>
         </field>
     </record>
-
 
     <menuitem
         id="menu_siantou_ems_core_students_student"

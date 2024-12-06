@@ -15,9 +15,9 @@
                                 <field name="journal_id"/>
                                 <!-- <field name="analytic_id"/> -->
                             </group>
-                            <group>
+                            <!-- <group>
                                 <field name="fee_structure"/>
-                            </group>
+                            </group> -->
                         </group>
                     </sheet>
                 </form>

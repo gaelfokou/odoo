@@ -14,7 +14,7 @@ class FeeStructure(models.Model):
 
 
     _sql_constraints = [
-        ('unique_fee_structure_name', 'unique(fee_structure_name)', 'Ce nom existe déjà'),
+        ('unique_fee_structure_name', 'unique(fee_structure_name)', 'Ce libellé existe déjà'),
     ]
 
     @api.depends('fee_type_ids.fee_amount')
@@ -76,7 +76,7 @@ class FeeStructure(models.Model):
     active = fields.Boolean(default=True)
 
 
-    @api.depends('field_of_study_id', 'level_id', 'type_frais_id', 'type_paiement')
+    @api.depends('field_of_study_id', 'level_id', 'type_frais_id', 'type_paiement', 'academic_year')
     def _compute_fee_structure_name(self):
         for record in self:
             # Calculer 'fee_structure_name' en fonction de 'field_of_study_id' et 'level_id'
@@ -84,7 +84,8 @@ class FeeStructure(models.Model):
             level_name = record.level_id.name
             type_frais_name = record.type_frais_id.name
             type_paiement = record.type_paiement
-            record.fee_structure_name = f"Frais_{type_frais_name or ''}_{field_of_study_name or ''}_{level_name or ''}_{type_paiement or ''}"
+            year_name = record.academic_year.name
+            record.fee_structure_name = f"Frais_{type_frais_name or ''}_{field_of_study_name or ''}_{level_name or ''}_{type_paiement or ''}_{year_name or ''}"
 
 
 

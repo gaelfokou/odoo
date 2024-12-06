@@ -211,7 +211,7 @@ class DeSchool(http.Controller):
             #=== récupération de la session d'admission active
             session_id = request.env['siantou.session'].sudo().search(
                 [
-                    ('active', '=', True),
+                    ('state', '=', 'admission'),
                     ('year_id', '=', year_id.id),
                     ('cycle_ids', 'in', int(data['cycle_id'])),
                 ], 

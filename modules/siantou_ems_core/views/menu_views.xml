@@ -52,7 +52,6 @@
     <menuitem
             id="menu_siantou_ems_core_config"
             name="Configurations"
-            groups="siantou_ems_core.group_school_manager_sup_admin,siantou_ems_core.group_school_user_directeur,siantou_ems_core.group_school_base"
 			parent="menu_siantou_ems_core"
             sequence = "100" />
     

@@ -3,7 +3,7 @@
     'name': "SIANTOU - EMS Core App",
     'category': 'Education',
     'version': '17.0.0.0',
-    'depends': ['base','hr','account','mail'],
+    'depends': ['base', 'web', 'sale', 'board', 'hr','account','mail'],
     'data': [
         # Fichiers de datas
         # 'data/email_template_preinscription.xml',
@@ -14,6 +14,10 @@
         'security/module_category_school_management.xml',
         'security/group_school_management.xml',
         'security/ir.model.access.csv',
+
+        # Fichier des groups
+        'views/res_groups_action.xml',
+        'views/res_groups_menu.xml',
 
         # Fichier des menus
         'views/menu_views.xml',
@@ -29,7 +33,7 @@
         'views/classroom_views.xml',
         'views/level_views.xml',
         'views/university_views.xml',
-        # 'views/student_views.xml',
+        'views/students_career_views.xml',
         'views/batch_views.xml',
         'views/school_views.xml',
         'views/admission_registre_view.xml',
@@ -63,9 +67,19 @@
         'views/timetable_print_wizard_views.xml',
         'report/timetable_reports.xml',
         'report/timetable_template.xml',
+
+        #=========== Fichier du dashboard
+        'views/ems_core_dashboard.xml',
     ],
     'license': 'LGPL-3',
     'installable': True,
     'application': True,
     'auto_install': False,
+    'assets': {
+        'web.assets_backend': [
+            'siantou_ems_core/static/src/components/**/*.js',
+            'siantou_ems_core/static/src/components/**/*.xml',
+            'siantou_ems_core/static/src/components/**/*.scss',
+        ],
+    },
 }
