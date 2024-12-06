@@ -190,13 +190,15 @@
                     <tfooter>
                         <tr>
                             <th class="text-left" colspan="1">Total montant payé</th>
-                            <th class="text-left"><span t-esc="total_amount"/></th>
+                            <th class="text-left" colspan="7"><span t-esc="total_amount"/></th>
+                        </tr>
+                        <tr>
                             <th class="text-left" colspan="1">Total net à payer</th>
-                            <th class="text-left"><span t-esc="total_structure_amount"/></th>
+                            <th class="text-left" colspan="7"><span t-esc="total_structure_amount"/></th>
+                        </tr>
+                        <tr>
                             <th class="text-left" colspan="1">Total restant à payer</th>
-                            <th class="text-left"><span t-esc="total_rest_amount"/></th>
-                            <th class="text-left"></th>
-                            <th class="text-left"></th>
+                            <th class="text-left" colspan="7"><span t-esc="total_rest_amount"/></th>
                         </tr>
                     </tfooter>
                 </t>
@@ -281,13 +283,11 @@
                     <tfooter>
                         <tr>
                             <th class="text-left" colspan="1">Total montant payé</th>
-                            <th class="text-left"><span t-esc="total_amount"/></th>
-                            <th class="text-left"></th>
+                            <th class="text-left" colspan="7"><span t-esc="total_amount"/></th>
+                        </tr>
+                        <tr>
                             <th class="text-left" colspan="1">Total nombre d'heure</th>
-                            <th class="text-left"><span t-esc="total_number_of_hours"/></th>
-                            <th class="text-left"></th>
-                            <th class="text-left"></th>
-                            <th class="text-left"></th>
+                            <th class="text-left" colspan="7"><span t-esc="total_number_of_hours"/></th>
                         </tr>
                     </tfooter>
                 </t>
