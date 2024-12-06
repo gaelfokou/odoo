@@ -118,6 +118,9 @@ class PortalAccount(portal.CustomerPortal):
     def portal_schoolfee(self, page=1, search=None, search_in='all', sortby=None, **kw):
         # Utilisation de la fonction du helper
         search_schoolfees, searchbar_inputs, search_in, sortby, searchbar_sortings = Helpers.schoolfee(search, search_in, sortby)
+        total_amount = 0.0
+        total_structure_amount = 0.0
+        total_rest_amount = 0.0
         schoolfees = []
         for search_schoolfee in search_schoolfees:
             schoolfee = {}
@@ -129,10 +132,16 @@ class PortalAccount(portal.CustomerPortal):
             schoolfee['structure_frais_amount_total'] = search_schoolfee.structure_frais_id.amount_total
             schoolfee['state'] = search_schoolfee.state if hasattr(search_schoolfee, 'state') else ''
             schoolfees.append(schoolfee)
+            total_amount += search_schoolfee.amount
+            total_structure_amount += search_schoolfee.structure_frais_id.amount_total
+            total_rest_amount = total_structure_amount - total_amount
         return request.render('siantou_ems_portal.siantou_ems_portal_my_home_schoolfee_views',
                                 {
                                     'schoolfee': schoolfees,
                                     'page_name': 'schoolfee',
+                                    'total_amount': total_amount,
+                                    'total_structure_amount': total_structure_amount,
+                                    'total_rest_amount': total_rest_amount,
                                 })
 
     @http.route(['/my/paymenthistory', '/my/paymenthistory/page/<int:page>'], type='http', auth="user", website=True)

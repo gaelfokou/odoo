@@ -183,6 +183,17 @@
                             </tr>
                         </t>
                     </tbody>
+                    <tfooter>
+                        <tr>
+                            <th class="text-left" colspan="1">Total montant payé</th>
+                            <th class="text-left"><span t-esc="total_amount"/></th>
+                            <th class="text-left" colspan="1">Total net à payer</th>
+                            <th class="text-left"><span t-esc="total_structure_amount"/></th>
+                            <th class="text-left" colspan="1">Total reste à payer</th>
+                            <th class="text-left"><span t-esc="total_rest_amount"/></th>
+                            <th class="text-left"></th>
+                        </tr>
+                    </tfooter>
                 </t>
             </t>
         </template>
