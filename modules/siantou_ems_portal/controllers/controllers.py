@@ -179,4 +179,6 @@ class PortalAccount(portal.CustomerPortal):
                                 {
                                     'paymenthistory': paymenthistories,
                                     'page_name': 'paymenthistory',
+                                    'total_amount': total_amount,
+                                    'total_number_of_hours': total_number_of_hours,
                                 })
