@@ -78,19 +78,6 @@ class PortalAccount(portal.CustomerPortal):
 
     @http.route(['/my/timetable/download', '/my/timetable/download/page/<int:page>'], type='http', auth="user", website=True)
     def portal_timetable_download(self, page=1, search=None, search_in='all', sortby=None, **kw):
-        report_name = 'siantou_ems_core.report_timetable'
-        report_action = 'siantou_ems_core.action_report_timetable'
-        pdf_report = request.env['ir.actions.report'].sudo()._get_report_from_name(report_action)
-        semester_ids = request.env['siantou.ems.core.year.semester'].sudo().search([])
-        semester_ids = list(semester_ids)
-        semester_id = semester_ids[0]
-        group_ids = request.env['siantou.ems.timetable.group'].sudo().search([])
-        group_ids = list(group_ids)
-        group_id = group_ids[0]
-        report_data = request.env['siantou.ems.timetable.timetable_print_wizard'].sudo().create({
-            'semester_id': semester_id.id,
-            'group_id': group_id.id,
-        })
         user = None
         is_user = None
         if http.request.env.user.employee_id.id:
@@ -101,8 +88,28 @@ class PortalAccount(portal.CustomerPortal):
             if user:
                 is_user = 'is_student'
         if user:
-            data = report_data.print_timetable_report_data(user, is_user)
-            pdf, _ = pdf_report.sudo().with_context()._render_qweb_pdf(report_name, data=data)
+            report_name = 'siantou_ems_core.report_timetable'
+            report_action = 'siantou_ems_core.action_report_timetable'
+            pdf_report = request.env['ir.actions.report'].sudo()._get_report_from_name(report_action)
+            domain = []
+            if is_user == 'is_teacher':
+                domain.append(('employee_id', '=', user.id))
+            elif is_user == 'is_student':
+                domain.append(('level_id', '=', user.level_id.id))
+                domain.append(('field_of_study_id', '=', user.field_of_study_id.id))
+            timetable_ids = request.env['siantou.ems.timetable.timetable'].sudo().search(domain, order='date asc')
+            timetable_ids = list(timetable_ids)
+            if len(timetable_ids) > 0:
+                n = len(timetable_ids)
+                timetable_id = timetable_ids[n - 1]
+                report_data = request.env['siantou.ems.timetable.timetable_print_wizard'].sudo().create({
+                    'semester_id': timetable_id.semester_id.id,
+                    'group_id': timetable_id.group_id.id,
+                })
+                data = report_data.print_timetable_report_data(user, is_user)
+                pdf, _ = pdf_report.sudo().with_context()._render_qweb_pdf(report_name, data=data)
+            else:
+                pdf = None
         else:
             pdf = None
         filename = 'Emploi du temps PDF.pdf'
