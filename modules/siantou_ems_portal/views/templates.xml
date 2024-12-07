@@ -60,50 +60,43 @@
                     </div>
                     <thead>
                         <tr class="active">
-                            <th class="text-left">Date</th>
-                            <th class="text-left">Filière</th>
-                            <th class="text-left">Semestre</th>
-                            <th class="text-left">Niveau</th>
-                            <th class="text-left">Cours</th>
-                            <th class="text-left">Salle de classe</th>
-                            <th class="text-left">Enseignant</th>
-                            <th class="text-left">Jour de la semaine</th>
-                            <th class="text-left">Heure de début</th>
-                            <th class="text-left">Heure de fin</th>
+                            <th class="text-left">Heure</th>
+                            <th class="text-left">Lundi</th>
+                            <th class="text-left">Mardi</th>
+                            <th class="text-left">Mercredi</th>
+                            <th class="text-left">Jeudi</th>
+                            <th class="text-left">Vendredi</th>
+                            <th class="text-left">Samedi</th>
+                            <th class="text-left">Dimanche</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <t t-foreach="timetable" t-as="record">
+                        <t t-set="hour_timetables" t-value="[0, 1, 2, 3, 4]"/>
+                        <t t-foreach="hour_timetables" t-as="record">
                             <tr>
                                 <td class='text-left'>
-                                    <span t-esc="record['date']"/>
+                                    <span t-esc="timetable['Heure'][record]"/>
                                 </td>
                                 <td class='text-left'>
-                                    <span t-esc="record['field_of_study_name']"/>
+                                    <span t-esc="timetable['Lundi'][record]"/>
                                 </td>
                                 <td class='text-left'>
-                                    <span t-esc="record['semester_name']"/>
+                                    <span t-esc="timetable['Mardi'][record]"/>
                                 </td>
                                 <td class='text-left'>
-                                    <span t-esc="record['level_name']"/>
+                                    <span t-esc="timetable['Mercredi'][record]"/>
                                 </td>
                                 <td class='text-left'>
-                                    <span t-esc="record['subject_name']"/>
+                                    <span t-esc="timetable['Jeudi'][record]"/>
                                 </td>
                                 <td class='text-left'>
-                                    <span t-esc="record['classroom_name']"/>
+                                    <span t-esc="timetable['Vendredi'][record]"/>
                                 </td>
                                 <td class='text-left'>
-                                    <span t-esc="record['employee_name']"/>
+                                    <span t-esc="timetable['Samedi'][record]"/>
                                 </td>
                                 <td class='text-left'>
-                                    <span t-esc="record['day_of_week']"/>
-                                </td>
-                                <td class='text-left'>
-                                    <span t-esc="record['start_time']"/>
-                                </td>
-                                <td class='text-left'>
-                                    <span t-esc="record['end_time']"/>
+                                    <span t-esc="timetable['Dimanche'][record]"/>
                                 </td>
                             </tr>
                         </t>

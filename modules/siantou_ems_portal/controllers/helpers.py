@@ -197,7 +197,7 @@ class Helpers:
                     if v == '-':
                         timetables[key][i] = ''
                     else:
-                        timetables[key][i] = [d for d in data if d['id'] == int(v)][0]
+                        timetables[key][i] = [(d['subject_name'] + ' ' + d['classroom_name'] + ' ' + d['employee_name']) for d in data if d['id'] == int(v)][0]
 
         _logger.info(f'----------- tototototototo timetables {timetables} -----------')
 
