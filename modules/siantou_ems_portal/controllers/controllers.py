@@ -53,18 +53,18 @@ class PortalAccount(portal.CustomerPortal):
         timetables = []
         for search_timetable in search_timetables:
             timetable = {}
-            timetable['date'] = date.strftime(search_timetable.date, DATE_FORMAT_FR)
+            timetable['id'] = search_timetable.id
+            timetable['date'] = search_timetable.date
             timetable['field_of_study_name'] = search_timetable.field_of_study_id.name
             timetable['semester_name'] = search_timetable.semester_id.name
             timetable['level_name'] = search_timetable.level_id.name
             timetable['subject_name'] = search_timetable.subject_id.name
             timetable['classroom_name'] = search_timetable.classroom_id.name
             timetable['employee_name'] = search_timetable.employee_id.name
-            # timetable['day_of_week'] = CURRENT_WEEKDAY[search_timetable.day_of_week]
-            timetable['day_of_week'] = CURRENT_WEEKDAY[search_timetable.date.weekday()]
             timetable['start_time'] = search_timetable.start_time
             timetable['end_time'] = search_timetable.end_time
             timetables.append(timetable)
+        timetables = Helpers.format_timetable(timetables)
         return request.render('siantou_ems_portal.siantou_ems_portal_my_home_timetable_views',
                                 {
                                     'timetable': timetables,
