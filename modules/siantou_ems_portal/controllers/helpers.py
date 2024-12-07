@@ -197,8 +197,20 @@ class Helpers:
                     if v == '-':
                         timetables[key][i] = ''
                     else:
-                        timetables[key][i] = [(d['subject_name'] + ' ' + d['classroom_name'] + ' ' + d['employee_name']) for d in data if d['id'] == int(v)][0]
+                        timetables[key][i] = [d for d in data if d['id'] == int(v)][0]
 
         _logger.info(f'----------- tototototototo timetables {timetables} -----------')
 
         return timetables
+
+    @staticmethod
+    def convert_float_to_time(tm):
+        tm = str(tm)
+        tm = tm.split('.')
+        if len(tm[0]) == 1:
+            tm[0] = '{}0'.format(tm[0])
+        if len(tm[1]) == 1:
+            tm[1] = '{}0'.format(tm[1])
+        tm = ':'.join(tm)
+        tm = '{}:00'.format(tm)
+        return tm

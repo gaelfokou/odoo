@@ -60,43 +60,99 @@
                     </div>
                     <thead>
                         <tr class="active">
-                            <th class="text-left">Heure</th>
-                            <th class="text-left">Lundi</th>
-                            <th class="text-left">Mardi</th>
-                            <th class="text-left">Mercredi</th>
-                            <th class="text-left">Jeudi</th>
-                            <th class="text-left">Vendredi</th>
-                            <th class="text-left">Samedi</th>
-                            <th class="text-left">Dimanche</th>
+                            <th class="text-center">Heure</th>
+                            <th class="text-center">Lundi</th>
+                            <th class="text-center">Mardi</th>
+                            <th class="text-center">Mercredi</th>
+                            <th class="text-center">Jeudi</th>
+                            <th class="text-center">Vendredi</th>
+                            <th class="text-center">Samedi</th>
+                            <th class="text-center">Dimanche</th>
                         </tr>
                     </thead>
                     <tbody>
                         <t t-set="hour_timetables" t-value="[0, 1, 2, 3, 4]"/>
                         <t t-foreach="hour_timetables" t-as="record">
                             <tr>
-                                <td class='text-left'>
+                                <td class='text-center'>
                                     <span t-esc="timetable['Heure'][record]"/>
                                 </td>
-                                <td class='text-left'>
-                                    <span t-esc="timetable['Lundi'][record]"/>
+                                <td class='text-center'>
+                                    <t t-if="timetable['Lundi'][record] != ''">
+                                        <span t-esc="timetable['Lundi'][record]['subject_name']"/>
+                                        <span t-esc="'(' + timetable['Lundi'][record]['subject_code'] + ')'"/>
+                                        <br/>
+                                        <span t-esc="timetable['Lundi'][record]['classroom_name']"/>
+                                        <span t-esc="'/ ' + timetable['Lundi'][record]['building_name']"/>
+                                        <br/>
+                                        <span t-esc="timetable['Lundi'][record]['employee_name']"/>
+                                    </t>
                                 </td>
-                                <td class='text-left'>
-                                    <span t-esc="timetable['Mardi'][record]"/>
+                                <td class='text-center'>
+                                    <t t-if="timetable['Mardi'][record] != ''">
+                                        <span t-esc="timetable['Mardi'][record]['subject_name']"/>
+                                        <span t-esc="' (' + timetable['Mardi'][record]['subject_code'] + ')'"/>
+                                        <br/>
+                                        <span t-esc="timetable['Mardi'][record]['classroom_name']"/>
+                                        <span t-esc="'/ ' + timetable['Mardi'][record]['building_name']"/>
+                                        <br/>
+                                        <span t-esc="timetable['Mardi'][record]['employee_name']"/>
+                                    </t>
                                 </td>
-                                <td class='text-left'>
-                                    <span t-esc="timetable['Mercredi'][record]"/>
+                                <td class='text-center'>
+                                    <t t-if="timetable['Mercredi'][record] != ''">
+                                        <span t-esc="timetable['Mercredi'][record]['subject_name']"/>
+                                        <span t-esc="' (' + timetable['Mercredi'][record]['subject_code'] + ')'"/>
+                                        <br/>
+                                        <span t-esc="timetable['Mercredi'][record]['classroom_name']"/>
+                                        <span t-esc="'/ ' + timetable['Mercredi'][record]['building_name']"/>
+                                        <br/>
+                                        <span t-esc="timetable['Mercredi'][record]['employee_name']"/>
+                                    </t>
                                 </td>
-                                <td class='text-left'>
-                                    <span t-esc="timetable['Jeudi'][record]"/>
+                                <td class='text-center'>
+                                    <t t-if="timetable['Jeudi'][record] != ''">
+                                        <span t-esc="timetable['Jeudi'][record]['subject_name']"/>
+                                        <span t-esc="' (' + timetable['Jeudi'][record]['subject_code'] + ')'"/>
+                                        <br/>
+                                        <span t-esc="timetable['Jeudi'][record]['classroom_name']"/>
+                                        <span t-esc="'/ ' + timetable['Jeudi'][record]['building_name']"/>
+                                        <br/>
+                                        <span t-esc="timetable['Jeudi'][record]['employee_name']"/>
+                                    </t>
                                 </td>
-                                <td class='text-left'>
-                                    <span t-esc="timetable['Vendredi'][record]"/>
+                                <td class='text-center'>
+                                    <t t-if="timetable['Vendredi'][record] != ''">
+                                        <span t-esc="timetable['Vendredi'][record]['subject_name']"/>
+                                        <span t-esc="' (' + timetable['Vendredi'][record]['subject_code'] + ')'"/>
+                                        <br/>
+                                        <span t-esc="timetable['Vendredi'][record]['classroom_name']"/>
+                                        <span t-esc="'/ ' + timetable['Vendredi'][record]['building_name']"/>
+                                        <br/>
+                                        <span t-esc="timetable['Vendredi'][record]['employee_name']"/>
+                                    </t>
                                 </td>
-                                <td class='text-left'>
-                                    <span t-esc="timetable['Samedi'][record]"/>
+                                <td class='text-center'>
+                                    <t t-if="timetable['Samedi'][record] != ''">
+                                        <span t-esc="timetable['Samedi'][record]['subject_name']"/>
+                                        <span t-esc="' (' + timetable['Samedi'][record]['subject_code'] + ')'"/>
+                                        <br/>
+                                        <span t-esc="timetable['Samedi'][record]['classroom_name']"/>
+                                        <span t-esc="'/ ' + timetable['Samedi'][record]['building_name']"/>
+                                        <br/>
+                                        <span t-esc="timetable['Samedi'][record]['employee_name']"/>
+                                    </t>
                                 </td>
-                                <td class='text-left'>
-                                    <span t-esc="timetable['Dimanche'][record]"/>
+                                <td class='text-center'>
+                                    <t t-if="timetable['Dimanche'][record] != ''">
+                                        <span t-esc="timetable['Dimanche'][record]['subject_name']"/>
+                                        <span t-esc="' (' + timetable['Dimanche'][record]['subject_code'] + ')'"/>
+                                        <br/>
+                                        <span t-esc="timetable['Dimanche'][record]['classroom_name']"/>
+                                        <span t-esc="'/ ' + timetable['Dimanche'][record]['building_name']"/>
+                                        <br/>
+                                        <span t-esc="timetable['Dimanche'][record]['employee_name']"/>
+                                    </t>
                                 </td>
                             </tr>
                         </t>

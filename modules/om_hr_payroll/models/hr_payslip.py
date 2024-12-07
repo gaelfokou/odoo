@@ -101,9 +101,9 @@ class HrPayslip(models.Model):
         tm = str(tm)
         tm = tm.split('.')
         if len(tm[0]) == 1:
-            tm[0] = '0{}'.format(tm[0])
+            tm[0] = '{}0'.format(tm[0])
         if len(tm[1]) == 1:
-            tm[1] = '0{}'.format(tm[1])
+            tm[1] = '{}0'.format(tm[1])
         tm = ':'.join(tm)
         tm = '{}:00'.format(tm)
         return tm

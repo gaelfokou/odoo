@@ -55,16 +55,24 @@ class PortalAccount(portal.CustomerPortal):
             timetable = {}
             timetable['id'] = search_timetable.id
             timetable['date'] = search_timetable.date
+            timetable['date_of_week'] = datetime.strftime(search_timetable.date, DATE_FORMAT_FR)
             timetable['field_of_study_name'] = search_timetable.field_of_study_id.name
             timetable['semester_name'] = search_timetable.semester_id.name
             timetable['level_name'] = search_timetable.level_id.name
             timetable['subject_name'] = search_timetable.subject_id.name
+            timetable['subject_code'] = search_timetable.subject_id.code
             timetable['classroom_name'] = search_timetable.classroom_id.name
+            timetable['building_name'] = search_timetable.classroom_id.building_id.name
             timetable['employee_name'] = search_timetable.employee_id.name
             timetable['start_time'] = search_timetable.start_time
             timetable['end_time'] = search_timetable.end_time
             timetables.append(timetable)
         timetables = Helpers.format_timetable(timetables)
+        for i, timetable in enumerate(timetables['Heure']):
+            tm = timetable.split('-')
+            tm[0] = Helpers.convert_float_to_time(tm[0])
+            tm[1] = Helpers.convert_float_to_time(tm[1])
+            timetables['Heure'][i] = '{}-{}'.format(tm[0], tm[1])
         return request.render('siantou_ems_portal.siantou_ems_portal_my_home_timetable_views',
                                 {
                                     'timetable': timetables,
@@ -131,7 +139,7 @@ class PortalAccount(portal.CustomerPortal):
         schoolfees = []
         for search_schoolfee in search_schoolfees:
             schoolfee = {}
-            schoolfee['date_payment'] = date.strftime(search_schoolfee.date_payment, DATE_FORMAT_FR)
+            schoolfee['date_payment'] = datetime.strftime(search_schoolfee.date_payment, DATE_FORMAT_FR)
             schoolfee['name'] = search_schoolfee.name
             schoolfee['reference'] = search_schoolfee.reference
             schoolfee['structure_frais_type_paiement'] = TYPE_PAIEMENT[search_schoolfee.structure_frais_id.type_paiement]
@@ -161,7 +169,7 @@ class PortalAccount(portal.CustomerPortal):
         paymenthistories = []
         for search_paymenthistory in search_paymenthistories:
             paymenthistory = {}
-            paymenthistory['date_from'] = date.strftime(search_paymenthistory.date_from, DATE_FORMAT_FR)
+            paymenthistory['date_from'] = datetime.strftime(search_paymenthistory.date_from, DATE_FORMAT_FR)
             paymenthistory['name'] = search_paymenthistory.name
             paymenthistory['number'] = search_paymenthistory.number
             paymenthistory['code'] = search_paymenthistory.code
