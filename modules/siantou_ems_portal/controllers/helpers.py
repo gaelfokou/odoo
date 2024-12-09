@@ -26,7 +26,7 @@ _logger = logging.getLogger(__name__)
 
 class Helpers:
     @staticmethod
-    def timetable(search=None, search_in='all', sortby=None):
+    def timetable(search=None, search_in='all'):
         if not search:
             search = ''
         searchbar_inputs = {
@@ -42,13 +42,7 @@ class Helpers:
             search_in = 'all'
         search_domain = searchbar_inputs[search_in]['domain']
 
-        searchbar_sortings = {
-            'date-desc': {'label': 'Date desc', 'order': 'date desc'},
-            'date-asc': {'label': 'Date asc', 'order': 'date asc'},
-        }
-        if not sortby or sortby not in searchbar_sortings.keys():
-            sortby = 'date-desc'
-        order = searchbar_sortings[sortby]['order']
+        order = 'date asc'
 
         search_timetables = []
         if http.request.env.user.employee_id.id:
@@ -73,10 +67,10 @@ class Helpers:
 
         _logger.info(f'----------- tototototototo search_timetables {search_timetables} -----------')
 
-        return search_timetables, searchbar_inputs, search_in, sortby, searchbar_sortings
+        return search_timetables, searchbar_inputs
 
     @staticmethod
-    def schoolfee(search=None, search_in='all', sortby=None):
+    def schoolfee(search=None, search_in='all'):
         if not search:
             search = ''
         searchbar_inputs = {
@@ -86,13 +80,7 @@ class Helpers:
             search_in = 'all'
         search_domain = searchbar_inputs[search_in]['domain']
 
-        searchbar_sortings = {
-            'date-desc': {'label': 'Date desc', 'order': 'date_payment desc'},
-            'date-asc': {'label': 'Date asc', 'order': 'date_payment asc'},
-        }
-        if not sortby or sortby not in searchbar_sortings.keys():
-            sortby = 'date-desc'
-        order = searchbar_sortings[sortby]['order']
+        order = 'date_payment asc'
 
         user = http.request.env.user
         # Chercher l'étudiant en fonction de l'ID de l'utilisateur (user_id)
@@ -116,10 +104,10 @@ class Helpers:
 
         _logger.info(f'----------- tototototototo search_schoolfees {search_schoolfees} -----------')
 
-        return search_schoolfees, searchbar_inputs, search_in, sortby, searchbar_sortings
+        return search_schoolfees, searchbar_inputs
 
     @staticmethod
-    def paymenthistory(search=None, search_in='all', sortby=None):
+    def paymenthistory(search=None, search_in='all'):
         if not search:
             search = ''
         searchbar_inputs = {
@@ -129,13 +117,7 @@ class Helpers:
             search_in = 'all'
         search_domain = searchbar_inputs[search_in]['domain']
 
-        searchbar_sortings = {
-            'date-desc': {'label': 'Date desc', 'order': 'date_from desc'},
-            'date-asc': {'label': 'Date asc', 'order': 'date_from asc'},
-        }
-        if not sortby or sortby not in searchbar_sortings.keys():
-            sortby = 'date-desc'
-        order = searchbar_sortings[sortby]['order']
+        order = 'date_from asc'
 
         search_paymenthistories = []
         if http.request.env.user.employee_id.id:
@@ -148,7 +130,7 @@ class Helpers:
 
         _logger.info(f'----------- tototototototo search_paymenthistories {search_paymenthistories} -----------')
 
-        return search_paymenthistories, searchbar_inputs, search_in, sortby, searchbar_sortings
+        return search_paymenthistories, searchbar_inputs
 
     @staticmethod
     def format_timetable(data):

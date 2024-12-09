@@ -47,9 +47,11 @@ class PortalAccount(portal.CustomerPortal):
         return values
 
     @http.route(['/my/timetable', '/my/timetable/page/<int:page>'], type='http', auth="user", website=True)
-    def portal_timetable(self, page=1, search=None, search_in='all', sortby=None, **kw):
+    def portal_timetable(self, page=1, search=None, search_in='all', view_type=None, **kw):
+        if view_type not in ['calendar', 'list']:
+            view_type = 'calendar'
         # Utilisation de la fonction du helper
-        search_timetables, searchbar_inputs, search_in, sortby, searchbar_sortings = Helpers.timetable(search, search_in, sortby)
+        search_timetables, searchbar_inputs = Helpers.timetable(search, search_in)
         timetables = []
         for search_timetable in search_timetables:
             timetable = {}
@@ -80,12 +82,10 @@ class PortalAccount(portal.CustomerPortal):
                                     'search': search,
                                     'search_in': search_in,
                                     'searchbar_inputs': searchbar_inputs,
-                                    'sortby': sortby,
-                                    'searchbar_sortings': searchbar_sortings,
                                 })
 
     @http.route(['/my/timetable/download', '/my/timetable/download/page/<int:page>'], type='http', auth="user", website=True)
-    def portal_timetable_download(self, page=1, search=None, search_in='all', sortby=None, **kw):
+    def portal_timetable_download(self, page=1, search=None, search_in='all', **kw):
         user = None
         is_user = None
         if http.request.env.user.employee_id.id:
@@ -130,9 +130,9 @@ class PortalAccount(portal.CustomerPortal):
         return request.make_response(pdf, headers=pdfhttpheaders)
 
     @http.route(['/my/schoolfee', '/my/schoolfee/page/<int:page>'], type='http', auth="user", website=True)
-    def portal_schoolfee(self, page=1, search=None, search_in='all', sortby=None, **kw):
+    def portal_schoolfee(self, page=1, search=None, search_in='all', **kw):
         # Utilisation de la fonction du helper
-        search_schoolfees, searchbar_inputs, search_in, sortby, searchbar_sortings = Helpers.schoolfee(search, search_in, sortby)
+        search_schoolfees, searchbar_inputs = Helpers.schoolfee(search, search_in)
         total_amount = 0.0
         total_structure_amount = 0.0
         total_rest_amount = 0.0
@@ -161,9 +161,9 @@ class PortalAccount(portal.CustomerPortal):
                                 })
 
     @http.route(['/my/paymenthistory', '/my/paymenthistory/page/<int:page>'], type='http', auth="user", website=True)
-    def portal_paymenthistory(self, page=1, search=None, search_in='all', sortby=None, **kw):
+    def portal_paymenthistory(self, page=1, search=None, search_in='all', **kw):
         # Utilisation de la fonction du helper
-        search_paymenthistories, searchbar_inputs, search_in, sortby, searchbar_sortings = Helpers.paymenthistory(search, search_in, sortby)
+        search_paymenthistories, searchbar_inputs = Helpers.paymenthistory(search, search_in)
         total_amount = 0.0
         total_number_of_hours = 0.0
         paymenthistories = []
