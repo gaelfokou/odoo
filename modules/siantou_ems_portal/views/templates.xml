@@ -56,7 +56,9 @@
                 <t t-call="portal.portal_table">
                     <!-- <div id="siantou_ems_portal_print_timetable_container"></div> -->
                     <div>
-                        <a t-att-href="'/my/timetable/download'"><button class="btn btn-primary">Impression de l'emploi du temps</button></a><br/><br/>
+                        <a t-att-href="'/my/timetable/download'"><button class="btn btn-primary">Impression de l'emploi du temps</button></a>
+                        <a t-att-href="'/my/timetable?view_type=calendar'"><button class="btn btn-primary">Calendrier</button></a>
+                        <a t-att-href="'/my/timetable?view_type=list'"><button class="btn btn-primary">Liste</button></a><br/><br/>
                     </div>
                     <t t-set="hour_timetables" t-value="[0, 1, 2, 3, 4]"/>
                     <t t-set="week_timetables" t-value="timetables.keys()"/>
@@ -186,7 +188,9 @@
                 <t t-call="portal.portal_table">
                     <!-- <div id="siantou_ems_portal_print_timetable_container"></div> -->
                     <div>
-                        <a t-att-href="'/my/timetable/download'"><button class="btn btn-primary">Impression de l'emploi du temps</button></a><br/><br/>
+                        <a t-att-href="'/my/timetable/download'"><button class="btn btn-primary">Impression de l'emploi du temps</button></a>
+                        <a t-att-href="'/my/timetable?view_type=calendar'"><button class="btn btn-primary">Calendrier</button></a>
+                        <a t-att-href="'/my/timetable?view_type=list'"><button class="btn btn-primary">Liste</button></a><br/><br/>
                     </div>
                     <thead>
                         <tr class="active">
