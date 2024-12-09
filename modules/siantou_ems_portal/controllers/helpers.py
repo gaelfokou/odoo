@@ -134,52 +134,69 @@ class Helpers:
 
     @staticmethod
     def format_timetable(data):
-        timetables = {
-            'Heure': [hour for hour in CURRENT_HOUR],
-            'Lundi': [],
-            'Mardi': [],
-            'Mercredi': [],
-            'Jeudi': [],
-            'Vendredi': [],
-            'Samedi': [],
-            'Dimanche': [],
-        }
-
-        for hour in timetables['Heure']:
-            for key in timetables.keys():
-                if key == 'Heure':
-                    continue
-                timetables[key].append(np.nan)
-
-        df = pd.DataFrame(timetables, dtype=str)
+        timetables = {}
+        df = {}
 
         for d in data:
             d['start_time'] = float(d['start_time'])
             d['end_time'] = float(d['end_time'])
+            if d['date'].weekday() == 0:
+                monday = d['date']
+            else:
+                monday = d['date'] - timedelta(days=d['date'].weekday())
+            monday = datetime.strftime(monday, DATE_FORMAT)
+            if not monday in timetables:
+                timetables[monday] = {
+                    'Heure': [hour for hour in CURRENT_HOUR],
+                    'Lundi': [],
+                    'Mardi': [],
+                    'Mercredi': [],
+                    'Jeudi': [],
+                    'Vendredi': [],
+                    'Samedi': [],
+                    'Dimanche': [],
+                }
+
+                for hour in timetables[monday]['Heure']:
+                    for key in timetables[monday].keys():
+                        if key == 'Heure':
+                            continue
+                        timetables[monday][key].append(np.nan)
+            if not monday in df:
+                df[monday] = pd.DataFrame(timetables[monday], dtype=str)
             while d['start_time'] < d['end_time']:
                 h = '{}-{}'.format(d['start_time'], (d['start_time'] + 2.0))
-                for i, row in df.iterrows():
-                    if h == timetables['Heure'][i]:
-                        for j, column in enumerate(df.columns):
-                            dt = d['date']
-                            for k, key in enumerate(timetables.keys()):
-                                if k == dt.weekday() + 1:
+                for i, row in df[monday].iterrows():
+                    if h == timetables[monday]['Heure'][i]:
+                        for j, column in enumerate(df[monday].columns):
+                            for k, key in enumerate(timetables[monday].keys()):
+                                if k == d['date'].weekday() + 1:
                                     if column == key:
-                                        # df.loc[i, column] = d['subject_name']
-                                        df.loc[i, column] = d['id']
+                                        # df[monday].loc[i, column] = d['subject_name']
+                                        df[monday].loc[i, column] = d['id']
                                     break
                 d['start_time'] += 2.0
 
-        df.replace(np.nan, '-', inplace=True)
+        for monday in df.keys():
+            df[monday].replace(np.nan, '-', inplace=True)
 
-        for key in timetables.keys():
-            timetables[key] = list(df[key])
-            if key != 'Heure':
-                for i, v in enumerate(timetables[key]):
-                    if v == '-':
-                        timetables[key][i] = ''
-                    else:
-                        timetables[key][i] = [d for d in data if d['id'] == int(v)][0]
+            for key in timetables[monday].keys():
+                timetables[monday][key] = list(df[monday][key])
+                if key != 'Heure':
+                    for i, v in enumerate(timetables[monday][key]):
+                        if v == '-':
+                            timetables[monday][key][i] = ''
+                        else:
+                            timetables[monday][key][i] = [d for d in data if d['id'] == int(v)][0]
+
+            monday = datetime.strptime(f'{monday}', DATE_FORMAT)
+            sunday = monday + timedelta(days=6)
+            monday_fr = datetime.strftime(monday, DATE_FORMAT_FR)
+            sunday_fr = datetime.strftime(sunday, DATE_FORMAT_FR)
+            monday = datetime.strftime(monday, DATE_FORMAT)
+            sunday = '{} - {}'.format(monday_fr, sunday_fr)
+            timetables[sunday] = timetables[monday]
+            del(timetables[monday])
 
         _logger.info(f'----------- tototototototo timetables {timetables} -----------')
 

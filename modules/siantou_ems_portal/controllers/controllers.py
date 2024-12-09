@@ -70,14 +70,15 @@ class PortalAccount(portal.CustomerPortal):
             timetable['end_time'] = search_timetable.end_time
             timetables.append(timetable)
         timetables = Helpers.format_timetable(timetables)
-        for i, timetable in enumerate(timetables['Heure']):
-            tm = timetable.split('-')
-            tm[0] = Helpers.convert_float_to_time(tm[0])
-            tm[1] = Helpers.convert_float_to_time(tm[1])
-            timetables['Heure'][i] = '{}-{}'.format(tm[0], tm[1])
+        for monday in timetables.keys():
+            for i, timetable in enumerate(timetables[monday]['Heure']):
+                tm = timetable.split('-')
+                tm[0] = Helpers.convert_float_to_time(tm[0])
+                tm[1] = Helpers.convert_float_to_time(tm[1])
+                timetables[monday]['Heure'][i] = '{}-{}'.format(tm[0], tm[1])
         return request.render('siantou_ems_portal.siantou_ems_portal_my_home_timetable_views',
                                 {
-                                    'timetable': timetables,
+                                    'timetables': timetables,
                                     'page_name': 'timetable',
                                     'search': search,
                                     'search_in': search_in,
@@ -153,7 +154,7 @@ class PortalAccount(portal.CustomerPortal):
             total_rest_amount = total_structure_amount - total_amount
         return request.render('siantou_ems_portal.siantou_ems_portal_my_home_schoolfee_views',
                                 {
-                                    'schoolfee': schoolfees,
+                                    'schoolfees': schoolfees,
                                     'page_name': 'schoolfee',
                                     'total_amount': total_amount,
                                     'total_structure_amount': total_structure_amount,
@@ -185,7 +186,7 @@ class PortalAccount(portal.CustomerPortal):
             total_number_of_hours += paymenthistory['number_of_hours']
         return request.render('siantou_ems_portal.siantou_ems_portal_my_home_paymenthistory_views',
                                 {
-                                    'paymenthistory': paymenthistories,
+                                    'paymenthistories': paymenthistories,
                                     'page_name': 'paymenthistory',
                                     'total_amount': total_amount,
                                     'total_number_of_hours': total_number_of_hours,
