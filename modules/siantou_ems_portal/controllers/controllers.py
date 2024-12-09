@@ -78,6 +78,11 @@ class PortalAccount(portal.CustomerPortal):
                     tm[0] = Helpers.convert_float_to_time(tm[0])
                     tm[1] = Helpers.convert_float_to_time(tm[1])
                     timetables[monday]['Heure'][i] = '{}-{}'.format(tm[0], tm[1])
+        else:
+            for timetable in timetables:
+                timetable['date'] = date.strftime(timetable['date'], DATE_FORMAT_FR)
+                timetable['start_time'] = Helpers.convert_float_to_time(timetable['start_time'])
+                timetable['end_time'] = Helpers.convert_float_to_time(timetable['end_time'])
         return request.render(f'siantou_ems_portal.siantou_ems_portal_my_home_timetable_{view_type}_views',
                                 {
                                     'timetables': timetables,
