@@ -48,7 +48,7 @@ class PortalAccount(portal.CustomerPortal):
 
     @http.route(['/my/timetable', '/my/timetable/page/<int:page>'], type='http', auth="user", website=True)
     def portal_timetable(self, page=1, search=None, search_in='all', view_type=None, **kw):
-        if view_type not in ['calendar', 'list']:
+        if not view_type or view_type not in ['calendar', 'list']:
             view_type = 'calendar'
         # Utilisation de la fonction du helper
         search_timetables, searchbar_inputs = Helpers.timetable(search, search_in)
@@ -66,17 +66,19 @@ class PortalAccount(portal.CustomerPortal):
             timetable['classroom_name'] = search_timetable.classroom_id.name
             timetable['building_name'] = search_timetable.classroom_id.building_id.name
             timetable['employee_name'] = search_timetable.employee_id.name
+            timetable['day_of_week'] = CURRENT_WEEKDAY[search_timetable.date.weekday()]
             timetable['start_time'] = search_timetable.start_time
             timetable['end_time'] = search_timetable.end_time
             timetables.append(timetable)
-        timetables = Helpers.format_timetable(timetables)
-        for monday in timetables.keys():
-            for i, timetable in enumerate(timetables[monday]['Heure']):
-                tm = timetable.split('-')
-                tm[0] = Helpers.convert_float_to_time(tm[0])
-                tm[1] = Helpers.convert_float_to_time(tm[1])
-                timetables[monday]['Heure'][i] = '{}-{}'.format(tm[0], tm[1])
-        return request.render('siantou_ems_portal.siantou_ems_portal_my_home_timetable_views',
+        if view_type == 'calendar':
+            timetables = Helpers.format_timetable(timetables)
+            for monday in timetables.keys():
+                for i, timetable in enumerate(timetables[monday]['Heure']):
+                    tm = timetable.split('-')
+                    tm[0] = Helpers.convert_float_to_time(tm[0])
+                    tm[1] = Helpers.convert_float_to_time(tm[1])
+                    timetables[monday]['Heure'][i] = '{}-{}'.format(tm[0], tm[1])
+        return request.render(f'siantou_ems_portal.siantou_ems_portal_my_home_timetable_{view_type}_views',
                                 {
                                     'timetables': timetables,
                                     'page_name': 'timetable',

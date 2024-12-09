@@ -47,7 +47,7 @@
             </div>
         </template>
 
-        <template id="siantou_ems_portal_my_home_timetable_views" name="siantou_ems_portal.print_timetable">
+        <template id="siantou_ems_portal_my_home_timetable_calendar_views" name="siantou_ems_portal.print_timetable">
             <t t-call="portal.portal_layout">
                 <t t-set="breadcrumbs_searchbar" t-value="True"/>
                 <t t-call="portal.portal_searchbar">
@@ -173,6 +173,71 @@
                             </tr>
                         </tfooter>
                     </t>
+                </t>
+            </t>
+        </template>
+
+        <template id="siantou_ems_portal_my_home_timetable_list_views" name="siantou_ems_portal.print_timetable">
+            <t t-call="portal.portal_layout">
+                <t t-set="breadcrumbs_searchbar" t-value="True"/>
+                <t t-call="portal.portal_searchbar">
+                    <t t-set="title">Emploi du temps</t>
+                </t>
+                <t t-call="portal.portal_table">
+                    <!-- <div id="siantou_ems_portal_print_timetable_container"></div> -->
+                    <div>
+                        <a t-att-href="'/my/timetable/download'"><button class="btn btn-primary">Impression de l'emploi du temps</button></a><br/><br/>
+                    </div>
+                    <thead>
+                        <tr class="active">
+                            <th class="text-left">Date</th>
+                            <th class="text-left">Filière</th>
+                            <th class="text-left">Semestre</th>
+                            <th class="text-left">Niveau</th>
+                            <th class="text-left">Cours</th>
+                            <th class="text-left">Salle de classe</th>
+                            <th class="text-left">Enseignant</th>
+                            <th class="text-left">Jour de la semaine</th>
+                            <th class="text-left">Heure de début</th>
+                            <th class="text-left">Heure de fin</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-foreach="timetables" t-as="record">
+                            <tr>
+                                <td class='text-left'>
+                                    <span t-esc="record['date']"/>
+                                </td>
+                                <td class='text-left'>
+                                    <span t-esc="record['field_of_study_name']"/>
+                                </td>
+                                <td class='text-left'>
+                                    <span t-esc="record['semester_name']"/>
+                                </td>
+                                <td class='text-left'>
+                                    <span t-esc="record['level_name']"/>
+                                </td>
+                                <td class='text-left'>
+                                    <span t-esc="record['subject_name']"/>
+                                </td>
+                                <td class='text-left'>
+                                    <span t-esc="record['classroom_name']"/>
+                                </td>
+                                <td class='text-left'>
+                                    <span t-esc="record['employee_name']"/>
+                                </td>
+                                <td class='text-left'>
+                                    <span t-esc="record['day_of_week']"/>
+                                </td>
+                                <td class='text-left'>
+                                    <span t-esc="record['start_time']"/>
+                                </td>
+                                <td class='text-left'>
+                                    <span t-esc="record['end_time']"/>
+                                </td>
+                            </tr>
+                        </t>
+                    </tbody>
                 </t>
             </t>
         </template>
