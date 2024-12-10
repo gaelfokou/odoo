@@ -1,26 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-        <!--Payslip Line -->
-        <record id="view_hr_payslip_line_tree" model="ir.ui.view">
-            <field name="name">hr.payslip.line.tree</field>
-            <field name="model">hr.payslip.line</field>
-            <field name="arch" type="xml">
-                <tree string="Salary Structure" editable="bottom" decoration-info="total == 0">
-                    <field name="category_id"/>
-                    <field name="employee_id" invisible="1"/>
-                    <field name="sequence"/>
-                    <field name="name"/>
-                    <field name="code"/>
-                    <field name="quantity"/>
-                    <field name="rate"/>
-                    <field name="amount"/>
-                    <field name="total"/>
-                    <field name="amount_select" invisible="1"/>
-                    <field name="register_id" invisible="1"/>
-                </tree>
-            </field>
-        </record>
         <!--Template to send demo mail template for the customer-->
         <record id="hr_payroll_hr_timetable_notification_template" model="mail.template">
             <field name="name">Email Template For Blog</field>
