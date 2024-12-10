@@ -14,7 +14,7 @@ _logger = logging.getLogger(__name__)
 
 class TimetableNotification(models.Model):
     _name = 'timetable.notification'
-    _description = 'Timetable Notification'
+    _description = 'Timetable notification'
     _inherit = ['mail.thread', 'mail.activity.mixin']
 
     template = fields.Char(string='Template')
@@ -35,3 +35,8 @@ class TimetableNotification(models.Model):
         for record in self:
             if not record.template or record.template == '':
                 raise ValidationError("Vous devez définir un template")
+
+    @api.model
+    def cron_timetable_notification(self):
+        # self.cron_download_attendance()
+        pass
