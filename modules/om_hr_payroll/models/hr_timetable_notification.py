@@ -42,4 +42,4 @@ class HrTimetableNotification(models.Model):
             ('status', '=', '0'),
         ])
         for timetable_notification in timetable_notifications:
-            pass
+            timetable_notification.sudo().write({'status': '1'})

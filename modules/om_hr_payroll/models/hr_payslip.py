@@ -364,7 +364,7 @@ class HrPayslip(models.Model):
                     ])
                     timetable_notifications = list(timetable_notifications)
                     if len(timetable_notifications) == 0:
-                        self.env['hr.timetable.notification'].create({
+                        self.env['hr.timetable.notification'].sudo().create({
                             'template': template,
                             'timetable_id': employee_timetable.id,
                         })
