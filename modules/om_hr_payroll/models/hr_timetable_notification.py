@@ -42,4 +42,6 @@ class HrTimetableNotification(models.Model):
             ('status', '=', '0'),
         ])
         for timetable_notification in timetable_notifications:
+            template = self.env.ref(timetable_notification.template)
+            template.send_mail(timetable_notification.id, force_send=True)
             timetable_notification.sudo().write({'status': '1'})
