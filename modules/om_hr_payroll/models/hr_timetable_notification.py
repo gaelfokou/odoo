@@ -12,8 +12,8 @@ import logging
 _logger = logging.getLogger(__name__)
 
 
-class TimetableNotification(models.Model):
-    _name = 'timetable.notification'
+class HrTimetableNotification(models.Model):
+    _name = 'hr.timetable.notification'
     _description = 'Timetable notification'
     _inherit = ['mail.thread', 'mail.activity.mixin']
 
