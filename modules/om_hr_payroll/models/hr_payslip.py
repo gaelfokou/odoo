@@ -357,6 +357,17 @@ class HrPayslip(models.Model):
                     employee_timetable.sudo().write({'status': '1'})
                 else:
                     employee_timetable.sudo().write({'status': '2'})
+                    template = 'om_hr_payroll.hr_payroll_hr_timetable_notification_template'
+                    timetable_notifications = self.env['hr.timetable.notification'].search([
+                        ('timetable_id', '=', employee_timetable.id),
+                        ('template', '=', template),
+                    ])
+                    timetable_notifications = list(timetable_notifications)
+                    if len(timetable_notifications) == 0:
+                        self.env['hr.timetable.notification'].create({
+                            'template': template,
+                            'timetable_id': employee_timetable.id,
+                        })
                 # if employee_timetable.employee_id.is_permanent:
                 #     pass
 

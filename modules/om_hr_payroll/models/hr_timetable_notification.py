@@ -38,5 +38,8 @@ class HrTimetableNotification(models.Model):
 
     @api.model
     def cron_timetable_notification(self):
-        # self.cron_download_attendance()
-        pass
+        timetable_notifications = self.env['hr.timetable.notification'].search([
+            ('status', '=', '0'),
+        ])
+        for timetable_notification in timetable_notifications:
+            pass
