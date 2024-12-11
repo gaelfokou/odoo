@@ -358,8 +358,9 @@ class HrPayslip(models.Model):
                 else:
                     template = 'om_hr_payroll.hr_payroll_hr_timetable_notification_template'
                     timetable_notifications = self.env['hr.timetable.notification'].search([
-                        ('timetable_id', '=', employee_timetable.id),
                         ('template', '=', template),
+                        ('timetable_id', '=', employee_timetable.id),
+                        ('status', '=', '0'),
                     ])
                     timetable_notifications = list(timetable_notifications)
                     if len(timetable_notifications) == 0:
