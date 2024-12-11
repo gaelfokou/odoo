@@ -356,7 +356,7 @@ class HrPayslip(models.Model):
                 if len(daily_attendances) > 1:
                     employee_timetable.sudo().write({'status': '1'})
                 else:
-                    template = 'om_hr_payroll.hr_payroll_hr_timetable_notification_template'
+                    template = 'om_hr_payroll.hr_payroll_timetable_notification_template'
                     timetable_notifications = self.env['hr.timetable.notification'].search([
                         ('template', '=', template),
                         ('timetable_id', '=', employee_timetable.id),

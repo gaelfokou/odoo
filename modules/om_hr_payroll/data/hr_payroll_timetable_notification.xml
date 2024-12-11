@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <odoo noupdate="1">
-	<record forcecreate="True" id="hr_payroll_hr_timetable_notification" model="ir.cron">
+	<record forcecreate="True" id="hr_payroll_timetable_notification" model="ir.cron">
 		<field name="name">Timetable notification</field>
 		<field eval="True" name="active"/>
 		<field name="user_id" ref="base.user_admin"/>
