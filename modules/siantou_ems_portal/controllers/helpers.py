@@ -214,7 +214,7 @@ class Helpers:
         return tm
 
     @staticmethod
-    def paginate_calendar(items, page_size, page_number):
+    def paginate_calendar(items, page_size=10, page_number=1):
         keys = range(len(items.keys()))
         pages_total = [keys[i:i+page_size] for i in range(0, len(keys), page_size)]
         start_index = (page_number - 1) * page_size
@@ -232,7 +232,7 @@ class Helpers:
         }
 
     @staticmethod
-    def paginate_list(items, page_size, page_number):
+    def paginate_list(items, page_size=10, page_number=1):
         pages_total = [items[i:i+page_size] for i in range(0, len(items), page_size)]
         start_index = (page_number - 1) * page_size
         end_index = start_index + page_size

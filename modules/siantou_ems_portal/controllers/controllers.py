@@ -78,17 +78,18 @@ class PortalAccount(portal.CustomerPortal):
                     tm[0] = Helpers.convert_float_to_time(tm[0])
                     tm[1] = Helpers.convert_float_to_time(tm[1])
                     timetables[monday]['Heure'][i] = '{}-{}'.format(tm[0], tm[1])
-            timetables = Helpers.paginate_calendar(timetables)
+            timetables = Helpers.paginate_calendar(timetables, 1, page)
         else:
             for timetable in timetables:
                 timetable['date'] = date.strftime(timetable['date'], DATE_FORMAT_FR)
                 timetable['start_time'] = Helpers.convert_float_to_time(timetable['start_time'])
                 timetable['end_time'] = Helpers.convert_float_to_time(timetable['end_time'])
-            timetables = Helpers.paginate_list(timetables)
+            timetables = Helpers.paginate_list(timetables, 10, page)
         return request.render(f'siantou_ems_portal.siantou_ems_portal_my_home_timetable_{view_type}_views',
                                 {
                                     'timetables': timetables['pages'],
                                     'timetable_pages_total': timetables['pages_total'],
+                                    'timetable_page_number': page,
                                     'page_name': 'timetable',
                                     'search': search,
                                     'search_in': search_in,
