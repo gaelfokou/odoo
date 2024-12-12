@@ -90,6 +90,7 @@ class PortalAccount(portal.CustomerPortal):
                                     'timetables': timetables['pages'],
                                     'timetable_pages_total': timetables['pages_total'],
                                     'timetable_page_number': page,
+                                    'timetable_view_type': view_type,
                                     'page_name': 'timetable',
                                     'search': search,
                                     'search_in': search_in,
