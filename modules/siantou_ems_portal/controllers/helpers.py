@@ -26,9 +26,7 @@ _logger = logging.getLogger(__name__)
 
 class Helpers:
     @staticmethod
-    def timetable(search=None, search_in='all'):
-        if not search:
-            search = ''
+    def timetable(search='', search_in='all'):
         searchbar_inputs = {
             'all': {'label': 'Tout', 'input': 'all', 'domain': []},
             'filiere': {'label': 'Filière', 'input': 'filiere', 'domain': [('field_of_study_id.name', 'like', search)]},
@@ -70,9 +68,7 @@ class Helpers:
         return search_timetables, searchbar_inputs
 
     @staticmethod
-    def schoolfee(search=None, search_in='all'):
-        if not search:
-            search = ''
+    def schoolfee(search='', search_in='all'):
         searchbar_inputs = {
             'all': {'label': 'Tout', 'input': 'all', 'domain': []},
         }
@@ -107,9 +103,7 @@ class Helpers:
         return search_schoolfees, searchbar_inputs
 
     @staticmethod
-    def paymenthistory(search=None, search_in='all'):
-        if not search:
-            search = ''
+    def paymenthistory(search='', search_in='all'):
         searchbar_inputs = {
             'all': {'label': 'Tout', 'input': 'all', 'domain': []},
         }
