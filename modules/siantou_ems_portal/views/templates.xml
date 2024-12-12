@@ -213,6 +213,7 @@
                         <a t-attf-href="/my/timetable?view_type=calendar"><button class="btn btn-primary">Calendrier</button></a>
                         <a t-attf-href="/my/timetable?view_type=list"><button class="btn btn-primary">Liste</button></a><br/><br/>
                     </div>
+                    <t t-set="total_timetables" t-value="[(i+1) for i in range(timetable_pages_total)]"/>
                     <thead>
                         <tr class="active">
                             <th class="text-left">Date</th>
@@ -271,6 +272,15 @@
                     <tbody>
                         <tr>
                             <td class="text-left" colspan="10">
+                                <nav aria-label="Page navigation timetable">
+                                    <ul class="pagination">
+                                        <li class="page-item"><a class="page-link" t-attf-href="/my/timetable/page/1?view_type={{ timetable_view_type }}">Précédent</a></li>
+                                        <t t-foreach="total_timetables" t-as="p">
+                                            <li class="page-item"><a class="page-link" t-attf-href="/my/timetable/page/{{ p }}?view_type={{ timetable_view_type }}" t-esc="p"/></li>
+                                        </t>
+                                        <li class="page-item"><a class="page-link" t-attf-href="/my/timetable/page/{{ timetable_pages_total }}?view_type={{ timetable_view_type }}">Suivant</a></li>
+                                    </ul>
+                                </nav>
                             </td>
                         </tr>
                     </tbody>
