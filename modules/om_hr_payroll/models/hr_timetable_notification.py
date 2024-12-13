@@ -46,5 +46,5 @@ class HrTimetableNotification(models.Model):
             context = {
                 'id': timetable_notification.id
             }
-            template.with_context(context).send_mail(timetable_notification.id, force_send=True)
+            template.sudo().with_context(context).send_mail(timetable_notification.id, force_send=True)
             timetable_notification.sudo().write({'status': '1'})
