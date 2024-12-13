@@ -112,7 +112,7 @@ class HrPayslip(models.Model):
     def convert_time_to_float(tm):
         tm = str(tm)
         tm = tm.split(':')
-        tm = tm[:2]
+        tm = tm[0:2]
         tm = '.'.join(tm)
         tm = eval(tm)
         tm = float(tm)
