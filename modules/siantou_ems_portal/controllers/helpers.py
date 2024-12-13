@@ -211,6 +211,7 @@ class Helpers:
     @staticmethod
     def paginate_calendar(items, page_size=10, page_number=1):
         keys = range(len(items.keys()))
+        keys = list(keys)
         pages_total = [keys[i:i+page_size] for i in range(0, len(keys), page_size)]
         start_index = (page_number - 1) * page_size
         end_index = start_index + page_size
