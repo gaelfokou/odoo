@@ -75,11 +75,7 @@
                                 </th>
                             </tr>
                         </thead>
-                        <thead>
-                            <tr>
-                                <th class="text-left" colspan="8" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
-                            </tr>
-                        </thead>
+                        <br/>
                         <thead>
                             <tr class="active">
                                 <th class="text-center">Heure</th>
