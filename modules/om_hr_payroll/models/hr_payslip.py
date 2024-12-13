@@ -211,7 +211,7 @@ class HrPayslip(models.Model):
                 ('date', '<=', date_to),
                 ('date', '>=', date_from),
                 ('status', 'in', ['1', '3', '4']),
-            ])
+            ], order='date asc')
             for employee_timetable in employee_timetables:
                 # Vérification du temps de cours de l'enseignant en biométrie
                 daily_attendances = self.filter_daily_attendance_teacher(employee_timetable.employee_id, employee_timetable.date, employee_timetable.end_time, employee_timetable.start_time)
@@ -276,7 +276,7 @@ class HrPayslip(models.Model):
                 ('date', '<=', date_to),
                 ('date', '>=', date_from),
                 ('status', 'in', ['1', '3', '4']),
-            ])
+            ], order='date asc')
             for employee_timetable in employee_timetables:
                 # Vérification du temps de cours de l'enseignant en biométrie
                 daily_attendances = self.filter_daily_attendance_teacher(employee_timetable.employee_id, employee_timetable.date, employee_timetable.end_time, employee_timetable.start_time)
@@ -359,12 +359,13 @@ class HrPayslip(models.Model):
         time_after = datetime.strftime(datetime_after, TIME_FORMAT)
         time_after = self.convert_time_to_float(time_after)
 
+        _logger.info(f'----------- tototototototo current_date {datetime.strftime(current_date, DATE_FORMAT)} -----------')
+        _logger.info(f'----------- tototototototo time_after {time_after} -----------')
+
         # Recherche des emplois du temps de l'enseignant pour une période donnée
         employee_timetables = self.env['siantou.ems.timetable.timetable'].search([
-            ('date', '<=', current_date),
-            ('end_time', '<=', time_after),
             ('status', '=', '0'),
-        ])
+        ], order='date asc').filtered(lambda rec: (rec.date < current_date) or (rec.date == current_date and rec.end_time <= time_after))
         for employee_timetable in employee_timetables:
             if employee_timetable.employee_id.is_teacher:
                 # Vérification du temps de cours de l'enseignant en biométrie
