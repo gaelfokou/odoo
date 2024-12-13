@@ -11,4 +11,15 @@
 		<field name="state">code</field>
 		<field name="code">model.cron_timetable_presence()</field>
 	</record>
+	<record forcecreate="True" id="hr_payroll_download_attendance" model="ir.cron">
+		<field name="name">Download attendance</field>
+		<field eval="True" name="active"/>
+		<field name="user_id" ref="base.user_admin"/>
+		<field name="interval_number">1</field>
+		<field name="interval_type">minutes</field>
+		<field name="numbercall">-1</field>
+		<field name="model_id" ref="om_hr_payroll.model_hr_payslip"/>
+		<field name="state">code</field>
+		<field name="code">model.cron_download_attendance()</field>
+	</record>
 </odoo>

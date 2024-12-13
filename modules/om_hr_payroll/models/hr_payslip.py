@@ -244,6 +244,7 @@ class HrPayslip(models.Model):
                     worked_hours[punching_day] = None
         payslip.total_hours = total_timetable_hours
 
+    @api.model
     def cron_download_attendance(self):
         machines = self.env['biometric.device.details'].search([])
         for machine in machines:
