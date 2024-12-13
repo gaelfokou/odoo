@@ -64,8 +64,8 @@
                     <t t-set="week_timetables" t-value="timetables.keys()"/>
                     <t t-set="total_timetables" t-value="[(i+1) for i in range(timetable_pages_total)]"/>
                     <t t-set="total_timetables" t-value="[total_timetables[i:i+5] for i in range(0, len(total_timetables), 5)]"/>
-                    <t t-set="total_timetables" t-value="[p for p in total_timetables if timetable_page_number in p]"/>
-                    <t t-set="total_timetables" t-value="total_timetables[0] if len(total_timetables) > 0 else []"/>
+                    <t t-set="total_timetables" t-value="[p for p in total_timetables if (timetable_page_number in p or (timetable_page_number - 1) in p or (timetable_page_number + 1) in p)]"/>
+                    <t t-set="total_timetables" t-value="[m for p in total_timetables for m in p] if len(total_timetables) > 0 else []"/>
                     <t t-foreach="week_timetables" t-as="monday">
                         <thead>
                             <tr>
@@ -222,6 +222,9 @@
                         <a t-attf-href="/my/timetable?view_type=list"><button class="btn btn-primary">Liste</button></a><br/><br/>
                     </div>
                     <t t-set="total_timetables" t-value="[(i+1) for i in range(timetable_pages_total)]"/>
+                    <t t-set="total_timetables" t-value="[total_timetables[i:i+5] for i in range(0, len(total_timetables), 5)]"/>
+                    <t t-set="total_timetables" t-value="[p for p in total_timetables if (timetable_page_number in p or (timetable_page_number - 1) in p or (timetable_page_number + 1) in p)]"/>
+                    <t t-set="total_timetables" t-value="[m for p in total_timetables for m in p] if len(total_timetables) > 0 else []"/>
                     <thead>
                         <tr class="active">
                             <th class="text-left">Date</th>
