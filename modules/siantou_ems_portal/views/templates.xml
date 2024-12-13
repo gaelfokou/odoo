@@ -63,6 +63,9 @@
                     <t t-set="hour_timetables" t-value="[0, 1, 2, 3, 4]"/>
                     <t t-set="week_timetables" t-value="timetables.keys()"/>
                     <t t-set="total_timetables" t-value="[(i+1) for i in range(timetable_pages_total)]"/>
+                    <t t-set="total_timetables" t-value="[total_timetables[i:i+5] for i in range(0, len(total_timetables), 5)]"/>
+                    <t t-set="total_timetables" t-value="[p for p in total_timetables if timetable_page_number in p]"/>
+                    <t t-set="total_timetables" t-value="total_timetables[0] if len(total_timetables) > 0 else []"/>
                     <t t-foreach="week_timetables" t-as="monday">
                         <thead>
                             <tr>
