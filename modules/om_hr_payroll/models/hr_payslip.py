@@ -13,6 +13,7 @@ DATE_FORMAT = '%Y-%m-%d'
 DATE_FORMAT_FR = '%d/%m/%Y'
 DATETIME_FORMAT = '%Y-%m-%d %H:%M:%S'
 DATETIME_FORMAT_FR = '%d/%m/%Y %H:%M:%S'
+TIME_FORMAT = '%H:%M'
 
 CURRENT_WEEKDAY = {
     0: 'Lundi',
@@ -106,6 +107,15 @@ class HrPayslip(models.Model):
             tm[1] = '{}0'.format(tm[1])
         tm = ':'.join(tm)
         tm = '{}:00'.format(tm)
+        return tm
+
+    def convert_time_to_float(tm):
+        tm = str(tm)
+        tm = tm.split(':')
+        tm = tm[:2]
+        tm = '.'.join(tm)
+        tm = eval(tm)
+        tm = float(tm)
         return tm
 
     def filter_daily_attendance(self, employee, end_date, start_date):
@@ -342,11 +352,17 @@ class HrPayslip(models.Model):
     def cron_timetable_presence(self):
         # self.cron_download_attendance()
 
-        date_to = date.today()
+        datetime_to = datetime.now()
+        current_date = datetime_to.date()
+
+        datetime_after = datetime_to + timedelta(minutes=15)
+        time_after = datetime.strftime(datetime_after, TIME_FORMAT)
+        time_after = self.convert_time_to_float(time_after)
 
         # Recherche des emplois du temps de l'enseignant pour une période donnée
         employee_timetables = self.env['siantou.ems.timetable.timetable'].search([
-            ('date', '<=', date_to),
+            ('date', '<=', current_date),
+            ('end_time', '<=', time_after),
             ('status', '=', '0'),
         ])
         for employee_timetable in employee_timetables:

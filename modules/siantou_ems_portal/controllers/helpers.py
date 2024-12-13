@@ -13,6 +13,7 @@ DATE_FORMAT = '%Y-%m-%d'
 DATE_FORMAT_FR = '%d/%m/%Y'
 DATETIME_FORMAT = '%Y-%m-%d %H:%M:%S'
 DATETIME_FORMAT_FR = '%d/%m/%Y %H:%M:%S'
+TIME_FORMAT = '%H:%M'
 
 CURRENT_HOUR = [
     '8.0-10.0',
@@ -183,7 +184,7 @@ class Helpers:
                         else:
                             timetables[monday][key][i] = [d for d in data if d['id'] == int(v)][0]
 
-            monday = datetime.strptime(f'{monday}', DATE_FORMAT)
+            monday = datetime.strptime(f'{monday}', DATE_FORMAT).date()
             sunday = monday + timedelta(days=6)
             monday_fr = datetime.strftime(monday, DATE_FORMAT_FR)
             sunday_fr = datetime.strftime(sunday, DATE_FORMAT_FR)
