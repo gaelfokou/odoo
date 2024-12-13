@@ -69,10 +69,15 @@
                     <t t-foreach="week_timetables" t-as="monday">
                         <thead>
                             <tr>
-                                <th class="text-center" colspan="8" style="box-shadow: inset 0 0 0 9999px transparent;">
+                                <th class="text-center" colspan="8" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;">
                                     <span t-esc="'Période :'"/>
                                     <span t-esc="monday"/>
                                 </th>
+                            </tr>
+                        </thead>
+                        <thead>
+                            <tr>
+                                <th class="text-left" colspan="8" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
                             </tr>
                         </thead>
                         <thead>
@@ -175,7 +180,7 @@
                         </tbody>
                         <tfooter>
                             <tr>
-                                <th class="text-left" colspan="8" style="box-shadow: inset 0 0 0 9999px transparent;"><br/></th>
+                                <th class="text-left" colspan="8" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
                             </tr>
                         </tfooter>
                         <tbody>
@@ -200,7 +205,7 @@
                         </tbody>
                         <tfooter>
                             <tr>
-                                <th class="text-left" colspan="8" style="box-shadow: inset 0 0 0 9999px transparent;"><br/></th>
+                                <th class="text-left" colspan="8" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
                             </tr>
                         </tfooter>
                     </t>
@@ -277,7 +282,7 @@
                     </tbody>
                     <tfooter>
                         <tr>
-                            <th class="text-left" colspan="10" style="box-shadow: inset 0 0 0 9999px transparent;"><br/></th>
+                            <th class="text-left" colspan="10" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
                         </tr>
                     </tfooter>
                     <tbody>
@@ -302,7 +307,7 @@
                     </tbody>
                     <tfooter>
                         <tr>
-                            <th class="text-left" colspan="10" style="box-shadow: inset 0 0 0 9999px transparent;"><br/></th>
+                            <th class="text-left" colspan="10" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
                         </tr>
                     </tfooter>
                 </t>
@@ -386,7 +391,7 @@
                     </tbody>
                     <tfooter>
                         <tr>
-                            <th class="text-left" colspan="8" style="box-shadow: inset 0 0 0 9999px transparent;"><br/></th>
+                            <th class="text-left" colspan="8" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
                         </tr>
                         <tr>
                             <th class="text-left" colspan="1">Total net à payer</th>
@@ -482,7 +487,7 @@
                     </tbody>
                     <tfooter>
                         <tr>
-                            <th class="text-left" colspan="8" style="box-shadow: inset 0 0 0 9999px transparent;"><br/></th>
+                            <th class="text-left" colspan="8" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
                         </tr>
                         <tr>
                             <th class="text-left" colspan="1">Total montant payé</th>
