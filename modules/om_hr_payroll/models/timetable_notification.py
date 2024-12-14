@@ -41,7 +41,5 @@ class TimetableNotification(models.Model):
         ])
         for timetable_notification in timetable_notifications:
             template = self.env.ref(timetable_notification.template)
-            _logger.info(f'----------- tototototototo timetable_notification template {timetable_notification.template} -----------')
-            _logger.info(f'----------- tototototototo timetable_notification timetable_id {timetable_notification.timetable_id} -----------')
             template.send_mail(timetable_notification.id, force_send=True)
             timetable_notification.sudo().write({'status': '1'})

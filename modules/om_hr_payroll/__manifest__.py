@@ -13,6 +13,7 @@
         'mail',
         'hr_contract',
         'hr_holidays',
+        'siantou_ems_core',
     ],
     'data': [
         'security/hr_payroll_security.xml',
