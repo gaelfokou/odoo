@@ -15,7 +15,6 @@ _logger = logging.getLogger(__name__)
 class TimetableNotification(models.Model):
     _name = 'siantou.ems.timetable.notification'
     _description = 'Timetable notification'
-    _inherit = ['mail.thread', 'mail.activity.mixin']
 
     template = fields.Char(string='Template')
     timetable_id = fields.Many2one('siantou.ems.timetable.timetable', string='Emplois du temps')
