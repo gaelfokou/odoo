@@ -2,9 +2,9 @@
 <odoo>
     <data>
         <!--Template to send demo mail template for the customer-->
-        <record id="hr_payroll_timetable_notification_template" model="mail.template">
+        <record id="om_hr_payroll_template_timetable_notification" model="mail.template">
             <field name="name">Email Template For Blog</field>
-            <field name="model_id" ref="om_hr_payroll.model_hr_timetable_notification"/>
+            <field name="model_id" ref="om_hr_payroll.model_siantou_ems_timetable_notification"/>
             <field name="email_from">{{ user.email }}</field>
             <field name="email_to">{{ object.timetable_id.employee_id.work_email }}</field>
             <field name="subject">Mail Template: Demo Mail</field>

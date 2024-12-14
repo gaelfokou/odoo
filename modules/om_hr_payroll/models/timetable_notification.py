@@ -12,15 +12,14 @@ import logging
 _logger = logging.getLogger(__name__)
 
 
-class HrTimetableNotification(models.Model):
-    _name = 'hr.timetable.notification'
+class TimetableNotification(models.Model):
+    _name = 'siantou.ems.timetable.notification'
     _description = 'Timetable notification'
     _inherit = ['mail.thread', 'mail.activity.mixin']
 
     template = fields.Char(string='Template')
     timetable_id = fields.Many2one('siantou.ems.timetable.timetable', string='Emplois du temps')
-    date = fields.Date(string='Date',
-        default=lambda r: date.today(),)
+    date = fields.Date(string='Date', default=lambda r: date.today(),)
 
     status = fields.Selection([
         ('0', 'En attente'),
@@ -38,13 +37,12 @@ class HrTimetableNotification(models.Model):
 
     @api.model
     def cron_timetable_notification(self):
-        timetable_notifications = self.env['hr.timetable.notification'].search([
+        timetable_notifications = self.env['siantou.ems.timetable.notification'].search([
             ('status', '=', '0'),
         ])
         for timetable_notification in timetable_notifications:
             template = self.env.ref(timetable_notification.template)
-            context = {
-                'id': timetable_notification.id
-            }
-            template.sudo().with_context(context).send_mail(timetable_notification.id, force_send=True)
+            _logger.info(f'----------- tototototototo timetable_notification template {timetable_notification.template} -----------')
+            _logger.info(f'----------- tototototototo timetable_notification timetable_id {timetable_notification.timetable_id} -----------')
+            template.send_mail(timetable_notification.id, force_send=True)
             timetable_notification.sudo().write({'status': '1'})

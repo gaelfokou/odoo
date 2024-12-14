@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<odoo noupdate="1">
+	<record forcecreate="True" id="om_hr_payroll_cron_timetable_notification" model="ir.cron">
+		<field name="name">Timetable notification</field>
+		<field eval="True" name="active"/>
+		<field name="user_id" ref="base.user_admin"/>
+		<field name="interval_number">1</field>
+		<field name="interval_type">minutes</field>
+		<field name="numbercall">-1</field>
+		<field name="model_id" ref="om_hr_payroll.model_siantou_ems_timetable_notification"/>
+		<field name="state">code</field>
+		<field name="code">model.cron_timetable_notification()</field>
+	</record>
+</odoo>
