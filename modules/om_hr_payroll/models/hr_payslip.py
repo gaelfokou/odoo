@@ -374,7 +374,7 @@ class HrPayslip(models.Model):
                 if len(daily_attendances) > 1:
                     employee_timetable.sudo().write({'status': '1'})
                 else:
-                    template = 'om_hr_payroll.om_hr_payroll_template_timetable_notification'
+                    template = 'om_hr_payroll.om_hr_payroll_template_timetable_notification_absence'
                     timetable_notifications = self.env['siantou.ems.timetable.notification'].search([
                         ('template', '=', template),
                         ('timetable_id', '=', employee_timetable.id),
@@ -389,6 +389,20 @@ class HrPayslip(models.Model):
                     employee_timetable.sudo().write({'status': '2'})
                 # if employee_timetable.employee_id.is_permanent:
                 #     pass
+
+    @api.model
+    def cron_timetable_exception(self):
+        # self.cron_download_attendance()
+
+        datetime_to = datetime.now()
+        current_date = datetime_to.date()
+
+        datetime_after = datetime_to + timedelta(minutes=15)
+        time_after = datetime.strftime(datetime_after, TIME_FORMAT)
+        time_after = self.convert_time_to_float(time_after)
+
+        _logger.info(f'----------- tototototototo current_date {datetime.strftime(current_date, DATE_FORMAT)} -----------')
+        _logger.info(f'----------- tototototototo time_after {time_after} -----------')
 
     @api.depends('employee_id', 'date_to', 'date_from')
     def _compute_total_hours(self):
