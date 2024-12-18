@@ -118,7 +118,7 @@ class HrPayslip(models.Model):
         tm = float(tm)
         return tm
 
-    def filter_daily_attendance(self, employee, end_date, start_date):
+    def filter_daily_attendance(self, end_date, start_date, employee=None):
         # Filtre des données biométriques de l'enseignant pour une période donnée
         end_date = datetime.strftime(end_date, DATE_FORMAT)
         start_date = datetime.strftime(start_date, DATE_FORMAT)
@@ -155,7 +155,7 @@ class HrPayslip(models.Model):
 
         return daily_attendances
 
-    def filter_daily_attendance_teacher(self, employee, current_date, end_time, start_time):
+    def filter_daily_attendance_teacher(self, current_date, end_time, start_time, employee=None):
         # Filtre des données biométriques de l'enseignant pour une période donnée
         current_date = datetime.strftime(current_date, DATE_FORMAT)
 
@@ -217,7 +217,7 @@ class HrPayslip(models.Model):
             employee_timetables = list(employee_timetables)
             for employee_timetable in employee_timetables:
                 # Vérification du temps de cours de l'enseignant en biométrie
-                daily_attendances = self.filter_daily_attendance_teacher(employee_timetable.employee_id, employee_timetable.date, employee_timetable.end_time, employee_timetable.start_time)
+                daily_attendances = self.filter_daily_attendance_teacher(employee_timetable.date, employee_timetable.end_time, employee_timetable.start_time, employee_timetable.employee_id)
                 if employee_timetable.status in ['3']:
                     timetable_hours = employee_timetable.end_time - employee_timetable.start_time
                     total_timetable_hours += timetable_hours
@@ -230,7 +230,7 @@ class HrPayslip(models.Model):
             #     pass
         else:
             # Vérification du temps de l'employé en biométrie
-            daily_attendances = self.filter_daily_attendance(payslip.employee_id, date_to, date_from)
+            daily_attendances = self.filter_daily_attendance(date_to, date_from, payslip.employee_id)
             worked_hours = {}
             for daily_attendance in daily_attendances:
                 punching_day = datetime.strftime(daily_attendance.punching_time, DATE_FORMAT)
@@ -284,7 +284,7 @@ class HrPayslip(models.Model):
             employee_timetables = list(employee_timetables)
             for employee_timetable in employee_timetables:
                 # Vérification du temps de cours de l'enseignant en biométrie
-                daily_attendances = self.filter_daily_attendance_teacher(employee_timetable.employee_id, employee_timetable.date, employee_timetable.end_time, employee_timetable.start_time)
+                daily_attendances = self.filter_daily_attendance_teacher(employee_timetable.date, employee_timetable.end_time, employee_timetable.start_time, employee_timetable.employee_id)
                 if employee_timetable.status in ['3']:
                     end_time = self.convert_float_to_time(employee_timetable.end_time)
                     start_time = self.convert_float_to_time(employee_timetable.start_time)
@@ -320,7 +320,7 @@ class HrPayslip(models.Model):
             #     pass
         else:
             # Vérification du temps de l'employé en biométrie
-            daily_attendances = self.filter_daily_attendance(payslip_id.employee_id, date_to, date_from)
+            daily_attendances = self.filter_daily_attendance(date_to, date_from, payslip_id.employee_id)
             worked_hours = {}
             punching_time = None
             for daily_attendance in daily_attendances:
@@ -372,7 +372,7 @@ class HrPayslip(models.Model):
         for employee_timetable in employee_timetables:
             if employee_timetable.employee_id.is_teacher:
                 # Vérification du temps de cours de l'enseignant en biométrie
-                daily_attendances = self.filter_daily_attendance_teacher(employee_timetable.employee_id, employee_timetable.date, employee_timetable.end_time, employee_timetable.start_time)
+                daily_attendances = self.filter_daily_attendance_teacher(employee_timetable.date, employee_timetable.end_time, employee_timetable.start_time, employee_timetable.employee_id)
                 if len(daily_attendances) == 1:
                     employee_timetable.sudo().write({'status': '4'})
                 elif len(daily_attendances) > 1:
@@ -432,7 +432,7 @@ class HrPayslip(models.Model):
                 for employee_timetable in employee_timetables:
                     if employee_timetable.employee_id.is_teacher:
                         # Vérification du temps de cours de l'enseignant en biométrie
-                        attendances = self.filter_daily_attendance_teacher(employee_timetable.employee_id, employee_timetable.date, employee_timetable.end_time, employee_timetable.start_time)
+                        attendances = self.filter_daily_attendance_teacher(employee_timetable.date, employee_timetable.end_time, employee_timetable.start_time, employee_timetable.employee_id)
                         attendances = list(attendances)
                         if len(attendances) > 0:
                             pass
