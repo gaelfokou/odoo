@@ -9,6 +9,8 @@ from odoo.exceptions import UserError, ValidationError
 import pytz
 import logging
 
+UTC_TZ = pytz.utc
+
 DATE_FORMAT = '%Y-%m-%d'
 DATE_FORMAT_FR = '%d/%m/%Y'
 DATETIME_FORMAT = '%Y-%m-%d %H:%M:%S'
@@ -149,9 +151,7 @@ class HrPayslip(models.Model):
         #     ('punching_time', '<=', datetime_after),
         # ], order='punching_time asc')
 
-        utc_tz = pytz.utc
-
-        daily_attendances = self.env['daily.attendance'].search(domain, order='punching_time asc').filtered(lambda rec: utc_tz.localize(rec.punching_time) >= datetime_before and utc_tz.localize(rec.punching_time) <= datetime_after)
+        daily_attendances = self.env['daily.attendance'].search(domain, order='punching_time asc').filtered(lambda rec: UTC_TZ.localize(rec.punching_time) >= datetime_before and UTC_TZ.localize(rec.punching_time) <= datetime_after)
         daily_attendances = list(daily_attendances)
 
         return daily_attendances
@@ -188,9 +188,7 @@ class HrPayslip(models.Model):
         #     ('punching_time', '<=', datetime_after),
         # ], order='punching_time asc')
 
-        utc_tz = pytz.utc
-
-        daily_attendances = self.env['daily.attendance'].search(domain, order='punching_time asc').filtered(lambda rec: (utc_tz.localize(rec.punching_time) >= datetime_before and utc_tz.localize(rec.punching_time) <= datetime_from) or (utc_tz.localize(rec.punching_time) >= datetime_to and utc_tz.localize(rec.punching_time) <= datetime_after))
+        daily_attendances = self.env['daily.attendance'].search(domain, order='punching_time asc').filtered(lambda rec: (UTC_TZ.localize(rec.punching_time) >= datetime_before and UTC_TZ.localize(rec.punching_time) <= datetime_from) or (UTC_TZ.localize(rec.punching_time) >= datetime_to and UTC_TZ.localize(rec.punching_time) <= datetime_after))
         daily_attendances = list(daily_attendances)
 
         return daily_attendances
@@ -235,15 +233,15 @@ class HrPayslip(models.Model):
             daily_attendances = self.filter_daily_attendance(date_to, date_from, payslip.employee_id)
             worked_hours = {}
             for daily_attendance in daily_attendances:
-                punching_day = datetime.strftime(daily_attendance.punching_time, DATE_FORMAT)
+                punching_day = datetime.strftime(UTC_TZ.localize(daily_attendance.punching_time), DATE_FORMAT)
 
                 if punching_day not in worked_hours.keys():
                     worked_hours[punching_day] = None
 
                 if not worked_hours[punching_day]:
-                    worked_hours[punching_day] = daily_attendance.punching_time
+                    worked_hours[punching_day] = UTC_TZ.localize(daily_attendance.punching_time)
                 else:
-                    worked_hours[punching_day] = daily_attendance.punching_time - worked_hours[punching_day]
+                    worked_hours[punching_day] = UTC_TZ.localize(daily_attendance.punching_time) - worked_hours[punching_day]
                     worked_hours[punching_day] = worked_hours[punching_day].total_seconds() / 3600.0
                     total_timetable_hours += worked_hours[punching_day]
                     worked_hours[punching_day] = None
@@ -326,17 +324,17 @@ class HrPayslip(models.Model):
             worked_hours = {}
             punching_time = None
             for daily_attendance in daily_attendances:
-                punching_day = datetime.strftime(daily_attendance.punching_time, DATE_FORMAT)
+                punching_day = datetime.strftime(UTC_TZ.localize(daily_attendance.punching_time), DATE_FORMAT)
 
                 if punching_day not in worked_hours.keys():
                     worked_hours[punching_day] = None
                     punching_time = None
 
                 if not worked_hours[punching_day]:
-                    worked_hours[punching_day] = daily_attendance.punching_time
-                    punching_time = daily_attendance.punching_time
+                    worked_hours[punching_day] = UTC_TZ.localize(daily_attendance.punching_time)
+                    punching_time = UTC_TZ.localize(daily_attendance.punching_time)
                 else:
-                    worked_hours[punching_day] = daily_attendance.punching_time - worked_hours[punching_day]
+                    worked_hours[punching_day] = UTC_TZ.localize(daily_attendance.punching_time) - worked_hours[punching_day]
                     worked_hours[punching_day] = worked_hours[punching_day].total_seconds() / 3600.0
                     self.env['hr.payslip.worked_days'].create({
                         'name': 'Journée du {} {}'.format(CURRENT_WEEKDAY[punching_time.weekday()], datetime.strftime(self.convert_datetime_from_utc(punching_time), DATETIME_FORMAT_FR)),
@@ -407,38 +405,33 @@ class HrPayslip(models.Model):
 
         datetime_before = datetime_from - timedelta(minutes=15)
 
-        time_before = datetime.strftime(datetime_before, TIME_FORMAT)
-        time_before = self.convert_time_to_float(time_before)
-        time_from = datetime.strftime(datetime_from, TIME_FORMAT)
-        time_from = self.convert_time_to_float(time_from)
-
         _logger.info(f'----------- tototototototo datetime_from {datetime.strftime(datetime_from, DATETIME_FORMAT)} -----------')
         _logger.info(f'----------- tototototototo datetime_before {datetime.strftime(datetime_before, DATETIME_FORMAT)} -----------')
-        _logger.info(f'----------- tototototototo time_before {time_before} -----------')
 
         datetime_before = self.convert_datetime_to_utc(datetime_before)
         datetime_from = self.convert_datetime_to_utc(datetime_from)
 
-        utc_tz = pytz.utc
-
         daily_attendances = self.env['daily.attendance'].search([
-        ], order='punching_time asc').filtered(lambda rec: utc_tz.localize(rec.punching_time) >= datetime_before and utc_tz.localize(rec.punching_time) <= datetime_from)
+        ], order='punching_time asc').filtered(lambda rec: UTC_TZ.localize(rec.punching_time) >= datetime_before and UTC_TZ.localize(rec.punching_time) <= datetime_from)
         daily_attendances = list(daily_attendances)
         for daily_attendance in daily_attendances:
+            datetime_from = UTC_TZ.localize(daily_attendance.punching_time)
+            datetime_from = self.convert_datetime_from_utc(datetime_from)
+
+            datetime_before = datetime_from - timedelta(minutes=15)
+
+            time_before = datetime.strftime(datetime_before, TIME_FORMAT)
+            time_before = self.convert_time_to_float(time_before)
+            time_from = datetime.strftime(datetime_from, TIME_FORMAT)
+            time_from = self.convert_time_to_float(time_from)
+
             if daily_attendance.employee_id.is_teacher:
                 employee_timetables = self.env['siantou.ems.timetable.timetable'].search([
                     ('employee_id', '=', daily_attendance.employee_id.id),
                     ('status', '=', '0'),
                 ], order='date asc').filtered(lambda rec: rec.date == current_date)
                 employee_timetables = list(employee_timetables)
-                attendances = []
-                for employee_timetable in employee_timetables:
-                    # Vérification du temps de cours de l'enseignant en biométrie
-                    daily_attendance_teachers = self.filter_daily_attendance_teacher(employee_timetable.date, employee_timetable.end_time, employee_timetable.start_time, employee_timetable.employee_id)
-                    attendances += list(daily_attendance_teachers)
-                if len(attendances) > 0:
-                    pass
-                else:
+                if len(employee_timetables) == 0:
                     template = 'om_hr_payroll.om_hr_payroll_template_timetable_notification_exception'
                     timetable_notifications = self.env['siantou.ems.timetable.notification'].search([
                         ('template', '=', template),
