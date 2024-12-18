@@ -394,15 +394,15 @@ class HrPayslip(models.Model):
     def cron_timetable_exception(self):
         # self.cron_download_attendance()
 
-        datetime_to = datetime.now()
-        current_date = datetime_to.date()
+        datetime_from = datetime.now()
+        current_date = datetime_from.date()
 
-        datetime_after = datetime_to + timedelta(minutes=15)
-        time_after = datetime.strftime(datetime_after, TIME_FORMAT)
-        time_after = self.convert_time_to_float(time_after)
+        datetime_before = datetime_from - timedelta(minutes=15)
+        time_before = datetime.strftime(datetime_before, TIME_FORMAT)
+        time_before = self.convert_time_to_float(time_before)
 
         _logger.info(f'----------- tototototototo current_date {datetime.strftime(current_date, DATE_FORMAT)} -----------')
-        _logger.info(f'----------- tototototototo time_after {time_after} -----------')
+        _logger.info(f'----------- tototototototo time_before {time_before} -----------')
 
     @api.depends('employee_id', 'date_to', 'date_from')
     def _compute_total_hours(self):
