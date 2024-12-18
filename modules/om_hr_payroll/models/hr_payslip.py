@@ -382,7 +382,6 @@ class HrPayslip(models.Model):
                     timetable_notifications = self.env['siantou.ems.timetable.notification'].search([
                         ('template', '=', template),
                         ('timetable_id', '=', employee_timetable.id),
-                        ('employee_id', '=', employee_timetable.employee_id.id),
                         ('status', '=', '0'),
                     ])
                     timetable_notifications = list(timetable_notifications)
@@ -390,7 +389,6 @@ class HrPayslip(models.Model):
                         self.env['siantou.ems.timetable.notification'].sudo().create({
                             'template': template,
                             'timetable_id': employee_timetable.id,
-                            'employee_id': employee_timetable.employee_id.id,
                         })
                     employee_timetable.sudo().write({'status': '2'})
                 # if employee_timetable.employee_id.is_permanent:
@@ -435,14 +433,14 @@ class HrPayslip(models.Model):
                     template = 'om_hr_payroll.om_hr_payroll_template_timetable_notification_exception'
                     timetable_notifications = self.env['siantou.ems.timetable.notification'].search([
                         ('template', '=', template),
-                        ('employee_id', '=', daily_attendance.employee_id.id),
+                        ('attendance_id', '=', daily_attendance.id),
                         ('status', '=', '0'),
                     ])
                     timetable_notifications = list(timetable_notifications)
                     if len(timetable_notifications) == 0:
                         self.env['siantou.ems.timetable.notification'].sudo().create({
                             'template': template,
-                            'employee_id': daily_attendance.employee_id.id,
+                            'attendance_id': daily_attendance.id,
                         })
 
     @api.depends('employee_id', 'date_to', 'date_from')

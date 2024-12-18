@@ -18,7 +18,7 @@ class TimetableNotification(models.Model):
 
     template = fields.Char(string='Template')
     timetable_id = fields.Many2one('siantou.ems.timetable.timetable', string='Emplois du temps')
-    employee_id = fields.Many2one('hr.employee', string='Employee')
+    attendance_id = fields.Many2one('daily.attendance', string='Daily attendance')
     date = fields.Date(string='Date', default=lambda r: date.today(),)
 
     status = fields.Selection([
