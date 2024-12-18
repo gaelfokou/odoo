@@ -92,7 +92,6 @@ class Helpers:
             search_schoolfees = schoolfees
 
             search_domain = []
-
             search_domain.append(('student_id', '=', student.student_enroll_id.id))
 
             schoolfees = http.request.env['education.fee.payment.enrollment'].sudo().search(search_domain, order=order)

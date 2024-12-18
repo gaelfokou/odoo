@@ -140,17 +140,18 @@ class HrPayslip(models.Model):
         datetime_after = self.convert_datetime_to_utc(datetime_after)
         datetime_to = self.convert_datetime_to_utc(datetime_to)
 
-        # daily_attendances = self.env['daily.attendance'].search([
-        #     ('employee_id', '=', employee.id),
+        domain = []
+        if employee:
+            domain.append(('employee_id', '=', employee.id))
+
+        # daily_attendances = self.env['daily.attendance'].search(domain + [
         #     ('punching_time', '>=', datetime_before),
         #     ('punching_time', '<=', datetime_after),
         # ], order='punching_time asc')
 
         utc_tz = pytz.utc
 
-        daily_attendances = self.env['daily.attendance'].search([
-            ('employee_id', '=', employee.id),
-        ], order='punching_time asc').filtered(lambda rec: utc_tz.localize(rec.punching_time) >= datetime_before and utc_tz.localize(rec.punching_time) <= datetime_after)
+        daily_attendances = self.env['daily.attendance'].search(domain, order='punching_time asc').filtered(lambda rec: utc_tz.localize(rec.punching_time) >= datetime_before and utc_tz.localize(rec.punching_time) <= datetime_after)
         daily_attendances = list(daily_attendances)
 
         return daily_attendances
@@ -176,8 +177,11 @@ class HrPayslip(models.Model):
         datetime_after = self.convert_datetime_to_utc(datetime_after)
         datetime_to = self.convert_datetime_to_utc(datetime_to)
 
-        # daily_attendances = self.env['daily.attendance'].search([
-        #     ('employee_id', '=', employee.id),
+        domain = []
+        if employee:
+            domain.append(('employee_id', '=', employee.id))
+
+        # daily_attendances = self.env['daily.attendance'].search(domain + [
         #     ('punching_time', '>=', datetime_before),
         #     ('punching_time', '<=', datetime_from),
         #     ('punching_time', '>=', datetime_to),
@@ -186,9 +190,7 @@ class HrPayslip(models.Model):
 
         utc_tz = pytz.utc
 
-        daily_attendances = self.env['daily.attendance'].search([
-            ('employee_id', '=', employee.id),
-        ], order='punching_time asc').filtered(lambda rec: (utc_tz.localize(rec.punching_time) >= datetime_before and utc_tz.localize(rec.punching_time) <= datetime_from) or (utc_tz.localize(rec.punching_time) >= datetime_to and utc_tz.localize(rec.punching_time) <= datetime_after))
+        daily_attendances = self.env['daily.attendance'].search(domain, order='punching_time asc').filtered(lambda rec: (utc_tz.localize(rec.punching_time) >= datetime_before and utc_tz.localize(rec.punching_time) <= datetime_from) or (utc_tz.localize(rec.punching_time) >= datetime_to and utc_tz.localize(rec.punching_time) <= datetime_after))
         daily_attendances = list(daily_attendances)
 
         return daily_attendances
