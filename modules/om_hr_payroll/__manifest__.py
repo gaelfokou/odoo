@@ -40,6 +40,7 @@
         'data/download_attendance.xml',
         'data/timetable_notification.xml',
         'data/timetable_notification_template.xml',
+        'data/timetable_exception.xml',
     ],
     'images': ['static/description/banner.png'],
     'application': True,
