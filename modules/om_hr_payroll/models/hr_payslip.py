@@ -431,26 +431,13 @@ class HrPayslip(models.Model):
                     ('status', '=', '0'),
                 ], order='date asc').filtered(lambda rec: rec.date == current_date)
                 employee_timetables = list(employee_timetables)
-                if len(employee_timetables) > 0:
-                    for employee_timetable in employee_timetables:
-                        # Vérification du temps de cours de l'enseignant en biométrie
-                        attendances = self.filter_daily_attendance_teacher(employee_timetable.date, employee_timetable.end_time, employee_timetable.start_time, employee_timetable.employee_id)
-                        attendances = list(attendances)
-                        if len(attendances) > 0:
-                            pass
-                        else:
-                            template = 'om_hr_payroll.om_hr_payroll_template_timetable_notification_exception'
-                            timetable_notifications = self.env['siantou.ems.timetable.notification'].search([
-                                ('template', '=', template),
-                                ('employee_id', '=', daily_attendance.employee_id.id),
-                                ('status', '=', '0'),
-                            ])
-                            timetable_notifications = list(timetable_notifications)
-                            if len(timetable_notifications) == 0:
-                                self.env['siantou.ems.timetable.notification'].sudo().create({
-                                    'template': template,
-                                    'employee_id': daily_attendance.employee_id.id,
-                                })
+                attendances = []
+                for employee_timetable in employee_timetables:
+                    # Vérification du temps de cours de l'enseignant en biométrie
+                    daily_attendance_teachers = self.filter_daily_attendance_teacher(employee_timetable.date, employee_timetable.end_time, employee_timetable.start_time, employee_timetable.employee_id)
+                    attendances += list(daily_attendance_teachers)
+                if len(attendances) > 0:
+                    pass
                 else:
                     template = 'om_hr_payroll.om_hr_payroll_template_timetable_notification_exception'
                     timetable_notifications = self.env['siantou.ems.timetable.notification'].search([
