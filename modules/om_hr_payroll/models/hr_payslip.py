@@ -414,16 +414,12 @@ class HrPayslip(models.Model):
         daily_attendances = list(daily_attendances)
         for daily_attendance in daily_attendances:
             punching_time = daily_attendance.punching_time
-            current_datetime = self.convert_datetime_from_utc(punching_time)
-
-            current_time = datetime.strftime(current_datetime, TIME_FORMAT)
-            current_time = self.convert_time_to_float(current_time)
 
             if daily_attendance.employee_id.is_teacher:
                 employee_timetables = self.env['siantou.ems.timetable.timetable'].search([
                     ('employee_id', '=', daily_attendance.employee_id.id),
                     ('status', '=', '0'),
-                ], order='date asc').filtered(lambda rec: (punching_time >= self.convert_datetime_to_utc(datetime.strptime(f'{rec.date} {current_time}', DATETIME_FORMAT) - timedelta(minutes=15)) and punching_time <= self.convert_datetime_to_utc(datetime.strptime(f'{rec.date} {current_time}', DATETIME_FORMAT))) or (punching_time >= self.convert_datetime_to_utc(datetime.strptime(f'{rec.date} {current_time}', DATETIME_FORMAT)) and punching_time <= self.convert_datetime_to_utc(datetime.strptime(f'{rec.date} {current_time}', DATETIME_FORMAT) + timedelta(minutes=15))))
+                ], order='date asc').filtered(lambda rec: (punching_time >= self.convert_datetime_to_utc(datetime.strptime(f'{rec.date} {self.convert_float_to_time(rec.start_time)}', DATETIME_FORMAT) - timedelta(minutes=15)) and punching_time <= self.convert_datetime_to_utc(datetime.strptime(f'{rec.date} {self.convert_float_to_time(rec.start_time)}', DATETIME_FORMAT) + timedelta(minutes=15))) or (punching_time >= self.convert_datetime_to_utc(datetime.strptime(f'{rec.date} {self.convert_float_to_time(rec.end_time)}', DATETIME_FORMAT)) and punching_time <= self.convert_datetime_to_utc(datetime.strptime(f'{rec.date} {self.convert_float_to_time(rec.end_time)}', DATETIME_FORMAT) + timedelta(minutes=15))))
                 employee_timetables = list(employee_timetables)
                 if len(employee_timetables) == 0:
                     template = 'om_hr_payroll.om_hr_payroll_template_timetable_notification_exception'
