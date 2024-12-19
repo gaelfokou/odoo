@@ -127,6 +127,30 @@ class Helpers:
         return search_paymenthistories, searchbar_inputs
 
     @staticmethod
+    def notification(search='', search_in='all'):
+        searchbar_inputs = {
+            'all': {'label': 'Tout', 'input': 'all', 'domain': []},
+        }
+        if search_in not in searchbar_inputs.keys():
+            search_in = 'all'
+        search_domain = searchbar_inputs[search_in]['domain']
+
+        order = 'date asc'
+
+        search_notifications = []
+        if http.request.env.user.employee_id.id:
+            user = http.request.env.user.employee_id
+            search_domain.append(('employee_id', '=', user.id))
+
+            notifications = http.request.env['siantou.ems.timetable.notification'].sudo().search(search_domain, order=order)
+            notifications = list(notifications)
+            search_notifications = notifications
+
+        _logger.info(f'----------- tototototototo search_notifications {search_notifications} -----------')
+
+        return search_notifications, searchbar_inputs
+
+    @staticmethod
     def format_timetable(data):
         timetables = {}
         df = {}

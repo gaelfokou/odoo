@@ -45,6 +45,7 @@ class PortalAccount(portal.CustomerPortal):
             values['portal_timetable'] = 1
             values['portal_schoolfee'] = 1 if is_user == 'is_student' else 0
             values['portal_paymenthistory'] = 1 if is_user == 'is_teacher' else 0
+            values['portal_notification'] = 1 if is_user == 'is_teacher' else 0
         return values
 
     @http.route(['/my/timetable', '/my/timetable/page/<int:page>'], type='http', auth="user", website=True)
