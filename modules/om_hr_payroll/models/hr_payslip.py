@@ -420,8 +420,14 @@ class HrPayslip(models.Model):
 
             datetime_before = datetime_from - timedelta(minutes=15)
 
+            datetime_after = datetime_from + timedelta(minutes=15)
+
             time_before = datetime.strftime(datetime_before, TIME_FORMAT)
             time_before = self.convert_time_to_float(time_before)
+
+            time_after = datetime.strftime(datetime_after, TIME_FORMAT)
+            time_after = self.convert_time_to_float(time_after)
+
             time_from = datetime.strftime(datetime_from, TIME_FORMAT)
             time_from = self.convert_time_to_float(time_from)
 
@@ -429,7 +435,7 @@ class HrPayslip(models.Model):
                 employee_timetables = self.env['siantou.ems.timetable.timetable'].search([
                     ('employee_id', '=', daily_attendance.employee_id.id),
                     ('status', '=', '0'),
-                ], order='date asc').filtered(lambda rec: rec.date == current_date)
+                ], order='date asc').filtered(lambda rec: (rec.date == current_date) and ((rec.start_time >= time_before and rec.start_time <= time_from) or (rec.end_time >= time_from and rec.end_time <= time_after)))
                 employee_timetables = list(employee_timetables)
                 if len(employee_timetables) == 0:
                     template = 'om_hr_payroll.om_hr_payroll_template_timetable_notification_exception'
