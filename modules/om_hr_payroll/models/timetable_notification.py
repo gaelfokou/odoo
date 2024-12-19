@@ -3,7 +3,6 @@
 import babel
 from datetime import date, datetime, timedelta, time
 from dateutil.relativedelta import relativedelta
-from pytz import timezone
 from odoo import api, fields, models, tools, _
 from odoo.exceptions import UserError, ValidationError
 import pytz

@@ -7,6 +7,7 @@ import numpy as np
 import re
 from datetime import date, datetime, timedelta, time
 from dateutil.relativedelta import relativedelta
+import pytz
 import logging
 
 DATE_FORMAT = '%Y-%m-%d'
@@ -221,7 +222,23 @@ class Helpers:
         return timetables
 
     @staticmethod
-    def convert_float_to_time(tm):
+    def convert_datetime_from_utc(dt):
+        new_tz = pytz.timezone('Africa/Douala')
+        old_tz = pytz.utc
+        local_dt = old_tz.localize(dt)
+        dt = local_dt.astimezone(new_tz)
+        return dt
+
+    @staticmethod
+    def convert_datetime_to_utc(dt):
+        old_tz = pytz.timezone('Africa/Douala')
+        new_tz = pytz.utc
+        local_dt = old_tz.localize(dt)
+        dt = local_dt.astimezone(new_tz)
+        return dt
+
+    @staticmethod
+    def convert_float_to_time(tm, has_second=False):
         tm = str(tm)
         tm = tm.split('.')
         if len(tm[0]) == 1:
@@ -229,6 +246,18 @@ class Helpers:
         if len(tm[1]) == 1:
             tm[1] = '{}0'.format(tm[1])
         tm = ':'.join(tm)
+        if has_second:
+            tm = '{}:00'.format(tm)
+        return tm
+
+    @staticmethod
+    def convert_time_to_float(tm):
+        tm = str(tm)
+        tm = tm.split(':')
+        tm = tm[0:2]
+        tm = '.'.join(tm)
+        tm = eval(tm)
+        tm = float(tm)
         return tm
 
     @staticmethod

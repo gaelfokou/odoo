@@ -3,7 +3,6 @@
 import babel
 from datetime import date, datetime, timedelta, time
 from dateutil.relativedelta import relativedelta
-from pytz import timezone
 from odoo import api, fields, models, tools, _
 from odoo.exceptions import UserError, ValidationError
 import pytz
@@ -578,7 +577,7 @@ class HrPayslip(models.Model):
             # compute leave days
             leaves = {}
             calendar = contract.resource_calendar_id
-            tz = timezone(calendar.tz)
+            tz = pytz.timezone(calendar.tz)
             day_leave_intervals = contract.employee_id.list_leaves(day_from, day_to, calendar=contract.resource_calendar_id)
             for day, hours, leave in day_leave_intervals:
                 holiday = leave.holiday_id
