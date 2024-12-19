@@ -382,7 +382,7 @@ class HrPayslip(models.Model):
                         ('template', '=', template),
                         ('timetable_id', '=', employee_timetable.id),
                         ('employee_id', '=', employee_timetable.employee_id.id),
-                        ('status', '=', '0'),
+                        # ('status', '=', '0'),
                     ])
                     timetable_notifications = list(timetable_notifications)
                     if len(timetable_notifications) == 0:
@@ -427,7 +427,7 @@ class HrPayslip(models.Model):
                         ('template', '=', template),
                         ('attendance_id', '=', daily_attendance.id),
                         ('employee_id', '=', daily_attendance.employee_id.id),
-                        ('status', '=', '0'),
+                        # ('status', '=', '0'),
                     ])
                     timetable_notifications = list(timetable_notifications)
                     if len(timetable_notifications) == 0:
