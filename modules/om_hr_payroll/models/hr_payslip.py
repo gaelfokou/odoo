@@ -233,15 +233,15 @@ class HrPayslip(models.Model):
             daily_attendances = self.filter_daily_attendance(date_to, date_from, payslip.employee_id)
             worked_hours = {}
             for daily_attendance in daily_attendances:
-                punching_day = datetime.strftime(UTC_TZ.localize(daily_attendance.punching_time), DATE_FORMAT)
+                punching_day = datetime.strftime(daily_attendance.punching_time, DATE_FORMAT)
 
                 if punching_day not in worked_hours.keys():
                     worked_hours[punching_day] = None
 
                 if not worked_hours[punching_day]:
-                    worked_hours[punching_day] = UTC_TZ.localize(daily_attendance.punching_time)
+                    worked_hours[punching_day] = daily_attendance.punching_time
                 else:
-                    worked_hours[punching_day] = UTC_TZ.localize(daily_attendance.punching_time) - worked_hours[punching_day]
+                    worked_hours[punching_day] = daily_attendance.punching_time - worked_hours[punching_day]
                     worked_hours[punching_day] = worked_hours[punching_day].total_seconds() / 3600.0
                     total_timetable_hours += worked_hours[punching_day]
                     worked_hours[punching_day] = None
@@ -324,17 +324,17 @@ class HrPayslip(models.Model):
             worked_hours = {}
             punching_time = None
             for daily_attendance in daily_attendances:
-                punching_day = datetime.strftime(UTC_TZ.localize(daily_attendance.punching_time), DATE_FORMAT)
+                punching_day = datetime.strftime(daily_attendance.punching_time, DATE_FORMAT)
 
                 if punching_day not in worked_hours.keys():
                     worked_hours[punching_day] = None
                     punching_time = None
 
                 if not worked_hours[punching_day]:
-                    worked_hours[punching_day] = UTC_TZ.localize(daily_attendance.punching_time)
-                    punching_time = UTC_TZ.localize(daily_attendance.punching_time)
+                    worked_hours[punching_day] = daily_attendance.punching_time
+                    punching_time = daily_attendance.punching_time
                 else:
-                    worked_hours[punching_day] = UTC_TZ.localize(daily_attendance.punching_time) - worked_hours[punching_day]
+                    worked_hours[punching_day] = daily_attendance.punching_time - worked_hours[punching_day]
                     worked_hours[punching_day] = worked_hours[punching_day].total_seconds() / 3600.0
                     self.env['hr.payslip.worked_days'].create({
                         'name': 'Journée du {} {}'.format(CURRENT_WEEKDAY[punching_time.weekday()], datetime.strftime(self.convert_datetime_from_utc(punching_time), DATETIME_FORMAT_FR)),
@@ -354,6 +354,7 @@ class HrPayslip(models.Model):
         # self.cron_download_attendance()
 
         datetime_to = datetime.now()
+        datetime_to = datetime_to + timedelta(hours=1)
         current_date = datetime_to.date()
 
         datetime_after = datetime_to + timedelta(minutes=15)
@@ -401,6 +402,7 @@ class HrPayslip(models.Model):
         # self.cron_download_attendance()
 
         datetime_from = datetime.now()
+        datetime_from = datetime_from + timedelta(hours=1)
         current_date = datetime_from.date()
 
         datetime_before = datetime_from - timedelta(minutes=15)
@@ -415,7 +417,7 @@ class HrPayslip(models.Model):
         ], order='punching_time asc').filtered(lambda rec: UTC_TZ.localize(rec.punching_time) >= datetime_before and UTC_TZ.localize(rec.punching_time) <= datetime_from)
         daily_attendances = list(daily_attendances)
         for daily_attendance in daily_attendances:
-            datetime_from = UTC_TZ.localize(daily_attendance.punching_time)
+            datetime_from = daily_attendance.punching_time
             datetime_from = self.convert_datetime_from_utc(datetime_from)
 
             datetime_before = datetime_from - timedelta(minutes=15)
