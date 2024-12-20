@@ -20,6 +20,7 @@ class TimetableNotification(models.Model):
     attendance_id = fields.Many2one('daily.attendance', string='Daily attendance')
     employee_id = fields.Many2one('hr.employee', string='Employee')
     date = fields.Date(string='Date', default=lambda r: date.today(),)
+    message = fields.Text(string='Message')
 
     status = fields.Selection([
         ('0', 'En attente'),

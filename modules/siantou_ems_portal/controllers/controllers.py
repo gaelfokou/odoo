@@ -216,12 +216,7 @@ class PortalAccount(portal.CustomerPortal):
             notification['date'] = datetime.strftime(search_notification.date, DATE_FORMAT_FR)
             notification['name'] = search_notification.employee_id.name
             notification['template'] = search_notification.template
-            if search_notification.timetable_id:
-                start_time = datetime.strptime(f'{search_notification.timetable_id.date} {Helpers.convert_float_to_time(search_notification.timetable_id.start_time, True)}', DATETIME_FORMAT)
-                notification['time'] = datetime.strftime(start_time, TIME_FORMAT)
-            elif search_notification.attendance_id:
-                punching_time = search_notification.attendance_id.punching_time
-                notification['time'] = datetime.strftime(Helpers.convert_datetime_from_utc(punching_time), TIME_FORMAT)
+            notification['message'] = search_notification.message
             notification['status'] = search_notification.status
             notifications.append(notification)
         return request.render('siantou_ems_portal.siantou_ems_portal_my_home_notification_views',

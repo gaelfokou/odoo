@@ -538,7 +538,7 @@
                     <thead>
                         <tr class="active">
                             <th class="text-left">Date</th>
-                            <th class="text-left">Heure</th>
+                            <th class="text-left">Message</th>
                             <th class="text-left">Enseignant</th>
                             <th class="text-left">Statut</th>
                         </tr>
@@ -550,7 +550,7 @@
                                     <span t-esc="record['date']"/>
                                 </td>
                                 <td class='text-left'>
-                                    <span t-esc="record['time']"/>
+                                    <span t-esc="record['message']"/>
                                 </td>
                                 <td class='text-left'>
                                     <span t-esc="record['name']"/>

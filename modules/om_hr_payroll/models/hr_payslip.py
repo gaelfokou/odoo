@@ -377,6 +377,11 @@ class HrPayslip(models.Model):
                     employee_timetable.sudo().write({'status': '1'})
                 else:
                     template = 'om_hr_payroll.om_hr_payroll_template_timetable_notification_absence'
+                    start_time = datetime.strptime(f'{employee_timetable.date} {self.convert_float_to_time(employee_timetable.start_time, True)}', DATETIME_FORMAT)
+                    start_time = datetime.strftime(start_time, TIME_FORMAT)
+                    end_time = datetime.strptime(f'{employee_timetable.date} {self.convert_float_to_time(employee_timetable.end_time, True)}', DATETIME_FORMAT)
+                    end_time = datetime.strftime(end_time, TIME_FORMAT)
+                    message = 'Notification Absence {} {}'.format(start_time, end_time)
                     timetable_notifications = self.env['siantou.ems.timetable.notification'].search([
                         ('template', '=', template),
                         ('timetable_id', '=', employee_timetable.id),
@@ -389,6 +394,7 @@ class HrPayslip(models.Model):
                             'template': template,
                             'timetable_id': employee_timetable.id,
                             'employee_id': employee_timetable.employee_id.id,
+                            'message': message,
                         })
                     employee_timetable.sudo().write({'status': '2'})
                 # if employee_timetable.employee_id.is_permanent:
@@ -422,6 +428,8 @@ class HrPayslip(models.Model):
                 employee_timetables = list(employee_timetables)
                 if len(employee_timetables) == 0:
                     template = 'om_hr_payroll.om_hr_payroll_template_timetable_notification_exception'
+                    punching_time = datetime.strftime(self.convert_datetime_from_utc(punching_time), TIME_FORMAT)
+                    message = 'Notification Exception {}'.format(punching_time)
                     timetable_notifications = self.env['siantou.ems.timetable.notification'].search([
                         ('template', '=', template),
                         ('attendance_id', '=', daily_attendance.id),
@@ -434,6 +442,7 @@ class HrPayslip(models.Model):
                             'template': template,
                             'attendance_id': daily_attendance.id,
                             'employee_id': daily_attendance.employee_id.id,
+                            'message': message,
                         })
 
     @api.depends('employee_id', 'date_to', 'date_from')
