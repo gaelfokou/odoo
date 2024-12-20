@@ -73,6 +73,7 @@
             name="Salles de classe"
             parent="menu_siantou_ems_core_config"
             action="action_show_classroom"
+            groups="siantou_ems_core.group_classroom_user,siantou_ems_core.group_classroom_admin,base.group_system"
             sequence="6"/>
     </data>
 </odoo>

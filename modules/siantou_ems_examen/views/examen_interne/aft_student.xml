@@ -1,0 +1,16 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <record id="aft_student_form" model="ir.ui.view">
+        <field name="name">aft_student_form.form</field>
+        <field name="model">oe.school.student</field>
+        <field name="inherit_id" ref="aft_edu_core.view_education_student_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//header/field[@name='state']" position="before">
+                <button string="Confirmer" name="action_confirm" states="brouillon" type="object"
+                class="oe_highlight"  />
+                <button string="Imprimer un document" name="%(wizard_releve_note_action)d" states="confirm" type="action"
+                class="oe_highlight"  />
+            </xpath>
+        </field>
+    </record>
+</odoo>

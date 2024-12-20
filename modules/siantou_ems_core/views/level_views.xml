@@ -56,7 +56,7 @@
                 name="Niveaux"
                 parent="menu_siantou_ems_core_program"
                 action="action_show_level"
-                
+                groups="siantou_ems_core.group_level_user,siantou_ems_core.group_level_admin,base.group_system"
                 sequence="2"/>
 	</data>
 </odoo>

@@ -1,0 +1,122 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <record id="aft_examen_student_view_form" model="ir.ui.view">
+        <field name="name">aft_examen_student_view_form.view.form</field>
+        <field name="model">siantou.ems.examen.student</field>
+        <field name="arch" type="xml">
+            <form string="">
+                <header>
+                    <!-- <button string="Valider" name="action_validate" type="object"
+                        class="oe_highlight"
+                        states="draft" />
+
+                    <button string="Confirmer" name="action_confirm" type="object"
+                        class="oe_highlight"
+                        states="validate" />
+
+                    <field name="state" widget="statusbar" statusbar_visible="draft,validate,confirm" /> -->
+                </header>
+                <sheet>
+                    <group col="4">
+                        <group colspan="2">
+                            <field name="student_id" readonly="1"/>
+                        </group>
+                        <group colspan="2">
+                            <field name="semestre_id" readonly="1"/>
+                        </group>
+                        <group colspan="2">
+                            <field name="class_id" readonly="1"/>
+                        </group>
+                        <group colspan="2">
+                            <field name="anne_academique_id" readonly="1"/>
+                        </group>
+                        <group colspan="2">
+                            <field name="rang" readonly="1"/>
+                        </group>
+                        <group colspan="2">
+                            <field name="credit" readonly="1"/>
+                        </group>
+                        <group colspan="2">
+                            <field name="moyenne" readonly="1"/>
+                        </group>
+                        <group colspan="2">
+                            <field name="stat" readonly="1"/>
+                        </group>
+                        <group colspan="2">
+                            <field name="session" readonly="1"/>
+                        </group>
+                        <group colspan="2">
+                            <field name="decision" readonly="1"/>
+                        </group>
+                        <group colspan="2">
+                            <field name="mention" readonly="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page name="examen_student_line_id" string="Moyenne par Unité d'enseignement" >
+                            <field name="examen_student_line_ids">
+                                <tree readonly="1"> 
+                                    <field name="ue_id" />
+                                    <field name="credit" />
+                                    <field name="moyenne_ue" />
+                                    <field name="statut" />
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" groups="base.group_user" />
+                    <field name="message_ids" />
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="aft_examen_student_view_tree" model="ir.ui.view">
+        <field name="name">aft_examen_student_view_tree.view.tree</field>
+        <field name="model">siantou.ems.examen.student</field>
+        <field name="arch" type="xml">
+            <tree string="" create="false">
+                <field name="student_id" />
+                <field name="semestre_id" />
+                <field name="class_id" />
+                <field name="moyenne" />
+                <field name="rang" />
+                <field name="anne_academique_id" />
+                <field name="nb_matieres_a_rattraper" />
+                <field name="a_des_rattrapages" />
+            </tree>
+        </field>
+    </record>
+
+    <!-- Ajout de la vue pivot -->
+    <record id="aft_examen_student_view_pivot" model="ir.ui.view">
+        <field name="name">siantou.ems.examen.student.view.pivot</field>
+        <field name="model">siantou.ems.examen.student</field>
+        <field name="arch" type="xml">
+            <pivot string="Statistiques Annuelles" display_quantity="true">
+                <field name="student_id" type="row"/>
+                <field name="anne_academique_id" type="col"/>
+                <field name="class_id" type="row"/>
+                <field name="moyenne_annuelle" type="measure"/>
+                <field name="pourcentage_reussite" type="measure"/>
+                <field name="credit" type="measure"/>
+                <field name="nb_matieres_a_rattraper" type="measure"/>
+                <field name="nb_etudiants_avec_rattrapages" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <!-- Modification de l'action existante pour inclure la vue pivot -->
+    <record id="aft_examen_student_action" model="ir.actions.act_window">
+        <field name="name">Moyenne des étudiants</field>
+        <field name="res_model">siantou.ems.examen.student</field>
+        <field name="view_mode">tree,form,pivot</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Créer un document
+            </p>
+        </field>
+    </record>
+</odoo>

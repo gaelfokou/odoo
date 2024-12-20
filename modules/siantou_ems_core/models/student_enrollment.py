@@ -82,7 +82,6 @@ class StudentEnrollment(models.Model):
     nationalite = fields.Many2one(
         'siantou.ems.core.country',
         string="Nationalité(Pays d'origine)",
-        required=True,
     )
 
     region_id = fields.Many2one("siantou.ems.core.region", string="Région")
@@ -102,54 +101,76 @@ class StudentEnrollment(models.Model):
     num_tel_tutor = fields.Char(string="N° de Téléphone", required=True)
     date_preins = fields.Datetime(string="Date de préinscription", default=datetime.datetime.now())
     status = fields.Selection([
-            ('broui', 'Brouillon'),
+            ('broui', "En attente de paiement des frais d'inscription"),
             ('inscrip', 'Inscrit'),
-            ('rej', 'Rejeté'),
-            ('transfer', 'Admis'),
+            ('rej', 'Candidature rejeté'),
+            ('transfer', 'Candidature accepté'),
         ],
         string="Status", 
         default="broui", 
         track_visibility='onchange'
     )
-
+    is_autre_pays = fields.Boolean(string="Autre pays ?", default=False)
     observations = fields.Html(string="Observations")
+    files_ids = fields.One2many(
+        'oe.school.student.enrollment.file', 
+        'student_enrollemnt_id',
+        string="Liste des fichiers"
+    )
 
 
-    # model = fields.Char('Related Document Model')
-    # res_id = fields.Many2oneReference('Related Document ID', model_field='model')
-    
-    # school_name = fields.Char('School Name', required=True)
-    # course_name = fields.Char('Program/Course', required=True)
-    # date_start = fields.Date('Start Date', required=True)
-    # date_end = fields.Date('End Date', required=True)
-    # status = fields.Selection([
-    #     ('enroll', 'Enrôllé'),
-    #     ('complete', 'Complété'),
-    #     ('transfer', 'Transférré'),
-    #     ('withdrawn', 'Brouillon'),
-    #     ('suspended', 'Suspendu'),
-    #     ('other', 'Other'),
-    # ], string='Statut')
-    # transcript_detail = fields.Text('Rélevé de note')
-    # reason = fields.Text(string='Raison du départ')
-    # address_school = fields.Text('Adresse de l\'école')
-    
-    # def compute_inscrire(self):
-    #     self.status = 'inscrip'
 
-    # def name_get(self):
-    #     result = []
-    #     for record in self:
-    #         # Customize the display name format
-    #         display_name = f"{record.full_name}"
-    #         result.append((record.id, display_name))
-    #     return result
+    def print_payement_student(self):
+        for rec in self:
+            factures = []
+            payment_id = self.env['education.fee.payment.enrollment'].search(
+                [
+                    ('student_id','=',rec.id),
+                    ('year_id','=',rec.year_id.id),
+                ], 
+                limit=1
+            )
+            
+            # factures.append({
+            #     'name':"INSCRIPTION",
+            #     'amount':payment_id.amount,
+            #     'date_payment':payment_id.date_payment,
+            #     'currency_id':payment_id.currency_id.name,
+            # })
+            data = {
+                # 'ids':rec.ids,
+                'model':rec,
+                'payment_id':{
+                    'name':payment_id.name,
+                    'year':payment_id.year_id.name,
+                    'year':payment_id.year_id.name,
+                },
+                'student':{
+                    'name':rec.name,
+                    'matricule':rec.matricule,
+                    'level':rec.level_id.name,
+                    'field_of_study':rec.field_of_study_id.name,
+                },
+                'date': fields.date.today(),
+                'facture': {
+                    'name':f"INSCRIPTION {rec.field_of_study_id.name} {rec.level_id.name}",
+                    'amount':payment_id.amount,
+                    'date_payment':payment_id.date_payment,
+                    'currency_id':payment_id.currency_id.name,
+                },
+            }
+
+            _logger.info(data)
+            #=====>>>>> Appeler le rapport PDF
+            report_action = self.env.ref('siantou_ems_core.action_report_student_core_pdf')
+            return report_action.report_action(self,data=data)
+
 
 
     def action_preinscrip_wizard(self):
         action = self.env.ref('siantou_ems_core.action_fee_enrollment_wizard').read()[0]
         action.update({
-            'name': f"Enregistrement des frais d'inscription de ===> {self.name}",
+            'name': f"Encaissement des frais d'inscription de Mr/Mdme {self.name} / {self.field_of_study_id.name} / {self.level_id.name}",
             'res_model': 'siantou.ems.core.fee.enrollment.student',
             'type': 'ir.actions.act_window',
         })
@@ -170,6 +191,39 @@ class StudentEnrollment(models.Model):
         self.status='rej'
 
 
+
+class StudentEnrollmentFileAdmission(models.Model):
+    _name = 'oe.school.student.enrollment.file'
+    _description = "Gestion des fichiers d'enrollement des étudiants"
+
+    student_enrollemnt_id = fields.Many2one(
+        'oe.school.student.enrollment', 
+        string="Etudiant préinscrit", 
+        required=True,    
+    )
+    submitted_date = fields.Date(
+        string="Date de dépôt", 
+        default=datetime.date.today(),
+        help="Documents soumis le"
+    )
+    doc_attachment_id = fields.Many2many(
+        'ir.attachment', 'doc_attach_rel',
+        'doc_id', 'attach_id3',
+        string="Pièces Jointes",
+        help='You can attach the copy of your document',
+        copy=False
+    )
+    # file = fields.Binary(string="Fichier", required=True, )
+
+
+class IrAttachment(models.Model):
+    _inherit = 'ir.attachment'
+
+    doc_attach_rel = fields.Many2many(
+        'oe.school.student.enrollment.file',
+        'doc_attachment_id', 'attach_id3',
+        'doc_id',
+        string="Attachment", invisible=1)
 
 
 class StudentEnrollmentAdmission(models.Model):

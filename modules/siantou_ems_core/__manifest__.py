@@ -67,6 +67,7 @@
         'views/timetable_print_wizard_views.xml',
         'report/timetable_reports.xml',
         'report/timetable_template.xml',
+        'report/report_student_core.xml',
 
         #=========== Fichier du dashboard
         'views/ems_core_dashboard.xml',

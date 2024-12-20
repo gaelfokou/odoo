@@ -12,8 +12,11 @@
                                 <field name="name"/>
                                 <field name="student_id" />
                                 <field name="amount" />
+                                <field name="amount_plus" />
+                                <field name="amount_moins" />
                             </group>
                             <group col="2" colspan="2">
+                                <field name="year_id" />
                                 <field name="structure_frais_id" />
                                 <field name="reference" />
                                 <field name="date_payment" />
@@ -50,13 +53,22 @@
             <field name="name">education.fee.payment.enrollment.view.tree</field>
             <field name="model">education.fee.payment.enrollment</field>
             <field name="arch" type="xml">
-                <tree string="Liste des paiements">
+                <tree string="Liste des paiements" default_group_by="year_id">
+                    <field name="year_id" />
                     <field name="name" />
                     <field name="date_payment" />
                     <field name="student_id" />
-                    <field name="amount" />
                     <field name="structure_frais_id" />
                     <field name="reference" />
+                    <field name="amount" />
+                    <field name="amount_plus" />
+                    <field name="amount_moins" />
+                    <field 
+                        name="status" 
+                        widget="badge"
+                        decoration-success="status == 'all'"
+                        decoration-warning="status == 'none_all'"
+                    />
                 </tree>
             </field>
         </record>

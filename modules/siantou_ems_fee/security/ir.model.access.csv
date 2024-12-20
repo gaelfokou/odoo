@@ -9,6 +9,8 @@ access_education_fee_payment_fee_admin,access.education.fee.payment,model_educat
 access_siantou_ems_fee_special_fee_admin,access.siantou.ems.fee.special,model_siantou_ems_fee_special,siantou_ems_fee.group_fee_admin,1,1,1,1
 access_siantou_ems_fee_config_bank_fee_admin,access.siantou.ems.fee.config.bank,model_siantou_ems_fee_config_bank,siantou_ems_fee.group_fee_admin,1,1,1,1
 access_education_fee_payment_enrollment_fee_admin,access.education.fee.payment.enrollment,model_education_fee_payment_enrollment,siantou_ems_fee.group_fee_admin,1,1,1,1
+access_siantou_ems_fee_moratoire_fee_admin,access.siantou.ems.fee.moratoire,model_siantou_ems_fee_moratoire,siantou_ems_fee.group_fee_admin,1,1,1,1
+access_education_fee_payment_wizard_fee_admin,access.education.fee.payment.wizard,model_education_fee_payment_wizard,siantou_ems_fee.group_fee_admin,1,1,1,1
 
 
 access_siantou_ems_fee_structure_fee_base,access.siantou.ems.fee.structure,model_siantou_ems_fee_structure,siantou_ems_fee.group_fee_base,1,0,0,0

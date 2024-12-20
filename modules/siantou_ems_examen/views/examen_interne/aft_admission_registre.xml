@@ -1,0 +1,56 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <record id="aft_admission_registre_form" model="ir.ui.view">
+        <field name="name">aft_admission_registre_form.form</field>
+        <field name="model">siantou.session.registre</field>
+        <field name="inherit_id" ref="aft_edu_core.view_education_admission_registre_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//header/button[@name='start_application']" position="after">
+                <button string="Exporter le fichier" name="action_get_liste_student" type="object" class="oe_highlight" states="admission" />
+                <button string="Liste des admis" name="action_get_liste_admi" type="object" class="oe_highlight" states="cloture" />
+                <button string="Liste d'attente" name="action_get_liste_waiting" type="object" class="oe_highlight" states="cloture" />
+                <button string="Valider les délibérations" name="action_validat" type="object" class="oe_highlight" states="deliberation" />
+                <button string="Importer le fichier" name="%(wizard_read_note_action)d" type="action" class="oe_highlight" states="admission" />
+                <button string="Valider les notes" name="action_validat_note" type="object" class="oe_highlight" states="admission" />
+                <button string="Exporter les résultats" name="get_moyenne_candidat" type="object"
+                class="oe_highlight"
+                states="deliberation" />
+            </xpath>
+
+            <xpath expr="//notebook/page[1]" position="after">
+                <page name="matiere" string="Liste des matières">
+                    <field name="matiere_ids">
+                        <tree editable="bottom"
+                        create="false"
+                        >
+                            <field name="code" />
+                            <field name="name" />
+                            <field name="obligatory" />
+                        </tree>
+                    </field>
+                </page>
+                <page name="condition_admission_id" string="Conditions d'admission" attrs="{'invisible': [('state','not in',['deliberation','done'])]}">
+                    <group string="information">
+                        <group >
+                            <field name="date" />
+                        </group>
+                        <group >
+                            <field name="responsable_id" />
+                        </group>
+                        <group>
+                            <field name="numero_decision" />
+                        </group>
+                    </group>
+                    <field name="condition_admission_ids">
+                        <tree editable="bottom">
+                            <field name="nationality_id" />
+                            <field name="nombre" />
+                            <field name="nbre_attente" />
+                        </tree>
+
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

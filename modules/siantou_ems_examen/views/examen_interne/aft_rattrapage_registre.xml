@@ -1,0 +1,102 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <record id="aft-rattrapage_regisre_view_form" model="ir.ui.view">
+        <field name="name">rattrapage_regisre_view_form.view.form</field>
+        <field name="model">rat.reg</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button string="Valider" name="action_validate" type="object"
+                        class="oe_highlight" states="draft" />
+                    <button string="Confirmer" name="action_confirm" type="object"
+                        class="oe_highlight" states="validate" />
+                    <button string="Calculer" name="action_calcul" type="object"
+                        class="oe_highlight" states="confirm" />
+                    <field name="state" widget="statusbar"
+                        statusbar_visible="draft,validate,confirm,cancel,done" />
+                </header>
+                <sheet>
+                    <div>
+                        <h2>
+                            <field name="name" states="validate,confirm,cancel,done" readonly="1" />
+                        </h2>
+                    </div>
+                    <group col="4" string="Informations">
+                        <group colspan="2">
+                            <field name="class_id"
+                                attrs="{'readonly': [('state','in',['validate','confirm','cancel','done'])]}" />
+                        </group>
+                        <group colspan="2">
+                            <field name="semestre_id"
+                                attrs="{'readonly': [('state','in',['validate','confirm','cancel','done'])]}" />
+                        </group>
+                        <group colspan="2">
+                            <field name="anne_academique_id"
+                                attrs="{'readonly': [('state','in',['validate','confirm','cancel','done'])]}" />
+                        </group>
+                        <group colspan="2">
+                            <field name="date"
+                                attrs="{'readonly': [('state','in',['validate','confirm','cancel','done'])]}" />
+                        </group>
+                    </group>
+                    <notebook>
+                        <page name="rat_id" string="Unité d'enseignement"
+                            attrs="{'readonly': [('state','in',['validate','confirm','cancel','done'])],'invisible': [('state','in',['draft'])]}">
+                            <field name="rat_ids">
+                                <tree editable="bottom">
+                                    <field name="ue_id" />
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" groups="base.group_user" />
+                    <field name="message_ids" />
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="aft_rattrapage_registre_view_tree" model="ir.ui.view">
+        <field name="name">aft_rattrapage_registre_view_tree.view.tree</field>
+        <field name="model">rat.reg</field>
+        <field name="arch" type="xml">
+            <tree string="">
+                <field name="name" />
+                <field name="class_id" />
+                <field name="semestre_id" />
+                <field name="anne_academique_id" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="aft_rattrapage_registre__view_search" model="ir.ui.view">
+        <field name="name">aft_rattrapage_registre__view_search.search</field>
+        <field name="model">rat.reg</field>
+        <field name="arch" type="xml">
+            <search string="Régistre de rattrapage">
+                <field name="class_id" />
+                <field name="semestre_id" />
+                <field name="anne_academique_id"/>
+                <group expand="1" string="Grouper Par">
+                    <filter string="Classe" name="group_by_class_id" context="{'group_by':'class_id'}"/>
+                    <filter string="Semestre" name="group_by_semestre_id" context="{'group_by':'semestre_id'}"/>
+                    <filter string="Année académique" name="group_by_anne_academique_id" context="{'group_by':'anne_academique_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="aft_rattrapage_registre_action" model="ir.actions.act_window">
+        <field name="name">Régistre de rattrapage</field>
+        <field name="res_model">rat.reg</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{'search_default_group_by_class_id': 1,'search_default_group_by_anne_academique_id': 1,'search_default_group_by_semestre_id': 1}</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Créer un document
+            </p>
+        </field>
+    </record>
+</odoo>

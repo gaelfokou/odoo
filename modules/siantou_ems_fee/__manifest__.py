@@ -25,16 +25,18 @@
         # 'views/fee_student.xml',
         'views/fee_payment.xml',
         'views/fee_payment_enrollment.xml',
+        'views/fee_moratoire.xml',
         'views/fee_special.xml',
         'views/fee_bank_account_setting.xml',
 
         # 'views/education_fee_classe_views.xml',
         # 'wizard/frais_etudiant.xml',
+        'wizard/complet_paiement_wizard.xml',
 
         # report
         
         # "reports/report_list_factures.xml",
-        # "reports/report_student_fees.xml",
+        "reports/report_student_fees.xml",
         # "reports/report.xml",
 
     ],

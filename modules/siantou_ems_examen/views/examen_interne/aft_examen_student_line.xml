@@ -1,0 +1,80 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <record id="aft_examen_student_lineview_form" model="ir.ui.view">
+        <field name="name">aft_examen_student_lineview_form.view.form</field>
+        <field name="model">siantou.ems.examen.student.moyenne.line</field>
+        <field name="arch" type="xml">
+            <form string="">
+                <!-- <header>
+                    <button string="Valider" name="action_validate" type="object"
+                        class="oe_highlight"
+                        states="draft" />
+
+                    <button string="Confirmer" name="action_confirm" type="object"
+                        class="oe_highlight"
+                        states="validate" />
+
+                    <field name="state" widget="statusbar"
+                        statusbar_visible="draft,validate,confirm" />
+                </header> -->
+                <sheet>
+                    <group col="4">
+                        <group colspan="2">
+                            <field name="ue_id" readonly="1"/>
+                        </group>
+                        <group colspan="2">
+                            <field name="moyenne_ue" readonly="1"/>
+                        </group>
+                        <group colspan="2">
+                            <field name="credit" readonly="1"/>
+                        </group>
+                        <group colspan="2">
+                            <field name="statut" readonly="1"/>   
+                        </group>
+                    </group>
+                    <notebook>
+                        <page name="examen_student_subject_line_id" string="Moyenne par matière">
+                            <field name="examen_student_subject_line_ids">
+                                <tree>
+                                    <field name="matiere_parent_id" />
+                                    <field name="coeficeint" />
+                                    <field name="moyenne_matiere_parent" />
+                                    <field name="statut" />
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" groups="base.group_user" />
+                    <field name="message_ids" />
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="aft_examen_student_lineview_tree" model="ir.ui.view">
+        <field name="name">aft_examen_student_lineview_tree.view.tree</field>
+        <field name="model">siantou.ems.examen.student.moyenne.line</field>
+        <field name="arch" type="xml">
+            <tree string="" 
+            create="false"
+            >
+                    <field name="ue_id" />
+                    <field name="moyenne_ue" />
+                    <field name="credit" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="aft_examen_student_line_action" model="ir.actions.act_window">
+        <field name="name">Moyenne par UE</field>
+        <field name="res_model">siantou.ems.examen.student.moyenne.line</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Créer un document
+            </p>
+        </field>
+    </record>
+</odoo>

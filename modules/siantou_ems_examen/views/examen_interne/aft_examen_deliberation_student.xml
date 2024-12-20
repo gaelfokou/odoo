@@ -1,0 +1,111 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <record id="aft_examen_deliberation_student_view_form" model="ir.ui.view">
+        <field name="name">aft_examen_deliberation_student_view_form.view.form</field>
+        <field name="model">siantou.ems.examen.deliberation.student</field>
+        <field name="arch" type="xml">
+            <form string="">
+                <header>
+                    <button string="Valider" name="action_validate" class="oe_highlight"
+                        type="object" states="draft" />
+
+                    <button string="Confirmer" name="action_confirm" class="oe_highlight"
+                        type="object" states="validate" />
+                    
+                    <button name="action_get_pv_pdf" type="object" string="Imprimer Procès-Verbal" class="btn-primary"/>
+
+                    <field name="state" widget="statusbar"
+                        statusbar_visible="draft,validate,confirm" />
+                </header>
+                <sheet>
+                    <group string="Information(s) classique(s)">
+                        <group>
+                            <field name="annee_academique_id"
+                                attrs="{'readonly': [('state','in',['validate','confirm'])]}" />
+                        </group>
+                        <group>
+                            <field name="filiere_id" attrs="{'readonly': [('state','in',['validate','confirm'])]}"/>
+                        </group>
+                        <group>
+                            <field name="actual_class_id"
+                                attrs="{'readonly': [('state','in',['validate','confirm'])]}" />
+                        </group>
+                        <group>
+                            <field name="next_class_id"
+                                attrs="{'required': [('state','=',['confirm'])],'invisible': [('state','in',['draft'])]}" />
+                        </group>
+                        <!-- <group>
+                            <field name="anne_academique_ids" widget="many2many_tags" attrs="{'readonly': [('state','in',['validate','confirm'])]}"/>
+                        </group> -->
+                        <group>
+                            <field name="anne_academique_new_id"
+                                attrs="{'required': [('state','=',['confirm'])],'invisible': [('state','in',['draft'])]}" />
+                        </group>
+                        <group>
+                            <field name="date_jury" attrs="{'readonly': [('state','in',['validate','confirm'])]}"/>
+                        </group>
+                        <group>
+                            <field name="pr_jury" attrs="{'readonly': [('state','in',['validate','confirm'])]}"/>
+                        </group>
+                        <group>
+                            <field name="vice_pr_jury" attrs="{'readonly': [('state','in',['validate','confirm'])]}"/>
+                        </group>
+                        <group>
+                            <field name="members_jury_ids" widget="many2many_tags" attrs="{'readonly': [('state','in',['validate','confirm'])]}"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page name="note_etudiant_id" string="Information(s) sur l'étudiant" >
+                            <field name="deli_line_note_etudiant_ids">
+                                <tree editable="bottom" >
+                                    <field name="student_id" invisible="1"/>
+                                    <field name="matricule"/>
+                                    <field name="name"/>
+                                    <field name="last_name"/>
+                                    <field name="date_of_birth" />
+                                    <field name="place_of_birth" />
+                                    <field name="decision" />
+                                    <!-- Bouton Modifier une ligne de délibération -->
+                                    <!-- <field name="mention" /> -->
+                                    <!-- Bouton Modifier -->
+                                    <button name="action_modifier_note_deliberation" type="object" string="Voir le relevé de notes" icon="fa-arrow-circle-o-right"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="aft_examen_deliberation_student_view_tree" model="ir.ui.view">
+        <field name="name">aft_examen_deliberation_student_view_tree.view.tree</field>
+        <field name="model">siantou.ems.examen.deliberation.student</field>
+        <field name="arch" type="xml">
+            <tree string="">
+                <field name="annee_academique_id" />
+                <field name="filiere_id" />
+                <field name="actual_class_id" />
+                <field name="date_jury" />
+                <field name="pr_jury" />
+                <field name="state" />
+                
+            </tree>
+        </field>
+    </record>
+
+    <record id="aft_examen_deliberation_student_action" model="ir.actions.act_window">
+        <field name="name">Délibérer les notes des étudiants</field>
+        <field name="res_model">siantou.ems.examen.deliberation.student</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Délibérer les notes
+            </p>
+        </field>
+    </record>
+</odoo>

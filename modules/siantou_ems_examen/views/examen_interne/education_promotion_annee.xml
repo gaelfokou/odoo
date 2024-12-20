@@ -1,0 +1,90 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <record id="anee_academique_tree" model="ir.ui.view">
+        <field name="name">anee.academique.tree</field>
+        <field name="model">anee.academique</field>
+        <field name="arch" type="xml">
+            <tree string="Notes des candidats">
+                <field name="anne_academique" />
+                <field name="actual_class_id" />
+                <field name="date_jury" />
+            </tree>
+        </field>
+    </record>
+    <record id="anee_academique_view_form" model="ir.ui.view">
+        <field name="name">anee.academique.view.form</field>
+        <field name="model">anee.academique</field>
+        <field name="arch" type="xml">
+            <form string=''>
+                <header>
+                    <button string="Valider" name="action_validate" class="oe_highlight"
+                        type="object" states="draft" />
+
+                    <button string="Confirmer" name="action_confim" class="oe_highlight"
+                        type="object" states="validate" />
+
+                    <field name="state" widget="statusbar"
+                        statusbar_visible="draft,validate,confirm" />
+                </header>
+                <sheet>
+                    <div>
+                        <h2>
+                            <field name="name" states="validate,confirm" readonly="1" />
+                        </h2>
+                    </div>
+                    <group string="Information(s)">
+                        <group>
+                            <field name="anne_academique"
+                                attrs="{'readonly': [('state','in',['validate','confirm'])]}" />
+                        </group>
+                        <group>
+                            <field name="actual_class_id"
+                                attrs="{'readonly': [('state','in',['validate','confirm'])]}" />
+                        </group>
+                        <group>
+                            <field name="next_class_id"
+                                attrs="{'readonly': [('state','in',['confirm'])],'invisible': [('state','in',['draft'])]}" />
+                        </group>
+                        <group>
+                            <field name="anne_academique_new"
+                                attrs="{'readonly': [('state','in',['confirm'])],'invisible': [('state','in',['draft'])]}" />
+                        </group>
+                        <group>
+                            <field name="date_jury" />
+                        </group>
+                        <group>
+                            <field name="pr_jury" />
+                        </group>
+                    </group>
+                    <notebook>
+                        <page name="Note de l'étudiant" string="Notes">
+                            <field name="note_etudiant_ids"
+                                readonly="1"
+                            >
+                                <tree>
+                                    <field name="student_id" />
+                                    <field name="moyenne" />
+                                    <field name="credit" />
+                                    <field name="mention" />
+                                    <field name="statut" />
+                                    <field name="qr_code" widget="image" class="oe_avatar"
+                                        options="{&quot;preview_image&quot;: &quot;image_128&quot;}" />
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="promotion_classe_action" model="ir.actions.act_window">
+        <field name="name">Promotion new</field>
+        <field name="res_model">anee.academique</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Créer votre semestre ici.
+            </p>
+        </field>
+    </record>
+</odoo>

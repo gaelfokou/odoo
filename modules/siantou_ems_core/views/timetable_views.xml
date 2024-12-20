@@ -85,6 +85,7 @@
             name="Emploi du temps"
             parent="menu_siantou_ems_timetable_planning"
             action="action_show_timetable"
+            groups="siantou_ems_core.group_timetable_user,siantou_ems_core.group_timetable_admin,base.group_system"
             sequence="1"/>
         
 	</data>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_complete_payment_wizard" model="ir.ui.view">
+        <field name="name">education.fee.payment.wizard.form</field>
+        <field name="model">education.fee.payment.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Compléter les frais de paiement">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="payment_id" readonly="1"/>
+                            <field name="student_id" readonly="1"/>
+                            <field name="amount_verse" readonly="1"/>
+                            <field name="currency_id" invisible="1"/>
+                        </group>
+                        <group>
+                            <field name="year_id" readonly="1"/>
+                            <field name="amount_rest" readonly="1"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group>
+                            <field name="name" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="reference"  invisible="mode_payment=='cash'"/>
+                            <field name="mode_payment"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group>
+                            <field name="amount"/>
+                        </group>
+                        <group>
+                            <field name="date_payment" />
+                        </group>
+                    </group>
+                    
+                </sheet>
+                <footer>
+                    <button string="Enregistrer" type="object" name="to_complete_student_fee_payment" class="btn-primary"/>
+                    <button string="Annuler" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_complete_fee_payment_wizard" model="ir.actions.act_window">
+        <field name="name">Compléter les frais de paiement</field>
+        <field name="res_model">education.fee.payment.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="target">new</field>
+        <field name="view_id" ref="view_complete_payment_wizard"/>
+    </record>
+</odoo>

@@ -21,7 +21,15 @@ class BankAccountEnrollmentConfigSettings(models.TransientModel):
         ('unique_numero', 'unique(numero)', 'Ce nom existe déjà'),
     ]
 
-    numero = fields.Char(string='Numéro', required=True)
+    name = fields.Char(string='Numéro', required=True, related='numero')
+    denomination = fields.Char(string='Dénomination', required=True)
+    nom_bank = fields.Char(string='Nom de la banque', required=True)
+    code_1 = fields.Char(string='TTE OU', required=True)
+    code_2 = fields.Char(string='CIIE DNDLE', required=True)
+    cle_rib = fields.Char(string='Clé RIB', required=True)
+    swift_code = fields.Char(string='Swift code', required=True)
+    iban = fields.Char(string='IBAN', required=True)
+    numero = fields.Char(string='Numéro de compte', required=True)
     active = fields.Boolean(string='Actif', default=False)
 
     # Contrainte logique pour empêcher d'avoir plusieurs années académiques actives simultannément

@@ -34,9 +34,10 @@ class OeSchoolCourse(models.Model):
         default=lambda self: self.env.company,
         domain=[('active','=',True),('is_school','=',True)]
     )
-    # fee_struct_id = fields.Many2one('siantou.ems.core.fee.struct', string="Type frais d'inscription")
-
-
+    level_ids = fields.Many2many(
+        'siantou.ems.core.level',
+        string='Niveaux'
+    )
     enable_elective = fields.Boolean('Activer la sélection des cours facultatifs')
     color = fields.Integer(default=_default_color)
     

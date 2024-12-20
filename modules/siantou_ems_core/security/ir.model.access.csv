@@ -1,32 +1,73 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 
-access_super_user_groups,Access Super User Groups,base.model_res_groups,siantou_ems_core.group_super_user,1,1,1,1
-access_siantou_ems_timetable_timetable,access.siantou.ems.timetable.timetable,model_siantou_ems_timetable_timetable,base.group_user,1,1,1,1
-access_super_user_timetable_group,Access Super User timetable group,model_siantou_ems_timetable_group,siantou_ems_core.group_super_user,1,1,1,1
-access_super_user_timetable_print_wizard,Access Super User timetable print wizard,model_siantou_ems_timetable_timetable_print_wizard,siantou_ems_core.group_super_user,1,1,1,1
-access_super_user_timetable_wizard,Access Super User timetable wizard,model_siantou_ems_timetable_timetable_wizard,siantou_ems_core.group_super_user,1,1,1,1
-access_super_user_year,Access Super User year,model_siantou_ems_core_year,siantou_ems_core.group_super_user,1,1,1,1
-access_super_user_subject,Access Super User subject,model_siantou_ems_core_subject,siantou_ems_core.group_super_user,1,1,1,1
-access_super_user_students,Access Super User students,model_oe_school_student,siantou_ems_core.group_super_user,1,1,1,1
-access_super_user_students_enrollment,Access Super User students enrollement,model_oe_school_student_enrollment,siantou_ems_core.group_super_user,1,1,1,1
-access_super_user_semester,Access Super User semester,model_siantou_ems_core_year_semester,siantou_ems_core.group_super_user,1,1,1,1
-access_super_user_school,Access Super User school,model_siantou_ems_core_school,siantou_ems_core.group_super_user,1,1,1,1
-access_super_user_region,Access Super User region,model_siantou_ems_core_region,siantou_ems_core.group_super_user,1,1,1,1
-access_super_user_quater,Access Super User quater,model_siantou_ems_core_quarter,siantou_ems_core.group_super_user,1,1,1,1
-access_super_user_level,Access Super User level,model_siantou_ems_core_level,siantou_ems_core.group_super_user,1,1,1,1
-access_super_user_fiel_of_study,Access Super User field of study,model_siantou_ems_core_field_of_study,siantou_ems_core.group_super_user,1,1,1,1
-access_super_user_fee_school,Access Super User fee school,model_siantou_ems_core_fee_school,siantou_ems_core.group_super_user,1,1,1,1
-access_super_user_fee_enrollment,Access Super User fee enrollment,model_siantou_ems_core_fee_enrollment,siantou_ems_core.group_super_user,1,1,1,1
-access_super_user_degree,Access Super User degree,model_oe_school_course_degree,siantou_ems_core.group_super_user,1,1,1,1
-access_super_user_course,Access Super User course,model_oe_school_course,siantou_ems_core.group_super_user,1,1,1,1
-access_super_user_country,Access Super User country,model_siantou_ems_core_country,siantou_ems_core.group_super_user,1,1,1,1
-access_super_user_classroom,Access Super User classroom,model_siantou_ems_core_building_classroom,siantou_ems_core.group_super_user,1,1,1,1
-access_super_user_city,Access Super User city,model_siantou_ems_core_city,siantou_ems_core.group_super_user,1,1,1,1
-access_super_user_campus,Access Super User campus,model_siantou_ems_core_campus,siantou_ems_core.group_super_user,1,1,1,1
-access_super_user_building,Access Super User building,model_siantou_ems_core_building,siantou_ems_core.group_super_user,1,1,1,1
-access_super_user_student_batch,Access Super User student batch,model_siantou_ems_core_student_batch,siantou_ems_core.group_super_user,1,1,1,1
-access_super_user_session,Access Super User session,model_siantou_session,siantou_ems_core.group_super_user,1,1,1,1
-access_super_user_session_registre,Access Super User session registre,model_siantou_session_registre,siantou_ems_core.group_super_user,1,1,1,1
-access_super_user_student_career,Access Super User student career,model_oe_school_student_career,siantou_ems_core.group_super_user,1,1,1,1
-access_super_user_fee_enrollment_student,Access Super User student fee enrollment student,model_siantou_ems_core_fee_enrollment_student,siantou_ems_core.group_super_user,1,1,1,1
-access_super_user_enrollment_admission_wizard,Access Super User enrollment admission wizard,model_siantou_ems_core_student_enrollment_admission_wizard,siantou_ems_core.group_super_user,1,1,1,1
+batch_user,batch.user,model_siantou_ems_core_student_batch,siantou_ems_core.group_batch_user,1,0,0,0
+batch_admin,batch.admin,model_siantou_ems_core_student_batch,siantou_ems_core.group_batch_admin,1,1,1,1
+
+classroom_user,classroom.user,model_siantou_ems_core_building_classroom,siantou_ems_core.group_classroom_user,1,0,0,0
+classroom_admin,classroom.admin,model_siantou_ems_core_building_classroom,siantou_ems_core.group_classroom_admin,1,1,1,1
+
+building_user,building.user,model_siantou_ems_core_building,siantou_ems_core.group_building_user,1,0,0,0
+building_admin,building.admin,model_siantou_ems_core_building,siantou_ems_core.group_building_admin,1,1,1,1
+
+campus_user,campus.user,model_siantou_ems_core_campus,siantou_ems_core.group_campus_user,1,0,0,0
+campus_admin,campus.admin,model_siantou_ems_core_campus,siantou_ems_core.group_campus_admin,1,1,1,1
+
+country_user,country.user,model_siantou_ems_core_country,siantou_ems_core.group_country_user,1,0,0,0
+country_admin,country.admin,model_siantou_ems_core_country,siantou_ems_core.group_country_admin,1,1,1,1
+
+region_user,region.user,model_siantou_ems_core_region,siantou_ems_core.group_region_user,1,0,0,0
+region_admin,region.admin,model_siantou_ems_core_region,siantou_ems_core.group_region_admin,1,1,1,1
+
+city_user,city.user,model_siantou_ems_core_city,siantou_ems_core.group_city_user,1,0,0,0
+city_admin,city.admin,model_siantou_ems_core_city,siantou_ems_core.group_city_admin,1,1,1,1
+
+quarter_user,quarter.user,model_siantou_ems_core_quarter,siantou_ems_core.group_quarter_user,1,0,0,0
+quarter_admin,quarter.admin,model_siantou_ems_core_quarter,siantou_ems_core.group_quarter_admin,1,1,1,1
+
+courses_user,courses.user,model_oe_school_course,siantou_ems_core.group_courses_user,1,0,0,0
+courses_admin,courses.admin,model_oe_school_course,siantou_ems_core.group_courses_admin,1,1,1,1
+
+degree_required_user,degree_required.user,model_oe_school_course_degree,siantou_ems_core.group_degree_required_user,1,0,0,0
+degree_required_admin,degree_required.admin,model_oe_school_course_degree,siantou_ems_core.group_degree_required_admin,1,1,1,1
+
+field_of_study_user,field_of_study.user,model_siantou_ems_core_field_of_study,siantou_ems_core.group_field_of_study_user,1,0,0,0
+field_of_study_admin,field_of_study.admin,model_siantou_ems_core_field_of_study,siantou_ems_core.group_field_of_study_admin,1,1,1,1
+
+level_user,level.user,model_siantou_ems_core_level,siantou_ems_core.group_level_user,1,0,0,0
+level_admin,level.admin,model_siantou_ems_core_level,siantou_ems_core.group_level_admin,1,1,1,1
+
+school_user,school.user,model_siantou_ems_core_school,siantou_ems_core.group_school_user,1,0,0,0
+school_admin,school.admin,model_siantou_ems_core_school,siantou_ems_core.group_school_admin,1,1,1,1
+
+year_semester_user,year_semester.user,model_siantou_ems_core_year_semester,siantou_ems_core.group_semester_user,1,0,0,0
+year_semester_admin,year_semester.admin,model_siantou_ems_core_year_semester,siantou_ems_core.group_semester_admin,1,1,1,1
+
+student_user,student.user,model_oe_school_student,siantou_ems_core.group_student_user,1,0,0,0
+student_admin,student.admin,model_oe_school_student,siantou_ems_core.group_student_admin,1,1,1,1
+
+student_career_user,student_career.user,model_oe_school_student_career,siantou_ems_core.group_student_career_user,1,0,0,0
+student_career_admin,student_career.admin,model_oe_school_student_career,siantou_ems_core.group_student_career_admin,1,1,1,1
+
+subject_user,subject.user,model_siantou_ems_core_subject,siantou_ems_core.group_subject_user,1,0,0,0
+subject_admin,subject.admin,model_siantou_ems_core_subject,siantou_ems_core.group_subject_admin,1,1,1,1
+
+teacher_user,teacher.user,model_hr_employee,siantou_ems_core.group_teacher_user,1,0,0,0
+teacher_admin,teacher.admin,model_hr_employee,siantou_ems_core.group_teacher_admin,1,1,1,1
+
+timetable_user,timetable.user,model_siantou_ems_timetable_timetable,siantou_ems_core.group_timetable_user,1,0,0,0
+timetable_admin,timetable.admin,model_siantou_ems_timetable_timetable,siantou_ems_core.group_timetable_admin,1,1,1,1
+
+timetable_group_user,timetable_group.user,model_siantou_ems_timetable_group,siantou_ems_core.group_timetable_user,1,0,0,0
+timetable_group_admin,timetable_group.admin,model_siantou_ems_timetable_group,siantou_ems_core.group_timetable_admin,1,1,1,1
+
+timetable_wizard_user,timetable_wizard.user,model_siantou_ems_timetable_timetable_wizard,siantou_ems_core.group_timetable_user,1,0,0,0
+timetable_wizard_admin,timetable_wizard.admin,model_siantou_ems_timetable_timetable_wizard,siantou_ems_core.group_timetable_admin,1,1,1,1
+
+timetable_print_wizard_user,timetable_print_wizard.user,model_siantou_ems_timetable_timetable_print_wizard,siantou_ems_core.group_timetable_user,1,0,0,0
+timetable_print_wizard_admin,timetable_print_wizard.admin,model_siantou_ems_timetable_timetable_print_wizard,siantou_ems_core.group_timetable_admin,1,1,1,1
+
+university_user,university.user,model_res_company,siantou_ems_core.group_university_user,1,0,0,0
+university_admin,university.admin,model_res_company,siantou_ems_core.group_university_admin,1,1,1,1
+
+year_user,year.user,model_siantou_ems_core_year,siantou_ems_core.group_year_user,1,0,0,0
+year_admin,year.admin,model_siantou_ems_core_year,siantou_ems_core.group_year_admin,1,1,1,1

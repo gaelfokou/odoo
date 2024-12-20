@@ -71,6 +71,7 @@
             name="Quartiers"
             parent="menu_siantou_ems_core_config"
             action="action_show_quarter"
+            groups="siantou_ems_core.group_quarter_user,siantou_ems_core.group_quarter_admin,base.group_system"
             sequence="12"
         />
 

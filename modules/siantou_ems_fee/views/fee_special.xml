@@ -9,25 +9,28 @@
                     <header>
                         <button name="validate_special" invisible="state == 'done'" type="object" string="Valider"
                             class="oe_highlight" confirm="Validez-vous cette facturation ?" />
-                        <button name="reset_special" invisible="state == 'draft'" type="object" string="Réinitoaliser" />
+                        <!-- <button name="reset_special" invisible="state == 'draft'" type="object" string="Réinitoaliser" /> -->
                         <field name="state" widget="statusbar" statusbar_visible="draft,done" />
                     </header>
                     <sheet>
                         <group col="4" colspan="4">
                             <group col="2" colspan="2">
                                 <field name="name" invisible="1"/>
-                                <field name="student_id" options="{'no_open': True, 'no_create': True}"/>
-                                <field name="fee_structure_id" options="{'no_open': True, 'no_create': True}"/>
-                                <!-- <field name="amount" /> -->
+                                <field name="student_id" options="{'no_open': True, 'no_create': True}" readonly="state in ['done']"/>
+                                <field name="fee_structure_id" domain="structure_frais_request_domain" 
+                                    options="{'no_open': True, 'no_create': True}" 
+                                    readonly="state in ['done']"/>
+                                <field name="structure_frais_request_domain" invisible="1"/>
+                                <field name="amount" readonly="state in ['done']"/>
+                                <field name="currency_id" invisible="1" />
                             </group>
                             <group col="2" colspan="2">
-                                <field name="academic_year_id" options="{'no_open': True, 'no_create': True}"/>
-                                <!-- <field name="currency_id" invisible="1" /> -->
+                                <field name="academic_year_id" options="{'no_open': True, 'no_create': True}" readonly="state in ['done']"/>
                             </group>
                         </group>
                         <notebook>
                             <page name="description" string="Description détaillé">
-                                <field name="description" placeholder="Une description des frais appliqué à l'étudiant"/>
+                                <field name="description" placeholder="Une description des frais appliqué à l'étudiant" readonly="state in ['done']"/>
                             </page>
                         </notebook>
                     </sheet>

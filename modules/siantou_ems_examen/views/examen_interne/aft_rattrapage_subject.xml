@@ -1,0 +1,89 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <record id="aft-rattrapage_subject_view_form" model="ir.ui.view">
+        <field name="name">rattrapage_subject_view_form.view.form</field>
+        <field name="model">rat.reg.sub</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button string="Valider" name="action_validate" type="object"
+                        class="oe_highlight" states="draft" />
+                    <button string="Confirmer" name="action_confirm" type="object"
+                        class="oe_highlight" states="validate" />
+                    <field name="state" widget="statusbar"
+                        statusbar_visible="draft,validate,confirm" />
+                </header>
+                <sheet>
+                    <div>
+                        <h2>
+                            <field name="name" states="validate,confirm" readonly="1" />
+                        </h2>
+                    </div>
+                    <group col="4" string="Informations">
+                        <group colspan="2">
+                            <field name="matiere_id"
+                                attrs="{'readonly': [('state','in',['draft','validate','confirm'])]}" />
+                        </group>
+                        <group colspan="2">
+                            <field name="class_id"
+                                attrs="{'readonly': [('state','in',['draft','validate','confirm'])]}" />
+                        </group>
+                        <group colspan="2">
+                            <field name="semestre_id"
+                                attrs="{'readonly': [('state','in',['draft','validate','confirm'])]}" />
+                        </group>
+                        <group colspan="2">
+                            <field name="anne_academique_id"
+                                attrs="{'readonly': [('state','in',['draft','validate','confirm'])]}" />
+                        </group>
+                        <group colspan="2">
+                            <field name="date"
+                                attrs="{'readonly': [('state','in',['draft','validate','confirm'])]}" />
+                        </group>
+                    </group>
+                    <notebook>
+                        <page name="rat_std_id" string="Étudiants" attrs="{'readonly': [('state','in',['validate','confirm'])],'invisible': [('state','in',['draft'])]}" >
+                            <field name="rat_std_ids">
+                                <tree editable="bottom">
+                                    <field name="student_id" />
+                                    <field name="statut" />
+                                    <field name="note_rattapage" />
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" groups="base.group_user" />
+                    <field name="message_ids" />
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="aft_rattrapage_subject_view_tree" model="ir.ui.view">
+        <field name="name">aft_rattrapage_subject_view_tree.view.tree</field>
+        <field name="model">rat.reg.sub</field>
+        <field name="arch" type="xml">
+            <tree 
+            create="false"
+            >
+                <field name="name" />
+                <field name="matiere_id" />
+                <field name="date" />
+                <field name="state" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="aft_rattrapage_subject_action" model="ir.actions.act_window">
+        <field name="name">Ajouter les notes</field>
+        <field name="res_model">rat.reg.sub</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Créer un document
+            </p>
+        </field>
+    </record>
+</odoo>

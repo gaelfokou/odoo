@@ -1,0 +1,69 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <record id="student_qr_code_view_form" model="ir.ui.view">
+        <field name="name">student_qr_code_view_form.view.form</field>
+        <field name="model">student.qr.code</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_validate" states="draft" type="object" string="Valider" class="oe_highlight"/>
+                    <button name="action_confirm" states="validate" type="object" string="Confirmer" class="oe_highlight"/>
+                    <button name="action_cancel" states="draft,validate" string="Annuler" type="object"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,validate,confirm,cancel"/>
+                </header>
+                <sheet>
+                    <div>
+                        <h2>
+                            <field name="name" states="validate,confirm,cancel" readonly="1" />
+                        </h2>
+                    </div>
+                    <group string="Informations">
+                        <group>
+                            <field name="classe_id" />
+                        </group>
+                        <group>
+                            <field name="annee_academique_id" />
+                        </group>
+                    </group>
+                    <notebook>
+                        <page name="lient" string="URL des étudiants">
+                            <field name="student_qr_liste_ids">
+                                <tree editable="bottom">
+                                    <field name="student_id" />
+                                    <field name="lien_qr" />
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" groups="base.group_user" />
+                    <field name="message_ids" />
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="student_qr_code_view_tree" model="ir.ui.view">
+        <field name="name">student_qr_code_view_tree.view.tree</field>
+        <field name="model">student.qr.code</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name" />
+                <field name="classe_id" />
+                <field name="annee_academique_id" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="student_qr_code_action" model="ir.actions.act_window">
+        <field name="name">Les liens des étudiants</field>
+        <field name="res_model">student.qr.code</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Enregistrer les liens
+            </p>
+        </field>
+    </record>
+</odoo>

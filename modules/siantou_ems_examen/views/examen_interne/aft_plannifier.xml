@@ -1,0 +1,235 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <record id="examen_view_form" model="ir.ui.view">
+        <field name="name">examen_view_form.view.form</field>
+        <field name="model">siantou.ems.examen.plannifier</field>
+        <field name="arch" type="xml">
+            <form string="">
+                <header>
+                    <button string="Valider" name="action_validate" type="object"
+                        class="oe_highlight"
+                        states="draft" />
+
+                    <button string="Confirmer" name="action_confirm" type="object"
+                        class="oe_highlight"
+                        states="validated" />
+
+                    <button string="Annuler" name="action_cancel" type="object"
+                        states="validated" />
+
+                    <button string="Calculer" name="action_calcul" type="object"
+                        class="oe_highlight"
+                        states="confirm" />
+
+                    <button string="Modifier" class="oe_highlight" name="action_modifier"
+                        type="object"
+                        states="cancel" />
+
+                    <field name="state" widget="statusbar"
+                        statusbar_visible="draft,validated,confirm,cancel,done" />
+                </header>
+                <sheet>
+                    <div>
+                        <h2>
+                            <field name="name" states="validated,confirm,cancel,done" readonly="1" />
+                        </h2>
+                    </div>
+                    <group string="Information" col="4">
+                        <group colspan="2">
+                            <field name="classe_id" attrs="{'readonly': [('state','in',['validated','confirm', 'cancel','done'])]}"/>
+                        </group>
+                        <group colspan="2">
+                            <field name="semestre_id" attrs="{'readonly': [('state','in',['validated','confirm', 'cancel','done'])]}"/>
+                        </group>
+                        <group colspan="2">
+                            <field name="annee_academique_id" attrs="{'readonly': [('state','in',['validated','confirm', 'cancel','done'])]}"/>
+                        </group>
+                        <group colspan="2">
+                            <field name="date" attrs="{'readonly': [('state','in',['validated','confirm', 'cancel','done'])]}"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page name="examen_lines" string="Lignes d'examen" attrs="{'readonly': [('state','in',['validated','confirm', 'cancel','done'])]}">
+                            <field name="line_examen_ids">
+                                <tree editable="top" create="false">
+                                    <field name="matiere_id" />
+                                    <field name="coeficien" />
+                                    <field name="pourcentage_cc" />
+                                    <field name="pourcentage_exam" />
+                                    <field name="pourcentage_presence" />
+                                    <field name="unite_enseignement_id" />
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" groups="base.group_user" />
+                    <field name="message_ids" />
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- Vous avez déjà défini ces vues, donc pas besoin de modifications ici -->
+    <record id="aft_examen_view_tree" model="ir.ui.view">
+        <field name="name">aft_examen_view_tree.view.tree</field>
+        <field name="model">siantou.ems.examen.plannifier</field>
+        <field name="arch" type="xml">
+            <tree string="">
+                <field name="name" />
+                <field name="classe_id" />
+                <field name="semestre_id" />
+                <field name="date" />
+                <field name="state" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="aft_examen_view_search" model="ir.ui.view">
+        <field name="name">aft_examen_view_search.search</field>
+        <field name="model">siantou.ems.examen.plannifier</field>
+        <field name="arch" type="xml">
+            <search string="Plannifier une SN ET CC">
+                <field name="classe_id" />
+                <field name="semestre_id" />
+                <field name="annee_academique_id"/>
+                <group expand="1" string="Grouper Par">
+                    <filter string="Classe" name="group_by_classe_id" context="{'group_by':'classe_id'}"/>
+                    <filter string="Semestre" name="group_by_semestre_id" context="{'group_by':'semestre_id'}"/>
+                    <filter string="Année académique" name="group_by_annee_academique_id" context="{'group_by':'annee_academique_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="aft_examen_action" model="ir.actions.act_window">
+        <field name="name">Plannifier une SN ET CC</field>
+        <field name="res_model">siantou.ems.examen.plannifier</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{'search_default_group_by_classe_id': 1,'search_default_group_by_annee_academique_id': 1,'search_default_group_by_semestre_id': 1}</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Créer une plannification
+            </p>
+        </field>
+    </record>
+</odoo>
+
+<!-- <?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <record id="examen_view_form" model="ir.ui.view">
+        <field name="name">examen_view_form.view.form</field>
+        <field name="model">siantou.ems.examen.plannifier</field>
+        <field name="arch" type="xml">
+            <form string="">
+                <header>
+                    <button string="Valider" name="action_validate" type="object"
+                        class="oe_highlight"
+                        states="draft" />
+
+                    <button string="Confirmer" name="action_confirm" type="object"
+                        class="oe_highlight"
+                        states="validated" />
+
+                    <button string="Annuler" name="action_cancel" type="object"
+                        states="validated" />
+
+                    <button string="Calculer" name="action_calcul" type="object"
+                        class="oe_highlight"
+                        states="confirm" />
+
+                    <button string="Modifier" class="oe_highlight" name="action_modifier"
+                        type="object"
+                        states="cancel" />
+
+                    <field name="state" widget="statusbar"
+                        statusbar_visible="draft,validated,confirm,cancel,done" />
+                </header>
+                <sheet>
+                    <div>
+                        <h2>
+                            <field name="name" states="validated,confirm,cancel,done" readonly="1" />
+                        </h2>
+                    </div>
+                    <group string="Information" col="4">
+                        <group colspan="2">
+                            <field name="classe_id"  attrs="{'readonly': [('state','in',['validated','confirm', 'cancel','done'])]}"/>
+                        </group>
+                        <group colspan="2">
+                            <field name="semestre_id" attrs="{'readonly': [('state','in',['validated','confirm', 'cancel','done'])]}"/>
+                        </group>
+                        <group colspan="2">
+                            <field name="annee_academique_id" attrs="{'readonly': [('state','in',['validated','confirm', 'cancel','done'])]}"/>
+                        </group>
+                        <group colspan="2">
+                            <field name="date" attrs="{'readonly': [('state','in',['validated','confirm', 'cancel','done'])]}"/>
+                        </group>
+                    </group>
+                    <notebook >
+                        <page name="name" string="Matiere" attrs="{'readonly': [('state','in',['validated','confirm', 'cancel','done'])]}">
+                            <field name="line_examen_ids">
+                                <tree editable="top"
+                                    create="false">
+                                    <field name="matiere_id" />
+                                    <field name="coeficien" />
+                                    <field name="pourcentage_cc" />
+                                    <field name="pourcentage_exam" />
+                                    <field name="pourcentage_presence" />
+                                    <field name="unite_enseignement_id" />
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" groups="base.group_user" />
+                    <field name="message_ids" />
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="aft_examen_view_tree" model="ir.ui.view">
+        <field name="name">aft_examen_view_tree.view.tree</field>
+        <field name="model">siantou.ems.examen.plannifier</field>
+        <field name="arch" type="xml">
+            <tree string="">
+                <field name="name" />
+                <field name="classe_id" />
+                <field name="semestre_id" />
+                <field name="date" />
+                <field name="state" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="aft_examen_view_search" model="ir.ui.view">
+        <field name="name">aft_examen_view_search.search</field>
+        <field name="model">siantou.ems.examen.plannifier</field>
+        <field name="arch" type="xml">
+            <search string="Plannifier une SN ET CC">
+                <field name="classe_id" />
+                <field name="semestre_id" />
+                <field name="annee_academique_id"/>
+                <group expand="1" string="Grouper Par">
+                    <filter string="Classe" name="group_by_classe_id" context="{'group_by':'classe_id'}"/>
+                    <filter string="Semestre" name="group_by_semestre_id" context="{'group_by':'semestre_id'}"/>
+                    <filter string="Année académique" name="group_by_annee_academique_id" context="{'group_by':'annee_academique_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="aft_examen_action" model="ir.actions.act_window">
+        <field name="name">Plannifier une SN ET CC</field>
+        <field name="res_model">siantou.ems.examen.plannifier</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{'search_default_group_by_classe_id': 1,'search_default_group_by_annee_academique_id': 1,'search_default_group_by_semestre_id': 1}</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Créer une plannification
+            </p>
+        </field>
+    </record>
+</odoo> -->

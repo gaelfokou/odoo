@@ -38,9 +38,9 @@ class DeSchool(http.Controller):
         for p in pays:
             datas.append({
                 'id': p.id,
+                'code': p.code,
                 'name': p.name,
             })
-
 
         return Response(
             json.dumps(datas)
@@ -83,6 +83,8 @@ class DeSchool(http.Controller):
             json.dumps(datas)
         )
 
+
+
     
     @http.route('/api/v1/cycles', type="http", methods=['GET'], cors="*", auth="none")
     def list_courses(self, **kw):
@@ -108,15 +110,17 @@ class DeSchool(http.Controller):
 
         # cycles = request.env['oe.school.course'].sudo().search([])
         for cycle in cycles:
+            niveaux = cycle.level_ids
             filieres = request.env['siantou.ems.core.field_of_study'].sudo().search([('cursus_id', '=', cycle.id)])
             diplo_requis = request.env['oe.school.course.degree'].sudo().search([('cursus_id', '=', cycle.id)])
 
-            if len(diplo_requis)>0 and len(filieres)>0:
+            if len(diplo_requis)>0 and len(filieres)>0 and len(niveaux)>0:
                 data.append({
                     'id': cycle.id,
                     'code': cycle.code,
                     'name': cycle.name,
                     'filieres': [{'id': filiere.id, 'name': filiere.name} for filiere in filieres],
+                    'niveaux': [{'id': niv.id, 'name': niv.name} for niv in niveaux],
                     'diplo_requis': [{'id': diplo.id, 'name': diplo.name} for diplo in diplo_requis]
                 })
 
@@ -140,7 +144,16 @@ class DeSchool(http.Controller):
                         'status': 'success',
                         'etudiant_id':etudiant.id,
                         'code_enrol':etudiant.code_enrol,
-                        'code_bank_paie_frais':code_bank_paie_frais.numero,
+                        'info_banque':{
+                            'denomination':code_bank_paie_frais.denomination,
+                            'numero':code_bank_paie_frais.numero,
+                            'nom_bank':code_bank_paie_frais.nom_bank,
+                            'code_1':code_bank_paie_frais.code_1,
+                            'code_2':code_bank_paie_frais.code_2,
+                            'cle_rib':code_bank_paie_frais.cle_rib,
+                            'swift_code':code_bank_paie_frais.swift_code,
+                            'iban':code_bank_paie_frais.iban,
+                        },
                         'dipl_req_ids':[dipl.name for dipl in etudiant.dipl_req_ids]
                     })
                 )
@@ -171,18 +184,54 @@ class DeSchool(http.Controller):
         code = f"{current_year}{letters}0000{nbre}"
         return code
 
-            
+    
+    def create_enroll_document(self, candidat, file):
+        # Création des document pour chaque candidature
+        document_obj = request.env['oe.school.student.enrollment.file']
+
+        if file:
+            dmd = document_obj.create({
+                "student_enrollemnt_id": candidat.id,
+            })
+            file_dmd = file
+            mime_type = file_dmd.content_type
+            attach = request.env['ir.attachment'].sudo().create({
+                'name': "%s-CANDIDAT-%s" % (candidat.code_enrol),
+                'type': 'binary',
+                'datas': base64.b64encode(file_dmd.read()),
+                'store_fname': "%s-CANDIDAT-%s" % (candidat.code_enrol),
+                'res_model': "oe.school.student.enrollment.file",
+                'res_id': dmd.id,
+                'mimetype': mime_type
+            }),
+            dmd.doc_attachment_id = [(6, 0, [attach[0].id])]
+
+            return dmd.id
+        else:
+            return 0
 
 
 
 
     @http.route('/api/v1/save', type="http", methods=['POST'], cors="*", auth="none", csrf=False)
-    def admission_form_submit(self,):
-        # _logger.info(request.httprequest.data)
+    def admission_form_submit(self,**kwargs):
         data = json.loads(request.httprequest.data)
+        _logger.info(data)
+        #=== remove files attribut list in data
+        files01 = data.pop('files')
+        # files = request.httprequest.files
+        # fichiers = kwargs.get('files')
+        # _logger.info(files01)
+        # _logger.info(files)
+        _logger.info(data)
+        # _logger.info(fichiers)
         is_existing = True
 
         try:
+
+            first_name = data.pop('first_name')
+            last_name = data.pop('last_name')
+            data['name'] = f"{first_name} {last_name}"
             #=== Get matricule generated
             code_enrol = self.generate_code()
             while is_existing:
@@ -194,6 +243,7 @@ class DeSchool(http.Controller):
                     data['code_enrol'] = code_enrol
                     is_existing = False
 
+            
             #===== create res partner instance =================
             partner = request.env['res.partner'].sudo().create({
                 "name":data['name']
@@ -238,10 +288,28 @@ class DeSchool(http.Controller):
 
                     #=== Insertion de l'utilisateur dans le registre correspondant à son cycle
                     data['registre_id']=registre_id.id
+                    # documents = []
                     _logger.info("========= etudiant pas encore crée")
-                    #=== Create a new student
-                    etudiant = request.env['oe.school.student.enrollment'].sudo().create(data)
 
+                    # file_name = kwargs.get('filename')
+                    #=== Create a new student
+                    if not data['nationalite']:
+                        data['is_autre_pays'] = True
+                    else:
+                        data['is_autre_pays'] = False
+                    etudiant = request.env['oe.school.student.enrollment'].sudo().create(data)
+                    # _logger.info(files)
+
+                    # if files:
+                    #     for file in files:
+                    #         _logger.info(file.name)
+                    #         dmd_id = self.create_enroll_document(
+                    #             etudiant,
+                    #             base64.b64decode(file)
+                    #         )
+                    #         documents.append(dmd_id)
+                    
+                    # etudiant.files_ids = [(6, 0, documents)]
                     if etudiant:
                         _logger.info(etudiant)
                         return Response(

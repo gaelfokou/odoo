@@ -63,6 +63,7 @@ class TimetablePrintWizard(models.TransientModel):
         report_action = self.env.ref('siantou_ems_core.action_report_timetable')
         return report_action.report_action(self, data=data)
 
+
     def print_timetable_report_data(self, user=None, is_user=None):
         # Récupérer les emplois du temps pour le semestre sélectionné
         domain = [

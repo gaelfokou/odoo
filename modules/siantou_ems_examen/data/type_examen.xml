@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data>
+        <record id="type_examen_cc_id" model="siantou.ems.type.examen">
+            <field name="code" >CC</field>
+            <field name="name">Contrôle continu</field>
+        </record>
+        <record id="type_examen_ef_id" model="siantou.ems.type.examen">
+            <field name="code" >SN</field>
+            <field name="name">Séssion normal</field>
+        </record>
+        <record id="type_examen_rt_id" model="siantou.ems.type.examen">
+            <field name="code" >SR</field>
+            <field name="name">Séssion de rattrapage</field>
+        </record>
+    </data>
+    
+</odoo>

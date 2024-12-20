@@ -62,7 +62,9 @@
                                     <field name="situat_matri"  widget="radio"/>
                                 </group>
                                 <group>
-                                    <field name="nationalite"/>
+                                    <field name="nationalite" invisible="is_autre_pays==True"/>
+                                    <field name="autre"/>
+                                    <field name="is_autre_pays" invisible="1"/>
                                 </group>
                                 <group>
                                     <field name="region_id"/>
@@ -168,6 +170,7 @@
         name="Etudiants"
         parent="menu_siantou_ems_core_students"
         action="action_admis_history"
+        groups="siantou_ems_core.group_student_user,siantou_ems_core.group_student_admin,base.group_system"
         sequence="2"
     />
 

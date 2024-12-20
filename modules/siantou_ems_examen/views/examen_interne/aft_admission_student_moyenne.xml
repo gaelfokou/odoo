@@ -1,0 +1,74 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <record id="admissio_candidat_view_form" model="ir.ui.view">
+        <field name="name">admissio_candidat_view_form.view.form</field>
+        <field name="model">siantou.ems.admission.run.note</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group col="4">
+                        <group colspan="2">
+                            <field name="candidat_id"/>
+                        </group>
+                        <group colspan="2">
+                            <field name="nationalite_id"/>
+                        </group>
+                        <group colspan="2">
+                            <field name="registre_id"/>
+                        </group>
+                        <group colspan="2">
+                            <field name="matricule"/>
+                        </group>
+                        <group colspan="2">
+                            <field name="moyenne"/>
+                        </group>
+                        <group colspan="2">
+                            <field name="rang"/>
+                        </group>
+                        <group colspan="2">
+                            <field name="rang_all"/>
+                        </group>
+                        <notebook>
+                            <page name="line_note_id" string="string">
+                                <field name="line_note_ids">
+                                    <tree>
+                                        <field name="obligatory" />
+                                        <field name="matiere_id" />
+                                        <field name="note" />
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="admissio_candidat_view_tree" model="ir.ui.view">
+        <field name="name">admissio_candidat_view_tree.view.tree</field>
+        <field name="model">siantou.ems.admission.run.note</field>
+        <field name="arch" type="xml">
+            <tree string="">
+                <field name="matricule"/>
+                <field name="candidat_id"/>
+                <field name="nationalite_id"/>
+                <field name="registre_id"/>
+                <field name="moyenne"/>
+                <field name="rang"/>
+                <field name="rang_all"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="admissio_candidat_view_action" model="ir.actions.act_window">
+        <field name="name">Résultat</field>
+        <field name="res_model">siantou.ems.admission.run.note</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Enregistrer les notes
+            </p>
+        </field>
+    </record>
+</odoo>

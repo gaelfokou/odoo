@@ -106,6 +106,7 @@
                 name="Enseignants"
                 parent="menu_siantou_ems_core_employee"
                 action="action_hr_employees_teachers"
+                groups="siantou_ems_core.group_teacher_user,siantou_ems_core.group_teacher_admin,base.group_system"
                 />
     </data>
 </odoo>

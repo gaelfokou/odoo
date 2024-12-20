@@ -5,13 +5,25 @@
             <field name="name">siantou.ems.fee.config.bank.form</field>
             <field name="model">siantou.ems.fee.config.bank</field>
             <field name="arch" type="xml">
-                <form string="Numéro de compte bancaire pour payer les frais d'inscription">
+                <form string="Banques pour payer les frais d'inscription">
                     <sheet>
                         <group>
-                            <group>
-                                <field name="numero" placeholder="Ex: YHOPL1252"/>
+                            <group string="Paiement nationaux">
+                                <group>
+                                    <field name="denomination" placeholder="Ex: Université siantou supérieur"/>
+                                    <field name="nom_bank" placeholder="Ex: AFRILAND FIRST BANK"/>
+                                    <field name="code_1" placeholder="Ex: 00001"/>
+                                    <field name="code_2" placeholder="Ex: 10005"/>
+                                    <field name="cle_rib" placeholder="Ex: YHOPL1252"/>
+                                    <field name="numero" placeholder="Ex: 03854381006"/>
+                                    <field name="name" invisible="1"/>
+                                </group>
                             </group>
-                            <group>
+                            <group string="Paiement internationaux">
+                                <field name="swift_code" placeholder="Ex: ICLRCMCXXXX"/>
+                                <field name="iban" placeholder="Ex: CM21 10005 00001 03853481001-20"/>
+                            </group>
+                            <group string="Configuration activé ?">
                                 <field name="active"/>
                             </group>
                         </group>
@@ -26,6 +38,10 @@
             <field name="arch" type="xml">
                 <tree string="Numéro de bancaire pour virer les frais d'inscription">
                     <field name="numero"/>
+                    <field name="denomination"/>
+                    <field name="nom_bank"/>
+                    <field name="swift_code"/>
+                    <field name="iban"/>
                     <field name="active"/>
                 </tree>
             </field>

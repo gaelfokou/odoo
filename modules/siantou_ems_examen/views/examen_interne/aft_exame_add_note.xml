@@ -1,0 +1,126 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <record id="aft_examen_add_note_view_form" model="ir.ui.view">
+        <field name="name">aft_examen_add_note_view_form.view.form</field>
+        <field name="model">siantou.ems.examen.registre.line</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button string="Valider" name="action_validate" type="object"
+                        class="oe_highlight"
+                        states="draft" />
+                    <button string="Confirmer" name="action_confirm" type="object"
+                        class="oe_highlight"
+                        states="validated" />
+                    <field name="state" widget="statusbar"
+                        statusbar_visible="draft,validated,confirm" />
+                </header>
+                <sheet>
+                    <div>
+                        <h2>
+                            <field name="name" states="validated,confirm" readonly="1" />
+                        </h2>
+                    </div>
+                    <group string="Information" col="4">
+                        <group colspan="2">
+                            <field name="type_examen_id"
+                                attrs="{'readonly': [('state','in',['draft','validated','confirm'])]}" />
+                        </group>
+                        <group colspan="2">
+                            <field name="matiere_id"
+                                attrs="{'readonly': [('state','in',['draft','validated','confirm'])]}" />
+                        </group>
+                        <group colspan="2">
+                            <field name="class_id"
+                                attrs="{'readonly': [('state','in',['draft','validated','confirm'])]}" />
+                        </group>
+                        <group colspan="2">
+                            <field name="semestre_id"
+                                attrs="{'readonly': [('state','in',['draft','validated','confirm'])]}" />
+                        </group>
+                        <group colspan="2">
+                            <field name="anne_academique_id"
+                                attrs="{'readonly': [('state','in',['draft','validated','confirm'])]}" />
+                        </group>
+                        <group colspan="2">
+                            <field name="unite_enseignement_id"
+                                attrs="{'readonly': [('state','in',['draft','validated','confirm'])]}" />
+                        </group>
+                        <group colspan="2">
+                            <field name="coeficien"
+                                attrs="{'readonly': [('state','in',['draft','validated','confirm'])]}" />
+                        </group>
+                        <group colspan="2">
+                            <field name="Pourcentage"
+                                attrs="{'readonly': [('state','in',['draft','validated','confirm'])]}" />
+                        </group>
+                    </group>
+                    <notebook attrs="{'invisible': [('state','=','draft')]}">
+                        <page name="name" string="Étudiant"
+                            attrs="{'readonly': [('state','in',['confirm'])]}">
+                            <field name="student_class_ids">
+                                <tree editable="top"
+                                    create="false"
+                                >
+                                    <field name="student_id" readonly="1"/>
+                                    <field name="note" />
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" groups="base.group_user" />
+                    <field name="message_ids" />
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="aft_examen_add_note_view_tree" model="ir.ui.view">
+        <field name="name">aft_examen_add_note_view_tree.view.tree</field>
+        <field name="model">siantou.ems.examen.registre.line</field>
+        <field name="arch" type="xml">
+            <tree create="false">
+                <field name="matiere_id" />
+                <field name="type_examen_id" />
+                <field name="class_id" />
+                <field name="anne_academique_id" />
+                <field name="semestre_id" />
+                <field name="state" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="aft_examen_add_note__view_search" model="ir.ui.view">
+        <field name="name">aft_examen_add_note__view_search.search</field>
+        <field name="model">siantou.ems.examen.registre.line</field>
+        <field name="arch" type="xml">
+            <search string="Régistre des examens">
+                <field name="matiere_id" />
+                <field name="type_examen_id" />
+                <field name="class_id" />
+                <field name="semestre_id" />
+                <field name="anne_academique_id"/>
+                <group expand="1" string="Grouper Par">
+                    <filter string="Classe" name="group_by_class_id" context="{'group_by':'class_id'}"/>
+                    <filter string="Semestre" name="group_by_semestre_id" context="{'group_by':'semestre_id'}"/>
+                    <filter string="Année académique" name="group_by_anne_academique_id" context="{'group_by':'anne_academique_id'}"/>
+                    <filter string="Type d'examen" name="group_by_type_examen_id" context="{'group_by':'type_examen_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="aft_examen_add_note_action" model="ir.actions.act_window">
+        <field name="name">Enregistrer les notes</field>
+        <field name="res_model">siantou.ems.examen.registre.line</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{'search_default_group_by_class_id': 1,'search_default_group_by_anne_academique_id': 1,'search_default_group_by_type_examen_id': 1}</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Enregistrer les notes
+            </p>
+        </field>
+    </record>
+</odoo>

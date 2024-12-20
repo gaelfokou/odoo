@@ -36,6 +36,7 @@
                 name="Diplôme réquis"
                 parent="menu_siantou_ems_core_config"
                 action="action_show_course_degree"
+                groups="siantou_ems_core.group_degree_required_user,siantou_ems_core.group_degree_required_admin,base.group_system"
                 sequence="7"/>
 	</data>
 </odoo>

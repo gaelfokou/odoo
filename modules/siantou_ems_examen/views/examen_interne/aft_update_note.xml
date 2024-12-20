@@ -1,0 +1,105 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <record id="aft_update_note_form" model="ir.ui.view">
+        <field name="name">aft_update_note_form.view.form</field>
+        <field name="model">siantou.ems.examen.update.note</field>
+        <field name="arch" type="xml">
+            <form string="">
+                <header>
+                    <button string="Valider" name="action_validate" type="object"
+                        class="oe_highlight" states="draft" />
+                    <button string="Confirmer" name="action_confirm" type="object"
+                        class="oe_highlight" states="validate" />
+
+                    <button string="Annuler" name="action_cancel" type="object" states="validate,confirm " />
+
+                    <field name="state" widget="statusbar"
+                        statusbar_visible="draft,validate,confirm,cancel" />
+                </header>
+                <sheet>
+                    <div>
+                        <h2>
+                            <field name="name" states="validate,confirm" readonly="1" />
+                        </h2>
+                    </div>
+                    <group string="Information(s)">
+                        <group>
+                            <field name="semestre_id"
+                                attrs="{'readonly': [('state','in',['validate','confirm','cancel'])]}" />
+                        </group>
+                        <group>
+                            <field name="annee_academique_id"
+                                attrs="{'readonly': [('state','in',['validate','confirm','cancel'])]}" />
+                        </group>
+                        <group>
+                            <field name="class_id"
+                                attrs="{'readonly': [('state','in',['validate','confirm','cancel'])]}" />
+                        </group>
+                        <group>
+                            <field name="student_id"
+                                attrs="{'readonly': [('state','in',['validate','confirm','cancel'])]}" />
+                        </group>
+                        <group>
+                            <field name="type_examen_id"
+                                attrs="{'readonly': [('state','in',['validate','confirm','cancel'])]}" />
+                        </group>
+                        <group>
+                            <field name="subject_id"
+                                attrs="{'readonly': [('state','in',['validate','confirm','cancel'])]}" />
+                        </group>
+                        <group>
+                            <field name="note"
+                                attrs="{'readonly': [('state','in',['validate','confirm','cancel'])]}" />
+                        </group>
+                        <group>
+                            <field name="motif_modification_note"
+                                attrs="{'readonly': [('state','in',['validate','confirm','cancel'])]}" />
+                        </group>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" groups="base.group_user" />
+                    <field name="message_ids" />
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="aft_update_note_tree" model="ir.ui.view">
+        <field name="name">aft_update_note_tree.view.tree</field>
+        <field name="model">siantou.ems.examen.update.note</field>
+        <field name="arch" type="xml">
+            <tree string="">
+
+                <field name="semestre_id" />
+
+                <field name="annee_academique_id" />
+
+                <field name="class_id" />
+
+                <field name="student_id" />
+
+                <field name="type_examen_id" />
+
+                <field name="subject_id" />
+
+                <field name="note" />
+
+                <field name="motif_modification_note" />
+
+                <field name="state" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="aft_update_note_action" model="ir.actions.act_window">
+        <field name="name">Formulaire pour modifier un note</field>
+        <field name="res_model">siantou.ems.examen.update.note</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Créer un document
+            </p>
+        </field>
+    </record>
+</odoo>

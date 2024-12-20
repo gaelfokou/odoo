@@ -16,6 +16,7 @@ class Level(models.Model):
         'Description',
     )
 
+
     # Ensemble des cours du niveau
     subject_ids = fields.One2many(
         'siantou.ems.core.subject',

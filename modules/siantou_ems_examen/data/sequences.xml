@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data>
+
+        <record id="seq_aft_examen" model="ir.sequence">
+            <field name="name">Creer un examen</field>
+            <field name="code">aft_examen.identifiant</field>
+            <field name="prefix">EX-%(y)s-</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False" />
+        </record>
+
+        <record id="seq_aft_examen_participant" model="ir.sequence">
+            <field name="name">Creer un participant examen</field>
+            <field name="code">aft_examen.participant</field>
+            <field name="prefix">EX-PR-%(y)s-</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False" />
+        </record>
+
+        <record id="seq_aft_examen_note" model="ir.sequence">
+            <field name="name">Creer une note</field>
+            <field name="code">aft_examen.add_note</field>
+            <field name="prefix">EX-NOTE-%(y)s-</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False" />
+        </record>
+
+        <record id="seq_aft_examen_registre" model="ir.sequence">
+            <field name="name">Code des régistre</field>
+            <field name="code">aft_examen.create_register</field>
+            <field name="prefix">EX-NOTE-%(y)s-</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False" />
+        </record>
+
+        <record id="seq_aft_admission_add_note" model="ir.sequence">
+            <field name="name">Code d'admission pour l'ajout des note</field>
+            <field name="code">aft_examen.admission_add_note</field>
+            <field name="prefix">AD-NOTE-%(y)s-</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False" />
+        </record>
+
+        <record id="seq_aft_rattrapage_registre" model="ir.sequence">
+            <field name="name">Régistre de rattrapage</field>
+            <field name="code">aft_examen.rattrapage_registre</field>
+            <field name="prefix">RR-%(y)s-</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False" />
+        </record>
+
+        <record id="seq_aft_rattrapage_ue" model="ir.sequence">
+            <field name="name">UE du régistre de rattrapage</field>
+            <field name="code">aft_examen.rattrapage_ue</field>
+            <field name="prefix">R-UE-%(y)s-</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False" />
+        </record>
+
+        <record id="seq_aft_rattrapage_sub_parent" model="ir.sequence">
+            <field name="name">Matière parent du régistre de rattrapage</field>
+            <field name="code">aft_examen.rattrapage_sub_parent</field>
+            <field name="prefix">R-MP-%(y)s-</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False" />
+        </record>
+
+        <record id="seq_aft_rattrapage_subject" model="ir.sequence">
+            <field name="name">matière du régistre de rattrapage</field>
+            <field name="code">aft_examen.rattrapage_subject</field>
+            <field name="prefix">R-MAT-%(y)s-</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False" />
+        </record>
+
+        <record id="seq_aft_promotion" model="ir.sequence">
+            <field name="name">Code promotion</field>
+            <field name="code">aft_formation.promotion</field>
+            <field name="prefix">PR-%(y)s-</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False" />
+        </record>
+
+        <record id="seq_aft_update" model="ir.sequence">
+            <field name="name">Code Update note</field>
+            <field name="code">aft_examen.update</field>
+            <field name="prefix">UP-NOTE-%(y)s-</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False" />
+        </record>
+
+        <record id="seq_lien" model="ir.sequence">
+            <field name="name">Code lien</field>
+            <field name="code">aft_examen.url</field>
+            <field name="prefix">URL-%(y)s-</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False" />
+        </record>
+
+
+        <record id="seq_student_qr_code" model="ir.sequence">
+            <field name="name">Séquence QR Code Étudiant</field>
+            <field name="code">student.qr.code</field>
+            <field name="prefix">QR-</field>
+            <field name="padding">5</field>
+        </record>
+        
+
+    </data>
+
+
+</odoo>

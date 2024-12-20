@@ -99,9 +99,9 @@ class Student(models.Model):
     nationalite = fields.Many2one(
         'siantou.ems.core.country',
         string="Nationalité(Pays d'origine)",
-        required=True,
     )
     autre = fields.Char(string="Autre pays")
+    is_autre_pays = fields.Boolean(string="Autre pays ?", default=False)
     lieu_residence = fields.Char(string="Lieu de résidence", required=True)
     email = fields.Char(string="E-mail", required=True)
     num_tel = fields.Char(string="N° de Téléphone", required=True)
@@ -147,15 +147,17 @@ class Student(models.Model):
             # Affecter les emplois du temps trouvés à l'attribut timetable_ids
             student.timetable_ids = timetables
 
-    def generate_matricule(self):
+    def generate_matricule(self, field_of_study_id):
         # Get the current year
         current_year = datetime.datetime.now().year
         last_caract_year = str(current_year)[2:]
+        # _logger.info(f"last_caract_year : {last_caract_year}")
         students = self.env['oe.school.student'].sudo().search([])  
+        # _logger.info(f"Matricule généré : {len(students)}")
         nbre = len(students) + 1
-        code = f"{last_caract_year}IUS000{nbre}"
-        _logger.info(f"Matricule généré : {code}")
-        return code
+        matricule = f"{last_caract_year}{field_of_study_id.school_id.code}000{nbre}"
+        _logger.info(f"Matricule généré : {matricule}")
+        return matricule
 
 
     def action_create_portal_user(self):
@@ -191,14 +193,14 @@ class Student(models.Model):
 
     @api.model
     def create(self, vals):
-        field_of_study = self.env['siantou.ems.core.field_of_study'].browse(vals['field_of_study_id'])
+        field_of_study_id = self.env['siantou.ems.core.field_of_study'].browse(vals['field_of_study_id'])
         batch = self.env['siantou.ems.core.student.batch'].assign_batch(
-            field_of_study.school_id.id, 
-            field_of_study.id, 
+            field_of_study_id.school_id.id, 
+            field_of_study_id.id, 
             vals['level_id']
         )
         vals['batch_id'] = batch.id
-        vals['matricule'] = self.generate_matricule()
+        vals['matricule'] = self.generate_matricule(field_of_study_id)
 
         # Création de l'étudiant
         student = super().create(vals)

@@ -71,6 +71,7 @@
             name="Régions"
             parent="menu_siantou_ems_core_config"
             action="action_show_region"
+            groups="siantou_ems_core.group_region_user,siantou_ems_core.group_region_admin,base.group_system"
             sequence="10"
         />
 

@@ -39,18 +39,17 @@ class StudentEnrollmentAdmissionWizard(models.TransientModel):
         return res
 
 
-    def generate_matricule(self):
+    def generate_matricule(self, field_of_study_id):
         # Get the current year
         current_year = datetime.now().year
         last_caract_year = str(current_year)[2:]
-        _logger.info(f"last_caract_year : {last_caract_year}")
+        # _logger.info(f"last_caract_year : {last_caract_year}")
         students = self.env['oe.school.student'].sudo().search([])  
-        _logger.info(f"Matricule généré : {len(students)}")
+        # _logger.info(f"Matricule généré : {len(students)}")
         nbre = len(students) + 1
-        code = f"{last_caract_year}IUS000000{nbre}"
-        _logger.info(f"Matricule généré : {code}")
-        return code
-
+        matricule = f"{last_caract_year}{field_of_study_id.school_id.code}000{nbre}"
+        _logger.info(f"Matricule généré : {matricule}")
+        return matricule
 
 
     def student_enroll_admission(self):
@@ -58,10 +57,10 @@ class StudentEnrollmentAdmissionWizard(models.TransientModel):
         if self.student_enrollement_id:  
             matricule=self.student_enrollement_id.matricule
             if not matricule:
-                matricule = f'{self.generate_matricule()}'
+                matricule = self.generate_matricule(self.student_enrollement_id.field_of_study_id)
 
             if self.student_enrollement_id.status_univ=='new':
-                student_id = self.env['oe.school.student'].create({
+                data = {
                     'student_enroll_id': self.student_enrollement_id.id,
                     'name': self.student_enrollement_id.name,
                     'matricule': matricule,
@@ -76,19 +75,27 @@ class StudentEnrollmentAdmissionWizard(models.TransientModel):
                     'lieu_naissance': self.student_enrollement_id.lieu_naissance,
                     'sexe': self.student_enrollement_id.sexe,
                     'situat_matri': self.student_enrollement_id.situat_matri,
-                    'nationalite': self.student_enrollement_id.nationalite.id,
-                    'autre': self.student_enrollement_id.autre,
                     'lieu_residence': self.student_enrollement_id.lieu_residence,
                     'email': self.student_enrollement_id.email,
                     'num_tel': self.student_enrollement_id.num_tel,
                     'level_id': self.student_enrollement_id.level_id.id,
-                })
+                    'is_autre_pays': self.student_enrollement_id.is_autre_pays,
+                }
+                if not self.student_enrollement_id.nationalite:
+                    data['autre'] = self.student_enrollement_id.autre
+                    data['is_autre_pays'] = True
+                else:
+                    data['nationalite'] = self.student_enrollement_id.nationalite.id
+                    data['is_autre_pays'] = False
+                
+                student_id = self.env['oe.school.student'].create(data)
             else:
                 student_id = self.env['oe.school.student'].search([
-                    ('name','=',self.student_enrollement_id.name),
-                    ('matricule','=',matricule),
-                ], limit=1)
-
+                        ('name','=',self.student_enrollement_id.name),
+                        ('matricule','=',matricule),
+                    ], 
+                    limit=1
+                )
 
             self.student_enrollement_id.status='transfer'
             self.student_enrollement_id.observations=self.observations
