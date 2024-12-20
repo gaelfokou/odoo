@@ -381,7 +381,7 @@ class HrPayslip(models.Model):
                     start_time = datetime.strftime(start_time, TIME_FORMAT)
                     end_time = datetime.strptime(f'{employee_timetable.date} {self.convert_float_to_time(employee_timetable.end_time)}', DATETIME_FORMAT)
                     end_time = datetime.strftime(end_time, TIME_FORMAT)
-                    message = 'Notification Absence {} {}'.format(start_time, end_time)
+                    message = 'Absence de {} {}'.format(start_time, end_time)
                     timetable_notifications = self.env['siantou.ems.timetable.notification'].search([
                         ('template', '=', template),
                         ('timetable_id', '=', employee_timetable.id),
@@ -429,7 +429,7 @@ class HrPayslip(models.Model):
                 if len(employee_timetables) == 0:
                     template = 'om_hr_payroll.om_hr_payroll_template_timetable_notification_exception'
                     punching_time = datetime.strftime(self.convert_datetime_from_utc(punching_time), TIME_FORMAT)
-                    message = 'Notification Exception {}'.format(punching_time)
+                    message = 'Exception de {}'.format(punching_time)
                     timetable_notifications = self.env['siantou.ems.timetable.notification'].search([
                         ('template', '=', template),
                         ('attendance_id', '=', daily_attendance.id),

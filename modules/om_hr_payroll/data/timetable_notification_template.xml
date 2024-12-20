@@ -18,6 +18,7 @@
                         </h2>
                         <div>
                             <h3>Ceci est un message de notification d'absence.</h3>
+                            <h3><t t-out="object.message"/></h3>
                         </div>
                     </div>
                     <br/>
@@ -46,6 +47,7 @@
                         </h2>
                         <div>
                             <h3>Ceci est un message de notification d'exception.</h3>
+                            <h3><t t-out="object.message"/></h3>
                         </div>
                     </div>
                     <br/>
