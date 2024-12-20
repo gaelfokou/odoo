@@ -519,7 +519,7 @@
             </xpath>
             <div id="portal_client_category" position="inside">
                 <t t-call="portal.portal_docs_entry">
-                    <t t-set="icon" t-value="'/siantou_ems_portal/static/src/img/payment_grid.png'"/>
+                    <t t-set="icon" t-value="'/siantou_ems_portal/static/src/img/notification_grid.png'"/>
                     <t t-set="title">Notifications</t>
                     <t t-set="url" t-value="'/my/notification'"/>
                     <t t-set="text">Affichez vos notifications</t>
