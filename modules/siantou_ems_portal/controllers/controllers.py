@@ -11,7 +11,7 @@ import logging
 DATE_FORMAT = '%Y-%m-%d'
 DATE_FORMAT_FR = '%d/%m/%Y'
 DATETIME_FORMAT = '%Y-%m-%d %H:%M:%S'
-DATETIME_FORMAT_FR = '%d/%m/%Y %H:%M:%S'
+DATETIME_FORMAT_FR = '%d/%m/%Y %H:%M'
 TIME_FORMAT = '%H:%M'
 
 CURRENT_WEEKDAY = {
@@ -218,10 +218,10 @@ class PortalAccount(portal.CustomerPortal):
             notification['template'] = search_notification.template
             if search_notification.timetable_id:
                 start_time = datetime.strptime(f'{search_notification.timetable_id.date} {Helpers.convert_float_to_time(search_notification.timetable_id.start_time, True)}', DATETIME_FORMAT)
-                notification['time'] = datetime.strftime(start_time, DATETIME_FORMAT_FR)
+                notification['time'] = datetime.strftime(start_time, TIME_FORMAT)
             elif search_notification.attendance_id:
                 punching_time = search_notification.attendance_id.punching_time
-                notification['time'] = datetime.strftime(Helpers.convert_datetime_from_utc(punching_time), DATETIME_FORMAT_FR)
+                notification['time'] = datetime.strftime(Helpers.convert_datetime_from_utc(punching_time), TIME_FORMAT)
             notification['status'] = search_notification.status
             notifications.append(notification)
         return request.render('siantou_ems_portal.siantou_ems_portal_my_home_notification_views',
