@@ -21,12 +21,17 @@ CURRENT_WEEKDAY = {
     3: 'Jeudi',
     4: 'Vendredi',
     5: 'Samedi',
-    6: 'Dimanche'
+    6: 'Dimanche',
 }
 
 TYPE_PAIEMENT = {
     'pu': 'Paiement unique',
     'pt': 'Paiement par tranches',
+}
+
+STATUS_NOTIFICATION = {
+    '0': 'En attente',
+    '1': 'Terminé',
 }
 
 _logger = logging.getLogger(__name__)
@@ -217,7 +222,7 @@ class PortalAccount(portal.CustomerPortal):
             notification['name'] = search_notification.employee_id.name
             notification['template'] = search_notification.template
             notification['message'] = search_notification.message
-            notification['status'] = search_notification.status
+            notification['status'] = STATUS_NOTIFICATION[search_notification.status]
             notifications.append(notification)
         return request.render('siantou_ems_portal.siantou_ems_portal_my_home_notification_views',
                                 {

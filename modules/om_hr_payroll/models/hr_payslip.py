@@ -394,6 +394,7 @@ class HrPayslip(models.Model):
                             'template': template,
                             'timetable_id': employee_timetable.id,
                             'employee_id': employee_timetable.employee_id.id,
+                            'date': employee_timetable.date,
                             'message': message,
                         })
                     employee_timetable.sudo().write({'status': '2'})
@@ -442,6 +443,7 @@ class HrPayslip(models.Model):
                             'template': template,
                             'attendance_id': daily_attendance.id,
                             'employee_id': daily_attendance.employee_id.id,
+                            'date': daily_attendance.punching_time.date(),
                             'message': message,
                         })
 
