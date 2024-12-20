@@ -377,9 +377,9 @@ class HrPayslip(models.Model):
                     employee_timetable.sudo().write({'status': '1'})
                 else:
                     template = 'om_hr_payroll.om_hr_payroll_template_timetable_notification_absence'
-                    start_time = datetime.strptime(f'{employee_timetable.date} {self.convert_float_to_time(employee_timetable.start_time, True)}', DATETIME_FORMAT)
+                    start_time = datetime.strptime(f'{employee_timetable.date} {self.convert_float_to_time(employee_timetable.start_time)}', DATETIME_FORMAT)
                     start_time = datetime.strftime(start_time, TIME_FORMAT)
-                    end_time = datetime.strptime(f'{employee_timetable.date} {self.convert_float_to_time(employee_timetable.end_time, True)}', DATETIME_FORMAT)
+                    end_time = datetime.strptime(f'{employee_timetable.date} {self.convert_float_to_time(employee_timetable.end_time)}', DATETIME_FORMAT)
                     end_time = datetime.strftime(end_time, TIME_FORMAT)
                     message = 'Notification Absence {} {}'.format(start_time, end_time)
                     timetable_notifications = self.env['siantou.ems.timetable.notification'].search([
