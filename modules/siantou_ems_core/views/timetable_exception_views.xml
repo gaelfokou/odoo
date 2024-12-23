@@ -8,7 +8,7 @@
             <field name="name">timetable.tree.view</field>
 			<field name="model">siantou.ems.timetable.timetable</field>
 			<field name="arch" type="xml">
-				<tree delete="false" string="Emploi du temps" editable="bottom" edit="1">
+				<tree delete="false" string="Emploi du temps">
                     <field name="group_id"/>
                     <field name="date"/>
                     <field name="field_of_study_id"/>
