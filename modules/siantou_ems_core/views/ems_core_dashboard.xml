@@ -10,6 +10,7 @@
             id="menu_owl_ems_core_dashboard" 
             parent="menu_siantou_ems_core" 
             sequence="10" 
+            groups="siantou_ems_core.group_dashboard_admin"
             action="action_owl_ems_core_dashboard" 
         />
     </data>

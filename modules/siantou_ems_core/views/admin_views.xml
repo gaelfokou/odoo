@@ -1,0 +1,23 @@
+<odoo>
+    <data>
+        <!-- Étendre la vue form de res.users -->
+        <record id="view_users_form_inherit_groups" model="ir.ui.view">
+            <field name="name">res.users.form.groups</field>
+            <field name="model">res.users</field>
+            <field name="inherit_id" ref="base.view_users_form"/>
+            <field name="arch" type="xml">
+                <!-- Utilisation d'un ID direct -->
+                <xpath expr="//page[@name='preferences']" position="after">
+                    <page name="administration" string="Administration"
+                          attributes="{'invisible': [('user_has_groups', 'siantou_ems_core.group_super_user', '=', False)]}">
+                        <group>
+                            <!-- <field name="admin_category_id" invisible="1"/> -->
+                            <field name="groups_id" widget="many2many_checkboxes" 
+                                   domain="[('category_id', 'in', [77, 84])]"/>
+                        </group>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

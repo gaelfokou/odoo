@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
     <data>
+        <!-- Gerer les groupes -->
+        <record id="group_super_user" model="res.groups">
+            <field name="name">Gestionnaire de groupes</field>
+            <field name="category_id" ref="base.module_category_administration"/>
+        </record>
+
         <!-- batch -->
         <record id="group_batch_user" model="res.groups">
             <field name="name">Lots étudiants - user</field>
@@ -33,18 +39,6 @@
         </record>
         <record id="group_building_admin" model="res.groups">
             <field name="name">Bâtiments - admin</field>
-            <field name="category_id" ref="base.module_category_administration"/>
-            <field name="implied_ids" eval="[(4, ref('base.group_system'))]"/>
-        </record>
-        
-        <!-- Campus -->
-        <record id="group_campus_user" model="res.groups">
-            <field name="name">Campus - user</field>
-            <field name="category_id" ref="base.module_category_administration"/>
-            <field name="implied_ids" eval="[(4, ref('base.group_system'))]"/>
-        </record>
-        <record id="group_campus_admin" model="res.groups">
-            <field name="name">Campus - admin</field>
             <field name="category_id" ref="base.module_category_administration"/>
             <field name="implied_ids" eval="[(4, ref('base.group_system'))]"/>
         </record>
@@ -261,6 +255,13 @@
         </record>
         <record id="group_year_admin" model="res.groups">
             <field name="name">Gestion des années académique - admin</field>
+            <field name="category_id" ref="base.module_category_administration"/>
+            <field name="implied_ids" eval="[(4, ref('base.group_system'))]"/>
+        </record>
+        
+        <!-- Tableau de bord -->
+        <record id="group_dashboard_admin" model="res.groups">
+            <field name="name">Tableau de bord - admin</field>
             <field name="category_id" ref="base.module_category_administration"/>
             <field name="implied_ids" eval="[(4, ref('base.group_system'))]"/>
         </record>

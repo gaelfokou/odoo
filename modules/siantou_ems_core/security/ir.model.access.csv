@@ -1,5 +1,8 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 
+
+access_super_user_groups,Access.Super.User.Groups,base.model_res_groups,siantou_ems_core.group_super_user,1,1,1,1
+
 batch_user,batch.user,model_siantou_ems_core_student_batch,siantou_ems_core.group_batch_user,1,0,0,0
 batch_admin,batch.admin,model_siantou_ems_core_student_batch,siantou_ems_core.group_batch_admin,1,1,1,1
 
@@ -51,8 +54,14 @@ student_career_admin,student_career.admin,model_oe_school_student_career,siantou
 subject_user,subject.user,model_siantou_ems_core_subject,siantou_ems_core.group_subject_user,1,0,0,0
 subject_admin,subject.admin,model_siantou_ems_core_subject,siantou_ems_core.group_subject_admin,1,1,1,1
 
+subject_priority_user,subject.priority.user,model_siantou_ems_core_teacher_subject_priority,siantou_ems_core.group_subject_user,1,0,0,0
+subject_priority_admin,subject.priority.admin,model_siantou_ems_core_teacher_subject_priority,siantou_ems_core.group_subject_admin,1,1,1,1
+
 teacher_user,teacher.user,model_hr_employee,siantou_ems_core.group_teacher_user,1,0,0,0
 teacher_admin,teacher.admin,model_hr_employee,siantou_ems_core.group_teacher_admin,1,1,1,1
+
+teacher_avaibility_user,teacher.avaibility.user,model_siantou_ems_core_teacher_availability,siantou_ems_core.group_teacher_user,1,0,0,0
+teacher_avaibility_admin,teacher.avaibility.admin,model_siantou_ems_core_teacher_availability,siantou_ems_core.group_teacher_admin,1,1,1,1
 
 timetable_user,timetable.user,model_siantou_ems_timetable_timetable,siantou_ems_core.group_timetable_user,1,0,0,0
 timetable_admin,timetable.admin,model_siantou_ems_timetable_timetable,siantou_ems_core.group_timetable_admin,1,1,1,1

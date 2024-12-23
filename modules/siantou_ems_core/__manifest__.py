@@ -22,6 +22,9 @@
         # Fichier des menus
         'views/menu_views.xml',
 
+        # Fichier de la section admin
+        # 'views/admin_views.xml',
+
         # Fichier des vues
         'views/year_views.xml',
         'views/semester_views.xml',
