@@ -27,6 +27,7 @@
                         decoration-danger="status == '2'"
                         decoration-info="status == '3'"
                         decoration-warning="status == '4'"/>
+                    <button name="action_cancel_timetable_exception" type="object" string="Annuler l'exception" class="btn btn-primary"/>
 				</tree>
 			</field>
 		</record>
