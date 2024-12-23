@@ -234,7 +234,7 @@ class PortalAccount(portal.CustomerPortal):
                 notification['subject_code'] = search_notification.timetable_id.subject_id.code
                 notification['classroom_name'] = search_notification.timetable_id.classroom_id.name
                 notification['building_name'] = search_notification.timetable_id.classroom_id.building_id.name
-            elif search_notification.template == 'is_student':
+            else:
                 notification['subject_name'] = ''
                 notification['subject_code'] = ''
                 notification['classroom_name'] = ''
