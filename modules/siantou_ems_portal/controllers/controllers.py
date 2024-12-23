@@ -24,6 +24,14 @@ CURRENT_WEEKDAY = {
     6: 'Dimanche',
 }
 
+STATUS_TIMETABLE = {
+    '0': 'En attente',
+    '1': 'Présent',
+    '2': 'Absent',
+    '3': 'Permissionnaire',
+    '4': 'Exception',
+}
+
 TYPE_PAIEMENT = {
     'pu': 'Paiement unique',
     'pt': 'Paiement par tranches',
@@ -31,7 +39,7 @@ TYPE_PAIEMENT = {
 
 STATUS_NOTIFICATION = {
     '0': 'En attente',
-    '1': 'Terminé',
+    '1': 'Envoyé',
 }
 
 _logger = logging.getLogger(__name__)
@@ -76,6 +84,7 @@ class PortalAccount(portal.CustomerPortal):
             timetable['day_of_week'] = CURRENT_WEEKDAY[search_timetable.date.weekday()]
             timetable['start_time'] = search_timetable.start_time
             timetable['end_time'] = search_timetable.end_time
+            timetable['status'] = STATUS_TIMETABLE[search_timetable.status]
             timetables.append(timetable)
         if view_type == 'calendar':
             timetables = Helpers.format_timetable(timetables)
