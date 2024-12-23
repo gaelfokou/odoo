@@ -544,6 +544,7 @@
                             <th class="text-left">Date</th>
                             <th class="text-left">Message</th>
                             <th class="text-left">Enseignant</th>
+                            <th class="text-left">Cours</th>
                             <th class="text-left">Statut</th>
                         </tr>
                     </thead>
@@ -560,6 +561,9 @@
                                     <span t-esc="record['name']"/>
                                 </td>
                                 <td class='text-left'>
+                                    <span t-esc="record['subject_name']"/>
+                                </td>
+                                <td class='text-left'>
                                     <span t-esc="record['status']"/>
                                 </td>
                             </tr>
@@ -567,7 +571,7 @@
                     </tbody>
                     <tfooter>
                         <tr>
-                            <th class="text-left" colspan="4" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
+                            <th class="text-left" colspan="5" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
                         </tr>
                     </tfooter>
                 </t>
