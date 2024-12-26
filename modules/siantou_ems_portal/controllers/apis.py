@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from odoo import http
 from odoo.http import request, content_disposition
+import json
 from odoo.addons.portal.controllers import portal
 from odoo.exceptions import UserError, ValidationError
 from datetime import date, datetime, timedelta, time
@@ -44,25 +45,9 @@ STATUS_NOTIFICATION = {
 
 _logger = logging.getLogger(__name__)
 
-class PortalAccount(portal.CustomerPortal):
-    def _prepare_home_portal_values(self, counters):
-        values = super()._prepare_home_portal_values(counters)
-        if 'portal_timetable' in counters:
-            is_user = None
-            if http.request.env.user.employee_id.id:
-                is_user = 'is_teacher'
-            else:
-                user = http.request.env['oe.school.student'].sudo().search([('user_id', '=', http.request.env.user.id)], limit=1)
-                if user:
-                    is_user = 'is_student'
-            values['portal_timetable'] = 1
-            values['portal_schoolfee'] = 1 if is_user == 'is_student' else 0
-            values['portal_paymenthistory'] = 1 if is_user == 'is_teacher' else 0
-            values['portal_notification'] = 1 if is_user == 'is_teacher' else 0
-        return values
-
-    @http.route(['/my/timetable', '/my/timetable/page/<int:page>'], type='http', auth="user", website=True)
-    def portal_timetable(self, page=1, search='', search_in='all', view_type='calendar', **kw):
+class ApiAccount(http.Controller):
+    @http.route(['/api/timetable', '/api/timetable/page/<int:page>'], type='json', auth='user')
+    def api_timetable(self, page=1, search='', search_in='all', view_type='calendar', **kw):
         if view_type not in ['calendar', 'list']:
             view_type = 'calendar'
         # Utilisation de la fonction du helper
@@ -101,20 +86,25 @@ class PortalAccount(portal.CustomerPortal):
                 timetable['start_time'] = Helpers.convert_float_to_time(timetable['start_time'])
                 timetable['end_time'] = Helpers.convert_float_to_time(timetable['end_time'])
             timetables = Helpers.paginate_list(timetables, 10, page)
-        return request.render(f'siantou_ems_portal.siantou_ems_portal_my_home_timetable_{view_type}_views',
-                                {
-                                    'timetables': timetables['pages'],
-                                    'timetable_pages_total': timetables['pages_total'],
-                                    'timetable_page_number': page,
-                                    'timetable_view_type': view_type,
-                                    'page_name': 'timetable',
-                                    'search': search,
-                                    'search_in': search_in,
-                                    'searchbar_inputs': searchbar_inputs,
-                                })
+        body = {
+            'code': 200,
+            'message': '',
+            'data': {
+                'timetables': timetables['pages'],
+                'timetable_pages_total': timetables['pages_total'],
+                'timetable_page_number': page,
+                'timetable_view_type': view_type,
+                'page_name': 'timetable',
+                'search': search,
+                'search_in': search_in,
+                'searchbar_inputs': searchbar_inputs,
+            }
+        }
+        data = json.dumps(body)
+        return json.loads(data)
 
-    @http.route(['/my/timetable/download', '/my/timetable/download/page/<int:page>'], type='http', auth="user", website=True)
-    def portal_timetable_download(self, page=1, search='', search_in='all', **kw):
+    @http.route(['/api/timetable/download', '/api/timetable/download/page/<int:page>'], type='json', auth='user')
+    def api_timetable_download(self, page=1, search='', search_in='all', **kw):
         user = None
         is_user = None
         if http.request.env.user.employee_id.id:
@@ -161,8 +151,8 @@ class PortalAccount(portal.CustomerPortal):
             status=200
         )
 
-    @http.route(['/my/schoolfee', '/my/schoolfee/page/<int:page>'], type='http', auth="user", website=True)
-    def portal_schoolfee(self, page=1, search='', search_in='all', **kw):
+    @http.route(['/api/schoolfee', '/api/schoolfee/page/<int:page>'], type='json', auth='user')
+    def api_schoolfee(self, page=1, search='', search_in='all', **kw):
         # Utilisation de la fonction du helper
         search_schoolfees, searchbar_inputs = Helpers.schoolfee(search, search_in)
         total_amount = 0.0
@@ -183,17 +173,22 @@ class PortalAccount(portal.CustomerPortal):
             total_amount += schoolfee['amount']
             total_structure_amount += schoolfee['structure_frais_amount_total']
             total_rest_amount = total_structure_amount - total_amount
-        return request.render('siantou_ems_portal.siantou_ems_portal_my_home_schoolfee_views',
-                                {
-                                    'schoolfees': schoolfees,
-                                    'page_name': 'schoolfee',
-                                    'total_amount': total_amount,
-                                    'total_structure_amount': total_structure_amount,
-                                    'total_rest_amount': total_rest_amount,
-                                })
+        body = {
+            'code': 200,
+            'message': '',
+            'data': {
+                'schoolfees': schoolfees,
+                'page_name': 'schoolfee',
+                'total_amount': total_amount,
+                'total_structure_amount': total_structure_amount,
+                'total_rest_amount': total_rest_amount,
+            }
+        }
+        data = json.dumps(body)
+        return json.loads(data)
 
-    @http.route(['/my/paymenthistory', '/my/paymenthistory/page/<int:page>'], type='http', auth="user", website=True)
-    def portal_paymenthistory(self, page=1, search='', search_in='all', **kw):
+    @http.route(['/api/paymenthistory', '/api/paymenthistory/page/<int:page>'], type='json', auth='user')
+    def api_paymenthistory(self, page=1, search='', search_in='all', **kw):
         # Utilisation de la fonction du helper
         search_paymenthistories, searchbar_inputs = Helpers.paymenthistory(search, search_in)
         total_amount = 0.0
@@ -215,16 +210,21 @@ class PortalAccount(portal.CustomerPortal):
             paymenthistories.append(paymenthistory)
             total_amount += paymenthistory['amount']
             total_number_of_hours += paymenthistory['number_of_hours']
-        return request.render('siantou_ems_portal.siantou_ems_portal_my_home_paymenthistory_views',
-                                {
-                                    'paymenthistories': paymenthistories,
-                                    'page_name': 'paymenthistory',
-                                    'total_amount': total_amount,
-                                    'total_number_of_hours': total_number_of_hours,
-                                })
+        body = {
+            'code': 200,
+            'message': '',
+            'data': {
+                'paymenthistories': paymenthistories,
+                'page_name': 'paymenthistory',
+                'total_amount': total_amount,
+                'total_number_of_hours': total_number_of_hours,
+            }
+        }
+        data = json.dumps(body)
+        return json.loads(data)
 
-    @http.route(['/my/notification', '/my/notification/page/<int:page>'], type='http', auth="user", website=True)
-    def portal_notification(self, page=1, search='', search_in='all', **kw):
+    @http.route(['/api/notification', '/api/notification/page/<int:page>'], type='json', auth='user')
+    def api_notification(self, page=1, search='', search_in='all', **kw):
         # Utilisation de la fonction du helper
         search_notifications, searchbar_inputs = Helpers.notification(search, search_in)
         notifications = []
@@ -246,8 +246,13 @@ class PortalAccount(portal.CustomerPortal):
             notification['message'] = search_notification.message
             notification['status'] = STATUS_NOTIFICATION[search_notification.status]
             notifications.append(notification)
-        return request.render('siantou_ems_portal.siantou_ems_portal_my_home_notification_views',
-                                {
-                                    'notifications': notifications,
-                                    'page_name': 'notification',
-                                })
+        body = {
+            'code': 200,
+            'message': '',
+            'data': {
+                'notifications': notifications,
+                'page_name': 'notification',
+            }
+        }
+        data = json.dumps(body)
+        return json.loads(data)
