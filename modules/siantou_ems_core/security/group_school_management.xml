@@ -265,5 +265,41 @@
             <field name="category_id" ref="base.module_category_administration"/>
             <field name="implied_ids" eval="[(4, ref('base.group_system'))]"/>
         </record>
+        
+        <!-- Candidatures -->
+        <record id="group_candidature_user" model="res.groups">
+            <field name="name">Gestion des candidatures - user</field>
+            <field name="category_id" ref="base.module_category_administration"/>
+            <field name="implied_ids" eval="[(4, ref('base.group_system'))]"/>
+        </record>
+        <record id="group_candidature_admin" model="res.groups">
+            <field name="name">Gestion des candidatures - admin</field>
+            <field name="category_id" ref="base.module_category_administration"/>
+            <field name="implied_ids" eval="[(4, ref('base.group_system'))]"/>
+        </record>
+        
+        <!-- Session -->
+        <record id="group_session_user" model="res.groups">
+            <field name="name">Gestion des sessions d'admission - user</field>
+            <field name="category_id" ref="base.module_category_administration"/>
+            <field name="implied_ids" eval="[(4, ref('base.group_system'))]"/>
+        </record>
+        <record id="group_session_admin" model="res.groups">
+            <field name="name">Gestion des sessions d'admission - admin</field>
+            <field name="category_id" ref="base.module_category_administration"/>
+            <field name="implied_ids" eval="[(4, ref('base.group_system'))]"/>
+        </record>
+        
+        <!-- Registre d'admission -->
+        <record id="group_session_registre_user" model="res.groups">
+            <field name="name">Gestion des registre d'admission - user</field>
+            <field name="category_id" ref="base.module_category_administration"/>
+            <field name="implied_ids" eval="[(4, ref('base.group_system'))]"/>
+        </record>
+        <record id="group_session_registre_admin" model="res.groups">
+            <field name="name">Gestion des registre d'admission - admin</field>
+            <field name="category_id" ref="base.module_category_administration"/>
+            <field name="implied_ids" eval="[(4, ref('base.group_system'))]"/>
+        </record>
     </data>
 </odoo>

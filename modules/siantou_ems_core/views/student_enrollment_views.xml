@@ -248,6 +248,7 @@
         name="Candidatures"
         parent="menu_siantou_ems_core_adminssions"
         action="action_enrollment_history"
+        groups="siantou_ems_core.group_candidature_user,siantou_ems_core.group_candidature_admin,base.group_system"
         sequence="1"
     />
     

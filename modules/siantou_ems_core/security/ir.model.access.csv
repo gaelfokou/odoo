@@ -80,3 +80,12 @@ university_admin,university.admin,model_res_company,siantou_ems_core.group_unive
 
 year_user,year.user,model_siantou_ems_core_year,siantou_ems_core.group_year_user,1,0,0,0
 year_admin,year.admin,model_siantou_ems_core_year,siantou_ems_core.group_year_admin,1,1,1,1
+
+candidature_user,candidature.user,model_oe_school_student_enrollment,siantou_ems_core.group_candidature_user,1,0,0,0
+candidature_admin,candidature.admin,model_oe_school_student_enrollment,siantou_ems_core.group_candidature_admin,1,1,1,1
+
+session_user,session.user,model_siantou_session,siantou_ems_core.group_session_user,1,0,0,0
+session_admin,session.admin,model_siantou_session,siantou_ems_core.group_session_admin,1,1,1,1
+
+session_registre_user,session.registre.user,model_siantou_session_registre,siantou_ems_core.group_session_registre_user,1,0,0,0
+session_registre_admin,session.registre.admin,model_siantou_session_registre,siantou_ems_core.group_session_registre_admin,1,1,1,1
