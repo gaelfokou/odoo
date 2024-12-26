@@ -46,6 +46,36 @@ STATUS_NOTIFICATION = {
 _logger = logging.getLogger(__name__)
 
 class ApiAccount(http.Controller):
+    @http.route(['/api/user', '/api/user/page/<int:page>'], type='json', auth='user')
+    def api_user(self, page=1, search='', search_in='all', **kw):
+        user = None
+        is_user = None
+        if http.request.env.user.employee_id.id:
+            user = http.request.env.user.employee_id
+            is_user = 'is_teacher'
+        else:
+            user = http.request.env['oe.school.student'].sudo().search([('user_id', '=', http.request.env.user.id)], limit=1)
+            if user:
+                is_user = 'is_student'
+        data = {}
+        if user:
+            data['id'] = user.id
+            data['name'] = user.name
+            data['is_user'] = is_user
+            if is_user == 'is_teacher':
+                data['email'] = user.work_email
+                data['phone'] = user.work_phone
+            elif is_user == 'is_student':
+                data['email'] = user.email
+                data['phone'] = user.num_tel
+        body = {
+            'code': 200,
+            'message': '',
+            'data': data
+        }
+        data = json.dumps(body)
+        return json.loads(data)
+
     @http.route(['/api/timetable', '/api/timetable/page/<int:page>'], type='json', auth='user')
     def api_timetable(self, page=1, search='', search_in='all', view_type='calendar', **kw):
         if view_type not in ['calendar', 'list']:
