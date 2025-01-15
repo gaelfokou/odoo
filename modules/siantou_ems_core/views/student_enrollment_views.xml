@@ -11,6 +11,7 @@
                 <field name="name"/>
                 <field name="cycle_id"/>
                 <field name="field_of_study_id"/>
+                <field name="specialty_id"/>
                 <field name="level_id"/>
                 <field name="type_cour"/>
                 <field 
@@ -153,6 +154,9 @@
                                     <field name="field_of_study_id"/>
                                 </group>
                                 <group>
+                                    <field name="specialty_id"/>
+                                </group>
+                                <group>
                                     <field name="type_cour" widget="radio"/>
                                 </group>
                                 
@@ -188,16 +192,20 @@
                                 </group>
                             </group>
                         </page>
+
                         <page name="info_raison" string="Raisons d'acceptation ou de rejet de la candidature">
                             <field name="observations" />
                         </page>
 
                         <page name="info_file" string="Pièces jointes">
-                             <field name="files_ids" widget="one2many_list">
-                                <tree delete="false">
-                                    <field name="doc_attachment_id" string="fichier"/>
+                             <field name="file_ids" widget="many2many_binary">
+                                <tree string="Attachments">
+                                    <field name="name"/>
+                                    <field name="type"/>
+                                    <field name="file_size"/>
+                                    <field name="create_date"/>
                                 </tree>
-                            </field>
+                             </field>
                         </page>
 
                     </notebook>

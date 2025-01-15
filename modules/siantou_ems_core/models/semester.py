@@ -89,3 +89,5 @@ class Semester(models.Model):
             else:
                 record.number_of_week = 0
 
+
+

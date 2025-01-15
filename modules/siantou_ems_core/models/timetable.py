@@ -198,22 +198,6 @@ class Timetable(models.Model):
         else:
             _logger.info('**************** Aucun enseignant disponible pour cette période.  ****************')
 
-    def action_cancel_timetable_exception(self):
-        employee_timetables = self.env['siantou.ems.timetable.timetable'].search([
-            ('id', '=', self.id),
-        ])
-        employee_timetables = list(employee_timetables)
-        if len(employee_timetables) > 0:
-            employee_timetable = employee_timetables[0]
-            employee_timetable.write({
-                'status': '1',
-            })
-
-        return {
-            'type': 'ir.actions.client',
-            'tag': 'reload',
-        }
-
 
 class TimetableGroup(models.Model):
     _name = 'siantou.ems.timetable.group'

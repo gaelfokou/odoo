@@ -65,6 +65,11 @@ class Student(models.Model):
         string='Filière',
         required=True,
     )
+    specialty_id = fields.Many2one(
+        'siantou.ems.core.specialty',
+        string='Spécialité',
+        required=True,
+    )
     type_cour = fields.Selection([
         ('cj', 'Cours du jour'),
         ('cs', 'Cours du soir'),

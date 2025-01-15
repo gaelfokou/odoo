@@ -16,6 +16,7 @@ class Level(models.Model):
         'Description',
     )
 
+    cycle_ids = fields.Many2many('oe.school.course', string="Cycles")
 
     # Ensemble des cours du niveau
     subject_ids = fields.One2many(

@@ -16,28 +16,26 @@
                         <group>
                             <field name="fee_structure_name" placeholder="Eg:LKG and UKG"/>
                             <field name="type_frais_id" options="{'no_create': True}"/>
+                            <field name="level_id"/>
+                            <field name="academic_year"/>
+                            <field name="amount_total"/>
                             <field name="type_inclusion_fee" widget="radio"/>
                             <field name="type_paiement" widget="radio"/>
                             <field name="nbre_tranche" invisible="type_paiement == 'pu'"/>
                         </group>
                         <group>
+                            <field name="school_id"/>
                             <field name="field_of_study_ids" widget="many2many_tags" options="{'no_create': True}"/>
-                            <field name="level_id"/>
-                            <field name="academic_year"/>
-                            <field name="amount_total"/>
                         </group>
                     </group>
-                    <!-- <group>
-                        <field name="is_scolarite"/>
-                    </group> -->
                     <notebook invisible="type_paiement == 'pu'">
                         <page string="Frais">
-                            <field name="fee_type_ids" widget="one2many_list" mode="tree">
-                                <tree string="Fee Types" editable="bottom">
+                            <field name="fee_type_ids" widget="one2many_list">
+                                <tree string="Tranches">
                                     <field name="name"/>
                                     <field name="fee_amount"/>
-                                    <field name="fee_structure_id" placeholder="Eg: Quarterly"/>
-                                    <field name="echeance" widget="monetary"/>
+                                    <field name="fee_structure_id" placeholder="Eg: Quarterly"  options="{'no_create': True}"/>
+                                    <field name="echeance"/>
                                 </tree>
                             </field>
                             <group class="oe_subtotal_footer oe_right">

@@ -242,7 +242,6 @@
                             <th class="text-left">Jour de la semaine</th>
                             <th class="text-left">Heure de début</th>
                             <th class="text-left">Heure de fin</th>
-                            <th class="text-left">Statut</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -278,20 +277,17 @@
                                 <td class='text-left'>
                                     <span t-esc="record['end_time']"/>
                                 </td>
-                                <td class='text-left'>
-                                    <span t-esc="record['status']"/>
-                                </td>
                             </tr>
                         </t>
                     </tbody>
                     <tfooter>
                         <tr>
-                            <th class="text-left" colspan="11" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
+                            <th class="text-left" colspan="10" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
                         </tr>
                     </tfooter>
                     <tbody>
                         <tr>
-                            <td class="text-left" colspan="11">
+                            <td class="text-left" colspan="10">
                                 <nav aria-label="Page navigation timetable">
                                     <ul class="pagination">
                                         <li class="page-item"><a class="page-link" t-attf-href="/my/timetable/page/1?view_type={{ timetable_view_type }}">Précédent</a></li>
@@ -311,7 +307,7 @@
                     </tbody>
                     <tfooter>
                         <tr>
-                            <th class="text-left" colspan="11" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
+                            <th class="text-left" colspan="10" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
                         </tr>
                     </tfooter>
                 </t>
@@ -544,7 +540,6 @@
                             <th class="text-left">Date</th>
                             <th class="text-left">Message</th>
                             <th class="text-left">Enseignant</th>
-                            <th class="text-left">Cours</th>
                             <th class="text-left">Statut</th>
                         </tr>
                     </thead>
@@ -561,9 +556,6 @@
                                     <span t-esc="record['name']"/>
                                 </td>
                                 <td class='text-left'>
-                                    <span t-esc="record['subject_name']"/>
-                                </td>
-                                <td class='text-left'>
                                     <span t-esc="record['status']"/>
                                 </td>
                             </tr>
@@ -571,7 +563,7 @@
                     </tbody>
                     <tfooter>
                         <tr>
-                            <th class="text-left" colspan="5" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
+                            <th class="text-left" colspan="4" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
                         </tr>
                     </tfooter>
                 </t>

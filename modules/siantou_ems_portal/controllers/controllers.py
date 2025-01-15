@@ -24,14 +24,6 @@ CURRENT_WEEKDAY = {
     6: 'Dimanche',
 }
 
-STATUS_TIMETABLE = {
-    '0': 'En attente',
-    '1': 'Présent',
-    '2': 'Absent',
-    '3': 'Permissionnaire',
-    '4': 'Exception',
-}
-
 TYPE_PAIEMENT = {
     'pu': 'Paiement unique',
     'pt': 'Paiement par tranches',
@@ -39,7 +31,7 @@ TYPE_PAIEMENT = {
 
 STATUS_NOTIFICATION = {
     '0': 'En attente',
-    '1': 'Envoyé',
+    '1': 'Terminé',
 }
 
 _logger = logging.getLogger(__name__)
@@ -84,7 +76,6 @@ class PortalAccount(portal.CustomerPortal):
             timetable['day_of_week'] = CURRENT_WEEKDAY[search_timetable.date.weekday()]
             timetable['start_time'] = search_timetable.start_time
             timetable['end_time'] = search_timetable.end_time
-            timetable['status'] = STATUS_TIMETABLE[search_timetable.status]
             timetables.append(timetable)
         if view_type == 'calendar':
             timetables = Helpers.format_timetable(timetables)
@@ -150,16 +141,13 @@ class PortalAccount(portal.CustomerPortal):
         else:
             pdf = None
         filename = 'Emploi du temps PDF.pdf'
-        headers = [
-            ('Content-Type', 'application/pdf'),
+        content_type = 'application/pdf'
+        pdfhttpheaders = [
+            ('Content-Type', content_type),
             ('Content-Length', len(pdf)),
             ('Content-Disposition', content_disposition(filename)),
         ]
-        return request.make_response(
-            pdf,
-            headers=headers,
-            status=200
-        )
+        return request.make_response(pdf, headers=pdfhttpheaders)
 
     @http.route(['/my/schoolfee', '/my/schoolfee/page/<int:page>'], type='http', auth="user", website=True)
     def portal_schoolfee(self, page=1, search='', search_in='all', **kw):
@@ -232,16 +220,6 @@ class PortalAccount(portal.CustomerPortal):
             notification = {}
             notification['date'] = datetime.strftime(search_notification.date, DATE_FORMAT_FR)
             notification['name'] = search_notification.employee_id.name
-            if search_notification.template == 'om_hr_payroll.om_hr_payroll_template_timetable_notification_absence':
-                notification['subject_name'] = search_notification.timetable_id.subject_id.name
-                notification['subject_code'] = search_notification.timetable_id.subject_id.code
-                notification['classroom_name'] = search_notification.timetable_id.classroom_id.name
-                notification['building_name'] = search_notification.timetable_id.classroom_id.building_id.name
-            else:
-                notification['subject_name'] = ''
-                notification['subject_code'] = ''
-                notification['classroom_name'] = ''
-                notification['building_name'] = ''
             notification['template'] = search_notification.template
             notification['message'] = search_notification.message
             notification['status'] = STATUS_NOTIFICATION[search_notification.status]

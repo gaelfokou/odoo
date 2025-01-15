@@ -55,7 +55,7 @@
         <menuitem
                 id="menu_siantou_ems_core_building"
                 name="Bâtiments"
-                parent="menu_siantou_ems_core_config"
+                parent="menu_siantou_ems_core_configuration"
                 action="action_show_building"
                 groups="siantou_ems_core.group_building_user,siantou_ems_core.group_building_admin,base.group_system"
                 sequence="5"/>

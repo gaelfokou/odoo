@@ -3,6 +3,39 @@ from collections import defaultdict
 from odoo import models, fields
 
 
+
+
+class SpecialtyOfStudy(models.Model):
+    _name = 'siantou.ems.core.specialty' #== cursus'
+    _description = 'Gestion des spécialités'
+
+
+    field_of_study_id = fields.Many2one(
+        'siantou.ems.core.field_of_study',
+        string='Filière ',
+        required=True,
+    )
+    # Code du programme
+    code = fields.Char(
+        'Code',
+        required=True
+    )
+
+    # Nom du programme
+    name = fields.Char(
+        'Nom de la spécialité',
+        required=True
+    )
+
+    # Contrainte SQL pour empêcher d'avoir le même code pour différentes filières
+    _sql_constraints = [
+        ('unique_code', 'unique(code)', 'Le code doit être unique'),
+        ('unique_name', 'unique(name)', 'Le nom doit être unique'),
+    ]
+
+
+
+
 class FieldOfStudy(models.Model):
     _name = 'siantou.ems.core.field_of_study' #== cursus'
     _description = 'Gestion des Filières'
@@ -12,13 +45,11 @@ class FieldOfStudy(models.Model):
         'Code',
         required=True
     )
-
     # Nom du programme
     name = fields.Char(
         'Nom de la filière',
         required=True
     )
-
     school_id = fields.Many2one(
         'siantou.ems.core.school',
         string='Ecole',
@@ -33,6 +64,12 @@ class FieldOfStudy(models.Model):
         'siantou.ems.core.subject',
         'field_of_study_id',
         'Cours'
+    )
+    # Ensemble des spécialités de la filière
+    specialty_ids = fields.One2many(
+        'siantou.ems.core.specialty',
+        'field_of_study_id',
+        'Liste des spécialités'
     )
 
     batch_ids = fields.One2many(

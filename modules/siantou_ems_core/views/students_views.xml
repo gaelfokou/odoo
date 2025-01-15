@@ -100,6 +100,9 @@
                                     <field name="field_of_study_id"/>
                                 </group>
                                 <group>
+                                    <field name="specialty_id"/>
+                                </group>
+                                <group>
                                     <field name="type_cour" widget="radio"/>
                                 </group>
                                 <group>

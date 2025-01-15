@@ -63,7 +63,7 @@
         <menuitem
                 id="menu_siantou_ems_core_config_university"
                 name="Universités"
-                parent="menu_siantou_ems_core_config"
+                parent="menu_siantou_ems_core_configuration"
                 action="action_school_setup"
                 groups="siantou_ems_core.group_university_user,siantou_ems_core.group_university_admin,base.group_system"
                 sequence="1"/>

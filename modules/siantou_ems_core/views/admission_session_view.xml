@@ -118,7 +118,7 @@
             name="Session d'admission"
             parent="menu_siantou_ems_core_adminssions"
             action="action_show_session"
-            groups="siantou_ems_core.group_session_user,siantou_ems_core.group_session_admin,base.group_system"
+            groups="siantou_ems_core.group_session_user,siantou_ems_core.group_session_admin"
             sequence="2"
         />
 

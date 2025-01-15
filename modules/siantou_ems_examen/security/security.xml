@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <record model="ir.module.category" id="module_category_aft_examen">
-        <field name="name">Gestion des examens</field>
-        <field name="description">Gestion des examens</field>
+        <field name="name">Gestion des examens et notes</field>
+        <field name="description">Gestion des examens et notes</field>
         <field name="sequence">5</field>
     </record>
 

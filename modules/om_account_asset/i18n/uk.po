@@ -1209,7 +1209,7 @@ msgstr "Скасувати"
 #. module: om_account_asset
 #: code:addons/om_account_asset/models/account_move.py:0
 #, python-format
-msgid "Vendor bill reset to drsiantou.ems."
+msgid "Vendor bill reset to draft."
 msgstr ""
 
 #. module: om_account_asset

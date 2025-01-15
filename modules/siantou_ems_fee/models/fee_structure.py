@@ -3,6 +3,7 @@
 
 from odoo import models, fields, api
 from odoo.exceptions import ValidationError
+from datetime import datetime
 import logging
 
 
@@ -40,6 +41,7 @@ class FeeStructure(models.Model):
         string='Type de frais', 
         required=True
     )
+    school_id = fields.Many2one('siantou.ems.core.school', required=False,string='Ecole')
     field_of_study_ids = fields.Many2many('siantou.ems.core.field_of_study', required=True,string='Filières')
     level_id = fields.Many2one('siantou.ems.core.level', required=True,string='Niveau')
     type_paiement = fields.Selection(
@@ -73,16 +75,21 @@ class FeeStructure(models.Model):
     active = fields.Boolean(default=True)
 
 
-    @api.depends('level_id', 'type_frais_id', 'type_paiement', 'academic_year')
+    @api.depends('level_id', 'type_frais_id', 'type_paiement', 'academic_year', 'field_of_study_ids', 'school_id')
     def _compute_fee_structure_name(self):
+        unique_number = datetime.now().strftime("%Y%m%d%H%M%S%f")
         for record in self:
-            # Calculer 'fee_structure_name' en fonction de 'field_of_study_id' et 'level_id'
-            field_of_study_name = "filieres"
+            if len(record.field_of_study_ids) == 1:
+                field_of_study_name = record.field_of_study_ids.name
+            elif record.school_id:
+                field_of_study_name = record.school_id.name
+            else:
+                field_of_study_name = "FIL_MULTI"
             level_name = record.level_id.name
             type_frais_name = record.type_frais_id.name
             type_paiement = record.type_paiement
             year_name = record.academic_year.name
-            record.fee_structure_name = f"Frais_{type_frais_name or ''}_{field_of_study_name or ''}_{level_name or ''}_{type_paiement or ''}_{year_name or ''}"
+            record.fee_structure_name = f"Frais_{type_frais_name or ''}_{field_of_study_name or ''}_{level_name or ''}_{type_paiement or ''}_{year_name or ''}_{unique_number or ''}"
 
 
     def diviser_montant(self, montant, nb_tranche):        
@@ -155,16 +162,33 @@ class FeeStructure(models.Model):
         # self._create_tranche(res)
         return res
 
+    @api.onchange('school_id')
+    def _onchange_school_id(self):
+        if self.school_id:
+            # Récupérer les filières associées à l'école sélectionnée
+            fields_of_study = self.env['siantou.ems.core.field_of_study'].search([
+                ('school_id', '=', self.school_id.id)
+            ])
+            # Remplir le champ des filières avec les IDs des filières trouvées
+            self.field_of_study_ids = [(6, 0, fields_of_study.ids)]
+        else:
+            # Si aucune école n'est sélectionnée, vider le champ des filières
+            self.field_of_study_ids = [(5, 0, 0)]
+
 
 
 class FeeStructureLines(models.Model):
     _name = 'siantou.ems.fee.structure.lines'
 
+
     name = fields.Char("Libellé", required=True)
     fee_structure_id = fields.Many2one(
-        'siantou.ems.fee.structure', string='Structure de frais', ondelete='cascade', index=True, required=True)
+        'siantou.ems.fee.structure', 
+        string='Structure de frais', 
+        ondelete='cascade', index=True, 
+        required=True
+    )
     fee_amount = fields.Float('Montant',  required=True)
-    # sequence = fields.Integer('Priorité', default=1, required=True, store=True)
     echeance = fields.Date("Echeance de paiement")
 
 

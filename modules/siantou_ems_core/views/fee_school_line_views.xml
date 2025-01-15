@@ -88,7 +88,7 @@
         <menuitem
                 id="menu_siantou_ems_core_config_fee_school"
                 name="Frais de scolarité"
-                parent="menu_siantou_ems_core_config"
+                parent="menu_siantou_ems_core_configuration"
                 action="action_show_fee_school"
                 sequence="14"/>
 	</data>

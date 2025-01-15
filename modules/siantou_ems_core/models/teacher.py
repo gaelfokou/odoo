@@ -15,18 +15,15 @@ class HrEmployee(models.Model):
     is_teacher = fields.Boolean(
         'Est un enseignant'
     )
-
     # Variable booléenne pour identifier un employé permanent
     is_permanent = fields.Boolean(
         'Est un employé permanent'
     )
-
     # Matricule de l'enseignant
     identifier = fields.Char(
         'Matricule',
         required=True
     )
-
     # Les cours que dispense cet enseignant
     subject_ids = fields.Many2many(
         'siantou.ems.core.subject',

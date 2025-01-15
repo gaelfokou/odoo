@@ -71,7 +71,7 @@
         <menuitem
                 id="menu_siantou_ems_core_config_fee_enrollment"
                 name="Frais de préinscription"
-                parent="menu_siantou_ems_core_config"
+                parent="menu_siantou_ems_core_configuration"
                 action="action_show_fee_enrollment"
                 sequence="8"/>
 	</data>

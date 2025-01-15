@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "Gestion des notes & examens",
+    'name': "Examens & notes",
 
     'summary': """
         Short (1 phrase/line) summary of the module's purpose, used as
@@ -20,46 +20,29 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base','mail'],
+    'depends': ['base','siantou_ems_core','siantou_ems_fee', 'mail'],
 
     # always loaded
     "data": [
-        #data
-        "data/sequences.xml",
-        "data/type_examen.xml",
-
         #security
         "security/security.xml",
         "security/ir.model.access.csv",
-
-        #views
-        #examen interne
-        "views/examen_interne/aft_plannifier.xml",
-        "views/examen_interne/aft_exemen_registre.xml",
-        "views/examen_interne/aft_exame_add_note.xml",
-        "views/examen_interne/aft_type_examen.xml",
-        "views/examen_interne/aft_admission_registre.xml",
-        "views/examen_interne/aft_admission_student_moyenne.xml",
-        "views/examen_interne/aft_examen_student.xml",
-        "views/examen_interne/aft_examen_student_line.xml",
-        "views/examen_interne/aft_examen_student_subject.xml",
-        "views/examen_interne/aft_student.xml",
-        "views/examen_interne/aft_rattrapage_registre.xml",
-        "views/examen_interne/aft_rattrapage_subject.xml",
-        "views/examen_interne/aft_rattrapage_subject_parent.xml",
-        "views/examen_interne/aft_rattrapage_ue.xml",
-        "views/examen_interne/education_promotion_annee.xml",
-        "views/examen_interne/aft_update_note.xml",
-        "views/examen_interne/student_qr_code_views.xml",
-        "views/examen_interne/examen_actions_valide_server.xml",
-        "views/examen_interne/examen_actions_confirm_server.xml",
-        "views/examen_interne/aft_examen_student_subject_parent.xml",
-        "views/examen_interne/aft_examen_deliberation_student.xml",
-        "views/examen_interne/aft_examen_deliberation_jury.xml",
         
-
-
         "views/menu.xml",
+        "views/type_examen_views.xml",
+        "views/type_examen_rattrapage_views.xml",
+        "views/grade_examen_views.xml",
+        "views/secretariat_examen_views.xml",
+        "views/session_exam_views.xml",
+        "views/exam_views.xml",
+        "views/subject_exam_views.xml",
+        "views/exam_attendees_views.xml",
+        "views/exam_result_views.xml",
+        "views/exam_result_teacher_views.xml",
+
+        'wizards/attendees_attendance_wizard_views.xml',
+        # 'wizards/examen_anonyme_code.xml',
+        # 'wizards/generate_marksheets_views.xml',
     ],
     # only loaded in demonstration mode
     'demo': [
@@ -67,8 +50,8 @@
     ],
     'assets': {
         'web._assets_font': [
-            "aft_examen/static/src/scss/font.scss",
-            # 'aft_examen/static/src/css/font.css',
+            "siantou_ems_examen/static/src/scss/font.scss",
+            # 'siantou_ems_examen/static/src/css/font.css',
         ],
     },
 }

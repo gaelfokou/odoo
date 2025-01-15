@@ -71,6 +71,7 @@ class DeSchool(http.Controller):
             json.dumps(datas)
         )
 
+
     @http.route('/api/v1/cities/<int:id_city>/quarters', type="http", methods=['GET'], cors="*", auth="none")
     def list_quarters_of_city(self, id_city):
         datas = []
@@ -82,8 +83,6 @@ class DeSchool(http.Controller):
         return Response(
             json.dumps(datas)
         )
-
-
 
     
     @http.route('/api/v1/cycles', type="http", methods=['GET'], cors="*", auth="none")
@@ -108,12 +107,15 @@ class DeSchool(http.Controller):
                 cycles.append(cycle_id)
                 
 
+        _logger.info('**************** cycles %s  ****************', cycles)
         # cycles = request.env['oe.school.course'].sudo().search([])
         for cycle in cycles:
             niveaux = cycle.level_ids
             filieres = request.env['siantou.ems.core.field_of_study'].sudo().search([('cursus_id', '=', cycle.id)])
             diplo_requis = request.env['oe.school.course.degree'].sudo().search([('cursus_id', '=', cycle.id)])
-
+            _logger.info('**************** niveaux %s  ****************', niveaux)
+            _logger.info('**************** filieres %s  ****************', filieres)
+            _logger.info('**************** diplo_requis %s  ****************', diplo_requis)
             if len(diplo_requis)>0 and len(filieres)>0 and len(niveaux)>0:
                 data.append({
                     'id': cycle.id,
@@ -124,11 +126,23 @@ class DeSchool(http.Controller):
                     'diplo_requis': [{'id': diplo.id, 'name': diplo.name} for diplo in diplo_requis]
                 })
 
-
+        _logger.info('**************** data %s  ****************', data)
         return Response(
             json.dumps(data)
         )
 
+
+    @http.route('/api/v1/filieres/<int:id>/specialites', type="http", methods=['GET'], cors="*", auth="none")
+    def list_specialites_of_filiere(self, id):
+        datas = []
+        field_of_study_id = request.env['siantou.ems.core.field_of_study'].sudo().search([('id', '=', id)], limit=1)
+        if field_of_study_id:
+            options = request.env['siantou.ems.core.specialty'].sudo().search([('field_of_study_id', '=', field_of_study_id.id)])
+            datas=[{'id':opt.id, 'name': opt.name} for opt in options]
+        _logger.info(datas)
+        return Response(
+            json.dumps(datas)
+        )
 
 
     @http.route('/api/v1/<int:id>/etudiants', type="http", methods=['GET'], cors="*", auth="none")
@@ -145,14 +159,14 @@ class DeSchool(http.Controller):
                         'etudiant_id':etudiant.id,
                         'code_enrol':etudiant.code_enrol,
                         'info_banque':{
-                            'denomination':code_bank_paie_frais.denomination,
-                            'numero':code_bank_paie_frais.numero,
-                            'nom_bank':code_bank_paie_frais.nom_bank,
-                            'code_1':code_bank_paie_frais.code_1,
-                            'code_2':code_bank_paie_frais.code_2,
-                            'cle_rib':code_bank_paie_frais.cle_rib,
-                            'swift_code':code_bank_paie_frais.swift_code,
-                            'iban':code_bank_paie_frais.iban,
+                            'denomination':code_bank_paie_frais.denomination if code_bank_paie_frais else '---',
+                            'numero':code_bank_paie_frais.numero if code_bank_paie_frais else '---',
+                            'nom_bank':code_bank_paie_frais.nom_bank if code_bank_paie_frais else '---',
+                            'code_1':code_bank_paie_frais.code_1 if code_bank_paie_frais else '---',
+                            'code_2':code_bank_paie_frais.code_2 if code_bank_paie_frais else '---',
+                            'cle_rib':code_bank_paie_frais.cle_rib if code_bank_paie_frais else '---',
+                            'swift_code':code_bank_paie_frais.swift_code if code_bank_paie_frais else '---',
+                            'iban':code_bank_paie_frais.iban if code_bank_paie_frais else '---',
                         },
                         'dipl_req_ids':[dipl.name for dipl in etudiant.dipl_req_ids]
                     })
@@ -190,26 +204,82 @@ class DeSchool(http.Controller):
         document_obj = request.env['oe.school.student.enrollment.file']
 
         if file:
-            dmd = document_obj.create({
+            dmd_id = document_obj.create({
                 "student_enrollemnt_id": candidat.id,
             })
             file_dmd = file
             mime_type = file_dmd.content_type
-            attach = request.env['ir.attachment'].sudo().create({
+            attachment_id = request.env['ir.attachment'].sudo().create({
                 'name': "%s-CANDIDAT-%s" % (candidat.code_enrol),
                 'type': 'binary',
                 'datas': base64.b64encode(file_dmd.read()),
                 'store_fname': "%s-CANDIDAT-%s" % (candidat.code_enrol),
-                'res_model': "oe.school.student.enrollment.file",
-                'res_id': dmd.id,
+                'res_model': dmd_id._name,
+                'res_id': dmd_id.id,
                 'mimetype': mime_type
-            }),
-            dmd.doc_attachment_id = [(6, 0, [attach[0].id])]
+            })
+            dmd_id.update({
+                'doc_attachment_id':[(4, attachment_id.id)]
+            })
 
-            return dmd.id
+            return dmd_id
         else:
             return 0
 
+
+    @http.route('/api/v1/etudiants/<int:id>/upload/docs', type="http", methods=['post'], cors="*", auth="none", csrf=False)
+    def upload_doc_etudiant_by_id(self, id,**kw):
+        documents = []
+        try:
+            etudiant = request.env['oe.school.student.enrollment'].sudo().search([('id', '=', id)], limit=1)
+            _logger.info(f'Etudiant: {etudiant}')
+
+            files = request.httprequest.files.getlist('file')
+            _logger.info(request.httprequest.files)
+            _logger.info(files)
+            if etudiant:
+                if files:
+                    for file in files:
+                        _logger.info(file.filename)
+                        file_name = file.filename
+                        attachment_id = request.env['ir.attachment'].sudo().create({
+                            'name': file_name,
+                            'type': 'binary',
+                            'datas': base64.b64encode(file.read()),
+                            'res_model': etudiant._name,
+                            'res_id': etudiant.id,
+                        })
+                        etudiant.update({
+                            'file_ids':[(4, attachment_id.id)]
+                        })
+                        # dmd_id = self.create_enroll_document(
+                        #     etudiant,
+                        #     base64.b64decode(file)
+                        # )
+
+                #         documents.append(dmd_id.id)
+                # _logger.info(documents)
+                # etudiant.files_ids = [(6, 0, documents)]
+                return Response(
+                    json.dumps({
+                        'status': 'success',
+                        'etudiant_id':etudiant.id,
+                    })
+                )
+            else:
+                return Response(
+                    json.dumps({
+                        'status': 'error',
+                        'data': f"Erreur lors de la savegarde des documents"
+                    })
+                )
+        except Exception as e:
+            return Response(
+                json.dumps({
+                    'status': 'error',
+                    'data': f"{e.args}"
+                })
+            )
 
 
 
@@ -217,14 +287,6 @@ class DeSchool(http.Controller):
     def admission_form_submit(self,**kwargs):
         data = json.loads(request.httprequest.data)
         _logger.info(data)
-        #=== remove files attribut list in data
-        files01 = data.pop('files')
-        # files = request.httprequest.files
-        # fichiers = kwargs.get('files')
-        # _logger.info(files01)
-        # _logger.info(files)
-        _logger.info(data)
-        # _logger.info(fichiers)
         is_existing = True
 
         try:
@@ -300,16 +362,7 @@ class DeSchool(http.Controller):
                     etudiant = request.env['oe.school.student.enrollment'].sudo().create(data)
                     # _logger.info(files)
 
-                    # if files:
-                    #     for file in files:
-                    #         _logger.info(file.name)
-                    #         dmd_id = self.create_enroll_document(
-                    #             etudiant,
-                    #             base64.b64decode(file)
-                    #         )
-                    #         documents.append(dmd_id)
                     
-                    # etudiant.files_ids = [(6, 0, documents)]
                     if etudiant:
                         _logger.info(etudiant)
                         return Response(

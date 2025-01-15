@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+
+        <record id="specialty_tree_view" model="ir.ui.view">
+			<field name="name">specialty_tree.view</field>
+			<field name="model">siantou.ems.core.specialty</field>
+			<field name="arch" type="xml">
+				<tree string="Cours">
+					<field name="code"/>
+					<field name="name"/>
+                    <field name="field_of_study_id"/>
+				</tree>
+			</field>
+		</record>
+		<record id="specialty_form_view" model="ir.ui.view">
+			<field name="name">specialty.form.view</field>
+			<field name="model">siantou.ems.core.specialty</field>
+			<field name="arch" type="xml">
+				<form string="Cours">
+					<sheet>
+                        <div class="oe_title">
+                            <label for="name"/>
+                            <h1><field name="name" placeholder="ex: COMMERCE INTERNATIONAL"/></h1>
+                        </div>
+                        <group>
+                            <field name="code" placeholder="ex: COM INT"/>
+                            <field name="field_of_study_id" options="{'no_open_create':True}"/>
+                        </group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+        
+        <record id="view_specialty_filter" model="ir.ui.view">
+            <field name="name">specialty.search</field>
+            <field name="model">siantou.ems.core.specialty</field>
+            <field name="arch" type="xml">
+                <search string="Spécialités">
+                    <field name="name" string="Spécialités"/>
+                    <separator/>
+                </search>
+             </field>
+        </record>
+        
+        <record id="action_school_specialty" model="ir.actions.act_window">
+            <field name="name">Spécialités</field>
+            <field name="res_model">siantou.ems.core.specialty</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref="view_specialty_filter"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Créer une nouvelle spécialité.
+                </p>
+            </field>
+        </record>
+        
+        <menuitem name="Spécialités" 
+            id="menu_school_specialty"
+            parent="menu_siantou_ems_core_configuration" 
+            action="action_school_specialty"
+                sequence="3"/>
+    </data>
+</odoo>

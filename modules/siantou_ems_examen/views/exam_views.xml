@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+        <!-- Exam -->
+        <record id="exam_tree_view" model="ir.ui.view">
+			<field name="name">session.line.tree.view</field>
+			<field name="model">examen.session.line</field>
+			<field name="arch" type="xml">
+				<tree string="Examens" default_order="id desc" default_group_by="exam_session_id">
+                    <field name="name"/>
+                    <field name="exam_session_id"/>
+					<field name="field_of_study_id"/>
+					<field name="specialty_id"/>
+					<field name="year_id"/>
+					<field name="semester_id"/>
+					<field name="level_ids" widget="many2many_tags"/>
+                    <field name="date_start" />
+                    <field name="date_end" />
+                    <field name="state" />
+				</tree>
+			</field>
+		</record>
+
+        <record id="exam_form_view" model="ir.ui.view">
+            <field name="name">session.line.form.view</field>
+            <field name="model">examen.session.line</field>
+            <field name="priority" eval="1"/>
+            <field name="arch" type="xml">
+                <form string="Exam">
+                    <header>
+                        <button name="button_draft" 
+                            invisible="state != 'cancel'" 
+                            string="Brouillon" 
+                            type="object" data-hotkey="n"/>
+                        <button name="button_schedule" invisible="state != 'draft'" string="Lancé" type="object" class="oe_highlight" data-hotkey="o" />
+                        <!-- <button name="button_close" type="object" 
+                            string="Terminé l'examen" 
+                            invisible="state != 'close'" 
+                            class="oe_highlight" data-hotkey="l"/> -->
+                        <button name="button_cancel" invisible="state not in ('progress')" string="Annuler" type="object" data-hotkey="x" />
+                        <field name="state" widget="statusbar" statusbar_visible="draft,progress,close,cancel" readonly="1"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button name="action_view_subjects"
+                                type="object"
+                                class="oe_stat_button"
+                                icon="fa-data">
+                                <field name="subjects_count" widget="statinfo" string="Matières"/>
+                            </button>
+                        </div>
+                        <div class="oe_title">
+                            <label for="name"/>
+                            <h1>
+                                <field name="name"
+                                    readonly="state != 'draft'"
+                                />
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="exam_session_id" 
+                                    options="{'no_open':True,'no_create':True}"
+                                    readonly="state != 'draft'"
+                                />
+                                <field name="field_of_study_id" 
+                                    options="{'no_open':True,'no_create':True}"
+                                    required="1"
+                                    readonly="state != 'draft'"
+                                />
+                                <field name="specialty_id" 
+                                    options="{'no_open':True,'no_create':True}"
+                                    required="1"
+                                    readonly="state != 'draft'"
+                                />
+                                <label for="date_start" string="Horaires"/>
+                                <div name="dates" class="o_row">
+                                    <field name="date_start" readonly="state != 'draft'"/>
+                                    <i class="fa fa-long-arrow-right mx-2 oe_edit_only" aria-label="Arrow icon" title="Arrow"/>
+                                    <field name="date_end" readonly="state != 'draft'"/>
+                                </div>
+                                
+                            </group>
+                            <group>
+                                <field name="year_id" 
+                                    options="{'no_open':True,'no_create':True}"
+                                    readonly="state != 'draft'"
+                                />
+                                <field name="semester_id" 
+                                    options="{'no_open':True,'no_create':True}"
+                                    required="1"
+                                    readonly="state != 'draft'"
+                                />
+                                <field name="level_ids" 
+                                    options="{'no_open':True,'no_create':True}"
+                                    required="1"
+                                    readonly="state != 'draft'"
+                                    widget="many2many_tags"
+                                />
+                            </group>
+                        </group>
+                        <notebook>
+                            <page name="exam_subject_ids" string="Matières programmées">
+                                <field name="exam_subject_ids" options="{'no_open':True,'no_create':True}">
+                                    <tree default_order="id desc" default_group_by="level_id">
+                                        <field name="name"/>
+                                        <field name="field_of_study_id"/>
+                                        <field name="level_id"/>
+                                        <field name="year_id"/>
+                                        <field name="state" />
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids"/>
+                        <field name="activity_ids"/>
+                        <field name="message_ids"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+        
+        <!-- <record id="exam_search_view" model="ir.ui.view">
+            <field name="name">session.line.search.view</field>
+            <field name="model">examen.session.line</field>
+            <field name="arch" type="xml">
+                <search string="Exam">
+                    <field name="subject_id" />
+                    <filter string="Scheduled" domain="[('state', '=', 'schedule')]" name="schedule_exam_filter"/>
+                    <filter string="Awaiting Result" domain="[('state', 'in', ['complete','prepare'])]" name="awaiting_result_filter"/>
+                    <filter string="Result Updated" domain="[('state', 'in', ['done'])]" name="result_updated_filter"/>
+
+                    <group expand="0" string="Group By">
+                        <filter string="Subject" name="group_subject" domain="[]" context="{'group_by': 'subject_id'}"/>
+                        <filter string="State" name="group_state" domain="[]" context="{'group_by': 'state'}"/>
+                    </group>
+                </search>
+             </field>
+        </record> -->
+        
+        <record id="action_exam" model="ir.actions.act_window">
+            <field name="name">Examens</field>
+            <field name="res_model">examen.session.line</field>
+            <field name="view_mode">tree,form</field>
+            <!-- <field name="search_view_id" ref="exam_search_view"/> -->
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Créer un nouvelle examen
+                </p>
+            </field>
+        </record>
+        
+        <menuitem 
+            name="Examens" 
+            id="menu_examen_examen"
+            parent="examen_menu_plannification"
+            action="action_exam"
+            sequence="20"
+        />
+        
+    </data>
+</odoo>

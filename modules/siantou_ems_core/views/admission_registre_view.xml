@@ -115,7 +115,7 @@
             name="Registre d'admission"
             parent="menu_siantou_ems_core_adminssions"
             action="action_siantou_admission_registre"
-            groups="siantou_ems_core.group_session_registre_user,siantou_ems_core.group_session_registre_admin,base.group_system"
+            groups="siantou_ems_core.group_session_registre_user,siantou_ems_core.group_session_registre_admin"
             sequence="3"/>
 
     </data>

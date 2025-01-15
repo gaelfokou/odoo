@@ -53,7 +53,7 @@
         <menuitem
                 id="menu_siantou_ems_core_campus"
                 name="Campus"
-                parent="menu_siantou_ems_core_config"
+                parent="menu_siantou_ems_core_configuration"
                 action="action_show_campus"
                 groups="siantou_ems_core.group_campus_user,siantou_ems_core.group_campus_admin,base.group_system"
                 sequence="4"/>

@@ -10,6 +10,7 @@
 			<field name="arch" type="xml">
 				<tree string="Niveaux" editable="bottom" edit="1">
                     <field name="name"/>
+                    <field name="cycle_ids" widget="many2many_tags"/>
 					<field name="description"/>
 				</tree>
 			</field>
@@ -22,10 +23,11 @@
 			<field name="name">level.form.view</field>
 			<field name="model">siantou.ems.core.level</field>
 			<field name="arch" type="xml">
-				<form string="Niveau">
+				<form string="Niveaux">
 					<sheet>
                         <group string="Informations sur le niveau">
                             <field name="name"/>
+                            <field name="cycle_ids" widget="many2many_tags"/>
                             <field name="description"/>
                         </group>
 						<group string="Cours du niveau">

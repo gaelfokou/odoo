@@ -24,45 +24,42 @@ class SessionEnrollment(models.Model):
         year = self.env['siantou.ems.core.year'].search([('active', '=', True)], limit=1)
         if not year:
             raise ValidationError("""Aucune annéé academique activé""")
+        self.name = f"Session_{year.name}"
         return year.id
 
-    @api.depends("year_id")
+
+    # @api.onchange("year_id")
+    @api.depends('year_id')
     def _get_name(self):
-        self.name = "Session_" + str(self.year_id.name)
+        for record in self:
+            self.name = f"Session_{record.year_id.name}"
         return self.name
 
 
-    @api.depends('year_id')
-    def _compute_fee_start_date(self):
-        for record in self:
-            record.start_date = record.year_id.start_time
+    # @api.depends('year_id')
+    # def _compute_fee_start_date(self):
+    #     for record in self:
+    #         record.start_date = record.year_id.start_time
 
-    @api.depends('year_id')
-    def _compute_fee_end_date(self):
-        for record in self:
-            record.end_date = record.year_id.end_time
+    # @api.depends('year_id')
+    # def _compute_fee_end_date(self):
+    #     for record in self:
+    #         record.end_date = record.year_id.end_time
+
 
     name = fields.Char(
         string="Nom de la session", 
         required=True,
-        default=lambda self: self._get_name()
     )
-    start_date = fields.Date('Date debut', required=True,
-        compute="_compute_fee_start_date")
+    start_date = fields.Date('Date debut', required=True, related='year_id.start_time')
     end_date = fields.Date(
         'Date de fin', 
-        required=True,
-        compute="_compute_fee_end_date")
+        required=True, related='year_id.end_time')
     cycle_ids = fields.Many2many(
         'oe.school.course', 
         string='Cycles', 
         required=True,
     )
-    # structure_frais_id = fields.Many2one(
-    #     'siantou.ems.fee.structure',
-    #     string='Structure de frais', 
-    #     required=True
-    # )
     year_id = fields.Many2one(
         'siantou.ems.core.year',
         string='Année Académique',
@@ -219,12 +216,6 @@ class SessionRegisterEnrollment(models.Model):
         related="session_id.year_id",
         store=True
     )
-    # campus = fields.Many2one(
-    #     'siantou.ems.core.campus',
-    #     'Campus', 
-    #     required=True,
-    #     tracking=True
-    # )
 
 
     @api.constrains('start_date', 'end_date')

@@ -69,6 +69,7 @@ class StudentEnrollmentAdmissionWizard(models.TransientModel):
                     'city_id': self.student_enrollement_id.city_id.id,
                     'quarter_id': self.student_enrollement_id.quarter_id.id,
                     'field_of_study_id': self.student_enrollement_id.field_of_study_id.id,
+                    'specialty_id': self.student_enrollement_id.specialty_id.id,
                     'type_cour': self.student_enrollement_id.type_cour,
                     'status_univ': self.student_enrollement_id.status_univ,
                     'date_naissance': self.student_enrollement_id.date_naissance,

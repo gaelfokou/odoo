@@ -41,6 +41,9 @@
         'views/school_views.xml',
         'views/admission_registre_view.xml',
         'views/admission_session_view.xml',
+        'views/syllabus_views.xml',
+        'views/syllabus_subject_views.xml',
+        'views/specialty_views.xml',
 
         'views/student_enrollment_views.xml',
         'views/students_views.xml',
@@ -65,7 +68,6 @@
 
         # Fichier de vue timetable
         'views/timetable_views.xml',
-        'views/timetable_exception_views.xml',
         'views/timetable_group_views.xml',
         'views/timetable_wizard_views.xml',
         'views/timetable_print_wizard_views.xml',

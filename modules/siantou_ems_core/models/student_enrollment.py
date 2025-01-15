@@ -59,6 +59,11 @@ class StudentEnrollment(models.Model):
         string='Filière ',
         required=True,
     )
+    specialty_id = fields.Many2one(
+        'siantou.ems.core.specialty',
+        string='Spécialité',
+        required=True,
+    )
     type_cour = fields.Selection([
         ('cj', 'Cours du jour'),
         ('cs', 'Cours du soir'),
@@ -112,10 +117,9 @@ class StudentEnrollment(models.Model):
     )
     is_autre_pays = fields.Boolean(string="Autre pays ?", default=False)
     observations = fields.Html(string="Observations")
-    files_ids = fields.One2many(
-        'oe.school.student.enrollment.file', 
-        'student_enrollemnt_id',
-        string="Liste des fichiers"
+    file_ids = fields.Many2many(
+        'ir.attachment',
+        string="Attachment"
     )
 
 
@@ -192,38 +196,37 @@ class StudentEnrollment(models.Model):
 
 
 
-class StudentEnrollmentFileAdmission(models.Model):
-    _name = 'oe.school.student.enrollment.file'
-    _description = "Gestion des fichiers d'enrollement des étudiants"
+# class StudentEnrollmentFileAdmission(models.Model):
+#     _name = 'oe.school.student.enrollment.file'
+#     _description = "Gestion des fichiers d'enrollement des étudiants"
 
-    student_enrollemnt_id = fields.Many2one(
-        'oe.school.student.enrollment', 
-        string="Etudiant préinscrit", 
-        required=True,    
-    )
-    submitted_date = fields.Date(
-        string="Date de dépôt", 
-        default=datetime.date.today(),
-        help="Documents soumis le"
-    )
-    doc_attachment_id = fields.Many2many(
-        'ir.attachment', 'doc_attach_rel',
-        'doc_id', 'attach_id3',
-        string="Pièces Jointes",
-        help='You can attach the copy of your document',
-        copy=False
-    )
-    # file = fields.Binary(string="Fichier", required=True, )
+#     student_enrollemnt_id = fields.Many2one(
+#         'oe.school.student.enrollment', 
+#         string="Etudiant préinscrit", 
+#         required=True,    
+#     )
+#     submitted_date = fields.Date(
+#         string="Date de dépôt", 
+#         default=datetime.date.today(),
+#         help="Documents soumis le"
+#     )
+#     doc_attachment_id = fields.Many2many(
+#         'ir.attachment', 'doc_attach_rel',
+#         'doc_id', 'attachment_id',
+#         string="Pièces Jointes",
+#         help='You can attach the copy of your document',
+#         copy=False
+#     )
 
 
-class IrAttachment(models.Model):
-    _inherit = 'ir.attachment'
+# class IrAttachment(models.Model):
+#     _inherit = 'ir.attachment'
 
-    doc_attach_rel = fields.Many2many(
-        'oe.school.student.enrollment.file',
-        'doc_attachment_id', 'attach_id3',
-        'doc_id',
-        string="Attachment", invisible=1)
+#     doc_attach_rel = fields.Many2many(
+#         'oe.school.student.enrollment.file',
+#         'doc_attachment_id', 'attachment_id',
+#         'document_id',
+#         string="Attachment")
 
 
 class StudentEnrollmentAdmission(models.Model):

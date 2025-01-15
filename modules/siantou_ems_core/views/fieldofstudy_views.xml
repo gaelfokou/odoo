@@ -8,7 +8,7 @@
             <field name="name">field_of_study.tree.view</field>
 			<field name="model">siantou.ems.core.field_of_study</field>
 			<field name="arch" type="xml">
-				<tree string="Filières" editable="bottom" edit="1">
+				<tree string="Filières">
                     <field name="code"/>
 					<field name="name"/>
                 	<field name="school_id"/>
@@ -25,18 +25,39 @@
 			<field name="name">field_of_study.form.view</field>
 			<field name="model">siantou.ems.core.field_of_study</field>
 			<field name="arch" type="xml">
-				<form string="Filière">
+				<form string="Filières">
 					<sheet>
-                        <group string="Informations sur la filière">
-                            <field name="code"/>
-                            <field name="name"/>
-                			<field name="school_id"/>
-                            <field name="cursus_id"/>
-                            <field name="department_id"/>
+                        <group>
+                            <group>
+                                <field name="code"/>
+                                <field name="name"/>
+                            </group>
+                            <group>
+                                <field name="cursus_id"/>
+                                <field name="school_id"/>
+                                <field name="department_id"/>
+                            </group>
                         </group>
-						<group string="Cours de la filière">
-							<field name="subject_ids"/>
-						</group>
+                        <notebook>
+                            <page name="specialty_ids" string="Spécialités">
+                                <field name="specialty_ids">
+                                    <tree string="">
+                                        <field name="code"/>
+                                        <field name="name"/>  
+                                        <field name="field_of_study_id"/>  
+                                    </tree>
+                                </field>
+                            </page>
+                            <page name="subject_ids" string="Cours">
+                                <field name="subject_ids">
+                                    <tree string="">
+                                        <field name="code"/>
+                                        <field name="name"/>  
+                                        <field name="field_of_study_id"/>  
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
 					</sheet>
 				</form>
 			</field>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="fee_structure_line_form" model="ir.ui.view">
+            <field name="name">siantou.ems.fee.structure.lines.form</field>
+            <field name="model">siantou.ems.fee.structure.lines</field>
+            <field name="arch" type="xml">
+                <form string="Fee Structure" class="o_invoice_form">
+                <sheet string="Fee Structure">
+                    <group>
+                        <group>
+                            <field name="name" placeholder="Ex : 1er tranche"/>
+                            <field name="fee_structure_id" options="{'no_create': True}"/>
+                        </group>
+                        <group>
+                            <field name="fee_amount"/>
+                            <field name="echeance"/>
+                        </group>
+                    </group>
+                </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="fee_structure_line_tree" model="ir.ui.view">
+            <field name="name">siantou.ems.fee.structure.lines.tree</field>
+            <field name="model">siantou.ems.fee.structure.lines</field>
+            <field name="arch" type="xml">
+                <tree string="Fee Structure" default_order="id desc" default_group_by="fee_structure_id">
+                    <field name="name"/>
+                    <field name="fee_structure_id"/>
+                    <field name="fee_amount"/>
+                    <field name="echeance"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_fee_structure_line" model="ir.actions.act_window">
+            <field name="name">Tranches</field>
+            <field name="res_model">siantou.ems.fee.structure.lines</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <!-- <menuitem
+          id="menu_fees_configuration"
+          parent="menu_education_fee_root" name="Configurations"
+          sequence="12"/>
+        
+        <menuitem action="action_fee_structure_line"
+          id="menu_action_fee_structure"
+          parent="menu_fees_configuration"
+          sequence="1"/> -->
+
+    </data>
+</odoo>

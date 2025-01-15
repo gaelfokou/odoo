@@ -50,7 +50,7 @@
 
     <!-- Menu principal de gestion des configurations -->
     <menuitem
-            id="menu_siantou_ems_core_config"
+            id="menu_siantou_ems_core_configuration"
             name="Configurations"
 			parent="menu_siantou_ems_core"
             sequence = "100" />

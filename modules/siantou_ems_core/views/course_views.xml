@@ -150,7 +150,7 @@
         <menuitem
             id="menu_siantou_ems_core_cycle"
             name="Cycles"
-            parent="menu_siantou_ems_core_config"
+            parent="menu_siantou_ems_core_configuration"
             action="action_oe_school_course"
             groups="siantou_ems_core.group_courses_user,siantou_ems_core.group_courses_admin,base.group_system"
             sequence="7"/>

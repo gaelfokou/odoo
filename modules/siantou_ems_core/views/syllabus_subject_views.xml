@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+	<data>
+		<!-- Affichage en vue liste -->
+		<record
+                id="syllabus_subject_tree_view"
+                model="ir.ui.view">
+            <field name="name">syllabus.tree.view</field>
+			<field name="model">siantou.ems.core.syllabus.subject</field>
+			<field name="arch" type="xml">
+				<tree string="Unité d'enseignement" default_order="id desc" default_group_by="syllabus_id">
+                    <field name="code"/>
+                    <field name="name"/>
+                    <field name="syllabus_id"/>
+					<field name="syllabus_subject_line_ids" string="Unités d'enseignements"/>
+					<field name="create_date" string="Date de création"/>
+				</tree>
+			</field>
+		</record>
+
+
+        <!-- Affichage en vue formulaire -->
+		<record
+                id="syllabus_subject_form_view"
+                model="ir.ui.view">
+			<field name="name">syllabus.form.view</field>
+			<field name="model">siantou.ems.core.syllabus.subject</field>
+			<field name="arch" type="xml">
+				<form string="Unité d'enseignement">
+					<sheet>
+                        <group>
+                            <group>
+                                <group>
+                                    <field name="code"/>
+                                </group>
+                                <group>
+                                    <field name="name"/>
+                                </group>
+                                <group>
+                                    <field name="type_ue"/>
+                                </group>
+                                <group>
+                                    <field name="syllabus_id"/>
+                                </group>
+                            </group>
+                        </group>
+                        <group string="Volumes horaires">
+                            <group>
+                                <field name="cm"/>
+                                <field name="td"/>
+                                <field name="tp"/>
+                            </group>
+                            <group>
+                                <field name="tpe"/>
+                                <field name="nbre_credit"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Matières">
+                                <field name="syllabus_subject_line_ids" widget="one2many_list" mode="tree">
+                                    <tree editable="bottom" default_order="id desc">
+                                        <field name="code"/>
+                                        <field name="name"/>
+                                        <field name="nbre_credit"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+
+        <!-- Affichage en vue recherche -->
+         <record
+                 id="syllabus_subject_search_view"
+                 model="ir.ui.view">
+            <field name="name">syllabus.search.view</field>
+            <field name="model">siantou.ems.core.syllabus.subject</field>
+            <field name="arch" type="xml">
+                <search string="Unité d'enseignement">
+                    <field name="name" string="Intitulé"/>
+                    <separator/>
+                </search>
+             </field>
+        </record>
+
+
+        <!-- Action pour le menu d'affichage des syllabus -->
+        <record id="action_show_syllabus_ue" model="ir.actions.act_window">
+            <field name="name">Unités d'enseignement</field>
+            <field name="res_model">siantou.ems.core.syllabus.subject</field>
+            <field name="search_view_id" ref="syllabus_subject_search_view"/>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Créer une unité d'enseignement.
+                </p>
+            </field>
+        </record>
+
+
+        <!-- Menu pour les syllabus -->
+        <menuitem
+                id="menu_siantou_ems_core_config_syllabus_ue"
+                name="Unité d'enseignement"
+                parent="menu_siantou_ems_core_configuration"
+                action="action_show_syllabus_ue"
+                sequence="2"/>
+	</data>
+</odoo>

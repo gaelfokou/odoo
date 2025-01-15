@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 {
-    "name": "Gestion des paiements étudiants",
+    "name": "Paiements étudiant(e)s",
     "version": '1.0',
     "author": "ICC SOFT S.A",
     "category": 'Scolarité',
@@ -18,6 +18,7 @@
         'views/fee_menu_view.xml',
         # 'views/fee_register.xml',
         'views/fee_structure.xml',
+        'views/fee_structure_line.xml',
         'views/fee_types.xml',
         'views/fee_category.xml',
         'views/fee_journal_dashboard_view.xml',

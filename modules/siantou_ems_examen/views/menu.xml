@@ -1,214 +1,46 @@
 <odoo>
   <data>
-    <menuitem id="root_menu_examen" name="Gestion des notes et examens"
-      web_icon="aft_examen,static/description/icon.svg"
-      groups="aft_examen.group_examen_base"
-      sequence="10" />
+    <menuitem id="root_menu_examen" name="Examens et notes"
+      web_icon="siantou_ems_examen/static/description/icon.svg"
+      groups="siantou_ems_examen.group_examen_base"
+      sequence="8" />
     <!-- Examen -->
+
+
     <menuitem
-      id="examen_menu_root"
-      name="Session normale"
-      sequence="5"
-      groups="aft_examen.group_examen_base"
+      id="examen_menu_plannification"
+      name="Planification d'examen"
+      sequence="39"
+      groups="siantou_ems_examen.group_examen_base"
       parent="root_menu_examen"
     />
 
     <menuitem
-      id="examen_plannifier_menu"
-      name="Planifier un examen"
-      action="aft_examen_action"
-      groups="aft_examen.group_examen_base"
-      parent="examen_menu_root"
-      sequence="5" />
-
-    <menuitem
-      id="examen_registre_menu"
-      name="Régistre d'examen"
-      action="aft_examen_registre_action"
-      groups="aft_examen.group_examen_base"
-      parent="examen_menu_root"
-      sequence="10" />
-
-    <menuitem
-      id="examen_ajouter_note_menu"
-      name="Ajouter les notes"
-      groups="aft_examen.group_examen_base"
-      action="aft_examen_add_note_action"
-      parent="examen_menu_root"
-      sequence="15" />
-
-    <menuitem
-      id="examen_menu_update_note"
-      name="Modifier une note"
-      groups="aft_examen.group_examen_base"
-      action="aft_update_note_action"
-      sequence="15"
-      parent="root_menu_examen"
-    />
-
-    <!-- Rattrapage  -->
-    <menuitem
-      id="rattrapage_menu_root"
-      name="Session de rattrapage"
-      groups="aft_examen.group_examen_base"
-      sequence="10"
-      parent="root_menu_examen"
-    />
-
-    <menuitem
-      id="planifier_rattrapage_menu"
-      name="Planifier"
-      action="aft_rattrapage_registre_action"
-      groups="aft_examen.group_examen_base"
-      parent="rattrapage_menu_root"
-      sequence="5" />
-
-    <menuitem
-      id="ue_rattrapage_menu"
-      name="Régistre des UE"
-      action="aft_rattrapage_ue_action"
-      groups="aft_examen.group_examen_base"
-      parent="rattrapage_menu_root"
-      sequence="10" />
-
-    <menuitem
-      id="subject_parent_rattrapage_menu"
-      name="Régistre des matières parents"
-      action="aft_rattrapage_subject_parent_action"
-      groups="aft_examen.group_examen_base"
-      parent="rattrapage_menu_root"
-      sequence="15" />
-
-    <menuitem
-      id="matiere_rattrapage_menu"
-      name="Ajouter les notes"
-      groups="aft_examen.group_examen_base"
-      action="aft_rattrapage_subject_action"
-      parent="rattrapage_menu_root"
-      sequence="20" />
-
-    <!-- Résultat  -->
-    <menuitem
-      id="examen_menu_resultat_root"
-      groups="aft_examen.group_examen_base"
-      name="Résultats"
-      sequence="20"
-      parent="root_menu_examen"
-    />
-
-    <menuitem
-      id="examen_student_resultat_menu"
-      groups="aft_examen.group_examen_base"
-      name="Résultats des semestres"
-      action="aft_examen_student_action"
-      parent="examen_menu_resultat_root"
-      sequence="5" />
-
-
-    <menuitem
-      id="examen_student_ue_menu"
-      name="Résultats des UE"
-      action="aft_examen_student_line_action"
-      groups="aft_examen.group_examen_base"
-      parent="examen_menu_resultat_root"
-      sequence="10" />
-
-    <menuitem
-      id="examen_student_matiere_menu"
-      name="Résultats des matières"
-      action="aft_examen_student_subject__action"
-      groups="aft_examen.group_examen_base"
-      parent="examen_menu_resultat_root"
-      sequence="15" />
-
-    <!-- Gérer les Délibérations  -->
-    <menuitem
-      id="examen_menu_deliberation_root"
-      groups="aft_examen.group_examen_base"
-      name="Délibérations"
-      sequence="30"
-      parent="root_menu_examen"
-    />
-
-    <menuitem
-      id="examen_menu_gerer_deliberation_root"
-      name="Gérer les délibérations"
-      action="aft_examen_deliberation_student_action"
-      groups="aft_examen.group_examen_base"
-      parent="examen_menu_deliberation_root"
-      sequence="1"
-    />
-
-    <!-- Analyse et rapport -->
-    <menuitem
-      id="examen_analyse_rapport_menu"
-      name="Analyse/Rapport"
-      groups="aft_examen.group_examen_base"
+      id="examen_menu_note"
+      name="Notes"
       sequence="40"
+      groups="siantou_ems_examen.group_examen_base"
       parent="root_menu_examen"
     />
+
+    <!-- <menuitem
+      id="examen_menu_root_attendees"
+      name="Participations"
+      sequence="40"
+      groups="siantou_ems_examen.group_examen_base"
+      parent="root_menu_examen"
+    /> -->
 
     <!-- Configuration examen -->
     <menuitem
       id="examen_configuration_menu"
-      groups="aft_examen.group_examen_base"
+      groups="siantou_ems_examen.group_examen_base"
       name="Configuration"
       sequence="45"
       parent="root_menu_examen"
     />
 
-    <menuitem
-      id="type_configuration_menu"
-      groups="aft_examen.group_examen_base"
-      name="Type d'examen"
-      action="type_examen_action"
-      parent="examen_configuration_menu"
-      sequence="5" />
 
-
-    <!-- Admission -->
-
-    <menuitem
-      id="admission_resultat_menu"
-      groups="aft_examen.group_examen_base"
-      name="Résultats"
-      action="admissio_candidat_view_action"
-      parent="aft_edu_core.menu_education_admissionss"
-      sequence="10" />
-
-    <menuitem
-      id="admission_resultat_rapport_menu"
-      name="Rapport"
-      parent="aft_edu_core.menu_education_admissionss"
-      groups="aft_examen.group_examen_base"
-      sequence="40" />
-
-    <menuitem
-      id="admission_moyenne_candidat_menu"
-      name="Imprimer les résultats"
-      action="wizard_moyenne_candidat_action"
-      groups="aft_examen.group_examen_base"
-      parent="admission_resultat_rapport_menu"
-      sequence="10" />
-
-
-      <!-- PROMOTION -->
-
-      <menuitem
-      id="formation_promotion_menu"
-      groups="aft_examen.group_examen_base"
-      name="Promotion"
-      sequence="25"
-      parent="aft_edu_core.menu_education_roott"
-    />
-
-    <menuitem
-      id="promotion_new_menu"
-      name="Promotion"
-      action="promotion_classe_action"
-      groups="aft_examen.group_examen_base"
-      parent="formation_promotion_menu"
-      sequence="5" />
 
   </data>
 </odoo>

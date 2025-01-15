@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+	<data>
+		<!-- Affichage en vue liste -->
+		<record
+                id="syllabus_tree_view"
+                model="ir.ui.view">
+            <field name="name">syllabus.tree.view</field>
+			<field name="model">siantou.ems.core.syllabus</field>
+			<field name="arch" type="xml">
+				<tree 
+                    string="Syllabus" 
+                    default_order="id desc" 
+                    default_group_by="year_id" 
+                    decoration-success="state == 'yesrecord'"
+                    decoration-danger="state == 'norecord'"
+                >
+                    <field name="name"/>
+					<field name="syllabus_subject_ids" string="Unités d'enseignements"/>
+					<field name="create_date" string="Date de création"/>
+					<field name="state" invisible="1"/>
+				</tree>
+			</field>
+		</record>
+
+        <!-- Affichage en vue formulaire -->
+		<record
+                id="syllabus_form_view"
+                model="ir.ui.view">
+			<field name="name">syllabus.form.view</field>
+			<field name="model">siantou.ems.core.syllabus</field>
+			<field name="arch" type="xml">
+				<form string="syllabus">
+					<sheet>
+                        <group>
+                            <group>
+                                <field name="name"/>
+                                <field name="year_id"/>
+                            </group>
+                            <group>
+                                <field name="semester_id"/>
+                                <field name="field_of_study_id"/>
+                                <field name="specialty_id" domain="specialty_domain" invisible="is_exist_speciality==False"/>
+                            </group>
+                            <group>
+                                <field name="level_id" domain="level_domain"/>
+                            </group>
+                        </group>
+                        <field name="is_exist_speciality" invisible="1"/>
+                        <field name="specialty_domain" invisible="1"/>
+                        <field name="level_domain" invisible="1"/>
+                        <notebook>
+                            <page string="Unités d'enseignement">
+                                <field name="syllabus_subject_ids" widget="one2many_list" mode="tree">
+                                    <tree default_order="id desc">
+                                        <field name="type_ue"/>
+                                        <field name="code"/>
+                                        <field name="name"/>
+                                        <field name="cm"/>
+                                        <field name="td"/>
+                                        <field name="tp"/>
+                                        <field name="tpe"/>
+                                        <field name="nbre_credit"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+        <!-- Affichage en vue recherche -->
+         <record
+                 id="syllabus_search_view"
+                 model="ir.ui.view">
+            <field name="name">syllabus.search.view</field>
+            <field name="model">siantou.ems.core.syllabus</field>
+            <field name="arch" type="xml">
+                <search string="Syllabus">
+                    <field name="name" string="Intitulé"/>
+                    <separator/>
+                </search>
+             </field>
+        </record>
+
+        <!-- Action pour le menu d'affichage des syllabus -->
+        <record
+                id="action_show_syllabus"
+                model="ir.actions.act_window">
+            <field name="name">Syllabus</field>
+            <field name="res_model">siantou.ems.core.syllabus</field>
+            <field name="search_view_id" ref="syllabus_search_view"/>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Créer un nouveau syllabus.
+                </p>
+            </field>
+        </record>
+
+        <!-- Menu pour les syllabus -->
+        <menuitem
+                id="menu_siantou_ems_core_config_syllabus"
+                name="Syllabus"
+                parent="menu_siantou_ems_core_configuration"
+                action="action_show_syllabus"
+                sequence="2"/>
+	</data>
+</odoo>
