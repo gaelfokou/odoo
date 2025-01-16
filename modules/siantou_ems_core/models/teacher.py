@@ -65,7 +65,10 @@ class HrEmployee(models.Model):
 
     def create_employee_user(self, employee_id):
         try:
-            identifier = self.env['ir.sequence'].next_by_code('hr.employee')
+            ecole = 'IUS'
+            ecole = ecole[:4]
+            ecole = ecole.upper()
+            identifier = ecole + self.env['ir.sequence'].next_by_code('hr.employee')
             if not employee_id.identifier or employee_id.identifier == '':
                 while True:
                     employee_ids = self.env['hr.employee'].search([
@@ -73,7 +76,7 @@ class HrEmployee(models.Model):
                     ])
                     employee_ids = list(employee_ids)
                     if len(employee_ids) > 0:
-                        identifier = self.env['ir.sequence'].next_by_code('hr.employee')
+                        identifier = ecole + self.env['ir.sequence'].next_by_code('hr.employee')
                     else:
                         employee_id.write({
                             'identifier': identifier,

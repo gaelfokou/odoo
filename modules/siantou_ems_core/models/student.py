@@ -8,8 +8,8 @@ from odoo import models, fields, api
 import datetime
 import time
 import logging
-
-from psycopg2 import sql, DatabaseError
+import re
+import psycopg2
 
 _logger = logging.getLogger("++++++++++++")
 
@@ -164,37 +164,80 @@ class Student(models.Model):
         _logger.info(f"Matricule généré : {matricule}")
         return matricule
 
-
-    def action_create_portal_user(self):
-        """Crée un compte utilisateur portail pour l'étudiant"""
-         
-        for student in self:
-            partner_id = student.student_enroll_id.partner_id
-            # Création de l'email
-            email = student.name.replace(' ', '.').lower() + '@siantou.net'
+    def create_student_user(self, student_id):
+        try:
+            ecole = re.sub('[^A-Za-z]+', '', student_id.field_of_study_id.school_id.name)
+            ecole = ecole[:4]
+            ecole = ecole.upper()
+            matricule = ecole + self.env['ir.sequence'].next_by_code('oe.school.student')
+            if not student_id.matricule or student_id.matricule == '':
+                while True:
+                    student_ids = self.env['oe.school.student'].search([
+                        ('matricule', '=', matricule),
+                    ])
+                    student_ids = list(student_ids)
+                    if len(student_ids) > 0:
+                        matricule = ecole + self.env['ir.sequence'].next_by_code('oe.school.student')
+                    else:
+                        student_id.write({
+                            'matricule': matricule,
+                        })
+                        break
+            name = student_id.name
+            # email = student_id.email
+            username = name.replace(' ', '.').lower()
+            email = username + '@siantou.net'
+            partner_id = student_id.student_enroll_id.partner_id
             if not partner_id:
-                partner_id = student.env['res.partner'].create({
-                    'name': student.name,
+                partner_id = self.env['res.partner'].create({
+                    'name': student_id.name,
                     'email': email,
-                    'phone': student.num_tel,
+                    'phone': student_id.num_tel,
                     'is_company': False,
                 })
-            if not student.user_id:
-                # Création du mot de passe
-                password = student.name.replace(' ', '.').lower()
-                user_vals = {
-                    'name': student.name,
+            user_ids = self.env['res.users'].search([
+                ('partner_id', '=', partner_id.id),
+            ])
+            user_ids = list(user_ids)
+            if len(user_ids) == 0:
+                # password = username
+                password = matricule
+                i = 0
+                while True:
+                    user_ids = self.env['res.users'].search([
+                        ('login', '=', email),
+                    ])
+                    user_ids = list(user_ids)
+                    if len(user_ids) > 0:
+                        i = i + 1
+                        email = username + f'.{i}' + '@siantou.net'
+                        # password = username + f'.{i}'
+                        password = matricule
+                    else:
+                        break
+                group_id = self.env.ref('base.group_portal')
+                user_id = self.env['res.users'].create({
                     'login': email,
-                    'email': email,
-                    'password': password,
+                    'name': name,
+                    'password' : password,
                     'partner_id': partner_id.id,
-                    'groups_id': [(6, 0, [self.env.ref('base.group_portal').id])],
-                }
-                user = self.env['res.users'].create(user_vals)
-                student.user_id = user
-                _logger.info(user.email)
-            
+                    'groups_id': [(6, 0, [group_id.id])],
+                })
+                student_id.write({
+                    # 'email': email,
+                    'user_id': user_id.id,
+                })
+        except psycopg2.errors.NotNullViolation as error:
+            _logger.info(f'----------- tototototototo Exception {error} -----------')
+            raise ValidationError("L'adresse e-mail professionnelle n'est pas renseignée.")
+        except psycopg2.Error as error:
+            _logger.info(f'----------- tototototototo Exception {error} -----------')
+        except Exception as error:
+            _logger.info(f'----------- tototototototo Exception {error} -----------')
 
+    def action_create_portal_user(self):
+        for student in self:
+            self.create_student_user(student)
 
     @api.model
     def create(self, vals):
@@ -205,15 +248,14 @@ class Student(models.Model):
             vals['level_id']
         )
         vals['batch_id'] = batch.id
-        vals['matricule'] = self.generate_matricule(field_of_study_id)
+        # vals['matricule'] = self.generate_matricule(field_of_study_id)
 
         # Création de l'étudiant
-        student = super().create(vals)
+        student_id = super().create(vals)
+
+        self.create_student_user(student_id)
         
-        # Appel de la fonction action_create_portal_user pour créer automatiquement un compte utilisateur
-        student.action_create_portal_user()
-        
-        return student
+        return student_id
 
 
 

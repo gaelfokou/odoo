@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <odoo noupdate="1">
 	<record id="siantou_ems_core_sequence_hr_student" model="ir.sequence">
-		<field name="name">Student identifier</field>
-		<field name="code">hr.student</field>
+		<field name="name">Student matricule</field>
+		<field name="code">oe.school.student</field>
 		<field name="prefix">%(year)s</field>
 		<field name="padding">4</field>
 		<field name="number_next">1</field>

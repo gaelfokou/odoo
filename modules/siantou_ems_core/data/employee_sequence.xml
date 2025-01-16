@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <odoo noupdate="1">
 	<record id="siantou_ems_core_sequence_hr_employee" model="ir.sequence">
-		<field name="name">Employee identifier</field>
+		<field name="name">Employee matricule</field>
 		<field name="code">hr.employee</field>
 		<field name="prefix">%(year)s</field>
 		<field name="padding">4</field>
