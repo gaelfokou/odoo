@@ -22,7 +22,7 @@ class HrEmployee(models.Model):
     # Matricule de l'enseignant
     identifier = fields.Char(
         'Matricule',
-        required=True
+        # required=True
     )
     # Les cours que dispense cet enseignant
     subject_ids = fields.Many2many(
@@ -65,6 +65,20 @@ class HrEmployee(models.Model):
 
     def create_employee_user(self, employee_id):
         try:
+            identifier = self.env['ir.sequence'].next_by_code('hr.employee')
+            if not employee_id.identifier or employee_id.identifier == '':
+                while True:
+                    employee_ids = self.env['hr.employee'].search([
+                        ('identifier', '=', identifier),
+                    ])
+                    employee_ids = list(employee_ids)
+                    if len(employee_ids) > 0:
+                        identifier = self.env['ir.sequence'].next_by_code('hr.employee')
+                    else:
+                        employee_id.write({
+                            'identifier': identifier,
+                        })
+                        break
             user_ids = self.env['res.users'].search([
                 ('employee_id', '=', employee_id.id),
             ])
@@ -74,7 +88,8 @@ class HrEmployee(models.Model):
                 # email = employee_id.work_email
                 username = name.replace(' ', '.').lower()
                 email = username + '@siantou.net'
-                password = username
+                # password = username
+                password = identifier
                 i = 0
                 while True:
                     user_ids = self.env['res.users'].search([
@@ -84,7 +99,8 @@ class HrEmployee(models.Model):
                     if len(user_ids) > 0:
                         i = i + 1
                         email = username + f'.{i}' + '@siantou.net'
-                        password = username + f'.{i}'
+                        # password = username + f'.{i}'
+                        password = identifier
                     else:
                         break
                 if employee_id.is_teacher:

@@ -77,6 +77,10 @@
 
         #=========== Fichier du dashboard
         'views/ems_core_dashboard.xml',
+
+        #=========== Fichier de sequence
+        'data/employee_sequence.xml',
+        'data/student_sequence.xml',
     ],
     'license': 'LGPL-3',
     'installable': True,

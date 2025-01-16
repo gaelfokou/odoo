@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<odoo noupdate="1">
+	<record id="siantou_ems_core_sequence_hr_student" model="ir.sequence">
+		<field name="name">Student identifier</field>
+		<field name="code">hr.student</field>
+		<field name="prefix">%(year)s</field>
+		<field name="padding">4</field>
+		<field name="number_next">1</field>
+		<field name="number_increment">1</field>
+		<field name="company_id" eval="False"/>
+	</record>
+</odoo>
