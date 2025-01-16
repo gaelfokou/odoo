@@ -68,6 +68,7 @@
 
         # Fichier de vue timetable
         'views/timetable_views.xml',
+        'views/timetable_exception_views.xml',
         'views/timetable_group_views.xml',
         'views/timetable_wizard_views.xml',
         'views/timetable_print_wizard_views.xml',
