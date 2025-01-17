@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <record id="type_examen_rattrapage_view_tree" model="ir.ui.view">
+      <field name="name">type_examen_view_rattrapagetree.view.tree</field>
+      <field name="model">siantou.ems.examen.type.rattrapage</field>
+      <field name="arch" type="xml">
+        <tree string="" editable="top">
+          <field name="name" />
+          <field name="type_examen_id" />
+        </tree>
+      </field>
+    </record>
+
+    <record id="type_examen_rattrapage_action" model="ir.actions.act_window">
+      <field name="name">Type d'examen de rattrapage</field>
+      <field name="res_model">siantou.ems.examen.type.rattrapage</field>
+      <field name="view_mode">tree</field>
+    </record>
+
+
+    <menuitem
+      id="type_rattrapage_configuration_menu"
+      groups="siantou_ems_examen.group_examen_base"
+      name="Examens de rattrapage"
+      action="type_examen_rattrapage_action"
+      parent="examen_menu_plannification_sr"
+      sequence="5" />
+</odoo>

@@ -4,21 +4,38 @@
       web_icon="siantou_ems_examen/static/description/icon.svg"
       groups="siantou_ems_examen.group_examen_base"
       sequence="8" />
+  
     <!-- Examen -->
-
-
     <menuitem
-      id="examen_menu_plannification"
-      name="Planification d'examen"
+      id="examen_menu_plannification_cc_sn"
+      name="Session normale/Contrôles continu"
       sequence="39"
       groups="siantou_ems_examen.group_examen_base"
       parent="root_menu_examen"
     />
 
     <menuitem
+      id="examen_menu_plannification_sr"
+      name="Session de rattrapage"
+      sequence="39"
+      groups="siantou_ems_examen.group_examen_base"
+      parent="root_menu_examen"
+    />
+
+
+
+    <menuitem
       id="examen_menu_note"
       name="Notes"
       sequence="40"
+      groups="siantou_ems_examen.group_examen_base"
+      parent="root_menu_examen"
+    />
+  
+    <menuitem
+      id="examen_menu_resultat"
+      name="Résultats"
+      sequence="41"
       groups="siantou_ems_examen.group_examen_base"
       parent="root_menu_examen"
     />
@@ -35,7 +52,7 @@
     <menuitem
       id="examen_configuration_menu"
       groups="siantou_ems_examen.group_examen_base"
-      name="Configuration"
+      name="Paramétrages"
       sequence="45"
       parent="root_menu_examen"
     />

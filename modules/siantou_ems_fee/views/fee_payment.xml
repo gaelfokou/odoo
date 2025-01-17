@@ -15,8 +15,15 @@
                             invisible="status in ['none', 'all'] or state in ['creer','draft']" 
                             type="object" 
                             string="Compléter le paiement" /> 
-                        <button class="btn btn-success" name="print_payement_student" invisible="state in ['creer','draft']" type="object" string="Imprimer le reçu"/>
-                        <button class="btn btn-warning" name="action_rien" invisible="use_moratoire == False" type="object" string="Cet étudiant a un moratoire de montant ci-dessous" />
+                        <button 
+                            class="btn btn-warning" 
+                            name="print_payement_student" 
+                            icon="fa-print"
+                            invisible="state in ['creer','draft']" 
+                            type="object" 
+                            string="Imprimer le reçu" 
+                            data-hotkey="F"/>
+                        <button class="btn btn-secondary" name="action_rien" invisible="use_moratoire == False" type="object" string="Cet étudiant a un moratoire de montant ci-dessous" />
                         <field name="state" widget="statusbar" statusbar_visible="draft,done" />
                     </header>
                     <sheet>

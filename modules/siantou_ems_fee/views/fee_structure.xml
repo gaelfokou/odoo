@@ -7,42 +7,50 @@
             <field name="model">siantou.ems.fee.structure</field>
             <field name="arch" type="xml">
                 <form string="Fee Structure" class="o_invoice_form">
-                <sheet string="Fee Structure">
-                    <field name="active" invisible="1"/>
-                    <!-- <widget name="web_ribbon" title="Archived" bg_color="bg-danger"/> -->
-                    <h1 class="mt0">
-                    </h1>
-                    <group>
+                    <header>
+                        <button 
+                            name="validate_structure_payment" 
+                            invisible="state in ['validate','create']" 
+                            type="object" string="Valider"
+                            class="oe_highlight" confirm="Validez-vous cette structure de frais ?" />
+                        <button name="cancel_structure_payment" invisible="state not in ['validate']" type="object" string="Annuler" />
+                        <field name="state" widget="statusbar" statusbar_visible="no_create,create,validate" />
+                    </header>
+                    <sheet string="Fee Structure">
+                        
+                        <field name="active" invisible="1"/>
+                        <!-- <widget name="web_ribbon" title="Archived" bg_color="bg-danger"/> -->
                         <group>
-                            <field name="fee_structure_name" placeholder="Eg:LKG and UKG"/>
-                            <field name="type_frais_id" options="{'no_create': True}"/>
-                            <field name="level_id"/>
-                            <field name="academic_year"/>
-                            <field name="amount_total"/>
-                            <field name="type_inclusion_fee" widget="radio"/>
-                            <field name="type_paiement" widget="radio"/>
-                            <field name="nbre_tranche" invisible="type_paiement == 'pu'"/>
-                        </group>
-                        <group>
-                            <field name="school_id"/>
-                            <field name="field_of_study_ids" widget="many2many_tags" options="{'no_create': True}"/>
-                        </group>
-                    </group>
-                    <notebook invisible="type_paiement == 'pu'">
-                        <page string="Frais">
-                            <field name="fee_type_ids" widget="one2many_list">
-                                <tree string="Tranches">
-                                    <field name="name"/>
-                                    <field name="fee_amount"/>
-                                    <field name="fee_structure_id" placeholder="Eg: Quarterly"  options="{'no_create': True}"/>
-                                    <field name="echeance"/>
-                                </tree>
-                            </field>
-                            <group class="oe_subtotal_footer oe_right">
-                                <field name="amount_total" class="oe_subtotal_footer_separator"/>
+                            <group>
+                                <field name="fee_structure_name" placeholder="Eg:LKG and UKG"/>
+                                <field name="type_frais_id" options="{'no_create': True}"/>
+                                <field name="level_id"/>
+                                <field name="academic_year"/>
+                                <field name="amount_total"/>
+                                <field name="type_inclusion_fee" widget="radio"/>
+                                <field name="type_paiement" widget="radio"/>
+                                <field name="nbre_tranche" invisible="type_paiement == 'pu'"/>
                             </group>
-                        </page>
-                    </notebook>
+                            <group>
+                                <field name="school_id"/>
+                                <field name="field_of_study_ids" widget="many2many_tags" options="{'no_create': True}"/>
+                            </group>
+                        </group>
+                        <notebook invisible="type_paiement == 'pu'">
+                            <page string="Frais">
+                                <field name="fee_type_ids" editable="bottom">
+                                    <tree string="Tranches">
+                                        <field name="name"/>
+                                        <field name="fee_amount"/>
+                                        <field name="fee_structure_id" placeholder="Eg: Quarterly"  options="{'no_create': True}"/>
+                                        <field name="echeance"/>
+                                    </tree>
+                                </field>
+                                <group class="oe_subtotal_footer oe_right">
+                                    <field name="amount_total" class="oe_subtotal_footer_separator"/>
+                                </group>
+                            </page>
+                        </notebook>
                 </sheet>
                 </form>
             </field>

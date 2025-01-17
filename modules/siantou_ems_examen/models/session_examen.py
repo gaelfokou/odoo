@@ -24,7 +24,14 @@ class SecretariatExamen(models.Model):
     )
     type_examen_id = fields.Many2one(
         'siantou.ems.examen.type',
-        string="Type d'examen", required=True,
+        string="Type d'examen",
+        required=True,
+    )
+    year_id = fields.Many2one(
+        'siantou.ems.core.year',
+        string='Année académique', 
+        required=True,
+        default=lambda self: self.env['siantou.ems.core.year'].search([('active','=',True)], limit=1)
     )
     responsable_id = fields.Many2one(
         'hr.employee',
@@ -64,6 +71,16 @@ class SecretariatExamen(models.Model):
 
 
 
+    @api.onchange('type_examen_id', 'year_id')
+    def _onchange_name(self):
+        for  secr in self:
+            name = f"Session_de_"
+            if secr.type_examen_id:
+                name = f"{name}{secr.type_examen_id.code}"
+            if secr.year_id:
+                name = f"{name}_{secr.year_id.name}"
+            
+            secr.name=name
 
 
 
@@ -95,19 +112,21 @@ class SessionExamen(models.Model):
         'siantou.ems.core.year',
         string='Année académique', 
         required=True,
+        related='secretariat_examen_id.year_id'
     )
     semester_id = fields.Many2one(
         'siantou.ems.core.year.semester', 
         string="Semestre",
         required=True,
     )
-    date_start = fields.Datetime(string='Date de début', required=True,)
-    date_end = fields.Datetime(string='Date de fin', required=True, )
-    exam_hours = fields.Float(string='Durée', 
-        compute='_compute_exam_hours', 
-        store=True, 
-        readonly=True
-    )
+    show_field = fields.Boolean(default=False)
+    date_start = fields.Date(string='Date de début', required=True,)
+    date_end = fields.Date(string='Date de fin', required=True, )
+    # exam_hours = fields.Float(string='Durée', 
+    #     compute='_compute_exam_hours', 
+    #     store=True, 
+    #     readonly=True
+    # )
     state = fields.Selection([
         ('create', 'Encours de création'),
         ('draft', 'En attente de lancement'),
@@ -115,7 +134,7 @@ class SessionExamen(models.Model):
         ('close', 'Terminé'),
         ('cancel', 'Annulé')
     ], string='Statut', readonly=True, index=True, copy=False, default='create', tracking=True)
-    exam_line_ids = fields.One2many('examen.session.line', 'exam_session_id', string='Exams')
+    exam_subject_ids = fields.One2many('examen.session.line.subject', 'exam_id', string='Exams')
     exam_count = fields.Integer("Nombre d'examen", compute='_compute_exam')
 
     _sql_constraints = [
@@ -130,14 +149,15 @@ class SessionExamen(models.Model):
         return result
 
 
-    @api.depends('date_start', 'date_end')
-    def _compute_exam_hours(self):
-        for exam in self:
-            if exam.date_start and exam.date_end:
-                delta = exam.date_end - exam.date_start
-                exam.exam_hours = delta.total_seconds() / 3600.0
-            else:
-                exam.exam_hours = False
+    # @api.depends('date_start', 'date_end')
+    # def _compute_exam_hours(self):
+    #     for exam in self:
+    #         if exam.date_start and exam.date_end:
+    #             delta = exam.date_end - exam.date_start
+    #             exam.exam_hours = delta.total_seconds() / 3600.0
+    #         else:
+    #             exam.exam_hours = False
+
 
     @api.onchange('type_examen_id', 'semester_id', 'year_id')
     def _onchange_name(self):
@@ -151,6 +171,7 @@ class SessionExamen(models.Model):
                 name = f"{name}_{exam.year_id.name}"
             
             exam.name=name
+
 
     @api.constrains('exam_hours')
     def _check_exam_hours(self):
@@ -179,7 +200,7 @@ class SessionExamen(models.Model):
     # Compute Methods
     def _compute_exam(self):
         for record in self:
-            record.exam_count = len(record.exam_line_ids)
+            record.exam_count = len(record.exam_subject_ids)
         
 
     # CRUD Operations
@@ -199,72 +220,85 @@ class SessionExamen(models.Model):
 
     def button_open(self):
         for rec in self:
-            rec.exam_line_ids.unlink()
+            if rec.exam_subject_ids:
+                rec.exam_subject_ids.unlink()
+            
             for field_of_study_id in rec.field_of_study_ids:
                 cycle_id = field_of_study_id.cursus_id
                 student_ids = field_of_study_id.student_ids
-                for specialty_id in field_of_study_id.specialty_ids:
-                    exam_line = self.exam_line_ids.create({
-                        'name': f"Examen_{rec.type_examen_id.code}_{specialty_id.code}",
-                        'exam_session_id': rec.id,
-                        'field_of_study_id': field_of_study_id.id,
-                        'specialty_id': specialty_id.id,
-                        'year_id': rec.year_id.id,
-                        'semester_id': rec.semester_id.id,
-                        'level_ids': cycle_id.level_ids.ids,
-                        'date_start': rec.date_start,
-                        'date_end': rec.date_end,
-                        'state': 'progress',
-                    })
-                    for level_id in exam_line.level_ids:
-                        syllabus_id = self.env['siantou.ems.core.syllabus'].search(
-                            [
-                                ('field_of_study_id','=',exam_line.field_of_study_id.id),
-                                ('specialty_id','=',exam_line.specialty_id.id),
-                                ('year_id','=',exam_line.year_id.id),
-                                ('semester_id','=',exam_line.semester_id.id),
-                                ('level_id','=',level_id.id),
-                            ],
-                            limit=1
-                        )
-                        for syllabus_subject_id in syllabus_id.syllabus_subject_ids:
-                            for subject_line_id in syllabus_subject_id.syllabus_subject_line_ids:
-                                exam_subject_id = exam_line.exam_subject_ids.create({
-                                    'exam_id':exam_line.id,
-                                    'name':f"{subject_line_id.name} [{exam_line.name}]",
-                                    'field_of_study_id':syllabus_id.field_of_study_id.id,
-                                    'specialty_id': exam_line.specialty_id.id,
-                                    'subject_id': subject_line_id.id,
-                                    'year_id':exam_line.year_id.id,
-                                    'level_id':level_id.id,
-                                    'date_start':exam_line.date_start,
-                                    'date_end':exam_line.date_end,
-                                    'state':'schedule',
-                                })
-                                for student_id in student_ids:
-                                    exam_attendee_id = self.env['session.line.attende'].search([
-                                            ('exam_subject_id.exam_id.exam_session_id','=', exam_subject_id.exam_id.exam_session_id.id),
-                                            ('exam_subject_id.exam_id','=', exam_subject_id.exam_id.id),
-                                            ('exam_subject_id','=', exam_subject_id.id),
-                                            ('student_id','=', student_id.id)
-                                        ],limit=1
-                                    )
-                                    if not exam_attendee_id:
-                                        exam_subject_id.exam_attendee_ids.create({
-                                            'exam_subject_id':exam_subject_id.id,
-                                            'student_id':student_id.id,
-                                            'status':'A',
-                                        })
+                if cycle_id:
+                    if cycle_id.level_ids:
+                        for level_id in cycle_id.level_ids:
+                            syllabus_id = self.env['siantou.ems.core.syllabus'].search(
+                                [
+                                    ('field_of_study_id','=',field_of_study_id.id),
+                                    ('year_id','=',rec.year_id.id),
+                                    ('semester_id','=',rec.semester_id.id),
+                                    ('level_id','=',level_id.id),
+                                ],
+                                limit=1
+                            )
+                            if syllabus_id:
+                                if syllabus_id.syllabus_subject_ids:
+                                    for syllabus_subject_id in syllabus_id.syllabus_subject_ids:
+                                        if syllabus_subject_id.syllabus_subject_line_ids:
+                                            for subject_line_id in syllabus_subject_id.syllabus_subject_line_ids:
+                                                exam_subject_id = rec.exam_subject_ids.create({
+                                                    'exam_id':rec.id,
+                                                    'name':f"{subject_line_id.name}_[{rec.name}]",
+                                                    'field_of_study_id':syllabus_id.field_of_study_id.id,
+                                                    'subject_id': subject_line_id.id,
+                                                    'year_id':rec.year_id.id,
+                                                    'level_id':level_id.id,
+                                                    'date_start':rec.date_start,
+                                                    'date_end':rec.date_end,
+                                                    'state':'schedule',
+                                                })
+                                                rec.show_field=True
+                                                if student_ids:
+                                                    for student_id in student_ids:
+                                                        exam_attendee_id = self.env['session.line.attende'].search([
+                                                                ('exam_subject_id','=', exam_subject_id.id),
+                                                                ('student_id','=', student_id.id)
+                                                            ],
+                                                            limit=1
+                                                        )
+                                                        if not exam_attendee_id:
+                                                            exam_subject_id.exam_attendee_ids.create({
+                                                                'exam_subject_id':exam_subject_id.id,
+                                                                'student_id':student_id.id,
+                                                                'status':'',
+                                                            })
+                                                else:
+                                                    raise ValidationError(f"Aucun étudiant de la {exam_subject_id.name} trouvé")
+                                        else:
+                                            raise ValidationError("Matière des unitées d'enseignement non configuré")
+                                else:
+                                    raise ValidationError("Unité d'enseignement de syllabus non configuré")
+                            else:
+                                raise ValidationError("Syllabus non configuré")
+                    else:
+                        raise ValidationError("Niveau non configuré")
+                else:
+                    raise ValidationError("Cycle non configuré")
 
         self.write({'state': 'progress'})
 
 
+    def get_students_has_paid(self, student_id, year_id):
+        paids = self.env['education.fee.payment'].search(
+            [
+                ('year_id','=',year_id.id),
+                ('student_id','=',student_id.id),
+            ]
+        )
+
 
     def button_close(self):
         for session in self:
-            if any(exam.state != 'done' for exam in session.exam_line_ids.filtered(lambda e: e.state != 'cancel')):
+            if any(exam.state != 'done' for exam in session.exam_subject_ids.filtered(lambda e: e.state != 'cancel')):
                 raise UserError(_('Veuillez fermer tous les examens avant de clôturer la session. %s') % (session.name))
-            session.exam_line_ids.unlink()
+            session.exam_subject_ids.unlink()
         self.write({'state': 'close'})
         
 
@@ -282,13 +316,13 @@ class SessionExamen(models.Model):
             'exam_session_id': self.id,
         }
         action = {
-            'name': 'Voir tous les examens',
+            'name': 'Voir tous les examens[matières]',
             'view_type': 'form',
             'view_mode': 'tree,form',
-            'res_model': 'examen.session.line',
+            'res_model': 'examen.session.line.subject',
             'type': 'ir.actions.act_window',
             'context': context,
-            'domain': [('exam_session_id','=',self.id)],
+            'domain': [('exam_id','=',self.id)],
         }
         return action
 
@@ -426,7 +460,7 @@ class SessionExamenLineSubject(models.Model):
     _inherit = ['portal.mixin', 'mail.thread', 'mail.activity.mixin', 'utm.mixin']
 
     exam_id = fields.Many2one(
-        comodel_name='examen.session.line',
+        comodel_name='siantou.ems.examen.session',
         string="Examen", 
         required=True, 
         ondelete='cascade', 
@@ -437,11 +471,6 @@ class SessionExamenLineSubject(models.Model):
     field_of_study_id = fields.Many2one(
         'siantou.ems.core.field_of_study', 
         string="Filières", 
-        required=True,
-    )
-    specialty_id = fields.Many2one(
-        'siantou.ems.core.specialty',
-        'Options',
         required=True,
     )
     subject_id = fields.Many2one(
@@ -462,10 +491,12 @@ class SessionExamenLineSubject(models.Model):
     )
     date_start = fields.Datetime(string='Date de début')
     date_end = fields.Datetime(string='Date de fin')
+    show_field = fields.Boolean(default=False)
     state = fields.Selection([
             ('draft', 'Brouillon'),
             ('schedule', 'Lancé'),
             ('complete', 'Terminé'),
+            ('code', 'Codification des étudiants'),
             ('prepare', 'Mise à jour des notes'),
             ('done', 'Notes mis à jour'),
             ('cancel', 'Annulé')
@@ -477,6 +508,7 @@ class SessionExamenLineSubject(models.Model):
     )
     attendees_count = fields.Integer('Nombre de participants',compute='_compute_attendees_count')
     exam_attendee_ids = fields.One2many('session.line.attende', 'exam_subject_id', string='Participants', )
+
 
     # exam_result_line = fields.One2many('examen.session.line.result', 'exam_subject_id', string='Résultats', )
     # exam_result_count = fields.Integer('Résultats', compute='_compute_exam_result')
@@ -526,17 +558,7 @@ class SessionExamenLineSubject(models.Model):
         self.write({'state': 'prepare'})
 
 
-    def button_put_result(self):
-        #raise UserError(student_ids)
-        # self.exam_result_line.unlink()
-        # for attendee in self.exam_attendee_ids:
-        #     exam_result = self.env['examen.session.line.result'].create({
-        #         'student_id': attendee.student_id.id,
-        #         'exam_subject_id': self.id,
-        #         'attendance_status': attendee.status,
-        #         'marks': 0,
-        #     })
-        self.write({'state': 'prepare'})
+
 
 
     def button_complete_result(self):
@@ -597,7 +619,8 @@ class SessionExamenLineSubject(models.Model):
     def _compute_attendees_count(self):
         for record in self:
             record.attendees_count = len(record.exam_attendee_ids)
-            
+
+
 
     def button_open_results(self):
         action = self.env['ir.actions.actions']._for_xml_id('siantou_ems_examen.action_exam_teacher_result')

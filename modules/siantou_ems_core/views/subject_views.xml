@@ -9,12 +9,12 @@
             <field name="name">subject.tree.view</field>
             <field name="model">siantou.ems.core.subject</field>
             <field name="arch" type="xml">
-                <tree string="Cours">
+                <tree string="Matières">
                     <field name="code"/>
                     <field name="shared_subject"/>
                     <field name="name"/>
                     <field name="semester_id"/>
-                    <field name="field_of_study_id"/>
+                    <field name="ue_ids" widget="many2many_tags"/>
                     <field name="level_id"/>
                     <field name="hours_credit"/>
                     <field name="weekly_hours_credit"/>
@@ -29,14 +29,14 @@
             <field name="name">subject.form.view</field>
             <field name="model">siantou.ems.core.subject</field>
             <field name="arch" type="xml">
-                <form string="Cours">
+                <form string="Matières">
                     <sheet>
                         <group string="Informations sur le cours">
                             <field name="code"/>
                             <field name="shared_subject"/>
                             <field name="name"/>
                             <field name="semester_id"/>
-                            <field name="field_of_study_id"/>
+                            <field name="ue_ids" widget="many2many_tags" options="{'no_create': True}"/>
                             <field name="level_id"/>
                             <field name="hours_credit"/>
                             <field name="weekly_hours_credit"/>
@@ -61,12 +61,12 @@
         <record
             id="action_show_subject"
             model="ir.actions.act_window">
-            <field name="name">Cours</field>
+            <field name="name">Matières</field>
             <field name="res_model">siantou.ems.core.subject</field>
             <field name="view_mode">tree,form</field>
             <field name="help" type="html">
                 <p class="o_view_nocontent_smiling_face">
-                    Créer un nouveau cours.
+                    Créer une nouvelle matières.
                 </p>
             </field>
         </record>
@@ -74,7 +74,7 @@
         <!-- Menu pour les cours -->
         <menuitem
                 id="menu_siantou_ems_core_program_subject"
-                name="Cours"
+                name="Matières"
                 parent="menu_siantou_ems_core_program"
                 action="action_show_subject"
                 groups="siantou_ems_core.group_subject_user,siantou_ems_core.group_subject_admin,base.group_system"

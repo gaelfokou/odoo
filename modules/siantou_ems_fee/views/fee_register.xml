@@ -662,7 +662,7 @@
                         <button name="button_cancel" string="Cancel Entry" type="object" groups="account.group_account_invoice"
                                 attrs="{'invisible' : ['|', ('id', '=', False), ('state', '!=', 'draft')]}"/>
                         <button name="button_draft" string="Reset to Draft" type="object" groups="account.group_account_invoice"
-                                attrs="{'invisible' : [('show_reset_to_draft_button', '=', False)]}"/>
+                                attrs="{'invisible' : [('show_reset_to_drsiantou_button', '=', False)]}"/>
                         <field name="state" widget="statusbar" statusbar_visible="draft,posted"/>
                     </header>
                     <!-- Invoice outstanding credits -->
@@ -723,7 +723,7 @@
                         <field name="commercial_partner_id" invisible="1"/>
                         <field name="bank_partner_id" invisible="1"/>
                         <field name="display_qr_code" invisible="1"/>
-                        <field name="show_reset_to_draft_button" invisible="1"/>
+                        <field name="show_reset_to_drsiantou_button" invisible="1"/>
 
                         <field name="invoice_has_outstanding" invisible="1"/>
                         <field name="is_move_sent" invisible="1"/>

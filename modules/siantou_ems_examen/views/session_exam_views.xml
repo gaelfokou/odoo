@@ -6,7 +6,7 @@
 			<field name="name">examen.session.tree.view</field>
 			<field name="model">siantou.ems.examen.session</field>
 			<field name="arch" type="xml">
-				<tree string="Session d'examen" default_order="id desc" default_group_by="year_id">
+				<tree string="Session d'examen" default_order="id desc">
                     <field name="name"/>
                     <field name="type_examen_id"/>
 					<field name="field_of_study_ids"/>
@@ -27,17 +27,23 @@
                 <form string="Exam">
                     <header>
                         <!-- <button name="button_draft" invisible="state == 'create'" string="Brouillon" type="object" data-hotkey="n"/> -->
-                        <button name="button_open" invisible="state != 'draft'" string="Lancé la session" type="object" class="oe_highlight" data-hotkey="o" />
-                        <button name="button_cancel" invisible="state == 'create'" string="Annulé" type="object" data-hotkey="x" />
-                        <button name="button_close" type="object" string="Fermé la session" invisible="state != 'progress'" class="oe_highlight" data-hotkey="l"/>
-                        
+                        <button name="button_open" invisible="state != 'draft'" 
+                            string="Lancé la session" type="object" 
+                            class="oe_highlight" data-hotkey="o" />
+                        <button name="button_cancel" 
+                            invisible="state == 'create'" 
+                            string="Annulé" type="object" data-hotkey="x" />
+                        <button name="button_close" 
+                            type="object" string="Termié la session" 
+                            invisible="state != 'progress'" class="oe_highlight" data-hotkey="l"/>
                         <field name="state" widget="statusbar" statusbar_visible="draft,progress,close,cancel" readonly="1"/>
                     </header>
                     <sheet>
+                        <field name="show_field" invisible="1" />
                         <div class="oe_button_box" name="button_box">
                             <button name="action_view_exams" type="object"
-                                class="oe_stat_button" icon="fa-clipboard">
-                                <field name="exam_count" widget="statinfo" string="Examens lancés"/>
+                                class="oe_stat_button" icon="fa-clipboard" invisible="show_field==False">
+                                <field name="exam_count" widget="statinfo" string="Examens [matières] lancés"/>
                             </button>
                         </div>
                         <div class="oe_title">
@@ -48,9 +54,6 @@
                                 />
                             </h1>
                         </div>
-                        <!-- <group>
-                            <field name="name" string="Libellé" />
-                        </group> -->
                         <group>
                             <group>
                                 <field name="secretariat_examen_id" 
@@ -83,18 +86,18 @@
                                     readonly="state != 'create'" 
                                     options="{'no_open':True,'no_create':True}"/>
                     
-                                <field name="exam_hours" readonly="state != 'create'"/>
+                                <!-- <field name="exam_hours" readonly="state != 'create'"/> -->
                             </group>
                         </group>
-                        <notebook>
+                        <notebook invisible="show_field==False">
                             <page name="exam_line_ids" string="Examens">
-                                <field name="exam_line_ids" options="{'no_open':True,'no_create':True}">
+                                <field name="exam_subject_ids" 
+                                    options="{'no_open':True,'no_create':True}">
                                     <tree string="Examens" default_order="id desc">
                                         <field name="name"/>
                                         <field name="field_of_study_id"/>
-                                        <field name="level_ids" widget="many2many_tags"/>
+                                        <field name="level_id"/>
                                         <field name="year_id"/>
-                                        <field name="semester_id"/>
                                         <field name="date_start" />
                                         <field name="date_end" />
                                         <field name="state" />
@@ -144,9 +147,9 @@
         
         <menuitem 
             id="menu_session_examen"
-            parent="examen_menu_plannification"
+            parent="examen_menu_plannification_cc_sn"
             action="action_session_exam"
-            name="Sessions d'examen"
+            name="Examens de session normal/Contrôle continu"
             sequence="20"
         />
         

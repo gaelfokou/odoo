@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="paperformat_examen_mark" model="report.paperformat">
+        <field name="name">Format du papier</field>
+        <field name="default" eval="True" />
+        <field name="orientation">Landscape</field>
+        <field name="margin_top">0</field>
+        <field name="margin_bottom">15</field>
+        <field name="margin_left">7</field>
+        <field name="margin_right">7</field>
+        <field name="header_line" eval="True" />
+        <field name="header_spacing">5</field>
+        <field name="dpi">90</field>
+    </record>
+    <record id="action_report_student_examen_mark_pdf" model="ir.actions.report">
+        <field name="name">Note PDF</field>
+        <field name="model">examen.resultat.subject</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">siantou_ems_examen.report_student_examen_mark_pdf_template</field>
+        <field name="report_file">siantou_ems_examen.report_student_examen_mark_pdf_template</field>
+        <field name="print_report_name">f"Notes - {student['name']}" </field>
+        <!-- <field name="print_report_name">'Paiement de - %s' % (data.student)</field> -->
+        <!-- <field name="binding_model_id" eval="'False'"/> -->
+        <!-- <field name="paperformat_id" ref="paperformat_examen_mark" /> -->
+        <!-- <field name="binding_type">report</field> -->
+    </record>
+
+    <template id="report_student_examen_mark_pdf_template">
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+                <div class="page">
+                    <div class="container">
+                        <table classe="table table-striped"
+                                        style="width: 100%;">
+                            <tbody>
+                                <tr >
+                                    <td style="border: none;padding: 4px;text-align: center; width:30%;text-transform:uppercase">
+                                        INSTITUT UNIVERSITAIRE SIANTOU <br/>
+                                        ECOLE SUPERIEUR DE MANAGEMENT, <br/>
+                                        DE GESTION ET DE <br/>
+                                        <small>
+                                            B.P. : 04 Yaoundé Cameroun <br/>
+                                            Tél : 22-30-62-71 <br/>
+                                            Fax :
+                                        </small>
+                                    </td>
+                                    <td style="border: none;text-align: bottom; width:40%">
+                                        <div style="text-align: center; width:100%">
+                                            <img src="siantou_ems_examens/static/src/img/logo.png" 
+                                            alt="logo"
+                                            style="width: 200px; height: 150px;"/>
+                                        </div>
+                                    </td>
+                                    <td style="border: none;padding: 4px; text-align: center; width:30%;text-transform:uppercase">
+                                        SIANTOU UNIVERSITY INSTITUTE <br/>
+                                        MANAGEMENT SCHOOL, <br/>
+                                        AND MANAGEMENT <br/>
+                                        <small>
+                                            B.P. : 04 Yaounde Cameroon <br/>
+                                            Phone : 22-30-62-71 <br/>
+                                            Fax :
+                                        </small>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <h3 style="font-weigth:bolt;margin-bottom:0px;text-transform:uppercase">
+                                CYCLE : <span style="text-transform:uppercase" t-esc="acad['cycle_name']" />
+                        </h3>
+                        <small style="margin-top:0px">cycle:</small>
+                        <center>
+                            <h2 style="text-decoration:underline;text-transform:uppercase">
+                                Note de 
+                                <span t-esc="acad['type_examen']" /> de 
+                                <span t-esc="acad['exam_subject_name']" />
+                            </h2>
+                        </center>
+                        <table style="width: 100%;">
+                            <tbody>
+                                <tr style="border: 1px solid black">
+                                    <td style="border: none;padding: 4px;text-align: left; width:45%">
+                                        <b style="text-transform:uppercase">SPECIALITE : </b>
+                                        <span style="text-transform:uppercase" t-esc="acad['field_of_study_name']" />
+                                    </td>
+                                    <td style="border: none;text-align: center; width:10%"></td>
+                                    <td style="border: none;padding: 4px;text-align: right; width:45%">
+                                        <b style="text-transform:capitalize">Année académique : </b>
+                                        <span t-esc="acad['year_name']" /> <br/>
+                                        Academic Year :-----
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <!-- <center>
+                            <h2 style="text-decoration:underline">
+                                <span t-esc="acad['exam_subject_name']" />
+                            </h2>
+                        </center> -->
+                        <!-- <div class="row">
+                            <div class="col-sm-12">
+                                <h3>I. Identification de l'étudiant</h3>
+                                <table classe="table table-striped"
+                                                style="width: 100%;">
+                                    <tbody>
+                                        <tr>
+                                            <td style="border: none;padding: 4px;text-align: left">
+                                                <b>Nom(s) et prénom(s) :</b>
+                                                <span t-esc="student['name']" />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="border: none;padding: 4px;text-align: left">
+                                                <b>Matricule :</b>
+                                                <span t-esc="student['matricule']" />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="border: none;padding: 4px;text-align: left">
+                                                <b>Filière :</b>
+                                                <span t-esc="student['field_of_study']" />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="border: none;padding: 4px;text-align: left">
+                                                <b>Niveau académique :</b>
+                                                <span t-esc="student['level']" />
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div> -->
+                        <div class="row mt-3">
+                            <div class="col-12">
+                                <table classe="table table-striped"
+                                    style="width: 100%;padding: 0px">
+                                    <thead>
+                                        <tr
+                                            style="border: 1px solid black;text-align: left;margin:0;">
+                                            <th style="border: 1px solid black;text-align: left;padding: 4px;margin:0; width: 50%">Nom(s) et prénom(s)</th>
+                                            <th style="border: 1px solid black;text-align: left;padding: 4px;margin:0; width: 25%">Note(s)</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr t-foreach="marks" t-as="mark"
+                                            style="border: 1px solid black;margin:0;">
+                                            <td style="border: 1px solid black;padding: 4px;margin:0;">
+                                                <t t-esc="mark.get('student_name')" />
+                                            </td>
+                                            <td style="border: 1px solid black;padding: 4px;margin:0;">
+                                                <t t-esc="mark.get('note')" />
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <!-- <div class="row mt-3 mb-3">
+                            <div class="col-12 text-center">
+                                <h5> Arrête la présente facture à la somme de : <strong><span t-esc="'{0:,.0f}'.format(int(amount_total)).replace(',', ' ')"/> FCFA</strong>
+                                    au titre de l'année académique <span t-esc="payment_id['year']" />
+                                </h5>
+                            </div>
+                        </div> -->
+                    </div>
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>

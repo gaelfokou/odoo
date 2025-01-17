@@ -73,6 +73,13 @@ class FeeStructure(models.Model):
     nbre_tranche = fields.Integer("Nombre de tranches", required=True, default=1,)
     sequence = fields.Integer('Priorité', default=1, required=True, store=True)
     active = fields.Boolean(default=True)
+    state = fields.Selection([
+            ('no_create', 'Encours de création'),
+            ('create', 'En attente de validation'),
+            ('validate', 'Validé'),
+        ],
+        default='no_create'
+    )
 
 
     @api.depends('level_id', 'type_frais_id', 'type_paiement', 'academic_year', 'field_of_study_ids', 'school_id')
@@ -111,6 +118,16 @@ class FeeStructure(models.Model):
             self.type_paiement='pt'
         
 
+    def validate_structure_payment(self):
+        """Validate"""
+        for rec in self:
+            rec.state = 'validate'
+
+
+    def cancel_structure_payment(self):
+        """cancel"""
+        for rec in self:
+            rec.state = 'create'
 
 
     # @api.onchange('nbre_tranche')
@@ -159,7 +176,9 @@ class FeeStructure(models.Model):
 
 
         res = super().create(vals)
-        # self._create_tranche(res)
+        res.update({
+            "state":'create'
+        })
         return res
 
     @api.onchange('school_id')
@@ -189,7 +208,8 @@ class FeeStructureLines(models.Model):
         required=True
     )
     fee_amount = fields.Float('Montant',  required=True)
-    echeance = fields.Date("Echeance de paiement")
+    echeance = fields.Date("Echeance de paiement", store=True) 
+    date_bu = fields.Date("Echeance de paiement") 
 
 
 
@@ -216,8 +236,9 @@ class FeeType(models.Model):
 
 class FeeMoratoire(models.Model):
     _name = 'siantou.ems.fee.moratoire'
+    _rec_name="student_id"
 
-    name = fields.Char("Nom", related='student_id.name')
+    # name = fields.Char("Nom", related='student_id.name')
     student_id = fields.Many2one('oe.school.student', string='Etudiant', required=True)
     year_id = fields.Many2one(
         'siantou.ems.core.year', 
@@ -226,12 +247,43 @@ class FeeMoratoire(models.Model):
         default=lambda self: self.env['siantou.ems.core.year'].search([('active','=',True)], limit=1),    
     )
     amount = fields.Monetary('Montant à verser', required=True, tracking=True)
+    date_debut = fields.Date(string="Date de début", required=True)
+    date_fin = fields.Date(string="Date de début", required=True)
     currency_id = fields.Many2one(
         'res.currency', 
         default=lambda self: self.env.company.currency_id, 
         readonly=True, 
         related_sudo=False
     )
+    state = fields.Selection(
+        [
+            ('no_create', "Encours de création"),
+            ('create', 'Crée et attente de validation'),
+            ('validate', 'Validé'), 
+        ],
+        "Statut", 
+        required=True,
+        default='no_create',
+    )
 
 
+    def validate_moratoire(self):
+        """validate moratoire"""
+        for rec in self:
+            rec.state = 'validate'
 
+
+    def cancel_moratoire(self):
+        """Cancel moratoire"""
+        for rec in self:
+            rec.state = 'create'
+    
+
+    def create(self, values):
+        res = super(FeeMoratoire, self).create(values)
+        res.update({
+            'state':'create'
+        })
+        return res
+
+    

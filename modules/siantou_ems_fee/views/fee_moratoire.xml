@@ -1,18 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-        <record id="fee_special_view_form" model="ir.ui.view">
+
+        <record id="fee_moratoire_view_tree" model="ir.ui.view">
+            <field name="name">siantou.ems.fee.moratoire.view.tree</field>
+            <field name="model">siantou.ems.fee.moratoire</field>
+            <field name="arch" type="xml">
+                <tree string="Moratoires">
+                    <field name="student_id" />
+                    <field name="year_id" />
+                    <field name="amount" />
+                    <field name="date_debut"/>
+                    <field name="date_fin"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="fee_moratoire_view_form" model="ir.ui.view">
             <field name="name">siantou.ems.fee.moratoire.view.form</field>
             <field name="model">siantou.ems.fee.moratoire</field>
             <field name="arch" type="xml">
                 <form string="Moratoire">
+                    <header>
+                        <button 
+                            name="validate_moratoire" 
+                            invisible="state in ['no_create','validate']" 
+                            type="object" string="Valider"
+                            class="btn btn-success" confirm="Validez-vous ce moratoire ?" 
+                        />
+                        <button class="btn btn-danger" 
+                            name="cancel_moratoire" 
+                            invisible="state in ['create','no_create']" 
+                            type="object" 
+                            string="Annuler" /> 
+                        <field name="state" widget="statusbar" statusbar_visible="no_create,create,validate" />
+                    </header>
                     <sheet>
-                        <group col="4" colspan="4">
-                            <group col="2" colspan="2">
+                        <group>
+                            <group>
                                 <field name="student_id"/>
-                                <field name="year_id"/>
+                                <field name="date_debut"/>
                             </group>
-                            <group col="2" colspan="2">
+                            <group>
+                                <field name="year_id"/>
+                                <field name="date_fin"/>
+                            </group>
+                            <group>
                                 <field name="amount"/>
                                 <field name="currency_id" invisible="1"/>
                             </group>
@@ -22,18 +55,7 @@
             </field>
         </record>
 
-        <record id="fee_special_view_tree" model="ir.ui.view">
-            <field name="name">siantou.ems.fee.moratoire.view.tree</field>
-            <field name="model">siantou.ems.fee.moratoire</field>
-            <field name="arch" type="xml">
-                <tree string="Moratoires">
-                    <field name="name" />
-                    <field name="year_id" />
-                    <field name="amount" />
-                    <field name="currency_id" invisible="1" />
-                </tree>
-            </field>
-        </record>
+
 
         <record id="fee_moratoire_action" model="ir.actions.act_window">
             <field name="name">Moratoires</field>

@@ -8,7 +8,7 @@ from odoo.exceptions import ValidationError
 
 class Subject(models.Model):
     _name = 'siantou.ems.core.subject'
-    _description = 'Cours'
+    _description = 'Matières'
 
     # Code du cours
     code = fields.Char(
@@ -19,7 +19,7 @@ class Subject(models.Model):
     # Variable booléenne pour savoir si c'est un tronc commun ou pas
     shared_subject = fields.Boolean(
         'Tronc commun',
-        default=True
+        default=False
     )
 
     # Nom du cours
@@ -38,10 +38,9 @@ class Subject(models.Model):
     )
 
     # Filière à laquelle appartient ce cours
-    field_of_study_id = fields.Many2one(
-        'siantou.ems.core.field_of_study',
-        'Filière',
-        help='Filière à laquelle appartient ce cours',
+    ue_ids = fields.Many2many(
+        'siantou.ems.core.syllabus.subject',
+        string="Unités d'enseignement",
         required=True,
         ondelete='restrict'
     )
@@ -137,3 +136,10 @@ class Subject(models.Model):
             # Supprimer les enseignants enlevés de teacher_ids
             to_remove = set(current_teacher_ids) - set(new_teacher_ids)
             record.teacher_priority_ids.filtered(lambda p: p.employee_id.id in to_remove).unlink()
+
+    # Validation pour s'assurer qu'un cours n'est lié qu'à une seule filière si ce n'est pas un tronc commun
+    @api.constrains('shared_subject', 'ue_ids')
+    def _check_field_of_study(self):
+        for record in self:
+            if not record.shared_subject and len(record.ue_ids) > 1:
+                raise ValidationError("Un cours qui n'est pas en tronc commun doit être lié à une seule filière.")

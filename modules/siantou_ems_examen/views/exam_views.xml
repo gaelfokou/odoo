@@ -155,7 +155,7 @@
         <menuitem 
             name="Examens" 
             id="menu_examen_examen"
-            parent="examen_menu_plannification"
+            parent="examen_menu_plannification_sn_cc"
             action="action_exam"
             sequence="20"
         />

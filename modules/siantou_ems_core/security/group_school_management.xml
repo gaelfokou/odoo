@@ -388,5 +388,17 @@
             <field name="implied_ids" eval="[(4, ref('base.group_system'))]"/>
         </record>
 
+        <!-- partenaire -->
+        <record id="group_university_partner_user" model="res.groups">
+            <field name="name">Gestion des partenaires - user</field>
+            <field name="category_id" ref="base.module_category_administration"/>
+            <field name="implied_ids" eval="[(4, ref('base.group_system'))]"/>
+        </record>
+        <record id="group_university_partner_admin" model="res.groups">
+            <field name="name">Gestion des partenaires - admin</field>
+            <field name="category_id" ref="base.module_category_administration"/>
+            <field name="implied_ids" eval="[(4, ref('base.group_system'))]"/>
+        </record>
+
     </data>
 </odoo>

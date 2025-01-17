@@ -60,11 +60,11 @@ class FieldOfStudy(models.Model):
         string='Cursus ou Cycle') #== cursus
 
     # Ensemble des cours de la filière
-    subject_ids = fields.One2many(
-        'siantou.ems.core.subject',
-        'field_of_study_id',
-        'Cours'
-    )
+    # subject_ids = fields.One2many(
+    #     'siantou.ems.core.subject',
+    #     'field_of_study_id',
+    #     'Cours'
+    # )
     # Ensemble des spécialités de la filière
     specialty_ids = fields.One2many(
         'siantou.ems.core.specialty',
@@ -96,16 +96,16 @@ class FieldOfStudy(models.Model):
         ('unique_name', 'unique(name)', 'Le nom doit être unique'),
     ]
 
-    def get_subject_ids_by_level(self):
-        # Dictionnaire pour stocker les IDs des cours par niveau
-        subject_ids_by_level = defaultdict(list)
+    # def get_subject_ids_by_level(self):
+    #     # Dictionnaire pour stocker les IDs des cours par niveau
+    #     subject_ids_by_level = defaultdict(list)
 
-        # Parcourt tous les niveaux de la filière
-        for level in self.env['siantou.ems.core.level'].search([]):
-            # Filtre les cours de cette filière et de ce niveau
-            subjects = self.subject_ids.filtered(lambda s: s.level_id == level)
-            if subjects:
-                # Ajoute les IDs des cours au dictionnaire avec l'ID du niveau comme clé
-                subject_ids_by_level[level.id] = subjects.mapped('id')
+    #     # Parcourt tous les niveaux de la filière
+    #     for level in self.env['siantou.ems.core.level'].search([]):
+    #         # Filtre les cours de cette filière et de ce niveau
+    #         subjects = self.subject_ids.filtered(lambda s: s.level_id == level)
+    #         if subjects:
+    #             # Ajoute les IDs des cours au dictionnaire avec l'ID du niveau comme clé
+    #             subject_ids_by_level[level.id] = subjects.mapped('id')
 
-        return subject_ids_by_level
+    #     return subject_ids_by_level

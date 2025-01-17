@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+
+        <record id="exam_result_subject_tree_view" model="ir.ui.view">
+			<field name="name">examen.resultat.subject.tree.view</field>
+			<field name="model">examen.resultat.subject</field>
+			<field name="arch" type="xml">
+				<tree string="Examen" default_order="id desc" default_group_by="level_id">
+                    <field name="name" />
+                    <field name="type_examen_id" options="{'no_open':True,'no_create':True}" />
+                    <field name="exam_subject_id" string="Matière" options="{'no_open':True,'no_create':True}" />
+                    <field name="year_id" options="{'no_open':True,'no_create':True}"/>
+                    <field name="field_of_study_id" options="{'no_open':True,'no_create':True}"/>
+                    <field name="level_id" options="{'no_open':True,'no_create':True}"/>
+                    <field name="state"/>
+				</tree>
+			</field>
+		</record>
+
+        
+        <record id="exam_result_subject_form_view" model="ir.ui.view">
+            <field name="name">examen.resultat.subject.form.view</field>
+            <field name="model">examen.resultat.subject</field>
+            <field name="priority" eval="1"/>
+            <field name="arch" type="xml">
+                <form string="Notes">
+                    <header>
+                        <button name="button_show_resultat" string="Voir les notes" invisible="show_mark==True" class="btn btn-primary" type="object" data-hotkey="x" />
+                        <button name="button_print_pdf_resultat" 
+                            string="Télécharger le fichier des notes(PDF)" 
+                            class="btn btn-warning"
+                            type="object" 
+                            data-hotkey="x" 
+                            invisible="show_mark==False"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <label for="name"/>
+                            <h1>
+                                <field name="name" readonly="show_mark==True"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="year_id" 
+                                    options="{'no_open':True,'no_create':True}" readonly="show_mark==True" />
+                            </group>
+                            <group>
+                                <field name="field_of_study_id" 
+                                    options="{'no_open':True,'no_create':True}" readonly="show_mark==True"/>
+                            </group>
+                            <group>
+                                <field name="semester_id" 
+                                    options="{'no_open':True,'no_create':True}" readonly="show_mark==True" />
+                            </group>
+                            <group>
+                                <field name="type_examen_id" 
+                                    options="{'no_open':True,'no_create':True}" readonly="show_mark==True" />
+                            </group>
+                            <group>
+                                <field name="level_id" 
+                                    options="{'no_open':True,'no_create':True}" readonly="show_mark==True"/>
+                            </group>
+                            <group>
+                                <field name="exam_subject_id" 
+                                    domain="exam_subject_domain"
+                                    options="{'no_open':True,'no_create':True}"  
+                                    invisible="show_field==False" readonly="show_mark==True" />
+                            </group>
+                            <group>
+                                <field name="exam_subject_domain" invisible="1" />
+                                <field name="show_field" invisible="1"/>
+                                <field name="show_mark" invisible="1"/>
+                            </group>
+                        </group>
+                        <notebook invisible="show_mark==False">
+                            <page string="Notes">
+                                <field name="result_subject_line_ids">
+                                    <tree editable="top" create="show_mark==True">
+                                        <field name="student_id" readonly="1"/>
+                                        <field name="note" string="Note" readonly="1"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids"/>
+                        <field name="activity_ids"/>
+                        <field name="message_ids"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+
+        <record id="action_exam_result_subject" model="ir.actions.act_window">
+            <field name="name">Résultats par matière</field>
+            <field name="res_model">examen.resultat.subject</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Ajouter un résultat
+                </p>
+            </field>
+        </record>
+
+
+        <menuitem 
+            id="menu_results_subject_exam"
+            name="Résultat session normale/Contrôle continu par matière" 
+            action="action_exam_result_subject"
+            parent="examen_menu_resultat"
+            sequence="30"
+        />
+        
+        
+    </data>
+</odoo>

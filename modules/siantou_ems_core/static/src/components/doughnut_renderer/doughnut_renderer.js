@@ -34,7 +34,7 @@ export class DoughnutRenderer extends Component {
                   position: 'bottom',
                 },
                 title: {
-                  display: true,
+                  display: false,
                   text: this.props.title,
                   position: 'bottom',
                 }

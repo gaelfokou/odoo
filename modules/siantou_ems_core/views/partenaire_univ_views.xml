@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+	<data>
+		<!-- Affichage en vue liste -->
+		<record
+                id="partner_tree_view"
+                model="ir.ui.view">
+            <field name="name">partner.tree.view</field>
+			<field name="model">siantou.university.partner</field>
+			<field name="arch" type="xml">
+				<tree string="Partenaires">
+                    <field name="name"/>
+                    <field name="image"/>
+				</tree>
+			</field>
+		</record>
+
+        <!-- Affichage en vue formulaire -->
+		<record
+                id="partner_form_view"
+                model="ir.ui.view">
+			<field name="name">partner.form.view</field>
+			<field name="model">siantou.university.partner</field>
+			<field name="arch" type="xml">
+				<form string="Villes">
+					<sheet>
+                        <group>
+                            <group>
+                                <field name="name"/>
+                            </group>
+                            <group>
+                                <field name="image" widget="image"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="filières">
+                                <field name="field_of_study_ids">
+                                    <tree>
+                                        <field name="code"/>   
+                                        <field name="name"/>   
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+        <!-- Affichage en vue recherche -->
+         <record
+                 id="partner_search_view"
+                 model="ir.ui.view">
+            <field name="name">partner.search.view</field>
+            <field name="model">siantou.university.partner</field>
+            <field name="arch" type="xml">
+                <search string="Villes">
+                    <field name="name" string="Nom"/>
+                    <separator/>
+                </search>
+             </field>
+        </record>
+
+        <!-- Action pour le menu d'affichage -->
+        <record
+                id="action_show_partenaire"
+                model="ir.actions.act_window">
+            <field name="name">Partenaires</field>
+            <field name="res_model">siantou.university.partner</field>
+            <field name="search_view_id" ref="partner_search_view"/>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Créer une nouveau Partenaire.
+                </p>
+            </field>
+        </record>
+
+        <!-- Menu -->
+        <menuitem
+            id="menu_siantou_ems_core_config_partenaire"
+            name="Partenaires"
+            parent="menu_siantou_ems_core_configuration"
+            action="action_show_partenaire"
+            groups="siantou_ems_core.group_university_partner_user,siantou_ems_core.group_university_partner_admin,base.group_system"
+            sequence="11"
+        />
+
+	</data>
+</odoo>

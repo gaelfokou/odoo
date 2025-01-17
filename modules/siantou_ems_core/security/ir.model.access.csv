@@ -108,4 +108,5 @@ syllabus_subject_line_admin,syllabus.subject.line.admin,model_siantou_ems_core_s
 specialty_user,specialty.user,model_siantou_ems_core_specialty,siantou_ems_core.group_specialty_user,1,0,0,0
 specialty_admin,specialty.user,model_siantou_ems_core_specialty,siantou_ems_core.group_specialty_admin,1,1,1,1
 
-
+university_partner_user,university_partner.user,model_siantou_university_partner,siantou_ems_core.group_university_partner_user,1,0,0,0
+university_partner_admin,university_partner.user,model_siantou_university_partner,siantou_ems_core.group_university_partner_admin,1,1,1,1

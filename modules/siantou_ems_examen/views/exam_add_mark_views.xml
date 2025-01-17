@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+
+        <record id="exam_result_tree_view" model="ir.ui.view">
+			<field name="name">exam.result.tree.view</field>
+			<field name="model">examen.subject.rating.anonymous</field>
+			<field name="arch" type="xml">
+				<tree string="Examen" default_order="id desc" default_group_by="exam_session_id">
+                    <field name="name" readonly="1" options="{'no_open':True,'no_create':True}"/>
+                    <field name="exam_subject_id" string="Matière" />
+                    <field name="exam_session_id" readonly="1" options="{'no_open':True,'no_create':True}"/>
+				</tree>
+			</field>
+		</record>
+
+        <!-- <record id="exam_result_grade_tree_view" model="ir.ui.view">
+			<field name="name">exam.result.grade.tree.view</field>
+			<field name="model">examen.subject.rating.anonymous</field>
+			<field name="arch" type="xml">
+				<tree string="Exam" editable="bottom">
+                    <field name="student_id" readonly="1" options="{'no_open':True,'no_create':True}"/>
+                    <field name="attendance_status" />
+                    <field name="exam_state" column_invisible="1"/>
+                    <field name="marks" readonly="exam_state != 'prepare'" />
+				</tree>
+			</field>
+		</record> -->
+
+        
+        <record id="exam_result_form_view" model="ir.ui.view">
+            <field name="name">exam.result.form.view</field>
+            <field name="model">examen.subject.rating.anonymous</field>
+            <field name="priority" eval="1"/>
+            <field name="arch" type="xml">
+                <form string="Codification des étudiants">
+                <header>
+                        <field name="state" widget="statusbar" statusbar_visible="create,done" readonly="1"/>
+                    </header>
+                    <sheet>
+                        <field name="state" invisible="1"/>
+                        <div class="oe_title">
+                            <label for="name"/>
+                            <h1>
+                                <field name="name" readonly="state=='done'"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="exam_session_id" options="{'no_open':True,'no_create':True}" readonly="state=='done'"/>
+                            </group>
+                            <group>
+                                <field name="exam_subject_id" 
+                                    readonly="state=='done'"
+                                    options="{'no_open':True,'no_create':True}" 
+                                    domain="exam_subject_request_domain"/>
+                                <field name="exam_subject_request_domain" invisible="1"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Codification des matières">
+                                <field name="anonymous_code_ids">
+                                    <tree editable="top">
+                                        <field name="anonymous_id" column_invisible="1" />
+                                        <field name="student_id" readonly="1" />
+                                        <field name="anonyma_code" />
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids"/>
+                        <field name="activity_ids"/>
+                        <field name="message_ids"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+
+        <record id="action_exam_result" model="ir.actions.act_window">
+            <field name="name">Codification des étudiants</field>
+            <field name="res_model">examen.subject.rating.anonymous</field>
+            <field name="view_mode">tree,form</field>
+            <!-- <field name="search_view_id" ref="exam_result_search_view"/> -->
+            <!-- <field name="view_ids" eval="[(5, 0, 0),
+                (0, 0, {'view_mode': 'tree', 'view_id': ref('exam_result_tree_view')}),
+                (0, 0, {'view_mode': 'form', 'view_id': ref('exam_result_form_view')}),
+            ]"/> -->
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Ajouter une codification des note
+                </p>
+            </field>
+        </record>
+
+
+        <menuitem 
+            id="menu_results_codification_exam"
+            name="Codification des étudiants" 
+            action="action_exam_result"
+            parent="examen_menu_note"
+            sequence="30"
+        />
+        
+        
+    </data>
+</odoo>

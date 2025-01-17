@@ -29,5 +29,8 @@ access_examen_subject_rating_anonymous_result_manager,examen_subject_rating_anon
 
 access_subject_mark_manager,subject_mark_manager,model_subject_mark,siantou_ems_examen.group_examen_admin,1,1,1,1
 
+access_examen_resultat_subject_manager,examen_resultat_subject_manager,model_examen_resultat_subject,siantou_ems_examen.group_examen_admin,1,1,1,1
+access_examen_resultat_subject_line_manager,examen_resultat_subject_line_manager,model_examen_resultat_subject_line,siantou_ems_examen.group_examen_admin,1,1,1,1
+
 
 

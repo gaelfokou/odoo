@@ -26,19 +26,19 @@
             <field name="arch" type="xml">
                 <form string="Exam">
                     <header>
-                        <button name="button_draft" invisible="state != 'cancel'" string="Brouillo," type="object" data-hotkey="n"/>
+                        <!-- <button name="button_draft" invisible="state != 'cancel'" string="Brouillo," type="object" data-hotkey="n"/>
                         <button name="button_schedule" invisible="state != 'draft'" string="Programmé" type="object" class="oe_highlight" data-hotkey="o" />
                         <button name="button_open_results" invisible="state not in ('prepare','done')" string="Voir les résultats" type="object" class="oe_highlight" data-hotkey="o" />
                         <button name="button_close" type="object" string="Terminé l'examen" invisible="state != 'schedule'" class="oe_highlight" data-hotkey="l"/>
                         <button name="button_open_anonyma_form" type="object" string="Préparer les résultats" invisible="state != 'complete'" class="oe_highlight" data-hotkey="l"/>
-                        
-                        <button 
+                         -->
+                        <!-- <button 
                             name="button_complete_result" 
                             type="object" string="Mettre les note" 
                             invisible="state != 'prepare'" 
                             class="oe_highlight" data-hotkey="l"/>
                         
-                        <button name="button_cancel" invisible="state not in ('draft','schedule')" string="Annuler" type="object" data-hotkey="x" />
+                        <button name="button_cancel" invisible="state not in ('draft','schedule')" string="Annuler" type="object" data-hotkey="x" /> -->
                         <!-- <button 
                             name="action_anonyma_wizard"
                             class="btn btn-primary" 
@@ -96,7 +96,16 @@
                                 />
                             </group>
                         </group>
-                        
+                        <notebook>
+                            <page string="Participants">
+                                <field name="exam_attendee_ids">
+                                    <tree string="Examens" default_order="id desc">
+                                        <field name="student_id"/>
+                                        <field name="status"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
                     </sheet>
                     <div class="oe_chatter">
                         <field name="message_follower_ids"/>
@@ -138,9 +147,9 @@
         </record>
         
         <menuitem 
-            name="Matières programmées" 
+            name="Matières programmées de session normal/Contrôle continu" 
             id="menu_examen_e"
-            parent="examen_menu_plannification"
+            parent="examen_menu_plannification_cc_sn"
             action="action_view_subjects"
             sequence="20"
         />

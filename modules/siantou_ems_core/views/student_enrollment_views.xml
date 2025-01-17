@@ -54,11 +54,12 @@
                         type="object" 
                         string="Rejeter cette candidature"/>
                     <button 
-                        class="btn btn-success" 
+                        class="btn btn-warning" 
                         name="print_payement_student" 
                         invisible="status in ['broui']" 
                         type="object" 
-                        string="Imprimer le reçu"/>
+                        icon="fa-print"
+                        string="Imprimer le reçu" data-hotkey="F"/>
                     <field name="status" widget="statusbar" statusbar_visible="broui,inscrip,transfer"/>
                 </header>
                 <sheet>

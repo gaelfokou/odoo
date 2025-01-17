@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+
+        <record id="exam_result_teacher_tree_view" model="ir.ui.view">
+			<field name="name">exam.result.teacher.tree.view</field>
+			<field name="model">subject.mark</field>
+			<field name="arch" type="xml">
+				<tree string="Notes">
+                    <field name="name" />
+                    <!-- <field name="exam_subject_mark_id" /> -->
+				</tree>
+			</field>
+		</record>
+        
+        <record id="exam_result_teacher_form_view" model="ir.ui.view">
+            <field name="name">exam.result.teacher.form.view</field>
+            <field name="model">subject.mark</field>
+            <field name="priority" eval="0"/>
+            <field name="arch" type="xml">
+                <form string="Notes">
+                    <sheet>
+                        <group>
+                            <div class="oe_title">
+                                <label for="exam_subject_mark_id"/>
+                                <h1>
+                                    <field name="exam_subject_mark_id" options="{'no_open':True,'no_create':True}"/>
+                                </h1>
+                            </div>
+                            <group>
+                                <field name="name" invisible="1" />
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Remplir les notes">
+                                <field name="anonymous_code_mark_ids">
+                                    <tree editable="top" delete="false" create="false">
+                                        <field name="anonymous_id" column_invisible="1"/>
+                                        <field name="anonyma_code" readonly="1"/>
+                                        <field name="marks" />
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids"/>
+                        <field name="activity_ids"/>
+                        <field name="message_ids"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+        
+        <!-- 
+        <record id="exam_result_teacher_search_view" model="ir.ui.view">
+            <field name="name">exam.result.search.view</field>
+            <field name="model"subject.mark</field>
+            <field name="arch" type="xml">
+                <search string="Exam">
+                    <field name="student_id" />
+                    <field name="seat_no" />
+                    <group expand="0" string="Group By">
+                        <filter string="Subject" name="group_subject" domain="[]" context="{'group_by': 'subject_id'}"/>
+                        <filter string="attendance_status" name="group_state" domain="[]" context="{'group_by': 'attendance_status'}"/>
+                    </group>
+                </search>
+             </field>
+        </record> 
+        -->
+
+        <record id="action_exam_teacher_result" model="ir.actions.act_window">
+            <field name="name">Notes</field>
+            <field name="res_model">subject.mark</field>
+            <field name="view_mode">tree,form</field>
+            <!-- <field name="search_view_id" ref="exam_result_teacher_search_view"/> -->
+            <!-- <field name="view_ids" eval="[(5, 0, 0),
+                (0, 0, {'view_mode': 'tree', 'view_id': ref('exam_result_teacher_tree_view')}),
+                (0, 0, {'view_mode': 'form', 'view_id': ref('exam_result_teacher_form_view')}),
+            ]"/> -->
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Ajouter une note
+                </p>
+            </field>
+        </record>
+
+        
+        <menuitem 
+            id="menu_results_note_exam"
+            name="Remplissage des notes" 
+            action="action_exam_teacher_result"
+            parent="examen_menu_note"
+            sequence="30"
+        />
+        
+    </data>
+</odoo>

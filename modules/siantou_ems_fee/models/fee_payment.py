@@ -327,48 +327,15 @@ class FeePayment(models.Model):
             return report_action.report_action(self,data=data)
 
 
-    # def get_report_values(self, student_id, data=None):
-    #     student_id = student_id
-    #     lines = []
-    #     total = 0
-    #     fees = self.env['account.move'].search([
-    #             ('partner_id', '=', student_id.student_enroll_id.partner_id.id),
-    #             # ('academic_year_id', '=', student_id.academic_year_id.id),
-    #             ('journal_id.is_fee','=', True)
-    #         ]
-    #     )
-    #     total = sum([x.amount_residual for x in fees])
-    #     for fee in fees:
-    #         lines.append({
-    #             'frais': fee.journal_id.name.upper(),
-    #             'amount': fee.amount_total,
-    #             'reste': fee.amount_residual,
-    #         })
-    #     docargs = {
-    #         'doc_model': "education.fee.payment",
-    #         'student': student_id.name,
-    #         'data': data,
-    #         'lines': lines,
-    #         'total': total,
-    #         # 'lettre' : get_amount_en_lettre(total),
-    #         'date': fields.date.today()
-    #     }
-    #     return docargs
-
-
     @api.onchange('student_id')
     def _onchange_student_id(self):
-        # year_id = self.env['siantou.ems.core.year'].search([
-        #     ('active','=',True)
-        # ], limit=1)
-        _logger.info(self.year_id.name)
-        
         for rec in self:
             rec.structure_frais_request_domain = [
                 ('level_id','=',rec.student_id.level_id.id),
                 ('field_of_study_ids','in',rec.student_id.field_of_study_id.id),
                 ('academic_year','=',rec.year_id.id),
-                ('type_inclusion_fee','=', 'fee_scol')
+                ('type_inclusion_fee','=', 'fee_scol'),
+                ('state','=', 'validate'),
             ]
             moratoire_id = self.env['siantou.ems.fee.moratoire'].search(
                 [('student_id','=',rec.student_id.id)],
@@ -381,27 +348,6 @@ class FeePayment(models.Model):
                 rec.amount = 0
                 rec.use_moratoire = False
 
-        # for rec in self:
-        #     structure_frais_id = self.env['siantou.ems.fee.structure'].search([
-        #             ('level_id','=',rec.student_id.level_id.id),
-        #             ('field_of_study_id','=',rec.student_id.field_of_study_id.id),
-        #             ('academic_year','=',year_id.id),
-        #         ], 
-        #         limit=1
-        #     )
-        #     self.structure_frais_id = structure_frais_id.id
-        #     for line in rec.facture_ids:
-        #         line.sudo().unlink()
-        #     if rec.id and len(rec.facture_ids) == 0:
-        #         fees = self.env['account.move'].search(
-        #             [('move_type', '=', 'out_invoice'),('partner_id', '=', 
-        #             rec.student_enroll_id.partner_id.id.id),
-        #             ('academic_year_id', '=', rec.field_of_study_id.academic_year_id.id)])
-        #         for fee in fees:
-        #             self.env['siantou.ems.fee.payment.line'].create({
-        #                 'invoice_id': fee.id,
-        #                 'payment_id': rec.id
-        #             })
 
 
     @api.model

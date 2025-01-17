@@ -101,32 +101,31 @@ class DeSchool(http.Controller):
                 ('year_id', '=', year_id.id),
             ]
         )
-        for session_id in session_ids:
-            for cycle_id in session_id.cycle_ids:
-                # cycle_id = request.env['oe.school.course'].sudo().search([('id','=',id)], limit=1)
-                cycles.append(cycle_id)
-                
+        _logger.info(session_ids)
+        if session_ids:
+            for session_id in session_ids:
+                for cycle_id in session_id.cycle_ids:
+                    cycles.append(cycle_id)
 
-        _logger.info('**************** cycles %s  ****************', cycles)
-        # cycles = request.env['oe.school.course'].sudo().search([])
-        for cycle in cycles:
-            niveaux = cycle.level_ids
-            filieres = request.env['siantou.ems.core.field_of_study'].sudo().search([('cursus_id', '=', cycle.id)])
-            diplo_requis = request.env['oe.school.course.degree'].sudo().search([('cursus_id', '=', cycle.id)])
-            _logger.info('**************** niveaux %s  ****************', niveaux)
-            _logger.info('**************** filieres %s  ****************', filieres)
-            _logger.info('**************** diplo_requis %s  ****************', diplo_requis)
-            if len(diplo_requis)>0 and len(filieres)>0 and len(niveaux)>0:
-                data.append({
-                    'id': cycle.id,
-                    'code': cycle.code,
-                    'name': cycle.name,
-                    'filieres': [{'id': filiere.id, 'name': filiere.name} for filiere in filieres],
-                    'niveaux': [{'id': niv.id, 'name': niv.name} for niv in niveaux],
-                    'diplo_requis': [{'id': diplo.id, 'name': diplo.name} for diplo in diplo_requis]
-                })
+        _logger.info(cycles)   
+        if cycles:
+            for cycle in cycles:
+                niveaux = cycle.level_ids
+                filieres = request.env['siantou.ems.core.field_of_study'].sudo().search([('cursus_id', '=', cycle.id)])
+                diplo_requis = request.env['oe.school.course.degree'].sudo().search([('cursus_id', '=', cycle.id)])
 
-        _logger.info('**************** data %s  ****************', data)
+                if len(diplo_requis)>0 and len(filieres)>0 and len(niveaux)>0:
+                    data.append({
+                        'id': cycle.id,
+                        'code': cycle.code,
+                        'name': cycle.name,
+                        'filieres': [{'id': filiere.id, 'name': filiere.name} for filiere in filieres],
+                        'niveaux': [{'id': niv.id, 'name': niv.name} for niv in niveaux],
+                        'diplo_requis': [{'id': diplo.id, 'name': diplo.name} for diplo in diplo_requis]
+                    })
+
+        _logger.info(data) 
+
         return Response(
             json.dumps(data)
         )

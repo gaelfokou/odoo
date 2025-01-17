@@ -25,3 +25,5 @@ from . import country
 from . import fee_student
 from . import timetable
 
+from . import partenaire
+

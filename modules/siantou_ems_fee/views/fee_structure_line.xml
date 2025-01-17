@@ -7,18 +7,18 @@
             <field name="model">siantou.ems.fee.structure.lines</field>
             <field name="arch" type="xml">
                 <form string="Fee Structure" class="o_invoice_form">
-                <sheet string="Fee Structure">
-                    <group>
+                    <sheet string="Fee Structure">
                         <group>
-                            <field name="name" placeholder="Ex : 1er tranche"/>
-                            <field name="fee_structure_id" options="{'no_create': True}"/>
+                            <group>
+                                <field name="name" placeholder="Ex : 1er tranche"/>
+                                <field name="fee_structure_id" options="{'no_create': True}"/>
+                            </group>
+                            <group>
+                                <field name="fee_amount"/>
+                                <field name="echeance" widget="date"/>
+                            </group>
                         </group>
-                        <group>
-                            <field name="fee_amount"/>
-                            <field name="echeance"/>
-                        </group>
-                    </group>
-                </sheet>
+                    </sheet>
                 </form>
             </field>
         </record>
@@ -42,15 +42,16 @@
             <field name="view_mode">tree,form</field>
         </record>
 
-        <!-- <menuitem
+        <menuitem
           id="menu_fees_configuration"
-          parent="menu_education_fee_root" name="Configurations"
+          parent="menu_education_fee_root" 
+          name="Configurations"
           sequence="12"/>
         
         <menuitem action="action_fee_structure_line"
-          id="menu_action_fee_structure"
+          id="menu_action_fee_structure_line"
           parent="menu_fees_configuration"
-          sequence="1"/> -->
+          sequence="1"/>
 
     </data>
 </odoo>

@@ -44,6 +44,7 @@
         'views/syllabus_views.xml',
         'views/syllabus_subject_views.xml',
         'views/specialty_views.xml',
+        'views/partenaire_univ_views.xml',
 
         'views/student_enrollment_views.xml',
         'views/students_views.xml',

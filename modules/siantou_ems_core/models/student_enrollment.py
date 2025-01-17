@@ -126,7 +126,6 @@ class StudentEnrollment(models.Model):
 
     def print_payement_student(self):
         for rec in self:
-            factures = []
             payment_id = self.env['education.fee.payment.enrollment'].search(
                 [
                     ('student_id','=',rec.id),
@@ -134,13 +133,6 @@ class StudentEnrollment(models.Model):
                 ], 
                 limit=1
             )
-            
-            # factures.append({
-            #     'name':"INSCRIPTION",
-            #     'amount':payment_id.amount,
-            #     'date_payment':payment_id.date_payment,
-            #     'currency_id':payment_id.currency_id.name,
-            # })
             data = {
                 # 'ids':rec.ids,
                 'model':rec,
@@ -151,7 +143,7 @@ class StudentEnrollment(models.Model):
                 },
                 'student':{
                     'name':rec.name,
-                    'matricule':rec.matricule,
+                    'code_enrol':rec.code_enrol,
                     'level':rec.level_id.name,
                     'field_of_study':rec.field_of_study_id.name,
                 },
