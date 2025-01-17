@@ -8,7 +8,7 @@
             <field name="name">timetable.tree.view</field>
 			<field name="model">siantou.ems.timetable.timetable</field>
 			<field name="arch" type="xml">
-				<tree delete="false" string="Emploi du temps">
+				<tree delete="false" string="Exceptions d'emploi du temps">
                     <field name="group_id"/>
                     <field name="date"/>
                     <field name="field_of_study_id"/>
@@ -36,7 +36,7 @@
         <record
                 id="action_show_timetable_exception"
                 model="ir.actions.act_window">
-            <field name="name">Emploi du temps</field>
+            <field name="name">Exceptions d'emploi du temps</field>
             <field name="res_model">siantou.ems.timetable.timetable</field>
             <field name="view_mode">tree</field>
             <field name="view_id" ref="timetable_exception_tree_view"/>
@@ -51,7 +51,7 @@
         
         <menuitem
             id="menu_timetable_exception"
-            name="Exceptions"
+            name="Exceptions d'emploi du temps"
             parent="menu_siantou_ems_timetable_planning"
             action="action_show_timetable_exception"
             groups="siantou_ems_core.group_timetable_user,siantou_ems_core.group_timetable_admin,base.group_system"
