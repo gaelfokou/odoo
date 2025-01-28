@@ -8,7 +8,7 @@ from odoo.exceptions import ValidationError
 
 class Subject(models.Model):
     _name = 'siantou.ems.core.subject'
-    _description = 'Matières'
+    _description = 'Cours'
 
     # Code du cours
     code = fields.Char(
@@ -19,7 +19,7 @@ class Subject(models.Model):
     # Variable booléenne pour savoir si c'est un tronc commun ou pas
     shared_subject = fields.Boolean(
         'Tronc commun',
-        default=False
+        default=True
     )
 
     # Nom du cours
@@ -38,12 +38,21 @@ class Subject(models.Model):
     )
 
     # Filière à laquelle appartient ce cours
-    ue_ids = fields.Many2many(
-        'siantou.ems.core.syllabus.subject',
-        string="Unités d'enseignement",
+    field_of_study_id = fields.Many2many(
+        'siantou.ems.core.field_of_study',
+        string='Filière',
+        help='Filière à laquelle appartient ce cours',
         required=True,
         ondelete='restrict'
     )
+
+    # ue_ids = fields.Many2many(
+    #     'siantou.ems.core.syllabus.subject',
+    #     string="Unités d'enseignement",
+    #     required=True,
+    #     ondelete='restrict'
+    # )
+
 
     # Niveau scolaire
     level_id = fields.Many2one(
@@ -55,7 +64,7 @@ class Subject(models.Model):
     )
 
     # Volume horaire du cours sur un semestre
-    hours_credit = fields.Integer(
+    hours_credit = fields.Float(
         'Volume horaire semestriel',
         help='Volume horaire du cours sur un semestre',
         default=0,
@@ -67,8 +76,12 @@ class Subject(models.Model):
         'Volume horaire hebdommadaire',
         compute='_compute_weekly_hours_credit',
         help='Volume horaire du cours sur une semaine',
-        store=True
+        
     )
+    
+    unite_enseignement_id = fields.Many2one('siantou.ems.core.unite.enseignement', string="Unite d'enseignement")
+    
+    syllabus_ids = fields.One2many(comodel_name= "siantou.ems.core.syllabus", inverse_name='subject_id', string='syllabus')
 
     # Les enseignants qui dispensent ce cours
     teacher_ids = fields.Many2many(
@@ -86,6 +99,12 @@ class Subject(models.Model):
         'siantou.ems.core.teacher.subject.priority',
         'subject_id',
         'Priorités des enseignants'
+    )
+    
+    total_credit = fields.Integer(
+        string='Crédit total',
+        compute='_compute_credit'
+        
     )
 
     # Contrainte SQL pour empêcher d'avoir le même code pour différentes filières
@@ -136,10 +155,21 @@ class Subject(models.Model):
             # Supprimer les enseignants enlevés de teacher_ids
             to_remove = set(current_teacher_ids) - set(new_teacher_ids)
             record.teacher_priority_ids.filtered(lambda p: p.employee_id.id in to_remove).unlink()
-
-    # Validation pour s'assurer qu'un cours n'est lié qu'à une seule filière si ce n'est pas un tronc commun
-    @api.constrains('shared_subject', 'ue_ids')
-    def _check_field_of_study(self):
-        for record in self:
-            if not record.shared_subject and len(record.ue_ids) > 1:
-                raise ValidationError("Un cours qui n'est pas en tronc commun doit être lié à une seule filière.")
+            
+    
+    field_name = fields.Char(compute='_compute_field_name', string='field_name')
+    
+    @api.depends('syllabus_ids.subject_credit')
+    def _compute_credit(self):
+        for rec in self:
+            total = 0
+            # On récupère tous les syllabus liés à cette sous matière
+            syllabuses = self.env['siantou.ems.core.syllabus'].search([
+                ('subject_id', '=', rec.id)
+            ])
+            
+            # Additionner les crédits de chaque syllabus
+            for syllabus in syllabuses:
+                total += syllabus.subject_credit
+            
+            rec.total_credit = total

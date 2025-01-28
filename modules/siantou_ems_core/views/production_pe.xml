@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_production_dpe_tree" model="ir.ui.view">
+        <field name="name">production.pe.tree</field>
+        <field name="model">production.pe</field>
+        <field name="arch" type="xml">
+            <tree string="Production du document pédagogique opérationnel">
+                <field name="name"/>
+                <field name="class_id"/>
+                <field name="annee_academique_id"/>
+                <field name="description"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_production_pe_form" model="ir.ui.view">
+        <field name="name">production.pe.form</field>
+        <field name="model">production.pe</field>
+        <field name="arch" type="xml">
+            <form string="Production du programme d'enseignement">
+                <sheet>
+                    <group col="4" string="Information(s) générale(s)" >
+                        <group colspan="2">
+                            <field name="name"/>
+                            <field name="annee_academique_id"/>
+                        </group>
+                        <group colspan="2">
+                            <field name="class_id"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="description"/>
+                    </group>
+                    <notebook>
+                        <page name="programme_ids" string="Lignes du programme d'enseignement">
+                            <field name="syllabus_ids">
+                                <tree 
+                                editable='bottom'
+                                >
+                                <field name="subject_id"/>
+                                <field name="cm" />
+                                <field name="td" />
+                                <field name="vhp" />
+                                <field name="tp" />
+                                <field name="te" />
+                                <field name="vht" />
+                                <field name="pourcentage_exam" attrs="{'invisible': [('note_sn','=','not_sn')]}"/>
+                                <field name="pourcentage_cc" />
+                                <field name="pourcentage_presence" />
+                                <field name="subject_credit" />
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_production_pe" model="ir.actions.act_window">
+        <field name="name">Production du programme d'enseignement</field>
+        <field name="res_model">production.pe</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Create the your first pe here.
+            </p>
+        </field>
+    </record>
+
+    <!-- Menu pour les programmes d'enseignement -->
+        <menuitem
+                id="menu_siantou_ems_core_programme_enseignement"
+                name="Editer un programme d'enseignement"
+                parent="menu_siantou_ems_core_program"
+                action="action_production_pe"
+                groups="siantou_ems_core.group_production_pe_user,siantou_ems_core.group_production_pe_admin,base.group_system"
+                sequence="5"/>
+
+</odoo>

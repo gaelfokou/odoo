@@ -9,12 +9,13 @@
             <field name="name">subject.tree.view</field>
             <field name="model">siantou.ems.core.subject</field>
             <field name="arch" type="xml">
-                <tree string="Matières">
+                <tree string="Cours">
                     <field name="code"/>
                     <field name="shared_subject"/>
                     <field name="name"/>
+                    <field name="unite_enseignement_id"/>
                     <field name="semester_id"/>
-                    <field name="ue_ids" widget="many2many_tags"/>
+                    <field name="field_of_study_id" widget="many2many_tags"/>
                     <field name="level_id"/>
                     <field name="hours_credit"/>
                     <field name="weekly_hours_credit"/>
@@ -29,29 +30,36 @@
             <field name="name">subject.form.view</field>
             <field name="model">siantou.ems.core.subject</field>
             <field name="arch" type="xml">
-                <form string="Matières">
+                <form string="Cours">
                     <sheet>
-                        <group string="Informations sur le cours">
-                            <field name="code"/>
-                            <field name="shared_subject"/>
-                            <field name="name"/>
-                            <field name="semester_id"/>
-                            <field name="ue_ids" widget="many2many_tags" options="{'no_create': True}"/>
-                            <field name="level_id"/>
-                            <field name="hours_credit"/>
-                            <field name="weekly_hours_credit"/>
+                        <group string="Informations sur le cours" col="4">
+                            <group colspan="2">
+                                <field name="code"/>
+                                <field name="unite_enseignement_id"/>
+                                <field name="field_of_study_id" widget="many2many_tags" options="{'no_create': True}"/>
+                                <field name="hours_credit"/>
+                                <field name="weekly_hours_credit"/>
+                            </group>
+                            <group colspan="2">
+                                <field name="name"/>
+                                <field name="semester_id"/>
+                                <field name="level_id"/>
+                                <field name="shared_subject"/>
+                            </group>
                         </group>
-                        <group string="Enseignants du cours">
-                            <field name="teacher_ids"/>
-                        </group>
-                        <group string="Priorités des enseignants">
-                            <field name="teacher_priority_ids" widget="one2many_list">
-                                <tree editable="bottom">
-                                    <field name="employee_id" options="{'no_open': True}"/>
-                                    <field name="priority"/>
-                                </tree>
-                            </field>
-                        </group>
+                        <notebook>
+                            <page name="name" string="Enseignants du cours">
+                                <field name="teacher_ids"/>
+                            </page>
+                            <page name="name" string="Priorités des enseignants">
+                                <field name="teacher_priority_ids" widget="one2many_list">
+                                    <tree editable="bottom">
+                                        <field name="employee_id" options="{'no_open': True}"/>
+                                        <field name="priority"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
                     </sheet>
                 </form>
             </field>
@@ -61,12 +69,12 @@
         <record
             id="action_show_subject"
             model="ir.actions.act_window">
-            <field name="name">Matières</field>
+            <field name="name">Cours</field>
             <field name="res_model">siantou.ems.core.subject</field>
             <field name="view_mode">tree,form</field>
             <field name="help" type="html">
                 <p class="o_view_nocontent_smiling_face">
-                    Créer une nouvelle matières.
+                    Créer un nouveau cours.
                 </p>
             </field>
         </record>
@@ -74,8 +82,8 @@
         <!-- Menu pour les cours -->
         <menuitem
                 id="menu_siantou_ems_core_program_subject"
-                name="Matières"
-                parent="menu_siantou_ems_core_program"
+                name="Cours"
+                parent="menu_production_pe_conf"
                 action="action_show_subject"
                 groups="siantou_ems_core.group_subject_user,siantou_ems_core.group_subject_admin,base.group_system"
                 sequence="3"/>

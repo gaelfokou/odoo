@@ -8,7 +8,7 @@
             <field name="name">semester.tree.view</field>
 			<field name="model">siantou.ems.core.year.semester</field>
 			<field name="arch" type="xml">
-				<tree string="Semestres" editable="bottom" edit="1">
+				<tree string="Semestres">
                     <field name="name"/>
                     <field name="year_id"/>
 					<field name="start_time"/>
@@ -25,18 +25,36 @@
 			<field name="name">semester.form.view</field>
 			<field name="model">siantou.ems.core.year.semester</field>
 			<field name="arch" type="xml">
-				<form string="Semestre">
+				<form >
 					<sheet>
-                        <group string="Informations sur le semestre">
-                            <field name="name"/>
-							<field name="year_id"/>
-							<field name="start_time"/>
-							<field name="end_time"/>
-							<field name="number_of_week"/>
+                        <group col="4" string="Informations sur le semestre">
+                            <group col="2" >
+                                <field name="name"/>
+                                <field name="start_time"/>
+                                <field name="year_id"/>
+                            </group>
+                            <group colspan="2">
+                                <field name="class_id"/>
+                                <field name="end_time"/>
+                                <field name="number_of_week"/>
+                            </group>
                         </group>
-						<group string="Cours du semestre">
+						<!-- <group string="Cours du semestre">
 							<field name="subject_ids"/>
-						</group>
+						</group> -->
+                        <notebook>
+                            <page name="unite_enseigenement" string="Unité d'enseignement">
+                                <field name="unite_enseignement_ids">
+                                    <tree 
+                                    editable='bottom'
+                                    >
+                                    <field name="code" />
+                                    <field name="name" />
+                                    <field name="total_credit" sum="Total credit" />
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
 					</sheet>
 				</form>
 			</field>
@@ -60,9 +78,9 @@
         <menuitem
                 id="menu_siantou_ems_core_config_semester"
                 name="Semestres"
-                parent="menu_siantou_ems_core_configuration"
+                parent="menu_production_pe_conf"
                 action="action_show_semester"
                 groups="siantou_ems_core.group_semester_user,siantou_ems_core.group_semester_admin,base.group_system"
-                sequence="3"/>
+                sequence="1"/>
 	</data>
 </odoo>

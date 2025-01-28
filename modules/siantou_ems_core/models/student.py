@@ -164,51 +164,50 @@ class Student(models.Model):
         _logger.info(f"Matricule généré : {matricule}")
         return matricule
 
-    def create_student_user(self, student_id):
+    def create_student_user(self, student):
         try:
-            ecole = re.sub('[^A-Za-z]+', '', student_id.field_of_study_id.school_id.name)
+            ecole = re.sub('[^A-Za-z]+', '', student.field_of_study_id.school_id.name)
             ecole = ecole[:4]
             ecole = ecole.upper()
             matricule = ecole + self.env['ir.sequence'].next_by_code('oe.school.student')
-            if not student_id.matricule or student_id.matricule == '':
+            if not student.matricule or not student.matricule.strip():
                 while True:
-                    student_ids = self.env['oe.school.student'].search([
+                    student_id = self.env['oe.school.student'].search([
                         ('matricule', '=', matricule),
-                    ])
-                    student_ids = list(student_ids)
-                    if len(student_ids) > 0:
+                    ], limit=1)
+                    if student_id:
                         matricule = ecole + self.env['ir.sequence'].next_by_code('oe.school.student')
                     else:
-                        student_id.write({
+                        student.write({
                             'matricule': matricule,
                         })
                         break
-            name = student_id.name
-            # email = student_id.email
+            else:
+                matricule = student.matricule
+            name = student.name
+            # email = student.email
             username = name.replace(' ', '.').lower()
             email = username + '@siantou.net'
-            partner_id = student_id.student_enroll_id.partner_id
+            partner_id = student.student_enroll_id.partner_id
             if not partner_id:
                 partner_id = self.env['res.partner'].create({
-                    'name': student_id.name,
+                    'name': student.name,
                     'email': email,
-                    'phone': student_id.num_tel,
+                    'phone': student.num_tel,
                     'is_company': False,
                 })
-            user_ids = self.env['res.users'].search([
+            user_id = self.env['res.users'].search([
                 ('partner_id', '=', partner_id.id),
-            ])
-            user_ids = list(user_ids)
-            if len(user_ids) == 0:
+            ], limit=1)
+            if not user_id:
                 # password = username
                 password = matricule
                 i = 0
                 while True:
-                    user_ids = self.env['res.users'].search([
+                    user_id = self.env['res.users'].search([
                         ('login', '=', email),
-                    ])
-                    user_ids = list(user_ids)
-                    if len(user_ids) > 0:
+                    ], limit=1)
+                    if user_id:
                         i = i + 1
                         email = username + f'.{i}' + '@siantou.net'
                         # password = username + f'.{i}'
@@ -223,7 +222,7 @@ class Student(models.Model):
                     'partner_id': partner_id.id,
                     'groups_id': [(6, 0, [group_id.id])],
                 })
-                student_id.write({
+                student.write({
                     # 'email': email,
                     'user_id': user_id.id,
                 })
@@ -251,11 +250,11 @@ class Student(models.Model):
         # vals['matricule'] = self.generate_matricule(field_of_study_id)
 
         # Création de l'étudiant
-        student_id = super().create(vals)
+        student = super().create(vals)
 
-        self.create_student_user(student_id)
+        self.create_student_user(student)
         
-        return student_id
+        return student
 
 
 

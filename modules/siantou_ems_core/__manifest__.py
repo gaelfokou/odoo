@@ -42,7 +42,7 @@
         'views/admission_registre_view.xml',
         'views/admission_session_view.xml',
         'views/syllabus_views.xml',
-        'views/syllabus_subject_views.xml',
+        'views/unite_enseignement_views.xml',
         'views/specialty_views.xml',
         'views/partenaire_univ_views.xml',
 
@@ -59,8 +59,9 @@
         'views/region_views.xml',
         'views/city_views.xml',
         'views/quarter_views.xml',
-
+        'views/class_division.xml',
         'views/country_views.xml',
+        'views/production_pe.xml',
 
 
         'wizard/fee_student_wizard.xml',
@@ -69,10 +70,10 @@
 
         # Fichier de vue timetable
         'views/timetable_views.xml',
-        'views/timetable_exception_views.xml',
         'views/timetable_group_views.xml',
         'views/timetable_wizard_views.xml',
         'views/timetable_print_wizard_views.xml',
+        'views/timetable_exception_views.xml',
         'report/timetable_reports.xml',
         'report/timetable_template.xml',
         'report/report_student_core.xml',

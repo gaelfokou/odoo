@@ -24,6 +24,14 @@ CURRENT_WEEKDAY = {
     6: 'Dimanche',
 }
 
+STATUS_TIMETABLE = {
+    '0': 'En attente',
+    '1': 'Présent',
+    '2': 'Absent',
+    '3': 'Permissionnaire',
+    '4': 'Exception',
+}
+
 TYPE_PAIEMENT = {
     'pu': 'Paiement unique',
     'pt': 'Paiement par tranches',
@@ -31,7 +39,7 @@ TYPE_PAIEMENT = {
 
 STATUS_NOTIFICATION = {
     '0': 'En attente',
-    '1': 'Terminé',
+    '1': 'Envoyé',
 }
 
 _logger = logging.getLogger(__name__)
@@ -42,7 +50,10 @@ class PortalAccount(portal.CustomerPortal):
         if 'portal_timetable' in counters:
             is_user = None
             if http.request.env.user.employee_id.id:
-                is_user = 'is_teacher'
+                if http.request.env.user.employee_id.is_teacher:
+                    is_user = 'is_teacher'
+                else:
+                    is_user = 'is_employee'
             else:
                 user = http.request.env['oe.school.student'].sudo().search([('user_id', '=', http.request.env.user.id)], limit=1)
                 if user:
@@ -76,6 +87,7 @@ class PortalAccount(portal.CustomerPortal):
             timetable['day_of_week'] = CURRENT_WEEKDAY[search_timetable.date.weekday()]
             timetable['start_time'] = search_timetable.start_time
             timetable['end_time'] = search_timetable.end_time
+            timetable['status'] = STATUS_TIMETABLE[search_timetable.status]
             timetables.append(timetable)
         if view_type == 'calendar':
             timetables = Helpers.format_timetable(timetables)
@@ -110,7 +122,10 @@ class PortalAccount(portal.CustomerPortal):
         is_user = None
         if http.request.env.user.employee_id.id:
             user = http.request.env.user.employee_id
-            is_user = 'is_teacher'
+            if http.request.env.user.employee_id.is_teacher:
+                is_user = 'is_teacher'
+            else:
+                is_user = 'is_employee'
         else:
             user = http.request.env['oe.school.student'].sudo().search([('user_id', '=', http.request.env.user.id)], limit=1)
             if user:
@@ -134,20 +149,23 @@ class PortalAccount(portal.CustomerPortal):
                     'semester_id': timetable_id.semester_id.id,
                     'group_id': timetable_id.group_id.id,
                 })
-                data = report_data.print_timetable_report_data(user, is_user)
+                data = report_data.print_timetable_report_data(domain)
                 pdf, _ = pdf_report.sudo().with_context()._render_qweb_pdf(report_name, data=data)
             else:
                 pdf = None
         else:
             pdf = None
         filename = 'Emploi du temps PDF.pdf'
-        content_type = 'application/pdf'
-        pdfhttpheaders = [
-            ('Content-Type', content_type),
+        headers = [
+            ('Content-Type', 'application/pdf'),
             ('Content-Length', len(pdf)),
             ('Content-Disposition', content_disposition(filename)),
         ]
-        return request.make_response(pdf, headers=pdfhttpheaders)
+        return request.make_response(
+            pdf,
+            headers=headers,
+            status=200
+        )
 
     @http.route(['/my/schoolfee', '/my/schoolfee/page/<int:page>'], type='http', auth="user", website=True)
     def portal_schoolfee(self, page=1, search='', search_in='all', **kw):
@@ -220,6 +238,16 @@ class PortalAccount(portal.CustomerPortal):
             notification = {}
             notification['date'] = datetime.strftime(search_notification.date, DATE_FORMAT_FR)
             notification['name'] = search_notification.employee_id.name
+            if search_notification.template == 'om_hr_payroll.om_hr_payroll_template_timetable_notification_absence':
+                notification['subject_name'] = search_notification.timetable_id.subject_id.name
+                notification['subject_code'] = search_notification.timetable_id.subject_id.code
+                notification['classroom_name'] = search_notification.timetable_id.classroom_id.name
+                notification['building_name'] = search_notification.timetable_id.classroom_id.building_id.name
+            else:
+                notification['subject_name'] = ''
+                notification['subject_code'] = ''
+                notification['classroom_name'] = ''
+                notification['building_name'] = ''
             notification['template'] = search_notification.template
             notification['message'] = search_notification.message
             notification['status'] = STATUS_NOTIFICATION[search_notification.status]

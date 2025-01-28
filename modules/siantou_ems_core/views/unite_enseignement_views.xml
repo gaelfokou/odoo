@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+	<data>
+		<!-- Affichage en vue liste -->
+		<record
+                id="unite_enseignement_tree_view"
+                model="ir.ui.view">
+            <field name="name">unite_enseignement.tree.view</field>
+			<field name="model">siantou.ems.core.unite.enseignement</field>
+			<field name="arch" type="xml">
+				<tree string="Unité d'enseignement">
+                    <field name="code"/>
+                    <field name="name"/>
+					<field name="create_date" string="Date de création"/>
+				</tree>
+			</field>
+		</record>
+
+
+        <!-- Affichage en vue formulaire -->
+		<record
+                id="unite_enseignement_form_view"
+                model="ir.ui.view">
+			<field name="name">unite_enseignement.form.view</field>
+			<field name="model">siantou.ems.core.unite.enseignement</field>
+			<field name="arch" type="xml">
+				<form string="Unité d'enseignement">
+					<sheet>
+                        <group col="4">
+                            <group colspan="2">
+                                <field name="code"/>
+                                <field name="name"/>
+                                <field name="total_credit"/>
+                            </group>
+                            <group colspan="2">
+                                <field name="semestre_id"/>
+                                <field name="type_ue"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page name="matiere_ids" string="Matière">
+                                <field name="subject_ids" editable='bottom'>
+                                    <tree 
+                                    editable='bottom'
+                                    create='false'
+                                    delete='false'
+                                    >
+                                        <field name="code"/>
+                                        <field name="name"/>
+                                        <field name="total_credit"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+
+        <!-- Affichage en vue recherche -->
+         <record
+                 id="unite_enseignement_search_view"
+                 model="ir.ui.view">
+            <field name="name">unite_enseignement.search.view</field>
+            <field name="model">siantou.ems.core.unite.enseignement</field>
+            <field name="arch" type="xml">
+                <search string="Unité d'enseignement">
+                    <field name="name" string="Intitulé"/>
+                    <separator/>
+                </search>
+             </field>
+        </record>
+
+
+        <!-- Action pour le menu d'affichage des syllabus -->
+        <record id="action_show_unite_enseignement" model="ir.actions.act_window">
+            <field name="name">Unités d'enseignement</field>
+            <field name="res_model">siantou.ems.core.unite.enseignement</field>
+            <field name="search_view_id" ref="unite_enseignement_search_view"/>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Créer une unité d'enseignement.
+                </p>
+            </field>
+        </record>
+
+
+        <!-- Menu pour les syllabus -->
+        <menuitem
+                id="menu_siantou_ems_core_unite_enseignement"
+                name="Unité d'enseignement"
+                parent="menu_production_pe_conf"
+                action="action_show_unite_enseignement"
+                sequence="2"/>
+	</data>
+</odoo>

@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <record id="paperformat_fee_payment" model="report.paperformat">
-        <field name="name">Custom Paper</field>
+        <field name="name">Format-Paiement-inscription-étudiant</field>
         <field name="default" eval="True" />
         <field name="format">custom</field>
-        <field name="page_height">450</field>
-        <field name="page_width">200</field>
+        <field name="page_height">210</field>
+        <field name="page_width">148</field>
         <field name="orientation">Portrait</field>
-        <field name="margin_top">10.00</field>
-        <field name="margin_bottom">10.00</field>
-        <field name="margin_left">7.0</field>
-        <field name="margin_right">7.0</field>
+        <field name="margin_top">5</field>
+        <field name="margin_bottom">5</field>
+        <field name="margin_left">4</field>
+        <field name="margin_right">4</field>
         <field name="header_line" eval="False" />
-        <field name="header_spacing">35</field>
+        <field name="header_spacing">25</field>
         <field name="dpi">125</field>
     </record>
     <record id="action_report_student_core_pdf" model="ir.actions.report">
-        <field name="name">Paiement PDF</field>
+        <field name="name">Paiement-inscription-étudiant</field>
         <field name="model">oe.school.student.enrollment</field>
         <field name="report_type">qweb-pdf</field>
         <field name="report_name">siantou_ems_core.report_student_core_pdf_template</field>
@@ -47,10 +47,12 @@
                                             Fax :
                                         </small>
                                     </td>
-                                    <td style="border: none;padding: 4px;text-align: center; width:40%">
-                                        <img src="siantou_ems_fee/static/src/img/logo.png" 
-                                            alt="logo"
-                                            style="width: 200px; height: 150px;"/>
+                                    <td style="border: none;padding: 4px;text-align: center; width:40%;height: 145px;">
+                                        <div style="display:flex;justify-content: center; align-items: center;height: 145px;width: 100%;">
+                                            <img src="siantou_ems_fee/static/src/img/logo.png" 
+                                                alt="logo" width="145px" height="145px"
+                                                style="width: 145px; height: 145px;"/>
+                                        </div>
                                     </td>
                                     <td style="border: none;padding: 4px; text-align: center; width:30%">
                                         SIANTOU UNIVERSITY INSTITUTE <br/>

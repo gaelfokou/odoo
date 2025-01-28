@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+	<data>
+		<!-- Affichage en vue liste -->
+		<record
+                id="siantou_ems_core_class_tree_view"
+                model="ir.ui.view">
+            <field name="name">siantou_ems_core_class.tree.view</field>
+			<field name="model">siantou.ems.core.class</field>
+			<field name="arch" type="xml">
+				<tree string="Classe standard">
+					<field name="name"/>
+                	<field name="filiere_id"/>
+                    <field name="school_id"/>
+                    <field name="niveau_id"/>
+				</tree>
+			</field>
+		</record>
+
+        <!-- Affichage en vue formulaire -->
+		<record
+                id="siantou_ems_core_class_form_view"
+                model="ir.ui.view">
+			<field name="name">siantou_ems_core_class.form.view</field>
+			<field name="model">siantou.ems.core.class</field>
+			<field name="arch" type="xml">
+				<form string="Classe Standard">
+					<sheet>
+                        <group>
+                            <group>
+                                <field name="name"/>
+                                <field name="niveau_id"/>
+                            </group>
+                            <group>
+                                <field name="filiere_id"/>
+                                <field name="school_id"/>
+                            </group>
+                        </group>
+					</sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" groups="base.group_user" />
+                        <field name="message_ids" />
+                    </div>
+				</form>
+			</field>
+		</record>
+
+        <!-- Action pour le menu s'affichage des classes standards -->
+        <record
+                id="action_show_siantou_ems_core_class"
+                model="ir.actions.act_window">
+            <field name="name">Classe Standard</field>
+            <field name="res_model">siantou.ems.core.class</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Créer une nouvelle classe.
+                </p>
+            </field>
+        </record>
+
+        <!-- Menu pour la gestion des classes -->
+        <menuitem
+                id="menu_siantou_ems_core_class"
+                name="Classe"
+                parent="menu_siantou_ems_core_program"
+                action="action_show_siantou_ems_core_class"
+                groups="siantou_ems_core.group_siantou_ems_core_class_user,siantou_ems_core.group_siantou_ems_core_class_admin,base.group_system"
+                sequence="4"/>
+
+	</data>
+</odoo>

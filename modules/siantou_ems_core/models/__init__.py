@@ -13,17 +13,14 @@ from . import degree_course_required
 from . import student_enrollment
 from . import student
 from . import courses
-
 from . import fee_student
 from . import fee_school
 from . import country
 from . import fee_enrollment
-
 from . import register_enrollement
-
 from . import country
 from . import fee_student
 from . import timetable
-
 from . import partenaire
-
+from . import class_division
+from . import production_pe

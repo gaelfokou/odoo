@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="action_bank_reconcile_bank_statements" model="ir.actions.client">
+            <field name="name">Reconciliation on Bank Statements</field>
+            <field name="tag">bank_statement_reconciliation_view</field>
+            <field name="context">{'statement_ids': [active_id]}</field>
+        </record>
+
+        <record id="view_bank_statement_tree_custom" model="ir.ui.view">
+            <field name="name">account.bank.statement.tree.custom</field>
+            <field name="model">account.bank.statement</field>
+            <field name="arch" type="xml">
+                <tree string="Bank Statements" decoration-info="state == 'new'" decoration-muted="state == 'confirm'">
+                    <field name="name"/>
+                    <field name="date"/>
+                    <field name="journal_id"/>
+                    <field name="balance_start"/>
+                    <field name="balance_end"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+        <!--<record id="view_bank_statement_search_inherited" model="ir.ui.view">
+            <field name="name">account.bank.statement.search.inherited</field>
+            <field name="model">account.bank.statement</field>
+            <field name="inherit_id" ref="account.view_bank_statement_search"/>
+            <field name="arch" type="xml">
+                <xpath expr="//search" position="replace">
+                    <search string="Search Bank Statements">
+                        <field name="name" string="Bank Statement"/>
+                        <field name="journal_id"/>
+                        <filter string="Empty" name="empty" domain="[('line_ids','=',False)]"/>
+                        <filter name="invalid" string="Invalid"
+                                domain="['|', ('is_valid', '=', False),('is_complete', '=', False)]"/>
+                        <separator/>
+                        <filter name="filter_date" date="journal_id"/>
+                        <field name="journal_id" domain="[('type', 'in', ('bank', 'cash'))]"/>
+                        <group expand="0" string="Group By">
+                            <filter string="Journal" name="journal_id"
+                                    context="{'group_by': 'journal_id'}"/>
+                            <filter string="Date" name="date" context="{'group_by': 'date'}"/>
+                        </group>
+                    </search>
+                </xpath>
+            </field>
+        </record>-->
+
+        <record id="view_bank_statement_form_custom" model="ir.ui.view">
+            <field name="name">account.bank.statement.form.custom</field>
+            <field name="model">account.bank.statement</field>
+            <field name="priority">1</field>
+            <field name="arch" type="xml">
+                <form string="Bank Statement">
+                    <header>
+                        <button name="action_open_reconcile_statement" invisible="statement_line_count == 0" string="Reconcile" type="object"
+                                class="oe_highlight" data-hotkey="r"/>
+                        <button name="action_confirm" invisible="state != 'open'" string="Confirm" type="object"
+                                class="oe_highlight" data-hotkey="q"/>
+                        <button name="action_draft" invisible="state != 'confirm'" string="Set to new" type="object" data-hotkey="q"/>
+                        <field name="all_lines_reconciled" invisible="1"/>
+                        <field name="state" widget="statusbar" statusbar_visible="open,confirm"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button class="oe_stat_button" name="button_journal_entries"
+                                    string="Journal Entries" type="object"
+                                    invisible="move_line_count == 0" icon="fa-bars"/>
+                            <field name="move_line_count" invisible="1"/>
+                            <field name="statement_line_count" invisible="1"/>
+
+                        </div>
+                        <div class="oe_title oe_inline">
+                            <label for="name" class="oe_edit_only"/>
+                            <h1>
+                                <field name="name" readonly="state == 'confirm'"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="journal_type" invisible="1"/>
+                                <!--<field name="cashbox_start_id" invisible="1"/>-->
+                                <!--<field name="cashbox_end_id" invisible="1"/>-->
+                                <field name="journal_id" domain="[('type', '=', journal_type)]"
+                                       readonly="move_line_count != 0 or state == 'confirm'" widget="selection"/>
+                                <!--<field name="journal_trick_id" domain="[('type', '=', journal_type)]"
+                                       readonly="move_line_count != 0" widget="selection"/>-->
+                                <field name="date" readonly="state == 'confirm'"/>
+                                <field name="currency_id" invisible="1"/>
+                            </group>
+                            <group>
+                                <label for="balance_start"/>
+                                <div>
+                                    <field class="oe_inline" name="balance_start" readonly="state == 'confirm'"/>
+                                </div>
+                                <label for="balance_end_real"/>
+                                <div>
+                                    <field class="oe_inline" name="balance_end_real" readonly="state == 'confirm'"/>
+                                </div>
+                            </group>
+                        </group>
+
+                        <notebook>
+                            <page string="Transactions" name="statement_line_ids">
+                                <field name="line_ids" context="{'date':date}" readonly="state == 'confirm'">
+                                    <tree editable="bottom" string="Statement lines">
+                                        <field name="is_reconciled" column_invisible="True" invisible="True"/>
+                                        <field name="currency_id" column_invisible="True" readonly="is_reconciled == True"/>
+                                        <field name="journal_entry_ids" column_invisible="True" readonly="is_reconciled == True"/>
+                                        <field name="amount_currency" column_invisible="True" readonly="is_reconciled == True"/>
+                                        <field name="sequence" widget="handle" readonly="is_reconciled == True"/>
+                                        <field name="date" readonly="1" decoration-muted="is_reconciled == True"/>
+                                        <field name="payment_ref" readonly="is_reconciled == True" decoration-muted="is_reconciled == True"/>
+                                        <field name="partner_id" decoration-muted="is_reconciled == True"
+                                               domain="['|',('parent_id','=',False),('is_company','=',True)]"
+                                               context="{'default_supplier': 1}" readonly="is_reconciled == True"/>
+                                        <field name="ref" groups="base.group_no_one" readonly="is_reconciled == True" decoration-muted="is_reconciled == True"/>
+                                        <field name="amount" readonly="is_reconciled == True" decoration-muted="is_reconciled == True"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                        <group class="oe_subtotal_footer oe_right" colspan="2" name="sale_total">
+                            <div class="oe_subtotal_footer_separator oe_inline">
+                                <label for="balance_end"/>
+                            </div>
+                            <field name="balance_end" nolabel="1" class="oe_subtotal_footer_separator"/>
+                        </group>
+                        <div class="oe_clear"/>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_bank_statement_line_tree_bank_rec_widget_inherit" model="ir.ui.view">
+            <field name="name">account.bank.statement.line.tree.bank_rec_widget.inherit</field>
+            <field name="model">account.bank.statement.line</field>
+            <field name="inherit_id" ref="account_accountant.view_bank_statement_line_tree_bank_rec_widget"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='statement_id']" position="replace">
+                    <field name="statement_id"
+                           decoration-danger="statement_complete == False or statement_valid == False"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="action_account_bank_statements" model="ir.actions.act_window">
+            <field name="name">Bank Statements</field>
+            <field name="res_model">account.bank.statement</field>
+            <field name="views">view_bank_statement_tree_custom,view_bank_statement_form_custom</field>
+            <field name="view_mode">tree,form</field>
+            <field name="target">current</field>
+            <field name="context">{'journal_type':'bank'}</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Click to register a bank statement.
+                </p>
+                <p>
+                    A bank statement is a summary of all financial transactions
+                    occurring over a given period of time on a bank account. You
+                    should receive this periodicaly from your bank.
+                </p>
+                <p>
+                    Odoo allows you to reconcile a statement line directly with
+                    the related sale or puchase invoices.
+                </p>
+            </field>
+        </record>
+
+        <menuitem
+                parent="account.menu_finance_entries_accounting_miscellaneous"
+                action="action_account_bank_statements"
+                id="menu_account_bank_statements"
+                sequence="30"
+        />
+
+    </data>
+</odoo>

@@ -60,13 +60,13 @@
                         <a t-attf-href="/my/timetable?view_type=calendar"><button class="btn btn-primary">Calendrier</button></a>
                         <a t-attf-href="/my/timetable?view_type=list"><button class="btn btn-primary">Liste</button></a><br/><br/>
                     </div>
-                    <t t-set="hour_timetables" t-value="[0, 1, 2, 3, 4]"/>
-                    <t t-set="week_timetables" t-value="timetables.keys()"/>
+                    <t t-set="weekdays" t-value="timetables.keys()"/>
                     <t t-set="total_timetables" t-value="[(i+1) for i in range(timetable_pages_total)]"/>
                     <t t-set="total_timetables" t-value="[total_timetables[i:i+5] for i in range(0, len(total_timetables), 5)]"/>
                     <t t-set="total_timetables" t-value="[p for p in total_timetables if (timetable_page_number in p or (timetable_page_number - 1) in p or (timetable_page_number + 1) in p)]"/>
                     <t t-set="total_timetables" t-value="[m for p in total_timetables for m in p] if len(total_timetables) > 0 else []"/>
-                    <t t-foreach="week_timetables" t-as="monday">
+                    <t t-foreach="weekdays" t-as="monday">
+                        <t t-set="current_hours" t-value="[i for i in range(len(timetables[monday]['Heure']))]"/>
                         <thead>
                             <tr>
                                 <th class="text-center" colspan="8" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;">
@@ -93,86 +93,107 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <t t-foreach="hour_timetables" t-as="hour">
+                            <t t-foreach="current_hours" t-as="hour">
                                 <tr>
                                     <td class='text-center'>
                                         <span t-esc="timetables[monday]['Heure'][hour]"/>
                                     </td>
                                     <td class='text-center'>
-                                        <t t-if="timetables[monday]['Lundi'][hour] != ''">
-                                            <span t-esc="timetables[monday]['Lundi'][hour]['subject_name']"/>
-                                            <span t-esc="'(' + timetables[monday]['Lundi'][hour]['subject_code'] + ')'"/>
+                                        <t t-foreach="timetables[monday]['Lundi'][hour]" t-as="record">
+                                            <span t-esc="record['subject_name']"/>
+                                            <span t-esc="'(' + record['subject_code'] + ')'"/>
                                             <br/>
-                                            <span t-esc="timetables[monday]['Lundi'][hour]['classroom_name']"/>
-                                            <span t-esc="'/ ' + timetables[monday]['Lundi'][hour]['building_name']"/>
+                                            <span t-esc="record['classroom_name']"/>
+                                            <span t-esc="'/ ' + record['building_name']"/>
                                             <br/>
-                                            <span t-esc="timetables[monday]['Lundi'][hour]['employee_name']"/>
+                                            <span t-esc="record['employee_name']"/>
+                                            <br/>
+                                            <span>-----</span>
+                                            <br/>
                                         </t>
                                     </td>
                                     <td class='text-center'>
-                                        <t t-if="timetables[monday]['Mardi'][hour] != ''">
-                                            <span t-esc="timetables[monday]['Mardi'][hour]['subject_name']"/>
-                                            <span t-esc="' (' + timetables[monday]['Mardi'][hour]['subject_code'] + ')'"/>
+                                        <t t-foreach="timetables[monday]['Mardi'][hour]" t-as="record">
+                                            <span t-esc="record['subject_name']"/>
+                                            <span t-esc="' (' + record['subject_code'] + ')'"/>
                                             <br/>
-                                            <span t-esc="timetables[monday]['Mardi'][hour]['classroom_name']"/>
-                                            <span t-esc="'/ ' + timetables[monday]['Mardi'][hour]['building_name']"/>
+                                            <span t-esc="record['classroom_name']"/>
+                                            <span t-esc="'/ ' + record['building_name']"/>
                                             <br/>
-                                            <span t-esc="timetables[monday]['Mardi'][hour]['employee_name']"/>
+                                            <span t-esc="record['employee_name']"/>
+                                            <br/>
+                                            <span>-----</span>
+                                            <br/>
                                         </t>
                                     </td>
                                     <td class='text-center'>
-                                        <t t-if="timetables[monday]['Mercredi'][hour] != ''">
-                                            <span t-esc="timetables[monday]['Mercredi'][hour]['subject_name']"/>
-                                            <span t-esc="' (' + timetables[monday]['Mercredi'][hour]['subject_code'] + ')'"/>
+                                        <t t-foreach="timetables[monday]['Mercredi'][hour]" t-as="record">
+                                            <span t-esc="record['subject_name']"/>
+                                            <span t-esc="' (' + record['subject_code'] + ')'"/>
                                             <br/>
-                                            <span t-esc="timetables[monday]['Mercredi'][hour]['classroom_name']"/>
-                                            <span t-esc="'/ ' + timetables[monday]['Mercredi'][hour]['building_name']"/>
+                                            <span t-esc="record['classroom_name']"/>
+                                            <span t-esc="'/ ' + record['building_name']"/>
                                             <br/>
-                                            <span t-esc="timetables[monday]['Mercredi'][hour]['employee_name']"/>
+                                            <span t-esc="record['employee_name']"/>
+                                            <br/>
+                                            <span>-----</span>
+                                            <br/>
                                         </t>
                                     </td>
                                     <td class='text-center'>
-                                        <t t-if="timetables[monday]['Jeudi'][hour] != ''">
-                                            <span t-esc="timetables[monday]['Jeudi'][hour]['subject_name']"/>
-                                            <span t-esc="' (' + timetables[monday]['Jeudi'][hour]['subject_code'] + ')'"/>
+                                        <t t-foreach="timetables[monday]['Jeudi'][hour]" t-as="record">
+                                            <span t-esc="record['subject_name']"/>
+                                            <span t-esc="' (' + record['subject_code'] + ')'"/>
                                             <br/>
-                                            <span t-esc="timetables[monday]['Jeudi'][hour]['classroom_name']"/>
-                                            <span t-esc="'/ ' + timetables[monday]['Jeudi'][hour]['building_name']"/>
+                                            <span t-esc="record['classroom_name']"/>
+                                            <span t-esc="'/ ' + record['building_name']"/>
                                             <br/>
-                                            <span t-esc="timetables[monday]['Jeudi'][hour]['employee_name']"/>
+                                            <span t-esc="record['employee_name']"/>
+                                            <br/>
+                                            <span>-----</span>
+                                            <br/>
                                         </t>
                                     </td>
                                     <td class='text-center'>
-                                        <t t-if="timetables[monday]['Vendredi'][hour] != ''">
-                                            <span t-esc="timetables[monday]['Vendredi'][hour]['subject_name']"/>
-                                            <span t-esc="' (' + timetables[monday]['Vendredi'][hour]['subject_code'] + ')'"/>
+                                        <t t-foreach="timetables[monday]['Vendredi'][hour]" t-as="record">
+                                            <span t-esc="record['subject_name']"/>
+                                            <span t-esc="' (' + record['subject_code'] + ')'"/>
                                             <br/>
-                                            <span t-esc="timetables[monday]['Vendredi'][hour]['classroom_name']"/>
-                                            <span t-esc="'/ ' + timetables[monday]['Vendredi'][hour]['building_name']"/>
+                                            <span t-esc="record['classroom_name']"/>
+                                            <span t-esc="'/ ' + record['building_name']"/>
                                             <br/>
-                                            <span t-esc="timetables[monday]['Vendredi'][hour]['employee_name']"/>
+                                            <span t-esc="record['employee_name']"/>
+                                            <br/>
+                                            <span>-----</span>
+                                            <br/>
                                         </t>
                                     </td>
                                     <td class='text-center'>
-                                        <t t-if="timetables[monday]['Samedi'][hour] != ''">
-                                            <span t-esc="timetables[monday]['Samedi'][hour]['subject_name']"/>
-                                            <span t-esc="' (' + timetables[monday]['Samedi'][hour]['subject_code'] + ')'"/>
+                                        <t t-foreach="timetables[monday]['Samedi'][hour]" t-as="record">
+                                            <span t-esc="record['subject_name']"/>
+                                            <span t-esc="' (' + record['subject_code'] + ')'"/>
                                             <br/>
-                                            <span t-esc="timetables[monday]['Samedi'][hour]['classroom_name']"/>
-                                            <span t-esc="'/ ' + timetables[monday]['Samedi'][hour]['building_name']"/>
+                                            <span t-esc="record['classroom_name']"/>
+                                            <span t-esc="'/ ' + record['building_name']"/>
                                             <br/>
-                                            <span t-esc="timetables[monday]['Samedi'][hour]['employee_name']"/>
+                                            <span t-esc="record['employee_name']"/>
+                                            <br/>
+                                            <span>-----</span>
+                                            <br/>
                                         </t>
                                     </td>
                                     <td class='text-center'>
-                                        <t t-if="timetables[monday]['Dimanche'][hour] != ''">
-                                            <span t-esc="timetables[monday]['Dimanche'][hour]['subject_name']"/>
-                                            <span t-esc="' (' + timetables[monday]['Dimanche'][hour]['subject_code'] + ')'"/>
+                                        <t t-foreach="timetables[monday]['Dimanche'][hour]" t-as="record">
+                                            <span t-esc="record['subject_name']"/>
+                                            <span t-esc="' (' + record['subject_code'] + ')'"/>
                                             <br/>
-                                            <span t-esc="timetables[monday]['Dimanche'][hour]['classroom_name']"/>
-                                            <span t-esc="'/ ' + timetables[monday]['Dimanche'][hour]['building_name']"/>
+                                            <span t-esc="record['classroom_name']"/>
+                                            <span t-esc="'/ ' + record['building_name']"/>
                                             <br/>
-                                            <span t-esc="timetables[monday]['Dimanche'][hour]['employee_name']"/>
+                                            <span t-esc="record['employee_name']"/>
+                                            <br/>
+                                            <span>-----</span>
+                                            <br/>
                                         </t>
                                     </td>
                                 </tr>
@@ -242,6 +263,7 @@
                             <th class="text-left">Jour de la semaine</th>
                             <th class="text-left">Heure de début</th>
                             <th class="text-left">Heure de fin</th>
+                            <th class="text-left">Statut</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -277,17 +299,20 @@
                                 <td class='text-left'>
                                     <span t-esc="record['end_time']"/>
                                 </td>
+                                <td class='text-left'>
+                                    <span t-esc="record['status']"/>
+                                </td>
                             </tr>
                         </t>
                     </tbody>
                     <tfooter>
                         <tr>
-                            <th class="text-left" colspan="10" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
+                            <th class="text-left" colspan="11" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
                         </tr>
                     </tfooter>
                     <tbody>
                         <tr>
-                            <td class="text-left" colspan="10">
+                            <td class="text-left" colspan="11">
                                 <nav aria-label="Page navigation timetable">
                                     <ul class="pagination">
                                         <li class="page-item"><a class="page-link" t-attf-href="/my/timetable/page/1?view_type={{ timetable_view_type }}">Précédent</a></li>
@@ -307,7 +332,7 @@
                     </tbody>
                     <tfooter>
                         <tr>
-                            <th class="text-left" colspan="10" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
+                            <th class="text-left" colspan="11" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
                         </tr>
                     </tfooter>
                 </t>
@@ -540,6 +565,7 @@
                             <th class="text-left">Date</th>
                             <th class="text-left">Message</th>
                             <th class="text-left">Enseignant</th>
+                            <th class="text-left">Cours</th>
                             <th class="text-left">Statut</th>
                         </tr>
                     </thead>
@@ -556,6 +582,9 @@
                                     <span t-esc="record['name']"/>
                                 </td>
                                 <td class='text-left'>
+                                    <span t-esc="record['subject_name']"/>
+                                </td>
+                                <td class='text-left'>
                                     <span t-esc="record['status']"/>
                                 </td>
                             </tr>
@@ -563,7 +592,7 @@
                     </tbody>
                     <tfooter>
                         <tr>
-                            <th class="text-left" colspan="4" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
+                            <th class="text-left" colspan="5" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
                         </tr>
                     </tfooter>
                 </t>

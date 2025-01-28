@@ -2,6 +2,7 @@ from email.policy import default
 
 from odoo import models, fields, api
 from odoo.exceptions import ValidationError
+from datetime import datetime
 import logging
 
 
@@ -83,7 +84,8 @@ class Timetable(models.Model):
         ('4', 'Vendredi'),
         ('5', 'Samedi'),
     ], 'Jour de la semaine',
-        required=True
+        readonly=True, store=True,
+        compute='_onchange_date',
     )
 
     # Heure de début du cours
@@ -107,7 +109,7 @@ class Timetable(models.Model):
     # Groupe auquel appartient l'emploi du temps
     group_id = fields.Many2one(
         'siantou.ems.timetable.group',
-        'Groupe',
+        'Version',
         required=True,
         ondelete='cascade'
     )
@@ -121,6 +123,27 @@ class Timetable(models.Model):
     ], 'Statut',
         default='0',
     )
+
+    # Méthode pour remplir automatiquement le jour de la semaine
+    @api.depends('date')
+    def _onchange_date(self):
+        if self.date:
+            # Calculer le jour de la semaine (0 = lundi, 1 = mardi, ...)
+            day_of_week = datetime.strptime(str(self.date), '%Y-%m-%d').weekday()
+            self.day_of_week = str(day_of_week)  # Assurez-vous que le jour soit un string (0-6)
+
+
+    # @api.model
+    # def update_day_of_week(self):
+    #     # Récupérer tous les enregistrements qui ont une valeur dans "date"
+    #     timetables = self.search([('date', '!=', False)])
+
+    #     for timetable in timetables:
+    #         # Calculer le jour de la semaine en fonction de la date
+    #         day_of_week = timetable.date.weekday()  # 0 pour lundi, 6 pour dimanche
+    #         timetable.write({'day_of_week': str(day_of_week)})  # Mise à jour du champ
+
+    #     return True
 
     # Contrainte logique pour se rassurer qu'on a pas deux enregistrements identiques
     @api.constrains('field_of_study_id', 'level_id', 'subject_id', 'classroom_id', 'employee_id', 'day_of_week', 'start_time', 'end_time')

@@ -1,7 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 	<data>
-    
+        <!-- <menuitem name="Filières" id="menu_school_config_course"
+                    parent="menu_school_config" 
+                     /> -->
+        
+        <!-- Grading Type -->
+        <!-- <record id="school_course_grading_type_tree_view" model="ir.ui.view">
+			<field name="name">school.course.grading.type.tree.view</field>
+			<field name="model">oe.school.course.grading.type</field>
+			<field name="arch" type="xml">
+				<tree string="Filières" editable="bottom">
+					<field name="name"/>
+				</tree>
+			</field>
+		</record>
+        
+        <record id="action_school_course_grading_type" model="ir.actions.act_window">
+            <field name="name">Type de notation</field>
+            <field name="res_model">oe.school.course.grading.type</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Créer un type de notation
+                </p>
+            </field>
+        </record> -->
+
+        <!--
+        <menuitem name="Grading Type" id="menu_school_config_course_grading_type"
+                    parent="menu_school_config_course" action="action_school_course_grading_type"
+                     />
+        -->
         <!-- Course -->
         <record id="school_course_tree_view" model="ir.ui.view">
 			<field name="name">school.course.tree.view</field>
@@ -20,6 +50,35 @@
 			<field name="arch" type="xml">
 				<form string="Cycles">
 					<sheet>
+                        <!-- <div class="oe_button_box" name="button_box">
+                            <button name="action_open_batch" 
+                                type="object" 
+                                icon="fa-list-alt" 
+                                class="oe_stat_button"
+                                invisible="not use_batch"
+                            >
+                                    <field string="Lot" name="batch_count" widget="statinfo"/>
+                            </button>
+                            <button name="action_open_section" 
+                                type="object" 
+                                icon="fa-list-alt" 
+                                class="oe_stat_button"
+                                invisible="not use_section"
+                            >
+                                    <field string="Section" name="section_count" widget="statinfo"/>
+                            </button>
+                        </div> -->
+                        <!-- <widget name="web_ribbon" title="Archivé" bg_color="bg-danger"
+                            invisible="active == True"/>
+                        <field name="active" invisible="1"/>
+                        <field name="use_batch" invisible="1" />
+                        <field name="use_credit_hours" invisible="1" />
+                        <div class="oe_title">
+                            <label for="name"/>
+                            <h1><field name="name" placeholder="e.g. Master en Télécommunication"/></h1>
+                            <label for="parent_id"/>
+                            <h2><field name="parent_id" /></h2>
+                        </div> -->
                         <group >
                             <group>
                                 <field name="code" />
@@ -32,6 +91,27 @@
                                 <field name="company_id" options="{'no_create': True}" />
                             </group>
                         </group>
+                        
+						<!-- <notebook>
+                            <page string="Affectation des cours">
+                                <field name="course_subject_line" >
+									<tree editable ="bottom" >
+                                        <field name="course_id" column_invisible="1" />
+                                        <field name="subject_id" 
+                                            options="{'no_create': True,'no_edit':True}" 
+                                        />
+                                         <field name="batch_ids" widget="many2many_tags"
+                                            options="{'no_create': True,'no_edit':True}" 
+                                            column_invisible="not parent.use_batch_subject"
+                                        />
+                                         <field name="credit_hours" 
+                                             column_invisible="not parent.use_credit_hours" 
+                                        />
+                                        <field name="max_weekly_class" />
+									</tree>
+								</field>
+                            </page>
+                        </notebook> -->
 					</sheet>
 				</form>
 			</field>
@@ -62,7 +142,11 @@
                 </p>
             </field>
         </record>
-                
+        
+        <!-- <menuitem name="Cycles" id="menu_school_courses_courses"
+                    parent="menu_school_courses" action="action_oe_school_course"
+                     sequence="1"/> -->
+        
         <menuitem
             id="menu_siantou_ems_core_cycle"
             name="Cycles"

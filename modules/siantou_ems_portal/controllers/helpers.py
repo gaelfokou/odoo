@@ -9,6 +9,7 @@ from datetime import date, datetime, timedelta, time
 from dateutil.relativedelta import relativedelta
 import pytz
 import logging
+import copy
 
 DATE_FORMAT = '%Y-%m-%d'
 DATE_FORMAT_FR = '%d/%m/%Y'
@@ -16,19 +17,11 @@ DATETIME_FORMAT = '%Y-%m-%d %H:%M:%S'
 DATETIME_FORMAT_FR = '%d/%m/%Y %H:%M'
 TIME_FORMAT = '%H:%M'
 
-CURRENT_HOUR = [
-    '8.0-10.0',
-    '10.0-12.0',
-    '12.0-13.0',
-    '13.0-15.0',
-    '15.0-17.0',
-]
-
 _logger = logging.getLogger(__name__)
 
 class Helpers:
     @staticmethod
-    def timetable(search='', search_in='all'):
+    def timetable(search='', search_in='all', level_id=None, field_of_study_id=None):
         searchbar_inputs = {
             'all': {'label': 'Tout', 'input': 'all', 'domain': []},
             'filiere': {'label': 'Filière', 'input': 'filiere', 'domain': [('field_of_study_id.name', 'like', search)]},
@@ -46,12 +39,24 @@ class Helpers:
 
         search_timetables = []
         if http.request.env.user.employee_id.id:
-            user = http.request.env.user.employee_id
-            search_domain.append(('employee_id', '=', user.id))
+            if http.request.env.user.employee_id.is_teacher:
+                user = http.request.env.user.employee_id
+                search_domain.append(('employee_id', '=', user.id))
 
-            timetables = http.request.env['siantou.ems.timetable.timetable'].sudo().search(search_domain, order=order)
-            timetables = list(timetables)
-            search_timetables = timetables
+                timetables = http.request.env['siantou.ems.timetable.timetable'].sudo().search(search_domain, order=order)
+                timetables = list(timetables)
+                search_timetables = timetables
+            else:
+                if level_id:
+                    # Si l'étudiant est trouvé, on filtre par cycle, niveau
+                    search_domain.append(('level_id', '=', level_id.id))
+                if field_of_study_id:
+                    # Si l'étudiant est trouvé, on filtre par cycle, filière
+                    search_domain.append(('field_of_study_id', '=', field_of_study_id.id))
+
+                timetables = http.request.env['siantou.ems.timetable.timetable'].sudo().search(search_domain, order=order)
+                timetables = list(timetables)
+                search_timetables = timetables
         else:
             user = http.request.env.user
             # Chercher l'étudiant en fonction de l'ID de l'utilisateur (user_id)
@@ -116,12 +121,13 @@ class Helpers:
 
         search_paymenthistories = []
         if http.request.env.user.employee_id.id:
-            user = http.request.env.user.employee_id
-            search_domain.append(('employee_id', '=', user.id))
+            if http.request.env.user.employee_id.is_teacher:
+                user = http.request.env.user.employee_id
+                search_domain.append(('employee_id', '=', user.id))
 
-            paymenthistories = http.request.env['hr.payslip'].sudo().search(search_domain, order=order)
-            paymenthistories = list(paymenthistories)
-            search_paymenthistories = paymenthistories
+                paymenthistories = http.request.env['hr.payslip'].sudo().search(search_domain, order=order)
+                paymenthistories = list(paymenthistories)
+                search_paymenthistories = paymenthistories
 
         _logger.info(f'----------- tototototototo search_paymenthistories {search_paymenthistories} -----------')
 
@@ -140,12 +146,13 @@ class Helpers:
 
         search_notifications = []
         if http.request.env.user.employee_id.id:
-            user = http.request.env.user.employee_id
-            search_domain.append(('employee_id', '=', user.id))
+            if http.request.env.user.employee_id.is_teacher:
+                user = http.request.env.user.employee_id
+                search_domain.append(('employee_id', '=', user.id))
 
-            notifications = http.request.env['siantou.ems.timetable.notification'].sudo().search(search_domain, order=order)
-            notifications = list(notifications)
-            search_notifications = notifications
+                notifications = http.request.env['siantou.ems.timetable.notification'].sudo().search(search_domain, order=order)
+                notifications = list(notifications)
+                search_notifications = notifications
 
         _logger.info(f'----------- tototototototo search_notifications {search_notifications} -----------')
 
@@ -153,12 +160,44 @@ class Helpers:
 
     @staticmethod
     def format_timetable(data):
+        n = 0.0
+        hours = []
+        current_hours = []
         timetables = {}
         df = {}
 
-        for d in data:
-            d['start_time'] = float(d['start_time'])
-            d['end_time'] = float(d['end_time'])
+        for i in range(len(data)):
+            data[i]['start_time'] = round(float(data[i]['start_time']), 2)
+            data[i]['end_time'] = round(float(data[i]['end_time']), 2)
+
+        data.sort(key=lambda d: d['date'])
+        sorted_data = copy.deepcopy(data)
+
+        for i, d in enumerate(data):
+            if i == 0:
+                n = d['end_time'] - d['start_time']
+            else:
+                if n > d['end_time'] - d['start_time']:
+                    n = d['end_time'] - d['start_time']
+            hours.append([d['start_time'], d['end_time']])
+
+        n = round(n, 2)
+
+        hours.sort(key=lambda h: h[0])
+
+        for i in range(len(hours)):
+            while Helpers.increment_float_time(hours[i][0]) < Helpers.increment_float_time(hours[i][1]):
+                if Helpers.increment_float_time(hours[i][0], n) < Helpers.increment_float_time(hours[i][1]):
+                    h = '{}-{}'.format(Helpers.increment_float_time(hours[i][0]), Helpers.increment_float_time(hours[i][0], n))
+                else:
+                    h = '{}-{}'.format(Helpers.increment_float_time(hours[i][0]), Helpers.increment_float_time(hours[i][1]))
+                current_hours.append(h)
+                hours[i][0] = Helpers.increment_float_time(hours[i][0], n)
+
+        current_hours = list(set(current_hours))
+        current_hours.sort(key=lambda h: float(h.split('-')[0]))
+
+        for d in sorted_data:
             if d['date'].weekday() == 0:
                 monday = d['date']
             else:
@@ -166,7 +205,7 @@ class Helpers:
             monday = datetime.strftime(monday, DATE_FORMAT)
             if not monday in timetables:
                 timetables[monday] = {
-                    'Heure': [hour for hour in CURRENT_HOUR],
+                    'Heure': [hour for hour in current_hours],
                     'Lundi': [],
                     'Mardi': [],
                     'Mercredi': [],
@@ -176,25 +215,30 @@ class Helpers:
                     'Dimanche': [],
                 }
 
-                for hour in timetables[monday]['Heure']:
+                for i in range(len(timetables[monday]['Heure'])):
                     for key in timetables[monday].keys():
                         if key == 'Heure':
                             continue
                         timetables[monday][key].append(np.nan)
             if not monday in df:
                 df[monday] = pd.DataFrame(timetables[monday], dtype=str)
-            while d['start_time'] < d['end_time']:
-                h = '{}-{}'.format(d['start_time'], (d['start_time'] + 2.0))
+            while Helpers.increment_float_time(d['start_time']) < Helpers.increment_float_time(d['end_time']):
+                if Helpers.increment_float_time(d['start_time'], n) < Helpers.increment_float_time(d['end_time']):
+                    h = '{}-{}'.format(Helpers.increment_float_time(d['start_time']), Helpers.increment_float_time(d['start_time'], n))
+                else:
+                    h = '{}-{}'.format(Helpers.increment_float_time(d['start_time']), Helpers.increment_float_time(d['end_time']))
                 for i, row in df[monday].iterrows():
                     if h == timetables[monday]['Heure'][i]:
                         for j, column in enumerate(df[monday].columns):
                             for k, key in enumerate(timetables[monday].keys()):
                                 if k == d['date'].weekday() + 1:
                                     if column == key:
-                                        # df[monday].loc[i, column] = d['subject_name']
-                                        df[monday].loc[i, column] = d['id']
+                                        if np.isnan(float(str(df[monday].loc[i, column]))):
+                                            df[monday].loc[i, column] = str(d['id'])
+                                        else:
+                                            df[monday].loc[i, column] = '{}-{}'.format(df[monday].loc[i, column], str(d['id']))
                                     break
-                d['start_time'] += 2.0
+                d['start_time'] = Helpers.increment_float_time(d['start_time'], n)
 
         for monday in df.keys():
             df[monday].replace(np.nan, '-', inplace=True)
@@ -202,11 +246,11 @@ class Helpers:
             for key in timetables[monday].keys():
                 timetables[monday][key] = list(df[monday][key])
                 if key != 'Heure':
-                    for i, v in enumerate(timetables[monday][key]):
-                        if v == '-':
-                            timetables[monday][key][i] = ''
-                        else:
-                            timetables[monday][key][i] = [d for d in data if d['id'] == int(v)][0]
+                    for i, vals in enumerate(timetables[monday][key]):
+                        timetables[monday][key][i] = []
+                        if vals != '-':
+                            for v in vals.split('-'):
+                                timetables[monday][key][i].append([d for d in data if d['id'] == int(v)][0])
 
             monday = datetime.strptime(f'{monday}', DATE_FORMAT).date()
             sunday = monday + timedelta(days=6)
@@ -258,6 +302,23 @@ class Helpers:
         tm = '.'.join(tm)
         tm = eval(tm)
         tm = float(tm)
+        tm = round(tm, 2)
+        return tm
+
+    @staticmethod
+    def increment_float_time(tm, n=0.0):
+        tm = str(tm)
+        tm = tm.split('.')
+        if len(tm[1]) == 1:
+            tm[1] = '{}0'.format(tm[1])
+        tm = time(int(tm[0]), int(tm[1]))
+        n = str(n)
+        n = n.split('.')
+        if len(n[1]) == 1:
+            n[1] = '{}0'.format(n[1])
+        tm = datetime.combine(date.today(), tm) + timedelta(hours=int(n[0]), minutes=int(n[1]))
+        tm = datetime.strftime(tm, TIME_FORMAT)
+        tm = Helpers.convert_time_to_float(tm)
         return tm
 
     @staticmethod
@@ -290,3 +351,14 @@ class Helpers:
             'pages_total': len(pages_total),
             'pages': pages,
         }
+
+    @staticmethod
+    def serialize_datetime(obj):
+        if isinstance(obj, date):
+            return datetime.strftime(obj, DATE_FORMAT_FR)
+        elif isinstance(obj, datetime):
+            return datetime.strftime(obj, DATETIME_FORMAT_FR)
+        elif isinstance(obj, time):
+            return datetime.strftime(obj, TIME_FORMAT)
+        else:
+            return obj

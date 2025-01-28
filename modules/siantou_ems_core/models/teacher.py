@@ -63,50 +63,49 @@ class HrEmployee(models.Model):
         help="Liste des emplois du temps associés à l'enseignant."
     )
 
-    def create_employee_user(self, employee_id):
+    def create_employee_user(self, employee):
         try:
             ecole = 'IUS'
             ecole = ecole[:4]
             ecole = ecole.upper()
             identifier = ecole + self.env['ir.sequence'].next_by_code('hr.employee')
-            if not employee_id.identifier or employee_id.identifier == '':
+            if not employee.identifier or not employee.identifier.strip():
                 while True:
-                    employee_ids = self.env['hr.employee'].search([
+                    employee_id = self.env['hr.employee'].search([
                         ('identifier', '=', identifier),
-                    ])
-                    employee_ids = list(employee_ids)
-                    if len(employee_ids) > 0:
+                    ], limit=1)
+                    if employee_id:
                         identifier = ecole + self.env['ir.sequence'].next_by_code('hr.employee')
                     else:
-                        employee_id.write({
+                        employee.write({
                             'identifier': identifier,
                         })
                         break
-            user_ids = self.env['res.users'].search([
-                ('employee_id', '=', employee_id.id),
-            ])
-            user_ids = list(user_ids)
-            if len(user_ids) == 0:
-                name = employee_id.name
-                # email = employee_id.work_email
+            else:
+                identifier = employee.identifier
+            user_id = self.env['res.users'].search([
+                ('employee_id', '=', employee.id),
+            ], limit=1)
+            if not user_id:
+                name = employee.name
+                # email = employee.work_email
                 username = name.replace(' ', '.').lower()
                 email = username + '@siantou.net'
                 # password = username
                 password = identifier
                 i = 0
                 while True:
-                    user_ids = self.env['res.users'].search([
+                    user_id = self.env['res.users'].search([
                         ('login', '=', email),
-                    ])
-                    user_ids = list(user_ids)
-                    if len(user_ids) > 0:
+                    ], limit=1)
+                    if user_id:
                         i = i + 1
                         email = username + f'.{i}' + '@siantou.net'
                         # password = username + f'.{i}'
                         password = identifier
                     else:
                         break
-                if employee_id.is_teacher:
+                if employee.is_teacher:
                     group_id = self.env.ref('base.group_portal')
                     user_id = self.env['res.users'].create({
                         'login': email,
@@ -120,7 +119,7 @@ class HrEmployee(models.Model):
                         'name': name,
                         'password' : password,
                     })
-                employee_id.write({
+                employee.write({
                     'work_email': email,
                     'user_id': user_id.id,
                 })
@@ -134,20 +133,18 @@ class HrEmployee(models.Model):
 
     @api.model
     def create(self, vals):
-        employee_id = super(HrEmployee, self).create(vals)
+        employee = super(HrEmployee, self).create(vals)
 
-        self.create_employee_user(employee_id)
+        self.create_employee_user(employee)
 
-        return employee_id
+        return employee
 
     def action_create_employee_user(self):
-        employee_ids = self.env['hr.employee'].search([
+        employee = self.env['hr.employee'].search([
             ('id', '=', self.id),
-        ])
-        employee_ids = list(employee_ids)
-        if len(employee_ids) > 0:
-            employee_id = employee_ids[0]
-            self.create_employee_user(employee_id)
+        ], limit=1)
+        if employee:
+            self.create_employee_user(employee)
 
         return {
             'type': 'ir.actions.client',
@@ -156,8 +153,8 @@ class HrEmployee(models.Model):
 
     def action_create_all_employee_user(self):
         employee_ids = self.env['hr.employee'].search([])
-        for employee_id in employee_ids:
-            self.create_employee_user(employee_id)
+        for employee in employee_ids:
+            self.create_employee_user(employee)
 
         return {
             'type': 'ir.actions.client',

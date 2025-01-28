@@ -54,5 +54,11 @@
             name="Configurations"
 			parent="menu_siantou_ems_core"
             sequence = "100" />
+
+    <menuitem 
+            id="menu_production_pe_conf" 
+            name="Gestion des programmes d'enseignements" 
+            parent="menu_siantou_ems_core_configuration" 
+            sequence="1"/>
     
 </odoo>

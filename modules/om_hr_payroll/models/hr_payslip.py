@@ -117,6 +117,7 @@ class HrPayslip(models.Model):
         tm = '.'.join(tm)
         tm = eval(tm)
         tm = float(tm)
+        tm = round(tm, 2)
         return tm
 
     def filter_daily_attendance(self, end_date, start_date, employee=None):

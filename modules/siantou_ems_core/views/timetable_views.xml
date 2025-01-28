@@ -23,6 +23,12 @@
                             class="oe_highlight" 
                             groups="siantou_ems_core.group_timetable_admin"
                             display="always"/>
+                        <!-- <button name="update_day_of_week" 
+                            type="object" 
+                            string="Update day" 
+                            class="oe_highlight" 
+                            groups="siantou_ems_core.group_timetable_admin"
+                            display="always"/> -->
                     </header>
                     <field name="group_id"/>
                     <field name="date"/>

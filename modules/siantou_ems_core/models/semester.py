@@ -34,6 +34,14 @@ class Semester(models.Model):
         help="Année académique à laquelle est lié le semestre",
         required=True,
     )
+    
+    # classe liée au semestre
+    class_id = fields.Many2one(
+        'siantou.ems.core.class',
+        'Classe',
+        help="classe à laquelle est lié le semestre",
+        required=True,
+    )
 
     # Nombre de semaines dans un semestre
     number_of_week = fields.Integer(
@@ -42,12 +50,19 @@ class Semester(models.Model):
         help='Nombre de semaines sur le semestre',
         store=True
     )
+    
+    unite_enseignement_ids = fields.One2many('siantou.ems.core.unite.enseignement', 'semestre_id',  string="Unité d'enseignement", tracking=True)
 
     # Ensemble des cours du semestre
     subject_ids = fields.One2many(
         'siantou.ems.core.subject',
         'semester_id',
         'Cours'
+    )
+    
+    class_id = fields.Many2one(
+        string='Classe',
+        comodel_name='siantou.ems.core.class',
     )
 
     # Contrainte SQL pour empêcher d'avoir le même nom pour différents semestres

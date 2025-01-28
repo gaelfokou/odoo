@@ -48,7 +48,7 @@
                                     </tree>
                                 </field>
                             </page>
-                            <!-- <page name="subject_ids" string="Cours">
+                            <page name="subject_ids" string="Cours">
                                 <field name="subject_ids">
                                     <tree string="">
                                         <field name="code"/>
@@ -56,7 +56,7 @@
                                         <field name="field_of_study_id"/>  
                                     </tree>
                                 </field>
-                            </page> -->
+                            </page>
                         </notebook>
 					</sheet>
 				</form>
