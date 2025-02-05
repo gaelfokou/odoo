@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!-- Vue liste -->
+        <record id="slot_tree_view" model="ir.ui.view">
+            <field name="name">slot.tree.view</field>
+            <field name="model">siantou.ems.timetable.slot</field>
+            <field name="arch" type="xml">
+                <tree string="Créneaux horaires">
+                    <field name="name"/>
+                    <field name="slotitem_day_ids"/>
+                    <field name="slotitem_night_ids"/>
+                    <field name="is_active"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Vue formulaire détaillée -->
+        <record id="slot_form_view" model="ir.ui.view">
+            <field name="name">slot.form.view</field>
+            <field name="model">siantou.ems.timetable.slot</field>
+            <field name="arch" type="xml">
+                <form string="Créneaux horaires">
+                    <sheet>
+                        <group col="4" string="Informations sur l'horaire">
+                            <group col="2" >
+                                <field name="name"/>
+                            </group>
+                            <group colspan="2">
+                                <field name="is_active"/>
+                            </group>
+                        </group>
+                        <!-- Onglets pour organiser les informations -->
+                        <notebook>
+                            <page name="slotitem_day_ids" string="Créneaux horaires jour">
+                                <field name="slotitem_day_ids">
+                                    <tree string="">
+                                        <field name="start_time"/>
+                                        <field name="end_time"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page name="slotitem_night_ids" string="Créneaux horaires soir">
+                                <field name="slotitem_night_ids">
+                                    <tree string="">
+                                        <field name="start_time"/>
+                                        <field name="end_time"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Action pour afficher la liste et le formulaire -->
+        <record id="action_show_slot" model="ir.actions.act_window">
+            <field name="name">Créneaux horaires</field>
+            <field name="res_model">siantou.ems.timetable.slot</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <!-- Menu pour accéder aux salles de classe -->
+        <menuitem
+            id="menu_siantou_ems_core_slot"
+            name="Créneaux horaires"
+            parent="menu_siantou_ems_core_configuration"
+            action="action_show_slot"
+            sequence="15"/>
+    </data>
+</odoo>

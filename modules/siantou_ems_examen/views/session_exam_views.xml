@@ -54,8 +54,8 @@
                                 />
                             </h1>
                         </div>
-                        <group>
-                            <group>
+                        <group col="4">
+                            <group colspan="2">
                                 <field name="secretariat_examen_id" 
                                     options="{'no_open':True,'no_create':True}"
                                     readonly="state != 'create'"
@@ -75,9 +75,19 @@
                                     <field name="date_end" readonly="state != 'create'"/>
                                 </div>
                             </group>
-                            <group>
+                            <group colspan="2">
+                                <field 
+                                    name="school_id" 
+                                    readonly="state != 'create'" 
+                                    options="{'no_open':True,'no_create':True}"/>
+
                                 <field 
                                     name="field_of_study_ids" widget="many2many_tags" 
+                                    readonly="state != 'create'" 
+                                    options="{'no_open':True,'no_create':True}"/>
+
+                                <field 
+                                    name="level_id" 
                                     readonly="state != 'create'" 
                                     options="{'no_open':True,'no_create':True}"/>
                                 

@@ -51,6 +51,28 @@ class FeeSpecial(models.Model):
         readonly=True, 
         related_sudo=False
     )
+    mode_payment = fields.Selection(
+        [
+            ('bank', 'Virement bancaire'),
+            ('cash', 'Paiement en espèce(Cash)')
+        ],
+        string='Mode de paiement', 
+        required=True,
+        default="cash"
+    )
+    cni = fields.Char(string="Numéro CNI", required=True)
+    date_delivr_cni = fields.Date(
+        string="Date de délivrance", 
+        required=True
+    )
+    lieu_delivr_cni = fields.Char(
+        string="Lieu de délivrance", 
+        required=True
+    )
+    titulaire_compte = fields.Char(string="Titulaire du compte")
+    numero_compte = fields.Char(string="N° de compte")
+    name_bank = fields.Char(string="Nom bank",)
+    code_guichet = fields.Char(string="Code guichet")
     state = fields.Selection([
             ('no_create', "Encours de création"),
             ('create', 'Crée et attente de validation'),
@@ -208,3 +230,5 @@ class FeeSpecial(models.Model):
             'state':'create'
         })
         return res
+
+

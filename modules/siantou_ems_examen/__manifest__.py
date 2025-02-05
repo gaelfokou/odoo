@@ -30,6 +30,7 @@
         
         "views/menu.xml",
         "views/type_examen_views.xml",
+        "views/date_butoire_exam.xml",
         "views/session_examen_rattrapage_views.xml",
         "views/grade_examen_views.xml",
         "views/secretariat_examen_views.xml",

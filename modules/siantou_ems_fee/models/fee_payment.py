@@ -13,6 +13,7 @@ _logger = logging.getLogger("+++++++++++++++++++++")
 
 class FeePaymentLine(models.Model):
     _name = 'siantou.ems.fee.payment.line'
+    _inherit = ['mail.thread', 'mail.activity.mixin']
 
     invoice_id = fields.Many2one(
         'account.move', string='Facture', required=True)
@@ -37,6 +38,20 @@ class FeePaymentLine(models.Model):
         string='Mode de paiement',
         required=True
     )
+
+    cni = fields.Char(string="Numéro CNI", required=True)
+    date_delivr_cni = fields.Date(
+        string="Date de délivrance", 
+        required=True
+    )
+    lieu_delivr_cni = fields.Char(
+        string="Lieu de délivrance", 
+        required=True
+    )
+    titulaire_compte = fields.Char(string="Titulaire du compte")
+    numero_compte = fields.Char(string="N° de compte")
+    name_bank = fields.Char(string="Nom bank",)
+    code_guichet = fields.Char(string="Code guichet")
     # sequence = fields.Integer('Séquence', related="structure_frais_line_id.sequence")
     amount_total = fields.Monetary('Montant versé')
     # amount_reste = fields.Monetary('Montant à compléter')
@@ -67,7 +82,8 @@ class FeePayment(models.Model):
             ('cash', 'Paiement en espèce(Cash)')
         ],
         string='Mode de paiement', 
-        required=True
+        required=True,
+        default="cash"
     )
     student_id = fields.Many2one('oe.school.student', string='Etudiant', required=True)
     structure_frais_id = fields.Many2one(
@@ -79,7 +95,7 @@ class FeePayment(models.Model):
     structure_frais_request_domain = fields.Binary(default=0, store=False)
     amount = fields.Monetary('Montant versé', required=True, tracking=True)
     amount_rest = fields.Monetary('Montant à compléter', default=0, required=True, tracking=True)
-    reference = fields.Char('Réference du reçu', required=True, default='/')
+    reference = fields.Char('Réference du reçu')
     date_payment = fields.Date('Date de versement', required=True, default=fields.Date.context_today)
     facture_ids = fields.One2many(
         'siantou.ems.fee.payment.line',
@@ -98,6 +114,20 @@ class FeePayment(models.Model):
         required=True,
         default=lambda self: self.env['siantou.ems.core.year'].search([('active','=',True)], limit=1),    
     )
+
+    cni = fields.Char(string="Numéro CNI", required=True)
+    date_delivr_cni = fields.Date(
+        string="Date de délivrance", 
+        required=True
+    )
+    lieu_delivr_cni = fields.Char(
+        string="Lieu de délivrance", 
+        required=True
+    )
+    titulaire_compte = fields.Char(string="Titulaire du compte")
+    numero_compte = fields.Char(string="N° de compte")
+    name_bank = fields.Char(string="Nom bank",)
+    code_guichet = fields.Char(string="Code guichet")
     state = fields.Selection([
             ('creer', 'Création'),
             ('draft', 'En attente de validation'),
@@ -105,8 +135,7 @@ class FeePayment(models.Model):
         ], 
         string='Etat',
         default='creer',
-        tracking=True, 
-        required=True
+        tracking=True, required=True
     )
     status = fields.Selection([
             ('none', 'one'),
@@ -115,8 +144,7 @@ class FeePayment(models.Model):
         ], 
         default='none',
         string='Paiement complèt ?',
-        tracking=True, 
-        required=True
+        tracking=True, required=True
     )
     use_moratoire = fields.Boolean("Utilisé un moratoire ?", default=False)
 
@@ -401,6 +429,14 @@ class FeePaymentEnrollment(models.Model):
         'oe.school.student.enrollment', 
         string='Etudiant', required=True
     )
+    student_name = fields.Char(
+        string='Nom du déposant',
+        related='student_id.name'
+    )
+    student_phone = fields.Char(
+        string='Téléphone du déposant',
+        related='student_id.num_tel'
+    )
     structure_frais_id = fields.Many2one(
         'siantou.ems.fee.structure',
         string='Structure de frais'
@@ -414,13 +450,34 @@ class FeePaymentEnrollment(models.Model):
     amount = fields.Monetary('Montant versé', required=True, tracking=True)
     amount_plus = fields.Monetary('Montant en plus', default=0, required=True, tracking=True)
     amount_moins = fields.Monetary('Montant en moins', default=0, required=True, tracking=True)
-    reference = fields.Char('Réference du reçu', required=True)
+    reference = fields.Char('Réference du reçu')
     date_payment = fields.Date('Date de versement', required=True)
     status = fields.Selection([
         ('all', 'Oui'),
         ('none_all', 'Non')
     ], string='Paiement complèt')
-
+    mode_payment = fields.Selection(
+        [
+            ('bank', 'Virement bancaire'),
+            ('cash', 'Paiement en espèce(Cash)')
+        ],
+        string='Mode de paiement', 
+        default="cash",
+        required=True
+    )
+    cni = fields.Char(string="Numéro CNI", required=True)
+    date_delivr_cni = fields.Date(
+        string="Date de délivrance", 
+        required=True
+    )
+    lieu_delivr_cni = fields.Char(
+        string="Lieu de délivrance", 
+        required=True
+    )
+    titulaire_compte = fields.Char(string="Titulaire du compte")
+    numero_compte = fields.Char(string="N° de compte")
+    name_bank = fields.Char(string="Nom bank",)
+    code_guichet = fields.Char(string="Code guichet")
     currency_id = fields.Many2one(
         'res.currency', 
         default=lambda self: self.env.company.currency_id, 

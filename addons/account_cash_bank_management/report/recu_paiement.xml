@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="report_saleorder_custom_document">
+        <link href="/its_lehas_templates/static/src/less/report_saleorder_pro_forma.less" rel="stylesheet"
+              type="text/less"/>
+        <t t-call="its_lehas_templates.external_layout_proforma">
+            <t t-set="doc" t-value="doc.with_context({'lang':doc.partner_id.lang})"/>
+            <div class="page">
+                <table style="width: 100%; margin-top: 20px; border-collapse: separate; width: 100%; margin-bottom: 20px; border: 0px;">
+                    <style>
+                        .custom-paragraph {
+                        text-align: center;
+                        margin: 20px 0;
+                        line-height: 1.2;
+                        }
+
+                        .custom-paragraph .line1 {
+                        font-weight: bold;
+                        font-size: 16px;
+                        color: black;
+                        }
+
+                        .custom-paragraph .line2 {
+                        font-style: italic;
+                        color: white;
+                        background-color: black;
+                        font-family: "Brush Script MT", cursive;
+                        font-size: 16px;
+                        }
+
+                        .custom-paragraph .line3,
+                        .custom-paragraph .line4 {
+                        font-weight: bold;
+                        font-family: "Times New Roman", serif;
+                        font-size: 12px;
+                        color: black;
+                        }
+
+                        .custom-paragraph .line5 {
+                        font-weight: normal;
+                        font-family: "Times New Roman", serif;
+                        font-size: 12px;
+                        color: black;
+                        }
+
+                        .gv-custom-header {
+                        width: 100%;
+                        margin-bottom: 20px;
+                        border-collapse: separate;
+                        border: 0px;
+                        }
+
+                        .gv-custom-header td {
+                        border: 0px;
+                        width: 50%;
+                        }
+
+                        .gv-custom-footer {
+                        width: 100%;
+                        border-collapse: separate;
+                        border-spacing: 0 10px;
+                        }
+                        .gv-custom-footer td {
+                        border: 0px;
+                        width: 33%;
+                        }
+
+                        .block-simple {
+                        border: 1px solid silver;
+                        padding: 5px 5px;
+                        }
+                    </style>
+                    <tr style="border: 1px solid transparent;">
+                        <td style="width: 15%; border: 1px solid transparent; text-align: center; vertical-align: middle;">
+                            <div style="display: inline-block;">
+                                <img t-if="doc.company_id.logo" t-att-src="image_data_uri(doc.company_id.logo)"
+                                     style="max-height: 100px;" alt="Logo"/>
+                            </div>
+                        </td>
+                        <td style="text-align: left; width: 35%; border: 1px solid transparent;">
+                            <div class="text-center custom-paragraph">
+                                <p>
+                                    <span class="line1">Négoce International - Distribution</span>
+                                    <br/>
+                                    <span class="line2">La formule du bien-être !</span>
+                                    <br/>
+                                    <span class="line3">Tél. :
+                                        <span t-field="doc.company_id.phone"/>
+                                    </span>
+                                    <br/>
+                                    <span class="line4">E-mail :
+                                        <span t-field="doc.company_id.email"/>
+                                    </span>
+                                    <br/>
+                                    <span class="line5">
+                                        <span t-field="doc.company_id.vat"/> - <span t-field="doc.company_id.company_registry"/>
+                                    </span>
+                                </p>
+                            </div>
+                        </td>
+                        <td style="text-align: center; width: 50%; border: 1px solid transparent;">
+                            <div class="col-xs-3 mb4">
+                                <h1>PROFORMA INVOICE</h1>
+                                <h6>N° :
+                                    <span t-field="doc.name"/>
+                                </h6>
+                                <h6>Date :
+                                    <span t-field="doc.date_order" t-field-options='{"format": "dd/MM/yyyy"}'/>
+                                </h6>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+                <table style="width: 100%; margin-top: 20px; border-collapse: collapse;">
+                    <tr style="border: 1px solid transparent;">
+                        <td style="text-align: left; width: 33%; border: 1px solid transparent;">
+                            <p>Customer :
+                                <span t-field="doc.partner_id.name"/>
+                            </p>
+                        </td>
+                        <td style="text-align: left; width: 33%; border: 1px solid transparent;">
+                            <p>Location :
+                                <span t-field="doc.partner_id.city"/>
+                            </p>
+                        </td>
+                        <td style="text-align: left; width: 33%; border: 1px solid transparent;">
+                            <p>Phone :
+                                <span t-field="doc.partner_id.phone"/>
+                            </p>
+                        </td>
+                    </tr>
+                </table>
+
+                <!-- Is there a discount on at least one line? -->
+                <t t-set="lines_to_report" t-value="doc._get_order_lines_to_report()"/>
+                <t t-set="display_discount" t-value="any(l.discount for l in lines_to_report)"/>
+
+                <div class="oe_structure"></div>
+                <table class="table table-sm o_main_table table-borderless mt-4">
+                    <!-- In case we want to repeat the header, remove "display: table-row-group" -->
+                    <thead style="display: table-row-group">
+                        <tr>
+                            <th name="th_description" class="text-start">Description</th>
+                            <th name="th_quantity" class="text-end">Quantity</th>
+                            <th name="th_priceunit" class="text-end">Unit Price</th>
+                            <th name="th_discount" t-if="display_discount" class="text-end">
+                                <span>Disc.%</span>
+                            </th>
+                            <!--<th name="th_taxes" class="text-end">Taxes</th>-->
+                            <th name="th_subtotal" class="text-end">
+                                <span>Amount</span>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="sale_tbody">
+
+                        <t t-set="current_subtotal" t-value="0"/>
+
+                        <t t-foreach="lines_to_report" t-as="line">
+
+                            <t t-set="current_subtotal" t-value="current_subtotal + line.price_subtotal"/>
+
+                            <tr t-att-class="'bg-200 fw-bold o_line_section' if line.display_type == 'line_section' else 'fst-italic o_line_note' if line.display_type == 'line_note' else ''">
+                                <t t-if="not line.display_type">
+                                    <td name="td_name">
+                                        <span t-field="line.name">Bacon Burger</span>
+                                    </td>
+                                    <td name="td_quantity" class="text-end">
+                                        <span t-field="line.product_uom_qty">3</span>
+                                        <span t-field="line.product_uom">units</span>
+                                        <span t-if="line.product_packaging_id">
+                                            (
+                                            <span t-field="line.product_packaging_qty"
+                                                  t-options='{"widget": "integer"}'/>
+                                            <span t-field="line.product_packaging_id"/>)
+                                        </span>
+                                    </td>
+                                    <td name="td_priceunit" class="text-end">
+                                        <span t-field="line.price_unit">3</span>
+                                    </td>
+                                    <td t-if="display_discount" class="text-end">
+                                        <span t-field="line.discount">-</span>
+                                    </td>
+                                    <!--<t t-set="taxes"
+                                       t-value="', '.join([(tax.invoice_label or tax.name) for tax in line.tax_id])"/>
+                                    <td name="td_taxes"
+                                        t-attf-class="text-end {{ 'text-nowrap' if len(taxes) &lt; 10 else '' }}">
+                                        <span t-out="taxes">Tax 15%</span>
+                                    </td>-->
+                                    <td t-if="not line.is_downpayment" name="td_subtotal"
+                                        class="text-end o_price_total">
+                                        <span t-field="line.price_subtotal">27.00</span>
+                                    </td>
+                                </t>
+                                <t t-elif="line.display_type == 'line_section'">
+                                    <td name="td_section_line" colspan="99">
+                                        <span t-field="line.name">A section title</span>
+                                    </td>
+                                    <t t-set="current_section" t-value="line"/>
+                                    <t t-set="current_subtotal" t-value="0"/>
+                                </t>
+                                <t t-elif="line.display_type == 'line_note'">
+                                    <td name="td_note_line" colspan="99">
+                                        <span t-field="line.name">A note, whose content usually applies to the section
+                                            or product above.
+                                        </span>
+                                    </td>
+                                </t>
+                            </tr>
+
+                            <t t-if="current_section and (line_last or doc.order_line[line_index+1].display_type == 'line_section') and not line.is_downpayment">
+                                <tr class="is-subtotal text-end">
+                                    <td name="td_section_subtotal" colspan="99">
+                                        <strong class="mr16">Subtotal</strong>
+                                        <span
+                                                t-out="current_subtotal"
+                                                t-options='{"widget": "monetary", "display_currency": doc.currency_id}'
+                                        >31.05
+                                        </span>
+                                    </td>
+                                </tr>
+                            </t>
+                        </t>
+                    </tbody>
+                </table>
+
+                <!-- Is there a discount on at least one line? -->
+                <t t-set="lines_to_report" t-value="doc._get_order_lines_to_report()"/>
+                <t t-set="display_discount" t-value="any(l.discount for l in lines_to_report)"/>
+
+                <table class="gv-custom-footer">
+                    <tr>
+                        <td style="text-align: right" colspan="3">
+                            <span>NET TO PAY:</span>
+                            <span t-field="doc.amount_untaxed"
+                                  t-options='{"widget": "monetary", "display_currency": doc.pricelist_id.currency_id}'/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <strong>Salesperson signature</strong>
+                        </td>
+                        <td>
+
+                        </td>
+                        <td style="text-align: right">
+                            <strong>Customer signature</strong>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </t>
+    </template>
+
+    <template id="report_saleorder_pro_forma">
+        <link href="/its_lehas_templates/static/src/less/report_saleorder_pro_forma.less" rel="stylesheet"
+              type="text/less"/>
+        <t t-call="web.html_container">
+            <t t-set="is_pro_forma" t-value="True"/>
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="its_lehas_templates.report_saleorder_custom_document"
+                   t-lang="doc.partner_id.lang"/>
+            </t>
+        </t>
+    </template>
+
+</odoo>

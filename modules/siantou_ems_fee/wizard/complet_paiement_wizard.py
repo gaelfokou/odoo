@@ -41,8 +41,22 @@ class FeeToCompleteFeePaymentWizard(models.TransientModel):
             ('cash', 'Paiement en espèce(Cash)')
         ],
         string='Mode de paiement', 
+        required=True,
+        default="cash"
+    )
+    cni = fields.Char(string="Numéro CNI", required=True)
+    date_delivr_cni = fields.Date(
+        string="Date de délivrance", 
         required=True
     )
+    lieu_delivr_cni = fields.Char(
+        string="Lieu de délivrance", 
+        required=True
+    )
+    titulaire_compte = fields.Char(string="Titulaire du compte")
+    numero_compte = fields.Char(string="N° de compte")
+    name_bank = fields.Char(string="Nom bank",)
+    code_guichet = fields.Char(string="Code guichet")
     amount_verse = fields.Monetary('Montant versé', required=True, related='payment_id.amount')
     amount_rest = fields.Monetary('Montant restant', required=True, related='payment_id.amount_rest')
     amount = fields.Monetary('Montant', required=True, tracking=True)
@@ -191,6 +205,13 @@ class FeeToCompleteFeePaymentWizard(models.TransientModel):
                                 'to_pay': True,
                                 'pay_complet': True,
                                 'mode_payment': self.mode_payment,
+                                'cni': self.cni,
+                                'lieu_delivr_cni': self.lieu_delivr_cni,
+                                'date_delivr_cni': self.date_delivr_cni,
+                                'titulaire_compte': self.titulaire_compte,
+                                'name_bank': self.name_bank,
+                                'code_guichet': self.code_guichet,
+                                'numero_compte': self.numero_compte,
                                 'date_payment': self.date_payment
                             })
                             montant_total_remplit+=line.fee_amount
@@ -215,6 +236,13 @@ class FeeToCompleteFeePaymentWizard(models.TransientModel):
                                 'to_pay': True,
                                 'pay_complet': False,
                                 'mode_payment': self.mode_payment,
+                                'cni': self.cni,
+                                'lieu_delivr_cni': self.lieu_delivr_cni,
+                                'date_delivr_cni': self.date_delivr_cni,
+                                'titulaire_compte': self.titulaire_compte,
+                                'name_bank': self.name_bank,
+                                'code_guichet': self.code_guichet,
+                                'numero_compte': self.numero_compte,
                                 'date_payment': self.date_payment
                             })
                     

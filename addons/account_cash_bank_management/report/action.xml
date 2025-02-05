@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="action_report_recu_payment" model="ir.actions.report">
+            <field name="name">Reçu Paiement</field>
+            <field name="model">account.bank.statement.line</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">account_cash_bank_management.report_recu_payment</field>
+            <field name="report_file">account_cash_bank_management.report_recu_payment</field>
+            <field name="paperformat_id" ref="recu_payment_paperformat"/>
+            <field name="print_report_name">'Reçu Paiement - %s' % (object.name)</field>
+        </record>
+    </data>
+
+    <record id="action_report_student_core_pdf" model="ir.actions.report">
+        <field name="name">Paiement PDF</field>
+        <field name="model">account.bank.statement.line</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">account_cash_bank_management.report_recu_payment</field>
+        <field name="report_file">account_cash_bank_management.report_recu_payment</field>
+        <field name="paperformat_id" ref="recu_payment_paperformat"/>
+        <field name="print_report_name">f"Paiement de - {student['name']}" </field>
+        <!-- <field name="print_report_name">'Paiement de - %s' % (data.student)</field> -->
+        <!-- <field name="binding_model_id" eval="'False'"/> -->
+        <!-- <field name="paperformat_id" ref="paperformat_fee_payment" /> -->
+        <!-- <field name="binding_type">report</field> -->
+    </record>
+</odoo>

@@ -24,3 +24,4 @@ from . import timetable
 from . import partenaire
 from . import class_division
 from . import production_pe
+# from . import account_move

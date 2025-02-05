@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- Adding Branch odoo view Form -->
+        <record id="view_hr_expense_sheet_tree" model="ir.ui.view">
+            <field name="name">hr.expense.sheet.tree</field>
+            <field name="model">hr.expense.sheet</field>
+            <field name="inherit_id" ref="hr_expense.view_hr_expense_sheet_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='employee_id']" position="before">
+                    <field name="ecole_id"/>
+                    <field name="departement_id"/>
+                    <field name="filiere_id"/>
+                    <field name="specialite_id"/>
+                    <field name="annee_academique_id"/>
+                </xpath>
+                <xpath expr="//field[@name='employee_id']" position="attributes">
+                    <attribute name="column_invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='name']" position="attributes">
+                    <attribute name="string">Libellé</attribute>
+                </xpath>
+                <xpath expr="//field[@name='activity_ids']" position="attributes">
+                    <attribute name="column_invisible">1</attribute>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_hr_expense_sheet_form" model="ir.ui.view">
+            <field name="name">hr.expense.sheet.form</field>
+            <field name="model">hr.expense.sheet</field>
+            <field name="inherit_id" ref="hr_expense.view_hr_expense_sheet_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='name']" position="attributes">
+                    <attribute name="string">Libellé</attribute>
+                </xpath>
+                <xpath expr="//button[@name='action_open_account_moves']" position="after">
+                    <button name="action_open_acc_moves" class="oe_stat_button" icon="fa-file-text-o" type="object"
+                            invisible="state not in ['post', 'done'] or nb_account_move == 0"
+                            groups="account.group_account_invoice">
+                        <div class="o_stat_info">
+                            <field name="nb_account_move" class="o_stat_value"/>
+                            <span class="o_stat_text">Pièce comptable</span>
+                        </div>
+                    </button>
+                </xpath>
+                <xpath expr="//button[@name='action_open_account_moves']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='employee_id']" position="before">
+                    <field name="ecole_id"/>
+                    <field name="departement_id"/>
+                    <field name="filiere_id"/>
+                    <field name="specialite_id"/>
+                    <field name="annee_academique_id"/>
+                </xpath>
+                <xpath expr="//button[@name='action_sheet_move_create']" position="before">
+                    <button name="action_sheet_move_create_and_post" string="Décaisser" type="object" data-hotkey="u"
+                            class="oe_highlight o_expense_sheet_post" invisible="state != 'approve'"
+                            groups="account.group_account_invoice"/>
+                </xpath>
+                <xpath expr="//button[@name='action_sheet_move_create']" position="replace"/>
+                <xpath expr="//field[@name='employee_id']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+
+                <xpath expr="//button[@name='action_open_expense_view']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='payment_mode']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//page[@name='expenses']" position="attributes">
+                    <attribute name="string">Dépenses</attribute>
+                </xpath>
+                <xpath expr="//field[@name='expense_line_ids']/tree/field[@name='sale_order_id']" position="attributes">
+                    <attribute name="column_invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='expense_line_ids']/tree/field[@name='tax_ids']" position="attributes">
+                    <attribute name="column_invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='expense_line_ids']/tree/field[@name='total_amount_currency']" position="attributes">
+                    <attribute name="column_invisible">1</attribute>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</odoo>

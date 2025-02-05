@@ -114,3 +114,9 @@ production_pe_admin,production_pe.user,model_production_pe,siantou_ems_core.grou
 
 siantou_ems_core_unite_enseignement_user,siantou_ems_core_unite_enseignement.user,model_siantou_ems_core_unite_enseignement,,1,0,0,0
 siantou_ems_core_unite_enseignement_admin,siantou_ems_core_unite_enseignement.admin,model_siantou_ems_core_unite_enseignement,,1,1,1,1
+
+access_siantou_ems_timetable_slot_user,siantou.ems.timetable.slot,model_siantou_ems_timetable_slot,base.group_user,1,0,0,0
+access_siantou_ems_timetable_slot_admin,siantou.ems.timetable.slot,model_siantou_ems_timetable_slot,base.group_user,1,1,1,1
+
+access_siantou_ems_timetable_slotitem_user,siantou.ems.timetable.slotitem,model_siantou_ems_timetable_slotitem,base.group_user,1,0,0,0
+access_siantou_ems_timetable_slotitem_admin,siantou.ems.timetable.slotitem,model_siantou_ems_timetable_slotitem,base.group_user,1,1,1,1

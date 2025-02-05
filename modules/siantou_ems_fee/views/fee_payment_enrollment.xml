@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-        <record id="fee_payment_enrollment_view_form" model="ir.ui.view">
+        <!-- <record id="fee_payment_enrollment_view_form" model="ir.ui.view">
             <field name="name">fee_payment_enrollment.view.form</field>
             <field name="model">education.fee.payment.enrollment</field>
             <field name="arch" type="xml">
@@ -20,36 +20,19 @@
                                 <field name="structure_frais_id" />
                                 <field name="reference" />
                                 <field name="date_payment" />
-                                <!-- <field name="campus"  string="Campus"/> -->
                                 <field name="currency_id" invisible="1" />
                             </group>
                         </group>
-                        <!-- <notebook>
-                            <page name="invoice" string="Liste factures">
-                                <field name="facture_ids">
-                                    <tree editable='bottom'>
-                                        <field name="fee_structure" />
-                                        <field name="amount_total" sum="Total"/>
-                                        <field name="amount_reste" sum="Reste à Payer"/>
-                                        <field name="to_pay" widget='checkbox' />
-                                        <field name='currency_id' invisible='1' />
-                                    </tree>
-                                </field>
-                            </page>
-                        </notebook> -->
                     </sheet>
                     <div class="oe_chatter">
-
                         <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
-        
                         <field name="message_ids" widget="mail_thread"/>
-        
                     </div>
                 </form>
             </field>
-        </record>
+        </record> -->
 
-        <record id="fee_payment_enrollment_view_tree" model="ir.ui.view">
+        <!-- <record id="fee_payment_enrollment_view_tree" model="ir.ui.view">
             <field name="name">education.fee.payment.enrollment.view.tree</field>
             <field name="model">education.fee.payment.enrollment</field>
             <field name="arch" type="xml">
@@ -71,9 +54,9 @@
                     />
                 </tree>
             </field>
-        </record>
+        </record> -->
 
-        <record id="fee_payment_enrollment_action" model="ir.actions.act_window">
+        <!-- <record id="fee_payment_enrollment_action" model="ir.actions.act_window">
             <field name="name">Encaissements des frais de candidatures</field>
             <field name="res_model">education.fee.payment.enrollment</field>
             <field name="type">ir.actions.act_window</field>
@@ -84,11 +67,19 @@
                     Veuillez enregistrer les encaissements
                 </p>
             </field>
-        </record>
+        </record> -->
 
         <menuitem 
-            action="fee_payment_enrollment_action"
+            action="siantou_ems_core.action_enrollment_history"
+            name="Inscription à encaisser"
             id="menu_fee_payment_enrollment_action"
+            parent="menu_student_fee_receipt"
+            sequence="20"
+        />
+        <menuitem 
+            action="account.action_move_out_invoice_type"
+            name="Créances étudiantes"
+            id="menu_fee_payment_action"
             parent="menu_student_fee_receipt"
             sequence="20"
         />

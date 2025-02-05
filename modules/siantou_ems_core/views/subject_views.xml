@@ -44,7 +44,10 @@
                                 <field name="name"/>
                                 <field name="semester_id"/>
                                 <field name="level_id"/>
-                                <field name="shared_subject"/>
+                                <field name="shared_subject" 
+                                    invisible="eps_subject == True"/>
+                                <field name="eps_subject"
+                                    invisible="shared_subject == True"/>
                             </group>
                         </group>
                         <notebook>

@@ -7,13 +7,13 @@
         <field name="page_height">210</field>
         <field name="page_width">148</field>
         <field name="orientation">Portrait</field>
-        <field name="margin_top">5</field>
+        <field name="margin_top">0</field>
         <field name="margin_bottom">5</field>
         <field name="margin_left">4</field>
         <field name="margin_right">4</field>
         <field name="header_line" eval="False" />
-        <field name="header_spacing">25</field>
-        <field name="dpi">125</field>
+        <field name="header_spacing">5</field>
+        <field name="dpi">150</field>
     </record>
     <record id="action_report_student_core_pdf" model="ir.actions.report">
         <field name="name">Paiement-inscription-étudiant</field>
@@ -31,13 +31,13 @@
     <template id="report_student_core_pdf_template">
         <t t-call="web.html_container">
             <t t-call="web.external_layout">
-                <div class="page">
+                <div style="margin-top: 0px;">
                     <div class="container">
                         <table classe="table table-striped"
                                         style="width: 100%;">
                             <tbody>
                                 <tr >
-                                    <td style="border: none;padding: 4px;text-align: center; width:30%">
+                                    <td style="border: none;padding: 4px;text-align: center; width:40%;font-size: 15px;">
                                         INSTITUT UNIVERSITAIRE SIANTOU <br/>
                                         ECOLE SUPERIEUR DE MANAGEMENT, <br/>
                                         DE GESTION ET DE <br/>
@@ -47,14 +47,14 @@
                                             Fax :
                                         </small>
                                     </td>
-                                    <td style="border: none;padding: 4px;text-align: center; width:40%;height: 145px;">
-                                        <div style="display:flex;justify-content: center; align-items: center;height: 145px;width: 100%;">
+                                    <td style="border: none;padding: 4px;text-align: center; width:40%;height: auto;font-size: 15px;">
+                                        <div style="height: 100%;width: 100%;font-size: 15px;position:relative">
                                             <img src="siantou_ems_fee/static/src/img/logo.png" 
-                                                alt="logo" width="145px" height="145px"
-                                                style="width: 145px; height: 145px;"/>
+                                                alt="logo"
+                                                style="width: 140px; height: 140px;position: fixed; top: 70px; left: 40%; right:0;z-index: -1;opacity:0.8"/>
                                         </div>
                                     </td>
-                                    <td style="border: none;padding: 4px; text-align: center; width:30%">
+                                    <td style="border: none;padding: 4px; text-align: center; width:40%;font-size: 15px;">
                                         SIANTOU UNIVERSITY INSTITUTE <br/>
                                         MANAGEMENT SCHOOL, <br/>
                                         AND MANAGEMENT <br/>
@@ -65,23 +65,15 @@
                                         </small>
                                     </td>
                                 </tr>
-                                <!-- <tr style="border: none;">
-                                    <td colspan="4"
-                                        style="text-align: center; border: none;padding: 4px">
-                                        <img src="siantou_ems_core/static/src/img/logo.png" 
-                                            alt="logo"
-                                            style="width: 100px; height: 100px;"/>
-                                    </td>
-                                </tr> -->
                             </tbody>
                         </table>
                         <center>
-                            <h2 style="text-decoration:underline">
+                            <h2 style="text-decoration:underline;font-size: 15px;margin-top:25px">
                                 RECU DE CAISSE SCOLARITE N° <span t-esc="payment_id['name']" /> 
                                 DU <span t-esc="date"
                                         t-options='{"widget": "date","format": "d/MM/Y"}' />
                             </h2>
-                            <h4>
+                            <h4 style="font-size: 12px;margin-top:15px">
                                 Année académique :
                                 <span t-esc="payment_id['year']" />
                             </h4>
@@ -90,31 +82,38 @@
                         <div class="row">
                             <div class="col-sm-12">
                                 <br/>
-                                <h3 style="text-decoration:underline;text-transform:uppercase">I. Identification de l'étudiant</h3>
+                                <h3 style="text-decoration:underline;text-transform:uppercase;font-size: 15px;">I. Identification de l'étudiant</h3>
                                 <table classe="table table-striped"
                                                 style="width: 100%;">
+                                    <thead>
+                                        <tr
+                                            style="border: 1px solid black;text-align: left;font-size: 12px;">
+                                            <th style="border: 1px solid black;text-align: left;padding: 4px; width: 25%;text-transform:uppercase;">
+                                                Nom(s) et prénom(s)
+                                            </th>
+                                            <th style="border: 1px solid black;text-align: left;padding: 4px; width: 25%;text-transform:uppercase;">
+                                                Code d'enroulement
+                                            </th>
+                                            <th style="border: 1px solid black;text-align: left;padding: 4px; width: 25%;text-transform:uppercase;">
+                                                Filière
+                                            </th>
+                                            <th style="border: 1px solid black;text-align: left;padding: 4px; width: 25%;text-transform:uppercase;">
+                                                Niveau académique
+                                            </th>
+                                        </tr>
+                                    </thead>
                                     <tbody>
                                         <tr>
-                                            <td style="border: none;padding: 4px;text-align: left">
-                                                <b>Nom(s) et prénom(s) :</b>
+                                            <td style="border: 1px solid black;padding: 4px;text-align: left;font-size: 12px;">
                                                 <span t-esc="student['name']" />
                                             </td>
-                                        </tr>
-                                        <tr>
-                                            <td style="border: none;padding: 4px;text-align: left">
-                                                <b>Code d'enroulement :</b>
+                                            <td style="border: 1px solid black;padding: 4px;text-align: left;font-size: 12px;">
                                                 <span t-esc="student['code_enrol']" />
                                             </td>
-                                        </tr>
-                                        <tr>
-                                            <td style="border: none;padding: 4px;text-align: left">
-                                                <b>Filière :</b>
+                                            <td style="border: 1px solid black;padding: 4px;text-align: left;font-size: 12px;">
                                                 <span t-esc="student['field_of_study']" />
                                             </td>
-                                        </tr>
-                                        <tr>
-                                            <td style="border: none;padding: 4px;text-align: left">
-                                                <b>Niveau académique :</b>
+                                            <td style="border: 1px solid black;padding: 4px;text-align: left;font-size: 12px;">
                                                 <span t-esc="student['level']" />
                                             </td>
                                         </tr>
@@ -123,39 +122,41 @@
                             </div>
                         </div>
                         <div class="row mt-3">
-                            <h3 style="text-decoration:underline;text-transform:uppercase;margin:15px 0px;">II. Information du paiement</h3>
+                            <h3 style="text-decoration:underline;text-transform:uppercase;margin:15px 0px;font-size: 15px;">II. Information du paiement</h3>
                             <div class="col-12">
                                 <table classe="table table-striped"
                                     style="width: 100%;">
                                     <thead>
                                         <tr
-                                            style="border: 1px solid black;text-align: left;">
-                                            <th style="border: 1px solid black;text-align: left;padding: 4px; width: 50%">Libellé</th>
-                                            <th style="border: 1px solid black;text-align: left;padding: 4px; width: 25%">PERÇUE</th>
-                                            <th style="border: 1px solid black;text-align: left;padding: 4px; width: 25%">Date de paiement</th>
+                                            style="border: 1px solid black;text-align: left;font-size: 12px;">
+                                            <th style="border: 1px solid black;text-align: left;padding: 4px; width: 50%;text-transform:uppercase;">Libellé</th>
+                                            <th style="border: 1px solid black;text-align: left;padding: 4px; width: 25%;text-transform:uppercase;">PERÇUE</th>
+                                            <th style="border: 1px solid black;text-align: left;padding: 4px; width: 25%;text-transform:uppercase;">Date de paiement</th>
                                             <!-- <th style="border: 1px solid black;padding: 4px">Reste
                                                 à payer</th> -->
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr style="border: 1px solid black">
-                                            <td style="border: 1px solid black;padding: 4px">
+                                        <tr style="border: 1px solid black;font-size: 12px;">
+                                            <td style="border: 1px solid black;padding: 4px;font-size: 12px;">
                                                 <t t-esc="facture.get('name')" />
                                             </td>
-                                            <td style="border: 1px solid black;padding: 4px;">
+                                            <td style="border: 1px solid black;padding: 4px;font-size: 12px;">
                                                 <t
                                                     t-esc="'{0:,.0f}'.format(int(facture.get('amount'))).replace(',', ' ')" /> FCFA
                                             </td>
-                                            <td style="border: 1px solid black;padding: 4px">
+                                            <td style="border: 1px solid black;padding: 4px;font-size: 12px;">
                                                 <t t-esc="facture.get('date_payment')" t-options='{"widget": "date","format": "d/MM/Y"}' />
                                             </td>
                                         </tr>
-                                        <tr style="border: 1px solid black; background-color:floralwhite">
+                                        <tr style="border: 1px solid black; background-color:floralwhite;font-size: 12px;">
                                             <td colspan="4"
-                                                style="text-align: center; border: 1px solid black;padding: 4px">
-                                                <h4><b>Montant total versé : <t
+                                                style="text-align: center; border: 1px solid black;padding: 4px;font-size: 12px;">
+                                                <h4 style="text-align: center; padding: 4px;font-size: 12px;text-transform:uppercase;">
+                                                    <b>Montant total versé : <t
                                                         t-esc="'{0:,.0f}'.format(int(facture.get('amount'))).replace(',', ' ')" />
-                                                    FCFA</b></h4>
+                                                    FCFA</b>
+                                                </h4>
                                             </td>
                                         </tr>
                                     </tbody>
@@ -164,7 +165,7 @@
                         </div>
                         <div class="row mt-3 mb-3">
                             <div class="col-12 text-center">
-                                <h5> Arrête la présente facture à la somme de : <strong><span t-esc="'{0:,.0f}'.format(int(facture.get('amount'))).replace(',', ' ')"/> FCFA</strong>
+                                <h5 style="font-size: 12px;"> Arrête la présente facture à la somme de : <strong><span t-esc="'{0:,.0f}'.format(int(facture.get('amount'))).replace(',', ' ')"/> FCFA</strong>
                                     au titre de l'année académique <span t-esc="payment_id['year']" />
                                 </h5>
                             </div>

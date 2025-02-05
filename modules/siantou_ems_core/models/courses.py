@@ -343,6 +343,7 @@ class SchoolCourseSubject(models.Model):
     #     compute="_compute_total_volume_horaire",
     #     # 
     # )
+    class_id = fields.Many2one('siantou.ems.core.class', string='classe')
     
     subject_ids = fields.One2many(
         string='Matière',

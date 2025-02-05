@@ -1,7 +1,7 @@
 import logging
 
 from odoo import models, fields, api
-from odoo.exceptions import ValidationError
+from odoo.exceptions import UserError, AccessError, ValidationError
 from datetime import datetime, timedelta
 
 _logger = logging.getLogger(__name__)
@@ -33,21 +33,28 @@ class TimetableWizard(models.TransientModel):
                 new_group = self.env['siantou.ems.timetable.group'].create({'name': "group-" + unique_string})
             
             # Récupérer la liste des filières et les traiter l'une après l'autre
-            fields_of_study = self.env['siantou.ems.core.field_of_study'].search([])
+            field_of_studies = self.env['siantou.ems.core.field_of_study'].search([])
+            field_of_studies = list(field_of_studies)
             # SI la liste des filières est vide signaler qu'il n'ya pas de filières
-            if len(fields_of_study) == 0:
-                raise ValidationError("Aucune filière trouvée")
-            for field in fields_of_study:
+            check_subjects = []
+            check_batches = []
+            check_weekly_hours_credit = 0
+            check_classroom = False
+            check_slot = None
+
+            for field_of_study in field_of_studies:
                 # Récupérer la liste des cours de la filière par niveau et les traiter l'un après l'autre
-                subject_ids_by_level = field.get_subject_ids_by_level()
+                subject_ids_by_level = field_of_study.get_subject_ids_by_level()
                 for level_id, subject_ids in subject_ids_by_level.items():
+                    check_subjects.append(subject_ids)
                     batches = self.env['siantou.ems.core.student.batch'].search([
-                        ('school_id', '=', field.school_id.id),
-                        ('field_of_study_id', '=', field.id),
+                        ('school_id', '=', field_of_study.school_id.id),
+                        ('field_of_study_id', '=', field_of_study.id),
                         ('level_id', '=', level_id),
                     ])
                     
                     for batch in batches:
+                        check_batches.append(batch)
                         for subject_id in subject_ids:
                             # On récupère le cours
                             subject = self.env['siantou.ems.core.subject'].browse(subject_id)
@@ -63,12 +70,14 @@ class TimetableWizard(models.TransientModel):
                                         for day in range(0, 6):
                                             # on verifie si le quota hebdomadaire est atteint
                                             if weekly_hours_credit > 0:
+                                                check_weekly_hours_credit += weekly_hours_credit
                                                 subject_duration = min(4, weekly_hours_credit)
                                                 check_available_slot_model = self.env['siantou.ems.timetable.check_available_slot']
                                                 target_date = subject.semester_id.start_time + timedelta(weeks=week - 1, days=day)
-                                                available_slot = check_available_slot_model.find_available_slot(target_date, field.id, level_id, batch.id, subject_duration)
-                                                # Si un crénau est disponible
+                                                available_slot = check_available_slot_model.find_available_slot(target_date, field_of_study.id, level_id, batch.id, subject_duration)
+                                                # Si un créneau est disponible
                                                 if available_slot:
+                                                    check_slot = available_slot
                                                     check_available_teacher_model = self.env['siantou.ems.timetable.check_priority']
                                                     # On trouve un enseignant disponible selon sa priorité et son quota horaire
                                                     teacher_priority = check_available_teacher_model.get_teacher_for_period(subject.id, target_date, day, available_slot["start_time"], available_slot["end_time"], week)
@@ -77,15 +86,16 @@ class TimetableWizard(models.TransientModel):
                                                     # On trouve une salle de classe disponible pour le cours
                                                     classroom = self.check_available_classroom(subject_duration, target_date, day, available_slot["start_time"])
                                                     if classroom['found']:
+                                                        check_classroom = classroom['found']
                                                         self.env['siantou.ems.timetable.timetable'].create({
                                                             'semester_id': record.semester_id.id,
                                                             'batch_id': batch.id,
-                                                            'field_of_study_id': field.id,
-                                                            'department_id': field.department_id.id if field.department_id else False,
+                                                            'field_of_study_id': field_of_study.id,
+                                                            'department_id': field_of_study.department_id.id if field_of_study.department_id else None,
                                                             'level_id': level_id,
                                                             'subject_id': subject_id,
                                                             'classroom_id': classroom['classroom_id'],
-                                                            'employee_id': teacher_priority.id if teacher_priority else False,
+                                                            'employee_id': teacher_priority.id if teacher_priority else None,
                                                             'date': target_date,
                                                             'day_of_week': str(day),
                                                             'start_time': available_slot["start_time"],
@@ -97,8 +107,21 @@ class TimetableWizard(models.TransientModel):
                                                     else:
                                                         _logger.info('**************** Aucune salle de classe trouvée ****************')
                                                 else:
-                                                    _logger.info('**************** Aucun crénau horaire disponible ****************')
-                
+                                                    _logger.info('**************** Aucun créneau horaire disponible ****************')
+
+            if len(field_of_studies) == 0:
+                raise UserError("Aucune filière trouvée")
+            elif len(check_subjects) == 0:
+                raise UserError("Aucun cours trouvé")
+            elif len(check_batches) == 0:
+                raise UserError("Aucun lot d'étudiants trouvé")
+            elif check_weekly_hours_credit == 0:
+                raise UserError("Aucun volume horaire de cours défini")
+            elif not check_slot:
+                raise UserError("Aucun créneau horaire disponible")
+            elif not check_classroom:
+                raise UserError("Aucune salle de classe trouvée")
+
     def find_available_teacher(self, subject_id):
         subject = self.env['siantou.ems.core.subject'].browse(subject_id)
         teachers = subject.teacher_ids

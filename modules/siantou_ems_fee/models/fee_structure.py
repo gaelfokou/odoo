@@ -67,8 +67,8 @@ class FeeStructure(models.Model):
         'siantou.ems.fee.structure.lines', 
         'fee_structure_id', 
         string='Liste des tranches de paiement',
-        compute='_create_tranche',
-        store=True,
+        # compute='_create_tranche',
+        # store=True,
     )
     nbre_tranche = fields.Integer("Nombre de tranches", required=True, default=1,)
     sequence = fields.Integer('Priorité', default=1, required=True, store=True)
@@ -130,7 +130,7 @@ class FeeStructure(models.Model):
             rec.state = 'create'
 
 
-    # @api.onchange('nbre_tranche')
+    @api.onchange('nbre_tranche')
     @api.depends('type_paiement', 'amount_total', 'nbre_tranche')
     def _create_tranche(self):
         _logger.info("============= "+self.type_paiement)
@@ -154,32 +154,31 @@ class FeeStructure(models.Model):
 
     @api.model
     def create(self, vals):
-        _logger.info(vals)
-        field_of_study_ids = vals['field_of_study_ids']
-        type_frais_id = vals['type_frais_id']
-        type_paiement = vals['type_paiement']
-        academic_year = vals['academic_year']
-        level_id = vals['level_id']
-
-        _logger.info(field_of_study_ids)
-
-        structure_frais_id = self.env['siantou.ems.fee.structure'].search([
-            ('academic_year', '=', academic_year),
-            ('level_id', '=', level_id),
-            ('type_frais_id', '=', type_frais_id),
-            ('type_paiement', '=', type_paiement),
-            ('field_of_study_ids','in', field_of_study_ids[0]),
-        ])
-
-        if structure_frais_id:
-            raise ValidationError(f"Il y'a une structure de frais qui existe déjà pour le niveau sélectionné et contenant toutes ou certaines des filières sélectionnées")
-
+        # _logger.info(vals)
+        # field_of_study_ids = vals['field_of_study_ids']
+        # type_frais_id = vals['type_frais_id']
+        # type_paiement = vals['type_paiement']
+        # academic_year = vals['academic_year']
+        # level_id = vals['level_id']
+        # _logger.info(field_of_study_ids)
+        # students = []
+        # structure_frais_id = self.env['siantou.ems.fee.structure'].search([
+        #     ('academic_year', '=', academic_year),
+        #     ('level_id', '=', level_id),
+        #     ('type_frais_id', '=', type_frais_id),
+        #     ('type_paiement', '=', type_paiement),
+        #     ('field_of_study_ids','in', field_of_study_ids[0]),
+        # ])
+        # if structure_frais_id:
+        #     raise ValidationError(f"Il y'a une structure de frais qui existe déjà pour le niveau sélectionné et contenant toutes ou certaines des filières sélectionnées")
 
         res = super().create(vals)
+
         res.update({
             "state":'create'
         })
         return res
+
 
     @api.onchange('school_id')
     def _onchange_school_id(self):
@@ -193,6 +192,123 @@ class FeeStructure(models.Model):
         else:
             # Si aucune école n'est sélectionnée, vider le champ des filières
             self.field_of_study_ids = [(5, 0, 0)]
+
+
+    def add_account_move(self):
+        students = []
+        account_move_created = []
+        _logger.info("=============add_account_move=============")
+        for rec in self:
+            journal_id = rec.type_frais_id.category_id.journal_id
+            for field_of_study_id in rec.field_of_study_ids:
+                student_ids = field_of_study_id.student_ids.search([
+                    ('level_id','=',rec.level_id.id),
+                    ('field_of_study_id','=',field_of_study_id.id),
+                ])
+                _logger.info(f"Nombres d'étudiants :: {len(student_ids)}")
+                if student_ids:
+                    for student_id in student_ids:
+                        _logger.info(student_id.name)
+                        _logger.info(student_id.level_id.name)
+                        _logger.info(student_id.field_of_study_id.name)
+                        _logger.info(student_id.cycle_id.name)
+                        _logger.info(rec.academic_year.name)
+                        
+
+                        students.append(student_id.id)
+                        # if not account_move_ids or not len(account_move_ids)>0:
+                        mone_vals = {}
+                        if journal_id:
+                            # account_receivable_id = journal_id.default_account_id
+                            account_revenue_id = journal_id.default_account_id
+                            if account_revenue_id: 
+                                mone_vals['move_type'] = 'out_invoice'
+                                mone_vals['partner_id'] = student_id.student_enroll_id.partner_id.id
+                                mone_vals['journal_id'] = journal_id.id
+                                mone_vals['invoice_date'] = fields.Date.today()
+                                mone_vals['invoice_date_due'] = fields.Date.today()
+                                mone_vals['annee_academique_id'] = rec.academic_year.id
+                                mone_vals['niveau_id'] = student_id.level_id.id
+                                mone_vals['filiere_id'] = student_id.field_of_study_id.id
+                                mone_vals['specialite_id'] = student_id.specialty_id.id
+                                mone_vals['cycle_id'] = student_id.field_of_study_id.cursus_id.id
+                                mone_vals['ecole_id'] = student_id.field_of_study_id.school_id.id
+                                mone_vals['type_inclusion_fee'] = rec.type_inclusion_fee
+
+                                if rec.type_inclusion_fee=='fee_scol':
+                                    account_move_ids = self.env['account.move'].search([
+                                            ('partner_id','=',student_id.student_enroll_id.partner_id.id),
+                                            ('type_inclusion_fee','=','fee_scol'),
+                                            ('annee_academique_id','=',rec.academic_year.id),
+                                            ('niveau_id','=',student_id.level_id.id),
+                                            ('filiere_id','=',student_id.field_of_study_id.id),
+                                            ('cycle_id','=',student_id.field_of_study_id.cursus_id.id),
+                                        ]
+                                    )
+                                    _logger.info(account_move_ids)
+                                    _logger.info(rec.type_inclusion_fee)
+                                    _logger.info(len(account_move_ids))
+                                    _logger.info(len(rec.fee_type_ids))
+                                    _logger.info("==========================")
+                                    if len(account_move_ids)!=len(rec.fee_type_ids):
+                                        for fee_line in rec.fee_type_ids: 
+                                            mone_vals['ref'] = f"Frais de {fee_line.name} de {student_id.name}"
+                                            mone_vals['invoice_line_ids'] = [
+                                                (0,0,{
+                                                    'name': f"Frais de {fee_line.name} de {student_id.name}",
+                                                    'quantity': 1.0,
+                                                    'price_unit': fee_line.fee_amount,
+                                                    'account_id': account_revenue_id.id,
+                                                })
+                                            ]
+                                            account_move_id = self.env['account.move'].create(mone_vals)
+                                            account_move_id.action_post()
+                                            account_move_created.append(account_move_id.id)
+                                    else:
+                                        _logger.info(f"Tous les créances ::{rec.type_frais_id.name}:: pour {student_id.name} en {rec.academic_year.name} déjà créer")
+                                    
+                                elif rec.type_inclusion_fee=='fee_spec':
+                                    account_move_id = self.env['account.move'].search([
+                                            ('partner_id','=',student_id.student_enroll_id.partner_id.id),
+                                            ('type_inclusion_fee','=','fee_spec'),
+                                            ('annee_academique_id','=',rec.academic_year.id),
+                                            ('niveau_id','=',student_id.level_id.id),
+                                            ('filiere_id','=',student_id.field_of_study_id.id),
+                                            ('cycle_id','=',student_id.field_of_study_id.cursus_id.id),
+                                        ],
+                                        limit=1
+                                    )
+                                    if not account_move_id:
+                                        mone_vals['ref'] = f"Frais de {rec.type_frais_id.name} de {student_id.name}"
+                                        mone_vals['invoice_line_ids'] = [
+                                            (0,0,{
+                                                'name': f"Frais de {rec.type_frais_id.name} de {student_id.name}",
+                                                'quantity': 1.0,
+                                                'price_unit': rec.amount_total,
+                                                'account_id': account_revenue_id.id,
+                                            })
+                                        ]
+                                        account_move_id = self.env['account.move'].create(mone_vals)
+                                        account_move_id.action_post()
+                                        account_move_created.append(account_move_id.id)
+                                    else:
+                                        _logger.info(f"Tous les créances ::{rec.type_frais_id.name}:: pour {student_id.name} en {rec.academic_year.name} déjà créer")
+                                    
+                                # account_move_id = self.env['account.move'].create(mone_vals)
+                                # account_move_id.action_post()
+                                mone_vals = {}
+                                
+
+            if account_move_created:
+                return {
+                    'type': 'ir.actions.client',
+                    'tag': 'display_notification',
+                    'params': {
+                        'type': 'success',
+                        'message': f"{len(account_move_created)} créances crées pour {len(students)}",
+                        'next': {'type': 'ir.actions.act_window_close'},
+                    }
+                }
 
 
 

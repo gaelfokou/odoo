@@ -306,13 +306,13 @@ class DeSchool(http.Controller):
 
             
             #===== create res partner instance =================
-            partner = request.env['res.partner'].sudo().create({
-                "name":data['name']
-            })
+            # partner = request.env['res.partner'].sudo().create({
+            #     "name":data['name']
+            # })
             
-            _logger.info(partner.name)
+            # _logger.info(partner.name)
             #=== Create a new student
-            data['partner_id'] = partner.id
+            # data['partner_id'] = partner.id
 
             year_id = request.env['siantou.ems.core.year'].sudo().search(
                 [('active', '=',True),], 

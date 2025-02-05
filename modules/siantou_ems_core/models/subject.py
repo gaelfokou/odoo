@@ -21,6 +21,11 @@ class Subject(models.Model):
         'Tronc commun',
         default=True
     )
+    
+    # Variable booléenne pour savoir si c'est une matière fait partie de l'EPS ou pas
+    eps_subject = fields.Boolean(
+        'Mathière de l\'EPS'
+    )
 
     # Nom du cours
     name = fields.Char(

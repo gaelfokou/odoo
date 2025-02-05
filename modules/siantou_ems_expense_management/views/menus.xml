@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <menuitem id="menu_racine_depense"
+                  name="Bons de dépense"
+                  web_icon="siantou_ems_expense_management,static/description/icon.png"
+                  sequence="30">
+
+            <menuitem id="menu_depense"
+                      name="Dépenses"
+                      sequence="10">
+                <menuitem id="menu_hr_expense_report"
+                          name="Dépenses"
+                          action="action_hr_expense_sheet_all"
+                          sequence="10"/>
+
+            </menuitem>
+        </menuitem>
+    </data>
+</odoo>

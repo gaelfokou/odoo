@@ -6,9 +6,9 @@
         <field name="arch" type="xml">
             <form string="Paiement des frais d'inscription">
                 <sheet>
-                    <!-- <group>
+                    <group>
                         <b><field name="student_id" readonly="1"/></b>
-                    </group> -->
+                    </group>
                     <group>
                         <group>
                             <field name="structure_frais_name" readonly="1"/>
@@ -19,20 +19,36 @@
                     </group>
                     <group>
                         <group>
-                            <field name="name" readonly="1"/>
+                            <field name="mode_payment"/>
+                            <field name="cash_register_id" domain="[('type','=',mode_payment)]"/>
                         </group>
-                        <group>
-                            <field name="reference"/>
-                        </group>
-                    </group>
-                    <group>
                         <group>
                             <field name="amount" readonly="1"/>
                         </group>
-                        <group>
-                            <field name="date_payment"/>
+                    </group>
+                    <!-- <group>
+                        <group string="Informations BANK" invisible="mode_payment=='cash'">
+                            <field name="titulaire_compte" required="mode_payment=='bank'"/>
+                            <field name="name_bank" required="mode_payment=='bank'"/>
+                            <field name="code_guichet" required="mode_payment=='bank'"/>
+                            <field name="numero_compte" required="mode_payment=='bank'"/>
+                        </group>
+                        <group string="Informations sur le déposant">
+                            <field name="student_name"/>
+                            <field name="student_phone"/>
                         </group>
                     </group>
+                    <group>
+                        <group string="Informations sur le paiement">
+                            <field name="amount" readonly="1"/>
+                            <field name="date_payment"/>
+                        </group>
+                        <group string="Informations sur la CNI">
+                            <field name="cni"/>
+                            <field name="lieu_delivr_cni"/>
+                            <field name="date_delivr_cni"/>
+                        </group>
+                    </group> -->
                     
                     <!-- <p>
                         Vous êtes sur le point d'ajouter une pièce comptable d'enregistrement des frais d'inscription de 

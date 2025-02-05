@@ -36,28 +36,34 @@ class SecretariatExamen(models.Model):
     responsable_id = fields.Many2one(
         'hr.employee',
         string='Responsable',
-        domain=[
-            ('is_permanent','=',True),
-            ('is_teacher','=',True)
-        ],
-        required=True,
+        # domain=[
+        #     ('is_permanent','=',True),
+        #     ('is_teacher','=',True)
+        # ],
+        required=True
     )
     responsable_adj_id = fields.Many2one(
         'hr.employee',
         string='Adjoint responsable',
-        domain=[
-            ('is_permanent','=',True),
-            ('is_teacher','=',True)
-        ],
-        required=True,
+        # domain=[
+        #     ('is_permanent','=',True),
+        #     ('is_teacher','=',True)
+        # ],
+        required=True
     )
+    
+    school_id = fields.Many2one('siantou.ems.core.school', string='Ecole')
+    
+    niveau_id = fields.Many2one('siantou.ems.core.level', string='Niveau',required=True,
+                                 help="Niveau")
+    
     surveillent_perm_ids = fields.Many2many(
         'hr.employee',
         string='Surveillants Internes',
-        domain=[
-            ('is_permanent','=',True), 
-            ('is_teacher','=',True)
-        ]
+        # domain=[
+        #     ('is_permanent','=',True), 
+        #     ('is_teacher','=',True)
+        # ]
     )
     # surveillent_vac_ids = fields.Many2many(
     #     'hr.employee',
@@ -104,10 +110,17 @@ class SessionExamen(models.Model):
         required=True,
         related='secretariat_examen_id.type_examen_id'
     )
-    field_of_study_ids = fields.Many2many(
-        'siantou.ems.core.field_of_study', 
-        string="Filières", required=True,
-    )
+    # field_of_study_ids = fields.Many2many(
+    #     'siantou.ems.core.field_of_study', 
+    #     string="Filières", required=True,
+    # )
+    
+    level_id = fields.Many2one('siantou.ems.core.level', required=True,string='Niveau')
+    
+    school_id = fields.Many2one('siantou.ems.core.school', required=False,string='Ecole')
+    
+    field_of_study_ids = fields.Many2many('siantou.ems.core.field_of_study', required=True,string='Filières')
+    
     year_id = fields.Many2one(
         'siantou.ems.core.year',
         string='Année académique', 
@@ -148,6 +161,18 @@ class SessionExamen(models.Model):
         result = super().create(values)
         return result
 
+    @api.onchange('school_id')
+    def _onchange_school_id(self):
+        if self.school_id:
+            # Récupérer les filières associées à l'école sélectionnée
+            fields_of_study = self.env['siantou.ems.core.field_of_study'].search([
+                ('school_id', '=', self.school_id.id)
+            ])
+            # Remplir le champ des filières avec les IDs des filières trouvées
+            self.field_of_study_ids = [(6, 0, fields_of_study.ids)]
+        else:
+            # Si aucune école n'est sélectionnée, vider le champ des filières
+            self.field_of_study_ids = [(5, 0, 0)]
 
     # @api.depends('date_start', 'date_end')
     # def _compute_exam_hours(self):

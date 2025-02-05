@@ -8,7 +8,7 @@
     "website": "http://www.iccsoft.com",
     'summary': 'Manage students fee',
     'description': """Manage students fee""",
-    "depends": ['base', 'account', 'siantou_ems_core'],
+    "depends": ['base', 'account', 'siantou_ems_core', 'account_cash_bank_management'],
     "data": [
         'data/account_data.xml',
         'data/sequences.xml',
@@ -24,10 +24,11 @@
         'views/fee_journal_dashboard_view.xml',
         'views/fee_journal_inherit.xml',
         # 'views/fee_student.xml',
-        'views/fee_payment.xml',
+        # 'views/fee_payment.xml',
+        # 'views/fee_payment_line.xml',
         'views/fee_payment_enrollment.xml',
         'views/fee_moratoire.xml',
-        'views/fee_special.xml',
+        # 'views/fee_special.xml',
         'views/fee_bank_account_setting.xml',
 
         # 'views/education_fee_classe_views.xml',

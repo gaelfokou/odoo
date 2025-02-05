@@ -39,11 +39,30 @@
                                     readonly="state in ['validate']"/>
                                 <field name="structure_frais_request_domain" invisible="1"/>
                                 <field name="amount" readonly="state in ['validate']"/>
+                                <field name="mode_payment" readonly="state in ['validate']"/>
                                 <field name="currency_id" invisible="1" />
                             </group>
                             <group col="2" colspan="2">
                                 <field name="academic_year_id" options="{'no_open': True, 'no_create': True}" readonly="state in ['validate']"/>
                                 <field name="date_payment" readonly="state in ['validate']"/>
+                            </group>
+                        </group>
+                        <group>
+                            <group string="Informations BANK" invisible="mode_payment=='cash'" readonly="state in ['validate']">
+                                <field name="titulaire_compte" required="mode_payment=='bank'" readonly="state in ['validate']"/>
+                                <field name="name_bank" required="mode_payment=='bank'" readonly="state in ['validate']"/>
+                                <field name="code_guichet" required="mode_payment=='bank'" readonly="state in ['validate']"/>
+                                <field name="numero_compte" required="mode_payment=='bank'" readonly="state in ['validate']"/>
+                            </group>
+                            <group string="Informations sur le paiement">
+                                <field name="amount" readonly="state in ['validate']"/>
+                                <field name="currency_id" invisible="1"/>
+                                <field name="date_payment" readonly="state in ['validate']"/>
+                            </group>
+                            <group string="Informations sur la CNI">
+                                <field name="cni" readonly="state in ['validate']"/>
+                                <field name="lieu_delivr_cni" readonly="state in ['validate']"/>
+                                <field name="date_delivr_cni" readonly="state in ['validate']"/>
                             </group>
                         </group>
                         <notebook>

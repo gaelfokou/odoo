@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="view_partner_form" model="ir.ui.view">
+            <field name="name">res.partner.form.inherit</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='category_id']" position="after">
+                    <field name="branch_id" string="Branch"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="its_base_branch_res_partner_view_buttons_modification_tree_inherit" model="ir.ui.view">
+            <field name="name">res.partner.view.buttons.tree</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_res_partner_filter"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='user_id']" position="after">
+                    <field name="branch_id"/>
+                  </xpath>
+            </field>
+        </record>
+
+        <!-- Grouping by Branch on res partner -->
+        <record id="its_base_branch_res_partner_grouping_inherit_branch" model="ir.ui.view">
+            <field name="name">res.partner.search.view.inherit.branch</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_res_partner_filter"/>
+            <field name="arch" type="xml">
+                <xpath expr="//group[@expand='0']" position="inside">
+                    <filter string="Branch" name="group_by_branch" context="{'group_by': 'branch_id'}"/>
+                </xpath>
+            </field>
+        </record>
+
+
+    </data>
+</odoo>

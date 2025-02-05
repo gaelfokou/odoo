@@ -12,7 +12,7 @@ class AccountBankStatement (models.Model):
     _name = 'account.bank.statement'
     _inherit = ['account.bank.statement', 'mail.thread', 'mail.activity.mixin']
 
-    state = fields.Selection([('open', 'New'), ('confirm', 'Validated')], string='Status', required=True,
+    state = fields.Selection([('open', 'Ouvert'), ('confirm', 'Fermé')], string='Status', required=True,
                              copy=False, default='open', readonly=True)
     move_line_count = fields.Integer(default=0)
     date = fields.Date(readonly=False)

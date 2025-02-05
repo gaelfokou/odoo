@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-
         <record id="fee_structure_form" model="ir.ui.view">
             <field name="name">siantou.ems.fee.structure.form</field>
             <field name="model">siantou.ems.fee.structure</field>
@@ -10,10 +9,24 @@
                     <header>
                         <button 
                             name="validate_structure_payment" 
-                            invisible="state in ['validate','create']" 
+                            invisible="state in ['validate','no_create']" 
                             type="object" string="Valider"
-                            class="oe_highlight" confirm="Validez-vous cette structure de frais ?" />
-                        <button name="cancel_structure_payment" invisible="state not in ['validate']" type="object" string="Annuler" />
+                            class="oe_highlight" 
+                            confirm="Validez-vous cette structure de frais ?" 
+                        />
+                        <button 
+                            name="add_account_move" 
+                            invisible="state not in ['validate'] or type_inclusion_fee in ['fee_inscrip']" 
+                            type="object" 
+                            string="Créer des créances"
+                            class="btn btn-warning" 
+                            confirm="Validez-vous créer des créances pour tous les étudiants de cette école ?" 
+                        />
+                        <button name="cancel_structure_payment" 
+                            invisible="state not in ['validate']" 
+                            type="object" 
+                            string="Annuler"
+                        />
                         <field name="state" widget="statusbar" statusbar_visible="no_create,create,validate" />
                     </header>
                     <sheet string="Fee Structure">
@@ -22,18 +35,18 @@
                         <!-- <widget name="web_ribbon" title="Archived" bg_color="bg-danger"/> -->
                         <group>
                             <group>
-                                <field name="fee_structure_name" placeholder="Eg:LKG and UKG"/>
-                                <field name="type_frais_id" options="{'no_create': True}"/>
-                                <field name="level_id"/>
-                                <field name="academic_year"/>
-                                <field name="amount_total"/>
-                                <field name="type_inclusion_fee" widget="radio"/>
-                                <field name="type_paiement" widget="radio"/>
-                                <field name="nbre_tranche" invisible="type_paiement == 'pu'"/>
+                                <field name="fee_structure_name" placeholder="Eg:LKG and UKG" readonly="state in ['validate']"/>
+                                <field name="type_frais_id" options="{'no_create': True}" readonly="state in ['validate']"/>
+                                <field name="level_id" readonly="state in ['validate']"/>
+                                <field name="academic_year" readonly="state in ['validate']"/>
+                                <field name="amount_total" readonly="state in ['validate']"/>
+                                <field name="type_inclusion_fee" widget="radio" readonly="state in ['validate']"/>
+                                <field name="type_paiement" widget="radio" readonly="state in ['validate']"/>
+                                <field name="nbre_tranche" invisible="type_paiement == 'pu'" readonly="state in ['validate']"/>
                             </group>
                             <group>
-                                <field name="school_id"/>
-                                <field name="field_of_study_ids" widget="many2many_tags" options="{'no_create': True}"/>
+                                <field name="school_id" readonly="state in ['validate']"/>
+                                <field name="field_of_study_ids" widget="many2many_tags" options="{'no_create': True}" readonly="state in ['validate']"/>
                             </group>
                         </group>
                         <notebook invisible="type_paiement == 'pu'">

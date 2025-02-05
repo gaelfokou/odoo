@@ -33,20 +33,32 @@
                                 <field name="use_moratoire" invisible="1" />
                                 <field name="student_id" readonly="state in ['draft', 'done']" />
                                 <field name="year_id" readonly="state in ['draft', 'done']" />
-                                <field name="amount" readonly="state in ['draft', 'done']"/>
-                                <field name="status" invisible="1"/>
-                                <field name="amount_rest" readonly="1"/>
-                                <field name="currency_id" invisible="1"/>
                             </group>
                             <group col="2" colspan="2">
                                 <field name="structure_frais_id" readonly="state in ['draft', 'done']"  domain="structure_frais_request_domain"/>
                                 <field name="structure_frais_request_domain" invisible="1"/> 
                                 <field name="mode_payment" readonly="state in ['draft', 'done']"/>
-                                <field name="reference" invisible="mode_payment=='cash'" readonly="state in ['draft', 'done']"  />
+                            </group>
+                        </group>
+                        <group readonly="state in ['draft', 'done']">
+                            <group string="Informations BANK" invisible="mode_payment=='cash'" readonly="state in ['draft', 'done']">
+                                <field name="titulaire_compte" required="mode_payment=='bank'" readonly="state in ['draft', 'done']"/>
+                                <field name="name_bank" required="mode_payment=='bank'" readonly="state in ['draft', 'done']"/>
+                                <field name="code_guichet" required="mode_payment=='bank'" readonly="state in ['draft', 'done']"/>
+                                <field name="numero_compte" required="mode_payment=='bank'" readonly="state in ['draft', 'done']"/>
+                            </group>
+                            <group string="Informations sur le paiement">
+                                <field name="amount" readonly="state in ['draft', 'done']"/>
+                                <field name="status" invisible="1"/>
+                                <field name="amount_rest" readonly="1"/>
+                                <field name="currency_id" invisible="1"/>
                                 <field name="date_payment" readonly="state in ['draft', 'done']"/>
                             </group>
-                            <!-- <field name="structure_frais_line_request_domain" invisible="1"/>-->
-                            
+                            <group string="Informations sur la CNI">
+                                <field name="cni" readonly="state in ['draft', 'done']"/>
+                                <field name="lieu_delivr_cni" readonly="state in ['draft', 'done']"/>
+                                <field name="date_delivr_cni" readonly="state in ['draft', 'done']"/>
+                            </group>
                         </group>
                         <notebook>
                             <page name="invoice" string="Liste factures">
@@ -78,7 +90,7 @@
             </field>
         </record>
 
-        <record id="fee_payment_view_tree" model="ir.ui.view">
+        <!-- <record id="fee_payment_view_tree" model="ir.ui.view">
             <field name="name">education.fee.payment.view.tree</field>
             <field name="model">education.fee.payment</field>
             <field name="arch" type="xml">
@@ -104,9 +116,9 @@
                     />
                 </tree>
             </field>
-        </record>
+        </record> -->
 
-        <record id="fee_payment_action" model="ir.actions.act_window">
+        <!-- <record id="fee_payment_action" model="ir.actions.act_window">
             <field name="name">Encaissement des frais de scolarité</field>
             <field name="res_model">education.fee.payment</field>
             <field name="type">ir.actions.act_window</field>
@@ -117,13 +129,13 @@
                     Veuillez enregistrer les encaissements
                 </p>
             </field>
-        </record>
+        </record> -->
 
-        <menuitem 
+        <!-- <menuitem 
             action="fee_payment_action"
             id="menu_fee_payment_action"
             parent="menu_student_fee_receipt"
-            sequence="10" />
+            sequence="10" /> -->
 
     </data>
 </odoo>

@@ -82,15 +82,32 @@ class HrEmployee(models.Model):
                         })
                         break
             else:
-                identifier = employee.identifier
+                identifier = '{}2024'.format(employee.identifier)
+                employee.write({
+                    'identifier': identifier,
+                })
+            name = employee.name
+            name = name.strip()
+            # email = employee.work_email
+            while True:
+                if name.find('  ') != -1:
+                    name = name.replace('  ', ' ')
+                else:
+                    break
+            username = name.lower()
+            username = username.split(' ')
+            username = username[0:3]
+            if len(username) == 1:
+                username = username[0]
+            elif len(username) == 2:
+                username = '{}.{}'.format(username[0][0:1], username[1])
+            elif len(username) == 3:
+                username = '{}.{}.{}'.format(username[0][0:1], username[1], username[2][0:1])
+            email = username + '@siantou.net'
             user_id = self.env['res.users'].search([
                 ('employee_id', '=', employee.id),
             ], limit=1)
             if not user_id:
-                name = employee.name
-                # email = employee.work_email
-                username = name.replace(' ', '.').lower()
-                email = username + '@siantou.net'
                 # password = username
                 password = identifier
                 i = 0
@@ -119,10 +136,11 @@ class HrEmployee(models.Model):
                         'name': name,
                         'password' : password,
                     })
-                employee.write({
-                    'work_email': email,
-                    'user_id': user_id.id,
-                })
+            employee.write({
+                'name': name,
+                'work_email': email,
+                'user_id': user_id.id,
+            })
         except psycopg2.errors.NotNullViolation as error:
             _logger.info(f'----------- tototototototo Exception {error} -----------')
             raise ValidationError("L'adresse e-mail professionnelle n'est pas renseignée.")

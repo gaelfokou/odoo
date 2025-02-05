@@ -9,6 +9,7 @@
                 <field name="name"/>
                 <field name="cycle_id"/>
                 <field name="field_of_study_id"/>
+                <field name="specialty_id"/>
                 <field name="type_cour"/>
                 <field 
                     name="status_univ" 
@@ -89,26 +90,17 @@
 
                         <!-- Informations académiques en vue page -->
                         <page string="Informations académiques">
-                            <group name="academique" string="Informations académiques">
-                                <group>
+                            <group col="4" name="academique" string="Informations académiques">
+                                <group colspan="2">
                                     <field name="matricule"/>
-                                </group>
-                                <group>
+                                    <field name="class_id"/>
                                     <field name="cycle_id"/>
-                                </group>
-                                <group>
-                                    <field name="field_of_study_id"/>
-                                </group>
-                                <group>
-                                    <field name="specialty_id"/>
-                                </group>
-                                <group>
-                                    <field name="type_cour" widget="radio"/>
-                                </group>
-                                <group>
                                     <field name="batch_id"/>
                                 </group>
-                                <group>
+                                <group colspan="2">
+                                    <field name="field_of_study_id"/>
+                                    <field name="specialty_id"/>
+                                    <field name="type_cour" widget="radio"/>
                                     <field name="level_id"/>
                                 </group>
                             </group>

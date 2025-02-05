@@ -18,14 +18,21 @@
     'version': '1.0',
 
     # any module necessary for this one to work correctly
-    'depends': ['base', 'account_accountant', 'account_payment'],
+    'depends': ['base', 'account_accountant', 'account_payment', 'siantou_ems_core'],
 
     # always loaded
     'data': [
-        # 'security/ir.model.access.csv',
+        'views/account_move_views.xml',
         'views/account_bank_statement_views.xml',
+        'views/account_move_line_views.xml',
+
+        # Rapports
+        'report/paper_format_templates.xml',
+        'report/layout.xml',
+        'report/recu_paiement.xml',
+        'report/report_recu_paiement_pdf_template.xml',
+        'report/action.xml',
     ],
     # only loaded in demonstration mode
     'demo': [],
 }
-

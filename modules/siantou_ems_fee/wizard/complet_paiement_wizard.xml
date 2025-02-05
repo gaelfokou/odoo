@@ -23,16 +23,25 @@
                             <field name="name" readonly="1"/>
                         </group>
                         <group>
-                            <field name="reference"  invisible="mode_payment=='cash'"/>
                             <field name="mode_payment"/>
                         </group>
                     </group>
                     <group>
-                        <group>
-                            <field name="amount"/>
+                        <group string="Informations BANK" invisible="mode_payment=='cash'">
+                            <field name="titulaire_compte" required="mode_payment=='bank'"/>
+                            <field name="name_bank" required="mode_payment=='bank'"/>
+                            <field name="code_guichet" required="mode_payment=='bank'"/>
+                            <field name="numero_compte" required="mode_payment=='bank'"/>
                         </group>
-                        <group>
-                            <field name="date_payment" />
+                        <group string="Informations sur le paiement">
+                            <field name="amount"/>
+                            <field name="currency_id" invisible="1"/>
+                            <field name="date_payment"/>
+                        </group>
+                        <group string="Informations sur la CNI">
+                            <field name="cni"/>
+                            <field name="lieu_delivr_cni"/>
+                            <field name="date_delivr_cni"/>
                         </group>
                     </group>
                     

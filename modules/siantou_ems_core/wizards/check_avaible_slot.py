@@ -13,9 +13,27 @@ class CheckAvailableSlot(models.Model):
 
     def find_available_slot(self, date, field_of_study_id, level_id, batch_id, duration_hours=2):
         # Plages horaires disponibles
-        available_slots = [(8, 10), (10, 12), (13, 15), (15, 17)]  # (heure de début, heure de fin)
-        if duration_hours > 2 :
-            available_slots = [(8, 12), (13, 17)]
+        slots = self.env['siantou.ems.timetable.slot'].search([
+            ('is_active', '=', True),
+        ])
+        slots = list(slots)
+        # available_slots = [(8, 10), (10, 12), (13, 15), (15, 17)]  # (heure de début, heure de fin)
+        available_slots = []
+        for slot in slots:
+            slotitem_day_ids = list(slot.slotitem_day_ids)
+            slotitem_day_ids.sort(key=lambda s: s.start_time)
+            for slotitem_day_id in slotitem_day_ids:
+                available_slots.append((slotitem_day_id.start_time, slotitem_day_id.end_time))
+            slotitem_night_ids = list(slot.slotitem_night_ids)
+            slotitem_night_ids.sort(key=lambda s: s.start_time)
+            for slotitem_night_id in slotitem_night_ids:
+                available_slots.append((slotitem_night_id.start_time, slotitem_night_id.end_time))
+        # if duration_hours > 2 :
+        #     available_slots = [(8, 12), (13, 17)]
+        slots = [available_slots[i:i+duration_hours] for i in range(0, len(available_slots), duration_hours)]
+        available_slots = []
+        for slot in slots:
+            available_slots.append((slot[0][0], slot[len(slot) - 1][1]))
 
         # Rechercher tous les cours programmés pour la date donnée, en tenant compte du field_of_study_id, level_id et du batch_id
         scheduled_classes = self.env['siantou.ems.timetable.timetable'].search([

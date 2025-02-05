@@ -25,7 +25,7 @@ class StudentEnrollment(models.Model):
 
     partner_id = fields.Many2one(
         'res.partner',
-        string='Employé',
+        string='Res partner',
     )
     registre_id = fields.Many2one(
         'siantou.session.registre', 
@@ -49,11 +49,13 @@ class StudentEnrollment(models.Model):
     )
     matricule = fields.Char(string="Matricule")
     code_enrol = fields.Char(string="Code de préinscription", default="001485KOPLL")
+    cycle_id_pk = fields.Integer(related='cycle_id.id')
     cycle_id = fields.Many2one(
         'oe.school.course',
         string='Cycle',
         required=True
     )
+    field_of_study_id_pk = fields.Integer(related='field_of_study_id.id')
     field_of_study_id = fields.Many2one(
         'siantou.ems.core.field_of_study',
         string='Filière ',
@@ -62,7 +64,6 @@ class StudentEnrollment(models.Model):
     specialty_id = fields.Many2one(
         'siantou.ems.core.specialty',
         string='Spécialité',
-        required=True,
     )
     type_cour = fields.Selection([
         ('cj', 'Cours du jour'),
@@ -106,13 +107,13 @@ class StudentEnrollment(models.Model):
     num_tel_tutor = fields.Char(string="N° de Téléphone", required=True)
     date_preins = fields.Datetime(string="Date de préinscription", default=datetime.datetime.now())
     status = fields.Selection([
-            ('broui', "En attente de paiement des frais d'inscription"),
+            # ('broui', "En attente de paiement des frais d'inscription"),
             ('inscrip', 'Inscrit'),
             ('rej', 'Candidature rejeté'),
             ('transfer', 'Candidature accepté'),
         ],
-        string="Status", 
-        default="broui", 
+        string="Status",
+        default="inscrip",
         track_visibility='onchange'
     )
     is_autre_pays = fields.Boolean(string="Autre pays ?", default=False)
@@ -186,7 +187,15 @@ class StudentEnrollment(models.Model):
     def compute_rejected(self):
         self.status='rej'
 
-
+    @api.model
+    def create(self, values):
+        result = super().create(values)
+        _logger.info(result.name)
+        partner_id = self.env['res.partner'].create({
+            "name":values['name']
+        })
+        result.partner_id = partner_id.id
+        return result
 
 # class StudentEnrollmentFileAdmission(models.Model):
 #     _name = 'oe.school.student.enrollment.file'

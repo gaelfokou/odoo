@@ -45,6 +45,7 @@
         'views/unite_enseignement_views.xml',
         'views/specialty_views.xml',
         'views/partenaire_univ_views.xml',
+        'views/slot_views.xml',
 
         'views/student_enrollment_views.xml',
         'views/students_views.xml',
@@ -63,7 +64,10 @@
         'views/country_views.xml',
         'views/production_pe.xml',
 
+        #=======Vue hérité pour les créances
+        # 'views/account_move.xml',
 
+        #=======Vue hérité pour les modales
         'wizard/fee_student_wizard.xml',
         'wizard/student_enroll_admission_wizard.xml',
 

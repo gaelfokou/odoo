@@ -34,14 +34,18 @@ class Student(models.Model):
     _inherit=['mail.thread', 'mail.activity.mixin',]
     _description = 'Gestion des étudiants'
     
-
     name = fields.Char(string="Nom(s) et prénom(s)", required=True)
     matricule = fields.Char(string="Matricule")
     student_enroll_id = fields.Many2one(
         'oe.school.student.enrollment',
         string='Etudiant(Préinscription)',
         ondelete='cascade',
-        # required=True
+        required=True
+    )
+    partner_id = fields.Many2one(
+        'res.partner',
+        string='Rest partner',
+        related='student_enroll_id.partner_id',
     )
     batch_id = fields.Many2one(
         'siantou.ems.core.student.batch',
@@ -50,12 +54,14 @@ class Student(models.Model):
     school_id = fields.Many2one(
         'siantou.ems.core.school',
         string='Ecole',
+        related='field_of_study_id.school_id'
         # required=True
     )
     cycle_id = fields.Many2one(
         'oe.school.course',
         string='Cycle',
-        required=True
+        required=True,
+        related='class_id.filiere_id.cursus_id'
     )
     region_id = fields.Many2one("siantou.ems.core.region", string="Région")
     city_id = fields.Many2one("siantou.ems.core.city", string="Ville")
@@ -64,11 +70,13 @@ class Student(models.Model):
         'siantou.ems.core.field_of_study',
         string='Filière',
         required=True,
+        related='class_id.filiere_id'
     )
     specialty_id = fields.Many2one(
         'siantou.ems.core.specialty',
         string='Spécialité',
         required=True,
+        related='class_id.specialte_id'
     )
     type_cour = fields.Selection([
         ('cj', 'Cours du jour'),
@@ -110,7 +118,12 @@ class Student(models.Model):
     lieu_residence = fields.Char(string="Lieu de résidence", required=True)
     email = fields.Char(string="E-mail", required=True)
     num_tel = fields.Char(string="N° de Téléphone", required=True)
-    level_id = fields.Many2one("siantou.ems.core.level", string="Niveau", required=True)
+    level_id = fields.Many2one(
+        'siantou.ems.core.level',
+        string="Niveau",
+        required=True,
+        related='class_id.niveau_id'
+    )
     annee_acad_current = fields.Many2one(
         "siantou.ems.core.year", 
         string="Année académique", 
@@ -136,7 +149,14 @@ class Student(models.Model):
         compute="_compute_timetables", 
         store=False
     )
-    
+
+    class_id = fields.Many2one(
+        'siantou.ems.core.class',
+        required=True,
+        string='Classe'
+    )
+
+
     @api.depends('field_of_study_id', 'level_id')
     def _compute_timetables(self):
         """Méthode pour récupérer les emplois du temps en fonction de la filière et du niveau"""
@@ -183,11 +203,42 @@ class Student(models.Model):
                         })
                         break
             else:
-                matricule = student.matricule
+                matricule = '{}2024'.format(student.matricule)
+                student.write({
+                    'matricule': matricule,
+                })
             name = student.name
+            name = name.strip()
             # email = student.email
-            username = name.replace(' ', '.').lower()
+            while True:
+                if name.find('  ') != -1:
+                    name = name.replace('  ', ' ')
+                else:
+                    break
+            username = name.lower()
+            username = username.split(' ')
+            username = username[0:3]
+            if len(username) == 1:
+                username = username[0]
+            elif len(username) == 2:
+                username = '{}.{}'.format(username[0][0:1], username[1])
+            elif len(username) == 3:
+                username = '{}.{}.{}'.format(username[0][0:1], username[1], username[2][0:1])
             email = username + '@siantou.net'
+            # password = username
+            password = matricule
+            i = 0
+            while True:
+                user_id = self.env['res.users'].search([
+                    ('login', '=', email),
+                ], limit=1)
+                if user_id:
+                    i = i + 1
+                    email = username + f'.{i}' + '@siantou.net'
+                    # password = username + f'.{i}'
+                    password = matricule
+                else:
+                    break
             partner_id = student.student_enroll_id.partner_id
             if not partner_id:
                 partner_id = self.env['res.partner'].create({
@@ -196,24 +247,12 @@ class Student(models.Model):
                     'phone': student.num_tel,
                     'is_company': False,
                 })
+                student.partner_id = partner_id.id
+            
             user_id = self.env['res.users'].search([
                 ('partner_id', '=', partner_id.id),
             ], limit=1)
             if not user_id:
-                # password = username
-                password = matricule
-                i = 0
-                while True:
-                    user_id = self.env['res.users'].search([
-                        ('login', '=', email),
-                    ], limit=1)
-                    if user_id:
-                        i = i + 1
-                        email = username + f'.{i}' + '@siantou.net'
-                        # password = username + f'.{i}'
-                        password = matricule
-                    else:
-                        break
                 group_id = self.env.ref('base.group_portal')
                 user_id = self.env['res.users'].create({
                     'login': email,
@@ -222,10 +261,11 @@ class Student(models.Model):
                     'partner_id': partner_id.id,
                     'groups_id': [(6, 0, [group_id.id])],
                 })
-                student.write({
-                    # 'email': email,
-                    'user_id': user_id.id,
-                })
+            student.write({
+                'name': name,
+                # 'email': email,
+                'user_id': user_id.id,
+            })
         except psycopg2.errors.NotNullViolation as error:
             _logger.info(f'----------- tototototototo Exception {error} -----------')
             raise ValidationError("L'adresse e-mail professionnelle n'est pas renseignée.")
@@ -240,11 +280,12 @@ class Student(models.Model):
 
     @api.model
     def create(self, vals):
-        field_of_study_id = self.env['siantou.ems.core.field_of_study'].browse(vals['field_of_study_id'])
+        class_id = self.env['siantou.ems.core.class'].browse(vals['class_id'])
+        field_of_study_id = class_id.filiere_id
         batch = self.env['siantou.ems.core.student.batch'].assign_batch(
             field_of_study_id.school_id.id, 
             field_of_study_id.id, 
-            vals['level_id']
+            class_id.niveau_id.id
         )
         vals['batch_id'] = batch.id
         # vals['matricule'] = self.generate_matricule(field_of_study_id)

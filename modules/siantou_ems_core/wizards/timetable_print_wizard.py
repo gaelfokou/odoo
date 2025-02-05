@@ -443,12 +443,16 @@ class TimetablePrintWizard(models.TransientModel):
         search_timetables = self.env['siantou.ems.timetable.timetable'].search(domain)
 
         timetables = {}
+        info_timetables = {}
         for search_timetable in search_timetables:
             key = '{}-{}-{}-{}'.format(search_timetable.semester_id.id, search_timetable.field_of_study_id.id, search_timetable.level_id.id, search_timetable.batch_id.id)
             semester = '{}'.format(search_timetable.semester_id.name)
-            study = '{} - {} - Lot {}'.format(search_timetable.field_of_study_id.name, search_timetable.level_id.name, search_timetable.batch_id.name)
+            study = '{} - {} - {}'.format(search_timetable.field_of_study_id.name, search_timetable.level_id.name, search_timetable.batch_id.name)
             if not key in timetables:
                 timetables[key] = []
+                info_timetables[key] = {}
+                info_timetables[key]['semester'] = semester
+                info_timetables[key]['study'] = study
             timetable = {}
             timetable['id'] = search_timetable.id
             timetable['date'] = search_timetable.date
@@ -478,8 +482,8 @@ class TimetablePrintWizard(models.TransientModel):
                     tm[1] = TimetablePrintWizard.convert_float_to_time(tm[1])
                     timetables[key][monday]['Heure'][i] = '{}-{}'.format(tm[0], tm[1])
             timetables[key] = TimetablePrintWizard.paginate_calendar(timetables[key], len(timetables[key].keys()))
-            timetables[key]['semester'] = semester
-            timetables[key]['study'] = study
+            timetables[key]['semester'] = info_timetables[key]['semester']
+            timetables[key]['study'] = info_timetables[key]['study']
 
         _logger.info(f'----------- tototototototo timetables {timetables} -----------')
 

@@ -5,8 +5,8 @@ from odoo.exceptions import ValidationError
 from datetime import datetime
 import logging
 
-
 _logger = logging.getLogger(__name__)
+
 class Timetable(models.Model):
     _name = 'siantou.ems.timetable.timetable'
     _description = 'Emplois du temps'
@@ -237,10 +237,96 @@ class Timetable(models.Model):
             'tag': 'reload',
         }
 
-
 class TimetableGroup(models.Model):
     _name = 'siantou.ems.timetable.group'
     _description = 'Groupe d\'emploi de temps'
 
     name = fields.Char('Nom du groupe', required=True)
 
+class TimetableSlotItem(models.Model):
+    _name = 'siantou.ems.timetable.slotitem'
+    _description = 'Plage horaire'
+
+    slot_id = fields.Many2one(
+        'siantou.ems.timetable.slot',
+        string='Créneau horaire',
+    )
+
+    # Heure de début du cours
+    start_time = fields.Float(
+        string='Heure de début',
+        required=True,
+        default=0,
+        widget='time'
+    )
+
+    # Heure de fin du cours
+    end_time = fields.Float(
+        string='Heure de fin',
+        required=True,
+        default=0,
+        widget='time'
+    )
+
+    type = fields.Selection(
+        selection=[('0', 'Soir'), ('1', 'Jour')],
+        string='Type',
+        default='1',
+        widget='radio'
+    )
+
+    @staticmethod
+    def are_almost_equal(a, b, tolerance=1e-9):
+        return abs(a - b) < tolerance
+
+    @api.constrains('start_time', 'end_time')
+    def _check_constrains(self):
+        for record in self:
+            if record.start_time >= record.end_time:
+                raise ValidationError(f"L'heure de fin doit être supérieure à l'heure de début")
+            elif not TimetableSlotItem.are_almost_equal(round((record.end_time - record.start_time), 2), round(1.00, 2)):
+                raise ValidationError(f"La plage horaire entre l'heure de début et l'heure de fin doit être 1")
+            else:
+                slotitems = self.env['siantou.ems.timetable.slotitem'].search([
+                    ('id', '!=', record.id),
+                ]).filtered(lambda rec: (rec.end_time > record.start_time and rec.start_time <= record.start_time) or (rec.end_time >= record.end_time and rec.start_time < record.end_time))
+                slotitems = list(slotitems)
+                if len(slotitems) > 0:
+                    raise ValidationError(f"La plage horaire entre l'heure de début et l'heure de fin n'est pas disponible")
+
+class TimetableSlot(models.Model):
+    _name = 'siantou.ems.timetable.slot'
+    _description = 'Créneau horaire'
+
+    name = fields.Char(
+        string="Nom",
+        required=True
+    )
+
+    slotitem_day_ids = fields.One2many(
+        'siantou.ems.timetable.slotitem',
+        'slot_id',
+        string='Plages horaires jour',
+        domain=[('type', '=', '1')]
+    )
+
+    slotitem_night_ids = fields.One2many(
+        'siantou.ems.timetable.slotitem',
+        'slot_id',
+        string='Plages horaires soir',
+        domain=[('type', '=', '0')]
+    )
+
+    is_active = fields.Boolean(string="Actif", default=False)
+
+    @api.constrains('is_active')
+    def _check_constrains(self):
+        for record in self:
+            if record.is_active:
+                slots = self.env['siantou.ems.timetable.slot'].search([
+                    ('id', '!=', record.id),
+                    ('is_active', '=', True),
+                ])
+                slots = list(slots)
+                if len(slots) > 0:
+                    raise ValidationError(f"Créneau horaire actif disponible")

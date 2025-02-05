@@ -21,15 +21,16 @@ class EducationClass(models.Model):
                        help="Entrer le nom de la Classe")
 
     filiere_id = fields.Many2one('siantou.ems.core.field_of_study', string='Filière', required=True,
-                                 help="Filière de la classe")
+                                 help="Filière")
+    specialte_id = fields.Many2one('siantou.ems.core.specialty', string='Spécialité', required=True,
+                                 help="Spécialité")
     niveau_id = fields.Many2one('siantou.ems.core.level', string='Niveau',required=True,
-                                 help="Niveau de la classe")
+                                 help="Niveau")
     
     school_id = fields.Many2one('siantou.ems.core.school', string='Ecole')
-
     
-    semestre_ids = fields.One2many(
-        string='Semestre',
-        comodel_name='siantou.ems.core.year.semester',
-        inverse_name='class_id',
-    )
+    annee_acadmique_id = fields.Many2one('siantou.ems.core.year', string='Année Académique')
+    
+    semestre_id = fields.Many2one('siantou.ems.core.year.semester', string='Semestre', required=True, tracking=True)
+    
+    ue_ids = fields.One2many(comodel_name='siantou.ems.core.unite.enseignement', inverse_name='class_id', string='Unité d\'enseignement')
