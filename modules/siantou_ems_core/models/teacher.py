@@ -100,9 +100,11 @@ class HrEmployee(models.Model):
             if len(username) == 1:
                 username = username[0]
             elif len(username) == 2:
-                username = '{}.{}'.format(username[0][0:1], username[1])
+                # username = '{}.{}'.format(username[0][0:1], username[1])
+                username = '{}{}'.format(username[0][0:1], username[1])
             elif len(username) == 3:
-                username = '{}.{}.{}'.format(username[0][0:1], username[1], username[2][0:1])
+                # username = '{}.{}.{}'.format(username[0][0:1], username[1], username[2][0:1])
+                username = '{}{}{}'.format(username[0][0:1], username[1], username[2][0:1])
             email = username + '@siantou.net'
             user_id = self.env['res.users'].search([
                 ('employee_id', '=', employee.id),
