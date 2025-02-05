@@ -90,6 +90,11 @@ class FieldOfStudy(models.Model):
         string='Liste des étudiants'
     )
 
+    slot_id = fields.Many2one(
+        'siantou.ems.timetable.slot',
+        string='Créneau horaire',
+    )
+
     # Contrainte SQL pour empêcher d'avoir le même code pour différentes filières
     _sql_constraints = [
         ('unique_code', 'unique(code)', 'Le code doit être unique'),

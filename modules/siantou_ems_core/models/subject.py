@@ -132,7 +132,7 @@ class Subject(models.Model):
                 # record.weekly_hours_credit = math.ceil(record.hours_credit / record.semester_id.number_of_week)
 
                 # Toujours arrondir par la valeur supérieur d'un multiple de 2 afin d'avoir les cours de minimum 2h
-                record.weekly_hours_credit = math.ceil(record.hours_credit / record.semester_id.number_of_week / 2) * 2
+                record.weekly_hours_credit = math.ceil(record.hours_credit / record.semester_id.number_of_week)
             else:
                 record.weekly_hours_credit = 0
 

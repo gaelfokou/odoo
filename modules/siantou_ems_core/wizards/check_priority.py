@@ -11,7 +11,7 @@ class CheckPriority(models.Model):
     _description = 'Déterminer la priorité d\'un enseignant sur un autre'
 
 
-    def get_teacher_for_period(self, subject_id, date, day_of_week, start_time, end_time, semester_week):
+    def get_teacher_for_period(self, subject_id, date, start_time, end_time):
         """
         Trouver l'enseignant disponible pour un cours à une période spécifique,
         en priorisant les enseignants permanents, triés par priorité décroissante,
@@ -34,7 +34,6 @@ class CheckPriority(models.Model):
             overlapping_course = self.env['siantou.ems.timetable.timetable'].search([
                 ('employee_id', '=', teacher.id),
                 ('date', '=', date),
-                ('day_of_week', '=', day_of_week),
                 ('start_time', '<', end_time),  # Chevauchement d'horaire
                 ('end_time', '>', start_time)   # Chevauchement d'horaire
             ], limit=1)
@@ -59,7 +58,6 @@ class CheckPriority(models.Model):
             overlapping_course = self.env['siantou.ems.timetable.timetable'].search([
                 ('employee_id', '=', teacher.id),
                 ('date', '=', date),
-                ('day_of_week', '=', day_of_week),
                 ('start_time', '<', end_time),  # Chevauchement d'horaire
                 ('end_time', '>', start_time)   # Chevauchement d'horaire
             ], limit=1)

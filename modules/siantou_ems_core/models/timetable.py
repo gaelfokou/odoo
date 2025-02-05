@@ -207,19 +207,6 @@ class Timetable(models.Model):
             'type': 'ir.actions.act_window',
         })
         return action
-    
-    def teacher_test_dispatch(self):
-        subject_id = 3  # ID du cours
-        day_of_week = '1'  # Mardi
-        start_time = 8.0  # 8h00
-        end_time = 12.0    # 12h00
-
-        teacher = self.env['siantou.ems.timetable.check_priority'].get_teacher_for_period(subject_id, day_of_week, start_time, end_time)
-
-        if teacher:
-            _logger.info('**************** L\'enseignant sélectionné est : %s  ****************', teacher.name)
-        else:
-            _logger.info('**************** Aucun enseignant disponible pour cette période.  ****************')
 
     def action_cancel_timetable_exception(self):
         employee_timetables = self.env['siantou.ems.timetable.timetable'].search([
@@ -317,16 +304,37 @@ class TimetableSlot(models.Model):
         domain=[('type', '=', '0')]
     )
 
-    is_active = fields.Boolean(string="Actif", default=False)
+    department_id = fields.Many2one(
+        'hr.department',
+        string='Département'
+    )
 
-    @api.constrains('is_active')
+    field_of_study_ids = fields.One2many(
+        'siantou.ems.core.field_of_study',
+        'slot_id',
+        string='Filières'
+    )
+
+    is_default = fields.Boolean(string="Par défaut", default=False)
+
+    @api.constrains('is_default')
     def _check_constrains(self):
         for record in self:
-            if record.is_active:
+            if record.is_default:
                 slots = self.env['siantou.ems.timetable.slot'].search([
                     ('id', '!=', record.id),
-                    ('is_active', '=', True),
+                    ('is_default', '=', True),
                 ])
                 slots = list(slots)
                 if len(slots) > 0:
-                    raise ValidationError(f"Créneau horaire actif disponible")
+                    raise ValidationError(f"Créneau horaire par défaut déjà défini")
+
+    @api.onchange('department_id')
+    def _check_onchange(self):
+        for record in self:
+            if record.department_id.id:
+                record.field_of_study_ids = self.env['siantou.ems.core.field_of_study'].search([
+                    ('department_id', '=', record.department_id.id),
+                ])
+            else:
+                record.field_of_study_ids = []
