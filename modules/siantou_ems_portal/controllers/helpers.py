@@ -169,30 +169,26 @@ class Helpers:
         for i in range(len(data)):
             data[i]['start_time'] = round(data[i]['start_time'], 2)
             data[i]['end_time'] = round(data[i]['end_time'], 2)
-            h = [hour for hour in hours if (TimetablePrintWizard.increment_float_time(data[i]['start_time']) <= TimetablePrintWizard.increment_float_time(hour[0]) and TimetablePrintWizard.increment_float_time(data[i]['end_time']) > TimetablePrintWizard.increment_float_time(hour[0])) or (TimetablePrintWizard.increment_float_time(data[i]['start_time']) < TimetablePrintWizard.increment_float_time(hour[1]) and TimetablePrintWizard.increment_float_time(data[i]['end_time']) >= TimetablePrintWizard.increment_float_time(hour[1]))]
-            if len(h) == 0:
-                current_data.append(data[i])
-            else:
-                h = [hour for hour in hours if TimetablePrintWizard.increment_float_time(data[i]['start_time']) == TimetablePrintWizard.increment_float_time(hour[0]) and TimetablePrintWizard.increment_float_time(data[i]['end_time']) == TimetablePrintWizard.increment_float_time(hour[1])]
-                if len(h) == 0:
-                    h = [hour for hour in hours if TimetablePrintWizard.increment_float_time(data[i]['start_time']) < TimetablePrintWizard.increment_float_time(hour[0]) and TimetablePrintWizard.increment_float_time(data[i]['end_time']) > TimetablePrintWizard.increment_float_time(hour[1])]
-                    if len(h) == 0:
-                        h = [hour for hour in hours if TimetablePrintWizard.increment_float_time(data[i]['start_time']) == TimetablePrintWizard.increment_float_time(hour[0])]
-                        if len(h) > 0:
-                            data[i]['start_time'] = h[0][1]
-                            current_data.append(data[i])
-                        else:
-                            h = [hour for hour in hours if TimetablePrintWizard.increment_float_time(data[i]['end_time']) == TimetablePrintWizard.increment_float_time(hour[1])]
-                            if len(h) > 0:
-                                data[i]['end_time'] = h[0][0]
+            for hour in hours:
+                if not (Helpers.increment_float_time(data[i]['start_time']) <= Helpers.increment_float_time(hour[0]) and Helpers.increment_float_time(data[i]['end_time']) > Helpers.increment_float_time(hour[0])) or not (Helpers.increment_float_time(data[i]['start_time']) < Helpers.increment_float_time(hour[1]) and Helpers.increment_float_time(data[i]['end_time']) >= Helpers.increment_float_time(hour[1])):
+                    current_data.append(data[i])
+                else:
+                    if not (Helpers.increment_float_time(data[i]['start_time']) == Helpers.increment_float_time(hour[0]) and Helpers.increment_float_time(data[i]['end_time']) == Helpers.increment_float_time(hour[1])):
+                        if not (Helpers.increment_float_time(data[i]['start_time']) < Helpers.increment_float_time(hour[0]) and Helpers.increment_float_time(data[i]['end_time']) > Helpers.increment_float_time(hour[1])):
+                            if Helpers.increment_float_time(data[i]['start_time']) == Helpers.increment_float_time(hour[0]):
+                                data[i]['start_time'] = hour[1]
                                 current_data.append(data[i])
-                    else:
-                        data1 = copy.deepcopy(data[i])
-                        data2 = copy.deepcopy(data[i])
-                        data1['end_time'] = h[0][0]
-                        data2['start_time'] = h[0][1]
-                        current_data.append(data1)
-                        current_data.append(data2)
+                            else:
+                                if Helpers.increment_float_time(data[i]['end_time']) == Helpers.increment_float_time(hour[1]):
+                                    data[i]['end_time'] = hour[0]
+                                    current_data.append(data[i])
+                        else:
+                            data1 = copy.deepcopy(data[i])
+                            data2 = copy.deepcopy(data[i])
+                            data1['end_time'] = hour[0]
+                            data2['start_time'] = hour[1]
+                            current_data.append(data1)
+                            current_data.append(data2)
 
         data = current_data
         data.sort(key=lambda d: d['date'])
