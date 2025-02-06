@@ -286,8 +286,6 @@ class TimetablePrintWizard(models.TransientModel):
         current_hours = []
         timetables = {}
         df = {}
-        data1 = {}
-        data2 = {}
 
         for i in range(len(data)):
             data[i]['start_time'] = round(data[i]['start_time'], 2)
@@ -310,15 +308,14 @@ class TimetablePrintWizard(models.TransientModel):
                                 data[i]['end_time'] = h[0][0]
                                 current_data.append(data[i])
                     else:
-                        data1[i] = copy.deepcopy(data[i])
-                        data2[i] = copy.deepcopy(data[i])
-                        data1[i]['end_time'] = h[0][0]
-                        data2[i]['start_time'] = h[0][1]
-                        current_data.append(data1[i])
-                        current_data.append(data2[i])
+                        data1 = copy.deepcopy(data[i])
+                        data2 = copy.deepcopy(data[i])
+                        data1['end_time'] = h[0][0]
+                        data2['start_time'] = h[0][1]
+                        current_data.append(data1)
+                        current_data.append(data2)
 
         data = current_data
-
         data.sort(key=lambda d: d['date'])
         sorted_data = copy.deepcopy(data)
 
