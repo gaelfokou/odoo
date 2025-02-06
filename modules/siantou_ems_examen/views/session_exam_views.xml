@@ -9,7 +9,7 @@
 				<tree string="Session d'examen" default_order="id desc">
                     <field name="name"/>
                     <field name="type_examen_id"/>
-					<field name="field_of_study_ids"/>
+					<field name="class_ids"/>
 					<field name="year_id"/>
 					<field name="semester_id"/>
                     <field name="date_start" />
@@ -82,7 +82,7 @@
                                     options="{'no_open':True,'no_create':True}"/>
 
                                 <field 
-                                    name="field_of_study_ids" widget="many2many_tags" 
+                                    name="class_ids" widget="many2many_tags" 
                                     readonly="state != 'create'" 
                                     options="{'no_open':True,'no_create':True}"/>
 

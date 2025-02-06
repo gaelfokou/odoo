@@ -182,14 +182,9 @@ class SchoolSyllabus(models.Model):
     class_id = fields.Many2one('siantou.ems.core.class', string='Classe')
     subject_id = fields.Many2one('siantou.ems.core.subject', string='Matière')
     
-    # enseignant_id = fields.Many2one(
-    #     string='Enseignant',
-    #     comodel_name='education.teacher',
-    # )
 
     semestre_id = fields.Many2one('siantou.ems.core.year.semester', string='Semestre', tracking=True)
     
-    # total_hours = fields.Integer(string='Total Hours')
     
     description = fields.Text(string='Syllabus Modules')
 
@@ -329,21 +324,11 @@ class SchoolCourseSubject(models.Model):
             ('up', 'UE Professionnelles'),
             ('ut', 'UE Transversales'),
         ],
-        required=True,
+        required=True
     )
     code = fields.Char(string="Code UE", required=True,)
     name = fields.Char(string="Intitulé de l'unité", required=True,)
-    # cm = fields.Integer(string="Cours majistral", required=True,)
-    # td = fields.Integer(string="Travaux dirigé", required=True,)
-    # tp = fields.Integer(string="Travaux pratique", required=True,)
-    # tpe = fields.Integer(string="Travaux pratique", required=True,)
-
-    # total_volume_horaire = fields.Integer(
-    #     string='Nombre d\'horaire total',
-    #     compute="_compute_total_volume_horaire",
-    #     # 
-    # )
-    class_id = fields.Many2one('siantou.ems.core.class', string='classe')
+    class_id = fields.Many2one('siantou.ems.core.class', string='classe',required=True)
     
     subject_ids = fields.One2many(
         string='Matière',

@@ -41,7 +41,7 @@
                                 <field name="academic_year" readonly="state in ['validate']"/>
                                 <field name="amount_total" readonly="state in ['validate']"/>
                                 <field name="type_inclusion_fee" widget="radio" readonly="state in ['validate']"/>
-                                <field name="type_paiement" widget="radio" readonly="state in ['validate']"/>
+                                <field name="type_paiement" invisible="type_inclusion_fee=='fee_inscrip' or type_inclusion_fee=='fee_spec'" widget="radio" readonly="state in ['validate']"/>
                                 <field name="nbre_tranche" invisible="type_paiement == 'pu'" readonly="state in ['validate']"/>
                             </group>
                             <group>

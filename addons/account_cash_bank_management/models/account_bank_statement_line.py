@@ -3,6 +3,9 @@ from datetime import datetime
 from odoo import fields, models, api
 from odoo.tools import formatLang
 
+import logging
+
+_logger = logging.getLogger("++++++++++++")
 
 class AccountBankStatementLine (models.Model):
     _inherit = 'account.bank.statement.line'
@@ -29,6 +32,58 @@ class AccountBankStatementLine (models.Model):
     cycle_id = fields.Many2one('oe.school.course', string='Cycle')
     niveau_id = fields.Many2one('siantou.ems.core.level', string='Niveau')
     semestre_id = fields.Many2one('siantou.ems.core.year.semester', string='Semestre')
+
+    search_matricule = fields.Char(string="Matricule")
+    search_name = fields.Char(string="Nom(s) et prénom(s)")
+    search_date_naissance = fields.Date(string="Date de naissance")
+
+
+    @api.onchange('search_name','search_matricule','search_date_naissance')
+    def action_search_student(self):
+        for rec in self:
+            student_id = self.env['oe.school.student'].search(
+                [
+                    ('name','=',rec.search_name.upper() if rec.search_name else False),
+                    ('matricule','=',rec.search_matricule),
+                    ('date_naissance','=',rec.search_date_naissance),
+                ],
+                limit=1
+            )
+            _logger.info(rec.search_name.upper() if rec.search_name else False)
+            
+            if student_id and student_id.partner_id:
+                rec.partner_id=student_id.partner_id.id
+                rec.ecole_id=student_id.field_of_study_id.school_id.id
+                rec.filiere_id=student_id.field_of_study_id.id
+                rec.specialite_id=student_id.specialty_id.id
+                rec.annee_academique_id=student_id.student_enroll_id.year_id.id
+                rec.cycle_id=student_id.field_of_study_id.cursus_id.id
+                rec.niveau_id=student_id.level_id.id
+                rec.departement_id=student_id.field_of_study_id.department_id.id
+            else:
+                rec.partner_id = False
+                rec.ecole_id = False
+                rec.filiere_id = False
+                rec.specialite_id = False
+                rec.annee_academique_id = False
+                rec.cycle_id = False
+                rec.niveau_id = False
+                rec.departement_id = False
+            
+
+            # _logger.info("==========statementline_id==============")
+            # _logger.info(f"partner :: {statementline_id.partner_id.id}")
+            # _logger.info(f"Ecole :: {statementline_id.ecole_id.name}")
+            # _logger.info(f"Cycle :: {statementline_id.cycle_id.name}")
+            # _logger.info(f"FIlière :: {statementline_id.filiere_id.name}")
+            # _logger.info(f"Niveau :: {statementline_id.niveau_id.name}")
+            _logger.info("==========student_id==============")
+            _logger.info(f"partner :: {student_id.partner_id.id}")
+            _logger.info(f"Ecole :: {student_id.school_id.name}")
+            _logger.info(f"Cycle :: {student_id.cycle_id.name}")
+            _logger.info(f"FIlière :: {student_id.field_of_study_id.name}")
+            _logger.info(f"Niveau :: {student_id.level_id.name}")
+    
 
     def _get_annee_academique_courante(self):
         return self.env['siantou.ems.core.year'].search([('active', '=', True)], limit=1).name
@@ -58,8 +113,14 @@ class AccountBankStatementLine (models.Model):
             }
 
             data['lignes_de_recouvrements'] = []
-            redevances = self.env['account.move'].search([('move_type', '=', 'out_invoice'), ('payment_state', 'in', ['paid', 'partial'])])
-            for redevance in redevances:
+            redevances_paiement_partiel_ou_total = self.env['account.move'].search([('move_type', '=', 'out_invoice'), ('payment_state', 'in', ['paid', 'partial'])])
+            redevances_non_payees = self.env['account.move'].search([
+                ('move_type', '=', 'out_invoice'),
+                ('partner_id', '=', rec.partner_id.id),
+                ('state', '=', 'posted'),
+                ('payment_state', '=', 'not_paid')
+            ])
+            for redevance in redevances_paiement_partiel_ou_total:
                 if not redevance.invoice_payments_widget:
                     continue
                 info_sur_paiements = redevance.invoice_payments_widget['content'][0]
@@ -68,9 +129,18 @@ class AccountBankStatementLine (models.Model):
                         'code': "#",
                         'libelle': redevance.ref,
                         'montant_recu': info_sur_paiements['amount_company_currency'],
-                        'observation': "Observation",
+                        'reste_a_payer': formatLang(self.env, redevance.amount_residual, currency_obj=rec.currency_id),
                     }
                     data['lignes_de_recouvrements'].append(info_ligne)
+
+            for redevance in redevances_non_payees:
+                info_ligne = {
+                    'code': "#",
+                    'libelle': redevance.ref,
+                    'montant_recu': formatLang(self.env, 0, currency_obj=rec.currency_id),
+                    'reste_a_payer': formatLang(self.env, redevance.amount_residual, currency_obj=rec.currency_id),
+                }
+                data['lignes_de_recouvrements'].append(info_ligne)
 
             report_action = self.env.ref('account_cash_bank_management.action_report_student_core_pdf')
             # return report_action.report_action(self,data=data)

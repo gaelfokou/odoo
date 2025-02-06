@@ -89,10 +89,13 @@ class StudentEnrollment(models.Model):
         'siantou.ems.core.country',
         string="Nationalité(Pays d'origine)",
     )
-
+    country_id_pk = fields.Integer(related='nationalite.id')
     region_id = fields.Many2one("siantou.ems.core.region", string="Région")
+    region_id_pk = fields.Integer(related='region_id.id')
     city_id = fields.Many2one("siantou.ems.core.city", string="Ville")
+    city_id_pk = fields.Integer(related='city_id.id')
     quarter_id = fields.Many2one("siantou.ems.core.quarter", string="Quartier")
+    
 
     autre = fields.Char(string="Autre pays")
     lieu_residence = fields.Char(string="Lieu de résidence", required=True)
@@ -163,6 +166,12 @@ class StudentEnrollment(models.Model):
             return report_action.report_action(self,data=data)
 
 
+    @api.onchange('nationalite')
+    def onchange_nationalite(self):
+        if self.nationalite:
+            self.is_autre_pays=False
+            self.autre=""
+    
 
     def action_preinscrip_wizard(self):
         action = self.env.ref('siantou_ems_core.action_fee_enrollment_wizard').read()[0]

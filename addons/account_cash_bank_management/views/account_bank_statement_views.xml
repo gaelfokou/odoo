@@ -107,7 +107,7 @@
                         <notebook>
                             <page string="Transactions" name="statement_line_ids">
                                 <field name="line_ids" context="{'date':date}" readonly="state == 'confirm'">
-                                    <tree editable="bottom" string="Statement lines">
+                                    <tree string="Statement lines">
                                         <field name="is_reconciled" column_invisible="True" invisible="True"/>
                                         <field name="currency_id" column_invisible="True" readonly="is_reconciled == True"/>
                                         <field name="move_id" column_invisible="True" readonly="is_reconciled == True"/>
@@ -128,8 +128,53 @@
                                         <field name="semestre_id" optional="show" readonly="is_reconciled == True"/>
                                         <field name="ref" readonly="is_reconciled == True" decoration-muted="is_reconciled == True"/>
                                         <field name="amount" readonly="is_reconciled == True" decoration-muted="is_reconciled == True"/>
-                                        <button class="text-warning" name="imprimer_recu" string="Imprimer" readonly="is_reconciled == True" type="object" icon="fa-print" data-hotkey="F"/>
+                                        <button class="btn btn-warning" name="imprimer_recu" string="Imprimer" readonly="is_reconciled == True" type="object" icon="fa-print" data-hotkey="F"/>
                                     </tree>
+                                    <form>
+                                        <!-- <header>
+                                            <button 
+                                                class="btn btn-success" 
+                                                name="action_search_student" 
+                                                string="Rechercher" 
+                                                type="object" icon="fa-search"/>
+                                        </header> -->
+                                        <sheet>
+                                            <group string="Rechercher un(e) étudiant(e)">
+                                                <group>
+                                                    <field name="search_name" string="Nom(s) et prénom(s)"/>
+                                                    <field name="search_date_naissance" string="Date de naissance"/>
+                                                </group>
+                                                <group>
+                                                    <field name="search_matricule" optional="show"/>
+                                                </group>
+                                            </group>
+                                            <group>
+                                                <group string="Informations sur l'étudiant(e)">
+                                                    <field string="Etudiant(e)" name="partner_id" 
+                                                        domain="['|',('parent_id','=',False),('is_company','=',True)]"
+                                                        context="{'default_supplier': 1}"/>
+                                                    <field name="ecole_id" optional="show"/>
+                                                    <field name="departement_id" optional="show"/>
+                                                    <field name="filiere_id" optional="show"/>
+                                                    <field name="currency_id" invisible="1"/>
+                                                    <field name="specialite_id" optional="show"/>
+                                                    <field name="annee_academique_id" optional="show"/>
+                                                    <field name="cycle_id" optional="show"/>
+                                                    <field name="niveau_id" optional="show"/>
+                                                    <field name="semestre_id" optional="show"/>
+                                                </group>
+                                                <group string="Informations sur le paiement">
+                                                    <field name="ref" optional="show"/>
+                                                    <field name="payment_ref" optional="show"/>
+                                                    <field name="date" optional="show"/>
+                                                    <div class="oe_title">
+                                                        <label for="amount" string="Montant"/>
+                                                        <h1><field name="amount"/></h1>
+                                                    </div>
+                                                </group>
+                                            </group>
+                                        </sheet>
+                                    </form>
                                 </field>
                             </page>
                         </notebook>

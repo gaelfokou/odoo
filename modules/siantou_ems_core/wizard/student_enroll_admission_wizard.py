@@ -67,7 +67,16 @@ class StudentEnrollmentAdmissionWizard(models.TransientModel):
                 ],
                 limit=1
             )
-            _logger.info(class_id.name)
+            # _logger.info(class_id.name)
+            if not class_id:
+                class_id = self.env['siantou.ems.core.class'].create({
+                    'name':f"classe {self.student_enrollement_id.field_of_study_id.name} {self.student_enrollement_id.level_id.name}",
+                    'filiere_id':self.student_enrollement_id.field_of_study_id.id,
+                    'niveau_id':self.student_enrollement_id.level_id.id,
+                    'annee_acadmique_id':self.student_enrollement_id.year_id.id,
+                    'school_id':self.student_enrollement_id.field_of_study_id.school_id.id,
+                })
+
             if self.student_enrollement_id.status_univ=='new':
                 data = {
                     'student_enroll_id': self.student_enrollement_id.id,
@@ -114,16 +123,16 @@ class StudentEnrollmentAdmissionWizard(models.TransientModel):
             self.student_enrollement_id.observations=self.observations
 
             #=====Création d'un parcours étudiant
-            self.env['oe.school.student.career'].create({
-                'student_id': student_id.id,
-                'name': f"Admission DE {student_id.name}",
-                'year_id': self.student_enrollement_id.year_id.id,
-                'level_id': self.student_enrollement_id.level_id.id,
-                'field_of_study_id': self.student_enrollement_id.field_of_study_id.id,
-                'cycle_id': self.student_enrollement_id.cycle_id.id,
-                'observations': self.observations,
-            })
-            _logger.info(self.student_enrollement_id.cycle_id.name)
+            # self.env['oe.school.student.career'].create({
+            #     'student_id': student_id.id,
+            #     'name': f"Admission DE {student_id.name}",
+            #     'year_id': self.student_enrollement_id.year_id.id,
+            #     'level_id': self.student_enrollement_id.level_id.id,
+            #     'field_of_study_id': self.student_enrollement_id.field_of_study_id.id,
+            #     'cycle_id': self.student_enrollement_id.cycle_id.id,
+            #     'observations': self.observations,
+            # })
+            # _logger.info(self.student_enrollement_id.cycle_id.name)
 
             year_id = self.env['siantou.ems.core.year'].search(
                 [('active', '=',True),], 
@@ -143,6 +152,12 @@ class StudentEnrollmentAdmissionWizard(models.TransientModel):
                 ],
                 limit=1
             )
+            _logger.info(student_id.field_of_study_id.name)
+            _logger.info(student_id.level_id.name)
+            _logger.info(year_id.name)
+            if not structure_frais_inscript_id:
+                raise ValidationError(f"Aucune structure de frais d'inscription disponible pour {self.student_enrollement_id.field_of_study_id.name} {self.student_enrollement_id.level_id.name} pour l'année {year_id.name}")
+            
             journal_id = structure_frais_inscript_id.type_frais_id.category_id.journal_id
             if journal_id:
                 account_receivable_id = journal_id.default_account_id
@@ -200,6 +215,7 @@ class StudentEnrollmentAdmissionWizard(models.TransientModel):
                 ],
                 limit=1
             )
+            
             _logger.info(structure_frais_id)
             journal_id = structure_frais_id.type_frais_id.category_id.journal_id
             if journal_id:

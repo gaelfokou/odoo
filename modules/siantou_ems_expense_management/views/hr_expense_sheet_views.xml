@@ -9,6 +9,7 @@
             <field name="inherit_id" ref="hr_expense.view_hr_expense_sheet_tree"/>
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='employee_id']" position="before">
+                    <field name="type_depense"/>
                     <field name="ecole_id"/>
                     <field name="departement_id"/>
                     <field name="filiere_id"/>
@@ -48,16 +49,22 @@
                 <xpath expr="//button[@name='action_open_account_moves']" position="attributes">
                     <attribute name="invisible">1</attribute>
                 </xpath>
+<!--                <xpath expr="//field[@name='state'][1]" position="replace"/>-->
                 <xpath expr="//field[@name='employee_id']" position="before">
-                    <field name="ecole_id"/>
-                    <field name="departement_id"/>
-                    <field name="filiere_id"/>
-                    <field name="specialite_id"/>
-                    <field name="annee_academique_id"/>
+                    <field name="type_depense"/>
+                    <field name="ecole_id" invisible="type_depense != 'academique'" required="type_depense == 'academique'"/>
+                    <field name="departement_id" required="type_depense != 'academique'"/>
+                    <field name="filiere_id" invisible="type_depense != 'academique'" required="type_depense == 'academique'"/>
+                    <field name="specialite_id" invisible="type_depense != 'academique'" required="type_depense == 'academique'"/>
+                    <field name="annee_academique_id" invisible="type_depense != 'academique'" required="type_depense == 'academique'"/>
                 </xpath>
                 <xpath expr="//button[@name='action_sheet_move_create']" position="before">
+                    <field name="validation_cptble_ok" invisible="1"/>
                     <button name="action_sheet_move_create_and_post" string="Décaisser" type="object" data-hotkey="u"
-                            class="oe_highlight o_expense_sheet_post" invisible="state != 'approve'"
+                            class="oe_highlight o_expense_sheet_post" invisible="state != 'approve' or not validation_cptble_ok"
+                            groups="account.group_account_invoice"/>
+                    <button name="action_approbation_comptable" string="Approbation Comptable" type="object" data-hotkey="a"
+                            class="oe_highlight o_expense_sheet_post" invisible="validation_cptble_ok"
                             groups="account.group_account_invoice"/>
                 </xpath>
                 <xpath expr="//button[@name='action_sheet_move_create']" position="replace"/>

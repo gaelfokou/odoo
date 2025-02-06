@@ -7,7 +7,7 @@
             <field name="report_type">qweb-pdf</field>
             <field name="report_name">account_cash_bank_management.report_recu_payment</field>
             <field name="report_file">account_cash_bank_management.report_recu_payment</field>
-            <field name="paperformat_id" ref="recu_payment_paperformat"/>
+<!--            <field name="paperformat_id" ref="recu_payment_paperformat"/>-->
             <field name="print_report_name">'Reçu Paiement - %s' % (object.name)</field>
         </record>
     </data>

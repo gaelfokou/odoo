@@ -33,6 +33,7 @@
                                 <field name="total_credit"/>
                             </group>
                             <group colspan="2">
+                                <field name="class_id"/>
                                 <field name="semestre_id"/>
                                 <field name="type_ue"/>
                             </group>

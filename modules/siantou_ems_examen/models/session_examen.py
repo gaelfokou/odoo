@@ -119,7 +119,7 @@ class SessionExamen(models.Model):
     
     school_id = fields.Many2one('siantou.ems.core.school', required=False,string='Ecole')
     
-    field_of_study_ids = fields.Many2many('siantou.ems.core.field_of_study', required=True,string='Filières')
+    class_ids = fields.Many2many('siantou.ems.core.class', required=True,string='Classes')
     
     year_id = fields.Many2one(
         'siantou.ems.core.year',
@@ -154,7 +154,6 @@ class SessionExamen(models.Model):
         ('unique_name', 'unique(name)', "Ce nom existe déjà")
     ]
 
-
     @api.model
     def create(self, values):
         values['state']='draft'
@@ -164,24 +163,15 @@ class SessionExamen(models.Model):
     @api.onchange('school_id')
     def _onchange_school_id(self):
         if self.school_id:
-            # Récupérer les filières associées à l'école sélectionnée
-            fields_of_study = self.env['siantou.ems.core.field_of_study'].search([
+            # Récupérer les classes associées à l'école sélectionnée
+            classes = self.env['siantou.ems.core.field_of_study'].search([
                 ('school_id', '=', self.school_id.id)
             ])
-            # Remplir le champ des filières avec les IDs des filières trouvées
-            self.field_of_study_ids = [(6, 0, fields_of_study.ids)]
+            # Remplir le champ des classes avec les IDs des classes trouvées
+            self.class_ids = [(6, 0, classes.ids)]
         else:
-            # Si aucune école n'est sélectionnée, vider le champ des filières
-            self.field_of_study_ids = [(5, 0, 0)]
-
-    # @api.depends('date_start', 'date_end')
-    # def _compute_exam_hours(self):
-    #     for exam in self:
-    #         if exam.date_start and exam.date_end:
-    #             delta = exam.date_end - exam.date_start
-    #             exam.exam_hours = delta.total_seconds() / 3600.0
-    #         else:
-    #             exam.exam_hours = False
+            # Si aucune école n'est sélectionnée, vider le champ des classes
+            self.class_ids = [(5, 0, 0)]
 
 
     @api.onchange('type_examen_id', 'semester_id', 'year_id')
@@ -226,22 +216,11 @@ class SessionExamen(models.Model):
     def _compute_exam(self):
         for record in self:
             record.exam_count = len(record.exam_subject_ids)
-        
-
-    # CRUD Operations
-    # def unlink(self):
-    #     for record in self:
-    #         if record.state != 'draft':
-    #             raise UserError("Impossible de supprimer une session d'examen dont le statut n'est pas « brouillon ».")
-    #     return super(SessionExamen, self).unlink()
-
-
 
     # Action Buttons
     def button_draft(self):
         self.write({'state': 'draft'})
-
-
+              
 
     def button_open(self):
         for rec in self:

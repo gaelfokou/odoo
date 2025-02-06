@@ -118,7 +118,7 @@
                                                 Perçue
                                             </th>
                                             <th style="border: 1px solid black;text-align: left;padding: 4px; width: 25%">
-                                                Observation
+                                                Reste à payer
                                             </th>
                                             <!-- <th style="border: 1px solid black;padding: 4px">Reste
                                                 à payer</th> -->
@@ -134,7 +134,7 @@
                                                     <t t-esc="l['montant_recu']"/>
                                                 </td>
                                                 <td style="border: 1px solid black;padding: 4px">
-                                                    <span/>
+                                                    <t t-esc="l['reste_a_payer']"/>
                                                 </td>
                                             </tr>
                                         </t>

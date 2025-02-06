@@ -5,6 +5,16 @@ from odoo.exceptions import UserError
 class HrExpense(models.Model):
     _inherit = 'hr.expense'
 
+    def _default_product_id(self):
+        product_id = self.env['product.product'].search([
+            ('detailed_type', '=', 'service'),
+            ('purchase_ok', '=', True),
+            ('can_be_expensed', '=', True)], limit=1).id
+        if not product_id:
+            raise UserError(_("Vous devez au moins créer un service pouvant être inséré dans une note de frais \n"
+                              "pour utiliser cette fonctionnalité"))
+        return product_id
+
     ecole_id = fields.Many2one('siantou.ems.core.school', string='École')
     departement_id = fields.Many2one('hr.department', string='Département')
     filiere_id = fields.Many2one('siantou.ems.core.field_of_study', string='Filière')
@@ -12,6 +22,7 @@ class HrExpense(models.Model):
     annee_academique_id = fields.Many2one('siantou.ems.core.year', string='Année académique')
     cycle_id = fields.Many2one('oe.school.course', string='Cycle')
     payment_mode = fields.Selection(default='company_account')
+    product_id = fields.Many2one('product.product', default=_default_product_id)
 
     def _prepare_transaction_vals(self):
         self.ensure_one()

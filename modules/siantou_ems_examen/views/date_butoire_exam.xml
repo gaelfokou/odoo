@@ -46,7 +46,6 @@
                                     <field name="name" />
                                     <field name="niveau_id"/>
                                     <field name="annee_acadmique_id"/>
-                                    <field name="semestre_id"/>
                                     <field name="filiere_id"/>
                                     <field name="school_id"/>
                                     </tree>
