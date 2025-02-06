@@ -177,22 +177,24 @@ class Helpers:
             else:
                 h = [hour for hour in hours if data[i]['start_time'] == hour[0] and data[i]['end_time'] == hour[1]]
                 if len(h) == 0:
-                    h = [hour for hour in hours if data[i]['start_time'] == hour[0]]
-                    if len(h) > 0:
-                        data[i]['start_time'] = h[1]
-                        current_data.append(data[i])
-                    else:
-                        h = [hour for hour in hours if data[i]['end_time'] == hour[1]]
+                    h = [hour for hour in hours if data[i]['start_time'] < hour[0] and data[i]['end_time'] > hour[1]]
+                    if len(h) == 0:
+                        h = [hour for hour in hours if data[i]['start_time'] == hour[0]]
                         if len(h) > 0:
-                            data[i]['end_time'] = h[0]
+                            data[i]['start_time'] = h[1]
                             current_data.append(data[i])
                         else:
-                            data1[i] = copy.deepcopy(data[i])
-                            data2[i] = copy.deepcopy(data[i])
-                            data1[i]['end_time'] = h[0]
-                            data2[i]['start_time'] = h[1]
-                            current_data.append(data1[i])
-                            current_data.append(data2[i])
+                            h = [hour for hour in hours if data[i]['end_time'] == hour[1]]
+                            if len(h) > 0:
+                                data[i]['end_time'] = h[0]
+                                current_data.append(data[i])
+                    else:
+                        data1[i] = copy.deepcopy(data[i])
+                        data2[i] = copy.deepcopy(data[i])
+                        data1[i]['end_time'] = h[0]
+                        data2[i]['start_time'] = h[1]
+                        current_data.append(data1[i])
+                        current_data.append(data2[i])
 
         data = current_data
 
