@@ -77,7 +77,45 @@ class ApiAccount(http.Controller):
         if view_type == 'calendar':
             if len(timetables) > 0:
                 field_of_study_id = timetables[0]['field_of_study_id']
-                timetables = Helpers.format_timetable(timetables)
+
+                slots = http.request.env['siantou.ems.timetable.slot'].sudo().search([
+                    ('is_default', '=', False),
+                ])
+                slots = list(slots)
+
+                available_slotitem = None
+                for slot in slots:
+                    field_of_study_ids = list(slot.field_of_study_ids)
+                    for field_of_study in field_of_study_ids:
+                        if field_of_study.id == field_of_study_id:
+                            available_slotitem = slot
+                            break
+                    if available_slotitem:
+                        break
+
+                if available_slotitem:
+                    slots = http.request.env['siantou.ems.timetable.slot'].sudo().search([
+                        ('id', '=', available_slotitem.id),
+                    ])
+                else:
+                    slots = http.request.env['siantou.ems.timetable.slot'].sudo().search([
+                        ('is_default', '=', True),
+                    ])
+
+                slots = list(slots)
+
+                slotitems = []
+                for slot in slots:
+                    slotitem_day_ids = slot.slotitem_day_ids.filtered(lambda s: not s.is_active)
+                    slotitem_day_ids = list(slotitem_day_ids)
+                    for slotitem_day_id in slotitem_day_ids:
+                        slotitems.append((round(slotitem_day_id.start_time, 2), round(slotitem_day_id.end_time, 2)))
+                    slotitem_night_ids = slot.slotitem_night_ids.filtered(lambda s: not s.is_active)
+                    slotitem_night_ids = list(slotitem_night_ids)
+                    for slotitem_night_id in slotitem_night_ids:
+                        slotitems.append((round(slotitem_night_id.start_time, 2), round(slotitem_night_id.end_time, 2)))
+
+                timetables = Helpers.format_timetable(timetables, slotitems)
             else:
                 timetables = Helpers.format_timetable(timetables)
             for monday in timetables.keys():

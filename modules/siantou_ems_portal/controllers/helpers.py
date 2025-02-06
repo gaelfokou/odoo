@@ -159,15 +159,15 @@ class Helpers:
         return search_notifications, searchbar_inputs
 
     @staticmethod
-    def format_timetable(data, current_hours=[]):
+    def format_timetable(data, hours=[]):
         n = 0.0
-        hours = []
+        current_hours = []
         timetables = {}
         df = {}
 
         for i in range(len(data)):
-            data[i]['start_time'] = round(float(data[i]['start_time']), 2)
-            data[i]['end_time'] = round(float(data[i]['end_time']), 2)
+            data[i]['start_time'] = round(data[i]['start_time'], 2)
+            data[i]['end_time'] = round(data[i]['end_time'], 2)
 
         data.sort(key=lambda d: d['date'])
         sorted_data = copy.deepcopy(data)
@@ -178,7 +178,7 @@ class Helpers:
             else:
                 if n > d['end_time'] - d['start_time']:
                     n = d['end_time'] - d['start_time']
-            hours.append([d['start_time'], d['end_time']])
+            hours.append((d['start_time'], d['end_time']))
 
         n = round(n, 2)
 

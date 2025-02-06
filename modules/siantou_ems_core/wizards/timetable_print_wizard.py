@@ -160,7 +160,45 @@ class TimetablePrintWizard(models.TransientModel):
         for key in timetables.keys():
             if len(timetables[key]) > 0:
                 field_of_study_id = timetables[key][0]['field_of_study_id']
-                timetables[key] = TimetablePrintWizard.format_timetable(timetables[key])
+
+                slots = self.env['siantou.ems.timetable.slot'].search([
+                    ('is_default', '=', False),
+                ])
+                slots = list(slots)
+
+                available_slotitem = None
+                for slot in slots:
+                    field_of_study_ids = list(slot.field_of_study_ids)
+                    for field_of_study in field_of_study_ids:
+                        if field_of_study.id == field_of_study_id:
+                            available_slotitem = slot
+                            break
+                    if available_slotitem:
+                        break
+
+                if available_slotitem:
+                    slots = self.env['siantou.ems.timetable.slot'].search([
+                        ('id', '=', available_slotitem.id),
+                    ])
+                else:
+                    slots = self.env['siantou.ems.timetable.slot'].search([
+                        ('is_default', '=', True),
+                    ])
+
+                slots = list(slots)
+
+                slotitems = []
+                for slot in slots:
+                    slotitem_day_ids = slot.slotitem_day_ids.filtered(lambda s: not s.is_active)
+                    slotitem_day_ids = list(slotitem_day_ids)
+                    for slotitem_day_id in slotitem_day_ids:
+                        slotitems.append((round(slotitem_day_id.start_time, 2), round(slotitem_day_id.end_time, 2)))
+                    slotitem_night_ids = slot.slotitem_night_ids.filtered(lambda s: not s.is_active)
+                    slotitem_night_ids = list(slotitem_night_ids)
+                    for slotitem_night_id in slotitem_night_ids:
+                        slotitems.append((round(slotitem_night_id.start_time, 2), round(slotitem_night_id.end_time, 2)))
+
+                timetables[key] = TimetablePrintWizard.format_timetable(timetables[key], slotitems)
             else:
                 timetables[key] = TimetablePrintWizard.format_timetable(timetables[key])
             for monday in timetables[key].keys():
@@ -242,15 +280,15 @@ class TimetablePrintWizard(models.TransientModel):
         }
 
     @staticmethod
-    def format_timetable(data, current_hours=[]):
+    def format_timetable(data, hours=[]):
         n = 0.0
-        hours = []
+        current_hours = []
         timetables = {}
         df = {}
 
         for i in range(len(data)):
-            data[i]['start_time'] = round(float(data[i]['start_time']), 2)
-            data[i]['end_time'] = round(float(data[i]['end_time']), 2)
+            data[i]['start_time'] = round(data[i]['start_time'], 2)
+            data[i]['end_time'] = round(data[i]['end_time'], 2)
 
         data.sort(key=lambda d: d['date'])
         sorted_data = copy.deepcopy(data)
@@ -261,7 +299,7 @@ class TimetablePrintWizard(models.TransientModel):
             else:
                 if n > d['end_time'] - d['start_time']:
                     n = d['end_time'] - d['start_time']
-            hours.append([d['start_time'], d['end_time']])
+            hours.append((d['start_time'], d['end_time']))
 
         n = round(n, 2)
 
