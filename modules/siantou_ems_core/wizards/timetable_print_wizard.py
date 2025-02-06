@@ -286,6 +286,8 @@ class TimetablePrintWizard(models.TransientModel):
         current_hours = []
         timetables = {}
         df = {}
+        data1 = {}
+        data2 = {}
 
         for i in range(len(data)):
             data[i]['start_time'] = round(data[i]['start_time'], 2)
@@ -298,21 +300,21 @@ class TimetablePrintWizard(models.TransientModel):
                 if len(h) == 0:
                     h = [hours[j] for j in range(len(hours)) if data[i]['start_time'] == hours[j][0]]
                     if len(h) > 0:
-                        data1 = copy.deepcopy(data[i])
-                        data2 = copy.deepcopy(data[i])
-                        data1['end_time'] = h[1]
-                        data2['start_time'] = h[1]
-                        current_data.append(data1)
-                        current_data.append(data2)
+                        data1[i] = copy.deepcopy(data[i])
+                        data2[i] = copy.deepcopy(data[i])
+                        data1[i]['end_time'] = h[1]
+                        data2[i]['start_time'] = h[1]
+                        current_data.append(data1[i])
+                        current_data.append(data2[i])
                     else:
                         h = [hours[j] for j in range(len(hours)) if data[i]['end_time'] == hours[j][1]]
                         if len(h) > 0:
-                            data1 = copy.deepcopy(data[i])
-                            data2 = copy.deepcopy(data[i])
-                            data1['end_time'] = h[0]
-                            data2['start_time'] = h[0]
-                            current_data.append(data1)
-                            current_data.append(data2)
+                            data1[i] = copy.deepcopy(data[i])
+                            data2[i] = copy.deepcopy(data[i])
+                            data1[i]['end_time'] = h[0]
+                            data2[i]['start_time'] = h[0]
+                            current_data.append(data1[i])
+                            current_data.append(data2[i])
 
         data = current_data
 
