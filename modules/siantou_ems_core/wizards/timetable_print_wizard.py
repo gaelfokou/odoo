@@ -192,11 +192,11 @@ class TimetablePrintWizard(models.TransientModel):
                     slotitem_day_ids = slot.slotitem_day_ids.filtered(lambda s: not s.is_active)
                     slotitem_day_ids = list(slotitem_day_ids)
                     for slotitem_day_id in slotitem_day_ids:
-                        slotitems.append((round(slotitem_day_id.start_time, 2), round(slotitem_day_id.end_time, 2)))
+                        slotitems.append([round(slotitem_day_id.start_time, 2), round(slotitem_day_id.end_time, 2)])
                     slotitem_night_ids = slot.slotitem_night_ids.filtered(lambda s: not s.is_active)
                     slotitem_night_ids = list(slotitem_night_ids)
                     for slotitem_night_id in slotitem_night_ids:
-                        slotitems.append((round(slotitem_night_id.start_time, 2), round(slotitem_night_id.end_time, 2)))
+                        slotitems.append([round(slotitem_night_id.start_time, 2), round(slotitem_night_id.end_time, 2)])
 
                 timetables[key] = TimetablePrintWizard.format_timetable(timetables[key], slotitems)
             else:
@@ -299,7 +299,7 @@ class TimetablePrintWizard(models.TransientModel):
             else:
                 if n > d['end_time'] - d['start_time']:
                     n = d['end_time'] - d['start_time']
-            hours.append((d['start_time'], d['end_time']))
+            hours.append([d['start_time'], d['end_time']])
 
         n = round(n, 2)
 

@@ -42,11 +42,11 @@ class CheckAvailableSlot(models.Model):
             slotitem_day_ids = slot.slotitem_day_ids.filtered(lambda s: s.is_active)
             slotitem_day_ids = list(slotitem_day_ids)
             for slotitem_day_id in slotitem_day_ids:
-                slotitems.append((slotitem_day_id.start_time, slotitem_day_id.end_time))
+                slotitems.append([round(slotitem_day_id.start_time, 2), round(slotitem_day_id.end_time, 2)])
             slotitem_night_ids = slot.slotitem_night_ids.filtered(lambda s: s.is_active)
             slotitem_night_ids = list(slotitem_night_ids)
             for slotitem_night_id in slotitem_night_ids:
-                slotitems.append((slotitem_night_id.start_time, slotitem_night_id.end_time))
+                slotitems.append([round(slotitem_night_id.start_time, 2), round(slotitem_night_id.end_time, 2)])
         slotitems.sort(key=lambda s: s[0])
 
         timetables = self.env['siantou.ems.timetable.timetable'].search([
@@ -67,12 +67,12 @@ class CheckAvailableSlot(models.Model):
                 available_timetables.sort(key=lambda s: s.start_time)
                 if len(available_timetables) > 0:
                     continue
-                available_slotitems.append((start_time, end_time))
+                available_slotitems.append([start_time, end_time])
                 if len(available_slotitems) == duration_hours:
                     break
         else:
             for start_time, end_time in slotitems:
-                available_slotitems.append((start_time, end_time))
+                available_slotitems.append([start_time, end_time])
                 if len(available_slotitems) == duration_hours:
                     break
 

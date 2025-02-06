@@ -178,7 +178,7 @@ class Helpers:
             else:
                 if n > d['end_time'] - d['start_time']:
                     n = d['end_time'] - d['start_time']
-            hours.append((d['start_time'], d['end_time']))
+            hours.append([d['start_time'], d['end_time']])
 
         n = round(n, 2)
 
