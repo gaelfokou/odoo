@@ -58,11 +58,11 @@ class ApiAccount(http.Controller):
             timetable['id'] = search_timetable.id
             timetable['date'] = search_timetable.date
             timetable['date_of_week'] = datetime.strftime(search_timetable.date, DATE_FORMAT_FR)
-            timetable['field_of_study_id'] = search_timetable.field_of_study_id.id
+            timetable['field_of_study_id'] = search_timetable.field_of_study_id
             timetable['field_of_study_name'] = search_timetable.field_of_study_id.name
             timetable['semester_name'] = search_timetable.semester_id.name
             timetable['level_name'] = search_timetable.level_id.name
-            timetable['department_id'] = search_timetable.department_id.id
+            timetable['department_id'] = search_timetable.department_id
             timetable['department_name'] = search_timetable.department_id.name
             timetable['subject_name'] = search_timetable.subject_id.name
             timetable['subject_code'] = search_timetable.subject_id.code
@@ -75,7 +75,11 @@ class ApiAccount(http.Controller):
             timetable['status'] = STATUS_TIMETABLE[search_timetable.status]
             timetables.append(timetable)
         if view_type == 'calendar':
-            timetables = Helpers.format_timetable(timetables)
+            if len(timetables) > 0:
+                field_of_study_id = timetables[0]['field_of_study_id']
+                timetables = Helpers.format_timetable(timetables)
+            else:
+                timetables = Helpers.format_timetable(timetables)
             for monday in timetables.keys():
                 for i, timetable in enumerate(timetables[monday]['Heure']):
                     tm = timetable.split('-')
