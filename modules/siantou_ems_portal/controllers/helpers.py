@@ -159,10 +159,9 @@ class Helpers:
         return search_notifications, searchbar_inputs
 
     @staticmethod
-    def format_timetable(data):
+    def format_timetable(data, current_hours=[]):
         n = 0.0
         hours = []
-        current_hours = []
         timetables = {}
         df = {}
 
