@@ -161,6 +161,7 @@ class Helpers:
     @staticmethod
     def format_timetable(data, hours=[]):
         n = 0.0
+        current_data = []
         current_hours = []
         timetables = {}
         df = {}
@@ -168,6 +169,13 @@ class Helpers:
         for i in range(len(data)):
             data[i]['start_time'] = round(data[i]['start_time'], 2)
             data[i]['end_time'] = round(data[i]['end_time'], 2)
+            h = [hours[j] for j in range(len(hours)) if (data[i]['start_time'] <= hours[j][0] and data[i]['end_time'] > hours[j][0]) or (data[i]['start_time'] < hours[j][1] and data[i]['end_time'] >= hours[j][1])]
+            if len(h) == 0:
+                current_data.append(data[i])
+            else:
+                h = [hours[j] for j in range(len(hours)) if data[i]['start_time'] == hours[j][0] or data[i]['end_time'] == hours[j][1]]
+                if len(h) == 0:
+                    current_data.append(data[i])
 
         data.sort(key=lambda d: d['date'])
         sorted_data = copy.deepcopy(data)

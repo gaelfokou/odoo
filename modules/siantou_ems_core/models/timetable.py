@@ -278,7 +278,7 @@ class TimetableSlotItem(models.Model):
             else:
                 slotitems = self.env['siantou.ems.timetable.slotitem'].search([
                     ('id', '!=', record.id),
-                ]).filtered(lambda rec: (rec.end_time > record.start_time and rec.start_time <= record.start_time) or (rec.end_time >= record.end_time and rec.start_time < record.end_time))
+                ]).filtered(lambda rec: (rec.start_time <= record.start_time and rec.end_time > record.start_time) or (rec.start_time < record.end_time and rec.end_time >= record.end_time))
                 slotitems = list(slotitems)
                 if len(slotitems) > 0:
                     raise ValidationError(f"La plage horaire entre l'heure de début et l'heure de fin n'est pas disponible")
