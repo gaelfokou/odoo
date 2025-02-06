@@ -301,7 +301,7 @@ class TimetablePrintWizard(models.TransientModel):
                         data1 = copy.deepcopy(data[i])
                         data2 = copy.deepcopy(data[i])
                         data1['end_time'] = h[1]
-                        data1['start_time'] = h[1]
+                        data2['start_time'] = h[1]
                         current_data.append(data1)
                         current_data.append(data2)
                     else:
@@ -310,7 +310,7 @@ class TimetablePrintWizard(models.TransientModel):
                             data1 = copy.deepcopy(data[i])
                             data2 = copy.deepcopy(data[i])
                             data1['end_time'] = h[0]
-                            data1['start_time'] = h[0]
+                            data2['start_time'] = h[0]
                             current_data.append(data1)
                             current_data.append(data2)
 
