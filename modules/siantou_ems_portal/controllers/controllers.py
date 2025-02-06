@@ -76,11 +76,11 @@ class PortalAccount(portal.CustomerPortal):
             timetable['id'] = search_timetable.id
             timetable['date'] = search_timetable.date
             timetable['date_of_week'] = datetime.strftime(search_timetable.date, DATE_FORMAT_FR)
-            timetable['field_of_study_id'] = search_timetable.field_of_study_id
+            timetable['field_of_study_id'] = search_timetable.field_of_study_id.id
             timetable['field_of_study_name'] = search_timetable.field_of_study_id.name
             timetable['semester_name'] = search_timetable.semester_id.name
             timetable['level_name'] = search_timetable.level_id.name
-            timetable['department_id'] = search_timetable.department_id
+            timetable['department_id'] = search_timetable.department_id.id
             timetable['department_name'] = search_timetable.department_id.name
             timetable['subject_name'] = search_timetable.subject_id.name
             timetable['subject_code'] = search_timetable.subject_id.code
