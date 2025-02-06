@@ -171,13 +171,13 @@ class Helpers:
         for i in range(len(data)):
             data[i]['start_time'] = round(data[i]['start_time'], 2)
             data[i]['end_time'] = round(data[i]['end_time'], 2)
-            h = [hours[j] for j in range(len(hours)) if (data[i]['start_time'] <= hours[j][0] and data[i]['end_time'] > hours[j][0]) or (data[i]['start_time'] < hours[j][1] and data[i]['end_time'] >= hours[j][1])]
+            h = [hour for hour in hours if (data[i]['start_time'] <= hour[0] and data[i]['end_time'] > hour[0]) or (data[i]['start_time'] < hour[1] and data[i]['end_time'] >= hour[1])]
             if len(h) == 0:
                 current_data.append(data[i])
             else:
-                h = [hours[j] for j in range(len(hours)) if data[i]['start_time'] == hours[j][0] and data[i]['end_time'] == hours[j][1]]
+                h = [hour for hour in hours if data[i]['start_time'] == hour[0] and data[i]['end_time'] == hour[1]]
                 if len(h) == 0:
-                    h = [hours[j] for j in range(len(hours)) if data[i]['start_time'] == hours[j][0]]
+                    h = [hour for hour in hours if data[i]['start_time'] == hour[0]]
                     if len(h) > 0:
                         data1[i] = copy.deepcopy(data[i])
                         data2[i] = copy.deepcopy(data[i])
@@ -186,7 +186,7 @@ class Helpers:
                         current_data.append(data1[i])
                         current_data.append(data2[i])
                     else:
-                        h = [hours[j] for j in range(len(hours)) if data[i]['end_time'] == hours[j][1]]
+                        h = [hour for hour in hours if data[i]['end_time'] == hour[1]]
                         if len(h) > 0:
                             data1[i] = copy.deepcopy(data[i])
                             data2[i] = copy.deepcopy(data[i])
