@@ -286,35 +286,34 @@ class TimetablePrintWizard(models.TransientModel):
         current_hours = []
         timetables = {}
         df = {}
-        hr = {}
         data1 = {}
         data2 = {}
 
         for i in range(len(data)):
             data[i]['start_time'] = round(data[i]['start_time'], 2)
             data[i]['end_time'] = round(data[i]['end_time'], 2)
-            hr[i] = [hour for hour in hours if (TimetablePrintWizard.increment_float_time(data[i]['start_time']) <= TimetablePrintWizard.increment_float_time(hour[0]) and TimetablePrintWizard.increment_float_time(data[i]['end_time']) > TimetablePrintWizard.increment_float_time(hour[0])) or (TimetablePrintWizard.increment_float_time(data[i]['start_time']) < TimetablePrintWizard.increment_float_time(hour[1]) and TimetablePrintWizard.increment_float_time(data[i]['end_time']) >= TimetablePrintWizard.increment_float_time(hour[1]))]
-            if len(hr[i]) == 0:
+            h = [hour for hour in hours if (TimetablePrintWizard.increment_float_time(data[i]['start_time']) <= TimetablePrintWizard.increment_float_time(hour[0]) and TimetablePrintWizard.increment_float_time(data[i]['end_time']) > TimetablePrintWizard.increment_float_time(hour[0])) or (TimetablePrintWizard.increment_float_time(data[i]['start_time']) < TimetablePrintWizard.increment_float_time(hour[1]) and TimetablePrintWizard.increment_float_time(data[i]['end_time']) >= TimetablePrintWizard.increment_float_time(hour[1]))]
+            if len(h) == 0:
                 current_data.append(data[i])
             else:
-                hr[i] = [hour for hour in hours if TimetablePrintWizard.increment_float_time(data[i]['start_time']) == TimetablePrintWizard.increment_float_time(hour[0]) and TimetablePrintWizard.increment_float_time(data[i]['end_time']) == TimetablePrintWizard.increment_float_time(hour[1])]
-                if len(hr[i]) == 0:
-                    hr[i] = [hour for hour in hours if TimetablePrintWizard.increment_float_time(data[i]['start_time']) < TimetablePrintWizard.increment_float_time(hour[0]) and TimetablePrintWizard.increment_float_time(data[i]['end_time']) > TimetablePrintWizard.increment_float_time(hour[1])]
-                    if len(hr[i]) == 0:
-                        hr[i] = [hour for hour in hours if TimetablePrintWizard.increment_float_time(data[i]['start_time']) == TimetablePrintWizard.increment_float_time(hour[0])]
-                        if len(hr[i]) > 0:
-                            data[i]['start_time'] = hr[i][1]
+                h = [hour for hour in hours if TimetablePrintWizard.increment_float_time(data[i]['start_time']) == TimetablePrintWizard.increment_float_time(hour[0]) and TimetablePrintWizard.increment_float_time(data[i]['end_time']) == TimetablePrintWizard.increment_float_time(hour[1])]
+                if len(h) == 0:
+                    h = [hour for hour in hours if TimetablePrintWizard.increment_float_time(data[i]['start_time']) < TimetablePrintWizard.increment_float_time(hour[0]) and TimetablePrintWizard.increment_float_time(data[i]['end_time']) > TimetablePrintWizard.increment_float_time(hour[1])]
+                    if len(h) == 0:
+                        h = [hour for hour in hours if TimetablePrintWizard.increment_float_time(data[i]['start_time']) == TimetablePrintWizard.increment_float_time(hour[0])]
+                        if len(h) > 0:
+                            data[i]['start_time'] = h[0][1]
                             current_data.append(data[i])
                         else:
-                            hr[i] = [hour for hour in hours if TimetablePrintWizard.increment_float_time(data[i]['end_time']) == TimetablePrintWizard.increment_float_time(hour[1])]
-                            if len(hr[i]) > 0:
-                                data[i]['end_time'] = hr[i][0]
+                            h = [hour for hour in hours if TimetablePrintWizard.increment_float_time(data[i]['end_time']) == TimetablePrintWizard.increment_float_time(hour[1])]
+                            if len(h) > 0:
+                                data[i]['end_time'] = h[0][0]
                                 current_data.append(data[i])
                     else:
                         data1[i] = copy.deepcopy(data[i])
                         data2[i] = copy.deepcopy(data[i])
-                        data1[i]['end_time'] = hr[i][0]
-                        data2[i]['start_time'] = hr[i][1]
+                        data1[i]['end_time'] = h[0][0]
+                        data2[i]['start_time'] = h[0][1]
                         current_data.append(data1[i])
                         current_data.append(data2[i])
 
