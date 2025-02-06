@@ -173,9 +173,27 @@ class Helpers:
             if len(h) == 0:
                 current_data.append(data[i])
             else:
-                h = [hours[j] for j in range(len(hours)) if data[i]['start_time'] == hours[j][0] or data[i]['end_time'] == hours[j][1]]
+                h = [hours[j] for j in range(len(hours)) if data[i]['start_time'] == hours[j][0] and data[i]['end_time'] == hours[j][1]]
                 if len(h) == 0:
-                    current_data.append(data[i])
+                    h = [hours[j] for j in range(len(hours)) if data[i]['start_time'] == hours[j][0]]
+                    if len(h) > 0:
+                        data1 = copy.deepcopy(data[i])
+                        data1['end_time'] = h[1]
+                        data2 = copy.deepcopy(data[i])
+                        data1['start_time'] = h[1]
+                        current_data.append(data1)
+                        current_data.append(data2)
+                    else:
+                        h = [hours[j] for j in range(len(hours)) if data[i]['end_time'] == hours[j][1]]
+                        if len(h) > 0:
+                            data1 = copy.deepcopy(data[i])
+                            data1['end_time'] = h[0]
+                            data2 = copy.deepcopy(data[i])
+                            data1['start_time'] = h[0]
+                            current_data.append(data1)
+                            current_data.append(data2)
+
+        data = current_data
 
         data.sort(key=lambda d: d['date'])
         sorted_data = copy.deepcopy(data)
