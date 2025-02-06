@@ -39,10 +39,12 @@ class CheckAvailableSlot(models.Model):
 
         slotitems = []
         for slot in slots:
-            slotitem_day_ids = list(slot.slotitem_day_ids)
+            slotitem_day_ids = slot.slotitem_day_ids.filtered(lambda s: not s.is_active)
+            slotitem_day_ids = list(slotitem_day_ids)
             for slotitem_day_id in slotitem_day_ids:
                 slotitems.append((slotitem_day_id.start_time, slotitem_day_id.end_time))
-            slotitem_night_ids = list(slot.slotitem_night_ids)
+            slotitem_night_ids = slot.slotitem_night_ids.filtered(lambda s: not s.is_active)
+            slotitem_night_ids = list(slotitem_night_ids)
             for slotitem_night_id in slotitem_night_ids:
                 slotitems.append((slotitem_night_id.start_time, slotitem_night_id.end_time))
         slotitems.sort(key=lambda s: s[0])

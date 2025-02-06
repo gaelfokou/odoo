@@ -262,6 +262,8 @@ class TimetableSlotItem(models.Model):
         widget='radio'
     )
 
+    is_active = fields.Boolean(string="Actif", default=True)
+
     @staticmethod
     def are_almost_equal(a, b, tolerance=1e-9):
         return abs(a - b) < tolerance

@@ -10,6 +10,8 @@
                     <field name="name"/>
                     <field name="slotitem_day_ids"/>
                     <field name="slotitem_night_ids"/>
+                    <field name="department_id"/>
+                    <field name="field_of_study_ids"/>
                     <field name="is_default"/>
                 </tree>
             </field>
