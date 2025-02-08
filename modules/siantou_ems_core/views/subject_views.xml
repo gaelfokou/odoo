@@ -15,7 +15,7 @@
                     <field name="name"/>
                     <field name="unite_enseignement_id"/>
                     <field name="semester_id"/>
-                    <field name="field_of_study_id" widget="many2many_tags"/>
+                    <field name="field_of_study_ids" widget="many2many_tags"/>
                     <field name="level_id"/>
                     <field name="hours_credit"/>
                     <field name="weekly_hours_credit"/>
@@ -36,7 +36,7 @@
                             <group colspan="2">
                                 <field name="code"/>
                                 <field name="unite_enseignement_id"/>
-                                <field name="field_of_study_id" widget="many2many_tags" options="{'no_create': True}"/>
+                                <field name="field_of_study_ids" widget="many2many_tags" options="{'no_create': True}"/>
                                 <field name="hours_credit"/>
                                 <field name="weekly_hours_credit"/>
                             </group>

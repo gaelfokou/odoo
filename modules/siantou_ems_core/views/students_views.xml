@@ -93,6 +93,7 @@
                             <group col="4" name="academique" string="Informations académiques">
                                 <group colspan="2">
                                     <field name="matricule"/>
+                                    <field name="student_enroll_id"/>
                                     <field name="class_id"/>
                                     <field name="cycle_id"/>
                                     <field name="batch_id"/>

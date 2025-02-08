@@ -53,7 +53,7 @@
                                     <tree string="">
                                         <field name="code"/>
                                         <field name="name"/>  
-                                        <field name="field_of_study_id"/>  
+                                        <field name="field_of_study_ids"/>  
                                     </tree>
                                 </field>
                             </page>

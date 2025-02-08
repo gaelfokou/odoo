@@ -43,13 +43,7 @@ class Subject(models.Model):
     )
 
     # Filière à laquelle appartient ce cours
-    field_of_study_id = fields.Many2many(
-        'siantou.ems.core.field_of_study',
-        string='Filière',
-        help='Filière à laquelle appartient ce cours',
-        required=True,
-        ondelete='restrict'
-    )
+    field_of_study_ids = fields.Many2many('siantou.ems.core.field_of_study', 'field_of_study_subject_rel', 'subject_id', 'field_of_study_id', string='Filières')
 
     # ue_ids = fields.Many2many(
     #     'siantou.ems.core.syllabus.subject',

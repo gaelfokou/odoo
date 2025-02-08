@@ -82,7 +82,6 @@
                 name="Classe"
                 parent="menu_siantou_ems_core_program"
                 action="action_show_siantou_ems_core_class"
-                groups="siantou_ems_core.group_siantou_ems_core_class_user,siantou_ems_core.group_siantou_ems_core_class_admin,base.group_system"
                 sequence="4"/>
 
 	</data>

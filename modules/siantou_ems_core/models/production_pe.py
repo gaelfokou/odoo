@@ -44,7 +44,7 @@ class ProductionDpo(models.Model):
         inverse_name='pro_pe_id',
     )
                             
-    @api.onchange('class_id')
+    @api.onchange('class_id','semestre_id')
     def _onchange_class_id(self):
         for rec in self:
             if rec.class_id:

@@ -26,11 +26,11 @@ class TimetableWizard(models.TransientModel):
 
         for record in self:
             if record.group:
-                new_group = self.env['siantou.ems.timetable.group'].create({'name': record.group})
+                new_group = self.env['siantou.ems.timetable.group'].create({'name': record.group, 'semester_id': record.semester_id.id})
             else:
                 # Génération de la chaîne unique
                 unique_string = datetime.now().strftime("%Y%m%d%H%M")
-                new_group = self.env['siantou.ems.timetable.group'].create({'name': "group-" + unique_string})
+                new_group = self.env['siantou.ems.timetable.group'].create({'name': "group-" + unique_string, 'semester_id': record.semester_id.id})
 
             check_field_of_studies = None
             check_subjects = None

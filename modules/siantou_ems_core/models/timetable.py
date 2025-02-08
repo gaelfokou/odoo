@@ -230,6 +230,12 @@ class TimetableGroup(models.Model):
 
     name = fields.Char('Nom du groupe', required=True)
 
+    semester_id = fields.Many2one(
+        'siantou.ems.core.year.semester',
+        'Semester',
+        required=True
+    )
+
 class TimetableSlotItem(models.Model):
     _name = 'siantou.ems.timetable.slotitem'
     _description = 'Plage horaire'

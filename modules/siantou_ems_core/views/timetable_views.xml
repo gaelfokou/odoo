@@ -14,14 +14,12 @@
                             type="object" 
                             string="Génération automatique" 
                             class="oe_highlight" 
-                            groups="siantou_ems_core.group_timetable_admin"
                             display="always"/>
                         <!-- <button name="teacher_test_dispatch" type="object" string="Teacher test" class="oe_highlight" display="always"/> -->
                         <button name="action_timetable_print" 
                             type="object" 
                             string="Impression" 
                             class="oe_highlight" 
-                            groups="siantou_ems_core.group_timetable_admin"
                             display="always"/>
                         <!-- <button name="update_day_of_week" 
                             type="object" 
