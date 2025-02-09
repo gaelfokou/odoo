@@ -204,7 +204,7 @@ class HrPayslip(models.Model):
             date_from = date_to
 
         # Calcul de la duréee d'un cours
-        total_timetable_hours = float(0)
+        total_timetable_hours = 0.0
 
         if payslip.employee_id.id:
             if payslip.employee_id.is_teacher:
@@ -220,11 +220,15 @@ class HrPayslip(models.Model):
                     # Vérification du temps de cours de l'enseignant en biométrie
                     daily_attendances = self.filter_daily_attendance_teacher(employee_timetable.date, employee_timetable.end_time, employee_timetable.start_time, employee_timetable.employee_id)
                     if employee_timetable.status in ['3']:
-                        timetable_hours = employee_timetable.end_time - employee_timetable.start_time
+                        # timetable_hours = employee_timetable.end_time - employee_timetable.start_time
+                        timetable_hours = employee_timetable.subject_id.weekly_hours_credit
+                        timetable_hours = float(timetable_hours)
                         total_timetable_hours += timetable_hours
                     elif len(daily_attendances) > 1:
                         for daily_attendance in daily_attendances:
-                            timetable_hours = employee_timetable.end_time - employee_timetable.start_time
+                            # timetable_hours = employee_timetable.end_time - employee_timetable.start_time
+                            timetable_hours = employee_timetable.subject_id.weekly_hours_credit
+                            timetable_hours = float(timetable_hours)
                             total_timetable_hours += timetable_hours
                             break
                 # if payslip.employee_id.is_permanent:
@@ -292,7 +296,9 @@ class HrPayslip(models.Model):
                         start_time = self.convert_float_to_time(employee_timetable.start_time)
                         datetime_to = datetime.strptime(f'{employee_timetable.date} {end_time}', DATETIME_FORMAT)
                         datetime_from = datetime.strptime(f'{employee_timetable.date} {start_time}', DATETIME_FORMAT)
-                        timetable_hours = employee_timetable.end_time - employee_timetable.start_time
+                        # timetable_hours = employee_timetable.end_time - employee_timetable.start_time
+                        timetable_hours = employee_timetable.subject_id.weekly_hours_credit
+                        timetable_hours = float(timetable_hours)
                         timetable_message = 'Exception'
                         self.env['hr.payslip.worked_days'].create({
                             'name': 'Journée du {} {}, {}, {}'.format(CURRENT_WEEKDAY[employee_timetable.date.weekday()], datetime.strftime(datetime_from, DATETIME_FORMAT_FR), employee_timetable.subject_id.name, timetable_message),
@@ -308,7 +314,9 @@ class HrPayslip(models.Model):
                             start_time = self.convert_float_to_time(employee_timetable.start_time)
                             datetime_to = datetime.strptime(f'{employee_timetable.date} {end_time}', DATETIME_FORMAT)
                             datetime_from = datetime.strptime(f'{employee_timetable.date} {start_time}', DATETIME_FORMAT)
-                            timetable_hours = employee_timetable.end_time - employee_timetable.start_time
+                            # timetable_hours = employee_timetable.end_time - employee_timetable.start_time
+                            timetable_hours = employee_timetable.subject_id.weekly_hours_credit
+                            timetable_hours = float(timetable_hours)
                             self.env['hr.payslip.worked_days'].create({
                                 'name': 'Journée du {} {}, {}'.format(CURRENT_WEEKDAY[employee_timetable.date.weekday()], datetime.strftime(datetime_from, DATETIME_FORMAT_FR), employee_timetable.subject_id.name),
                                 'payslip_id': payslip_id.id,
