@@ -52,10 +52,10 @@
                         </group>
                         <notebook>
                             <page name="name" string="Enseignants du cours">
-                                <field name="teacher_ids"/>
+                                <field name="teacher_ids" domain="[('is_teacher', '=', True)]"/>
                             </page>
                             <page name="name" string="Priorités des enseignants">
-                                <field name="teacher_priority_ids" widget="one2many_list">
+                                <field name="teacher_priority_ids" domain="[('is_teacher', '=', True)]" widget="one2many_list">
                                     <tree editable="bottom">
                                         <field name="employee_id" options="{'no_open': True}"/>
                                         <field name="priority"/>

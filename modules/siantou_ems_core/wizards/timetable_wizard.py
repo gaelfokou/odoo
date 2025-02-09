@@ -145,8 +145,8 @@ class TimetableWizard(models.TransientModel):
                 raise UserError("Aucun étudiant trouvé")
             elif not check_slot:
                 raise UserError("Aucun créneau horaire disponible")
-            elif not check_teacher:
-                raise UserError("Aucun enseignant disponible")
+            # elif not check_teacher:
+            #     raise UserError("Aucun enseignant disponible")
             elif not check_classroom:
                 raise UserError("Aucune salle de classe trouvée")
 
