@@ -38,7 +38,6 @@ class TimetableWizard(models.TransientModel):
             check_weekly_hours_credit = 0
             check_batches = None
             check_slot = None
-            check_teacher = None
             check_classroom = False
             
             # Récupérer la liste des filières et les traiter l'une après l'autre
@@ -105,9 +104,7 @@ class TimetableWizard(models.TransientModel):
                                                         # On trouve un enseignant disponible selon sa priorité et son quota horaire
                                                         teacher_priority = check_available_teacher_model.get_teacher_for_period(subject.id, current_date, available_slot["start_time"], available_slot["end_time"])
                                                         if teacher_priority:
-                                                            teacher_availability = self.find_available_teacher(teacher_priority, current_date, available_slot["start_time"], available_slot["end_time"])
-                                                            if teacher_availability:
-                                                                check_teacher = teacher_priority
+                                                            teacher_priority = self.find_available_teacher(teacher_priority, current_date, available_slot["start_time"], available_slot["end_time"])
                                                         # On trouve une salle de classe disponible pour le cours
                                                         classroom = self.check_available_classroom(subject_duration, current_date, day, available_slot["start_time"])
                                                         if classroom['found']:
@@ -147,8 +144,6 @@ class TimetableWizard(models.TransientModel):
                 raise UserError("Aucun volume horaire hebdomadaire défini")
             elif not check_slot:
                 raise UserError("Aucun créneau horaire disponible")
-            # elif not check_teacher:
-            #     raise UserError("Aucun enseignant disponible")
             elif not check_classroom:
                 raise UserError("Aucune salle de classe trouvée")
 
