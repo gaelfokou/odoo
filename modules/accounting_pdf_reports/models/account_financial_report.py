@@ -17,7 +17,7 @@ class AccountFinancialReport(models.Model):
 
     def _get_children_by_order(self):
         res = self
-        children = self.search([('parent_id', 'in', self.ids)], order='sequence ASC')
+        children = self.search([('parent_id', 'in', self.ids)], order='sequence asc')
         if children:
             for child in children:
                 res += child._get_children_by_order()

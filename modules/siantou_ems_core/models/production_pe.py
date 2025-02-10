@@ -12,7 +12,7 @@ class ProductionDpo(models.Model):
     _description = 'Production du PROGRAMME D\'ENSEIGNEMENT'
 
     _rec_name = 'name'
-    _order = 'name ASC'
+    _order = 'name asc'
 
     name = fields.Char(
         string='Name',

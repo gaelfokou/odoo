@@ -22,7 +22,7 @@ class CheckPriority(models.Model):
         # Étape 1: Chercher les enseignants pour le cours, triés par priorité décroissante
         priorities = self.env['siantou.ems.core.teacher.subject.priority'].search(
             [('subject_id', '=', subject_id)],
-            order='priority DESC'
+            order='priority asc'
         )
 
 
@@ -31,14 +31,24 @@ class CheckPriority(models.Model):
             teacher = priority.employee_id
 
             # Étape 2 : Vérifier si l'enseignant a déjà un cours prévu à la même plage horaire
-            overlapping_course = self.env['siantou.ems.timetable.timetable'].search([
+            # overlapping_course = self.env['siantou.ems.timetable.timetable'].search([
+            #     ('employee_id', '=', teacher.id),
+            #     ('date', '=', date),
+            #     ('start_time', '<', end_time),  # Chevauchement d'horaire
+            #     ('end_time', '>', start_time)   # Chevauchement d'horaire
+            # ], limit=1)
+
+            # if overlapping_course:
+            #     continue  # Si l'enseignant a déjà un cours à la même plage horaire, on passe au suivant
+
+            overlapping_courses = self.env['siantou.ems.timetable.timetable'].search([
                 ('employee_id', '=', teacher.id),
                 ('date', '=', date),
-                ('start_time', '<', end_time),  # Chevauchement d'horaire
-                ('end_time', '>', start_time)   # Chevauchement d'horaire
-            ], limit=1)
+            ]).filtered(lambda rec: (rec.start_time <= start_time and rec.end_time > start_time) or (rec.start_time < end_time and rec.end_time >= end_time))
 
-            if overlapping_course:
+            overlapping_courses = list(overlapping_courses)
+
+            if len(overlapping_courses) > 0:
                 continue  # Si l'enseignant a déjà un cours à la même plage horaire, on passe au suivant
 
             # Si un enseignant est permanent
@@ -55,17 +65,26 @@ class CheckPriority(models.Model):
             teacher = priority.employee_id
 
             # Étape 2 : Vérifier si l'enseignant a déjà un cours prévu à la même plage horaire
-            overlapping_course = self.env['siantou.ems.timetable.timetable'].search([
+            # overlapping_course = self.env['siantou.ems.timetable.timetable'].search([
+            #     ('employee_id', '=', teacher.id),
+            #     ('date', '=', date),
+            #     ('start_time', '<', end_time),  # Chevauchement d'horaire
+            #     ('end_time', '>', start_time)   # Chevauchement d'horaire
+            # ], limit=1)
+
+            # if overlapping_course:
+            #     continue  # Si l'enseignant a déjà un cours à la même plage horaire, on passe au suivant
+
+            overlapping_courses = self.env['siantou.ems.timetable.timetable'].search([
                 ('employee_id', '=', teacher.id),
                 ('date', '=', date),
-                ('start_time', '<', end_time),  # Chevauchement d'horaire
-                ('end_time', '>', start_time)   # Chevauchement d'horaire
-            ], limit=1)
+            ]).filtered(lambda rec: (rec.start_time <= start_time and rec.end_time > start_time) or (rec.start_time < end_time and rec.end_time >= end_time))
 
-            if overlapping_course:
+            overlapping_courses = list(overlapping_courses)
+
+            if len(overlapping_courses) > 0:
                 continue  # Si l'enseignant a déjà un cours à la même plage horaire, on passe au suivant
 
-            
             # Si un enseignant est non permanent
             if not teacher.is_permanent:
                 # Vérifier si le quota horaire hebdomadaire n'est pas atteint

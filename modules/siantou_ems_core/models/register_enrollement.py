@@ -13,7 +13,7 @@ class SessionEnrollment(models.Model):
     _name = "siantou.session"
     _inherit = "mail.thread"
     _description = "Gestion des Session d'admission"
-    _order = 'id DESC'
+    _order = 'id desc'
     _sql_constraints = [
         ('uniq_session', 'unique(name,year_id,campus)',
          "Cette session existe déja pour cette Année académique!"),
@@ -165,7 +165,7 @@ class SessionRegisterEnrollment(models.Model):
     _name = "siantou.session.registre"
     _inherit = "mail.thread"
     _description = "Gestion des Registre d'admission"
-    _order = 'id DESC'
+    _order = 'id desc'
     _sql_constraints = [
         ('uniq_registre', 'unique(name,filiere_id,year_id,campus)',
          "Cette session existe déja pour cette année académique!"),

@@ -298,5 +298,5 @@ class TeacherSubjectPriority(models.Model):
     def get_teachers_by_priority(self, subject_id):
         return self.env['siantou.ems.core.teacher.subject.priority'].search(
             [('subject_id', '=', subject_id)],
-            order='priority DESC'
+            order='priority desc'
         )

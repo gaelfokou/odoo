@@ -214,7 +214,7 @@ class ExamRatingAnonymousResult(models.Model):
     def _compute_exam_grade(self):
         for result in self:
             result.exam_grade_line_id = False
-            grade_lines = self.env['siantou.ems.examen.grade'].search([],order='score_min DESC')
+            grade_lines = self.env['siantou.ems.examen.grade'].search([],order='score_min desc')
             for line in grade_lines:
                 if result.marks in [line.score_min, line.score_max]:
                     result.exam_grade_line_id = line.id
