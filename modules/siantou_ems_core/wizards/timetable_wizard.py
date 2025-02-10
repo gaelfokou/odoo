@@ -105,7 +105,9 @@ class TimetableWizard(models.TransientModel):
                                                         # On trouve un enseignant disponible selon sa priorité et son quota horaire
                                                         teacher_priority = check_available_teacher_model.get_teacher_for_period(subject.id, current_date, available_slot["start_time"], available_slot["end_time"])
                                                         if teacher_priority:
-                                                            check_teacher = teacher_priority
+                                                            teacher_availability = self.find_available_teacher(teacher_priority, current_date, available_slot["start_time"], available_slot["end_time"])
+                                                            if teacher_availability:
+                                                                check_teacher = teacher_priority
                                                         # On trouve une salle de classe disponible pour le cours
                                                         classroom = self.check_available_classroom(subject_duration, current_date, day, available_slot["start_time"])
                                                         if classroom['found']:
@@ -150,29 +152,15 @@ class TimetableWizard(models.TransientModel):
             elif not check_classroom:
                 raise UserError("Aucune salle de classe trouvée")
 
-    def find_available_teacher(self, subject_id):
-        subject = self.env['siantou.ems.core.subject'].browse(subject_id)
-        teachers = subject.teacher_ids
-        for teacher in teachers:
-            availabilities = teacher.teacher_availability_ids
-            for availability in availabilities:
-                conflicting_timetables = self.env['siantou.ems.timetable.timetable'].search([
-                    ('employee_id', '=', teacher.id),
-                    ('day_of_week', '=', availability.day_of_week),
-                    ('start_time', '<', availability.end_time),
-                    ('end_time', '>', availability.start_time),
-                ])
-                if not conflicting_timetables:
-                    return {
-                        'found': True,
-                        'employee_id': teacher.id,
-                        'day_of_week': availability.day_of_week,
-                        'start_time': availability.start_time,
-                    }
-        return {
-            'found': False,
-        }
+    def find_available_teacher(self, teacher, date, start_time, end_time):
+        availabilities = teacher.teacher_availability_ids.filtered(lambda rec: (rec.day_of_week == str(date.weekday())) and ((rec.start_time <= start_time and rec.end_time > start_time) and (rec.start_time < end_time and rec.end_time >= end_time)))
 
+        availabilities = list(availabilities)
+
+        if len(availabilities) > 0:
+            return teacher
+
+        return None
 
     def check_available_classroom(self, subject_duration, date, day_of_week, start_time):
         available_classrooms = self.env['siantou.ems.core.building.classroom'].search([])
