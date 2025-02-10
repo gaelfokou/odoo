@@ -56,33 +56,33 @@ class TimetableWizard(models.TransientModel):
                         _logger.info(f'----------- tototototototo subject name {subject.name} -----------')
                         _logger.info(f'----------- tototototototo subject weekly_hours_credit {subject.weekly_hours_credit} -----------')
                         if subject.semester_id.id == record.semester_id.id:
-                            semester_hours_credit = subject.hours_credit
-                            check_semester_hours_credit += semester_hours_credit
-                            # On parcours toutes les semaines du semestre
-                            for week in range(0, subject.semester_id.number_of_week):
-                                # on verifie si le quota semestriel n'est pas atteint
-                                if semester_hours_credit > 0:
-                                    # On initialise weekly_hours_credit pour gérer le nombre de jours sur lesquels on doit programmer le cours
-                                    weekly_hours_credit = subject.weekly_hours_credit
-                                    check_weekly_hours_credit += weekly_hours_credit
-                                    # On parcours toutes les jours de la semaine
-                                    for day in range(0, 6):
-                                        # on verifie si le quota hebdomadaire est atteint
-                                        if weekly_hours_credit > 0:
-                                            start_time = subject.semester_id.start_time - timedelta(days=subject.semester_id.start_time.weekday())
-                                            end_time = start_time + timedelta(days=5)
-                                            subject_duration = min(4, weekly_hours_credit)
-                                            # On parcours les jours de la semaine de Lundi - Samedi
-                                            check_available_slot_model = self.env['siantou.ems.timetable.check_available_slot']
-                                            target_date = start_time + timedelta(weeks=week, days=day)
-                                            batches = self.env['siantou.ems.core.student.batch'].search([
-                                                ('school_id', '=', field_of_study.school_id.id),
-                                                ('field_of_study_id', '=', field_of_study.id),
-                                                ('level_id', '=', level_id),
-                                            ])
-                                            
-                                            for batch in batches:
-                                                check_batches = batch
+                            batches = self.env['siantou.ems.core.student.batch'].search([
+                                ('school_id', '=', field_of_study.school_id.id),
+                                ('field_of_study_id', '=', field_of_study.id),
+                                ('level_id', '=', level_id),
+                            ])
+                            
+                            for batch in batches:
+                                check_batches = batch
+                                semester_hours_credit = subject.hours_credit
+                                check_semester_hours_credit += semester_hours_credit
+                                # On parcours toutes les semaines du semestre
+                                for week in range(0, subject.semester_id.number_of_week):
+                                    # on verifie si le quota semestriel n'est pas atteint
+                                    if semester_hours_credit > 0:
+                                        # On initialise weekly_hours_credit pour gérer le nombre de jours sur lesquels on doit programmer le cours
+                                        weekly_hours_credit = subject.weekly_hours_credit
+                                        check_weekly_hours_credit += weekly_hours_credit
+                                        # On parcours toutes les jours de la semaine
+                                        for day in range(0, 6):
+                                            # on verifie si le quota hebdomadaire est atteint
+                                            if weekly_hours_credit > 0:
+                                                start_time = subject.semester_id.start_time - timedelta(days=subject.semester_id.start_time.weekday())
+                                                end_time = start_time + timedelta(days=5)
+                                                subject_duration = min(4, weekly_hours_credit)
+                                                # On parcours les jours de la semaine de Lundi - Samedi
+                                                check_available_slot_model = self.env['siantou.ems.timetable.check_available_slot']
+                                                target_date = start_time + timedelta(weeks=week, days=day)
                                                 i = 0
                                                 duration_hours = subject_duration
                                                 while True:
@@ -137,12 +137,12 @@ class TimetableWizard(models.TransientModel):
                 raise UserError("Aucune filière trouvée")
             elif not check_subjects:
                 raise UserError("Aucun cours trouvé")
+            elif not check_batches:
+                raise UserError("Aucun étudiant trouvé")
             elif check_semester_hours_credit == 0:
                 raise UserError("Aucun volume horaire semestriel défini")
             elif check_weekly_hours_credit == 0:
                 raise UserError("Aucun volume horaire hebdomadaire défini")
-            elif not check_batches:
-                raise UserError("Aucun étudiant trouvé")
             elif not check_slot:
                 raise UserError("Aucun créneau horaire disponible")
             # elif not check_teacher:
