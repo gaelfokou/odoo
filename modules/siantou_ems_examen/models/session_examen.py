@@ -202,7 +202,8 @@ class SessionExamen(models.Model):
             if record.state != 'cancel':
                 # Check the uniqueness constraint when the state is not 'cancel'
                 if self.env['siantou.ems.examen.session'].search([
-                    ('field_of_study_ids', 'in', record.field_of_study_ids.ids),
+                    # ('field_of_study_ids', 'in', record.field_of_study_ids.ids),
+                    ('class_ids', 'in', record.class_ids.ids),
                     ('year_id', '=', record.year_id.id),
                     ('type_examen_id', '=', record.type_examen_id.id),
                     ('semester_id', '=', record.semester_id.id),
@@ -227,15 +228,17 @@ class SessionExamen(models.Model):
             if rec.exam_subject_ids:
                 rec.exam_subject_ids.unlink()
             
-            for field_of_study_id in rec.field_of_study_ids:
-                cycle_id = field_of_study_id.cursus_id
-                student_ids = field_of_study_id.student_ids
+            # for field_of_study_id in rec.field_of_study_ids:
+            for class_id in rec.class_ids:
+                cycle_id = class_id.filiere_id.cursus_id
+                student_ids = class_id.filiere_id.student_ids
                 if cycle_id:
                     if cycle_id.level_ids:
                         for level_id in cycle_id.level_ids:
                             syllabus_id = self.env['siantou.ems.core.syllabus'].search(
                                 [
-                                    ('field_of_study_id','=',field_of_study_id.id),
+                                    # ('field_of_study_id','=',field_of_study_id.id),
+                                    ('field_of_study_id','=',class_id.filiere_id.id),
                                     ('year_id','=',rec.year_id.id),
                                     ('semester_id','=',rec.semester_id.id),
                                     ('level_id','=',level_id.id),
