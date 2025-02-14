@@ -38,7 +38,10 @@
                                 <tree 
                                 editable='bottom'
                                 >
+                                <field name="class_id"/>
+                                <field name="unite_enseignement_id"/>
                                 <field name="subject_id"/>
+                                <field name="semestre_id"/>
                                 <field name="cm" />
                                 <field name="td" />
                                 <field name="vhp" />

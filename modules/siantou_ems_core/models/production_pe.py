@@ -32,12 +32,10 @@ class ProductionDpo(models.Model):
         required=True,
     )
 
-    
     description = fields.Text(
         string='Description',
     )
-    
-    
+
     syllabus_ids = fields.One2many(
         string='syllabus',
         comodel_name='siantou.ems.core.syllabus',

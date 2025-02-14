@@ -33,8 +33,7 @@ class EducationClass(models.Model):
     annee_acadmique_id = fields.Many2one('siantou.ems.core.year', string='Année Académique')
     
     semestre_id = fields.Many2one('siantou.ems.core.year.semester', string='Semestre', tracking=True)
-    
-    
+
     ue_ids = fields.One2many(comodel_name='siantou.ems.core.unite.enseignement', inverse_name='class_id', string='Unité d\'enseignement')
     
     

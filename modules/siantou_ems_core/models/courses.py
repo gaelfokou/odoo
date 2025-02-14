@@ -179,13 +179,15 @@ class SchoolSyllabus(models.Model):
         compute='_compute_name',readonly=False, precompute=True,
         tracking=True,
     )
-    class_id = fields.Many2one('siantou.ems.core.class', string='Classe')
-    subject_id = fields.Many2one('siantou.ems.core.subject', string='Matière')
-    
 
-    semestre_id = fields.Many2one('siantou.ems.core.year.semester', string='Semestre', tracking=True)
-    
-    
+    class_id = fields.Many2one('siantou.ems.core.class', string='Classe', required=True)
+
+    unite_enseignement_id = fields.Many2one('siantou.ems.core.unite.enseignement', string='UE', required=True, tracking=True)
+
+    subject_id = fields.Many2one('siantou.ems.core.subject', string='Matière', required=True)
+
+    semestre_id = fields.Many2one('siantou.ems.core.year.semester', string='Semestre', required=True, tracking=True)
+
     description = fields.Text(string='Syllabus Modules')
 
     pourcentage_cc = fields.Integer(string='Pourcentage CC',default=30,  tracking=True)
@@ -194,8 +196,6 @@ class SchoolSyllabus(models.Model):
     
     pourcentage_presence = fields.Integer(string='Pourcentage Présence', default=20, tracking=True)
 
-    unite_enseignement_id = fields.Many2one('siantou.ems.core.unite.enseignement', string='UE', tracking=True)
-    
     note_sn= fields.Boolean('Pas de SN')
 
     coefficient = fields.Integer(
@@ -243,6 +243,30 @@ class SchoolSyllabus(models.Model):
         string='pro_pe',
         comodel_name='production.pe',
     )
+
+    @api.onchange('class_id')
+    def _check_onchange(self):
+        for record in self:
+            return {'domain': {
+                'subject_id': [
+                    ('id', 'in', record.class_id.filiere_id.subject_ids.ids),
+                    ('id', 'in', record.unite_enseignement_id.subject_ids.ids)
+                ],
+                'semestre_id': [('id', '=', record.semestre_id.id)],
+            }}
+
+    @api.constrains('subject_id')
+    def _check_validity(self):
+        for record in self:
+            subject_ids = record.class_id.filiere_id.subject_ids.filtered(lambda s: s.id == record.subject_id.id)
+            subject_ids = list(subject_ids)
+            if len(subject_ids) > 0:
+                subject_ids = record.unite_enseignement_id.subject_ids.filtered(lambda s: s.id == record.subject_id.id)
+                subject_ids = list(subject_ids)
+                if len(subject_ids) == 0:
+                    raise ValidationError(f"Le cours magistral n'existe pas dans l'unité d'enseignement choisi")
+            else:
+                raise ValidationError(f"Le cours magistral n'existe pas dans la filière choisie")
     
     @api.depends('class_id')
     def _compute_name(self):

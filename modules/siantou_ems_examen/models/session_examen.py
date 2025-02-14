@@ -228,66 +228,54 @@ class SessionExamen(models.Model):
             if rec.exam_subject_ids:
                 rec.exam_subject_ids.unlink()
             
-            # for field_of_study_id in rec.field_of_study_ids:
+            check_syllabus = None
+            check_students = None
+
             for class_id in rec.class_ids:
-                cycle_id = class_id.filiere_id.cursus_id
+                niveau_id = class_id.niveau_id
+                subject_ids = class_id.filiere_id.subject_ids.ids
                 student_ids = class_id.filiere_id.student_ids
-                if cycle_id:
-                    if cycle_id.level_ids:
-                        for level_id in cycle_id.level_ids:
-                            syllabus_id = self.env['siantou.ems.core.syllabus'].search(
-                                [
-                                    # ('field_of_study_id','=',field_of_study_id.id),
-                                    ('field_of_study_id','=',class_id.filiere_id.id),
-                                    ('year_id','=',rec.year_id.id),
-                                    ('semester_id','=',rec.semester_id.id),
-                                    ('level_id','=',level_id.id),
-                                ],
-                                limit=1
-                            )
-                            if syllabus_id:
-                                if syllabus_id.syllabus_subject_ids:
-                                    for syllabus_subject_id in syllabus_id.syllabus_subject_ids:
-                                        if syllabus_subject_id.syllabus_subject_line_ids:
-                                            for subject_line_id in syllabus_subject_id.syllabus_subject_line_ids:
-                                                exam_subject_id = rec.exam_subject_ids.create({
-                                                    'exam_id':rec.id,
-                                                    'name':f"{subject_line_id.name}_[{rec.name}]",
-                                                    'field_of_study_id':syllabus_id.field_of_study_id.id,
-                                                    'subject_id': subject_line_id.id,
-                                                    'year_id':rec.year_id.id,
-                                                    'level_id':level_id.id,
-                                                    'date_start':rec.date_start,
-                                                    'date_end':rec.date_end,
-                                                    'state':'schedule',
-                                                })
-                                                rec.show_field=True
-                                                if student_ids:
-                                                    for student_id in student_ids:
-                                                        exam_attendee_id = self.env['session.line.attende'].search([
-                                                                ('exam_subject_id','=', exam_subject_id.id),
-                                                                ('student_id','=', student_id.id)
-                                                            ],
-                                                            limit=1
-                                                        )
-                                                        if not exam_attendee_id:
-                                                            exam_subject_id.exam_attendee_ids.create({
-                                                                'exam_subject_id':exam_subject_id.id,
-                                                                'student_id':student_id.id,
-                                                                'status':'',
-                                                            })
-                                                else:
-                                                    raise ValidationError(f"Aucun étudiant de la {exam_subject_id.name} trouvé")
-                                        else:
-                                            raise ValidationError("Matière des unitées d'enseignement non configuré")
-                                else:
-                                    raise ValidationError("Unité d'enseignement de syllabus non configuré")
-                            else:
-                                raise ValidationError("Syllabus non configuré")
-                    else:
-                        raise ValidationError("Niveau non configuré")
-                else:
-                    raise ValidationError("Cycle non configuré")
+                syllabus_ids = self.env['siantou.ems.core.syllabus'].search(
+                    [
+                        ('subject_id', 'in', subject_ids),
+                        ('class_id','=',class_id.id),
+                        ('semestre_id','=',rec.semester_id.id),
+                    ],
+                )
+                syllabus_ids = list(syllabus_ids)
+                for syllabus_id in syllabus_ids:
+                    check_syllabus = syllabus_id
+                    exam_subject_id = rec.exam_subject_ids.create({
+                        'exam_id': rec.id,
+                        'name':f"{syllabus_id.name}_[{rec.name}]",
+                        'field_of_study_id': syllabus_id.class_id.filiere_id.id,
+                        'subject_id': syllabus_id.subject_id.id,
+                        'year_id': rec.year_id.id,
+                        'level_id': niveau_id.id,
+                        'date_start': rec.date_start,
+                        'date_end': rec.date_end,
+                        'state':'schedule',
+                    })
+                    rec.show_field=True
+                    for student_id in student_ids:
+                        check_students = student_id
+                        exam_attendee_id = self.env['session.line.attende'].search([
+                                ('exam_subject_id','=', exam_subject_id.id),
+                                ('student_id','=', student_id.id)
+                            ],
+                            limit=1
+                        )
+                        if not exam_attendee_id:
+                            exam_subject_id.exam_attendee_ids.create({
+                                'exam_subject_id':exam_subject_id.id,
+                                'student_id':student_id.id,
+                                'status':'',
+                            })
+
+            if not check_syllabus:
+                raise ValidationError("Matière des unitées d'enseignement non configuré")
+            elif not check_students:
+                raise ValidationError(f"Aucun étudiant trouvé")
 
         self.write({'state': 'progress'})
 
