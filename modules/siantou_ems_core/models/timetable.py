@@ -132,44 +132,14 @@ class Timetable(models.Model):
             day_of_week = datetime.strptime(str(self.date), '%Y-%m-%d').weekday()
             self.day_of_week = str(day_of_week)  # Assurez-vous que le jour soit un string (0-6)
 
-
-    # @api.model
-    # def update_day_of_week(self):
-    #     # Récupérer tous les enregistrements qui ont une valeur dans "date"
-    #     timetables = self.search([('date', '!=', False)])
-
-    #     for timetable in timetables:
-    #         # Calculer le jour de la semaine en fonction de la date
-    #         day_of_week = timetable.date.weekday()  # 0 pour lundi, 6 pour dimanche
-    #         timetable.write({'day_of_week': str(day_of_week)})  # Mise à jour du champ
-
-    #     return True
-
-    # Contrainte logique pour se rassurer qu'on a pas deux enregistrements identiques
-    @api.constrains('field_of_study_id', 'level_id', 'subject_id', 'classroom_id', 'employee_id', 'day_of_week', 'start_time', 'end_time')
-    def _check_duplicate(self):
-        for record in self:
-            if self.search([
-                ('field_of_study_id', '=', record.field_of_study_id.id),
-                ('level_id', '=', record.level_id.id),
-                ('subject_id', '=', record.subject_id.id),
-                ('classroom_id', '=', record.classroom_id.id),
-                ('employee_id', '=', record.employee_id.id),
-                ('day_of_week', '=', record.day_of_week),
-                # ('start_time', '=', record.end_time),
-                # ('end_time', '=', record.start_time),
-            ]).filtered(lambda rec: (rec.start_time <= record.start_time and rec.end_time > record.start_time) or (rec.start_time < record.end_time and rec.end_time >= record.end_time)):
-                raise ValidationError("Cet enregistrement existe déjà")
-
-    #Contrainte logique pour se rassurer que deux cours ne sont pas programmés dans la même salle au même moment
-    @api.constrains('classroom_id', 'date', 'day_of_week', 'start_time', 'end_time')
+    # Contrainte logique pour se rassurer que deux cours ne sont pas programmés dans la même salle au même moment
+    @api.constrains('classroom_id', 'date', 'start_time', 'end_time')
     def _check_classroom_is_free(self):
         for record in self:
             if self.search([
                 ('id', '!=', record.id),
                 ('classroom_id', '=', record.classroom_id.id),
                 ('date', '=', record.date),
-                ('day_of_week', '=', record.day_of_week),
                 # ('start_time', '<', record.end_time),
                 # ('end_time', '>', record.start_time),
             ]).filtered(lambda rec: (rec.start_time <= record.start_time and rec.end_time > record.start_time) or (rec.start_time < record.end_time and rec.end_time >= record.end_time)):
