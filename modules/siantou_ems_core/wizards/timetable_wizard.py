@@ -116,9 +116,9 @@ class TimetableWizard(models.TransientModel):
                                                         timetables = self.env['siantou.ems.timetable.timetable'].search([
                                                             ('classroom_id', '=', classroom['classroom_id']),
                                                             ('date', '=', current_date),
-                                                            # ('start_time', '<', available_slot["end_time"]),
-                                                            # ('end_time', '>', available_slot["start_time"]),
-                                                        ]).filtered(lambda rec: (rec.start_time <= available_slot["start_time"] and rec.end_time > available_slot["start_time"]) or (rec.start_time < available_slot["end_time"] and rec.end_time >= available_slot["end_time"]))
+                                                            ('start_time', '<', available_slot["end_time"]),
+                                                            ('end_time', '>', available_slot["start_time"]),
+                                                        ])
                                                         timetables = list(timetables)
                                                         if len(timetables) == 0:
                                                             self.env['siantou.ems.timetable.timetable'].create({
@@ -173,13 +173,14 @@ class TimetableWizard(models.TransientModel):
         available_classrooms = self.env['siantou.ems.core.building.classroom'].search([])
         for classroom in available_classrooms:
             end_time = start_time + duration_hours_credit
-            conflicting_timetables = self.env['siantou.ems.timetable.timetable'].search([
+            timetables = self.env['siantou.ems.timetable.timetable'].search([
                 ('classroom_id', '=', classroom.id),
                 ('date', '=', current_date),
-                # ('start_time', '<', end_time),
-                # ('end_time', '>', start_time),
-            ]).filtered(lambda rec: (rec.start_time <= start_time and rec.end_time > start_time) or (rec.start_time < end_time and rec.end_time >= end_time))
-            if not conflicting_timetables:
+                ('start_time', '<', end_time),
+                ('end_time', '>', start_time),
+            ])
+            timetables = list(timetables)
+            if len(timetables) == 0:
                 return {
                     'found': True,
                     'classroom_id': classroom.id,
