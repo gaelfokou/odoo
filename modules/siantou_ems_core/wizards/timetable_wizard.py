@@ -114,24 +114,33 @@ class TimetableWizard(models.TransientModel):
                                                     classroom = self.check_available_classroom(subject_duration, current_date, day, available_slot["start_time"])
                                                     if classroom['found']:
                                                         check_classroom = classroom['found']
-                                                        self.env['siantou.ems.timetable.timetable'].create({
-                                                            'semester_id': record.semester_id.id,
-                                                            'batch_id': batch.id,
-                                                            'field_of_study_id': field_of_study.id,
-                                                            'department_id': field_of_study.department_id.id if field_of_study.department_id else None,
-                                                            'level_id': level_id,
-                                                            'subject_id': subject_id,
-                                                            'classroom_id': classroom['classroom_id'],
-                                                            'employee_id': teacher_priority.id if teacher_priority else None,
-                                                            'date': current_date,
-                                                            'day_of_week': str(current_date.weekday()),
-                                                            'start_time': available_slot["start_time"],
-                                                            'end_time': available_slot["end_time"],
-                                                            'group_id': new_group.id,
-                                                        })
-                                                        duration_hours = available_slot['duration_hours']
-                                                        semester_hours_credit -= available_slot['available_hours']
-                                                        weekly_hours_credit -= available_slot['available_hours']
+                                                        timetables = self.env['siantou.ems.timetable.timetable'].search([
+                                                            ('classroom_id', '=', classroom['classroom_id']),
+                                                            ('date', '=', current_date),
+                                                            ('day_of_week', '=', str(current_date.weekday())),
+                                                            ('start_time', '<', available_slot["end_time"]),
+                                                            ('end_time', '>', available_slot["start_time"]),
+                                                        ])
+                                                        timetables = list(timetables)
+                                                        if len(timetables) == 0:
+                                                            self.env['siantou.ems.timetable.timetable'].create({
+                                                                'semester_id': record.semester_id.id,
+                                                                'batch_id': batch.id,
+                                                                'field_of_study_id': field_of_study.id,
+                                                                'department_id': field_of_study.department_id.id if field_of_study.department_id else None,
+                                                                'level_id': level_id,
+                                                                'subject_id': subject_id,
+                                                                'classroom_id': classroom['classroom_id'],
+                                                                'employee_id': teacher_priority.id if teacher_priority else None,
+                                                                'date': current_date,
+                                                                'day_of_week': str(current_date.weekday()),
+                                                                'start_time': available_slot["start_time"],
+                                                                'end_time': available_slot["end_time"],
+                                                                'group_id': new_group.id,
+                                                            })
+                                                            duration_hours = available_slot['duration_hours']
+                                                            semester_hours_credit -= available_slot['available_hours']
+                                                            weekly_hours_credit -= available_slot['available_hours']
                                                     else:
                                                         break
                                                 else:
