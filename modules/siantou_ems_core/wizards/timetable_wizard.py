@@ -118,9 +118,9 @@ class TimetableWizard(models.TransientModel):
                                                             ('classroom_id', '=', classroom['classroom_id']),
                                                             ('date', '=', current_date),
                                                             ('day_of_week', '=', str(current_date.weekday())),
-                                                            ('start_time', '<', available_slot["end_time"]),
-                                                            ('end_time', '>', available_slot["start_time"]),
-                                                        ])
+                                                            # ('start_time', '<', available_slot["end_time"]),
+                                                            # ('end_time', '>', available_slot["start_time"]),
+                                                        ]).filtered(lambda rec: (rec.start_time <= available_slot["start_time"] and rec.end_time > available_slot["start_time"]) or (rec.start_time < available_slot["end_time"] and rec.end_time >= available_slot["end_time"]))
                                                         timetables = list(timetables)
                                                         if len(timetables) == 0:
                                                             self.env['siantou.ems.timetable.timetable'].create({
@@ -178,9 +178,9 @@ class TimetableWizard(models.TransientModel):
                 ('classroom_id', '=', classroom.id),
                 ('date', '=', date),
                 ('day_of_week', '=', day_of_week),
-                ('start_time', '<', start_time + subject_duration),
-                ('end_time', '>', start_time),
-            ])
+                # ('start_time', '<', start_time + subject_duration),
+                # ('end_time', '>', start_time),
+            ]).filtered(lambda rec: (rec.start_time <= start_time and rec.end_time > start_time) or (rec.start_time < (start_time + subject_duration) and rec.end_time >= (start_time + subject_duration)))
             if not conflicting_timetables:
                 return {
                     'found': True,

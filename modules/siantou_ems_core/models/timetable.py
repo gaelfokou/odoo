@@ -156,9 +156,9 @@ class Timetable(models.Model):
                 ('classroom_id', '=', record.classroom_id.id),
                 ('employee_id', '=', record.employee_id.id),
                 ('day_of_week', '=', record.day_of_week),
-                ('start_time', '=', record.end_time),
-                ('end_time', '=', record.start_time),
-            ]):
+                # ('start_time', '=', record.end_time),
+                # ('end_time', '=', record.start_time),
+            ]).filtered(lambda rec: (rec.start_time <= record.start_time and rec.end_time > record.start_time) or (rec.start_time < record.end_time and rec.end_time >= record.end_time)):
                 raise ValidationError("Cet enregistrement existe déjà")
 
     #Contrainte logique pour se rassurer que deux cours ne sont pas programmés dans la même salle au même moment
@@ -170,9 +170,9 @@ class Timetable(models.Model):
                 ('classroom_id', '=', record.classroom_id.id),
                 ('date', '=', record.date),
                 ('day_of_week', '=', record.day_of_week),
-                ('start_time', '<', record.end_time),
-                ('end_time', '>', record.start_time),
-            ]):
+                # ('start_time', '<', record.end_time),
+                # ('end_time', '>', record.start_time),
+            ]).filtered(lambda rec: (rec.start_time <= record.start_time and rec.end_time > record.start_time) or (rec.start_time < record.end_time and rec.end_time >= record.end_time)):
                 raise ValidationError("Deux salles de classe ne doivent pas être programmées sur des horaires qui se chevauchent le même jour")
 
     # Contrainte logique pour s'assurer que l'heure de fin est supérieure à l'heure de début
