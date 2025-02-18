@@ -62,7 +62,10 @@ class TimetableWizard(models.TransientModel):
                             ('field_of_study_id', '=', field_of_study.id),
                             ('level_id', '=', level_id),
                         ])
-                        
+                        batches = list(batches)
+                        if len(batches) == 0:
+                            batch = self.env['siantou.ems.core.student.batch'].create_new_batch(field_of_study.school_id.id, field_of_study.id, level_id)
+                            batches.append(batch)
                         for batch in batches:
                             check_batches = batch
                             semester_hours_credit = subject.hours_credit
