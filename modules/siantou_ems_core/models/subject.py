@@ -75,11 +75,11 @@ class Subject(models.Model):
     ]
 
     # Contrainte logique pour s'assurer que le volume horaire est précisé et strictement supérieur à 0
-    # @api.constrains('hours_credit')
-    # def _check_hours_credit(self):
-    #     for record in self:
-    #         if record.hours_credit <= 0 :
-    #             raise ValidationError("Le volume horaire semestriel doit être supérieur à 0")
+    @api.constrains('hours_credit')
+    def _check_hours_credit(self):
+        for record in self:
+            if record.hours_credit <= 0 :
+                raise ValidationError("Le volume horaire semestriel doit être supérieur à 0")
 
     # Méthode calculée pour teacher_ids afin de montrer les enseignants liés dans le modèle des priorités
     @api.depends('teacher_priority_ids')

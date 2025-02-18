@@ -65,8 +65,8 @@ subject_priority_admin,subject.priority.admin,model_siantou_ems_core_teacher_sub
 teacher_user,teacher.user,model_hr_employee,siantou_ems_core.group_teacher_user,1,0,0,0
 teacher_admin,teacher.admin,model_hr_employee,siantou_ems_core.group_teacher_admin,1,1,1,1
 
-teacher_avaibility_user,teacher.avaibility.user,model_siantou_ems_core_teacher_availability,siantou_ems_core.group_teacher_user,1,0,0,0
-teacher_avaibility_admin,teacher.avaibility.admin,model_siantou_ems_core_teacher_availability,siantou_ems_core.group_teacher_admin,1,1,1,1
+teacher_avaibility_user,teacher.avaibility.user,model_siantou_ems_core_teacher_availability,,1,0,0,0
+teacher_avaibility_admin,teacher.avaibility.admin,model_siantou_ems_core_teacher_availability,,1,1,1,1
 
 timetable_user,timetable.user,model_siantou_ems_timetable_timetable,siantou_ems_core.group_timetable_user,1,0,0,0
 timetable_admin,timetable.admin,model_siantou_ems_timetable_timetable,siantou_ems_core.group_timetable_admin,1,1,1,1

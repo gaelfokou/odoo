@@ -63,6 +63,8 @@
         'views/class_division.xml',
         'views/country_views.xml',
         'views/production_pe.xml',
+        'views/teacher_avaibility_views.xml',
+        
 
         #=======Vue hérité pour les créances
         # 'views/account_move.xml',

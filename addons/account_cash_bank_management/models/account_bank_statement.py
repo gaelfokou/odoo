@@ -20,8 +20,23 @@ class AccountBankStatement (models.Model):
     move_line_ids = fields.One2many('account.move.line', 'statement_id', string='Entry lines')
     journal_type = fields.Selection(related='journal_id.type', help="Technical field used for usability purposes")
     all_lines_reconciled = fields.Boolean(compute='_check_lines_reconciled')
+    caissier_id = fields.Many2one('res.users', string='Caissier')
 
     journal_id = fields.Many2one(compute='_compute_journal_id2', readonly=False, precompute=True)
+
+    def action_encaisser(self):
+        wizard = self.env['encaissement.frais.etudiant.wizard'].create({
+            'caisse_id': self.id,
+        })
+
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Encaissement > Recherche Etudiant(e)',
+            'res_model': 'encaissement.frais.etudiant.wizard',
+            'view_mode': 'form',
+            'target': 'new',
+            'res_id': wizard.id,
+        }
 
     @api.depends('line_ids.internal_index', 'line_ids.state')
     def _compute_date_index(self):

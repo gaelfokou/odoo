@@ -56,6 +56,8 @@
             <field name="arch" type="xml">
                 <form string="Bank Statement">
                     <header>
+                        <button name="action_encaisser" invisible="state != 'open'" string="Encaisser" type="object"
+                                class="oe_highlight" data-hotkey="e"/>
                         <button name="action_open_reconcile_statement" invisible="statement_line_count == 0" string="Reconcilier" type="object"
                                 class="oe_highlight" data-hotkey="r"/>
                         <button name="action_confirm" invisible="state != 'open'" string="Clôturer" type="object"
@@ -92,7 +94,7 @@
                                 <field name="currency_id" invisible="1"/>
                             </group>
                             <group>
-                                <field name="create_uid" string="Responsable" readonly="1"/>
+                                <field name="caissier_id"/>
                                 <label for="balance_start"/>
                                 <div>
                                     <field class="oe_inline" name="balance_start" readonly="state == 'confirm'"/>
@@ -106,7 +108,7 @@
 
                         <notebook>
                             <page string="Transactions" name="statement_line_ids">
-                                <field name="line_ids" context="{'date':date}" readonly="state == 'confirm'">
+                                <field name="line_ids" context="{'date':date}" readonly="1">
                                     <tree string="Statement lines">
                                         <field name="is_reconciled" column_invisible="True" invisible="True"/>
                                         <field name="currency_id" column_invisible="True" readonly="is_reconciled == True"/>
@@ -127,7 +129,8 @@
                                         <field name="niveau_id" optional="show" readonly="is_reconciled == True"/>
                                         <field name="semestre_id" optional="show" readonly="is_reconciled == True"/>
                                         <field name="ref" readonly="is_reconciled == True" decoration-muted="is_reconciled == True"/>
-                                        <field name="amount" readonly="is_reconciled == True" decoration-muted="is_reconciled == True"/>
+                                        <field name="montant_recu" readonly="is_reconciled == True" decoration-muted="is_reconciled == True"/>
+                                        <field name="amount" string="Montant payé" readonly="is_reconciled == True" decoration-muted="is_reconciled == True"/>
                                         <button class="btn btn-warning" name="imprimer_recu" string="Imprimer" readonly="is_reconciled == True" type="object" icon="fa-print" data-hotkey="F"/>
                                     </tree>
                                     <form>
@@ -139,29 +142,19 @@
                                                 type="object" icon="fa-search"/>
                                         </header> -->
                                         <sheet>
-                                            <group string="Rechercher un(e) étudiant(e)">
-                                                <group>
-                                                    <field name="search_name" string="Nom(s) et prénom(s)"/>
-                                                    <field name="search_date_naissance" string="Date de naissance"/>
-                                                </group>
-                                                <group>
-                                                    <field name="search_matricule" optional="show"/>
-                                                </group>
-                                            </group>
                                             <group>
                                                 <group string="Informations sur l'étudiant(e)">
                                                     <field string="Etudiant(e)" name="partner_id" 
                                                         domain="['|',('parent_id','=',False),('is_company','=',True)]"
                                                         context="{'default_supplier': 1}"/>
                                                     <field name="ecole_id" optional="show"/>
-                                                    <field name="departement_id" optional="show"/>
+                                                    <field name="departement_id" optional="hide"/>
                                                     <field name="filiere_id" optional="show"/>
                                                     <field name="currency_id" invisible="1"/>
                                                     <field name="specialite_id" optional="show"/>
-                                                    <field name="annee_academique_id" optional="show"/>
+                                                    <field name="annee_academique_id" optional="hide"/>
                                                     <field name="cycle_id" optional="show"/>
                                                     <field name="niveau_id" optional="show"/>
-                                                    <field name="semestre_id" optional="show"/>
                                                 </group>
                                                 <group string="Informations sur le paiement">
                                                     <field name="ref" optional="show"/>

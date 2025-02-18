@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record model="ir.ui.view" id="wizard_form_view">
+        <field name="name">encaissement.frais.etudiant.wizard</field>
+        <field name="model">encaissement.frais.etudiant.wizard</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <field name="etat_de_progression" invisible="1"/>
+                    <div invisible="etat_de_progression != 'saisir_les_montants'">
+                        <field name="currency_id" readonly="1"/>
+                        <div class="oe_title">
+                            <label for="montant_recu"/>
+                            <h1>
+                                <field name="montant_recu" placeholder="Montant reçu" required="True" widget="monetary" style="width: 100%;"/>
+                            </h1>
+                        </div>
+
+                        <div class="oe_title">
+                            <label for="montant_paye"/>
+                            <h1>
+                                <field name="montant_paye" placeholder="Montant payé" widget="monetary" style="width: 100%;"/>
+                            </h1>
+                        </div>
+
+                        <div class="oe_title">
+                            <label for="montant_a_rembourser"/>
+                            <h1>
+                                <field name="montant_a_rembourser" placeholder="Montant à rembourser" widget="monetary" style="width: 100%;"/>
+                            </h1>
+                        </div>
+
+                    </div>
+
+                    <div invisible="etat_de_progression != 'recherche_etudiant'">
+                        <div class="oe_title">
+                            <label for="recherche_etudiant_nom"/>
+                            <h1>
+                                <field name="recherche_etudiant_nom" placeholder="Nom de l'étudiant" required="True"/>
+                            </h1>
+                        </div>
+
+                        <div class="oe_title">
+                            <label for="recherche_etudiant_date_naissance"/>
+                            <h1>
+                                <field name="recherche_etudiant_date_naissance"
+                                       placeholder="Date de naissance de l'étudiant"/>
+                            </h1>
+                        </div>
+
+                        <div class="oe_title">
+                            <label for="recherche_etudiant_matricule"/>
+                            <h1>
+                                <field name="recherche_etudiant_matricule" placeholder="Matricule de l'étudiant"
+                                       required="not recherche_etudiant_date_naissance"/>
+                            </h1>
+                        </div>
+
+                    </div>
+
+                    <div invisible="etat_de_progression != 'validation_etudiant'">
+                        <group>
+                            <group string="Général">
+                                <field string="Etudiant(e)" name="etudiant_id" readonly="1"
+                                       options='{"no_open": True}'/>
+                                <field name="recherche_etudiant_date_naissance" string="Date de naissance"
+                                       readonly="1"/>
+                                <field name="recherche_etudiant_matricule" string="Matricule" readonly="1"/>
+                            </group>
+                            <group string="Académique">
+                                <field name="filiere_id"/>
+                                <field name="specialite_id"/>
+                                <field name="cycle_id"/>
+                                <field name="niveau_id"/>
+                            </group>
+                        </group>
+                    </div>
+                    <footer invisible="etat_de_progression != 'validation_etudiant'">
+                        <button name="action_valider" string="Continuer" type="object" class="oe_highlight"/>
+                        <button name="action_verification_precedent" string="Précédent" type="object"/>
+                        <button special="cancel" string="Annuler"/>
+                    </footer>
+                    <footer invisible="etat_de_progression != 'recherche_etudiant'">
+                        <button name="action_continuer" string="Continuer" type="object" class="oe_highlight"/>
+                        <button special="cancel" string="Annuler"/>
+                    </footer>
+                    <footer invisible="etat_de_progression != 'saisir_les_montants'">
+                        <button name="action_encaisser" string="Encaisser" type="object" class="oe_highlight"/>
+                        <button name="action_encaisser_precedent" string="Précédent" type="object"/>
+                        <button special="cancel" string="Annuler"/>
+                    </footer>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="encaissement_frais_etudiant_wiz_act" model="ir.actions.act_window">
+        <field name="name">Encaissement > Recherche Etudiant(e)</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">encaissement.frais.etudiant.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="wizard_form_view"/>
+        <field name="target">new</field>
+    </record>
+
+</odoo>

@@ -32,58 +32,14 @@ class AccountBankStatementLine (models.Model):
     cycle_id = fields.Many2one('oe.school.course', string='Cycle')
     niveau_id = fields.Many2one('siantou.ems.core.level', string='Niveau')
     semestre_id = fields.Many2one('siantou.ems.core.year.semester', string='Semestre')
+    caissier_id = fields.Many2one('res.users', related='statement_id.caissier_id')
+    montant_recu = fields.Monetary("Montant reçu")
+    montant_a_rembourser = fields.Monetary("Montant à rembourser", compute='_compute_montant_a_rembourser')
 
-    search_matricule = fields.Char(string="Matricule")
-    search_name = fields.Char(string="Nom(s) et prénom(s)")
-    search_date_naissance = fields.Date(string="Date de naissance")
-
-
-    @api.onchange('search_name','search_matricule','search_date_naissance')
-    def action_search_student(self):
+    @api.depends('montant_recu', 'amount')
+    def _compute_montant_a_rembourser(self):
         for rec in self:
-            student_id = self.env['oe.school.student'].search(
-                [
-                    ('name','=',rec.search_name.upper() if rec.search_name else False),
-                    ('matricule','=',rec.search_matricule),
-                    ('date_naissance','=',rec.search_date_naissance),
-                ],
-                limit=1
-            )
-            _logger.info(rec.search_name.upper() if rec.search_name else False)
-            
-            if student_id and student_id.partner_id:
-                rec.partner_id=student_id.partner_id.id
-                rec.ecole_id=student_id.field_of_study_id.school_id.id
-                rec.filiere_id=student_id.field_of_study_id.id
-                rec.specialite_id=student_id.specialty_id.id
-                rec.annee_academique_id=student_id.student_enroll_id.year_id.id
-                rec.cycle_id=student_id.field_of_study_id.cursus_id.id
-                rec.niveau_id=student_id.level_id.id
-                rec.departement_id=student_id.field_of_study_id.department_id.id
-            else:
-                rec.partner_id = False
-                rec.ecole_id = False
-                rec.filiere_id = False
-                rec.specialite_id = False
-                rec.annee_academique_id = False
-                rec.cycle_id = False
-                rec.niveau_id = False
-                rec.departement_id = False
-            
-
-            # _logger.info("==========statementline_id==============")
-            # _logger.info(f"partner :: {statementline_id.partner_id.id}")
-            # _logger.info(f"Ecole :: {statementline_id.ecole_id.name}")
-            # _logger.info(f"Cycle :: {statementline_id.cycle_id.name}")
-            # _logger.info(f"FIlière :: {statementline_id.filiere_id.name}")
-            # _logger.info(f"Niveau :: {statementline_id.niveau_id.name}")
-            _logger.info("==========student_id==============")
-            _logger.info(f"partner :: {student_id.partner_id.id}")
-            _logger.info(f"Ecole :: {student_id.school_id.name}")
-            _logger.info(f"Cycle :: {student_id.cycle_id.name}")
-            _logger.info(f"FIlière :: {student_id.field_of_study_id.name}")
-            _logger.info(f"Niveau :: {student_id.level_id.name}")
-    
+            rec.montant_a_rembourser = rec.montant_recu - rec.amount
 
     def _get_annee_academique_courante(self):
         return self.env['siantou.ems.core.year'].search([('active', '=', True)], limit=1).name

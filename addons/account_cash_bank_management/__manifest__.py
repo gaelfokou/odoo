@@ -22,6 +22,9 @@
 
     # always loaded
     'data': [
+        # Wizards
+        'wizards/encaissement_frais_etudiant_views.xml',
+
         'views/account_move_views.xml',
         'views/account_bank_statement_views.xml',
         'views/account_move_line_views.xml',
