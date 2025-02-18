@@ -174,13 +174,14 @@ class TimetableWizard(models.TransientModel):
     def check_available_classroom(self, subject_duration, date, day_of_week, start_time):
         available_classrooms = self.env['siantou.ems.core.building.classroom'].search([])
         for classroom in available_classrooms:
+            end_time = start_time + subject_duration
             conflicting_timetables = self.env['siantou.ems.timetable.timetable'].search([
                 ('classroom_id', '=', classroom.id),
                 ('date', '=', date),
                 ('day_of_week', '=', day_of_week),
-                # ('start_time', '<', start_time + subject_duration),
+                # ('start_time', '<', end_time),
                 # ('end_time', '>', start_time),
-            ]).filtered(lambda rec: (rec.start_time <= start_time and rec.end_time > start_time) or (rec.start_time < (start_time + subject_duration) and rec.end_time >= (start_time + subject_duration)))
+            ]).filtered(lambda rec: (rec.start_time <= start_time and rec.end_time > start_time) or (rec.start_time < end_time and rec.end_time >= end_time))
             if not conflicting_timetables:
                 return {
                     'found': True,
@@ -188,7 +189,7 @@ class TimetableWizard(models.TransientModel):
                     'date': date,
                     'day_of_week': day_of_week,
                     'start_time': start_time,
-                    'end_time': start_time + subject_duration,
+                    'end_time': end_time,
                 }
         return {
             'found': False,
