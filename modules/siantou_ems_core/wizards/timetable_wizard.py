@@ -111,10 +111,10 @@ class TimetableWizard(models.TransientModel):
                                                         teacher_priority = self.find_available_teacher(teacher_priority, current_date, available_slot["start_time"], available_slot["end_time"])
                                                     # On trouve une salle de classe disponible pour le cours
                                                     classroom = self.check_available_classroom(duration_hours_credit, current_date, available_slot["start_time"])
-                                                    if classroom['found']:
-                                                        check_classroom = classroom['found']
+                                                    if classroom:
+                                                        check_classroom = classroom
                                                         timetables = self.env['siantou.ems.timetable.timetable'].search([
-                                                            ('classroom_id', '=', classroom['classroom_id']),
+                                                            ('classroom_id', '=', classroom.id),
                                                             ('date', '=', current_date),
                                                             ('start_time', '<', available_slot["end_time"]),
                                                             ('end_time', '>', available_slot["start_time"]),
@@ -128,7 +128,7 @@ class TimetableWizard(models.TransientModel):
                                                                 'department_id': field_of_study.department_id.id if field_of_study.department_id else None,
                                                                 'level_id': level_id,
                                                                 'subject_id': subject_id,
-                                                                'classroom_id': classroom['classroom_id'],
+                                                                'classroom_id': classroom.id,
                                                                 'employee_id': teacher_priority.id if teacher_priority else None,
                                                                 'date': current_date,
                                                                 'day_of_week': str(current_date.weekday()),
@@ -181,14 +181,6 @@ class TimetableWizard(models.TransientModel):
             ])
             timetables = list(timetables)
             if len(timetables) == 0:
-                return {
-                    'found': True,
-                    'classroom_id': classroom.id,
-                    'date': current_date,
-                    'start_time': start_time,
-                    'end_time': end_time,
-                }
-        return {
-            'found': False,
-        }
+                return classroom
+        return None
 
