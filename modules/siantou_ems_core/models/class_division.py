@@ -11,17 +11,23 @@ class EducationClass(models.Model):
     _inherit = ['mail.thread']
     
     
-    _sql_constraints = [
-        ('unique_class',
-         'unique(filiere_id,niveau_id,school_id)',
-         'Classe unique par school_id'),
-    ]
+    # _sql_constraints = [
+    #     ('unique_class',
+    #      'unique(filiere_id,niveau_id,school_id)',
+    #      'Classe unique par school_id'),
+    # ]
 
     name = fields.Char(string='Nom', required=True,
                        help="Entrer le nom de la Classe")
 
     filiere_id = fields.Many2one('siantou.ems.core.field_of_study', string='Filière', required=True,
                                  help="Filière")
+
+    student_ids = fields.One2many(
+        'oe.school.student',
+        'field_of_study_id',
+        string='Liste des étudiants'
+    )
     
     specialty_ids = fields.Many2many('siantou.ems.core.specialty', string='Liste des spécialités')
     
@@ -31,8 +37,6 @@ class EducationClass(models.Model):
     school_id = fields.Many2one('siantou.ems.core.school', string='Ecole')
     
     annee_acadmique_id = fields.Many2one('siantou.ems.core.year', string='Année Académique')
-    
-    semestre_id = fields.Many2one('siantou.ems.core.year.semester', string='Semestre', tracking=True)
 
     ue_ids = fields.One2many(comodel_name='siantou.ems.core.unite.enseignement', inverse_name='class_id', string='Unité d\'enseignement')
     

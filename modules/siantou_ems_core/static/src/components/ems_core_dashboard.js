@@ -82,12 +82,19 @@ export class OwlSalesDashboard extends Component {
     async getFiliereDatas(){
         const filieres = await this.orm.searchRead("siantou.ems.core.field_of_study",[]);
         filieres.forEach(async (filiere)=>{
+            const classes = await this.orm.searchRead("siantou.ems.core.class",[
+                ('filiere_id', '=', filiere.id)
+            ]);
+            let nbre = 0;
+            classes.forEach(async (classe)=>{
+                nbre += classe.student_ids.length
+            })
             this.state.doughFilieres.push({
                 name:filiere.name,
-                value:filiere.student_ids.length
+                value:nbre
             })
         })
-        console.log(this.state.doughFilieres)
+        console.log('doughFilieres', this.state.doughFilieres)
     }
 
     async getEcoleDatas(){
@@ -96,15 +103,20 @@ export class OwlSalesDashboard extends Component {
             let nbre = 0
             const filieres = await this.orm.searchRead("siantou.ems.core.field_of_study",[["school_id","=",ecole.id]]);
             filieres.forEach(async (filiere)=>{
-                nbre += filiere.student_ids.length
+                const classes = await this.orm.searchRead("siantou.ems.core.class",[
+                    ('filiere_id', '=', filiere.id)
+                ]);
+                classes.forEach(async (classe)=>{
+                    nbre += classe.student_ids.length
+                })
             })
-
+    
             this.state.doughEcoles.push({
                 name:ecole.name,
                 value:nbre
             })
         })
-        console.log(this.state.doughEcoles)
+        console.log('doughEcoles', this.state.doughEcoles)
     }
 
 }

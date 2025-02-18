@@ -13,12 +13,8 @@
                     <field name="code"/>
                     <field name="shared_subject"/>
                     <field name="name"/>
-                    <field name="unite_enseignement_id"/>
-                    <field name="semester_id"/>
-                    <field name="field_of_study_ids" widget="many2many_tags"/>
-                    <field name="level_id"/>
+                    <field name="ue_ids"/>
                     <field name="hours_credit"/>
-                    <field name="weekly_hours_credit"/>
                 </tree>
             </field>
         </record>
@@ -35,15 +31,11 @@
                         <group string="Informations sur le cours" col="4">
                             <group colspan="2">
                                 <field name="code"/>
-                                <field name="unite_enseignement_id"/>
-                                <field name="field_of_study_ids" widget="many2many_tags" options="{'no_create': True}"/>
+                                <field name="ue_ids"/>
                                 <field name="hours_credit"/>
-                                <field name="weekly_hours_credit"/>
                             </group>
                             <group colspan="2">
                                 <field name="name"/>
-                                <field name="semester_id"/>
-                                <field name="level_id"/>
                                 <field name="shared_subject" 
                                     invisible="eps_subject == True"/>
                                 <field name="eps_subject"

@@ -182,11 +182,9 @@ class SchoolSyllabus(models.Model):
 
     class_id = fields.Many2one('siantou.ems.core.class', string='Classe', required=True)
 
-    unite_enseignement_id = fields.Many2one('siantou.ems.core.unite.enseignement', string='UE', required=True, tracking=True)
+    ue_id = fields.Many2one('siantou.ems.core.unite.enseignement', string="Unité d'enseignement", required=True)
 
     subject_id = fields.Many2one('siantou.ems.core.subject', string='Matière', required=True)
-
-    semestre_id = fields.Many2one('siantou.ems.core.year.semester', string='Semestre', required=True, tracking=True)
 
     description = fields.Text(string='Syllabus Modules')
 
@@ -244,29 +242,13 @@ class SchoolSyllabus(models.Model):
         comodel_name='production.pe',
     )
 
-    @api.onchange('class_id')
-    def _check_onchange(self):
-        for record in self:
-            return {'domain': {
-                'subject_id': [
-                    ('id', 'in', record.class_id.filiere_id.subject_ids.ids),
-                    ('id', 'in', record.unite_enseignement_id.subject_ids.ids)
-                ],
-                'semestre_id': [('id', '=', record.semestre_id.id)],
-            }}
-
     @api.constrains('subject_id')
     def _check_validity(self):
         for record in self:
-            subject_ids = record.class_id.filiere_id.subject_ids.filtered(lambda s: s.id == record.subject_id.id)
+            subject_ids = record.ue_id.subject_ids.filtered(lambda s: s.id == record.subject_id.id)
             subject_ids = list(subject_ids)
-            if len(subject_ids) > 0:
-                subject_ids = record.unite_enseignement_id.subject_ids.filtered(lambda s: s.id == record.subject_id.id)
-                subject_ids = list(subject_ids)
-                if len(subject_ids) == 0:
-                    raise ValidationError(f"Le cours magistral n'existe pas dans l'unité d'enseignement choisi")
-            else:
-                raise ValidationError(f"Le cours magistral n'existe pas dans la filière choisie")
+            if len(subject_ids) == 0:
+                raise ValidationError(f"Le cours magistral n'existe pas dans l'unité d'enseignement choisi")
     
     @api.depends('class_id')
     def _compute_name(self):
@@ -341,7 +323,7 @@ class SchoolSyllabus(models.Model):
 
 class SchoolCourseSubject(models.Model):
     _name = 'siantou.ems.core.unite.enseignement'
-    _description = "Unité d'enseignement ou module du syllabus"
+    _description = "Unité d'enseignement"
 
     type_ue = fields.Selection([
             ('uf', 'UE Fondamentales'),
@@ -354,21 +336,16 @@ class SchoolCourseSubject(models.Model):
     name = fields.Char(string="Intitulé de l'unité", required=True,)
     class_id = fields.Many2one('siantou.ems.core.class', string='classe',required=True)
     
-    subject_ids = fields.One2many(
-        string='Matière',
-        comodel_name='siantou.ems.core.subject',
-        inverse_name='unite_enseignement_id'
-    )
+    subject_ids = fields.Many2many('siantou.ems.core.subject', 'ue_subject_rel', 'ue_id', 'subject_id', string='Cours')
     
     semestre_id = fields.Many2one('siantou.ems.core.year.semester', string='Semestre', required=True, tracking=True)
     
-    syllabus_ids = fields.One2many('siantou.ems.core.syllabus', 'unite_enseignement_id', string='field_name')
+    syllabus_ids = fields.One2many('siantou.ems.core.syllabus', 'ue_id', string='Syllabus')
     
     total_credit = fields.Integer('Nombre de crédit total',  compute="_compute_total_credit",)
 
     _sql_constraints = [
-        ('unique_code', 'unique(code)', "Il existe une unité d'enseignement avec ce code"),
-        ('unique_name', 'unique(name)', "Il existe une unité d'enseignement avec ce nom"),
+        ('unique_code', 'unique(code)', "Le code de l'unité d'enseignement doit être unique."),
     ]
     
     @api.depends('subject_ids', 'subject_ids.syllabus_ids.subject_credit')

@@ -26,7 +26,7 @@
                             <field name="annee_academique_id"/>
                         </group>
                         <group colspan="2">
-                            <field name="class_id"/>
+                            <field name="class_id" domain="[('annee_acadmique_id', '=', annee_academique_id)]"/>
                         </group>
                     </group>
                     <group>
@@ -34,14 +34,13 @@
                     </group>
                     <notebook>
                         <page name="programme_ids" string="Lignes du programme d'enseignement">
-                            <field name="syllabus_ids">
+                            <field name="syllabus_ids" domain="[('class_id', '=', class_id)]">
                                 <tree 
                                 editable='bottom'
                                 >
                                 <field name="class_id"/>
-                                <field name="unite_enseignement_id"/>
+                                <field name="ue_id"/>
                                 <field name="subject_id"/>
-                                <field name="semestre_id"/>
                                 <field name="cm" />
                                 <field name="td" />
                                 <field name="vhp" />

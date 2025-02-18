@@ -233,13 +233,13 @@ class SessionExamen(models.Model):
 
             for class_id in rec.class_ids:
                 niveau_id = class_id.niveau_id
-                subject_ids = class_id.filiere_id.subject_ids.ids
-                student_ids = class_id.filiere_id.student_ids
+                subject_ids = class_id.ue_ids.subject_ids.ids
+                student_ids = class_id.student_ids
                 syllabus_ids = self.env['siantou.ems.core.syllabus'].search(
                     [
                         ('subject_id', 'in', subject_ids),
                         ('class_id','=',class_id.id),
-                        ('semestre_id','=',rec.semester_id.id),
+                        # ('semestre_id','=',rec.semester_id.id),
                     ],
                 )
                 syllabus_ids = list(syllabus_ids)

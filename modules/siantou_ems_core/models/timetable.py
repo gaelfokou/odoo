@@ -338,7 +338,7 @@ class TimetableSlot(models.Model):
                     raise ValidationError(f"Créneau horaire par défaut déjà défini")
 
     @api.onchange('department_id')
-    def _check_onchange(self):
+    def _onchange_department(self):
         for record in self:
             if record.department_id.id:
                 record.field_of_study_ids = self.env['siantou.ems.core.field_of_study'].search([

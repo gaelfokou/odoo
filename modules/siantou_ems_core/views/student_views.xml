@@ -26,11 +26,6 @@
         <field name="arch" type="xml">
             <tree string="Étudiants">
                 <field name="name"/>
-                <!-- <field name="gender"/> -->
-                <!-- <field name="school_id"/>
-                <field name="course_id"/>
-                <field name="field_of_study_id"/>
-                <field name="level_id"/> -->
             </tree>
         </field>
     </record>
@@ -48,9 +43,6 @@
                                 <img t-att-src="'/web/image/res.partner/' + record.id + '/image_128'" class="img-circle"/>
                             </div>
                             <strong><field name="name"/></strong>
-                            <!-- <div><field name="field_of_study_id"/></div>
-                            <div><field name="level_id"/></div>
-                            <div><t t-esc="record.gender.raw_value"/></div> -->
                         </div>
                     </t>
                 </templates>

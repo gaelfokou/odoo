@@ -29,8 +29,7 @@ class SpecialtyOfStudy(models.Model):
 
     # Contrainte SQL pour empêcher d'avoir le même code pour différentes filières
     _sql_constraints = [
-        ('unique_code', 'unique(code)', 'Le code doit être unique'),
-        ('unique_name', 'unique(name)', 'Le nom doit être unique'),
+        ('unique_code', 'unique(code)', 'Le code de la spécialité doit être unique.'),
     ]
 
 
@@ -59,8 +58,6 @@ class FieldOfStudy(models.Model):
         'oe.school.course', 
         string='Cursus ou Cycle') #== cursus
 
-    # Ensemble des cours de la filière
-    subject_ids = fields.Many2many('siantou.ems.core.subject', 'field_of_study_subject_rel', 'field_of_study_id', 'subject_id', string='Cours')
     # Ensemble des spécialités de la filière
     specialty_ids = fields.One2many(
         'siantou.ems.core.specialty',
@@ -80,12 +77,6 @@ class FieldOfStudy(models.Model):
         string='Département'
     )
 
-    student_ids = fields.One2many(
-        'oe.school.student',
-        'field_of_study_id',
-        string='Liste des étudiants'
-    )
-
     slot_id = fields.Many2one(
         'siantou.ems.timetable.slot',
         string='Créneau horaire',
@@ -93,8 +84,7 @@ class FieldOfStudy(models.Model):
 
     # Contrainte SQL pour empêcher d'avoir le même code pour différentes filières
     _sql_constraints = [
-        ('unique_code', 'unique(code)', 'Le code doit être unique'),
-        ('unique_name', 'unique(name)', 'Le nom doit être unique'),
+        ('unique_code', 'unique(code)', 'Le code de la filière doit être unique.'),
     ]
 
     def get_subject_ids_by_level(self):
@@ -107,11 +97,19 @@ class FieldOfStudy(models.Model):
         for level in levels:
             subject_ids_by_level[level.id] = []
             # Filtre les cours de cette filière et de ce niveau
-            subjects = self.subject_ids.filtered(lambda s: s.level_id.id == level.id)
-            subjects = list(subjects)
-            for subject in subjects:
-                if not subject.id in subject_ids_by_level[level.id]:
-                    subject_ids_by_level[level.id].append(subject.id)
+            classes = self.env['siantou.ems.core.class'].search([
+                ('niveau_id', '=', level.id),
+                ('filiere_id', '=', self.id)
+            ])
+            classes = list(classes)
+            for classe in classes:
+                subjects = self.env['siantou.ems.core.subject'].search([
+                    ('ue_ids', 'in', classe.ue_ids.ids),
+                ])
+                subjects = list(subjects)
+                for subject in subjects:
+                    if not subject.id in subject_ids_by_level[level.id]:
+                        subject_ids_by_level[level.id].append(subject.id)
             if len(subject_ids_by_level[level.id]) == 0:
                 del(subject_ids_by_level[level.id])
 

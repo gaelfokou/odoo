@@ -24,11 +24,11 @@
                         <group colspan="2">
                             <field name="name"/>
                             <field name="class_id" required="1"/>
-                            <field name="unite_enseignement_id"/>
+                            <field name="ue_id" domain="[('class_id', '=', class_id)]"/>
                             <field name="note_sn" widget="radio" />
                         </group>
                         <group colspan="2">
-                            <field name="subject_id" required="1"/>
+                            <field name="subject_id" domain="[('ue_ids', 'in', [ue_id])]" required="1"/>
                             <field name="pourcentage_cc" placeholder="Pourcentage lors du controle continu"/>
                             <field name="pourcentage_exam" invisible="[('note_sn','=','not_sn')]" placeholder="Pourcentage lors de l'examen"/>
                         </group>

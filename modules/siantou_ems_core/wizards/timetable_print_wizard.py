@@ -82,11 +82,6 @@ class TimetablePrintWizard(models.TransientModel):
         required=True
     )
 
-    @api.onchange('semester_id')
-    def _check_onchange(self):
-        for record in self:
-            return {'domain': {'group_id': [('semester_id', '=', record.semester_id.id)]}}
-
     def print_timetable(self):
         data = self.print_timetable_report_data()
 

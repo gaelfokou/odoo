@@ -36,13 +36,13 @@ class Semester(models.Model):
     )
     
     # classe liée au semestre
-    class_ids = fields.One2many(
-        comodel_name='siantou.ems.core.class',
-        inverse_name='semestre_id',
-        string='Classe',
-        help="classe à laquelle est lié le semestre",
-        required=True
-    )
+    # class_ids = fields.One2many(
+    #     comodel_name='siantou.ems.core.class',
+    #     inverse_name='semestre_id',
+    #     string='Classe',
+    #     help="classe à laquelle est lié le semestre",
+    #     required=True
+    # )
 
     # Nombre de semaines dans un semestre
     number_of_week = fields.Integer(
@@ -52,19 +52,12 @@ class Semester(models.Model):
         store=True
     )
     
-    unite_enseignement_ids = fields.One2many(
+    ue_ids = fields.One2many(
         comodel_name='siantou.ems.core.unite.enseignement', 
         inverse_name='semestre_id',  
         string="Unité d'enseignement", 
         tracking=True)
 
-    # Ensemble des cours du semestre
-    subject_ids = fields.One2many(
-        'siantou.ems.core.subject',
-        'semester_id',
-        'Cours'
-    )
-    
     class_id = fields.Many2one(
         string='Classe',
         comodel_name='siantou.ems.core.class',
@@ -72,7 +65,7 @@ class Semester(models.Model):
 
     # Contrainte SQL pour empêcher d'avoir le même nom pour différents semestres
     _sql_constraints = [
-        ('unique_name', 'unique(name)', 'Le semestre doit être unique')
+        ('unique_name', 'unique(name)', 'Le nom du semestre doit être unique.'),
     ]
 
     # Contrainte logique pour empêcher d'avoir des semestres qui se chevauchent

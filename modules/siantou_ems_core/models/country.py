@@ -17,8 +17,8 @@ class Country(models.Model):
     )
     
     _sql_constraints = [
-        ('unique_code', 'unique(code)', 'Ce code existe déjà'),
-        ('unique_name', 'unique(name)', 'Ce nom existe déjà'),
+        ('unique_code', 'unique(code)', 'Le code du pays doit être unique.'),
+        ('unique_name', 'unique(name)', 'Le nom du pays doit être unique.'),
     ]
 
 class Region(models.Model):
@@ -36,7 +36,7 @@ class Region(models.Model):
         required=True,
     )
     _sql_constraints = [
-        ('unique_name', 'unique(name)', 'Ce nom existe déjà'),
+        ('unique_name', 'unique(name)', 'Le nom de la région doit être unique.'),
     ]
 
 class City(models.Model):
@@ -54,7 +54,7 @@ class City(models.Model):
         required=True,
     )
     _sql_constraints = [
-        ('unique_name', 'unique(name)', 'Ce nom existe déjà'),
+        ('unique_name', 'unique(name)', 'Le nom de la ville doit être unique.'),
     ]
 
 class Quarter(models.Model):
@@ -72,7 +72,7 @@ class Quarter(models.Model):
         required=True,
     )
     _sql_constraints = [
-        ('unique_name', 'unique(name)', 'Ce nom existe déjà'),
+        ('unique_name', 'unique(name)', 'Le nom du quartier doit être unique.'),
     ]
 
 

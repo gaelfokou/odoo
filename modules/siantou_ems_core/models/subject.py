@@ -33,35 +33,6 @@ class Subject(models.Model):
         required=True
     )
 
-    # Semestre auquel est lié le cours
-    semester_id = fields.Many2one(
-        'siantou.ems.core.year.semester',
-        'Semestre',
-        help='Semestre du cours',
-        required=True,
-        ondelete='restrict'
-    )
-
-    # Filière à laquelle appartient ce cours
-    field_of_study_ids = fields.Many2many('siantou.ems.core.field_of_study', 'field_of_study_subject_rel', 'subject_id', 'field_of_study_id', string='Filières')
-
-    # ue_ids = fields.Many2many(
-    #     'siantou.ems.core.syllabus.subject',
-    #     string="Unités d'enseignement",
-    #     required=True,
-    #     ondelete='restrict'
-    # )
-
-
-    # Niveau scolaire
-    level_id = fields.Many2one(
-        'siantou.ems.core.level',
-        'Niveau',
-        help='Niveau du cours',
-        required=True,
-        ondelete='restrict'
-    )
-
     # Volume horaire du cours sur un semestre
     hours_credit = fields.Float(
         'Volume horaire semestriel',
@@ -70,17 +41,9 @@ class Subject(models.Model):
         required=True
     )
 
-    # Volume horaire hebdommadaire sur un semestre
-    weekly_hours_credit = fields.Integer(
-        'Volume horaire hebdommadaire',
-        compute='_compute_weekly_hours_credit',
-        help='Volume horaire du cours sur une semaine',
-        
-    )
+    ue_ids = fields.Many2many('siantou.ems.core.unite.enseignement', 'ue_subject_rel', 'subject_id', 'ue_id', string="Unités d'enseignement")
     
-    unite_enseignement_id = fields.Many2one('siantou.ems.core.unite.enseignement', string="Unite d'enseignement")
-    
-    syllabus_ids = fields.One2many(comodel_name= "siantou.ems.core.syllabus", inverse_name='subject_id', string='syllabus')
+    syllabus_ids = fields.One2many(comodel_name= "siantou.ems.core.syllabus", inverse_name='subject_id', string='Syllabus')
 
     # Les enseignants qui dispensent ce cours
     teacher_ids = fields.Many2many(
@@ -108,27 +71,15 @@ class Subject(models.Model):
 
     # Contrainte SQL pour empêcher d'avoir le même code pour différentes filières
     _sql_constraints = [
-        ('unique_code', 'unique(code)', 'Le cours doit être unique')
+        ('unique_code', 'unique(code)', 'Le code du cours doit être unique.'),
     ]
 
     # Contrainte logique pour s'assurer que le volume horaire est précisé et strictement supérieur à 0
-    @api.constrains('hours_credit')
-    def _check_hours_credit(self):
-        for record in self:
-            if record.hours_credit <= 0 :
-                raise ValidationError("Le volume horaire semestriel doit être supérieur à 0")
-
-    # Fonction pour le champ calculé weekly_hours_credit
-    @api.depends('hours_credit', 'semester_id')
-    def _compute_weekly_hours_credit(self):
-        for record in self:
-            if record.semester_id:
-                # record.weekly_hours_credit = math.ceil(record.hours_credit / record.semester_id.number_of_week)
-
-                # Toujours arrondir par la valeur supérieur d'un multiple de 2 afin d'avoir les cours de minimum 2h
-                record.weekly_hours_credit = math.ceil(record.hours_credit / record.semester_id.number_of_week)
-            else:
-                record.weekly_hours_credit = 0
+    # @api.constrains('hours_credit')
+    # def _check_hours_credit(self):
+    #     for record in self:
+    #         if record.hours_credit <= 0 :
+    #             raise ValidationError("Le volume horaire semestriel doit être supérieur à 0")
 
     # Méthode calculée pour teacher_ids afin de montrer les enseignants liés dans le modèle des priorités
     @api.depends('teacher_priority_ids')

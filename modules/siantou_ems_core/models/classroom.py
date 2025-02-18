@@ -102,7 +102,7 @@ class Classroom(models.Model):
 
     # Contrainte SQL pour garantir que le code de la salle de classe est unique
     _sql_constraints = [
-        ('unique_code', 'unique(code)', 'Le code de la salle de classe doit être unique.')
+        ('unique_code', 'unique(code)', 'Le code de la salle de classe doit être unique.'),
     ]
 
     # Contrainte logique pour vérifier que la capacité est strictement positive

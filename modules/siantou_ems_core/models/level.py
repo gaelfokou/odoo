@@ -19,9 +19,9 @@ class Level(models.Model):
     cycle_ids = fields.Many2many('oe.school.course', string="Cycles")
 
     # Ensemble des cours du niveau
-    subject_ids = fields.One2many(
-        'siantou.ems.core.subject',
-        'level_id',
+    class_ids = fields.One2many(
+        'siantou.ems.core.class',
+        'niveau_id',
         'Cours'
     )
 
@@ -32,5 +32,5 @@ class Level(models.Model):
     )
     
     _sql_constraints = [
-        ('unique_name', 'unique(name)', 'Nom déjà utilisé'),
+        ('unique_name', 'unique(name)', 'Le nom du niveau doit être unique.'),
     ]
