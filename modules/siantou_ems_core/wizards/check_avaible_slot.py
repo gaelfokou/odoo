@@ -10,7 +10,7 @@ class CheckAvailableSlot(models.Model):
     _name = 'siantou.ems.timetable.check_available_slot'
     _description = 'Déterminer un creneau pour un cours'
 
-    def find_available_slot(self, date, field_of_study_id, level_id, batch_id, duration_hours=1):
+    def find_available_slot(self, date, field_of_study_id, level_id, batch_id, duration_hours_credit=1):
         slots = self.env['siantou.ems.timetable.slot'].search([
             ('is_default', '=', False),
         ])
@@ -68,18 +68,18 @@ class CheckAvailableSlot(models.Model):
                 if len(available_timetables) > 0:
                     continue
                 available_slotitems.append([start_time, end_time])
-                if len(available_slotitems) == duration_hours:
+                if len(available_slotitems) == duration_hours_credit:
                     break
         else:
             for start_time, end_time in slotitems:
                 available_slotitems.append([start_time, end_time])
-                if len(available_slotitems) == duration_hours:
+                if len(available_slotitems) == duration_hours_credit:
                     break
 
         available_hours = len(available_slotitems)
 
         if available_hours > 0:
-            duration_hours = duration_hours - available_hours
-            available_slot = {'date': date, 'start_time': available_slotitems[0][0], 'end_time': available_slotitems[available_hours - 1][1], 'duration_hours': duration_hours, 'available_hours': available_hours}
+            duration_hours_credit = duration_hours_credit - available_hours
+            available_slot = {'date': date, 'start_time': available_slotitems[0][0], 'end_time': available_slotitems[available_hours - 1][1], 'duration_hours_credit': duration_hours_credit, 'available_hours': available_hours}
 
         return available_slot

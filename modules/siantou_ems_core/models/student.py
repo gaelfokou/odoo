@@ -159,12 +159,9 @@ class Student(models.Model):
 
     @api.depends('field_of_study_id', 'level_id')
     def _compute_timetables(self):
-        """Méthode pour récupérer les emplois du temps en fonction de la filière et du niveau"""
-        Timetable = self.env['siantou.ems.timetable.timetable']
-    
         # Recherche des emplois du temps qui correspondent à la filière et au niveau de l'étudiant
         for student in self:
-            timetables = Timetable.search([
+            timetables = self.env['siantou.ems.timetable.timetable'].search([
                 ('field_of_study_id', '=', student.field_of_study_id.id),
                 ('level_id', '=', student.level_id.id)
             ])
