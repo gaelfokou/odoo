@@ -64,7 +64,6 @@ class CheckAvailableSlot(models.Model):
             for start_time, end_time in slotitems:
                 available_timetables = timetables.filtered(lambda rec: (rec.end_time > start_time and rec.start_time <= start_time) or (rec.end_time >= end_time and rec.start_time < end_time))
                 available_timetables = list(available_timetables)
-                available_timetables.sort(key=lambda s: s.start_time)
                 if len(available_timetables) > 0:
                     continue
                 available_slotitems.append([start_time, end_time])
