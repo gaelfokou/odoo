@@ -49,36 +49,35 @@ class CheckAvailableSlot(models.Model):
                 slotitems.append([round(slotitem_night_id.start_time, 2), round(slotitem_night_id.end_time, 2)])
         slotitems.sort(key=lambda s: s[0])
 
-        timetables = self.env['siantou.ems.timetable.timetable'].search([
-            ('date', '=', current_date),
-            ('field_of_study_id', '=', field_of_study_id),
-            ('level_id', '=', level_id),
-            ('batch_id', '=', batch_id)
-        ])
-        all_timetables = list(timetables)
-
         available_slotitems = []
-        available_slot = None
 
-        if len(all_timetables) > 0:
+        classrooms = self.env['siantou.ems.core.building.classroom'].search([])
+        classrooms = list(classrooms)
+        for classroom in classrooms:
             for start_time, end_time in slotitems:
-                available_timetables = timetables.filtered(lambda rec: (rec.end_time > start_time and rec.start_time <= start_time) or (rec.end_time >= end_time and rec.start_time < end_time))
-                available_timetables = list(available_timetables)
-                if len(available_timetables) > 0:
+                timetables = self.env['siantou.ems.timetable.timetable'].search([
+                    ('classroom_id', '=', classroom.id),
+                    ('date', '=', current_date),
+                    ('start_time', '<', end_time),
+                    ('end_time', '>', start_time),
+                ])
+                timetables = list(timetables)
+                if len(timetables) > 0:
                     continue
-                available_slotitems.append([start_time, end_time])
+                available_slotitems.append([start_time, end_time, classroom])
                 if len(available_slotitems) == duration_hours_credit:
                     break
-        else:
-            for start_time, end_time in slotitems:
-                available_slotitems.append([start_time, end_time])
-                if len(available_slotitems) == duration_hours_credit:
-                    break
+            if len(available_slotitems) == duration_hours_credit:
+                break
+            else:
+                available_slotitems = []
 
         available_hours = len(available_slotitems)
 
-        if available_hours > 0:
+        available_slot = None
+
+        if available_hours == duration_hours_credit:
             duration_hours_credit = duration_hours_credit - available_hours
-            available_slot = {'current_date': current_date, 'start_time': available_slotitems[0][0], 'end_time': available_slotitems[available_hours - 1][1], 'duration_hours_credit': duration_hours_credit, 'available_hours': available_hours}
+            available_slot = {'current_date': current_date, 'start_time': available_slotitems[0][0], 'end_time': available_slotitems[available_hours - 1][1], 'classroom': available_slotitems[0][2], 'duration_hours_credit': duration_hours_credit, 'available_hours': available_hours}
 
         return available_slot
