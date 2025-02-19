@@ -50,7 +50,7 @@
                                 </field>
                             </page>
                             <page name="student_ids" string="Etudiants">
-                                <field name="student_ids"/>
+                                <field name="student_ids" options="{'no_open': True, 'no_create': True}"/>
                             </page>
                         </notebook>
 					</sheet>
