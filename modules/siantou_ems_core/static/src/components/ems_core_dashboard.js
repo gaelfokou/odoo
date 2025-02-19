@@ -51,24 +51,25 @@ export class OwlSalesDashboard extends Component {
         this.state.students.value = await this.orm.searchCount("oe.school.student", [])
         this.state.ecoles.value = await this.orm.searchCount("siantou.ems.core.school", [])
         this.state.campus.value = await this.orm.searchCount("siantou.ems.core.campus", [])
-        this.state.teachers.value = await this.orm.searchCount("hr.employee", [["is_teacher","=",true]])
+        this.state.teachers.value = await this.orm.searchCount("hr.employee", [["is_teacher", "=", true]])
         this.state.filieres.value = await this.orm.searchCount("siantou.ems.core.field_of_study", [])
     }
 
     async getBarChartDatas(){
         const cycles = await this.orm.searchRead("oe.school.course",[]);
         cycles.forEach( async (cycle) => {
-            let studentCount = await this.orm.searchCount("oe.school.student", [["cycle_id","=",cycle.id]])
+            let studentCount = await this.orm.searchCount("oe.school.student", [["cycle_id", "=", cycle.id]])
             this.state.datas.push({
                 name:cycle.name,
                 value:studentCount
             })
         });
+        console.log('datas', this.state.datas);
     }
 
     async getTearcherDatas(){
-        const teacher_vac = await this.orm.searchCount("hr.employee",[["is_teacher","=",true], ["is_permanent","=",false]]);
-        const teacher_perm = await this.orm.searchCount("hr.employee",[["is_permanent","=",true], ["is_teacher","=",true]]);
+        const teacher_vac = await this.orm.searchCount("hr.employee",[["is_teacher", "=", true], ["is_permanent", "=", false]]);
+        const teacher_perm = await this.orm.searchCount("hr.employee",[["is_permanent", "=", true], ["is_teacher", "=", true]]);
         this.state.doughTearchers.push({
             name:"Enseignants permanents",
             value:teacher_perm
@@ -82,29 +83,36 @@ export class OwlSalesDashboard extends Component {
     async getFiliereDatas(){
         const filieres = await this.orm.searchRead("siantou.ems.core.field_of_study",[]);
         filieres.forEach(async (filiere)=>{
+            const classes = await this.orm.searchRead("siantou.ems.core.class",[["filiere_id", "=", filiere.id]]);
+            let nbre = 0;
+            await classes.forEach(async (classe)=>{
+                nbre += classe.student_ids.length
+            })
             this.state.doughFilieres.push({
                 name:filiere.name,
-                value:filiere.student_ids.length
+                value:nbre
             })
-        })
-        console.log(this.state.doughFilieres)
+        });
+        console.log('doughFilieres', this.state.doughFilieres);
     }
 
     async getEcoleDatas(){
         const ecoles = await this.orm.searchRead("siantou.ems.core.school",[]);
         ecoles.forEach(async (ecole)=>{
             let nbre = 0
-            const filieres = await this.orm.searchRead("siantou.ems.core.field_of_study",[["school_id","=",ecole.id]]);
-            filieres.forEach(async (filiere)=>{
-                nbre += filiere.student_ids.length
+            const filieres = await this.orm.searchRead("siantou.ems.core.field_of_study",[["school_id", "=", ecole.id]]);
+            await filieres.forEach(async (filiere)=>{
+                const classes = await this.orm.searchRead("siantou.ems.core.class",[["filiere_id", "=", filiere.id]]);
+                await classes.forEach(async (classe)=>{
+                    nbre += classe.student_ids.length
+                })
             })
-
             this.state.doughEcoles.push({
                 name:ecole.name,
                 value:nbre
             })
-        })
-        console.log(this.state.doughEcoles)
+        });
+        console.log('doughEcoles', this.state.doughEcoles);
     }
 
 }

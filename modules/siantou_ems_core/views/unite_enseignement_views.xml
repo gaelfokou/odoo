@@ -40,7 +40,7 @@
                         </group>
                         <notebook>
                             <page name="subject_ids" string="Cours">
-                                <field name="subject_ids" editable='bottom'>
+                                <field name="subject_ids">
                                     <tree editable='bottom' create='false' delete='false'>
                                         <field name="code"/>
                                         <field name="name"/>
