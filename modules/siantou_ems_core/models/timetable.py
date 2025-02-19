@@ -127,10 +127,11 @@ class Timetable(models.Model):
     # Méthode pour remplir automatiquement le jour de la semaine
     @api.depends('date')
     def _onchange_date(self):
-        if self.date:
-            # Calculer le jour de la semaine (0 = lundi, 1 = mardi, ...)
-            day_of_week = datetime.strptime(str(self.date), '%Y-%m-%d').weekday()
-            self.day_of_week = str(day_of_week)  # Assurez-vous que le jour soit un string (0-6)
+        for record in self:
+            if record.date:
+                # Calculer le jour de la semaine (0 = lundi, 1 = mardi, ...)
+                day_of_week = datetime.strptime(str(record.date), '%Y-%m-%d').weekday()
+                record.day_of_week = str(day_of_week)  # Assurez-vous que le jour soit un string (0-6)
 
     # Contrainte logique pour se rassurer que deux cours ne sont pas programmés dans la même salle au même moment
     @api.constrains('classroom_id', 'date', 'start_time', 'end_time')

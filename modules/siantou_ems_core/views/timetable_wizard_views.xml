@@ -9,6 +9,8 @@
                     <sheet>
                         <group>
                             <field name="semester_id"/>
+                            <field name="level_id"/>
+                            <field name="field_of_study_id"/>
                             <field name="group"/>
                         </group>
                         <footer>

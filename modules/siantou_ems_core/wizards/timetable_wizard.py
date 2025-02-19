@@ -17,6 +17,20 @@ class TimetableWizard(models.TransientModel):
         required=True
     )
 
+    # Niveau lié à la programmation de cours
+    level_id = fields.Many2one(
+        'siantou.ems.core.level',
+        'Niveau',
+        ondelete='restrict'
+    )
+
+    # Filière liée à la programmation de cours
+    field_of_study_id = fields.Many2one(
+        'siantou.ems.core.field_of_study',
+        'Filière',
+        ondelete='restrict'
+    )
+
     # Groupe auquel appartient l'emploi du temps
     group = fields.Char(
         'Groupe'
@@ -47,7 +61,7 @@ class TimetableWizard(models.TransientModel):
                 field_of_study = classe.filiere_id
                 check_classes = field_of_study
                 level_id = classe.niveau_id.id
-                ue_ids = classe.ue_ids.filtered(lambda u: u.semestre_id.id == record.semester_id.id)
+                ue_ids = classe.ue_ids.filtered(lambda u: u.semestre_id.id == record.semester_id.id and u.class_id.filiere_id.id == record.field_of_study_id.id and u.class_id.niveau_id.id == record.level_id.id)
                 # Récupérer la liste des cours de la filière par niveau et les traiter l'un après l'autre
                 ue_ids = list(ue_ids)
                 for ue_id in ue_ids:
