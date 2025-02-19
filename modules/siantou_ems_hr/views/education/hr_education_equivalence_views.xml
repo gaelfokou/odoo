@@ -5,7 +5,7 @@
         <field name="name">hr_education_equivalence.view.tree</field>
         <field name="model">hr.education.equivalence</field>
         <field name="arch" type="xml">
-            <tree string="Liste equivalence" editable='bottom'>
+            <tree string="Liste equivalence" editable="bottom">
                 <field name="name" />
                 <field name="code" />
                 <field name="active" />

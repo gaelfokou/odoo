@@ -31,7 +31,7 @@
                         <group string="Informations sur le cours" col="4">
                             <group colspan="2">
                                 <field name="code"/>
-                                <field name="ue_ids"/>
+                                <field name="ue_ids" widget="many2many_tags" options="{'no_open': True, 'no_create': True}"/>
                                 <field name="hours_credit"/>
                             </group>
                             <group colspan="2">

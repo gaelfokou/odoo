@@ -36,7 +36,7 @@
                         <page name="programme_ids" string="Lignes du programme d'enseignement">
                             <field name="syllabus_ids" domain="[('class_id', '=', class_id)]">
                                 <tree 
-                                editable='bottom'
+                                editable="bottom"
                                 >
                                 <field name="class_id"/>
                                 <field name="ue_id"/>

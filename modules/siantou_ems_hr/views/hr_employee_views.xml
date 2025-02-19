@@ -87,7 +87,7 @@
                 position="after">
                 <group string="Enfant(s)" colspan="4">
                     <field name="children_ids">
-                        <tree editable='bottom'>
+                        <tree editable="bottom">
                             <field name="nom_enfant" />
                             <field name="date_naissance" />
                             <field name="genre_enfant" />
@@ -103,7 +103,7 @@
                 position="after">
                 <group string="Diplome (s)" colspan="4">
                     <field name="diplome_ids">
-                        <tree editable='bottom'>
+                        <tree editable="bottom">
                             <field name="nom_diplome" />
                             <field name="equivalence_id" />
                             <field name="ecole" />
@@ -118,7 +118,7 @@
                 position="after">
                 <group string="Certificat (s)" colspan="4">
                     <field name="certificat_ids">
-                        <tree editable='bottom'>
+                        <tree editable="bottom">
                             <field name="nom_certificat" />
                             <field name="equivalence_id" />
                             <field name="ecole" />

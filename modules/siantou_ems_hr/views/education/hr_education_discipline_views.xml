@@ -5,7 +5,7 @@
         <field name="name">hr_education_discipline.view.tree</field>
         <field name="model">hr.education.discipline</field>
         <field name="arch" type="xml">
-            <tree string="Liste discipline" editable='bottom'>
+            <tree string="Liste discipline" editable="bottom">
                 <field name="name" />
                 <field name="code" />
                 <field name="active" />

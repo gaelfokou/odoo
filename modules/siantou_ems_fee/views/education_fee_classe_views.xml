@@ -35,7 +35,7 @@
                         <!-- <notebook>
                             <page name="invoice" string="Liste factures">
                                 <field name="facture_ids">
-                                    <tree editable='bottom'>
+                                    <tree editable="bottom">
                                         <field name="fee_structure" />
                                         <field name="amount_total" sum="Total"/>
                                         <field name="amount_reste" sum="Reste à Payer"/>
