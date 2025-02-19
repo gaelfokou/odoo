@@ -40,7 +40,7 @@
                         </group>
                         <notebook>
                             <page name="unite_enseignement" string="Unité d'enseignements">
-                                <field name="ue_ids" widget="many2many_tags" options="{'no_open': True, 'no_create': True}">
+                                <field name="ue_ids">
                                     <tree editable="bottom">
                                         <field name="code" />
                                         <field name="name" />
