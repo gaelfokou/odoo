@@ -35,34 +35,35 @@ class Helpers:
             search_in = 'all'
         search_domain = searchbar_inputs[search_in]['domain']
 
+        if level_id:
+            search_domain.append(('level_id', '=', level_id.id))
+        if field_of_study_id:
+            search_domain.append(('field_of_study_id', '=', field_of_study_id.id))
+
         order = 'date asc'
 
         search_timetables = []
+        user = None
+        is_user = None
         if http.request.env.user.employee_id.id:
+            user = http.request.env.user.employee_id
             if http.request.env.user.employee_id.is_teacher:
+                is_user = 'is_teacher'
+            else:
+                is_user = 'is_employee'
+        else:
+            user = http.request.env['oe.school.student'].sudo().search([('user_id', '=', http.request.env.user.id)], limit=1)
+            if user:
+                is_user = 'is_student'
+        if user:
+            if is_user == 'is_teacher':
                 user = http.request.env.user.employee_id
                 search_domain.append(('employee_id', '=', user.id))
 
                 timetables = http.request.env['siantou.ems.timetable.timetable'].sudo().search(search_domain, order=order)
                 timetables = list(timetables)
                 search_timetables = timetables
-            else:
-                if level_id:
-                    # Si l'étudiant est trouvé, on filtre par cycle, niveau
-                    search_domain.append(('level_id', '=', level_id.id))
-                if field_of_study_id:
-                    # Si l'étudiant est trouvé, on filtre par cycle, filière
-                    search_domain.append(('field_of_study_id', '=', field_of_study_id.id))
-
-                timetables = http.request.env['siantou.ems.timetable.timetable'].sudo().search(search_domain, order=order)
-                timetables = list(timetables)
-                search_timetables = timetables
-        else:
-            user = http.request.env.user
-            # Chercher l'étudiant en fonction de l'ID de l'utilisateur (user_id)
-            student = http.request.env['oe.school.student'].sudo().search([('user_id', '=', user.id)], limit=1)
-            if student:
-                # Si l'étudiant est trouvé, on filtre par cycle, niveau et filière
+            elif is_user == 'is_student':
                 search_domain.append(('level_id', '=', student.level_id.id))
                 search_domain.append(('field_of_study_id', '=', student.field_of_study_id.id))
 
