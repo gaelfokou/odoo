@@ -64,8 +64,8 @@ class Helpers:
                 timetables = list(timetables)
                 search_timetables = timetables
             elif is_user == 'is_student':
-                search_domain.append(('level_id', '=', student.level_id.id))
-                search_domain.append(('field_of_study_id', '=', student.field_of_study_id.id))
+                search_domain.append(('level_id', '=', user.level_id.id))
+                search_domain.append(('field_of_study_id', '=', user.field_of_study_id.id))
 
                 timetables = http.request.env['siantou.ems.timetable.timetable'].sudo().search(search_domain, order=order)
                 timetables = list(timetables)
