@@ -50,6 +50,7 @@ class CheckAvailableSlot(models.Model):
         slotitems.sort(key=lambda s: s[0])
 
         available_slotitems = []
+        available_hours = 0
 
         classrooms = self.env['siantou.ems.core.building.classroom'].search([])
         classrooms = list(classrooms)
@@ -65,18 +66,20 @@ class CheckAvailableSlot(models.Model):
                 if len(timetables) > 0:
                     continue
                 available_slotitems.append([start_time, end_time, classroom])
-                if len(available_slotitems) == duration_hours_credit:
+                available_hours = len(available_slotitems)
+                if available_hours == duration_hours_credit:
                     break
-            if len(available_slotitems) == duration_hours_credit:
+            if available_hours > 0:
+            # if available_hours == duration_hours_credit:
                 break
-            else:
-                available_slotitems = []
-
-        available_hours = len(available_slotitems)
+            # else:
+            #     available_slotitems = []
+            #     available_hours = 0
 
         available_slot = None
 
-        if available_hours == duration_hours_credit:
+        if available_hours > 0:
+        # if available_hours == duration_hours_credit:
             duration_hours_credit = duration_hours_credit - available_hours
             available_slot = {'current_date': current_date, 'start_time': available_slotitems[0][0], 'end_time': available_slotitems[available_hours - 1][1], 'classroom': available_slotitems[0][2], 'duration_hours_credit': duration_hours_credit, 'available_hours': available_hours}
 
