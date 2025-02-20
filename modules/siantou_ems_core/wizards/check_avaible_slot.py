@@ -65,6 +65,17 @@ class CheckAvailableSlot(models.Model):
                 timetables = list(timetables)
                 if len(timetables) > 0:
                     continue
+                timetables = self.env['siantou.ems.timetable.timetable'].search([
+                    ('date', '=', current_date),
+                    ('start_time', '<', end_time),
+                    ('end_time', '>', start_time),
+                    ('field_of_study_id', '=', field_of_study_id),
+                    ('level_id', '=', level_id),
+                    ('batch_id', '=', batch_id)
+                ])
+                timetables = list(timetables)
+                if len(timetables) > 0:
+                    continue
                 available_slotitems.append([start_time, end_time, classroom])
                 available_hours = len(available_slotitems)
                 if available_hours == duration_hours_credit:
