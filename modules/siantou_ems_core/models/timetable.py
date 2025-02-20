@@ -232,6 +232,7 @@ class TimetableSlotItem(models.Model):
     slot_id = fields.Many2one(
         'siantou.ems.timetable.slot',
         string='Créneau horaire',
+        ondelete='cascade',
     )
 
     # Heure de début du cours
