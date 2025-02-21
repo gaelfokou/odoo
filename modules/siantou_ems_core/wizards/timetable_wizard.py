@@ -60,6 +60,15 @@ class TimetableWizard(models.TransientModel):
             check_classes = classe
             field_of_study = classe.filiere_id
             level_id = classe.niveau_id.id
+            batches = self.env['siantou.ems.core.student.batch'].search([
+                ('school_id', '=', field_of_study.school_id.id),
+                ('field_of_study_id', '=', field_of_study.id),
+                ('level_id', '=', level_id),
+            ])
+            batches = list(batches)
+            if len(batches) == 0:
+                batch = self.env['siantou.ems.core.student.batch'].create_new_batch(field_of_study.school_id.id, field_of_study.id, level_id)
+                batches.append(batch)
             if self.field_of_study_id.id and self.level_id.id:
                 ue_ids = classe.ue_ids.filtered(lambda u: u.semestre_id.id == self.semester_id.id and u.class_id.filiere_id.id == self.field_of_study_id.id and u.class_id.niveau_id.id == self.level_id.id)
             elif self.field_of_study_id.id:
@@ -75,78 +84,72 @@ class TimetableWizard(models.TransientModel):
                 subject_ids = ue_id.subject_ids.ids
                 for subject_id in subject_ids:
                     check_subjects = subject_id
-                    # On récupère le cours
-                    subject = self.env['siantou.ems.core.subject'].browse(subject_id)
-                    batches = self.env['siantou.ems.core.student.batch'].search([
-                        ('school_id', '=', field_of_study.school_id.id),
-                        ('field_of_study_id', '=', field_of_study.id),
-                        ('level_id', '=', level_id),
-                    ])
-                    batches = list(batches)
-                    if len(batches) == 0:
-                        batch = self.env['siantou.ems.core.student.batch'].create_new_batch(field_of_study.school_id.id, field_of_study.id, level_id)
-                        batches.append(batch)
                     for batch in batches:
                         check_batches = batch
+                        # On récupère le cours
+                        subject = self.env['siantou.ems.core.subject'].browse(subject_id)
                         semester_hours_credit = subject.hours_credit
-                        # On parcours toutes les semaines du semestre
-                        for week in range(0, self.semester_id.number_of_week):
-                            # on verifie si le quota semestriel n'est pas atteint
-                            if semester_hours_credit > 0:
-                                check_semester_hours_credit += semester_hours_credit
-                                # On initialise weekly_hours_credit pour gérer le nombre de jours sur lesquels on doit programmer le cours
-                                weekly_hours_credit = math.ceil(subject.hours_credit / self.semester_id.number_of_week)
-                                # On parcours toutes les jours de la semaine
-                                for day in range(0, 6):
-                                    # on verifie si le quota hebdomadaire est atteint
-                                    if weekly_hours_credit > 0:
-                                        check_weekly_hours_credit += weekly_hours_credit
-                                        start_time = self.semester_id.start_time - timedelta(days=self.semester_id.start_time.weekday())
-                                        end_time = start_time + timedelta(days=5)
-                                        duration_hours_credit = min(4, weekly_hours_credit)
-                                        # On parcours les jours de la semaine de Lundi - Samedi
-                                        check_available_slot_model = self.env['siantou.ems.timetable.check_available_slot']
-                                        target_date = start_time + timedelta(weeks=week, days=day)
-                                        i = 0
-                                        while True:
-                                            if duration_hours_credit == 0:
-                                                break
-                                            current_date = target_date + timedelta(days=i)
-                                            if current_date > end_time:
-                                                break
-                                            available_slot = check_available_slot_model.find_available_slot(current_date, field_of_study.id, level_id, batch.id, duration_hours_credit)
-                                            # On trouve une salle de classe et un créneau horaire disponiblent pour le cours
-                                            if available_slot:
-                                                check_classroom_slot = available_slot
-                                                check_available_teacher_model = self.env['siantou.ems.timetable.check_priority']
-                                                # On trouve un enseignant disponible selon sa priorité et son quota horaire
-                                                teacher_priority = check_available_teacher_model.get_teacher_for_period(subject.id, current_date, available_slot["start_time"], available_slot["end_time"])
-                                                if teacher_priority:
-                                                    teacher_priority = self.find_available_teacher(teacher_priority, current_date, available_slot["start_time"], available_slot["end_time"])
-                                                self.env['siantou.ems.timetable.timetable'].create({
-                                                    'semester_id': self.semester_id.id,
-                                                    'batch_id': batch.id,
-                                                    'field_of_study_id': field_of_study.id,
-                                                    'department_id': field_of_study.department_id.id if field_of_study.department_id else None,
-                                                    'level_id': level_id,
-                                                    'subject_id': subject_id,
-                                                    'classroom_id': available_slot["classroom"].id,
-                                                    'employee_id': teacher_priority.id if teacher_priority else None,
-                                                    'date': current_date,
-                                                    'day_of_week': str(current_date.weekday()),
-                                                    'start_time': available_slot["start_time"],
-                                                    'end_time': available_slot["end_time"],
-                                                    'group_id': new_group.id,
-                                                })
-                                                duration_hours_credit = available_slot['duration_hours_credit']
-                                                semester_hours_credit -= available_slot['available_hours']
-                                                weekly_hours_credit -= available_slot['available_hours']
-                                            else:
-                                                i = i + 1
-                                    else:
+                        # on verifie si le quota semestriel n'est pas atteint
+                        if semester_hours_credit > 0:
+                            check_semester_hours_credit += semester_hours_credit
+                            # On initialise weekly_hours_credit pour gérer le nombre de jours sur lesquels on doit programmer le cours
+                            weekly_hours_credit = math.ceil(semester_hours_credit / ue_id.semester_id.number_of_week)
+                            if weekly_hours_credit > 0:
+                                check_weekly_hours_credit += weekly_hours_credit
+                                start_time = ue_id.semester_id.start_time - timedelta(days=ue_id.semester_id.start_time.weekday())
+                                end_time = start_time + timedelta(days=5)
+                                weekly_hours_credit = min(4, weekly_hours_credit)
+                                # On parcours toutes les semaines du semestre
+                                for week in range(0, ue_id.semester_id.number_of_week):
+                                    # on verifie si le quota semestriel est atteint
+                                    if semester_hours_credit == 0:
                                         break
+                                    # on verifie si le quota hebdomadaire est atteint
+                                    if weekly_hours_credit == 0:
+                                        break
+                                    # On parcours toutes les jours de la semaine
+                                    for day in range(0, 6):
+                                        # on verifie si le quota semestriel est atteint
+                                        if semester_hours_credit == 0:
+                                            break
+                                        # on verifie si le quota hebdomadaire est atteint
+                                        if weekly_hours_credit == 0:
+                                            break
+                                        # On parcours les jours de la semaine de Lundi - Samedi
+                                        target_date = start_time + timedelta(weeks=week, days=day)
+                                        if target_date > end_time:
+                                            break
+                                        available_slot = self.env['siantou.ems.timetable.check_available_slot'].find_available_slot(target_date, field_of_study.id, level_id, batch.id, weekly_hours_credit)
+                                        # On trouve une salle de classe et un créneau horaire disponiblent pour le cours
+                                        if available_slot:
+                                            check_classroom_slot = available_slot
+                                            check_available_teacher_model = self.env['siantou.ems.timetable.check_priority']
+                                            # On trouve un enseignant disponible selon sa priorité et son quota horaire
+                                            teacher_priority = check_available_teacher_model.get_teacher_for_period(subject.id, target_date, available_slot["start_time"], available_slot["end_time"])
+                                            if teacher_priority:
+                                                teacher_priority = self.find_available_teacher(teacher_priority, target_date, available_slot["start_time"], available_slot["end_time"])
+                                            self.env['siantou.ems.timetable.timetable'].create({
+                                                'semester_id': ue_id.semester_id.id,
+                                                'batch_id': batch.id,
+                                                'field_of_study_id': field_of_study.id,
+                                                'department_id': field_of_study.department_id.id if field_of_study.department_id else None,
+                                                'level_id': level_id,
+                                                'subject_id': subject_id,
+                                                'classroom_id': available_slot["classroom"].id,
+                                                'employee_id': teacher_priority.id if teacher_priority else None,
+                                                'date': target_date,
+                                                'day_of_week': str(target_date.weekday()),
+                                                'start_time': available_slot["start_time"],
+                                                'end_time': available_slot["end_time"],
+                                                'group_id': new_group.id,
+                                            })
+                                            duration_weekly_hours_credit = available_slot['duration_weekly_hours_credit']
+                                            semester_hours_credit -= duration_weekly_hours_credit
+                                            weekly_hours_credit -= duration_weekly_hours_credit
                             else:
                                 break
+                        else:
+                            break
 
         if not check_classes:
             raise UserError("Aucune classe trouvée")

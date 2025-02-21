@@ -10,7 +10,7 @@ class CheckAvailableSlot(models.Model):
     _name = 'siantou.ems.timetable.check_available_slot'
     _description = 'Déterminer un creneau pour un cours'
 
-    def find_available_slot(self, current_date, field_of_study_id, level_id, batch_id, duration_hours_credit=1):
+    def find_available_slot(self, current_date, field_of_study_id, level_id, batch_id, duration_weekly_hours_credit):
         slots = self.env['siantou.ems.timetable.slot'].search([
             ('is_default', '=', False),
         ])
@@ -55,8 +55,6 @@ class CheckAvailableSlot(models.Model):
         classrooms = self.env['siantou.ems.core.building.classroom'].search([])
         classrooms = list(classrooms)
         for classroom in classrooms:
-            available_slotitems = []
-            available_hours = 0
             for start_time, end_time in slotitems:
                 timetables = self.env['siantou.ems.timetable.timetable'].search([
                     ('classroom_id', '=', classroom.id),
@@ -80,7 +78,7 @@ class CheckAvailableSlot(models.Model):
                     continue
                 available_slotitems.append([start_time, end_time, classroom])
                 available_hours = len(available_slotitems)
-                if available_hours == duration_hours_credit:
+                if available_hours == duration_weekly_hours_credit:
                     break
             if available_hours > 0:
                 break
@@ -88,7 +86,7 @@ class CheckAvailableSlot(models.Model):
         available_slot = None
 
         if available_hours > 0:
-            duration_hours_credit = duration_hours_credit - available_hours
-            available_slot = {'current_date': current_date, 'start_time': available_slotitems[0][0], 'end_time': available_slotitems[available_hours - 1][1], 'classroom': available_slotitems[0][2], 'duration_hours_credit': duration_hours_credit, 'available_hours': available_hours}
+            duration_weekly_hours_credit = available_hours
+            available_slot = {'current_date': current_date, 'start_time': available_slotitems[0][0], 'end_time': available_slotitems[available_hours - 1][1], 'classroom': available_slotitems[0][2], 'duration_weekly_hours_credit': duration_weekly_hours_credit}
 
         return available_slot
