@@ -122,9 +122,8 @@ class TimetableWizard(models.TransientModel):
                                         # On trouve une salle de classe et un créneau horaire disponiblent pour le cours
                                         if available_slot:
                                             check_classroom_slot = available_slot
-                                            check_available_teacher_model = self.env['siantou.ems.timetable.check_priority']
                                             # On trouve un enseignant disponible selon sa priorité et son quota horaire
-                                            teacher_priority = check_available_teacher_model.get_teacher_for_period(subject.id, target_date, available_slot["start_time"], available_slot["end_time"])
+                                            teacher_priority = self.env['siantou.ems.timetable.check_priority'].get_teacher_for_period(subject.id, target_date, available_slot["start_time"], available_slot["end_time"])
                                             if teacher_priority:
                                                 teacher_priority = self.find_available_teacher(teacher_priority, target_date, available_slot["start_time"], available_slot["end_time"])
                                             self.env['siantou.ems.timetable.timetable'].create({
