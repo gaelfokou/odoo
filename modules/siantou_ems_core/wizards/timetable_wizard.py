@@ -86,29 +86,22 @@ class TimetableWizard(models.TransientModel):
                     check_subjects = subject_id
                     for batch in batches:
                         check_batches = batch
-                        # On récupère le cours
-                        subject = self.env['siantou.ems.core.subject'].browse(subject_id)
-                        semester_hours_credit = subject.hours_credit
-                        # on verifie si le quota semestriel n'est pas atteint
-                        if semester_hours_credit > 0:
-                            check_semester_hours_credit += semester_hours_credit
-                            # On initialise weekly_hours_credit pour gérer le nombre de jours sur lesquels on doit programmer le cours
-                            weekly_hours_credit = math.ceil(semester_hours_credit / ue_id.semestre_id.number_of_week)
-                            if weekly_hours_credit > 0:
-                                check_weekly_hours_credit += weekly_hours_credit
-                                start_time = ue_id.semestre_id.start_time - timedelta(days=ue_id.semestre_id.start_time.weekday())
-                                end_time = start_time + timedelta(days=5)
-                                weekly_hours_credit = min(4, weekly_hours_credit)
-                                # On parcours toutes les semaines du semestre
-                                for week in range(0, ue_id.semestre_id.number_of_week):
-                                    # on verifie si le quota semestriel est atteint
-                                    if semester_hours_credit == 0:
-                                        break
+                        # On parcours toutes les semaines du semestre
+                        for week in range(0, ue_id.semestre_id.number_of_week):
+                            subject = self.env['siantou.ems.core.subject'].browse(subject_id)
+                            semester_hours_credit = subject.hours_credit
+                            # on verifie si le quota semestriel n'est pas atteint
+                            if semester_hours_credit > 0:
+                                check_semester_hours_credit += semester_hours_credit
+                                # On initialise weekly_hours_credit pour gérer le nombre de jours sur lesquels on doit programmer le cours
+                                weekly_hours_credit = math.ceil(semester_hours_credit / ue_id.semestre_id.number_of_week)
+                                if weekly_hours_credit > 0:
+                                    check_weekly_hours_credit += weekly_hours_credit
+                                    start_time = ue_id.semestre_id.start_time - timedelta(days=ue_id.semestre_id.start_time.weekday())
+                                    end_time = start_time + timedelta(days=5)
+                                    weekly_hours_credit = min(4, weekly_hours_credit)
                                     # On parcours toutes les jours de la semaine
                                     for day in range(0, 6):
-                                        # on verifie si le quota hebdomadaire est atteint
-                                        if weekly_hours_credit == 0:
-                                            break
                                         # On parcours les jours de la semaine de Lundi - Samedi
                                         target_date = start_time + timedelta(weeks=week, days=day)
                                         available_slot = self.env['siantou.ems.timetable.check_available_slot'].find_available_slot(target_date, field_of_study.id, level_id, batch.id, weekly_hours_credit)
@@ -138,10 +131,10 @@ class TimetableWizard(models.TransientModel):
                                             duration_weekly_hours_credit = available_slot['duration_weekly_hours_credit']
                                             semester_hours_credit -= duration_weekly_hours_credit
                                             weekly_hours_credit -= duration_weekly_hours_credit
+                                else:
+                                    break
                             else:
                                 break
-                        else:
-                            break
 
         if not check_classes:
             raise UserError("Aucune classe trouvée")
