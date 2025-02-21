@@ -41,14 +41,14 @@ class CheckPriority(models.Model):
             # if overlapping_course:
             #     continue  # Si l'enseignant a déjà un cours à la même plage horaire, on passe au suivant
 
-            overlapping_courses = self.env['siantou.ems.timetable.timetable'].search([
+            overlapping_course = self.env['siantou.ems.timetable.timetable'].search([
                 ('employee_id', '=', teacher.id),
                 ('date', '=', date),
-            ]).filtered(lambda rec: (rec.start_time <= start_time and rec.end_time > start_time) or (rec.start_time < end_time and rec.end_time >= end_time))
+                ('start_time', '<', end_time),
+                ('end_time', '>', start_time),
+            ], limit=1)
 
-            overlapping_courses = list(overlapping_courses)
-
-            if len(overlapping_courses) > 0:
+            if overlapping_course:
                 continue  # Si l'enseignant a déjà un cours à la même plage horaire, on passe au suivant
 
             # Si un enseignant est permanent
@@ -75,14 +75,14 @@ class CheckPriority(models.Model):
             # if overlapping_course:
             #     continue  # Si l'enseignant a déjà un cours à la même plage horaire, on passe au suivant
 
-            overlapping_courses = self.env['siantou.ems.timetable.timetable'].search([
+            overlapping_course = self.env['siantou.ems.timetable.timetable'].search([
                 ('employee_id', '=', teacher.id),
                 ('date', '=', date),
-            ]).filtered(lambda rec: (rec.start_time <= start_time and rec.end_time > start_time) or (rec.start_time < end_time and rec.end_time >= end_time))
+                ('start_time', '<', end_time),
+                ('end_time', '>', start_time),
+            ], limit=1)
 
-            overlapping_courses = list(overlapping_courses)
-
-            if len(overlapping_courses) > 0:
+            if overlapping_course:
                 continue  # Si l'enseignant a déjà un cours à la même plage horaire, on passe au suivant
 
             # Si un enseignant est non permanent
