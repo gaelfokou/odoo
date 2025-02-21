@@ -98,15 +98,15 @@ class TimetablePrintWizard(models.TransientModel):
             ('group_id', '=', self.group_id.id)
         ]
         # Ajouter le critère Niveau seulement s'il est sélectionné
-        if self.level_id:
+        if self.level_id.id:
             domain.append(('level_id', '=', self.level_id.id))
 
         # Ajouter le critère Filière seulement s'il est sélectionné
-        if self.department_id:
+        if self.department_id.id:
             domain.append(('department_id', '=', self.department_id.id))
         
         # Ajouter le critère Filière seulement s'il est sélectionné
-        if self.field_of_study_id:
+        if self.field_of_study_id.id:
             domain.append(('field_of_study_id', '=', self.field_of_study_id.id))
         
         # Ajouter le critère de période seulement si la période de début et la période de fin sont sélectionnées
