@@ -1,5 +1,5 @@
 import math
-
+import threading
 from odoo import models, fields, api
 from odoo.exceptions import UserError, AccessError, ValidationError
 from datetime import datetime, timedelta
@@ -54,7 +54,21 @@ class TimetableWizard(models.TransientModel):
         check_classroom_slot = None
         
         # Récupérer la liste des filières et les traiter l'une après l'autre
-        classes = self.env['siantou.ems.core.class'].search([])
+        if self.field_of_study_id.id and self.level_id.id:
+            classes = self.env['siantou.ems.core.class'].search([
+                ('filiere_id', '=', self.field_of_study_id.id),
+                ('niveau_id', '=', self.level_id.id),
+            ])
+        elif self.field_of_study_id.id:
+            classes = self.env['siantou.ems.core.class'].search([
+                ('filiere_id', '=', self.field_of_study_id.id),
+            ])
+        elif self.level_id.id:
+            classes = self.env['siantou.ems.core.class'].search([
+                ('niveau_id', '=', self.level_id.id),
+            ])
+        else:
+            classes = self.env['siantou.ems.core.class'].search([])
         classes = list(classes)
         for classe in classes:
             check_classes = classe
@@ -69,14 +83,7 @@ class TimetableWizard(models.TransientModel):
             if len(batches) == 0:
                 batch = self.env['siantou.ems.core.student.batch'].create_new_batch(field_of_study.school_id.id, field_of_study.id, level_id)
                 batches.append(batch)
-            if self.field_of_study_id.id and self.level_id.id:
-                ue_ids = classe.ue_ids.filtered(lambda u: u.semestre_id.id == self.semester_id.id and u.class_id.filiere_id.id == self.field_of_study_id.id and u.class_id.niveau_id.id == self.level_id.id)
-            elif self.field_of_study_id.id:
-                ue_ids = classe.ue_ids.filtered(lambda u: u.semestre_id.id == self.semester_id.id and u.class_id.filiere_id.id == self.field_of_study_id.id)
-            elif self.level_id.id:
-                ue_ids = classe.ue_ids.filtered(lambda u: u.semestre_id.id == self.semester_id.id and u.class_id.niveau_id.id == self.level_id.id)
-            else:
-                ue_ids = classe.ue_ids.filtered(lambda u: u.semestre_id.id == self.semester_id.id)
+            ue_ids = classe.ue_ids.filtered(lambda u: u.semestre_id.id == self.semester_id.id)
             # Récupérer la liste des cours de la filière par niveau et les traiter l'un après l'autre
             ue_ids = list(ue_ids)
             for ue_id in ue_ids:
