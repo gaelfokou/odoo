@@ -93,14 +93,14 @@ class TimetableWizard(models.TransientModel):
                         if semester_hours_credit > 0:
                             check_semester_hours_credit += semester_hours_credit
                             # On initialise weekly_hours_credit pour gérer le nombre de jours sur lesquels on doit programmer le cours
-                            weekly_hours_credit = math.ceil(semester_hours_credit / ue_id.semester_id.number_of_week)
+                            weekly_hours_credit = math.ceil(semester_hours_credit / ue_id.semestre_id.number_of_week)
                             if weekly_hours_credit > 0:
                                 check_weekly_hours_credit += weekly_hours_credit
-                                start_time = ue_id.semester_id.start_time - timedelta(days=ue_id.semester_id.start_time.weekday())
+                                start_time = ue_id.semestre_id.start_time - timedelta(days=ue_id.semestre_id.start_time.weekday())
                                 end_time = start_time + timedelta(days=5)
                                 weekly_hours_credit = min(4, weekly_hours_credit)
                                 # On parcours toutes les semaines du semestre
-                                for week in range(0, ue_id.semester_id.number_of_week):
+                                for week in range(0, ue_id.semestre_id.number_of_week):
                                     # on verifie si le quota semestriel est atteint
                                     if semester_hours_credit == 0:
                                         break
@@ -129,7 +129,7 @@ class TimetableWizard(models.TransientModel):
                                             if teacher_priority:
                                                 teacher_priority = self.find_available_teacher(teacher_priority, target_date, available_slot["start_time"], available_slot["end_time"])
                                             self.env['siantou.ems.timetable.timetable'].create({
-                                                'semester_id': ue_id.semester_id.id,
+                                                'semester_id': ue_id.semestre_id.id,
                                                 'batch_id': batch.id,
                                                 'field_of_study_id': field_of_study.id,
                                                 'department_id': field_of_study.department_id.id if field_of_study.department_id else None,
