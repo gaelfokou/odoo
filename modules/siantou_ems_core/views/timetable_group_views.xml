@@ -10,6 +10,7 @@
             <field name="arch" type="xml">
                 <tree delete="true" create="false" edit="true">
                     <field name="name"/>
+                    <field name="timetables"/>
                     <field name="semester_id"/>
                 </tree>
             </field>

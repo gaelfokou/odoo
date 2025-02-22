@@ -219,6 +219,12 @@ class TimetableGroup(models.Model):
 
     name = fields.Char('Nom du groupe', required=True)
 
+    timetables = fields.One2many(
+        'siantou.ems.timetable.timetable',
+        'group_id',
+        string='Emplois du temps'
+    )
+
     semester_id = fields.Many2one(
         'siantou.ems.core.year.semester',
         'Semester',

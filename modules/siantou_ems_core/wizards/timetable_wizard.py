@@ -38,12 +38,12 @@ class TimetableWizard(models.TransientModel):
 
 
     def generate_timetable(self):
-        if self.group and self.group.strip() != '':
-            new_group = self.env['siantou.ems.timetable.group'].create({'name': self.group, 'semester_id': self.semester_id.id})
-        else:
-            # Génération de la chaîne unique
-            unique_string = datetime.now().strftime("%Y%m%d%H%M")
-            new_group = self.env['siantou.ems.timetable.group'].create({'name': "group-" + unique_string, 'semester_id': self.semester_id.id})
+        # if self.group and self.group.strip() != '':
+        #     new_group = self.env['siantou.ems.timetable.group'].create({'name': self.group, 'semester_id': self.semester_id.id})
+        # else:
+        #     # Génération de la chaîne unique
+        #     unique_string = datetime.now().strftime("%Y%m%d%H%M")
+        #     new_group = self.env['siantou.ems.timetable.group'].create({'name': "group-" + unique_string, 'semester_id': self.semester_id.id})
 
         check_classes = None
         check_ues = None
@@ -70,8 +70,14 @@ class TimetableWizard(models.TransientModel):
         else:
             classes = self.env['siantou.ems.core.class'].search([])
         classes = list(classes)
+        # Génération de la chaîne unique
+        unique_string = datetime.now().strftime("%Y%m%d%H%M")
         for classe in classes:
             check_classes = classe
+            if self.group and self.group.strip() != '':
+                new_group = self.env['siantou.ems.timetable.group'].create({'name': self.group + "-" + classe.name, 'semester_id': self.semester_id.id})
+            else:
+                new_group = self.env['siantou.ems.timetable.group'].create({'name': "group-" + unique_string + "-" + classe.name, 'semester_id': self.semester_id.id})
             field_of_study = classe.filiere_id
             level_id = classe.niveau_id.id
             batches = self.env['siantou.ems.core.student.batch'].search([
