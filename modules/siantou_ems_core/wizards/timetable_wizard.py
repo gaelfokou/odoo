@@ -141,6 +141,7 @@ class TimetableWizard(models.TransientModel):
                                                 'end_time': available_slot["end_time"],
                                                 'group_id': new_group.id,
                                             })
+                                            self.env.cr.commit()
                                             duration_weekly_hours_credit = available_slot['duration_weekly_hours_credit']
                                             semester_hours_credit -= duration_weekly_hours_credit
                                             weekly_hours_credit -= duration_weekly_hours_credit
