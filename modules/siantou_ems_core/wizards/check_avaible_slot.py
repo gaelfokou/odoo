@@ -76,9 +76,8 @@ class CheckAvailableSlot(models.Model):
                     ('end_time', '>', start_time),
                 ], limit=1)
                 _logger.info(f'----------- tototototototo timetable 1 {timetable} {class_id} {current_date} {start_time} {end_time} -----------')
-                if timetable:
-                    continue
-                available_class_slotitems.append([start_time, end_time])
+                if not timetable:
+                    available_class_slotitems.append([start_time, end_time])
             if len(available_class_slotitems) > 0:
                 classroom_ids = self.env['siantou.ems.timetable.timetable'].search([
                     ('date', '=', current_date),
