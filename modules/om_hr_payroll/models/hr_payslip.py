@@ -1,7 +1,4 @@
 # -*- coding:utf-8 -*-
-
-import math
-
 import babel
 from datetime import date, datetime, timedelta, time
 from dateutil.relativedelta import relativedelta
@@ -222,13 +219,13 @@ class HrPayslip(models.Model):
                     # Vérification du temps de cours de l'enseignant en biométrie
                     daily_attendances = self.filter_daily_attendance_teacher(employee_timetable.date, employee_timetable.end_time, employee_timetable.start_time, employee_timetable.employee_id)
                     if employee_timetable.status in ['3']:
-                        # weekly_hours_credit = employee_timetable.end_time - employee_timetable.start_time
-                        weekly_hours_credit = math.ceil(employee_timetable.subject_id.hours_credit / employee_timetable.semester_id.number_of_week)
+                        weekly_hours_credit = employee_timetable.end_time - employee_timetable.start_time
+                        weekly_hours_credit = weekly_hours_credit - employee_timetable.not_active_slotitems
                         total_weekly_hours_credit += weekly_hours_credit
                     elif len(daily_attendances) > 1:
                         for daily_attendance in daily_attendances:
-                            # weekly_hours_credit = employee_timetable.end_time - employee_timetable.start_time
-                            weekly_hours_credit = math.ceil(employee_timetable.subject_id.hours_credit / employee_timetable.semester_id.number_of_week)
+                            weekly_hours_credit = employee_timetable.end_time - employee_timetable.start_time
+                            weekly_hours_credit = weekly_hours_credit - employee_timetable.not_active_slotitems
                             total_weekly_hours_credit += weekly_hours_credit
                             break
                 # if payslip.employee_id.is_permanent:
@@ -296,8 +293,8 @@ class HrPayslip(models.Model):
                         start_time = self.convert_float_to_time(employee_timetable.start_time)
                         datetime_to = datetime.strptime(f'{employee_timetable.date} {end_time}', DATETIME_FORMAT)
                         datetime_from = datetime.strptime(f'{employee_timetable.date} {start_time}', DATETIME_FORMAT)
-                        # weekly_hours_credit = employee_timetable.end_time - employee_timetable.start_time
-                        weekly_hours_credit = math.ceil(employee_timetable.subject_id.hours_credit / employee_timetable.semester_id.number_of_week)
+                        weekly_hours_credit = employee_timetable.end_time - employee_timetable.start_time
+                        weekly_hours_credit = weekly_hours_credit - employee_timetable.not_active_slotitems
                         timetable_message = 'Exception'
                         self.env['hr.payslip.worked_days'].create({
                             'name': 'Journée du {} {}, {}, {}'.format(CURRENT_WEEKDAY[employee_timetable.date.weekday()], datetime.strftime(datetime_from, DATETIME_FORMAT_FR), employee_timetable.subject_id.name, timetable_message),
@@ -313,8 +310,8 @@ class HrPayslip(models.Model):
                             start_time = self.convert_float_to_time(employee_timetable.start_time)
                             datetime_to = datetime.strptime(f'{employee_timetable.date} {end_time}', DATETIME_FORMAT)
                             datetime_from = datetime.strptime(f'{employee_timetable.date} {start_time}', DATETIME_FORMAT)
-                            # weekly_hours_credit = employee_timetable.end_time - employee_timetable.start_time
-                            weekly_hours_credit = math.ceil(employee_timetable.subject_id.hours_credit / employee_timetable.semester_id.number_of_week)
+                            weekly_hours_credit = employee_timetable.end_time - employee_timetable.start_time
+                            weekly_hours_credit = weekly_hours_credit - employee_timetable.not_active_slotitems
                             self.env['hr.payslip.worked_days'].create({
                                 'name': 'Journée du {} {}, {}'.format(CURRENT_WEEKDAY[employee_timetable.date.weekday()], datetime.strftime(datetime_from, DATETIME_FORMAT_FR), employee_timetable.subject_id.name),
                                 'payslip_id': payslip_id.id,
