@@ -38,6 +38,7 @@ class CheckAvailableSlot(models.Model):
         slots = list(slots)
 
         slotitems = []
+        not_active_slotitems = []
         for slot in slots:
             slotitem_day_ids = slot.slotitem_day_ids.filtered(lambda s: s.is_active)
             slotitem_day_ids = list(slotitem_day_ids)
@@ -47,7 +48,16 @@ class CheckAvailableSlot(models.Model):
             slotitem_night_ids = list(slotitem_night_ids)
             for slotitem_night_id in slotitem_night_ids:
                 slotitems.append([round(slotitem_night_id.start_time, 2), round(slotitem_night_id.end_time, 2)])
+            not_active_slotitem_day_ids = slot.slotitem_day_ids.filtered(lambda s: not s.is_active)
+            not_active_slotitem_day_ids = list(not_active_slotitem_day_ids)
+            for not_active_slotitem_day_id in not_active_slotitem_day_ids:
+                not_active_slotitems.append([round(not_active_slotitem_day_id.start_time, 2), round(not_active_slotitem_day_id.end_time, 2)])
+            not_active_slotitem_night_ids = slot.slotitem_night_ids.filtered(lambda s: not s.is_active)
+            not_active_slotitem_night_ids = list(not_active_slotitem_night_ids)
+            for not_active_slotitem_night_id in not_active_slotitem_night_ids:
+                not_active_slotitems.append([round(not_active_slotitem_night_id.start_time, 2), round(not_active_slotitem_night_id.end_time, 2)])
         slotitems.sort(key=lambda s: s[0])
+        not_active_slotitems.sort(key=lambda s: s[0])
 
         available_slotitems = []
         available_hours = 0
@@ -85,6 +95,6 @@ class CheckAvailableSlot(models.Model):
 
         if available_hours > 0:
             duration_weekly_hours_credit = available_hours
-            available_slot = {'current_date': current_date, 'start_time': available_slotitems[0][0], 'end_time': available_slotitems[available_hours - 1][1], 'classroom': available_slotitems[0][2], 'duration_weekly_hours_credit': duration_weekly_hours_credit}
+            available_slot = {'current_date': current_date, 'start_time': available_slotitems[0][0], 'end_time': available_slotitems[available_hours - 1][1], 'classroom': available_slotitems[0][2], 'duration_weekly_hours_credit': duration_weekly_hours_credit, 'not_active_slotitems': not_active_slotitems}
 
         return available_slot

@@ -10,7 +10,7 @@ class CheckPriority(models.Model):
     _description = 'Déterminer la priorité d\'un enseignant sur un autre'
 
 
-    def get_teacher_for_period(self, subject_id, date, start_time, end_time):
+    def get_teacher_for_period(self, subject_id, date, start_time, end_time, not_active_slotitems):
         """
         Trouver l'enseignant disponible pour un cours à une période spécifique,
         en priorisant les enseignants permanents, triés par priorité décroissante,
@@ -53,8 +53,14 @@ class CheckPriority(models.Model):
             # Si un enseignant est permanent
             if teacher.is_permanent:
                 # Vérifier si le quota horaire hebdomadaire n'est pas atteint
-                assigned_hours = self.get_assigned_hours(teacher, date)
-                if assigned_hours + (end_time - start_time) > teacher.weekly_hours_limit:
+                assigned_hours = self.get_assigned_hours(teacher, date, not_active_slotitems)
+                n = 0
+                for not_active_slotitem in not_active_slotitems:
+                    if start_time < not_active_slotitem[1] and end_time > not_active_slotitem[0]:
+                        n += 1
+                total_hours = end_time - start_time
+                total_hours = total_hours - n
+                if assigned_hours + total_hours > teacher.weekly_hours_limit:
                     continue  # Si le quota est dépassé, on passe au prochain enseignant
 
                 return teacher
@@ -87,8 +93,14 @@ class CheckPriority(models.Model):
             # Si un enseignant est non permanent
             if not teacher.is_permanent:
                 # Vérifier si le quota horaire hebdomadaire n'est pas atteint
-                assigned_hours = self.get_assigned_hours(teacher, date)
-                if assigned_hours + (end_time - start_time) > teacher.weekly_hours_limit:
+                assigned_hours = self.get_assigned_hours(teacher, date, not_active_slotitems)
+                n = 0
+                for not_active_slotitem in not_active_slotitems:
+                    if start_time < not_active_slotitem[1] and end_time > not_active_slotitem[0]:
+                        n += 1
+                total_hours = end_time - start_time
+                total_hours = total_hours - n
+                if assigned_hours + total_hours > teacher.weekly_hours_limit:
                     continue  # Si le quota est dépassé, on passe au prochain enseignant
                                    
 
@@ -99,7 +111,7 @@ class CheckPriority(models.Model):
         return None
 
     # Fonction pour calculer les heures assignées à un enseignant dans la semaine
-    def get_assigned_hours(self, employee, date):
+    def get_assigned_hours(self, employee, date, not_active_slotitems):
 
         monday_of_week = date - timedelta(days=date.weekday())
         saturday_of_week = monday_of_week + timedelta(days=5)
@@ -115,6 +127,11 @@ class CheckPriority(models.Model):
         total_hours = 0
         timetables = list(timetables)
         for timetable in timetables:
+            n = 0
+            for not_active_slotitem in not_active_slotitems:
+                if timetable.start_time < not_active_slotitem[1] and timetable.end_time > not_active_slotitem[0]:
+                    n += 1
             total_hours += timetable.end_time - timetable.start_time
+            total_hours = total_hours - n
 
         return total_hours
