@@ -131,7 +131,7 @@ class TimetableWizard(models.TransientModel):
                                     end_time = start_time + timedelta(days=5)
                                     weekly_hours_credit = min(4, weekly_hours_credit)
                                     # On parcours toutes les jours de la semaine
-                                    for day in range(0, end_time.weekday()):
+                                    for day in range(0, end_time.weekday() + 1):
                                         if week == 0:
                                             if day < first_time.weekday():
                                                 continue
