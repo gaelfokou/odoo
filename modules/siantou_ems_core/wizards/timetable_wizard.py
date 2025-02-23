@@ -88,6 +88,55 @@ class TimetableWizard(models.TransientModel):
                 new_group = self.env['siantou.ems.timetable.group'].create({'name': self.group + "-" + classe.name, 'semester_id': self.semester_id.id})
             else:
                 new_group = self.env['siantou.ems.timetable.group'].create({'name': "group-" + unique_string + "-" + classe.name, 'semester_id': self.semester_id.id})
+
+            slots = self.env['siantou.ems.timetable.slot'].search([
+                ('is_default', '=', False),
+            ])
+            slots = list(slots)
+
+            available_slotitem = None
+            for slot in slots:
+                field_of_study_ids = list(slot.field_of_study_ids)
+                for field_of_study in field_of_study_ids:
+                    if field_of_study.id == classe.filiere_id.id:
+                        available_slotitem = slot
+                        break
+                if available_slotitem:
+                    break
+
+            if available_slotitem:
+                slots = self.env['siantou.ems.timetable.slot'].search([
+                    ('id', '=', available_slotitem.id),
+                ])
+            else:
+                slots = self.env['siantou.ems.timetable.slot'].search([
+                    ('is_default', '=', True),
+                ])
+
+            slots = list(slots)
+
+            active_slotitems = []
+            not_active_slotitems = []
+            for slot in slots:
+                active_slotitem_day_ids = slot.slotitem_day_ids.filtered(lambda s: s.is_active)
+                active_slotitem_day_ids = list(active_slotitem_day_ids)
+                for active_slotitem_day_id in active_slotitem_day_ids:
+                    active_slotitems.append([round(active_slotitem_day_id.start_time, 2), round(active_slotitem_day_id.end_time, 2)])
+                active_slotitem_night_ids = slot.slotitem_night_ids.filtered(lambda s: s.is_active)
+                active_slotitem_night_ids = list(active_slotitem_night_ids)
+                for active_slotitem_night_id in active_slotitem_night_ids:
+                    active_slotitems.append([round(active_slotitem_night_id.start_time, 2), round(active_slotitem_night_id.end_time, 2)])
+                not_active_slotitem_day_ids = slot.slotitem_day_ids.filtered(lambda s: not s.is_active)
+                not_active_slotitem_day_ids = list(not_active_slotitem_day_ids)
+                for not_active_slotitem_day_id in not_active_slotitem_day_ids:
+                    not_active_slotitems.append([round(not_active_slotitem_day_id.start_time, 2), round(not_active_slotitem_day_id.end_time, 2)])
+                not_active_slotitem_night_ids = slot.slotitem_night_ids.filtered(lambda s: not s.is_active)
+                not_active_slotitem_night_ids = list(not_active_slotitem_night_ids)
+                for not_active_slotitem_night_id in not_active_slotitem_night_ids:
+                    not_active_slotitems.append([round(not_active_slotitem_night_id.start_time, 2), round(not_active_slotitem_night_id.end_time, 2)])
+            active_slotitems.sort(key=lambda s: s[0])
+            not_active_slotitems.sort(key=lambda s: s[0])
+
             batches = self.env['siantou.ems.core.student.batch'].search([
                 ('school_id', '=', classe.filiere_id.school_id.id),
                 ('field_of_study_id', '=', classe.filiere_id.id),
@@ -141,7 +190,7 @@ class TimetableWizard(models.TransientModel):
                                         if self.period_from and self.period_to:
                                             if self.period_from > target_date or self.period_to < target_date:
                                                 continue
-                                        available_slot = self.env['siantou.ems.timetable.check_available_slot'].find_available_slot(target_date, classe.id, classe.filiere_id.id, batch.id, weekly_hours_credit)
+                                        available_slot = self.env['siantou.ems.timetable.check_available_slot'].find_available_slot(target_date, classe.id, batch.id, weekly_hours_credit, active_slotitems, not_active_slotitems)
                                         # On trouve une salle de classe et un créneau horaire disponiblent pour le cours
                                         if available_slot:
                                             check_classroom_slot = available_slot

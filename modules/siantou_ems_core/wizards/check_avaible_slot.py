@@ -10,55 +10,7 @@ class CheckAvailableSlot(models.Model):
     _name = 'siantou.ems.timetable.check_available_slot'
     _description = 'Déterminer un creneau pour un cours'
 
-    def find_available_slot(self, current_date, class_id, field_of_study_id, batch_id, duration_weekly_hours_credit):
-        slots = self.env['siantou.ems.timetable.slot'].search([
-            ('is_default', '=', False),
-        ])
-        slots = list(slots)
-
-        available_slotitem = None
-        for slot in slots:
-            field_of_study_ids = list(slot.field_of_study_ids)
-            for field_of_study in field_of_study_ids:
-                if field_of_study.id == field_of_study_id:
-                    available_slotitem = slot
-                    break
-            if available_slotitem:
-                break
-
-        if available_slotitem:
-            slots = self.env['siantou.ems.timetable.slot'].search([
-                ('id', '=', available_slotitem.id),
-            ])
-        else:
-            slots = self.env['siantou.ems.timetable.slot'].search([
-                ('is_default', '=', True),
-            ])
-
-        slots = list(slots)
-
-        active_slotitems = []
-        not_active_slotitems = []
-        for slot in slots:
-            active_slotitem_day_ids = slot.slotitem_day_ids.filtered(lambda s: s.is_active)
-            active_slotitem_day_ids = list(active_slotitem_day_ids)
-            for active_slotitem_day_id in active_slotitem_day_ids:
-                active_slotitems.append([round(active_slotitem_day_id.start_time, 2), round(active_slotitem_day_id.end_time, 2)])
-            active_slotitem_night_ids = slot.slotitem_night_ids.filtered(lambda s: s.is_active)
-            active_slotitem_night_ids = list(active_slotitem_night_ids)
-            for active_slotitem_night_id in active_slotitem_night_ids:
-                active_slotitems.append([round(active_slotitem_night_id.start_time, 2), round(active_slotitem_night_id.end_time, 2)])
-            not_active_slotitem_day_ids = slot.slotitem_day_ids.filtered(lambda s: not s.is_active)
-            not_active_slotitem_day_ids = list(not_active_slotitem_day_ids)
-            for not_active_slotitem_day_id in not_active_slotitem_day_ids:
-                not_active_slotitems.append([round(not_active_slotitem_day_id.start_time, 2), round(not_active_slotitem_day_id.end_time, 2)])
-            not_active_slotitem_night_ids = slot.slotitem_night_ids.filtered(lambda s: not s.is_active)
-            not_active_slotitem_night_ids = list(not_active_slotitem_night_ids)
-            for not_active_slotitem_night_id in not_active_slotitem_night_ids:
-                not_active_slotitems.append([round(not_active_slotitem_night_id.start_time, 2), round(not_active_slotitem_night_id.end_time, 2)])
-        active_slotitems.sort(key=lambda s: s[0])
-        not_active_slotitems.sort(key=lambda s: s[0])
-
+    def find_available_slot(self, current_date, class_id, batch_id, duration_weekly_hours_credit, active_slotitems, not_active_slotitems):
         available_class_slotitems = []
         available_slotitems = []
         available_hours = 0
