@@ -30,11 +30,19 @@ class Timetable(models.Model):
         string='Département'
     )
 
+    class_id = fields.Many2one(
+        'siantou.ems.core.class',
+        string='Classe',
+        required=True,
+        ondelete='restrict'
+    )
+
     # Filière liée à la programmation de cours
     field_of_study_id = fields.Many2one(
         'siantou.ems.core.field_of_study',
         'Filière',
         required=True,
+        related='class_id.filiere_id',
         ondelete='restrict'
     )
 
@@ -43,6 +51,7 @@ class Timetable(models.Model):
         'siantou.ems.core.level',
         'Niveau',
         required=True,
+        related='class_id.niveau_id',
         ondelete='restrict'
     )
 
@@ -128,6 +137,13 @@ class Timetable(models.Model):
     ], 'Statut',
         default='0',
     )
+
+    @api.onchange('class_id')
+    def _onchange_class(self):
+        for record in self:
+            if record.class_id.id:
+                record.field_of_study_id = record.class_id.filiere_id
+                record.level_id = record.class_id.niveau_id
 
     # Méthode pour remplir automatiquement le jour de la semaine
     @api.depends('date')

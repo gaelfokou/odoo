@@ -30,6 +30,7 @@
                     </header>
                     <field name="group_id"/>
                     <field name="date"/>
+                    <field name="class_id"/>
                     <field name="field_of_study_id"/>
                     <field name="semester_id"/>
                     <field name="batch_id"/>
@@ -62,6 +63,7 @@
                         <group>
                             <field name="group_id"/>
                             <field name="date"/>
+                            <field name="class_id"/>
                             <field name="field_of_study_id"/>
                             <field name="semester_id"/>
                             <field name="batch_id"/>

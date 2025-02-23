@@ -152,9 +152,8 @@ class TimetableWizard(models.TransientModel):
                                             self.env['siantou.ems.timetable.timetable'].create({
                                                 'semester_id': ue_id.semestre_id.id,
                                                 'batch_id': batch.id,
-                                                'field_of_study_id': field_of_study.id,
+                                                'class_id': classe.id,
                                                 'department_id': field_of_study.department_id.id if field_of_study.department_id else None,
-                                                'level_id': level_id,
                                                 'subject_id': subject_id,
                                                 'classroom_id': available_slot["classroom"].id,
                                                 'employee_id': teacher_priority.id if teacher_priority else None,

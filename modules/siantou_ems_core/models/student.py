@@ -152,8 +152,8 @@ class Student(models.Model):
 
     class_id = fields.Many2one(
         'siantou.ems.core.class',
-        required=True,
-        string='Classe'
+        string='Classe',
+        required=True
     )
 
 
