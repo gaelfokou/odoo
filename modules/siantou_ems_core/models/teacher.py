@@ -48,13 +48,6 @@ class HrEmployee(models.Model):
         required=True
     )
 
-    # Contrainte logique pour s'assurer que le quota horaire hebdommadaire de cours pour un professeur permanent est de 24
-    @api.constrains('weekly_hours_limit')
-    def _check_weekly_hours_limit_permanent(self):
-        for record in self:
-            if record.is_permanent and record.weekly_hours_limit != 24:
-                raise ValidationError("Vous devez définir le quota horaire hebdommadaire de cours pour un professeur permanent à 24")
-
     # Disponibilité de l'enseignant
     teacher_availability_ids = fields.One2many(
         'siantou.ems.core.teacher.availability',
@@ -69,6 +62,13 @@ class HrEmployee(models.Model):
         string='Emplois du temps',
         help="Liste des emplois du temps associés à l'enseignant."
     )
+
+    # Contrainte logique pour s'assurer que le quota horaire hebdommadaire de cours pour un professeur permanent est de 24
+    @api.constrains('weekly_hours_limit')
+    def _check_weekly_hours_limit_permanent(self):
+        for record in self:
+            if record.is_permanent and record.weekly_hours_limit != 24:
+                raise ValidationError("Vous devez définir le quota horaire hebdommadaire de cours pour un professeur permanent à 24")
 
     def create_employee_user(self, employee):
         try:

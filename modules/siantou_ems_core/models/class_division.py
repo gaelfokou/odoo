@@ -39,8 +39,14 @@ class EducationClass(models.Model):
     annee_acadmique_id = fields.Many2one('siantou.ems.core.year', string='Année Académique')
 
     ue_ids = fields.One2many(comodel_name='siantou.ems.core.unite.enseignement', inverse_name='class_id', string='Unité d\'enseignement')
-    
-    
+
+    # Contrainte logique pour s'assurer de ne pas sélectionner plus d'une spécialité pour une classe
+    @api.constrains('specialty_ids')
+    def _check_specialty_ids(self):
+        for record in self:
+            if len(record.specialty_ids.ids) > 1:
+                raise ValidationError("Vous ne devez pas sélectionner plus d'une spécialité pour une classe")
+
     @api.onchange('filiere_id')
     def _onchange_filiere_id(self):
         if self.filiere_id:
