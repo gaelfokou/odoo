@@ -149,20 +149,19 @@ class Timetable(models.Model):
             ]):
                 raise ValidationError("Cet enregistrement existe déjà")
 
-    # Contrainte logique pour se rassurer que deux cours ne sont pas programmés dans la même salle au même moment
+    # Contrainte logique pour se rassurer que deux cours ne sont pas programmés dans la même salle de classe sur des horaires qui se chevauchent le même jour
     @api.constrains('classroom_id', 'date', 'start_time', 'end_time')
     def _check_classroom_is_free(self):
         for record in self:
-            timetables = self.search([
+            timetable = self.search([
                 ('id', '!=', record.id),
                 ('classroom_id', '=', record.classroom_id.id),
                 ('date', '=', record.date),
                 ('start_time', '<', record.end_time),
                 ('end_time', '>', record.start_time),
-            ])
-            timetables = list(timetables)
-            if len(timetables) > 0:
-                raise ValidationError("Deux salles de classe ne doivent pas être programmées sur des horaires qui se chevauchent le même jour")
+            ], limit=1)
+            if timetable:
+                raise ValidationError("Deux cours ne doivent pas être programmés dans la même salle de classe sur des horaires qui se chevauchent le même jour")
 
     # Contrainte logique pour s'assurer que l'heure de fin est supérieure à l'heure de début
     @api.constrains('start_time', 'end_time')

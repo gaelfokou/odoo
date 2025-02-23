@@ -42,11 +42,18 @@ class HrEmployee(models.Model):
         'Cours dispensés avec les priorités'
     )
 
-    # Quota horaire de cours pour un professeur permanent
+    # Quota horaire hebdommadaire de cours pour un professeur permanent
     weekly_hours_limit = fields.Integer(
         'Quota horaire hebdommadaire',
         required=True
     )
+
+    # Contrainte logique pour s'assurer que le quota horaire hebdommadaire de cours pour un professeur permanent est de 24
+    @api.constrains('weekly_hours_limit')
+    def _check_weekly_hours_limit_permanent(self):
+        for record in self:
+            if record.is_permanent and record.weekly_hours_limit != 24:
+                raise ValidationError("Vous devez définir le quota horaire hebdommadaire de cours pour un professeur permanent à 24")
 
     # Disponibilité de l'enseignant
     teacher_availability_ids = fields.One2many(
