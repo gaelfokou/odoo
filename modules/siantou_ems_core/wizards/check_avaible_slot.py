@@ -72,6 +72,7 @@ class CheckAvailableSlot(models.Model):
             classroom_ids = classroom_ids.ids
             classrooms = self.env['siantou.ems.core.building.classroom'].search([
                 ('id', 'not in', classroom_ids),
+                ('is_cours_active', '=', True),
             ])
             classrooms = list(classrooms)
             for classroom in classrooms:
