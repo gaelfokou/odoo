@@ -10,7 +10,7 @@ class CheckAvailableSlot(models.Model):
     _name = 'siantou.ems.timetable.check_available_slot'
     _description = 'Déterminer un creneau pour un cours'
 
-    def find_available_slot(self, current_date, class_id, field_of_study_id, level_id, batch_id, duration_weekly_hours_credit):
+    def find_available_slot(self, current_date, class_id, field_of_study_id, batch_id, duration_weekly_hours_credit):
         slots = self.env['siantou.ems.timetable.slot'].search([
             ('is_default', '=', False),
         ])
@@ -59,50 +59,57 @@ class CheckAvailableSlot(models.Model):
         active_slotitems.sort(key=lambda s: s[0])
         not_active_slotitems.sort(key=lambda s: s[0])
 
+        available_class_slotitems = []
         available_slotitems = []
         available_hours = 0
 
         n = len(active_slotitems)
 
         if n > 0:
-            classroom_ids = self.env['siantou.ems.timetable.timetable'].search([
-                ('date', '=', current_date),
-                ('end_time', '=', active_slotitems[n - 1][1]),
-            ]).mapped('classroom_id')
-            classroom_ids = classroom_ids.ids
-            classrooms = self.env['siantou.ems.core.building.classroom'].search([
-                ('id', 'not in', classroom_ids),
-                ('is_cours_active', '=', True),
-            ])
-            classrooms = list(classrooms)
-            for classroom in classrooms:
-                available_slotitems = []
-                available_hours = 0
-                for start_time, end_time in active_slotitems:
-                    timetable = self.env['siantou.ems.timetable.timetable'].search([
-                        ('classroom_id', '=', classroom.id),
-                        ('date', '=', current_date),
-                        ('start_time', '<', end_time),
-                        ('end_time', '>', start_time),
-                    ], limit=1)
-                    if timetable:
-                        continue
-                    timetable = self.env['siantou.ems.timetable.timetable'].search([
-                        ('date', '=', current_date),
-                        ('start_time', '<', end_time),
-                        ('end_time', '>', start_time),
-                        ('class_id', '=', class_id),
-                        ('level_id', '=', level_id),
-                        ('batch_id', '=', batch_id)
-                    ], limit=1)
-                    if timetable:
-                        continue
-                    available_slotitems.append([start_time, end_time, classroom])
-                    available_hours = len(available_slotitems)
-                    if available_hours == duration_weekly_hours_credit:
+            _logger.info(f'----------- tototototototo current_date {current_date} -----------')
+            for start_time, end_time in active_slotitems:
+                timetable = self.env['siantou.ems.timetable.timetable'].search([
+                    ('class_id', '=', class_id),
+                    ('batch_id', '=', batch_id),
+                    ('date', '=', current_date),
+                    ('start_time', '<', end_time),
+                    ('end_time', '>', start_time),
+                ], limit=1)
+                _logger.info(f'----------- tototototototo timetable 1 {timetable} {class_id} {current_date} {start_time} {end_time} -----------')
+                if timetable:
+                    continue
+                available_class_slotitems.append([start_time, end_time])
+            if len(available_class_slotitems) > 0:
+                classroom_ids = self.env['siantou.ems.timetable.timetable'].search([
+                    ('date', '=', current_date),
+                    ('end_time', '=', active_slotitems[n - 1][1]),
+                ]).mapped('classroom_id')
+                classroom_ids = classroom_ids.ids
+                _logger.info(f'----------- tototototototo classroom_ids {classroom_ids} -----------')
+                classrooms = self.env['siantou.ems.core.building.classroom'].search([
+                    ('id', 'not in', classroom_ids),
+                    ('is_cours_active', '=', True),
+                ])
+                classrooms = list(classrooms)
+                _logger.info(f'----------- tototototototo classrooms {classrooms} -----------')
+                for classroom in classrooms:
+                    for start_time, end_time in available_class_slotitems:
+                        timetable = self.env['siantou.ems.timetable.timetable'].search([
+                            ('classroom_id', '=', classroom.id),
+                            ('date', '=', current_date),
+                            ('start_time', '<', end_time),
+                            ('end_time', '>', start_time),
+                        ], limit=1)
+                        _logger.info(f'----------- tototototototo timetable 2 {timetable} {classroom.id} {current_date} {start_time} {end_time} -----------')
+                        if timetable:
+                            continue
+                        available_slotitems.append([start_time, end_time, classroom])
+                        available_hours = len(available_slotitems)
+                        if available_hours == duration_weekly_hours_credit:
+                            break
+                    _logger.info(f'----------- tototototototo available_hours {available_hours} -----------')
+                    if available_hours > 0:
                         break
-                if available_hours > 0:
-                    break
 
         available_slot = None
 

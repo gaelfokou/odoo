@@ -88,16 +88,14 @@ class TimetableWizard(models.TransientModel):
                 new_group = self.env['siantou.ems.timetable.group'].create({'name': self.group + "-" + classe.name, 'semester_id': self.semester_id.id})
             else:
                 new_group = self.env['siantou.ems.timetable.group'].create({'name': "group-" + unique_string + "-" + classe.name, 'semester_id': self.semester_id.id})
-            field_of_study = classe.filiere_id
-            level_id = classe.niveau_id.id
             batches = self.env['siantou.ems.core.student.batch'].search([
-                ('school_id', '=', field_of_study.school_id.id),
-                ('field_of_study_id', '=', field_of_study.id),
-                ('level_id', '=', level_id),
+                ('school_id', '=', classe.filiere_id.school_id.id),
+                ('field_of_study_id', '=', classe.filiere_id.id),
+                ('level_id', '=', classe.niveau_id.id),
             ])
             batches = list(batches)
             if len(batches) == 0:
-                batch = self.env['siantou.ems.core.student.batch'].create_new_batch(field_of_study.school_id.id, field_of_study.id, level_id)
+                batch = self.env['siantou.ems.core.student.batch'].create_new_batch(classe.filiere_id.school_id.id, classe.filiere_id.id, classe.niveau_id.id)
                 batches.append(batch)
             ue_ids = classe.ue_ids.filtered(lambda u: u.semestre_id.id == self.semester_id.id)
             # Récupérer la liste des cours de la filière par niveau et les traiter l'un après l'autre
@@ -143,7 +141,7 @@ class TimetableWizard(models.TransientModel):
                                         if self.period_from and self.period_to:
                                             if self.period_from > target_date or self.period_to < target_date:
                                                 continue
-                                        available_slot = self.env['siantou.ems.timetable.check_available_slot'].find_available_slot(target_date, classe.id, field_of_study.id, level_id, batch.id, weekly_hours_credit)
+                                        available_slot = self.env['siantou.ems.timetable.check_available_slot'].find_available_slot(target_date, classe.id, classe.filiere_id.id, batch.id, weekly_hours_credit)
                                         # On trouve une salle de classe et un créneau horaire disponiblent pour le cours
                                         if available_slot:
                                             check_classroom_slot = available_slot
@@ -155,7 +153,7 @@ class TimetableWizard(models.TransientModel):
                                                 'semester_id': ue_id.semestre_id.id,
                                                 'batch_id': batch.id,
                                                 'class_id': classe.id,
-                                                'department_id': field_of_study.department_id.id if field_of_study.department_id else None,
+                                                'department_id': classe.filiere_id.department_id.id if classe.filiere_id.department_id else None,
                                                 'subject_id': subject_id,
                                                 'classroom_id': available_slot["classroom"].id,
                                                 'employee_id': teacher_priority.id if teacher_priority else None,
