@@ -55,6 +55,13 @@ class Timetable(models.Model):
         ondelete='restrict'
     )
 
+    specialty_id = fields.Many2one(
+        'siantou.ems.core.specialty',
+        string='Spécialité',
+        compute="_compute_class", 
+        store=False
+    )
+
     # Cours programmé
     subject_id = fields.Many2one(
         'siantou.ems.core.subject',
@@ -137,6 +144,16 @@ class Timetable(models.Model):
     ], 'Statut',
         default='0',
     )
+
+    @api.depends('class_id')
+    def _compute_class(self):
+        for record in self:
+            if record.class_id.id:
+                specialty_ids = list(record.class_id.specialty_ids)
+                if len(specialty_ids) > 0:
+                    record.specialty_id = specialty_ids[0]
+                else:
+                    record.specialty_id = None
 
     @api.onchange('class_id')
     def _onchange_class(self):
