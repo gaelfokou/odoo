@@ -52,27 +52,17 @@ class CheckAvailableSlot(models.Model):
         available_slotitems = []
         available_hours = 0
 
-        all_classrooms = self.env['siantou.ems.core.building.classroom'].search([])
-        all_classroom_ids = all_classrooms.ids
-        if len(all_classroom_ids) > 0:
+        classrooms = self.env['siantou.ems.core.building.classroom'].search([])
+        classrooms = list(classrooms)
+        for classroom in classrooms:
             for start_time, end_time in slotitems:
-                classroom_ids = self.env['siantou.ems.timetable.timetable'].search([
-                    ('classroom_id', 'in', all_classroom_ids),
+                timetable = self.env['siantou.ems.timetable.timetable'].search([
+                    ('classroom_id', '=', classroom.id),
                     ('date', '=', current_date),
                     ('start_time', '<', end_time),
                     ('end_time', '>', start_time),
-                ]).mapped('classroom_id')
-                classroom_ids = classroom_ids.ids
-                if len(classroom_ids) > 0:
-                    classrooms = self.env['siantou.ems.core.building.classroom'].search([
-                        ('id', 'not in', classroom_ids),
-                    ])
-                else:
-                    classrooms = self.env['siantou.ems.core.building.classroom'].search([
-                        ('id', 'in', all_classroom_ids),
-                    ])
-                classrooms = list(classrooms)
-                if len(classrooms) == 0:
+                ], limit=1)
+                if timetable:
                     continue
                 timetable = self.env['siantou.ems.timetable.timetable'].search([
                     ('date', '=', current_date),
@@ -84,10 +74,12 @@ class CheckAvailableSlot(models.Model):
                 ], limit=1)
                 if timetable:
                     continue
-                available_slotitems.append([start_time, end_time, classrooms[0]])
+                available_slotitems.append([start_time, end_time, classroom])
                 available_hours = len(available_slotitems)
                 if available_hours == duration_weekly_hours_credit:
                     break
+            if available_hours > 0:
+                break
 
         available_slot = None
 
