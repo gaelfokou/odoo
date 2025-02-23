@@ -63,9 +63,9 @@ class CheckAvailableSlot(models.Model):
         available_slotitems = []
         available_hours = 0
 
-        n = len(active_slotitems)
+        nbr_slotitems = len(active_slotitems)
 
-        if n > 0:
+        if nbr_slotitems > 0:
             _logger.info(f'----------- tototototototo current_date {current_date} -----------')
             for start_time, end_time in active_slotitems:
                 timetable = self.env['siantou.ems.timetable.timetable'].search([
@@ -78,17 +78,25 @@ class CheckAvailableSlot(models.Model):
                 _logger.info(f'----------- tototototototo timetable 1 {timetable} {class_id} {current_date} {start_time} {end_time} -----------')
                 if not timetable:
                     available_class_slotitems.append([start_time, end_time])
-            if len(available_class_slotitems) > 0:
+
+            nbr_class_slotitems = len(available_class_slotitems)
+    
+            if nbr_class_slotitems > 0:
                 classroom_ids = self.env['siantou.ems.timetable.timetable'].search([
                     ('date', '=', current_date),
-                    ('end_time', '=', active_slotitems[n - 1][1]),
+                    ('end_time', '=', active_slotitems[nbr_slotitems - 1][1]),
                 ]).mapped('classroom_id')
                 classroom_ids = classroom_ids.ids
                 _logger.info(f'----------- tototototototo classroom_ids {classroom_ids} -----------')
-                classrooms = self.env['siantou.ems.core.building.classroom'].search([
-                    ('id', 'not in', classroom_ids),
-                    ('is_cours_active', '=', True),
-                ])
+                if len(classroom_ids) > 0:
+                    classrooms = self.env['siantou.ems.core.building.classroom'].search([
+                        ('id', 'not in', classroom_ids),
+                        ('is_cours_active', '=', True),
+                    ])
+                else:
+                    classrooms = self.env['siantou.ems.core.building.classroom'].search([
+                        ('is_cours_active', '=', True),
+                    ])
                 classrooms = list(classrooms)
                 _logger.info(f'----------- tototototototo classrooms {classrooms} -----------')
                 for classroom in classrooms:
