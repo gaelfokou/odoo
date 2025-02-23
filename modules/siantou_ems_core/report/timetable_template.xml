@@ -54,7 +54,7 @@
                                     <thead>
                                         <tr>
                                             <th class="text-center" colspan="8" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;">
-                                                <h2>INSTITUT UNIVERSITAIRE SIANTOU</h2>
+                                                <h3>INSTITUT UNIVERSITAIRE SIANTOU</h3>
                                                 <h3>
                                                     <span t-esc="'Emploi du Temps'"/>
                                                     <span t-esc="docdata['timetable_data'][key]['semester']"/>
