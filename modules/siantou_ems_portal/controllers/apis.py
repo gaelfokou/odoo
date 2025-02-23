@@ -104,18 +104,18 @@ class ApiAccount(http.Controller):
 
                 slots = list(slots)
 
-                slotitems = []
+                not_active_slotitems = []
                 for slot in slots:
-                    slotitem_day_ids = slot.slotitem_day_ids.filtered(lambda s: not s.is_active)
-                    slotitem_day_ids = list(slotitem_day_ids)
-                    for slotitem_day_id in slotitem_day_ids:
-                        slotitems.append([round(slotitem_day_id.start_time, 2), round(slotitem_day_id.end_time, 2)])
-                    slotitem_night_ids = slot.slotitem_night_ids.filtered(lambda s: not s.is_active)
-                    slotitem_night_ids = list(slotitem_night_ids)
-                    for slotitem_night_id in slotitem_night_ids:
-                        slotitems.append([round(slotitem_night_id.start_time, 2), round(slotitem_night_id.end_time, 2)])
+                    not_active_slotitem_day_ids = slot.slotitem_day_ids.filtered(lambda s: not s.is_active)
+                    not_active_slotitem_day_ids = list(not_active_slotitem_day_ids)
+                    for not_active_slotitem_day_id in not_active_slotitem_day_ids:
+                        not_active_slotitems.append([round(not_active_slotitem_day_id.start_time, 2), round(not_active_slotitem_day_id.end_time, 2)])
+                    not_active_slotitem_night_ids = slot.slotitem_night_ids.filtered(lambda s: not s.is_active)
+                    not_active_slotitem_night_ids = list(not_active_slotitem_night_ids)
+                    for not_active_slotitem_night_id in not_active_slotitem_night_ids:
+                        not_active_slotitems.append([round(not_active_slotitem_night_id.start_time, 2), round(not_active_slotitem_night_id.end_time, 2)])
 
-                timetables = Helpers.format_timetable(timetables, slotitems)
+                timetables = Helpers.format_timetable(timetables, not_active_slotitems)
             else:
                 timetables = Helpers.format_timetable(timetables)
             for monday in timetables.keys():

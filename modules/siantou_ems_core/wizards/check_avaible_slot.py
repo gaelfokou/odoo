@@ -37,17 +37,17 @@ class CheckAvailableSlot(models.Model):
 
         slots = list(slots)
 
-        slotitems = []
+        active_slotitems = []
         not_active_slotitems = []
         for slot in slots:
-            slotitem_day_ids = slot.slotitem_day_ids.filtered(lambda s: s.is_active)
-            slotitem_day_ids = list(slotitem_day_ids)
-            for slotitem_day_id in slotitem_day_ids:
-                slotitems.append([round(slotitem_day_id.start_time, 2), round(slotitem_day_id.end_time, 2)])
-            slotitem_night_ids = slot.slotitem_night_ids.filtered(lambda s: s.is_active)
-            slotitem_night_ids = list(slotitem_night_ids)
-            for slotitem_night_id in slotitem_night_ids:
-                slotitems.append([round(slotitem_night_id.start_time, 2), round(slotitem_night_id.end_time, 2)])
+            active_slotitem_day_ids = slot.slotitem_day_ids.filtered(lambda s: s.is_active)
+            active_slotitem_day_ids = list(active_slotitem_day_ids)
+            for active_slotitem_day_id in active_slotitem_day_ids:
+                active_slotitems.append([round(active_slotitem_day_id.start_time, 2), round(active_slotitem_day_id.end_time, 2)])
+            active_slotitem_night_ids = slot.slotitem_night_ids.filtered(lambda s: s.is_active)
+            active_slotitem_night_ids = list(active_slotitem_night_ids)
+            for active_slotitem_night_id in active_slotitem_night_ids:
+                active_slotitems.append([round(active_slotitem_night_id.start_time, 2), round(active_slotitem_night_id.end_time, 2)])
             not_active_slotitem_day_ids = slot.slotitem_day_ids.filtered(lambda s: not s.is_active)
             not_active_slotitem_day_ids = list(not_active_slotitem_day_ids)
             for not_active_slotitem_day_id in not_active_slotitem_day_ids:
@@ -56,40 +56,50 @@ class CheckAvailableSlot(models.Model):
             not_active_slotitem_night_ids = list(not_active_slotitem_night_ids)
             for not_active_slotitem_night_id in not_active_slotitem_night_ids:
                 not_active_slotitems.append([round(not_active_slotitem_night_id.start_time, 2), round(not_active_slotitem_night_id.end_time, 2)])
-        slotitems.sort(key=lambda s: s[0])
+        active_slotitems.sort(key=lambda s: s[0])
         not_active_slotitems.sort(key=lambda s: s[0])
 
         available_slotitems = []
         available_hours = 0
 
-        classrooms = self.env['siantou.ems.core.building.classroom'].search([])
-        classrooms = list(classrooms)
-        for classroom in classrooms:
-            for start_time, end_time in slotitems:
-                timetable = self.env['siantou.ems.timetable.timetable'].search([
-                    ('classroom_id', '=', classroom.id),
-                    ('date', '=', current_date),
-                    ('start_time', '<', end_time),
-                    ('end_time', '>', start_time),
-                ], limit=1)
-                if timetable:
-                    continue
-                timetable = self.env['siantou.ems.timetable.timetable'].search([
-                    ('date', '=', current_date),
-                    ('start_time', '<', end_time),
-                    ('end_time', '>', start_time),
-                    ('field_of_study_id', '=', field_of_study_id),
-                    ('level_id', '=', level_id),
-                    ('batch_id', '=', batch_id)
-                ], limit=1)
-                if timetable:
-                    continue
-                available_slotitems.append([start_time, end_time, classroom])
-                available_hours = len(available_slotitems)
-                if available_hours == duration_weekly_hours_credit:
+        n = len(active_slotitems)
+
+        if n > 0:
+            classroom_ids = self.env['siantou.ems.timetable.timetable'].search([
+                ('date', '=', current_date),
+                ('end_time', '=', active_slotitems[n - 1][1]),
+            ]).mapped('classroom_id')
+            classroom_ids = classroom_ids.ids
+            classrooms = self.env['siantou.ems.core.building.classroom'].search([
+                ('id', 'not in', classroom_ids),
+            ])
+            classrooms = list(classrooms)
+            for classroom in classrooms:
+                for start_time, end_time in active_slotitems:
+                    timetable = self.env['siantou.ems.timetable.timetable'].search([
+                        ('classroom_id', '=', classroom.id),
+                        ('date', '=', current_date),
+                        ('start_time', '<', end_time),
+                        ('end_time', '>', start_time),
+                    ], limit=1)
+                    if timetable:
+                        continue
+                    timetable = self.env['siantou.ems.timetable.timetable'].search([
+                        ('date', '=', current_date),
+                        ('start_time', '<', end_time),
+                        ('end_time', '>', start_time),
+                        ('field_of_study_id', '=', field_of_study_id),
+                        ('level_id', '=', level_id),
+                        ('batch_id', '=', batch_id)
+                    ], limit=1)
+                    if timetable:
+                        continue
+                    available_slotitems.append([start_time, end_time, classroom])
+                    available_hours = len(available_slotitems)
+                    if available_hours == duration_weekly_hours_credit:
+                        break
+                if available_hours > 0:
                     break
-            if available_hours > 0:
-                break
 
         available_slot = None
 
