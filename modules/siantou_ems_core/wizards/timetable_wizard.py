@@ -125,7 +125,9 @@ class TimetableWizard(models.TransientModel):
                                 if weekly_hours_credit > 0:
                                     check_weekly_hours_credit += weekly_hours_credit
                                     first_time = ue_id.semestre_id.start_time
-                                    start_time = ue_id.semestre_id.start_time - timedelta(days=ue_id.semestre_id.start_time.weekday())
+                                    if first_time.weekday() == 6:
+                                        first_time = first_time + timedelta(days=1)
+                                    start_time = first_time - timedelta(days=first_time.weekday())
                                     end_time = start_time + timedelta(days=5)
                                     weekly_hours_credit = min(4, weekly_hours_credit)
                                     # On parcours toutes les jours de la semaine
