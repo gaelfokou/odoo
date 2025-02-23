@@ -138,6 +138,9 @@ class TimetableWizard(models.TransientModel):
                                             break
                                         # On parcours les jours de la semaine de Lundi - Samedi
                                         target_date = start_time + timedelta(weeks=week, days=day)
+                                        if self.period_from and self.period_to:
+                                            if self.period_from > target_date or self.period_to < target_date:
+                                                continue
                                         available_slot = self.env['siantou.ems.timetable.check_available_slot'].find_available_slot(target_date, field_of_study.id, level_id, batch.id, weekly_hours_credit)
                                         # On trouve une salle de classe et un créneau horaire disponiblent pour le cours
                                         if available_slot:
