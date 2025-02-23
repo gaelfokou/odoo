@@ -62,10 +62,10 @@ class Timetable(models.Model):
         ondelete='restrict'
     )
 
-    # Professeur lié à la programmation de cours
+    # Enseignant lié à la programmation de cours
     employee_id = fields.Many2one(
         'hr.employee',
-        'Professeur',
+        'Enseignant',
         ondelete='restrict'
     )
 

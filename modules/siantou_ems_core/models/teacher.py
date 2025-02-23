@@ -42,7 +42,7 @@ class HrEmployee(models.Model):
         'Cours dispensés avec les priorités'
     )
 
-    # Quota horaire hebdommadaire de cours pour un professeur permanent
+    # Quota horaire hebdommadaire de cours pour un enseignant permanent
     weekly_hours_limit = fields.Integer(
         'Quota horaire hebdommadaire',
         required=True
@@ -63,12 +63,12 @@ class HrEmployee(models.Model):
         help="Liste des emplois du temps associés à l'enseignant."
     )
 
-    # Contrainte logique pour s'assurer que le quota horaire hebdommadaire de cours pour un professeur permanent est de 24
+    # Contrainte logique pour s'assurer que le quota horaire hebdommadaire de cours pour un enseignant permanent est de 24
     @api.constrains('weekly_hours_limit')
     def _check_weekly_hours_limit_permanent(self):
         for record in self:
             if record.is_permanent and record.weekly_hours_limit != 24:
-                raise ValidationError("Vous devez définir le quota horaire hebdommadaire de cours pour un professeur permanent à 24")
+                raise ValidationError("Vous devez définir le quota horaire hebdommadaire de cours pour un enseignant permanent à 24")
 
     def create_employee_user(self, employee):
         try:
@@ -218,7 +218,7 @@ class HrEmployee(models.Model):
 
 class TeacherAvailability(models.Model):
     _name = 'siantou.ems.core.teacher.availability'
-    _description = 'Disponibilité des professeurs'
+    _description = 'Disponibilité des enseignants'
 
     # Enseignant lié
     employee_id = fields.Many2one(
@@ -264,9 +264,9 @@ class TeacherAvailability(models.Model):
 
 class TeacherSubjectPriority(models.Model):
     _name = 'siantou.ems.core.teacher.subject.priority'
-    _description = 'Priorité du professeur au cours'
+    _description = 'Priorité du enseignant au cours'
 
-    # Professeur pour lequel on souhaite définir la priorité sur le cours
+    # Enseignant pour lequel on souhaite définir la priorité sur le cours
     employee_id = fields.Many2one(
         'hr.employee',
         'Enseignant',
@@ -285,11 +285,11 @@ class TeacherSubjectPriority(models.Model):
     # Priorité de l'enseignant pour ce cours
     priority = fields.Integer(
         'Priorité',
-        help='Le professeur avec le nombre le plus élevé est prioritaire (va de 1 à 10)',
+        help='Le enseignant avec le nombre le plus élevé est prioritaire (va de 1 à 10)',
         required=True
     )
 
-    # Contrainte SQL pour s'assurer de l'unicité du couple (professeur, couple) dans la base de donnée
+    # Contrainte SQL pour s'assurer de l'unicité du couple (enseignant, couple) dans la base de donnée
     _sql_constraints = [
         ('unique_teacher_subject_rel', 'unique(employee_id, subject_id)', 'Un enseignant ne peut être lié à un même cours qu\'une seule fois.')
     ]

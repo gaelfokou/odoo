@@ -51,7 +51,7 @@ class Subject(models.Model):
         relation='teacher_subject_rel',
         column1='subject_id',
         column2='employee_id',
-        string='Professeurs',
+        string='Enseignants',
         compute='_compute_teacher_ids',
         inverse='_set_teacher_ids'
     )
