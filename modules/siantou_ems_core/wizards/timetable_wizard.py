@@ -31,6 +31,16 @@ class TimetableWizard(models.TransientModel):
         ondelete='restrict'
     )
 
+    # Période de début
+    period_from = fields.Date(
+        'Période de',
+    )
+
+    # Période de fin
+    period_to = fields.Date(
+        'Période à',
+    )
+
     # Groupe auquel appartient l'emploi du temps
     group = fields.Char(
         'Groupe'
