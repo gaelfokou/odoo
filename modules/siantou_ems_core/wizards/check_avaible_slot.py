@@ -76,6 +76,8 @@ class CheckAvailableSlot(models.Model):
             ])
             classrooms = list(classrooms)
             for classroom in classrooms:
+                available_slotitems = []
+                available_hours = 0
                 for start_time, end_time in active_slotitems:
                     timetable = self.env['siantou.ems.timetable.timetable'].search([
                         ('classroom_id', '=', classroom.id),
