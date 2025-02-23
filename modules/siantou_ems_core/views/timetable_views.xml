@@ -40,6 +40,7 @@
 					<field name="day_of_week"/>
 					<field name="start_time"/>
 					<field name="end_time"/>
+					<field name="not_active_slotitems"/>
 					<field name="status"
                         decoration-muted="status == '0'"
                         decoration-success="status == '1'"
@@ -72,6 +73,7 @@
                             <field name="day_of_week"/>
                             <field name="start_time"/>
                             <field name="end_time"/>
+        					<field name="not_active_slotitems"/>
         					<field name="status"/>
                         </group>
 					</sheet>
