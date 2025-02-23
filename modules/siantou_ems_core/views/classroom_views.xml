@@ -11,6 +11,8 @@
                     <field name="name"/>
                     <field name="building_id"/>
                     <field name="capacity"/>
+                    <field name="is_cours_active"/>
+                    <field name="is_examen_active"/>
                 </tree>
             </field>
         </record>
@@ -30,6 +32,8 @@
                                     <field name="name"/>
                                     <field name="building_id"/>
                                     <field name="capacity"/>
+                                    <field name="is_cours_active"/>
+                                    <field name="is_examen_active"/>
                                 </group>
                             </page>
                             <page string="Horaires associés">

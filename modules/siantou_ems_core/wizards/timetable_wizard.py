@@ -145,6 +145,7 @@ class TimetableWizard(models.TransientModel):
                                                 'day_of_week': str(target_date.weekday()),
                                                 'start_time': available_slot["start_time"],
                                                 'end_time': available_slot["end_time"],
+                                                'not_active_slotitems': available_slot['not_active_slotitems'],
                                                 'group_id': new_group.id,
                                             })
                                             self.env.cr.commit()

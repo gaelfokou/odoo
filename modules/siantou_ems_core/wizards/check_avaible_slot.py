@@ -105,6 +105,10 @@ class CheckAvailableSlot(models.Model):
 
         if available_hours > 0:
             duration_weekly_hours_credit = available_hours
-            available_slot = {'current_date': current_date, 'start_time': available_slotitems[0][0], 'end_time': available_slotitems[available_hours - 1][1], 'classroom': available_slotitems[0][2], 'duration_weekly_hours_credit': duration_weekly_hours_credit, 'not_active_slotitems': not_active_slotitems}
+            n = 0
+            for not_active_slotitem in not_active_slotitems:
+                if available_slotitems[0][0] < not_active_slotitem[1] and available_slotitems[available_hours - 1][1] > not_active_slotitem[0]:
+                    n += 1
+            available_slot = {'current_date': current_date, 'start_time': available_slotitems[0][0], 'end_time': available_slotitems[available_hours - 1][1], 'classroom': available_slotitems[0][2], 'duration_weekly_hours_credit': duration_weekly_hours_credit, 'not_active_slotitems': n}
 
         return available_slot

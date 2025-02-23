@@ -114,6 +114,11 @@ class Timetable(models.Model):
         ondelete='cascade'
     )
 
+    not_active_slotitems = fields.Integer(
+        string='Créneau horaire inactif',
+        default=0,
+    )
+
     status = fields.Selection([
         ('0', 'En attente'),
         ('1', 'Présent'),

@@ -53,13 +53,9 @@ class CheckPriority(models.Model):
             # Si un enseignant est permanent
             if teacher.is_permanent:
                 # Vérifier si le quota horaire hebdomadaire n'est pas atteint
-                assigned_hours = self.get_assigned_hours(teacher, date, not_active_slotitems)
-                n = 0
-                for not_active_slotitem in not_active_slotitems:
-                    if start_time < not_active_slotitem[1] and end_time > not_active_slotitem[0]:
-                        n += 1
+                assigned_hours = self.get_assigned_hours(teacher, date)
                 total_hours = end_time - start_time
-                total_hours = total_hours - n
+                total_hours = total_hours - not_active_slotitems
                 if assigned_hours + total_hours > teacher.weekly_hours_limit:
                     continue  # Si le quota est dépassé, on passe au prochain enseignant
 
@@ -93,13 +89,9 @@ class CheckPriority(models.Model):
             # Si un enseignant est non permanent
             if not teacher.is_permanent:
                 # Vérifier si le quota horaire hebdomadaire n'est pas atteint
-                assigned_hours = self.get_assigned_hours(teacher, date, not_active_slotitems)
-                n = 0
-                for not_active_slotitem in not_active_slotitems:
-                    if start_time < not_active_slotitem[1] and end_time > not_active_slotitem[0]:
-                        n += 1
+                assigned_hours = self.get_assigned_hours(teacher, date)
                 total_hours = end_time - start_time
-                total_hours = total_hours - n
+                total_hours = total_hours - not_active_slotitems
                 if assigned_hours + total_hours > teacher.weekly_hours_limit:
                     continue  # Si le quota est dépassé, on passe au prochain enseignant
                                    
@@ -111,7 +103,7 @@ class CheckPriority(models.Model):
         return None
 
     # Fonction pour calculer les heures assignées à un enseignant dans la semaine
-    def get_assigned_hours(self, employee, date, not_active_slotitems):
+    def get_assigned_hours(self, employee, date):
 
         monday_of_week = date - timedelta(days=date.weekday())
         saturday_of_week = monday_of_week + timedelta(days=5)
@@ -127,11 +119,7 @@ class CheckPriority(models.Model):
         total_hours = 0
         timetables = list(timetables)
         for timetable in timetables:
-            n = 0
-            for not_active_slotitem in not_active_slotitems:
-                if timetable.start_time < not_active_slotitem[1] and timetable.end_time > not_active_slotitem[0]:
-                    n += 1
             total_hours += timetable.end_time - timetable.start_time
-            total_hours = total_hours - n
+            total_hours = total_hours - timetable.not_active_slotitems
 
         return total_hours

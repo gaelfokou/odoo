@@ -100,6 +100,10 @@ class Classroom(models.Model):
         help="Liste des emplois du temps associés à cette salle de classe."
     )
 
+    is_cours_active = fields.Boolean(string="Actif pour les cours", default=False)
+
+    is_examen_active = fields.Boolean(string="Actif pour les examens", default=False)
+
     # Contrainte SQL pour garantir que le code de la salle de classe est unique
     _sql_constraints = [
         ('unique_code', 'unique(code)', 'Le code de la salle de classe doit être unique.'),
