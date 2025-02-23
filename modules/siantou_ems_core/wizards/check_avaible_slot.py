@@ -10,7 +10,7 @@ class CheckAvailableSlot(models.Model):
     _name = 'siantou.ems.timetable.check_available_slot'
     _description = 'Déterminer un creneau pour un cours'
 
-    def find_available_slot(self, current_date, field_of_study_id, level_id, batch_id, duration_weekly_hours_credit):
+    def find_available_slot(self, current_date, class_id, field_of_study_id, level_id, batch_id, duration_weekly_hours_credit):
         slots = self.env['siantou.ems.timetable.slot'].search([
             ('is_default', '=', False),
         ])
@@ -91,7 +91,7 @@ class CheckAvailableSlot(models.Model):
                         ('date', '=', current_date),
                         ('start_time', '<', end_time),
                         ('end_time', '>', start_time),
-                        ('field_of_study_id', '=', field_of_study_id),
+                        ('class_id', '=', class_id),
                         ('level_id', '=', level_id),
                         ('batch_id', '=', batch_id)
                     ], limit=1)

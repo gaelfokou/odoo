@@ -143,7 +143,7 @@ class TimetableWizard(models.TransientModel):
                                         if self.period_from and self.period_to:
                                             if self.period_from > target_date or self.period_to < target_date:
                                                 continue
-                                        available_slot = self.env['siantou.ems.timetable.check_available_slot'].find_available_slot(target_date, field_of_study.id, level_id, batch.id, weekly_hours_credit)
+                                        available_slot = self.env['siantou.ems.timetable.check_available_slot'].find_available_slot(target_date, classe.id, field_of_study.id, level_id, batch.id, weekly_hours_credit)
                                         # On trouve une salle de classe et un créneau horaire disponiblent pour le cours
                                         if available_slot:
                                             check_classroom_slot = available_slot

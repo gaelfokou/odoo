@@ -172,12 +172,11 @@ class Timetable(models.Model):
                 record.day_of_week = str(day_of_week)  # Assurez-vous que le jour soit un string (0-6)
 
     # Contrainte logique pour se rassurer qu'on a pas deux enregistrements identiques
-    @api.constrains('field_of_study_id', 'level_id', 'subject_id', 'classroom_id', 'employee_id', 'day_of_week', 'start_time', 'end_time')
+    @api.constrains('class_id', 'subject_id', 'classroom_id', 'employee_id', 'day_of_week', 'start_time', 'end_time')
     def _check_duplicate(self):
         for record in self:
             if self.search([
-                ('field_of_study_id', '=', record.field_of_study_id.id),
-                ('level_id', '=', record.level_id.id),
+                ('class_id', '=', record.class_id.id),
                 ('subject_id', '=', record.subject_id.id),
                 ('classroom_id', '=', record.classroom_id.id),
                 ('employee_id', '=', record.employee_id.id),
