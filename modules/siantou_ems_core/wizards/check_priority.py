@@ -1,8 +1,7 @@
-import logging
-
 from odoo import models, fields, api
 from odoo.exceptions import ValidationError
 from datetime import timedelta
+import logging
 
 _logger = logging.getLogger(__name__)
 
@@ -100,17 +99,10 @@ class CheckPriority(models.Model):
         return None
 
     # Fonction pour calculer les heures assignées à un enseignant dans la semaine
-    def get_assigned_hours(self, employee, date_x):
+    def get_assigned_hours(self, employee, date):
 
-        # Déterminer le jour de la semaine de date_x (0 = lundi, 6 = dimanche)
-        weekday = date_x.weekday()
-
-        # Calculer le lundi de la semaine de date_x
-        monday_of_week = date_x - timedelta(days=weekday)
-
-        # Calculer le samedi de la semaine de date_x
+        monday_of_week = date - timedelta(days=date.weekday())
         saturday_of_week = monday_of_week + timedelta(days=5)
-
 
         # Rechercher toutes les lignes d'emploi du temps pour cet enseignant pour cette période (lundi - samedi)
         timetables = self.env['siantou.ems.timetable.timetable'].search([
@@ -121,8 +113,8 @@ class CheckPriority(models.Model):
 
         # Calculer le total des heures assignées pour la semaine
         total_hours = 0
+        timetables = list(timetables)
         for timetable in timetables:
             total_hours += timetable.end_time - timetable.start_time
-        
+
         return total_hours
-    
