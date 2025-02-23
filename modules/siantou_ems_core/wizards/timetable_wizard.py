@@ -124,11 +124,15 @@ class TimetableWizard(models.TransientModel):
                                 # on verifie si le quota hebdomadaire est atteint
                                 if weekly_hours_credit > 0:
                                     check_weekly_hours_credit += weekly_hours_credit
+                                    first_time = ue_id.semestre_id.start_time
                                     start_time = ue_id.semestre_id.start_time - timedelta(days=ue_id.semestre_id.start_time.weekday())
                                     end_time = start_time + timedelta(days=5)
                                     weekly_hours_credit = min(4, weekly_hours_credit)
                                     # On parcours toutes les jours de la semaine
-                                    for day in range(0, 6):
+                                    for day in range(0, end_time.weekday()):
+                                        if week == 0:
+                                            if day < first_time.weekday():
+                                                continue
                                         # on verifie si le quota hebdomadaire est atteint
                                         if weekly_hours_credit == 0:
                                             break
