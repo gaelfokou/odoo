@@ -265,6 +265,7 @@ class Student(models.Model):
                 # 'email': email,
                 'user_id': user_id.id,
             })
+            self.env.cr.commit()
         except psycopg2.errors.NotNullViolation as error:
             _logger.info(f'----------- tototototototo Exception {error} -----------')
             raise ValidationError("L'adresse e-mail professionnelle n'est pas renseignée.")
