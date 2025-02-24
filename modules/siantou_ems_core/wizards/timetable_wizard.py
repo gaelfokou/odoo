@@ -207,7 +207,7 @@ class TimetableWizard(models.TransientModel):
                                                 'department_id': classe.filiere_id.department_id.id,
                                                 'subject_id': subject_id,
                                                 'classroom_id': available_slot["classroom"].id,
-                                                'employee_id': teacher_priority.id,
+                                                'employee_id': teacher_priority.id if teacher_priority else None,
                                                 'date': target_date,
                                                 'day_of_week': str(target_date.weekday()),
                                                 'start_time': available_slot["start_time"],
