@@ -194,8 +194,7 @@ class Timetable(models.Model):
                 ('id', '!=', record.id),
                 ('classroom_id', '=', record.classroom_id.id),
                 ('date', '=', record.date),
-            ]).filtered(lambda rec: (rec.start_time <= record.start_time and rec.end_time > record.start_time) or (rec.start_time < record.end_time and rec.end_time >= record.end_time) or \
-                (record.start_time <= rec.start_time and record.end_time > rec.start_time) or (record.start_time < rec.end_time and record.end_time >= rec.end_time))
+            ]).filtered(lambda rec: not (rec.start_time >= record.end_time or rec.end_time <= record.start_time))
             timetables = list(timetables)
             if len(timetables) > 0:
                 raise ValidationError("Deux cours ne doivent pas être programmés dans la même salle de classe sur des horaires qui se chevauchent le même jour")
@@ -317,8 +316,7 @@ class TimetableSlotItem(models.Model):
                 slotitems = self.env['siantou.ems.timetable.slotitem'].search([
                     ('id', '!=', record.id),
                     ('slot_id', '=', record.slot_id.id),
-                ]).filtered(lambda rec: (rec.start_time <= record.start_time and rec.end_time > record.start_time) or (rec.start_time < record.end_time and rec.end_time >= record.end_time) or \
-                    (record.start_time <= rec.start_time and record.end_time > rec.start_time) or (record.start_time < rec.end_time and record.end_time >= rec.end_time))
+                ]).filtered(lambda rec: not (rec.start_time >= record.end_time or rec.end_time <= record.start_time))
                 slotitems = list(slotitems)
                 if len(slotitems) > 0:
                     raise ValidationError(f"La plage horaire entre l'heure de début et l'heure de fin n'est pas disponible")

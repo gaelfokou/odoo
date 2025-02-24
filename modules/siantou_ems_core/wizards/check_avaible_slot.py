@@ -23,8 +23,7 @@ class CheckAvailableSlot(models.Model):
                     ('class_id', '=', class_id),
                     ('batch_id', '=', batch_id),
                     ('date', '=', current_date),
-                ]).filtered(lambda rec: (rec.start_time <= start_time and rec.end_time > start_time) or (rec.start_time < end_time and rec.end_time >= end_time) or \
-                    (start_time <= rec.start_time and end_time > rec.start_time) or (start_time < rec.end_time and end_time >= rec.end_time))
+                ]).filtered(lambda rec: not (rec.start_time >= end_time or rec.end_time <= start_time))
                 timetables = list(timetables)
                 if len(timetables) == 0:
                     available_class_slotitems.append([start_time, end_time])
@@ -52,8 +51,7 @@ class CheckAvailableSlot(models.Model):
                         timetables = self.env['siantou.ems.timetable.timetable'].search([
                             ('classroom_id', '=', classroom.id),
                             ('date', '=', current_date),
-                        ]).filtered(lambda rec: (rec.start_time <= start_time and rec.end_time > start_time) or (rec.start_time < end_time and rec.end_time >= end_time) or \
-                            (start_time <= rec.start_time and end_time > rec.start_time) or (start_time < rec.end_time and end_time >= rec.end_time))
+                        ]).filtered(lambda rec: not (rec.start_time >= end_time or rec.end_time <= start_time))
                         timetables = list(timetables)
                         if len(timetables) > 0:
                             continue

@@ -246,7 +246,7 @@ class TimetableWizard(models.TransientModel):
         }
 
     def find_available_teacher(self, teacher, date, start_time, end_time):
-        availabilities = teacher.teacher_availability_ids.filtered(lambda rec: (rec.day_of_week == str(date.weekday())) and ((rec.start_time <= start_time and rec.end_time > start_time) and (rec.start_time < end_time and rec.end_time >= end_time)))
+        availabilities = teacher.teacher_availability_ids.filtered(lambda rec: (rec.day_of_week == str(date.weekday())) and (rec.end_time >= end_time and rec.start_time <= start_time))
 
         availabilities = list(availabilities)
 
