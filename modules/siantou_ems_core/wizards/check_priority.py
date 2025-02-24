@@ -40,14 +40,13 @@ class CheckPriority(models.Model):
             # if overlapping_course:
             #     continue  # Si l'enseignant a déjà un cours à la même plage horaire, on passe au suivant
 
-            overlapping_course = self.env['siantou.ems.timetable.timetable'].search([
+            timetables = self.env['siantou.ems.timetable.timetable'].search([
                 ('employee_id', '=', teacher.id),
                 ('date', '=', date),
-                ('start_time', '<', end_time),
-                ('end_time', '>', start_time),
-            ], limit=1)
-
-            if overlapping_course:
+            ]).filtered(lambda rec: (rec.start_time <= start_time and rec.end_time > start_time) or (rec.start_time < end_time and rec.end_time >= end_time) or \
+                (start_time <= rec.start_time and end_time > rec.start_time) or (start_time < rec.end_time and end_time >= rec.end_time))
+            timetables = list(timetables)
+            if len(timetables) > 0:
                 continue  # Si l'enseignant a déjà un cours à la même plage horaire, on passe au suivant
 
             # Si un enseignant est permanent
@@ -76,14 +75,13 @@ class CheckPriority(models.Model):
             # if overlapping_course:
             #     continue  # Si l'enseignant a déjà un cours à la même plage horaire, on passe au suivant
 
-            overlapping_course = self.env['siantou.ems.timetable.timetable'].search([
+            timetables = self.env['siantou.ems.timetable.timetable'].search([
                 ('employee_id', '=', teacher.id),
                 ('date', '=', date),
-                ('start_time', '<', end_time),
-                ('end_time', '>', start_time),
-            ], limit=1)
-
-            if overlapping_course:
+            ]).filtered(lambda rec: (rec.start_time <= start_time and rec.end_time > start_time) or (rec.start_time < end_time and rec.end_time >= end_time) or \
+                (start_time <= rec.start_time and end_time > rec.start_time) or (start_time < rec.end_time and end_time >= rec.end_time))
+            timetables = list(timetables)
+            if len(timetables) > 0:
                 continue  # Si l'enseignant a déjà un cours à la même plage horaire, on passe au suivant
 
             # Si un enseignant est non permanent

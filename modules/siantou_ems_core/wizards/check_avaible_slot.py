@@ -19,14 +19,14 @@ class CheckAvailableSlot(models.Model):
 
         if nbr_slotitems > 0:
             for start_time, end_time in active_slotitems:
-                timetable = self.env['siantou.ems.timetable.timetable'].search([
+                timetables = self.env['siantou.ems.timetable.timetable'].search([
                     ('class_id', '=', class_id),
                     ('batch_id', '=', batch_id),
                     ('date', '=', current_date),
-                    ('start_time', '<', end_time),
-                    ('end_time', '>', start_time),
-                ], limit=1)
-                if not timetable:
+                ]).filtered(lambda rec: (rec.start_time <= start_time and rec.end_time > start_time) or (rec.start_time < end_time and rec.end_time >= end_time) or \
+                    (start_time <= rec.start_time and end_time > rec.start_time) or (start_time < rec.end_time and end_time >= rec.end_time))
+                timetables = list(timetables)
+                if len(timetables) == 0:
                     available_class_slotitems.append([start_time, end_time])
 
             nbr_class_slotitems = len(available_class_slotitems)
@@ -49,13 +49,13 @@ class CheckAvailableSlot(models.Model):
                 classrooms = list(classrooms)
                 for classroom in classrooms:
                     for start_time, end_time in available_class_slotitems:
-                        timetable = self.env['siantou.ems.timetable.timetable'].search([
+                        timetables = self.env['siantou.ems.timetable.timetable'].search([
                             ('classroom_id', '=', classroom.id),
                             ('date', '=', current_date),
-                            ('start_time', '<', end_time),
-                            ('end_time', '>', start_time),
-                        ], limit=1)
-                        if timetable:
+                        ]).filtered(lambda rec: (rec.start_time <= start_time and rec.end_time > start_time) or (rec.start_time < end_time and rec.end_time >= end_time) or \
+                            (start_time <= rec.start_time and end_time > rec.start_time) or (start_time < rec.end_time and end_time >= rec.end_time))
+                        timetables = list(timetables)
+                        if len(timetables) > 0:
                             continue
                         available_slotitems.append([start_time, end_time, classroom])
                         available_hours = len(available_slotitems)

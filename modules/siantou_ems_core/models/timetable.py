@@ -190,14 +190,14 @@ class Timetable(models.Model):
     @api.constrains('classroom_id', 'date', 'start_time', 'end_time')
     def _check_classroom_is_free(self):
         for record in self:
-            timetable = self.search([
+            timetables = self.search([
                 ('id', '!=', record.id),
                 ('classroom_id', '=', record.classroom_id.id),
                 ('date', '=', record.date),
-                ('start_time', '<', record.end_time),
-                ('end_time', '>', record.start_time),
-            ], limit=1)
-            if timetable:
+            ]).filtered(lambda rec: (rec.start_time <= record.start_time and rec.end_time > record.start_time) or (rec.start_time < record.end_time and rec.end_time >= record.end_time) or \
+                (record.start_time <= rec.start_time and record.end_time > rec.start_time) or (record.start_time < rec.end_time and record.end_time >= rec.end_time))
+            timetables = list(timetables)
+            if len(timetables) > 0:
                 raise ValidationError("Deux cours ne doivent pas être programmés dans la même salle de classe sur des horaires qui se chevauchent le même jour")
 
     # Contrainte logique pour s'assurer que l'heure de fin est supérieure à l'heure de début
