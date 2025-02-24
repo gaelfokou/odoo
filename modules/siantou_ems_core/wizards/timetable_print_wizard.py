@@ -56,7 +56,6 @@ class TimetablePrintWizard(models.TransientModel):
     field_of_study_id = fields.Many2one(
         'siantou.ems.core.field_of_study',
         'Filière',
-        related='class_id.filiere_id',
         ondelete='restrict'
     )
 
@@ -64,7 +63,6 @@ class TimetablePrintWizard(models.TransientModel):
     level_id = fields.Many2one(
         'siantou.ems.core.level',
         'Niveau',
-        related='class_id.niveau_id',
         ondelete='restrict'
     )
 
