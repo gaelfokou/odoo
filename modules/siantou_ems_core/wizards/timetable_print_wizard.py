@@ -45,14 +45,7 @@ class TimetablePrintWizard(models.TransientModel):
         'Semester',
         required=True
     )
-
-    # Niveau lié à la programmation de cours
-    level_id = fields.Many2one(
-        'siantou.ems.core.level',
-        'Niveau',
-        ondelete='restrict'
-    )
-
+    
     # Ajouter un champ de relation vers hr.department pour lier la filière au département
     department_id = fields.Many2one(
         'hr.department',
@@ -63,6 +56,15 @@ class TimetablePrintWizard(models.TransientModel):
     field_of_study_id = fields.Many2one(
         'siantou.ems.core.field_of_study',
         'Filière',
+        related='class_id.filiere_id',
+        ondelete='restrict'
+    )
+
+    # Niveau lié à la programmation de cours
+    level_id = fields.Many2one(
+        'siantou.ems.core.level',
+        'Niveau',
+        related='class_id.niveau_id',
         ondelete='restrict'
     )
 
@@ -97,18 +99,19 @@ class TimetablePrintWizard(models.TransientModel):
             ('semester_id', '=', self.semester_id.id),
             ('group_id', '=', self.group_id.id)
         ]
-        # Ajouter le critère Niveau seulement s'il est sélectionné
-        if self.level_id.id:
-            domain.append(('level_id', '=', self.level_id.id))
 
         # Ajouter le critère Filière seulement s'il est sélectionné
         if self.department_id.id:
             domain.append(('department_id', '=', self.department_id.id))
+
+        # Ajouter le critère Niveau seulement s'il est sélectionné
+        if self.level_id.id:
+            domain.append(('level_id', '=', self.level_id.id))
         
         # Ajouter le critère Filière seulement s'il est sélectionné
         if self.field_of_study_id.id:
             domain.append(('field_of_study_id', '=', self.field_of_study_id.id))
-        
+
         # Ajouter le critère de période seulement si la période de début et la période de fin sont sélectionnées
         if self.period_from and self.period_to:
             domain.append(('date', '>=', self.period_from))

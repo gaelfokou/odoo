@@ -17,17 +17,19 @@ class TimetableWizard(models.TransientModel):
         required=True
     )
 
-    # Niveau lié à la programmation de cours
-    level_id = fields.Many2one(
-        'siantou.ems.core.level',
-        'Niveau',
-        ondelete='restrict'
-    )
-
     # Filière liée à la programmation de cours
     field_of_study_id = fields.Many2one(
         'siantou.ems.core.field_of_study',
         'Filière',
+        related='class_id.filiere_id',
+        ondelete='restrict'
+    )
+
+    # Niveau lié à la programmation de cours
+    level_id = fields.Many2one(
+        'siantou.ems.core.level',
+        'Niveau',
+        related='class_id.niveau_id',
         ondelete='restrict'
     )
 
@@ -63,22 +65,16 @@ class TimetableWizard(models.TransientModel):
         check_weekly_hours_credit = 0
         check_classroom_slot = None
         
+        domain = []
+        
+        if self.level_id.id:
+            domain.append(('niveau_id', '=', self.level_id.id))
+
         # Récupérer la liste des filières et les traiter l'une après l'autre
-        if self.field_of_study_id.id and self.level_id.id:
-            classes = self.env['siantou.ems.core.class'].search([
-                ('filiere_id', '=', self.field_of_study_id.id),
-                ('niveau_id', '=', self.level_id.id),
-            ])
-        elif self.field_of_study_id.id:
-            classes = self.env['siantou.ems.core.class'].search([
-                ('filiere_id', '=', self.field_of_study_id.id),
-            ])
-        elif self.level_id.id:
-            classes = self.env['siantou.ems.core.class'].search([
-                ('niveau_id', '=', self.level_id.id),
-            ])
-        else:
-            classes = self.env['siantou.ems.core.class'].search([])
+        if self.field_of_study_id.id:
+            domain.append(('filiere_id', '=', self.field_of_study_id.id))
+
+        classes = self.env['siantou.ems.core.class'].search(domain)
         classes = list(classes)
         # Génération de la chaîne unique
         unique_string = datetime.now().strftime("%Y%m%d%H%M")
@@ -202,10 +198,10 @@ class TimetableWizard(models.TransientModel):
                                                 'semester_id': ue_id.semestre_id.id,
                                                 'batch_id': batch.id,
                                                 'class_id': classe.id,
-                                                'department_id': classe.filiere_id.department_id.id if classe.filiere_id.department_id else None,
+                                                'department_id': classe.filiere_id.department_id.id,
                                                 'subject_id': subject_id,
                                                 'classroom_id': available_slot["classroom"].id,
-                                                'employee_id': teacher_priority.id if teacher_priority else None,
+                                                'employee_id': teacher_priority.id,
                                                 'date': target_date,
                                                 'day_of_week': str(target_date.weekday()),
                                                 'start_time': available_slot["start_time"],
