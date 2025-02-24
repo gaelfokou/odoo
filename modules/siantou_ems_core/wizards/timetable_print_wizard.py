@@ -1,7 +1,7 @@
 import logging
 
 from odoo import models, fields, api
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
 from pprint import pformat
 import pandas as pd
 import numpy as np
@@ -83,6 +83,14 @@ class TimetablePrintWizard(models.TransientModel):
         'Version',
         required=True
     )
+
+    @api.constrains('period_from', 'period_to')
+    def _check_constrains_period(self):
+        for record in self:
+            if record.period_from > record.period_to:
+                raise ValidationError(f"La période de début ne doit pas être supérieure à la période de fin")
+            elif record.period_from + timedelta(months=1) < record.period_to:
+                raise ValidationError(f"La plage entre la période de début et la période de fin ne doit pas être supérieure 1 mois")
 
     def print_timetable(self):
         data = self.print_timetable_report_data()

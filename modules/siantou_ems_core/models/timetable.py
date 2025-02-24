@@ -307,12 +307,12 @@ class TimetableSlotItem(models.Model):
         return abs(a - b) < tolerance
 
     @api.constrains('start_time', 'end_time')
-    def _check_constrains(self):
+    def _check_constrains_time(self):
         for record in self:
-            if record.start_time >= record.end_time:
-                raise ValidationError(f"L'heure de fin doit être supérieure à l'heure de début")
+            if record.start_time > record.end_time:
+                raise ValidationError(f"L'heure de début ne doit pas être supérieure à l'heure de fin")
             elif not TimetableSlotItem.are_almost_equal(round((record.end_time - record.start_time), 2), round(1.00, 2)):
-                raise ValidationError(f"La plage horaire entre l'heure de début et l'heure de fin doit être 1")
+                raise ValidationError(f"La plage horaire entre l'heure de début et l'heure de fin ne doit pas être supérieure 1")
             else:
                 slotitems = self.env['siantou.ems.timetable.slotitem'].search([
                     ('id', '!=', record.id),
@@ -360,7 +360,7 @@ class TimetableSlot(models.Model):
     is_default = fields.Boolean(string="Par défaut", default=False)
 
     @api.constrains('is_default')
-    def _check_constrains(self):
+    def _check_constrains_default(self):
         for record in self:
             if record.is_default:
                 slots = self.env['siantou.ems.timetable.slot'].search([
