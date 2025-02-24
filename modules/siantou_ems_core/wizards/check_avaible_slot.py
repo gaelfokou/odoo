@@ -18,7 +18,6 @@ class CheckAvailableSlot(models.Model):
         nbr_slotitems = len(active_slotitems)
 
         if nbr_slotitems > 0:
-            _logger.info(f'----------- tototototototo current_date {current_date} -----------')
             for start_time, end_time in active_slotitems:
                 timetable = self.env['siantou.ems.timetable.timetable'].search([
                     ('class_id', '=', class_id),
@@ -27,7 +26,6 @@ class CheckAvailableSlot(models.Model):
                     ('start_time', '<', end_time),
                     ('end_time', '>', start_time),
                 ], limit=1)
-                _logger.info(f'----------- tototototototo timetable 1 {timetable} {class_id} {current_date} {start_time} {end_time} -----------')
                 if not timetable:
                     available_class_slotitems.append([start_time, end_time])
 
@@ -39,7 +37,6 @@ class CheckAvailableSlot(models.Model):
                     ('end_time', '=', active_slotitems[nbr_slotitems - 1][1]),
                 ]).mapped('classroom_id')
                 classroom_ids = classroom_ids.ids
-                _logger.info(f'----------- tototototototo classroom_ids {classroom_ids} -----------')
                 if len(classroom_ids) > 0:
                     classrooms = self.env['siantou.ems.core.building.classroom'].search([
                         ('id', 'not in', classroom_ids),
@@ -50,7 +47,6 @@ class CheckAvailableSlot(models.Model):
                         ('is_cours_active', '=', True),
                     ])
                 classrooms = list(classrooms)
-                _logger.info(f'----------- tototototototo classrooms {classrooms} -----------')
                 for classroom in classrooms:
                     for start_time, end_time in available_class_slotitems:
                         timetable = self.env['siantou.ems.timetable.timetable'].search([
@@ -59,14 +55,12 @@ class CheckAvailableSlot(models.Model):
                             ('start_time', '<', end_time),
                             ('end_time', '>', start_time),
                         ], limit=1)
-                        _logger.info(f'----------- tototototototo timetable 2 {timetable} {classroom.id} {current_date} {start_time} {end_time} -----------')
                         if timetable:
                             continue
                         available_slotitems.append([start_time, end_time, classroom])
                         available_hours = len(available_slotitems)
                         if available_hours == duration_weekly_hours_credit:
                             break
-                    _logger.info(f'----------- tototototototo available_hours {available_hours} -----------')
                     if available_hours > 0:
                         break
 
