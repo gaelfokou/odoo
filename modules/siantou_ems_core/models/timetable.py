@@ -316,6 +316,7 @@ class TimetableSlotItem(models.Model):
             else:
                 slotitems = self.env['siantou.ems.timetable.slotitem'].search([
                     ('id', '!=', record.id),
+                    ('slot_id', '=', record.slot_id.id),
                 ]).filtered(lambda rec: (rec.start_time <= record.start_time and rec.end_time > record.start_time) or (rec.start_time < record.end_time and rec.end_time >= record.end_time) or \
                     (record.start_time <= rec.start_time and record.end_time > rec.start_time) or (record.start_time < rec.end_time and record.end_time >= rec.end_time))
                 slotitems = list(slotitems)
