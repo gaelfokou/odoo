@@ -87,7 +87,7 @@ class TimetablePrintWizard(models.TransientModel):
         for record in self:
             if record.period_from > record.period_to:
                 raise ValidationError(f"La période de début ne doit pas être supérieure à la période de fin")
-            elif record.period_from + timedelta(months=1) < record.period_to:
+            elif record.period_from + relativedelta(months=1) < record.period_to:
                 raise ValidationError(f"La plage entre la période de début et la période de fin ne doit pas être supérieure 1 mois")
 
     def print_timetable(self):

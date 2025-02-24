@@ -2,7 +2,8 @@ import math
 import threading
 from odoo import models, fields, api
 from odoo.exceptions import UserError, AccessError, ValidationError
-from datetime import datetime, timedelta
+from datetime import date, datetime, timedelta, time
+from dateutil.relativedelta import relativedelta
 import logging
 
 _logger = logging.getLogger(__name__)
@@ -51,7 +52,7 @@ class TimetableWizard(models.TransientModel):
         for record in self:
             if record.period_from > record.period_to:
                 raise ValidationError(f"La période de début ne doit pas être supérieure à la période de fin")
-            elif record.period_from + timedelta(months=1) < record.period_to:
+            elif record.period_from + relativedelta(months=1) < record.period_to:
                 raise ValidationError(f"La plage entre la période de début et la période de fin ne doit pas être supérieure 1 mois")
 
     def generate_timetable(self):
