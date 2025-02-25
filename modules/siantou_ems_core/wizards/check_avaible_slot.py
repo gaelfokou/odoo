@@ -20,7 +20,7 @@ class CheckAvailableSlot(models.Model):
         if nbr_slotitems > 0:
             for start_time, end_time in active_slotitems:
                 timetables = self.env['siantou.ems.timetable.timetable'].search([
-                    ('class_id', '=', class_id),
+                    ('class_id', '=', class_id.id),
                     ('batch_id', '=', batch_id),
                     ('date', '=', current_date),
                 ]).filtered(lambda rec: not (rec.start_time >= end_time or rec.end_time <= start_time))
@@ -31,6 +31,12 @@ class CheckAvailableSlot(models.Model):
             nbr_class_slotitems = len(available_class_slotitems)
     
             if nbr_class_slotitems > 0:
+                building_ids = []
+                if class_id.filiere_id.school_id:
+                    buildings = self.env['siantou.ems.core.building'].search([
+                        ('school_ids', 'in', [class_id.filiere_id.school_id.id]),
+                    ])
+                    building_ids = buildings.ids
                 classroom_ids = self.env['siantou.ems.timetable.timetable'].search([
                     ('date', '=', current_date),
                     ('end_time', '=', active_slotitems[nbr_slotitems - 1][1]),
@@ -41,11 +47,28 @@ class CheckAvailableSlot(models.Model):
                         ('id', 'not in', classroom_ids),
                         ('is_cours_active', '=', True),
                     ])
+                    classrooms = list(classrooms)
+                    building_classrooms = []
+                    if len(building_ids) > 0:
+                        building_classrooms = self.env['siantou.ems.core.building.classroom'].search([
+                            ('id', 'not in', classroom_ids),
+                            ('is_cours_active', '=', True),
+                            ('building_id', 'in', building_ids),
+                        ])
+                        building_classrooms = list(building_classrooms)
                 else:
                     classrooms = self.env['siantou.ems.core.building.classroom'].search([
                         ('is_cours_active', '=', True),
                     ])
-                classrooms = list(classrooms)
+                    classrooms = list(classrooms)
+                    building_classrooms = []
+                    if len(building_ids) > 0:
+                        building_classrooms = self.env['siantou.ems.core.building.classroom'].search([
+                            ('is_cours_active', '=', True),
+                            ('building_id', 'in', building_ids),
+                        ])
+                        building_classrooms = list(building_classrooms)
+                classrooms = building_classrooms + classrooms
                 for classroom in classrooms:
                     for start_time, end_time in available_class_slotitems:
                         timetables = self.env['siantou.ems.timetable.timetable'].search([
