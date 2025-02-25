@@ -51,7 +51,7 @@ class CheckAvailableSlot(models.Model):
                             ('is_cours_active', '=', True),
                             ('building_id', 'in', building_ids),
                         ])
-                        building_classroom_ids = classroom_ids.ids
+                        building_classroom_ids = building_classrooms.ids
                         building_classrooms = list(building_classrooms)
                     if len(building_classroom_ids) > 0:
                         classrooms = self.env['siantou.ems.core.building.classroom'].search([
@@ -73,7 +73,7 @@ class CheckAvailableSlot(models.Model):
                             ('is_cours_active', '=', True),
                             ('building_id', 'in', building_ids),
                         ])
-                        building_classroom_ids = classroom_ids.ids
+                        building_classroom_ids = building_classrooms.ids
                         building_classrooms = list(building_classrooms)
                     if len(building_classroom_ids) > 0:
                         classrooms = self.env['siantou.ems.core.building.classroom'].search([
