@@ -204,9 +204,9 @@ class Student(models.Model):
                 student.write({
                     'matricule': matricule,
                 })
+            password = matricule
             name = student.name
             name = name.strip()
-            # email = student.email
             while True:
                 if name.find('  ') != -1:
                     name = name.replace('  ', ' ')
@@ -218,24 +218,10 @@ class Student(models.Model):
             if len(username) == 1:
                 username = username[0]
             elif len(username) == 2:
-                # username = '{}.{}'.format(username[0][0:1], username[1])
                 username = '{}{}'.format(username[0][0:1], username[1])
             elif len(username) == 3:
-                # username = '{}.{}.{}'.format(username[0][0:1], username[1], username[2][0:1])
                 username = '{}{}{}'.format(username[0][0:1], username[1], username[2][0:1])
             email = username + '@siantou.net'
-            # password = username
-            password = matricule
-            i = 0
-            while True:
-                user = self.env['res.users'].search([
-                    ('login', '=', email),
-                ], limit=1)
-                if user:
-                    i = i + 1
-                    email = username + f'.{i}' + '@siantou.net'
-                else:
-                    break
             partner_id = student.student_enroll_id.partner_id
             if not partner_id:
                 partner_id = self.env['res.partner'].create({
@@ -244,12 +230,31 @@ class Student(models.Model):
                     'phone': student.num_tel,
                     'is_company': False,
                 })
-                student.partner_id = partner_id.id
-            
+                student.write({
+                    'partner_id': partner_id.id,
+                })
             user_id = self.env['res.users'].search([
                 ('partner_id', '=', partner_id.id),
             ], limit=1)
             if not user_id:
+                i = 0
+                while True:
+                    user_id = self.env['res.users'].search([
+                        ('login', '=', email),
+                    ], limit=1)
+                    if user_id:
+                        i = i + 1
+                        email = username + f'.{i}' + '@siantou.net'
+                    else:
+                        student_id = self.env['oe.school.student'].search([
+                            ('id', '!=', student.id),
+                            ('login', '=', email),
+                        ], limit=1)
+                        if student_id:
+                            i = i + 1
+                            email = username + f'.{i}' + '@siantou.net'
+                        else:
+                            break
                 group_id = self.env.ref('base.group_portal')
                 user_id = self.env['res.users'].create({
                     'login': email,
@@ -258,9 +263,34 @@ class Student(models.Model):
                     'partner_id': partner_id.id,
                     'groups_id': [(6, 0, [group_id.id])],
                 })
+            else:
+                i = 0
+                while True:
+                    user_id = self.env['res.users'].search([
+                        ('login', '=', email),
+                    ], limit=1)
+                    if user_id:
+                        i = i + 1
+                        email = username + f'.{i}' + '@siantou.net'
+                    else:
+                        student_id = self.env['oe.school.student'].search([
+                            ('id', '!=', student.id),
+                            ('login', '=', email),
+                        ], limit=1)
+                        if student_id:
+                            i = i + 1
+                            email = username + f'.{i}' + '@siantou.net'
+                        else:
+                            break
+            partner_id.write({
+                'email': email,
+            })
+            user_id.write({
+                'login': email,
+            })
             student.write({
                 'name': name,
-                # 'email': email,
+                'email': email,
                 'user_id': user_id.id,
             })
         except psycopg2.errors.NotNullViolation as error:

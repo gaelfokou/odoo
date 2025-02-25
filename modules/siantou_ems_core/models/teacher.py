@@ -93,9 +93,9 @@ class HrEmployee(models.Model):
                 employee.write({
                     'identifier': identifier,
                 })
+            password = identifier
             name = employee.name
             name = name.strip()
-            # email = employee.work_email
             while True:
                 if name.find('  ') != -1:
                     name = name.replace('  ', ' ')
@@ -107,24 +107,20 @@ class HrEmployee(models.Model):
             if len(username) == 1:
                 username = username[0]
             elif len(username) == 2:
-                # username = '{}.{}'.format(username[0][0:1], username[1])
                 username = '{}{}'.format(username[0][0:1], username[1])
             elif len(username) == 3:
-                # username = '{}.{}.{}'.format(username[0][0:1], username[1], username[2][0:1])
                 username = '{}{}{}'.format(username[0][0:1], username[1], username[2][0:1])
             email = username + '@siantou.net'
             user_id = self.env['res.users'].search([
                 ('employee_id', '=', employee.id),
             ], limit=1)
             if not user_id:
-                # password = username
-                password = identifier
                 i = 0
                 while True:
-                    user = self.env['res.users'].search([
+                    user_id = self.env['res.users'].search([
                         ('login', '=', email),
                     ], limit=1)
-                    if user:
+                    if user_id:
                         i = i + 1
                         email = username + f'.{i}' + '@siantou.net'
                     else:
@@ -154,11 +150,11 @@ class HrEmployee(models.Model):
             else:
                 i = 0
                 while True:
-                    user = self.env['res.users'].search([
+                    user_id = self.env['res.users'].search([
                         ('id', '!=', user_id.id),
                         ('login', '=', email),
                     ], limit=1)
-                    if user:
+                    if user_id:
                         i = i + 1
                         email = username + f'.{i}' + '@siantou.net'
                     else:
