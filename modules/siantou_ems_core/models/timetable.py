@@ -314,7 +314,7 @@ class TimetableSlotItem(models.Model):
             if record.start_time > record.end_time:
                 raise ValidationError(f"L'heure de début ne doit pas être supérieure à l'heure de fin")
             elif not TimetableSlotItem.are_almost_equal(round((record.end_time - record.start_time), 2), round(1.00, 2)):
-                raise ValidationError(f"La plage horaire entre l'heure de début et l'heure de fin ne doit pas être supérieure 1")
+                raise ValidationError(f"La plage horaire entre l'heure de début et l'heure de fin ne doit pas être supérieure ou inférieure 1")
             else:
                 slotitems = self.env['siantou.ems.timetable.slotitem'].search([
                     ('id', '!=', record.id),

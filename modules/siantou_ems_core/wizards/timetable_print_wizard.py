@@ -137,12 +137,12 @@ class TimetablePrintWizard(models.TransientModel):
         timetables = {}
         info_timetables = {}
         for search_timetable in search_timetables:
-            key = '{}-{}-{}-{}'.format(search_timetable.semester_id.id, search_timetable.class_id.id, search_timetable.level_id.id, search_timetable.batch_id.id)
+            key = '{}-{}-{}-{}'.format(search_timetable.semester_id.id, search_timetable.field_of_study_id.id, search_timetable.specialty_id.id, search_timetable.level_id.id, search_timetable.batch_id.id)
             semester = '{}'.format(search_timetable.semester_id.name)
             if search_timetable.department_id.id:
-                study = '{} - {} - {} - {}'.format(search_timetable.department_id.name, search_timetable.class_id.name, search_timetable.level_id.name, search_timetable.batch_id.name)
+                study = '{} - {} - {} - {}'.format(search_timetable.department_id.name, search_timetable.field_of_study_id.name, search_timetable.specialty_id.name, search_timetable.level_id.name, search_timetable.batch_id.name)
             else:
-                study = '{} - {} - {}'.format(search_timetable.class_id.name, search_timetable.level_id.name, search_timetable.batch_id.name)
+                study = '{} - {} - {}'.format(search_timetable.field_of_study_id.name, search_timetable.specialty_id.name, search_timetable.level_id.name, search_timetable.batch_id.name)
             if not key in timetables:
                 timetables[key] = []
                 info_timetables[key] = {}
@@ -152,8 +152,8 @@ class TimetablePrintWizard(models.TransientModel):
             timetable['id'] = search_timetable.id
             timetable['date'] = search_timetable.date
             timetable['date_of_week'] = datetime.strftime(search_timetable.date, DATE_FORMAT_FR)
-            timetable['class_id'] = search_timetable.class_id.id
-            timetable['class_name'] = search_timetable.class_id.name
+            timetable['class_id'] = search_timetable.field_of_study_id.id
+            timetable['class_name'] = search_timetable.field_of_study_id.name
             timetable['field_of_study_id'] = search_timetable.field_of_study_id.id
             timetable['field_of_study_name'] = search_timetable.field_of_study_id.name
             timetable['specialty_id'] = search_timetable.specialty_id.id
