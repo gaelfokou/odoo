@@ -127,8 +127,6 @@ class HrEmployee(models.Model):
                     if user_id:
                         i = i + 1
                         email = username + f'.{i}' + '@siantou.net'
-                        # password = username + f'.{i}'
-                        password = identifier
                     else:
                         employee_id = self.env['hr.employee'].search([
                             ('id', '!=', employee.id),
@@ -137,8 +135,6 @@ class HrEmployee(models.Model):
                         if employee_id:
                             i = i + 1
                             email = username + f'.{i}' + '@siantou.net'
-                            # password = username + f'.{i}'
-                            password = identifier
                         else:
                             break
                 if employee.is_teacher:
@@ -155,6 +151,17 @@ class HrEmployee(models.Model):
                         'name': name,
                         'password' : password,
                     })
+            i = 0
+            while True:
+                employee_id = self.env['hr.employee'].search([
+                    ('id', '!=', employee.id),
+                    ('work_email', '=', email),
+                ], limit=1)
+                if employee_id:
+                    i = i + 1
+                    email = username + f'.{i}' + '@siantou.net'
+                else:
+                    break
             employee.write({
                 'name': name,
                 'work_email': email,

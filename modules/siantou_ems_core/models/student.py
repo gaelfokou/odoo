@@ -234,20 +234,7 @@ class Student(models.Model):
                 if user_id:
                     i = i + 1
                     email = username + f'.{i}' + '@siantou.net'
-                    # password = username + f'.{i}'
-                    password = matricule
                 else:
-                    # student_id = self.env['oe.school.student'].search([
-                    #     ('id', '!=', student.id),
-                    #     ('login', '=', email),
-                    # ], limit=1)
-                    # if student_id:
-                    #     i = i + 1
-                    #     email = username + f'.{i}' + '@siantou.net'
-                    #     # password = username + f'.{i}'
-                    #     password = matricule
-                    # else:
-                    #     break
                     break
             partner_id = student.student_enroll_id.partner_id
             if not partner_id:
