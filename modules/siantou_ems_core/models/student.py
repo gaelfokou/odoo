@@ -228,10 +228,10 @@ class Student(models.Model):
             password = matricule
             i = 0
             while True:
-                user_id = self.env['res.users'].search([
+                user = self.env['res.users'].search([
                     ('login', '=', email),
                 ], limit=1)
-                if user_id:
+                if user:
                     i = i + 1
                     email = username + f'.{i}' + '@siantou.net'
                 else:

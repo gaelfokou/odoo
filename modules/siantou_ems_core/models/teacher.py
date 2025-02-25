@@ -121,10 +121,10 @@ class HrEmployee(models.Model):
                 password = identifier
                 i = 0
                 while True:
-                    user_id = self.env['res.users'].search([
+                    user = self.env['res.users'].search([
                         ('login', '=', email),
                     ], limit=1)
-                    if user_id:
+                    if user:
                         i = i + 1
                         email = username + f'.{i}' + '@siantou.net'
                     else:
@@ -151,17 +151,29 @@ class HrEmployee(models.Model):
                         'name': name,
                         'password' : password,
                     })
-            i = 0
-            while True:
-                employee_id = self.env['hr.employee'].search([
-                    ('id', '!=', employee.id),
-                    ('work_email', '=', email),
-                ], limit=1)
-                if employee_id:
-                    i = i + 1
-                    email = username + f'.{i}' + '@siantou.net'
-                else:
-                    break
+            else:
+                i = 0
+                while True:
+                    user = self.env['res.users'].search([
+                        ('id', '!=', user_id.id),
+                        ('login', '=', email),
+                    ], limit=1)
+                    if user:
+                        i = i + 1
+                        email = username + f'.{i}' + '@siantou.net'
+                    else:
+                        employee_id = self.env['hr.employee'].search([
+                            ('id', '!=', employee.id),
+                            ('work_email', '=', email),
+                        ], limit=1)
+                        if employee_id:
+                            i = i + 1
+                            email = username + f'.{i}' + '@siantou.net'
+                        else:
+                            break
+            user_id.write({
+                'login': email,
+            })
             employee.write({
                 'name': name,
                 'work_email': email,
