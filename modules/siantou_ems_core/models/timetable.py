@@ -175,7 +175,7 @@ class Timetable(models.Model):
     @api.constrains('class_id', 'subject_id', 'classroom_id', 'employee_id', 'day_of_week', 'start_time', 'end_time')
     def _check_duplicate(self):
         for record in self:
-            if self.search([
+            timetables = self.search([
                 ('class_id', '=', record.class_id.id),
                 ('subject_id', '=', record.subject_id.id),
                 ('classroom_id', '=', record.classroom_id.id),
@@ -183,7 +183,9 @@ class Timetable(models.Model):
                 ('day_of_week', '=', record.day_of_week),
                 ('start_time', '=', record.end_time),
                 ('end_time', '=', record.start_time),
-            ]):
+            ])
+            timetables = list(timetables)
+            if len(timetables) > 0:
                 raise ValidationError("Cet enregistrement existe déjà")
 
     # Contrainte logique pour se rassurer que deux cours ne sont pas programmés dans la même salle de classe sur des horaires qui se chevauchent le même jour
@@ -193,6 +195,7 @@ class Timetable(models.Model):
             timetables = self.search([
                 ('id', '!=', record.id),
                 ('classroom_id', '=', record.classroom_id.id),
+                ('subject_id', '!=', record.subject_id.id),
                 ('date', '=', record.date),
             ]).filtered(lambda rec: not (rec.start_time >= record.end_time or rec.end_time <= record.start_time))
             timetables = list(timetables)
