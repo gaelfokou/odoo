@@ -130,7 +130,17 @@ class HrEmployee(models.Model):
                         # password = username + f'.{i}'
                         password = identifier
                     else:
-                        break
+                        employee_id = self.env['hr.employee'].search([
+                            ('id', '!=', employee.id),
+                            ('work_email', '=', email),
+                        ], limit=1)
+                        if employee_id:
+                            i = i + 1
+                            email = username + f'.{i}' + '@siantou.net'
+                            # password = username + f'.{i}'
+                            password = identifier
+                        else:
+                            break
                 if employee.is_teacher:
                     group_id = self.env.ref('base.group_portal')
                     user_id = self.env['res.users'].create({
