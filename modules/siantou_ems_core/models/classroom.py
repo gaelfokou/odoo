@@ -49,6 +49,8 @@ class Building(models.Model):
         string="Campus",
     )
 
+    school_ids = fields.One2many('siantou.ems.core.school', 'building_id', string='Écoles')
+
     # Variable booléenne pour préciser si le bâtiment est opérationnel
     active = fields.Boolean(
         default=True

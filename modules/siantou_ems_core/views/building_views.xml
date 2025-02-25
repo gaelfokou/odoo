@@ -13,6 +13,7 @@
                     <field name="code"/>
 					<field name="name"/>
                     <field name="address_id"/>
+                    <field name="school_ids"/>
 				</tree>
 			</field>
 		</record>
@@ -31,6 +32,7 @@
                             <field name="code"/>
                             <field name="name"/>
                             <field name="address_id"/>
+                            <field name="school_ids"/>
                         </group>
 					</sheet>
 				</form>
