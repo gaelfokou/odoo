@@ -170,7 +170,7 @@ class TimetableWizard(models.TransientModel):
                             if len(timetables) > 0:
                                 for timetable in timetables:
                                     self.env['siantou.ems.timetable.timetable'].create({
-                                        'semester_id': timetable.semestre_id.id,
+                                        'semester_id': timetable.semester_id.id,
                                         'batch_id': batch.id,
                                         'class_id': classe.id,
                                         'department_id': classe.filiere_id.department_id.id,
