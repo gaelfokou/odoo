@@ -89,7 +89,13 @@ class HrEmployee(models.Model):
                         })
                         break
             else:
-                identifier = '{}2024'.format(employee.identifier)
+                identifier = employee.identifier
+                while True:
+                    if identifier.find('2024') != -1:
+                        identifier = identifier.replace('2024', '')
+                    else:
+                        break
+                identifier = '{}2024'.format(identifier)
                 employee.write({
                     'identifier': identifier,
                 })

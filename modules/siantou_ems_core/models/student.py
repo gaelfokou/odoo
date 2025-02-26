@@ -200,7 +200,13 @@ class Student(models.Model):
                         })
                         break
             else:
-                matricule = '{}2024'.format(student.matricule)
+                matricule = student.matricule
+                while True:
+                    if matricule.find('2024') != -1:
+                        matricule = matricule.replace('2024', '')
+                    else:
+                        break
+                matricule = '{}2024'.format(matricule)
                 student.write({
                     'matricule': matricule,
                 })
