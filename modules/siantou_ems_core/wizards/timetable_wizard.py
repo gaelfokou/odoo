@@ -160,6 +160,31 @@ class TimetableWizard(models.TransientModel):
                     for batch in batches:
                         check_batches = batch
                         subject = self.env['siantou.ems.core.subject'].browse(subject_id)
+                        if subject.shared_subject:
+                            timetables = self.env['siantou.ems.timetable.timetable'].search([
+                                ('level_id', '=', classe.niveau_id.id),
+                                ('subject_id', '=', subject.id),
+                                ('semester_id', '=', ue_id.semestre_id.id),
+                            ])
+                            timetables = list(timetables)
+                            if len(timetables) > 0:
+                                for timetable in timetables:
+                                    self.env['siantou.ems.timetable.timetable'].create({
+                                        'semester_id': timetable.semestre_id.id,
+                                        'batch_id': batch.id,
+                                        'class_id': classe.id,
+                                        'department_id': classe.filiere_id.department_id.id,
+                                        'subject_id': timetable.subject_id.id,
+                                        'classroom_id': timetable.classroom_id.id,
+                                        'employee_id': timetable.employee_id.id,
+                                        'date': timetable.date,
+                                        'day_of_week': timetable.day_of_week,
+                                        'start_time': timetable.start_time,
+                                        'end_time': timetable.end_time,
+                                        'not_active_slotitems': timetable.not_active_slotitems,
+                                        'group_id': new_group.id,
+                                    })
+                                continue
                         semester_hours_credit = subject.hours_credit
                         # on verifie si le quota semestriel est atteint
                         if semester_hours_credit > 0:
