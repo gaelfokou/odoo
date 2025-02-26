@@ -295,7 +295,7 @@ class Student(models.Model):
                     else:
                         student_id = self.env['oe.school.student'].search([
                             ('id', '!=', student.id),
-                            ('login', '=', email),
+                            ('email', '=', email),
                         ], limit=1)
                         if student_id:
                             i = i + 1
@@ -322,7 +322,7 @@ class Student(models.Model):
                     else:
                         student_id = self.env['oe.school.student'].search([
                             ('id', '!=', student.id),
-                            ('login', '=', email),
+                            ('email', '=', email),
                         ], limit=1)
                         if student_id:
                             i = i + 1
