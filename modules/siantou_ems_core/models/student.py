@@ -174,7 +174,7 @@ class Student(models.Model):
         current_year = datetime.datetime.now().year
         last_caract_year = str(current_year)[2:]
         # _logger.info(f"last_caract_year : {last_caract_year}")
-        students = self.env['oe.school.student'].sudo().search([])  
+        students = self.env['oe.school.student'].search([])  
         # _logger.info(f"Matricule généré : {len(students)}")
         nbre = len(students) + 1
         matricule = f"{last_caract_year}{field_of_study_id.school_id.code}000{nbre}"
@@ -222,7 +222,54 @@ class Student(models.Model):
             elif len(username) == 3:
                 username = '{}{}{}'.format(username[0][0:1], username[1], username[2][0:1])
             email = username + '@siantou.net'
-            partner_id = student.student_enroll_id.partner_id
+            student_enroll_id = student.student_enroll_id
+            if not student_enroll_id:
+                partner_id = self.env['res.partner'].create({
+                    'name': student.name,
+                    'email': email,
+                    'phone': student.num_tel,
+                    'is_company': False,
+                })
+                diplo_requis = self.env['oe.school.course.degree'].search([('cursus_id', '=', student.cycle_id.id)])
+                diplo_requis_ids = diplo_requis.ids
+                if len(diplo_requis_ids) == 0:
+                    diplo_requis = self.env['oe.school.course.degree'].search([
+                        ('name', '=', student.cycle_id.name),
+                        ('cursus_id', '=', student.cycle_id.id),
+                    ])
+                    diplo_requis_ids = diplo_requis.ids
+                    if len(diplo_requis_ids) == 0:
+                        diplo_requis = self.env['oe.school.course.degree'].create({
+                            'name': student.cycle_id.name,
+                            'cycle_id': student.cycle_id.id,
+                        })
+                        diplo_requis_ids.append(diplo_requis.id)
+                student_enroll_id = self.env['oe.school.student.enrollment'].create({
+                    'name': student.name,
+                    'email': email,
+                    'num_tel': student.num_tel,
+                    'year_id': student.annee_acad_current.id,
+                    'cycle_id': student.cycle_id.id,
+                    'field_of_study_id': student.field_of_study_id.id,
+                    'specialty_id': student.specialty_id.id,
+                    'type_cour': student.type_cour,
+                    'status_univ': student.status_univ,
+                    'date_naissance': student.date_naissance,
+                    'lieu_naissance': student.lieu_naissance,
+                    'sexe': student.sexe,
+                    'situat_matri': student.situat_matri,
+                    'lieu_residence': student.lieu_residence,
+                    'dipl_req_ids': diplo_requis_ids,
+                    'session_lieu_obt': student.lieu_residence,
+                    'dern_etab_freq': student.lieu_residence,
+                    'annee_acad': student.annee_acad_current.name,
+                    'level_id': student.level_id.id,
+                    'full_name_tutor': student.name,
+                    'num_tel_tutor': student.num_tel,
+                    'partner_id': partner_id.id,
+                })
+            else:
+                partner_id = student_enroll_id.partner_id
             if not partner_id:
                 partner_id = self.env['res.partner'].create({
                     'name': student.name,
@@ -230,7 +277,7 @@ class Student(models.Model):
                     'phone': student.num_tel,
                     'is_company': False,
                 })
-                student.write({
+                student_enroll_id.write({
                     'partner_id': partner_id.id,
                 })
             user_id = self.env['res.users'].search([
