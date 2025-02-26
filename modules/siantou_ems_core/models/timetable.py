@@ -195,8 +195,10 @@ class Timetable(models.Model):
             timetables = self.search([
                 ('id', '!=', record.id),
                 ('classroom_id', '=', record.classroom_id.id),
-                ('subject_id', '!=', record.subject_id.id),
                 ('date', '=', record.date),
+                '|',
+                ('subject_id', '!=', record.subject_id.id),
+                ('level_id', '!=', record.level_id.id),
             ]).filtered(lambda rec: not (rec.start_time >= record.end_time or rec.end_time <= record.start_time))
             timetables = list(timetables)
             if len(timetables) > 0:
