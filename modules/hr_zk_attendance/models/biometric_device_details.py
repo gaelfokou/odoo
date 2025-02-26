@@ -196,12 +196,13 @@ class BiometricDeviceDetails(models.Model):
                         for uid in user:
                             if uid.user_id == each.user_id:
                                 get_user_id = self.env['hr.employee'].search(
-                                    [('device_id_num', '=', each.user_id)])
+                                    [('device_id_num', '=', each.user_id)], limit=1)
                                 if get_user_id:
-                                    duplicate_atten_ids = zk_attendance.search(
+                                    duplicate_attens = zk_attendance.search(
                                         [('device_id_num', '=', each.user_id),
                                          ('punching_time', '=', atten_time)])
-                                    if not duplicate_atten_ids:
+                                    duplicate_atten_ids = duplicate_attens.ids
+                                    if len(duplicate_atten_ids) == 0:
                                         zk_attendance.create({
                                             'employee_id': get_user_id.id,
                                             'device_id_num': each.user_id,
@@ -213,23 +214,25 @@ class BiometricDeviceDetails(models.Model):
                                         att_var = hr_attendance.search([(
                                             'employee_id', '=', get_user_id.id),
                                             ('check_out', '=', False)])
+                                        att_var = list(att_var)
                                         if each.punch == 0:  # check-in
-                                            if not att_var:
+                                            if len(att_var) == 0:
                                                 hr_attendance.create({
                                                     'employee_id':
                                                         get_user_id.id,
                                                     'check_in': atten_time
                                                 })
                                         if each.punch == 1:  # check-out
-                                            if len(att_var) == 1:
-                                                att_var.write({
+                                            if len(att_var) > 0:
+                                                att_var[0].write({
                                                     'check_out': atten_time
                                                 })
                                             else:
                                                 att_var1 = hr_attendance.search(
                                                     [('employee_id', '=',
                                                       get_user_id.id)])
-                                                if att_var1:
+                                                att_var1 = list(att_var1)
+                                                if len(att_var1) > 0:
                                                     att_var1[-1].write({
                                                         'check_out': atten_time
                                                     })
