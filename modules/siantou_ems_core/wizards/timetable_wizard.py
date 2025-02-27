@@ -67,7 +67,7 @@ class TimetableWizard(models.TransientModel):
         self.generate_timetable_subject(True, all_groups)
         self.generate_timetable_subject(False, all_groups)
 
-    def generate_timetable_subject(self, shared_subject=False, all_groups=[]):
+    def generate_timetable_subject(self, shared_subject, all_groups):
         # if self.group and self.group.strip() != '':
         #     new_group = self.env['siantou.ems.timetable.group'].create({'name': self.group, 'semester_id': self.semester_id.id})
         # else:
@@ -98,15 +98,16 @@ class TimetableWizard(models.TransientModel):
         classes = self.env['siantou.ems.core.class'].search(domain)
         classes = list(classes)
         # Génération de la chaîne unique
-        unique_string = datetime.now().strftime("%Y%m%d%H%M")
+        if shared_subject:
+            unique_string = datetime.now().strftime("%Y%m%d%H%M")
         for i, classe in enumerate(classes):
             check_classes = classe
-            if self.group and self.group.strip() != '':
-                new_group = self.env['siantou.ems.timetable.group'].create({'name': self.group + "-" + classe.name, 'semester_id': self.semester_id.id})
-            else:
-                new_group = self.env['siantou.ems.timetable.group'].create({'name': "group-" + unique_string + "-" + classe.name, 'semester_id': self.semester_id.id})
-
             if shared_subject:
+                if self.group and self.group.strip() != '':
+                    new_group = self.env['siantou.ems.timetable.group'].create({'name': self.group + "-" + classe.name, 'semester_id': self.semester_id.id})
+                else:
+                    new_group = self.env['siantou.ems.timetable.group'].create({'name': "group-" + unique_string + "-" + classe.name, 'semester_id': self.semester_id.id})
+
                 all_groups.append(new_group)
             else:
                 new_group = all_groups[i]
@@ -280,11 +281,14 @@ class TimetableWizard(models.TransientModel):
                         else:
                             break
 
-            timetable = self.env['siantou.ems.timetable.timetable'].search([
-                ('group_id', '=', new_group.id),
-            ], limit=1)
-            if not timetable:
-                new_group.unlink()
+            if not shared_subject:
+                timetable = self.env['siantou.ems.timetable.timetable'].search([
+                    ('group_id', '=', new_group.id),
+                ], limit=1)
+                _logger.info(f'----------- tototototototo new_group {new_group} -----------')
+                _logger.info(f'----------- tototototototo timetable {timetable} -----------')
+                if not timetable:
+                    new_group.unlink()
 
         if not check_classes:
             raise UserError("Aucune classe trouvée")
