@@ -225,6 +225,9 @@ class TimetableWizard(models.TransientModel):
                                             # on verifie si le quota hebdomadaire est atteint
                                             if weekly_hours_credit == 0:
                                                 break
+                                            if subject.shared_subject:
+                                                if day not in [0, 1, 4]:
+                                                    continue
                                             # On parcours les jours de la semaine de Lundi - Samedi
                                             target_date = start_time + timedelta(weeks=week, days=day)
                                             if self.period_from and self.period_to:
