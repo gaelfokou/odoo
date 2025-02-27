@@ -57,6 +57,10 @@ class TimetableWizard(models.TransientModel):
                     raise ValidationError(f"La plage entre la période de début et la période de fin ne doit pas être supérieure 1 mois")
 
     def generate_timetable(self):
+        self.generate_timetable__subject(True)
+        self.generate_timetable__subject()
+
+    def generate_timetable__subject(self, shared_subject=False):
         # if self.group and self.group.strip() != '':
         #     new_group = self.env['siantou.ems.timetable.group'].create({'name': self.group, 'semester_id': self.semester_id.id})
         # else:
@@ -160,6 +164,10 @@ class TimetableWizard(models.TransientModel):
                     for batch in batches:
                         check_batches = batch
                         subject = self.env['siantou.ems.core.subject'].browse(subject_id)
+                        if shared_subject and not subject.shared_subject:
+                            continue
+                        if not shared_subject and subject.shared_subject:
+                            continue
                         if subject.shared_subject:
                             timetables = self.env['siantou.ems.timetable.timetable'].search([
                                 ('level_id', '=', classe.niveau_id.id),
