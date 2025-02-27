@@ -32,6 +32,12 @@ class TimetableWizard(models.TransientModel):
         ondelete='restrict'
     )
 
+    class_id = fields.Many2one(
+        'siantou.ems.core.class',
+        string='classe',
+        ondelete='restrict'
+    )
+
     # Période de début
     period_from = fields.Date(
         'Période de',
@@ -77,13 +83,16 @@ class TimetableWizard(models.TransientModel):
         check_classroom_slot = None
         
         domain = []
-        
-        if self.level_id.id:
-            domain.append(('niveau_id', '=', self.level_id.id))
 
         # Récupérer la liste des filières et les traiter l'une après l'autre
         if self.field_of_study_id.id:
             domain.append(('filiere_id', '=', self.field_of_study_id.id))
+        
+        if self.level_id.id:
+            domain.append(('niveau_id', '=', self.level_id.id))
+        
+        if self.class_id.id:
+            domain.append(('id', '=', self.class_id.id))
 
         classes = self.env['siantou.ems.core.class'].search(domain)
         classes = list(classes)

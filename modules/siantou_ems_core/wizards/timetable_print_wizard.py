@@ -66,6 +66,12 @@ class TimetablePrintWizard(models.TransientModel):
         ondelete='restrict'
     )
 
+    class_id = fields.Many2one(
+        'siantou.ems.core.class',
+        string='classe',
+        ondelete='restrict'
+    )
+
     # Période de début
     period_from = fields.Date(
         'Période de',
@@ -110,14 +116,18 @@ class TimetablePrintWizard(models.TransientModel):
         # Ajouter le critère Filière seulement s'il est sélectionné
         if self.department_id.id:
             domain.append(('department_id', '=', self.department_id.id))
-
-        # Ajouter le critère Niveau seulement s'il est sélectionné
-        if self.level_id.id:
-            domain.append(('level_id', '=', self.level_id.id))
         
         # Ajouter le critère Filière seulement s'il est sélectionné
         if self.field_of_study_id.id:
             domain.append(('field_of_study_id', '=', self.field_of_study_id.id))
+
+        # Ajouter le critère Niveau seulement s'il est sélectionné
+        if self.level_id.id:
+            domain.append(('level_id', '=', self.level_id.id))
+
+        # Ajouter le critère Niveau seulement s'il est sélectionné
+        if self.class_id.id:
+            domain.append(('class_id', '=', self.class_id.id))
 
         # Ajouter le critère de période seulement si la période de début et la période de fin sont sélectionnées
         if self.period_from and self.period_to:
