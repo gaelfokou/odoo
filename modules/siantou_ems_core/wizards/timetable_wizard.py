@@ -280,15 +280,11 @@ class TimetableWizard(models.TransientModel):
                         else:
                             break
 
-            group = self.env['siantou.ems.timetable.group'].search([
-                ('id', '=', new_group.id),
+            timetable = self.env['siantou.ems.timetable.timetable'].search([
+                ('group_id', '=', new_group.id),
             ], limit=1)
-            if group:
-                timetable = self.env['siantou.ems.timetable.timetable'].search([
-                    ('group_id', '=', new_group.id),
-                ], limit=1)
-                if not timetable:
-                    group.unlink()
+            if not timetable:
+                new_group.unlink()
 
         if not check_classes:
             raise UserError("Aucune classe trouvée")
