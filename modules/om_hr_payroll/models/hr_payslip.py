@@ -360,18 +360,18 @@ class HrPayslip(models.Model):
         datetime_to = datetime_to + timedelta(hours=1)
         current_date = datetime_to.date()
 
-        datetime_after = datetime_to + timedelta(minutes=15)
+        datetime_before = datetime_to - timedelta(minutes=15)
 
-        time_after = datetime.strftime(datetime_after, TIME_FORMAT)
-        time_after = self.convert_time_to_float(time_after)
+        time_before = datetime.strftime(datetime_before, TIME_FORMAT)
+        time_before = self.convert_time_to_float(time_before)
 
         _logger.info(f'----------- tototototototo current_date {datetime.strftime(current_date, DATE_FORMAT)} -----------')
-        _logger.info(f'----------- tototototototo time_after {time_after} -----------')
+        _logger.info(f'----------- tototototototo time_before {time_before} -----------')
 
         # Recherche des emplois du temps de l'enseignant pour une période donnée
         employee_timetables = self.env['siantou.ems.timetable.timetable'].search([
             ('status', '=', '0'),
-        ], order='date asc').filtered(lambda rec: (rec.date < current_date) or (rec.date == current_date and rec.end_time <= time_after))
+        ], order='date asc').filtered(lambda rec: (rec.date < current_date) or (rec.date == current_date and rec.end_time <= time_before))
         employee_timetables = list(employee_timetables)
         for employee_timetable in employee_timetables:
             if employee_timetable.employee_id.id:
