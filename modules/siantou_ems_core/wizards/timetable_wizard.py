@@ -63,10 +63,11 @@ class TimetableWizard(models.TransientModel):
                     raise ValidationError(f"La plage entre la période de début et la période de fin ne doit pas être supérieure 1 mois")
 
     def generate_timetable(self):
+        all_groups = []
         self.generate_timetable_subject(True)
-        self.generate_timetable_subject()
+        self.generate_timetable_subject(False, all_groups)
 
-    def generate_timetable_subject(self, shared_subject=False):
+    def generate_timetable_subject(self, shared_subject=False, all_groups=[]):
         # if self.group and self.group.strip() != '':
         #     new_group = self.env['siantou.ems.timetable.group'].create({'name': self.group, 'semester_id': self.semester_id.id})
         # else:
@@ -98,12 +99,17 @@ class TimetableWizard(models.TransientModel):
         classes = list(classes)
         # Génération de la chaîne unique
         unique_string = datetime.now().strftime("%Y%m%d%H%M")
-        for classe in classes:
+        for i, classe in enumerate(classes):
             check_classes = classe
             if self.group and self.group.strip() != '':
                 new_group = self.env['siantou.ems.timetable.group'].create({'name': self.group + "-" + classe.name, 'semester_id': self.semester_id.id})
             else:
                 new_group = self.env['siantou.ems.timetable.group'].create({'name': "group-" + unique_string + "-" + classe.name, 'semester_id': self.semester_id.id})
+
+            if shared_subject:
+                all_groups.append(new_group)
+            else:
+                new_group = all_groups[i]
 
             slots = self.env['siantou.ems.timetable.slot'].search([
                 ('is_default', '=', False),
