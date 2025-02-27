@@ -97,7 +97,6 @@ class TimetableWizard(models.TransientModel):
 
         classes = self.env['siantou.ems.core.class'].search(domain)
         classes = list(classes)
-        new_group = None
         # Génération de la chaîne unique
         unique_string = datetime.now().strftime("%Y%m%d%H%M")
         for i, classe in enumerate(classes):
@@ -281,7 +280,6 @@ class TimetableWizard(models.TransientModel):
                         else:
                             break
 
-        if new_group:
             group = self.env['siantou.ems.timetable.group'].search([
                 ('id', '=', new_group.id),
             ], limit=1)
