@@ -64,7 +64,7 @@ class TimetableWizard(models.TransientModel):
 
     def generate_timetable(self):
         all_groups = []
-        self.generate_timetable_subject(True)
+        self.generate_timetable_subject(True, all_groups)
         self.generate_timetable_subject(False, all_groups)
 
     def generate_timetable_subject(self, shared_subject=False, all_groups=[]):
