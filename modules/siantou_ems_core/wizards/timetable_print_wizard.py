@@ -172,7 +172,7 @@ class TimetablePrintWizard(models.TransientModel):
             timetable['level_name'] = search_timetable.level_id.name
             timetable['department_id'] = search_timetable.department_id.id
             timetable['department_name'] = search_timetable.department_id.name
-            timetable['subject_name'] = search_timetable.subject_id.name + ' TC' if search_timetable.subject_id.shared_subject else search_timetable.subject_id.name
+            timetable['subject_name'] = search_timetable.subject_id.name + ' TC ' if search_timetable.subject_id.shared_subject else search_timetable.subject_id.name
             timetable['subject_code'] = search_timetable.subject_id.code
             timetable['classroom_name'] = search_timetable.classroom_id.name
             timetable['building_name'] = search_timetable.classroom_id.building_id.name
