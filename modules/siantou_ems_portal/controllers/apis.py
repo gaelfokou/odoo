@@ -68,6 +68,7 @@ class ApiAccount(http.Controller):
             timetable['subject_code'] = search_timetable.subject_id.code
             timetable['classroom_name'] = search_timetable.classroom_id.name
             timetable['building_name'] = search_timetable.classroom_id.building_id.name
+            timetable['batch_name'] = search_timetable.batch_id.name
             timetable['employee_name'] = search_timetable.employee_id.name
             timetable['day_of_week'] = CURRENT_WEEKDAY[search_timetable.date.weekday()]
             timetable['start_time'] = search_timetable.start_time
