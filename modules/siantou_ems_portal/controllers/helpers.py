@@ -177,8 +177,6 @@ class Helpers:
 
         if len(hours) > 0:
             for i in range(len(data)):
-                data[i]['start_time'] = round(data[i]['start_time'], 2)
-                data[i]['end_time'] = round(data[i]['end_time'], 2)
                 for hour in hours:
                     if not (Helpers.increment_float_time(data[i]['start_time']) <= Helpers.increment_float_time(hour[0]) and Helpers.increment_float_time(data[i]['end_time']) > Helpers.increment_float_time(hour[0])) or not (Helpers.increment_float_time(data[i]['start_time']) < Helpers.increment_float_time(hour[1]) and Helpers.increment_float_time(data[i]['end_time']) >= Helpers.increment_float_time(hour[1])):
                         current_data.append(data[i])
