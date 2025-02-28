@@ -160,6 +160,14 @@ class Helpers:
         return search_notifications, searchbar_inputs
 
     @staticmethod
+    def is_float(data):
+        try:
+            float(data)
+            return True
+        except ValueError:
+            return False
+
+    @staticmethod
     def format_timetable(data, hours=[]):
         n = 0.0
         current_data = []
@@ -260,7 +268,7 @@ class Helpers:
                             for k, key in enumerate(timetables[monday].keys()):
                                 if k == d['date'].weekday() + 1:
                                     if column == key:
-                                        if np.isnan(float(str(df[monday].loc[i, column]))):
+                                        if Helpers.is_float(str(df[monday].loc[i, column])) and np.isnan(float(str(df[monday].loc[i, column]))):
                                             df[monday].loc[i, column] = str(d['id'])
                                         else:
                                             df[monday].loc[i, column] = '{}-{}'.format(df[monday].loc[i, column], str(d['id']))
