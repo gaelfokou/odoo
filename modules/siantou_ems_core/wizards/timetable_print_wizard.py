@@ -331,26 +331,28 @@ class TimetablePrintWizard(models.TransientModel):
         if len(hours) > 0:
             for i in range(len(data)):
                 for hour in hours:
-                    if TimetablePrintWizard.increment_float_time(data[i]['start_time']) >= TimetablePrintWizard.increment_float_time(hour[1]) or TimetablePrintWizard.increment_float_time(data[i]['end_time']) <= TimetablePrintWizard.increment_float_time(hour[0]):
+                    if not (TimetablePrintWizard.increment_float_time(data[i]['start_time']) <= TimetablePrintWizard.increment_float_time(hour[0]) and TimetablePrintWizard.increment_float_time(data[i]['end_time']) > TimetablePrintWizard.increment_float_time(hour[0])) or not (TimetablePrintWizard.increment_float_time(data[i]['start_time']) < TimetablePrintWizard.increment_float_time(hour[1]) and TimetablePrintWizard.increment_float_time(data[i]['end_time']) >= TimetablePrintWizard.increment_float_time(hour[1])):
                         current_data.append(data[i])
                         break
                     else:
-                        if not TimetablePrintWizard.increment_float_time(data[i]['start_time']) == TimetablePrintWizard.increment_float_time(hour[0]) and TimetablePrintWizard.increment_float_time(data[i]['end_time']) == TimetablePrintWizard.increment_float_time(hour[1]):
-                            if TimetablePrintWizard.increment_float_time(data[i]['start_time']) < TimetablePrintWizard.increment_float_time(hour[0]) and TimetablePrintWizard.increment_float_time(data[i]['end_time']) > TimetablePrintWizard.increment_float_time(hour[1]):
+                        if not (TimetablePrintWizard.increment_float_time(data[i]['start_time']) == TimetablePrintWizard.increment_float_time(hour[0]) and TimetablePrintWizard.increment_float_time(data[i]['end_time']) == TimetablePrintWizard.increment_float_time(hour[1])):
+                            if not (TimetablePrintWizard.increment_float_time(data[i]['start_time']) < TimetablePrintWizard.increment_float_time(hour[0]) and TimetablePrintWizard.increment_float_time(data[i]['end_time']) > TimetablePrintWizard.increment_float_time(hour[1])):
+                                if TimetablePrintWizard.increment_float_time(data[i]['start_time']) == TimetablePrintWizard.increment_float_time(hour[0]):
+                                    data[i]['start_time'] = hour[1]
+                                    current_data.append(data[i])
+                                    break
+                                else:
+                                    if TimetablePrintWizard.increment_float_time(data[i]['end_time']) == TimetablePrintWizard.increment_float_time(hour[1]):
+                                        data[i]['end_time'] = hour[0]
+                                        current_data.append(data[i])
+                                        break
+                            else:
                                 data1 = copy.deepcopy(data[i])
                                 data2 = copy.deepcopy(data[i])
                                 data1['end_time'] = hour[0]
                                 data2['start_time'] = hour[1]
                                 current_data.append(data1)
                                 current_data.append(data2)
-                                break
-                            elif TimetablePrintWizard.increment_float_time(data[i]['start_time']) >= TimetablePrintWizard.increment_float_time(hour[0]) and TimetablePrintWizard.increment_float_time(data[i]['end_time']) > TimetablePrintWizard.increment_float_time(hour[1]):
-                                data[i]['start_time'] = hour[1]
-                                current_data.append(data[i])
-                                break
-                            elif TimetablePrintWizard.increment_float_time(data[i]['end_time']) <= TimetablePrintWizard.increment_float_time(hour[1]) and TimetablePrintWizard.increment_float_time(data[i]['start_time']) < TimetablePrintWizard.increment_float_time(hour[0]):
-                                data[i]['end_time'] = hour[0]
-                                current_data.append(data[i])
                                 break
             data = current_data
 
