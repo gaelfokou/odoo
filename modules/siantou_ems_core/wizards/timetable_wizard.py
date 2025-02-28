@@ -208,6 +208,7 @@ class TimetableWizard(models.TransientModel):
                                         'not_active_slotitems': timetable.not_active_slotitems,
                                         'group_id': new_group.id,
                                     })
+                                    self.env.cr.commit()
                                 continue
                         semester_hours_credit = subject.hours_credit
                         # on verifie si le quota semestriel est atteint
