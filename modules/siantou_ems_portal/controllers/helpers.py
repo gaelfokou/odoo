@@ -175,6 +175,10 @@ class Helpers:
         timetables = {}
         df = {}
 
+        for i in range(len(data)):
+            data[i]['start_time'] = round(data[i]['start_time'], 2)
+            data[i]['end_time'] = round(data[i]['end_time'], 2)
+
         if len(hours) > 0:
             for i in range(len(data)):
                 for hour in hours:
