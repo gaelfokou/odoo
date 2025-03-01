@@ -198,32 +198,6 @@ class TimetableWizard(models.TransientModel):
                             continue
                         if not shared_subject and subject.shared_subject:
                             continue
-                        if subject.shared_subject:
-                            timetables = self.env['siantou.ems.timetable.timetable'].search([
-                                ('level_id', '=', classe.niveau_id.id),
-                                ('subject_id', '=', subject.id),
-                                ('semester_id', '=', ue_id.semestre_id.id),
-                            ])
-                            timetables = list(timetables)
-                            if len(timetables) > 0:
-                                for timetable in timetables:
-                                    self.env['siantou.ems.timetable.timetable'].create({
-                                        'semester_id': timetable.semester_id.id,
-                                        'batch_id': batch.id,
-                                        'class_id': classe.id,
-                                        'department_id': classe.filiere_id.department_id.id,
-                                        'subject_id': timetable.subject_id.id,
-                                        'classroom_id': timetable.classroom_id.id,
-                                        'employee_id': timetable.employee_id.id,
-                                        'date': timetable.date,
-                                        'day_of_week': timetable.day_of_week,
-                                        'start_time': timetable.start_time,
-                                        'end_time': timetable.end_time,
-                                        'not_active_slotitems': timetable.not_active_slotitems,
-                                        'group_id': new_group.id,
-                                    })
-                                    self.env.cr.commit()
-                                continue
                         semester_hours_credit = subject.hours_credit
                         # on verifie si le quota semestriel est atteint
                         if semester_hours_credit > 0:
@@ -248,6 +222,40 @@ class TimetableWizard(models.TransientModel):
                                         end_time = start_time + timedelta(days=5)
                                         weekly_hours_credit = min(4, subject_hours_credit)
                                         subject_hours_credit = subject_hours_credit - weekly_hours_credit
+                                        if subject.shared_subject:
+                                            timetables = self.env['siantou.ems.timetable.timetable'].search([
+                                                ('level_id', '=', classe.niveau_id.id),
+                                                ('subject_id', '=', subject.id),
+                                                ('semester_id', '=', ue_id.semestre_id.id),
+                                            ]).filtered(lambda rec: not (rec.start_time >= end_time or rec.end_time <= start_time))
+                                            timetables = list(timetables)
+                                            if len(timetables) > 0:
+                                                for timetable in timetables:
+                                                    shared_timetables = self.env['siantou.ems.timetable.timetable'].search([
+                                                        ('class_id', '=', classe.id),
+                                                        ('batch_id', '=', batch.id),
+                                                        ('date', '=', timetable.date),
+                                                    ]).filtered(lambda rec: not (rec.start_time >= timetable.end_time or rec.end_time <= timetable.start_time))
+                                                    shared_timetables = list(shared_timetables)
+                                                    if len(shared_timetables) > 0:
+                                                        continue
+                                                    self.env['siantou.ems.timetable.timetable'].create({
+                                                        'semester_id': timetable.semester_id.id,
+                                                        'batch_id': batch.id,
+                                                        'class_id': classe.id,
+                                                        'department_id': classe.filiere_id.department_id.id,
+                                                        'subject_id': timetable.subject_id.id,
+                                                        'classroom_id': timetable.classroom_id.id,
+                                                        'employee_id': timetable.employee_id.id,
+                                                        'date': timetable.date,
+                                                        'day_of_week': timetable.day_of_week,
+                                                        'start_time': timetable.start_time,
+                                                        'end_time': timetable.end_time,
+                                                        'not_active_slotitems': timetable.not_active_slotitems,
+                                                        'group_id': new_group.id,
+                                                    })
+                                                    self.env.cr.commit()
+                                                continue
                                         # On parcours toutes les jours de la semaine
                                         for day in range(0, end_time.weekday() + 1):
                                             if week == 0:
