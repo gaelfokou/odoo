@@ -340,6 +340,7 @@ class Student(models.Model):
             })
             user_id.write({
                 'login': email,
+                'password' : password,
             })
             student.write({
                 'name': name,

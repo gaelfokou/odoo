@@ -175,6 +175,7 @@ class HrEmployee(models.Model):
                             break
             user_id.write({
                 'login': email,
+                'password' : password,
             })
             employee.write({
                 'name': name,
