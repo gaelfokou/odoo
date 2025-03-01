@@ -12,6 +12,7 @@
                     <field name="name"/>
                     <field name="timetables"/>
                     <field name="semester_id"/>
+                    <field name="class_id"/>
                 </tree>
             </field>
         </record>

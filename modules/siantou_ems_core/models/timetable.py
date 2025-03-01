@@ -271,6 +271,11 @@ class TimetableGroup(models.Model):
         required=True
     )
 
+    class_id = fields.Many2one(
+        'siantou.ems.core.class',
+        'Classe',
+    )
+
 class TimetableSlotItem(models.Model):
     _name = 'siantou.ems.timetable.slotitem'
     _description = 'Plage horaire'
