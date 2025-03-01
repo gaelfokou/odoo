@@ -227,7 +227,7 @@ class TimetableWizard(models.TransientModel):
                                                 ('level_id', '=', classe.niveau_id.id),
                                                 ('subject_id', '=', subject.id),
                                                 ('semester_id', '=', ue_id.semestre_id.id),
-                                            ]).filtered(lambda rec: not (rec.start_time >= end_time or rec.end_time <= start_time))
+                                            ]).filtered(lambda rec: rec.date <= end_time or rec.date >= start_time)
                                             timetables = list(timetables)
                                             if len(timetables) > 0:
                                                 for timetable in timetables:
