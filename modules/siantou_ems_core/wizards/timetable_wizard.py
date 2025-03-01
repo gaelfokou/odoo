@@ -104,9 +104,9 @@ class TimetableWizard(models.TransientModel):
             check_classes = classe
             if shared_subject:
                 if self.group and self.group.strip() != '':
-                    new_group = self.env['siantou.ems.timetable.group'].create({'name': self.group + "-" + classe.name, 'semester_id': self.semester_id.id, 'class_id': self.classe.id})
+                    new_group = self.env['siantou.ems.timetable.group'].create({'name': self.group + "-" + classe.name, 'semester_id': self.semester_id.id, 'class_id': classe.id})
                 else:
-                    new_group = self.env['siantou.ems.timetable.group'].create({'name': "group-" + unique_string + "-" + classe.name, 'semester_id': self.semester_id.id, 'class_id': self.classe.id})
+                    new_group = self.env['siantou.ems.timetable.group'].create({'name': "group-" + unique_string + "-" + classe.name, 'semester_id': self.semester_id.id, 'class_id': classe.id})
 
                 all_groups.append(new_group)
             else:
