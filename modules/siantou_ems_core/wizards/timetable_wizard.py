@@ -255,7 +255,7 @@ class TimetableWizard(models.TransientModel):
                                                         'group_id': new_group.id,
                                                     })
                                                     self.env.cr.commit()
-                                                continue
+                                            break
                                         # On parcours toutes les jours de la semaine
                                         for day in range(0, end_time.weekday() + 1):
                                             if week == 0:
