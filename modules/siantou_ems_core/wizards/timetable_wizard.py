@@ -113,14 +113,14 @@ class TimetableWizard(models.TransientModel):
 
                     new_group = self.env['siantou.ems.timetable.group'].search([], limit=1)
                     if not new_group:
-                        new_group = self.env['siantou.ems.timetable.group'].create({'name': name_group, 'semester_id': self.semester_id.id})
+                        new_group = self.env['siantou.ems.timetable.group'].create({'name': name_group, 'semester_id': self.semester_id.id, 'is_merge': self.is_merge})
                 else:
                     if self.group and self.group.strip() != '':
                         name_group = self.group + "-" + classe.name
                     else:
                         name_group = "group-" + unique_string + "-" + classe.name
 
-                    new_group = self.env['siantou.ems.timetable.group'].create({'name': name_group, 'semester_id': self.semester_id.id, 'class_id': classe.id})
+                    new_group = self.env['siantou.ems.timetable.group'].create({'name': name_group, 'semester_id': self.semester_id.id, 'is_merge': self.is_merge, 'class_id': classe.id})
 
                 all_groups.append(new_group)
             else:

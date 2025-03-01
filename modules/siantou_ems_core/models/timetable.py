@@ -276,6 +276,8 @@ class TimetableGroup(models.Model):
         'Classe',
     )
 
+    is_merge = fields.Boolean(string="Fusionner", default=True)
+
 class TimetableSlotItem(models.Model):
     _name = 'siantou.ems.timetable.slotitem'
     _description = 'Plage horaire'
