@@ -75,8 +75,8 @@ class HrEmployee(models.Model):
             ecole = 'IUS'
             ecole = ecole[:4]
             ecole = ecole.upper()
-            identifier = ecole + self.env['ir.sequence'].next_by_code('hr.employee')
             if not employee.identifier or not employee.identifier.strip():
+                identifier = ecole + self.env['ir.sequence'].next_by_code('hr.employee')
                 while True:
                     employee_id = self.env['hr.employee'].search([
                         ('id', '!=', employee.id),
@@ -85,9 +85,6 @@ class HrEmployee(models.Model):
                     if employee_id:
                         identifier = ecole + self.env['ir.sequence'].next_by_code('hr.employee')
                     else:
-                        employee.write({
-                            'identifier': identifier,
-                        })
                         break
             else:
                 identifier = employee.identifier
@@ -97,9 +94,6 @@ class HrEmployee(models.Model):
                     else:
                         break
                 identifier = '{}2024'.format(identifier)
-                employee.write({
-                    'identifier': identifier,
-                })
             password = identifier
             name = employee.name
             name = name.strip()
@@ -180,9 +174,11 @@ class HrEmployee(models.Model):
             })
             employee.write({
                 'name': name,
+                'identifier': identifier,
                 'work_email': email,
                 'user_id': user_id.id,
             })
+            self.env.cr.commit()
         except psycopg2.errors.NotNullViolation as error:
             _logger.info(f'----------- tototototototo Exception {error} -----------')
             raise ValidationError("L'adresse e-mail professionnelle n'est pas renseignée.")

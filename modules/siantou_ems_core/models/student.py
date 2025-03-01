@@ -186,8 +186,8 @@ class Student(models.Model):
             ecole = re.sub('[^A-Za-z]+', '', student.field_of_study_id.school_id.name)
             ecole = ecole[:4]
             ecole = ecole.upper()
-            matricule = ecole + self.env['ir.sequence'].next_by_code('oe.school.student')
             if not student.matricule or not student.matricule.strip():
+                matricule = ecole + self.env['ir.sequence'].next_by_code('oe.school.student')
                 while True:
                     student_id = self.env['oe.school.student'].search([
                         ('id', '!=', student.id),
@@ -196,9 +196,6 @@ class Student(models.Model):
                     if student_id:
                         matricule = ecole + self.env['ir.sequence'].next_by_code('oe.school.student')
                     else:
-                        student.write({
-                            'matricule': matricule,
-                        })
                         break
             else:
                 matricule = student.matricule
@@ -208,9 +205,6 @@ class Student(models.Model):
                     else:
                         break
                 matricule = '{}2024'.format(matricule)
-                student.write({
-                    'matricule': matricule,
-                })
             password = matricule
             name = student.name
             name = name.strip()
@@ -277,16 +271,6 @@ class Student(models.Model):
                 })
             else:
                 partner_id = student_enroll_id.partner_id
-            if not partner_id:
-                partner_id = self.env['res.partner'].create({
-                    'name': student.name,
-                    'email': email,
-                    'phone': student.num_tel,
-                    'is_company': False,
-                })
-                student_enroll_id.write({
-                    'partner_id': partner_id.id,
-                })
             user_id = self.env['res.users'].search([
                 ('partner_id', '=', partner_id.id),
             ], limit=1)
@@ -346,9 +330,11 @@ class Student(models.Model):
             })
             student.write({
                 'name': name,
+                'matricule': matricule,
                 'email': email,
                 'user_id': user_id.id,
             })
+            self.env.cr.commit()
         except psycopg2.errors.NotNullViolation as error:
             _logger.info(f'----------- tototototototo Exception {error} -----------')
             raise ValidationError("L'adresse e-mail professionnelle n'est pas renseignée.")
