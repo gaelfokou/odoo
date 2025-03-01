@@ -79,6 +79,7 @@ class HrEmployee(models.Model):
             if not employee.identifier or not employee.identifier.strip():
                 while True:
                     employee_id = self.env['hr.employee'].search([
+                        ('id', '!=', employee.id),
                         ('identifier', '=', identifier),
                     ], limit=1)
                     if employee_id:
@@ -156,11 +157,11 @@ class HrEmployee(models.Model):
             else:
                 i = 0
                 while True:
-                    user_id = self.env['res.users'].search([
+                    res_user_id = self.env['res.users'].search([
                         ('id', '!=', user_id.id),
                         ('login', '=', email),
                     ], limit=1)
-                    if user_id:
+                    if res_user_id:
                         i = i + 1
                         email = username + f'.{i}' + '@siantou.net'
                     else:

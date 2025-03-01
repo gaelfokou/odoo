@@ -190,6 +190,7 @@ class Student(models.Model):
             if not student.matricule or not student.matricule.strip():
                 while True:
                     student_id = self.env['oe.school.student'].search([
+                        ('id', '!=', student.id),
                         ('matricule', '=', matricule),
                     ], limit=1)
                     if student_id:
@@ -319,10 +320,11 @@ class Student(models.Model):
             else:
                 i = 0
                 while True:
-                    user_id = self.env['res.users'].search([
+                    res_user_id = self.env['res.users'].search([
+                        ('id', '!=', user_id.id),
                         ('login', '=', email),
                     ], limit=1)
-                    if user_id:
+                    if res_user_id:
                         i = i + 1
                         email = username + f'.{i}' + '@siantou.net'
                     else:
