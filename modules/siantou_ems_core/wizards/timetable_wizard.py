@@ -224,6 +224,7 @@ class TimetableWizard(models.TransientModel):
                                         subject_hours_credit = subject_hours_credit - weekly_hours_credit
                                         if subject.shared_subject:
                                             timetables = self.env['siantou.ems.timetable.timetable'].search([
+                                                ('class_id', '!=', classe.id),
                                                 ('level_id', '=', classe.niveau_id.id),
                                                 ('subject_id', '=', subject.id),
                                                 ('semester_id', '=', ue_id.semestre_id.id),
@@ -255,7 +256,7 @@ class TimetableWizard(models.TransientModel):
                                                         'group_id': new_group.id,
                                                     })
                                                     self.env.cr.commit()
-                                            break
+                                                break
                                         # On parcours toutes les jours de la semaine
                                         for day in range(0, end_time.weekday() + 1):
                                             if week == 0:
