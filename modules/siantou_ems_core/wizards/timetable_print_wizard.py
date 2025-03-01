@@ -88,6 +88,8 @@ class TimetablePrintWizard(models.TransientModel):
         required=True
     )
 
+    is_merge = fields.Boolean(string="Fusionner", default=True)
+
     @api.constrains('period_from', 'period_to')
     def _check_constrains_period(self):
         for record in self:

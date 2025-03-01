@@ -53,6 +53,8 @@ class TimetableWizard(models.TransientModel):
         'Groupe'
     )
 
+    is_merge = fields.Boolean(string="Fusionner", default=True)
+
     @api.constrains('period_from', 'period_to')
     def _check_constrains_period(self):
         for record in self:
@@ -103,10 +105,22 @@ class TimetableWizard(models.TransientModel):
         for i, classe in enumerate(classes):
             check_classes = classe
             if shared_subject:
-                if self.group and self.group.strip() != '':
-                    new_group = self.env['siantou.ems.timetable.group'].create({'name': self.group + "-" + classe.name, 'semester_id': self.semester_id.id, 'class_id': classe.id})
+                if self.is_merge:
+                    if self.group and self.group.strip() != '':
+                        name_group = self.group
+                    else:
+                        name_group = "group-" + unique_string
+
+                    new_group = self.env['siantou.ems.timetable.group'].search([], limit=1)
+                    if not new_group:
+                        new_group = self.env['siantou.ems.timetable.group'].create({'name': name_group, 'semester_id': self.semester_id.id})
                 else:
-                    new_group = self.env['siantou.ems.timetable.group'].create({'name': "group-" + unique_string + "-" + classe.name, 'semester_id': self.semester_id.id, 'class_id': classe.id})
+                    if self.group and self.group.strip() != '':
+                        name_group = self.group + "-" + classe.name
+                    else:
+                        name_group = "group-" + unique_string + "-" + classe.name
+
+                    new_group = self.env['siantou.ems.timetable.group'].create({'name': name_group, 'semester_id': self.semester_id.id, 'class_id': classe.id})
 
                 all_groups.append(new_group)
             else:
@@ -286,8 +300,6 @@ class TimetableWizard(models.TransientModel):
                 timetable = self.env['siantou.ems.timetable.timetable'].search([
                     ('group_id', '=', new_group.id),
                 ], limit=1)
-                _logger.info(f'----------- tototototototo new_group {new_group} -----------')
-                _logger.info(f'----------- tototototototo timetable {timetable} -----------')
                 if not timetable:
                     new_group.unlink()
 

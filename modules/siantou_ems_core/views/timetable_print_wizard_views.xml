@@ -14,7 +14,8 @@
                         <field name="class_id" domain="[('niveau_id', '=', level_id), ('filiere_id', '=', field_of_study_id)]"/>
                         <field name="period_from"/>
                         <field name="period_to"/>
-                        <field name="group_id" domain="[('semester_id', '=', semester_id), ('class_id', '=', class_id)]"/>
+                        <field name="group_id" domain="[('semester_id', '=', semester_id), '&', '|', '&', ('is_merge', '=', True), ('class_id', '=', None), ('is_merge', '=', False), ('class_id', '=', class_id)]"/>
+                        <field name="is_merge"/>
                     </group>
                     <footer>
                         <button string="Imprimer" type="object" name="print_timetable" class="btn-primary"/>

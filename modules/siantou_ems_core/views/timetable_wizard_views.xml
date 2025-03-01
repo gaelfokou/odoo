@@ -15,6 +15,7 @@
                             <field name="period_from"/>
                             <field name="period_to"/>
                             <field name="group"/>
+                            <field name="is_merge"/>
                         </group>
                         <footer>
                             <button name="generate_timetable" string="Générer l'emploi du temps" type="object" class="btn-primary"/>
