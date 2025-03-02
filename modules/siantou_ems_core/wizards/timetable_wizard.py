@@ -233,11 +233,11 @@ class TimetableWizard(models.TransientModel):
                                             if len(timetables) > 0:
                                                 class_timetable = None
                                                 for timetable in timetables:
-                                                    # if not class_timetable:
-                                                    #     class_timetable = timetable.class_id
-                                                    # else:
-                                                    #     if class_timetable.id != timetable.class_id.id:
-                                                    #         continue
+                                                    if not class_timetable:
+                                                        class_timetable = timetable.class_id
+                                                    else:
+                                                        if class_timetable.id != timetable.class_id.id:
+                                                            continue
                                                     shared_timetables = self.env['siantou.ems.timetable.timetable'].search([
                                                         ('class_id', '=', classe.id),
                                                         ('batch_id', '=', batch.id),
