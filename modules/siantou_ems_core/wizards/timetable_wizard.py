@@ -231,7 +231,13 @@ class TimetableWizard(models.TransientModel):
                                             ]).filtered(lambda rec: rec.date <= end_time and rec.date >= start_time)
                                             timetables = list(timetables)
                                             if len(timetables) > 0:
+                                                class_timetable = None
                                                 for timetable in timetables:
+                                                    if not class_timetable:
+                                                        class_timetable = timetable.class_id
+                                                    else:
+                                                        if class_timetable.id != timetable.class_id.id:
+                                                            continue
                                                     shared_timetables = self.env['siantou.ems.timetable.timetable'].search([
                                                         ('class_id', '=', classe.id),
                                                         ('batch_id', '=', batch.id),
@@ -256,7 +262,6 @@ class TimetableWizard(models.TransientModel):
                                                         'group_id': new_group.id,
                                                     })
                                                     self.env.cr.commit()
-                                                    break
                                                 break
                                         # On parcours toutes les jours de la semaine
                                         for day in range(0, end_time.weekday() + 1):
