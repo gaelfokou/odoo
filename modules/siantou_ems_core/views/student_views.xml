@@ -10,7 +10,7 @@
                 <group string="Informations Étudiant">
                     <field name="is_student"/>
                     <field name="user_id" readonly="1"/>
-                    <button name="action_create_portal_user"
+                    <button name="action_create_student_user"
                             string="Créer un utilisateur"
                             type="object"
                             class="btn-primary"/>

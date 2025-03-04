@@ -27,7 +27,7 @@
         <field name="arch" type="xml">
             <form string="Etudiant">
                 <header>
-                    <button name="action_create_portal_user" 
+                    <button name="action_create_student_user" 
                             type="object" 
                             string="Créer un compte utilisateur" 
                             class="oe_highlight" 

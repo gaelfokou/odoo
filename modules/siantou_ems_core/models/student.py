@@ -343,7 +343,7 @@ class Student(models.Model):
         except Exception as error:
             _logger.info(f'----------- tototototototo Exception {error} -----------')
 
-    def action_create_portal_user(self):
+    def action_create_student_user(self):
         for student in self:
             self.create_student_user(student)
 
