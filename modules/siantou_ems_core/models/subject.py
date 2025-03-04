@@ -21,6 +21,18 @@ class Subject(models.Model):
         'Tronc commun',
         default=True
     )
+
+    subject_id = fields.Many2one(
+        'siantou.ems.core.subject',
+        string='Cours',
+    )
+
+    # Disponibilité de l'enseignant
+    subject_ids = fields.One2many(
+        'siantou.ems.core.subject',
+        'subject_id',
+        'Cours'
+    )
     
     # Variable booléenne pour savoir si c'est une matière fait partie de l'EPS ou pas
     eps_subject = fields.Boolean(
