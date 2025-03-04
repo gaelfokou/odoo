@@ -344,8 +344,26 @@ class Student(models.Model):
             _logger.info(f'----------- tototototototo Exception {error} -----------')
 
     def action_create_student_user(self):
-        for student in self:
+        student = self.env['oe.school.student'].search([
+            ('id', '=', self.id),
+        ], limit=1)
+        if student:
             self.create_student_user(student)
+
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'reload',
+        }
+
+    def action_create_all_student_user(self):
+        student_ids = self.env['oe.school.student'].search([])
+        for student in student_ids:
+            self.create_student_user(student)
+
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'reload',
+        }
 
     @api.model
     def create(self, vals):

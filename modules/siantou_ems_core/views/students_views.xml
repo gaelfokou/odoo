@@ -5,6 +5,12 @@
         <field name="model">oe.school.student</field>
         <field name="arch" type="xml">
             <tree string="Etudiants" default_order="id desc">
+                <header>
+                    <button name="action_create_all_student_user" 
+                            type="object" 
+                            string="Créer un compte utilisateur" 
+                            class="oe_highlight"/>
+                </header>
                 <field name="matricule"/>
                 <field name="name"/>
                 <field name="cycle_id"/>
@@ -31,7 +37,7 @@
                             type="object" 
                             string="Créer un compte utilisateur" 
                             class="oe_highlight" 
-                            invisible="id == False or user_id != False"/>
+                            invisible="user_id.id"/>
                 </header>
                 <sheet>
                     <field name="user_id" invisible="1"/>

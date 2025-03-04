@@ -7,7 +7,7 @@
             <field name="inherit_id" ref="hr.view_employee_form" />
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='name']" position="after">
-                    <button name="action_create_employee_user" type="object" string="Créer un utilisateur" class="btn btn-primary" invisible="not id or user_id"/>
+                    <button name="action_create_employee_user" type="object" string="Créer un compte utilisateur" class="oe_highlight" invisible="user_id.id"/>
                 </xpath>
 
                 <xpath expr="//field[@name = 'category_ids']" position="after">
@@ -71,7 +71,7 @@
             <field name="inherit_id" ref="hr.hr_kanban_view_employees" />
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='category_ids']" position="before">
-                    <button name="action_create_all_employee_user" type="object" string="Créer tous les utilisateurs" class="btn btn-primary" invisible="work_email and work_email != ''"/>
+                    <button name="action_create_all_employee_user" type="object" string="Créer les comptes utilisateurs" class="oe_highlight"/>
                 </xpath>
             </field>
         </record>
@@ -82,7 +82,7 @@
             <field name="inherit_id" ref="hr.view_employee_tree" />
             <field name="arch" type="xml">
                 <xpath expr="//tree" position="inside">
-                    <button name="action_create_all_employee_user" type="object" string="Créer tous les utilisateurs" class="btn btn-primary" invisible="work_email and work_email != ''"/>
+                    <button name="action_create_all_employee_user" type="object" string="Créer les comptes utilisateurs" class="oe_highlight"/>
                 </xpath>
             </field>
         </record>
