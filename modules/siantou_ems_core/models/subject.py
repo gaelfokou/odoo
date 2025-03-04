@@ -22,20 +22,25 @@ class Subject(models.Model):
         default=True
     )
 
-    subject_id = fields.Many2one(
+    subject_parent_ids = fields.Many2one(
         'siantou.ems.core.subject',
+        'subject_parent_child_rel',
+        'subject_parent_id',
+        'subject_child_id',
         string='Cours parent',
         domain="[('shared_subject', '=', True)]",
     )
 
     # Disponibilité de l'enseignant
-    subject_ids = fields.One2many(
+    subject_child_ids = fields.One2many(
         'siantou.ems.core.subject',
-        'subject_id',
-        'Cours enfant',
+        'subject_parent_child_rel',
+        'subject_child_id',
+        'subject_parent_id',
+        string='Cours enfant',
         domain="[('shared_subject', '=', False)]",
     )
-    
+
     # Variable booléenne pour savoir si c'est une matière fait partie de l'EPS ou pas
     eps_subject = fields.Boolean(
         'Mathière de l\'EPS'
@@ -89,16 +94,16 @@ class Subject(models.Model):
     ]
 
     # Contrainte logique pour s'assurer que les cours en tronc commun sont ajoutés
-    @api.constrains('subject_ids')
-    def _check_subject_ids(self):
+    @api.constrains('subject_child_ids')
+    def _check_subject_child_ids(self):
         for record in self:
-            if record.shared_subject and len(record.subject_ids.ids) == 0:
+            if record.shared_subject and len(record.subject_child_ids.ids) == 0:
                 raise ValidationError("Les cours en tronc commun doivent être ajoutés")
 
     @api.onchange('shared_subject')
     def _onchange_shared_subject(self):
         for record in self:
-            record.subject_ids = []
+            record.subject_child_ids = []
 
     # Contrainte logique pour s'assurer que le volume horaire est précisé et strictement supérieur à 0
     @api.constrains('hours_credit')
