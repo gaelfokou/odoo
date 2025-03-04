@@ -61,7 +61,6 @@
                                                     <span t-esc="docdata['timetable_data'][key]['semester']"/>
                                                 </h4>
                                                 <h5 class="text-left">
-                                                    <span t-esc="'Département :'"/>
                                                     <span t-esc="docdata['timetable_data'][key]['study']"/>
                                                 </h5>
                                                 <h5 class="text-left">
