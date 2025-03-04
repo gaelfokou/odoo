@@ -25,13 +25,15 @@ class Subject(models.Model):
     subject_id = fields.Many2one(
         'siantou.ems.core.subject',
         string='Cours',
+        domain="[('shared_subject', '=', True)]",
     )
 
     # Disponibilité de l'enseignant
     subject_ids = fields.One2many(
         'siantou.ems.core.subject',
         'subject_id',
-        'Cours'
+        'Cours',
+        domain="[('shared_subject', '=', False)]",
     )
     
     # Variable booléenne pour savoir si c'est une matière fait partie de l'EPS ou pas
@@ -86,11 +88,23 @@ class Subject(models.Model):
         ('unique_code', 'unique(code)', 'Le code du cours doit être unique.'),
     ]
 
+    # Contrainte logique pour s'assurer que les cours en tronc commun sont ajoutés
+    @api.constrains('subject_ids')
+    def _check_subject_ids(self):
+        for record in self:
+            if record.shared_subject and len(record.subject_ids.ids) == 0:
+                raise ValidationError("Les cours en tronc commun doivent être ajoutés")
+
+    @api.onchange('shared_subject')
+    def _onchange_shared_subject(self):
+        for record in self:
+            record.subject_ids = []
+
     # Contrainte logique pour s'assurer que le volume horaire est précisé et strictement supérieur à 0
     @api.constrains('hours_credit')
     def _check_hours_credit(self):
         for record in self:
-            if record.hours_credit <= 0 :
+            if record.hours_credit <= 0:
                 raise ValidationError("Le volume horaire semestriel doit être supérieur à 0")
 
     # Méthode calculée pour teacher_ids afin de montrer les enseignants liés dans le modèle des priorités

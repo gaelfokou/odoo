@@ -12,6 +12,8 @@
                 <tree string="Cours">
                     <field name="code"/>
                     <field name="shared_subject"/>
+                    <field name="subject_id"/>
+                    <field name="subject_ids"/>
                     <field name="name"/>
                     <field name="ue_ids"/>
                     <field name="hours_credit"/>
@@ -40,6 +42,8 @@
                                     invisible="eps_subject == True"/>
                                 <field name="eps_subject"
                                     invisible="shared_subject == True"/>
+                                <field name="subject_id" invisible="shared_subject == True"/>
+                                <field name="subject_ids" invisible="shared_subject == False"/>
                             </group>
                         </group>
                         <notebook>
