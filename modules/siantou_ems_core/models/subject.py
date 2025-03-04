@@ -24,7 +24,7 @@ class Subject(models.Model):
 
     subject_id = fields.Many2one(
         'siantou.ems.core.subject',
-        string='Cours',
+        string='Cours parent',
         domain="[('shared_subject', '=', True)]",
     )
 
@@ -32,7 +32,7 @@ class Subject(models.Model):
     subject_ids = fields.One2many(
         'siantou.ems.core.subject',
         'subject_id',
-        'Cours',
+        'Cours enfant',
         domain="[('shared_subject', '=', False)]",
     )
     
