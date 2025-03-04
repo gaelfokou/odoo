@@ -22,7 +22,7 @@ class Subject(models.Model):
         default=True
     )
 
-    subject_parent_ids = fields.Many2one(
+    subject_parent_ids = fields.Many2many(
         'siantou.ems.core.subject',
         'subject_parent_child_rel',
         'subject_parent_id',
@@ -31,8 +31,7 @@ class Subject(models.Model):
         domain="[('shared_subject', '=', True)]",
     )
 
-    # Disponibilité de l'enseignant
-    subject_child_ids = fields.One2many(
+    subject_child_ids = fields.Many2many(
         'siantou.ems.core.subject',
         'subject_parent_child_rel',
         'subject_child_id',
