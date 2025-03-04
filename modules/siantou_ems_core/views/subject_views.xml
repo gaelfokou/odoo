@@ -43,7 +43,7 @@
                                 <field name="eps_subject"
                                     invisible="shared_subject == True"/>
                                 <field name="subject_id" invisible="shared_subject == True"/>
-                                <field name="subject_ids" widget="one2many_list" invisible="shared_subject == False"/>
+                                <field name="subject_ids" invisible="shared_subject == False"/>
                             </group>
                         </group>
                         <notebook>
