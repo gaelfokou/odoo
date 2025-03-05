@@ -19,7 +19,7 @@
                 />
                 <button name="action_create_all_student_user" 
                         type="object" 
-                        string="Créer un compte utilisateur" 
+                        string="Créer les comptes utilisateurs" 
                         class="oe_highlight"/>
             </tree>
         </field>
