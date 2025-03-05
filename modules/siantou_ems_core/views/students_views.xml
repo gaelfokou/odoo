@@ -5,10 +5,6 @@
         <field name="model">oe.school.student</field>
         <field name="arch" type="xml">
             <tree string="Etudiants" default_order="id desc">
-                <button name="action_create_all_student_user" 
-                        type="object" 
-                        string="Créer un compte utilisateur" 
-                        class="oe_highlight"/>
                 <field name="matricule"/>
                 <field name="name"/>
                 <field name="cycle_id"/>
@@ -21,6 +17,10 @@
                     decoration-success="status_univ == 'new'"
                     decoration-warning="status_univ == 'red'"
                 />
+                <button name="action_create_all_student_user" 
+                        type="object" 
+                        string="Créer un compte utilisateur" 
+                        class="oe_highlight"/>
             </tree>
         </field>
     </record>
