@@ -95,6 +95,26 @@ class HrEmployee(models.Model):
                         break
                 identifier = '{}2024'.format(identifier)
             password = identifier
+            # last_name = employee.last_name if employee.last_name else ''
+            # last_name = last_name.strip()
+            # while True:
+            #     if last_name.find('  ') != -1:
+            #         last_name = last_name.replace('  ', ' ')
+            #     else:
+            #         break
+            # last_name = last_name.split(' ')
+            # first_name = employee.first_name if employee.first_name else ''
+            # first_name = first_name.strip()
+            # while True:
+            #     if first_name.find('  ') != -1:
+            #         first_name = first_name.replace('  ', ' ')
+            #     else:
+            #         break
+            # first_name = first_name.split(' ')
+            # if len(first_name) > 1:
+            #     name = '{} {} {}'.format(first_name[0], last_name[0], first_name[1])
+            # else:
+            #     name = '{} {}'.format(first_name[0], last_name[0])
             name = employee.name
             name = name.strip()
             while True:
@@ -136,14 +156,14 @@ class HrEmployee(models.Model):
                     group_id = self.env.ref('base.group_portal')
                     user_id = self.env['res.users'].create({
                         'login': email,
-                        'name': name,
+                        'name': employee.name,
                         'password' : password,
                         'groups_id': [(6, 0, [group_id.id])],
                     })
                 else:
                     user_id = self.env['res.users'].create({
                         'login': email,
-                        'name': name,
+                        'name': employee.name,
                         'password' : password,
                     })
             else:
@@ -171,7 +191,7 @@ class HrEmployee(models.Model):
                 'password' : password,
             })
             employee.write({
-                'name': name,
+                'name': employee.name,
                 'identifier': identifier,
                 'work_email': email,
                 'user_id': user_id.id,
