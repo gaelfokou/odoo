@@ -35,9 +35,7 @@ class Timetable(models.Model):
         'siantou.ems.core.field_of_study',
         'Filière',
         required=True,
-        related='class_id.filiere_id',
-        ondelete='restrict', 
-        store=True
+        ondelete='restrict'
     )
 
     # Niveau lié à la programmation de cours
@@ -45,9 +43,7 @@ class Timetable(models.Model):
         'siantou.ems.core.level',
         'Niveau',
         required=True,
-        related='class_id.niveau_id',
-        ondelete='restrict', 
-        store=True
+        ondelete='restrict'
     )
 
     class_id = fields.Many2one(
