@@ -183,6 +183,10 @@ class TimetableWizard(models.TransientModel):
             if len(batches) == 0:
                 batch = self.env['siantou.ems.core.student.batch'].create_new_batch(classe.filiere_id.school_id.id, classe.filiere_id.id, classe.niveau_id.id)
                 batches.append(batch)
+            specialty_ids = classe.specialty_ids
+            specialty_ids = list(specialty_ids)
+            if len(specialty_ids) == 0:
+                continue
             ue_ids = classe.ue_ids.filtered(lambda u: u.semestre_id.id == self.semester_id.id)
             # Récupérer la liste des cours de la filière par niveau et les traiter l'un après l'autre
             ue_ids = list(ue_ids)
@@ -288,10 +292,14 @@ class TimetableWizard(models.TransientModel):
                                                 if teacher_priority:
                                                     teacher_priority = self.find_available_teacher(teacher_priority, target_date, available_slot["start_time"], available_slot["end_time"])
                                                 self.env['siantou.ems.timetable.timetable'].create({
+                                                    'department_id': classe.filiere_id.department_id.id,
                                                     'semester_id': ue_id.semestre_id.id,
                                                     'batch_id': batch.id,
+                                                    'field_of_study_id': classe.filiere_id.id,
+                                                    'level_id': classe.niveau_id.id,
                                                     'class_id': classe.id,
-                                                    'department_id': classe.filiere_id.department_id.id,
+                                                    'specialty_id': specialty_ids[0].id,
+                                                    'ue_id': ue_id.id,
                                                     'subject_id': subject_id,
                                                     'classroom_id': available_slot["classroom"].id,
                                                     'employee_id': teacher_priority.id if teacher_priority else None,
