@@ -30,20 +30,14 @@ class Timetable(models.Model):
         string='Département'
     )
 
-    class_id = fields.Many2one(
-        'siantou.ems.core.class',
-        string='Classe',
-        required=True,
-        ondelete='restrict'
-    )
-
     # Filière liée à la programmation de cours
     field_of_study_id = fields.Many2one(
         'siantou.ems.core.field_of_study',
         'Filière',
         required=True,
         related='class_id.filiere_id',
-        ondelete='restrict'
+        ondelete='restrict', 
+        store=True
     )
 
     # Niveau lié à la programmation de cours
@@ -52,14 +46,30 @@ class Timetable(models.Model):
         'Niveau',
         required=True,
         related='class_id.niveau_id',
+        ondelete='restrict', 
+        store=True
+    )
+
+    class_id = fields.Many2one(
+        'siantou.ems.core.class',
+        string='Classe',
+        required=True,
         ondelete='restrict'
     )
 
     specialty_id = fields.Many2one(
         'siantou.ems.core.specialty',
         string='Spécialité',
+        required=True,
         compute="_compute_class", 
-        store=False
+        store=True
+    )
+
+    ue_id = fields.Many2one(
+        'siantou.ems.core.unite.enseignement',
+        string="Unité d'enseignement",
+        required=True,
+        ondelete='restrict'
     )
 
     # Cours programmé
@@ -154,13 +164,20 @@ class Timetable(models.Model):
                     record.specialty_id = specialty_ids[0]
                 else:
                     record.specialty_id = None
+            else:
+                record.specialty_id = None
 
     @api.onchange('class_id')
     def _onchange_class(self):
         for record in self:
             if record.class_id.id:
-                record.field_of_study_id = record.class_id.filiere_id
-                record.level_id = record.class_id.niveau_id
+                specialty_ids = list(record.class_id.specialty_ids)
+                if len(specialty_ids) > 0:
+                    record.specialty_id = specialty_ids[0]
+                else:
+                    record.specialty_id = None
+            else:
+                record.specialty_id = None
 
     # Méthode pour remplir automatiquement le jour de la semaine
     @api.depends('date')

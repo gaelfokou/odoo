@@ -29,13 +29,14 @@
                             display="always"/> -->
                     </header>
                     <field name="group_id"/>
-                    <field name="date"/>
-                    <field name="class_id"/>
-                    <field name="field_of_study_id"/>
-                    <field name="specialty_id"/>
-                    <field name="semester_id"/>
                     <field name="batch_id"/>
+                    <field name="date"/>
+                    <field name="semester_id"/>
+                    <field name="field_of_study_id"/>
                     <field name="level_id"/>
+                    <field name="class_id"/>
+                    <field name="specialty_id"/>
+                    <field name="ue_id"/>
 					<field name="subject_id"/>
 					<field name="classroom_id"/>
 					<field name="employee_id"/>
@@ -63,14 +64,15 @@
 					<sheet>
                         <group>
                             <field name="group_id"/>
-                            <field name="date"/>
-                            <field name="class_id"/>
-                            <field name="field_of_study_id"/>
-                            <field name="specialty_id"/>
-                            <field name="semester_id"/>
                             <field name="batch_id"/>
+                            <field name="date"/>
+                            <field name="semester_id"/>
+                            <field name="field_of_study_id"/>
                             <field name="level_id"/>
-                            <field name="subject_id"/>
+                            <field name="class_id" domain="[('filiere_id', '=', field_of_study_id), ('niveau_id', '=', level_id)]"/>
+                            <field name="specialty_id"/>
+                            <field name="ue_id" domain="[('class_id', '=', class_id), ('semestre_id', '=', semester_id)]"/>
+                            <field name="subject_id" domain="[('ue_ids', '=', ue_id)]"/>
                             <field name="classroom_id"/>
                             <field name="employee_id"/>
                             <field name="day_of_week"/>
