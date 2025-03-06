@@ -112,10 +112,8 @@ class HrEmployee(models.Model):
             elif len(username) == 3:
                 username = '{}{}{}'.format(username[0][0:1], username[1], username[2][0:1])
             email = username + '@siantou.net'
-            user_id = self.env['res.users'].search([
-                ('employee_id', '=', employee.id),
-            ], limit=1)
-            if not user_id:
+            user_id = employee.user_id
+            if not user_id.id:
                 i = 0
                 while True:
                     user_id = self.env['res.users'].search([
@@ -123,7 +121,7 @@ class HrEmployee(models.Model):
                     ], limit=1)
                     if user_id:
                         i = i + 1
-                        email = username + f'.{i}' + '@siantou.net'
+                        email = username + f'{i}' + '@siantou.net'
                     else:
                         employee_id = self.env['hr.employee'].search([
                             ('id', '!=', employee.id),
@@ -131,7 +129,7 @@ class HrEmployee(models.Model):
                         ], limit=1)
                         if employee_id:
                             i = i + 1
-                            email = username + f'.{i}' + '@siantou.net'
+                            email = username + f'{i}' + '@siantou.net'
                         else:
                             break
                 if employee.is_teacher:
@@ -157,7 +155,7 @@ class HrEmployee(models.Model):
                     ], limit=1)
                     if res_user_id:
                         i = i + 1
-                        email = username + f'.{i}' + '@siantou.net'
+                        email = username + f'{i}' + '@siantou.net'
                     else:
                         employee_id = self.env['hr.employee'].search([
                             ('id', '!=', employee.id),
@@ -165,7 +163,7 @@ class HrEmployee(models.Model):
                         ], limit=1)
                         if employee_id:
                             i = i + 1
-                            email = username + f'.{i}' + '@siantou.net'
+                            email = username + f'{i}' + '@siantou.net'
                         else:
                             break
             user_id.write({

@@ -282,7 +282,7 @@ class Student(models.Model):
                     ], limit=1)
                     if user_id:
                         i = i + 1
-                        email = username + f'.{i}' + '@siantou.net'
+                        email = username + f'{i}' + '@siantou.net'
                     else:
                         student_id = self.env['oe.school.student'].search([
                             ('id', '!=', student.id),
@@ -290,7 +290,7 @@ class Student(models.Model):
                         ], limit=1)
                         if student_id:
                             i = i + 1
-                            email = username + f'.{i}' + '@siantou.net'
+                            email = username + f'{i}' + '@siantou.net'
                         else:
                             break
                 group_id = self.env.ref('base.group_portal')
@@ -310,7 +310,7 @@ class Student(models.Model):
                     ], limit=1)
                     if res_user_id:
                         i = i + 1
-                        email = username + f'.{i}' + '@siantou.net'
+                        email = username + f'{i}' + '@siantou.net'
                     else:
                         student_id = self.env['oe.school.student'].search([
                             ('id', '!=', student.id),
@@ -318,7 +318,7 @@ class Student(models.Model):
                         ], limit=1)
                         if student_id:
                             i = i + 1
-                            email = username + f'.{i}' + '@siantou.net'
+                            email = username + f'{i}' + '@siantou.net'
                         else:
                             break
             partner_id.write({
