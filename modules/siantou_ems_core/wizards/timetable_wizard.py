@@ -251,10 +251,14 @@ class TimetableWizard(models.TransientModel):
                                                     if len(shared_timetables) > 0:
                                                         continue
                                                     self.env['siantou.ems.timetable.timetable'].create({
+                                                        'department_id': classe.filiere_id.department_id.id,
                                                         'semester_id': timetable.semester_id.id,
                                                         'batch_id': batch.id,
+                                                        'field_of_study_id': classe.filiere_id.id,
+                                                        'level_id': timetable.level_id.id,
                                                         'class_id': classe.id,
-                                                        'department_id': classe.filiere_id.department_id.id,
+                                                        'specialty_id': specialty_ids[0].id,
+                                                        'ue_id': ue_id.id,
                                                         'subject_id': timetable.subject_id.id,
                                                         'classroom_id': timetable.classroom_id.id,
                                                         'employee_id': timetable.employee_id.id,
