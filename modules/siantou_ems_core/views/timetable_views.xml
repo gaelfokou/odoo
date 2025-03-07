@@ -75,10 +75,8 @@
                             <field name="subject_id" domain="[('ue_ids', '=', ue_id)]"/>
                             <field name="classroom_id"/>
                             <field name="employee_id"/>
-                            <field name="day_of_week"/>
                             <field name="start_time"/>
                             <field name="end_time"/>
-        					<field name="status"/>
                         </group>
 					</sheet>
 				</form>
