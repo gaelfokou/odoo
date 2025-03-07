@@ -310,7 +310,7 @@ class Student(models.Model):
                     else:
                         break
                 group_id = self.env.ref('base.group_portal')
-                user_id = self.env['res.users'].create({
+                user_id = self.env['res.users'].with_context(no_reset_password=True).create({
                     'login': email,
                     'name': student.name,
                     'password' : password,
@@ -348,7 +348,6 @@ class Student(models.Model):
             self.env.cr.commit()
         except psycopg2.errors.NotNullViolation as error:
             _logger.info(f'----------- tototototototo Exception {error} -----------')
-            raise ValidationError("L'adresse e-mail professionnelle n'est pas renseignée.")
         except psycopg2.Error as error:
             _logger.info(f'----------- tototototototo Exception {error} -----------')
         except Exception as error:
