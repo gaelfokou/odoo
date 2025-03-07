@@ -297,22 +297,18 @@ class Student(models.Model):
             if not user_id:
                 i = 0
                 while True:
-                    user_id = self.env['res.users'].search([
+                    res_user_id = self.env['res.users'].search([
                         ('login', '=', email),
                     ], limit=1)
-                    if user_id:
+                    student_id = self.env['oe.school.student'].search([
+                        ('id', '!=', student.id),
+                        ('email', '=', email),
+                    ], limit=1)
+                    if res_user_id or student_id:
                         i = i + 1
                         email = username + f'{i}' + '@siantou.net'
                     else:
-                        student_id = self.env['oe.school.student'].search([
-                            ('id', '!=', student.id),
-                            ('email', '=', email),
-                        ], limit=1)
-                        if student_id:
-                            i = i + 1
-                            email = username + f'{i}' + '@siantou.net'
-                        else:
-                            break
+                        break
                 group_id = self.env.ref('base.group_portal')
                 user_id = self.env['res.users'].create({
                     'login': email,
@@ -328,19 +324,15 @@ class Student(models.Model):
                         ('id', '!=', user_id.id),
                         ('login', '=', email),
                     ], limit=1)
-                    if res_user_id:
+                    student_id = self.env['oe.school.student'].search([
+                        ('id', '!=', student.id),
+                        ('email', '=', email),
+                    ], limit=1)
+                    if res_user_id or student_id:
                         i = i + 1
                         email = username + f'{i}' + '@siantou.net'
                     else:
-                        student_id = self.env['oe.school.student'].search([
-                            ('id', '!=', student.id),
-                            ('email', '=', email),
-                        ], limit=1)
-                        if student_id:
-                            i = i + 1
-                            email = username + f'{i}' + '@siantou.net'
-                        else:
-                            break
+                        break
             partner_id.write({
                 'email': email,
             })

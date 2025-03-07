@@ -136,22 +136,18 @@ class HrEmployee(models.Model):
             if not user_id.id:
                 i = 0
                 while True:
-                    user_id = self.env['res.users'].search([
+                    res_user_id = self.env['res.users'].search([
                         ('login', '=', email),
                     ], limit=1)
-                    if user_id:
+                    employee_id = self.env['hr.employee'].search([
+                        ('id', '!=', employee.id),
+                        ('work_email', '=', email),
+                    ], limit=1)
+                    if res_user_id or employee_id:
                         i = i + 1
                         email = username + f'{i}' + '@siantou.net'
                     else:
-                        employee_id = self.env['hr.employee'].search([
-                            ('id', '!=', employee.id),
-                            ('work_email', '=', email),
-                        ], limit=1)
-                        if employee_id:
-                            i = i + 1
-                            email = username + f'{i}' + '@siantou.net'
-                        else:
-                            break
+                        break
                 if employee.is_teacher:
                     group_id = self.env.ref('base.group_portal')
                     user_id = self.env['res.users'].create({
@@ -173,19 +169,15 @@ class HrEmployee(models.Model):
                         ('id', '!=', user_id.id),
                         ('login', '=', email),
                     ], limit=1)
-                    if res_user_id:
+                    employee_id = self.env['hr.employee'].search([
+                        ('id', '!=', employee.id),
+                        ('work_email', '=', email),
+                    ], limit=1)
+                    if res_user_id or employee_id:
                         i = i + 1
                         email = username + f'{i}' + '@siantou.net'
                     else:
-                        employee_id = self.env['hr.employee'].search([
-                            ('id', '!=', employee.id),
-                            ('work_email', '=', email),
-                        ], limit=1)
-                        if employee_id:
-                            i = i + 1
-                            email = username + f'{i}' + '@siantou.net'
-                        else:
-                            break
+                        break
             user_id.write({
                 'login': email,
                 'password' : password,
