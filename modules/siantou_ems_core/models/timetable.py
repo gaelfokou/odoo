@@ -98,15 +98,16 @@ class Timetable(models.Model):
 
     # Jour où le cours est programmé
     day_of_week = fields.Selection([
-        ('0', 'Lundi'),
-        ('1', 'Mardi'),
-        ('2', 'Mercredi'),
-        ('3', 'Jeudi'),
-        ('4', 'Vendredi'),
-        ('5', 'Samedi'),
-    ], 'Jour de la semaine',
-        readonly=True, store=True,
+            ('0', 'Lundi'),
+            ('1', 'Mardi'),
+            ('2', 'Mercredi'),
+            ('3', 'Jeudi'),
+            ('4', 'Vendredi'),
+            ('5', 'Samedi'),
+        ],
+        'Jour de la semaine',
         compute='_onchange_date',
+        store=True
     )
 
     # Heure de début du cours
@@ -179,9 +180,9 @@ class Timetable(models.Model):
     def _onchange_date(self):
         for record in self:
             if record.date:
-                # Calculer le jour de la semaine (0 = lundi, 1 = mardi, ...)
-                day_of_week = datetime.strptime(str(record.date), '%Y-%m-%d').weekday()
-                record.day_of_week = str(day_of_week)  # Assurez-vous que le jour soit un string (0-6)
+                record.day_of_week = str(record.date.weekday())
+            else:
+                record.day_of_week = None
 
     # Contrainte logique pour se rassurer qu'on a pas deux enregistrements identiques
     @api.constrains('class_id', 'subject_id', 'classroom_id', 'employee_id', 'day_of_week', 'start_time', 'end_time')
