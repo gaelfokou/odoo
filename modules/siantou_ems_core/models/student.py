@@ -349,7 +349,6 @@ class Student(models.Model):
                 'password' : password,
             })
             student.write({
-                'name': student.name,
                 'matricule': matricule,
                 'email': email,
                 'user_id': user_id.id,
