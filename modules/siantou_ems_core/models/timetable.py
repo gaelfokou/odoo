@@ -56,7 +56,6 @@ class Timetable(models.Model):
     specialty_id = fields.Many2one(
         'siantou.ems.core.specialty',
         string='Spécialité',
-        required=True,
         compute="_compute_class", 
         store=True
     )
