@@ -43,7 +43,7 @@
 					<field name="day_of_week"/>
 					<field name="start_time"/>
 					<field name="end_time"/>
-					<field name="status"
+					<field name="status" widget="badge"
                         decoration-muted="status == '0'"
                         decoration-success="status == '1'"
                         decoration-danger="status == '2'"
@@ -92,6 +92,10 @@
             <field name="name">Emploi du temps</field>
             <field name="res_model">siantou.ems.timetable.timetable</field>
             <field name="view_mode">tree,form</field>
+            <field name="view_ids"
+                eval="[(5, 0, 0),
+                (0, 0, {'view_mode': 'tree', 'view_id': ref('timetable_tree_view')}),
+                (0, 0, {'view_mode': 'form', 'view_id': ref('timetable_form_view')})]" />
             <field name="help" type="html">
                 <p class="o_view_nocontent_smiling_face">
                     Créer une nouvelle programmation de cours.
