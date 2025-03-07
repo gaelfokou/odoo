@@ -8,7 +8,6 @@ _logger = logging.getLogger(__name__)
 
 
 class HrEmployee(models.Model):
-    _name = 'hr.employee'
     _inherit = 'hr.employee'
 
     # Variable booléenne pour identifier un enseignant
