@@ -359,13 +359,15 @@ class TimetablePrintWizard(models.TransientModel):
         data.sort(key=lambda d: d['date'])
         sorted_data = copy.deepcopy(data)
 
-        for i, d in enumerate(data):
-            if i == 0:
-                n = d['end_time'] - d['start_time']
-            else:
-                if n > d['end_time'] - d['start_time']:
-                    n = d['end_time'] - d['start_time']
+        for d in data:
             hours.append([d['start_time'], d['end_time']])
+
+        for i, hour in enumerate(hours):
+            if i == 0:
+                n = hour[1] - hour[0]
+            else:
+                if n > hour[1] - hour[0]:
+                    n = hour[1] - hour[0]
 
         n = round(n, 2)
 
