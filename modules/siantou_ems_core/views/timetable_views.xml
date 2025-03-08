@@ -77,6 +77,7 @@
                             <field name="employee_id"/>
                             <field name="start_time"/>
                             <field name="end_time"/>
+                            <field name="not_active_slotitems"/>
                         </group>
 					</sheet>
 				</form>
