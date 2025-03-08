@@ -90,7 +90,6 @@ class CheckPriority(models.Model):
                 total_hours = total_hours - not_active_slotitems
                 if assigned_hours + total_hours > teacher.weekly_hours_limit:
                     continue  # Si le quota est dépassé, on passe au prochain enseignant
-                                   
 
                 return teacher
 
