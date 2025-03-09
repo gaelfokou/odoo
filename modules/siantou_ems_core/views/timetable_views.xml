@@ -38,6 +38,7 @@
                     <field name="specialty_id"/>
                     <field name="ue_id"/>
 					<field name="subject_id"/>
+					<field name="building_id"/>
 					<field name="classroom_id"/>
 					<field name="employee_id"/>
 					<field name="day_of_week"/>
@@ -73,7 +74,8 @@
                             <field name="specialty_id"/>
                             <field name="ue_id" domain="[('class_id', '=', class_id), ('semestre_id', '=', semester_id)]"/>
                             <field name="subject_id" domain="[('ue_ids', '=', ue_id)]"/>
-                            <field name="classroom_id"/>
+                            <field name="building_id"/>
+                            <field name="classroom_id" domain="[('building_id', '=', building_id)]"/>
                             <field name="employee_id"/>
                             <field name="start_time"/>
                             <field name="end_time"/>

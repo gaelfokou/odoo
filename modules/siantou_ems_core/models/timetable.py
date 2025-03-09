@@ -75,6 +75,14 @@ class Timetable(models.Model):
         ondelete='restrict'
     )
 
+    # Bâtiment auquel appartient la salle de classe
+    building_id = fields.Many2one(
+        'siantou.ems.core.building',
+        'Bâtiment',
+        required=True,
+        ondelete='restrict'
+    )
+
     # Salle liée à la programmation de cours
     classroom_id = fields.Many2one(
         'siantou.ems.core.building.classroom',
