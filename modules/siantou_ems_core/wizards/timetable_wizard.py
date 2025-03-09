@@ -104,6 +104,8 @@ class TimetableWizard(models.TransientModel):
         if shared_subject:
             unique_string = datetime.now().strftime("%Y%m%d%H%M")
         for i, classe in enumerate(classes):
+            if not classe.filiere_id.school_id.id:
+                continue
             check_classes = classe
             if shared_subject:
                 if self.is_merge:
