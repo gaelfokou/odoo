@@ -192,26 +192,9 @@ class Timetable(models.Model):
             else:
                 record.day_of_week = None
 
-    # Contrainte logique pour se rassurer qu'on a pas deux enregistrements identiques
-    @api.constrains('class_id', 'subject_id', 'classroom_id', 'employee_id', 'day_of_week', 'start_time', 'end_time')
-    def _check_duplicate(self):
-        for record in self:
-            timetables = self.search([
-                ('class_id', '=', record.class_id.id),
-                ('subject_id', '=', record.subject_id.id),
-                ('classroom_id', '=', record.classroom_id.id),
-                ('employee_id', '=', record.employee_id.id),
-                ('day_of_week', '=', record.day_of_week),
-                ('start_time', '=', record.end_time),
-                ('end_time', '=', record.start_time),
-            ])
-            timetables = list(timetables)
-            if len(timetables) > 0:
-                raise ValidationError("Cet enregistrement existe déjà")
-
     # Contrainte logique pour se rassurer que deux cours ne sont pas programmés dans la même salle de classe sur des horaires qui se chevauchent le même jour
-    @api.constrains('classroom_id', 'date', 'start_time', 'end_time')
-    def _check_classroom_is_free(self):
+    @api.constrains('classroom_id', 'date', 'subject_id', 'level_id', 'start_time', 'end_time')
+    def _check_constrains_classroom_is_free(self):
         for record in self:
             timetables = self.search([
                 ('id', '!=', record.id),
@@ -225,19 +208,14 @@ class Timetable(models.Model):
             if len(timetables) > 0:
                 raise ValidationError("Deux cours ne doivent pas être programmés dans la même salle de classe sur des horaires qui se chevauchent le même jour")
 
-    # Contrainte logique pour s'assurer que l'heure de fin est supérieure à l'heure de début
+    # Contrainte logique pour s'assurer que les heures de début et de fin sont définies et que l'heure de fin est supérieure à l'heure de début
     @api.constrains('start_time', 'end_time')
-    def _check_time(self):
+    def _check_constrains_time(self):
         for record in self:
-            if record.end_time <= record.start_time:
-                raise ValidationError("L'heure de fin du cours doit être supérieure à l'heure de début du cours")
-
-    # Contrainte logique pour s'assurer que les heures de début et de fin sont définies
-    @api.constrains('start_time', 'end_time')
-    def _check_time_is_set(self):
-        for record in self:
-            if record.start_time <= 0 or record.end_time <= 0:
+            if record.start_time <= 0.0 or record.end_time <= 0.0:
                 raise ValidationError("Vous devez définir des heures de début et de fin corrects")
+            elif record.end_time <= record.start_time:
+                raise ValidationError("L'heure de fin du cours doit être supérieure à l'heure de début du cours")
 
     def action_timetable_automatic(self):
         action = self.env.ref('siantou_ems_core.action_generatetimetable_wizard').read()[0]
