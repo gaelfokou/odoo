@@ -16,7 +16,7 @@
                     </group>
                     <group>
                         <field name="max_students_per_batch"/>
-                        <field name="building_id"/>
+                        <field name="building_ids"/>
                     </group>
                     <notebook>
                         <page name="field_of_study_ids" string="Filières">
@@ -42,7 +42,7 @@
                 <field name="code"/>
                 <field name="name"/>
                 <field name="max_students_per_batch"/>
-                <field name="building_id"/>
+                <field name="building_ids"/>
             </tree>
         </field>
     </record>

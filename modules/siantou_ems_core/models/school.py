@@ -47,4 +47,4 @@ class School(models.Model):
         string='Lots d\'étudiants'
     )
 
-    building_id = fields.Many2one('siantou.ems.core.building', string="Bâtiments")
+    building_ids = fields.Many2many('siantou.ems.core.building', 'building_school_rel', 'school_id', 'building_id', string="Bâtiments")
