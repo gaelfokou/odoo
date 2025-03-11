@@ -10,18 +10,22 @@
 			<field name="arch" type="xml">
 				<tree delete="false" string="Exceptions d'emploi du temps">
                     <field name="group_id"/>
-                    <field name="date"/>
-                    <field name="field_of_study_id"/>
-                    <field name="semester_id"/>
                     <field name="batch_id"/>
+                    <field name="date"/>
+                    <field name="semester_id"/>
+                    <field name="field_of_study_id"/>
                     <field name="level_id"/>
+                    <field name="class_id"/>
+                    <field name="specialty_id"/>
+                    <field name="ue_id"/>
 					<field name="subject_id"/>
+					<field name="building_id"/>
 					<field name="classroom_id"/>
 					<field name="employee_id"/>
 					<field name="day_of_week"/>
 					<field name="start_time"/>
 					<field name="end_time"/>
-					<field name="status"
+					<field name="status" widget="badge"
                         decoration-muted="status == '0'"
                         decoration-success="status == '1'"
                         decoration-danger="status == '2'"
