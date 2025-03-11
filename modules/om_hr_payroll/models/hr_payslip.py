@@ -358,9 +358,9 @@ class HrPayslip(models.Model):
     def cron_timetable_presence(self):
         datetime_from = datetime.now()
         datetime_from = datetime_from + timedelta(hours=1)
-        current_date = datetime_from.date()
 
         datetime_before = datetime_from - timedelta(minutes=15)
+        current_date = datetime_before.date()
 
         time_before = datetime.strftime(datetime_before, TIME_FORMAT)
         time_before = self.convert_time_to_float(time_before)
