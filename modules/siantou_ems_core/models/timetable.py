@@ -163,9 +163,9 @@ class Timetable(models.Model):
     def _compute_class(self):
         for record in self:
             if record.class_id.id:
-                specialty_ids = list(record.class_id.specialty_ids)
-                if len(specialty_ids) > 0:
-                    record.specialty_id = specialty_ids[0]
+                specialty_id = record.class_id.specialty_id
+                if specialty_id.id:
+                    record.specialty_id = specialty_id
                 else:
                     record.specialty_id = None
             else:
@@ -175,9 +175,9 @@ class Timetable(models.Model):
     def _onchange_class(self):
         for record in self:
             if record.class_id.id:
-                specialty_ids = list(record.class_id.specialty_ids)
-                if len(specialty_ids) > 0:
-                    record.specialty_id = specialty_ids[0]
+                specialty_id = record.class_id.specialty_id
+                if specialty_id.id:
+                    record.specialty_id = specialty_id
                 else:
                     record.specialty_id = None
             else:

@@ -9,12 +9,12 @@ class SpecialtyOfStudy(models.Model):
     _name = 'siantou.ems.core.specialty' #== cursus'
     _description = 'Gestion des spécialités'
 
-
     field_of_study_id = fields.Many2one(
         'siantou.ems.core.field_of_study',
         string='Filière ',
         required=True,
     )
+
     # Code du programme
     code = fields.Char(
         'Code',

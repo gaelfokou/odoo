@@ -186,13 +186,12 @@ class TimetableWizard(models.TransientModel):
             if len(batches) == 0:
                 batch = self.env['siantou.ems.core.student.batch'].create_new_batch(classe.filiere_id.school_id.id, classe.filiere_id.id, classe.niveau_id.id)
                 batches.append(batch)
-            specialty_ids = classe.specialty_ids
-            # Récupérer la liste des spécialités de la classe et les traiter l'une après l'autre
-            specialty_ids = list(specialty_ids)
-            ue_ids = classe.ue_ids.filtered(lambda u: u.semestre_id.id == self.semester_id.id)
+            # Récupérer la spécialité de la classe et les traiter l'une après l'autre
+            specialty_id = classe.specialty_id
             # Récupérer la liste des unités d'enseignement de la classe et les traiter l'un après l'autre
+            ue_ids = classe.ue_ids.filtered(lambda u: u.semestre_id.id == self.semester_id.id)
             ue_ids = list(ue_ids)
-            for specialty_id in specialty_ids:
+            if specialty_id.id:
                 check_specialties = specialty_id
                 for ue_id in ue_ids:
                     check_ues = ue_id

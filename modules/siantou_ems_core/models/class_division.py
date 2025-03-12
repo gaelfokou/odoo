@@ -28,10 +28,11 @@ class EducationClass(models.Model):
         'field_of_study_id',
         string='Liste des étudiants'
     )
-    
-    specialty_ids = fields.Many2many('siantou.ems.core.specialty', string='Liste des spécialités')
-    
-    niveau_id = fields.Many2one('siantou.ems.core.level', string='Niveau',required=True,
+
+    specialty_id = fields.Many2one('siantou.ems.core.specialty', string='Spécialité', required=True,
+                                 help="Spécialité")
+
+    niveau_id = fields.Many2one('siantou.ems.core.level', string='Niveau', required=True,
                                  help="Niveau")
     
     school_id = fields.Many2one('siantou.ems.core.school', string='Ecole')
@@ -39,23 +40,3 @@ class EducationClass(models.Model):
     annee_acadmique_id = fields.Many2one('siantou.ems.core.year', string='Année Académique')
 
     ue_ids = fields.One2many(comodel_name='siantou.ems.core.unite.enseignement', inverse_name='class_id', string='Unité d\'enseignement')
-
-    # Contrainte logique pour s'assurer de ne pas sélectionner plus d'une spécialité pour une classe
-    @api.constrains('specialty_ids')
-    def _check_specialty_ids(self):
-        for record in self:
-            if len(record.specialty_ids.ids) > 1:
-                raise ValidationError("Vous ne devez pas sélectionner plus d'une spécialité pour une classe")
-
-    @api.onchange('filiere_id')
-    def _onchange_filiere_id(self):
-        if self.filiere_id:
-            # Récupérer les specialty_ids associées à l'école sélectionnée
-            specialty = self.env['siantou.ems.core.specialty'].search([
-                ('field_of_study_id', '=', self.filiere_id.id)
-            ])
-            # Remplir le champ des specialty_ids avec les IDs des specialty_ids trouvées
-            self.specialty_ids = [(6, 0, specialty.ids)]
-        else:
-            # Si aucune école n'est sélectionnée, vider le champ des specialty_ids
-            self.specialty_ids = [(5, 0, 0)]
