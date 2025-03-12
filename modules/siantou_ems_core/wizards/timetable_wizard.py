@@ -323,7 +323,6 @@ class TimetableWizard(models.TransientModel):
                                         break
                             else:
                                 break
-                break
 
             if not shared_subject:
                 timetable = self.env['siantou.ems.timetable.timetable'].search([
