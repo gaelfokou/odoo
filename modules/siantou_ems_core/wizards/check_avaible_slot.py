@@ -15,9 +15,7 @@ class CheckAvailableSlot(models.Model):
         available_slotitems = []
         available_hours = 0
 
-        nbr_slotitems = len(active_slotitems)
-
-        if nbr_slotitems > 0:
+        if len(active_slotitems) > 0:
             for start_time, end_time in active_slotitems:
                 timetables = self.env['siantou.ems.timetable.timetable'].search([
                     ('class_id', '=', class_id.id),
@@ -39,7 +37,7 @@ class CheckAvailableSlot(models.Model):
                     building_ids = buildings.ids
                 classroom_ids = self.env['siantou.ems.timetable.timetable'].search([
                     ('date', '=', current_date),
-                    ('end_time', '=', active_slotitems[nbr_slotitems - 1][1]),
+                    ('end_time', '=', active_slotitems[-1][1]),
                 ]).mapped('classroom_id')
                 classroom_ids = classroom_ids.ids
                 if len(classroom_ids) > 0:
@@ -108,8 +106,8 @@ class CheckAvailableSlot(models.Model):
             duration_weekly_hours_credit = available_hours
             n = 0
             for not_active_slotitem in not_active_slotitems:
-                if available_slotitems[0][0] < not_active_slotitem[1] and available_slotitems[available_hours - 1][1] > not_active_slotitem[0]:
+                if available_slotitems[0][0] < not_active_slotitem[1] and available_slotitems[-1][1] > not_active_slotitem[0]:
                     n += 1
-            available_slot = {'current_date': current_date, 'start_time': available_slotitems[0][0], 'end_time': available_slotitems[available_hours - 1][1], 'classroom': available_slotitems[0][2], 'duration_weekly_hours_credit': duration_weekly_hours_credit, 'not_active_slotitems': n}
+            available_slot = {'current_date': current_date, 'start_time': available_slotitems[0][0], 'end_time': available_slotitems[-1][1], 'classroom': available_slotitems[0][2], 'duration_weekly_hours_credit': duration_weekly_hours_credit, 'not_active_slotitems': n}
 
         return available_slot
