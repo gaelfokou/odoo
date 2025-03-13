@@ -35,17 +35,17 @@
                             </group>
                             <group>
                                 <field name="filiere_id"/>
-                                <field name="specialty_id"/>
+                                <field name="specialty_id" domain="[('field_of_study_id', '=', filiere_id)]"/>
                             </group>
                         </group>
                         <notebook>
                             <page name="unite_enseignement" string="Unité d'enseignements">
                                 <field name="ue_ids">
                                     <tree editable="bottom">
-                                        <field name="code" />
-                                        <field name="name" />
-                                        <field name="type_ue" />
-                                        <field name="semestre_id" />
+                                        <field name="code"/>
+                                        <field name="name"/>
+                                        <field name="type_ue"/>
+                                        <field name="semestre_id"/>
                                     </tree>
                                 </field>
                             </page>
@@ -55,8 +55,8 @@
                         </notebook>
 					</sheet>
                     <div class="oe_chatter">
-                        <field name="message_follower_ids" groups="base.group_user" />
-                        <field name="message_ids" />
+                        <field name="message_follower_ids" groups="base.group_user"/>
+                        <field name="message_ids"/>
                     </div>
 				</form>
 			</field>
