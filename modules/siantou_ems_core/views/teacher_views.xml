@@ -65,7 +65,7 @@
             </field>
         </record>
 
-        <record id="view_employee_kanban_inherit_teacher" model="ir.ui.view">
+        <!-- <record id="view_employee_kanban_inherit_teacher" model="ir.ui.view">
             <field name="name">view.employee.kanban.inherit.teacher</field>
             <field name="model">hr.employee</field>
             <field name="inherit_id" ref="hr.hr_kanban_view_employees" />
@@ -74,14 +74,14 @@
                     <button name="action_create_all_employee_user" type="object" string="Créer les comptes utilisateurs" class="oe_highlight"/>
                 </xpath>
             </field>
-        </record>
+        </record> -->
 
         <record id="view_employee_tree_inherit_teacher" model="ir.ui.view">
             <field name="name">view.employee.tree.inherit.teacher</field>
             <field name="model">hr.employee</field>
             <field name="inherit_id" ref="hr.view_employee_tree" />
             <field name="arch" type="xml">
-                <xpath expr="//tree" position="inside">
+                <xpath expr="//header" position="inside">
                     <button name="action_create_all_employee_user" type="object" string="Créer les comptes utilisateurs" class="oe_highlight"/>
                 </xpath>
             </field>
