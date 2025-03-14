@@ -202,7 +202,6 @@ class HrEmployee(models.Model):
 
         return employee
 
-    @api.model
     def action_create_employee_user(self):
         employee = self.env['hr.employee'].search([
             ('id', '=', self.id),
@@ -215,7 +214,6 @@ class HrEmployee(models.Model):
             'tag': 'reload',
         }
 
-    @api.model
     def action_create_all_employee_user(self):
         active_ids = self.env.context.get('active_ids', [])
         employee_ids = self.env['hr.employee'].browse(active_ids)

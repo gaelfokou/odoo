@@ -353,7 +353,6 @@ class Student(models.Model):
         except Exception as error:
             _logger.info(f'----------- tototototototo Exception {error} -----------')
 
-    @api.model
     def action_create_student_user(self):
         student = self.env['oe.school.student'].search([
             ('id', '=', self.id),
@@ -366,7 +365,6 @@ class Student(models.Model):
             'tag': 'reload',
         }
 
-    @api.model
     def action_create_all_student_user(self):
         active_ids = self.env.context.get('active_ids', [])
         student_ids = self.env['oe.school.student'].browse(active_ids)
