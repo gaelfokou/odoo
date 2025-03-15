@@ -7,7 +7,7 @@
             <field name="inherit_id" ref="hr.view_employee_form" />
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='name']" position="after">
-                    <button name="action_create_employee_user" type="object" string="Créer un compte utilisateur" class="oe_highlight" invisible="user_id.id"/>
+                    <button name="action_create_employee_user" type="object" string="Créer un compte utilisateur" class="oe_highlight" invisible="user_id.id != False"/>
                 </xpath>
 
                 <xpath expr="//field[@name = 'category_ids']" position="after">

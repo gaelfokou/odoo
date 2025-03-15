@@ -37,7 +37,7 @@
                             type="object" 
                             string="Créer un compte utilisateur" 
                             class="oe_highlight" 
-                            invisible="user_id.id"/>
+                            invisible="user_id.id != False"/>
                 </header>
                 <sheet>
                     <field name="user_id" invisible="1"/>
