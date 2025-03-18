@@ -171,6 +171,30 @@ class Timetable(models.Model):
             else:
                 record.specialty_id = None
 
+    @api.onchange('semester_id')
+    def _onchange_semester(self):
+        for record in self:
+            record.class_id = None
+            record.specialty_id = None
+            record.ue_id = None
+            record.subject_id = None
+
+    @api.onchange('field_of_study_id')
+    def _onchange_field_of_study(self):
+        for record in self:
+            record.class_id = None
+            record.specialty_id = None
+            record.ue_id = None
+            record.subject_id = None
+
+    @api.onchange('level_id')
+    def _onchange_level(self):
+        for record in self:
+            record.class_id = None
+            record.specialty_id = None
+            record.ue_id = None
+            record.subject_id = None
+
     @api.onchange('class_id')
     def _onchange_class(self):
         for record in self:
@@ -178,10 +202,16 @@ class Timetable(models.Model):
                 specialty_id = record.class_id.specialty_id
                 if specialty_id.id:
                     record.specialty_id = specialty_id
+                    record.ue_id = None
+                    record.subject_id = None
                 else:
                     record.specialty_id = None
+                    record.ue_id = None
+                    record.subject_id = None
             else:
                 record.specialty_id = None
+                record.ue_id = None
+                record.subject_id = None
 
     # Méthode pour remplir automatiquement le jour de la semaine
     @api.depends('date')
