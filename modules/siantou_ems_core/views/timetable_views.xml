@@ -29,18 +29,18 @@
                             display="always"/> -->
                     </header>
                     <field name="group_id"/>
-                    <field name="batch_id" options="{'no_create': True}"/>
+                    <field name="batch_id"/>
                     <field name="date"/>
-                    <field name="semester_id" options="{'no_create': True}"/>
-                    <field name="field_of_study_id" options="{'no_create': True}"/>
-                    <field name="level_id" options="{'no_create': True}"/>
-                    <field name="class_id" options="{'no_create': True}"/>
-                    <field name="specialty_id" options="{'no_create': True}"/>
-                    <field name="ue_id" options="{'no_create': True}"/>
-					<field name="subject_id" options="{'no_create': True}"/>
-					<field name="building_id" options="{'no_create': True}"/>
-					<field name="classroom_id" options="{'no_create': True}"/>
-					<field name="employee_id" options="{'no_create': True}"/>
+                    <field name="semester_id"/>
+                    <field name="field_of_study_id"/>
+                    <field name="level_id"/>
+                    <field name="class_id"/>
+                    <field name="specialty_id"/>
+                    <field name="ue_id"/>
+					<field name="subject_id"/>
+					<field name="building_id"/>
+					<field name="classroom_id"/>
+					<field name="employee_id"/>
 					<field name="day_of_week"/>
 					<field name="start_time"/>
 					<field name="end_time"/>
