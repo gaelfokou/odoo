@@ -50,6 +50,7 @@
                         decoration-danger="status == '2'"
                         decoration-info="status == '3'"
                         decoration-warning="status == '4'"/>
+                    <filter string="Mon emploi du temps" name="mytimetable" domain="[('employee_id.user_id', '=', uid)]"/>
 				</tree>
 			</field>
 		</record>

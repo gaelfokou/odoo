@@ -32,6 +32,7 @@
                         decoration-info="status == '3'"
                         decoration-warning="status == '4'"/>
                     <button name="action_cancel_timetable_exception" type="object" string="Annuler l'exception" class="btn btn-primary"/>
+                    <filter string="Mon emploi du temps" name="myexceptiontimetable" domain="[('employee_id.user_id', '=', uid)]"/>
 				</tree>
 			</field>
 		</record>
