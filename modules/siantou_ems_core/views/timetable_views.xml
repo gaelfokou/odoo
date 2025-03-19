@@ -54,39 +54,6 @@
 			</field>
 		</record>
 
-        <record id="timetable_search_view" model="ir.ui.view">
-            <field name="name">timetable.search.view</field>
-            <field name="model">siantou.ems.timetable.timetable</field>
-            <field name="arch" type="xml">
-                <search>
-                    <field name="group_id"/>
-                    <field name="batch_id"/>
-                    <field name="date"/>
-                    <field name="semester_id"/>
-                    <field name="field_of_study_id"/>
-                    <field name="level_id"/>
-                    <field name="class_id"/>
-                    <field name="specialty_id"/>
-                    <field name="ue_id"/>
-					<field name="subject_id"/>
-					<field name="building_id"/>
-					<field name="classroom_id"/>
-					<field name="employee_id"/>
-					<field name="day_of_week"/>
-					<field name="start_time"/>
-					<field name="end_time"/>
-					<field name="status"/>
-                    <filter string="Mon emploi du temps" name="mytimetable" domain="[('employee_id.user_id', '=', uid)]"/>
-                    <group expand="0" string="Group By">
-                        <filter string="Filière" name="field_of_study" context="{'group_by': 'field_of_study_id'}"/>
-                        <filter string="Niveau" name="level" context="{'group_by': 'level_id'}"/>
-                        <filter string="Classe" name="class" context="{'group_by': 'class_id'}"/>
-                        <filter string="Spécialité" name="specialty" context="{'group_by': 'specialty_id'}"/>
-                    </group>
-                </search>
-            </field>
-        </record>
-
         <!-- Affichage en vue formulaire -->
 		<record
                 id="timetable_form_view"
@@ -120,6 +87,39 @@
 			</field>
 		</record>
 
+        <record id="timetable_search_view" model="ir.ui.view">
+            <field name="name">timetable.search.view</field>
+            <field name="model">siantou.ems.timetable.timetable</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="group_id"/>
+                    <field name="batch_id"/>
+                    <field name="date"/>
+                    <field name="semester_id"/>
+                    <field name="field_of_study_id"/>
+                    <field name="level_id"/>
+                    <field name="class_id"/>
+                    <field name="specialty_id"/>
+                    <field name="ue_id"/>
+					<field name="subject_id"/>
+					<field name="building_id"/>
+					<field name="classroom_id"/>
+					<field name="employee_id"/>
+					<field name="day_of_week"/>
+					<field name="start_time"/>
+					<field name="end_time"/>
+					<field name="status"/>
+                    <filter string="Mon emploi du temps" name="mytimetable" domain="[('employee_id.user_id', '=', uid)]"/>
+                    <group expand="0" string="Group By">
+                        <filter string="Filière" name="field_of_study" context="{'group_by': 'field_of_study_id'}"/>
+                        <filter string="Niveau" name="level" context="{'group_by': 'level_id'}"/>
+                        <filter string="Classe" name="class" context="{'group_by': 'class_id'}"/>
+                        <filter string="Spécialité" name="specialty" context="{'group_by': 'specialty_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
         <!-- Action pour le menu d'affichage des années académiques -->
         <record
                 id="action_show_timetable"
@@ -137,6 +137,7 @@
                     Créer une nouvelle programmation de cours.
                 </p>
             </field>
+            <field name="search_view_id" ref="timetable_search_view"/>
         </record>
 
         

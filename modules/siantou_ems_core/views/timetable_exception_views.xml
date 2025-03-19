@@ -83,6 +83,7 @@
                     Liste des exceptions.
                 </p>
             </field>
+            <field name="search_view_id" ref="timetable_exception_search_view"/>
         </record>
 
         
