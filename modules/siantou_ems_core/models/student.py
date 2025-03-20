@@ -207,32 +207,32 @@ class Student(models.Model):
                 matricule = '{}2024'.format(matricule)
             password = matricule
             # last_name = student.last_name if student.last_name else ''
-            # last_name = last_name.strip()
             # while True:
             #     if last_name.find('  ') != -1:
             #         last_name = last_name.replace('  ', ' ')
             #     else:
             #         break
+            # last_name = last_name.strip()
             # last_name = last_name.split(' ')
             # first_name = student.first_name if student.first_name else ''
-            # first_name = first_name.strip()
             # while True:
             #     if first_name.find('  ') != -1:
             #         first_name = first_name.replace('  ', ' ')
             #     else:
             #         break
+            # first_name = first_name.strip()
             # first_name = first_name.split(' ')
             # if len(first_name) > 1:
             #     name = '{} {} {}'.format(first_name[0], last_name[0], first_name[1])
             # else:
             #     name = '{} {}'.format(first_name[0], last_name[0])
             name = student.name
-            name = name.strip()
             while True:
                 if name.find('  ') != -1:
                     name = name.replace('  ', ' ')
                 else:
                     break
+            name = name.strip()
             username = name.lower()
             username = username.split(' ')
             username = username[0:3]
