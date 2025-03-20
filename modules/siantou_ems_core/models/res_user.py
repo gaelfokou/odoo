@@ -47,7 +47,7 @@ class ResUsers(models.Model):
     @api.model
     def create(self, vals):
         # Création de l'utilisateur
-        user = super().create(vals)
+        user = super(ResUsers, self.with_context(no_reset_password=True)).create(vals)
 
         self.create_user_employee_or_student(user)
 
