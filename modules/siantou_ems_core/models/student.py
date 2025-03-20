@@ -169,18 +169,6 @@ class Student(models.Model):
             # Affecter les emplois du temps trouvés à l'attribut timetable_ids
             student.timetable_ids = timetables
 
-    def generate_matricule(self, field_of_study_id):
-        # Get the current year
-        current_year = datetime.datetime.now().year
-        last_caract_year = str(current_year)[2:]
-        # _logger.info(f"last_caract_year : {last_caract_year}")
-        students = self.env['oe.school.student'].search([])  
-        # _logger.info(f"Matricule généré : {len(students)}")
-        nbre = len(students) + 1
-        matricule = f"{last_caract_year}{field_of_study_id.school_id.code}000{nbre}"
-        _logger.info(f"Matricule généré : {matricule}")
-        return matricule
-
     def create_student_user(self, student):
         try:
             ecole = re.sub('[^A-Za-z]+', '', student.field_of_study_id.school_id.name)
@@ -386,7 +374,6 @@ class Student(models.Model):
             class_id.niveau_id.id
         )
         vals['batch_id'] = batch.id
-        # vals['matricule'] = self.generate_matricule(field_of_study_id)
 
         # Création de l'étudiant
         student = super().create(vals)
