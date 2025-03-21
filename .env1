@@ -1,0 +1,12 @@
+# postgresql env variables
+POSTGRES_DB=postgres # name of the PostgreSQL db that will be created or used by the PostgreSQL server.
+POSTGRES_USER=odoo117 # db_user
+POSTGRES_PASSWORD=odoo117 # db_password
+PGDATA=/var/lib/postgresql/data # storage location of DBs and data files of PSQL
+# odoo env variables
+HOST=psql1
+USER=${POSTGRES_USER}
+PASSWORD=${POSTGRES_PASSWORD}
+# pgadmin4 env variables
+# PGADMIN_DEFAULT_EMAIL=user@localhost.com
+# PGADMIN_DEFAULT_PASSWORD=password
