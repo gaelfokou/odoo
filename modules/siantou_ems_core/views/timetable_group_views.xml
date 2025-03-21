@@ -8,7 +8,7 @@
             <field name="name">siantou.ems.timetable.group.tree</field>
             <field name="model">siantou.ems.timetable.group</field>
             <field name="arch" type="xml">
-                <tree delete="true" create="false" edit="true">
+                <tree editable="bottom">
                     <field name="name"/>
                     <field name="timetables"/>
                     <field name="semester_id"/>
