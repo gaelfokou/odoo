@@ -14,27 +14,28 @@
                     <field name="semester_id"/>
                     <field name="class_id"/>
                     <field name="is_merge"/>
+                    <field name="is_default"/>
                 </tree>
             </field>
         </record>
 
-        <!-- Action pour le menu d'affichage des groupes -->
+        <!-- Action pour le menu d'affichage des versions -->
         <record
                 id="action_timetable_group"
                 model="ir.actions.act_window">
-            <field name="name">Liste des groupes</field>
+            <field name="name">Liste des versions</field>
             <field name="res_model">siantou.ems.timetable.group</field>
             <field name="view_mode">tree</field>
             <field name="help" type="html">
                 <p class="o_view_nocontent_smiling_face">
-                    Liste des groupes d'emploi de temps. Vous pouvez uniquement supprimer des groupes.
+                    Liste des versions d'emploi de temps. Vous pouvez uniquement supprimer des versions.
                 </p>
             </field>
         </record>
 
         <menuitem 
             id="menu_siantou_ems_timetable_group" 
-            name="Groupes d'emploi de temps"
+            name="Versions d'emploi de temps"
             parent="menu_siantou_ems_timetable_planning" 
             action="action_timetable_group" 
             groups="siantou_ems_core.group_timetable_user,siantou_ems_core.group_timetable_admin,base.group_system"

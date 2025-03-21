@@ -29,7 +29,7 @@
                             display="always"/> -->
                     </header>
                     <field name="group_id"/>
-                    <field name="batch_id"/>
+                    <field name="batch_id" invisible="1"/>
                     <field name="date"/>
                     <field name="semester_id"/>
                     <field name="field_of_study_id"/>
@@ -64,10 +64,10 @@
 				<form string="Emploi du temps">
 					<sheet>
                         <group>
-                            <field name="group_id"/>
-                            <field name="batch_id" options="{'no_create': True}"/>
+                            <field name="group_id" readonly="1" options="{'no_open': True, 'no_create': True}"/>
+                            <field name="batch_id" invisible="1" options="{'no_create': True}"/>
                             <field name="date"/>
-                            <field name="semester_id" options="{'no_create': True}"/>
+                            <field name="semester_id" options="{'no_create': True}" domain="[('id', '=', group_id.semester_id.id)]"/>
                             <field name="field_of_study_id" options="{'no_create': True}"/>
                             <field name="level_id" options="{'no_create': True}"/>
                             <field name="class_id" options="{'no_create': True}" domain="[('filiere_id', '=', field_of_study_id), ('niveau_id', '=', level_id)]"/>
@@ -93,7 +93,7 @@
             <field name="arch" type="xml">
                 <search>
                     <field name="group_id"/>
-                    <field name="batch_id"/>
+                    <field name="batch_id" invisible="1"/>
                     <field name="date"/>
                     <field name="semester_id"/>
                     <field name="field_of_study_id"/>

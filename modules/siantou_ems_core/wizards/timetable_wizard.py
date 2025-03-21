@@ -48,9 +48,9 @@ class TimetableWizard(models.TransientModel):
         'Période à',
     )
 
-    # Groupe auquel appartient l'emploi du temps
+    # Version à laquelle appartient l'emploi du temps
     group = fields.Char(
-        'Groupe'
+        'Version'
     )
 
     is_merge = fields.Boolean(string="Fusionner", default=True)

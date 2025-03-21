@@ -136,11 +136,12 @@ class Timetable(models.Model):
         widget='time'
     )
 
-    # Groupe auquel appartient l'emploi du temps
+    # Version auquel appartient l'emploi du temps
     group_id = fields.Many2one(
         'siantou.ems.timetable.group',
         'Version',
         required=True,
+        default=lambda self: self.env['siantou.ems.timetable.group'].search([('is_default', '=', True)], limit=1),
         ondelete='cascade'
     )
 
@@ -284,7 +285,7 @@ class Timetable(models.Model):
 
 class TimetableGroup(models.Model):
     _name = 'siantou.ems.timetable.group'
-    _description = 'Groupe d\'emploi de temps'
+    _description = 'Version d\'emploi de temps'
 
     name = fields.Char('Nom du groupe', required=True)
 
@@ -306,6 +307,20 @@ class TimetableGroup(models.Model):
     )
 
     is_merge = fields.Boolean(string="Fusionner", default=True)
+
+    is_default = fields.Boolean(string="Par défaut", default=False)
+
+    @api.constrains('is_default')
+    def _check_constrains_default(self):
+        for record in self:
+            if record.is_default:
+                slots = self.env['siantou.ems.timetable.group'].search([
+                    ('id', '!=', record.id),
+                    ('is_default', '=', True),
+                ])
+                slots = list(slots)
+                if len(slots) > 0:
+                    raise ValidationError(f"Version par défaut déjà définie")
 
 class TimetableSlotItem(models.Model):
     _name = 'siantou.ems.timetable.slotitem'
