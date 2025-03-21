@@ -56,8 +56,8 @@ class Timetable(models.Model):
     specialty_id = fields.Many2one(
         'siantou.ems.core.specialty',
         string='Spécialité',
-        # compute="_compute_class", 
-        # store=True
+        required=True,
+        ondelete='restrict'
     )
 
     ue_id = fields.Many2one(
@@ -159,18 +159,6 @@ class Timetable(models.Model):
     ], 'Statut',
         default='0',
     )
-
-    # @api.depends('class_id')
-    # def _compute_class(self):
-    #     for record in self:
-    #         if record.class_id.id:
-    #             specialty_id = record.class_id.specialty_id
-    #             if specialty_id.id:
-    #                 record.specialty_id = specialty_id
-    #             else:
-    #                 record.specialty_id = None
-    #         else:
-    #             record.specialty_id = None
 
     @api.onchange('semester_id')
     def _onchange_semester(self):
