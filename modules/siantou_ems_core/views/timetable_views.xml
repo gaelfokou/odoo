@@ -82,7 +82,14 @@
         					<field name="day_of_week" invisible="1"/>
                             <field name="start_time" invisible="1"/>
                             <field name="end_time" invisible="1"/>
-                            <field name="subject_day_hour_ids"/>
+                            <field name="subject_day_hour_ids" widget="one2many_list">
+                                <tree editable="bottom">
+                                    <field name="date"/>
+                                    <field name="day_of_week"/>
+                                    <field name="start_time"/>
+                                    <field name="end_time"/>
+                                </tree>
+                            </field>
                             <field name="not_active_slotitems" invisible="1"/>
                             <field name="status"/>
                         </group>
