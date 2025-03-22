@@ -196,6 +196,7 @@ class Timetable(models.Model):
     def _onchange_field_of_study(self):
         for record in self:
             record.class_id = None
+            record.class_group_id = None
             record.specialty_id = None
             record.ue_id = None
             record.subject_id = None
@@ -204,6 +205,7 @@ class Timetable(models.Model):
     def _onchange_level(self):
         for record in self:
             record.class_id = None
+            record.class_group_id = None
             record.ue_id = None
             record.subject_id = None
 
@@ -211,12 +213,14 @@ class Timetable(models.Model):
     def _onchange_specialty(self):
         for record in self:
             record.class_id = None
+            record.class_group_id = None
             record.ue_id = None
             record.subject_id = None
 
     @api.onchange('class_id')
     def _onchange_class(self):
         for record in self:
+            record.class_group_id = None
             record.ue_id = None
             record.subject_id = None
 
