@@ -29,7 +29,6 @@
                             display="always"/> -->
                     </header>
                     <field name="group_id"/>
-                    <field name="batch_id" invisible="1"/>
                     <field name="date"/>
                     <field name="semester_id"/>
                     <field name="school_id"/>
@@ -107,7 +106,6 @@
             <field name="arch" type="xml">
                 <search>
                     <field name="group_id"/>
-                    <field name="batch_id" invisible="1"/>
                     <field name="date"/>
                     <field name="semester_id"/>
                     <field name="school_id"/>
