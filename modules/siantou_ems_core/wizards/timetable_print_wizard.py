@@ -456,16 +456,18 @@ class TimetablePrintWizard(models.TransientModel):
     def convert_number_to_weekday(self, number):
         if number == '0':
             return "Lundi"
-        if number == '1':
+        elif number == '1':
             return "Mardi"
-        if number == '2':
+        elif number == '2':
             return "Mercredi"
-        if number == '3':
+        elif number == '3':
             return "Jeudi"
-        if number == '4':
+        elif number == '4':
             return "Vendredi"
-        if number == '5':
+        elif number == '5':
             return "Samedi"
+        elif number == '6':
+            return "Dimanche"
 
     def format_time(self, input_str):
         """

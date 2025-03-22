@@ -273,6 +273,7 @@ class TeacherAvailability(models.Model):
         ('3', 'Jeudi'),
         ('4', 'Vendredi'),
         ('5', 'Samedi'),
+        ('6', 'Dimanche'),
     ],
         'Jour de la semaine',
         required=True
