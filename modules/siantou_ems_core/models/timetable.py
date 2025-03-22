@@ -180,6 +180,12 @@ class Timetable(models.Model):
         default='0',
     )
 
+    class_group_id = fields.Many2one(
+        'siantou.ems.core.class.group',
+        'Groupe',
+        ondelete='restrict'
+    )
+
     @api.onchange('semester_id')
     def _onchange_semester(self):
         for record in self:
