@@ -65,6 +65,21 @@ class TimetableSubjectHour(models.Model):
         ondelete='cascade'
     )
 
+    not_active_slotitems = fields.Integer(
+        string='Créneau horaire inactif',
+        default=0,
+    )
+
+    status = fields.Selection([
+        ('0', 'En attente'),
+        ('1', 'Présent'),
+        ('2', 'Absent'),
+        ('3', 'Permissionnaire'),
+        ('4', 'Exception'),
+    ], 'Statut',
+        default='0',
+    )
+
     # Méthode pour remplir automatiquement le jour de la semaine
     @api.onchange('date')
     def _onchange_date(self):
@@ -120,6 +135,13 @@ class Timetable(models.Model):
     department_id = fields.Many2one(
         'hr.department',
         string='Département'
+    )
+
+    school_id = fields.Many2one(
+        'siantou.ems.core.school',
+        string='Ecole',
+        required=True,
+        ondelete='restrict'
     )
 
     # Filière liée à la programmation de cours
