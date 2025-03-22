@@ -13,6 +13,8 @@
                 	<field name="filiere_id"/>
                     <field name="school_id"/>
                     <field name="niveau_id"/>
+                    <field name="type_cour"/>
+                    <field name="group_ids"/>
 				</tree>
 			</field>
 		</record>
@@ -36,6 +38,8 @@
                             <group>
                                 <field name="filiere_id"/>
                                 <field name="specialty_id" domain="[('field_of_study_id', '=', filiere_id)]"/>
+                                <field name="type_cour" widget="radio"/>
+                                <field name="group_ids"/>
                             </group>
                         </group>
                         <notebook>

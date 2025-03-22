@@ -40,3 +40,32 @@ class EducationClass(models.Model):
     annee_acadmique_id = fields.Many2one('siantou.ems.core.year', string='Année Académique')
 
     ue_ids = fields.One2many(comodel_name='siantou.ems.core.unite.enseignement', inverse_name='class_id', string='Unité d\'enseignement')
+
+    type_cour = fields.Selection([
+            ('cj', 'Cours du jour'),
+            ('cs', 'Cours du soir'),
+        ],
+        string="Type de cours",
+        required=True,
+        default='cj',
+    )
+
+    group_ids = fields.One2many(
+        'siantou.ems.core.class.group',
+        'class_id',
+        string='Liste des groupes'
+    )
+
+class EducationClassGroup(models.Model):
+    _name = 'siantou.ems.core.class.group'
+    _description = "Groupe de classe"
+
+    name = fields.Char(string='Nom', required=True,
+                       help="Entrer le nom du groupe")
+
+    class_id = fields.Many2one(
+        'siantou.ems.core.class',
+        string='Classe',
+        required=True,
+        ondelete='cascade'
+    )

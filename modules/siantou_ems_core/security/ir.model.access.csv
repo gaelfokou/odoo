@@ -38,6 +38,9 @@ field_of_study_admin,field_of_study.admin,model_siantou_ems_core_field_of_study,
 siantou_ems_core_class_user,siantou_ems_core_class.user,model_siantou_ems_core_class,,1,0,0,0
 siantou_ems_core_class_admin,siantou_ems_core_class.admin,model_siantou_ems_core_class,,1,1,1,1
 
+siantou_ems_core_class_group_user,siantou_ems_core_class_group.user,model_siantou_ems_core_class_group,,1,0,0,0
+siantou_ems_core_class_group_admin,siantou_ems_core_class_group.admin,model_siantou_ems_core_class_group,,1,1,1,1
+
 speciality_user,speciality.user,model_siantou_ems_core_specialty,siantou_ems_core.group_field_of_study_user,1,0,0,0
 speciality_admin,speciality.admin,model_siantou_ems_core_specialty,siantou_ems_core.group_field_of_study_admin,1,1,1,1
 

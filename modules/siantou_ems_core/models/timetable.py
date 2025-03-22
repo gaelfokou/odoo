@@ -131,7 +131,7 @@ class Timetable(models.Model):
             ('6', 'Dimanche'),
         ],
         'Jour de la semaine',
-        compute='_onchange_date',
+        compute='_compute_date',
         store=True
     )
 
@@ -215,8 +215,16 @@ class Timetable(models.Model):
             record.subject_id = None
 
     # Méthode pour remplir automatiquement le jour de la semaine
-    @api.depends('date')
+    @api.onchange('date')
     def _onchange_date(self):
+        for record in self:
+            if record.date:
+                record.day_of_week = str(record.date.weekday())
+            else:
+                record.day_of_week = None
+
+    @api.depends('date')
+    def _compute_date(self):
         for record in self:
             if record.date:
                 record.day_of_week = str(record.date.weekday())
