@@ -67,7 +67,7 @@
                         <group>
                             <field name="group_id" readonly="1" options="{'no_open': True, 'no_create': True}"/>
                             <field name="batch_id" invisible="1" options="{'no_create': True}"/>
-                            <field name="date"/>
+                            <field name="date" invisible="1"/>
                             <field name="semester_id" readonly="1" options="{'no_open': True, 'no_create': True}"/>
                             <field name="field_of_study_id" options="{'no_create': True}"/>
                             <field name="level_id" options="{'no_create': True}"/>
@@ -79,10 +79,11 @@
                             <field name="building_id" options="{'no_create': True}"/>
                             <field name="classroom_id" options="{'no_create': True}" domain="[('building_id', '=', building_id)]"/>
                             <field name="employee_id" options="{'no_create': True}"/>
-        					<field name="day_of_week"/>
-                            <field name="start_time"/>
-                            <field name="end_time"/>
-                            <field name="not_active_slotitems"/>
+        					<field name="day_of_week" invisible="1"/>
+                            <field name="start_time" invisible="1"/>
+                            <field name="end_time" invisible="1"/>
+                            <field name="subject_day_hour_ids"/>
+                            <field name="not_active_slotitems" invisible="1"/>
                             <field name="status"/>
                         </group>
 					</sheet>

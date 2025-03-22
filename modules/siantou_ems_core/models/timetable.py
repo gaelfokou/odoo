@@ -7,6 +7,90 @@ import logging
 
 _logger = logging.getLogger(__name__)
 
+class TimetableSubjectHour(models.Model):
+    _name = 'siantou.ems.timetable.subject.day.hour'
+    _description = 'Jour et heure du cours'
+
+    def _default_date(self):
+        group = self.env['siantou.ems.timetable.group'].search([('is_default', '=', True)], limit=1)
+        if group:
+            return group.semester_id.start_time
+        else:
+            return None
+
+    # Date du jour où le cours sera programmé
+    date = fields.Date(
+        'Date du jour',
+        required=True,
+        default=_default_date,
+    )
+
+    # Jour où le cours est programmé
+    day_of_week = fields.Selection([
+            ('0', 'Lundi'),
+            ('1', 'Mardi'),
+            ('2', 'Mercredi'),
+            ('3', 'Jeudi'),
+            ('4', 'Vendredi'),
+            ('5', 'Samedi'),
+            ('6', 'Dimanche'),
+        ],
+        'Jour de la semaine',
+        compute='_compute_date',
+        store=True
+    )
+
+    # Heure de début du cours
+    start_time = fields.Float(
+        'Heure de début',
+        required=True,
+        default=0,
+        ondelete='restrict',
+        widget='time'
+    )
+
+    # Heure de fin du cours
+    end_time = fields.Float(
+        'Heure de fin',
+        required=True,
+        default=0,
+        ondelete='restrict',
+        widget='time'
+    )
+
+    timetable_id = fields.Many2one(
+        'siantou.ems.timetable.timetable',
+        string='Emplois du temps',
+        required=True,
+        ondelete='cascade'
+    )
+
+    # Méthode pour remplir automatiquement le jour de la semaine
+    @api.onchange('date')
+    def _onchange_date(self):
+        for record in self:
+            if record.date:
+                record.day_of_week = str(record.date.weekday())
+            else:
+                record.day_of_week = None
+
+    @api.depends('date')
+    def _compute_date(self):
+        for record in self:
+            if record.date:
+                record.day_of_week = str(record.date.weekday())
+            else:
+                record.day_of_week = None
+
+    # Contrainte logique pour s'assurer que les heures de début et de fin sont définies et que l'heure de fin est supérieure à l'heure de début
+    @api.constrains('start_time', 'end_time')
+    def _check_constrains_time(self):
+        for record in self:
+            if record.start_time <= 0.0 or record.end_time <= 0.0:
+                raise ValidationError("Vous devez définir des heures de début et de fin corrects")
+            elif record.end_time <= record.start_time:
+                raise ValidationError("L'heure de fin du cours doit être supérieure à l'heure de début du cours")
+
 class Timetable(models.Model):
     _name = 'siantou.ems.timetable.timetable'
     _description = 'Emplois du temps'
@@ -186,6 +270,12 @@ class Timetable(models.Model):
         ondelete='restrict'
     )
 
+    subject_day_hour_ids = fields.One2many(
+        'siantou.ems.timetable.subject.day.hour',
+        'timetable_id',
+        string='Jours et heures du cours'
+    )
+
     @api.onchange('semester_id')
     def _onchange_semester(self):
         for record in self:
@@ -258,13 +348,13 @@ class Timetable(models.Model):
                 raise ValidationError("Deux cours ne doivent pas être programmés dans la même salle de classe sur des horaires qui se chevauchent le même jour")
 
     # Contrainte logique pour s'assurer que les heures de début et de fin sont définies et que l'heure de fin est supérieure à l'heure de début
-    @api.constrains('start_time', 'end_time')
-    def _check_constrains_time(self):
-        for record in self:
-            if record.start_time <= 0.0 or record.end_time <= 0.0:
-                raise ValidationError("Vous devez définir des heures de début et de fin corrects")
-            elif record.end_time <= record.start_time:
-                raise ValidationError("L'heure de fin du cours doit être supérieure à l'heure de début du cours")
+    # @api.constrains('start_time', 'end_time')
+    # def _check_constrains_time(self):
+    #     for record in self:
+    #         if record.start_time <= 0.0 or record.end_time <= 0.0:
+    #             raise ValidationError("Vous devez définir des heures de début et de fin corrects")
+    #         elif record.end_time <= record.start_time:
+    #             raise ValidationError("L'heure de fin du cours doit être supérieure à l'heure de début du cours")
 
     def action_timetable_automatic(self):
         action = self.env.ref('siantou_ems_core.action_generatetimetable_wizard').read()[0]

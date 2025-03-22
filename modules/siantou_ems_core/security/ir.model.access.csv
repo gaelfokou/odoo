@@ -123,3 +123,6 @@ access_siantou_ems_timetable_slot_admin,siantou.ems.timetable.slot,model_siantou
 
 access_siantou_ems_timetable_slotitem_user,siantou.ems.timetable.slotitem,model_siantou_ems_timetable_slotitem,base.group_user,1,0,0,0
 access_siantou_ems_timetable_slotitem_admin,siantou.ems.timetable.slotitem,model_siantou_ems_timetable_slotitem,base.group_user,1,1,1,1
+
+access_siantou_ems_timetable_subject_day_hour_user,siantou.ems.timetable.subject.day.hour,model_siantou_ems_timetable_subject_day_hour,base.group_user,1,0,0,0
+access_siantou_ems_timetable_subject_day_hour_admin,siantou.ems.timetable.subject.day.hour,model_siantou_ems_timetable_subject_day_hour,base.group_user,1,1,1,1
