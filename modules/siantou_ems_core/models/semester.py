@@ -63,6 +63,14 @@ class Semester(models.Model):
         comodel_name='siantou.ems.core.class',
     )
 
+    level_ids = fields.Many2many(
+        'siantou.ems.core.level',
+        'semester_level_rel',
+        'semester_id',
+        'level_id',
+        string='Niveaux',
+    )
+
     # Contrainte SQL pour empêcher d'avoir le même nom pour différents semestres
     _sql_constraints = [
         ('unique_name', 'unique(name)', 'Le nom du semestre doit être unique.'),

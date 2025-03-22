@@ -32,7 +32,13 @@
                             <field name="code"/>
                             <field name="name"/>
                             <field name="address_id"/>
-                            <field name="school_ids"/>
+                            <field name="school_ids">
+                                <tree>
+                                    <field name="code"/>
+                                    <field name="name"/>
+                                    <field name="max_students_per_batch"/>
+                                </tree>
+                            </field>
                         </group>
 					</sheet>
 				</form>

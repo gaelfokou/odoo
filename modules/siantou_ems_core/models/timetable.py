@@ -12,7 +12,7 @@ class TimetableSubjectHour(models.Model):
     _description = 'Jour et heure du cours'
 
     def _default_date(self):
-        group = self.env['siantou.ems.timetable.group'].search([('is_default', '=', True)], limit=1)
+        group = self.env['siantou.ems.timetable.group'].search([('active', '=', True)], limit=1)
         if group:
             return group.semester_id.start_time
         else:
@@ -111,7 +111,7 @@ class Timetable(models.Model):
     _description = 'Emplois du temps'
 
     def _default_semester(self):
-        group = self.env['siantou.ems.timetable.group'].search([('is_default', '=', True)], limit=1)
+        group = self.env['siantou.ems.timetable.group'].search([('active', '=', True)], limit=1)
         if group:
             return group.semester_id
         else:
@@ -213,7 +213,7 @@ class Timetable(models.Model):
     )
 
     def _default_date(self):
-        group = self.env['siantou.ems.timetable.group'].search([('is_default', '=', True)], limit=1)
+        group = self.env['siantou.ems.timetable.group'].search([('active', '=', True)], limit=1)
         if group:
             return group.semester_id.start_time
         else:
@@ -260,7 +260,7 @@ class Timetable(models.Model):
     )
 
     def _default_group(self):
-        return self.env['siantou.ems.timetable.group'].search([('is_default', '=', True)], limit=1)
+        return self.env['siantou.ems.timetable.group'].search([('active', '=', True)], limit=1)
 
     # Version auquel appartient l'emploi du temps
     group_id = fields.Many2one(
@@ -438,19 +438,19 @@ class TimetableGroup(models.Model):
 
     is_merge = fields.Boolean(string="Fusionner", default=True)
 
-    is_default = fields.Boolean(string="Par défaut", default=False)
+    active = fields.Boolean(string="Actif", default=False)
 
-    @api.constrains('is_default')
+    @api.constrains('active')
     def _check_constrains_default(self):
         for record in self:
-            if record.is_default:
+            if record.active:
                 slots = self.env['siantou.ems.timetable.group'].search([
                     ('id', '!=', record.id),
-                    ('is_default', '=', True),
+                    ('active', '=', True),
                 ])
                 slots = list(slots)
                 if len(slots) > 0:
-                    raise ValidationError(f"Version par défaut déjà définie")
+                    raise ValidationError(f"Version active déjà définie")
 
 class TimetableSlotItem(models.Model):
     _name = 'siantou.ems.timetable.slotitem'
@@ -541,19 +541,19 @@ class TimetableSlot(models.Model):
         string='Filières'
     )
 
-    is_default = fields.Boolean(string="Par défaut", default=False)
+    active = fields.Boolean(string="Actif", default=False)
 
-    @api.constrains('is_default')
+    @api.constrains('active')
     def _check_constrains_default(self):
         for record in self:
-            if record.is_default:
+            if record.active:
                 slots = self.env['siantou.ems.timetable.slot'].search([
                     ('id', '!=', record.id),
-                    ('is_default', '=', True),
+                    ('active', '=', True),
                 ])
                 slots = list(slots)
                 if len(slots) > 0:
-                    raise ValidationError(f"Créneau horaire par défaut déjà défini")
+                    raise ValidationError(f"Créneau horaire actif déjà défini")
 
     @api.onchange('department_id')
     def _onchange_department(self):

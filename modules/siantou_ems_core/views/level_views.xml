@@ -12,6 +12,7 @@
                     <field name="name"/>
                     <field name="cycle_ids" widget="many2many_tags"/>
 					<field name="description"/>
+					<field name="semester_ids" widget="many2many_tags"/>
 				</tree>
 			</field>
 		</record>
@@ -29,6 +30,14 @@
                             <field name="name"/>
                             <field name="cycle_ids" widget="many2many_tags"/>
                             <field name="description"/>
+                            <field name="semester_ids">
+                                <tree>
+                                    <field name="name"/>
+                                    <field name="start_time"/>
+                                    <field name="end_time"/>
+                                    <field name="year_id"/>
+                                </tree>
+                            </field>
                         </group>
 					</sheet>
 				</form>

@@ -11,6 +11,7 @@
 				<tree string="Semestres">
                     <field name="name"/>
                     <field name="year_id"/>
+					<field name="level_ids" widget="many2many_tags"/>
 					<field name="start_time"/>
 					<field name="end_time"/>
 					<field name="number_of_week"/>
@@ -36,6 +37,12 @@
                             <group colspan="2">
                                 <field name="end_time"/>
                                 <field name="number_of_week"/>
+                                <field name="level_ids">
+                                    <tree>
+                                        <field name="name"/>
+                                        <field name="description"/>
+                                    </tree>
+                                </field>
                             </group>
                         </group>
                         <notebook>

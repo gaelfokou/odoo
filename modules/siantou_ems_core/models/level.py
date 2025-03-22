@@ -30,7 +30,15 @@ class Level(models.Model):
         'level_id',
         string='Lots du niveau'
     )
-    
+
+    semester_ids = fields.Many2many(
+        'siantou.ems.core.year.semester',
+        'semester_level_rel',
+        'level_id',
+        'semester_id',
+        string='Semestres',
+    )
+
     _sql_constraints = [
         ('unique_name', 'unique(name)', 'Le nom du niveau doit être unique.'),
     ]

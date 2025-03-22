@@ -14,7 +14,7 @@
                     <field name="semester_id"/>
                     <field name="class_id"/>
                     <field name="is_merge"/>
-                    <field name="is_default"/>
+                    <field name="active"/>
                 </tree>
             </field>
         </record>

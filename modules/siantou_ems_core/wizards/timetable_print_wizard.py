@@ -189,7 +189,7 @@ class TimetablePrintWizard(models.TransientModel):
                 field_of_study_id = timetables[key][0]['field_of_study_id']
 
                 slots = self.env['siantou.ems.timetable.slot'].search([
-                    ('is_default', '=', False),
+                    ('active', '=', False),
                 ])
                 slots = list(slots)
 
@@ -209,7 +209,7 @@ class TimetablePrintWizard(models.TransientModel):
                     ])
                 else:
                     slots = self.env['siantou.ems.timetable.slot'].search([
-                        ('is_default', '=', True),
+                        ('active', '=', True),
                     ])
 
                 slots = list(slots)
