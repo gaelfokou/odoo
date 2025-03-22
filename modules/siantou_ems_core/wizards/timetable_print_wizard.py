@@ -42,7 +42,7 @@ class TimetablePrintWizard(models.TransientModel):
     # Semestre pour lequel on souhaite tirer l'emploi du temps
     semester_id = fields.Many2one(
         'siantou.ems.core.year.semester',
-        'Semester',
+        string='Semestre',
         required=True
     )
     

@@ -11,11 +11,19 @@ class Timetable(models.Model):
     _name = 'siantou.ems.timetable.timetable'
     _description = 'Emplois du temps'
 
+    def _default_semester(self):
+        group = self.env['siantou.ems.timetable.group'].search([('is_default', '=', True)], limit=1)
+        if group:
+            return group.semester_id
+        else:
+            return None
+
     # Semestre liée à la programmation de cours
     semester_id = fields.Many2one(
         'siantou.ems.core.year.semester',
-        'Semestre',
+        string='Semestre',
         required=True,
+        default=_default_semester,
         ondelete='restrict'
     )
 
@@ -98,10 +106,18 @@ class Timetable(models.Model):
         ondelete='restrict'
     )
 
+    def _default_date(self):
+        group = self.env['siantou.ems.timetable.group'].search([('is_default', '=', True)], limit=1)
+        if group:
+            return group.semester_id.start_time
+        else:
+            return None
+
     # Date du jour où le cours sera programmé
     date = fields.Date(
         'Date du jour',
-        required=True
+        required=True,
+        default=_default_date,
     )
 
     # Jour où le cours est programmé
@@ -136,12 +152,15 @@ class Timetable(models.Model):
         widget='time'
     )
 
+    def _default_group(self):
+        return self.env['siantou.ems.timetable.group'].search([('is_default', '=', True)], limit=1)
+
     # Version auquel appartient l'emploi du temps
     group_id = fields.Many2one(
         'siantou.ems.timetable.group',
         'Version',
         required=True,
-        default=lambda self: self.env['siantou.ems.timetable.group'].search([('is_default', '=', True)], limit=1),
+        default=_default_group,
         ondelete='cascade'
     )
 
@@ -285,7 +304,7 @@ class TimetableGroup(models.Model):
 
     semester_id = fields.Many2one(
         'siantou.ems.core.year.semester',
-        'Semester',
+        string='Semestre',
         required=True
     )
 
