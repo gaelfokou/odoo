@@ -122,6 +122,7 @@
                     <field name="level_id"/>
                     <field name="specialty_id"/>
                     <field name="class_id"/>
+                    <field name="class_group_id"/>
                     <field name="ue_id"/>
 					<field name="subject_id"/>
 					<field name="building_id"/>
