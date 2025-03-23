@@ -327,7 +327,6 @@ class Timetable(models.Model):
                             'level_id': timetable.level_id.id,
                             'specialty_id': timetable.specialty_id.id,
                             'class_id': timetable.class_id.id,
-                            'group_id': timetable.group_id.id,
                             'ue_id': timetable.ue_id.id,
                             'subject_id': timetable.subject_id.id,
                             'building_id': timetable.building_id.id,
@@ -367,7 +366,6 @@ class Timetable(models.Model):
                                     'level_id': timetable_id.level_id.id,
                                     'specialty_id': timetable_id.specialty_id.id,
                                     'class_id': timetable_id.class_id.id,
-                                    'group_id': timetable_id.group_id.id,
                                     'ue_id': timetable_id.ue_id.id,
                                     'subject_id': timetable_id.subject_id.id,
                                     'building_id': timetable_id.building_id.id,
@@ -391,9 +389,32 @@ class Timetable(models.Model):
     def create(self, vals):
         timetable = super(Timetable, self).create(vals)
 
-        self.create_timetable(timetable)
+        # self.create_timetable(timetable)
 
         return timetable
+
+    def action_create_timetable(self):
+        timetable = self.env['siantou.ems.timetable.timetable'].search([
+            ('id', '=', self.id),
+        ], limit=1)
+        if timetable:
+            self.create_timetable(timetable)
+
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'reload',
+        }
+
+    def action_create_all_timetable(self):
+        active_ids = self.env.context.get('active_ids', [])
+        timetable_ids = self.env['siantou.ems.timetable.timetable'].browse(active_ids)
+        for timetable in timetable_ids:
+            self.create_timetable(timetable)
+
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'reload',
+        }
 
     @api.onchange('semester_id')
     def _onchange_semester(self):
@@ -483,7 +504,6 @@ class Timetable(models.Model):
             'type': 'ir.actions.act_window',
         })
         return action
-    
 
     def action_timetable_print(self):
         action = self.env.ref('siantou_ems_core.action_print_timetable_wizard').read()[0]

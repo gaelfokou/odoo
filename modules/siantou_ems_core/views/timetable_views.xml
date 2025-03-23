@@ -27,6 +27,10 @@
                             class="oe_highlight" 
                             groups="siantou_ems_core.group_timetable_admin"
                             display="always"/> -->
+                        <button name="action_create_all_timetable" 
+                                type="object" 
+                                string="Dupliquer les emplois du temps" 
+                                class="oe_highlight"/>
                     </header>
                     <field name="group_id"/>
                     <field name="date"/>
@@ -51,6 +55,11 @@
                         decoration-danger="status == '2'"
                         decoration-info="status == '3'"
                         decoration-warning="status == '4'"/>
+                    <button name="action_create_timetable" 
+                            type="object" 
+                            string="Dupliquer l'emploi du temps" 
+                            class="oe_highlight" 
+                            invisible="id != False and start_time != end_time"/>
 				</tree>
 			</field>
 		</record>
@@ -63,6 +72,13 @@
 			<field name="model">siantou.ems.timetable.timetable</field>
 			<field name="arch" type="xml">
 				<form string="Emploi du temps">
+                    <header>
+                        <button name="action_create_timetable" 
+                                type="object" 
+                                string="Dupliquer l'emploi du temps" 
+                                class="oe_highlight" 
+                                invisible="id != False and start_time != end_time"/>
+                    </header>
 					<sheet>
                         <group>
                             <field name="group_id" readonly="1" options="{'no_open': True, 'no_create': True}"/>
@@ -80,10 +96,10 @@
                             <field name="building_id" options="{'no_create': True}"/>
                             <field name="classroom_id" options="{'no_create': True}" domain="[('building_id', '=', building_id)]"/>
                             <field name="employee_id" options="{'no_create': True}" domain="[('subject_ids', '=', subject_id)]"/>
-        					<field name="day_of_week" invisible="id == False"/>
-                            <field name="start_time" invisible="id == False"/>
-                            <field name="end_time" invisible="id == False"/>
-                            <field name="subject_day_hour_ids" invisible="id != False" widget="one2many_list">
+        					<field name="day_of_week" invisible="id == False or start_time == end_time"/>
+                            <field name="start_time" invisible="id == False or start_time == end_time"/>
+                            <field name="end_time" invisible="id == False or start_time == end_time"/>
+                            <field name="subject_day_hour_ids" invisible="id != False and start_time != end_time" widget="one2many_list">
                                 <tree>
                                     <field name="date"/>
                                     <field name="day_of_week"/>
