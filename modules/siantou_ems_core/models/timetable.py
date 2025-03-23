@@ -350,7 +350,7 @@ class Timetable(models.Model):
                         weekly_hours_credit = weekly_hours_credit - timetable_id.not_active_slotitems
                         semester_hours_credit -= weekly_hours_credit
                         if i > 0:
-                            target_date = subject_day_hour_id.date + timedelta(weeks=i)
+                            target_date = timetable_id.date + timedelta(weeks=i)
                             timetable_id = self.env['siantou.ems.timetable.timetable'].search([
                                 ('class_id', '=', timetable_id.class_id.id),
                                 ('subject_id', '=', timetable_id.subject_id.id),
@@ -377,7 +377,7 @@ class Timetable(models.Model):
                                     'group_id': timetable_id.group_id.id,
                                 })
                     i += 1
-            self.env.cr.commit()
+            # self.env.cr.commit()
         except psycopg2.errors.NotNullViolation as error:
             _logger.info(f'----------- tototototototo Exception {error} -----------')
         except psycopg2.Error as error:
