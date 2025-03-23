@@ -66,6 +66,5 @@ class EducationClassGroup(models.Model):
     class_id = fields.Many2one(
         'siantou.ems.core.class',
         string='Classe',
-        required=True,
         ondelete='cascade'
     )
