@@ -454,6 +454,11 @@ class Timetable(models.Model):
             record.ue_id = None
             record.subject_id = None
 
+    @api.onchange('ue_id')
+    def _onchange_ue(self):
+        for record in self:
+            record.subject_id = None
+
     # Méthode pour remplir automatiquement le jour de la semaine
     @api.onchange('date')
     def _onchange_date(self):
