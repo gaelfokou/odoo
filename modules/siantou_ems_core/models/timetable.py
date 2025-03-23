@@ -1,9 +1,10 @@
+import math
 from email.policy import default
-
 from odoo import models, fields, api
 from odoo.exceptions import ValidationError
 import psycopg2
-from datetime import datetime
+from datetime import date, datetime, timedelta, time
+from dateutil.relativedelta import relativedelta
 import logging
 
 _logger = logging.getLogger(__name__)
@@ -301,6 +302,7 @@ class Timetable(models.Model):
 
     def create_timetable(self, timetable):
         try:
+            timetables = []
             subject_day_hour_ids = list(timetable.subject_day_hour_ids)
             for i, subject_day_hour_id in enumerate(subject_day_hour_ids):
                 if i == 0:
@@ -309,8 +311,9 @@ class Timetable(models.Model):
                         'start_time': subject_day_hour_id.start_time,
                         'end_time': subject_day_hour_id.end_time,
                     })
+                    timetables.append(timetable)
                 else:
-                    self.env['siantou.ems.timetable.timetable'].create({
+                    timetable_id = self.env['siantou.ems.timetable.timetable'].create({
                         'semester_id': timetable.semester_id.id,
                         'school_id': timetable.school_id.id,
                         'field_of_study_id': timetable.field_of_study_id.id,
@@ -327,7 +330,37 @@ class Timetable(models.Model):
                         'end_time': subject_day_hour_id.end_time,
                         'group_id': timetable.group_id.id,
                     })
+                    timetables.append(timetable_id)
                 subject_day_hour_id.unlink()
+            semester_hours_credit = timetable.subject_id.hours_credit
+            i = 0
+            while True:
+                if semester_hours_credit <= 0:
+                    break
+                for timetable_id in timetables:
+                    weekly_hours_credit = timetable_id.end_time - timetable_id.start_time
+                    weekly_hours_credit = weekly_hours_credit - timetable_id.not_active_slotitems
+                    semester_hours_credit -= weekly_hours_credit
+                    if i > 0:
+                        target_date = subject_day_hour_id.date + timedelta(weeks=i)
+                        timetable_id = self.env['siantou.ems.timetable.timetable'].create({
+                            'semester_id': timetable_id.semester_id.id,
+                            'school_id': timetable_id.school_id.id,
+                            'field_of_study_id': timetable_id.field_of_study_id.id,
+                            'level_id': timetable_id.level_id.id,
+                            'specialty_id': timetable_id.specialty_id.id,
+                            'class_id': timetable_id.class_id.id,
+                            'ue_id': timetable_id.ue_id.id,
+                            'subject_id': timetable_id.subject_id.id,
+                            'building_id': timetable_id.building_id.id,
+                            'classroom_id': timetable_id.classroom_id.id,
+                            'employee_id': timetable_id.employee_id.id,
+                            'date': target_date,
+                            'start_time': timetable_id.start_time,
+                            'end_time': timetable_id.end_time,
+                            'group_id': timetable_id.group_id.id,
+                        })
+                i += 1
             self.env.cr.commit()
         except psycopg2.errors.NotNullViolation as error:
             _logger.info(f'----------- tototototototo Exception {error} -----------')
