@@ -327,6 +327,7 @@ class Timetable(models.Model):
                             'level_id': timetable.level_id.id,
                             'specialty_id': timetable.specialty_id.id,
                             'class_id': timetable.class_id.id,
+                            'class_group_id': timetable.class_group_id.id,
                             'ue_id': timetable.ue_id.id,
                             'subject_id': timetable.subject_id.id,
                             'building_id': timetable.building_id.id,
@@ -339,42 +340,43 @@ class Timetable(models.Model):
                         })
                     timetables.append(timetable_id)
                 subject_day_hour_id.unlink()
-            if len(subject_day_hour_ids) > 0:
+            if len(timetables) > 0:
                 semester_hours_credit = timetable.subject_id.hours_credit
                 i = 0
                 while True:
                     if semester_hours_credit <= 0:
                         break
-                    for timetable_id in timetables:
-                        weekly_hours_credit = timetable_id.end_time - timetable_id.start_time
-                        weekly_hours_credit = weekly_hours_credit - timetable_id.not_active_slotitems
+                    for first_timetable in timetables:
+                        weekly_hours_credit = first_timetable.end_time - first_timetable.start_time
+                        weekly_hours_credit = weekly_hours_credit - first_timetable.not_active_slotitems
                         semester_hours_credit -= weekly_hours_credit
                         if i > 0:
-                            target_date = timetable_id.date + timedelta(weeks=i)
+                            target_date = first_timetable.date + timedelta(weeks=i)
                             timetable_id = self.env['siantou.ems.timetable.timetable'].search([
-                                ('class_id', '=', timetable_id.class_id.id),
-                                ('subject_id', '=', timetable_id.subject_id.id),
+                                ('class_id', '=', first_timetable.class_id.id),
+                                ('subject_id', '=', first_timetable.subject_id.id),
                                 ('date', '=', target_date),
-                                ('start_time', '=', timetable_id.start_time),
-                                ('end_time', '=', timetable_id.end_time),
+                                ('start_time', '=', first_timetable.start_time),
+                                ('end_time', '=', first_timetable.end_time),
                             ], limit=1)
                             if not timetable_id:
                                 timetable_id = self.env['siantou.ems.timetable.timetable'].create({
-                                    'semester_id': timetable_id.semester_id.id,
-                                    'school_id': timetable_id.school_id.id,
-                                    'field_of_study_id': timetable_id.field_of_study_id.id,
-                                    'level_id': timetable_id.level_id.id,
-                                    'specialty_id': timetable_id.specialty_id.id,
-                                    'class_id': timetable_id.class_id.id,
-                                    'ue_id': timetable_id.ue_id.id,
-                                    'subject_id': timetable_id.subject_id.id,
-                                    'building_id': timetable_id.building_id.id,
-                                    'classroom_id': timetable_id.classroom_id.id,
-                                    'employee_id': timetable_id.employee_id.id,
+                                    'semester_id': first_timetable.semester_id.id,
+                                    'school_id': first_timetable.school_id.id,
+                                    'field_of_study_id': first_timetable.field_of_study_id.id,
+                                    'level_id': first_timetable.level_id.id,
+                                    'specialty_id': first_timetable.specialty_id.id,
+                                    'class_id': first_timetable.class_id.id,
+                                    'class_group_id': first_timetable.class_group_id.id,
+                                    'ue_id': first_timetable.ue_id.id,
+                                    'subject_id': first_timetable.subject_id.id,
+                                    'building_id': first_timetable.building_id.id,
+                                    'classroom_id': first_timetable.classroom_id.id,
+                                    'employee_id': first_timetable.employee_id.id,
                                     'date': target_date,
-                                    'start_time': timetable_id.start_time,
-                                    'end_time': timetable_id.end_time,
-                                    'group_id': timetable_id.group_id.id,
+                                    'start_time': first_timetable.start_time,
+                                    'end_time': first_timetable.end_time,
+                                    'group_id': first_timetable.group_id.id,
                                 })
                     i += 1
             self.env.cr.commit()
@@ -389,7 +391,7 @@ class Timetable(models.Model):
     def create(self, vals):
         timetable = super(Timetable, self).create(vals)
 
-        # self.create_timetable(timetable)
+        self.create_timetable(timetable)
 
         return timetable
 

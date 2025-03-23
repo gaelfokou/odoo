@@ -15,22 +15,15 @@
                             string="Génération automatique" 
                             class="oe_highlight" 
                             display="always"/>
-                        <!-- <button name="teacher_test_dispatch" type="object" string="Teacher test" class="oe_highlight" display="always"/> -->
                         <button name="action_timetable_print" 
                             type="object" 
                             string="Impression" 
                             class="oe_highlight" 
                             display="always"/>
-                        <!-- <button name="update_day_of_week" 
-                            type="object" 
-                            string="Update day" 
-                            class="oe_highlight" 
-                            groups="siantou_ems_core.group_timetable_admin"
-                            display="always"/> -->
-                        <button name="action_create_all_timetable" 
+                        <!-- <button name="action_create_all_timetable" 
                                 type="object" 
                                 string="Dupliquer les emplois du temps" 
-                                class="oe_highlight"/>
+                                class="oe_highlight"/> -->
                     </header>
                     <field name="group_id"/>
                     <field name="date"/>
@@ -55,11 +48,11 @@
                         decoration-danger="status == '2'"
                         decoration-info="status == '3'"
                         decoration-warning="status == '4'"/>
-                    <button name="action_create_timetable" 
+                    <!-- <button name="action_create_timetable" 
                             type="object" 
                             string="Dupliquer l'emploi du temps" 
                             class="oe_highlight" 
-                            invisible="id != False and start_time != end_time"/>
+                            invisible="id != False and start_time != end_time"/> -->
 				</tree>
 			</field>
 		</record>
@@ -72,13 +65,13 @@
 			<field name="model">siantou.ems.timetable.timetable</field>
 			<field name="arch" type="xml">
 				<form string="Emploi du temps">
-                    <header>
+                    <!-- <header>
                         <button name="action_create_timetable" 
                                 type="object" 
                                 string="Dupliquer l'emploi du temps" 
                                 class="oe_highlight" 
                                 invisible="id != False and start_time != end_time"/>
-                    </header>
+                    </header> -->
 					<sheet>
                         <group>
                             <field name="group_id" readonly="1" options="{'no_open': True, 'no_create': True}"/>
