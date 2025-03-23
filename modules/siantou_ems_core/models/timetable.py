@@ -2,6 +2,7 @@ from email.policy import default
 
 from odoo import models, fields, api
 from odoo.exceptions import ValidationError
+import psycopg2
 from datetime import datetime
 import logging
 
@@ -297,6 +298,51 @@ class Timetable(models.Model):
         'timetable_id',
         string='Jours et heures du cours'
     )
+
+    def create_timetable(self, timetable):
+        try:
+            subject_day_hour_ids = list(timetable.subject_day_hour_ids)
+            for i, subject_day_hour_id in enumerate(subject_day_hour_ids):
+                if i == 0:
+                    timetable.write({
+                        'date': subject_day_hour_id.date,
+                        'start_time': subject_day_hour_id.start_time,
+                        'end_time': subject_day_hour_id.end_time,
+                    })
+                else:
+                    self.env['siantou.ems.timetable.timetable'].create({
+                        'semester_id': timetable.semester_id.id,
+                        'school_id': timetable.school_id.id,
+                        'field_of_study_id': timetable.field_of_study_id.id,
+                        'level_id': timetable.level_id.id,
+                        'specialty_id': timetable.specialty_id.id,
+                        'class_id': timetable.class_id.id,
+                        'ue_id': timetable.ue_id.id,
+                        'subject_id': timetable.subject_id.id,
+                        'building_id': timetable.building_id.id,
+                        'classroom_id': timetable.classroom_id.id,
+                        'employee_id': timetable.employee_id.id,
+                        'date': subject_day_hour_id.date,
+                        'start_time': subject_day_hour_id.start_time,
+                        'end_time': subject_day_hour_id.end_time,
+                        'group_id': timetable.group_id.id,
+                    })
+                subject_day_hour_id.unlink()
+            self.env.cr.commit()
+        except psycopg2.errors.NotNullViolation as error:
+            _logger.info(f'----------- tototototototo Exception {error} -----------')
+        except psycopg2.Error as error:
+            _logger.info(f'----------- tototototototo Exception {error} -----------')
+        except Exception as error:
+            _logger.info(f'----------- tototototototo Exception {error} -----------')
+
+    @api.model
+    def create(self, vals):
+        timetable = super(Timetable, self).create(vals)
+
+        self.create_timetable(timetable)
+
+        return timetable
 
     @api.onchange('semester_id')
     def _onchange_semester(self):

@@ -376,7 +376,7 @@ class Student(models.Model):
         vals['batch_id'] = batch.id
 
         # Création de l'étudiant
-        student = super().create(vals)
+        student = super(Student, self).create(vals)
 
         self.create_student_user(student)
         
