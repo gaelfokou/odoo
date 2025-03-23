@@ -32,12 +32,6 @@ class TimetableWizard(models.TransientModel):
         ondelete='restrict'
     )
 
-    class_id = fields.Many2one(
-        'siantou.ems.core.class',
-        string='classe',
-        ondelete='restrict'
-    )
-
     # Période de début
     period_from = fields.Date(
         'Période de',
@@ -52,8 +46,6 @@ class TimetableWizard(models.TransientModel):
     group = fields.Char(
         'Version'
     )
-
-    is_merge = fields.Boolean(string="Fusionner", default=True)
 
     @api.constrains('period_from', 'period_to')
     def _check_constrains_period(self):
@@ -94,9 +86,6 @@ class TimetableWizard(models.TransientModel):
         
         if self.level_id.id:
             domain.append(('niveau_id', '=', self.level_id.id))
-        
-        if self.class_id.id:
-            domain.append(('id', '=', self.class_id.id))
 
         classes = self.env['siantou.ems.core.class'].search(domain)
         classes = list(classes)
@@ -108,22 +97,12 @@ class TimetableWizard(models.TransientModel):
                 continue
             check_classes = classe
             if shared_subject:
-                if self.is_merge:
-                    if self.group and self.group.strip() != '':
-                        name_group = self.group
-                    else:
-                        name_group = "group-" + unique_string
-
-                    new_group = self.env['siantou.ems.timetable.group'].search([], limit=1)
-                    if not new_group:
-                        new_group = self.env['siantou.ems.timetable.group'].create({'name': name_group, 'semester_id': self.semester_id.id, 'is_merge': self.is_merge})
+                if self.group and self.group.strip() != '':
+                    name_group = self.group + "-" + classe.name
                 else:
-                    if self.group and self.group.strip() != '':
-                        name_group = self.group + "-" + classe.name
-                    else:
-                        name_group = "group-" + unique_string + "-" + classe.name
+                    name_group = "group-" + unique_string + "-" + classe.name
 
-                    new_group = self.env['siantou.ems.timetable.group'].create({'name': name_group, 'semester_id': self.semester_id.id, 'is_merge': self.is_merge, 'class_id': classe.id})
+                new_group = self.env['siantou.ems.timetable.group'].create({'name': name_group, 'semester_id': self.semester_id.id})
 
                 all_groups[i] = new_group
             else:

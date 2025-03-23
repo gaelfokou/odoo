@@ -66,12 +66,6 @@ class TimetablePrintWizard(models.TransientModel):
         ondelete='restrict'
     )
 
-    class_id = fields.Many2one(
-        'siantou.ems.core.class',
-        string='classe',
-        ondelete='restrict'
-    )
-
     # Période de début
     period_from = fields.Date(
         'Période de',
@@ -87,8 +81,6 @@ class TimetablePrintWizard(models.TransientModel):
         'Version',
         required=True
     )
-
-    is_merge = fields.Boolean(string="Fusionner", default=True)
 
     @api.constrains('period_from', 'period_to')
     def _check_constrains_period(self):
@@ -126,10 +118,6 @@ class TimetablePrintWizard(models.TransientModel):
         # Ajouter le critère Niveau seulement s'il est sélectionné
         if self.level_id.id:
             domain.append(('level_id', '=', self.level_id.id))
-
-        # Ajouter le critère Niveau seulement s'il est sélectionné
-        if self.class_id.id:
-            domain.append(('class_id', '=', self.class_id.id))
 
         # Ajouter le critère de période seulement si la période de début et la période de fin sont sélectionnées
         if self.period_from and self.period_to:

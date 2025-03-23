@@ -431,13 +431,6 @@ class TimetableGroup(models.Model):
         required=True
     )
 
-    class_id = fields.Many2one(
-        'siantou.ems.core.class',
-        'Classe',
-    )
-
-    is_merge = fields.Boolean(string="Fusionner", default=True)
-
     active = fields.Boolean(string="Actif", default=False)
 
     @api.constrains('active')

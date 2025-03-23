@@ -12,8 +12,6 @@
                     <field name="name"/>
                     <field name="timetables"/>
                     <field name="semester_id"/>
-                    <field name="class_id"/>
-                    <field name="is_merge"/>
                     <field name="active"/>
                 </tree>
             </field>
