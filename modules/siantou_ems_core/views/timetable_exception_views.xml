@@ -8,7 +8,7 @@
             <field name="name">timetable.exception.tree.view</field>
 			<field name="model">siantou.ems.timetable.timetable</field>
 			<field name="arch" type="xml">
-				<tree delete="False" create="False" string="Exceptions d'emploi du temps">
+				<tree create="False" string="Exceptions d'emploi du temps">
                     <field name="group_id"/>
                     <field name="batch_id" invisible="1"/>
                     <field name="date"/>
