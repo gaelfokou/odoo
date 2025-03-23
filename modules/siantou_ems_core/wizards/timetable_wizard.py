@@ -190,7 +190,7 @@ class TimetableWizard(models.TransientModel):
                                 # On parcours toutes les semaines du semestre
                                 for week in range(0, ue_id.semestre_id.number_of_week):
                                     # on verifie si le quota semestriel est atteint
-                                    if semester_hours_credit == 0:
+                                    if semester_hours_credit <= 0:
                                         break
                                     check_semester_hours_credit += semester_hours_credit
                                     # On initialise subject_hours_credit pour gérer le nombre de jours sur lesquels on doit programmer le cours
@@ -198,7 +198,7 @@ class TimetableWizard(models.TransientModel):
                                     # on verifie si le quota hebdomadaire est atteint
                                     if subject_hours_credit > 0:
                                         while True:
-                                            if subject_hours_credit == 0:
+                                            if subject_hours_credit <= 0:
                                                 break
                                             check_weekly_hours_credit += subject_hours_credit
                                             first_time = ue_id.semestre_id.start_time
@@ -258,7 +258,7 @@ class TimetableWizard(models.TransientModel):
                                                     if day < first_time.weekday():
                                                         continue
                                                 # on verifie si le quota hebdomadaire est atteint
-                                                if weekly_hours_credit == 0:
+                                                if weekly_hours_credit <= 0:
                                                     break
                                                 if subject.shared_subject:
                                                     if day not in [0, 1, 4]:
