@@ -63,7 +63,6 @@ class TimetableSubjectHour(models.Model):
     timetable_id = fields.Many2one(
         'siantou.ems.timetable.timetable',
         string='Emplois du temps',
-        required=True,
         ondelete='cascade'
     )
 
