@@ -9,6 +9,12 @@
 			<field name="model">siantou.ems.timetable.timetable</field>
 			<field name="arch" type="xml">
 				<tree create="False" string="Exceptions d'emploi du temps">
+                    <header>
+                        <button name="action_cancel_all_timetable_exception" 
+                                type="object" 
+                                string="Annuler les exceptions" 
+                                class="oe_highlight"/>
+                    </header>
                     <field name="group_id"/>
                     <field name="date"/>
                     <field name="semester_id"/>
@@ -32,7 +38,6 @@
                         decoration-danger="status == '2'"
                         decoration-info="status == '3'"
                         decoration-warning="status == '4'"/>
-                    <button name="action_cancel_timetable_exception" type="object" string="Annuler l'exception" class="btn btn-primary"/>
 				</tree>
 			</field>
 		</record>

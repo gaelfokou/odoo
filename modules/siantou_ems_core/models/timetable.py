@@ -519,14 +519,11 @@ class Timetable(models.Model):
         })
         return action
 
-    def action_cancel_timetable_exception(self):
-        employee_timetables = self.env['siantou.ems.timetable.timetable'].search([
-            ('id', '=', self.id),
-        ])
-        employee_timetables = list(employee_timetables)
-        if len(employee_timetables) > 0:
-            employee_timetable = employee_timetables[0]
-            employee_timetable.write({
+    def action_cancel_all_timetable_exception(self):
+        active_ids = self.env.context.get('active_ids', [])
+        timetable_ids = self.env['siantou.ems.timetable.timetable'].browse(active_ids)
+        for timetable in timetable_ids:
+            timetable.write({
                 'status': '1',
             })
 
