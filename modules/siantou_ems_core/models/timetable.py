@@ -314,11 +314,11 @@ class Timetable(models.Model):
                     timetables.append(timetable)
                 else:
                     timetable_id = self.env['siantou.ems.timetable.timetable'].search([
-                        'class_id': timetable.class_id.id,
-                        'subject_id': timetable.subject_id.id,
-                        'date': subject_day_hour_id.date,
-                        'start_time': subject_day_hour_id.start_time,
-                        'end_time': subject_day_hour_id.end_time,
+                        ('class_id', '=', timetable.class_id.id),
+                        ('subject_id', '=', timetable.subject_id.id),
+                        ('date', '=', subject_day_hour_id.date),
+                        ('start_time', '=', subject_day_hour_id.start_time),
+                        ('end_time', '=', subject_day_hour_id.end_time),
                     ], limit=1)
                     if not timetable_id:
                         timetable_id = self.env['siantou.ems.timetable.timetable'].create({
@@ -352,11 +352,11 @@ class Timetable(models.Model):
                     if i > 0:
                         target_date = subject_day_hour_id.date + timedelta(weeks=i)
                         timetable_id = self.env['siantou.ems.timetable.timetable'].search([
-                            'class_id': timetable_id.class_id.id,
-                            'subject_id': timetable_id.subject_id.id,
-                            'date': target_date,
-                            'start_time': timetable_id.start_time,
-                            'end_time': timetable_id.end_time,
+                            ('class_id', '=', timetable_id.class_id.id),
+                            ('subject_id', '=', timetable_id.subject_id.id),
+                            ('date', '=', target_date),
+                            ('start_time', '=', timetable_id.start_time),
+                            ('end_time', '=', timetable_id.end_time),
                         ], limit=1)
                         if not timetable_id:
                             timetable_id = self.env['siantou.ems.timetable.timetable'].create({
