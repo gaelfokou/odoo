@@ -79,7 +79,7 @@
                             <field name="subject_id" options="{'no_create': True}" domain="[('ue_ids', '=', ue_id)]"/>
                             <field name="building_id" options="{'no_create': True}"/>
                             <field name="classroom_id" options="{'no_create': True}" domain="[('building_id', '=', building_id)]"/>
-                            <field name="employee_id" options="{'no_create': True}" domain="[('employee_id.subject_ids', '=', subject_id)]"/>
+                            <field name="employee_id" options="{'no_create': True}" domain="[('subject_ids', '=', subject_id)]"/>
         					<field name="day_of_week" invisible="id == False"/>
                             <field name="start_time" invisible="id == False"/>
                             <field name="end_time" invisible="id == False"/>
