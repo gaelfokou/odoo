@@ -66,12 +66,12 @@ class Subject(models.Model):
     # Les enseignants qui dispensent ce cours
     teacher_ids = fields.Many2many(
         'hr.employee',
-        relation='teacher_subject_rel',
-        column1='subject_id',
-        column2='employee_id',
+        'teacher_subject_rel',
+        'subject_id',
+        'employee_id',
         string='Enseignants',
-        compute='_compute_teacher_ids',
-        inverse='_set_teacher_ids'
+        # compute='_compute_teacher_ids',
+        # inverse='_set_teacher_ids'
     )
     
     # Les priorités pour chaque enseignant sur ce cours
@@ -112,29 +112,29 @@ class Subject(models.Model):
                 raise ValidationError("Le volume horaire semestriel doit être supérieur à 0")
 
     # Méthode calculée pour teacher_ids afin de montrer les enseignants liés dans le modèle des priorités
-    @api.depends('teacher_priority_ids')
-    def _compute_teacher_ids(self):
-        for record in self:
-            record.teacher_ids = record.teacher_priority_ids.mapped('employee_id')
+    # @api.depends('teacher_priority_ids')
+    # def _compute_teacher_ids(self):
+    #     for record in self:
+    #         record.teacher_ids = record.teacher_priority_ids.mapped('employee_id')
 
     # Méthode inverse pour ajouter/supprimer des enseignants dans le modèle des priorités avec une priorité par défaut de 1
-    def _set_teacher_ids(self):
-        for record in self:
-            current_teacher_ids = record.teacher_priority_ids.mapped('employee_id').ids
-            new_teacher_ids = record.teacher_ids.ids
+    # def _set_teacher_ids(self):
+    #     for record in self:
+    #         current_teacher_ids = record.teacher_priority_ids.mapped('employee_id').ids
+    #         new_teacher_ids = record.teacher_ids.ids
 
-            # Ajouter les nouveaux enseignants avec une priorité par défaut de 1
-            to_add = set(new_teacher_ids) - set(current_teacher_ids)
-            for teacher_id in to_add:
-                self.env['siantou.ems.core.teacher.subject.priority'].create({
-                    'employee_id': teacher_id,
-                    'subject_id': record.id,
-                    'priority': 1,
-                })
+    #         # Ajouter les nouveaux enseignants avec une priorité par défaut de 1
+    #         to_add = set(new_teacher_ids) - set(current_teacher_ids)
+    #         for teacher_id in to_add:
+    #             self.env['siantou.ems.core.teacher.subject.priority'].create({
+    #                 'employee_id': teacher_id,
+    #                 'subject_id': record.id,
+    #                 'priority': 1,
+    #             })
 
-            # Supprimer les enseignants enlevés de teacher_ids
-            to_remove = set(current_teacher_ids) - set(new_teacher_ids)
-            record.teacher_priority_ids.filtered(lambda p: p.employee_id.id in to_remove).unlink()
+    #         # Supprimer les enseignants enlevés de teacher_ids
+    #         to_remove = set(current_teacher_ids) - set(new_teacher_ids)
+    #         record.teacher_priority_ids.filtered(lambda p: p.employee_id.id in to_remove).unlink()
             
     
     field_name = fields.Char(compute='_compute_field_name', string='field_name')

@@ -37,7 +37,7 @@
                     </page>
                     <page string="Priorités des cours" name="course_priorities"
                         invisible="is_teacher == False">
-                        <field name="subject_priority_ids" widget="one2many_list">
+                        <field name="subject_priority_ids" domain="[('subject_id', 'in', subject_ids)]" widget="one2many_list">
                             <tree editable="bottom">
                                 <field name="subject_id" options="{'no_open': True}"/>
                                 <field name="priority"/>
