@@ -327,6 +327,7 @@ class Timetable(models.Model):
                             'level_id': timetable.level_id.id,
                             'specialty_id': timetable.specialty_id.id,
                             'class_id': timetable.class_id.id,
+                            'group_id': timetable.group_id.id,
                             'ue_id': timetable.ue_id.id,
                             'subject_id': timetable.subject_id.id,
                             'building_id': timetable.building_id.id,
@@ -366,6 +367,7 @@ class Timetable(models.Model):
                                     'level_id': timetable_id.level_id.id,
                                     'specialty_id': timetable_id.specialty_id.id,
                                     'class_id': timetable_id.class_id.id,
+                                    'group_id': timetable_id.group_id.id,
                                     'ue_id': timetable_id.ue_id.id,
                                     'subject_id': timetable_id.subject_id.id,
                                     'building_id': timetable_id.building_id.id,
@@ -377,7 +379,7 @@ class Timetable(models.Model):
                                     'group_id': timetable_id.group_id.id,
                                 })
                     i += 1
-            # self.env.cr.commit()
+            self.env.cr.commit()
         except psycopg2.errors.NotNullViolation as error:
             _logger.info(f'----------- tototototototo Exception {error} -----------')
         except psycopg2.Error as error:
