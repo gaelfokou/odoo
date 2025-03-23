@@ -339,43 +339,44 @@ class Timetable(models.Model):
                         })
                     timetables.append(timetable_id)
                 subject_day_hour_id.unlink()
-            semester_hours_credit = timetable.subject_id.hours_credit
-            i = 0
-            while True:
-                if semester_hours_credit <= 0:
-                    break
-                for timetable_id in timetables:
-                    weekly_hours_credit = timetable_id.end_time - timetable_id.start_time
-                    weekly_hours_credit = weekly_hours_credit - timetable_id.not_active_slotitems
-                    semester_hours_credit -= weekly_hours_credit
-                    if i > 0:
-                        target_date = subject_day_hour_id.date + timedelta(weeks=i)
-                        timetable_id = self.env['siantou.ems.timetable.timetable'].search([
-                            ('class_id', '=', timetable_id.class_id.id),
-                            ('subject_id', '=', timetable_id.subject_id.id),
-                            ('date', '=', target_date),
-                            ('start_time', '=', timetable_id.start_time),
-                            ('end_time', '=', timetable_id.end_time),
-                        ], limit=1)
-                        if not timetable_id:
-                            timetable_id = self.env['siantou.ems.timetable.timetable'].create({
-                                'semester_id': timetable_id.semester_id.id,
-                                'school_id': timetable_id.school_id.id,
-                                'field_of_study_id': timetable_id.field_of_study_id.id,
-                                'level_id': timetable_id.level_id.id,
-                                'specialty_id': timetable_id.specialty_id.id,
-                                'class_id': timetable_id.class_id.id,
-                                'ue_id': timetable_id.ue_id.id,
-                                'subject_id': timetable_id.subject_id.id,
-                                'building_id': timetable_id.building_id.id,
-                                'classroom_id': timetable_id.classroom_id.id,
-                                'employee_id': timetable_id.employee_id.id,
-                                'date': target_date,
-                                'start_time': timetable_id.start_time,
-                                'end_time': timetable_id.end_time,
-                                'group_id': timetable_id.group_id.id,
-                            })
-                i += 1
+            if len(subject_day_hour_ids) > 0:
+                semester_hours_credit = timetable.subject_id.hours_credit
+                i = 0
+                while True:
+                    if semester_hours_credit <= 0:
+                        break
+                    for timetable_id in timetables:
+                        weekly_hours_credit = timetable_id.end_time - timetable_id.start_time
+                        weekly_hours_credit = weekly_hours_credit - timetable_id.not_active_slotitems
+                        semester_hours_credit -= weekly_hours_credit
+                        if i > 0:
+                            target_date = subject_day_hour_id.date + timedelta(weeks=i)
+                            timetable_id = self.env['siantou.ems.timetable.timetable'].search([
+                                ('class_id', '=', timetable_id.class_id.id),
+                                ('subject_id', '=', timetable_id.subject_id.id),
+                                ('date', '=', target_date),
+                                ('start_time', '=', timetable_id.start_time),
+                                ('end_time', '=', timetable_id.end_time),
+                            ], limit=1)
+                            if not timetable_id:
+                                timetable_id = self.env['siantou.ems.timetable.timetable'].create({
+                                    'semester_id': timetable_id.semester_id.id,
+                                    'school_id': timetable_id.school_id.id,
+                                    'field_of_study_id': timetable_id.field_of_study_id.id,
+                                    'level_id': timetable_id.level_id.id,
+                                    'specialty_id': timetable_id.specialty_id.id,
+                                    'class_id': timetable_id.class_id.id,
+                                    'ue_id': timetable_id.ue_id.id,
+                                    'subject_id': timetable_id.subject_id.id,
+                                    'building_id': timetable_id.building_id.id,
+                                    'classroom_id': timetable_id.classroom_id.id,
+                                    'employee_id': timetable_id.employee_id.id,
+                                    'date': target_date,
+                                    'start_time': timetable_id.start_time,
+                                    'end_time': timetable_id.end_time,
+                                    'group_id': timetable_id.group_id.id,
+                                })
+                    i += 1
             self.env.cr.commit()
         except psycopg2.errors.NotNullViolation as error:
             _logger.info(f'----------- tototototototo Exception {error} -----------')
