@@ -342,16 +342,15 @@ class Timetable(models.Model):
                 subject_day_hour_id.unlink()
             if len(timetables) > 0:
                 semester_hours_credit = timetable.subject_id.hours_credit
-                i = 0
-                while True:
+                for week in range(0, timetable.ue_id.semestre_id.number_of_week):
                     if semester_hours_credit <= 0:
                         break
                     for first_timetable in timetables:
                         weekly_hours_credit = first_timetable.end_time - first_timetable.start_time
                         weekly_hours_credit = weekly_hours_credit - first_timetable.not_active_slotitems
                         semester_hours_credit -= weekly_hours_credit
-                        if i > 0:
-                            target_date = first_timetable.date + timedelta(weeks=i)
+                        if week > 0:
+                            target_date = first_timetable.date + timedelta(weeks=week)
                             timetable_id = self.env['siantou.ems.timetable.timetable'].search([
                                 ('class_id', '=', first_timetable.class_id.id),
                                 ('subject_id', '=', first_timetable.subject_id.id),
@@ -378,7 +377,6 @@ class Timetable(models.Model):
                                     'end_time': first_timetable.end_time,
                                     'group_id': first_timetable.group_id.id,
                                 })
-                    i += 1
             self.env.cr.commit()
         except psycopg2.errors.NotNullViolation as error:
             _logger.info(f'----------- tototototototo Exception {error} -----------')
