@@ -21,12 +21,12 @@ class EducationClass(models.Model):
                        compute='_compute_name', store=True,
                        help="Entrer le nom de la Classe")
 
-    filiere_id = fields.Many2one('siantou.ems.core.field_of_study', string='Filière', required=True,
+    filiere_id = fields.Many2one('siantou.ems.core.filiere', string='Filière', required=True,
                                  help="Filière")
 
     student_ids = fields.One2many(
         'oe.school.student',
-        'field_of_study_id',
+        'filiere_id',
         string='Liste des étudiants'
     )
 
@@ -56,6 +56,17 @@ class EducationClass(models.Model):
         'class_id',
         string='Liste des groupes'
     )
+
+    @api.onchange('school_id')
+    def _onchange_school(self):
+        for record in self:
+            record.filiere_id = None
+            record.specialty_id = None
+
+    @api.onchange('filiere_id')
+    def _onchange_filiere(self):
+        for record in self:
+            record.specialty_id = None
 
     @api.onchange('specialty_id', 'niveau_id', 'type_cour')
     def _onchange_name(self):

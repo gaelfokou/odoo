@@ -36,7 +36,7 @@
                                 <field name="annee_acadmique_id"/>
                             </group>
                             <group>
-                                <field name="filiere_id"/>
+                                <field name="filiere_id" domain="[('school_id', '=', school_id)]"/>
                                 <field name="specialty_id" domain="[('field_of_study_id', '=', filiere_id)]"/>
                                 <field name="type_cour" widget="radio"/>
                                 <field name="group_ids"/>

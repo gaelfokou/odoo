@@ -303,6 +303,7 @@ class Timetable(models.Model):
     def _onchange_school(self):
         for record in self:
             record.field_of_study_id = None
+            record.level_id = None
             record.class_id = None
             record.class_group_id = None
             record.specialty_id = None
@@ -312,6 +313,7 @@ class Timetable(models.Model):
     @api.onchange('field_of_study_id')
     def _onchange_field_of_study(self):
         for record in self:
+            record.level_id = None
             record.class_id = None
             record.class_group_id = None
             record.specialty_id = None
