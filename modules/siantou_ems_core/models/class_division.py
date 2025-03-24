@@ -57,10 +57,10 @@ class EducationClass(models.Model):
         string='Liste des groupes'
     )
 
-    @api.depends('filiere_id', 'specialty_id', 'niveau_id')
-    def _compute_name(self):
+    @api.onchange('specialty_id', 'niveau_id')
+    def _onchange_name(self):
         for record in self:
-            name = '{} {} {}'.format(record.filiere_id.name, record.specialty_id.name, record.niveau_id.name)
+            name = '{} {}'.format(record.specialty_id.name, record.niveau_id.name)
             name = re.sub(r'Niveau ', '', name)
             while True:
                 if name.find('  ') != -1:
@@ -68,7 +68,21 @@ class EducationClass(models.Model):
                 else:
                     break
             name = name.strip()
-            name = name.lower()
+            name = name.upper()
+            record.name = name
+
+    @api.depends('specialty_id', 'niveau_id')
+    def _compute_name(self):
+        for record in self:
+            name = '{} {}'.format(record.specialty_id.name, record.niveau_id.name)
+            name = re.sub(r'Niveau ', '', name)
+            while True:
+                if name.find('  ') != -1:
+                    name = name.replace('  ', ' ')
+                else:
+                    break
+            name = name.strip()
+            name = name.upper()
             record.name = name
 
 class EducationClassGroup(models.Model):
