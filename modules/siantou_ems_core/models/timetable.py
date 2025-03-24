@@ -299,6 +299,95 @@ class Timetable(models.Model):
         string='Jours et heures du cours'
     )
 
+    @api.onchange('school_id')
+    def _onchange_school(self):
+        for record in self:
+            record.field_of_study_id = None
+            record.class_id = None
+            record.class_group_id = None
+            record.specialty_id = None
+            record.ue_id = None
+            record.subject_id = None
+
+    @api.onchange('field_of_study_id')
+    def _onchange_field_of_study(self):
+        for record in self:
+            record.class_id = None
+            record.class_group_id = None
+            record.specialty_id = None
+            record.ue_id = None
+            record.subject_id = None
+
+    @api.onchange('level_id')
+    def _onchange_level(self):
+        for record in self:
+            record.class_id = None
+            record.class_group_id = None
+            record.ue_id = None
+            record.subject_id = None
+
+    @api.onchange('specialty_id')
+    def _onchange_specialty(self):
+        for record in self:
+            record.class_id = None
+            record.class_group_id = None
+            record.ue_id = None
+            record.subject_id = None
+
+    @api.onchange('class_id')
+    def _onchange_class(self):
+        for record in self:
+            record.class_group_id = None
+            record.ue_id = None
+            record.subject_id = None
+
+    @api.onchange('ue_id')
+    def _onchange_ue(self):
+        for record in self:
+            record.subject_id = None
+
+    # Méthode pour remplir automatiquement le jour de la semaine
+    @api.onchange('date')
+    def _onchange_date(self):
+        for record in self:
+            if record.date:
+                record.day_of_week = str(record.date.weekday())
+            else:
+                record.day_of_week = None
+
+    @api.depends('date')
+    def _compute_date(self):
+        for record in self:
+            if record.date:
+                record.day_of_week = str(record.date.weekday())
+            else:
+                record.day_of_week = None
+
+    # Contrainte logique pour se rassurer que deux cours ne sont pas programmés dans la même salle de classe sur des horaires qui se chevauchent le même jour
+    @api.constrains('classroom_id', 'date', 'subject_id', 'level_id', 'start_time', 'end_time')
+    def _check_constrains_classroom_is_free(self):
+        for record in self:
+            timetables = self.search([
+                ('id', '!=', record.id),
+                ('classroom_id', '=', record.classroom_id.id),
+                ('date', '=', record.date),
+                '|',
+                ('subject_id', '!=', record.subject_id.id),
+                ('level_id', '!=', record.level_id.id),
+            ]).filtered(lambda rec: not (rec.start_time >= record.end_time or rec.end_time <= record.start_time))
+            timetables = list(timetables)
+            if len(timetables) > 0:
+                raise ValidationError("Deux cours ne doivent pas être programmés dans la même salle de classe sur des horaires qui se chevauchent le même jour")
+
+    # Contrainte logique pour s'assurer que les heures de début et de fin sont définies et que l'heure de fin est supérieure à l'heure de début
+    # @api.constrains('start_time', 'end_time')
+    # def _check_constrains_time(self):
+    #     for record in self:
+    #         if record.start_time <= 0.0 or record.end_time <= 0.0:
+    #             raise ValidationError("Vous devez définir des heures de début et de fin corrects")
+    #         elif record.end_time <= record.start_time:
+    #             raise ValidationError("L'heure de fin du cours doit être supérieure à l'heure de début du cours")
+
     def create_timetable(self, timetable):
         try:
             timetables = []
@@ -415,91 +504,6 @@ class Timetable(models.Model):
             'type': 'ir.actions.client',
             'tag': 'reload',
         }
-
-    @api.onchange('semester_id')
-    def _onchange_semester(self):
-        for record in self:
-            record.ue_id = None
-            record.subject_id = None
-
-    @api.onchange('field_of_study_id')
-    def _onchange_field_of_study(self):
-        for record in self:
-            record.class_id = None
-            record.class_group_id = None
-            record.specialty_id = None
-            record.ue_id = None
-            record.subject_id = None
-
-    @api.onchange('level_id')
-    def _onchange_level(self):
-        for record in self:
-            record.class_id = None
-            record.class_group_id = None
-            record.ue_id = None
-            record.subject_id = None
-
-    @api.onchange('specialty_id')
-    def _onchange_specialty(self):
-        for record in self:
-            record.class_id = None
-            record.class_group_id = None
-            record.ue_id = None
-            record.subject_id = None
-
-    @api.onchange('class_id')
-    def _onchange_class(self):
-        for record in self:
-            record.class_group_id = None
-            record.ue_id = None
-            record.subject_id = None
-
-    @api.onchange('ue_id')
-    def _onchange_ue(self):
-        for record in self:
-            record.subject_id = None
-
-    # Méthode pour remplir automatiquement le jour de la semaine
-    @api.onchange('date')
-    def _onchange_date(self):
-        for record in self:
-            if record.date:
-                record.day_of_week = str(record.date.weekday())
-            else:
-                record.day_of_week = None
-
-    @api.depends('date')
-    def _compute_date(self):
-        for record in self:
-            if record.date:
-                record.day_of_week = str(record.date.weekday())
-            else:
-                record.day_of_week = None
-
-    # Contrainte logique pour se rassurer que deux cours ne sont pas programmés dans la même salle de classe sur des horaires qui se chevauchent le même jour
-    @api.constrains('classroom_id', 'date', 'subject_id', 'level_id', 'start_time', 'end_time')
-    def _check_constrains_classroom_is_free(self):
-        for record in self:
-            timetables = self.search([
-                ('id', '!=', record.id),
-                ('classroom_id', '=', record.classroom_id.id),
-                ('date', '=', record.date),
-                '|',
-                ('subject_id', '!=', record.subject_id.id),
-                ('level_id', '!=', record.level_id.id),
-            ]).filtered(lambda rec: not (rec.start_time >= record.end_time or rec.end_time <= record.start_time))
-            timetables = list(timetables)
-            if len(timetables) > 0:
-                raise ValidationError("Deux cours ne doivent pas être programmés dans la même salle de classe sur des horaires qui se chevauchent le même jour")
-
-    # Contrainte logique pour s'assurer que les heures de début et de fin sont définies et que l'heure de fin est supérieure à l'heure de début
-    # @api.constrains('start_time', 'end_time')
-    # def _check_constrains_time(self):
-    #     for record in self:
-    #         if record.start_time <= 0.0 or record.end_time <= 0.0:
-    #             raise ValidationError("Vous devez définir des heures de début et de fin corrects")
-    #         elif record.end_time <= record.start_time:
-    #             raise ValidationError("L'heure de fin du cours doit être supérieure à l'heure de début du cours")
 
     def action_timetable_automatic(self):
         action = self.env.ref('siantou_ems_core.action_generatetimetable_wizard').read()[0]
