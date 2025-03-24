@@ -11,6 +11,10 @@
                 </xpath>
 
                 <xpath expr="//field[@name = 'category_ids']" position="after">
+                    <group string="Informations personnelles">
+                        <field name="birthday"/>
+                    </group>
+                    
                     <group string="Informations académiques pour les enseignants">
                         <field name="is_teacher"/>
                         <field name="is_permanent"/>

@@ -63,6 +63,10 @@ class HrEmployee(models.Model):
         help="Liste des emplois du temps associés à l'enseignant."
     )
 
+    birthday = fields.Date(
+        'Date de naissance',
+    )
+
     # Contrainte logique pour s'assurer que le quota horaire hebdommadaire de cours pour un enseignant permanent est de 24
     @api.constrains('weekly_hours_limit')
     def _check_weekly_hours_limit_permanent(self):
