@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import logging
-
+import re
 from odoo import fields, models, api, _
 from odoo.exceptions import ValidationError
 from odoo.tools import unique
@@ -18,6 +18,7 @@ class EducationClass(models.Model):
     # ]
 
     name = fields.Char(string='Nom', required=True,
+                       compute='_compute_name', store=True,
                        help="Entrer le nom de la Classe")
 
     filiere_id = fields.Many2one('siantou.ems.core.field_of_study', string='Filière', required=True,
@@ -55,6 +56,20 @@ class EducationClass(models.Model):
         'class_id',
         string='Liste des groupes'
     )
+
+    @api.depends('filiere_id', 'specialty_id', 'niveau_id')
+    def _compute_name(self):
+        for record in self:
+            name = '{} {} {}'.format(record.filiere_id.name, record.specialty_id.name, record.niveau_id.name)
+            name = re.sub(r'Niveau ', '', name)
+            while True:
+                if name.find('  ') != -1:
+                    name = name.replace('  ', ' ')
+                else:
+                    break
+            name = name.strip()
+            name = name.lower()
+            record.name = name
 
 class EducationClassGroup(models.Model):
     _name = 'siantou.ems.core.class.group'
