@@ -57,11 +57,14 @@ class EducationClass(models.Model):
         string='Liste des groupes'
     )
 
-    @api.onchange('specialty_id', 'niveau_id')
+    @api.onchange('specialty_id', 'niveau_id', 'type_cour')
     def _onchange_name(self):
         for record in self:
-            name = '{} {}'.format(record.specialty_id.name, record.niveau_id.name)
-            name = re.sub(r'Niveau ', '', name)
+            specialty_name = record.specialty_id.name if record.specialty_id.id else ''
+            niveau_name = record.niveau_id.name if record.niveau_id.id else ''
+            niveau_name = re.sub(r'Niveau ', '', niveau_name)
+            type_cour_name = record.type_cour if record.type_cour == 'cs' else ''
+            name = '{} {} {}'.format(specialty_name, niveau_name, type_cour_name)
             while True:
                 if name.find('  ') != -1:
                     name = name.replace('  ', ' ')
@@ -71,11 +74,14 @@ class EducationClass(models.Model):
             name = name.upper()
             record.name = name
 
-    @api.depends('specialty_id', 'niveau_id')
+    @api.depends('specialty_id', 'niveau_id', 'type_cour')
     def _compute_name(self):
         for record in self:
-            name = '{} {}'.format(record.specialty_id.name, record.niveau_id.name)
-            name = re.sub(r'Niveau ', '', name)
+            specialty_name = record.specialty_id.name if record.specialty_id.id else ''
+            niveau_name = record.niveau_id.name if record.niveau_id.id else ''
+            niveau_name = re.sub(r'Niveau ', '', niveau_name)
+            type_cour_name = record.type_cour if record.type_cour == 'cs' else ''
+            name = '{} {} {}'.format(specialty_name, niveau_name, type_cour_name)
             while True:
                 if name.find('  ') != -1:
                     name = name.replace('  ', ' ')
