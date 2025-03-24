@@ -44,11 +44,13 @@ class FieldOfStudy(models.Model):
         'Code',
         required=True
     )
+
     # Nom du programme
     name = fields.Char(
         'Nom de la filière',
         required=True
     )
+
     school_id = fields.Many2one(
         'siantou.ems.core.school',
         string='Ecole',

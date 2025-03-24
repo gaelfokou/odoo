@@ -37,8 +37,8 @@ class Semester(models.Model):
     
     # classe liée au semestre
     # class_ids = fields.One2many(
-    #     comodel_name='siantou.ems.core.class',
-    #     inverse_name='semestre_id',
+    #     'siantou.ems.core.class',
+    #     'semestre_id',
     #     string='Classe',
     #     help="classe à laquelle est lié le semestre",
     #     required=True
@@ -53,14 +53,14 @@ class Semester(models.Model):
     )
     
     ue_ids = fields.One2many(
-        comodel_name='siantou.ems.core.unite.enseignement', 
-        inverse_name='semestre_id',  
+        'siantou.ems.core.unite.enseignement', 
+        'semestre_id',  
         string="Unité d'enseignement", 
         tracking=True)
 
     class_id = fields.Many2one(
+        'siantou.ems.core.class',
         string='Classe',
-        comodel_name='siantou.ems.core.class',
     )
 
     level_ids = fields.Many2many(

@@ -46,6 +46,7 @@ class Student(models.Model):
         'res.partner',
         string='Rest partner',
         related='student_enroll_id.partner_id',
+        store=True
     )
     batch_id = fields.Many2one(
         'siantou.ems.core.student.batch',
@@ -54,14 +55,14 @@ class Student(models.Model):
     school_id = fields.Many2one(
         'siantou.ems.core.school',
         string='Ecole',
-        related='field_of_study_id.school_id'
-        # required=True
+        related='field_of_study_id.school_id',
+        store=True
     )
     cycle_id = fields.Many2one(
         'oe.school.course',
         string='Cycle',
-        required=True,
-        related='class_id.filiere_id.cursus_id'
+        related='field_of_study_id.cursus_id',
+        store=True
     )
     region_id = fields.Many2one("siantou.ems.core.region", string="Région")
     city_id = fields.Many2one("siantou.ems.core.city", string="Ville")
@@ -69,14 +70,14 @@ class Student(models.Model):
     field_of_study_id = fields.Many2one(
         'siantou.ems.core.field_of_study',
         string='Filière',
-        required=True,
-        related='class_id.filiere_id'
+        related='class_id.filiere_id',
+        store=True
     )
     specialty_id = fields.Many2one(
         'siantou.ems.core.specialty',
         string='Spécialité',
-        required=True
-        # related='class_id.specialte_id'
+        related='class_id.specialty_id',
+        store=True
     )
     type_cour = fields.Selection([
         ('cj', 'Cours du jour'),
@@ -121,8 +122,8 @@ class Student(models.Model):
     level_id = fields.Many2one(
         'siantou.ems.core.level',
         string="Niveau",
-        required=True,
-        related='class_id.niveau_id'
+        related='class_id.niveau_id',
+        store=True
     )
     annee_acad_current = fields.Many2one(
         "siantou.ems.core.year", 
@@ -171,7 +172,7 @@ class Student(models.Model):
 
     def create_student_user(self, student):
         try:
-            ecole = re.sub('[^A-Za-z]+', '', student.field_of_study_id.school_id.name)
+            ecole = re.sub('[^A-Za-z]+', '', student.school_id.name)
             ecole = ecole[:4]
             ecole = ecole.upper()
             if not student.matricule or not student.matricule.strip():

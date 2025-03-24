@@ -21,12 +21,12 @@ class EducationClass(models.Model):
                        compute='_compute_name', store=True,
                        help="Entrer le nom de la Classe")
 
-    filiere_id = fields.Many2one('siantou.ems.core.filiere', string='Filière', required=True,
+    filiere_id = fields.Many2one('siantou.ems.core.field_of_study', string='Filière', required=True,
                                  help="Filière")
 
     student_ids = fields.One2many(
         'oe.school.student',
-        'filiere_id',
+        'class_id',
         string='Liste des étudiants'
     )
 
@@ -40,14 +40,13 @@ class EducationClass(models.Model):
     
     annee_acadmique_id = fields.Many2one('siantou.ems.core.year', string='Année Académique')
 
-    ue_ids = fields.One2many(comodel_name='siantou.ems.core.unite.enseignement', inverse_name='class_id', string='Unité d\'enseignement')
+    ue_ids = fields.One2many('siantou.ems.core.unite.enseignement', 'class_id', string='Unité d\'enseignement')
 
     type_cour = fields.Selection([
             ('cj', 'Cours du jour'),
             ('cs', 'Cours du soir'),
         ],
         string="Type de cours",
-        required=True,
         default='cj',
     )
 

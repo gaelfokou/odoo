@@ -21,14 +21,14 @@ class ProductionDpo(models.Model):
     )
     
     annee_academique_id = fields.Many2one(
+        'siantou.ems.core.year',
         string='annee_academique',
-        comodel_name='siantou.ems.core.year',
         required=True,
     )
 
     class_id = fields.Many2one(
+        'siantou.ems.core.class',
         string='Classe',
-        comodel_name='siantou.ems.core.class',
         required=True,
     )
 
@@ -37,9 +37,9 @@ class ProductionDpo(models.Model):
     )
 
     syllabus_ids = fields.One2many(
+        'siantou.ems.core.syllabus',
+        'pro_pe_id',
         string='syllabus',
-        comodel_name='siantou.ems.core.syllabus',
-        inverse_name='pro_pe_id',
     )
                             
     @api.onchange('class_id')

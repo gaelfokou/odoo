@@ -238,8 +238,8 @@ class SchoolSyllabus(models.Model):
     )
 
     pro_pe_id = fields.Many2one(
+        'production.pe',
         string='pro_pe',
-        comodel_name='production.pe',
     )
 
     @api.constrains('subject_id')
