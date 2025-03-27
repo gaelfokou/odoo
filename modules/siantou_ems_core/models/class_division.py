@@ -33,6 +33,9 @@ class EducationClass(models.Model):
     specialty_id = fields.Many2one('siantou.ems.core.specialty', string='Spécialité',
                                  help="Spécialité")
 
+    option_id = fields.Many2one('siantou.ems.core.option', string='Option',
+                                 help="Option")
+
     niveau_id = fields.Many2one('siantou.ems.core.level', string='Niveau',
                                  help="Niveau")
     
