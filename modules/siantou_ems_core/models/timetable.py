@@ -127,6 +127,13 @@ class Timetable(models.Model):
         ondelete='restrict'
     )
 
+    year_id = fields.Many2one(
+        'siantou.ems.core.year',
+        'Année académique', 
+        related='semester_id.year_id',
+        store=True
+    )
+
     batch_id = fields.Many2one(
         'siantou.ems.core.student.batch',
         string='Lot d\'étudiants'

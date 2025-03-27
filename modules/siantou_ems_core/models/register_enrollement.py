@@ -174,9 +174,9 @@ class SessionRegisterEnrollment(models.Model):
     name = fields.Char(
         'Name', required=True, readonly=True)
     start_date = fields.Date(
-        'Date debut', store=True, related="session_id.start_date")
+        'Date debut', store=True, related='session_id.start_date')
     end_date = fields.Date(
-        'Date de fin', store=True, related="session_id.end_date")
+        'Date de fin', store=True, related='session_id.end_date')
     cycle_id = fields.Many2one(
         'oe.school.course', 'Cycle', 
         required=True, 
@@ -213,7 +213,7 @@ class SessionRegisterEnrollment(models.Model):
     year_id = fields.Many2one('siantou.ems.core.year',
         'Année académique', 
         readonly=True,
-        related="session_id.year_id",
+        related='session_id.year_id',
         store=True
     )
 
