@@ -10,6 +10,7 @@
 					<field name="code"/>
 					<field name="name"/>
                     <field name="field_of_study_id"/>
+                    <field name="option_ids"/>
 				</tree>
 			</field>
 		</record>
@@ -26,6 +27,7 @@
                         <group>
                             <field name="code" placeholder="ex: COM INT"/>
                             <field name="field_of_study_id" options="{'create': false, 'create_edit': false}"/>
+                            <field name="option_ids"/>
                         </group>
 					</sheet>
 				</form>

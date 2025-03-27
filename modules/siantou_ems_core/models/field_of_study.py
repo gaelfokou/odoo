@@ -1,17 +1,39 @@
-from collections import defaultdict
-
 from odoo import models, fields
 
+class OptionOfStudy(models.Model):
+    _name = 'siantou.ems.core.option'
+    _description = 'Gestion des options'
 
+    specialty_id = fields.Many2one(
+        'siantou.ems.core.specialty',
+        string='Spécialité',
+        required=True,
+    )
 
+    # Code du programme
+    code = fields.Char(
+        'Code',
+        required=True
+    )
+
+    # Nom du programme
+    name = fields.Char(
+        "Nom de l'option",
+        required=True
+    )
+
+    # Contrainte SQL pour empêcher d'avoir le même code pour différentes filières
+    _sql_constraints = [
+        ('unique_code', 'unique(code)', "Le code de l'option doit être unique."),
+    ]
 
 class SpecialtyOfStudy(models.Model):
-    _name = 'siantou.ems.core.specialty' #== cursus'
+    _name = 'siantou.ems.core.specialty'
     _description = 'Gestion des spécialités'
 
     field_of_study_id = fields.Many2one(
         'siantou.ems.core.field_of_study',
-        string='Filière ',
+        string='Filière',
         required=True,
     )
 
@@ -27,16 +49,20 @@ class SpecialtyOfStudy(models.Model):
         required=True
     )
 
+    # Ensemble des options de la filière
+    option_ids = fields.One2many(
+        'siantou.ems.core.option',
+        'specialty_id',
+        'Liste des options'
+    )
+
     # Contrainte SQL pour empêcher d'avoir le même code pour différentes filières
     _sql_constraints = [
         ('unique_code', 'unique(code)', 'Le code de la spécialité doit être unique.'),
     ]
 
-
-
-
 class FieldOfStudy(models.Model):
-    _name = 'siantou.ems.core.field_of_study' #== cursus'
+    _name = 'siantou.ems.core.field_of_study'
     _description = 'Gestion des Filières'
 
     # Code du programme

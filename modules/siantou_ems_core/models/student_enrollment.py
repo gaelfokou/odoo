@@ -58,7 +58,7 @@ class StudentEnrollment(models.Model):
     field_of_study_id_pk = fields.Integer(related='field_of_study_id.id')
     field_of_study_id = fields.Many2one(
         'siantou.ems.core.field_of_study',
-        string='Filière ',
+        string='Filière',
         required=True,
     )
     specialty_id = fields.Many2one(

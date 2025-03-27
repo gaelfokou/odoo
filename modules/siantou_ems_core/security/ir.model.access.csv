@@ -105,9 +105,11 @@ session_registre_admin,session.registre.admin,model_siantou_session_registre,sia
 syllabus_user,syllabus.user,model_siantou_ems_core_syllabus,siantou_ems_core.group_syllabus_user,1,0,0,0
 syllabus_admin,syllabus.admin,model_siantou_ems_core_syllabus,siantou_ems_core.group_syllabus_admin,1,1,1,1
 
-
 specialty_user,specialty.user,model_siantou_ems_core_specialty,siantou_ems_core.group_specialty_user,1,0,0,0
 specialty_admin,specialty.user,model_siantou_ems_core_specialty,siantou_ems_core.group_specialty_admin,1,1,1,1
+
+option_user,option.user,model_siantou_ems_core_option,,1,0,0,0
+option_admin,option.user,model_siantou_ems_core_option,,1,1,1,1
 
 university_partner_user,university_partner.user,model_siantou_university_partner,siantou_ems_core.group_university_partner_user,1,0,0,0
 university_partner_admin,university_partner.user,model_siantou_university_partner,siantou_ems_core.group_university_partner_admin,1,1,1,1
