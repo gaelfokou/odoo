@@ -12,6 +12,7 @@
 					<field name="name"/>
                 	<field name="filiere_id"/>
                     <field name="school_id"/>
+                    <field name="annee_acadmique_id"/>
                     <field name="niveau_id"/>
                     <field name="type_cour"/>
                     <field name="group_ids"/>
