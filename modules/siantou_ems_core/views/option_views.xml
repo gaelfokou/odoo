@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+
+        <record id="option_tree_view" model="ir.ui.view">
+			<field name="name">option_tree.view</field>
+			<field name="model">siantou.ems.core.option</field>
+			<field name="arch" type="xml">
+				<tree string="Cours">
+					<field name="code"/>
+					<field name="name"/>
+                    <field name="specialty_id"/>
+				</tree>
+			</field>
+		</record>
+		<record id="option_form_view" model="ir.ui.view">
+			<field name="name">option.form.view</field>
+			<field name="model">siantou.ems.core.option</field>
+			<field name="arch" type="xml">
+				<form string="Cours">
+					<sheet>
+                        <div class="oe_title">
+                            <label for="name"/>
+                            <h1><field name="name" placeholder="ex: COMMERCE INTERNATIONAL"/></h1>
+                        </div>
+                        <group>
+                            <field name="code" placeholder="ex: COM INT"/>
+                            <field name="specialty_id" options="{'create': false, 'create_edit': false}"/>
+                        </group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+        
+        <record id="view_option_filter" model="ir.ui.view">
+            <field name="name">option.search</field>
+            <field name="model">siantou.ems.core.option</field>
+            <field name="arch" type="xml">
+                <search string="Options">
+                    <field name="name" string="Options"/>
+                    <separator/>
+                </search>
+             </field>
+        </record>
+        
+        <record id="action_school_option" model="ir.actions.act_window">
+            <field name="name">Options</field>
+            <field name="res_model">siantou.ems.core.option</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref="view_option_filter"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Créer une nouvelle option.
+                </p>
+            </field>
+        </record>
+        
+        <menuitem name="Options" 
+            id="menu_school_option"
+            parent="menu_siantou_ems_core_configuration" 
+            action="action_school_option"
+                sequence="3"/>
+    </data>
+</odoo>

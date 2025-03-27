@@ -10,7 +10,7 @@
 					<field name="code"/>
 					<field name="name"/>
                     <field name="field_of_study_id"/>
-                    <field name="option_ids"/>
+                    <field name="option_ids" widget="many2many_tags"/>
 				</tree>
 			</field>
 		</record>
