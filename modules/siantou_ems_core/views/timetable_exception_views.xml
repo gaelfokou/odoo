@@ -23,6 +23,7 @@
                     <field name="field_of_study_id"/>
                     <field name="level_id"/>
                     <field name="specialty_id"/>
+                    <field name="option_id"/>
                     <field name="class_id"/>
                     <field name="class_group_id"/>
                     <field name="ue_id"/>
@@ -56,6 +57,7 @@
                     <field name="field_of_study_id"/>
                     <field name="level_id"/>
                     <field name="specialty_id"/>
+                    <field name="option_id"/>
                     <field name="class_id"/>
                     <field name="class_group_id"/>
                     <field name="ue_id"/>
@@ -73,6 +75,7 @@
                         <filter string="Niveau" name="level" context="{'group_by': 'level_id'}"/>
                         <filter string="Classe" name="class" context="{'group_by': 'class_id'}"/>
                         <filter string="Spécialité" name="specialty" context="{'group_by': 'specialty_id'}"/>
+                        <filter string="Option" name="option" context="{'group_by': 'option_id'}"/>
                     </group>
                 </search>
             </field>

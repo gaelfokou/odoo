@@ -182,6 +182,12 @@ class Timetable(models.Model):
         ondelete='restrict'
     )
 
+    option_id = fields.Many2one(
+        'siantou.ems.core.option',
+        string='Option',
+        ondelete='restrict'
+    )
+
     ue_id = fields.Many2one(
         'siantou.ems.core.unite.enseignement',
         string="Unité d'enseignement",
