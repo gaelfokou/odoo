@@ -82,7 +82,7 @@
                             <field name="field_of_study_id" options="{'no_create': True}" domain="[('school_id', '=', school_id)]"/>
                             <field name="level_id" options="{'no_create': True}" domain="[('semester_ids', '=', semester_id)]"/>
                             <field name="specialty_id" options="{'no_create': True}" domain="[('field_of_study_id', '=', field_of_study_id)]"/>
-                            <field name="class_id" options="{'no_create': True}" domain="[('filiere_id', '=', field_of_study_id), ('specialty_id', '=', specialty_id), ('niveau_id', '=', level_id)]"/>
+                            <field name="class_id" options="{'no_create': True}" domain="[('filiere_id', '=', field_of_study_id), ('specialty_id', '=', specialty_id), ('niveau_id', '=', level_id), ('annee_acadmique_id', '=', semester_id.year_id)]"/>
                             <field name="class_group_id" options="{'no_create': True}" domain="[('class_id', '=', class_id)]"/>
                             <field name="ue_id" options="{'no_create': True}" domain="[('class_id', '=', class_id), ('semestre_id', '=', semester_id)]"/>
                             <field name="subject_id" options="{'no_create': True}" domain="[('ue_ids', '=', ue_id)]"/>
