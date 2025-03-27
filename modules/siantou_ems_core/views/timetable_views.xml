@@ -28,6 +28,7 @@
                     <field name="group_id"/>
                     <field name="date"/>
                     <field name="semester_id"/>
+                    <field name="year_id"/>
                     <field name="school_id"/>
                     <field name="field_of_study_id"/>
                     <field name="level_id"/>
@@ -118,6 +119,7 @@
                     <field name="group_id"/>
                     <field name="date"/>
                     <field name="semester_id"/>
+                    <field name="year_id"/>
                     <field name="school_id"/>
                     <field name="field_of_study_id"/>
                     <field name="level_id"/>
@@ -135,6 +137,8 @@
 					<field name="status"/>
                     <filter string="Mon emploi du temps" name="mytimetable" domain="[('employee_id.user_id', '=', uid)]"/>
                     <group expand="0" string="Group By">
+                        <filter string="Semestre" name="semester" context="{'group_by': 'semester_id'}"/>
+                        <filter string="Année académique" name="year" context="{'group_by': 'year_id'}"/>
                         <filter string="École" name="school" context="{'group_by': 'school_id'}"/>
                         <filter string="Filière" name="field_of_study" context="{'group_by': 'field_of_study_id'}"/>
                         <filter string="Niveau" name="level" context="{'group_by': 'level_id'}"/>

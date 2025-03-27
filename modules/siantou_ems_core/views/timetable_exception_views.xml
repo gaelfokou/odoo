@@ -18,6 +18,7 @@
                     <field name="group_id"/>
                     <field name="date"/>
                     <field name="semester_id"/>
+                    <field name="year_id"/>
                     <field name="school_id"/>
                     <field name="field_of_study_id"/>
                     <field name="level_id"/>
@@ -50,6 +51,7 @@
                     <field name="group_id"/>
                     <field name="date"/>
                     <field name="semester_id"/>
+                    <field name="year_id"/>
                     <field name="school_id"/>
                     <field name="field_of_study_id"/>
                     <field name="level_id"/>
