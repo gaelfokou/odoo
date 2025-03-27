@@ -11,6 +11,7 @@
 				<tree string="Classe standard">
 					<field name="name"/>
                 	<field name="filiere_id"/>
+                	<field name="specialty_id"/>
                     <field name="school_id"/>
                     <field name="annee_acadmique_id"/>
                     <field name="niveau_id"/>
