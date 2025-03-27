@@ -64,11 +64,18 @@ class EducationClass(models.Model):
         for record in self:
             record.filiere_id = None
             record.specialty_id = None
+            record.option_id = None
 
     @api.onchange('filiere_id')
     def _onchange_filiere(self):
         for record in self:
             record.specialty_id = None
+            record.option_id = None
+
+    @api.onchange('specialty_id')
+    def _onchange_specialty(self):
+        for record in self:
+            record.option_id = None
 
     @api.onchange('specialty_id', 'niveau_id', 'type_cour')
     def _onchange_name(self):
