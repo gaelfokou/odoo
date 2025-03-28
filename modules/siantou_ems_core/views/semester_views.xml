@@ -51,10 +51,10 @@
                                     <tree 
                                     editable="bottom"
                                     >
-                                    <field name="code" />
-                                    <field name="name" />
-                                    <field name="type_ue" />
-                                    <field name="class_id" />
+                                    <field name="code"/>
+                                    <field name="name"/>
+                                    <field name="type_ue"/>
+                                    <field name="class_ids"/>
                                     </tree>
                                 </field>
                             </page>

@@ -4,7 +4,7 @@
         <record id="view_employee_form_inherit_teacher" model="ir.ui.view">
             <field name="name">view.employee.form.inherit.teacher</field>
             <field name="model">hr.employee</field>
-            <field name="inherit_id" ref="hr.view_employee_form" />
+            <field name="inherit_id" ref="hr.view_employee_form"/>
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='name']" position="after">
                     <button name="action_create_employee_user" type="object" string="Créer un compte utilisateur" class="oe_highlight" invisible="user_id.id != False"/>
@@ -72,7 +72,7 @@
         <!-- <record id="view_employee_kanban_inherit_teacher" model="ir.ui.view">
             <field name="name">view.employee.kanban.inherit.teacher</field>
             <field name="model">hr.employee</field>
-            <field name="inherit_id" ref="hr.hr_kanban_view_employees" />
+            <field name="inherit_id" ref="hr.hr_kanban_view_employees"/>
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='category_ids']" position="before">
                     <button name="action_create_all_employee_user" type="object" string="Créer les comptes utilisateurs" class="oe_highlight"/>
@@ -83,7 +83,7 @@
         <record id="view_employee_tree_inherit_teacher" model="ir.ui.view">
             <field name="name">view.employee.tree.inherit.teacher</field>
             <field name="model">hr.employee</field>
-            <field name="inherit_id" ref="hr.view_employee_tree" />
+            <field name="inherit_id" ref="hr.view_employee_tree"/>
             <field name="arch" type="xml">
                 <xpath expr="//header" position="inside">
                     <button name="action_create_all_employee_user" type="object" string="Créer les comptes utilisateurs" class="oe_highlight"/>
@@ -102,7 +102,7 @@
                 eval="[(5, 0, 0),
                 (0, 0, {'view_mode': 'kanban', 'view_id': ref('hr.hr_kanban_view_employees')}),
                 (0, 0, {'view_mode': 'tree', 'view_id': ref('hr.view_employee_tree')}),
-                (0, 0, {'view_mode': 'form', 'view_id': ref('hr.view_employee_form')})]" />
+                (0, 0, {'view_mode': 'form', 'view_id': ref('hr.view_employee_form')})]"/>
         </record>
 
         <menuitem

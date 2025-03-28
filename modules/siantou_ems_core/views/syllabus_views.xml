@@ -24,8 +24,8 @@
                         <group colspan="2">
                             <field name="name"/>
                             <field name="class_id" required="1"/>
-                            <field name="ue_id" domain="[('class_id', '=', class_id)]"/>
-                            <field name="note_sn" widget="radio" />
+                            <field name="ue_id" domain="[('class_ids', '=', class_id)]"/>
+                            <field name="note_sn" widget="radio"/>
                         </group>
                         <group colspan="2">
                             <field name="subject_id" domain="[('ue_ids', 'in', [ue_id])]" required="1"/>

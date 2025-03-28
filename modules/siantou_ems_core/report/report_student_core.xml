@@ -2,7 +2,7 @@
 <odoo>
     <record id="paperformat_fee_payment" model="report.paperformat">
         <field name="name">Format-Paiement-inscription-étudiant</field>
-        <field name="default" eval="True" />
+        <field name="default" eval="True"/>
         <field name="format">custom</field>
         <field name="page_height">210</field>
         <field name="page_width">148</field>
@@ -11,7 +11,7 @@
         <field name="margin_bottom">5</field>
         <field name="margin_left">4</field>
         <field name="margin_right">4</field>
-        <field name="header_line" eval="False" />
+        <field name="header_line" eval="False"/>
         <field name="header_spacing">5</field>
         <field name="dpi">150</field>
     </record>
@@ -24,7 +24,7 @@
         <field name="print_report_name">f"Paiement de - {student['name']}" </field>
         <!-- <field name="print_report_name">'Paiement de - %s' % (data.student)</field> -->
         <!-- <field name="binding_model_id" eval="'False'"/> -->
-        <field name="paperformat_id" ref="paperformat_fee_payment" />
+        <field name="paperformat_id" ref="paperformat_fee_payment"/>
         <!-- <field name="binding_type">report</field> -->
     </record>
 
@@ -69,13 +69,13 @@
                         </table>
                         <center>
                             <h2 style="text-decoration:underline;font-size: 15px;margin-top:25px">
-                                RECU DE CAISSE SCOLARITE N° <span t-esc="payment_id['name']" /> 
+                                RECU DE CAISSE SCOLARITE N° <span t-esc="payment_id['name']"/> 
                                 DU <span t-esc="date"
                                         t-options='{"widget": "date","format": "d/MM/Y"}' />
                             </h2>
                             <h4 style="font-size: 12px;margin-top:15px">
                                 Année académique :
-                                <span t-esc="payment_id['year']" />
+                                <span t-esc="payment_id['year']"/>
                             </h4>
                         </center>
 
@@ -105,16 +105,16 @@
                                     <tbody>
                                         <tr>
                                             <td style="border: 1px solid black;padding: 4px;text-align: left;font-size: 12px;">
-                                                <span t-esc="student['name']" />
+                                                <span t-esc="student['name']"/>
                                             </td>
                                             <td style="border: 1px solid black;padding: 4px;text-align: left;font-size: 12px;">
-                                                <span t-esc="student['code_enrol']" />
+                                                <span t-esc="student['code_enrol']"/>
                                             </td>
                                             <td style="border: 1px solid black;padding: 4px;text-align: left;font-size: 12px;">
-                                                <span t-esc="student['field_of_study']" />
+                                                <span t-esc="student['field_of_study']"/>
                                             </td>
                                             <td style="border: 1px solid black;padding: 4px;text-align: left;font-size: 12px;">
-                                                <span t-esc="student['level']" />
+                                                <span t-esc="student['level']"/>
                                             </td>
                                         </tr>
                                     </tbody>
@@ -139,11 +139,11 @@
                                     <tbody>
                                         <tr style="border: 1px solid black;font-size: 12px;">
                                             <td style="border: 1px solid black;padding: 4px;font-size: 12px;">
-                                                <t t-esc="facture.get('name')" />
+                                                <t t-esc="facture.get('name')"/>
                                             </td>
                                             <td style="border: 1px solid black;padding: 4px;font-size: 12px;">
                                                 <t
-                                                    t-esc="'{0:,.0f}'.format(int(facture.get('amount'))).replace(',', ' ')" /> FCFA
+                                                    t-esc="'{0:,.0f}'.format(int(facture.get('amount'))).replace(',', ' ')"/> FCFA
                                             </td>
                                             <td style="border: 1px solid black;padding: 4px;font-size: 12px;">
                                                 <t t-esc="facture.get('date_payment')" t-options='{"widget": "date","format": "d/MM/Y"}' />
@@ -154,7 +154,7 @@
                                                 style="text-align: center; border: 1px solid black;padding: 4px;font-size: 12px;">
                                                 <h4 style="text-align: center; padding: 4px;font-size: 12px;text-transform:uppercase;">
                                                     <b>Montant total versé : <t
-                                                        t-esc="'{0:,.0f}'.format(int(facture.get('amount'))).replace(',', ' ')" />
+                                                        t-esc="'{0:,.0f}'.format(int(facture.get('amount'))).replace(',', ' ')"/>
                                                     FCFA</b>
                                                 </h4>
                                             </td>
@@ -166,7 +166,7 @@
                         <div class="row mt-3 mb-3">
                             <div class="col-12 text-center">
                                 <h5 style="font-size: 12px;"> Arrête la présente facture à la somme de : <strong><span t-esc="'{0:,.0f}'.format(int(facture.get('amount'))).replace(',', ' ')"/> FCFA</strong>
-                                    au titre de l'année académique <span t-esc="payment_id['year']" />
+                                    au titre de l'année académique <span t-esc="payment_id['year']"/>
                                 </h5>
                             </div>
                         </div>

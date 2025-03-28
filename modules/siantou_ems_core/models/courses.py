@@ -334,8 +334,9 @@ class SchoolCourseSubject(models.Model):
     )
     code = fields.Char(string="Code UE", required=True,)
     name = fields.Char(string="Intitulé de l'unité", required=True,)
-    class_id = fields.Many2one('siantou.ems.core.class', string='classe',required=True)
-    
+
+    class_ids = fields.Many2many('siantou.ems.core.class', 'class_ue_rel', 'ue_id', 'class_id', string='Classes')
+
     subject_ids = fields.Many2many('siantou.ems.core.subject', 'ue_subject_rel', 'ue_id', 'subject_id', string='Cours')
     
     semestre_id = fields.Many2one('siantou.ems.core.year.semester', string='Semestre', required=True, tracking=True)

@@ -83,11 +83,11 @@
                         invisible="status in ['broui', 'inscrip', 'transfer']"
                     />
                     <div class="oe_title">
-                        <label for="name" string="Nom(s) et prénom(s)" />
+                        <label for="name" string="Nom(s) et prénom(s)"/>
                         <h1><field name="name"/></h1>
                     </div>
                     <div class="oe_title">
-                        <label for="date_preins" string="Date de préinscription" />
+                        <label for="date_preins" string="Date de préinscription"/>
                         <h1><field name="date_preins" readonly="1"/></h1>
                     </div>
                     <group>
@@ -211,7 +211,7 @@
                         </page>
 
                         <page name="info_raison" string="Raisons d'acceptation ou de rejet de la candidature">
-                            <field name="observations" />
+                            <field name="observations"/>
                         </page>
 
                         <page name="info_file" string="Pièces jointes">

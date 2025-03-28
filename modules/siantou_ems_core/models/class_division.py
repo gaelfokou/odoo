@@ -43,7 +43,7 @@ class EducationClass(models.Model):
     
     annee_acadmique_id = fields.Many2one('siantou.ems.core.year', string='Année Académique')
 
-    ue_ids = fields.One2many('siantou.ems.core.unite.enseignement', 'class_id', string='Unité d\'enseignement')
+    ue_ids = fields.Many2many('siantou.ems.core.unite.enseignement', 'class_ue_rel', 'class_id', 'ue_id', string="Unités d'enseignement")
 
     type_cour = fields.Selection([
             ('cj', 'Cours du jour'),
