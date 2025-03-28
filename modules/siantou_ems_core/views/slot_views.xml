@@ -35,7 +35,8 @@
                                         <field name="name"/>
                                     </tree>
                                 </field>
-                                <field name="field_of_study_ids" widget="many2many_tags" options="{'no_open': True, 'no_create': True}">
+                                <!-- <field name="field_of_study_ids" widget="many2many_tags" options="{'no_create': True}" domain="[('department_id', '=', department_id)]"> -->
+                                <field name="field_of_study_ids" widget="many2many_tags" options="{'no_create': True}">
                                     <tree string="">
                                         <field name="name"/>
                                         <field name="code"/>

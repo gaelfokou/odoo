@@ -167,11 +167,11 @@
                                     <field name="cycle_id_pk" invisible="1"/>
                                 </group>
                                 <group>
-                                    <field name="field_of_study_id" domain="[('cursus_id','=',cycle_id_pk)]"/>
+                                    <field name="field_of_study_id" options="{'no_create': True}" domain="[('cursus_id','=',cycle_id_pk)]"/>
                                     <field name="field_of_study_id_pk" invisible="1"/>
                                 </group>
                                 <group>
-                                    <field name="specialty_id" domain="[('field_of_study_id','=',field_of_study_id_pk)]"/>
+                                    <field name="specialty_id" options="{'no_create': True}" domain="[('field_of_study_id','=',field_of_study_id_pk)]"/>
                                 </group>
                                 <group>
                                     <field name="type_cour" widget="radio"/>
