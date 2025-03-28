@@ -11,7 +11,10 @@
 				<tree string="Unité d'enseignement">
                     <field name="code"/>
                     <field name="name"/>
-					<field name="create_date" string="Date de création"/>
+                    <field name="total_credit"/>
+                    <field name="class_ids" widget="many2many_tags"/>
+                    <field name="semestre_id"/>
+                    <field name="type_ue"/>
 				</tree>
 			</field>
 		</record>
@@ -33,7 +36,7 @@
                                 <field name="total_credit"/>
                             </group>
                             <group colspan="2">
-                                <field name="class_ids"/>
+                                <field name="class_ids" widget="many2many_tags" options="{'no_open': True, 'no_create': True}"/>
                                 <field name="semestre_id"/>
                                 <field name="type_ue"/>
                             </group>

@@ -220,7 +220,6 @@
                                     <field name="name"/>
                                     <field name="type"/>
                                     <field name="file_size"/>
-                                    <field name="create_date"/>
                                 </tree>
                              </field>
                         </page>

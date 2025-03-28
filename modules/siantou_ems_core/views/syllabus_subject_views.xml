@@ -13,7 +13,6 @@
                     <field name="name"/>
                     <field name="syllabus_id"/>
 					<field name="syllabus_subject_line_ids" string="Unités d'enseignements"/>
-					<field name="create_date" string="Date de création"/>
 				</tree>
 			</field>
 		</record>
