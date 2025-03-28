@@ -35,7 +35,7 @@
                                 <field name="total_credit"/>
                             </group>
                             <group colspan="2">
-                                <field name="class_ids" widget="many2many_tags" options="{'no_open': True, 'no_create': True}"/>
+                                <field name="class_ids" widget="many2many_tags" options="{'no_create': True}"/>
                                 <field name="semestre_id"/>
                                 <field name="type_ue"/>
                             </group>

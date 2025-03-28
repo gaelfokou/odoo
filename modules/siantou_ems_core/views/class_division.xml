@@ -33,7 +33,7 @@
 					<sheet>
                         <group>
                             <group>
-                                <field name="name" readonly="1" options="{'no_open': True, 'no_create': True}"/>
+                                <field name="name" readonly="1"/>
                                 <field name="niveau_id"/>
                                 <field name="school_id"/>
                                 <field name="annee_acadmique_id"/>
