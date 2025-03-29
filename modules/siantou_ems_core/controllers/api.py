@@ -149,7 +149,7 @@ class DeSchool(http.Controller):
         try:
             etudiant = request.env['oe.school.student.enrollment'].sudo().search([('id', '=', id)], limit=1)
             code_bank_paie_frais = request.env['siantou.ems.fee.config.bank'].sudo().search([('active', '=', True)], limit=1)
-            _logger.info(f'Etudiant: {etudiant}')
+            _logger.info(f'Étudiant: {etudiant}')
             _logger.info(f'numero: {code_bank_paie_frais.numero}')
             if etudiant:
                 return Response(
@@ -231,7 +231,7 @@ class DeSchool(http.Controller):
         documents = []
         try:
             etudiant = request.env['oe.school.student.enrollment'].sudo().search([('id', '=', id)], limit=1)
-            _logger.info(f'Etudiant: {etudiant}')
+            _logger.info(f'Étudiant: {etudiant}')
 
             files = request.httprequest.files.getlist('file')
             _logger.info(request.httprequest.files)

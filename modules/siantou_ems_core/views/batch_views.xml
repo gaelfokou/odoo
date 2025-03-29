@@ -13,7 +13,7 @@
                         <field name="level_id"/>
                     </group>
                     <notebook>
-                        <page name="student_ids" string="Etudiants">
+                        <page name="student_ids" string="Étudiants">
                             <field name="student_ids" readonly="1"/>
                         </page>
                     </notebook>

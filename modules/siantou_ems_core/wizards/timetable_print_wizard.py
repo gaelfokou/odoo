@@ -1,6 +1,6 @@
 import logging
 
-from odoo import models, fields, api
+from odoo import models, fields, api, tools, _
 from odoo.exceptions import UserError, ValidationError
 from pprint import pformat
 import pandas as pd

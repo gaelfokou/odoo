@@ -24,7 +24,7 @@ class FeeEnrollmentWizard(models.TransientModel):
     )
     student_id = fields.Many2one(
         'oe.school.student.enrollment', 
-        string='Etudiant', 
+        string='Étudiant', 
         required=True
     )
     student_name = fields.Char(

@@ -4,7 +4,7 @@ import logging
 from odoo import fields, models, api, _
 
 
-_logger = logging.getLogger("++++++++++++++++++++++++++++++++++++++++++")
+_logger = logging.getLogger(__name__)
 
 
 class ProductionDpo(models.Model):

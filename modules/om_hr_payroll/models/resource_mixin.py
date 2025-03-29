@@ -3,7 +3,7 @@
 from collections import defaultdict
 from datetime import timedelta
 from pytz import utc
-from odoo import api, fields, models, tools, _
+from odoo import models, fields, api, tools, _
 from odoo.tools import float_utils
 
 ROUNDING_FACTOR = 16

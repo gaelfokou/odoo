@@ -1,4 +1,4 @@
-from odoo import models, fields, api
+from odoo import models, fields, api, tools, _
 from datetime import timedelta
 from odoo.exceptions import ValidationError  # Import the ValidationError class
 

@@ -3,7 +3,7 @@
 from datetime import datetime
 from dateutil import relativedelta
 
-from odoo import api, fields, models
+from odoo import models, fields, api, tools, _
 
 
 class PayslipLinesContributionRegister(models.TransientModel):

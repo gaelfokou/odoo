@@ -1,6 +1,6 @@
 import math
 from email.policy import default
-from odoo import models, fields, api
+from odoo import models, fields, api, tools, _
 from odoo.exceptions import ValidationError
 import psycopg2
 from datetime import date, datetime, timedelta, time

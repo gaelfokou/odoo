@@ -4,7 +4,7 @@
         <field name="name">enrollment.history.tree.view</field>
         <field name="model">oe.school.student.enrollment</field>
         <field name="arch" type="xml">
-            <tree string="Etudiants" default_order="id desc" default_group_by="year_id" expand="context.get('expand', False)">
+            <tree string="Étudiants" default_order="id desc" default_group_by="year_id" expand="context.get('expand', False)">
                 <field name="date_preins" widget="datetime"/>
                 <field name="matricule"/>
                 <field name="code_enrol"/>
@@ -18,7 +18,7 @@
                     name="status_univ" 
                     widget="badge"
                     decoration-success="status_univ == 'new'"
-                    decoration-warning="status_univ == 'red'"
+                    decoration-warning="status_univ == 'old'"
                 />
                 <field 
                     name="status" 
@@ -36,7 +36,7 @@
 		<field name="name">oe.school.student.enrollment.form.view</field>
 		<field name="model">oe.school.student.enrollment</field>
 		<field name="arch" type="xml">
-			<form string="Etudiant">
+			<form string="Étudiant">
                 <header>
                     <!-- <button 
                         invisible="status in ['inscrip','transfer','rej']" 

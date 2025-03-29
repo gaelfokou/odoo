@@ -4,7 +4,7 @@
         <field name="name">studnt.tree.view</field>
         <field name="model">oe.school.student</field>
         <field name="arch" type="xml">
-            <tree string="Etudiants" default_order="id desc">
+            <tree string="Étudiants" default_order="id desc">
                 <header>
                     <button name="action_create_all_student_user" 
                             type="object" 
@@ -21,7 +21,7 @@
                     name="status_univ" 
                     widget="badge"
                     decoration-success="status_univ == 'new'"
-                    decoration-warning="status_univ == 'red'"
+                    decoration-warning="status_univ == 'old'"
                 />
             </tree>
         </field>
@@ -31,7 +31,7 @@
         <field name="name">oe.school.student.form.view</field>
         <field name="model">oe.school.student</field>
         <field name="arch" type="xml">
-            <form string="Etudiant">
+            <form string="Étudiant">
                 <header>
                     <button name="action_create_student_user" 
                             type="object" 
@@ -157,7 +157,7 @@
     </record>
 
     <record model="ir.actions.act_window" id="action_admis_history">
-        <field name="name">Etudiants</field>
+        <field name="name">Étudiants</field>
         <field name="res_model">oe.school.student</field>
         <field name="view_mode">tree,form</field>
         <field name="help" type="html">
@@ -169,7 +169,7 @@
 
     <menuitem
         id="menu_siantou_ems_core_students_student"
-        name="Etudiants"
+        name="Étudiants"
         parent="menu_siantou_ems_core_students"
         action="action_admis_history"
         groups="siantou_ems_core.group_student_user,siantou_ems_core.group_student_admin,base.group_system"

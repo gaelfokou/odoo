@@ -8,7 +8,7 @@ import logging
 from psycopg2 import sql, DatabaseError
 
 
-from odoo import api, fields, models, _
+from odoo import models, fields, api, tools, _
 from odoo.tools import DEFAULT_SERVER_DATETIME_FORMAT
 from odoo.exceptions import ValidationError, UserError
 from odoo.addons.base.models.res_partner import WARNING_MESSAGE, WARNING_HELP
@@ -74,10 +74,10 @@ class StudentEnrollment(models.Model):
     )
     status_univ = fields.Selection([
             ('new', 'Nouveau'),
-            ('red', 'Ancien'),
+            ('old', 'Ancien'),
         ], 
         string='Statut universitaire',
-        default='red',
+        default='old',
     )
     nbre_matiere= fields.Integer(string="Nombre de matière")
     date_naissance = fields.Date(string="Date de naissance", required=True)
@@ -218,7 +218,7 @@ class StudentEnrollment(models.Model):
 
 #     student_enrollemnt_id = fields.Many2one(
 #         'oe.school.student.enrollment', 
-#         string="Etudiant préinscrit", 
+#         string="Étudiant préinscrit", 
 #         required=True,    
 #     )
 #     submitted_date = fields.Date(
@@ -251,7 +251,7 @@ class StudentEnrollmentAdmission(models.Model):
 
     student_enrollemnt_id = fields.Many2one(
         'oe.school.student.enrollment', 
-        string="Etudiant préinscrit", 
+        string="Étudiant préinscrit", 
         # required=True,    
     )
     observations = fields.Html(string="Observations", required=True)

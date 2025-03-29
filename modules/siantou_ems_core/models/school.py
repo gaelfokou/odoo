@@ -32,13 +32,13 @@ class School(models.Model):
     # student_ids = fields.One2many(
     #     'res.partner',
     #     'school_id',
-    #     string='Etudiants'
+    #     string='Étudiants'
     # )
 
     student_ids = fields.One2many(
         'oe.school.student',
         'school_id',
-        string='Etudiants'
+        string='Étudiants'
     )
 
     batch_ids = fields.One2many(

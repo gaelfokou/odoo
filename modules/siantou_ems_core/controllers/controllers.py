@@ -124,7 +124,7 @@ class DeSchool(http.Controller):
     def get_etudiant_by_id(self, id,**kw):
         try:
             etudiant = request.env['oe.school.student.enrollment'].sudo().search([('id', '=', id)], limit=1)
-            _logger.info(f'Etudiant: {etudiant}')
+            _logger.info(f'Étudiant: {etudiant}')
             if etudiant:
                 return Response(
                     json.dumps({

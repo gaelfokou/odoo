@@ -57,7 +57,7 @@
                                     </tree>
                                 </field>
                             </page>
-                            <page name="student_ids" string="Etudiants">
+                            <page name="student_ids" string="Étudiants">
                                 <field name="student_ids" options="{'create': false, 'create_edit': false}"/>
                             </page>
                         </notebook>

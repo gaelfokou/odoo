@@ -28,7 +28,7 @@
                         <page name="field_of_study_ids" string="Filières">
                             <field name="field_of_study_ids"/>
                         </page>
-                        <page name="student_ids" string="Etudiants">
+                        <page name="student_ids" string="Étudiants">
                             <field name="student_ids"/>
                         </page>
                         <page name="batch_ids" string="Lots">

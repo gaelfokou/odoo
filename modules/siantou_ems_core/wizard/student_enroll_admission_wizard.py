@@ -1,12 +1,12 @@
 
 from datetime import datetime
-from odoo import models, fields, api
+from odoo import models, fields, api, tools, _
 from odoo.exceptions import ValidationError
 import logging
 
 _logger = logging.getLogger(__name__)
 
-from odoo import models, fields, api
+from odoo import models, fields, api, tools, _
 from odoo.exceptions import ValidationError
 
 
@@ -18,12 +18,12 @@ class StudentEnrollmentAdmissionWizard(models.TransientModel):
 
     # student_id = fields.Many2one(
     #     'oe.school.student', 
-    #     string="Etudiant admis", 
+    #     string="Étudiant admis", 
     #     # required=True,
     # )
     student_enrollement_id = fields.Many2one(
         'oe.school.student.enrollment', 
-        string="Etudiant inscrit", 
+        string="Étudiant inscrit", 
         # required=True,  
     )
     observations = fields.Html(string="Observations", required=True)

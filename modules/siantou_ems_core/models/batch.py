@@ -1,5 +1,4 @@
-from odoo import models, fields, api
-from odoo.fields import One2many
+from odoo import models, fields, api, tools, _
 
 
 class StudentBatch(models.Model):
@@ -28,15 +27,10 @@ class StudentBatch(models.Model):
         required=True
     )
 
-    # student_ids = One2many(
-    #     'res.partner',
-    #     'batch_id',
-    #     string='Etudiants du lot'
-    # )
-    student_ids = One2many(
+    student_ids = fields.One2many(
         'oe.school.student',
         'batch_id',
-        string='Etudiants du lot'
+        string='Étudiants du lot'
     )
 
     current_size = fields.Integer(

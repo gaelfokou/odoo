@@ -1,6 +1,6 @@
 import logging
 
-from odoo import models, fields, api
+from odoo import models, fields, api, tools, _
 from odoo.exceptions import ValidationError
 from datetime import datetime, timedelta, time
 

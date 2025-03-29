@@ -4,7 +4,7 @@ import logging
 import os
 import re
 
-from odoo import api, fields, models, tools, _
+from odoo import models, fields, api, tools, _
 from odoo.exceptions import ValidationError, UserError
 from odoo.modules.module import get_resource_path
 

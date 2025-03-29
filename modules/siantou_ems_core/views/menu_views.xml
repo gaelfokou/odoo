@@ -8,7 +8,7 @@
 
     <menuitem
         id="menu_siantou_ems_core_students"
-        name="Etudiants"
+        name="Étudiants"
         parent="menu_siantou_ems_core"
         sequence="30"
     />

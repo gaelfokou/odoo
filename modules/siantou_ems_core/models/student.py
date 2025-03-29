@@ -3,7 +3,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 
-from odoo import models, fields, api
+from odoo import models, fields, api, tools, _
 
 import datetime
 import time
@@ -26,7 +26,7 @@ class Student(models.Model):
     matricule = fields.Char(string="Matricule")
     student_enroll_id = fields.Many2one(
         'oe.school.student.enrollment',
-        string='Etudiant(Préinscription)',
+        string='Étudiant(Préinscription)',
         ondelete='cascade',
     )
     partner_id = fields.Many2one(
@@ -75,10 +75,10 @@ class Student(models.Model):
     )
     status_univ = fields.Selection([
             ('new', 'Nouveau'),
-            ('red', 'Ancien'),
+            ('old', 'Ancien'),
         ], 
         string='Statut universitaire',
-        default='red',
+        default='old',
     )
     redoublant = fields.Selection(
         [
@@ -381,7 +381,7 @@ class StudentCareer(models.Model):
     name = fields.Char(string="Libellé", required=True)
     student_id = fields.Many2one(
         'oe.school.student',
-        string='Etudiant',
+        string='Étudiant',
         ondelete='cascade',
         required=True
     )

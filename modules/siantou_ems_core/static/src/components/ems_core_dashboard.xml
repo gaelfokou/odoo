@@ -14,7 +14,7 @@
                         </div>
                     </div>
                     <div class="row">
-                        <KpiCard name="'Etudiants'" value="state.students.value" icon="'user'"/>
+                        <KpiCard name="'Étudiants'" value="state.students.value" icon="'user'"/>
                         <KpiCard name="'Enseignants'" value="state.teachers.value" icon="'group'"/>
                         <KpiCard name="'Filières'" value="state.filieres.value" icon="'level-up'"/>
                         <KpiCard name="'Cycles'" value="state.cycles.value" icon="'repeat'"/>
