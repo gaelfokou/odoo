@@ -10,7 +10,7 @@ from odoo.http import request, content_disposition, Response
 from odoo.exceptions import ValidationError  # Import the ValidationError class
 import requests
 
-_logger = logging.getLogger("++++++++++++")
+_logger = logging.getLogger(__name__)
 
 class DeSchool(http.Controller):
 

@@ -14,7 +14,7 @@ from odoo.exceptions import ValidationError, UserError
 from odoo.addons.base.models.res_partner import WARNING_MESSAGE, WARNING_HELP
 
 
-_logger = logging.getLogger("++++++++++++")
+_logger = logging.getLogger(__name__)
 
 
 class StudentEnrollment(models.Model):
@@ -66,13 +66,19 @@ class StudentEnrollment(models.Model):
         string='Spécialité',
     )
     type_cour = fields.Selection([
-        ('cj', 'Cours du jour'),
-        ('cs', 'Cours du soir'),
-    ], required=True, string="Type de cours",)
+            ('cj', 'Cours du jour'),
+            ('cs', 'Cours du soir'),
+        ],
+        string="Type de cours",
+        default='cj',
+    )
     status_univ = fields.Selection([
-        ('new', 'Nouveau'),
-        ('red', 'Redoublant'),
-    ], required=True, string="Statut universitaire")
+            ('new', 'Nouveau'),
+            ('red', 'Ancien'),
+        ], 
+        string='Statut universitaire',
+        default='red',
+    )
     nbre_matiere= fields.Integer(string="Nombre de matière")
     date_naissance = fields.Date(string="Date de naissance", required=True)
     lieu_naissance = fields.Char(string="Lieu de naissance", required=True)

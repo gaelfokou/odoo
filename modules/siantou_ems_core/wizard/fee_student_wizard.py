@@ -8,7 +8,7 @@ from odoo.tools.misc import clean_context
 
 import logging
 
-_logger = logging.getLogger("++++++++++++")
+_logger = logging.getLogger(__name__)
 
 
 

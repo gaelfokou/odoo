@@ -6,7 +6,7 @@ from odoo.exceptions import ValidationError
 
 import logging
 
-_logger = logging.getLogger("++++++++++++")
+_logger = logging.getLogger(__name__)
 
 
 class SessionEnrollment(models.Model):

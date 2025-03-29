@@ -11,23 +11,11 @@ import logging
 import re
 import psycopg2
 
-_logger = logging.getLogger("++++++++++++")
+_logger = logging.getLogger(__name__)
 
 from odoo.tools import DEFAULT_SERVER_DATETIME_FORMAT
 from odoo.exceptions import ValidationError, UserError
 from odoo.addons.base.models.res_partner import WARNING_MESSAGE, WARNING_HELP
-
-
-
-
-# class Student(models.Model):
-#     _inherit = 'res.partner'
-
-#     is_student = fields.Boolean(
-#         string='Est un étudiant',
-#         default=False
-#     )
-
 
 class Student(models.Model):
     _name = 'oe.school.student'
@@ -40,7 +28,6 @@ class Student(models.Model):
         'oe.school.student.enrollment',
         string='Etudiant(Préinscription)',
         ondelete='cascade',
-        required=True
     )
     partner_id = fields.Many2one(
         'res.partner',
@@ -80,15 +67,18 @@ class Student(models.Model):
         store=True
     )
     type_cour = fields.Selection([
-        ('cj', 'Cours du jour'),
-        ('cs', 'Cours du soir'),
-    ], required=True, string="Type de cours",)
+            ('cj', 'Cours du jour'),
+            ('cs', 'Cours du soir'),
+        ],
+        string="Type de cours",
+        default='cj',
+    )
     status_univ = fields.Selection([
             ('new', 'Nouveau'),
             ('red', 'Ancien'),
-        ], required=True, 
+        ], 
+        string='Statut universitaire',
         default='red',
-        string="Statut universitaire"
     )
     redoublant = fields.Selection(
         [
@@ -98,27 +88,27 @@ class Student(models.Model):
         'Redoublant?',
         default="non"
     )
-    date_naissance = fields.Date(string="Date de naissance", required=True)
-    lieu_naissance = fields.Char(string="Lieu de naissance", required=True)
+    date_naissance = fields.Date(string="Date de naissance")
+    lieu_naissance = fields.Char(string="Lieu de naissance")
     sexe = fields.Selection([
             ('masculin', 'Masculin'),
             ('feminin', 'Féminin'),
-        ], required=True, string="Sexe"
+        ], string="Sexe"
     )
     situat_matri = fields.Selection([
         ('marie', 'Marié'),
         ('celibat', 'Célibataire'),
         ('concub', 'Concubinage'),
-    ], string="Situation matrimoniale", required=True)
+    ], string="Situation matrimoniale")
     nationalite = fields.Many2one(
         'siantou.ems.core.country',
         string="Nationalité(Pays d'origine)",
     )
     autre = fields.Char(string="Autre pays")
     is_autre_pays = fields.Boolean(string="Autre pays ?", default=False)
-    lieu_residence = fields.Char(string="Lieu de résidence", required=True)
-    email = fields.Char(string="E-mail", required=True)
-    num_tel = fields.Char(string="N° de Téléphone", required=True)
+    lieu_residence = fields.Char(string="Lieu de résidence")
+    email = fields.Char(string="E-mail")
+    num_tel = fields.Char(string="N° de Téléphone")
     level_id = fields.Many2one(
         'siantou.ems.core.level',
         string="Niveau",
@@ -128,7 +118,6 @@ class Student(models.Model):
     annee_acad_current = fields.Many2one(
         "siantou.ems.core.year", 
         string="Année académique", 
-        required=True,
         default=lambda self: self.env['siantou.ems.core.year'].search([('active', '=', True)], limit=1)
     )
     # payment_ids = fields.Many2one(
@@ -139,9 +128,8 @@ class Student(models.Model):
     # )
     user_id = fields.Many2one(
         'res.users',
-        string="Utilisateur lié",
-        readonly=True,
-        help="Compte utilisateur portail associé à cet étudiant"
+        string="Utilisateur associé",
+        help="Utilisateur associé à cet étudiant"
     )
 
     timetable_ids = fields.One2many(
