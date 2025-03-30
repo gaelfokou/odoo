@@ -20,6 +20,17 @@ class StudentBatch(models.Model):
         required=True
     )
 
+    specialty_id = fields.Many2one(
+        'siantou.ems.core.specialty',
+        string='Spécialité',
+        required=True
+    )
+
+    option_id = fields.Many2one(
+        'siantou.ems.core.option',
+        string='Option',
+    )
+
     level_id = fields.Many2one(
         'siantou.ems.core.level',
         string='Niveau',
@@ -58,17 +69,19 @@ class StudentBatch(models.Model):
         })
 
     @api.model
-    def assign_batch(self, school_id, field_of_study_id, level_id):
+    def assign_batch(self, school_id, field_of_study_id, specialty_id, option_id, level_id):
 
         max_students_per_batch = self.env['siantou.ems.core.school'].browse(school_id).max_students_per_batch
-        batches = self.search([
+        batch = self.search([
             ('school_id', '=', school_id),
             ('field_of_study_id', '=', field_of_study_id),
+            ('specialty_id', '=', specialty_id),
+            ('option_id', '=', option_id),
             ('level_id', '=', level_id),
             ('current_size', '<', max_students_per_batch)
         ], limit=1)
 
-        if batches:
-            return batches[0]
+        if batch:
+            return batch
         else:
-            return self.create_new_batch(school_id, field_of_study_id, level_id)
+            return self.create_new_batch(school_id, field_of_study_id, specialty_id, option_id, level_id)

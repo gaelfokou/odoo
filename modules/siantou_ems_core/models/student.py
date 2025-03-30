@@ -50,10 +50,12 @@ class Student(models.Model):
     field_of_study_id = fields.Many2one(
         'siantou.ems.core.field_of_study',
         string='Filière',
+        required=True
     )
     specialty_id = fields.Many2one(
         'siantou.ems.core.specialty',
         string='Spécialité',
+        required=True
     )
     option_id = fields.Many2one(
         'siantou.ems.core.option',
@@ -105,6 +107,7 @@ class Student(models.Model):
     level_id = fields.Many2one(
         'siantou.ems.core.level',
         string="Niveau",
+        required=True
     )
     annee_acad_current = fields.Many2one(
         "siantou.ems.core.year", 
@@ -140,7 +143,6 @@ class Student(models.Model):
     class_id = fields.Many2one(
         'siantou.ems.core.class',
         string='Classe',
-        required=True
     )
 
     @api.depends('field_of_study_id', 'level_id')
@@ -356,14 +358,25 @@ class Student(models.Model):
     @api.model
     def create(self, vals):
         class_id = self.env['siantou.ems.core.class'].browse(vals['class_id'])
-        field_of_study_id = class_id.filiere_id
-        specialty_id = class_id.specialty_id
-        option_id = class_id.option_id
+        if not class_id:
+            class_id = self.env['siantou.ems.core.class'].search([
+                ('niveau_id', '=', vals['level_id']),
+                ('filiere_id', '=', vals['field_of_study_id']),
+                ('specialty_id', '=', vals['specialty_id']),
+                ('option_id', '=', vals['option_id'])
+            ], limit=1)
+            if not class_id:
+                class_id = self.env['siantou.ems.core.class'].create({
+                    'niveau_id': vals['level_id'],
+                    'filiere_id': vals['field_of_study_id'],
+                    'specialty_id': vals['specialty_id'],
+                    'option_id': vals['option_id'],
+                })
         batch = self.env['siantou.ems.core.student.batch'].assign_batch(
-            field_of_study_id.school_id.id, 
-            field_of_study_id.id, 
-            specialty_id.id, 
-            option_id.id, 
+            class_id.filiere_id.school_id.id, 
+            class_id.filiere_id.id, 
+            class_id.specialty_id.id, 
+            class_id.option_id.id, 
             class_id.niveau_id.id
         )
         vals['batch_id'] = batch.id

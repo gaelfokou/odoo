@@ -16,12 +16,12 @@ class EducationClass(models.Model):
     #      'Classe unique par school_id'),
     # ]
 
-    name = fields.Char(string='Nom', required=True,
+    name = fields.Char(string='Nom',
                        compute='_compute_name', store=True,
                        help="Entrer le nom de la Classe")
 
     filiere_id = fields.Many2one('siantou.ems.core.field_of_study', string='Filière',
-                                 help="Filière")
+                                 required=True, help="Filière")
 
     student_ids = fields.One2many(
         'oe.school.student',
@@ -30,13 +30,13 @@ class EducationClass(models.Model):
     )
 
     specialty_id = fields.Many2one('siantou.ems.core.specialty', string='Spécialité',
-                                 help="Spécialité")
+                                 required=True, help="Spécialité")
 
     option_id = fields.Many2one('siantou.ems.core.option', string='Option',
                                  help="Option")
 
     niveau_id = fields.Many2one('siantou.ems.core.level', string='Niveau',
-                                 help="Niveau")
+                                 required=True, help="Niveau")
 
     school_id = fields.Many2one('siantou.ems.core.school', string='Ecole')
 

@@ -27,37 +27,33 @@ class StudentEnrollment(models.Model):
         'siantou.session.registre', 
         "Registre d'admission" ,
         # domain="[('state', '=', 'application')]",
-        # required=True
     )
     year_id = fields.Many2one(
         "siantou.ems.core.year", 
         string="Année académique", 
-        required=True,
         default=lambda self: self.env['siantou.ems.core.year'].search([('active', '=', True)], limit=1)
     )
     name = fields.Char(
         string="Nom(s) et prénom(s)", 
-        required=True,
-        index=True,
-        translate=True,
-        help="Nom(s) et prénom(s) du(des) étudiant(s).",
-        track_visibility='onchange'
+        compute='_compute_name',
+        store=True
     )
+
     matricule = fields.Char(string="Matricule")
     code_enrol = fields.Char(string="Code de préinscription", default="001485KOPLL")
     cycle_id = fields.Many2one(
         'oe.school.course',
         string='Cycle',
-        required=True
     )
     field_of_study_id = fields.Many2one(
         'siantou.ems.core.field_of_study',
         string='Filière',
-        required=True,
+        required=True
     )
     specialty_id = fields.Many2one(
         'siantou.ems.core.specialty',
         string='Spécialité',
+        required=True
     )
     option_id = fields.Many2one(
         'siantou.ems.core.option',
@@ -66,6 +62,7 @@ class StudentEnrollment(models.Model):
     class_id = fields.Many2one(
         'siantou.ems.core.class',
         string='Classe',
+        required=True
     )
     type_cour = fields.Selection([
             ('cj', 'Cours du jour'),
@@ -82,17 +79,17 @@ class StudentEnrollment(models.Model):
         default='old',
     )
     nbre_matiere= fields.Integer(string="Nombre de matière")
-    date_naissance = fields.Date(string="Date de naissance", required=True)
-    lieu_naissance = fields.Char(string="Lieu de naissance", required=True)
+    date_naissance = fields.Date(string="Date de naissance")
+    lieu_naissance = fields.Char(string="Lieu de naissance")
     sexe = fields.Selection([
         ('masculin', 'Masculin'),
         ('feminin', 'Féminin'),
-    ], required=True, string="Sexe")
+    ], string="Sexe")
     situat_matri = fields.Selection([
         ('marie', 'Marié'),
         ('celibat', 'Célibataire'),
         ('concub', 'Concubinage'),
-    ], string="Situation matrimoniale", required=True)
+    ], string="Situation matrimoniale")
     nationalite = fields.Many2one(
         'siantou.ems.core.country',
         string="Nationalité(Pays d'origine)",
@@ -102,16 +99,16 @@ class StudentEnrollment(models.Model):
     quarter_id = fields.Many2one("siantou.ems.core.quarter", string="Quartier")
 
     autre = fields.Char(string="Autre pays")
-    lieu_residence = fields.Char(string="Lieu de résidence", required=True)
-    email = fields.Char(string="E-mail", required=True)
-    num_tel = fields.Char(string="N° de Téléphone", required=True)
-    dipl_req_ids = fields.Many2many('oe.school.course.degree', string="Diplôme requis", required=True)
-    session_lieu_obt = fields.Char(string="Session et lieu d'obtention", required=True)
-    dern_etab_freq = fields.Char(string="Dernier établissement fréquenté", required=True)
-    annee_acad = fields.Char(string="Année académique", required=True)
+    lieu_residence = fields.Char(string="Lieu de résidence")
+    email = fields.Char(string="E-mail")
+    num_tel = fields.Char(string="N° de Téléphone")
+    dipl_req_ids = fields.Many2many('oe.school.course.degree', string="Diplôme requis")
+    session_lieu_obt = fields.Char(string="Session et lieu d'obtention")
+    dern_etab_freq = fields.Char(string="Dernier établissement fréquenté")
+    annee_acad = fields.Char(string="Année académique")
     level_id = fields.Many2one("siantou.ems.core.level", string="Niveau", required=True)
-    full_name_tutor = fields.Char(string="Nom(s) et prénom(s)", required=True)
-    num_tel_tutor = fields.Char(string="N° de Téléphone", required=True)
+    full_name_tutor = fields.Char(string="Nom(s) et prénom(s)")
+    num_tel_tutor = fields.Char(string="N° de Téléphone")
     date_preins = fields.Datetime(string="Date de préinscription", default=datetime.datetime.now())
     status = fields.Selection([
             # ('broui', "En attente de paiement des frais d'inscription"),
@@ -121,7 +118,6 @@ class StudentEnrollment(models.Model):
         ],
         string="Status",
         default="inscrip",
-        track_visibility='onchange'
     )
     is_autre_pays = fields.Boolean(string="Autre pays ?", default=False)
     observations = fields.Html(string="Observations")
@@ -133,7 +129,18 @@ class StudentEnrollment(models.Model):
         'oe.school.student',
         string='Étudiant',
         ondelete='cascade',
+        required=True
     )
+
+    @api.onchange('student_id')
+    def _onchange_name(self):
+        for record in self:
+            record.name = record.student_id.name
+
+    @api.depends('student_id')
+    def _compute_name(self):
+        for record in self:
+            record.name = record.student_id.name
 
     def print_payement_student(self):
         for rec in self:
@@ -216,7 +223,6 @@ class StudentEnrollment(models.Model):
 #     student_enrollemnt_id = fields.Many2one(
 #         'oe.school.student.enrollment', 
 #         string="Étudiant préinscrit", 
-#         required=True,    
 #     )
 #     submitted_date = fields.Date(
 #         string="Date de dépôt", 
@@ -247,7 +253,6 @@ class StudentEnrollmentAdmission(models.Model):
     student_enrollemnt_id = fields.Many2one(
         'oe.school.student.enrollment', 
         string="Étudiant préinscrit", 
-        # required=True,    
     )
-    observations = fields.Html(string="Observations", required=True)
+    observations = fields.Html(string="Observations")
 
