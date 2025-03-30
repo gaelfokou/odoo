@@ -24,7 +24,7 @@
                 </div>
                 <div class="col-lg-6">
                     <div class="row">
-                    
+
                         <div class="col-md-4 m-0 p-0">
                             <div class="shadow-sm border m-2 p-4 bg-white">
                                 <div class="d-flex align-items-center justify-content-between">
@@ -62,7 +62,7 @@
                                 <t t-if="state.doughFilieres.length>0">
                                     <DoughnutRenderer type="'doughnut'" title="'Filières'" datas="state.doughFilieres"/>
                                 </t>
-                                
+
                             </div>
                         </div>
                     </div>

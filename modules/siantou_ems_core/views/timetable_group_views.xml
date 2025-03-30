@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
 	<data>
-        
 
         <!-- Vue en mode Liste (Tree) pour TimetableGroup -->
         <record id="view_timetable_group_tree" model="ir.ui.view">
@@ -38,7 +37,6 @@
             action="action_timetable_group" 
             groups="siantou_ems_core.group_timetable_user,siantou_ems_core.group_timetable_admin,base.group_system"
             sequence="2"/>
-        
-        
+
 	</data>
 </odoo>

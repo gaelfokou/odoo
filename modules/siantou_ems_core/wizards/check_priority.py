@@ -9,7 +9,6 @@ class CheckPriority(models.Model):
     _name = 'siantou.ems.timetable.check_priority'
     _description = 'Déterminer la priorité d\'un enseignant sur un autre'
 
-
     def get_teacher_for_period(self, subject_id, date, start_time, end_time, not_active_slotitems):
         """
         Trouver l'enseignant disponible pour un cours à une période spécifique,
@@ -23,7 +22,6 @@ class CheckPriority(models.Model):
             [('subject_id', '=', subject_id)],
             order='priority asc'
         )
-
 
         # Chercher les enseignants permanents d'abord
         for priority in priorities:
@@ -93,7 +91,6 @@ class CheckPriority(models.Model):
 
                 return teacher
 
-        
         # Si aucun enseignant (permanent ou non) n'est disponible
         return None
 

@@ -33,7 +33,7 @@
 				</form>
 			</field>
 		</record>
-        
+
         <record id="view_specialty_filter" model="ir.ui.view">
             <field name="name">specialty.search</field>
             <field name="model">siantou.ems.core.specialty</field>
@@ -44,7 +44,7 @@
                 </search>
              </field>
         </record>
-        
+
         <record id="action_school_specialty" model="ir.actions.act_window">
             <field name="name">Spécialités</field>
             <field name="res_model">siantou.ems.core.specialty</field>
@@ -56,7 +56,7 @@
                 </p>
             </field>
         </record>
-        
+
         <menuitem name="Spécialités" 
             id="menu_school_specialty"
             parent="menu_siantou_ems_core_configuration" 

@@ -98,7 +98,6 @@
             <field name="search_view_id" ref="timetable_exception_search_view"/>
         </record>
 
-        
         <menuitem
             id="menu_timetable_exception"
             name="Exceptions d'emploi du temps"
@@ -106,6 +105,6 @@
             action="action_show_timetable_exception"
             groups="siantou_ems_core.group_timetable_user,siantou_ems_core.group_timetable_admin,base.group_system"
             sequence="3"/>
-        
+
 	</data>
 </odoo>

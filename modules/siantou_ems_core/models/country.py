@@ -1,6 +1,5 @@
 from odoo import models, fields
 
-
 class Country(models.Model):
     _name = 'siantou.ems.core.country'
     _description = 'Gestion des pays'
@@ -15,7 +14,7 @@ class Country(models.Model):
         'Nom',
         required=True,
     )
-    
+
     _sql_constraints = [
         ('unique_code', 'unique(code)', 'Le code du pays doit être unique.'),
         ('unique_name', 'unique(name)', 'Le nom du pays doit être unique.'),
@@ -74,5 +73,4 @@ class Quarter(models.Model):
     _sql_constraints = [
         ('unique_name', 'unique(name)', 'Le nom du quartier doit être unique.'),
     ]
-
 

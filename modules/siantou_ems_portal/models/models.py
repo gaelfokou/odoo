@@ -2,7 +2,6 @@
 
 # from odoo import models, fields, api, tools, _
 
-
 # class siantou_ems_portal(models.Model):
 #     _name = 'siantou_ems_portal.siantou_ems_portal'
 #     _description = 'siantou_ems_portal.siantou_ems_portal'

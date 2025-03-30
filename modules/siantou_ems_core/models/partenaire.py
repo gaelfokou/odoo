@@ -1,10 +1,8 @@
 from odoo import models, fields
 
-
 class UniversityPartner(models.Model):
     _name = 'siantou.university.partner'
     _description = 'Gestion des universitées partenaires'
-
 
     #===== Nom
     name = fields.Char(

@@ -92,7 +92,6 @@ year_admin,year.admin,model_siantou_ems_core_year,siantou_ems_core.group_year_ad
 candidature_user,candidature.user,model_oe_school_student_enrollment,siantou_ems_core.group_candidature_user,1,0,0,0
 candidature_admin,candidature.admin,model_oe_school_student_enrollment,siantou_ems_core.group_candidature_admin,1,1,1,1
 
-
 modal_inscritpion_candidature_admin,inscritpion.candidature.user,model_siantou_ems_core_fee_enrollment_student,siantou_ems_core.group_modal_enrol_admin,1,1,1,1
 modal_transfert_candidature_admin,transfert.candidature.admin,model_siantou_ems_core_student_enrollment_admission_wizard,siantou_ems_core.group_modal_sent_admin,1,1,1,1
 

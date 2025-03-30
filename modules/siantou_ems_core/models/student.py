@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-
 from odoo import models, fields, api, tools, _
 
 import datetime
@@ -21,7 +20,7 @@ class Student(models.Model):
     _name = 'oe.school.student'
     _inherit=['mail.thread', 'mail.activity.mixin',]
     _description = 'Gestion des étudiants'
-    
+
     name = fields.Char(string="Nom(s) et prénom(s)", required=True)
     matricule = fields.Char(string="Matricule")
     student_enroll_id = fields.Many2one(
@@ -145,7 +144,6 @@ class Student(models.Model):
         required=True
     )
 
-
     @api.depends('field_of_study_id', 'level_id')
     def _compute_timetables(self):
         # Recherche des emplois du temps qui correspondent à la filière et au niveau de l'étudiant
@@ -154,7 +152,7 @@ class Student(models.Model):
                 ('field_of_study_id', '=', student.field_of_study_id.id),
                 ('level_id', '=', student.level_id.id)
             ])
-            
+
             # Affecter les emplois du temps trouvés à l'attribut timetable_ids
             student.timetable_ids = timetables
 
@@ -368,15 +366,12 @@ class Student(models.Model):
         student = super(Student, self).create(vals)
 
         self.create_student_user(student)
-        
+
         return student
-
-
 
 class StudentCareer(models.Model):
     _name = 'oe.school.student.career'
     _description = 'Gestion du parcours des étudiants'
-    
 
     name = fields.Char(string="Libellé", required=True)
     student_id = fields.Many2one(

@@ -4,7 +4,6 @@ from odoo import models, fields, api, tools, _
 from datetime import timedelta, datetime, date
 from odoo.exceptions import ValidationError  # Import the ValidationError class
 
-
 class Semester(models.Model):
     _name = 'siantou.ems.core.year.semester'
     _description = 'Gestion des Semestres'
@@ -34,7 +33,7 @@ class Semester(models.Model):
         help="Année académique à laquelle est lié le semestre",
         required=True,
     )
-    
+
     # classe liée au semestre
     # class_ids = fields.One2many(
     #     'siantou.ems.core.class',
@@ -51,7 +50,7 @@ class Semester(models.Model):
         help='Nombre de semaines sur le semestre',
         store=True
     )
-    
+
     ue_ids = fields.One2many(
         'siantou.ems.core.unite.enseignement', 
         'semestre_id',  
@@ -109,6 +108,4 @@ class Semester(models.Model):
                 record.number_of_week = math.ceil(diff_days / 7)
             else:
                 record.number_of_week = 0
-
-
 

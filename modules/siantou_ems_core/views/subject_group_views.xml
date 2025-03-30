@@ -11,7 +11,7 @@
 				</tree>
 			</field>
 		</record>
-        
+
         <record id="action_school_subject_group" model="ir.actions.act_window">
             <field name="name">Filière</field>
             <field name="res_model">oe.school.subject.group</field>
@@ -26,7 +26,7 @@
         <menuitem name="Filière" id="menu_school_config_subject_group"
                     parent="menu_school_config_course" action="action_school_subject_group"
                      />
-        
+
         <!-- Subject -->
         <record id="school_subject_tree_view" model="ir.ui.view">
 			<field name="name">school.subject_tree.view</field>
@@ -69,7 +69,7 @@
 				</form>
 			</field>
 		</record>
-        
+
         <record id="view_subject_filter" model="ir.ui.view">
             <field name="name">school.subject.search</field>
             <field name="model">oe.school.subject</field>
@@ -81,7 +81,7 @@
                 </search>
              </field>
         </record>
-        
+
         <record id="action_school_subject" model="ir.actions.act_window">
             <field name="name">Cours</field>
             <field name="res_model">oe.school.subject</field>
@@ -93,7 +93,7 @@
                 </p>
             </field>
         </record>
-        
+
         <menuitem name="Cours" id="menu_school_subjects"
                     parent="menu_school_courses" action="action_school_subject"
                      sequence="3"/>

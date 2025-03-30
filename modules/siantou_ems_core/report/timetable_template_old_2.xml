@@ -42,7 +42,7 @@
                         <h3 style="text-align: center;">Emploi du Temps <t t-esc="record['semester']"/></h3>
                         <h5>Département : <t t-esc="record['departement']"/> - Filière : <t t-esc="record['field_of_study']"/> - Niveau : <t t-esc="record['level']"/> - <t t-esc="record['batch']"/></h5>
                         <h5>Periode : <t t-esc="record['week_number']"/></h5>
-                        
+
                         <!-- Tableau des emplois du temps sous forme d'horaire -->
                         <style>
                             .table {

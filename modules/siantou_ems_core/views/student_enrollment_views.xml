@@ -153,7 +153,7 @@
                                 </group>
                             </group>
                         </page>
-                    
+
                         <page name="info_ac" string="Informations académiques">
                             <group  name="academique">
                                 <group invisible="status_univ=='new'">
@@ -176,11 +176,11 @@
                                 <group>
                                     <field name="type_cour" widget="radio"/>
                                 </group>
-                                
+
                                 <group invisible="status_univ=='new'">
                                     <field name="nbre_matiere"/>
                                 </group>
-                                
+
                                 <group>
                                     <field name="dipl_req_ids" widget="many2many_tags"/>
                                 </group>
@@ -198,7 +198,7 @@
                                 </group>
                             </group>
                         </page>
-                    
+
                         <page name="info_tu" string="Informations sur la personne à joindre en cas d'urgence">
                             <group name="tuteur">
                                 <group>
@@ -225,7 +225,7 @@
                         </page>
 
                     </notebook>
-                    
+
                 </sheet>
                 <div class="oe_chatter">
                     <field name="message_follower_ids"/>
@@ -250,7 +250,7 @@
             </search>
         </field>
     </record>
-    
+
     <record model="ir.actions.act_window" id="action_enrollment_history">
         <field name="name">Candidatures</field>
         <field name="res_model">oe.school.student.enrollment</field>
@@ -275,5 +275,5 @@
         groups="siantou_ems_core.group_candidature_user,siantou_ems_core.group_candidature_admin,base.group_system"
         sequence="1"
     />
-    
+
 </odoo>

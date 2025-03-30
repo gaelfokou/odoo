@@ -195,7 +195,7 @@
                                    context="{'default_employee_id': employee_id}"/>
                                 <field name="credit_note" readonly="state != 'draft'"/>
                             </group>
-                            
+
                             <group colspan="2">
                                 <field name="number" readonly="state != 'draft'"/>
                                 <field name="struct_id" required="contract_id != False" readonly="state != 'draft'"/>

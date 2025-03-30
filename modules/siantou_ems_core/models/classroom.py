@@ -24,8 +24,6 @@ class Campus(models.Model):
         required=True,
         default=lambda self: self.env.company
     )
-    
-    
 
 class Building(models.Model):
     _name = 'siantou.ems.core.building'
@@ -55,7 +53,6 @@ class Building(models.Model):
     active = fields.Boolean(
         default=True
     )
-
 
 class Classroom(models.Model):
     _name = 'siantou.ems.core.building.classroom'

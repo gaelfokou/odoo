@@ -4,7 +4,7 @@
         <!-- <menuitem name="Filières" id="menu_school_config_course"
                     parent="menu_school_config" 
                      /> -->
-        
+
         <!-- Grading Type -->
         <!-- <record id="school_course_grading_type_tree_view" model="ir.ui.view">
 			<field name="name">school.course.grading.type.tree.view</field>
@@ -15,7 +15,7 @@
 				</tree>
 			</field>
 		</record>
-        
+
         <record id="action_school_course_grading_type" model="ir.actions.act_window">
             <field name="name">Type de notation</field>
             <field name="res_model">oe.school.course.grading.type</field>
@@ -91,7 +91,7 @@
                                 <field name="company_id" options="{'no_create': True}"/>
                             </group>
                         </group>
-                        
+
 						<!-- <notebook>
                             <page string="Affectation des cours">
                                 <field name="course_subject_line" >
@@ -116,7 +116,7 @@
 				</form>
 			</field>
 		</record>
-        
+
         <record id="view_course_filter" model="ir.ui.view">
             <field name="name">school.course.search</field>
             <field name="model">oe.school.course</field>
@@ -128,7 +128,7 @@
                 </search>
              </field>
         </record>
-        
+
         <record id="action_oe_school_course" model="ir.actions.act_window">
             <field name="name">Cycles</field>
             <field name="res_model">oe.school.course</field>
@@ -142,11 +142,11 @@
                 </p>
             </field>
         </record>
-        
+
         <!-- <menuitem name="Cycles" id="menu_school_courses_courses"
                     parent="menu_school_courses" action="action_oe_school_course"
                      sequence="1"/> -->
-        
+
         <menuitem
             id="menu_siantou_ems_core_cycle"
             name="Cycles"

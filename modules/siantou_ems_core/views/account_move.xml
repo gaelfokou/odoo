@@ -17,7 +17,6 @@
         </field>
     </record>
 
-
     <record model="ir.ui.menu" id="account.menu_finance_receivables">
         <field name="name">Encaissement</field>
     </record>

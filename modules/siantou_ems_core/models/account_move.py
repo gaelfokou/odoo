@@ -3,15 +3,10 @@ from odoo import models, fields, Command
 from odoo.tools import populate
 import logging
 
-
-
 _logger = logging.getLogger(__name__)
-
-
 
 class AccountMove(models.Model):
     _inherit = "account.move"
-
 
     # cycle_id = fields.Many2one(
     #     'oe.school.course',
@@ -42,13 +37,4 @@ class AccountMove(models.Model):
     #     # )
     # )
     # level_id = fields.Many2one("siantou.ems.core.level", string="Niveau", required=True)
-
-
-
-
-
-
-
-
-
 

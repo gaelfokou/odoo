@@ -10,7 +10,6 @@ import logging
 
 _logger = logging.getLogger(__name__)
 
-
 class TimetableNotification(models.Model):
     _name = 'siantou.ems.timetable.notification'
     _description = 'Timetable notification'

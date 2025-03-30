@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
     <data>
-        
+
         <record id="view_siantou_admission_registre_tree_view" model="ir.ui.view">
             <field name="name">siantou.session.registre.tree.view</field>
             <field name="model">siantou.session.registre</field>
@@ -18,7 +18,6 @@
                 </tree>
             </field>
         </record>
-
 
 		<record
             id="session_registre_form_view"
@@ -81,7 +80,7 @@
                                             class="btn btn-success"
                                             type="object" 
                                             string="Accepter cette candidature"/>
-                                        
+
                                         <button  invisible="status in ['broui', 'transfer', 'rej']"
                                             name="compute_rejected" 
                                             class="btn btn-danager" 
@@ -95,9 +94,6 @@
 				</form>
 			</field>
 		</record>
-
- 
-
 
         <record model="ir.actions.act_window" id="action_siantou_admission_registre">
             <field name="name">Régistre d'admission</field>

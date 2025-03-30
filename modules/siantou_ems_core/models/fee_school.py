@@ -2,9 +2,6 @@ from datetime import datetime
 from odoo import models, fields, api, tools, _
 from odoo.exceptions import UserError, AccessError, ValidationError
 
-
-
-
 class FeeSchool(models.Model):
     _name = 'siantou.ems.core.fee.school'
     _description = 'Gestion des Frais de scolarité'
@@ -48,7 +45,6 @@ class FeeSchool(models.Model):
                     _("Journal incorrect: Le journal doit être rédigé dans la même devise que l'entreprise.")
                 )
 
-
 class FeeSchoolLine(models.Model):
     _name = 's.e.core.fee.school.line'
     _description = " Gestion des élements de frais de scolarité des étudiants"
@@ -82,8 +78,4 @@ class FeeSchoolLine(models.Model):
         for record in self:
             if record.date_debut >= record.date_fin:
                 raise ValidationError("La date de fin doit être supérieure à la date de début.")
-
-
-
-
 

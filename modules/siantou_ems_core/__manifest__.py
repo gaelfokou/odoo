@@ -9,7 +9,7 @@
         # 'data/email_template_preinscription.xml',
         # 'data/email_template_preinscription_conditionnelle.xml',
         # 'data/sequence_preinscription.xml',
-        
+
         # Fichiers de sécurité
         'security/module_category_school_management.xml',
         'security/group_school_management.xml',
@@ -55,7 +55,6 @@
         # 'views/fee_struct_views.xml',
         # 'views/fee_struct_line_views.xml',
 
-
         # 'views/fee_enrollment_views.xml',
         'views/country_views.xml',
         'views/region_views.xml',
@@ -65,7 +64,6 @@
         'views/country_views.xml',
         'views/production_pe.xml',
         'views/teacher_avaibility_views.xml',
-        
 
         #=======Vue hérité pour les créances
         # 'views/account_move.xml',
@@ -73,7 +71,6 @@
         #=======Vue hérité pour les modales
         'wizard/fee_student_wizard.xml',
         'wizard/student_enroll_admission_wizard.xml',
-
 
         # Fichier de vue timetable
         'views/timetable_views.xml',

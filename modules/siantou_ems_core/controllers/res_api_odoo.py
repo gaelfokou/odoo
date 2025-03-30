@@ -7,7 +7,6 @@ from odoo.http import request
 
 _logger = logging.getLogger(__name__)
 
-
 class RestApi(http.Controller):
 
     @http.route(['/odoo_connect'], type="http", auth="none", csrf=False, methods=['GET'])

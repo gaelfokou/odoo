@@ -27,7 +27,6 @@ CURRENT_WEEKDAY = {
 
 _logger = logging.getLogger(__name__)
 
-
 class HrPayslip(models.Model):
     _name = 'hr.payslip'
     _description = 'Pay Slip'
@@ -916,7 +915,6 @@ class HrPayslip(models.Model):
         else:
             return 0.0
 
-
 class HrPayslipLine(models.Model):
     _name = 'hr.payslip.line'
     _inherit = 'hr.salary.rule'
@@ -948,7 +946,6 @@ class HrPayslipLine(models.Model):
                     raise UserError(_('You must set a contract to create a payslip line.'))
         return super(HrPayslipLine, self).create(vals_list)
 
-
 class HrPayslipWorkedDays(models.Model):
     _name = 'hr.payslip.worked_days'
     _description = 'Payslip Worked Days'
@@ -962,7 +959,6 @@ class HrPayslipWorkedDays(models.Model):
     number_of_hours = fields.Float(string='Number of Hours')
     contract_id = fields.Many2one('hr.contract', string='Contract', required=True,
         help="The contract for which applied this input")
-
 
 class HrPayslipInput(models.Model):
     _name = 'hr.payslip.input'
@@ -978,7 +974,6 @@ class HrPayslipInput(models.Model):
                                "like result = inputs.SALEURO.amount * contract.wage*0.01.")
     contract_id = fields.Many2one('hr.contract', string='Contract', required=True,
         help="The contract for which applied this input")
-
 
 class HrPayslipRun(models.Model):
     _name = 'hr.payslip.run'

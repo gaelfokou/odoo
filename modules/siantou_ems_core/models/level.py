@@ -1,6 +1,5 @@
 from odoo import models, fields
 
-
 class Level(models.Model):
     _name = 'siantou.ems.core.level'
     _description = 'Gestion des niveaux'

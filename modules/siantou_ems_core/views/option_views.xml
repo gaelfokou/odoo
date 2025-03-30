@@ -31,7 +31,7 @@
 				</form>
 			</field>
 		</record>
-        
+
         <record id="view_option_filter" model="ir.ui.view">
             <field name="name">option.search</field>
             <field name="model">siantou.ems.core.option</field>
@@ -42,7 +42,7 @@
                 </search>
              </field>
         </record>
-        
+
         <record id="action_school_option" model="ir.actions.act_window">
             <field name="name">Options</field>
             <field name="res_model">siantou.ems.core.option</field>
@@ -54,7 +54,7 @@
                 </p>
             </field>
         </record>
-        
+
         <menuitem name="Options" 
             id="menu_school_option"
             parent="menu_siantou_ems_core_configuration" 

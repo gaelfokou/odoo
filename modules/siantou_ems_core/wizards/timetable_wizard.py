@@ -77,13 +77,13 @@ class TimetableWizard(models.TransientModel):
         check_semester_hours_credit = 0
         check_weekly_hours_credit = 0
         check_classroom_slot = None
-        
+
         domain = []
 
         # Récupérer la liste des filières et les traiter l'une après l'autre
         if self.field_of_study_id.id:
             domain.append(('filiere_id', '=', self.field_of_study_id.id))
-        
+
         if self.level_id.id:
             domain.append(('niveau_id', '=', self.level_id.id))
 

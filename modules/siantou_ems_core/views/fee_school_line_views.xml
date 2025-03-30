@@ -83,7 +83,6 @@
             </field>
         </record>
 
-
         <!-- Menu pour les schoolure des frais d'inscription -->
         <menuitem
                 id="menu_siantou_ems_core_config_fee_school"

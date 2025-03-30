@@ -2,9 +2,6 @@ from datetime import datetime
 from odoo import models, fields, api, tools, _
 from odoo.exceptions import UserError, AccessError, ValidationError
 
-
-
-
 class FeeStruct(models.Model):
     _name = 'siantou.ems.core.fee.struct'
     _description = 'Gestion des structuration des frais de scolarité'
@@ -45,7 +42,6 @@ class FeeStruct(models.Model):
     # )
     montant_paie_total = fields.Integer(string="Montant à payer")
 
-
     @api.constrains('journal_id')
     def _check_journal_id(self):
         for record_sudo in self.sudo():
@@ -53,7 +49,6 @@ class FeeStruct(models.Model):
                 raise ValidationError(
                     _("Journal incorrect: Le journal doit être rédigé dans la même devise que l'entreprise.")
                 )
-
 
 # class FeeLine(models.Model):
 #     _name = 'siantou.ems.core.fee.struct.line'
@@ -80,11 +75,9 @@ class FeeStruct(models.Model):
 #             if self.search([('id', '!=', record.id), ('date_paie', '=', record.date_paie), ('date_paie', '>=', record.date_paie),]):
 #                 raise ValidationError("Entrer une date supérieur.")
 
-
 class FeeStudent(models.Model):
     _name = 'siantou.ems.core.fee.student'
     _description = "Frais de d'inscription des étudiants"
-
 
     fee_enroll_struct_id = fields.Many2one(
         'siantou.ems.core.fee.enrollment', 
@@ -99,5 +92,4 @@ class FeeStudent(models.Model):
         required=True,    
     )
     date_paiement = fields.Date(string="Date de paiement", required=True)
-
 

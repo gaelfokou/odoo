@@ -45,7 +45,7 @@
                         <label for="name" string="Nom(s) et prénom(s)"/>
                         <h1><field name="name"/></h1>
                     </div>
-                    
+
                     <!-- Informations générales en vue page -->
                     <notebook>
                         <page string="Informations générales">
@@ -115,7 +115,7 @@
 
                         <!-- Informations sur l'emplois de temps en vue page -->
                         <page string="Emplois de temps">
-                        
+
                             <field name="timetable_ids">
                                 <tree string="Emplois du temps">
                                     <field name="subject_id" string="Cours"/>

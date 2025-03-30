@@ -45,7 +45,7 @@ class TimetablePrintWizard(models.TransientModel):
         string='Semestre',
         required=True
     )
-    
+
     # Ajouter un champ de relation vers hr.department pour lier la filière au département
     department_id = fields.Many2one(
         'hr.department',
@@ -110,7 +110,7 @@ class TimetablePrintWizard(models.TransientModel):
         # Ajouter le critère Filière seulement s'il est sélectionné
         if self.department_id.id:
             domain.append(('department_id', '=', self.department_id.id))
-        
+
         # Ajouter le critère Filière seulement s'il est sélectionné
         if self.field_of_study_id.id:
             domain.append(('field_of_study_id', '=', self.field_of_study_id.id))

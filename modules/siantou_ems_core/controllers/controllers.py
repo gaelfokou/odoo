@@ -28,7 +28,6 @@ class DeSchool(http.Controller):
             json.dumps(data)
         )
 
-
     @http.route('/api/v1/pays', type="http", auth='none', methods=['GET'], cors="*", website=True)
     def list_country(self, **kw):
         data = []
@@ -39,7 +38,6 @@ class DeSchool(http.Controller):
                 'name': p.name,
             })
 
-
     @http.route('/api/v1/pays', type="http", auth='none', methods=['GET'], cors="*", website=True)
     def list_country(self, **kwargs):
         datas = []
@@ -49,7 +47,6 @@ class DeSchool(http.Controller):
                 'id': p.id,
                 'name': p.name,
             })
-
 
         return Response(
             json.dumps(datas)
@@ -63,11 +60,9 @@ class DeSchool(http.Controller):
             regions = request.env['siantou.ems.core.region'].sudo().search([('country_id', '=', p.id)])
             datas =[{'id':reg.id, 'name': reg.name} for reg in regions]
 
-
         return Response(
             json.dumps(datas)
         )
-
 
     @http.route('/api/v1/regions/<int:id_region>/cities', type="http", auth='none', methods=['GET'], cors="*", website=True)
     def list_cities_of_region(self, id_region):
@@ -81,7 +76,6 @@ class DeSchool(http.Controller):
             json.dumps(datas)
         )
 
-
     @http.route('/api/v1/cities/<int:id_city>/quarters', type="http", auth='none', methods=['GET'], cors="*", website=True)
     def list_quarters_of_city(self, id_city):
         datas = []
@@ -90,12 +84,10 @@ class DeSchool(http.Controller):
             quarters = request.env['siantou.ems.core.quarter'].sudo().search([('city_id', '=', city.id)])
             datas=[{'id':quart.id, 'name': quart.name} for quart in quarters]
 
-
         return Response(
             json.dumps(datas)
         )
 
-    
     @http.route('/api/v1/cycles', type="http", auth='none', methods=['GET'], cors="*", website=True)
     def list_courses(self, **kw):
         data = []
@@ -113,12 +105,9 @@ class DeSchool(http.Controller):
                     'diplo_requis': [{'id': diplo.id, 'name': diplo.name} for diplo in diplo_requis]
                 })
 
-
         return Response(
             json.dumps(data)
         )
-
-
 
     @http.route('/api/v1/<int:id>/etudiants', type="http", auth='none', methods=['GET'], cors="*", website=True)
     def get_etudiant_by_id(self, id,**kw):
@@ -149,7 +138,6 @@ class DeSchool(http.Controller):
                 })
             )
 
-
     def generate_code(self):
         # Get the current year
         current_year = datetime.now().year
@@ -160,7 +148,6 @@ class DeSchool(http.Controller):
         nbre = len(student_enroll) + 1
         code = f"{current_year}{letters}0000{nbre}"
         return code
-
 
     @http.route('/api/v1/save', type="http", auth='none', methods=['POST'], cors="*", website=True)
     def admission_form_submit(self,):
@@ -186,7 +173,7 @@ class DeSchool(http.Controller):
             partner = request.env['res.partner'].sudo().create({
                 "name":data['name']
             })
-            
+
             _logger.info(partner.name)
             #=== Create a new student
             data['partner_id'] = partner.id
@@ -209,6 +196,4 @@ class DeSchool(http.Controller):
                     'data':f"{e.args}"
                 })
             )
-
-
 

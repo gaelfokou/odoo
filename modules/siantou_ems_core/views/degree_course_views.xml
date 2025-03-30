@@ -15,7 +15,6 @@
 			</field>
 		</record>
 
-
         <!-- Action pour le menu d'affichage des Diplôme réquis -->
         <record
                 id="action_show_course_degree"

@@ -27,7 +27,7 @@ class CheckAvailableSlot(models.Model):
                     available_class_slotitems.append([start_time, end_time])
 
             nbr_class_slotitems = len(available_class_slotitems)
-    
+
             if nbr_class_slotitems > 0:
                 building_ids = []
                 if class_id.filiere_id.school_id:

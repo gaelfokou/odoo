@@ -138,7 +138,7 @@ class Timetable(models.Model):
         'siantou.ems.core.student.batch',
         string='Lot d\'étudiants'
     )
-    
+
     # Ajouter un champ de relation vers hr.department pour lier la filière au département
     department_id = fields.Many2one(
         'hr.department',

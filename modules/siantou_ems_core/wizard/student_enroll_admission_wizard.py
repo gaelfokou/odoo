@@ -9,9 +9,6 @@ _logger = logging.getLogger(__name__)
 from odoo import models, fields, api, tools, _
 from odoo.exceptions import ValidationError
 
-
-
-
 class StudentEnrollmentAdmissionWizard(models.TransientModel):
     _name = 'siantou.ems.core.student.enrollment.admission.wizard'
     _description = 'modale pour effectuer une admission'
@@ -28,7 +25,6 @@ class StudentEnrollmentAdmissionWizard(models.TransientModel):
     )
     observations = fields.Html(string="Observations", required=True)
 
-
     @api.model
     def default_get(self, fields):
         res = super(StudentEnrollmentAdmissionWizard, self).default_get(fields)
@@ -37,7 +33,6 @@ class StudentEnrollmentAdmissionWizard(models.TransientModel):
             res['student_enrollement_id'] = self.env.context.get('active_id')
             _logger.info(f"Student admission ::: {res['student_enrollement_id']}")
         return res
-
 
     def generate_matricule(self, field_of_study_id):
         # Get the current year
@@ -51,14 +46,13 @@ class StudentEnrollmentAdmissionWizard(models.TransientModel):
         # _logger.info(f"Matricule généré : {matricule}")
         return matricule
 
-
     def student_enroll_admission(self):
         student_id = None
         if self.student_enrollement_id:  
             matricule=self.student_enrollement_id.matricule
             if not matricule:
                 matricule = self.generate_matricule(self.student_enrollement_id.field_of_study_id)
-            
+
             class_id = self.env['siantou.ems.core.class'].search(
                 [
                     ('filiere_id','=',self.student_enrollement_id.field_of_study_id.id),
@@ -108,7 +102,7 @@ class StudentEnrollmentAdmissionWizard(models.TransientModel):
                 else:
                     data['nationalite'] = self.student_enrollement_id.nationalite.id
                     data['is_autre_pays'] = False
-                
+
                 student_id = self.env['oe.school.student'].create(data)
                 _logger.info(student_id.name)
             else:
@@ -138,7 +132,7 @@ class StudentEnrollmentAdmissionWizard(models.TransientModel):
                 [('active', '=',True),], 
                 limit=1
             )
-    
+
             #=========================================================================================================
             #==============Création des frais rédevances d'inscription de la scolarité================================
             #=========================================================================================================
@@ -157,7 +151,7 @@ class StudentEnrollmentAdmissionWizard(models.TransientModel):
             _logger.info(year_id.name)
             if not structure_frais_inscript_id:
                 raise ValidationError(f"Aucune structure de frais d'inscription disponible pour {self.student_enrollement_id.field_of_study_id.name} {self.student_enrollement_id.level_id.name} pour l'année {year_id.name}")
-            
+
             journal_id = structure_frais_inscript_id.type_frais_id.category_id.journal_id
             if journal_id:
                 account_receivable_id = journal_id.default_account_id
@@ -201,7 +195,7 @@ class StudentEnrollmentAdmissionWizard(models.TransientModel):
                                 }
                                 account_move_id = self.env['account.move'].create(mone_vals)
                                 account_move_id.action_post()
-            
+
             #=========================================================================================================
             #==============Création des lignes de rédevance de la scolarité===========================================
             #=========================================================================================================
@@ -215,7 +209,7 @@ class StudentEnrollmentAdmissionWizard(models.TransientModel):
                 ],
                 limit=1
             )
-            
+
             _logger.info(structure_frais_id)
             journal_id = structure_frais_id.type_frais_id.category_id.journal_id
             if journal_id:
@@ -318,6 +312,5 @@ class StudentEnrollmentAdmissionWizard(models.TransientModel):
                                 }
                                 account_move_id = self.env['account.move'].create(mone_vals)
                                 account_move_id.action_post()
-
 
         return {'type': 'ir.actions.act_window_close'}

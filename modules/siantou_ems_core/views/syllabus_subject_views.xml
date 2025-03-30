@@ -17,7 +17,6 @@
 			</field>
 		</record>
 
-
         <!-- Affichage en vue formulaire -->
 		<record
                 id="syllabus_subject_form_view"
@@ -70,7 +69,6 @@
 			</field>
 		</record>
 
-
         <!-- Affichage en vue recherche -->
          <record
                  id="syllabus_subject_search_view"
@@ -85,7 +83,6 @@
              </field>
         </record>
 
-
         <!-- Action pour le menu d'affichage des syllabus -->
         <record id="action_show_syllabus_ue" model="ir.actions.act_window">
             <field name="name">Unités d'enseignement</field>
@@ -98,7 +95,6 @@
                 </p>
             </field>
         </record>
-
 
         <!-- Menu pour les syllabus -->
         <menuitem

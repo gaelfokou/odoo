@@ -13,9 +13,6 @@ from PIL import Image
 
 _logger = logging.getLogger(__name__)
 
-
-
-
 class University(models.Model):
     _inherit = "res.company"
 

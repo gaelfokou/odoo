@@ -1,6 +1,5 @@
 from odoo import models, fields, api, tools, _
 
-
 class StudentBatch(models.Model):
     _name = 'siantou.ems.core.student.batch'
     _description = 'Lots d\'étudiants'
@@ -60,7 +59,7 @@ class StudentBatch(models.Model):
 
     @api.model
     def assign_batch(self, school_id, field_of_study_id, level_id):
-        
+
         max_students_per_batch = self.env['siantou.ems.core.school'].browse(school_id).max_students_per_batch
         batches = self.search([
             ('school_id', '=', school_id),

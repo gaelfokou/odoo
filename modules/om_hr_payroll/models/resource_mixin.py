@@ -8,7 +8,6 @@ from odoo.tools import float_utils
 
 ROUNDING_FACTOR = 16
 
-
 class ResourceMixin(models.AbstractModel):
     _inherit = "resource.mixin"
 

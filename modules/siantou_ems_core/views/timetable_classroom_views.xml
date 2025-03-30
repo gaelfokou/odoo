@@ -25,7 +25,7 @@
             <field name="name">Classrooms</field>
             <field name="res_model">siantou.ems.timetable.classroom</field>
             <field name="view_mode">tree</field>
-            
+
             <field name="binding_model_id" ref="action_populate_classrooms"/>
         </record>
 

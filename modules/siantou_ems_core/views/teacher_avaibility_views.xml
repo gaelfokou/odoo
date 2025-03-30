@@ -43,6 +43,5 @@
                 action="action_teacher_availability"
                 sequence="20"/>
 
-
     </data>
 </odoo>

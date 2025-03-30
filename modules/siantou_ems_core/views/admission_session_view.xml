@@ -61,7 +61,7 @@
                                 <field name="cycle_ids" widget="many2many_tags"/>
                             </group>
                         </group>
-                        
+
                         <group>
                             <group>
                                 <field name="start_date"/>

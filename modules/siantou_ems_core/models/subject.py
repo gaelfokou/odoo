@@ -3,9 +3,6 @@ import math
 from odoo import models, fields, api, tools, _
 from odoo.exceptions import ValidationError
 
-
-
-
 class Subject(models.Model):
     _name = 'siantou.ems.core.subject'
     _description = 'Cours'
@@ -60,7 +57,7 @@ class Subject(models.Model):
     )
 
     ue_ids = fields.Many2many('siantou.ems.core.unite.enseignement', 'ue_subject_rel', 'subject_id', 'ue_id', string="Unités d'enseignement")
-    
+
     syllabus_ids = fields.One2many('siantou.ems.core.syllabus', 'subject_id', string='Syllabus')
 
     # Les enseignants qui dispensent ce cours
@@ -73,18 +70,18 @@ class Subject(models.Model):
         # compute='_compute_teacher_ids',
         # inverse='_set_teacher_ids'
     )
-    
+
     # Les priorités pour chaque enseignant sur ce cours
     teacher_priority_ids = fields.One2many(
         'siantou.ems.core.teacher.subject.priority',
         'subject_id',
         'Priorités des enseignants'
     )
-    
+
     total_credit = fields.Integer(
         string='Crédit total',
         compute='_compute_credit'
-        
+
     )
 
     # Contrainte SQL pour empêcher d'avoir le même code pour différentes filières
@@ -135,10 +132,9 @@ class Subject(models.Model):
     #         # Supprimer les enseignants enlevés de teacher_ids
     #         to_remove = set(current_teacher_ids) - set(new_teacher_ids)
     #         record.teacher_priority_ids.filtered(lambda p: p.employee_id.id in to_remove).unlink()
-            
-    
+
     field_name = fields.Char(compute='_compute_field_name', string='field_name')
-    
+
     @api.depends('syllabus_ids.subject_credit')
     def _compute_credit(self):
         for rec in self:
@@ -147,9 +143,9 @@ class Subject(models.Model):
             syllabuses = self.env['siantou.ems.core.syllabus'].search([
                 ('subject_id', '=', rec.id)
             ])
-            
+
             # Additionner les crédits de chaque syllabus
             for syllabus in syllabuses:
                 total += syllabus.subject_credit
-            
+
             rec.total_credit = total

@@ -9,8 +9,7 @@ class EducationClass(models.Model):
     _name = 'siantou.ems.core.class'
     _description = "Classe Standard"
     _inherit = ['mail.thread']
-    
-    
+
     # _sql_constraints = [
     #     ('unique_class',
     #      'unique(filiere_id,niveau_id,school_id)',
@@ -38,9 +37,9 @@ class EducationClass(models.Model):
 
     niveau_id = fields.Many2one('siantou.ems.core.level', string='Niveau',
                                  help="Niveau")
-    
+
     school_id = fields.Many2one('siantou.ems.core.school', string='Ecole')
-    
+
     annee_acadmique_id = fields.Many2one('siantou.ems.core.year', string='Année Académique')
 
     ue_ids = fields.Many2many('siantou.ems.core.unite.enseignement', 'class_ue_rel', 'class_id', 'ue_id', string="Unités d'enseignement")

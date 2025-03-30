@@ -8,8 +8,6 @@ import re
 from odoo.exceptions import ValidationError
 import logging
 
-
-
 _logger = logging.getLogger(__name__)
 
 # class CourseGradingType(models.Model):
@@ -17,7 +15,6 @@ _logger = logging.getLogger(__name__)
 #     _description = 'Type de notation'
 #     name = fields.Char(string='Type', required=True, index=True, translate=True) 
 
-    
 class OeSchoolCourse(models.Model):
     _name = 'oe.school.course'
     _description = 'Gestion des Cycles'
@@ -45,12 +42,12 @@ class OeSchoolCourse(models.Model):
     )
     enable_elective = fields.Boolean('Activer la sélection des cours facultatifs')
     color = fields.Integer(default=_default_color)
-    
+
     sequence_id = fields.Many2one('ir.sequence', 'Séquence des numéros d\'enregistrement', copy=False, check_company=True)
 
     # batch_ids = fields.One2many('oe.school.course.batch', 'course_id', string="Lots")
     # batch_count = fields.Integer(string='Nombre de lot', compute='_compute_course_batch_count')
-    
+
     # course_subject_line = fields.One2many('oe.school.course.subject.line', 'course_id', string="Cours")
 
     # use_batch = fields.Boolean(compute='_compute_use_batch_from_company')
@@ -68,15 +65,15 @@ class OeSchoolCourse(models.Model):
     # def _compute_course_section_count(self):
     #     for record in self:
     #         record.section_count = len(record.section_ids)
-        
+
     # def _compute_course_batch_count(self):
     #     for record in self:
     #         record.batch_count = len(record.batch_ids)
-            
+
     # def _compute_use_credit_hours_from_company(self):
     #     for record in self:
     #         record.use_credit_hours = record.company_id.use_credit_hours
-            
+
     # def _compute_use_batch_from_company(self):
     #     for record in self:
     #         record.use_batch = record.company_id.use_batch
@@ -88,7 +85,6 @@ class OeSchoolCourse(models.Model):
     #         else:
     #             record.use_batch_subject = False
 
-
     @api.depends('name', 'parent_id.complete_name')
     def _compute_complete_name(self):
         for course in self:
@@ -96,7 +92,6 @@ class OeSchoolCourse(models.Model):
                 course.complete_name = '%s/%s' % (course.parent_id.complete_name, course.name)
             else:
                 course.complete_name = course.name
-
 
     @api.model
     def create(self, vals):
@@ -160,8 +155,6 @@ class OeSchoolCourse(models.Model):
     #     })
     #     return action
 
-
-
 class SchoolSyllabus(models.Model):
     _name = 'siantou.ems.core.syllabus'
     _description = 'Syllabus'
@@ -172,7 +165,6 @@ class SchoolSyllabus(models.Model):
         if not year:
             raise ValidationError("""Aucune année academique activé""")
         return year.id
-
 
     name = fields.Char(
         string='Label',
@@ -191,7 +183,7 @@ class SchoolSyllabus(models.Model):
     pourcentage_cc = fields.Integer(string='Pourcentage CC',default=30,  tracking=True)
 
     pourcentage_exam = fields.Integer(string='Pourcentage SN', default=50, tracking=True)
-    
+
     pourcentage_presence = fields.Integer(string='Pourcentage Présence', default=20, tracking=True)
 
     note_sn= fields.Boolean('Pas de SN')
@@ -199,11 +191,11 @@ class SchoolSyllabus(models.Model):
     coefficient = fields.Integer(
         string='Crédit',
     )
-    
+
     # display_type = fields.Selection([
     #     ('line_section', "Section"),
     #     ('line_note', "Note")], default=False, help="Technical field for UX purpose.")
-    
+
     note_sn = fields.Selection([
         ('not_sn', 'Pas de SN'),
         ('whit_sn', 'Avec SN'),
@@ -224,17 +216,17 @@ class SchoolSyllabus(models.Model):
     vhp = fields.Integer(
         string='Volume horaire prévue (VHP)',
         compute='_compute_vhp'
-        
+
     )
     vht = fields.Integer(
         string='Volume horaire total (VHT)',
         compute='_compute_vht'
-        
+
     )
     subject_credit = fields.Integer(
         string='Crédit de la matière',
         compute='_compute_subject_credit'
-        
+
     )
 
     pro_pe_id = fields.Many2one(
@@ -249,7 +241,7 @@ class SchoolSyllabus(models.Model):
             subject_ids = list(subject_ids)
             if len(subject_ids) == 0:
                 raise ValidationError(f"Le cours magistral n'existe pas dans l'unité d'enseignement choisi")
-    
+
     @api.depends('class_id')
     def _compute_name(self):
         for line in self:
@@ -265,7 +257,6 @@ class SchoolSyllabus(models.Model):
             #     if product.description_purchase:
             #         values.append(product.description_purchase)
             line.name = '\n'.join(values)
-
 
     @api.depends('cm','td','tp')
     def _compute_vhp(self):
@@ -288,7 +279,7 @@ class SchoolSyllabus(models.Model):
     #     for rec in self:
     #         if rec.total_hours <= 0:
     #             raise ValidationError(_('Hours must be greater than Zero'))
-            
+
     # # ----------------------------------------
     # # Constrains
     # # ----------------------------------------
@@ -297,29 +288,24 @@ class SchoolSyllabus(models.Model):
         for record in self:
             if record.cm <0:
                 raise ValidationError(f"Le Nombre de Cours magistral doit être supérieur ou égal à zéro")
-    
+
     @api.constrains('td')
     def _check_td_value(self):
         for record in self:
             if record.td <0:
                 raise ValidationError(f"Le Nombre de Travaux dirigé doit être supérieur ou égal à zéro")
-    
+
     @api.constrains('tp')
     def _check_tp_value(self):
         for record in self:
             if record.tp <0:
                 raise ValidationError(f"Le Nombre de Travaux pratique doit être supérieur ou égal à zéro")
-    
+
     @api.constrains('te')
     def _check_tpe_value(self):
         for record in self:
             if record.te <0:
                 raise ValidationError(f"Le Nombre de Travaux pratique doit être supérieur ou égal à zéro")
-    
-    
-
-
-
 
 class SchoolCourseSubject(models.Model):
     _name = 'siantou.ems.core.unite.enseignement'
@@ -338,17 +324,17 @@ class SchoolCourseSubject(models.Model):
     class_ids = fields.Many2many('siantou.ems.core.class', 'class_ue_rel', 'ue_id', 'class_id', string='Classes')
 
     subject_ids = fields.Many2many('siantou.ems.core.subject', 'ue_subject_rel', 'ue_id', 'subject_id', string='Cours')
-    
+
     semestre_id = fields.Many2one('siantou.ems.core.year.semester', string='Semestre', required=True, tracking=True)
-    
+
     syllabus_ids = fields.One2many('siantou.ems.core.syllabus', 'ue_id', string='Syllabus')
-    
+
     total_credit = fields.Integer('Nombre de crédit total',  compute="_compute_total_credit",)
 
     _sql_constraints = [
         ('unique_code', 'unique(code)', "Le code de l'unité d'enseignement doit être unique."),
     ]
-    
+
     @api.depends('subject_ids', 'subject_ids.syllabus_ids.subject_credit')
     def _compute_total_credit(self):
         for record in self:
@@ -360,6 +346,4 @@ class SchoolCourseSubject(models.Model):
                 ])
                 total += sum(syllabus.subject_credit for syllabus in syllabuses)
             record.total_credit = total
-    
-  
-    
+

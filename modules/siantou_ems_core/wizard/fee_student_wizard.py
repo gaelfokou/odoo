@@ -5,18 +5,14 @@ from odoo import models, fields, api, Command, _
 from odoo.exceptions import ValidationError
 from odoo.tools.misc import clean_context
 
-
 import logging
 
 _logger = logging.getLogger(__name__)
-
-
 
 class FeeEnrollmentWizard(models.TransientModel):
     _name = 'siantou.ems.core.fee.enrollment.student'
     _description = 'modale pour valider un paiement'
 
-        
     name = fields.Char('Réference du paiement', default='/')
     year_id = fields.Many2one(
         'siantou.ems.core.year', 
@@ -83,7 +79,6 @@ class FeeEnrollmentWizard(models.TransientModel):
         related_sudo=False
     )
 
-
     # @api.onchange('mode_payment')
     # def onchange_mode_payment(self):
     #     for rec in self:
@@ -93,9 +88,6 @@ class FeeEnrollmentWizard(models.TransientModel):
     #         )
     #         _logger.info(journals)
     #         rec.caisse_id = [(0,0,journals)]
-
-
-
 
     @api.model
     def default_get(self, fields):
@@ -128,10 +120,10 @@ class FeeEnrollmentWizard(models.TransientModel):
 
             if not year_id:
                 raise ValidationError(f"Aucune année active trouvé")
-            
+
             if not structure_frais_id:
                 raise ValidationError(f"Aucune structure de frais de paiement disponible pour {student_id.field_of_study_id.name} {student_id.level_id.name} pour l'année {year_id.name}")
-            
+
             # _logger.info(student_id)
             # _logger.info(structure_frais_id)
             # _logger.info(res['student_id'])
@@ -142,11 +134,9 @@ class FeeEnrollmentWizard(models.TransientModel):
             res['structure_frais_name'] = structure_frais_id.fee_structure_name
         return res
 
-
     # def action_send_email(self, student_id, dossier_number):
     #     template = self.env.ref('siantou_ems_core.email_template_preinscription')  # Référence à votre template d'email
     #     template.with_context(dossier_number=dossier_number).send_mail(student_id.id, force_send=True)
-    
 
     def action_send_email(self, student, dossier_number, username, password):
         # Condition pour les étudiants en licence ou master
@@ -154,7 +144,7 @@ class FeeEnrollmentWizard(models.TransientModel):
             template_id = self.env.ref('siantou_ems_core.email_template_preinscription_conditionnelle').id
         else:
             template_id = self.env.ref('siantou_ems_core.email_template_preinscription_standard').id
-        
+
         template = self.env['mail.template'].browse(template_id)
         template.with_context(
             dossier_number=dossier_number,
@@ -162,11 +152,9 @@ class FeeEnrollmentWizard(models.TransientModel):
             password=password
         ).send_mail(student.id, force_send=True)
 
-
     def generate_dossier_number(self):
         """ Génère un numéro de dossier unique basé sur le modèle 'Dossier-<ID>' """
         return f'Dossier-{self.env["ir.sequence"].next_by_code("preinscription.dossier") or self.id}'
-
 
     def enroll_student(self):
         if self.student_id:
@@ -208,7 +196,7 @@ class FeeEnrollmentWizard(models.TransientModel):
             self.student_id.status = 'inscrip'
 
             return {'type': 'ir.actions.act_window_close'}
-            
+
             # self._do_create_and_post_moves()
             # return {
             #     'type': 'ir.actions.client',
@@ -219,7 +207,6 @@ class FeeEnrollmentWizard(models.TransientModel):
             #         'next': {'type': 'ir.actions.act_window_close'},
             #     }
             # }
-
 
     #============ Part 1: prepare vals des transactions
     def _prepare_transaction_vals(self):  
@@ -236,7 +223,7 @@ class FeeEnrollmentWizard(models.TransientModel):
             raise ValidationError(_("Vous devez ouvrir une caisse ou un brouillard de banque à la date du %s pour enregistrer le décaissement", self.date_payment))  
         if not payment_method_line:  
             raise ValidationError(_("Vous avez manqué d'ajouter une méthode de paiement manuel au niveau du journal (%s)", journal.name))  
-        
+
         return {  
             #**self.sheet_id._prepare_move_vals(),  
             'date': self.date_payment,  # Overidden from self.sheet_id._prepare_transaction_vals() so we can use the expense date for the account move date  
@@ -255,8 +242,7 @@ class FeeEnrollmentWizard(models.TransientModel):
             'amount': self.amount,  
             'currency_id': self.currency_id.id,
         }
- 
- 
+
     #======================= Part 2: Comptabilisation des pièces comptables des transactions
     def _do_create_and_post_moves(self):  
         self = self.with_context(clean_context(self.env.context))  # remove default_*  
@@ -282,8 +268,4 @@ class FeeEnrollmentWizard(models.TransientModel):
         transaction.move_id.action_post()
         # self.activity_update()
         return transaction.move_id
- 
-
-
-
 

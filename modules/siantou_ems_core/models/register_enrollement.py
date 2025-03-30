@@ -3,11 +3,9 @@ from dateutil.relativedelta import relativedelta
 from odoo import models, fields, api, _
 from odoo.exceptions import ValidationError
 
-
 import logging
 
 _logger = logging.getLogger(__name__)
-
 
 class SessionEnrollment(models.Model):
     _name = "siantou.session"
@@ -27,14 +25,12 @@ class SessionEnrollment(models.Model):
         self.name = f"Session_{year.name}"
         return year.id
 
-
     # @api.onchange("year_id")
     @api.depends('year_id')
     def _get_name(self):
         for record in self:
             self.name = f"Session_{record.year_id.name}"
         return self.name
-
 
     # @api.depends('year_id')
     # def _compute_fee_start_date(self):
@@ -45,7 +41,6 @@ class SessionEnrollment(models.Model):
     # def _compute_fee_end_date(self):
     #     for record in self:
     #         record.end_date = record.year_id.end_time
-
 
     name = fields.Char(
         string="Nom de la session", 
@@ -83,13 +78,11 @@ class SessionEnrollment(models.Model):
         'Registres de session'
     )
 
-
     # @api.constrains('active')
     # def _check_unique_active(self):
     #     for record in self:
     #         if self.search([('id', '!=', record.id), ('active', '=', 'True')]):
     #             raise ValidationError("Il ne peut y avoir qu'une seule session active à la fois.")
-
 
     @api.constrains('cycle_ids')
     def check_cycle_id_existe_in_session(self):
@@ -107,8 +100,6 @@ class SessionEnrollment(models.Model):
                         cycle_id = self.env['oe.school.course'].search([('id','=',id)], limit=1)
                         raise ValidationError(
                             _(f"Le cycle << {cycle_id.name} >> existe déjà dans une session d'admission de l'année {self.year_id.name}"))
-                    
-
 
     @api.constrains('start_date', 'end_date')
     def check_dates(self):
@@ -119,14 +110,11 @@ class SessionEnrollment(models.Model):
                 raise ValidationError(
                     _("La date de début doit être antérieur à la date de fin"))
 
-
     def set_to_draft(self):
         self.state = 'draft'
 
-
     def cancel_register(self):
         self.state = 'cancel'
-
 
     def start_admission(self):
         for rec in self:
@@ -145,7 +133,6 @@ class SessionEnrollment(models.Model):
         self.state = 'admission'
         self.active=True
 
-
     def close_register(self):
         for rec in self:
             registres = self.env["siantou.session.registre"].search([('session_id','=',self.id)])
@@ -156,10 +143,6 @@ class SessionEnrollment(models.Model):
                         _("Veuillez d'abord valider les candidatures présentent les registres de cette session d'admission"))
             rec.state = 'done'
             rec.active = True
-
-
-
-
 
 class SessionRegisterEnrollment(models.Model):
     _name = "siantou.session.registre"
@@ -217,7 +200,6 @@ class SessionRegisterEnrollment(models.Model):
         store=True
     )
 
-
     @api.constrains('start_date', 'end_date')
     def check_dates(self):
         for record in self:
@@ -226,8 +208,6 @@ class SessionRegisterEnrollment(models.Model):
             if start_date > end_date:
                 raise ValidationError(
                     _("End Date cannot be set before Start Date."))
-
-
 
     def confirm_register(self):
         self.state = 'confirm'

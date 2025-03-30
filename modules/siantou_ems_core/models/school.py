@@ -1,6 +1,5 @@
 from odoo import models, fields
 
-
 class School(models.Model):
     _name = 'siantou.ems.core.school'
     _description = 'Gestion des écoles'

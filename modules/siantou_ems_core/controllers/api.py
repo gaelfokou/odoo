@@ -12,7 +12,6 @@ import requests
 
 _logger = logging.getLogger(__name__)
 
-
 class DeSchool(http.Controller):
 
     @http.route(['/api/v1/niveaux'], type="http", methods=['GET'], cors="*", auth="none")
@@ -28,8 +27,6 @@ class DeSchool(http.Controller):
         return Response(
             json.dumps(data)
         )
-
-
 
     @http.route('/api/v1/pays', type="http", methods=['GET'], cors="*", auth="none")
     def list_country(self, **kwargs):
@@ -54,7 +51,6 @@ class DeSchool(http.Controller):
             regions = request.env['siantou.ems.core.region'].sudo().search([('country_id', '=', p.id)])
             datas =[{'id':reg.id, 'name': reg.name} for reg in regions]
 
-
         return Response(
             json.dumps(datas)
         )
@@ -71,7 +67,6 @@ class DeSchool(http.Controller):
             json.dumps(datas)
         )
 
-
     @http.route('/api/v1/cities/<int:id_city>/quarters', type="http", methods=['GET'], cors="*", auth="none")
     def list_quarters_of_city(self, id_city):
         datas = []
@@ -84,7 +79,6 @@ class DeSchool(http.Controller):
             json.dumps(datas)
         )
 
-    
     @http.route('/api/v1/cycles', type="http", methods=['GET'], cors="*", auth="none")
     def list_courses(self, **kw):
         data = []
@@ -130,7 +124,6 @@ class DeSchool(http.Controller):
             json.dumps(data)
         )
 
-
     @http.route('/api/v1/filieres/<int:id>/specialites', type="http", methods=['GET'], cors="*", auth="none")
     def list_specialites_of_filiere(self, id):
         datas = []
@@ -142,7 +135,6 @@ class DeSchool(http.Controller):
         return Response(
             json.dumps(datas)
         )
-
 
     @http.route('/api/v1/<int:id>/etudiants', type="http", methods=['GET'], cors="*", auth="none")
     def get_etudiant_by_id(self, id,**kw):
@@ -185,7 +177,6 @@ class DeSchool(http.Controller):
                 })
             )
 
-
     def generate_code(self):
         # Get the current year
         current_year = datetime.now().year
@@ -197,7 +188,6 @@ class DeSchool(http.Controller):
         code = f"{current_year}{letters}0000{nbre}"
         return code
 
-    
     def create_enroll_document(self, candidat, file):
         # Création des document pour chaque candidature
         document_obj = request.env['oe.school.student.enrollment.file']
@@ -224,7 +214,6 @@ class DeSchool(http.Controller):
             return dmd_id
         else:
             return 0
-
 
     @http.route('/api/v1/etudiants/<int:id>/upload/docs', type="http", methods=['post'], cors="*", auth="none", csrf=False)
     def upload_doc_etudiant_by_id(self, id,**kw):
@@ -280,8 +269,6 @@ class DeSchool(http.Controller):
                 })
             )
 
-
-
     @http.route('/api/v1/save', type="http", methods=['POST'], cors="*", auth="none", csrf=False)
     def admission_form_submit(self,**kwargs):
         data = json.loads(request.httprequest.data)
@@ -304,12 +291,11 @@ class DeSchool(http.Controller):
                     data['code_enrol'] = code_enrol
                     is_existing = False
 
-            
             #===== create res partner instance =================
             # partner = request.env['res.partner'].sudo().create({
             #     "name":data['name']
             # })
-            
+
             # _logger.info(partner.name)
             #=== Create a new student
             # data['partner_id'] = partner.id
@@ -361,7 +347,6 @@ class DeSchool(http.Controller):
                     etudiant = request.env['oe.school.student.enrollment'].sudo().create(data)
                     # _logger.info(files)
 
-                    
                     if etudiant:
                         _logger.info(etudiant)
                         return Response(
@@ -391,9 +376,4 @@ class DeSchool(http.Controller):
                     'data':f"{e.args}"
                 })
             )
-
-
-
-
-
 

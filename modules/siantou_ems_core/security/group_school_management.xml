@@ -18,7 +18,7 @@
             <field name="category_id" ref="base.module_category_administration"/>
             <field name="implied_ids" eval="[(4, ref('base.group_system'))]"/>
         </record>
-        
+
         <!-- classroom -->
         <record id="group_classroom_user" model="res.groups">
             <field name="name">Salles de classe - user</field>
@@ -30,7 +30,7 @@
             <field name="category_id" ref="base.module_category_administration"/>
             <field name="implied_ids" eval="[(4, ref('base.group_system'))]"/>
         </record>
-        
+
         <!-- Bâtiments -->
         <record id="group_building_user" model="res.groups">
             <field name="name">Bâtiments - user</field>
@@ -42,7 +42,7 @@
             <field name="category_id" ref="base.module_category_administration"/>
             <field name="implied_ids" eval="[(4, ref('base.group_system'))]"/>
         </record>
-        
+
         <!-- Campus -->
         <record id="group_campus_user" model="res.groups">
             <field name="name">Campus - user</field>
@@ -54,7 +54,7 @@
             <field name="category_id" ref="base.module_category_administration"/>
             <field name="implied_ids" eval="[(4, ref('base.group_system'))]"/>
         </record>
-        
+
         <!-- Country -->
         <record id="group_country_user" model="res.groups">
             <field name="name">Gestion des pays - user</field>
@@ -66,7 +66,7 @@
             <field name="category_id" ref="base.module_category_administration"/>
             <field name="implied_ids" eval="[(4, ref('base.group_system'))]"/>
         </record>
-        
+
         <!-- Region -->
         <record id="group_region_user" model="res.groups">
             <field name="name">Gestion des régions - user</field>
@@ -78,7 +78,7 @@
             <field name="category_id" ref="base.module_category_administration"/>
             <field name="implied_ids" eval="[(4, ref('base.group_system'))]"/>
         </record>
-        
+
         <!-- City -->
         <record id="group_city_user" model="res.groups">
             <field name="name">Gestion des villes - user</field>
@@ -90,7 +90,7 @@
             <field name="category_id" ref="base.module_category_administration"/>
             <field name="implied_ids" eval="[(4, ref('base.group_system'))]"/>
         </record>
-        
+
         <!-- Quarter -->
         <record id="group_quarter_user" model="res.groups">
             <field name="name">Gestion des quartiers - user</field>
@@ -102,7 +102,7 @@
             <field name="category_id" ref="base.module_category_administration"/>
             <field name="implied_ids" eval="[(4, ref('base.group_system'))]"/>
         </record>
-        
+
         <!-- Courses -->
         <record id="group_courses_user" model="res.groups">
             <field name="name">Gestion des Cycles - user</field>
@@ -114,7 +114,7 @@
             <field name="category_id" ref="base.module_category_administration"/>
             <field name="implied_ids" eval="[(4, ref('base.group_system'))]"/>
         </record>
-        
+
         <!-- Degree required -->
         <record id="group_degree_required_user" model="res.groups">
             <field name="name">Gestion des diplôme requis lors de la préinscription - user</field>
@@ -126,7 +126,7 @@
             <field name="category_id" ref="base.module_category_administration"/>
             <field name="implied_ids" eval="[(4, ref('base.group_system'))]"/>
         </record>
-        
+
         <!-- field_of_study -->
         <record id="group_field_of_study_user" model="res.groups">
             <field name="name">Gestion des filières - user</field>
@@ -150,7 +150,7 @@
             <field name="category_id" ref="base.module_category_administration"/>
             <field name="implied_ids" eval="[(4, ref('base.group_system'))]"/>
         </record>
-        
+
         <!-- level -->
         <record id="group_level_user" model="res.groups">
             <field name="name">Gestion des niveaux - user</field>
@@ -162,7 +162,7 @@
             <field name="category_id" ref="base.module_category_administration"/>
             <field name="implied_ids" eval="[(4, ref('base.group_system'))]"/>
         </record>
-        
+
         <!-- school -->
         <record id="group_school_user" model="res.groups">
             <field name="name">Gestion des écoles - user</field>
@@ -174,7 +174,7 @@
             <field name="category_id" ref="base.module_category_administration"/>
             <field name="implied_ids" eval="[(4, ref('base.group_system'))]"/>
         </record>
-        
+
         <!-- semester -->
         <record id="group_semester_user" model="res.groups">
             <field name="name">Gestion des semestres - user</field>
@@ -210,7 +210,7 @@
             <field name="category_id" ref="base.module_category_administration"/>
             <field name="implied_ids" eval="[(4, ref('base.group_system'))]"/>
         </record>
-        
+
         <!-- student career -->
         <record id="group_student_career_user" model="res.groups">
             <field name="name">Gestion du parcours des étudiants - user</field>
@@ -222,7 +222,7 @@
             <field name="category_id" ref="base.module_category_administration"/>
             <field name="implied_ids" eval="[(4, ref('base.group_system'))]"/>
         </record>
-        
+
         <!-- subject -->
         <record id="group_subject_user" model="res.groups">
             <field name="name">Gestion des cours - user</field>
@@ -234,7 +234,7 @@
             <field name="category_id" ref="base.module_category_administration"/>
             <field name="implied_ids" eval="[(4, ref('base.group_system'))]"/>
         </record>
-        
+
         <!-- teacher -->
         <record id="group_teacher_user" model="res.groups">
             <field name="name">Gestion des enseignants - user</field>
@@ -246,7 +246,7 @@
             <field name="category_id" ref="base.module_category_administration"/>
             <field name="implied_ids" eval="[(4, ref('base.group_system'))]"/>
         </record>
-        
+
         <!-- timetable -->
         <record id="group_timetable_user" model="res.groups">
             <field name="name">Gestion des emplois du temps - user</field>
@@ -258,7 +258,7 @@
             <field name="category_id" ref="base.module_category_administration"/>
             <field name="implied_ids" eval="[(4, ref('base.group_system'))]"/>
         </record>
-        
+
         <!-- university -->
         <record id="group_university_user" model="res.groups">
             <field name="name">Gestion des universités - user</field>
@@ -270,7 +270,7 @@
             <field name="category_id" ref="base.module_category_administration"/>
             <field name="implied_ids" eval="[(4, ref('base.group_system'))]"/>
         </record>
-        
+
         <!-- year -->
         <record id="group_year_user" model="res.groups">
             <field name="name">Gestion des années académique - user</field>
@@ -282,7 +282,7 @@
             <field name="category_id" ref="base.module_category_administration"/>
             <field name="implied_ids" eval="[(4, ref('base.group_system'))]"/>
         </record>
-        
+
         <!-- Tableau de bord -->
         <record id="group_dashboard_admin" model="res.groups">
             <field name="name">Tableau de bord - admin</field>
@@ -327,7 +327,7 @@
             <field name="category_id" ref="base.module_category_administration"/>
             <field name="implied_ids" eval="[(4, ref('base.group_system'))]"/>
         </record>
-        
+
         <!-- Session -->
         <record id="group_session_user" model="res.groups">
             <field name="name">Gestion des sessions d'admission - user</field>
@@ -339,7 +339,7 @@
             <field name="category_id" ref="base.module_category_administration"/>
             <field name="implied_ids" eval="[(4, ref('base.group_system'))]"/>
         </record>
-        
+
         <!-- Registre d'admission -->
         <record id="group_session_registre_user" model="res.groups">
             <field name="name">Gestion des registre d'admission - user</field>

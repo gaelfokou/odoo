@@ -49,7 +49,7 @@
                             <field name="date_delivr_cni"/>
                         </group>
                     </group> -->
-                    
+
                     <!-- <p>
                         Vous êtes sur le point d'ajouter une pièce comptable d'enregistrement des frais d'inscription de 
                         <b><field name="student_id" readonly="1"/></b>

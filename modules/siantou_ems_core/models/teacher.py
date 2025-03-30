@@ -6,7 +6,6 @@ import logging
 
 _logger = logging.getLogger(__name__)
 
-
 class HrEmployee(models.Model):
     _inherit = 'hr.employee'
 
@@ -257,7 +256,6 @@ class HrEmployee(models.Model):
     #         to_remove = set(current_subject_ids) - set(new_subject_ids)
     #         record.subject_priority_ids.filtered(lambda p: p.subject_id.id in to_remove).unlink()
 
-
 class TeacherAvailability(models.Model):
     _name = 'siantou.ems.core.teacher.availability'
     _description = 'Disponibilité des enseignants'
@@ -303,7 +301,6 @@ class TeacherAvailability(models.Model):
         for record in self:
             if record.start_time >= record.end_time:
                 raise ValidationError("L'heure de fin doit être supérieure à l'heure de début")
-
 
 class TeacherSubjectPriority(models.Model):
     _name = 'siantou.ems.core.teacher.subject.priority'

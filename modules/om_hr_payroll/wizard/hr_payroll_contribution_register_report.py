@@ -5,7 +5,6 @@ from dateutil import relativedelta
 
 from odoo import models, fields, api, tools, _
 
-
 class PayslipLinesContributionRegister(models.TransientModel):
     _name = 'payslip.lines.contribution.register'
     _description = 'Payslip Lines by Contribution Registers'

@@ -7,21 +7,17 @@ import logging
 
 from psycopg2 import sql, DatabaseError
 
-
 from odoo import models, fields, api, tools, _
 from odoo.tools import DEFAULT_SERVER_DATETIME_FORMAT
 from odoo.exceptions import ValidationError, UserError
 from odoo.addons.base.models.res_partner import WARNING_MESSAGE, WARNING_HELP
 
-
 _logger = logging.getLogger(__name__)
-
 
 class StudentEnrollment(models.Model):
     _name = 'oe.school.student.enrollment'
     _inherit=['mail.thread', 'mail.activity.mixin']
     _description = 'Gestion des inscriptions des étudiants'
-
 
     partner_id = fields.Many2one(
         'res.partner',
@@ -101,7 +97,6 @@ class StudentEnrollment(models.Model):
     city_id = fields.Many2one("siantou.ems.core.city", string="Ville")
     city_id_pk = fields.Integer(related='city_id.id')
     quarter_id = fields.Many2one("siantou.ems.core.quarter", string="Quartier")
-    
 
     autre = fields.Char(string="Autre pays")
     lieu_residence = fields.Char(string="Lieu de résidence", required=True)
@@ -131,8 +126,6 @@ class StudentEnrollment(models.Model):
         'ir.attachment',
         string="Attachment"
     )
-
-
 
     def print_payement_student(self):
         for rec in self:
@@ -171,13 +164,11 @@ class StudentEnrollment(models.Model):
             report_action = self.env.ref('siantou_ems_core.action_report_student_core_pdf')
             return report_action.report_action(self,data=data)
 
-
     @api.onchange('nationalite')
     def onchange_nationalite(self):
         if self.nationalite:
             self.is_autre_pays=False
             self.autre=""
-    
 
     def action_preinscrip_wizard(self):
         action = self.env.ref('siantou_ems_core.action_fee_enrollment_wizard').read()[0]
@@ -188,7 +179,6 @@ class StudentEnrollment(models.Model):
         })
         return action
 
-
     def action_admission_enrollment_wizard(self):
         action = self.env.ref('siantou_ems_core.action_student_admission_enrollment_wizard').read()[0]
         action.update({
@@ -197,7 +187,6 @@ class StudentEnrollment(models.Model):
             'type': 'ir.actions.act_window',
         })
         return action
-
 
     def compute_rejected(self):
         self.status='rej'
@@ -234,7 +223,6 @@ class StudentEnrollment(models.Model):
 #         copy=False
 #     )
 
-
 # class IrAttachment(models.Model):
 #     _inherit = 'ir.attachment'
 
@@ -243,7 +231,6 @@ class StudentEnrollment(models.Model):
 #         'doc_attachment_id', 'attachment_id',
 #         'document_id',
 #         string="Attachment")
-
 
 class StudentEnrollmentAdmission(models.Model):
     _name = 'oe.school.student.enrollment.admission'
@@ -255,11 +242,4 @@ class StudentEnrollmentAdmission(models.Model):
         # required=True,    
     )
     observations = fields.Html(string="Observations", required=True)
-
-
-
-
-
-
-
 
