@@ -414,14 +414,18 @@ class Student(models.Model):
                     'annee_acadmique_id': vals['annee_acadmique_id'],
                 })
         vals['class_id'] = class_id.id
-        batch = self.env['siantou.ems.core.student.batch'].assign_batch(
-            class_id.filiere_id.school_id.id, 
-            class_id.filiere_id.id, 
-            class_id.specialty_id.id, 
-            class_id.option_id.id, 
-            class_id.niveau_id.id
-        )
-        vals['batch_id'] = batch.id
+
+        batch_id = self.env['siantou.ems.core.student.batch'].browse(vals['batch_id'])
+        if not batch_id:
+            if 'batch_id' not in vals or not vals['batch_id']:
+                batch_id = self.env['siantou.ems.core.student.batch'].assign_batch(
+                    class_id.filiere_id.school_id.id, 
+                    class_id.filiere_id.id, 
+                    class_id.specialty_id.id, 
+                    class_id.option_id.id, 
+                    class_id.niveau_id.id
+                )
+        vals['batch_id'] = batch_id.id
 
         # Création de l'étudiant
         student = super(Student, self).create(vals)
