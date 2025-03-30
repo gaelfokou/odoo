@@ -45,13 +45,11 @@ class StudentEnrollment(models.Model):
     )
     matricule = fields.Char(string="Matricule")
     code_enrol = fields.Char(string="Code de préinscription", default="001485KOPLL")
-    cycle_id_pk = fields.Integer(related='cycle_id.id')
     cycle_id = fields.Many2one(
         'oe.school.course',
         string='Cycle',
         required=True
     )
-    field_of_study_id_pk = fields.Integer(related='field_of_study_id.id')
     field_of_study_id = fields.Many2one(
         'siantou.ems.core.field_of_study',
         string='Filière',
@@ -99,11 +97,8 @@ class StudentEnrollment(models.Model):
         'siantou.ems.core.country',
         string="Nationalité(Pays d'origine)",
     )
-    country_id_pk = fields.Integer(related='nationalite.id')
     region_id = fields.Many2one("siantou.ems.core.region", string="Région")
-    region_id_pk = fields.Integer(related='region_id.id')
     city_id = fields.Many2one("siantou.ems.core.city", string="Ville")
-    city_id_pk = fields.Integer(related='city_id.id')
     quarter_id = fields.Many2one("siantou.ems.core.quarter", string="Quartier")
 
     autre = fields.Char(string="Autre pays")

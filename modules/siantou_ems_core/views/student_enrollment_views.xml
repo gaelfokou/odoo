@@ -12,7 +12,9 @@
                 <field name="cycle_id"/>
                 <field name="field_of_study_id"/>
                 <field name="specialty_id"/>
+                <field name="option_id"/>
                 <field name="level_id"/>
+                <field name="class_id"/>
                 <field name="type_cour"/>
                 <field 
                     name="status_univ" 
@@ -28,6 +30,7 @@
                     decoration-info="status == 'inscrip'"
                     decoration-danger="status == 'rej'"
                 />
+                <field name="student_id"/>
             </tree>
         </field>
     </record>
@@ -126,21 +129,18 @@
                                     <field name="situat_matri"  widget="radio"/>
                                 </group>
                                 <group>
-                                    <field name="nationalite" invisible="is_autre_pays==True"/>
-                                    <field name="country_id_pk" invisible="1"/>
+                                    <field name="nationalite"/>
                                     <field name="autre"/>
                                     <field name="is_autre_pays" invisible="1"/>
                                 </group>
                                 <group>
-                                    <field name="region_id" domain="[('country_id','=',country_id_pk)]"/>
-                                    <field name="region_id_pk" invisible="1"/>
+                                    <field name="region_id" domain="[('country_id','=',nationalite)]"/>
                                 </group>
                                 <group>
-                                    <field name="city_id" domain="[('region_id','=',region_id_pk)]"/>
-                                    <field name="city_id_pk" invisible="1"/>
+                                    <field name="city_id" domain="[('region_id','=',region_id)]"/>
                                 </group>
                                 <group>
-                                    <field name="quarter_id" domain="[('city_id','=',city_id_pk)]"/>
+                                    <field name="quarter_id" domain="[('city_id','=',city_id)]"/>
                                 </group>
                                 <group>
                                     <field name="lieu_residence"/>
@@ -163,24 +163,32 @@
                                     <field name="status_univ"/>
                                 </group>
                                 <group>
+                                    <field name="annee_acad"/>
+                                </group>
+                                <group>
                                     <field name="cycle_id"/>
-                                    <field name="cycle_id_pk" invisible="1"/>
                                 </group>
                                 <group>
-                                    <field name="field_of_study_id" options="{'no_create': True}" domain="[('cursus_id','=',cycle_id_pk)]"/>
-                                    <field name="field_of_study_id_pk" invisible="1"/>
+                                    <field name="field_of_study_id" options="{'no_create': True}" domain="[('cursus_id','=',cycle_id)]"/>
                                 </group>
                                 <group>
-                                    <field name="specialty_id" options="{'no_create': True}" domain="[('field_of_study_id','=',field_of_study_id_pk)]"/>
+                                    <field name="specialty_id" options="{'no_create': True}" domain="[('field_of_study_id','=',field_of_study_id)]"/>
+                                </group>
+                                <group>
+                                    <field name="option_id" options="{'no_create': True}" domain="[('specialty_id','=',specialty_id)]"/>
+                                </group>
+                                <group>
+                                    <field name="level_id"/>
                                 </group>
                                 <group>
                                     <field name="type_cour" widget="radio"/>
                                 </group>
-
+                                <group>
+                                    <field name="class_id" options="{'no_create': True}" domain="[('filiere_id', '=', field_of_study_id), ('specialty_id', '=', specialty_id), ('option_id', '=', option_id), ('niveau_id', '=', level_id), ('annee_acadmique_id', '=', annee_acad), ('type_cour', '=', type_cour)]"/>
+                                </group>
                                 <group invisible="status_univ=='new'">
                                     <field name="nbre_matiere"/>
                                 </group>
-
                                 <group>
                                     <field name="dipl_req_ids" widget="many2many_tags"/>
                                 </group>
@@ -189,12 +197,6 @@
                                 </group>
                                 <group>
                                     <field name="dern_etab_freq"/>
-                                </group>
-                                <group>
-                                    <field name="annee_acad"/>
-                                </group>
-                                <group>
-                                    <field name="level_id"/>
                                 </group>
                             </group>
                         </page>

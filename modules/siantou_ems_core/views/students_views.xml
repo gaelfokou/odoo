@@ -14,17 +14,6 @@
                 <field name="matricule"/>
                 <field name="name"/>
                 <field name="email"/>
-                <field name="cycle_id"/>
-                <field name="field_of_study_id"/>
-                <field name="specialty_id"/>
-                <field name="option_id"/>
-                <field name="type_cour"/>
-                <field 
-                    name="status_univ" 
-                    widget="badge"
-                    decoration-success="status_univ == 'new'"
-                    decoration-warning="status_univ == 'old'"
-                />
                 <field name="user_id"/>
                 <field 
                     name="status_user" 
