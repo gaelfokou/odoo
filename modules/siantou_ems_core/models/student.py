@@ -274,7 +274,7 @@ class Student(models.Model):
                     if len(diplo_requis_ids) == 0:
                         diplo_requis = self.env['oe.school.course.degree'].create({
                             'name': student.cycle_id.name,
-                            'cycle_id': student.cycle_id.id,
+                            'cursus_id': student.cycle_id.id,
                         })
                         diplo_requis_ids.append(diplo_requis.id)
                 student_enroll_id = student.student_enroll_ids.create({
