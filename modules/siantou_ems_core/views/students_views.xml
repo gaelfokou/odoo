@@ -29,8 +29,8 @@
                 <field 
                     name="status_user" 
                     widget="badge" 
-                    decoration-primary="state_user_id == 'new'"
-                    decoration-success="state_user_id == 'active'"
+                    decoration-primary="status_user == 'new'"
+                    decoration-success="status_user == 'active'"
                 />
             </tree>
         </field>
