@@ -38,8 +38,6 @@
                             invisible="user_id.id != False"/>
                 </header>
                 <sheet>
-                    <field name="user_id"/>
-                    <field name="status_user"/>
                     <div class="oe_title">
                         <label for="name" string="Nom(s) et prénom(s)"/>
                         <h1><field name="name"/></h1>
@@ -89,6 +87,9 @@
                                 </group>
                                 <group>
                                     <field name="num_tel" widget="phone"/>
+                                </group>
+                                <group>
+                                    <field name="user_id"/>
                                 </group>
                             </group>
                         </page>
