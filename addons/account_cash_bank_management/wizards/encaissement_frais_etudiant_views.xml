@@ -68,10 +68,10 @@
                                 <field name="recherche_etudiant_matricule" string="Matricule" readonly="1"/>
                             </group>
                             <group string="Académique">
-                                <field name="filiere_id"/>
+                                <field name="field_of_study_id"/>
                                 <field name="specialite_id"/>
                                 <field name="cycle_id"/>
-                                <field name="niveau_id"/>
+                                <field name="level_id"/>
                             </group>
                         </group>
                     </div>

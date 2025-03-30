@@ -30,7 +30,7 @@
                 <xpath expr="//field[@name='employee_id']" position="before">
                     <field name="ecole_id"/>
                     <field name="departement_id"/>
-                    <field name="filiere_id"/>
+                    <field name="field_of_study_id"/>
                     <field name="specialite_id"/>
                     <field name="annee_academique_id"/>
                 </xpath>

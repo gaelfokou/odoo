@@ -122,11 +122,11 @@
                                                context="{'default_supplier': 1}" readonly="is_reconciled == True"/>
                                         <field name="ecole_id" optional="show" readonly="is_reconciled == True"/>
                                         <field name="departement_id" optional="show" readonly="is_reconciled == True"/>
-                                        <field name="filiere_id" optional="show" readonly="is_reconciled == True"/>
+                                        <field name="field_of_study_id" optional="show" readonly="is_reconciled == True"/>
                                         <field name="specialite_id" optional="show" readonly="is_reconciled == True"/>
                                         <field name="annee_academique_id" optional="show" readonly="is_reconciled == True"/>
                                         <field name="cycle_id" optional="show" readonly="is_reconciled == True"/>
-                                        <field name="niveau_id" optional="show" readonly="is_reconciled == True"/>
+                                        <field name="level_id" optional="show" readonly="is_reconciled == True"/>
                                         <field name="semestre_id" optional="show" readonly="is_reconciled == True"/>
                                         <field name="ref" readonly="is_reconciled == True" decoration-muted="is_reconciled == True"/>
                                         <field name="montant_recu" readonly="is_reconciled == True" decoration-muted="is_reconciled == True"/>
@@ -149,12 +149,12 @@
                                                         context="{'default_supplier': 1}"/>
                                                     <field name="ecole_id" optional="show"/>
                                                     <field name="departement_id" optional="hide"/>
-                                                    <field name="filiere_id" optional="show"/>
+                                                    <field name="field_of_study_id" optional="show"/>
                                                     <field name="currency_id" invisible="1"/>
                                                     <field name="specialite_id" optional="show"/>
                                                     <field name="annee_academique_id" optional="hide"/>
                                                     <field name="cycle_id" optional="show"/>
-                                                    <field name="niveau_id" optional="show"/>
+                                                    <field name="level_id" optional="show"/>
                                                 </group>
                                                 <group string="Informations sur le paiement">
                                                     <field name="ref" optional="show"/>

@@ -20,7 +20,7 @@ class ExamenDeliberationStudent(models.Model):
 
     anne_academique_ids = fields.Many2many('education.academic.year', string ="Année(s) académique", relation='deli_id')
 
-    filiere_id = fields.Many2one('education.filiere', string='Filière', required=True)
+    field_of_study_id = fields.Many2one('education.filiere', string='Filière', required=True)
 
     actual_class_id = fields.Many2one('education.class', string='Classe actuelle', required=True)
 
@@ -43,13 +43,13 @@ class ExamenDeliberationStudent(models.Model):
     ], string='État', default='draft')
 
 
-    @api.onchange('filiere_id')
+    @api.onchange('field_of_study_id')
     def _onchange_class(self):
         for rec in self:
-            if rec.filiere_id:
+            if rec.field_of_study_id:
                 class_ids = self.env['education.class'].search([
-                    ('filiere_id', '=', rec.filiere_id.id),
-                    ('niveau_id.name', 'in', ['L1', 'L2', 'L3'])
+                    ('field_of_study_id', '=', rec.field_of_study_id.id),
+                    ('level_id.name', 'in', ['L1', 'L2', 'L3'])
                 ])
                 return {'domain': {'actual_class_id': [('id', 'in', class_ids.ids)]}}
             else:
@@ -57,16 +57,16 @@ class ExamenDeliberationStudent(models.Model):
                 return {'domain': {'actual_class_id': []}}
 
 
-    @api.onchange('anne_academique_id', 'actual_class_id', 'filiere_id')
+    @api.onchange('anne_academique_id', 'actual_class_id', 'field_of_study_id')
     def _onchange_student(self):
         for rec in self:
-            if rec.annee_academique_id and rec.actual_class_id and rec.filiere_id:
+            if rec.annee_academique_id and rec.actual_class_id and rec.field_of_study_id:
                 # Filtrer les étudiants en fonction de l'année académique, de la classe et de la filière
                 etudiant_ids = self.env['siantou.ems.examen.student'].search([
                     ('anne_academique_id', '=', rec.annee_academique_id.id),
                     ('class_id.class_id', '=', rec.actual_class_id.id),
-                    ('class_id.class_id.filiere_id', '=', rec.filiere_id.id),
-                    ('class_id.class_id.niveau_id', '=', rec.actual_class_id.niveau_id.id)  # Filtrer par niveau
+                    ('class_id.class_id.field_of_study_id', '=', rec.field_of_study_id.id),
+                    ('class_id.class_id.level_id', '=', rec.actual_class_id.level_id.id)  # Filtrer par niveau
                 ])
 
                 _logger.info(etudiant_ids)
@@ -110,13 +110,13 @@ class ExamenDeliberationStudent(models.Model):
                 }
 
 
-    def _get_average(self, rec, niveau_id=None):
+    def _get_average(self, rec, level_id=None):
         """Helper pour calculer la moyenne des notes pour un niveau d'étudiant spécifié ou pour tous les niveaux."""
         averages = {}
 
         for line in rec.deli_line_note_etudiant_ids:
             # Récupération du niveau de l'étudiant
-            niveau = line.student_id.class_id.class_id.niveau_id
+            niveau = line.student_id.class_id.class_id.level_id
 
             if niveau not in averages:
                 averages[niveau] = []
@@ -124,9 +124,9 @@ class ExamenDeliberationStudent(models.Model):
             # Ajouter les moyennes des notes de l'étudiant
             averages[niveau].extend(st.moyenne for st in line.student_note_ids)
 
-        if niveau_id:
+        if level_id:
             # Retourner la moyenne pour un niveau spécifique
-            notes = averages.get(niveau_id, [])
+            notes = averages.get(level_id, [])
             return sum(notes) / len(notes) if notes else 0
         else:
             # Retourner les moyennes pour tous les niveaux
@@ -168,8 +168,8 @@ class ExamenDeliberationStudent(models.Model):
                 # Calculer les moyennes des notes pour chaque étudiant
                 average_notes = self._get_average(rec)
 
-                niveau_id = line.student_id.class_id.class_id.niveau_id
-                level = niveau_id.name
+                level_id = line.student_id.class_id.class_id.level_id
+                level = level_id.name
                 
                 # Initialiser les pourcentages
                 pct_n1 = pct_n2 = pct_n3 = moyenne_n2 = 0
@@ -222,8 +222,8 @@ class ExamenDeliberationStudent(models.Model):
         """Détermine la décision basée sur les pourcentages de validation."""
         for rec in self:
             for line in rec.deli_line_note_etudiant_ids:
-                niveau_id = line.student_id.class_id.class_id.niveau_id
-                level = niveau_id.name
+                level_id = line.student_id.class_id.class_id.level_id
+                level = level_id.name
 
                 if level == 'L1':
                     _logger.info("eccccccccccccccc %s", pct_n1)

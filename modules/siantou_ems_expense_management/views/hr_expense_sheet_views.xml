@@ -12,7 +12,7 @@
                     <field name="type_depense"/>
                     <field name="ecole_id"/>
                     <field name="departement_id"/>
-                    <field name="filiere_id"/>
+                    <field name="field_of_study_id"/>
                     <field name="specialite_id"/>
                     <field name="annee_academique_id"/>
                 </xpath>
@@ -54,7 +54,7 @@
                     <field name="type_depense"/>
                     <field name="ecole_id" invisible="type_depense != 'academique'" required="type_depense == 'academique'"/>
                     <field name="departement_id" required="type_depense != 'academique'"/>
-                    <field name="filiere_id" invisible="type_depense != 'academique'" required="type_depense == 'academique'"/>
+                    <field name="field_of_study_id" invisible="type_depense != 'academique'" required="type_depense == 'academique'"/>
                     <field name="specialite_id" invisible="type_depense != 'academique'" required="type_depense == 'academique'"/>
                     <field name="annee_academique_id" invisible="type_depense != 'academique'" required="type_depense == 'academique'"/>
                 </xpath>

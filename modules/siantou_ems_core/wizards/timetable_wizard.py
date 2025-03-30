@@ -82,7 +82,7 @@ class TimetableWizard(models.TransientModel):
 
         # Récupérer la liste des filières et les traiter l'une après l'autre
         if self.field_of_study_id.id:
-            domain.append(('filiere_id', '=', self.field_of_study_id.id))
+            domain.append(('field_of_study_id', '=', self.field_of_study_id.id))
 
         if self.level_id.id:
             domain.append(('level_id', '=', self.level_id.id))
@@ -93,7 +93,7 @@ class TimetableWizard(models.TransientModel):
         if shared_subject:
             unique_string = datetime.now().strftime("%Y%m%d%H%M")
         for i, classe in enumerate(classes):
-            if not classe.filiere_id.school_id.id:
+            if not classe.field_of_study_id.school_id.id:
                 continue
             check_classes = classe
             if shared_subject:
@@ -117,7 +117,7 @@ class TimetableWizard(models.TransientModel):
             for slot in slots:
                 field_of_study_ids = list(slot.field_of_study_ids)
                 for field_of_study in field_of_study_ids:
-                    if field_of_study.id == classe.filiere_id.id:
+                    if field_of_study.id == classe.field_of_study_id.id:
                         available_slotitem = slot
                         break
                 if available_slotitem:
@@ -156,15 +156,15 @@ class TimetableWizard(models.TransientModel):
             active_slotitems.sort(key=lambda s: s[0])
             not_active_slotitems.sort(key=lambda s: s[0])
             batches = self.env['siantou.ems.core.student.batch'].search([
-                ('school_id', '=', classe.filiere_id.school_id.id),
-                ('field_of_study_id', '=', classe.filiere_id.id),
+                ('school_id', '=', classe.field_of_study_id.school_id.id),
+                ('field_of_study_id', '=', classe.field_of_study_id.id),
                 ('specialty_id', '=', classe.specialty_id.id),
                 ('option_id', '=', classe.option_id.id),
                 ('level_id', '=', classe.level_id.id),
             ])
             batches = list(batches)
             if len(batches) == 0:
-                batch = self.env['siantou.ems.core.student.batch'].create_new_batch(classe.filiere_id.school_id.id, classe.filiere_id.id, classe.specialty_id.id, classe.option_id.id, classe.level_id.id)
+                batch = self.env['siantou.ems.core.student.batch'].create_new_batch(classe.field_of_study_id.school_id.id, classe.field_of_study_id.id, classe.specialty_id.id, classe.option_id.id, classe.level_id.id)
                 batches.append(batch)
             # Récupérer la spécialité de la classe et les traiter l'une après l'autre
             specialty_id = classe.specialty_id
@@ -234,10 +234,10 @@ class TimetableWizard(models.TransientModel):
                                                         if len(shared_timetables) > 0:
                                                             continue
                                                         self.env['siantou.ems.timetable.timetable'].create({
-                                                            'department_id': classe.filiere_id.department_id.id,
+                                                            'department_id': classe.field_of_study_id.department_id.id,
                                                             'semester_id': timetable.semester_id.id,
                                                             'batch_id': batch.id,
-                                                            'field_of_study_id': classe.filiere_id.id,
+                                                            'field_of_study_id': classe.field_of_study_id.id,
                                                             'level_id': timetable.level_id.id,
                                                             'class_id': classe.id,
                                                             'ue_id': ue_id.id,
@@ -278,10 +278,10 @@ class TimetableWizard(models.TransientModel):
                                                     if teacher_priority:
                                                         teacher_priority = self.find_available_teacher(teacher_priority, target_date, available_slot["start_time"], available_slot["end_time"])
                                                     self.env['siantou.ems.timetable.timetable'].create({
-                                                        'department_id': classe.filiere_id.department_id.id,
+                                                        'department_id': classe.field_of_study_id.department_id.id,
                                                         'semester_id': ue_id.semestre_id.id,
                                                         'batch_id': batch.id,
-                                                        'field_of_study_id': classe.filiere_id.id,
+                                                        'field_of_study_id': classe.field_of_study_id.id,
                                                         'level_id': classe.level_id.id,
                                                         'class_id': classe.id,
                                                         'ue_id': ue_id.id,

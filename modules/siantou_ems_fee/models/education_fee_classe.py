@@ -12,7 +12,7 @@ class EducationFeeClass(models.Model):
 
     name = fields.Char('Libellé', default="/")
     date = fields.Date('Date de génération', required=True, readonly=True)
-    filiere_id = fields.Many2one('siantou.ems.core.field_of_study', string='Filiere', readonly=True)
+    field_of_study_id = fields.Many2one('siantou.ems.core.field_of_study', string='Filiere', readonly=True)
     niveau = fields.Many2one('siantou.ems.core.level', string="Niveau")
     amount = fields.Monetary('Montant total de la filière', compute='_compute_amount', store=True)
     
@@ -40,16 +40,16 @@ class EducationFeeClass(models.Model):
         for rec in self:
             rec.amount = 0  
             total = 0
-            for student in rec.filiere_id.student_ids:
+            for student in rec.field_of_study_id.student_ids:
                 fees = self.env['account.move'].search([('partner_id', '=', student.partner_id.id),('academic_year_id', '=', rec.academic_year.id)])
                 total += sum([x.amount_residual for x in fees])
             rec.amount = total
 
     
-    @api.constrains("filiere_id", "academic_year")
+    @api.constrains("field_of_study_id", "academic_year")
     def _check_duplicated_generation(self):
         for rec in self:
-            factures = self.search([('academic_year', '=', rec.academic_year.id),('filiere_id', '=', rec.filiere_id.id)])
+            factures = self.search([('academic_year', '=', rec.academic_year.id),('field_of_study_id', '=', rec.field_of_study_id.id)])
             if len(factures) > 1:
                 raise ValidationError(_("Impossible de générer pour une filière plusieurs factures sur l'année"))
 
@@ -61,7 +61,7 @@ class EducationFeeClass(models.Model):
     
     def action_draft(self):
         for rec in self:
-            for student in rec.filiere_id.student_ids:
+            for student in rec.field_of_study_id.student_ids:
                 fees = self.env['account.move'].search([('partner_id', '=', student.partner_id.id),('academic_year_id', '=', rec.academic_year.id)])
                 for fee in fees:
                     fee.unlink()
@@ -70,7 +70,7 @@ class EducationFeeClass(models.Model):
             
     def action_cancel(self):
         for rec in self:
-            for student in rec.filiere_id.student_ids:
+            for student in rec.field_of_study_id.student_ids:
                 fees = self.env['account.move'].search([('partner_id', '=', student.partner_id.id),('academic_year_id', '=', rec.academic_year.id)])
                 for fee in fees:
                     fee.unlink()
@@ -83,7 +83,7 @@ class EducationFeeClass(models.Model):
 
     def action_confirm(self):
         for rec in self:
-            for student in rec.filiere_id.student_ids:
+            for student in rec.field_of_study_id.student_ids:
                 fees = self.env['account.move'].search([('partner_id', '=', student.partner_id.id),('academic_year_id', '=', rec.academic_year.id)])
                 for fee in fees:
                     fee.action_post()
@@ -93,7 +93,7 @@ class EducationFeeClass(models.Model):
     def generate_fees(self):
         """Generation des factures pour une scolarite normale pour la classe"""
         for rec in self:
-            students = rec.filiere_id.student_ids.filtered(lambda x: x.state == 'draft')
+            students = rec.field_of_study_id.student_ids.filtered(lambda x: x.state == 'draft')
             rec._student_generate_fees(students)
             rec.action_validate()
 
@@ -105,7 +105,7 @@ class EducationFeeClass(models.Model):
         """impression des factures pour la classe"""
         docids = []
         for rec in self:
-            docids = rec.filiere_id.student_ids.ids
+            docids = rec.field_of_study_id.student_ids.ids
 
         return self.env.ref('siantou_ems_fee.action_fees_student').report_action(docids)
         
@@ -118,7 +118,7 @@ class EducationFeeClass(models.Model):
         fee_category_obj = self.env['siantou.ems.fee.category']
         
         for rec in students:
-            if  not self.filiere_id.                                                                                                                             frais:
+            if  not self.field_of_study_id.                                                                                                                             frais:
                 raise ValidationError(_('Aucun Frais disponible pour la filière'))
             
             #  Get all fees category for student
@@ -136,13 +136,13 @@ class EducationFeeClass(models.Model):
                 
                 if rec.redoublant == 'non':
                     structure_ids = structure_obj.search(
-                    [('academic_year', '=', annee.id), ('fee_special', '=', False),('id', 'in', self.filiere_id.class_id.filiere_id.frais.ids),
-                    ('category_id', '=', cat.id),('cycle_id', '=', self.filiere_id.class_id.filiere_id.cycle_id.id)])
+                    [('academic_year', '=', annee.id), ('fee_special', '=', False),('id', 'in', self.field_of_study_id.class_id.field_of_study_id.frais.ids),
+                    ('category_id', '=', cat.id),('cycle_id', '=', self.field_of_study_id.class_id.field_of_study_id.cycle_id.id)])
 
                 elif rec.redoublant == 'oui':
                     structure_ids = structure_obj.search(
-                        [('academic_year', '=', annee.id),('is_scolarite', '=', False), ('fee_special', '=', False),('id', 'in', self.filiere_id.class_id.filiere_id.frais.ids),
-                        ('category_id', '=', cat.id),('cycle_id', '=', self.filiere_id.class_id.filiere_id.cycle_id.id)])
+                        [('academic_year', '=', annee.id),('is_scolarite', '=', False), ('fee_special', '=', False),('id', 'in', self.field_of_study_id.class_id.field_of_study_id.frais.ids),
+                        ('category_id', '=', cat.id),('cycle_id', '=', self.field_of_study_id.class_id.field_of_study_id.cycle_id.id)])
 
                 for struct in structure_ids:
                     lines = []

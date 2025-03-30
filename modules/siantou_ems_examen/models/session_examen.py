@@ -54,7 +54,7 @@ class SecretariatExamen(models.Model):
     
     school_id = fields.Many2one('siantou.ems.core.school', string='Ecole')
     
-    niveau_id = fields.Many2one('siantou.ems.core.level', string='Niveau',required=True,
+    level_id = fields.Many2one('siantou.ems.core.level', string='Niveau',required=True,
                                  help="Niveau")
     
     surveillent_perm_ids = fields.Many2many(
@@ -232,7 +232,7 @@ class SessionExamen(models.Model):
             check_students = None
 
             for class_id in rec.class_ids:
-                niveau_id = class_id.niveau_id
+                level_id = class_id.level_id
                 subject_ids = class_id.ue_ids.subject_ids.ids
                 student_ids = class_id.student_ids
                 syllabus_ids = self.env['siantou.ems.core.syllabus'].search(
@@ -248,10 +248,10 @@ class SessionExamen(models.Model):
                     exam_subject_id = rec.exam_subject_ids.create({
                         'exam_id': rec.id,
                         'name':f"{syllabus_id.name}_[{rec.name}]",
-                        'field_of_study_id': syllabus_id.class_id.filiere_id.id,
+                        'field_of_study_id': syllabus_id.class_id.field_of_study_id.id,
                         'subject_id': syllabus_id.subject_id.id,
                         'year_id': rec.year_id.id,
-                        'level_id': niveau_id.id,
+                        'level_id': level_id.id,
                         'date_start': rec.date_start,
                         'date_end': rec.date_end,
                         'state':'schedule',

@@ -228,7 +228,7 @@ class ExamenStudent(models.Model):
     @api.depends('class_id', 'stat', 'moyenne_annuelle')
     def _compute_is_graduate(self):
         for student in self:
-            niveau = student.class_id.class_id.niveau_id.name
+            niveau = student.class_id.class_id.level_id.name
             if niveau in ['L3', 'M2', 'D']:
                 student.is_graduate = (
                     student.stat == 'Valider' and

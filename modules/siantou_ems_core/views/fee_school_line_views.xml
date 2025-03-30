@@ -52,8 +52,8 @@
                                         </tree>
                                     </field>
                                 </page>
-                                <page name="filiere_ids" string="Filières">
-                                    <field name="filiere_ids">
+                                <page name="field_of_study_ids" string="Filières">
+                                    <field name="field_of_study_ids">
                                         <tree>
                                             <field name="code"/>
                                             <field name="name"/>

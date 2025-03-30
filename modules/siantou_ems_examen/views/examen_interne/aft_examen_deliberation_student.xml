@@ -24,7 +24,7 @@
                                 attrs="{'readonly': [('state','in',['validate','confirm'])]}" />
                         </group>
                         <group>
-                            <field name="filiere_id" attrs="{'readonly': [('state','in',['validate','confirm'])]}"/>
+                            <field name="field_of_study_id" attrs="{'readonly': [('state','in',['validate','confirm'])]}"/>
                         </group>
                         <group>
                             <field name="actual_class_id"
@@ -88,7 +88,7 @@
         <field name="arch" type="xml">
             <tree string="">
                 <field name="annee_academique_id" />
-                <field name="filiere_id" />
+                <field name="field_of_study_id" />
                 <field name="actual_class_id" />
                 <field name="date_jury" />
                 <field name="pr_jury" />

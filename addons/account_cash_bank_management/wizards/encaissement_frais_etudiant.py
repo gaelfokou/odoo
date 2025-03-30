@@ -22,10 +22,10 @@ class EncaissementFraisEtudiant(models.TransientModel):
         ('validation_etudiant', "Validation de l'étudiant"),
         ('saisir_les_montants', "Saisir les montants")
     ], default='recherche_etudiant')
-    filiere_id = fields.Many2one('siantou.ems.core.field_of_study', related='etudiant_id.field_of_study_id')
+    field_of_study_id = fields.Many2one('siantou.ems.core.field_of_study', related='etudiant_id.field_of_study_id')
     specialite_id = fields.Many2one('siantou.ems.core.specialty', related='etudiant_id.specialty_id')
     cycle_id = fields.Many2one('oe.school.course', related='etudiant_id.cycle_id')
-    niveau_id = fields.Many2one('siantou.ems.core.level', related='etudiant_id.level_id')
+    level_id = fields.Many2one('siantou.ems.core.level', related='etudiant_id.level_id')
 
     @api.constrains('recherche_etudiant_nom', 'recherche_etudiant_matricule')
     def _check_recherche_etudiant(self):
@@ -118,7 +118,7 @@ class EncaissementFraisEtudiant(models.TransientModel):
             # Overidden from self.sheet_id._prepare_transaction_vals() so we can use the expense date for the account move date
             'payment_ref': "Encaissement des frais de scolarité",
             # 'ecole_id': self.sheet_id.ecole_id.id,
-            'filiere_id': self.etudiant_id.field_of_study_id.id,
+            'field_of_study_id': self.etudiant_id.field_of_study_id.id,
             'specialite_id': self.etudiant_id.specialty_id.id,
             # 'annee_academique_id': self.etudiant_id.annee_academique_id.id,
             'cycle_id': self.etudiant_id.cycle_id.id,

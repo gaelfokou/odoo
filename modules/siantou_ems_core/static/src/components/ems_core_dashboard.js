@@ -42,7 +42,6 @@ export class OwlSalesDashboard extends Component {
             await this.getTearcherDatas()
             await this.getFiliereDatas()
             await this.getEcoleDatas()
-            // console.log(this.state)
         })
     }
 
@@ -53,6 +52,12 @@ export class OwlSalesDashboard extends Component {
         this.state.campus.value = await this.orm.searchCount("siantou.ems.core.campus", [])
         this.state.teachers.value = await this.orm.searchCount("hr.employee", [["is_teacher", "=", true]])
         this.state.filieres.value = await this.orm.searchCount("siantou.ems.core.field_of_study", [])
+        console.log('cycles', this.state.cycles);
+        console.log('students', this.state.students);
+        console.log('ecoles', this.state.ecoles);
+        console.log('campus', this.state.campus);
+        console.log('teachers', this.state.teachers);
+        console.log('filieres', this.state.filieres);
     }
 
     async getBarChartDatas(){
@@ -78,12 +83,13 @@ export class OwlSalesDashboard extends Component {
             name:"Enseignants vacataires",
             value:teacher_vac
         })
+        console.log('doughTearchers', this.state.doughTearchers);
     }
 
     async getFiliereDatas(){
         const filieres = await this.orm.searchRead("siantou.ems.core.field_of_study",[]);
         filieres.forEach(async (filiere)=>{
-            const classes = await this.orm.searchRead("siantou.ems.core.class",[["filiere_id", "=", filiere.id]]);
+            const classes = await this.orm.searchRead("siantou.ems.core.class",[["field_of_study_id", "=", filiere.id]]);
             let nbre = 0;
             await classes.forEach(async (classe)=>{
                 nbre += classe.student_ids.length
@@ -102,7 +108,7 @@ export class OwlSalesDashboard extends Component {
             let nbre = 0
             const filieres = await this.orm.searchRead("siantou.ems.core.field_of_study",[["school_id", "=", ecole.id]]);
             await filieres.forEach(async (filiere)=>{
-                const classes = await this.orm.searchRead("siantou.ems.core.class",[["filiere_id", "=", filiere.id]]);
+                const classes = await this.orm.searchRead("siantou.ems.core.class",[["field_of_study_id", "=", filiere.id]]);
                 await classes.forEach(async (classe)=>{
                     nbre += classe.student_ids.length
                 })

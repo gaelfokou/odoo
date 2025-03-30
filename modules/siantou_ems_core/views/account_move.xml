@@ -8,7 +8,7 @@
             <field name="partner_id" position="after">
                 <group>
                     <field name="cycle_id"/>
-                    <field name="filiere_id"/>
+                    <field name="field_of_study_id"/>
                     <field name="specialty_id"/>
                     <field name="annee_academique_id"/>
                     <field name="level_id"/>

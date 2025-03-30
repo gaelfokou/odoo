@@ -23,7 +23,7 @@ class FeeSchool(models.Model):
         company_dependent=True,
         default=lambda self: self.env['account.journal'].sudo().search([('company_id', '=', self.env.company.id)], limit=1)
     )
-    filiere_ids = fields.Many2many(
+    field_of_study_ids = fields.Many2many(
         'siantou.ems.core.field_of_study', 
         required=True,
         string="Filières"

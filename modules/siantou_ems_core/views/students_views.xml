@@ -109,7 +109,7 @@
                                     <field name="option_id" domain="[('specialty_id', '=', specialty_id)]"/>
                                     <field name="type_cour" widget="radio"/>
                                     <field name="level_id"/>
-                                    <field name="class_id" domain="[('filiere_id', '=', field_of_study_id), ('specialty_id', '=', specialty_id), ('option_id', '=', option_id), ('level_id', '=', level_id), ('annee_acadmique_id', '=', annee_acadmique_id), ('type_cour', '=', type_cour)]"/>
+                                    <field name="class_id" domain="[('field_of_study_id', '=', field_of_study_id), ('specialty_id', '=', specialty_id), ('option_id', '=', option_id), ('level_id', '=', level_id), ('annee_acadmique_id', '=', annee_acadmique_id), ('type_cour', '=', type_cour)]"/>
                                 </group>
                             </group>
                         </page>

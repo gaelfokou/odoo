@@ -130,8 +130,8 @@ class AnneeAcademique(models.Model):
                 vals = {
                     "student_id":line.student_id.id,
                     "class_id": rec.actual_class_id.id,
-                    "filiere_id": rec.actual_class_id.class_id.filiere_id.id,
-                    "niveau_id":rec.actual_class_id.class_id.niveau_id.id,
+                    "field_of_study_id": rec.actual_class_id.class_id.field_of_study_id.id,
+                    "level_id":rec.actual_class_id.class_id.level_id.id,
                     "option_id":rec.actual_class_id.class_id.option_id.id,
                     "academic_year_id":rec.anne_academique.id,
                     "mention":line.mention,

@@ -71,7 +71,7 @@
                                         <div class="col-8">
                                             <p>Filière : <b>
                                                     <span
-                                                        t-field="o.filiere_id.name" />
+                                                        t-field="o.field_of_study_id.name" />
                                                 </b>
                                             </p>
                                         </div>

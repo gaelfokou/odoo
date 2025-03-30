@@ -26,7 +26,7 @@ class HrExpenseSheet(models.Model):
 
     ecole_id = fields.Many2one('siantou.ems.core.school', string='École')
     departement_id = fields.Many2one('hr.department', string='Département')
-    filiere_id = fields.Many2one('siantou.ems.core.field_of_study', string='Filière')
+    field_of_study_id = fields.Many2one('siantou.ems.core.field_of_study', string='Filière')
     specialite_id = fields.Many2one('siantou.ems.core.specialty', string='Spécialité')
     annee_academique_id = fields.Many2one('siantou.ems.core.year', string='Année académique')
     cycle_id = fields.Many2one('oe.school.course', string='Cycle')

@@ -128,7 +128,7 @@ class FieldOfStudy(models.Model):
             # Filtre les cours de cette filière et de ce niveau
             classes = self.env['siantou.ems.core.class'].search([
                 ('level_id', '=', level.id),
-                ('filiere_id', '=', self.id)
+                ('field_of_study_id', '=', self.id)
             ])
             classes = list(classes)
             for classe in classes:

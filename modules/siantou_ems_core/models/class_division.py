@@ -12,7 +12,7 @@ class EducationClass(models.Model):
 
     # _sql_constraints = [
     #     ('unique_class',
-    #      'unique(filiere_id,level_id,school_id)',
+    #      'unique(field_of_study_id,level_id,school_id)',
     #      'Classe unique par school_id'),
     # ]
 
@@ -20,7 +20,7 @@ class EducationClass(models.Model):
                        compute='_compute_name', store=True,
                        help="Entrer le nom de la Classe")
 
-    filiere_id = fields.Many2one('siantou.ems.core.field_of_study', string='Filière',
+    field_of_study_id = fields.Many2one('siantou.ems.core.field_of_study', string='Filière',
                                  required=True, help="Filière")
 
     student_ids = fields.One2many(
@@ -66,11 +66,11 @@ class EducationClass(models.Model):
     @api.onchange('school_id')
     def _onchange_school(self):
         for record in self:
-            record.filiere_id = None
+            record.field_of_study_id = None
             record.specialty_id = None
             record.option_id = None
 
-    @api.onchange('filiere_id')
+    @api.onchange('field_of_study_id')
     def _onchange_filiere(self):
         for record in self:
             record.specialty_id = None

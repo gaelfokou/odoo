@@ -44,9 +44,9 @@
                                     editable="bottom"
                                     >
                                     <field name="name" />
-                                    <field name="niveau_id"/>
+                                    <field name="level_id"/>
                                     <field name="annee_acadmique_id"/>
-                                    <field name="filiere_id"/>
+                                    <field name="field_of_study_id"/>
                                     <field name="school_id"/>
                                     </tree>
                                 </field>

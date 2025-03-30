@@ -17,7 +17,7 @@ class HrExpense(models.Model):
 
     ecole_id = fields.Many2one('siantou.ems.core.school', string='École')
     departement_id = fields.Many2one('hr.department', string='Département')
-    filiere_id = fields.Many2one('siantou.ems.core.field_of_study', string='Filière')
+    field_of_study_id = fields.Many2one('siantou.ems.core.field_of_study', string='Filière')
     specialite_id = fields.Many2one('siantou.ems.core.specialty', string='Spécialité')
     annee_academique_id = fields.Many2one('siantou.ems.core.year', string='Année académique')
     cycle_id = fields.Many2one('oe.school.course', string='Cycle')
@@ -47,7 +47,7 @@ class HrExpense(models.Model):
             'ref': self.name,
             'ecole_id': self.sheet_id.ecole_id.id,
             'departement_id': self.sheet_id.departement_id.id,
-            'filiere_id': self.sheet_id.filiere_id.id,
+            'field_of_study_id': self.sheet_id.field_of_study_id.id,
             'specialite_id': self.sheet_id.specialite_id.id,
             'annee_academique_id': self.sheet_id.annee_academique_id.id,
             'cycle_id': self.sheet_id.cycle_id.id,

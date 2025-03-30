@@ -229,7 +229,7 @@ class FeeStructure(models.Model):
                                 mone_vals['invoice_date_due'] = fields.Date.today()
                                 mone_vals['annee_academique_id'] = rec.academic_year.id
                                 mone_vals['level_id'] = student_id.level_id.id
-                                mone_vals['filiere_id'] = student_id.field_of_study_id.id
+                                mone_vals['field_of_study_id'] = student_id.field_of_study_id.id
                                 mone_vals['specialite_id'] = student_id.specialty_id.id
                                 mone_vals['cycle_id'] = student_id.field_of_study_id.cycle_id.id
                                 mone_vals['ecole_id'] = student_id.field_of_study_id.school_id.id
@@ -241,7 +241,7 @@ class FeeStructure(models.Model):
                                             ('type_inclusion_fee','=','fee_scol'),
                                             ('annee_academique_id','=',rec.academic_year.id),
                                             ('level_id','=',student_id.level_id.id),
-                                            ('filiere_id','=',student_id.field_of_study_id.id),
+                                            ('field_of_study_id','=',student_id.field_of_study_id.id),
                                             ('cycle_id','=',student_id.field_of_study_id.cycle_id.id),
                                         ]
                                     )
@@ -273,7 +273,7 @@ class FeeStructure(models.Model):
                                             ('type_inclusion_fee','=','fee_spec'),
                                             ('annee_academique_id','=',rec.academic_year.id),
                                             ('level_id','=',student_id.level_id.id),
-                                            ('filiere_id','=',student_id.field_of_study_id.id),
+                                            ('field_of_study_id','=',student_id.field_of_study_id.id),
                                             ('cycle_id','=',student_id.field_of_study_id.cycle_id.id),
                                         ],
                                         limit=1

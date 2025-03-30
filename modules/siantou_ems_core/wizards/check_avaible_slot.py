@@ -30,9 +30,9 @@ class CheckAvailableSlot(models.Model):
 
             if nbr_class_slotitems > 0:
                 building_ids = []
-                if class_id.filiere_id.school_id:
+                if class_id.field_of_study_id.school_id:
                     buildings = self.env['siantou.ems.core.building'].search([
-                        ('school_ids', 'in', [class_id.filiere_id.school_id.id]),
+                        ('school_ids', 'in', [class_id.field_of_study_id.school_id.id]),
                     ])
                     building_ids = buildings.ids
                 classroom_ids = self.env['siantou.ems.timetable.timetable'].search([

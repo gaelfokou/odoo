@@ -150,7 +150,7 @@ class SessionRegisterEnrollment(models.Model):
     _description = "Gestion des Registre d'admission"
     _order = 'id desc'
     _sql_constraints = [
-        ('uniq_registre', 'unique(name,filiere_id,year_id,campus)',
+        ('uniq_registre', 'unique(name,field_of_study_id,year_id,campus)',
          "Cette session existe déja pour cette année académique!"),
     ]
 
