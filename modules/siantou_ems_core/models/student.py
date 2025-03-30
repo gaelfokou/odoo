@@ -147,6 +147,39 @@ class Student(models.Model):
         string='Classe',
     )
 
+    @api.onchange('cycle_id')
+    def _onchange_school(self):
+        for record in self:
+            record.field_of_study_id = None
+            record.level_id = None
+            record.class_id = None
+            record.specialty_id = None
+            record.option_id = None
+
+    @api.onchange('field_of_study_id')
+    def _onchange_field_of_study(self):
+        for record in self:
+            record.level_id = None
+            record.class_id = None
+            record.specialty_id = None
+            record.option_id = None
+
+    @api.onchange('level_id')
+    def _onchange_level(self):
+        for record in self:
+            record.class_id = None
+
+    @api.onchange('specialty_id')
+    def _onchange_specialty(self):
+        for record in self:
+            record.class_id = None
+            record.option_id = None
+
+    @api.onchange('option_id')
+    def _onchange_option(self):
+        for record in self:
+            record.class_id = None
+
     @api.depends('field_of_study_id', 'level_id')
     def _compute_timetables(self):
         # Recherche des emplois du temps qui correspondent à la filière et au niveau de l'étudiant
