@@ -13,7 +13,7 @@ _logger = logging.getLogger(__name__)
 # class CourseGradingType(models.Model):
 #     _name = 'oe.school.course.grading.type'
 #     _description = 'Type de notation'
-#     name = fields.Char(string='Type', required=True, index=True, translate=True) 
+#     name = fields.Char(string='Type', required=True) 
 
 class OeSchoolCourse(models.Model):
     _name = 'oe.school.course'
@@ -23,7 +23,7 @@ class OeSchoolCourse(models.Model):
     def _default_color(self):
         return randint(1, 11)
 
-    name = fields.Char(string='Nom', required=True, index=True, translate=True)
+    name = fields.Char(string='Nom', required=True)
     code = fields.Char(string='Code', required=True, size=10)
     complete_name = fields.Char('Nom complet', compute='_compute_complete_name', recursive=True, )
     parent_id = fields.Many2one(
@@ -36,10 +36,8 @@ class OeSchoolCourse(models.Model):
         default=lambda self: self.env.company,
         domain=[('active','=',True),('is_school','=',True)]
     )
-    level_ids = fields.Many2many(
-        'siantou.ems.core.level',
-        string='Niveaux'
-    )
+    level_ids = fields.Many2many('siantou.ems.core.level', 'course_level_rel', 'cycle_id', 'level_id', string='Niveaux')
+    diplo_requis_ids = fields.Many2many('oe.school.course.degree', 'course_degree_rel', 'cycle_id', 'diplo_requis_id', string='Diplômes requis')
     enable_elective = fields.Boolean('Activer la sélection des cours facultatifs')
     color = fields.Integer(default=_default_color)
 

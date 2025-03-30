@@ -12,7 +12,7 @@
                     <field name="code"/>
 					<field name="name"/>
                 	<field name="school_id"/>
-                    <field name="cursus_id"/>
+                    <field name="cycle_id"/>
                     <field name="department_id"/>
 				</tree>
 			</field>
@@ -33,7 +33,7 @@
                                 <field name="name"/>
                             </group>
                             <group>
-                                <field name="cursus_id"/>
+                                <field name="cycle_id"/>
                                 <field name="school_id"/>
                                 <field name="department_id"/>
                             </group>

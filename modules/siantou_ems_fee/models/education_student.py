@@ -17,7 +17,7 @@ class EducationFiliere(models.Model):
     #     store=True
     # )
 
-    # @api.depends('cursus_id')
+    # @api.depends('cycle_id')
     # def _compute_struct(self):
     #     for rec in self:
     #         annee = self.env['siantou.ems.core.year'].search(

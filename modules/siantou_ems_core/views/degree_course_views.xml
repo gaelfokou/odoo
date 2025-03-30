@@ -10,7 +10,7 @@
 			<field name="arch" type="xml">
 				<tree string="Diplôme réquis" editable="bottom" edit="1">
                     <field name="name"/>
-					<field name="cursus_id" widget="many2many_tags"/>
+					<field name="cycle_ids" widget="many2many_tags"/>
 				</tree>
 			</field>
 		</record>

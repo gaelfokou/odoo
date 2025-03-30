@@ -228,10 +228,10 @@ class FeeStructure(models.Model):
                                 mone_vals['invoice_date'] = fields.Date.today()
                                 mone_vals['invoice_date_due'] = fields.Date.today()
                                 mone_vals['annee_academique_id'] = rec.academic_year.id
-                                mone_vals['niveau_id'] = student_id.level_id.id
+                                mone_vals['level_id'] = student_id.level_id.id
                                 mone_vals['filiere_id'] = student_id.field_of_study_id.id
                                 mone_vals['specialite_id'] = student_id.specialty_id.id
-                                mone_vals['cycle_id'] = student_id.field_of_study_id.cursus_id.id
+                                mone_vals['cycle_id'] = student_id.field_of_study_id.cycle_id.id
                                 mone_vals['ecole_id'] = student_id.field_of_study_id.school_id.id
                                 mone_vals['type_inclusion_fee'] = rec.type_inclusion_fee
 
@@ -240,9 +240,9 @@ class FeeStructure(models.Model):
                                             ('partner_id','=',student_id.partner_id.id),
                                             ('type_inclusion_fee','=','fee_scol'),
                                             ('annee_academique_id','=',rec.academic_year.id),
-                                            ('niveau_id','=',student_id.level_id.id),
+                                            ('level_id','=',student_id.level_id.id),
                                             ('filiere_id','=',student_id.field_of_study_id.id),
-                                            ('cycle_id','=',student_id.field_of_study_id.cursus_id.id),
+                                            ('cycle_id','=',student_id.field_of_study_id.cycle_id.id),
                                         ]
                                     )
                                     _logger.info(account_move_ids)
@@ -272,9 +272,9 @@ class FeeStructure(models.Model):
                                             ('partner_id','=',student_id.partner_id.id),
                                             ('type_inclusion_fee','=','fee_spec'),
                                             ('annee_academique_id','=',rec.academic_year.id),
-                                            ('niveau_id','=',student_id.level_id.id),
+                                            ('level_id','=',student_id.level_id.id),
                                             ('filiere_id','=',student_id.field_of_study_id.id),
-                                            ('cycle_id','=',student_id.field_of_study_id.cursus_id.id),
+                                            ('cycle_id','=',student_id.field_of_study_id.cycle_id.id),
                                         ],
                                         limit=1
                                     )

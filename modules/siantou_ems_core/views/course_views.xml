@@ -37,7 +37,7 @@
 			<field name="name">school.course.tree.view</field>
 			<field name="model">oe.school.course</field>
 			<field name="arch" type="xml">
-				<tree string="Cycles">
+				<tree string='Cursus ou Cycles'>
 					<field name="name"/>
                     <field name="company_id"/>
                     <field name="level_ids" widget="many2many_tags"/>
@@ -48,7 +48,7 @@
 			<field name="name">school.course.form.view</field>
 			<field name="model">oe.school.course</field>
 			<field name="arch" type="xml">
-				<form string="Cycles">
+				<form string='Cursus ou Cycles'>
 					<sheet>
                         <!-- <div class="oe_button_box" name="button_box">
                             <button name="action_open_batch" 
@@ -121,7 +121,7 @@
             <field name="name">school.course.search</field>
             <field name="model">oe.school.course</field>
             <field name="arch" type="xml">
-                <search string="Cycles">
+                <search string='Cursus ou Cycles'>
                     <field name="name" string="Filière"/>
                     <separator/>
                     <filter string="Archivé" name="inactive" domain="[('active','=',False)]"/>
@@ -143,13 +143,13 @@
             </field>
         </record>
 
-        <!-- <menuitem name="Cycles" id="menu_school_courses_courses"
+        <!-- <menuitem name='Cursus ou Cycles' id="menu_school_courses_courses"
                     parent="menu_school_courses" action="action_oe_school_course"
                      sequence="1"/> -->
 
         <menuitem
             id="menu_siantou_ems_core_cycle"
-            name="Cycles"
+            name='Cursus ou Cycles'
             parent="menu_siantou_ems_core_configuration"
             action="action_oe_school_course"
             groups="siantou_ems_core.group_courses_user,siantou_ems_core.group_courses_admin,base.group_system"

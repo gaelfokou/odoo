@@ -15,12 +15,12 @@ class Level(models.Model):
         'Description',
     )
 
-    cycle_ids = fields.Many2many('oe.school.course', string="Cycles")
+    cycle_ids = fields.Many2many('oe.school.course', 'course_level_rel', 'level_id', 'cycle_id', string='Cursus ou Cycles')
 
     # Ensemble des cours du niveau
     class_ids = fields.One2many(
         'siantou.ems.core.class',
-        'niveau_id',
+        'level_id',
         'Cours'
     )
 

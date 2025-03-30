@@ -42,7 +42,7 @@ class Student(models.Model):
     )
     cycle_id = fields.Many2one(
         'oe.school.course',
-        string='Cycle',
+        string='Cursus ou Cycle',
         required=True
     )
     region_id = fields.Many2one("siantou.ems.core.region", string="Région")
@@ -180,12 +180,14 @@ class Student(models.Model):
         for record in self:
             record.class_id = None
 
-    @api.depends('field_of_study_id', 'level_id')
+    @api.depends('field_of_study_id', 'specialty_id', 'option_id', 'level_id')
     def _compute_timetables(self):
         # Recherche des emplois du temps qui correspondent à la filière et au niveau de l'étudiant
         for student in self:
             timetables = self.env['siantou.ems.timetable.timetable'].search([
                 ('field_of_study_id', '=', student.field_of_study_id.id),
+                ('specialty_id', '=', student.specialty_id.id),
+                ('option_id', '=', student.option_id.id),
                 ('level_id', '=', student.level_id.id)
             ])
 
@@ -263,20 +265,13 @@ class Student(models.Model):
                     'phone': student.num_tel,
                     'is_company': False,
                 })
-                diplo_requis = self.env['oe.school.course.degree'].search([('cursus_id', '=', student.cycle_id.id)])
+                diplo_requis = self.env['oe.school.course.degree'].search([('cycle_ids', '=', student.cycle_id.id)])
                 diplo_requis_ids = diplo_requis.ids
                 if len(diplo_requis_ids) == 0:
-                    diplo_requis = self.env['oe.school.course.degree'].search([
-                        ('name', '=', student.cycle_id.name),
-                        ('cursus_id', '=', student.cycle_id.id),
-                    ])
-                    diplo_requis_ids = diplo_requis.ids
-                    if len(diplo_requis_ids) == 0:
-                        diplo_requis = self.env['oe.school.course.degree'].create({
-                            'name': student.cycle_id.name,
-                            'cursus_id': student.cycle_id.id,
-                        })
-                        diplo_requis_ids.append(diplo_requis.id)
+                    diplo_requis = student.cycle_id.diplo_requis_ids.create({
+                        'name': student.cycle_id.name,
+                    })
+                    diplo_requis_ids.append(diplo_requis.id)
                 student_enroll_id = student.student_enroll_ids.create({
                     'name': student.name,
                     'email': email,
@@ -294,13 +289,14 @@ class Student(models.Model):
                     'sexe': student.sexe,
                     'situat_matri': student.situat_matri,
                     'lieu_residence': student.lieu_residence,
-                    'dipl_req_ids': diplo_requis_ids,
+                    'diplo_requis_ids': diplo_requis_ids,
                     'session_lieu_obt': student.lieu_residence,
                     'dern_etab_freq': student.lieu_residence,
                     'annee_acad': student.annee_acadmique_id.name,
                     'level_id': student.level_id.id,
                     'full_name_tutor': student.name,
                     'num_tel_tutor': student.num_tel,
+                    'student_id': student.id,
                     'partner_id': partner_id.id,
                 })
             else:
@@ -398,7 +394,7 @@ class Student(models.Model):
                 ('filiere_id', '=', vals['field_of_study_id']),
                 ('specialty_id', '=', vals['specialty_id']),
                 ('option_id', '=', vals['option_id']),
-                ('niveau_id', '=', vals['level_id']),
+                ('level_id', '=', vals['level_id']),
             ], limit=1)
             if not class_id:
                 if 'school_id' not in vals or not vals['school_id']:
@@ -410,8 +406,9 @@ class Student(models.Model):
                     'filiere_id': vals['field_of_study_id'],
                     'specialty_id': vals['specialty_id'],
                     'option_id': vals['option_id'],
-                    'niveau_id': vals['level_id'],
+                    'level_id': vals['level_id'],
                     'annee_acadmique_id': vals['annee_acadmique_id'],
+                    'type_cour': vals['type_cour'],
                 })
         vals['class_id'] = class_id.id
 
@@ -423,7 +420,7 @@ class Student(models.Model):
                     class_id.filiere_id.id, 
                     class_id.specialty_id.id, 
                     class_id.option_id.id, 
-                    class_id.niveau_id.id
+                    class_id.level_id.id
                 )
         vals['batch_id'] = batch_id.id
 
@@ -458,7 +455,7 @@ class StudentCareer(models.Model):
     )
     cycle_id = fields.Many2one(
         'oe.school.course',
-        string='Cycle',
+        string='Cursus ou Cycle',
         required=True
     )
     observations = fields.Html(string="Observations")

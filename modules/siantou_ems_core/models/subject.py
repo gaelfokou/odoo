@@ -56,7 +56,7 @@ class Subject(models.Model):
         required=True
     )
 
-    ue_ids = fields.Many2many('siantou.ems.core.unite.enseignement', 'ue_subject_rel', 'subject_id', 'ue_id', string="Unités d'enseignement")
+    ue_ids = fields.Many2many('siantou.ems.core.unite.enseignement', 'ue_subject_rel', 'subject_id', 'ue_id', string='Unités d\'enseignement')
 
     syllabus_ids = fields.One2many('siantou.ems.core.syllabus', 'subject_id', string='Syllabus')
 

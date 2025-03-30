@@ -12,7 +12,7 @@ class EducationClass(models.Model):
 
     # _sql_constraints = [
     #     ('unique_class',
-    #      'unique(filiere_id,niveau_id,school_id)',
+    #      'unique(filiere_id,level_id,school_id)',
     #      'Classe unique par school_id'),
     # ]
 
@@ -35,7 +35,7 @@ class EducationClass(models.Model):
     option_id = fields.Many2one('siantou.ems.core.option', string='Option',
                                  help="Option")
 
-    niveau_id = fields.Many2one('siantou.ems.core.level', string='Niveau',
+    level_id = fields.Many2one('siantou.ems.core.level', string='Niveau',
                                  required=True, help="Niveau")
 
     school_id = fields.Many2one('siantou.ems.core.school', string='Ecole', required=True)
@@ -47,7 +47,7 @@ class EducationClass(models.Model):
         default=lambda self: self.env['siantou.ems.core.year'].search([('active', '=', True)], limit=1)
     )
 
-    ue_ids = fields.Many2many('siantou.ems.core.unite.enseignement', 'class_ue_rel', 'class_id', 'ue_id', string="Unités d'enseignement")
+    ue_ids = fields.Many2many('siantou.ems.core.unite.enseignement', 'class_ue_rel', 'class_id', 'ue_id', string='Unités d\'enseignement')
 
     type_cour = fields.Selection([
             ('cj', 'Cours du jour'),
@@ -81,14 +81,14 @@ class EducationClass(models.Model):
         for record in self:
             record.option_id = None
 
-    @api.onchange('specialty_id', 'option_id', 'niveau_id', 'type_cour')
+    @api.onchange('specialty_id', 'option_id', 'level_id', 'type_cour')
     def _onchange_name(self):
         for record in self:
             specialty_name = record.specialty_id.name if record.specialty_id.id else ''
             option_name = record.option_id.name if record.option_id.id else ''
             if option_name != '':
                 option_name = f'- {option_name}'
-            niveau_name = record.niveau_id.name if record.niveau_id.id else ''
+            niveau_name = record.level_id.name if record.level_id.id else ''
             niveau_name = re.sub(r'Niveau ', '', niveau_name)
             type_cour_name = record.type_cour if record.type_cour == 'cs' else ''
             name = '{} {} {} {}'.format(specialty_name, option_name, niveau_name, type_cour_name)
@@ -101,14 +101,14 @@ class EducationClass(models.Model):
             name = name.upper()
             record.name = name
 
-    @api.depends('specialty_id', 'option_id', 'niveau_id', 'type_cour')
+    @api.depends('specialty_id', 'option_id', 'level_id', 'type_cour')
     def _compute_name(self):
         for record in self:
             specialty_name = record.specialty_id.name if record.specialty_id.id else ''
             option_name = record.option_id.name if record.option_id.id else ''
             if option_name != '':
                 option_name = f'- {option_name}'
-            niveau_name = record.niveau_id.name if record.niveau_id.id else ''
+            niveau_name = record.level_id.name if record.level_id.id else ''
             niveau_name = re.sub(r'Niveau ', '', niveau_name)
             type_cour_name = record.type_cour if record.type_cour == 'cs' else ''
             name = '{} {} {} {}'.format(specialty_name, option_name, niveau_name, type_cour_name)

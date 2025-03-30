@@ -85,7 +85,7 @@ class TimetableWizard(models.TransientModel):
             domain.append(('filiere_id', '=', self.field_of_study_id.id))
 
         if self.level_id.id:
-            domain.append(('niveau_id', '=', self.level_id.id))
+            domain.append(('level_id', '=', self.level_id.id))
 
         classes = self.env['siantou.ems.core.class'].search(domain)
         classes = list(classes)
@@ -160,11 +160,11 @@ class TimetableWizard(models.TransientModel):
                 ('field_of_study_id', '=', classe.filiere_id.id),
                 ('specialty_id', '=', classe.specialty_id.id),
                 ('option_id', '=', classe.option_id.id),
-                ('level_id', '=', classe.niveau_id.id),
+                ('level_id', '=', classe.level_id.id),
             ])
             batches = list(batches)
             if len(batches) == 0:
-                batch = self.env['siantou.ems.core.student.batch'].create_new_batch(classe.filiere_id.school_id.id, classe.filiere_id.id, classe.specialty_id.id, classe.option_id.id, classe.niveau_id.id)
+                batch = self.env['siantou.ems.core.student.batch'].create_new_batch(classe.filiere_id.school_id.id, classe.filiere_id.id, classe.specialty_id.id, classe.option_id.id, classe.level_id.id)
                 batches.append(batch)
             # Récupérer la spécialité de la classe et les traiter l'une après l'autre
             specialty_id = classe.specialty_id
@@ -212,7 +212,7 @@ class TimetableWizard(models.TransientModel):
                                             if subject.shared_subject:
                                                 timetables = self.env['siantou.ems.timetable.timetable'].search([
                                                     ('class_id', '!=', classe.id),
-                                                    ('level_id', '=', classe.niveau_id.id),
+                                                    ('level_id', '=', classe.level_id.id),
                                                     ('subject_id', '=', subject.id),
                                                     ('semester_id', '=', ue_id.semestre_id.id),
                                                 ]).filtered(lambda rec: rec.date <= end_time and rec.date >= start_time)
@@ -282,7 +282,7 @@ class TimetableWizard(models.TransientModel):
                                                         'semester_id': ue_id.semestre_id.id,
                                                         'batch_id': batch.id,
                                                         'field_of_study_id': classe.filiere_id.id,
-                                                        'level_id': classe.niveau_id.id,
+                                                        'level_id': classe.level_id.id,
                                                         'class_id': classe.id,
                                                         'ue_id': ue_id.id,
                                                         'subject_id': subject_id,

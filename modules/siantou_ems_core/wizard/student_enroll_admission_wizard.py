@@ -56,7 +56,7 @@ class StudentEnrollmentAdmissionWizard(models.TransientModel):
             class_id = self.env['siantou.ems.core.class'].search(
                 [
                     ('filiere_id','=',self.student_enrollement_id.field_of_study_id.id),
-                    ('niveau_id','=',self.student_enrollement_id.level_id.id),
+                    ('level_id','=',self.student_enrollement_id.level_id.id),
                     ('annee_acadmique_id','=',self.student_enrollement_id.year_id.id),
                 ],
                 limit=1
@@ -66,7 +66,7 @@ class StudentEnrollmentAdmissionWizard(models.TransientModel):
                 class_id = self.env['siantou.ems.core.class'].create({
                     'name':f"classe {self.student_enrollement_id.field_of_study_id.name} {self.student_enrollement_id.level_id.name}",
                     'filiere_id':self.student_enrollement_id.field_of_study_id.id,
-                    'niveau_id':self.student_enrollement_id.level_id.id,
+                    'level_id':self.student_enrollement_id.level_id.id,
                     'annee_acadmique_id':self.student_enrollement_id.year_id.id,
                     'school_id':self.student_enrollement_id.field_of_study_id.school_id.id,
                 })
@@ -163,9 +163,9 @@ class StudentEnrollmentAdmissionWizard(models.TransientModel):
                                     ('partner_id','=',self.student_enrollement_id.partner_id.id),
                                     ('type_inclusion_fee','=','fee_inscrip'),
                                     ('annee_academique_id','=',structure_frais_inscript_id.academic_year.id),
-                                    ('niveau_id','=',self.student_enrollement_id.level_id.id),
+                                    ('level_id','=',self.student_enrollement_id.level_id.id),
                                     ('filiere_id','=',self.student_enrollement_id.field_of_study_id.id),
-                                    ('cycle_id','=',self.student_enrollement_id.field_of_study_id.cursus_id.id),
+                                    ('cycle_id','=',self.student_enrollement_id.field_of_study_id.cycle_id.id),
                                 ],
                                 limit=1
                             )
@@ -177,9 +177,9 @@ class StudentEnrollmentAdmissionWizard(models.TransientModel):
                                     'invoice_date': fields.Date.today(),
                                     'invoice_date_due': fields.Date.today(),
                                     'annee_academique_id': self.student_enrollement_id.year_id.id,
-                                    'niveau_id': self.student_enrollement_id.level_id.id,
+                                    'level_id': self.student_enrollement_id.level_id.id,
                                     'filiere_id': self.student_enrollement_id.field_of_study_id.id,
-                                    'cycle_id': self.student_enrollement_id.field_of_study_id.cursus_id.id,
+                                    'cycle_id': self.student_enrollement_id.field_of_study_id.cycle_id.id,
                                     'type_inclusion_fee':structure_frais_inscript_id.type_inclusion_fee,
                                     'ecole_id': self.student_enrollement_id.field_of_study_id.school_id.id,
                                     'specialite_id': self.student_enrollement_id.specialty_id.id,
@@ -223,9 +223,9 @@ class StudentEnrollmentAdmissionWizard(models.TransientModel):
                                 ('partner_id','=',self.student_enrollement_id.partner_id.id),
                                 ('type_inclusion_fee','=','fee_scol'),
                                 ('annee_academique_id','=',structure_frais_id.academic_year.id),
-                                ('niveau_id','=',self.student_enrollement_id.level_id.id),
+                                ('level_id','=',self.student_enrollement_id.level_id.id),
                                 ('filiere_id','=',self.student_enrollement_id.field_of_study_id.id),
-                                ('cycle_id','=',self.student_enrollement_id.field_of_study_id.cursus_id.id),
+                                ('cycle_id','=',self.student_enrollement_id.field_of_study_id.cycle_id.id),
                             ]
                         )
                         if len(account_move_ids)!=len(structure_frais_id.fee_type_ids):
@@ -237,9 +237,9 @@ class StudentEnrollmentAdmissionWizard(models.TransientModel):
                                     'invoice_date': fields.Date.today(),
                                     'invoice_date_due': fields.Date.today(),
                                     'annee_academique_id': self.student_enrollement_id.year_id.id,
-                                    'niveau_id': self.student_enrollement_id.level_id.id,
+                                    'level_id': self.student_enrollement_id.level_id.id,
                                     'filiere_id': self.student_enrollement_id.field_of_study_id.id,
-                                    'cycle_id': self.student_enrollement_id.field_of_study_id.cursus_id.id,
+                                    'cycle_id': self.student_enrollement_id.field_of_study_id.cycle_id.id,
                                     'type_inclusion_fee':structure_frais_id.type_inclusion_fee,
                                     'ecole_id': self.student_enrollement_id.field_of_study_id.school_id.id,
                                     'specialite_id': self.student_enrollement_id.specialty_id.id,
@@ -280,9 +280,9 @@ class StudentEnrollmentAdmissionWizard(models.TransientModel):
                                     ('partner_id','=',self.student_enrollement_id.partner_id.id),
                                     ('type_inclusion_fee','=','fee_spec'),
                                     ('annee_academique_id','=',struct_spec_id.academic_year.id),
-                                    ('niveau_id','=',self.student_enrollement_id.level_id.id),
+                                    ('level_id','=',self.student_enrollement_id.level_id.id),
                                     ('filiere_id','=',self.student_enrollement_id.field_of_study_id.id),
-                                    ('cycle_id','=',self.student_enrollement_id.field_of_study_id.cursus_id.id),
+                                    ('cycle_id','=',self.student_enrollement_id.field_of_study_id.cycle_id.id),
                                 ],
                                 limit=1
                             )
@@ -294,9 +294,9 @@ class StudentEnrollmentAdmissionWizard(models.TransientModel):
                                     'invoice_date': fields.Date.today(),
                                     'invoice_date_due': fields.Date.today(),
                                     'annee_academique_id': self.student_enrollement_id.year_id.id,
-                                    'niveau_id': self.student_enrollement_id.level_id.id,
+                                    'level_id': self.student_enrollement_id.level_id.id,
                                     'filiere_id': self.student_enrollement_id.field_of_study_id.id,
-                                    'cycle_id': self.student_enrollement_id.field_of_study_id.cursus_id.id,
+                                    'cycle_id': self.student_enrollement_id.field_of_study_id.cycle_id.id,
                                     'type_inclusion_fee':struct_spec_id.type_inclusion_fee,
                                     'ecole_id': self.student_enrollement_id.field_of_study_id.school_id.id,
                                     'specialite_id': self.student_enrollement_id.specialty_id.id,

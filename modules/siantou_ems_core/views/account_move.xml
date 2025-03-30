@@ -11,7 +11,7 @@
                     <field name="filiere_id"/>
                     <field name="specialty_id"/>
                     <field name="annee_academique_id"/>
-                    <field name="niveau_id"/>
+                    <field name="level_id"/>
                 </group>
             </field>
         </field>

@@ -82,9 +82,10 @@ class FieldOfStudy(models.Model):
         string='Ecole',
     )
 
-    cursus_id = fields.Many2one(
+    cycle_id = fields.Many2one(
         'oe.school.course', 
-        string='Cursus ou Cycle') #== cursus
+        string='Cursus ou Cycle',
+    )
 
     # Ensemble des spécialités de la filière
     specialty_ids = fields.One2many(
@@ -126,7 +127,7 @@ class FieldOfStudy(models.Model):
             subject_ids_by_level[level.id] = []
             # Filtre les cours de cette filière et de ce niveau
             classes = self.env['siantou.ems.core.class'].search([
-                ('niveau_id', '=', level.id),
+                ('level_id', '=', level.id),
                 ('filiere_id', '=', self.id)
             ])
             classes = list(classes)

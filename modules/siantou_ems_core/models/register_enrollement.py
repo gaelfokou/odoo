@@ -161,10 +161,8 @@ class SessionRegisterEnrollment(models.Model):
     end_date = fields.Date(
         'Date de fin', store=True, related='session_id.end_date')
     cycle_id = fields.Many2one(
-        'oe.school.course', 'Cycle', 
+        'oe.school.course', 'Cursus ou Cycle', 
         required=True, 
-        readonly=True,
-         tracking=True
     )
     session_id = fields.Many2one(
         'siantou.session', 

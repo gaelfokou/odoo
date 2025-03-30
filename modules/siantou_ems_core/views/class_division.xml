@@ -15,7 +15,7 @@
                 	<field name="option_id"/>
                     <field name="school_id"/>
                     <field name="annee_acadmique_id"/>
-                    <field name="niveau_id"/>
+                    <field name="level_id"/>
                     <field name="type_cour"/>
                     <field name="group_ids" widget="many2many_tags"/>
 				</tree>
@@ -34,7 +34,7 @@
                         <group>
                             <group>
                                 <field name="name" readonly="1"/>
-                                <field name="niveau_id"/>
+                                <field name="level_id"/>
                                 <field name="school_id"/>
                                 <field name="annee_acadmique_id"/>
                             </group>

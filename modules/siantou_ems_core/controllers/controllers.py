@@ -93,8 +93,8 @@ class DeSchool(http.Controller):
         data = []
         cycles = request.env['oe.school.course'].sudo().search([])
         for cycle in cycles:
-            filieres = request.env['siantou.ems.core.field_of_study'].sudo().search([('cursus_id', '=', cycle.id)])
-            diplo_requis = request.env['oe.school.course.degree'].sudo().search([('cursus_id', '=', cycle.id)])
+            filieres = request.env['siantou.ems.core.field_of_study'].sudo().search([('cycle_id', '=', cycle.id)])
+            diplo_requis = request.env['oe.school.course.degree'].sudo().search([('cycle_id', '=', cycle.id)])
 
             if len(diplo_requis)>0:
                 data.append({
@@ -120,7 +120,7 @@ class DeSchool(http.Controller):
                         'status': 'success',
                         'etudiant_id':etudiant.id,
                         'code_enrol':etudiant.code_enrol,
-                        'dipl_req_ids':[dipl.name for dipl in etudiant.dipl_req_ids]
+                        'diplo_requis_ids':[dipl.name for dipl in etudiant.diplo_requis_ids]
                     })
                 )
             else:

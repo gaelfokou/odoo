@@ -43,7 +43,7 @@ class StudentEnrollment(models.Model):
     code_enrol = fields.Char(string="Code de préinscription", default="001485KOPLL")
     cycle_id = fields.Many2one(
         'oe.school.course',
-        string='Cycle',
+        string='Cursus ou Cycle',
     )
     field_of_study_id = fields.Many2one(
         'siantou.ems.core.field_of_study',
@@ -102,7 +102,7 @@ class StudentEnrollment(models.Model):
     lieu_residence = fields.Char(string="Lieu de résidence")
     email = fields.Char(string="E-mail")
     num_tel = fields.Char(string="N° de Téléphone")
-    dipl_req_ids = fields.Many2many('oe.school.course.degree', string="Diplôme requis")
+    diplo_requis_ids = fields.Many2many('oe.school.course.degree', string="Diplôme requis")
     session_lieu_obt = fields.Char(string="Session et lieu d'obtention")
     dern_etab_freq = fields.Char(string="Dernier établissement fréquenté")
     annee_acad = fields.Char(string="Année académique")

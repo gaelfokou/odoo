@@ -10,7 +10,7 @@ class AccountMove(models.Model):
 
     # cycle_id = fields.Many2one(
     #     'oe.school.course',
-    #     string='Cycle',
+    #     string='Cursus ou Cycle',
     #     required=True
     # )
     # school_id = fields.Many2one(
