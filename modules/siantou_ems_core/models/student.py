@@ -23,16 +23,14 @@ class Student(models.Model):
 
     name = fields.Char(string="Nom(s) et prénom(s)", required=True)
     matricule = fields.Char(string="Matricule")
-    student_enroll_id = fields.Many2one(
+    student_enroll_ids = fields.One2many(
         'oe.school.student.enrollment',
-        string='Étudiant(Préinscription)',
-        ondelete='cascade',
+        'student_id',
+        string='Candidatures',
     )
     partner_id = fields.Many2one(
         'res.partner',
         string='Rest partner',
-        related='student_enroll_id.partner_id',
-        store=True
     )
     batch_id = fields.Many2one(
         'siantou.ems.core.student.batch',
@@ -41,14 +39,10 @@ class Student(models.Model):
     school_id = fields.Many2one(
         'siantou.ems.core.school',
         string='Ecole',
-        related='field_of_study_id.school_id',
-        store=True
     )
     cycle_id = fields.Many2one(
         'oe.school.course',
         string='Cycle',
-        related='field_of_study_id.cursus_id',
-        store=True
     )
     region_id = fields.Many2one("siantou.ems.core.region", string="Région")
     city_id = fields.Many2one("siantou.ems.core.city", string="Ville")
@@ -56,14 +50,14 @@ class Student(models.Model):
     field_of_study_id = fields.Many2one(
         'siantou.ems.core.field_of_study',
         string='Filière',
-        related='class_id.filiere_id',
-        store=True
     )
     specialty_id = fields.Many2one(
         'siantou.ems.core.specialty',
         string='Spécialité',
-        related='class_id.specialty_id',
-        store=True
+    )
+    option_id = fields.Many2one(
+        'siantou.ems.core.option',
+        string='Option',
     )
     type_cour = fields.Selection([
             ('cj', 'Cours du jour'),
@@ -111,8 +105,6 @@ class Student(models.Model):
     level_id = fields.Many2one(
         'siantou.ems.core.level',
         string="Niveau",
-        related='class_id.niveau_id',
-        store=True
     )
     annee_acad_current = fields.Many2one(
         "siantou.ems.core.year", 
@@ -129,6 +121,13 @@ class Student(models.Model):
         'res.users',
         string="Utilisateur associé",
         help="Utilisateur associé à cet étudiant"
+    )
+    status_user = fields.Selection([
+            ('new', 'Jamais connecté'),
+            ('active', 'Confirmé'),
+        ], 
+        string='Statut',
+        related='user_id.state',
     )
 
     timetable_ids = fields.One2many(
@@ -218,8 +217,9 @@ class Student(models.Model):
             elif len(username) == 3:
                 username = '{}{}{}'.format(username[0][0:1], username[1], username[2][0:1])
             email = username + '@siantou.net'
-            student_enroll_id = student.student_enroll_id
-            if not student_enroll_id:
+            student_enroll_ids = student.student_enroll_ids
+            student_enroll_ids = list(student_enroll_ids)
+            if len(student_enroll_ids) == 0:
                 partner_id = self.env['res.partner'].create({
                     'name': student.name,
                     'email': email,
@@ -240,7 +240,7 @@ class Student(models.Model):
                             'cycle_id': student.cycle_id.id,
                         })
                         diplo_requis_ids.append(diplo_requis.id)
-                student_enroll_id = self.env['oe.school.student.enrollment'].create({
+                student_enroll_id = student.student_enroll_ids.create({
                     'name': student.name,
                     'email': email,
                     'num_tel': student.num_tel,

@@ -29,7 +29,7 @@ class FeeSpecial(models.Model):
     partner_id = fields.Many2one(
         'res.partner', 
         string='partner', 
-        related="student_id.student_enroll_id.partner_id"
+        related="student_id.partner_id"
     )
     fee_structure_id = fields.Many2one(
         'siantou.ems.fee.structure',
@@ -139,7 +139,7 @@ class FeeSpecial(models.Model):
 
             mone_vals = {
                 'move_type': 'out_invoice',
-                'partner_id': rec.student_id.student_enroll_id.partner_id.id,
+                'partner_id': rec.student_id.partner_id.id,
                 'journal_id': journal_id.id,
                 'invoice_date': fields.Date.today(),
                 'invoice_date_due': fields.Date.today(),

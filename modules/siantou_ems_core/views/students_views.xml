@@ -40,7 +40,8 @@
                             invisible="user_id.id != False"/>
                 </header>
                 <sheet>
-                    <field name="user_id" invisible="1"/>
+                    <field name="user_id"/>
+                    <field name="status_user"/>
                     <div class="oe_title">
                         <label for="name" string="Nom(s) et prénom(s)"/>
                         <h1><field name="name"/></h1>
@@ -99,7 +100,7 @@
                             <group col="4" name="academique" string="Informations académiques">
                                 <group colspan="2">
                                     <field name="matricule"/>
-                                    <field name="student_enroll_id"/>
+                                    <field name="student_enroll_ids"/>
                                     <field name="class_id"/>
                                     <field name="cycle_id"/>
                                     <field name="batch_id"/>
@@ -107,6 +108,7 @@
                                 <group colspan="2">
                                     <field name="field_of_study_id"/>
                                     <field name="specialty_id"/>
+                                    <field name="option_id"/>
                                     <field name="type_cour" widget="radio"/>
                                     <field name="level_id"/>
                                 </group>

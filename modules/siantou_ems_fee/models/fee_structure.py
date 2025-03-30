@@ -223,7 +223,7 @@ class FeeStructure(models.Model):
                             account_revenue_id = journal_id.default_account_id
                             if account_revenue_id: 
                                 mone_vals['move_type'] = 'out_invoice'
-                                mone_vals['partner_id'] = student_id.student_enroll_id.partner_id.id
+                                mone_vals['partner_id'] = student_id.partner_id.id
                                 mone_vals['journal_id'] = journal_id.id
                                 mone_vals['invoice_date'] = fields.Date.today()
                                 mone_vals['invoice_date_due'] = fields.Date.today()
@@ -237,7 +237,7 @@ class FeeStructure(models.Model):
 
                                 if rec.type_inclusion_fee=='fee_scol':
                                     account_move_ids = self.env['account.move'].search([
-                                            ('partner_id','=',student_id.student_enroll_id.partner_id.id),
+                                            ('partner_id','=',student_id.partner_id.id),
                                             ('type_inclusion_fee','=','fee_scol'),
                                             ('annee_academique_id','=',rec.academic_year.id),
                                             ('niveau_id','=',student_id.level_id.id),
@@ -269,7 +269,7 @@ class FeeStructure(models.Model):
                                     
                                 elif rec.type_inclusion_fee=='fee_spec':
                                     account_move_id = self.env['account.move'].search([
-                                            ('partner_id','=',student_id.student_enroll_id.partner_id.id),
+                                            ('partner_id','=',student_id.partner_id.id),
                                             ('type_inclusion_fee','=','fee_spec'),
                                             ('annee_academique_id','=',rec.academic_year.id),
                                             ('niveau_id','=',student_id.level_id.id),

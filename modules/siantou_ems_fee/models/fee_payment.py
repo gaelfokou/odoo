@@ -285,7 +285,7 @@ class FeePayment(models.Model):
     def account_move(self, student_id, journal_id, price_unit, account_revenue_id):
         mone_vals = {
             'move_type': 'out_invoice',
-            'partner_id': student_id.student_enroll_id.partner_id.id,
+            'partner_id': student_id.partner_id.id,
             'journal_id': journal_id.id,
             'invoice_date': fields.Date.today(),
             'invoice_date_due': fields.Date.today(),

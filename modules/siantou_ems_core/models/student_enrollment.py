@@ -126,6 +126,11 @@ class StudentEnrollment(models.Model):
         'ir.attachment',
         string="Attachment"
     )
+    student_id = fields.Many2one(
+        'oe.school.student',
+        string='Étudiant',
+        ondelete='cascade',
+    )
 
     def print_payement_student(self):
         for rec in self:

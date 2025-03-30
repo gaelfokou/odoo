@@ -60,7 +60,7 @@ class FeeReceipts(models.Model):
         lines = []
         for item in self:
             item.invoice_line_ids = lines
-            item.partner_id = item.student.student_id.student_enroll_id.partner_id.id
+            item.partner_id = item.student.student_id.partner_id.id
             item.class_division_id = item.student_id.field_of_study_id
             date_today = datetime.date.today()
             company = self.env.user.company_id
@@ -113,7 +113,7 @@ class FeeReceipts(models.Model):
 
     journal_id = fields.Many2one('account.journal', string='Journal', required=True,)
     student_id = fields.Many2one('oe.school.student', string='Etudiant')
-    student_name = fields.Char(string="Nom de l'étudiant", related='student_id.student_enroll_id.partner_id.name', store=True)
+    student_name = fields.Char(string="Nom de l'étudiant", related='student_id.partner_id.name', store=True)
     class_division_id = fields.Many2one('siantou.ems.core.field_of_study', string='Filière')
     fee_structure = fields.Many2one('siantou.ems.fee.structure', string='Structure paiement')
     is_fee = fields.Boolean(string='Est un Frais', store=True, default=False)
