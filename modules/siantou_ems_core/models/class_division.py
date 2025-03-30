@@ -38,9 +38,14 @@ class EducationClass(models.Model):
     niveau_id = fields.Many2one('siantou.ems.core.level', string='Niveau',
                                  required=True, help="Niveau")
 
-    school_id = fields.Many2one('siantou.ems.core.school', string='Ecole')
+    school_id = fields.Many2one('siantou.ems.core.school', string='Ecole', required=True)
 
-    annee_acadmique_id = fields.Many2one('siantou.ems.core.year', string='Année Académique')
+    annee_acadmique_id = fields.Many2one(
+        'siantou.ems.core.year',
+        string='Année Académique',
+        required=True,
+        default=lambda self: self.env['siantou.ems.core.year'].search([('active', '=', True)], limit=1)
+    )
 
     ue_ids = fields.Many2many('siantou.ems.core.unite.enseignement', 'class_ue_rel', 'class_id', 'ue_id', string="Unités d'enseignement")
 

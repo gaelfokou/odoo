@@ -43,6 +43,7 @@ class Student(models.Model):
     cycle_id = fields.Many2one(
         'oe.school.course',
         string='Cycle',
+        required=True
     )
     region_id = fields.Many2one("siantou.ems.core.region", string="Région")
     city_id = fields.Many2one("siantou.ems.core.city", string="Ville")
@@ -109,9 +110,10 @@ class Student(models.Model):
         string="Niveau",
         required=True
     )
-    annee_acad_current = fields.Many2one(
-        "siantou.ems.core.year", 
-        string="Année académique", 
+    annee_acadmique_id = fields.Many2one(
+        'siantou.ems.core.year',
+        string='Année Académique',
+        required=True,
         default=lambda self: self.env['siantou.ems.core.year'].search([('active', '=', True)], limit=1)
     )
     # payment_ids = fields.Many2one(
@@ -246,7 +248,7 @@ class Student(models.Model):
                     'name': student.name,
                     'email': email,
                     'num_tel': student.num_tel,
-                    'year_id': student.annee_acad_current.id,
+                    'year_id': student.annee_acadmique_id.id,
                     'cycle_id': student.cycle_id.id,
                     'field_of_study_id': student.field_of_study_id.id,
                     'specialty_id': student.specialty_id.id,
@@ -262,7 +264,7 @@ class Student(models.Model):
                     'dipl_req_ids': diplo_requis_ids,
                     'session_lieu_obt': student.lieu_residence,
                     'dern_etab_freq': student.lieu_residence,
-                    'annee_acad': student.annee_acad_current.name,
+                    'annee_acad': student.annee_acadmique_id.name,
                     'level_id': student.level_id.id,
                     'full_name_tutor': student.name,
                     'num_tel_tutor': student.num_tel,
@@ -360,18 +362,25 @@ class Student(models.Model):
         class_id = self.env['siantou.ems.core.class'].browse(vals['class_id'])
         if not class_id:
             class_id = self.env['siantou.ems.core.class'].search([
-                ('niveau_id', '=', vals['level_id']),
                 ('filiere_id', '=', vals['field_of_study_id']),
                 ('specialty_id', '=', vals['specialty_id']),
-                ('option_id', '=', vals['option_id'])
+                ('option_id', '=', vals['option_id']),
+                ('niveau_id', '=', vals['level_id']),
             ], limit=1)
             if not class_id:
+                if not vals['school_id']:
+                    field_of_study_id = self.env['siantou.ems.core.field_of_study'].search([('id', '=', vals['field_of_study_id'])], limit=1)
+                    if field_of_study_id:
+                        vals['school_id'] = field_of_study_id.school_id.id
                 class_id = self.env['siantou.ems.core.class'].create({
-                    'niveau_id': vals['level_id'],
+                    'school_id': vals['school_id'],
                     'filiere_id': vals['field_of_study_id'],
                     'specialty_id': vals['specialty_id'],
                     'option_id': vals['option_id'],
+                    'niveau_id': vals['level_id'],
+                    'annee_acadmique_id': vals['annee_acadmique_id'],
                 })
+        vals['class_id'] = class_id.id
         batch = self.env['siantou.ems.core.student.batch'].assign_batch(
             class_id.filiere_id.school_id.id, 
             class_id.filiere_id.id, 
