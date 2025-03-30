@@ -401,7 +401,7 @@ class Student(models.Model):
                 ('niveau_id', '=', vals['level_id']),
             ], limit=1)
             if not class_id:
-                if not vals['school_id']:
+                if 'school_id' not in vals or not vals['school_id']:
                     field_of_study_id = self.env['siantou.ems.core.field_of_study'].search([('id', '=', vals['field_of_study_id'])], limit=1)
                     if field_of_study_id:
                         vals['school_id'] = field_of_study_id.school_id.id
