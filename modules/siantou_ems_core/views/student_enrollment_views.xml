@@ -151,6 +151,9 @@
                                 <group>
                                     <field name="num_tel" widget="phone"/>
                                 </group>
+                                <group>
+                                    <field name="student_id"/>
+                                </group>
                             </group>
                         </page>
 
