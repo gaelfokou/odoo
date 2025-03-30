@@ -248,6 +248,8 @@ class Student(models.Model):
                     'cycle_id': student.cycle_id.id,
                     'field_of_study_id': student.field_of_study_id.id,
                     'specialty_id': student.specialty_id.id,
+                    'option_id': student.option_id.id,
+                    'class_id': student.class_id.id,
                     'type_cour': student.type_cour,
                     'status_univ': student.status_univ,
                     'date_naissance': student.date_naissance,
@@ -355,9 +357,13 @@ class Student(models.Model):
     def create(self, vals):
         class_id = self.env['siantou.ems.core.class'].browse(vals['class_id'])
         field_of_study_id = class_id.filiere_id
+        specialty_id = class_id.specialty_id
+        option_id = class_id.option_id
         batch = self.env['siantou.ems.core.student.batch'].assign_batch(
             field_of_study_id.school_id.id, 
             field_of_study_id.id, 
+            specialty_id.id, 
+            option_id.id, 
             class_id.niveau_id.id
         )
         vals['batch_id'] = batch.id
