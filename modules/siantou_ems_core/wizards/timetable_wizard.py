@@ -155,15 +155,16 @@ class TimetableWizard(models.TransientModel):
                     not_active_slotitems.append([round(not_active_slotitem_night_id.start_time, 2), round(not_active_slotitem_night_id.end_time, 2)])
             active_slotitems.sort(key=lambda s: s[0])
             not_active_slotitems.sort(key=lambda s: s[0])
-
             batches = self.env['siantou.ems.core.student.batch'].search([
                 ('school_id', '=', classe.filiere_id.school_id.id),
                 ('field_of_study_id', '=', classe.filiere_id.id),
+                ('specialty_id', '=', classe.specialty_id.id),
+                ('option_id', '=', classe.option_id.id),
                 ('level_id', '=', classe.niveau_id.id),
             ])
             batches = list(batches)
             if len(batches) == 0:
-                batch = self.env['siantou.ems.core.student.batch'].create_new_batch(classe.filiere_id.school_id.id, classe.filiere_id.id, classe.niveau_id.id)
+                batch = self.env['siantou.ems.core.student.batch'].create_new_batch(classe.filiere_id.school_id.id, classe.filiere_id.id, classe.specialty_id.id, classe.option_id.id, classe.niveau_id.id)
                 batches.append(batch)
             # Récupérer la spécialité de la classe et les traiter l'une après l'autre
             specialty_id = classe.specialty_id

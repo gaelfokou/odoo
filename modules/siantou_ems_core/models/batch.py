@@ -54,10 +54,12 @@ class StudentBatch(models.Model):
         for batch in self:
             batch.current_size = len(batch.student_ids)
 
-    def create_new_batch(self, school_id, field_of_study_id, level_id):
+    def create_new_batch(self, school_id, field_of_study_id, specialty_id, option_id, level_id):
         count_existing_batches = self.search_count([
             ('school_id', '=', school_id),
             ('field_of_study_id', '=', field_of_study_id),
+            ('specialty_id', '=', specialty_id),
+            ('option_id', '=', option_id),
             ('level_id', '=', level_id),
         ])
         new_batch_name = f"Lot {chr(65 + count_existing_batches)}"
@@ -65,6 +67,8 @@ class StudentBatch(models.Model):
             'name': new_batch_name,
             'school_id': school_id,
             'field_of_study_id': field_of_study_id,
+            'specialty_id': specialty_id,
+            'option_id': option_id,
             'level_id': level_id
         })
 
