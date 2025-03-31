@@ -71,7 +71,7 @@ class StudentEnrollmentAdmissionWizard(models.TransientModel):
                     'school_id':self.student_enrollement_id.field_of_study_id.school_id.id,
                 })
 
-            if self.student_enrollement_id.status_univ=='new':
+            if self.student_enrollement_id.status_univ == 'new':
                 data = {
                     'student_enroll_id': self.student_enrollement_id.id,
                     'partner_id': self.student_enrollement_id.partner_id.id,
@@ -158,7 +158,7 @@ class StudentEnrollmentAdmissionWizard(models.TransientModel):
                 account_revenue_id = journal_id.default_account_id
                 if account_receivable_id or account_revenue_id:
                     _logger.info(structure_frais_inscript_id)
-                    if structure_frais_inscript_id.type_inclusion_fee=='fee_inscrip':
+                    if structure_frais_inscript_id.type_inclusion_fee == 'fee_inscrip':
                             account_move_id = self.env['account.move'].search([
                                     ('partner_id','=',self.student_enrollement_id.partner_id.id),
                                     ('type_inclusion_fee','=','fee_inscrip'),
@@ -218,7 +218,7 @@ class StudentEnrollmentAdmissionWizard(models.TransientModel):
 
                 if account_receivable_id or account_revenue_id:
                     _logger.info(structure_frais_id)
-                    if structure_frais_id.type_inclusion_fee=='fee_scol':
+                    if structure_frais_id.type_inclusion_fee == 'fee_scol':
                         account_move_ids = self.env['account.move'].search([
                                 ('partner_id','=',self.student_enrollement_id.partner_id.id),
                                 ('type_inclusion_fee','=','fee_scol'),
@@ -275,7 +275,7 @@ class StudentEnrollmentAdmissionWizard(models.TransientModel):
                     account_revenue_id = journal_id.default_account_id
                     if account_receivable_id or account_revenue_id: 
                         _logger.info(struct_spec_id)  
-                        if struct_spec_id.type_inclusion_fee=='fee_spec':
+                        if struct_spec_id.type_inclusion_fee == 'fee_spec':
                             account_move_id = self.env['account.move'].search([
                                     ('partner_id','=',self.student_enrollement_id.partner_id.id),
                                     ('type_inclusion_fee','=','fee_spec'),

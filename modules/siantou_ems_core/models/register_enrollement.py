@@ -225,19 +225,19 @@ class SessionRegisterEnrollment(models.Model):
                 raise ValidationError(
                     _("Aucune candidature n'a été enregistré sur ce registre!"))
             else:
-                data = [l for l in rec.admission_ids if l.state=="draft"]
+                data = [l for l in rec.admission_ids if l.state == "draft"]
                 for  c in data:
                     c.send_to_verify()
                 rec.state = 'admission'
 
     def approve_all(self):
         for a in self.admission_ids:
-            if a.state=='verification':
+            if a.state == 'verification':
                 a.approve_application()
 
     def approve_all(self):
         for a in self.admission_ids:
-            if a.state=='verification':
+            if a.state == 'verification':
                 a.approve_application()
 
     def close_register(self):

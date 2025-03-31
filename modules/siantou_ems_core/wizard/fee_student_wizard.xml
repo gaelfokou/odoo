@@ -27,11 +27,11 @@
                         </group>
                     </group>
                     <!-- <group>
-                        <group string="Informations BANK" invisible="mode_payment=='cash'">
-                            <field name="titulaire_compte" required="mode_payment=='bank'"/>
-                            <field name="name_bank" required="mode_payment=='bank'"/>
-                            <field name="code_guichet" required="mode_payment=='bank'"/>
-                            <field name="numero_compte" required="mode_payment=='bank'"/>
+                        <group string="Informations BANK" invisible="mode_payment == 'cash'">
+                            <field name="titulaire_compte" required="mode_payment == 'bank'"/>
+                            <field name="name_bank" required="mode_payment == 'bank'"/>
+                            <field name="code_guichet" required="mode_payment == 'bank'"/>
+                            <field name="numero_compte" required="mode_payment == 'bank'"/>
                         </group>
                         <group string="Informations sur le déposant">
                             <field name="student_name"/>

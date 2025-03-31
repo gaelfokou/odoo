@@ -82,7 +82,7 @@
                                             string="Accepter cette candidature"/>
 
                                         <button  invisible="status in ['broui', 'transfer', 'rej']"
-                                            name="compute_rejected" 
+                                            name="rejected_enrollment" 
                                             class="btn btn-danager" 
                                             type="object" 
                                             string="Rejeter cette candidature"/>

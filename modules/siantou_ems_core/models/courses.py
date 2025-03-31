@@ -101,7 +101,7 @@ class OeSchoolCourse(models.Model):
             'company_id': vals.get('company_id'),
         })
         vals['sequence_id'] = sequence.id
-        course = super().create(vals)
+        course = super(OeSchoolCourse, self).create(vals)
         return course
 
     def write(self, vals):

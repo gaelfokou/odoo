@@ -27,6 +27,8 @@ class StudentEnrollment(models.Model):
         'siantou.session.registre', 
         "Registre d'admission" ,
         # domain="[('state', '=', 'application')]",
+        compute='_compute_registre',
+        store=True
     )
     year_id = fields.Many2one(
         "siantou.ems.core.year", 
@@ -132,6 +134,12 @@ class StudentEnrollment(models.Model):
         required=True
     )
 
+    @api.depends('cycle_id')
+    def _compute_registre(self):
+        for record in self:
+            registre_id = self.env['siantou.session.registre'].search([('cycle_id', '=', record.cycle_id.id)], limit=1)
+            record.registre_id = registre_id
+
     @api.onchange('student_id')
     def _onchange_name(self):
         for record in self:
@@ -203,18 +211,104 @@ class StudentEnrollment(models.Model):
         })
         return action
 
-    def compute_rejected(self):
-        self.status='rej'
+    def accepted_enrollment(self, student_enrol_id):
+        if not student_enrol_id.status == "transfer":
+            wizard = self.env['siantou.ems.core.student.enrollment.admission.wizard'].create({
+                'student_enrollement_id': student_enrol_id.id,  # Pass the current student to the wizard
+                'observations': 'Données de la candidature ok',  # Set the new state
+            })
+            wizard.create_creance(student_enrol_id)
+            student_enrol_id.write({
+                'status': 'transfer',
+                'observations': 'Données de la candidature validées',
+            })
+
+    def rejected_enrollment(self, student_enrol_id):
+        if not student_enrol_id.status == "rej":
+            student_enrol_id.write({
+                'status': 'rej',
+                'observations': 'Données de la candidature rejetées',
+            })
+            account_move_id = self.env['account.move'].search([
+                    ('partner_id','=',student_enrol_id.student_id.partner_id.id),
+                    ('type_inclusion_fee','=','fee_inscrip'),
+                    ('annee_academique_id','=',student_enrol_id.class_id.annee_acadmique_id.id),
+                    ('level_id','=',student_enrol_id.class_id.level_id.id),
+                    ('field_of_study_id','=',student_enrol_id.class_id.field_of_study_id.id),
+                    ('cycle_id','=',student_enrol_id.class_id.field_of_study_id.cycle_id.id),
+                ],
+                limit=1
+            )
+            account_move_id.button_draft()
+            account_move_id.unlink()
+
+            account_move_ids = self.env['account.move'].search([
+                    ('partner_id','=',student_enrol_id.student_id.partner_id.id),
+                    ('type_inclusion_fee','=','fee_scol'),
+                    ('annee_academique_id','=',student_enrol_id.class_id.annee_acadmique_id.id),
+                    ('level_id','=',student_enrol_id.class_id.level_id.id),
+                    ('field_of_study_id','=',student_enrol_id.class_id.field_of_study_id.id),
+                    ('cycle_id','=',student_enrol_id.class_id.field_of_study_id.cycle_id.id),
+                ]
+            )
+            for move_id in account_move_ids:
+                move_id.button_draft()
+                move_id.unlink()
+
+    def action_accepted_enrollment(self):
+        student_enrol_id = self.env['oe.school.student.enrollment'].search([
+            ('id', '=', self.id),
+        ], limit=1)
+        if student_enrol_id:
+            self.accepted_enrollment(student_enrol_id)
+
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'reload',
+        }
+
+    def action_rejected_enrollment(self):
+        student_enrol_id = self.env['oe.school.student.enrollment'].search([
+            ('id', '=', self.id),
+        ], limit=1)
+        if student_enrol_id:
+            self.rejected_enrollment(student_enrol_id)
+
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'reload',
+        }
+
+    def action_all_accepted_enrollment(self):
+        active_ids = self.env.context.get('active_ids', [])
+        student_enrol_ids = self.env['oe.school.student.enrollment'].browse(active_ids)
+        for student_enrol_id in student_enrol_ids:
+            self.accepted_enrollment(student_enrol_id)
+
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'reload',
+        }
+
+    def action_all_rejected_enrollment(self):
+        active_ids = self.env.context.get('active_ids', [])
+        student_enrol_ids = self.env['oe.school.student.enrollment'].browse(active_ids)
+        for student_enrol_id in student_enrol_ids:
+            self.rejected_enrollment(student_enrol_id)
+
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'reload',
+        }
 
     @api.model
-    def create(self, values):
-        result = super().create(values)
-        _logger.info(result.name)
-        partner_id = self.env['res.partner'].create({
-            "name":values['name']
-        })
-        result.partner_id = partner_id.id
-        return result
+    def unlink(self):
+        if self.status == "transfer":
+            raise ValidationError("Impossible de supprimer une candidature déjà admise")
+        else:
+            self.unlink()
+        student_enrol = super(StudentEnrollment, self).unlink()
+        return student_enrol
 
 # class StudentEnrollmentFileAdmission(models.Model):
 #     _name = 'oe.school.student.enrollment.file'

@@ -9,6 +9,10 @@ _logger = logging.getLogger(__name__)
 class HrEmployee(models.Model):
     _inherit = 'hr.employee'
 
+    name = fields.Char(string="Nom(s) et prénom(s)", compute='_compute_name', store=True)
+    first_name = fields.Char(string="Prénom(s)")
+    last_name = fields.Char(string="Nom(s)", required=True)
+
     # Variable booléenne pour identifier un enseignant
     is_teacher = fields.Boolean(
         'Est un enseignant'
@@ -66,6 +70,30 @@ class HrEmployee(models.Model):
         'Date de naissance',
     )
 
+    @api.onchange('first_name', 'last_name')
+    def _onchange_name(self):
+        for record in self:
+            name = '{} {}'.format(record.first_name, record.last_name)
+            while True:
+                if name.find('  ') != -1:
+                    name = name.replace('  ', ' ')
+                else:
+                    break
+            name = name.strip()
+            record.name = name
+
+    @api.depends('first_name', 'last_name')
+    def _compute_name(self):
+        for record in self:
+            name = '{} {}'.format(record.first_name, record.last_name)
+            while True:
+                if name.find('  ') != -1:
+                    name = name.replace('  ', ' ')
+                else:
+                    break
+            name = name.strip()
+            record.name = name
+
     # Contrainte logique pour s'assurer que le quota horaire hebdommadaire de cours pour un enseignant permanent est de 24
     @api.constrains('weekly_hours_limit')
     def _check_weekly_hours_limit_permanent(self):
@@ -98,27 +126,27 @@ class HrEmployee(models.Model):
                         break
                 identifier = '{}2024'.format(identifier)
             password = identifier
-            # last_name = employee.last_name if employee.last_name else ''
-            # while True:
-            #     if last_name.find('  ') != -1:
-            #         last_name = last_name.replace('  ', ' ')
-            #     else:
-            #         break
-            # last_name = last_name.strip()
-            # last_name = last_name.split(' ')
-            # first_name = employee.first_name if employee.first_name else ''
-            # while True:
-            #     if first_name.find('  ') != -1:
-            #         first_name = first_name.replace('  ', ' ')
-            #     else:
-            #         break
-            # first_name = first_name.strip()
-            # first_name = first_name.split(' ')
-            # if len(first_name) > 1:
-            #     name = '{} {} {}'.format(first_name[0], last_name[0], first_name[1])
-            # else:
-            #     name = '{} {}'.format(first_name[0], last_name[0])
-            name = employee.name
+            last_name = employee.last_name if employee.last_name else ''
+            while True:
+                if last_name.find('  ') != -1:
+                    last_name = last_name.replace('  ', ' ')
+                else:
+                    break
+            last_name = last_name.strip()
+            last_name = last_name.split(' ')
+            first_name = employee.first_name if employee.first_name else ''
+            while True:
+                if first_name.find('  ') != -1:
+                    first_name = first_name.replace('  ', ' ')
+                else:
+                    break
+            first_name = first_name.strip()
+            first_name = first_name.split(' ')
+            if len(first_name) > 1:
+                name = '{} {} {}'.format(first_name[0], last_name[0], first_name[1])
+            else:
+                name = '{} {}'.format(first_name[0], last_name[0])
+            # name = employee.name
             while True:
                 if name.find('  ') != -1:
                     name = name.replace('  ', ' ')
@@ -135,52 +163,34 @@ class HrEmployee(models.Model):
             elif len(username) == 3:
                 username = '{}{}{}'.format(username[0][0:1], username[1], username[2][0:1])
             email = username + '@siantou.net'
-            user_id = employee.user_id
-            if not user_id.id:
-                i = 0
-                while True:
-                    res_user_id = self.env['res.users'].search([
-                        ('login', '=', email),
-                    ], limit=1)
-                    employee_id = self.env['hr.employee'].search([
-                        ('id', '!=', employee.id),
-                        ('work_email', '=', email),
-                    ], limit=1)
-                    if res_user_id or employee_id:
-                        i = i + 1
-                        email = username + f'{i}' + '@siantou.net'
-                    else:
-                        break
-                if employee.is_teacher:
-                    group_id = self.env.ref('base.group_portal')
-                    user_id = self.env['res.users'].with_context(no_reset_password=True).create({
-                        'login': email,
-                        'name': employee.name,
-                        'password' : password,
-                        'groups_id': [(6, 0, [group_id.id])],
-                    })
+            i = 0
+            while True:
+                res_user_id = self.env['res.users'].search([
+                    ('login', '=', email),
+                ], limit=1)
+                employee_id = self.env['hr.employee'].search([
+                    ('id', '!=', employee.id),
+                    ('work_email', '=', email),
+                ], limit=1)
+                if res_user_id or employee_id:
+                    i = i + 1
+                    email = username + f'{i}' + '@siantou.net'
                 else:
-                    user_id = self.env['res.users'].with_context(no_reset_password=True).create({
-                        'login': email,
-                        'name': employee.name,
-                        'password' : password,
-                    })
+                    break
+            if employee.is_teacher:
+                group_id = self.env.ref('base.group_portal')
+                user_id = self.env['res.users'].with_context(no_reset_password=True).create({
+                    'login': email,
+                    'name': employee.name,
+                    'password' : password,
+                    'groups_id': [(6, 0, [group_id.id])],
+                })
             else:
-                i = 0
-                while True:
-                    res_user_id = self.env['res.users'].search([
-                        ('id', '!=', user_id.id),
-                        ('login', '=', email),
-                    ], limit=1)
-                    employee_id = self.env['hr.employee'].search([
-                        ('id', '!=', employee.id),
-                        ('work_email', '=', email),
-                    ], limit=1)
-                    if res_user_id or employee_id:
-                        i = i + 1
-                        email = username + f'{i}' + '@siantou.net'
-                    else:
-                        break
+                user_id = self.env['res.users'].with_context(no_reset_password=True).create({
+                    'login': email,
+                    'name': employee.name,
+                    'password' : password,
+                })
             user_id.write({
                 'login': email,
                 'password' : password,
