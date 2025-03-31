@@ -107,7 +107,10 @@ class StudentEnrollment(models.Model):
     diplo_requis_ids = fields.Many2many('oe.school.course.degree', string="Diplôme requis")
     session_lieu_obt = fields.Char(string="Session et lieu d'obtention")
     dern_etab_freq = fields.Char(string="Dernier établissement fréquenté")
-    annee_acad = fields.Char(string="Année académique")
+    annee_acadmique_id = fields.Many2one(
+        'siantou.ems.core.year',
+        string='Année Académique',
+    )
     level_id = fields.Many2one("siantou.ems.core.level", string="Niveau", required=True)
     full_name_tutor = fields.Char(string="Nom(s) et prénom(s)")
     num_tel_tutor = fields.Char(string="N° de Téléphone")

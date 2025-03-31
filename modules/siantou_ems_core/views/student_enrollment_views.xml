@@ -114,91 +114,47 @@
                         </group>
                     </group>
                     <notebook>
-                        <page name="info_ge" string="Informations générales">
-                            <group name="perso">
-                                <group>
+                        <page string="Informations générales">
+                            <group col="4" name="perso" string="Informations générales">
+                                <group colspan="2">
                                     <field name="date_naissance" invisible="1"/>
-                                </group>
-                                <group>
                                     <field name="lieu_naissance" invisible="1"/>
-                                </group>
-                                <group>
                                     <field name="sexe"  widget="radio" invisible="1"/>
-                                </group>
-                                <group>
                                     <field name="situat_matri"  widget="radio" invisible="1"/>
+                                    <field name="email" widget="email" invisible="1"/>
+                                    <field name="num_tel" widget="phone" invisible="1"/>
+                                    <field name="student_id"/>
                                 </group>
-                                <group>
+                                <group colspan="2">
                                     <field name="nationalite" invisible="1"/>
                                     <field name="autre" invisible="1"/>
                                     <field name="is_autre_pays" invisible="1"/>
-                                </group>
-                                <group>
                                     <field name="region_id" domain="[('country_id','=',nationalite)]" invisible="1"/>
-                                </group>
-                                <group>
                                     <field name="city_id" domain="[('region_id','=',region_id)]" invisible="1"/>
-                                </group>
-                                <group>
                                     <field name="quarter_id" domain="[('city_id','=',city_id)]" invisible="1"/>
-                                </group>
-                                <group>
                                     <field name="lieu_residence" invisible="1"/>
-                                </group>
-                                <group>
-                                    <field name="email" widget="email" invisible="1"/>
-                                </group>
-                                <group>
-                                    <field name="num_tel" widget="phone" invisible="1"/>
-                                </group>
-                                <group>
-                                    <field name="student_id"/>
                                 </group>
                             </group>
                         </page>
 
-                        <page name="info_ac" string="Informations académiques">
-                            <group  name="academique">
-                                <group invisible="status_univ == 'new'">
+                        <page string="Informations académiques">
+                            <group col="4" name="academique" string="Informations académiques">
+                                <group colspan="2">
                                     <field name="matricule"/>
-                                </group>
-                                <group>
-                                    <field name="status_univ"/>
-                                </group>
-                                <group>
-                                    <field name="annee_acad"/>
-                                </group>
-                                <group>
+                                    <field name="status_univ" invisible="status_univ == 'new'"/>
+                                    <field name="annee_acadmique_id"/>
                                     <field name="cycle_id"/>
-                                </group>
-                                <group>
                                     <field name="field_of_study_id" options="{'no_create': True}" domain="[('cycle_id','=',cycle_id)]"/>
-                                </group>
-                                <group>
                                     <field name="specialty_id" options="{'no_create': True}" domain="[('field_of_study_id','=',field_of_study_id)]"/>
-                                </group>
-                                <group>
                                     <field name="option_id" options="{'no_create': True}" domain="[('specialty_id','=',specialty_id)]"/>
                                 </group>
-                                <group>
+                                <group colspan="2">
                                     <field name="level_id"/>
-                                </group>
-                                <group>
                                     <field name="type_cour" widget="radio"/>
-                                </group>
-                                <group>
-                                    <field name="class_id" options="{'no_create': True}" domain="[('field_of_study_id', '=', field_of_study_id), ('specialty_id', '=', specialty_id), ('option_id', '=', option_id), ('level_id', '=', level_id), ('annee_acadmique_id', '=', annee_acad), ('type_cour', '=', type_cour)]"/>
-                                </group>
-                                <group invisible="status_univ == 'new'">
-                                    <field name="nbre_matiere"/>
-                                </group>
-                                <group>
+                                    <field name="class_id" options="{'no_create': True}" domain="[('field_of_study_id', '=', field_of_study_id), ('specialty_id', '=', specialty_id), ('option_id', '=', option_id), ('level_id', '=', level_id), ('annee_acadmique_id', '=', annee_acadmique_id), ('type_cour', '=', type_cour)]"/>
+                                    <field name="nbre_matiere" invisible="status_univ == 'new'"/>
                                     <field name="diplo_requis_ids" widget="many2many_tags"/>
-                                </group>
-                                <group>
                                     <field name="session_lieu_obt"/>
-                                </group>
-                                <group>
                                     <field name="dern_etab_freq"/>
                                 </group>
                             </group>

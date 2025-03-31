@@ -353,7 +353,7 @@ class Student(models.Model):
                 'diplo_requis_ids': diplo_requis_ids,
                 'session_lieu_obt': student.lieu_residence,
                 'dern_etab_freq': student.lieu_residence,
-                'annee_acad': student.annee_acadmique_id.name,
+                'annee_acadmique_id': student.annee_acadmique_id,
                 'level_id': student.level_id.id,
                 'full_name_tutor': student.name,
                 'num_tel_tutor': student.num_tel,

@@ -46,56 +46,26 @@
                     <!-- Informations générales en vue page -->
                     <notebook>
                         <page string="Informations générales">
-                            <group name="perso" string="Informations générales">
-                                <group>
+                            <group col="4" name="perso" string="Informations générales">
+                                <group colspan="2">
                                     <field name="last_name"/>
-                                </group>
-                                <group>
                                     <field name="first_name"/>
-                                </group>
-                                <group>
-                                    <field name="status_univ"/>
-                                </group>
-                                <group>
-                                    <field name="annee_acadmique_id"/>
-                                </group>
-                                <group>
                                     <field name="date_naissance"/>
-                                </group>
-                                <group>
                                     <field name="lieu_naissance"/>
-                                </group>
-                                <group>
                                     <field name="sexe"  widget="radio"/>
-                                </group>
-                                <group>
                                     <field name="situat_matri"  widget="radio"/>
+                                    <field name="email" widget="email"/>
+                                    <field name="num_tel" widget="phone"/>
+                                    <field name="user_id"/>
                                 </group>
-                                <group>
+                                <group colspan="2">
                                     <field name="nationalite" invisible="is_autre_pays==True"/>
                                     <field name="autre"/>
                                     <field name="is_autre_pays" invisible="1"/>
-                                </group>
-                                <group>
                                     <field name="region_id"/>
-                                </group>
-                                <group>
                                     <field name="city_id"/>
-                                </group>
-                                <group>
                                     <field name="quarter_id"/>
-                                </group>
-                                <group>
                                     <field name="lieu_residence"/>
-                                </group>
-                                <group>
-                                    <field name="email" widget="email"/>
-                                </group>
-                                <group>
-                                    <field name="num_tel" widget="phone"/>
-                                </group>
-                                <group>
-                                    <field name="user_id"/>
                                 </group>
                             </group>
                         </page>
@@ -106,6 +76,8 @@
                                 <group colspan="2">
                                     <field name="matricule"/>
                                     <field name="student_enroll_ids"/>
+                                    <field name="status_univ"/>
+                                    <field name="annee_acadmique_id"/>
                                     <field name="cycle_id"/>
                                     <field name="batch_id"/>
                                 </group>
