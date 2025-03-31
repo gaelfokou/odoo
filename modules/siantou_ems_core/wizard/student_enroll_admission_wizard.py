@@ -14,14 +14,14 @@ class StudentEnrollmentAdmissionWizard(models.TransientModel):
     _description = 'modale pour effectuer une admission'
 
     # student_id = fields.Many2one(
-    #     'oe.school.student', 
-    #     string="Étudiant admis", 
+    #     'oe.school.student',
+    #     string="Étudiant admis",
     #     # required=True,
     # )
     student_enrollement_id = fields.Many2one(
-        'oe.school.student.enrollment', 
-        string="Étudiant inscrit", 
-        # required=True,  
+        'oe.school.student.enrollment',
+        string="Étudiant inscrit",
+        # required=True,
     )
     observations = fields.Html(string="Observations", required=True)
 
@@ -109,7 +109,7 @@ class StudentEnrollmentAdmissionWizard(models.TransientModel):
                 student_id = self.env['oe.school.student'].search([
                         ('name','=',self.student_enrollement_id.name),
                         ('matricule','=',matricule),
-                    ], 
+                    ],
                     limit=1
                 )
 
@@ -129,7 +129,7 @@ class StudentEnrollmentAdmissionWizard(models.TransientModel):
             # _logger.info(self.student_enrollement_id.cycle_id.name)
 
             year_id = self.env['siantou.ems.core.year'].search(
-                [('active', '=',True),], 
+                [('active', '=',True),],
                 limit=1
             )
 

@@ -15,13 +15,19 @@ class FeeEnrollmentWizard(models.TransientModel):
 
     name = fields.Char('Réference du paiement', default='/')
     year_id = fields.Many2one(
-        'siantou.ems.core.year', 
+        'siantou.ems.core.year',
         string='Année académique active'
     )
-    student_id = fields.Many2one(
-        'oe.school.student.enrollment', 
-        string='Étudiant', 
+    student_enrol_id = fields.Many2one(
+        'oe.school.student.enrollment',
+        string='Candidature',
         required=True
+    )
+    student_id = fields.Many2one(
+        'oe.school.student',
+        string='Étudiant',
+        related='student_enrol_id.student_id',
+        store=True
     )
     student_name = fields.Char(
         string='Nom du déposant',
@@ -35,8 +41,8 @@ class FeeEnrollmentWizard(models.TransientModel):
         string='Structure de frais'
     )
     amount = fields.Monetary(
-        'Montant versé', 
-        required=True, 
+        'Montant versé',
+        required=True,
         tracking=True
     )
     cash_register_id = fields.Many2one(
@@ -51,31 +57,31 @@ class FeeEnrollmentWizard(models.TransientModel):
             ('bank', 'Virement bancaire'),
             ('cash', 'Paiement en espèce(Cash)')
         ],
-        string='Mode de paiement', 
+        string='Mode de paiement',
         # default="cash",
         required=True
     )
     # cni = fields.Char(string="Numéro CNI", required=True)
     # date_delivr_cni = fields.Date(
-    #     string="Date de délivrance", 
+    #     string="Date de délivrance",
     #     required=True
     # )
     # lieu_delivr_cni = fields.Char(
-    #     string="Lieu de délivrance", 
+    #     string="Lieu de délivrance",
     #     required=True
     # )
     # titulaire_compte = fields.Char(string="Titulaire du compte")
     # numero_compte = fields.Char(string="N° de compte")
     # name_bank = fields.Char(string="Nom bank",)
     # code_guichet = fields.Char(string="Code guichet")
-    date_payment = fields.Date('Date de versement', 
-        required=True, 
+    date_payment = fields.Date('Date de versement',
+        required=True,
         default=fields.Date.context_today
     )
     currency_id = fields.Many2one(
-        'res.currency', 
-        default=lambda self: self.env.company.currency_id, 
-        readonly=True, 
+        'res.currency',
+        default=lambda self: self.env.company.currency_id,
+        readonly=True,
         related_sudo=False
     )
 
@@ -84,7 +90,7 @@ class FeeEnrollmentWizard(models.TransientModel):
     #     for rec in self:
 
     #         journals = self.env['account.journal'].search(
-    #             [('type','=',rec.mode_payment)], 
+    #             [('type','=',rec.mode_payment)],
     #         )
     #         _logger.info(journals)
     #         rec.caisse_id = [(0,0,journals)]
@@ -96,11 +102,11 @@ class FeeEnrollmentWizard(models.TransientModel):
             enrol_payments = self.env['education.fee.payment.enrollment'].search([])
             res['student_id'] = self.env.context.get('active_id')
             year_id = self.env['siantou.ems.core.year'].search(
-                [('active', '=',True),], 
+                [('active', '=',True),],
                 limit=1
             )
             student_id = self.env['oe.school.student.enrollment'].search(
-                [('id', '=',int(res['student_id'])),], 
+                [('id', '=',int(res['student_id'])),],
                 limit=1
             )
             try:
@@ -112,7 +118,7 @@ class FeeEnrollmentWizard(models.TransientModel):
                         ('type_inclusion_fee','=','fee_inscrip'),
                         ('academic_year','=',year_id.id),
                         ('state','=', 'validate'),
-                    ], 
+                    ],
                     limit=1
                 )
             except Exception as e:
@@ -214,9 +220,9 @@ class FeeEnrollmentWizard(models.TransientModel):
         journal = self.cash_register_id  
         payment_method_line = self.cash_register_id.inbound_payment_method_line_ids[0].payment_method_id
         statement = self.env['account.bank.statement'].search([  
-            ('date', '=', self.date_payment),  
-            ('create_uid', '=', self.env.user.id),  
-            ('state', '=', 'open'),  
+            ('date', '=', self.date_payment),
+            ('create_uid', '=', self.env.user.id),
+            ('state', '=', 'open'),
             ('journal_id', '=', journal.id)  
         ], limit=1)  
         if not statement:  
@@ -225,21 +231,21 @@ class FeeEnrollmentWizard(models.TransientModel):
             raise ValidationError(_("Vous avez manqué d'ajouter une méthode de paiement manuel au niveau du journal (%s)", journal.name))  
 
         return {  
-            #**self.sheet_id._prepare_move_vals(),  
+            #**self.sheet_id._prepare_move_vals(),
             'date': self.date_payment,  # Overidden from self.sheet_id._prepare_transaction_vals() so we can use the expense date for the account move date  
             'payment_ref': "Frais d'inscription de %s" % self.student_id.name,
             'ref': "Frais d'inscription de %s" % self.student_id.name,
-            'ecole_id': self.student_id.field_of_study_id.school_id.id,  
-            'departement_id': self.student_id.field_of_study_id.department_id.id,  
-            'field_of_study_id': self.student_id.field_of_study_id.id,  
-            'specialite_id': self.student_id.specialty_id.id,  
-            'annee_academique_id': self.year_id.id,  
+            'ecole_id': self.student_id.field_of_study_id.school_id.id,
+            'departement_id': self.student_id.field_of_study_id.department_id.id,
+            'field_of_study_id': self.student_id.field_of_study_id.id,
+            'specialite_id': self.student_id.specialty_id.id,
+            'annee_academique_id': self.year_id.id,
             'cycle_id': self.student_id.field_of_study_id.cycle_id.id,
             'partner_id': self.student_id.partner_id.id,
-            'journal_id': journal.id,  
-            # 'expense_sheet_id': self.sheet_id.id,  
-            # 'statement_id': statement.id,  
-            'amount': self.amount,  
+            'journal_id': journal.id,
+            # 'expense_sheet_id': self.sheet_id.id,
+            # 'statement_id': statement.id,
+            'amount': self.amount,
             'currency_id': self.currency_id.id,
         }
 
@@ -247,9 +253,9 @@ class FeeEnrollmentWizard(models.TransientModel):
     def _do_create_and_post_moves(self):  
         self = self.with_context(clean_context(self.env.context))  # remove default_*  
         # skip_context = {  
-        #     'skip_invoice_sync': True,  
-        #     'skip_invoice_line_sync': True,  
-        #     'skip_account_move_synchronization': True,  
+        #     'skip_invoice_sync': True,
+        #     'skip_invoice_line_sync': True,
+        #     'skip_account_move_synchronization': True,
         # }  
         # own_account_sheets = self.filtered(lambda sheet: sheet.payment_mode == 'own_account')  
         # company_account_sheets = self - own_account_sheets  

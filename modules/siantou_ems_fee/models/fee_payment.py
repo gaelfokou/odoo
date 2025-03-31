@@ -18,10 +18,10 @@ class FeePaymentLine(models.Model):
     invoice_id = fields.Many2one(
         'account.move', string='Facture', required=True)
     payment_id = fields.Many2one(
-        'education.fee.payment', 
-        string='Paiement', 
+        'education.fee.payment',
+        string='Paiement',
         required=True,
-        ondelete='cascade', 
+        ondelete='cascade',
         index=True
     )
     structure_frais_line_id = fields.Many2one(
@@ -41,11 +41,11 @@ class FeePaymentLine(models.Model):
 
     cni = fields.Char(string="Numéro CNI", required=True)
     date_delivr_cni = fields.Date(
-        string="Date de délivrance", 
+        string="Date de délivrance",
         required=True
     )
     lieu_delivr_cni = fields.Char(
-        string="Lieu de délivrance", 
+        string="Lieu de délivrance",
         required=True
     )
     titulaire_compte = fields.Char(string="Titulaire du compte")
@@ -60,8 +60,8 @@ class FeePaymentLine(models.Model):
     pay_complet = fields.Boolean('Paiement complèt', default=False)
     date_payment = fields.Date('Date de versement', required=True)
     currency_id = fields.Many2one(
-        'res.currency', 
-        default=lambda self: self.env.company.currency_id, 
+        'res.currency',
+        default=lambda self: self.env.company.currency_id,
         readonly=True
     )
 
@@ -81,7 +81,7 @@ class FeePayment(models.Model):
             ('bank', 'Virement bancaire'),
             ('cash', 'Paiement en espèce(Cash)')
         ],
-        string='Mode de paiement', 
+        string='Mode de paiement',
         required=True,
         default="cash"
     )
@@ -99,29 +99,29 @@ class FeePayment(models.Model):
     date_payment = fields.Date('Date de versement', required=True, default=fields.Date.context_today)
     facture_ids = fields.One2many(
         'siantou.ems.fee.payment.line',
-        'payment_id', 
+        'payment_id',
         string='Liste des factures'
     )
     currency_id = fields.Many2one(
-        'res.currency', 
-        default=lambda self: self.env.company.currency_id, 
-        readonly=True, 
+        'res.currency',
+        default=lambda self: self.env.company.currency_id,
+        readonly=True,
         related_sudo=False
     )
     year_id = fields.Many2one(
-        'siantou.ems.core.year', 
-        string='Année académique', 
+        'siantou.ems.core.year',
+        string='Année académique',
         required=True,
-        default=lambda self: self.env['siantou.ems.core.year'].search([('active','=',True)], limit=1),    
+        default=lambda self: self.env['siantou.ems.core.year'].search([('active','=',True)], limit=1),
     )
 
     cni = fields.Char(string="Numéro CNI", required=True)
     date_delivr_cni = fields.Date(
-        string="Date de délivrance", 
+        string="Date de délivrance",
         required=True
     )
     lieu_delivr_cni = fields.Char(
-        string="Lieu de délivrance", 
+        string="Lieu de délivrance",
         required=True
     )
     titulaire_compte = fields.Char(string="Titulaire du compte")
@@ -132,7 +132,7 @@ class FeePayment(models.Model):
             ('creer', 'Création'),
             ('draft', 'En attente de validation'),
             ('done', 'Validé')
-        ], 
+        ],
         string='Etat',
         default='creer',
         tracking=True, required=True
@@ -141,7 +141,7 @@ class FeePayment(models.Model):
             ('none', 'one'),
             ('all', 'Oui'),
             ('none_all', 'Non')
-        ], 
+        ],
         default='none',
         string='Paiement complèt ?',
         tracking=True, required=True
@@ -425,9 +425,16 @@ class FeePaymentEnrollment(models.Model):
 
     name = fields.Char('Reference', default='/')
 
+    student_enrol_id = fields.Many2one(
+        'oe.school.student.enrollment',
+        string='Candidature',
+        required=True
+    )
     student_id = fields.Many2one(
-        'oe.school.student.enrollment', 
-        string='Etudiant', required=True
+        'oe.school.student',
+        string='Étudiant',
+        related='student_enrol_id.student_id',
+        store=True
     )
     student_name = fields.Char(
         string='Nom du déposant',
@@ -442,10 +449,10 @@ class FeePaymentEnrollment(models.Model):
         string='Structure de frais'
     )
     year_id = fields.Many2one(
-        'siantou.ems.core.year', 
-        string='Année académique', 
+        'siantou.ems.core.year',
+        string='Année académique',
         required=True,
-        default=lambda self: self.env['siantou.ems.core.year'].search([('active','=',True)], limit=1),    
+        default=lambda self: self.env['siantou.ems.core.year'].search([('active','=',True)], limit=1),
     )
     amount = fields.Monetary('Montant versé', required=True, tracking=True)
     amount_plus = fields.Monetary('Montant en plus', default=0, required=True, tracking=True)
@@ -461,17 +468,17 @@ class FeePaymentEnrollment(models.Model):
             ('bank', 'Virement bancaire'),
             ('cash', 'Paiement en espèce(Cash)')
         ],
-        string='Mode de paiement', 
+        string='Mode de paiement',
         default="cash",
         required=True
     )
     cni = fields.Char(string="Numéro CNI", required=True)
     date_delivr_cni = fields.Date(
-        string="Date de délivrance", 
+        string="Date de délivrance",
         required=True
     )
     lieu_delivr_cni = fields.Char(
-        string="Lieu de délivrance", 
+        string="Lieu de délivrance",
         required=True
     )
     titulaire_compte = fields.Char(string="Titulaire du compte")
@@ -479,9 +486,9 @@ class FeePaymentEnrollment(models.Model):
     name_bank = fields.Char(string="Nom bank",)
     code_guichet = fields.Char(string="Code guichet")
     currency_id = fields.Many2one(
-        'res.currency', 
-        default=lambda self: self.env.company.currency_id, 
-        readonly=True, 
+        'res.currency',
+        default=lambda self: self.env.company.currency_id,
+        readonly=True,
         related_sudo=False
     )
 

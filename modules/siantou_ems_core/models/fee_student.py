@@ -9,35 +9,35 @@ class FeeStruct(models.Model):
     code = fields.Char(string="Code", required=True)
     name = fields.Char(string="Nom", required=True)
     active = fields.Boolean(string="Actif", default=True)
-    company_id = fields.Many2one('res.company', 
+    company_id = fields.Many2one('res.company',
         string='Université', index=True,
         default=lambda self: self.env.company,
         domain=[('active','=',True),('is_school','=',True)]
     )
     note = fields.Html(string='Description')
     journal_id = fields.Many2one(
-        'account.journal', 
-        string="Journal comptable", 
+        'account.journal',
+        string="Journal comptable",
         readonly=False, required=True,
         company_dependent=True,
         default=lambda self: self.env['account.journal'].sudo().search([('company_id', '=', self.env.company.id)], limit=1)
     )
     # cycle_ids = fields.One2many(
-    #     'oe.school.course', 
-    #     'fee_struct_id', 
+    #     'oe.school.course',
+    #     'fee_struct_id',
     #     # required=True
     # )
     # fee_line_ids = fields.One2many(
-    #     'siantou.ems.core.fee.struct.line', 
-    #     'fee_struct_id', 
+    #     'siantou.ems.core.fee.struct.line',
+    #     'fee_struct_id',
     #     string="Lignes"
     # )
     # nbre_tranche = fields.Integer(string="Nombre de tranche")
     # type_fee = fields.Selection([
-    #         ('paie_tranch', 'Paiement par tranche'), 
+    #         ('paie_tranch', 'Paiement par tranche'),
     #         ('paie_total', 'Paiement total')
-    #     ], 
-    #     string="Type de paiement", 
+    #     ],
+    #     string="Type de paiement",
     #     required=True
     # )
     montant_paie_total = fields.Integer(string="Montant à payer")
@@ -59,8 +59,8 @@ class FeeStruct(models.Model):
 #     montant_paie = fields.Integer(string="Montant")
 #     date_created = fields.Date(string="Date de création", default=datetime.now())
 #     fee_struct_id = fields.Many2one(
-#         'siantou.ems.core.fee.struct', 
-#         string="Structure des frais", 
+#         'siantou.ems.core.fee.struct',
+#         string="Structure des frais",
 #         # required=True,
 #     )
 
@@ -80,16 +80,16 @@ class FeeStudent(models.Model):
     _description = "Frais de d'inscription des étudiants"
 
     fee_enroll_struct_id = fields.Many2one(
-        'siantou.ems.core.fee.enrollment', 
-        string="Frais d'incription", 
-        required=True,    
+        'siantou.ems.core.fee.enrollment',
+        string="Frais d'incription",
+        required=True,
     )
 
     student_id = fields.Many2one(
-        'oe.school.student.enrollment', 
-        string="Étudiant", 
+        'oe.school.student.enrollment',
+        string="Étudiant",
         ondelete='cascade',
-        required=True,    
+        required=True,
     )
     date_paiement = fields.Date(string="Date de paiement", required=True)
 

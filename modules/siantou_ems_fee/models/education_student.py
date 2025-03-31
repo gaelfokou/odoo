@@ -11,8 +11,8 @@ class EducationFiliere(models.Model):
     _inherit = 'siantou.ems.core.field_of_study'
 
     # frais = fields.Many2many(
-    #     'siantou.ems.fee.structure', 
-    #     string='Frais ', 
+    #     'siantou.ems.fee.structure',
+    #     string='Frais ',
     #     compute='_compute_struct',
     #     store=True
     # )
@@ -33,7 +33,7 @@ class EducationFiliere(models.Model):
             #     strs = [e.id for e in structure_ids]
             # else:
             # structure_ids = self.env['siantou.ems.fee.structure'].search([
-            #     ('academic_year', '=', annee.id), 
+            #     ('academic_year', '=', annee.id),
             #     ('fee_special', '=', False),
             #     ('category_id', 'in', cats),
             #     ('field_of_study_id', '=', rec.field_of_study_id.id)
@@ -55,13 +55,13 @@ class EducationFiliere(models.Model):
 #     amount_to_paid = fields.Monetary(
 #         compute='_compute_amount_to_paid',
 #         string='Montant à payé',
-#         currency_field="currency_id", 
+#         currency_field="currency_id",
 #         store=True
 #     )
 #     amount_paid = fields.Monetary(
 #         compute='_compute_amount_paid',
-#         string='Montant payé', 
-#         currency_field="currency_id", 
+#         string='Montant payé',
+#         currency_field="currency_id",
 #         store=True
 #     )
 #     percentage = fields.Float(compute='_compute_percentage',store=True, string='Poucentage de scolarite')

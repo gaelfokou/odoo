@@ -162,7 +162,7 @@ class DeSchool(http.Controller):
             code_enrol = self.generate_code()
             while is_existing:
                 etudiant = request.env['oe.school.student.enrollment'].sudo().search(
-                    [('code_enrol', '=', code_enrol)], 
+                    [('code_enrol', '=', code_enrol)],
                     limit=1
                 )
                 if not etudiant:

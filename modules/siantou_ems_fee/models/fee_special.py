@@ -22,33 +22,33 @@ class FeeSpecial(models.Model):
 
     name = fields.Char('Réference du paiement', default='/')
     student_id = fields.Many2one(
-        'oe.school.student', 
-        string='Etudiant', 
+        'oe.school.student',
+        string='Etudiant',
         required=True
     )
     partner_id = fields.Many2one(
-        'res.partner', 
-        string='partner', 
+        'res.partner',
+        string='partner',
         related="student_id.partner_id"
     )
     fee_structure_id = fields.Many2one(
         'siantou.ems.fee.structure',
-        string='Structure de frais', 
-        required=True, 
+        string='Structure de frais',
+        required=True,
         tracking=True
     )
     structure_frais_request_domain = fields.Binary(default=0, store=False)
     facture_id = fields.Many2one('account.move', string='Facture')
     amount = fields.Monetary(
         'Montant total',
-        required=True, 
-        tracking=True, 
+        required=True,
+        tracking=True,
         # store=False
     )
     currency_id = fields.Many2one(
-        'res.currency', 
-        default=lambda self: self.env.company.currency_id, 
-        readonly=True, 
+        'res.currency',
+        default=lambda self: self.env.company.currency_id,
+        readonly=True,
         related_sudo=False
     )
     mode_payment = fields.Selection(
@@ -56,17 +56,17 @@ class FeeSpecial(models.Model):
             ('bank', 'Virement bancaire'),
             ('cash', 'Paiement en espèce(Cash)')
         ],
-        string='Mode de paiement', 
+        string='Mode de paiement',
         required=True,
         default="cash"
     )
     cni = fields.Char(string="Numéro CNI", required=True)
     date_delivr_cni = fields.Date(
-        string="Date de délivrance", 
+        string="Date de délivrance",
         required=True
     )
     lieu_delivr_cni = fields.Char(
-        string="Lieu de délivrance", 
+        string="Lieu de délivrance",
         required=True
     )
     titulaire_compte = fields.Char(string="Titulaire du compte")
@@ -76,16 +76,16 @@ class FeeSpecial(models.Model):
     state = fields.Selection([
             ('no_create', "Encours de création"),
             ('create', 'Crée et attente de validation'),
-            ('validate', 'Validé'), 
-        ], string='Statut', 
-        default='no_create', 
+            ('validate', 'Validé'),
+        ], string='Statut',
+        default='no_create',
         tracking=True
     )
     academic_year_id = fields.Many2one(
         'siantou.ems.core.year',
         string='Année Académique',
         help="Séletionner l'Année Académique",
-        required=True, 
+        required=True,
         default=lambda self: self._get_default_acadmic_year()
     )
     description = fields.Text('Description')

@@ -74,13 +74,13 @@ class Student(models.Model):
     status_univ = fields.Selection([
             ('new', 'Nouveau'),
             ('old', 'Ancien'),
-        ], 
+        ],
         string='Statut universitaire',
         default='old',
     )
     redoublant = fields.Selection(
         [
-            ('oui', 'Oui'), 
+            ('oui', 'Oui'),
             ('non', 'Non')
         ],
         'Redoublant?',
@@ -119,8 +119,8 @@ class Student(models.Model):
         default=lambda self: self.env['siantou.ems.core.year'].search([('active', '=', True)], limit=1)
     )
     # payment_ids = fields.Many2one(
-    #     "education.fee.payment", 
-    #     string="Paiements", 
+    #     "education.fee.payment",
+    #     string="Paiements",
     #     readonly=True,
     #     default=lambda self: self.env['education.fee.payment'].search([('student_id', '=', self.id)], limit=1)
     # )
@@ -132,15 +132,15 @@ class Student(models.Model):
     status_user = fields.Selection([
             ('new', 'Jamais connecté'),
             ('active', 'Confirmé'),
-        ], 
+        ],
         string='Statut',
         related='user_id.state',
     )
 
     timetable_ids = fields.One2many(
-        'siantou.ems.timetable.timetable', 
-        string="Emplois du temps", 
-        compute="_compute_timetables", 
+        'siantou.ems.timetable.timetable',
+        string="Emplois du temps",
+        compute="_compute_timetables",
         store=False
     )
 
@@ -403,10 +403,10 @@ class Student(models.Model):
         if not batch_id:
             if 'batch_id' not in vals or not vals['batch_id']:
                 batch_id = self.env['siantou.ems.core.student.batch'].assign_batch(
-                    class_id.field_of_study_id.school_id.id, 
-                    class_id.field_of_study_id.id, 
-                    class_id.specialty_id.id, 
-                    class_id.option_id.id, 
+                    class_id.field_of_study_id.school_id.id,
+                    class_id.field_of_study_id.id,
+                    class_id.specialty_id.id,
+                    class_id.option_id.id,
                     class_id.level_id.id
                 )
         vals['batch_id'] = batch_id.id
@@ -430,8 +430,8 @@ class StudentCareer(models.Model):
         required=True
     )
     year_id = fields.Many2one(
-        "siantou.ems.core.year", 
-        string="Année académique", 
+        "siantou.ems.core.year",
+        string="Année académique",
         required=True
     )
     level_id = fields.Many2one("siantou.ems.core.level", string="Niveau", required=True)

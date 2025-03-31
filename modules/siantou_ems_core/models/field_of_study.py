@@ -83,7 +83,7 @@ class FieldOfStudy(models.Model):
     )
 
     cycle_id = fields.Many2one(
-        'oe.school.course', 
+        'oe.school.course',
         string='Cursus ou Cycle',
     )
 

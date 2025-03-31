@@ -43,38 +43,38 @@ class SessionEnrollment(models.Model):
     #         record.end_date = record.year_id.end_time
 
     name = fields.Char(
-        string="Nom de la session", 
+        string="Nom de la session",
         required=True,
     )
     start_date = fields.Date('Date debut', required=True, related='year_id.start_time')
     end_date = fields.Date(
-        'Date de fin', 
+        'Date de fin',
         required=True, related='year_id.end_time')
     cycle_ids = fields.Many2many(
-        'oe.school.course', 
-        string='Cycles', 
+        'oe.school.course',
+        string='Cycles',
         required=True,
     )
     year_id = fields.Many2one(
         'siantou.ems.core.year',
         string='Année Académique',
         help="Séletionner l'année Académique",
-        required=True, 
+        required=True,
         default=lambda self: self._get_default_acadmic_year()
     )
     active = fields.Boolean(default=False)
     state = fields.Selection([
-            ('draft', 'Brouillon'), 
+            ('draft', 'Brouillon'),
             ('cancel', 'Cancelled'),
-            ('admission', 'Admission en cours'), 
+            ('admission', 'Admission en cours'),
             ('done', 'Fait')
         ],
-        'Statut', 
+        'Statut',
         default='draft'
     )
     registre_ids = fields.One2many(
-        'siantou.session.registre', 
-        'session_id', 
+        'siantou.session.registre',
+        'session_id',
         'Registres de session'
     )
 
@@ -161,38 +161,38 @@ class SessionRegisterEnrollment(models.Model):
     end_date = fields.Date(
         'Date de fin', store=True, related='session_id.end_date')
     cycle_id = fields.Many2one(
-        'oe.school.course', 'Cursus ou Cycle', 
-        required=True, 
+        'oe.school.course', 'Cursus ou Cycle',
+        required=True,
     )
     session_id = fields.Many2one(
-        'siantou.session', 
-        "Session d'admission", 
-        required=True, 
+        'siantou.session',
+        "Session d'admission",
+        required=True,
         ondelete='cascade'
     )
     admission_ids = fields.One2many(
-        'oe.school.student.enrollment', 
-        'registre_id', 
+        'oe.school.student.enrollment',
+        'registre_id',
         'Candidatures'
     )
     state = fields.Selection(
         [
-            ('draft', 'Brouillon'), 
+            ('draft', 'Brouillon'),
             ('application', 'Candidature en cours'),
-            ('cancel', 'Annulé'), 
-            ('admission', 'Admission En cours'), 
-            ('done', 'Fait'), 
+            ('cancel', 'Annulé'),
+            ('admission', 'Admission En cours'),
+            ('done', 'Fait'),
             ('archive', 'Archivé')
         ],
-        'Status', 
-        default='draft', 
+        'Status',
+        default='draft',
         tracking=True
     )
 
     active = fields.Boolean(default=True)
 
     year_id = fields.Many2one('siantou.ems.core.year',
-        'Année académique', 
+        'Année académique',
         readonly=True,
         related='session_id.year_id',
         store=True

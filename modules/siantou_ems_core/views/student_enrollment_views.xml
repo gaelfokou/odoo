@@ -6,7 +6,6 @@
         <field name="arch" type="xml">
             <tree string="Étudiants" default_order="id desc" default_group_by="year_id" expand="context.get('expand', False)">
                 <field name="date_preins" widget="datetime"/>
-                <field name="matricule"/>
                 <field name="code_enrol"/>
                 <field name="name"/>
                 <field name="cycle_id"/>
@@ -125,7 +124,6 @@
                         <page string="Informations académiques">
                             <group col="4" name="academique" string="Informations académiques">
                                 <group colspan="2">
-                                    <field name="matricule"/>
                                     <field name="status_univ" invisible="status_univ == 'new'"/>
                                     <field name="year_id"/>
                                     <field name="cycle_id"/>
@@ -176,7 +174,6 @@
         <field name="model">oe.school.student.enrollment</field>
         <field name="arch" type="xml">
             <search string="Recherche d'un candidat">
-                <field name="matricule"/>
                 <field name="code_enrol"/>
                 <field name="name"/>
                 <field name="type_cour"/>

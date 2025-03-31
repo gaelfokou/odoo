@@ -10,25 +10,25 @@ class FeeEnrollment(models.Model):
     name = fields.Char(string="Nom", required=True, index=True,)
     year = fields.Many2one(
         'siantou.ems.core.year',
-        string="Année académique", 
+        string="Année académique",
         required=True, index=True,
     )
-    company_id = fields.Many2one('res.company', 
+    company_id = fields.Many2one('res.company',
         string='Université', index=True,
         default=lambda self: self.env.company,
         domain=[('active','=',True),('is_school','=',True)]
     )
     note = fields.Html(string='Description')
     journal_id = fields.Many2one(
-        'account.journal', 
-        string="Journal comptable", 
-        readonly=False, 
+        'account.journal',
+        string="Journal comptable",
+        readonly=False,
         required=True,
         company_dependent=True,
         default=lambda self: self.env['account.journal'].sudo().search([('company_id', '=', self.env.company.id)], limit=1)
     )
     level_ids = fields.Many2many(
-        'siantou.ems.core.level', 
+        'siantou.ems.core.level',
         required=True,
         string="Niveaux"
     )
@@ -57,15 +57,15 @@ class FeeEnrollStudent(models.Model):
     _order = 'name'
 
     fee_enroll_struct_id = fields.Many2one(
-        'siantou.ems.core.fee.enrollment', 
-        string="Frais de préinscription", 
-        required=True,  
+        'siantou.ems.core.fee.enrollment',
+        string="Frais de préinscription",
+        required=True,
     )
 
     student_id = fields.Many2one(
-        'oe.school.student.enrollment', 
-        string="Étudiant", 
+        'oe.school.student.enrollment',
+        string="Étudiant",
         ondelete='cascade',
-        required=True,    
+        required=True,
     )
     date_paiement = fields.Date(string="Date de paiement", required=True)

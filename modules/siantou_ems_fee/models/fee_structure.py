@@ -37,8 +37,8 @@ class FeeStructure(models.Model):
     amount_total = fields.Float(
         'Montant', currency_field='company_currency_id', required=True)
     type_frais_id = fields.Many2one(
-        'siantou.ems.fee.type', 
-        string='Type de frais', 
+        'siantou.ems.fee.type',
+        string='Type de frais',
         required=True
     )
     school_id = fields.Many2one('siantou.ems.core.school', required=False,string='Ecole')
@@ -46,10 +46,10 @@ class FeeStructure(models.Model):
     level_id = fields.Many2one('siantou.ems.core.level', required=True,string='Niveau')
     type_paiement = fields.Selection(
         [
-            ('pu', 'Paiement unique'), 
+            ('pu', 'Paiement unique'),
             ('pt', 'Paiement par tranches'),
         ],
-        'Type de paiement', 
+        'Type de paiement',
         required=True,
         default='pu',
     )
@@ -57,15 +57,15 @@ class FeeStructure(models.Model):
         [
             ('fee_inscrip', "Inclure dans les frais d'inscription"),
             ('fee_scol', 'Inclure dans les frais de scolarité'),
-            ('fee_spec', 'Inclure dans les frais spéciaux'), 
+            ('fee_spec', 'Inclure dans les frais spéciaux'),
         ],
-        "Visibilité de la structure de frais", 
+        "Visibilité de la structure de frais",
         required=True,
         default='fee_inscrip',
     )
     fee_type_ids = fields.One2many(
-        'siantou.ems.fee.structure.lines', 
-        'fee_structure_id', 
+        'siantou.ems.fee.structure.lines',
+        'fee_structure_id',
         string='Liste des tranches de paiement',
         # compute='_create_tranche',
         # store=True,
@@ -318,9 +318,9 @@ class FeeStructureLines(models.Model):
 
     name = fields.Char("Libellé", required=True)
     fee_structure_id = fields.Many2one(
-        'siantou.ems.fee.structure', 
-        string='Structure de frais', 
-        ondelete='cascade', index=True, 
+        'siantou.ems.fee.structure',
+        string='Structure de frais',
+        ondelete='cascade', index=True,
         required=True
     )
     fee_amount = fields.Float('Montant',  required=True)
@@ -357,27 +357,27 @@ class FeeMoratoire(models.Model):
     # name = fields.Char("Nom", related='student_id.name')
     student_id = fields.Many2one('oe.school.student', string='Etudiant', required=True)
     year_id = fields.Many2one(
-        'siantou.ems.core.year', 
-        string='Année académique', 
+        'siantou.ems.core.year',
+        string='Année académique',
         required=True,
-        default=lambda self: self.env['siantou.ems.core.year'].search([('active','=',True)], limit=1),    
+        default=lambda self: self.env['siantou.ems.core.year'].search([('active','=',True)], limit=1),
     )
     amount = fields.Monetary('Montant à verser', required=True, tracking=True)
     date_debut = fields.Date(string="Date de début", required=True)
     date_fin = fields.Date(string="Date de début", required=True)
     currency_id = fields.Many2one(
-        'res.currency', 
-        default=lambda self: self.env.company.currency_id, 
-        readonly=True, 
+        'res.currency',
+        default=lambda self: self.env.company.currency_id,
+        readonly=True,
         related_sudo=False
     )
     state = fields.Selection(
         [
             ('no_create', "Encours de création"),
             ('create', 'Crée et attente de validation'),
-            ('validate', 'Validé'), 
+            ('validate', 'Validé'),
         ],
-        "Statut", 
+        "Statut",
         required=True,
         default='no_create',
     )

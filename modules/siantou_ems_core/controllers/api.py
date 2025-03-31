@@ -84,7 +84,7 @@ class DeSchool(http.Controller):
         data = []
         cycles = []
         year_id = request.env['siantou.ems.core.year'].sudo().search(
-            [('active', '=',True),], 
+            [('active', '=',True),],
             limit=1
         )
 
@@ -284,7 +284,7 @@ class DeSchool(http.Controller):
             code_enrol = self.generate_code()
             while is_existing:
                 etudiant = request.env['oe.school.student.enrollment'].sudo().search(
-                    [('code_enrol', '=', code_enrol)], 
+                    [('code_enrol', '=', code_enrol)],
                     limit=1
                 )
                 if not etudiant:
@@ -301,7 +301,7 @@ class DeSchool(http.Controller):
             # data['partner_id'] = partner.id
 
             year_id = request.env['siantou.ems.core.year'].sudo().search(
-                [('active', '=',True),], 
+                [('active', '=',True),],
                 limit=1
             )
 
@@ -311,7 +311,7 @@ class DeSchool(http.Controller):
                     ('state', '=', 'admission'),
                     ('year_id', '=', year_id.id),
                     ('cycle_ids', 'in', int(data['cycle_id'])),
-                ], 
+                ],
                 limit=1
             )
 
@@ -325,7 +325,7 @@ class DeSchool(http.Controller):
                 #=== récupération du régistre de la session d'admission active et correspondant au cycle choisi par l'utilisateur
                 registre_id = request.env['siantou.session.registre'].sudo().search(
                     [
-                        ('session_id', '=', session_id.id), 
+                        ('session_id', '=', session_id.id),
                         ('cycle_id', '=', int(data['cycle_id']))
                     ],
                     limit=1

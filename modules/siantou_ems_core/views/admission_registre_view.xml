@@ -60,7 +60,6 @@
                                         <field name="cycle_id"/>
                                         <field name="field_of_study_id"/>
                                         <field name="type_cour"/>
-                                        <field name="sexe"/>
                                         <field name="status_univ"/>
                                         <field 
                                             name="status" 

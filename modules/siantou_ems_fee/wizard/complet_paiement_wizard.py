@@ -20,18 +20,18 @@ class FeeToCompleteFeePaymentWizard(models.TransientModel):
 
     name = fields.Char('Réference du paiement', default='/')
     year_id = fields.Many2one(
-        'siantou.ems.core.year', 
+        'siantou.ems.core.year',
         string='Année académique',
         required=True
     )
     payment_id = fields.Many2one(
-        'education.fee.payment', 
-        string='Paiement', 
+        'education.fee.payment',
+        string='Paiement',
         required=True
     )
     student_id = fields.Many2one(
-        'oe.school.student', 
-        string='Etudiant', 
+        'oe.school.student',
+        string='Etudiant',
         related='payment_id.student_id',
         required=True
     )
@@ -40,17 +40,17 @@ class FeeToCompleteFeePaymentWizard(models.TransientModel):
             ('bank', 'Virement bancaire'),
             ('cash', 'Paiement en espèce(Cash)')
         ],
-        string='Mode de paiement', 
+        string='Mode de paiement',
         required=True,
         default="cash"
     )
     cni = fields.Char(string="Numéro CNI", required=True)
     date_delivr_cni = fields.Date(
-        string="Date de délivrance", 
+        string="Date de délivrance",
         required=True
     )
     lieu_delivr_cni = fields.Char(
-        string="Lieu de délivrance", 
+        string="Lieu de délivrance",
         required=True
     )
     titulaire_compte = fields.Char(string="Titulaire du compte")
@@ -63,9 +63,9 @@ class FeeToCompleteFeePaymentWizard(models.TransientModel):
     reference = fields.Char('Réference du reçu', required=True, default='/')
     date_payment = fields.Date('Date de versement', required=True, default=fields.Date.context_today)
     currency_id = fields.Many2one(
-        'res.currency', 
-        default=lambda self: self.env.company.currency_id, 
-        readonly=True, 
+        'res.currency',
+        default=lambda self: self.env.company.currency_id,
+        readonly=True,
         related_sudo=False
     )
 
@@ -76,11 +76,11 @@ class FeeToCompleteFeePaymentWizard(models.TransientModel):
         if self.env.context.get('active_id'):
             res['payment_id'] = self.env.context.get('active_id')
             year_id = self.env['siantou.ems.core.year'].search(
-                [('active', '=',True),], 
+                [('active', '=',True),],
                 limit=1
             )
             payment_id = self.env['education.fee.payment'].search(
-                [('id', '=',int(res['payment_id'])),], 
+                [('id', '=',int(res['payment_id'])),],
                 limit=1
             )
             if not year_id:
@@ -171,9 +171,9 @@ class FeeToCompleteFeePaymentWizard(models.TransientModel):
                                 })
                                 price_unit = amount_to_add
                             account_move = self.payment_id.account_move(
-                                self.student_id, 
+                                self.student_id,
                                 journal_id,
-                                price_unit, 
+                                price_unit,
                                 account_revenue_id
                             )
                 else:

@@ -129,7 +129,7 @@ class Timetable(models.Model):
 
     year_id = fields.Many2one(
         'siantou.ems.core.year',
-        'Année académique', 
+        'Année académique',
         related='semester_id.year_id',
         store=True
     )

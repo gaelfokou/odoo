@@ -43,8 +43,8 @@ class ScolariteEtudiant(models.TransientModel):
     #     'Campus', related="student_id.admission_class.campus", store=True, tracking=True)
 	campus = fields.Many2one(
 		'siantou.ems.core.campus',
-        'Campus', 
-		store=True, 
+        'Campus',
+		store=True,
 		tracking=True
 	)
 	redoublant = fields.Selection(
