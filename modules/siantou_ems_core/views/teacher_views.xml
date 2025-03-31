@@ -12,6 +12,8 @@
 
                 <xpath expr="//field[@name = 'category_ids']" position="after">
                     <group string="Informations personnelles">
+                        <field name="last_name"/>
+                        <field name="first_name"/>
                         <field name="birthday"/>
                     </group>
 

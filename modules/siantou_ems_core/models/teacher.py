@@ -10,8 +10,8 @@ class HrEmployee(models.Model):
     _inherit = 'hr.employee'
 
     name = fields.Char(string="Nom(s) et prénom(s)", compute='_compute_name', store=True)
-    first_name = fields.Char(string="Prénom(s)")
     last_name = fields.Char(string="Nom(s)", required=True)
+    first_name = fields.Char(string="Prénom(s)")
 
     # Variable booléenne pour identifier un enseignant
     is_teacher = fields.Boolean(

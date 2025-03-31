@@ -22,8 +22,8 @@ class Student(models.Model):
     _description = 'Gestion des étudiants'
 
     name = fields.Char(string="Nom(s) et prénom(s)", compute='_compute_name', store=True)
-    first_name = fields.Char(string="Prénom(s)")
     last_name = fields.Char(string="Nom(s)", required=True)
+    first_name = fields.Char(string="Prénom(s)")
     matricule = fields.Char(string="Matricule")
     student_enroll_ids = fields.One2many(
         'oe.school.student.enrollment',
