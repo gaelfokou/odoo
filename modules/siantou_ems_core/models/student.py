@@ -286,19 +286,6 @@ class Student(models.Model):
             elif len(username) == 3:
                 username = '{}{}{}'.format(username[0][0:1], username[1], username[2][0:1])
             email = username + '@siantou.net'
-            partner_id = self.env['res.partner'].create({
-                'name': student.name,
-                'email': email,
-                'phone': student.num_tel,
-                'is_company': False,
-            })
-            diplo_requis = self.env['oe.school.course.degree'].search([('cycle_ids', '=', student.cycle_id.id)])
-            diplo_requis_ids = diplo_requis.ids
-            if len(diplo_requis_ids) == 0:
-                diplo_requis = student.cycle_id.diplo_requis_ids.create({
-                    'name': student.cycle_id.name,
-                })
-                diplo_requis_ids.append(diplo_requis.id)
             i = 0
             while True:
                 res_user_id = self.env['res.users'].search([
@@ -313,6 +300,12 @@ class Student(models.Model):
                     email = username + f'{i}' + '@siantou.net'
                 else:
                     break
+            partner_id = self.env['res.partner'].create({
+                'name': student.name,
+                'email': email,
+                'phone': student.num_tel,
+                'is_company': False,
+            })
             group_id = self.env.ref('base.group_portal')
             user_id = self.env['res.users'].with_context(no_reset_password=True).create({
                 'login': email,
@@ -321,22 +314,20 @@ class Student(models.Model):
                 'partner_id': partner_id.id,
                 'groups_id': [(6, 0, [group_id.id])],
             })
-            partner_id.write({
-                'email': email,
-            })
-            user_id.write({
-                'login': email,
-                'password' : password,
-            })
             student.write({
                 'matricule': matricule,
                 'email': email,
                 'user_id': user_id.id,
+                'partner_id': partner_id.id,
             })
-            student_enroll_id = student.student_enroll_ids.create({
-                'name': student.name,
-                'email': student.email,
-                'num_tel': student.num_tel,
+            diplo_requis = self.env['oe.school.course.degree'].search([('cycle_ids', '=', student.cycle_id.id)])
+            diplo_requis_ids = diplo_requis.ids
+            if len(diplo_requis_ids) == 0:
+                diplo_requis = student.cycle_id.diplo_requis_ids.create({
+                    'name': student.cycle_id.name,
+                })
+                diplo_requis_ids.append(diplo_requis.id)
+            student.student_enroll_ids.create({
                 'year_id': student.year_id.id,
                 'cycle_id': student.cycle_id.id,
                 'field_of_study_id': student.field_of_study_id.id,
@@ -345,19 +336,11 @@ class Student(models.Model):
                 'class_id': student.class_id.id,
                 'type_cour': student.type_cour,
                 'status_univ': student.status_univ,
-                'date_naissance': student.date_naissance,
-                'lieu_naissance': student.lieu_naissance,
-                'sexe': student.sexe,
-                'situat_matri': student.situat_matri,
-                'lieu_residence': student.lieu_residence,
                 'diplo_requis_ids': diplo_requis_ids,
                 'session_lieu_obt': student.lieu_residence,
                 'dern_etab_freq': student.lieu_residence,
                 'level_id': student.level_id.id,
-                'full_name_tutor': student.name,
-                'num_tel_tutor': student.num_tel,
                 'student_id': student.id,
-                'partner_id': partner_id.id,
             })
             self.env.cr.commit()
         except psycopg2.errors.NotNullViolation as error:

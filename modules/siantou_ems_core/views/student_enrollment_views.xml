@@ -117,22 +117,7 @@
                         <page string="Informations générales">
                             <group col="4" name="perso" string="Informations générales">
                                 <group colspan="2">
-                                    <field name="date_naissance" invisible="1"/>
-                                    <field name="lieu_naissance" invisible="1"/>
-                                    <field name="sexe"  widget="radio" invisible="1"/>
-                                    <field name="situat_matri"  widget="radio" invisible="1"/>
-                                    <field name="email" widget="email" invisible="1"/>
-                                    <field name="num_tel" widget="phone" invisible="1"/>
                                     <field name="student_id"/>
-                                </group>
-                                <group colspan="2">
-                                    <field name="nationalite" invisible="1"/>
-                                    <field name="autre" invisible="1"/>
-                                    <field name="is_autre_pays" invisible="1"/>
-                                    <field name="region_id" domain="[('country_id','=',nationalite)]" invisible="1"/>
-                                    <field name="city_id" domain="[('region_id','=',region_id)]" invisible="1"/>
-                                    <field name="quarter_id" domain="[('city_id','=',city_id)]" invisible="1"/>
-                                    <field name="lieu_residence" invisible="1"/>
                                 </group>
                             </group>
                         </page>
@@ -156,17 +141,6 @@
                                     <field name="diplo_requis_ids" widget="many2many_tags"/>
                                     <field name="session_lieu_obt"/>
                                     <field name="dern_etab_freq"/>
-                                </group>
-                            </group>
-                        </page>
-
-                        <page name="info_tu" string="Informations sur la personne à joindre en cas d'urgence">
-                            <group name="tuteur">
-                                <group>
-                                    <field name="full_name_tutor"/>
-                                </group>
-                                <group>
-                                    <field name="num_tel_tutor" widget="phone"/>
                                 </group>
                             </group>
                         </page>

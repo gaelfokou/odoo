@@ -19,29 +19,21 @@ class StudentEnrollment(models.Model):
     _inherit=['mail.thread', 'mail.activity.mixin']
     _description = 'Gestion des inscriptions des étudiants'
 
-    partner_id = fields.Many2one(
-        'res.partner',
-        string='Res partner',
+    name = fields.Char(
+        string="Nom(s) et prénom(s)", 
+        related='student_id.name',
+        store=True
     )
     registre_id = fields.Many2one(
         'siantou.session.registre', 
         "Registre d'admission" ,
         # domain="[('state', '=', 'application')]",
-        compute='_compute_registre',
-        store=True
     )
     year_id = fields.Many2one(
         "siantou.ems.core.year", 
         string="Année académique", 
         default=lambda self: self.env['siantou.ems.core.year'].search([('active', '=', True)], limit=1)
     )
-    name = fields.Char(
-        string="Nom(s) et prénom(s)", 
-        compute='_compute_name',
-        store=True
-    )
-
-    matricule = fields.Char(string="Matricule")
     code_enrol = fields.Char(string="Code de préinscription", default="001485KOPLL")
     cycle_id = fields.Many2one(
         'oe.school.course',
@@ -81,35 +73,10 @@ class StudentEnrollment(models.Model):
         default='old',
     )
     nbre_matiere= fields.Integer(string="Nombre de matière")
-    date_naissance = fields.Date(string="Date de naissance")
-    lieu_naissance = fields.Char(string="Lieu de naissance")
-    sexe = fields.Selection([
-        ('masculin', 'Masculin'),
-        ('feminin', 'Féminin'),
-    ], string="Sexe")
-    situat_matri = fields.Selection([
-        ('marie', 'Marié'),
-        ('celibat', 'Célibataire'),
-        ('concub', 'Concubinage'),
-    ], string="Situation matrimoniale")
-    nationalite = fields.Many2one(
-        'siantou.ems.core.country',
-        string="Nationalité(Pays d'origine)",
-    )
-    region_id = fields.Many2one("siantou.ems.core.region", string="Région")
-    city_id = fields.Many2one("siantou.ems.core.city", string="Ville")
-    quarter_id = fields.Many2one("siantou.ems.core.quarter", string="Quartier")
-
-    autre = fields.Char(string="Autre pays")
-    lieu_residence = fields.Char(string="Lieu de résidence")
-    email = fields.Char(string="E-mail")
-    num_tel = fields.Char(string="N° de Téléphone")
     diplo_requis_ids = fields.Many2many('oe.school.course.degree', string="Diplôme requis")
     session_lieu_obt = fields.Char(string="Session et lieu d'obtention")
     dern_etab_freq = fields.Char(string="Dernier établissement fréquenté")
     level_id = fields.Many2one("siantou.ems.core.level", string="Niveau", required=True)
-    full_name_tutor = fields.Char(string="Nom(s) et prénom(s)")
-    num_tel_tutor = fields.Char(string="N° de Téléphone")
     date_preins = fields.Datetime(string="Date de préinscription", default=datetime.datetime.now())
     status = fields.Selection([
             # ('broui', "En attente de paiement des frais d'inscription"),
@@ -120,7 +87,6 @@ class StudentEnrollment(models.Model):
         string="Status",
         default="inscrip",
     )
-    is_autre_pays = fields.Boolean(string="Autre pays ?", default=False)
     observations = fields.Html(string="Observations")
     file_ids = fields.Many2many(
         'ir.attachment',
@@ -132,22 +98,6 @@ class StudentEnrollment(models.Model):
         ondelete='cascade',
         required=True
     )
-
-    @api.depends('cycle_id')
-    def _compute_registre(self):
-        for record in self:
-            registre_id = self.env['siantou.session.registre'].search([('cycle_id', '=', record.cycle_id.id)], limit=1)
-            record.registre_id = registre_id
-
-    @api.onchange('student_id')
-    def _onchange_name(self):
-        for record in self:
-            record.name = record.student_id.name
-
-    @api.depends('student_id')
-    def _compute_name(self):
-        for record in self:
-            record.name = record.student_id.name
 
     def print_payement_student(self):
         for rec in self:
@@ -185,12 +135,6 @@ class StudentEnrollment(models.Model):
             #=====>>>>> Appeler le rapport PDF
             report_action = self.env.ref('siantou_ems_core.action_report_student_core_pdf')
             return report_action.report_action(self,data=data)
-
-    @api.onchange('nationalite')
-    def onchange_nationalite(self):
-        if self.nationalite:
-            self.is_autre_pays=False
-            self.autre=""
 
     def action_preinscrip_wizard(self):
         action = self.env.ref('siantou_ems_core.action_fee_enrollment_wizard').read()[0]
@@ -301,12 +245,22 @@ class StudentEnrollment(models.Model):
         }
 
     @api.model
+    def create(self, vals):
+        registre_id = self.env['siantou.session.registre'].search([('cycle_id', '=', vals['cycle_id'])], limit=1)
+        if registre_id:
+            vals['registre_id'] = registre_id.id
+
+        student_enroll = super(StudentEnrollment, self).create(vals)
+
+        return student_enroll
+
+    @api.model
     def unlink(self):
         if self.status == "transfer":
             raise ValidationError("Impossible de supprimer une candidature déjà admise")
-        else:
-            self.unlink()
+
         student_enrol = super(StudentEnrollment, self).unlink()
+
         return student_enrol
 
 # class StudentEnrollmentFileAdmission(models.Model):
