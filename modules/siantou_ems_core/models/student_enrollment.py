@@ -20,18 +20,18 @@ class StudentEnrollment(models.Model):
     _description = 'Gestion des inscriptions des étudiants'
 
     name = fields.Char(
-        string="Nom(s) et prénom(s)",
+        string="Nom(s) et prénom(s)", 
         related='student_id.name',
         store=True
     )
     registre_id = fields.Many2one(
-        'siantou.session.registre',
+        'siantou.session.registre', 
         "Registre d'admission" ,
         # domain="[('state', '=', 'application')]",
     )
     year_id = fields.Many2one(
-        "siantou.ems.core.year",
-        string="Année académique",
+        "siantou.ems.core.year", 
+        string="Année académique", 
         default=lambda self: self.env['siantou.ems.core.year'].search([('active', '=', True)], limit=1)
     )
     code_enrol = fields.Char(string="Code de préinscription", default="001485KOPLL")
@@ -68,7 +68,7 @@ class StudentEnrollment(models.Model):
     status_univ = fields.Selection([
             ('new', 'Nouveau'),
             ('old', 'Ancien'),
-        ],
+        ], 
         string='Statut universitaire',
         default='old',
     )
@@ -105,7 +105,7 @@ class StudentEnrollment(models.Model):
                 [
                     ('student_id','=',rec.id),
                     ('year_id','=',rec.year_id.id),
-                ],
+                ], 
                 limit=1
             )
             data = {
@@ -254,7 +254,15 @@ class StudentEnrollment(models.Model):
 
         return student_enroll
 
-    @api.model
+    # def write(self, vals):
+    #     registre_id = self.env['siantou.session.registre'].search([('cycle_id', '=', vals['cycle_id'])], limit=1)
+    #     if registre_id:
+    #         vals['registre_id'] = registre_id.id
+
+    #     student_enroll = super(StudentEnrollment, self).write(vals)
+
+    #     return student_enroll
+
     def unlink(self):
         if self.status == "transfer":
             raise ValidationError("Impossible de supprimer une candidature déjà admise")
@@ -268,11 +276,11 @@ class StudentEnrollment(models.Model):
 #     _description = "Gestion des fichiers d'enrollement des étudiants"
 
 #     student_enrollemnt_id = fields.Many2one(
-#         'oe.school.student.enrollment',
-#         string="Étudiant préinscrit",
+#         'oe.school.student.enrollment', 
+#         string="Étudiant préinscrit", 
 #     )
 #     submitted_date = fields.Date(
-#         string="Date de dépôt",
+#         string="Date de dépôt", 
 #         default=datetime.date.today(),
 #         help="Documents soumis le"
 #     )
@@ -298,8 +306,8 @@ class StudentEnrollmentAdmission(models.Model):
     _description = 'Gestion des Admission scolarité des étudiants'
 
     student_enrollemnt_id = fields.Many2one(
-        'oe.school.student.enrollment',
-        string="Étudiant préinscrit",
+        'oe.school.student.enrollment', 
+        string="Étudiant préinscrit", 
     )
     observations = fields.Html(string="Observations")
 
