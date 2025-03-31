@@ -48,13 +48,13 @@
                         <page string="Informations générales">
                             <group name="perso" string="Informations générales">
                                 <group>
-                                    <field name="status_univ"/>
-                                </group>
-                                <group>
                                     <field name="last_name"/>
                                 </group>
                                 <group>
                                     <field name="first_name"/>
+                                </group>
+                                <group>
+                                    <field name="status_univ"/>
                                 </group>
                                 <group>
                                     <field name="annee_acadmique_id"/>

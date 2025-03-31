@@ -70,10 +70,12 @@ class HrEmployee(models.Model):
         'Date de naissance',
     )
 
-    @api.onchange('first_name', 'last_name')
+    @api.onchange('last_name', 'first_name')
     def _onchange_name(self):
         for record in self:
-            name = '{} {}'.format(record.first_name, record.last_name)
+            last_name = record.last_name if record.last_name else ''
+            first_name = record.first_name if record.first_name else ''
+            name = '{} {}'.format(last_name, first_name)
             while True:
                 if name.find('  ') != -1:
                     name = name.replace('  ', ' ')
@@ -82,10 +84,12 @@ class HrEmployee(models.Model):
             name = name.strip()
             record.name = name
 
-    @api.depends('first_name', 'last_name')
+    @api.depends('last_name', 'first_name')
     def _compute_name(self):
         for record in self:
-            name = '{} {}'.format(record.first_name, record.last_name)
+            last_name = record.last_name if record.last_name else ''
+            first_name = record.first_name if record.first_name else ''
+            name = '{} {}'.format(last_name, first_name)
             while True:
                 if name.find('  ') != -1:
                     name = name.replace('  ', ' ')
