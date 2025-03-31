@@ -384,10 +384,9 @@ class Student(models.Model):
                 ('level_id', '=', vals['level_id']),
             ], limit=1)
             if not class_id:
-                if 'school_id' not in vals or not vals['school_id']:
-                    field_of_study_id = self.env['siantou.ems.core.field_of_study'].search([('id', '=', vals['field_of_study_id'])], limit=1)
-                    if field_of_study_id:
-                        vals['school_id'] = field_of_study_id.school_id.id
+                field_of_study_id = self.env['siantou.ems.core.field_of_study'].search([('id', '=', vals['field_of_study_id'])], limit=1)
+                if field_of_study_id:
+                    vals['school_id'] = field_of_study_id.school_id.id
                 class_id = self.env['siantou.ems.core.class'].create({
                     'school_id': vals['school_id'],
                     'field_of_study_id': vals['field_of_study_id'],
@@ -401,14 +400,13 @@ class Student(models.Model):
 
         batch_id = self.env['siantou.ems.core.student.batch'].browse(vals['batch_id'])
         if not batch_id:
-            if 'batch_id' not in vals or not vals['batch_id']:
-                batch_id = self.env['siantou.ems.core.student.batch'].assign_batch(
-                    class_id.field_of_study_id.school_id.id,
-                    class_id.field_of_study_id.id,
-                    class_id.specialty_id.id,
-                    class_id.option_id.id,
-                    class_id.level_id.id
-                )
+            batch_id = self.env['siantou.ems.core.student.batch'].assign_batch(
+                class_id.field_of_study_id.school_id.id,
+                class_id.field_of_study_id.id,
+                class_id.specialty_id.id,
+                class_id.option_id.id,
+                class_id.level_id.id
+            )
         vals['batch_id'] = batch_id.id
 
         # Création de l'étudiant

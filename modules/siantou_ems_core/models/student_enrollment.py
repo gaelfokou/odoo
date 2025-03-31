@@ -56,7 +56,6 @@ class StudentEnrollment(models.Model):
     class_id = fields.Many2one(
         'siantou.ems.core.class',
         string='Classe',
-        required=True
     )
     type_cour = fields.Selection([
             ('cj', 'Cours du jour'),
