@@ -1,4 +1,3 @@
-
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
@@ -320,13 +319,6 @@ class Student(models.Model):
                 'user_id': user_id.id,
                 'partner_id': partner_id.id,
             })
-            diplo_requis = self.env['oe.school.course.degree'].search([('cycle_ids', '=', student.cycle_id.id)])
-            diplo_requis_ids = diplo_requis.ids
-            if len(diplo_requis_ids) == 0:
-                diplo_requis = student.cycle_id.diplo_requis_ids.create({
-                    'name': student.cycle_id.name,
-                })
-                diplo_requis_ids.append(diplo_requis.id)
             student.student_enroll_ids.create({
                 'year_id': student.year_id.id,
                 'cycle_id': student.cycle_id.id,
@@ -336,7 +328,6 @@ class Student(models.Model):
                 'class_id': student.class_id.id,
                 'type_cour': student.type_cour,
                 'status_univ': student.status_univ,
-                'diplo_requis_ids': diplo_requis_ids,
                 'session_lieu_obt': student.lieu_residence,
                 'dern_etab_freq': student.lieu_residence,
                 'level_id': student.level_id.id,
@@ -375,41 +366,10 @@ class Student(models.Model):
 
     @api.model
     def create(self, vals):
-        class_id = self.env['siantou.ems.core.class'].browse(vals['class_id'])
-        if not class_id:
-            class_id = self.env['siantou.ems.core.class'].search([
-                ('field_of_study_id', '=', vals['field_of_study_id']),
-                ('specialty_id', '=', vals['specialty_id']),
-                ('option_id', '=', vals['option_id']),
-                ('level_id', '=', vals['level_id']),
-            ], limit=1)
-            if not class_id:
-                field_of_study_id = self.env['siantou.ems.core.field_of_study'].search([('id', '=', vals['field_of_study_id'])], limit=1)
-                if field_of_study_id:
-                    vals['school_id'] = field_of_study_id.school_id.id
-                class_id = self.env['siantou.ems.core.class'].create({
-                    'school_id': vals['school_id'],
-                    'field_of_study_id': vals['field_of_study_id'],
-                    'specialty_id': vals['specialty_id'],
-                    'option_id': vals['option_id'],
-                    'level_id': vals['level_id'],
-                    'year_id': vals['year_id'],
-                    'type_cour': vals['type_cour'],
-                })
-        vals['class_id'] = class_id.id
+        field_of_study_id = self.env['siantou.ems.core.field_of_study'].search([('id', '=', vals['field_of_study_id'])], limit=1)
+        if field_of_study_id:
+            vals['school_id'] = field_of_study_id.school_id.id
 
-        batch_id = self.env['siantou.ems.core.student.batch'].browse(vals['batch_id'])
-        if not batch_id:
-            batch_id = self.env['siantou.ems.core.student.batch'].assign_batch(
-                class_id.field_of_study_id.school_id.id,
-                class_id.field_of_study_id.id,
-                class_id.specialty_id.id,
-                class_id.option_id.id,
-                class_id.level_id.id
-            )
-        vals['batch_id'] = batch_id.id
-
-        # Création de l'étudiant
         student = super(Student, self).create(vals)
 
         self.create_student_user(student)
