@@ -10,7 +10,7 @@
           <field name="date" />
           <field name="type_examen_id"/>
           <field name="semestre_id"/>
-          <field name="annee_acadmique_id"/>
+          <field name="year_id"/>
           <field name="school_id"/>
         </tree>
       </field>
@@ -33,7 +33,7 @@
                             </group>
                             <group colspan="2">
                                 <field name="date"/>
-                                <field name="annee_acadmique_id"/>
+                                <field name="year_id"/>
                                 <field name="school_id"/>
                             </group>
                         </group>
@@ -45,7 +45,7 @@
                                     >
                                     <field name="name" />
                                     <field name="level_id"/>
-                                    <field name="annee_acadmique_id"/>
+                                    <field name="year_id"/>
                                     <field name="field_of_study_id"/>
                                     <field name="school_id"/>
                                     </tree>

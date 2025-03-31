@@ -57,7 +57,7 @@ class StudentEnrollmentAdmissionWizard(models.TransientModel):
                 [
                     ('field_of_study_id','=',self.student_enrollement_id.field_of_study_id.id),
                     ('level_id','=',self.student_enrollement_id.level_id.id),
-                    ('annee_acadmique_id','=',self.student_enrollement_id.year_id.id),
+                    ('year_id','=',self.student_enrollement_id.year_id.id),
                 ],
                 limit=1
             )
@@ -67,7 +67,7 @@ class StudentEnrollmentAdmissionWizard(models.TransientModel):
                     'name':f"classe {self.student_enrollement_id.field_of_study_id.name} {self.student_enrollement_id.level_id.name}",
                     'field_of_study_id':self.student_enrollement_id.field_of_study_id.id,
                     'level_id':self.student_enrollement_id.level_id.id,
-                    'annee_acadmique_id':self.student_enrollement_id.year_id.id,
+                    'year_id':self.student_enrollement_id.year_id.id,
                     'school_id':self.student_enrollement_id.field_of_study_id.school_id.id,
                 })
 

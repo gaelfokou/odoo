@@ -48,7 +48,7 @@ class ExamenDateButtoire(models.Model):
     name = fields.Char('Nom', required=True, tracking=True)
     date = fields.Datetime('Date butoire')
     type_examen_id = fields.Many2one('siantou.ems.examen.type', string='Type d\'examen')
-    annee_acadmique_id = fields.Many2one('siantou.ems.core.year', string='Année Académique')
+    year_id = fields.Many2one('siantou.ems.core.year', string='Année Académique')
     semestre_id = fields.Many2one('siantou.ems.core.year.semester', string='Semestre', required=True, tracking=True)
     school_id = fields.Many2one('siantou.ems.core.school', string='Ecole')
     class_ids = fields.Many2many('siantou.ems.core.class', string='Classe')

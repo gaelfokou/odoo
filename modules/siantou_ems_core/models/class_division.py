@@ -40,7 +40,7 @@ class EducationClass(models.Model):
 
     school_id = fields.Many2one('siantou.ems.core.school', string='Ecole', required=True)
 
-    annee_acadmique_id = fields.Many2one(
+    year_id = fields.Many2one(
         'siantou.ems.core.year',
         string='Année Académique',
         required=True,

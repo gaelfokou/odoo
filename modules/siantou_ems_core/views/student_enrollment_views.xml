@@ -142,7 +142,7 @@
                                 <group colspan="2">
                                     <field name="matricule"/>
                                     <field name="status_univ" invisible="status_univ == 'new'"/>
-                                    <field name="annee_acadmique_id"/>
+                                    <field name="year_id"/>
                                     <field name="cycle_id"/>
                                     <field name="field_of_study_id" options="{'no_create': True}" domain="[('cycle_id','=',cycle_id)]"/>
                                     <field name="specialty_id" options="{'no_create': True}" domain="[('field_of_study_id','=',field_of_study_id)]"/>
@@ -151,7 +151,7 @@
                                 <group colspan="2">
                                     <field name="level_id"/>
                                     <field name="type_cour" widget="radio"/>
-                                    <field name="class_id" options="{'no_create': True}" domain="[('field_of_study_id', '=', field_of_study_id), ('specialty_id', '=', specialty_id), ('option_id', '=', option_id), ('level_id', '=', level_id), ('annee_acadmique_id', '=', annee_acadmique_id), ('type_cour', '=', type_cour)]"/>
+                                    <field name="class_id" options="{'no_create': True}" domain="[('field_of_study_id', '=', field_of_study_id), ('specialty_id', '=', specialty_id), ('option_id', '=', option_id), ('level_id', '=', level_id), ('year_id', '=', year_id), ('type_cour', '=', type_cour)]"/>
                                     <field name="nbre_matiere" invisible="status_univ == 'new'"/>
                                     <field name="diplo_requis_ids" widget="many2many_tags"/>
                                     <field name="session_lieu_obt"/>

@@ -112,7 +112,7 @@ class Student(models.Model):
         string="Niveau",
         required=True
     )
-    annee_acadmique_id = fields.Many2one(
+    year_id = fields.Many2one(
         'siantou.ems.core.year',
         string='Année Académique',
         required=True,
@@ -337,7 +337,7 @@ class Student(models.Model):
                 'name': student.name,
                 'email': student.email,
                 'num_tel': student.num_tel,
-                'year_id': student.annee_acadmique_id.id,
+                'year_id': student.year_id.id,
                 'cycle_id': student.cycle_id.id,
                 'field_of_study_id': student.field_of_study_id.id,
                 'specialty_id': student.specialty_id.id,
@@ -353,7 +353,6 @@ class Student(models.Model):
                 'diplo_requis_ids': diplo_requis_ids,
                 'session_lieu_obt': student.lieu_residence,
                 'dern_etab_freq': student.lieu_residence,
-                'annee_acadmique_id': student.annee_acadmique_id,
                 'level_id': student.level_id.id,
                 'full_name_tutor': student.name,
                 'num_tel_tutor': student.num_tel,
@@ -412,7 +411,7 @@ class Student(models.Model):
                     'specialty_id': vals['specialty_id'],
                     'option_id': vals['option_id'],
                     'level_id': vals['level_id'],
-                    'annee_acadmique_id': vals['annee_acadmique_id'],
+                    'year_id': vals['year_id'],
                     'type_cour': vals['type_cour'],
                 })
         vals['class_id'] = class_id.id

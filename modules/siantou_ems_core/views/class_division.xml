@@ -14,7 +14,7 @@
                 	<field name="specialty_id"/>
                 	<field name="option_id"/>
                     <field name="school_id"/>
-                    <field name="annee_acadmique_id"/>
+                    <field name="year_id"/>
                     <field name="level_id"/>
                     <field name="type_cour"/>
                     <field name="group_ids" widget="many2many_tags"/>
@@ -36,7 +36,7 @@
                                 <field name="name" readonly="1"/>
                                 <field name="level_id"/>
                                 <field name="school_id"/>
-                                <field name="annee_acadmique_id"/>
+                                <field name="year_id"/>
                             </group>
                             <group>
                                 <field name="field_of_study_id" options="{'no_create': True}" domain="[('school_id', '=', school_id)]"/>
