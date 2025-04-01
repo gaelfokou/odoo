@@ -252,7 +252,7 @@ class RattrapageUe(models.Model):
 
     name = fields.Char('name')
 
-    ue_id = fields.Many2one('education.unite.enseignement', string="Unité d'enseignement")
+    ue_id = fields.Many2one('education.unite.enseignement', string='Unité d\'enseignement')
 
     anne_academique_id = fields.Many2one('education.academic.year', string='Année académiqu',  tracking=True)
 

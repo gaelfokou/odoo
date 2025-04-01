@@ -14,7 +14,7 @@ class ExamenRegistre(models.Model):
 
     matiere_id = fields.Many2one('education.subject', string='Matiere', required=True, tracking=True)
 
-    unite_enseignement_id = fields.Many2one('education.unite.enseignement', string="Unité d'enseignement", required=True, tracking=True)
+    unite_enseignement_id = fields.Many2one('education.unite.enseignement', string='Unité d\'enseignement', required=True, tracking=True)
 
     class_id = fields.Many2one('education.class.division', string='Classe', required=True, tracking=True)
 
@@ -185,7 +185,7 @@ class ExamenRegistreLine(models.Model):
 
     coeficien = fields.Float('Crédit', required=True)
 
-    unite_enseignement_id = fields.Many2one('education.unite.enseignement', readonly=True, string="Unité d'enseignement")
+    unite_enseignement_id = fields.Many2one('education.unite.enseignement', readonly=True, string='Unité d\'enseignement')
 
     Pourcentage = fields.Integer('Pourcentage')
 

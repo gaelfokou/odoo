@@ -200,7 +200,7 @@ class ExamenLine(models.Model):
 
     pourcentage_presence = fields.Integer('Pourcentage de présence', default=20)
 
-    unite_enseignement_id = fields.Many2one('education.unite.enseignement', string="Unité d'enseignement")
+    unite_enseignement_id = fields.Many2one('education.unite.enseignement', string='Unité d\'enseignement')
 
     examen_id = fields.Many2one('siantou.ems.examen.plannifier')
 

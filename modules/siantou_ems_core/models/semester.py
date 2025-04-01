@@ -54,7 +54,7 @@ class Semester(models.Model):
     ue_ids = fields.One2many(
         'siantou.ems.core.unite.enseignement',
         'semestre_id',
-        string="Unité d'enseignement",
+        string='Unité d\'enseignement',
         tracking=True)
 
     class_id = fields.Many2one(

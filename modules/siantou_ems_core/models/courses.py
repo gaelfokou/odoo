@@ -172,7 +172,7 @@ class SchoolSyllabus(models.Model):
 
     class_id = fields.Many2one('siantou.ems.core.class', string='Classe', required=True)
 
-    ue_id = fields.Many2one('siantou.ems.core.unite.enseignement', string="Unité d'enseignement", required=True)
+    ue_id = fields.Many2one('siantou.ems.core.unite.enseignement', string='Unité d\'enseignement', required=True)
 
     subject_id = fields.Many2one('siantou.ems.core.subject', string='Matière', required=True)
 
@@ -307,7 +307,7 @@ class SchoolSyllabus(models.Model):
 
 class SchoolCourseSubject(models.Model):
     _name = 'siantou.ems.core.unite.enseignement'
-    _description = "Unité d'enseignement"
+    _description = 'Unité d\'enseignement'
 
     type_ue = fields.Selection([
             ('uf', 'UE Fondamentales'),

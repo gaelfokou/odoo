@@ -190,7 +190,7 @@ class Timetable(models.Model):
 
     ue_id = fields.Many2one(
         'siantou.ems.core.unite.enseignement',
-        string="Unité d'enseignement",
+        string='Unité d\'enseignement',
         required=True,
         ondelete='restrict'
     )

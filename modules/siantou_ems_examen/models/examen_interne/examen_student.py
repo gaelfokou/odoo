@@ -241,7 +241,7 @@ class ExamenStudentLine(models.Model):
     _description = "Modèle pour les lignes de calculer les données d'examen d'un étudiant"
     _inherit = ["mail.thread", "mail.activity.mixin"]
 
-    ue_id = fields.Many2one('education.unite.enseignement', string="Unité d'enseignement")
+    ue_id = fields.Many2one('education.unite.enseignement', string='Unité d\'enseignement')
 
     moyenne_ue = fields.Float('Moyenne',store=True,compute='_compute_moyenne')
 
