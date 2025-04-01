@@ -118,7 +118,7 @@
                                         <field name="date" readonly="1" decoration-muted="is_reconciled == True"/>
                                         <field name="payment_ref" readonly="is_reconciled == True" decoration-muted="is_reconciled == True"/>
                                         <field name="partner_id" decoration-muted="is_reconciled == True"
-                                               domain="['|',('parent_id', '=', False),('is_company', '=', True)]"
+                                               domain="['|', ('parent_id', '=', False),('is_company', '=', True)]"
                                                context="{'default_supplier': 1}" readonly="is_reconciled == True"/>
                                         <field name="ecole_id" optional="show" readonly="is_reconciled == True"/>
                                         <field name="departement_id" optional="show" readonly="is_reconciled == True"/>
@@ -145,7 +145,7 @@
                                             <group>
                                                 <group string="Informations sur l'étudiant(e)">
                                                     <field string="Etudiant(e)" name="partner_id" 
-                                                        domain="['|',('parent_id', '=', False),('is_company', '=', True)]"
+                                                        domain="['|', ('parent_id', '=', False),('is_company', '=', True)]"
                                                         context="{'default_supplier': 1}"/>
                                                     <field name="ecole_id" optional="show"/>
                                                     <field name="departement_id" optional="hide"/>

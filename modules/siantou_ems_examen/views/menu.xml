@@ -4,7 +4,7 @@
       web_icon="siantou_ems_examen/static/description/icon.svg"
       groups="siantou_ems_examen.group_examen_base"
       sequence="8" />
-  
+
     <!-- Examen -->
     <menuitem
       id="examen_menu_plannification_cc_sn"
@@ -22,8 +22,6 @@
       parent="root_menu_examen"
     />
 
-
-
     <menuitem
       id="examen_menu_note"
       name="Notes"
@@ -31,7 +29,7 @@
       groups="siantou_ems_examen.group_examen_base"
       parent="root_menu_examen"
     />
-  
+
     <menuitem
       id="examen_menu_resultat"
       name="Résultats"
@@ -56,8 +54,6 @@
       sequence="45"
       parent="root_menu_examen"
     />
-
-
 
   </data>
 </odoo>

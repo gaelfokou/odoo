@@ -17,7 +17,7 @@
                     <field name="student_id" readonly="1" options="{'no_open':True,'no_create':True}"/>
                     <field name="status"/>
                     <!-- <field name="status" readonly="exam_state not in ('draft','schedule')"/> -->
-                    
+
                     <field name="exam_state" column_invisible="1" />
 				</tree>
 			</field>
@@ -48,7 +48,7 @@
                 </form>
             </field>
         </record>
-        
+
         <record id="exam_attendees_search_view" model="ir.ui.view">
             <field name="name">exam.attendees.search.view</field>
             <field name="model">session.line.attende</field>
@@ -62,7 +62,7 @@
                 </search>
              </field>
         </record>
-        
+
         <record id="action_exam_attendees" model="ir.actions.act_window">
             <field name="name">Liste des étudiants autorisés à prendre part à l'examen</field>
             <field name="res_model">session.line.attende</field>
@@ -86,6 +86,6 @@
             action="action_exam_attendees"
             sequence="15"
         /> -->
-        
+
     </data>
 </odoo>

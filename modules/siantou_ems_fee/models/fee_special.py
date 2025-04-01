@@ -5,11 +5,9 @@ from datetime import date
 import logging
 _logger = logging.getLogger("Logger ==========")
 
-
 class FeeSpecial(models.Model):
     _name = 'siantou.ems.fee.special'
     _inherit = ['mail.thread', 'mail.activity.mixin']
-
 
     def _get_default_acadmic_year(self):
         """Get the default acedemic year active"""
@@ -18,7 +16,6 @@ class FeeSpecial(models.Model):
         if not year:
             raise UserError("""Aucune annéé academique activé, vous ne pouvez pas effectuer la facturation""")
         return year.id
-
 
     name = fields.Char('Réference du paiement', default='/')
     student_id = fields.Many2one(
@@ -91,14 +88,12 @@ class FeeSpecial(models.Model):
     description = fields.Text('Description')
     date_payment = fields.Date(string="Date de paiement", default=fields.Date.context_today)
 
-
     @api.constrains('amount')
     def _constrains_amount(self):
         """Amount paid less or egal than amount of selected invoice"""
         for rec in self:
             if rec.amount <= 0:
                 raise UserError("""Le montant du frais spécial ne peut être égal à 0""")
-
 
     @api.onchange('student_id')
     def _onchange_student_id(self):
@@ -110,12 +105,11 @@ class FeeSpecial(models.Model):
                 ('type_inclusion_fee','=', 'fee_spec'),
                 ('state','=', 'validate'),
             ]
-    
+
     @api.onchange('fee_structure_id')
     def _onchange_fee_structure_id(self):
         for rec in self:
             rec.amount = rec.fee_structure_id.amount_total
-
 
     def validate_special(self):
         """Validate, create and match payment and invoice"""
@@ -123,7 +117,7 @@ class FeeSpecial(models.Model):
             journal_id = rec.fee_structure_id.type_frais_id.category_id.journal_id
             if not journal_id:
                 raise ValidationError("Le journal de paiement n'est pas configuré pour cette structure de frais")
-            
+
             account_receivable_id = journal_id.default_account_id
             account_revenue_id = journal_id.default_account_id
             # _logger.info(account_receivable_id)
@@ -131,7 +125,7 @@ class FeeSpecial(models.Model):
 
             if not account_receivable_id or not account_revenue_id:
                 raise ValidationError("Les comptes de créance ou de revenus ne sont pas configurés dans le journal. Veuillez vérifier la configuration")
-    
+
             amount = 0
             if rec.fee_structure_id.type_paiement=='pu':
                 amount = rec.fee_structure_id.amount_total
@@ -157,14 +151,12 @@ class FeeSpecial(models.Model):
             rec.facture_id = move.id
             rec.state = 'validate'
 
-
     def reset_special(self):
         """Cancel payment"""
         for rec in self:
             rec.facture_id.unlink()
             rec.state = 'create'
             # rec.unlink()
-    
 
     def print_payement_special(self):
         for rec in self:
@@ -200,7 +192,6 @@ class FeeSpecial(models.Model):
             report_action = self.env.ref('siantou_ems_fee.action_report_student_fees_pdf')
             return report_action.report_action(self,data=data)
 
-
     @api.model
     def create(self, vals):
         """Over riding the create method to assign
@@ -224,11 +215,10 @@ class FeeSpecial(models.Model):
         )
         if pay_fee:
             raise ValidationError(f"Un paiement de Mr/Mdme {student_id.name} existe déjà")
-        
+
         res = super(FeeSpecial, self).create(vals)
         res.update({
             'state':'create'
         })
         return res
-
 

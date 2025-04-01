@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 	<data>
-        
+
         <record id="create_examen_session_line_result_wizard_form_view" model="ir.ui.view">
             <field name="name">examen.session.line.result.wizard.form</field>
             <field name="model">examen.session.line.result.wizard</field>

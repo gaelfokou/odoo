@@ -6,7 +6,6 @@ from datetime import datetime
 
 _logger = logging.getLogger("Logger ==========")
 
-
 class LissteFacture(models.AbstractModel):
     _name = 'report.siantou_ems_fee.report_fees_classe'
 
@@ -27,7 +26,6 @@ class LissteFacture(models.AbstractModel):
                     'reste': total,
                 })
 
-        
         docargs = {
             'doc_ids': docids,
             'doc_model': "siantou.ems.fee.classe",

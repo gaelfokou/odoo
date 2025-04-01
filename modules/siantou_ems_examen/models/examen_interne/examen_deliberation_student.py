@@ -42,7 +42,6 @@ class ExamenDeliberationStudent(models.Model):
         ('confirm', 'Confirmer'),
     ], string='État', default='draft')
 
-
     @api.onchange('field_of_study_id')
     def _onchange_class(self):
         for rec in self:
@@ -55,7 +54,6 @@ class ExamenDeliberationStudent(models.Model):
             else:
             # Si aucune filière n'est sélectionnée, supprimer le domaine
                 return {'domain': {'actual_class_id': []}}
-
 
     @api.onchange('anne_academique_id', 'actual_class_id', 'field_of_study_id')
     def _onchange_student(self):
@@ -97,7 +95,7 @@ class ExamenDeliberationStudent(models.Model):
                             ("anne_academique_id", "=", rec.annee_academique_id.id),
                             ("class_id.class_id", "=", rec.actual_class_id.id)
                         ])
-                        
+
                         if aft_exam_student_obj:
                             for ex in aft_exam_student_obj:
                                 ex.deli_stu_line_id = new_line.id  # Utilisez new_line.id ici
@@ -108,7 +106,6 @@ class ExamenDeliberationStudent(models.Model):
                         'actual_class_id': [('id', 'in', etudiant_ids.mapped('class_id.class_id.id'))]
                     }
                 }
-
 
     def _get_average(self, rec, level_id=None):
         """Helper pour calculer la moyenne des notes pour un niveau d'étudiant spécifié ou pour tous les niveaux."""
@@ -131,7 +128,6 @@ class ExamenDeliberationStudent(models.Model):
         else:
             # Retourner les moyennes pour tous les niveaux
             return {niveau: (sum(notes) / len(notes) if notes else 0) for niveau, notes in averages.items()}
-
 
     def action_validate(self):
         """Fonction pour valider la délibération des étudiants et déterminer leur passage de niveau."""
@@ -170,7 +166,7 @@ class ExamenDeliberationStudent(models.Model):
 
                 level_id = line.student_id.class_id.class_id.level_id
                 level = level_id.name
-                
+
                 # Initialiser les pourcentages
                 pct_n1 = pct_n2 = pct_n3 = moyenne_n2 = 0
                 _logger.info(f"level: {level}")
@@ -181,7 +177,7 @@ class ExamenDeliberationStudent(models.Model):
                     _logger.info("total_matiere_n1: %d", total_matiere_n1)
                     _logger.info("valider_n1: %d", valider_n1)
                     _logger.info("pct_n1: %d", pct_n1)
-        
+
                     decision = self._determine_decision(pct_n1)
                     line.decision = decision
 
@@ -189,7 +185,7 @@ class ExamenDeliberationStudent(models.Model):
                     total_matiere_n2 = student_stats[line.student_id.id]['total']
                     valider_n2 = student_stats[line.student_id.id]['valides']
                     pct_n2 = (valider_n2 / total_matiere_n2 * 100) if total_matiere_n2 > 0 else 0
-                    
+
                     moyenne_n2 = average_notes.get('L2', 0)  # Récupérer la moyenne pour L2
                     decision = self._determine_decision(pct_n1, pct_n2=pct_n2, moyenne_n2=moyenne_n2)
                     line.decision = decision
@@ -198,10 +194,10 @@ class ExamenDeliberationStudent(models.Model):
                     total_matiere_n3 = student_stats[line.student_id.id]['total']
                     valider_n3 = student_stats[line.student_id.id]['valides']
                     pct_n3 = (valider_n3 / total_matiere_n3 * 100) if total_matiere_n3 > 0 else 0
-                    
+
                     decision = self._determine_decision(pct_n1, pct_n2=None, pct_n3=pct_n3)
                     line.decision = decision
-                
+
                 # Log de la décision prise
                 _logger.info("Décision pour l'étudiant %s (%s): %s", line.student_id.name, level, line.decision)
 
@@ -216,7 +212,6 @@ class ExamenDeliberationStudent(models.Model):
                 'next': {'type': 'ir.actions.act_window_close'},
             }
         }
-
 
     def _determine_decision(self, pct_n1, pct_n2=None, pct_n3=None,moyenne_n2=None):
         """Détermine la décision basée sur les pourcentages de validation."""
@@ -250,7 +245,6 @@ class ExamenDeliberationStudent(models.Model):
                     else:
                         return "Ajourné"
 
-
     def action_confirm(self):
         """Fonction pour confirmer et inscrire les étudiants dans la classe suivante ou dans la même classe pour reprise."""
         for rec in self:
@@ -265,7 +259,7 @@ class ExamenDeliberationStudent(models.Model):
                     line.student_id.class_id = rec.next_class_id.id  # Inscrire dans la classe supérieure
                 elif line.decision == "Reprise (ADR)":
                     line.student_id.class_id.class_id = rec.actual_class_id.id  # Rester dans la même classe
-                    
+
                     # Réinscrire l'étudiant pour les matières à rattraper
                     subjects_to_retake = []
                     for note_line in line.student_note_ids:
@@ -323,12 +317,11 @@ class ExamenDeliberationStudent(models.Model):
             datas = {}
             res = {}
             res['id'] = rec.id
-        
+
             # Prepare data for the report
             datas['form'] = res
-            
-        return self.env.ref('aft_examen.action_print_pv_pdf').report_action(self, data=datas)
 
+        return self.env.ref('aft_examen.action_print_pv_pdf').report_action(self, data=datas)
 
 class ExamenDeliberationLines(models.Model):
     """
@@ -349,15 +342,15 @@ class ExamenDeliberationLines(models.Model):
     last_name = fields.Char('Prénom(s)', related='student_id.last_name', tracking=True)
 
     date_of_birth = fields.Date(string="Date de Naissance", related='student_id.date_of_birth', requird=True)
-    
+
     student_note_ids = fields.One2many('siantou.ems.examen.student', string='Notes de l\'étudiants', inverse_name='deli_stu_line_id')
 
     deli_note_id = fields.Many2one(string='Délibération des notes', comodel_name='siantou.ems.examen.deliberation.student')
 
     decision = fields.Char('Décision', readonly=True)  # Champ pour stocker la décision
-    
+
     moyenne = fields.Float(compute='_compute_moyenne', store=True)
-    
+
     mention = fields.Selection([
         ('Assez bien', 'Assez bien'),
         ('Bien', 'Bien'),
@@ -365,30 +358,27 @@ class ExamenDeliberationLines(models.Model):
         ('Très Bien', 'Très Bien'),       
     ], string='Mention',store=True, readonly=True,compute="_compute_mention")
 
-    
     state = fields.Selection([
         ('draft', 'Brouillon'),
         ('validate', 'Valider'),
         ('confirm', 'Confirmer'),
     ], string='state', default='draft')
 
-    
     @api.depends('student_note_ids')
     def _compute_moyenne(self):
         _logger.info("Calculating total average")
-        
+
         for rec in self:
             total_moyenne = 0
             note_count = len(rec.student_note_ids)
-            
+
             # Sum the averages of all student notes
             for note in rec.student_note_ids:
                 total_moyenne += note.moyenne
-            
+
             # Calculate the average if there are notes
             rec.moyenne = total_moyenne / note_count if note_count > 0 else 0
-            
-    
+
     @api.depends('moyenne')
     def _compute_mention(self):
         for rec in self:
@@ -402,11 +392,9 @@ class ExamenDeliberationLines(models.Model):
                 elif rec.moyenne >= 16:
                     rec.mention = "Très Bien"
 
-
-
     def action_modifier_note_deliberation(self):
         _logger.info("Action de modification des notes appelée pour l'étudiant: %s", self.student_id.name)
-        
+
         for rec in self:
             # Rechercher les notes de l'étudiant
             subject_lines = self.env['siantou.ems.examen.student'].search([
@@ -429,7 +417,6 @@ class ExamenDeliberationLines(models.Model):
                     'target': 'current',
                 }
 
-
 class ExamenDeliberationJury(models.Model):
     """
     Modèle pour gérer les délibérations des notes d'un étudiant d'une classe
@@ -447,4 +434,4 @@ class ExamenDeliberationJury(models.Model):
     description = fields.Char('Description')
 
     deli_stu_id = fields.Many2one(string='Délibération des étudiants', comodel_name='siantou.ems.examen.deliberation.student')
-    
+

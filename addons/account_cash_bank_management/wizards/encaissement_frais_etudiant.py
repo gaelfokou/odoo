@@ -4,7 +4,6 @@ from odoo import models, fields, api, exceptions, _
 
 from odoo.exceptions import UserError
 
-
 class EncaissementFraisEtudiant(models.TransientModel):
     _name = 'encaissement.frais.etudiant.wizard'
 
@@ -40,7 +39,6 @@ class EncaissementFraisEtudiant(models.TransientModel):
         for rec in self:
             rec.montant_a_rembourser = rec.montant_recu - rec.montant_paye
 
-
     def action_verification_precedent(self):
         self.write({
             'etudiant_id': False,
@@ -49,7 +47,6 @@ class EncaissementFraisEtudiant(models.TransientModel):
             'recherche_etudiant_matricule': False,
             'etat_de_progression': 'recherche_etudiant',
         })
-
 
     def action_encaisser_precedent(self):
         self.write({

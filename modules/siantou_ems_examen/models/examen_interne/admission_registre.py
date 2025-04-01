@@ -6,7 +6,6 @@ from odoo.exceptions import UserError, ValidationError
 
 _logger = logging.getLogger("++++++++++++++")
 
-
 class AdmissiRegistre(models.Model):
     """
     Modèle pour ajouter les matière dans le régistre 
@@ -27,7 +26,6 @@ class AdmissiRegistre(models.Model):
 
     numero_decision = fields.Char('Numéro de décision')
 
-
     def action_validat_note(self): 
         for rec in self:
             rec.state = "deliberation"
@@ -41,7 +39,6 @@ class AdmissiRegistre(models.Model):
                             'next': {'type': 'ir.actions.act_window_close'},
                         }
                     }
-
 
     def action_validat(self): 
         for rec in self:
@@ -80,7 +77,7 @@ class AdmissiRegistre(models.Model):
         for rec in self:
             datas = {}
             res = {}
-            
+
             res ['id'] = rec.id            
             datas['form'] = res
 
@@ -93,12 +90,12 @@ class AdmissiRegistre(models.Model):
         for rec in self:
             datas = {}
             res = {}
-            
+
             res ['id'] = rec.id            
             datas['form'] = res
 
         return self.env.ref('aft_examen.action_print_liste_waiting').report_action(self, data=datas)
-    
+
     def action_get_liste_student(self):
         """
         Fonction permettant de transférer les données pour imprimer le fichier excel
@@ -106,12 +103,12 @@ class AdmissiRegistre(models.Model):
         for rec in self:
             datas = {}
             res = {}
-            
+
             res ['id'] = rec.id            
             datas['form'] = res
 
         return self.env.ref('aft_examen.action_print_admission_resultat').report_action(self, data=datas)
-    
+
     def get_moyenne_candidat(self):
         """
         Fonction pour transferer l'id du régistre dans le rapport de moyenne
@@ -125,6 +122,3 @@ class AdmissiRegistre(models.Model):
         datas['form'] = res
         return self.env.ref('aft_examen.action_print_moyenne_candidat').report_action(self, data=datas)
 
-    
-
-    

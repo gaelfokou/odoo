@@ -47,7 +47,7 @@
           parent="menu_education_fee_root" 
           name="Configurations"
           sequence="12"/>
-        
+
         <menuitem action="action_fee_structure_line"
           id="menu_action_fee_structure_line"
           parent="menu_fees_configuration"

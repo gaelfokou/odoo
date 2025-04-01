@@ -7,18 +7,13 @@ from dateutil.relativedelta import relativedelta
 from odoo import api, fields, models, _
 from odoo.exceptions import UserError, ValidationError
 
-
-
 import logging
 _logger = logging.getLogger("++++++++++++")
-
-
 
 class ResultatSubjectExamen(models.Model):
     _name = 'examen.resultat.subject'
     _description = "Model pour gérer les résultats des matières des examen"
     _inherit = ["mail.thread", "mail.activity.mixin"]
-
 
     name = fields.Char(
         'Libellé', 
@@ -74,7 +69,6 @@ class ResultatSubjectExamen(models.Model):
         string="Notes des étudiants",
     )
 
-
     @api.onchange('type_examen_id')
     def onchange_subject_id(self):
         for rec in self:
@@ -96,13 +90,11 @@ class ResultatSubjectExamen(models.Model):
                 rec.show_field = False
                 # raise ValidationError("Merci de Sélectionner : l'année académique, le semestre, le niveau, le filière")
 
-
     @api.onchange('exam_subject_id')
     def onchange_exam_subject_id(self):
         for rec in self:
             if (rec.exam_subject_id):
                 rec.name = f"Résultat_{rec.exam_subject_id.name}"
-
 
     def button_show_resultat(self):
         for rec in self:
@@ -132,7 +124,7 @@ class ResultatSubjectExamen(models.Model):
                     #========== add line resultat subject in database
                     for student in student_results:
                         rec.result_subject_line_ids.create(student)
-                    
+
                     if len(rec.result_subject_line_ids)>0:
                         rec.show_mark=True
                         rec.update({
@@ -149,8 +141,6 @@ class ResultatSubjectExamen(models.Model):
                         }
                 else:
                     raise ValidationError("Codification ou remplissage des notes non trouvé")
-
-
 
     def button_print_pdf_resultat(self):
         for rec in self:
@@ -181,8 +171,6 @@ class ResultatSubjectExamen(models.Model):
             report_action = self.env.ref('siantou_ems_examen.action_report_student_examen_mark_pdf')
             return report_action.report_action(self,data=data)
 
-
-
 class ResultatSubjectLineExamen(models.Model):
     _name = 'examen.resultat.subject.line'
     _description = "Model pour gérer les lines des résultats des matières des examens"
@@ -204,16 +192,4 @@ class ResultatSubjectLineExamen(models.Model):
     note = fields.Float(string="Note")
     # note_sn = fields.Float(string="Note de SN")
     # note_final = fields.Float(string="Note finale")
-    
-
-
-
-
-
-
-
-
-
-
-
 

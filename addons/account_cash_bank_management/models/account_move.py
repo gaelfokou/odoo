@@ -1,6 +1,5 @@
 from odoo import models, fields, api
 
-
 class AccountMove(models.Model):
     _inherit = 'account.move'
 
@@ -50,13 +49,11 @@ class AccountMove(models.Model):
                 rec.semestre_id = rec.statement_line_id.semestre_id
                 rec.type_inclusion_fee = rec.statement_line_id.type_inclusion_fee
 
-
     @api.depends('statement_line_id')
     def _compute_transaction_date(self):
         for move in self:
             if move.statement_line_id:
                 move.transaction_date = move.statement_line_id.date
-
 
     @api.depends('invoice_date', 'company_id', 'transaction_date')
     def _compute_date(self):

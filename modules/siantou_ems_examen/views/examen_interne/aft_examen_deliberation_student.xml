@@ -11,7 +11,7 @@
 
                     <button string="Confirmer" name="action_confirm" class="oe_highlight"
                         type="object" states="validate" />
-                    
+
                     <button name="action_get_pv_pdf" type="object" string="Imprimer Procès-Verbal" class="btn-primary"/>
 
                     <field name="state" widget="statusbar"
@@ -93,7 +93,7 @@
                 <field name="date_jury" />
                 <field name="pr_jury" />
                 <field name="state" />
-                
+
             </tree>
         </field>
     </record>

@@ -312,7 +312,6 @@
             </field>
         </record>
 
-
         <record id="view_move_line_tree_grouped_partner" model="ir.ui.view">
             <field name="name">account.move.line.tree.grouped.partner</field>
             <field name="model">account.move.line</field>
@@ -616,7 +615,6 @@
                 </kanban>
             </field>
         </record>
-
 
         <record id="receipt_form" model="ir.ui.view">
             <field name="name">account.move.form</field>
@@ -1236,7 +1234,7 @@
                                                widget="email"
                                                attrs="{'invisible': ['|', ('move_type', 'not in', ('in_invoice', 'in_refund')), ('invoice_source_email', '=', False)]}"/>
                                         <field name="auto_post"
-                                               attrs="{'readonly': ['|',('reversed_entry_id', '!=', False),('state','!=','draft')]}"/>
+                                               attrs="{'readonly': ['|', ('reversed_entry_id', '!=', False),('state','!=','draft')]}"/>
                                         <field name="to_check"/>
                                     </group>
                                 </group>
@@ -1246,7 +1244,7 @@
                                 <group id="other_tab_entry_group">
                                     <group name="misc_group">
                                         <field name="auto_post"
-                                               attrs="{'invisible': [('move_type', '!=', 'entry')], 'readonly': ['|',('reversed_entry_id', '!=', False),('state','!=','draft')]}"/>
+                                               attrs="{'invisible': [('move_type', '!=', 'entry')], 'readonly': ['|', ('reversed_entry_id', '!=', False),('state','!=','draft')]}"/>
                                         <field name="reversed_entry_id"
                                                attrs="{'invisible': [('move_type', '!=', 'entry')]}"/>
                                         <field name="to_check"
@@ -1521,10 +1519,6 @@
             </field>
         </record>
 
-
-
-
-
         <record id="action_move_out_invoice_type" model="ir.actions.act_window">
             <field name="name">Reçu de frais</field>
             <field name="res_model">account.move</field>
@@ -1564,7 +1558,6 @@
             <field name="act_window_id" ref="action_move_out_invoice_type"/>
         </record>
 
-
         <record id="view_move_pivots" model="ir.ui.view">
             <field name="name">account.move.pivot</field>
             <field name="model">account.move</field>
@@ -1593,7 +1586,6 @@
                 </graph>
             </field>
         </record>
-
 
         <record id="action_fees_pivots" model="ir.actions.act_window">
             <field name="name">Analyse de frais</field>
@@ -1637,7 +1629,6 @@
                     <field name="act_window_id" ref="action_move_out_refund_type"/>
                 </record>
 
-
         <record id="action_move_line_form" model="ir.actions.act_window">
             <field name="name">Entrées</field>
             <field name="type">ir.actions.act_window</field>
@@ -1669,13 +1660,11 @@
             </field>
         </record>
 
-
-        
         <!-- <menuitem action="action_move_out_invoice_type"
                   id="menu_action_fee_receipt"
                   parent="menu_student_fee_receipt"
                   sequence="20"/> -->
-       
+
         <menuitem action="action_fees_pivots"
                   id="menu_action_analyse"
                   parent="menu_student_fee_receipt"

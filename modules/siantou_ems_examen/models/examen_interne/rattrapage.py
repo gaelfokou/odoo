@@ -13,19 +13,19 @@ class Rattrage(models.Model):
     _name = "rat.reg"
     _description = "Module pou gérer les rattrapages"
     _inherit = ["mail.thread", "mail.activity.mixin"]
-    
+
     name = fields.Char('name')
-    
+
     semestre_id = fields.Many2one('education.semestre', string='Semestre',required=True, tracking=True)
-    
+
     class_id = fields.Many2one('education.class.division', string='Classe',required=True, tracking=True)
-    
+
     anne_academique_id = fields.Many2one('education.academic.year', string='Année académique', required=True, tracking=True)
-    
+
     date = fields.Date(string="Date",default=lambda self: fields.Date.today())
-    
+
     rat_ids = fields.One2many('rat.reg.ue', 'rat_reg_id')
-    
+
     state = fields.Selection([
         ('draft', 'Brouillon'),
         ('validate', 'Valider'),
@@ -33,7 +33,7 @@ class Rattrage(models.Model):
         ('cancel', 'Annuler'),
         ('done', 'Fait'),
     ], string='statut', default="draft")
-    
+
     def action_validate(self):
         """
         fonction pour valider
@@ -73,7 +73,7 @@ class Rattrage(models.Model):
                                 'next': {'type': 'ir.actions.act_window_close'},
                             }
                         }
-            
+
     def action_confirm(self):
         """
         Fonction pour confirmer une action
@@ -90,13 +90,13 @@ class Rattrage(models.Model):
                                 'next': {'type': 'ir.actions.act_window_close'},
                             }
                         }
-            
+
     def action_calcul(self):
         """
         Fonction pour ajouter les notes de rattrapages
         """
         type_examen_sn = self.env['siantou.ems.type.examen'].search([("code","=","SR")])
-        
+
         for rec in self:
             for line in rec.rat_ids:
                 if line.state != "confirm":
@@ -112,13 +112,13 @@ class Rattrage(models.Model):
             ("semestre_id","=",rec.semestre_id.id),
             ("class_id","=",rec.class_id.id),
             ])
-            
+
             resultat_student = self.env["siantou.ems.examen.student"].search([
             ("anne_academique_id","=",rec.anne_academique_id.id),
             ("semestre_id","=",rec.semestre_id.id),
             ("class_id","=",rec.class_id.id),
             ])
-            
+
             for std in resultat_student:
                 for line in resultat_rattrapage.rat_sub_ids.rat_std_ids:
                     if std.student_id.id == line.student_id.id:
@@ -175,7 +175,7 @@ class Rattrage(models.Model):
     #     Fonction pour ajouter les notes de rattrapages
     #     """
     #     type_examen_sn = self.env['siantou.ems.type.examen'].search([("code","=","SR")])
-        
+
     #     for rec in self:
     #         for line in rec.rat_ids:
     #             if line.state != "confirm":
@@ -188,13 +188,13 @@ class Rattrage(models.Model):
     #         ("semestre_id","=",rec.semestre_id.id),
     #         ("class_id","=",rec.class_id.id),
     #         ])
-            
+
     #         resultat_student = self.env["iia.examen.student"].search([
     #         ("anne_academique_id","=",rec.anne_academique_id.id),
     #         ("semestre_id","=",rec.semestre_id.id),
     #         ("class_id","=",rec.class_id.id),
     #         ])
-            
+
     #         for std in resultat_student:
     #             for line in resultat_rattrapage.rat_std_ids:
     #                 if std.student_id.id == line.student_id.id:
@@ -241,8 +241,7 @@ class Rattrage(models.Model):
                                 'next': {'type': 'ir.actions.act_window_close'},
                             }
                         }
-    
-    
+
 class RattrapageUe(models.Model):
     """
     Modèle pour gérer les UE pour un rattrapage
@@ -250,29 +249,29 @@ class RattrapageUe(models.Model):
     _name = "rat.reg.ue"
     _description = "Modèle pour gérer les UE pour un rattrapage"
     _inherit = ["mail.thread", "mail.activity.mixin"]
-    
+
     name = fields.Char('name')
-    
+
     ue_id = fields.Many2one('education.unite.enseignement', string="Unité d'enseignement")
-    
+
     anne_academique_id = fields.Many2one('education.academic.year', string='Année académiqu',  tracking=True)
-    
+
     semestre_id = fields.Many2one('education.semestre', string='Semestre', tracking=True)
-    
+
     class_id = fields.Many2one('education.class.division', string='Classe', tracking=True)
-    
+
     date = fields.Date(string="Date",default=lambda self: fields.Date.today())
-    
+
     rat_reg_id = fields.Many2one('rat.reg')
-    
+
     rat_sub_parent_ids = fields.One2many('rat.reg.sub.parent', 'rat_ue_id', string='Matière Parent')
-    
+
     state = fields.Selection([
         ('draft', 'Brouillon'),
         ('validate', 'Valider'),
         ('confirm', 'Confirmer')
     ], string='statut', default="draft")
-    
+
     def action_validate(self):
         """
         fonction pour valider
@@ -289,7 +288,7 @@ class RattrapageUe(models.Model):
                     ('examen_student_line_id.examen_student_id.anne_academique_id','=',rec.anne_academique_id.id),
                     ('examen_student_line_id.ue_id','=',rec.ue_id.id),
                     ('statut','in',type_rattap)])
-                
+
                 for line in syllabus_ids:
                     if line.matiere_parent_id.id not in subject_obj.keys():
                         subject_obj[line.matiere_parent_id.id] = {}
@@ -299,18 +298,18 @@ class RattrapageUe(models.Model):
                         subject_obj[line.matiere_parent_id.id]["semestre_id"] = rec.semestre_id.id
                         subject_obj[line.matiere_parent_id.id]["coeficeint"] = line.coeficeint
                         subject_obj[line.matiere_parent_id.id]["rat_ue_id"] = rec.id
-                        
+
                 rec.rat_sub_parent_ids.create(subject_obj.values())
             rec.state = 'validate'
-            
+
     def action_confirm(self):
         """
         Fonction pour confirmer une action
         """
         for rec in self:
-            
+
             rec.state = "confirm"
-    
+
 class RattrapageMatiereParent(models.Model):
     """
     Modèle pour gérer les matières parent d'un rattrapage
@@ -318,46 +317,42 @@ class RattrapageMatiereParent(models.Model):
     _name = "rat.reg.sub.parent"
     _description = "Modèle pour gérer les matières parent d'un rattrapage"
     _inherit = ["mail.thread", "mail.activity.mixin"]
-    
+
     name = fields.Char('name')
-    
+
     matiere_parent_id = fields.Many2one('education.under.subject', string='Matière Parent',tracking=True)
-    
+
     anne_academique_id = fields.Many2one('education.academic.year', string='Année académique',  tracking=True)
-    
+
     semestre_id = fields.Many2one('education.semestre', string='Semestre', tracking=True)
-    
+
     class_id = fields.Many2one('education.class.division', string='Classe', tracking=True)
-    
+
     rat_ue_id = fields.Many2one('rat.reg.ue')
-    
+
     coeficeint = fields.Float('Coéficient')
-    
+
     date = fields.Date(string="Date",default=lambda self: fields.Date.today())
 
     rat_sub_ids = fields.One2many('rat.reg.sub', 'rat_sub_parent_id', string='Sous-matière')
 
-
-    
     state = fields.Selection([
         ('draft', 'Brouillon'),
         ('validate', 'Valider'),
         ('confirm', 'Confirmer')
     ], string='statut', default="draft")
-    
-    
-    
+
     def action_validate(self):
         """
         Fonction pour valider
         """
         type_rattap = ["rpo", "rpf"]
         subject_obj = {}
-        
+
         for rec in self:
             num = self.env["ir.sequence"].next_by_code("aft_examen.rattrapage_sub_parent")
             rec.name = num
-            
+
             if rec.class_id and rec.semestre_id and rec.matiere_parent_id:
                 syllabus_ids = self.env["siantou.ems.examen.student.subject"].search([
                     ("examen_student_parent_subject_id.examen_student_line_id.examen_student_id.semestre_id", "=", rec.semestre_id.id),
@@ -372,8 +367,6 @@ class RattrapageMatiereParent(models.Model):
                 _logger.info("Syllabus_3: %s", rec.anne_academique_id.id)
                 _logger.info("Syllabus_4: %s", rec.matiere_parent_id.id)
                 _logger.info("Syllabus_ids: %s", syllabus_ids)
-                
-                
 
                 for line in syllabus_ids:
                     _logger.info("sous-matières_id: %s", line.matiere_id.under_subject_id.id)
@@ -385,12 +378,12 @@ class RattrapageMatiereParent(models.Model):
                         subject_obj[line.matiere_id.id]["semestre_id"] = rec.semestre_id.id
                         subject_obj[line.matiere_id.id]["coeficeint"] = line.coeficeint
                         subject_obj[line.matiere_id.id]["rat_sub_parent_id"] = rec.id
-                        
+
                 rec.rat_sub_ids.create(subject_obj.values())
                 _logger.info("sous-matières: %s", rec.rat_sub_ids)
-            
+
             rec.state = 'validate'
-            
+
     def action_confirm(self):
         """
         Fonction pour confirmer une action
@@ -405,33 +398,31 @@ class RattrapageMatiere(models.Model):
     _name = "rat.reg.sub"
     _description = "Modèle pour gérer les matière d'un rattrapage"
     _inherit = ["mail.thread", "mail.activity.mixin"]
-    
+
     name = fields.Char('name')
-    
+
     matiere_id = fields.Many2one('education.subject', string='Matière',tracking=True)
-    
+
     anne_academique_id = fields.Many2one('education.academic.year', string='Année académiqu',  tracking=True)
-    
+
     semestre_id = fields.Many2one('education.semestre', string='Semestre', tracking=True)
-    
+
     class_id = fields.Many2one('education.class.division', string='Classe', tracking=True)
-    
+
     rat_sub_parent_id = fields.Many2one('rat.reg.sub.parent')
-    
+
     coeficeint = fields.Float('Coéficient')
-    
+
     date = fields.Date(string="Date",default=lambda self: fields.Date.today())
-    
+
     rat_std_ids = fields.One2many('rat.reg.std', 'rat_sub_id')
-    
+
     state = fields.Selection([
         ('draft', 'Brouillon'),
         ('validate', 'Valider'),
         ('confirm', 'Confirmer')
     ], string='statut', default="draft")
-    
-    
-    
+
     def action_validate(self):
         """
         fonction pour valider
@@ -457,14 +448,14 @@ class RattrapageMatiere(models.Model):
                             "student_id": student_id,
                             "statut": line.statut
                         }
-            
+
             # Convertir le dictionnaire en liste et l'assigner à rec.rat_std_ids
             rec.rat_std_ids = [(0, 0, student_info) for student_info in student_dict.values()]
-            
+
             _logger.info(rec.rat_std_ids)
-            
+
             rec.state = 'validate'
-            
+
     def action_confirm(self):
         """
         Fonction pour confirmer une action
@@ -474,23 +465,22 @@ class RattrapageMatiere(models.Model):
                 if line.note_rattapage < 0 or line.note_rattapage > 20:
                     raise ValidationError("Une note doit être en te 0-20")
             rec.state = "confirm"
-    
+
 class RattrapageStudent(models.Model):
     """
     Modèle pour gérer les notes des étudiant
     """
     _name = "rat.reg.std"
     _description = " Modèle pour gérer les notes des étudiant"
-    
+
     student_id = fields.Many2one('oe.school.student', string='Étudiant')
-    
+
     statut = fields.Selection([
         ('rpo', 'Rattrapage obligatoire'),
         ('rpf', 'Rattrapage facultatif')
     ], string='statut')
-    
+
     note_rattapage = fields.Float('Note de rattrapage')
 
     rat_sub_id = fields.Many2one('rat.reg.sub')
-    
-    
+

@@ -27,7 +27,6 @@
 			</field>
 		</record> -->
 
-        
         <record id="exam_result_form_view" model="ir.ui.view">
             <field name="name">exam.result.form.view</field>
             <field name="model">examen.subject.rating.anonymous</field>
@@ -78,7 +77,6 @@
             </field>
         </record>
 
-
         <record id="action_exam_result" model="ir.actions.act_window">
             <field name="name">Codification des étudiants</field>
             <field name="res_model">examen.subject.rating.anonymous</field>
@@ -95,7 +93,6 @@
             </field>
         </record>
 
-
         <menuitem 
             id="menu_results_codification_exam"
             name="Codification des étudiants" 
@@ -103,7 +100,6 @@
             parent="examen_menu_note"
             sequence="30"
         />
-        
-        
+
     </data>
 </odoo>

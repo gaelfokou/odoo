@@ -13,11 +13,10 @@ class ConditionAdmission(models.Model):
     _name = "siantou.ems.condition.admission"
     _description = " Modèle pour enregistrer les condition d'admission"
 
-
     nationality_id = fields.Many2one('res.country', string='Nationalité',required=True,tracking=True)
 
     nombre = fields.Integer('Nombre par pays',required=True,tracking=True)
-    
+
     nbre_attente = fields.Integer("Liste d'attente",tracking=True)
 
     # registre_id = fields.Many2one('siantou.session.registre', string="Régistre", readonly=True)

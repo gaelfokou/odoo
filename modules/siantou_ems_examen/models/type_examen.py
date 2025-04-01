@@ -2,7 +2,6 @@
 
 from odoo import models, fields, api
 
-
 class TypeExamen(models.Model):
     _name = 'siantou.ems.examen.type'
     _description = "Model pour gerer le type d'examen"
@@ -11,7 +10,6 @@ class TypeExamen(models.Model):
     code = fields.Char('Code', required=True, tracking=True)
     name = fields.Char('Nom', required=True, tracking=True)
     prcent_note = fields.Float(string="Pourcentage sur la note")
-
 
 class TypeRattrappageExamen(models.Model):
     _name = 'siantou.ems.examen.type.rattrapage'
@@ -35,9 +33,8 @@ class TypeRattrappageExamen(models.Model):
             name = f"rattrapage"
             if type_rattrap:
                 name = f"{name}_{type_rattrap.type_examen_id.code}"
-            
+
             type_rattrap.name=name
-            
 
 class ExamenDateButtoire(models.Model):
     _name = 'siantou.ems.examen.date.butoire'
@@ -52,7 +49,7 @@ class ExamenDateButtoire(models.Model):
     semestre_id = fields.Many2one('siantou.ems.core.year.semester', string='Semestre', required=True, tracking=True)
     school_id = fields.Many2one('siantou.ems.core.school', string='Ecole')
     class_ids = fields.Many2many('siantou.ems.core.class', string='Classe')
-            
+
     @api.onchange('school_id')
     def _onchange_school_id(self):
         if self.school_id:
@@ -65,15 +62,4 @@ class ExamenDateButtoire(models.Model):
         else:
             # Si aucune école n'est sélectionnée, vider le champ des classes
             self.class_ids = [(5, 0, 0)]
-
-
-
-
-
-
-
-
-
-
-
 

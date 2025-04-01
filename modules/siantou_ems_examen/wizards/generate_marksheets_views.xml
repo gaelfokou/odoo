@@ -30,11 +30,11 @@
         <field name="view_mode">form</field>
         <field name="target">new</field>
     </record>
-        
+
         <menuitem name="Generate Marksheets" id="menu_exam_main_generate_marksheets"
             parent="menu_exam_main" 
             action="action_generate_marksheets"
             sequence="40"
         />
-    
+
 </odoo>

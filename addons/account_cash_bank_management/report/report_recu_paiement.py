@@ -7,15 +7,13 @@ from datetime import datetime
 
 _logger = logging.getLogger("Logger ==========")
 
-
 class RecuPaiement(models.AbstractModel):
     _name = 'report.account_cash_bank_management.report_recu_payment'
-
 
     @api.model
     def _get_report_values(self, docids, data=None):
         _logger.info(docids)
-        
+
         # student_id = self.env["oe.school.student"].search([('id', '=', student_id)], limit=1)
 
         # lines = []
@@ -35,7 +33,6 @@ class RecuPaiement(models.AbstractModel):
         #         'reste': fee.amount_residual,
         #     })
 
-        
         docargs = {
             'doc_model': "account.bank.statement.line",
             'data': data,

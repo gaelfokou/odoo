@@ -27,7 +27,7 @@
         #security
         "security/security.xml",
         "security/ir.model.access.csv",
-        
+
         "views/menu.xml",
         "views/type_examen_views.xml",
         "views/date_butoire_exam.xml",

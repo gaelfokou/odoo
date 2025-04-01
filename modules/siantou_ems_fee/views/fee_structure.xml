@@ -30,7 +30,7 @@
                         <field name="state" widget="statusbar" statusbar_visible="no_create,create,validate" />
                     </header>
                     <sheet string="Fee Structure">
-                        
+
                         <field name="active" invisible="1"/>
                         <!-- <widget name="web_ribbon" title="Archived" bg_color="bg-danger"/> -->
                         <group>
@@ -94,7 +94,7 @@
           id="menu_fees_configuration"
           parent="menu_education_fee_root" name="Configurations"
           sequence="12"/>
-        
+
         <menuitem action="action_fee_structure"
           id="menu_action_fee_structure"
           parent="menu_fees_configuration"

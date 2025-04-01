@@ -4,7 +4,6 @@ from odoo.exceptions import ValidationError
 import logging
 _logger = logging.getLogger("Logger ==========")
 
-
 # class RapportFraisEtudiant(models.TransientModel):
 # 	_name = 'wizard.frais.etudiant'
 # 	_description = "Impression de la liste des Étudiant"
@@ -20,8 +19,6 @@ _logger = logging.getLogger("Logger ==========")
 # 		data['frais'] = self.frais
 # 		data['cat_ids'] = [(reg.id,reg.name) for reg in self.cat_ids] if self.frais == 'cat' else []
 # 		return self.env.ref('siantou.ems.fee.action_liste_etudiant').report_action(self, data=data)
-	
-
 
 class ScolariteEtudiant(models.TransientModel):
 	_name = 'wizard.etudiant.scolarite'
@@ -50,7 +47,6 @@ class ScolariteEtudiant(models.TransientModel):
 	redoublant = fields.Selection(
         [('oui', 'OUI'), ('non', 'NON')],
         'Redoublant?',related="student_id.redoublant")
-
 
 	def print_etudiant(self):
 		for rec in self:

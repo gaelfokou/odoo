@@ -44,7 +44,7 @@
                             <field name="date_delivr_cni"/>
                         </group>
                     </group>
-                    
+
                 </sheet>
                 <footer>
                     <button string="Enregistrer" type="object" name="to_complete_student_fee_payment" class="btn-primary"/>

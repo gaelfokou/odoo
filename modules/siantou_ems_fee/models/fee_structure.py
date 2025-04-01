@@ -1,31 +1,24 @@
 # -*- coding: utf-8 -*-
 
-
 from odoo import models, fields, api
 from odoo.exceptions import ValidationError
 from datetime import datetime
 import logging
 
-
 _logger = logging.getLogger(__name__)
-
-
 
 class FeeStructure(models.Model):
     _name = 'siantou.ems.fee.structure'
     _rec_name = 'fee_structure_name'
 
-
     _sql_constraints = [
         ('unique_fee_structure_name', 'unique(fee_structure_name)', 'Ce libellé existe déjà'),
     ]
-
 
     @api.depends('fee_type_ids.fee_amount')
     def compute_total(self):
         for rec in self:
             rec.amount_total = sum(line.fee_amount for line in rec.fee_type_ids)
-
 
     company_currency_id = fields.Many2one(
         'res.currency', compute='get_company_id', readonly=True, related_sudo=False)
@@ -81,7 +74,6 @@ class FeeStructure(models.Model):
         default='no_create'
     )
 
-
     @api.depends('level_id', 'type_frais_id', 'type_paiement', 'academic_year', 'field_of_study_ids', 'school_id')
     def _compute_fee_structure_name(self):
         unique_number = datetime.now().strftime("%Y%m%d%H%M%S%f")
@@ -98,7 +90,6 @@ class FeeStructure(models.Model):
             year_name = record.academic_year.name
             record.fee_structure_name = f"Frais_{type_frais_name or ''}_{field_of_study_name or ''}_{level_name or ''}_{type_paiement or ''}_{year_name or ''}_{unique_number or ''}"
 
-
     def diviser_montant(self, montant, nb_tranche):        
         # Calcule la part pour chaque partie
         part = montant / nb_tranche
@@ -106,8 +97,7 @@ class FeeStructure(models.Model):
         parties = [part] * nb_tranche
         # Retourne la liste des montants
         return parties  
-    
-    
+
     @api.onchange('type_inclusion_fee')
     # @api.depends('type_inclusion_fee')
     def change_type_inclusion_fee(self):
@@ -116,19 +106,16 @@ class FeeStructure(models.Model):
             self.type_paiement='pu'
         if self.type_inclusion_fee=='fee_scol':
             self.type_paiement='pt'
-        
 
     def validate_structure_payment(self):
         """Validate"""
         for rec in self:
             rec.state = 'validate'
 
-
     def cancel_structure_payment(self):
         """cancel"""
         for rec in self:
             rec.state = 'create'
-
 
     @api.onchange('nbre_tranche')
     @api.depends('type_paiement', 'amount_total', 'nbre_tranche')
@@ -150,7 +137,6 @@ class FeeStructure(models.Model):
                     raise ValidationError("""Aucune Le nombre de tranche doit être supérieur à 1""")
             else:
                 pass
-        
 
     @api.model
     def create(self, vals):
@@ -179,7 +165,6 @@ class FeeStructure(models.Model):
         })
         return res
 
-
     @api.onchange('school_id')
     def _onchange_school_id(self):
         if self.school_id:
@@ -192,7 +177,6 @@ class FeeStructure(models.Model):
         else:
             # Si aucune école n'est sélectionnée, vider le champ des filières
             self.field_of_study_ids = [(5, 0, 0)]
-
 
     def add_account_move(self):
         students = []
@@ -213,7 +197,6 @@ class FeeStructure(models.Model):
                         _logger.info(student_id.field_of_study_id.name)
                         _logger.info(student_id.cycle_id.name)
                         _logger.info(rec.academic_year.name)
-                        
 
                         students.append(student_id.id)
                         # if not account_move_ids or not len(account_move_ids)>0:
@@ -266,7 +249,7 @@ class FeeStructure(models.Model):
                                             account_move_created.append(account_move_id.id)
                                     else:
                                         _logger.info(f"Tous les créances ::{rec.type_frais_id.name}:: pour {student_id.name} en {rec.academic_year.name} déjà créer")
-                                    
+
                                 elif rec.type_inclusion_fee=='fee_spec':
                                     account_move_id = self.env['account.move'].search([
                                             ('partner_id','=',student_id.partner_id.id),
@@ -293,11 +276,10 @@ class FeeStructure(models.Model):
                                         account_move_created.append(account_move_id.id)
                                     else:
                                         _logger.info(f"Tous les créances ::{rec.type_frais_id.name}:: pour {student_id.name} en {rec.academic_year.name} déjà créer")
-                                    
+
                                 # account_move_id = self.env['account.move'].create(mone_vals)
                                 # account_move_id.action_post()
                                 mone_vals = {}
-                                
 
             if account_move_created:
                 return {
@@ -310,11 +292,8 @@ class FeeStructure(models.Model):
                     }
                 }
 
-
-
 class FeeStructureLines(models.Model):
     _name = 'siantou.ems.fee.structure.lines'
-
 
     name = fields.Char("Libellé", required=True)
     fee_structure_id = fields.Many2one(
@@ -326,9 +305,6 @@ class FeeStructureLines(models.Model):
     fee_amount = fields.Float('Montant',  required=True)
     echeance = fields.Date("Echeance de paiement", store=True) 
     date_bu = fields.Date("Echeance de paiement") 
-
-
-
 
 class FeeType(models.Model):
     _name = 'siantou.ems.fee.type'
@@ -346,9 +322,6 @@ class FeeType(models.Model):
         })
         res = super(FeeType, self).create(vals)
         return res
-
-
-
 
 class FeeMoratoire(models.Model):
     _name = 'siantou.ems.fee.moratoire'
@@ -382,18 +355,15 @@ class FeeMoratoire(models.Model):
         default='no_create',
     )
 
-
     def validate_moratoire(self):
         """validate moratoire"""
         for rec in self:
             rec.state = 'validate'
 
-
     def cancel_moratoire(self):
         """Cancel moratoire"""
         for rec in self:
             rec.state = 'create'
-    
 
     def create(self, values):
         res = super(FeeMoratoire, self).create(values)
@@ -402,4 +372,3 @@ class FeeMoratoire(models.Model):
         })
         return res
 
-    

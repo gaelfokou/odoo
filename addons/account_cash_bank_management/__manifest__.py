@@ -5,7 +5,7 @@
     'summary': "The objective of this module is to manage cash and banking flows.",
 
     'description': """
-    
+
     """,
 
     'author': "No name",

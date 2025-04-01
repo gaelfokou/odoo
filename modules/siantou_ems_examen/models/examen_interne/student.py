@@ -11,5 +11,3 @@ class Student(models.Model):
         for rec in self:
             rec.state = "confirm"
 
-
-    

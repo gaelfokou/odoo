@@ -18,7 +18,6 @@
 			</field>
 		</record>
 
-        
         <record id="exam_result_subject_form_view" model="ir.ui.view">
             <field name="name">examen.resultat.subject.form.view</field>
             <field name="model">examen.resultat.subject</field>
@@ -94,7 +93,6 @@
             </field>
         </record>
 
-
         <record id="action_exam_result_subject" model="ir.actions.act_window">
             <field name="name">Résultats par matière</field>
             <field name="res_model">examen.resultat.subject</field>
@@ -106,7 +104,6 @@
             </field>
         </record>
 
-
         <menuitem 
             id="menu_results_subject_exam"
             name="Résultat session normale/Contrôle continu par matière" 
@@ -114,7 +111,6 @@
             parent="examen_menu_resultat"
             sequence="30"
         />
-        
-        
+
     </data>
 </odoo>

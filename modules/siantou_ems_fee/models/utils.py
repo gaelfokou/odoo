@@ -23,10 +23,10 @@ def create_payment(payment_obj, montant, name, currency_id, journal_id,
 
     # if facture_id:
     #     values['move_id'] = facture_id
-        
+
     _logger.info(values)
 
     res = payment_obj.create(values)
-    
+
     # res.post()
     return res

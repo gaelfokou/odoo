@@ -23,9 +23,9 @@ class ExamenRegistre(models.Model):
     annee_academique_id = fields.Many2one('education.academic.year', string='Année académique',  tracking=True)
 
     coeficien = fields.Float('Credit', required=True)
-    
+
     pourcentage_cc = fields.Integer('Pourcentage CC')
-    
+
     pourcentage_exam = fields.Integer('Pourcentage Examen')
 
     pourcentage_presence = fields.Integer('Pourcentage de présence')
@@ -45,7 +45,7 @@ class ExamenRegistre(models.Model):
     @api.depends('class_id')
     def action_validate(self):
         number = 0
-        
+
         type_examen_cc = self.env['siantou.ems.type.examen'].search([("code","=","CC")])
         type_examen_ef = self.env['siantou.ems.type.examen'].search([("code","=","SN")])
         type_examen_pr = self.env['siantou.ems.type.examen'].search([("code","=","PR")])
@@ -128,7 +128,6 @@ class ExamenRegistre(models.Model):
                             )
                     ]
 
-
             if rec.matiere_id:
                 unite_enseignement = self.env['education.unite.enseignement'].search([('semestre_id', '=',rec.semestre_id.id)], offset=0, limit=None, order=None, count=False)
                 for line in unite_enseignement:
@@ -179,7 +178,7 @@ class ExamenRegistreLine(models.Model):
     anne_academique_id = fields.Many2one('education.academic.year', string='Année académique',tracking=True)
 
     matiere_id = fields.Many2one('education.subject', string='Matiere', tracking=True)
-    
+
     class_id = fields.Many2one('education.class.division', string='Classe', tracking=True)
 
     student_class_ids = fields.One2many('siantou.ems.examen.student.line', 'examen_student_number_id')
@@ -187,7 +186,7 @@ class ExamenRegistreLine(models.Model):
     coeficien = fields.Float('Crédit', required=True)
 
     unite_enseignement_id = fields.Many2one('education.unite.enseignement', readonly=True, string="Unité d'enseignement")
-    
+
     Pourcentage = fields.Integer('Pourcentage')
 
     examen_registre_id = fields.Many2one('siantou.ems.examen.registre')
@@ -197,7 +196,6 @@ class ExamenRegistreLine(models.Model):
         ('validated', 'Valider'),
         ('confirm', 'Confirmer')
     ], string='state', default="draft")
-
 
     @api.depends('class_id')
     def action_validate(self):
@@ -225,7 +223,7 @@ class ExamenRegistreLine(models.Model):
                             ('subject_id', '=', rec.matiere_id.id),
                             ('present', '=', True)
                         ]))
-                        
+
                         taux_presence = (heures_presences * 100) / total_heures if total_heures > 0 else 0
                         note_presence = (taux_presence / 100) * 20 if taux_presence > 0 else 0
                         # Préparer les données de l'étudiant
@@ -280,7 +278,6 @@ class ExamenRegistreLine(models.Model):
                 else:
                     raise ValidationError("Veuillez ajouter les étudiants")
 
-
     def action_confirm(self):
         """
         Action confirmer
@@ -309,14 +306,9 @@ class ExamenStudentLine(models.Model):
 
     examen_student_number_id = fields.Many2one('siantou.ems.examen.registre.line')
 
-    
     @api.constrains('note')
     def _check_note(self):
         for rec in self:
             if rec.note < 0 or rec.note > 20:
                 raise ValidationError("La note doit être comprise entre 0 et 20")
-            
-    
-
-
 

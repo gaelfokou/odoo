@@ -11,7 +11,6 @@ class ExamenPlannifier(models.Model):
     _description = "Model pour gerer les plannification des examens"
     _inherit = ["mail.thread", "mail.activity.mixin"]
 
-    
     name = fields.Char('code')
 
     classe_id = fields.Many2one('education.class.division', string='Classe', required=True, tracking=True,states={
@@ -29,7 +28,6 @@ class ExamenPlannifier(models.Model):
         'draft': [('readonly', False)]})
 
     registre_examen_ids = fields.One2many('siantou.ems.examen.registre', 'examen_plannifier_id','Régistre')
-
 
     state = fields.Selection([
         ('draft', 'Brouillon'),
@@ -67,7 +65,6 @@ class ExamenPlannifier(models.Model):
     #                     )
     #                 ]
 
-    
     @api.onchange('semestre_id', 'classe_id')
     def _onchange_matiere(self):
         for rec in self:
@@ -91,7 +88,7 @@ class ExamenPlannifier(models.Model):
                             },
                         )
                     ]
-    
+
     def action_validate(self):
         for rec in self:
             num = self.env["ir.sequence"].next_by_code("aft_examen.identifiant")
@@ -107,7 +104,7 @@ class ExamenPlannifier(models.Model):
                             'next': {'type': 'ir.actions.act_window_close'},
                         }
                     }
-    
+
     def action_confirm(self):
         registre_obj = self.env['siantou.ems.examen.registre']
         for rec in self:
@@ -136,7 +133,7 @@ class ExamenPlannifier(models.Model):
                                 'next': {'type': 'ir.actions.act_window_close'},
                             }
                         }
-            
+
     def action_cancel(self):
         for rec in self:
             rec.state = 'cancel'
@@ -173,7 +170,7 @@ class ExamenPlannifier(models.Model):
                     "anne_academique_id" : rec.annee_academique_id.id,
                     "examen_planifier_id" : rec.id
                 })
-            
+
                 stud.action_confirm()
             rec.state = 'done'
             if rec.state == "done":
@@ -187,8 +184,6 @@ class ExamenPlannifier(models.Model):
                             }
                         }
 
-
-
 class ExamenLine(models.Model):
     _name = 'siantou.ems.examen.plannifier.line'
     _description = "Model pour gerer les lignes d'examen"
@@ -196,11 +191,11 @@ class ExamenLine(models.Model):
     matiere_id = fields.Many2one('education.subject', string='Matière', required=True)
 
     # coeficien = fields.Float('Coéficient', required=True)
-    
+
     coeficien = fields.Float('Crédit', required=True)
-    
+
     pourcentage_cc = fields.Integer('Pourcentage CC',default=30,)
-    
+
     pourcentage_exam = fields.Integer('Pourcentage Examen', default=50)
 
     pourcentage_presence = fields.Integer('Pourcentage de présence', default=20)
@@ -209,4 +204,3 @@ class ExamenLine(models.Model):
 
     examen_id = fields.Many2one('siantou.ems.examen.plannifier')
 
-    

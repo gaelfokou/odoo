@@ -9,7 +9,6 @@ import logging
 
 _logger = logging.getLogger("++++++++++++")
 
-
 class ResulteWizard(models.TransientModel):
     _name = "examen.session.line.result.wizard"
 
@@ -33,7 +32,6 @@ class ResulteWizard(models.TransientModel):
             res['exam_subject_id'] = self.env.context.get('active_id')
             # self.write({'results': [(6, 0, results.ids)]})
         return res
-
 
 class ResulteWizardLine(models.TransientModel):
     _name = "examen.session.line.result.wizard.line"

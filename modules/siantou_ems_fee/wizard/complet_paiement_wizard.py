@@ -1,22 +1,16 @@
 
-
 from datetime import datetime, timedelta
 
 from odoo import models, fields, api
 from odoo.exceptions import ValidationError
 
-
-
 import logging
 
 _logger = logging.getLogger("++++++++++++")
 
-
-
 class FeeToCompleteFeePaymentWizard(models.TransientModel):
     _name = 'education.fee.payment.wizard'
     _description = 'modale pour compléter un paiement de scolarité'
-
 
     name = fields.Char('Réference du paiement', default='/')
     year_id = fields.Many2one(
@@ -69,7 +63,6 @@ class FeeToCompleteFeePaymentWizard(models.TransientModel):
         related_sudo=False
     )
 
-
     @api.model
     def default_get(self, fields):
         res = super(FeeToCompleteFeePaymentWizard, self).default_get(fields)
@@ -87,7 +80,7 @@ class FeeToCompleteFeePaymentWizard(models.TransientModel):
                 raise ValidationError(f"Aucune année active trouvé")
             if not payment_id:
                 raise ValidationError(f"Aucune paiement disponible pour {payment_id.student_id.name} pour l'année {year_id.name}")
-            
+
             moratoire_id = self.env['siantou.ems.fee.moratoire'].search(
                 [('student_id','=',payment_id.student_id.id)],
                 limit=1
@@ -95,10 +88,8 @@ class FeeToCompleteFeePaymentWizard(models.TransientModel):
             if moratoire_id:
                 res['amount'] = moratoire_id.amount
             res['year_id'] = year_id.id
-            
+
         return res
-
-
 
     def to_complete_student_fee_payment(self):
         if self.payment_id:
@@ -109,13 +100,13 @@ class FeeToCompleteFeePaymentWizard(models.TransientModel):
                 journal_id = structure_frais_scol_id.type_frais_id.category_id.journal_id
                 if not journal_id:
                     raise ValidationError("Le journal de paiement n'est pas configuré pour cette structure de frais")
-                
+
                 account_receivable_id = journal_id.default_account_id
                 account_revenue_id = journal_id.default_account_id
 
                 if not account_receivable_id or not account_revenue_id:
                     raise ValidationError("Les comptes de créance ou de revenus ne sont pas configurés dans le journal. Veuillez vérifier la configuration")
-                
+
                 lines = self.env['siantou.ems.fee.structure.lines'].sudo().search(
                     [('fee_structure_id','=',structure_frais_scol_id.id)],
                 )
@@ -135,7 +126,6 @@ class FeeToCompleteFeePaymentWizard(models.TransientModel):
                 for pay_line in self.payment_id.facture_ids:
                     if pay_line.amount_total<amount_of_one_tranche:
                         pay_lines_incomplet.append(pay_line)
-                
 
                 objs_tranche_no_use = []
                 new_ids_tranche_no_use = []
@@ -143,7 +133,7 @@ class FeeToCompleteFeePaymentWizard(models.TransientModel):
                     line = lines.search([('id','=',id)], limit=1)
                     objs_tranche_no_use.append(line)
                     new_ids_tranche_no_use.append(line.id)
-                
+
                 amount_reste = 0
                 if pay_lines_incomplet:
                     pay_line = pay_lines_incomplet[0]
@@ -178,7 +168,7 @@ class FeeToCompleteFeePaymentWizard(models.TransientModel):
                             )
                 else:
                     amount_reste = self.amount
-                
+
                 montant_total_remplit = 0
                 if amount_reste>0:
                     nbre_tranches_a_remplir = (amount_reste)/amount_of_one_tranche
@@ -216,7 +206,7 @@ class FeeToCompleteFeePaymentWizard(models.TransientModel):
                             })
                             montant_total_remplit+=line.fee_amount
                             tranches_remplit.append(line.id)
-                        
+
                     results = self.payment_id.get_liste_of_ids_tranche_no_use(new_ids_tranche_no_use, tranches_remplit)
                     if partie_decimal!=0.0:
                         #=== récupération de l'une des tranches qui n'est pas remplit
@@ -245,9 +235,9 @@ class FeeToCompleteFeePaymentWizard(models.TransientModel):
                                 'numero_compte': self.numero_compte,
                                 'date_payment': self.date_payment
                             })
-                    
+
                 _logger.info(montant_total_remplit)
-                    
+
                 amout_payment_total = sum([pay.amount_total for pay in self.payment_id.facture_ids])
                 rest_diff = structure_frais_scol_id.amount_total-amout_payment_total
                 if rest_diff==0:
@@ -266,36 +256,4 @@ class FeeToCompleteFeePaymentWizard(models.TransientModel):
                 raise ValidationError(f"Le montant renseigné doit être inférieur ou égal à {self.amount_rest} (Montant qui reste à payer)")   
 
             return {'type': 'ir.actions.act_window_close'}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            
-
 

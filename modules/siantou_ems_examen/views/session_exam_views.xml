@@ -90,12 +90,12 @@
                                     name="level_id" 
                                     readonly="state != 'create'" 
                                     options="{'no_open':True,'no_create':True}"/>
-                                
+
                                 <field 
                                     name="semester_id" 
                                     readonly="state != 'create'" 
                                     options="{'no_open':True,'no_create':True}"/>
-                    
+
                                 <!-- <field name="exam_hours" readonly="state != 'create'"/> -->
                             </group>
                         </group>
@@ -124,7 +124,7 @@
                 </form>
             </field>
         </record>
-        
+
         <!-- <record id="session_exam_search_view" model="ir.ui.view">
             <field name="name">examen.session.search.view</field>
             <field name="model">siantou.ems.examen.session</field>
@@ -142,7 +142,7 @@
                 </search>
              </field>
         </record> -->
-        
+
         <record id="action_session_exam" model="ir.actions.act_window">
             <field name="name">Sessions d'examen</field>
             <field name="res_model">siantou.ems.examen.session</field>
@@ -154,7 +154,7 @@
                 </p>
             </field>
         </record>
-        
+
         <menuitem 
             id="menu_session_examen"
             parent="examen_menu_plannification_cc_sn"
@@ -162,6 +162,6 @@
             name="Examens de session normal/Contrôle continu"
             sequence="20"
         />
-        
+
     </data>
 </odoo>

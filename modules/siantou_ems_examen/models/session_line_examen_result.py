@@ -10,8 +10,6 @@ from odoo.exceptions import UserError, ValidationError
 import logging
 _logger = logging.getLogger("++++++++++++")
 
-
-
 class ExamRatingAnonymousMark(models.Model):
     _name = 'subject.mark'
     _inherit = ['portal.mixin', 'mail.thread', 'mail.activity.mixin', 'utm.mixin']
@@ -20,7 +18,6 @@ class ExamRatingAnonymousMark(models.Model):
     _sql_constraints = [
         ('unique_name', 'unique(name)', 'Les notes existe déjà pour cette codification'),
     ]
-    
 
     name = fields.Char(string="Libellé")
     exam_subject_mark_id = fields.Many2one(
@@ -36,21 +33,16 @@ class ExamRatingAnonymousMark(models.Model):
         required=True, 
     )
 
-
     @api.onchange('exam_subject_mark_id')
     def _onchange_exam_subject_mark_id(self):
         for rec in self:
             rec.name = f"Note_de_{rec.exam_subject_mark_id.exam_subject_id.name}"
             rec.anonymous_code_mark_ids = rec.exam_subject_mark_id.anonymous_code_ids
 
-
-
-
 class ExamRatingAnonymous(models.Model):
     _name = 'examen.subject.rating.anonymous'
     _inherit = ['portal.mixin', 'mail.thread', 'mail.activity.mixin', 'utm.mixin']
     _description = "Note de l'examen"
-
 
     _sql_constraints = [
         ('unique_name', 'unique(name)', 'Les notes existe déjà pour cette codification'),
@@ -83,7 +75,6 @@ class ExamRatingAnonymous(models.Model):
     anonymous_code_ids = fields.One2many('examen.subject.rating.anonymous.result', 'anonymous_id')
     exam_subject_request_domain = fields.Binary(default=0, store=False) 
 
-
     @api.onchange('exam_session_id', 'exam_subject_id')
     def _onchange_name(self):
         for rec in self:
@@ -92,7 +83,6 @@ class ExamRatingAnonymous(models.Model):
                 name = f"{name}_{rec.exam_subject_id.name}"
             rec.name=name
 
-
     @api.onchange('exam_session_id')
     def _onchange_exam_session_id(self):
         for rec in self:
@@ -100,7 +90,6 @@ class ExamRatingAnonymous(models.Model):
                 rec.exam_subject_request_domain = [
                     ('exam_id','=',rec.exam_session_id.id),
                 ]
-
 
     def create(self, values):
         # raise ValidationError("eeeeeee rr")
@@ -119,14 +108,12 @@ class ExamRatingAnonymous(models.Model):
 
         return res
 
-
 class ExamRatingAnonymousResult(models.Model):
     _name = 'examen.subject.rating.anonymous.result'
     _inherit = ['portal.mixin', 'mail.thread', 
         'mail.activity.mixin', 'utm.mixin']
     _description = "Note de l'examen"
     _rec_name = 'student_id'
-
 
     anonymous_id = fields.Many2one(
         comodel_name='examen.subject.rating.anonymous',
@@ -175,7 +162,6 @@ class ExamRatingAnonymousResult(models.Model):
             self.marks = rec.marks
             rec.state = 'done'
             _logger.info(rec.state)
-    
 
     def check_marks_subject(self, anonymous_id):
         results = self.env['examen.subject.rating.anonymous.result'].search(
@@ -184,8 +170,6 @@ class ExamRatingAnonymousResult(models.Model):
         for rec in results:
             if rec.state=='add' or rec.state=='create':
                 raise ValidationError(f"Certaines notes dans {anonymous_id.name} ne sont pas fournis")
-    
-
 
     def create(self, values):
         res = super().create(values)
@@ -203,12 +187,8 @@ class ExamRatingAnonymousResult(models.Model):
                     f"Les notes obtenues ne doivent pas être comprise entre 1 et 20."
                 )
 
-
-
-
-
     # CRUD Operations
-    
+
     #compute Methods
     @api.depends('marks')
     def _compute_exam_grade(self):
@@ -220,5 +200,3 @@ class ExamRatingAnonymousResult(models.Model):
                     result.exam_grade_line_id = line.id
                     break
 
-        
-    

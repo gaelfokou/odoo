@@ -6,7 +6,6 @@ from datetime import date
 from odoo.exceptions import ValidationError, UserError
 _logger = logging.getLogger(__name__)
 
-
 class EducationFiliere(models.Model):
     _inherit = 'siantou.ems.core.field_of_study'
 
@@ -39,14 +38,12 @@ class EducationFiliere(models.Model):
             #     ('field_of_study_id', '=', rec.field_of_study_id.id)
             # ])
             # strs = [e.id for e in structure_ids]
-                
-            # rec.frais = [(6, 0,strs)]
 
+            # rec.frais = [(6, 0,strs)]
 
 # class EducationStudent(models.Model):
 #     _inherit = 'oe.school.student'
-    
-    
+
 #     currency_id = fields.Many2one(
 #         'res.currency',
 #         string='Devise',
@@ -68,4 +65,4 @@ class EducationFiliere(models.Model):
 #     etat_scol = fields.Selection(
 #         [('nok', 'Refusé'), ('ok', 'Accepté')],
 #         'Statut de la Scolarité', compute='maj_statut',default='nok', store=True)
-    
+

@@ -2,7 +2,6 @@ from markupsafe import Markup
 
 from odoo import models, api, _, fields
 
-
 class AccountJournal(models.Model):
     _inherit = "account.journal"
 

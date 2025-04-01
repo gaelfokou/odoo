@@ -30,11 +30,9 @@ class ExamenPlannifier(models.Model):
 
     note = fields.Float('Nouvelle note',required=True,tracking=True)
 
-    
     motif_modification_note = fields.Char(
         string='Motif de la modification  de la note',
     )
-    
 
     state = fields.Selection([
         ('draft', 'Brouillon'),
@@ -108,7 +106,7 @@ class ExamenPlannifier(models.Model):
                                 'next': {'type': 'ir.actions.act_window_close'},
                             }
                         }
-    
+
     def action_cancel(self):
         """
         Fonction pour valider une action

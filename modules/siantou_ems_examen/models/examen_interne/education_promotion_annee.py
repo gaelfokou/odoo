@@ -15,36 +15,35 @@ except ImportError:
   base64 = None
 from io import BytesIO
 
-
 class AnneeAcademique(models.Model):
-    
+
     """Pour faire passer un étudiant d'une salle à l'autre durant une annéé"""
     _name = 'anee.academique'
     _description ="Pour faire passer un étudiant d'une salle à l'autre durant une annéé"
     _inherit = ['mail.thread', 'mail.activity.mixin']
-    
+
     name = fields.Char('code')
-    
+
     anne_academique = fields.Many2one('education.academic.year',string ='Année Académique', required=True)
 
     anne_academique_new = fields.Many2one('education.academic.year',string ='Nouvelle année académique')
-    
+
     actual_class_id = fields.Many2one('education.class.division', string='Classe actuelle')
-    
+
     next_class_id = fields.Many2one('education.class.division', string='Classe suivante')
-    
+
     date_jury = fields.Date('Date du jury')
 
     pr_jury = fields.Char('Président du jury')
-    
+
     note_etudiant_ids = fields.One2many('note.etudiants', 'gest_aca_id', string="Note de l'étudiant")
-    
+
     state = fields.Selection([
         ('draft', 'Brouillon'),
         ('validate', 'valider'),
         ('confirm', 'Confirmer'),
     ], string='state', default="draft")
-    
+
     def action_validate(self):
         """
         Fonctionpour valider
@@ -62,13 +61,12 @@ class AnneeAcademique(models.Model):
                     liste[line.student_id.id]["moyenne"] = line.moyenne
                     liste[line.student_id.id]["credit"] = line.credit
                     liste[line.student_id.id]["div"] = note
-                    
 
                 else:
                     liste[line.student_id.id]["credit"] += line.credit
                     liste[line.student_id.id]["moyenne"] += line.moyenne
                     liste[line.student_id.id]["div"] += note
-                    
+
             for emp in  liste.values():    
                 rec.note_etudiant_ids = [(
                         0,
@@ -80,9 +78,7 @@ class AnneeAcademique(models.Model):
                         },
                     )
                 ]
-                    
-        
-                
+
             rec.state ="validate"
             if rec.state == "validate":
                 return {
@@ -94,7 +90,7 @@ class AnneeAcademique(models.Model):
                             'next': {'type': 'ir.actions.act_window_close'},
                         }
                     }
-            
+
     def action_confim(self):
         """
         Fonction pour confirmer
@@ -102,7 +98,7 @@ class AnneeAcademique(models.Model):
         for rec in self:
             if rec.anne_academique_new.id  == rec.anne_academique.id:
                 raise ValidationError("L'anneé atuelle doit être différente de l'année suivante")
-            
+
             for line in rec.note_etudiant_ids:
                 if line.statut == "Valider":
                     line.student_id.class_id = rec.next_class_id.id
@@ -141,16 +137,13 @@ class AnneeAcademique(models.Model):
 
                 student_history.create(vals)
 
-    
-
-
 class NoteEtudiants(models.Model):
-    
+
     """ Recupérer les notes de l'étudiant"""
     _name ='note.etudiants'
     _description ="Recupérer les notes de l'étudiant"
     _inherit = ['mail.thread', 'mail.activity.mixin']
-    
+
     student_id = fields.Many2one('oe.school.student', string='Liste des étudiants', required=True)
     moyenne = fields.Float(string='Moyenne')
     credit = fields.Float(string='Crédit')
@@ -198,12 +191,11 @@ class NoteEtudiants(models.Model):
             else:
                 rec.update({'qr_code': False})
 
-    
     @api.depends('moyenne','credit')
     def _compute_statut(self):
         for rec in self:
             rec.statut = ""
-            
+
             if rec.moyenne and rec.credit:
                 if rec.moyenne >= 12 and rec.credit >= 30:
                     rec.statut = "Valider"
@@ -218,6 +210,4 @@ class NoteEtudiants(models.Model):
                 rec.mention = "Bien"
             elif rec.moyenne >= 16:
                 rec.mention = "Très Bien"
-                
-                    
-    
+

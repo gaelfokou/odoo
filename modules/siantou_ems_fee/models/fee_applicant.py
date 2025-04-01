@@ -10,4 +10,4 @@ _logger = logging.getLogger("+++++++++++++++++++++++++++++")
 
 class StudentApplication(models.Model):
     _inherit = 'oe.school.student.enrollment'
-    
+

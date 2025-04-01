@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 
-
 from odoo import models, fields, api
-
 
 class FeeCategory(models.Model):
     _name = 'siantou.ems.fee.category'
@@ -24,6 +22,5 @@ class FeeCategory(models.Model):
     #                                help='If any fee structure want to be included in this category you must click here.'
     #                                     'For an example Institution category have different kind of fee structures '
     #                                     'for different syllabuses')
-
 
 #     analytic_id = fields.Many2one('account.analytic.account', string='Compte Analytique')

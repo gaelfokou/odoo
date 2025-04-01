@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 # from odoo import http
 
-
 # class aftMain(http.Controller):
 #     @http.route('/siantou_main/siantou_main', auth='public')
 #     def index(self, **kw):

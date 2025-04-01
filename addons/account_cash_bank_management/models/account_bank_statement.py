@@ -7,7 +7,6 @@ from odoo.exceptions import ValidationError
 
 _logger = logging.getLogger(__name__)
 
-
 class AccountBankStatement (models.Model):
     _name = 'account.bank.statement'
     _inherit = ['account.bank.statement', 'mail.thread', 'mail.activity.mixin']
@@ -65,7 +64,7 @@ class AccountBankStatement (models.Model):
         self.all_lines_reconciled = False
         # self.all_lines_reconciled = all([line.journal_entry_ids.ids or line.account_id.id for line in self.line_ids if not self.currency_id.is_zero(line.amount)])
         pass
-    
+
     @api.depends()
     def _get_statement_line_count(self):
         for statement in self:

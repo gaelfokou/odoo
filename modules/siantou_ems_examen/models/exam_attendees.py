@@ -7,14 +7,11 @@ from dateutil.relativedelta import relativedelta
 from odoo import api, fields, models, _
 from odoo.exceptions import UserError, ValidationError
 
-
-
 class ExamAttendees(models.Model):
     _name = 'session.line.attende'
     _inherit = ['portal.mixin', 'mail.thread', 'mail.activity.mixin', 'utm.mixin']
     _description = "Participants à l'examen"
     _rec_name = 'student_id'
-
 
     exam_subject_id = fields.Many2one(
         comodel_name='examen.session.line.subject',
@@ -40,8 +37,6 @@ class ExamAttendees(models.Model):
         ],
         string='Statut', 
     )
-
-
 
     def Mark_attendance(self):
         return {

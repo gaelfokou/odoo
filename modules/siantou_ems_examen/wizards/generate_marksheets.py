@@ -32,7 +32,7 @@ class CreateMarksheets(models.TransientModel):
                 record.exam_session_ids = [(6, 0, exams.ids)]
             else:
                 record.exam_session_ids = [(5, 0, 0)]
-                
+
     def generate_marksheets(self):
         for wizard in self:
             student_ids = wizard.exam_session_ids.exam_line.exam_result_line.mapped('student_id')

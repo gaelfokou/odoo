@@ -37,7 +37,7 @@
                             type="object" string="Mettre les note" 
                             invisible="state != 'prepare'" 
                             class="oe_highlight" data-hotkey="l"/>
-                        
+
                         <button name="button_cancel" invisible="state not in ('draft','schedule')" string="Annuler" type="object" data-hotkey="x" /> -->
                         <!-- <button 
                             name="action_anonyma_wizard"
@@ -45,7 +45,7 @@
                             type="object" 
                             string="Anonymation des notes"/> -->
                         <field name="state" widget="statusbar" statusbar_visible="draft,schedule,complete,prepare,done" readonly="1"/>
-                        
+
                     </header>
                     <sheet>
                         <div class="oe_button_box" name="button_box">
@@ -55,7 +55,7 @@
                                 icon="fa-users">
                                 <field name="attendees_count" widget="statinfo" string="Participants"/>
                             </button>
-                            
+
                             <!-- <button name="button_open_results"
                                 type="object"
                                 class="oe_stat_button"
@@ -75,14 +75,14 @@
                                     required="1"
                                     readonly="state != 'draft'"
                                 />
-                                
+
                                 <label for="date_start" string="Schedule"/>
                                 <div name="dates" class="o_row">
                                     <field name="date_start" readonly="state != 'draft'"/>
                                     <i class="fa fa-long-arrow-right mx-2 oe_edit_only" aria-label="Arrow icon" title="Arrow"/>
                                     <field name="date_end" readonly="state != 'draft'"/>
                                 </div>
-                                
+
                             </group>
                             <group>
                                 <field name="year_id" 
@@ -115,7 +115,7 @@
                 </form>
             </field>
         </record>
-        
+
         <!-- <record id="exam_search_view" model="ir.ui.view">
             <field name="name">session.line.search.view</field>
             <field name="model">examen.session.line.subject</field>
@@ -133,7 +133,7 @@
                 </search>
              </field>
         </record> -->
-        
+
         <record id="action_view_subjects" model="ir.actions.act_window">
             <field name="name">Matières</field>
             <field name="res_model">examen.session.line.subject</field>
@@ -145,7 +145,7 @@
                 </p>
             </field>
         </record>
-        
+
         <menuitem 
             name="Matières programmées de session normal/Contrôle continu" 
             id="menu_examen_e"
@@ -153,6 +153,6 @@
             action="action_view_subjects"
             sequence="20"
         />
-        
+
     </data>
 </odoo>

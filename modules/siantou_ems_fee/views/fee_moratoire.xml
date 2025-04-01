@@ -55,8 +55,6 @@
             </field>
         </record>
 
-
-
         <record id="fee_moratoire_action" model="ir.actions.act_window">
             <field name="name">Moratoires</field>
             <field name="res_model">siantou.ems.fee.moratoire</field>

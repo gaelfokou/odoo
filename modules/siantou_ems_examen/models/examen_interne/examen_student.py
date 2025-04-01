@@ -13,7 +13,7 @@ class ExamenStudent(models.Model):
     _inherit = ["mail.thread", "mail.activity.mixin"]
 
     name = fields.Char('code')
-    
+
     student_id = fields.Many2one('oe.school.student', string='Etudiant', required=True, tracking=True)
 
     semestre_id = fields.Many2one('education.semestre', string='Semestre', required=True, tracking=True)
@@ -25,11 +25,11 @@ class ExamenStudent(models.Model):
     examen_planifier_id = fields.Many2one('siantou.ems.examen.plannifier')
 
     deli_stu_line_id = fields.Many2one(string='Délibération des lines étudiants', comodel_name='siantou.ems.examen.deliberation.lines')
-    
+
     tpe_exame = fields.Char('')
-    
+
     rang = fields.Integer('Rang',compute="_compute_rang")
-    
+
     credit = fields.Float('Crédit',store=True,compute="_compute_credit")
 
     # pourcentage_valid = fields.Float(compute='_compute_pourcentage_validation', store=True)
@@ -42,7 +42,7 @@ class ExamenStudent(models.Model):
         ('Semestre validé', 'Semestre validé'),
         ('Semestre non validé', 'Semestre non validé'),
     ], string='decision', readonly=True, compute="_compute_decision")
-    
+
     state = fields.Selection([
         ('draft', 'Brouillon'),
         ('validate', 'Valider'),
@@ -60,7 +60,7 @@ class ExamenStudent(models.Model):
         ('SN', 'Séssion normale'),
         ('SR', 'Séssion de rattrapage'),
     ], string='Séssion', default='SN')
-    
+
     mention = fields.Selection([
         ('Assez bien', 'Assez bien'),
         ('Bien', 'Bien'),
@@ -78,8 +78,6 @@ class ExamenStudent(models.Model):
 
     is_graduate = fields.Boolean('Est diplômé', compute='_compute_is_graduate', store=True)
 
-    
-    
     @api.depends('moyenne')
     def _compute_decision(self):
         for rec in self:
@@ -89,7 +87,7 @@ class ExamenStudent(models.Model):
                     rec.decision = "Semestre validé"
                 else:
                     rec.decision = "Semestre non validé"
-                    
+
     @api.depends('moyenne')
     def _compute_mention(self):
         for rec in self:
@@ -103,7 +101,6 @@ class ExamenStudent(models.Model):
                 elif rec.moyenne >= 16:
                     rec.mention = "Très Bien"
 
-    
     @api.depends('credit')
     def _compute_stat(self):
         """
@@ -115,8 +112,7 @@ class ExamenStudent(models.Model):
                     rec.stat = "Valider"
                 else:
                     rec.stat = "Échec"
-    
-    
+
     def action_validate(self):
         """
         fonction pour valider les actions
@@ -147,13 +143,12 @@ class ExamenStudent(models.Model):
             if rec.examen_student_line_ids:
                 for cd in rec.examen_student_line_ids:
                     rec.credit += cd.credit
-    
+
     @api.depends('credit')  # Dépend uniquement du crédit
     def _compute_pourcentage_validation(self):
         for rec in self:
             rec.pourcentage_valid = (rec.credit * 30) / 100
 
-                    
     @api.depends('examen_student_line_ids', 'credit')
     def _compute_moyenne(self):
         for rec in self:
@@ -171,9 +166,7 @@ class ExamenStudent(models.Model):
                 rec.moyenne = round(som / som_credit, 2)
             else:
                 rec.moyenne = 0  # Ou une autre valeur par défaut si tu le souhaites
-            
-            
-    
+
     @api.depends('moyenne')
     def _compute_rang(self):
         for rec in self:
@@ -183,13 +176,13 @@ class ExamenStudent(models.Model):
             for pos in range(len(notes)):
                 if notes[pos].id == rec.id:
                     rec.rang = pos+1
-    
+
     @api.depends('examen_student_line_ids', 'examen_student_line_ids.moyenne_ue', 'examen_student_line_ids.credit')
     def _compute_statistiques_annuelles(self):
         for student in self:
             total_credits = sum(line.credit for line in student.examen_student_line_ids)
             total_points = sum(line.moyenne_ue * line.credit for line in student.examen_student_line_ids)
-            
+
             if total_credits > 0:
                 student.moyenne_annuelle = total_points / total_credits
             else:
@@ -197,7 +190,7 @@ class ExamenStudent(models.Model):
 
             ues_validees = len([line for line in student.examen_student_line_ids if line.statut == 'valid'])
             total_ues = len(student.examen_student_line_ids)
-            
+
             if total_ues > 0:
                 student.pourcentage_reussite = (ues_validees / total_ues) * 100
             else:
@@ -288,7 +281,7 @@ class ExamenStudentLine(models.Model):
                 ("semestre_id","=",rec.examen_student_id.semestre_id.id),
                 ("class_id","=",rec.examen_student_id.class_id.id),
                 ("anne_academique_id","=",rec.examen_student_id.anne_academique_id.id)])
-            
+
             for mat in results:
                 if mat.matiere_id.under_subject_id.id not in liste.keys():
                     liste[mat.matiere_id.under_subject_id.id]={}
@@ -299,15 +292,14 @@ class ExamenStudentLine(models.Model):
                         "coeficeint" : mat.coeficien,
                         "examen_student_line_id" : rec.id
                     })
-                    
-                    
+
             for line in liste.values():
                 for value in line["liste"]:
                     rec.examen_student_subject_line_ids.create({
                         "matiere_parent_id" : value["matiere_parent_id"],
                         "examen_student_line_id" : value["examen_student_line_id"]})
             rec.examen_student_subject_line_ids.action_confirm()
-        
+
     @api.depends('examen_student_subject_line_ids')
     def _compute_credit(self):
         for rec in self:
@@ -324,8 +316,7 @@ class ExamenStudentLine(models.Model):
                     if cd.statut == "rpf":
                         rec.statut = "rpf"
                         break
-                        
-    
+
     @api.depends('examen_student_subject_line_ids')
     def _compute_moyenne(self):
         for rec in self:
@@ -362,7 +353,7 @@ class ExamenStudentMatiereParent(models.Model):
         required=True,
         ondelete='cascade'
     )
-    
+
     pourcentage_validation = fields.Float('Pourcentage de validation', store=True, compute='_compute_pourcentage_validation')
 
     is_validated = fields.Boolean('Validé', compute='_compute_is_validated')
@@ -371,7 +362,7 @@ class ExamenStudentMatiereParent(models.Model):
     def _compute_is_validated(self):
         for rec in self:
             rec.is_validated = rec.moyenne_matiere_parent >= 10  # Supposons que la moyenne_matiere_parent minimale pour valider est 10
-    
+
     statut = fields.Selection([
         ('rpo', 'Rattrapage obligatoire'),
         ('rpf', 'Rattrapage facultatif'),
@@ -379,13 +370,11 @@ class ExamenStudentMatiereParent(models.Model):
         ('ajour', 'Ajourner')
     ], string='statut', compute="_compute_state")
 
-    
     state = fields.Selection([
     ('draft', 'Brouillon'),
     ('validate', 'Valider'),
     ('confirm', 'Confirmer')
     ], string='Statue', default="draft")
-    
 
     @api.depends('examen_student_subject_ids')
     def _compute_pourcentage_validation(self):
@@ -394,14 +383,13 @@ class ExamenStudentMatiereParent(models.Model):
             matiere_parent_valide = len(rec.examen_student_subject_ids.filtered(lambda x: x.statut in ['valid', 'rpf']))
             rec.pourcentage_validation = (matiere_parent_valide / total_matiere_parent) * 100 if total_matiere_parent > 0 else 0
 
-
     def action_validate(self):
         """
         fonction pour valider les actions
         """
         for rec in self:
             rec.state = "validate"
-            
+
     def action_confirm(self):
         """
         fonction pour confirmer les actions
@@ -414,7 +402,7 @@ class ExamenStudentMatiereParent(models.Model):
                 ("class_id","=",rec.examen_student_line_id.examen_student_id.class_id.id),
                 ("anne_academique_id","=",rec.examen_student_line_id.examen_student_id.anne_academique_id.id),
                 ("matiere_id.under_subject_id", "=", rec.matiere_parent_id.id)])
-            
+
             for mat in results:
                 if mat.matiere_id.id not in liste.keys():
                     liste[mat.matiere_id.id]={}
@@ -424,8 +412,7 @@ class ExamenStudentMatiereParent(models.Model):
                         "coeficeint" : mat.coeficien,
                         "examen_student_parent_subject_id" : rec.id
                     })
-                    
-                    
+
             for line in liste.values():
                 for value in line["liste"]:
                     rec.examen_student_subject_ids.create({
@@ -433,7 +420,6 @@ class ExamenStudentMatiereParent(models.Model):
                         "coeficeint" : value["coeficeint"],
                         "examen_student_parent_subject_id" : value["examen_student_parent_subject_id"]})
             rec.examen_student_subject_ids.action_confirm()
-
 
     @api.depends('examen_student_subject_ids')
     def _compute_credit_parent(self):
@@ -458,8 +444,7 @@ class ExamenStudentMatiereParent(models.Model):
                 rec.moyenne_matiere_parent = total_moyenne / total_credit
 
             _logger.info(rec.moyenne_matiere_parent)
-            
-    
+
     @api.depends('moyenne_matiere_parent','examen_student_line_id')
     def _compute_state(self):
         for rec in self:
@@ -485,7 +470,7 @@ class ExamenStudentMatiereParent(models.Model):
                         else:
                             rec.statut = "valid"
                             rec.examen_student_line_id.statut = "valid"
-    
+
 class ExamenStudentMatiere(models.Model):
     """
     Modèle permettant de concerver les notes par matière d'un étudiant
@@ -503,8 +488,7 @@ class ExamenStudentMatiere(models.Model):
     examen_student_subject_ids = fields.One2many('siantou.ems.examen.student.subject.line', 'examen_student_subject_id')
 
     coeficeint = fields.Float('Coéficient')
-    
-    
+
     statut = fields.Selection([
         ('rpo', 'Rattrapage obligatoire'),
         ('rpf', 'Rattrapage facultatif'),
@@ -512,13 +496,11 @@ class ExamenStudentMatiere(models.Model):
         ('ajour', 'Ajourner')
     ], string='statut', compute="_compute_state")
 
-    
     state = fields.Selection([
     ('draft', 'Brouillon'),
     ('validate', 'Valider'),
     ('confirm', 'Confirmer')
     ], string='Statue', default="draft")
-    
 
     def action_validate(self):
         """
@@ -551,8 +533,7 @@ class ExamenStudentMatiere(models.Model):
             rec.moyenne_matiere = 0
             for moyenn in rec.examen_student_subject_ids:
                 rec.moyenne_matiere += moyenn.moyenne_type_examne
-    
-    
+
     @api.depends('moyenne_matiere','examen_student_parent_subject_id')
     def _compute_state(self):
         for rec in self:
@@ -581,7 +562,6 @@ class ExamenStudentMatiere(models.Model):
                         rec.statut = "valid"
                         rec.examen_student_parent_subject_id.examen_student_line_id.statut = "valid"
 
-    
 class ExamenStudentMatiereLine(models.Model):
     """
     Modèle des ligne permettant de concerver les notes par matière d'un étudiant
@@ -591,15 +571,15 @@ class ExamenStudentMatiereLine(models.Model):
     _inherit = ["mail.thread", "mail.activity.mixin"]
 
     type_examen_id = fields.Many2one('siantou.ems.type.examen', string="Type d'examen")
-    
+
     pourcentage = fields.Integer('Pourcentage')
-    
+
     note = fields.Float('note')
 
     moyenne_type_examne = fields.Float('Moyenne',store=True,compute='_compute_moyenne_type_examne')
-    
+
     examen_student_subject_id = fields.Many2one('siantou.ems.examen.student.subject')
-    
+
     examen_student_under_subject_id = fields.Many2one('siantou.ems.examen.student.subject.parent')
 
     @api.depends('pourcentage','note')
@@ -607,6 +587,4 @@ class ExamenStudentMatiereLine(models.Model):
         for rec in self:
             rec.moyenne_type_examne = 0
             rec.moyenne_type_examne = ((rec.note * rec.pourcentage) / 100)
-    
-    
-    
+

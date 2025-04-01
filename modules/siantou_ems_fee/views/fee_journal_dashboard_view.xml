@@ -602,6 +602,4 @@
     <!--    Menu Item for dashboard-->
     <menuitem id="fee_menu_board_journal0" name="Tableau de Bord" action="open_fee_journal_dashboard_kanban" parent="menu_education_fee_root" sequence="1"/>
 
-    
-    
 </odoo>

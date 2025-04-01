@@ -27,14 +27,12 @@ class RunNoteCandidat(models.Model):
     rang = fields.Integer('rang par paye',  compute='_compute_rang_contry')
 
     rang_all = fields.Integer('rang global',  compute='_compute_rang')
-    
+
     state = fields.Selection([
         ('cancel', 'Éliminer'),
         ('not_cancel', 'Non Éliminer'),
     ], string='Statut', default='not_cancel')
-    
 
-    
     @api.depends('moyenne')
     def _compute_rang_contry(self):
         for rec in self:
@@ -54,9 +52,7 @@ class RunNoteCandidat(models.Model):
             for pos in range(len(notes)):
                 if notes[pos].id == rec.id:
                     rec.rang_all = pos+1
-                
-    
-    
+
     @api.depends('line_note_ids.note')
     def _compute_moyenne(self):
         self.moyenne = 0
@@ -79,13 +75,11 @@ class RunNoteCandidat(models.Model):
     """
     _name = "siantou.ems.admission.run.note.line"
 
-
     matiere_id = fields.Many2one('education.subject', string='Matière')
-    
+
     obligatory = fields.Boolean('Obligatoire',related='matiere_id.obligatory' ,default=False)
 
     note = fields.Float('note')
 
     candidat_note_id = fields.Many2one('siantou.ems.admission.run.note')
-
 

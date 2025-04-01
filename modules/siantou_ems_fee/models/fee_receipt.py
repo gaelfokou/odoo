@@ -1,24 +1,22 @@
 # -*- coding: utf-8 -*-
 
-
 import datetime
 from xml.dom import ValidationErr
 from odoo import models, fields, api, _
 from odoo.exceptions import ValidationError, UserError
 
-
 class FeeReceipts(models.Model):
     _inherit = 'account.move'
-    
+
     def _get_default_acadmic_year(self):
         """Get the default acedemic year active"""
-        
+
         year = self.env['siantou.ems.core.year'].search([('active', '=', True)], limit=1)
-        
+
         if not year:
             raise UserError(""" Aucune annéé academique activé, vous ne pouvez pas effectuer la facturation
                             """)
-        
+
         return year.id
 
     @api.onchange('fee_structure')
@@ -92,7 +90,6 @@ class FeeReceipts(models.Model):
                         invoice_line_list.append((0, 0, fee_line))
                 item.payed_line_ids = invoice_line_list
 
-
     @api.onchange('fee_category_id')
     def _get_fee_structure(self):
         """ Set domain for fee structure based on category"""
@@ -128,10 +125,10 @@ class FeeReceipts(models.Model):
                                  domain="[('deprecated', '=', False),"
                                         " ('company_id', '=', 'company_id')"
                                         ",('is_off_balance', '=', False)]",
-                                  
+
                                  tracking=True)
     partner_id = fields.Many2one('res.partner')
-    
+
     academic_year_id = fields.Many2one('siantou.ems.core.year',
                                        string='Année Académique',
                                        help="Séletionner l'Année Académique",
@@ -148,7 +145,6 @@ class FeeReceipts(models.Model):
             })
         res = super(FeeReceipts, self).create(vals)
         return res
-
 
 class InvoiceLineInherit(models.Model):
     _inherit = 'account.move.line'
@@ -169,7 +165,6 @@ class InvoiceLineInherit(models.Model):
                 }
             }
             return vals
-
 
 # class PayedLinens(models.Model):
 #     _name = 'payed.lines'

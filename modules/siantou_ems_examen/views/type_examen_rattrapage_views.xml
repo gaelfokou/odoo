@@ -17,7 +17,6 @@
       <field name="view_mode">tree</field>
     </record>
 
-
     <menuitem
       id="type_rattrapage_configuration_menu"
       groups="siantou_ems_examen.group_examen_base"

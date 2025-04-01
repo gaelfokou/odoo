@@ -37,13 +37,12 @@
             </field>
         </record>
 
-
         <record id="action_fee_type" model="ir.actions.act_window">
             <field name="name">Type de frais</field>
             <field name="res_model">siantou.ems.fee.type</field>
             <field name="view_mode">tree,form</field>
         </record>
-        
+
         <menuitem 
             id="menu_student_fee_receipt" 
             name="Paiements étudiants"

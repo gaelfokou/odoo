@@ -10,13 +10,10 @@ from odoo.exceptions import UserError, ValidationError
 import logging
 _logger = logging.getLogger("++++++++++++")
 
-
-
 class SecretariatExamen(models.Model):
     _name = 'siantou.ems.examen.secretariat'
     _description = "Model pour gérer les sécretariat des examen"
     _inherit = ["mail.thread", "mail.activity.mixin"]
-
 
     name = fields.Char(
         'Libellé', 
@@ -51,12 +48,12 @@ class SecretariatExamen(models.Model):
         # ],
         required=True
     )
-    
+
     school_id = fields.Many2one('siantou.ems.core.school', string='Ecole')
-    
+
     level_id = fields.Many2one('siantou.ems.core.level', string='Niveau',required=True,
                                  help="Niveau")
-    
+
     surveillent_perm_ids = fields.Many2many(
         'hr.employee',
         string='Surveillants Internes',
@@ -75,8 +72,6 @@ class SecretariatExamen(models.Model):
         ('unique_name', 'unique(name)', "Ce nom existe déjà")
     ]
 
-
-
     @api.onchange('type_examen_id', 'year_id')
     def _onchange_name(self):
         for  secr in self:
@@ -85,10 +80,8 @@ class SecretariatExamen(models.Model):
                 name = f"{name}{secr.type_examen_id.code}"
             if secr.year_id:
                 name = f"{name}_{secr.year_id.name}"
-            
+
             secr.name=name
-
-
 
 class SessionExamen(models.Model):
     _name = 'siantou.ems.examen.session'
@@ -114,13 +107,13 @@ class SessionExamen(models.Model):
     #     'siantou.ems.core.field_of_study', 
     #     string="Filières", required=True,
     # )
-    
+
     level_id = fields.Many2one('siantou.ems.core.level', required=True,string='Niveau')
-    
+
     school_id = fields.Many2one('siantou.ems.core.school', required=False,string='Ecole')
-    
+
     class_ids = fields.Many2many('siantou.ems.core.class', required=True,string='Classes')
-    
+
     year_id = fields.Many2one(
         'siantou.ems.core.year',
         string='Année académique', 
@@ -173,7 +166,6 @@ class SessionExamen(models.Model):
             # Si aucune école n'est sélectionnée, vider le champ des classes
             self.class_ids = [(5, 0, 0)]
 
-
     @api.onchange('type_examen_id', 'semester_id', 'year_id')
     def _onchange_name(self):
         for exam in self:
@@ -184,16 +176,14 @@ class SessionExamen(models.Model):
                 name = f"{name}_{exam.semester_id.name}"
             if exam.year_id:
                 name = f"{name}_{exam.year_id.name}"
-            
-            exam.name=name
 
+            exam.name=name
 
     @api.constrains('exam_hours')
     def _check_exam_hours(self):
         for record in self:
             if record.exam_hours < 0:
                 raise ValidationError("La date de fin ne peut être inférieure à la date de début.")
-
 
     # Constraints
     @api.constrains('state')
@@ -212,7 +202,6 @@ class SessionExamen(models.Model):
                 ]):
                     raise ValidationError("La session d'examen a déjà commencé pour cette filière !")
 
-
     # Compute Methods
     def _compute_exam(self):
         for record in self:
@@ -221,13 +210,12 @@ class SessionExamen(models.Model):
     # Action Buttons
     def button_draft(self):
         self.write({'state': 'draft'})
-              
 
     def button_open(self):
         for rec in self:
             if rec.exam_subject_ids:
                 rec.exam_subject_ids.unlink()
-            
+
             check_syllabus = None
             check_students = None
 
@@ -279,7 +267,6 @@ class SessionExamen(models.Model):
 
         self.write({'state': 'progress'})
 
-
     def get_students_has_paid(self, student_id, year_id):
         paids = self.env['education.fee.payment'].search(
             [
@@ -288,20 +275,15 @@ class SessionExamen(models.Model):
             ]
         )
 
-
     def button_close(self):
         for session in self:
             if any(exam.state != 'done' for exam in session.exam_subject_ids.filtered(lambda e: e.state != 'cancel')):
                 raise UserError(_('Veuillez fermer tous les examens avant de clôturer la session. %s') % (session.name))
             session.exam_subject_ids.unlink()
         self.write({'state': 'close'})
-        
-
 
     def button_cancel(self):
         self.write({'state': 'draft'})
-
-
 
     def action_view_exams(self):
         #self.ensure_one()
@@ -320,8 +302,6 @@ class SessionExamen(models.Model):
             'domain': [('exam_id','=',self.id)],
         }
         return action
-
-
 
 class SessionExamenLine(models.Model):
     _name = 'examen.session.line'
@@ -379,16 +359,13 @@ class SessionExamenLine(models.Model):
         index=True, copy=False, 
         default='create', tracking=True
     )
-    
+
     subjects_count = fields.Integer('Nombre de matière',compute='_compute_subject_count')
     exam_subject_ids = fields.One2many('examen.session.line.subject', 'exam_id', string='Matières', )
-
-
 
     # Action Buttons
     def button_draft(self):
         self.write({'state': 'draft'})
-
 
     def button_schedule(self):
         self.exam_subject_ids.unlink()
@@ -406,16 +383,13 @@ class SessionExamenLine(models.Model):
             })
         self.write({'state': 'schedule'})
 
-
     def button_close(self):
         # if any(not attendee.status for attendee in self.exam_subject_ids):
         #     raise UserError(_("One or more attendance is missing."))
         self.write({'state': 'complete'})
-        
 
     def button_cancel(self):
         self.write({'state': 'cancel'})
-
 
     @api.model
     def create(self, vals):
@@ -432,7 +406,6 @@ class SessionExamenLine(models.Model):
         for record in self:
             record.subjects_count = len(record.exam_subject_ids)
 
-
     def action_view_subjects(self):
         action = self.env.ref('siantou_ems_examen.action_view_subjects').read()[0]
         action.update({
@@ -447,7 +420,6 @@ class SessionExamenLine(models.Model):
             },
         })
         return action
-
 
 class SessionExamenLineSubject(models.Model):
     _name = 'examen.session.line.subject'
@@ -504,7 +476,6 @@ class SessionExamenLineSubject(models.Model):
     attendees_count = fields.Integer('Nombre de participants',compute='_compute_attendees_count')
     exam_attendee_ids = fields.One2many('session.line.attende', 'exam_subject_id', string='Participants', )
 
-
     # exam_result_line = fields.One2many('examen.session.line.result', 'exam_subject_id', string='Résultats', )
     # exam_result_count = fields.Integer('Résultats', compute='_compute_exam_result')
 
@@ -512,11 +483,9 @@ class SessionExamenLineSubject(models.Model):
         for record in self:
             record.exam_result_count = len(record.exam_result_line)
 
-
     # Action Buttons
     def button_draft(self):
         self.write({'state': 'draft'})
-
 
     def button_schedule(self):
         self.exam_attendee_ids.unlink()
@@ -529,16 +498,13 @@ class SessionExamenLineSubject(models.Model):
             })
         self.write({'state': 'schedule'})
 
-
     def button_close(self):
         if any(not attendee.status for attendee in self.exam_attendee_ids):
             raise UserError(_("One or more attendance is missing."))
         self.write({'state': 'complete'})
-        
 
     def button_cancel(self):
         self.write({'state': 'cancel'})
-
 
     def button_prepare_result(self):
         #raise UserError(student_ids)
@@ -552,16 +518,11 @@ class SessionExamenLineSubject(models.Model):
         #     })
         self.write({'state': 'prepare'})
 
-
-
-
-
     def button_complete_result(self):
         for exam in self:
             if any(er.marks == 0 for er in exam.exam_result_line.filtered(lambda e: e.attendance_status == 'present')):
                 raise UserError("One or more student's marks are not updated.")
         self.write({'state': 'done'})
-
 
     # def action_anonyma_wizard(self):
     #     action = self.env.ref('siantou_ems_examen.action_anonyma_wizard').read()[0]
@@ -571,7 +532,6 @@ class SessionExamenLineSubject(models.Model):
     #         'type': 'ir.actions.act_window',
     #     })
     #     return action
-
 
     def button_open_anonyma_form(self):
         # self.exam_result_line.unlink()
@@ -598,7 +558,6 @@ class SessionExamenLineSubject(models.Model):
         action['context'] = context
         return action
 
-
     @api.model
     def create(self, vals):
         # sequence = self.env['ir.sequence'].create({
@@ -610,12 +569,9 @@ class SessionExamenLineSubject(models.Model):
         examen = super().create(vals)
         return examen
 
-
     def _compute_attendees_count(self):
         for record in self:
             record.attendees_count = len(record.exam_attendee_ids)
-
-
 
     def button_open_results(self):
         action = self.env['ir.actions.actions']._for_xml_id('siantou_ems_examen.action_exam_teacher_result')
@@ -631,7 +587,6 @@ class SessionExamenLineSubject(models.Model):
         action['context'] = context
         return action
 
-
     def action_view_attendees(self):
         action = self.env.ref('siantou_ems_examen.action_exam_attendees').read()[0]
         action.update({
@@ -646,7 +601,4 @@ class SessionExamenLineSubject(models.Model):
             },
         })
         return action
-
-
-
 

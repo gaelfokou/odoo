@@ -47,7 +47,6 @@
             </field>
         </record>
 
-
         <record id="action_fee_bank_account_config" model="ir.actions.act_window">
             <field name="name">Numéro de compte bancaire pour payer les frais d'inscription</field>
             <field name="res_model">siantou.ems.fee.config.bank</field>
@@ -62,5 +61,4 @@
         />
     </data>
 </odoo>
-
 

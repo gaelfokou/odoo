@@ -4,9 +4,7 @@ from odoo import fields, models, _, api
 from odoo.exceptions import UserError, ValidationError
 from bs4 import BeautifulSoup
 
-
 _logger = logging.getLogger("++++++++++++")
-
 
 class TicketMergeWizard(models.TransientModel):
     _name = 'session.line.attende.attend'
@@ -17,7 +15,7 @@ class TicketMergeWizard(models.TransientModel):
         default=lambda self: self.env.context.get('active_ids'),
         string="Participants"
     )
-    
+
     status = fields.Selection([
             ('P', 'Présent'),
             ('A', 'Abscent'),

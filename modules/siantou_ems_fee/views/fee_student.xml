@@ -43,7 +43,6 @@
         </field>
     </record>
 
-
     <record id="fees_filiere_inherits" model="ir.ui.view">
         <field name="name">fees.filiere.view.form.inherit</field>
         <field name="model">education.filiere</field>

@@ -3,14 +3,11 @@
 from odoo import api, fields, models
 from odoo.exceptions import ValidationError  # Import the ValidationError class
 
-
 class ResConfigSettings(models.TransientModel):
     _inherit = 'res.config.settings'
 
     percent = fields.Integer(string='Pourcentage de contrôle',config_parameter="siantou_ems_fee.percent",
                              default=60)
-
-
 
 class BankAccountEnrollmentConfigSettings(models.TransientModel):
     _name = 'siantou.ems.fee.config.bank'

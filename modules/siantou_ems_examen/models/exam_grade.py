@@ -2,7 +2,6 @@
 
 from odoo import models, fields, api
 
-
 class ExamGrade(models.Model):
     _name = 'siantou.ems.examen.grade'
     _description = "Grade de l'examen"
@@ -13,5 +12,4 @@ class ExamGrade(models.Model):
     score_min = fields.Float(string='Moyenne min', required=True)
     score_max = fields.Float(string='Moyenne max', required=True)
     appreciation = fields.Char(string='Appréciaiton', required=True)
-    
-    
+

@@ -12,7 +12,7 @@
 				</tree>
 			</field>
 		</record>
-        
+
         <record id="exam_result_teacher_form_view" model="ir.ui.view">
             <field name="name">exam.result.teacher.form.view</field>
             <field name="model">subject.mark</field>
@@ -46,7 +46,7 @@
                 </form>
             </field>
         </record>
-        
+
         <!-- 
         <record id="exam_result_teacher_search_view" model="ir.ui.view">
             <field name="name">exam.result.search.view</field>
@@ -80,7 +80,6 @@
             </field>
         </record>
 
-        
         <menuitem 
             id="menu_results_note_exam"
             name="Remplissage des notes" 
@@ -88,6 +87,6 @@
             parent="examen_menu_note"
             sequence="30"
         />
-        
+
     </data>
 </odoo>

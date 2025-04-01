@@ -7,15 +7,13 @@ from datetime import datetime
 
 _logger = logging.getLogger("Logger ==========")
 
-
 class StudentFacture(models.AbstractModel):
     _name = 'report.siantou_ems_fee.report_student_fees_pdf_template'
-
 
     @api.model
     def _get_report_values(self, docids, data=None):
         _logger.info(docids)
-        
+
         # student_id = self.env["oe.school.student"].search([('id', '=', student_id)], limit=1)
 
         # lines = []
@@ -35,7 +33,6 @@ class StudentFacture(models.AbstractModel):
         #         'reste': fee.amount_residual,
         #     })
 
-        
         docargs = {
             'doc_model': "education.fee.payment",
             'data': data,

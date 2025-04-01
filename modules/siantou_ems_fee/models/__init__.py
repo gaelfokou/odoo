@@ -32,6 +32,3 @@ from . import config
 # from . import education_student
 # from . import education_fee_classe
 
-
-
-

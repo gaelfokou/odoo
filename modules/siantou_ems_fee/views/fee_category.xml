@@ -35,7 +35,6 @@
             </field>
         </record>
 
-
         <record id="action_fee_category" model="ir.actions.act_window">
             <field name="name">Catégorie de frais</field>
             <field name="res_model">siantou.ems.fee.category</field>
@@ -49,5 +48,4 @@
         />
     </data>
 </odoo>
-
 

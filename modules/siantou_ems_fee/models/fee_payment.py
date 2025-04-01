@@ -6,10 +6,7 @@ from . import utils
 # from odoo.addons.siantou_ems_fee.models.utils import create_payment
 import logging
 
-
-
 _logger = logging.getLogger("+++++++++++++++++++++")
-
 
 class FeePaymentLine(models.Model):
     _name = 'siantou.ems.fee.payment.line'
@@ -64,8 +61,6 @@ class FeePaymentLine(models.Model):
         default=lambda self: self.env.company.currency_id,
         readonly=True
     )
-
-
 
 class FeePayment(models.Model):
     _name = 'education.fee.payment'
@@ -148,7 +143,6 @@ class FeePayment(models.Model):
     )
     use_moratoire = fields.Boolean("Utilisé un moratoire ?", default=False)
 
-
     def action_complete_fee_payment_wizard(self):
         action = self.env.ref('siantou_ems_fee.action_complete_fee_payment_wizard').read()[0]
         action.update({
@@ -158,14 +152,12 @@ class FeePayment(models.Model):
         })
         return action
 
-
     def get_liste_of_ids_tranche_no_use(self, list_tranche_ids_of_structure, list_tranche_ids_use):
         results = []
         for id in list_tranche_ids_of_structure:
             if id not in list_tranche_ids_use:
                 results.append(id)
         return results
-
 
     def validate_payment(self):
         """Validate, create and match payment and invoice"""
@@ -174,12 +166,12 @@ class FeePayment(models.Model):
             journal_id = rec.structure_frais_id.type_frais_id.category_id.journal_id
             if not journal_id:
                 raise ValidationError("Le journal de paiement n'est pas configuré pour cette structure de frais")
-            
+
             account_receivable_id = journal_id.default_account_id
             account_revenue_id = journal_id.default_account_id
             if not account_receivable_id or not account_revenue_id:
                 raise ValidationError("Les comptes de créance ou de revenus ne sont pas configurés dans le journal. Veuillez vérifier la configuration")
-            
+
             price_unit = 0
             structure_frais_scol_id = rec.structure_frais_id
 
@@ -202,11 +194,10 @@ class FeePayment(models.Model):
             rest_diff = structure_frais_scol_id.amount_total-rec.amount
             if rec.amount<=0:
                 raise ValidationError("Le montant versé doit être supérieur à 0")
-            
+
             if rest_diff<0:
                 raise ValidationError(f"Le montant versé doit être inférieur ou égal à {structure_frais_scol_id.amount_total}")
-            
-            
+
             amount_of_one_tranche = lines[0].fee_amount
             nbre_tranches_a_remplir = (rec.amount)/amount_of_one_tranche
             partie_entiere = int(nbre_tranches_a_remplir)
@@ -217,7 +208,7 @@ class FeePayment(models.Model):
 
             # nbre_tranches_disp = len(lines)
             # diff_nbre_tranch = nbre_tranches_disp - int(nbre_tranches_a_remplir)
-            
+
             tranches_remplit = []
             montant_total_remplit = 0
             if partie_entiere>0:
@@ -241,7 +232,7 @@ class FeePayment(models.Model):
                     })
                     montant_total_remplit+=line.fee_amount
                     tranches_remplit.append(line.id)
-                
+
             results = self.get_liste_of_ids_tranche_no_use(lines.ids, tranches_remplit)
             if partie_decimal!=0.0:
                 #=== récupération de l'une des tranches qui n'est pas remplit
@@ -264,9 +255,9 @@ class FeePayment(models.Model):
                     'mode_payment':rec.mode_payment,
                     'date_payment': rec.date_payment
                 })
-            
+
             #==== mise à jour du paiement actuelle
-            
+
             if rest_diff==0:
                 rec.update({
                     'amount_rest': 0.0,
@@ -277,10 +268,8 @@ class FeePayment(models.Model):
                     'amount_rest': rest_diff,
                     'status': 'none_all'
                 })
-        
 
             rec.state = 'done'
-
 
     def account_move(self, student_id, journal_id, price_unit, account_revenue_id):
         mone_vals = {
@@ -302,7 +291,6 @@ class FeePayment(models.Model):
         account_move = self.env['account.move'].create(mone_vals)
         return account_move
 
-
     def reset_payment(self):
         """Cancel payment"""
         for rec in self:
@@ -311,13 +299,11 @@ class FeePayment(models.Model):
             rec.amount_rest = 0.0
             rec.state = 'creer'
             rec.status = 'none'
-    
 
     def action_rien(self):
         """Cancel payment"""
         for rec in self:
             pass
-
 
     def print_payement_student(self):
         for rec in self:
@@ -354,7 +340,6 @@ class FeePayment(models.Model):
             report_action = self.env.ref('siantou_ems_fee.action_report_student_fees_pdf')
             return report_action.report_action(self,data=data)
 
-
     @api.onchange('student_id')
     def _onchange_student_id(self):
         for rec in self:
@@ -375,8 +360,6 @@ class FeePayment(models.Model):
             else:
                 rec.amount = 0
                 rec.use_moratoire = False
-
-
 
     @api.model
     def create(self, vals):
@@ -400,24 +383,21 @@ class FeePayment(models.Model):
         )
         if pay_fee:
             raise ValidationError(f"Un paiement de Mr/Mdme {student_id.name} existe déjà")
-        
+
         if vals['amount']<=0:
             raise ValidationError("Le montant versé doit être supérieur à 0")
-        
+
         if structure_frais_id.amount_total<vals['amount']:
             raise ValidationError(f"Le montant versé doit être inférieur ou égal à {structure_frais_id.amount_total}")
-        
+
         vals['state'] = 'draft'
         res = super(FeePayment, self).create(vals)
         return res
-    
-    
+
     @api.model
     def write(self, vals):
         res = super(FeePayment, self).write(vals)
         return res
-
-
 
 class FeePaymentEnrollment(models.Model):
     _name = 'education.fee.payment.enrollment'
@@ -491,7 +471,4 @@ class FeePaymentEnrollment(models.Model):
         readonly=True,
         related_sudo=False
     )
-
-
-
 

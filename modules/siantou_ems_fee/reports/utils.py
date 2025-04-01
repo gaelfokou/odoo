@@ -9,8 +9,6 @@ _logger = logging.getLogger("++++++++++++++=============")
 #    https://github.com/BADEP/addons/blob/8.0/amount_to_text_fr/amount_to_text_fr.py #
 ######################################################################################
 
-
-
 correspondance = []
 
 to_19_fr = (
@@ -29,7 +27,6 @@ denom_fr = (
 
 pattern = re.compile(r'(?i)(un)\s+(cent|mille)+.*')
 
-
 def format_amount_to_integer(amount):
     """
     Convertit un nombre decimal en un entier.
@@ -39,7 +36,6 @@ def format_amount_to_integer(amount):
     """
     amount = int(round(amount))
     return '{0:,}'.format(amount).replace(',', ' ')
-
 
 def amount_to_text_fr_corrected(valeur, devise):
     res = amount_to_text_fr(valeur, devise)
@@ -52,7 +48,6 @@ def amount_to_text_fr_corrected(valeur, devise):
         r_comp = re.compile(elt[0])
         rep = r_comp.sub(elt[1], rep)
     return rep[:-14]
-
 
 def _convert_nn_fr(val):
     """ convert a value < 100 to French
@@ -67,7 +62,6 @@ def _convert_nn_fr(val):
                 else:
                     return dcap + '-' + to_19_fr[val % 10]
             return dcap
-
 
 def _convert_nnn_fr(val):
     """ convert a value < 1000 to french
@@ -90,7 +84,6 @@ def _convert_nnn_fr(val):
         word += _convert_nn_fr(mod)
     return word
 
-
 def french_number(val):
     if val < 100:
         return _convert_nn_fr(val)
@@ -109,7 +102,6 @@ def french_number(val):
                 ret = ret + ' ' + french_number(r)
             return ret
 
-
 def amount_to_text_fr(number, currency):
     number = '%.2f' % number
     units_name = currency
@@ -120,7 +112,6 @@ def amount_to_text_fr(number, currency):
     cents_name = (cents_number > 1) and ' Centimes' or ' Centime'
     final_result = start_word + ' ' + units_name + ' ' + end_word + ' ' + cents_name
     return final_result
-
 
 def get_amount_en_lettre(amount):
     montant = ""

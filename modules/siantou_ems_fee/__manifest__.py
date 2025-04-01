@@ -36,7 +36,7 @@
         'wizard/complet_paiement_wizard.xml',
 
         # report
-        
+
         # "reports/report_list_factures.xml",
         "reports/report_student_fees.xml",
         # "reports/report.xml",

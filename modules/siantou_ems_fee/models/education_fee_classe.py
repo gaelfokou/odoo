@@ -4,7 +4,6 @@ from datetime import date
 from odoo import models, fields, api, _
 from odoo.exceptions import ValidationError
 
-
 class EducationFeeClass(models.Model):
     _name = 'siantou.ems.fee.classe'
     _inherit = ['mail.thread', 'mail.activity.mixin']
@@ -15,7 +14,7 @@ class EducationFeeClass(models.Model):
     field_of_study_id = fields.Many2one('siantou.ems.core.field_of_study', string='Filiere', readonly=True)
     niveau = fields.Many2one('siantou.ems.core.level', string="Niveau")
     amount = fields.Monetary('Montant total de la filière', compute='_compute_amount', store=True)
-    
+
     state = fields.Selection([
         ('draft', 'Brouillon'),
         ('done', 'En cours de validation'),
@@ -26,13 +25,12 @@ class EducationFeeClass(models.Model):
     academic_year = fields.Many2one('siantou.ems.core.year',
                                     string='Année académique',
                                     store=True)
-    
+
     company_id = fields.Many2one(
         'res.company', default=lambda self: self.env.company.id, readonly=True, related_sudo=False)
-    
+
     currency_id = fields.Many2one(
         'res.currency', default=lambda self: self.env.company.currency_id, readonly=True, related_sudo=False)
-    
 
     @api.depends('state')
     def _compute_amount(self):
@@ -45,7 +43,6 @@ class EducationFeeClass(models.Model):
                 total += sum([x.amount_residual for x in fees])
             rec.amount = total
 
-    
     @api.constrains("field_of_study_id", "academic_year")
     def _check_duplicated_generation(self):
         for rec in self:
@@ -53,12 +50,11 @@ class EducationFeeClass(models.Model):
             if len(factures) > 1:
                 raise ValidationError(_("Impossible de générer pour une filière plusieurs factures sur l'année"))
 
-
     @api.model
     def create(self, valeurs):
         valeurs['name'] = 'SCOLARITE'
         return super(EducationFeeClass, self).create(valeurs)
-    
+
     def action_draft(self):
         for rec in self:
             for student in rec.field_of_study_id.student_ids:
@@ -67,7 +63,7 @@ class EducationFeeClass(models.Model):
                     fee.unlink()
             rec._compute_amount()
             rec.state = 'draft'
-            
+
     def action_cancel(self):
         for rec in self:
             for student in rec.field_of_study_id.student_ids:
@@ -76,7 +72,7 @@ class EducationFeeClass(models.Model):
                     fee.unlink()
             rec._compute_amount()
             rec.state = 'cancel'
-    
+
     def action_validate(self):
         for rec in self:
             rec.state = 'done'
@@ -89,7 +85,7 @@ class EducationFeeClass(models.Model):
                     fee.action_post()
                 student.state = 'facture'
             rec.state = 'confirm'
-    
+
     def generate_fees(self):
         """Generation des factures pour une scolarite normale pour la classe"""
         for rec in self:
@@ -108,7 +104,6 @@ class EducationFeeClass(models.Model):
             docids = rec.field_of_study_id.student_ids.ids
 
         return self.env.ref('siantou_ems_fee.action_fees_student').report_action(docids)
-        
 
     def _student_generate_fees(self, students):
         """Genere les frais pour etudiants"""
@@ -116,11 +111,11 @@ class EducationFeeClass(models.Model):
         account_move_obj = self.env['account.move']
         structure_obj = self.env['siantou.ems.fee.structure']
         fee_category_obj = self.env['siantou.ems.fee.category']
-        
+
         for rec in students:
             if  not self.field_of_study_id.                                                                                                                             frais:
                 raise ValidationError(_('Aucun Frais disponible pour la filière'))
-            
+
             #  Get all fees category for student
             fee_category_ids = fee_category_obj.search([])
 
@@ -131,9 +126,9 @@ class EducationFeeClass(models.Model):
                 #  Get structure object for student
                 annee = self.env['siantou.ems.core.year'].search(
                     [('active', '=', True)], limit=1)
-                
+
                 structure_ids = []
-                
+
                 if rec.redoublant == 'non':
                     structure_ids = structure_obj.search(
                     [('academic_year', '=', annee.id), ('fee_special', '=', False),('id', 'in', self.field_of_study_id.class_id.field_of_study_id.frais.ids),
@@ -158,7 +153,7 @@ class EducationFeeClass(models.Model):
                         'journal_id': cat.journal_id.id,
                         'move_type': 'out_invoice'
                     }
-                    
+
                     # Records line of fee structure
                     for line in struct.fee_type_ids:
                         name = line.fee_type.product_id.description_sale
@@ -194,6 +189,5 @@ class EducationFeeClass(models.Model):
                         values['invoice_line_ids'] = lines
                         values['line_ids'] = lines
                         move_id = account_move_obj.create(values)
-        
+
         return True
-                        
