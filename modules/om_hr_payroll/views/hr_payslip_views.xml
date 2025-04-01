@@ -53,7 +53,7 @@
             <field name="arch" type="xml">
                 <search string="Search Payslip Lines">
                     <field name="name" string="Payslip Lines"
-                           filter_domain="['|', ('name','ilike',self),('code','ilike',self)]"/>
+                           filter_domain="['|', ('name', 'ilike', self),('code', 'ilike', self)]"/>
                     <field name="amount_select"/>
                     <field name="slip_id"/>
                     <group col="8" colspan="4" expand="0" string="Group By">
@@ -318,7 +318,7 @@
             <field name="arch" type="xml">
                 <search string="Search Payslips">
                     <field name="name" string="Payslips"
-                           filter_domain="['|', ('name','ilike',self),('number','ilike',self)]"/>
+                           filter_domain="['|', ('name', 'ilike', self),('number', 'ilike', self)]"/>
                     <field name="date_from"/>
                     <filter string="Draft" name="draft" domain="[('state','=','draft')]" help="Draft Slip"/>
                     <filter string="Done" name="done" domain="[('state','=','done')]" help="Done Slip"/>
