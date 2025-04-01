@@ -42,7 +42,7 @@
                             <field name="semestre_id" attrs="{'readonly': [('state','in',['validated','confirm', 'cancel','done'])]}"/>
                         </group>
                         <group colspan="2">
-                            <field name="annee_academique_id" attrs="{'readonly': [('state','in',['validated','confirm', 'cancel','done'])]}"/>
+                            <field name="year_id" attrs="{'readonly': [('state','in',['validated','confirm', 'cancel','done'])]}"/>
                         </group>
                         <group colspan="2">
                             <field name="date" attrs="{'readonly': [('state','in',['validated','confirm', 'cancel','done'])]}"/>
@@ -93,11 +93,11 @@
             <search string="Plannifier une SN ET CC">
                 <field name="classe_id" />
                 <field name="semestre_id" />
-                <field name="annee_academique_id"/>
+                <field name="year_id"/>
                 <group expand="1" string="Grouper Par">
                     <filter string="Classe" name="group_by_classe_id" context="{'group_by':'classe_id'}"/>
                     <filter string="Semestre" name="group_by_semestre_id" context="{'group_by':'semestre_id'}"/>
-                    <filter string="Année académique" name="group_by_annee_academique_id" context="{'group_by':'annee_academique_id'}"/>
+                    <filter string="Année académique" name="group_by_year_id" context="{'group_by':'year_id'}"/>
                 </group>
             </search>
         </field>
@@ -107,7 +107,7 @@
         <field name="name">Plannifier une SN ET CC</field>
         <field name="res_model">siantou.ems.examen.plannifier</field>
         <field name="view_mode">tree,form</field>
-        <field name="context">{'search_default_group_by_classe_id': 1,'search_default_group_by_annee_academique_id': 1,'search_default_group_by_semestre_id': 1}</field>
+        <field name="context">{'search_default_group_by_classe_id': 1,'search_default_group_by_year_id': 1,'search_default_group_by_semestre_id': 1}</field>
         <field name="help" type="html">
             <p class="oe_view_nocontent_create">
                 Créer une plannification
@@ -160,7 +160,7 @@
                             <field name="semestre_id" attrs="{'readonly': [('state','in',['validated','confirm', 'cancel','done'])]}"/>
                         </group>
                         <group colspan="2">
-                            <field name="annee_academique_id" attrs="{'readonly': [('state','in',['validated','confirm', 'cancel','done'])]}"/>
+                            <field name="year_id" attrs="{'readonly': [('state','in',['validated','confirm', 'cancel','done'])]}"/>
                         </group>
                         <group colspan="2">
                             <field name="date" attrs="{'readonly': [('state','in',['validated','confirm', 'cancel','done'])]}"/>
@@ -211,11 +211,11 @@
             <search string="Plannifier une SN ET CC">
                 <field name="classe_id" />
                 <field name="semestre_id" />
-                <field name="annee_academique_id"/>
+                <field name="year_id"/>
                 <group expand="1" string="Grouper Par">
                     <filter string="Classe" name="group_by_classe_id" context="{'group_by':'classe_id'}"/>
                     <filter string="Semestre" name="group_by_semestre_id" context="{'group_by':'semestre_id'}"/>
-                    <filter string="Année académique" name="group_by_annee_academique_id" context="{'group_by':'annee_academique_id'}"/>
+                    <filter string="Année académique" name="group_by_year_id" context="{'group_by':'year_id'}"/>
                 </group>
             </search>
         </field>
@@ -225,7 +225,7 @@
         <field name="name">Plannifier une SN ET CC</field>
         <field name="res_model">siantou.ems.examen.plannifier</field>
         <field name="view_mode">tree,form</field>
-        <field name="context">{'search_default_group_by_classe_id': 1,'search_default_group_by_annee_academique_id': 1,'search_default_group_by_semestre_id': 1}</field>
+        <field name="context">{'search_default_group_by_classe_id': 1,'search_default_group_by_year_id': 1,'search_default_group_by_semestre_id': 1}</field>
         <field name="help" type="html">
             <p class="oe_view_nocontent_create">
                 Créer une plannification

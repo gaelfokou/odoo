@@ -20,7 +20,7 @@ class ExamenRegistre(models.Model):
 
     semestre_id = fields.Many2one('education.semestre', string='Semestre', required=True, tracking=True)
 
-    annee_academique_id = fields.Many2one('education.academic.year', string='Année académique',  tracking=True)
+    year_id = fields.Many2one('education.academic.year', string='Année académique',  tracking=True)
 
     coeficien = fields.Float('Credit', required=True)
 
@@ -70,7 +70,7 @@ class ExamenRegistre(models.Model):
                                     "unite_enseignement_id" : rec.unite_enseignement_id.id,
                                     "coeficien" : rec.coeficien,
                                     "class_id" : rec.class_id.id,
-                                    "anne_academique_id" : rec.annee_academique_id.id,
+                                    "anne_academique_id" : rec.year_id.id,
                                     "semestre_id" : rec.semestre_id.id
                                 },
                             ), (0,0,
@@ -82,7 +82,7 @@ class ExamenRegistre(models.Model):
                                     "coeficien" : rec.coeficien,
                                     "class_id" : rec.class_id.id,
                                     "unite_enseignement_id" : rec.unite_enseignement_id.id,
-                                    "anne_academique_id" : rec.annee_academique_id.id,
+                                    "anne_academique_id" : rec.year_id.id,
                                     "semestre_id" : rec.semestre_id.id
                                 },
                             ), (0,0,
@@ -94,7 +94,7 @@ class ExamenRegistre(models.Model):
                                     "coeficien" : rec.coeficien,
                                     "class_id" : rec.class_id.id,
                                     "unite_enseignement_id" : rec.unite_enseignement_id.id,
-                                    "anne_academique_id" : rec.annee_academique_id.id,
+                                    "anne_academique_id" : rec.year_id.id,
                                     "semestre_id" : rec.semestre_id.id
                                 },
                             )
@@ -110,7 +110,7 @@ class ExamenRegistre(models.Model):
                                     "unite_enseignement_id" : rec.unite_enseignement_id.id,
                                     "coeficien" : rec.coeficien,
                                     "class_id" : rec.class_id.id,
-                                    "anne_academique_id" : rec.annee_academique_id.id,
+                                    "anne_academique_id" : rec.year_id.id,
                                     "semestre_id" : rec.semestre_id.id
                                 },
                             ), (0,0,
@@ -122,7 +122,7 @@ class ExamenRegistre(models.Model):
                                     "coeficien" : rec.coeficien,
                                     "class_id" : rec.class_id.id,
                                     "unite_enseignement_id" : rec.unite_enseignement_id.id,
-                                    "anne_academique_id" : rec.annee_academique_id.id,
+                                    "anne_academique_id" : rec.year_id.id,
                                     "semestre_id" : rec.semestre_id.id
                                 },
                             )

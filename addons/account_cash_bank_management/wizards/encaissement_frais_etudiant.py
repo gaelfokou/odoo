@@ -117,7 +117,7 @@ class EncaissementFraisEtudiant(models.TransientModel):
             # 'ecole_id': self.sheet_id.ecole_id.id,
             'field_of_study_id': self.etudiant_id.field_of_study_id.id,
             'specialite_id': self.etudiant_id.specialty_id.id,
-            # 'annee_academique_id': self.etudiant_id.annee_academique_id.id,
+            # 'year_id': self.etudiant_id.year_id.id,
             'cycle_id': self.etudiant_id.cycle_id.id,
             'partner_id': self.etudiant_id.partner_id.id,
             'amount': self.montant_paye,

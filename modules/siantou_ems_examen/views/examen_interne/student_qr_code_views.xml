@@ -22,7 +22,7 @@
                             <field name="classe_id" />
                         </group>
                         <group>
-                            <field name="annee_academique_id" />
+                            <field name="year_id" />
                         </group>
                     </group>
                     <notebook>
@@ -51,7 +51,7 @@
             <tree>
                 <field name="name" />
                 <field name="classe_id" />
-                <field name="annee_academique_id" />
+                <field name="year_id" />
             </tree>
         </field>
     </record>

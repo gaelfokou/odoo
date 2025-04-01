@@ -23,7 +23,7 @@ class AccountMove(models.Model):
     departement_id = fields.Many2one('hr.department', string='Département', compute='_compute_school_accounting_axes', readonly=False, store=True)
     field_of_study_id = fields.Many2one('siantou.ems.core.field_of_study', compute='_compute_school_accounting_axes', readonly=False, store=True)
     specialite_id = fields.Many2one('siantou.ems.core.specialty', compute='_compute_school_accounting_axes', readonly=False, store=True)
-    annee_academique_id = fields.Many2one('siantou.ems.core.year', compute='_compute_school_accounting_axes', readonly=False, store=True)
+    year_id = fields.Many2one('siantou.ems.core.year', compute='_compute_school_accounting_axes', readonly=False, store=True)
     cycle_id = fields.Many2one('oe.school.course', compute='_compute_school_accounting_axes', readonly=False, store=True)
     level_id = fields.Many2one('siantou.ems.core.level', compute='_compute_school_accounting_axes', readonly=False, store=True)
     semestre_id = fields.Many2one('siantou.ems.core.year.semester', compute='_compute_school_accounting_axes', readonly=False, store=True)
@@ -32,7 +32,7 @@ class AccountMove(models.Model):
                  'statement_line_id.departement_id',
                  'statement_line_id.field_of_study_id',
                  'statement_line_id.specialite_id',
-                 'statement_line_id.annee_academique_id',
+                 'statement_line_id.year_id',
                  'statement_line_id.cycle_id',
                  'statement_line_id.level_id',
                  'statement_line_id.semestre_id',)
@@ -43,7 +43,7 @@ class AccountMove(models.Model):
                 rec.departement_id = rec.statement_line_id.departement_id
                 rec.field_of_study_id = rec.statement_line_id.field_of_study_id
                 rec.specialite_id = rec.statement_line_id.specialite_id
-                rec.annee_academique_id = rec.statement_line_id.annee_academique_id
+                rec.year_id = rec.statement_line_id.year_id
                 rec.cycle_id = rec.statement_line_id.cycle_id
                 rec.level_id = rec.statement_line_id.level_id
                 rec.semestre_id = rec.statement_line_id.semestre_id

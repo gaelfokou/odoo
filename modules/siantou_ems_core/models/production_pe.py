@@ -18,7 +18,7 @@ class ProductionDpo(models.Model):
         copy=False
     )
 
-    annee_academique_id = fields.Many2one(
+    year_id = fields.Many2one(
         'siantou.ems.core.year',
         string='annee_academique',
         required=True,

@@ -195,10 +195,6 @@ class HrEmployee(models.Model):
                     'name': employee.name,
                     'password' : password,
                 })
-            user_id.write({
-                'login': email,
-                'password' : password,
-            })
             employee.write({
                 'identifier': identifier,
                 'work_email': email,

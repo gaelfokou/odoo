@@ -174,7 +174,7 @@ class StudentEnrollment(models.Model):
             account_move_id = self.env['account.move'].search([
                     ('partner_id','=',student_enrol_id.student_id.partner_id.id),
                     ('type_inclusion_fee','=','fee_inscrip'),
-                    ('annee_academique_id','=',student_enrol_id.class_id.year_id.id),
+                    ('year_id','=',student_enrol_id.class_id.year_id.id),
                     ('level_id','=',student_enrol_id.class_id.level_id.id),
                     ('field_of_study_id','=',student_enrol_id.class_id.field_of_study_id.id),
                     ('cycle_id','=',student_enrol_id.class_id.field_of_study_id.cycle_id.id),
@@ -187,7 +187,7 @@ class StudentEnrollment(models.Model):
             account_move_ids = self.env['account.move'].search([
                     ('partner_id','=',student_enrol_id.student_id.partner_id.id),
                     ('type_inclusion_fee','=','fee_scol'),
-                    ('annee_academique_id','=',student_enrol_id.class_id.year_id.id),
+                    ('year_id','=',student_enrol_id.class_id.year_id.id),
                     ('level_id','=',student_enrol_id.class_id.level_id.id),
                     ('field_of_study_id','=',student_enrol_id.class_id.field_of_study_id.id),
                     ('cycle_id','=',student_enrol_id.class_id.field_of_study_id.cycle_id.id),

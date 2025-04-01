@@ -18,7 +18,7 @@ class ExamenPlannifier(models.Model):
 
     semestre_id = fields.Many2one("education.semestre", string='Semestre', required=True,tracking=True)
 
-    annee_academique_id = fields.Many2one('education.academic.year', string='Année académique',required=True,tracking=True)
+    year_id = fields.Many2one('education.academic.year', string='Année académique',required=True,tracking=True)
 
     class_id = fields.Many2one("education.class.division", string='Classe', required=True,tracking=True)
 
@@ -79,7 +79,7 @@ class ExamenPlannifier(models.Model):
         """
         for rec in self:
             resultat_student = self.env["siantou.ems.examen.student"].search([
-            ("anne_academique_id","=",rec.annee_academique_id.id),
+            ("anne_academique_id","=",rec.year_id.id),
             ("semestre_id","=",rec.semestre_id.id),
             ("class_id","=",rec.class_id.id),
             ])

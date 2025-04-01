@@ -22,7 +22,7 @@ class ExamenPlannifier(models.Model):
     date = fields.Date('Date', required=True, tracking=True,states={
         'draft': [('readonly', False)]})
 
-    annee_academique_id = fields.Many2one('education.academic.year', string='Année académique', domain=[('active', '=', True)], required=True)
+    year_id = fields.Many2one('education.academic.year', string='Année académique', domain=[('active', '=', True)], required=True)
 
     line_examen_ids = fields.One2many('siantou.ems.examen.plannifier.line', 'examen_id', string="Line d'examen",states={
         'draft': [('readonly', False)]})
@@ -114,7 +114,7 @@ class ExamenPlannifier(models.Model):
                     "matiere_id" : line.subject_id.id,
                     "class_id" : rec.classe_id.id,
                     "semestre_id" : rec.semestre_id.id,
-                    "annee_academique_id" : rec.annee_academique_id.id,
+                    "year_id" : rec.year_id.id,
                     "coeficien": line.under_subject_credit,
                     "pourcentage_cc": line.pourcentage_cc,
                     "pourcentage_exam": line.pourcentage_exam,
@@ -167,7 +167,7 @@ class ExamenPlannifier(models.Model):
                     "student_id" : emp.id,
                     "semestre_id" : rec.semestre_id.id,
                     "class_id" : rec.classe_id.id,
-                    "anne_academique_id" : rec.annee_academique_id.id,
+                    "anne_academique_id" : rec.year_id.id,
                     "examen_planifier_id" : rec.id
                 })
 

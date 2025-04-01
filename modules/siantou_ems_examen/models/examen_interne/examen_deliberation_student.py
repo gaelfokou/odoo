@@ -14,7 +14,7 @@ class ExamenDeliberationStudent(models.Model):
 
     name = fields.Char('Code')
 
-    annee_academique_id = fields.Many2one('education.academic.year', string='Année Académique Actuelle', required=True)
+    year_id = fields.Many2one('education.academic.year', string='Année Académique Actuelle', required=True)
 
     anne_academique_new_id = fields.Many2one('education.academic.year', string='Nouvelle année académique')
 
@@ -58,10 +58,10 @@ class ExamenDeliberationStudent(models.Model):
     @api.onchange('anne_academique_id', 'actual_class_id', 'field_of_study_id')
     def _onchange_student(self):
         for rec in self:
-            if rec.annee_academique_id and rec.actual_class_id and rec.field_of_study_id:
+            if rec.year_id and rec.actual_class_id and rec.field_of_study_id:
                 # Filtrer les étudiants en fonction de l'année académique, de la classe et de la filière
                 etudiant_ids = self.env['siantou.ems.examen.student'].search([
-                    ('anne_academique_id', '=', rec.annee_academique_id.id),
+                    ('anne_academique_id', '=', rec.year_id.id),
                     ('class_id.class_id', '=', rec.actual_class_id.id),
                     ('class_id.class_id.field_of_study_id', '=', rec.field_of_study_id.id),
                     ('class_id.class_id.level_id', '=', rec.actual_class_id.level_id.id)  # Filtrer par niveau
@@ -92,7 +92,7 @@ class ExamenDeliberationStudent(models.Model):
                         # Mise à jour de l'enregistrement associé dans siantou.ems.examen.student
                         aft_exam_student_obj = self.env['siantou.ems.examen.student'].search([
                             ("student_id", "=", line.student_id.id),
-                            ("anne_academique_id", "=", rec.annee_academique_id.id),
+                            ("anne_academique_id", "=", rec.year_id.id),
                             ("class_id.class_id", "=", rec.actual_class_id.id)
                         ])
 
@@ -248,7 +248,7 @@ class ExamenDeliberationStudent(models.Model):
     def action_confirm(self):
         """Fonction pour confirmer et inscrire les étudiants dans la classe suivante ou dans la même classe pour reprise."""
         for rec in self:
-            if rec.anne_academique_new_id.id == rec.annee_academique_id.id:
+            if rec.anne_academique_new_id.id == rec.year_id.id:
                 raise ValidationError("L'année actuelle doit être différente de l'année suivante")
 
             student_history = self.env['education.class.history']  # Initialiser le modèle d'historique des étudiants
@@ -286,11 +286,11 @@ class ExamenDeliberationStudent(models.Model):
                 if not line.student_id:
                     _logger.warning("Student ID is missing for line %s", line)
 
-                if rec.actual_class_id and rec.annee_academique_id:
+                if rec.actual_class_id and rec.year_id:
                     vals = {
                         "student_id": line.student_id.id,
                         "class_id": rec.actual_class_id.id,
-                        "academic_year_id": rec.annee_academique_id.id
+                        "academic_year_id": rec.year_id.id
                     }
                     # Créer l'historique de l'étudiant
                     student_history.create(vals)

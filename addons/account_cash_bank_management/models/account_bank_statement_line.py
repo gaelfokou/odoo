@@ -28,7 +28,7 @@ class AccountBankStatementLine (models.Model):
     departement_id = fields.Many2one('hr.department', string='Département')
     field_of_study_id = fields.Many2one('siantou.ems.core.field_of_study', string='Filière')
     specialite_id = fields.Many2one('siantou.ems.core.specialty', string='Spécialité')
-    annee_academique_id = fields.Many2one('siantou.ems.core.year', string='Année académique')
+    year_id = fields.Many2one('siantou.ems.core.year', string='Année académique')
     cycle_id = fields.Many2one('oe.school.course', string='Cycle')
     level_id = fields.Many2one('siantou.ems.core.level', string='Niveau')
     semestre_id = fields.Many2one('siantou.ems.core.year.semester', string='Semestre')

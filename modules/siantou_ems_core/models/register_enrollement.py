@@ -8,7 +8,7 @@ import logging
 _logger = logging.getLogger(__name__)
 
 class SessionEnrollment(models.Model):
-    _name = "siantou.session"
+    _name = 'siantou.session'
     _inherit = "mail.thread"
     _description = "Gestion des Session d'admission"
     _order = 'id desc'

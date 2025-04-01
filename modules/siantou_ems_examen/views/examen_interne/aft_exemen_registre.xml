@@ -35,7 +35,7 @@
                                 attrs="{'readonly': [('state','in',['draft','validated','confirm'])]}" />
                         </group>
                         <group colspan="2">
-                            <field name="annee_academique_id"
+                            <field name="year_id"
                                 attrs="{'readonly': [('state','in',['draft','validated','confirm'])]}" />
                         </group>
                         <group colspan="2">
@@ -86,11 +86,11 @@
             <search string="Régistre des examens">
                 <field name="class_id" />
                 <field name="semestre_id" />
-                <field name="annee_academique_id"/>
+                <field name="year_id"/>
                 <group expand="1" string="Grouper Par">
                     <filter string="Classe" name="group_by_class_id" context="{'group_by':'class_id'}"/>
                     <filter string="Semestre" name="group_by_semestre_id" context="{'group_by':'semestre_id'}"/>
-                    <filter string="Année académique" name="group_by_annee_academique_id" context="{'group_by':'annee_academique_id'}"/>
+                    <filter string="Année académique" name="group_by_year_id" context="{'group_by':'year_id'}"/>
                 </group>
             </search>
         </field>
@@ -107,7 +107,7 @@
                 <field name="matiere_id" />
                 <field name="class_id"/>
                 <field name="semestre_id" />
-                <field name="annee_academique_id" />
+                <field name="year_id" />
                 <field name="unite_enseignement_id" />
                 <field name="state" />
             </tree>
@@ -118,7 +118,7 @@
         <field name="name">Régistre des examens</field>
         <field name="res_model">siantou.ems.examen.registre</field>
         <field name="view_mode">tree,form</field>
-        <field name="context">{'search_default_group_by_class_id': 1,'search_default_group_by_annee_academique_id': 1}</field>
+        <field name="context">{'search_default_group_by_class_id': 1,'search_default_group_by_year_id': 1}</field>
         <field name="help" type="html">
             <p class="oe_view_nocontent_create">
                 Crée des registres d'examen

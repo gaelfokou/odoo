@@ -23,7 +23,7 @@
                                 <field name="level_id" readonly="1"/>
                             </group>
                             <group string="Période scolaire">
-                                <field name="annee_academique_id" readonly="1"/>
+                                <field name="year_id" readonly="1"/>
                                 <field name="semestre_id" readonly="1"/>
                             </group>
                         </group>
@@ -42,7 +42,7 @@
                     <field name="departement_id" optional="hide" />
                     <field name="field_of_study_id" optional="hide" />
                     <field name="specialite_id" optional="hide" />
-                    <field name="annee_academique_id" optional="hide" />
+                    <field name="year_id" optional="hide" />
                     <field name="cycle_id" optional="hide" />
                     <field name="level_id" optional="hide" />
                     <field name="semestre_id" optional="hide" />

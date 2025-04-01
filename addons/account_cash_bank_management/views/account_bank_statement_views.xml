@@ -124,7 +124,7 @@
                                         <field name="departement_id" optional="show" readonly="is_reconciled == True"/>
                                         <field name="field_of_study_id" optional="show" readonly="is_reconciled == True"/>
                                         <field name="specialite_id" optional="show" readonly="is_reconciled == True"/>
-                                        <field name="annee_academique_id" optional="show" readonly="is_reconciled == True"/>
+                                        <field name="year_id" optional="show" readonly="is_reconciled == True"/>
                                         <field name="cycle_id" optional="show" readonly="is_reconciled == True"/>
                                         <field name="level_id" optional="show" readonly="is_reconciled == True"/>
                                         <field name="semestre_id" optional="show" readonly="is_reconciled == True"/>
@@ -152,7 +152,7 @@
                                                     <field name="field_of_study_id" optional="show"/>
                                                     <field name="currency_id" invisible="1"/>
                                                     <field name="specialite_id" optional="show"/>
-                                                    <field name="annee_academique_id" optional="hide"/>
+                                                    <field name="year_id" optional="hide"/>
                                                     <field name="cycle_id" optional="show"/>
                                                     <field name="level_id" optional="show"/>
                                                 </group>
