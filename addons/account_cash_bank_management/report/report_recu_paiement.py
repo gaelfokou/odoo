@@ -23,7 +23,7 @@ class RecuPaiement(models.AbstractModel):
         # fees = self.env['account.move'].search([
         #         ('partner_id', '=', student_id.student_enroll_id.partner_id.id),
         #         # ('academic_year_id', '=', student_id.academic_year_id.id),
-        #         ('journal_id.is_fee','=', True)
+        #         ('journal_id.is_fee', '=', True)
         #     ]
         # )
         # _logger.info(fees)

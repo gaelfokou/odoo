@@ -76,7 +76,7 @@ class FeeToCompleteFeePaymentWizard(models.TransientModel):
         if self.env.context.get('active_id'):
             res['payment_id'] = self.env.context.get('active_id')
             year_id = self.env['siantou.ems.core.year'].search(
-                [('active', '=',True),],
+                [('active', '=', True),],
                 limit=1
             )
             payment_id = self.env['education.fee.payment'].search(

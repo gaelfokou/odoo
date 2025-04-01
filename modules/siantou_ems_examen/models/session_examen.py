@@ -31,14 +31,14 @@ class SecretariatExamen(models.Model):
         'siantou.ems.core.year',
         string='Année académique', 
         required=True,
-        default=lambda self: self.env['siantou.ems.core.year'].search([('active','=',True)], limit=1)
+        default=lambda self: self.env['siantou.ems.core.year'].search([('active', '=', True)], limit=1)
     )
     responsable_id = fields.Many2one(
         'hr.employee',
         string='Responsable',
         # domain=[
-        #     ('is_permanent','=',True),
-        #     ('is_teacher','=',True)
+        #     ('is_permanent', '=', True),
+        #     ('is_teacher', '=', True)
         # ],
         required=True
     )
@@ -46,8 +46,8 @@ class SecretariatExamen(models.Model):
         'hr.employee',
         string='Adjoint responsable',
         # domain=[
-        #     ('is_permanent','=',True),
-        #     ('is_teacher','=',True)
+        #     ('is_permanent', '=', True),
+        #     ('is_teacher', '=', True)
         # ],
         required=True
     )
@@ -61,14 +61,14 @@ class SecretariatExamen(models.Model):
         'hr.employee',
         string='Surveillants Internes',
         # domain=[
-        #     ('is_permanent','=',True), 
-        #     ('is_teacher','=',True)
+        #     ('is_permanent', '=', True), 
+        #     ('is_teacher', '=', True)
         # ]
     )
     # surveillent_vac_ids = fields.Many2many(
     #     'hr.employee',
     #     string='Surveillants vacataires',
-    #     domain=[('is_permanent','=',False)]
+    #     domain=[('is_permanent', '=', False)]
     # )
 
     _sql_constraints = [

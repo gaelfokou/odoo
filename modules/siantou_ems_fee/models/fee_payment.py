@@ -28,7 +28,7 @@ class FeePaymentLine(models.Model):
         'siantou.ems.fee.structure.lines',
         string='Lignes de structure de frais',
         required=True
-        # domain=[('id', '=',False)],
+        # domain=[('id', '=', False)],
     )
     mode_payment = fields.Selection(
         [
@@ -112,7 +112,7 @@ class FeePayment(models.Model):
         'siantou.ems.core.year',
         string='Année académique',
         required=True,
-        default=lambda self: self.env['siantou.ems.core.year'].search([('active','=',True)], limit=1),
+        default=lambda self: self.env['siantou.ems.core.year'].search([('active', '=', True)], limit=1),
     )
 
     cni = fields.Char(string="Numéro CNI", required=True)
@@ -452,7 +452,7 @@ class FeePaymentEnrollment(models.Model):
         'siantou.ems.core.year',
         string='Année académique',
         required=True,
-        default=lambda self: self.env['siantou.ems.core.year'].search([('active','=',True)], limit=1),
+        default=lambda self: self.env['siantou.ems.core.year'].search([('active', '=', True)], limit=1),
     )
     amount = fields.Monetary('Montant versé', required=True, tracking=True)
     amount_plus = fields.Monetary('Montant en plus', default=0, required=True, tracking=True)

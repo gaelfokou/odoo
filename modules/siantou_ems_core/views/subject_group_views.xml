@@ -77,7 +77,7 @@
                 <search string="Cours">
                     <field name="name" string="Cours"/>
                     <separator/>
-                    <filter string="Archivé" name="inactive" domain="[('active','=',False)]"/>
+                    <filter string="Archivé" name="inactive" domain="[('active', '=', False)]"/>
                 </search>
              </field>
         </record>

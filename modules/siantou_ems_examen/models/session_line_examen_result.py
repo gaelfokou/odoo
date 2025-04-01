@@ -71,7 +71,7 @@ class ExamRatingAnonymous(models.Model):
         ondelete='cascade', 
         index=True, 
         copy=False,
-        domain=[('id','=',False)]
+        domain=[('id', '=', False)]
     )
     state = fields.Selection([
             ('create', 'Encours de création'),

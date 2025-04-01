@@ -124,7 +124,7 @@
                 <search string='Cursus ou Cycles'>
                     <field name="name" string="Filière"/>
                     <separator/>
-                    <filter string="Archivé" name="inactive" domain="[('active','=',False)]"/>
+                    <filter string="Archivé" name="inactive" domain="[('active', '=', False)]"/>
                 </search>
              </field>
         </record>

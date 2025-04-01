@@ -23,7 +23,7 @@ class ExamenPlannifier(models.Model):
     date = fields.Date('Date', required=True, tracking=True,states={
         'draft': [('readonly', False)]})
 
-    annee_academique_id = fields.Many2one('education.academic.year', string='Année académique', domain=[('active','=',True)], required=True)
+    annee_academique_id = fields.Many2one('education.academic.year', string='Année académique', domain=[('active', '=', True)], required=True)
 
     line_examen_ids = fields.One2many('siantou.ems.examen.plannifier.line', 'examen_id', string="Line d'examen",states={
         'draft': [('readonly', False)]})

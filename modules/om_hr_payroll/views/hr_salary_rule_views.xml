@@ -81,7 +81,7 @@
                 </group>
                 <notebook colspan="4">
                     <page string="Salary Rules">
-                        <field name="rule_ids" domain="[('parent_rule_id','=',False)]">
+                        <field name="rule_ids" domain="[('parent_rule_id', '=', False)]">
                             <tree>
                                 <field name="name"/>
                                 <field name="code"/>
@@ -432,7 +432,7 @@
         <field name="name">Salary Rules</field>
         <field name="res_model">hr.salary.rule</field>
         <field name="view_mode">tree,kanban,form</field>
-        <field name="domain">[('parent_rule_id','=',False)]</field>
+        <field name="domain">[('parent_rule_id', '=', False)]</field>
         <field name="search_view_id" ref="view_hr_rule_filter"/>
     </record>
 

@@ -34,7 +34,7 @@ class OeSchoolCourse(models.Model):
     company_id = fields.Many2one('res.company',
         string='Université', index=True,
         default=lambda self: self.env.company,
-        domain=[('active','=',True),('is_school','=',True)]
+        domain=[('active', '=', True),('is_school', '=', True)]
     )
     level_ids = fields.Many2many('siantou.ems.core.level', 'course_level_rel', 'cycle_id', 'level_id', string='Niveaux')
     diplo_requis_ids = fields.Many2many('oe.school.course.degree', 'course_degree_rel', 'cycle_id', 'diplo_requis_id', string='Diplômes requis')

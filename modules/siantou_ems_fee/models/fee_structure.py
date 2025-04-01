@@ -360,7 +360,7 @@ class FeeMoratoire(models.Model):
         'siantou.ems.core.year',
         string='Année académique',
         required=True,
-        default=lambda self: self.env['siantou.ems.core.year'].search([('active','=',True)], limit=1),
+        default=lambda self: self.env['siantou.ems.core.year'].search([('active', '=', True)], limit=1),
     )
     amount = fields.Monetary('Montant à verser', required=True, tracking=True)
     date_debut = fields.Date(string="Date de début", required=True)
