@@ -106,7 +106,7 @@ class ResultatSubjectExamen(models.Model):
                         ('exam_session_id', '=', rec.exam_subject_id.exam_id.id),
                         ('exam_subject_id', '=', rec.exam_subject_id.id),
                         ('state', '=', 'done'),
-                    ],limit=1
+                    ], limit=1
                 )
                 _logger.info(rec.exam_subject_id.exam_id.type_examen_id.code)
                 _logger.info(anonymous_id.anonymous_code_ids)
