@@ -46,7 +46,7 @@
                             </group>
                             <group>
                                 <field name="school_id" readonly="state in ['validate']"/>
-                                <field name="field_of_study_ids" widget="many2many_tags" options="{'no_create': True}" readonly="state in ['validate']"/>
+                                <field name="field_of_study_ids" widget="many2many_tags" readonly="state in ['validate']"/>
                             </group>
                         </group>
                         <notebook invisible="type_paiement == 'pu'">

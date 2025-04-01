@@ -32,7 +32,7 @@
                             <field name="code"/>
                             <field name="name"/>
                             <field name="address_id"/>
-                            <field name="school_ids">
+                            <field name="school_ids" widget="many2many_tags">
                                 <tree>
                                     <field name="code"/>
                                     <field name="name"/>

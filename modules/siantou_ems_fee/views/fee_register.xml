@@ -1168,7 +1168,7 @@
                                         <field name="currency_id" options="{'no_create': True}" groups="base.group_multi_currency"/>
                                         <field name="debit" sum="Total Debit"/>
                                         <field name="credit" sum="Total Credit"/>
-                                        <field name="tax_ids" string="Taxes Applied" widget="many2many_tags" options="{'no_create': True}"/>
+                                        <field name="tax_ids" string="Taxes Applied" widget="many2many_tags"/>
                                         <field name="date_maturity" required="0" invisible="context.get('view_no_maturity', False)"/>
                                         <field name="recompute_tax_line" invisible="1" readonly="1"/>
                                       </group>

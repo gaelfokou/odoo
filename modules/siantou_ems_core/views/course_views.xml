@@ -83,7 +83,7 @@
                             <group>
                                 <field name="code"/>
                                 <field name="name"/>
-                                <field name="level_ids" widget="many2many_tags" options="{'no_create': True}"/>
+                                <field name="level_ids" widget="many2many_tags"/>
                                 <field name="sequence_id" readonly="1"/>
                             </group>
                             <group>
