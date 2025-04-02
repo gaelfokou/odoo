@@ -28,7 +28,7 @@ class PrintTimetableComponent extends Component {
         	model: 'siantou.ems.timetable.timetable',
         	method: 'action_timetable_print',
         	args: []
-		}).then(function(data){
+		}).then(function(data) {
 			console.log(data)
     	}); */
 

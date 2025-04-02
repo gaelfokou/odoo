@@ -7,13 +7,17 @@
         </div>
         <!-- You can add the templates here -->
         <div class="body">
-            <table class="table table-attendance" t-ref="student-data" t-on-click="showNotification" style="cursor: pointer;">
+            <table class="table table-attendance">
                 <tr>
-                    <th>Nom</th>
+                    <th>Matricule</th>
+                    <th>Nom(s) et prénom(s)</th>
                     <th>E-mail</th>
                 </tr>
-                <tr t-foreach="students.data" t-as="data" t-key="data_index" t-att-data-value="data.id">
-                    <td t-esc="data.name"/>
+                <tr t-foreach="state.students" t-as="data" t-key="index" t-att-data-value="data.id">
+                    <td t-esc="data.matricule"/>
+                    <td t-on-click="showNotification" style="cursor: pointer;">
+                        <Span text="data.name"/>
+                    </td>
                     <td t-esc="data.email"/>
                 </tr>
             </table>

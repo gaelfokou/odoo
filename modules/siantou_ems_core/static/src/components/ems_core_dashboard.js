@@ -9,7 +9,7 @@ import { useService } from "@web/core/utils/hooks";
 const { Component, onWillStart, useRef, onMounted, useState } = owl
 
 export class OwlSalesDashboard extends Component {
-    setup(){
+    setup() {
         this.state = useState({
             cycles:{
                 value:0
@@ -45,7 +45,7 @@ export class OwlSalesDashboard extends Component {
         })
     }
 
-    async getDatasCount(){
+    async getDatasCount() {
         this.state.cycles.value = await this.orm.searchCount("oe.school.course", [])
         this.state.students.value = await this.orm.searchCount("oe.school.student", [])
         this.state.ecoles.value = await this.orm.searchCount("siantou.ems.core.school", [])
@@ -60,7 +60,7 @@ export class OwlSalesDashboard extends Component {
         console.log('----------- tototototototo filieres', this.state.filieres);
     }
 
-    async getBarChartDatas(){
+    async getBarChartDatas() {
         const cycles = await this.orm.searchRead("oe.school.course",[]);
         cycles.forEach( async (cycle) => {
             let studentCount = await this.orm.searchCount("oe.school.student", [["cycle_id", "=", cycle.id]])
@@ -72,7 +72,7 @@ export class OwlSalesDashboard extends Component {
         console.log('----------- tototototototo datas', this.state.datas);
     }
 
-    async getTearcherDatas(){
+    async getTearcherDatas() {
         const teacher_vac = await this.orm.searchCount("hr.employee",[["is_teacher", "=", true], ["is_permanent", "=", false]]);
         const teacher_perm = await this.orm.searchCount("hr.employee",[["is_permanent", "=", true], ["is_teacher", "=", true]]);
         this.state.doughTearchers.push({
@@ -86,7 +86,7 @@ export class OwlSalesDashboard extends Component {
         console.log('----------- tototototototo doughTearchers', this.state.doughTearchers);
     }
 
-    async getFiliereDatas(){
+    async getFiliereDatas() {
         const filieres = await this.orm.searchRead("siantou.ems.core.field_of_study",[]);
         filieres.forEach(async (filiere)=>{
             const classes = await this.orm.searchRead("siantou.ems.core.class",[["field_of_study_id", "=", filiere.id]]);
@@ -102,7 +102,7 @@ export class OwlSalesDashboard extends Component {
         console.log('----------- tototototototo doughFilieres', this.state.doughFilieres);
     }
 
-    async getEcoleDatas(){
+    async getEcoleDatas() {
         const ecoles = await this.orm.searchRead("siantou.ems.core.school",[]);
         ecoles.forEach(async (ecole)=>{
             let nbre = 0

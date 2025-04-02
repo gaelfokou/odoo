@@ -394,9 +394,8 @@ class Student(models.Model):
         }
 
     @api.model
-    def get_students(self):
-        students = self.env['oe.school.student'].search([])
-        # we can add the students to the dashboard
+    def get_students(self, domain=[]):
+        students = self.env['oe.school.student'].search(domain)
         return students.read()
 
 class StudentCareer(models.Model):

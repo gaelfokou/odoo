@@ -5,7 +5,7 @@ import { loadJS } from "@web/core/assets"
 const { Component, onWillStart, useRef, onMounted } = owl
 
 export class ChartRenderer extends Component {
-    setup(){
+    setup() {
         this.chartRef = useRef("chart")
         onWillStart(async ()=>{
             await loadJS("https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js")
@@ -14,7 +14,7 @@ export class ChartRenderer extends Component {
         onMounted(()=>this.renderChart())
     }
 
-    renderChart(){
+    renderChart() {
         new Chart(this.chartRef.el,
         {
           type: this.props.type,

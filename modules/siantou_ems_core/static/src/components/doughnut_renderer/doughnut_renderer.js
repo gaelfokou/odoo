@@ -5,7 +5,7 @@ import { loadJS } from "@web/core/assets"
 const { Component, onWillStart, useRef, onMounted } = owl
 
 export class DoughnutRenderer extends Component {
-    setup(){
+    setup() {
       this.doughRef = useRef("doughRef")
       onWillStart(async ()=>{
           await loadJS("https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js")
@@ -13,7 +13,7 @@ export class DoughnutRenderer extends Component {
       onMounted(()=>this.renderChart())
     }
 
-    renderChart(){
+    renderChart() {
         new Chart(this.doughRef.el,
           {
             type: this.props.type,
