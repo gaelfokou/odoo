@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <record id="admis_history_tree_view" model="ir.ui.view">
+    <record id="siantou_ems_core.student_tree_view" model="ir.ui.view">
         <field name="name">studnt.tree.view</field>
         <field name="model">oe.school.student</field>
         <field name="arch" type="xml">
@@ -25,7 +25,7 @@
         </field>
     </record>
 
-     <record id="admis_history_form_view" model="ir.ui.view">
+     <record id="siantou_ems_core.student_form_view" model="ir.ui.view">
         <field name="name">oe.school.student.form.view</field>
         <field name="model">oe.school.student</field>
         <field name="arch" type="xml">
@@ -122,7 +122,7 @@
         </field>
     </record>
 
-    <record id="student_search" model="ir.ui.view">
+    <record id="siantou_ems_core.student_search_view" model="ir.ui.view">
         <field name="name">student.search</field>
         <field name="model">oe.school.student</field>
         <field name="arch" type="xml">
@@ -135,7 +135,7 @@
         </field>
     </record>
 
-    <record model="ir.actions.act_window" id="action_admis_history">
+    <record model="ir.actions.act_window" id="action_student">
         <field name="name">Étudiants</field>
         <field name="res_model">oe.school.student</field>
         <field name="view_mode">tree,form</field>
@@ -150,7 +150,7 @@
         id="menu_siantou_ems_core_students_student"
         name="Étudiants"
         parent="menu_siantou_ems_core_students"
-        action="action_admis_history"
+        action="action_student"
         groups="siantou_ems_core.group_student_user,siantou_ems_core.group_student_admin,base.group_system"
         sequence="2"
     />

@@ -376,6 +376,24 @@ class Student(models.Model):
 
         return student
 
+    def student_open_wizard(self):
+        _logger.info(f'----------- tototototototo open wizard -----------')
+        # return {
+        #     'type': 'ir.actions.act_url',
+        #     'url': 'https://odoo.com',
+        #     'target': 'self',
+        # }
+        return {
+            'name': 'Open wizard',
+            'type': 'ir.actions.act_window',
+            'view_mode': 'form',
+            'view_type': 'form',
+            'res_model': 'oe.school.student',
+            'target': 'new',
+            'view_id': self.env.ref('siantou_ems_core.student_form_view').id,
+            # 'context': {'active_id': self.id},
+        }
+
 class StudentCareer(models.Model):
     _name = 'oe.school.student.career'
     _description = 'Gestion du parcours des étudiants'

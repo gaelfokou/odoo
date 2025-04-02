@@ -88,6 +88,7 @@
         #=========== Fichier de sequence
         'data/employee_sequence.xml',
         'data/student_sequence.xml',
+        'data/action_server_student.xml',
     ],
     'license': 'LGPL-3',
     'installable': True,
