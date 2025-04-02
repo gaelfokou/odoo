@@ -14,10 +14,10 @@
                     <th>E-mail</th>
                 </tr>
                 <tr t-foreach="state.students" t-as="data" t-key="index" t-att-data-value="data.id">
-                    <td t-esc="data.matricule"/>
                     <td t-on-click="showNotification" style="cursor: pointer;">
-                        <Span text="data.name"/>
+                        <Span text="data.matricule"/>
                     </td>
+                    <td t-esc="data.name"/>
                     <td t-esc="data.email"/>
                 </tr>
             </table>
