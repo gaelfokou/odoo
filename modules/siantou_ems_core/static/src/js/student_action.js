@@ -1,10 +1,8 @@
 /** @odoo-module */
 import { registry } from '@web/core/registry';
 import { useService } from "@web/core/utils/hooks";
-import { useRef, useState, onRendered, onMounted, onWillUnmount } from "@odoo/owl/hooks";
-import { Layout } from "@web/search/layout";
 import { _t } from "@web/core/l10n/translation";
-import { Component } from "@odoo/owl";
+const { Component, mount, useRef, useState, onRendered, onMounted, onWillUnmount } = owl;
 export class StudentAction extends Component {
 	setup(){
     	this.action = useService("action");
@@ -33,5 +31,4 @@ export class StudentAction extends Component {
     }
 }
 StudentAction.template = "siantou_ems_core.student_action";
-StudentAction.components = { Layout };
 registry.category("actions").add("siantou_ems_core.student_action", StudentAction);
