@@ -89,6 +89,7 @@
         'data/employee_sequence.xml',
         'data/student_sequence.xml',
         'data/action_server_student.xml',
+        'views/student_action_views.xml',
     ],
     'license': 'LGPL-3',
     'installable': True,
@@ -99,6 +100,8 @@
             'siantou_ems_core/static/src/components/**/*.js',
             'siantou_ems_core/static/src/components/**/*.xml',
             'siantou_ems_core/static/src/components/**/*.scss',
+            'siantou_ems_core/static/src/js/student_action.js',
+        	'siantou_ems_core/static/src/xml/student_action.xml',
         ],
     },
 }

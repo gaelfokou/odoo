@@ -1,14 +1,14 @@
 <?xml version="1.0"?>
 <odoo noupdate="1">
-	<record id="siantou_ems_core_action_server_student_open_wizard" model="ir.actions.server">
-		<field name="name">Open wizard</field>
+	<record id="siantou_ems_core_action_server_open_student_form" model="ir.actions.server">
+		<field name="name">Nouveau étudiant</field>
 		<field name="model_id" ref="siantou_ems_core.model_oe_school_student"/>
 		<field name="binding_model_id" ref="siantou_ems_core.model_oe_school_student"/>
 		<!-- <field name="binding_view_types">form</field> -->
 		<field name="binding_view_types">list</field>
 		<field name="state">code</field>
 		<field name="code">
-			action = model.student_open_wizard()
+			action = model.open_student_form()
 		</field>
 	</record>
 </odoo>

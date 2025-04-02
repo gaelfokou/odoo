@@ -376,15 +376,14 @@ class Student(models.Model):
 
         return student
 
-    def student_open_wizard(self):
-        _logger.info(f'----------- tototototototo open wizard -----------')
+    def open_student_form(self):
         # return {
         #     'type': 'ir.actions.act_url',
         #     'url': 'https://odoo.com',
         #     'target': 'self',
         # }
         return {
-            'name': 'Open wizard',
+            'name': 'Nouveau étudiant',
             'type': 'ir.actions.act_window',
             'view_mode': 'form',
             'view_type': 'form',
@@ -393,6 +392,12 @@ class Student(models.Model):
             'view_id': self.env.ref('siantou_ems_core.student_form_view').id,
             # 'context': {'active_id': self.id},
         }
+
+    @api.model
+    def get_students(self):
+        students = self.env['oe.school.student'].search([])
+        # we can add the students to the dashboard
+        return students.read()
 
 class StudentCareer(models.Model):
     _name = 'oe.school.student.career'

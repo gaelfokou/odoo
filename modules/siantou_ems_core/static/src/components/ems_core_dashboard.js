@@ -52,12 +52,12 @@ export class OwlSalesDashboard extends Component {
         this.state.campus.value = await this.orm.searchCount("siantou.ems.core.campus", [])
         this.state.teachers.value = await this.orm.searchCount("hr.employee", [["is_teacher", "=", true]])
         this.state.filieres.value = await this.orm.searchCount("siantou.ems.core.field_of_study", [])
-        console.log('cycles', this.state.cycles);
-        console.log('students', this.state.students);
-        console.log('ecoles', this.state.ecoles);
-        console.log('campus', this.state.campus);
-        console.log('teachers', this.state.teachers);
-        console.log('filieres', this.state.filieres);
+        console.log('----------- tototototototo cycles', this.state.cycles);
+        console.log('----------- tototototototo students', this.state.students);
+        console.log('----------- tototototototo ecoles', this.state.ecoles);
+        console.log('----------- tototototototo campus', this.state.campus);
+        console.log('----------- tototototototo teachers', this.state.teachers);
+        console.log('----------- tototototototo filieres', this.state.filieres);
     }
 
     async getBarChartDatas(){
@@ -69,7 +69,7 @@ export class OwlSalesDashboard extends Component {
                 value:studentCount
             })
         });
-        console.log('datas', this.state.datas);
+        console.log('----------- tototototototo datas', this.state.datas);
     }
 
     async getTearcherDatas(){
@@ -83,7 +83,7 @@ export class OwlSalesDashboard extends Component {
             name:"Enseignants vacataires",
             value:teacher_vac
         })
-        console.log('doughTearchers', this.state.doughTearchers);
+        console.log('----------- tototototototo doughTearchers', this.state.doughTearchers);
     }
 
     async getFiliereDatas(){
@@ -99,7 +99,7 @@ export class OwlSalesDashboard extends Component {
                 value:nbre
             })
         });
-        console.log('doughFilieres', this.state.doughFilieres);
+        console.log('----------- tototototototo doughFilieres', this.state.doughFilieres);
     }
 
     async getEcoleDatas(){
@@ -118,7 +118,7 @@ export class OwlSalesDashboard extends Component {
                 value:nbre
             })
         });
-        console.log('doughEcoles', this.state.doughEcoles);
+        console.log('----------- tototototototo doughEcoles', this.state.doughEcoles);
     }
 
 }
