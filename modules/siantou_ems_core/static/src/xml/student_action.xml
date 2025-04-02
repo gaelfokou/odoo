@@ -3,7 +3,7 @@
 <templates id="siantou_ems_core_student_action" xml:space="preserve">
     <t t-name="siantou_ems_core.student_action">
         <div class="title">
-            <h1>Liste des étudiants</h1>
+            <h1>Étudiants</h1>
         </div>
         <!-- You can add the templates here -->
         <div class="body">

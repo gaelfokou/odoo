@@ -7,6 +7,6 @@
             <field name="tag">siantou_ems_core.student_action</field>
         </record>
         <!-- Menu Item to show the dashboard menu in the module -->
-        <menuitem name="Liste des étudiants" id="student_action_menu" parent="menu_siantou_ems_core" sequence="11" action="student_action_action"/>
+        <menuitem name="Étudiants" id="student_action_menu" parent="menu_siantou_ems_core" sequence="11" action="student_action_action"/>
     </data>
 </odoo>
