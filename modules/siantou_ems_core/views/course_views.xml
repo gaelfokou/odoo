@@ -38,6 +38,7 @@
 			<field name="model">oe.school.course</field>
 			<field name="arch" type="xml">
 				<tree string='Cursus ou Cycles'>
+                    <field name="code"/>
 					<field name="name"/>
                     <field name="company_id"/>
                     <field name="level_ids" widget="many2many_tags"/>

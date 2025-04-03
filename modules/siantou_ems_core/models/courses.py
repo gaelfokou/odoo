@@ -166,7 +166,7 @@ class SchoolSyllabus(models.Model):
 
     name = fields.Char(
         string='Label',
-        compute='_compute_name',readonly=False, precompute=True,
+        compute='_compute_name',
         tracking=True,
     )
 

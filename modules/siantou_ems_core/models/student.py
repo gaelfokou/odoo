@@ -44,7 +44,6 @@ class Student(models.Model):
     cycle_id = fields.Many2one(
         'oe.school.course',
         string='Cursus ou Cycle',
-        required=True
     )
     region_id = fields.Many2one("siantou.ems.core.region", string="Région")
     city_id = fields.Many2one("siantou.ems.core.city", string="Ville")
@@ -76,14 +75,6 @@ class Student(models.Model):
         ],
         string='Statut universitaire',
         default='old',
-    )
-    redoublant = fields.Selection(
-        [
-            ('oui', 'Oui'),
-            ('non', 'Non')
-        ],
-        'Redoublant?',
-        default="non"
     )
     date_naissance = fields.Date(string="Date de naissance")
     lieu_naissance = fields.Char(string="Lieu de naissance")
