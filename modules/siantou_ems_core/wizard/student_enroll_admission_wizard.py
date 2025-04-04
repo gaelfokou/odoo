@@ -129,7 +129,7 @@ class StudentEnrollmentAdmissionWizard(models.TransientModel):
             # _logger.info(self.student_enrollement_id.cycle_id.name)
 
             year_id = self.env['siantou.ems.core.year'].search(
-                [('active', '=', True),],
+                [('is_active', '=', True),],
                 limit=1
             )
 

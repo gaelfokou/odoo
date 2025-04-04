@@ -25,10 +25,7 @@ class Year(models.Model):
     )
 
     # Variable booléenne pour définir une année académique comme étant active (année académique en cours)
-    active = fields.Boolean(
-        'Actif',
-        default=False
-    )
+    is_active = fields.Boolean(string="Actif", default=False)
 
     # Contrainte SQL pour empêcher d'avoir le même nom pour différentes années académiques
     # _sql_constraints = [
@@ -50,10 +47,10 @@ class Year(models.Model):
                 raise ValidationError("La date de fin doit être supérieure à la date de début.")
 
     # Contrainte logique pour empêcher d'avoir plusieurs années académiques actives simultannément
-    @api.constrains('active')
+    @api.constrains('is_active')
     def _check_unique_active(self):
         years = self.search([])
         if len(years)>1:
             for record in self:
-                if self.search([('id', '=', record.id), ('active', '=', True)]):
+                if self.search([('id', '=', record.id), ('is_active', '=', True)]):
                     raise ValidationError("Il ne peut y avoir qu'une seule année académique active à la fois.")

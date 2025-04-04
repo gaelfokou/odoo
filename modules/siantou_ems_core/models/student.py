@@ -106,7 +106,7 @@ class Student(models.Model):
         'siantou.ems.core.year',
         string='Année Académique',
         required=True,
-        default=lambda self: self.env['siantou.ems.core.year'].search([('active', '=', True)], limit=1)
+        default=lambda self: self.env['siantou.ems.core.year'].search([('is_active', '=', True)], limit=1)
     )
     # payment_ids = fields.Many2one(
     #     "education.fee.payment",

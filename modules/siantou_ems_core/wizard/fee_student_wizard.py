@@ -102,7 +102,7 @@ class FeeEnrollmentWizard(models.TransientModel):
             enrol_payments = self.env['education.fee.payment.enrollment'].search([])
             res['student_id'] = self.env.context.get('active_id')
             year_id = self.env['siantou.ems.core.year'].search(
-                [('active', '=', True),],
+                [('is_active', '=', True),],
                 limit=1
             )
             student_id = self.env['oe.school.student.enrollment'].search(

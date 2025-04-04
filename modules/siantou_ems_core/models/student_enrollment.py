@@ -32,7 +32,7 @@ class StudentEnrollment(models.Model):
     year_id = fields.Many2one(
         "siantou.ems.core.year", 
         string="Année académique", 
-        default=lambda self: self.env['siantou.ems.core.year'].search([('active', '=', True)], limit=1)
+        default=lambda self: self.env['siantou.ems.core.year'].search([('is_active', '=', True)], limit=1)
     )
     code_enrol = fields.Char(string="Code de préinscription", default="001485KOPLL")
     cycle_id = fields.Many2one(

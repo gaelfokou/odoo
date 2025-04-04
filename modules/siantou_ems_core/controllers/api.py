@@ -84,14 +84,14 @@ class DeSchool(http.Controller):
         data = []
         cycles = []
         year_id = request.env['siantou.ems.core.year'].sudo().search(
-            [('active', '=', True),],
+            [('is_active', '=', True),],
             limit=1
         )
 
         #=== récupération de la session d'admission active de l'année active
         session_ids = request.env['siantou.session'].sudo().search(
             [
-                ('active', '=', True),
+                ('is_active', '=', True),
                 ('year_id', '=', year_id.id),
             ]
         )
@@ -301,7 +301,7 @@ class DeSchool(http.Controller):
             # data['partner_id'] = partner.id
 
             year_id = request.env['siantou.ems.core.year'].sudo().search(
-                [('active', '=', True),],
+                [('is_active', '=', True),],
                 limit=1
             )
 

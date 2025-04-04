@@ -44,7 +44,7 @@ class EducationClass(models.Model):
         'siantou.ems.core.year',
         string='Année Académique',
         required=True,
-        default=lambda self: self.env['siantou.ems.core.year'].search([('active', '=', True)], limit=1)
+        default=lambda self: self.env['siantou.ems.core.year'].search([('is_active', '=', True)], limit=1)
     )
 
     ue_ids = fields.Many2many('siantou.ems.core.unite.enseignement', 'class_ue_rel', 'class_id', 'ue_id', string='Unités d\'enseignement')

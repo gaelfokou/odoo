@@ -32,7 +32,7 @@ class AccountMove(models.Model):
     #     string="Année académique",
     #     required=True,
     #     # default=lambda self: self.env['siantou.ems.core.year'].search(
-    #     #     [('active', '=', True)],
+    #     #     [('is_active', '=', True)],
     #     #     limit=1
     #     # )
     # )

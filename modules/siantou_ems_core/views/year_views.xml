@@ -9,7 +9,7 @@
 			<field name="model">siantou.ems.core.year</field>
 			<field name="arch" type="xml">
 				<tree string="Années académiques" editable="bottom" edit="1">
-                    <field name="active"/>
+                    <field name="is_active"/>
                     <field name="name"/>
 					<field name="start_time"/>
 					<field name="end_time"/>
@@ -27,7 +27,7 @@
 				<form string="Années académiques">
 					<sheet>
                         <group>
-                            <field name="active"/>
+                            <field name="is_active"/>
                             <field name="name"/>
                             <field name="start_time"/>
                             <field name="end_time"/>
@@ -46,7 +46,7 @@
             <field name="arch" type="xml">
                 <search string="Années académiques">
                     <field name="name" string="Années académiques"/>
-                    <filter string="Actif" name="year_active" domain="[('active', '=', True)]"/>
+                    <filter string="Actif" name="year_active" domain="[('is_active', '=', True)]"/>
                     <separator/>
                 </search>
              </field>

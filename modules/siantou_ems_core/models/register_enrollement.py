@@ -19,7 +19,7 @@ class SessionEnrollment(models.Model):
 
     def _get_default_acadmic_year(self):
         """Get the default acedemic year active"""
-        year = self.env['siantou.ems.core.year'].search([('active', '=', True)], limit=1)
+        year = self.env['siantou.ems.core.year'].search([('is_active', '=', True)], limit=1)
         if not year:
             raise ValidationError("""Aucune annéé academique activé""")
         self.name = f"Session_{year.name}"
@@ -62,7 +62,7 @@ class SessionEnrollment(models.Model):
         required=True,
         default=lambda self: self._get_default_acadmic_year()
     )
-    active = fields.Boolean(default=False)
+    is_active = fields.Boolean(string="Actif", default=False)
     state = fields.Selection([
             ('draft', 'Brouillon'),
             ('cancel', 'Cancelled'),
