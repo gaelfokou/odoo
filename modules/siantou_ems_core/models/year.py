@@ -36,7 +36,7 @@ class Year(models.Model):
     @api.constrains('start_time', 'end_time')
     def _check_date_overlap(self):
         for record in self:
-            if self.search([('id', '!=', record.id), ('start_time', '<=', record.end_time), ('end_time', '>=', record.start_time),]):
+            if self.search([('id', '!=', record.id), ('start_time', '<=', record.end_time), ('end_time', '>=', record.start_time),], limit=1):
                 raise ValidationError("Les années académiques ne peuvent se supperposer.")
 
     # Contrainte logique pour s'assurer que la date de fin est supérieure à la date de début
@@ -49,8 +49,6 @@ class Year(models.Model):
     # Contrainte logique pour empêcher d'avoir plusieurs années académiques actives simultannément
     @api.constrains('is_active')
     def _check_unique_active(self):
-        years = self.search([])
-        if len(years)>1:
-            for record in self:
-                if self.search([('id', '=', record.id), ('is_active', '=', True)]):
-                    raise ValidationError("Il ne peut y avoir qu'une seule année académique active à la fois.")
+        for record in self:
+            if self.search([('id', '!=', record.id), ('is_active', '=', True)], limit=1):
+                raise ValidationError("Il ne peut y avoir qu'une seule année académique active à la fois.")

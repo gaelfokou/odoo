@@ -8,7 +8,7 @@
             <field name="name">year.tree.view</field>
 			<field name="model">siantou.ems.core.year</field>
 			<field name="arch" type="xml">
-				<tree string="Années académiques" editable="bottom" edit="1">
+				<tree string="Années académiques" editable="bottom">
                     <field name="is_active"/>
                     <field name="name"/>
 					<field name="start_time"/>
