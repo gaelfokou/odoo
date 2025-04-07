@@ -19,11 +19,11 @@ class SessionEnrollment(models.Model):
 
     def _get_default_acadmic_year(self):
         """Get the default acedemic year active"""
-        year = self.env['siantou.ems.core.year'].search([('is_active', '=', True)], limit=1)
-        if not year:
+        year_id = self.env['siantou.ems.core.year'].search([('is_active', '=', True)], limit=1)
+        if not year_id:
             raise ValidationError("""Aucune annéé academique activé""")
-        self.name = f"Session_{year.name}"
-        return year.id
+        self.name = f"Session_{year_id.name}"
+        return year_id.id
 
     # @api.onchange("year_id")
     @api.depends('year_id')

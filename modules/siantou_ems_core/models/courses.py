@@ -159,10 +159,10 @@ class SchoolSyllabus(models.Model):
 
     def _get_default_acadmic_year(self):
         """Get the default acedemic year active"""
-        year = self.env['siantou.ems.core.year'].search([('is_active', '=', True)], limit=1)
-        if not year:
+        year_id = self.env['siantou.ems.core.year'].search([('is_active', '=', True)], limit=1)
+        if not year_id:
             raise ValidationError("""Aucune année academique activé""")
-        return year.id
+        return year_id.id
 
     name = fields.Char(
         string='Label',

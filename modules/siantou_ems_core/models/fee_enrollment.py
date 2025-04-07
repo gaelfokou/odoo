@@ -8,7 +8,7 @@ class FeeEnrollment(models.Model):
 
     code = fields.Char(string="Code", required=True, index=True,)
     name = fields.Char(string="Nom", required=True, index=True,)
-    year = fields.Many2one(
+    year_id = fields.Many2one(
         'siantou.ems.core.year',
         string="Année académique",
         required=True, index=True,
