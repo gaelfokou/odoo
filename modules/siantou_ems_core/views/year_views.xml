@@ -74,6 +74,6 @@
                 parent="menu_siantou_ems_core_configuration"
                 action="action_show_year"
                 groups="siantou_ems_core.group_year_user,siantou_ems_core.group_year_admin"
-                sequence="2"/>
+                sequence="1"/>
 	</data>
 </odoo>

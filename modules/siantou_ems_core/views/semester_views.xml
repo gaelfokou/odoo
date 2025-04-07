@@ -82,7 +82,7 @@
         <menuitem
                 id="menu_siantou_ems_core_config_semester"
                 name="Semestres"
-                parent="menu_production_pe_conf"
+                parent="menu_siantou_ems_core_config_pe"
                 action="action_show_semester"
                 groups="siantou_ems_core.group_semester_user,siantou_ems_core.group_semester_admin,base.group_system"
                 sequence="1"/>

@@ -87,8 +87,8 @@
         <!-- Menu pour la gestion des classes -->
         <menuitem
                 id="menu_siantou_ems_core_class"
-                name="Classe"
-                parent="menu_siantou_ems_core_program"
+                name="Classes"
+                parent="menu_siantou_ems_core_config_fa"
                 action="action_show_siantou_ems_core_class"
                 sequence="4"/>
 

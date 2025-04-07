@@ -72,7 +72,7 @@
         <menuitem
                 id="menu_siantou_ems_core_program_field_of_study"
                 name="Filières"
-                parent="menu_siantou_ems_core_program"
+                parent="menu_siantou_ems_core_config_fa"
                 action="action_show_field_of_study"
                 groups="siantou_ems_core.group_field_of_study_user,siantou_ems_core.group_field_of_study_admin,base.group_system"
                 sequence="1"/>

@@ -4,7 +4,7 @@
         <field name="name">school.view.form</field>
         <field name="model">siantou.ems.core.school</field>
         <field name="arch" type="xml">
-            <form string="Ecole">
+            <form string="École">
                 <sheet>
                     <group>
                         <group>
@@ -44,7 +44,7 @@
         <field name="name">school.view.tree</field>
         <field name="model">siantou.ems.core.school</field>
         <field name="arch" type="xml">
-            <tree string="Ecoles">
+            <tree string="Écoles">
                 <field name="code"/>
                 <field name="name"/>
                 <field name="building_ids" widget="many2many_tags"/>
@@ -61,7 +61,7 @@
 
     <menuitem
             id="menu_siantou_ems_core_config_school"
-            name="Ecoles"
+            name="Écoles"
             parent="menu_siantou_ems_core_configuration"
             action="action_show_school"
             groups="siantou_ems_core.group_school_user,siantou_ems_core.group_school_admin,base.group_system"

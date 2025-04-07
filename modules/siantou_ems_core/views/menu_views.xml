@@ -55,9 +55,15 @@
             sequence = "100"/>
 
     <menuitem 
-            id="menu_production_pe_conf" 
+            id="menu_siantou_ems_core_config_pe" 
             name="Gestion des programmes d'enseignements" 
             parent="menu_siantou_ems_core_configuration" 
-            sequence="1"/>
+            sequence="2"/>
+
+    <menuitem 
+            id="menu_siantou_ems_core_config_fa" 
+            name="Gestion des formations académiques" 
+            parent="menu_siantou_ems_core_configuration" 
+            sequence="3"/>
 
 </odoo>

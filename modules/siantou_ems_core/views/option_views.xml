@@ -57,7 +57,7 @@
 
         <menuitem name="Options" 
             id="menu_school_option"
-            parent="menu_siantou_ems_core_configuration" 
+            parent="menu_siantou_ems_core_config_fa" 
             action="action_school_option"
                 sequence="3"/>
     </data>

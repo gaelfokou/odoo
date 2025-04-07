@@ -78,7 +78,7 @@
 
         <!-- Menu -->
         <menuitem
-            id="menu_siantou_ems_core_config_partenaire"
+            id="menu_siantou_ems_core_config_fartenaire"
             name="Partenaires"
             parent="menu_siantou_ems_core_configuration"
             action="action_show_partenaire"

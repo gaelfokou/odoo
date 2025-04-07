@@ -87,7 +87,7 @@
         <menuitem
                 id="menu_siantou_ems_core_unite_enseignement"
                 name="Unité d'enseignement"
-                parent="menu_production_pe_conf"
+                parent="menu_siantou_ems_core_config_pe"
                 action="action_show_unite_enseignement"
                 sequence="2"/>
 	</data>

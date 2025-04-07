@@ -80,7 +80,7 @@
         <menuitem
                 id="menu_siantou_ems_core_program_subject"
                 name="Cours"
-                parent="menu_production_pe_conf"
+                parent="menu_siantou_ems_core_config_pe"
                 action="action_show_subject"
                 groups="siantou_ems_core.group_subject_user,siantou_ems_core.group_subject_admin,base.group_system"
                 sequence="3"/>
