@@ -324,7 +324,7 @@ class Student(models.Model):
                 'level_id': student.level_id.id,
                 'student_id': student.id,
             })
-            self.env.cr.commit()
+            # self.env.cr.commit()
         except psycopg2.errors.NotNullViolation as error:
             _logger.info(f'----------- tototototototo Exception {error} -----------')
         except psycopg2.Error as error:

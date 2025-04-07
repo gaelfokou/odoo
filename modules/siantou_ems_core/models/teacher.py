@@ -200,7 +200,7 @@ class HrEmployee(models.Model):
                 'work_email': email,
                 'user_id': user_id.id,
             })
-            self.env.cr.commit()
+            # self.env.cr.commit()
         except psycopg2.errors.NotNullViolation as error:
             _logger.info(f'----------- tototototototo Exception {error} -----------')
         except psycopg2.Error as error:
