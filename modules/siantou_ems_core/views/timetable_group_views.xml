@@ -11,7 +11,7 @@
                     <field name="name"/>
                     <field name="timetables"/>
                     <field name="semester_id"/>
-                    <field name="active"/>
+                    <field name="is_active"/>
                 </tree>
             </field>
         </record>

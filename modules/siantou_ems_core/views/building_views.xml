@@ -9,7 +9,7 @@
 			<field name="model">siantou.ems.core.building</field>
 			<field name="arch" type="xml">
 				<tree string="Bâtiments" editable="bottom" edit="1">
-                    <field name="active"/>
+                    <field name="is_active"/>
                     <field name="code"/>
 					<field name="name"/>
                     <field name="address_id"/>
@@ -28,7 +28,7 @@
 				<form string="Bâtiment">
 					<sheet>
                         <group>
-                            <field name="active"/>
+                            <field name="is_active"/>
                             <field name="code"/>
                             <field name="name"/>
                             <field name="address_id"/>

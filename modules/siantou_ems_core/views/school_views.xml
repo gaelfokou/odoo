@@ -20,7 +20,7 @@
                             <tree>
                                 <field name="code"/>
                                 <field name="name"/>
-                                <field name="active"/>
+                                <field name="is_active"/>
                             </tree>
                         </field>
                     </group>

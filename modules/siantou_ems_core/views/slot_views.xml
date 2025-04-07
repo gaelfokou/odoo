@@ -12,7 +12,7 @@
                     <field name="slotitem_night_ids"/>
                     <field name="department_id"/>
                     <field name="field_of_study_ids"/>
-                    <field name="active"/>
+                    <field name="is_active"/>
                 </tree>
             </field>
         </record>
@@ -27,7 +27,7 @@
                         <group col="4" string="Informations sur l'horaire">
                             <group col="2" >
                                 <field name="name"/>
-                                <field name="active"/>
+                                <field name="is_active"/>
                             </group>
                             <group colspan="2">
                                 <field name="department_id">

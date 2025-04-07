@@ -189,7 +189,7 @@ class SessionRegisterEnrollment(models.Model):
         tracking=True
     )
 
-    active = fields.Boolean(default=True)
+    is_active = fields.Boolean(default=True)
 
     year_id = fields.Many2one('siantou.ems.core.year',
         'Année académique',

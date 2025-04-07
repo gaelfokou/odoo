@@ -34,7 +34,7 @@ class FeeEnrollment(models.Model):
     )
     montant_paie = fields.Monetary(string="Montant à payer", required=True)
     currency_id = fields.Many2one('res.currency', string='Currency', required=True, default=lambda self: self.env.company.currency_id)
-    active = fields.Boolean(string="Actif", default=False)
+    is_active = fields.Boolean(string="Actif", default=False)
 
     @api.constrains('journal_id')
     def _check_journal_id(self):
@@ -45,10 +45,10 @@ class FeeEnrollment(models.Model):
                 )
 
     # Contrainte logique pour empêcher d'avoir plusieurs structure de frais d'inscritption actives simultannément
-    @api.constrains('active')
+    @api.constrains('is_active')
     def _check_unique_active(self):
         for record in self:
-            if self.search([('id', '!=', record.id), ('active', '=', 'True')]):
+            if self.search([('id', '!=', record.id), ('is_active', '=', 'True')]):
                 raise ValidationError("Il ne peut y avoir qu'une seule structure de frais d'inscription active à la fois.")
 
 class FeeEnrollStudent(models.Model):
