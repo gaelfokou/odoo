@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-        <record id="view_data_request_wizard" model="ir.ui.view">
+        <record id="siantou_ems_core.view_data_request_wizard" model="ir.ui.view">
             <field name="name">siantou.ems.core.data_request_wizard.form</field>
             <field name="model">siantou.ems.core.data_request_wizard</field>
             <field name="arch" type="xml">
@@ -19,12 +19,12 @@
         </record>
 
         <!-- Define an action to open the form view -->
-        <record id="action_data_request_wizard" model="ir.actions.act_window">
+        <record id="siantou_ems_core.action_data_request_wizard" model="ir.actions.act_window">
             <field name="name">Données requises</field>
             <field name="res_model">siantou.ems.core.data_request_wizard</field>
             <field name="view_mode">form</field>
             <field name="target">new</field>
-            <field name="view_id" ref="view_data_request_wizard"/>
+            <field name="view_id" ref="siantou_ems_core.view_data_request_wizard"/>
         </record>
     </data>
 </odoo>

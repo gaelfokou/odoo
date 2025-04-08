@@ -392,6 +392,23 @@ class Student(models.Model):
             # 'context': {'active_id': self.id},
         }
 
+    def open_data_request_wizard_form(self):
+        # return {
+        #     'type': 'ir.actions.act_url',
+        #     'url': 'https://odoo.com',
+        #     'target': 'self',
+        # }
+        return {
+            'name': 'Données requises',
+            'type': 'ir.actions.act_window',
+            'view_mode': 'form',
+            'view_type': 'form',
+            'res_model': 'siantou.ems.core.data_request_wizard',
+            'target': 'new',
+            'view_id': self.env.ref('siantou_ems_core.view_data_request_wizard').id,
+            # 'context': {'active_id': self.id},
+        }
+
     @api.model
     def get_students(self, domain=[]):
         students = self.env['oe.school.student'].search(domain)
