@@ -275,21 +275,24 @@ class Student(models.Model):
                 username = '{}{}'.format(username[0][0:1], username[1])
             elif len(username) == 3:
                 username = '{}{}{}'.format(username[0][0:1], username[1], username[2][0:1])
-            email = username + '@siantou.net'
-            i = 0
-            while True:
-                res_user_id = self.env['res.users'].search([
-                    ('login', '=', email),
-                ], limit=1)
-                student_id = self.env['oe.school.student'].search([
-                    ('id', '!=', student.id),
-                    ('email', '=', email),
-                ], limit=1)
-                if res_user_id or student_id:
-                    i = i + 1
-                    email = username + f'{i}' + '@siantou.net'
-                else:
-                    break
+            if student.email and student.email.strip():
+                email = student.email
+            else:
+                email = username + '@siantou.net'
+                i = 0
+                while True:
+                    res_user_id = self.env['res.users'].search([
+                        ('login', '=', email),
+                    ], limit=1)
+                    student_id = self.env['oe.school.student'].search([
+                        ('id', '!=', student.id),
+                        ('email', '=', email),
+                    ], limit=1)
+                    if res_user_id or student_id:
+                        i = i + 1
+                        email = username + f'{i}' + '@siantou.net'
+                    else:
+                        break
             partner_id = self.env['res.partner'].create({
                 'name': student.name,
                 'email': email,
@@ -357,6 +360,11 @@ class Student(models.Model):
 
     @api.model
     def create(self, vals):
+        if vals['email'] and vals['email'].strip():
+            student_id = self.env['oe.school.student'].search([('email', '=', vals['email'])], limit=1)
+            if student_id:
+                return None
+
         field_of_study_id = self.env['siantou.ems.core.field_of_study'].search([('id', '=', vals['field_of_study_id'])], limit=1)
         if field_of_study_id:
             vals['school_id'] = field_of_study_id.school_id.id

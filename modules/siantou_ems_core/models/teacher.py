@@ -166,21 +166,24 @@ class HrEmployee(models.Model):
                 username = '{}{}'.format(username[0][0:1], username[1])
             elif len(username) == 3:
                 username = '{}{}{}'.format(username[0][0:1], username[1], username[2][0:1])
-            email = username + '@siantou.net'
-            i = 0
-            while True:
-                res_user_id = self.env['res.users'].search([
-                    ('login', '=', email),
-                ], limit=1)
-                employee_id = self.env['hr.employee'].search([
-                    ('id', '!=', employee.id),
-                    ('work_email', '=', email),
-                ], limit=1)
-                if res_user_id or employee_id:
-                    i = i + 1
-                    email = username + f'{i}' + '@siantou.net'
-                else:
-                    break
+            if employee.work_email and employee.work_email.strip():
+                email = employee.work_email
+            else:
+                email = username + '@siantou.net'
+                i = 0
+                while True:
+                    res_user_id = self.env['res.users'].search([
+                        ('login', '=', email),
+                    ], limit=1)
+                    employee_id = self.env['hr.employee'].search([
+                        ('id', '!=', employee.id),
+                        ('work_email', '=', email),
+                    ], limit=1)
+                    if res_user_id or employee_id:
+                        i = i + 1
+                        email = username + f'{i}' + '@siantou.net'
+                    else:
+                        break
             if employee.is_teacher:
                 group_id = self.env.ref('base.group_portal')
                 user_id = self.env['res.users'].with_context(no_reset_password=True).create({
@@ -210,6 +213,11 @@ class HrEmployee(models.Model):
 
     @api.model
     def create(self, vals):
+        if vals['work_email'] and vals['work_email'].strip():
+            employee_id = self.env['hr.employee'].search([('work_email', '=', vals['work_email'])], limit=1)
+            if employee_id:
+                return None
+
         employee = super(HrEmployee, self).create(vals)
 
         self.create_employee_user(employee)
