@@ -45,8 +45,9 @@ class ScolariteEtudiant(models.TransientModel):
 		tracking=True
 	)
 	redoublant = fields.Selection(
-        [('oui', 'OUI'), ('non', 'NON')],
-        'Redoublant?',related="student_id.redoublant")
+        [('oui', 'Oui'), ('non', 'Non')],
+        'Redoublant?',
+	)
 
 	def print_etudiant(self):
 		for rec in self:

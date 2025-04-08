@@ -1,3 +1,10 @@
+venv/
+.env
+config/
+docker-compose.yml
+docker-compose1.yml
+odoo-windows.cmd
+odoo-windows1.cmd
 # Ignore all Python cache directories
 **/__pycache__/
 *.pyc
