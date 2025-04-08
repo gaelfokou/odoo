@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_data_request_wizard" model="ir.ui.view">
+            <field name="name">siantou.ems.core.data_request_wizard.form</field>
+            <field name="model">siantou.ems.core.data_request_wizard</field>
+            <field name="arch" type="xml">
+                <form string="Données requises">
+                    <group>
+                        <field name="email" widget="email"/>
+                        <field name="phone" widget="phone"/>
+                    </group>
+                    <footer>
+                        <button string="Soumettre" type="object" name="submit_data_request" class="btn-primary"/>
+                        <button string="Annuler" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <!-- Define an action to open the form view -->
+        <record id="action_data_request_wizard" model="ir.actions.act_window">
+            <field name="name">Données requises</field>
+            <field name="res_model">siantou.ems.core.data_request_wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="view_id" ref="view_data_request_wizard"/>
+        </record>
+    </data>
+</odoo>
