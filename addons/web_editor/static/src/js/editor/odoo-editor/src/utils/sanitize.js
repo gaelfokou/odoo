@@ -96,10 +96,6 @@ export function areSimilarElements(node, node2) {
 * @returns {String|null}
 */
 export function deduceURLfromText(text, link) {
-    // Skip modifying the href for Bootstrap tabs.
-    if (link && link.getAttribute("role") === "tab") {
-        return;
-    }
    const label = text.replace(ZERO_WIDTH_CHARS_REGEX, '').trim();
    // Check first for e-mail.
    let match = label.match(EMAIL_REGEX);
@@ -229,17 +225,6 @@ function sanitizeNode(node, root) {
         paragraph.replaceChildren(...node.childNodes);
         node.replaceWith(paragraph);
         node = paragraph; // The node has been removed, update the reference.
-    } else if (
-        ['UL', 'OL'].includes(node.nodeName) &&
-        ['UL', 'OL'].includes(node.parentNode.nodeName)
-    ) {
-        const restoreCursor = shouldPreserveCursor(node, root) && preserveCursor(root.ownerDocument);
-        const li = document.createElement('li');
-        node.parentNode.insertBefore(li, node);
-        li.appendChild(node);
-        li.classList.add('oe-nested');
-        node = li;
-        restoreCursor && restoreCursor();
     } else if (isFontAwesome(node) && node.textContent !== '\u200B') {
         // Ensure a zero width space is present inside the FA element.
         node.textContent = '\u200B';

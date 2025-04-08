@@ -8,7 +8,6 @@
 # Arma Gedonsky <armagedonsky@hot.ee>, 2023
 # Maidu Targama <m.targama@gmail.com>, 2023
 # Egon Raamat <egon@avalah.ee>, 2023
-# Stevin Lilla, 2024
 # Anna, 2024
 # 
 msgid ""
@@ -63,7 +62,7 @@ msgstr "Maksa kassas"
 #. module: pos_online_payment_self_order
 #: model_terms:ir.ui.view,arch_db:pos_online_payment_self_order.res_config_settings_view_form_menu
 msgid "Pay at cashier if empty"
-msgstr "Kui on tühi, maksa kassas"
+msgstr ""
 
 #. module: pos_online_payment_self_order
 #: model_terms:ir.ui.view,arch_db:pos_online_payment_self_order.res_config_settings_view_form_menu
@@ -92,7 +91,7 @@ msgstr "Kassa tellimused"
 #: code:addons/pos_online_payment_self_order/static/src/pages/payment_page/payment_page.xml:0
 #, python-format
 msgid "Scan the QR code to pay"
-msgstr "Skaneeri QR-kood, et maksta"
+msgstr ""
 
 #. module: pos_online_payment_self_order
 #: model:ir.model.fields,field_description:pos_online_payment_self_order.field_pos_config__self_order_online_payment_method_id

@@ -202,9 +202,6 @@ class ResPartner(models.Model):
             if not partner.vies_vat_to_check:
                 partner.vies_valid = False
                 continue
-            if partner.parent_id and partner.parent_id.vies_vat_to_check == partner.vies_vat_to_check:
-                partner.vies_valid = partner.parent_id.vies_valid
-                continue
             try:
                 _logger.info('Calling VIES service to check VAT for validation: %s', partner.vies_vat_to_check)
                 vies_valid = check_vies(partner.vies_vat_to_check, timeout=10)
@@ -390,9 +387,22 @@ class ResPartner(models.Model):
         checksum = extra + sum((8-i) * int(x) for i, x in enumerate(vat[:7]))
         return 'WABCDEFGHIJKLMNOPQRSTUV'[checksum % 23]
 
-    # TODO: remove in master
     def check_vat_ie(self, vat):
-        return stdnum.util.get_cc_module('ie', 'vat').is_valid(vat)
+        """ Temporary Ireland VAT validation to support the new format
+        introduced in January 2013 in Ireland, until upstream is fixed.
+        TODO: remove when fixed upstream"""
+        if len(vat) not in (8, 9) or not vat[2:7].isdigit():
+            return False
+        if len(vat) == 8:
+            # Normalize pre-2013 numbers: final space or 'W' not significant
+            vat += ' '
+        if vat[:7].isdigit():
+            return vat[7] == self._ie_check_char(vat[:7] + vat[8])
+        elif vat[1] in (string.ascii_uppercase + '+*'):
+            # Deprecated format
+            # See http://www.revenue.ie/en/online/third-party-reporting/reporting-payment-details/faqs.html#section3
+            return vat[7] == self._ie_check_char(vat[2:7] + vat[0] + vat[8])
+        return False
 
     # Mexican VAT verification, contributed by Vauxoo
     # and Panos Christeas <p_christ@hol.gr>

@@ -159,7 +159,7 @@ class AccountEdiXmlCII(models.AbstractModel):
         else:
             seller_siret = invoice.company_id.company_registry
 
-        buyer_siret = invoice.commercial_partner_id.company_registry
+        buyer_siret = False
         if 'siret' in invoice.commercial_partner_id._fields and invoice.commercial_partner_id.siret:
             buyer_siret = invoice.commercial_partner_id.siret
         template_values = {

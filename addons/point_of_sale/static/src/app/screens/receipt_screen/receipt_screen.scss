@@ -12,7 +12,7 @@
 
 @media print {
     body {
-        background-color: transparent;
+        background: white;
     }
     body * {
         visibility: hidden;
@@ -22,7 +22,7 @@
     }
     .render-container .pos-receipt * {
         visibility: visible;
-        background-color: transparent !important;
+        background: white !important;
         color: black !important;
     }
     .render-container .pos-receipt {

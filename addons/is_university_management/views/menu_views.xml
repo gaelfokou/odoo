@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <menuitem id="menu_university_root" name="Université"/>
+
+    <menuitem id="menu_university_school_root" name="Écoles" parent="menu_university_root"/>
+    <menuitem id="menu_university_school" name="Gestion des écoles" parent="menu_university_school_root" action="action_university_school"/>
+
+    <menuitem id="menu_school_student_root" name="Étudiants" parent="menu_university_root"/>
+    <menuitem id="menu_school_student" name="Gestion des étudiants" parent="menu_school_student_root" action="action_school_student"/>
+
+    <menuitem id="menu_university_teacher_root" name="Enseignants" parent="menu_university_root"/>
+    <menuitem id="menu_university_teacher" name="Gestion des enseignants" parent="menu_university_teacher_root" action="action_university_teacher"/>
+
+    <menuitem id="menu_university_subject_root" name="Cours" parent="menu_university_root"/>
+    <menuitem id="menu_university_subject" name="Gestion des cours" parent="menu_university_subject_root" action="action_university_subject"/>
+
+    <menuitem id="menu_school_timetable_root" name="Emploi du temps" parent="menu_university_root"/>
+    <menuitem id="menu_school_timetable" name="Gestion de l'emploi du temps" parent="menu_school_timetable_root" action="action_school_timetable"/>
+
+    <menuitem id="menu_university_management" name="Gestion de l'université" parent="menu_university_root"/>
+
+    <menuitem id="menu_university_academic_year" name="Gestion des années académiques" parent="menu_university_management" action="action_university_academic_year"/>
+
+    <menuitem id="menu_university_semester" name="Gestion des semestres" parent="menu_university_management" action="action_university_semester"/>
+
+    <menuitem id="menu_teacher_availability" name="Disponibilités des enseignants"
+              parent="menu_university_management" action="action_teacher_availability"/>
+
+    <menuitem id="menu_student_batch" name="Lots d'étudiants"
+              parent="menu_university_management" action="action_student_batch"/>
+
+    <menuitem id="menu_university_building" name="Bâtiments"
+              parent="menu_university_management" action="action_university_building"/>
+
+    <menuitem id="menu_building_classroom" name="Salles de classe"
+              parent="menu_university_management" action="action_building_classroom"/>
+
+    <menuitem id="menu_field_of_study" name="Filières"
+              parent="menu_university_management" action="action_field_of_study"/>
+
+    <menuitem id="menu_school_level" name="Niveaux d'études"
+              parent="menu_university_management" action="action_school_level"/>
+
+    <menuitem id="menu_school_program" name="Programmes"
+              parent="menu_university_management" action="action_school_program"/>
+
+    <menuitem id="menu_timetable_schedule" name="Horaires de l'emploi du temps"
+              parent="menu_university_management" action="action_timetable_schedule"/>
+</odoo>

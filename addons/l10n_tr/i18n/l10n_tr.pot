@@ -197,7 +197,7 @@ msgstr ""
 
 #. module: l10n_tr
 #: model:account.report,name:l10n_tr.turkey_tax_report
-msgid "Türkiye Tax Report (TR)"
+msgid "Turkey Tax Report (TR)"
 msgstr ""
 
 #. module: l10n_tr

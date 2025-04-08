@@ -2083,14 +2083,14 @@ msgstr ""
 #: code:addons/web/static/src/views/fields/copy_clipboard/copy_clipboard_field.js:0
 #, python-format
 msgid "Copy Text to Clipboard"
-msgstr "متن را در کلیپ بورد کپی کنید"
+msgstr ""
 
 #. module: web
 #. odoo-javascript
 #: code:addons/web/static/src/views/fields/copy_clipboard/copy_clipboard_field.js:0
 #, python-format
 msgid "Copy URL to Clipboard"
-msgstr "URL را در کلیپ بورد کپی کنید"
+msgstr ""
 
 #. module: web
 #. odoo-javascript
@@ -2848,7 +2848,7 @@ msgstr ""
 #: code:addons/web/static/src/views/kanban/kanban_header.js:0
 #, python-format
 msgid "Edit: %s"
-msgstr "ویرایش کنید: %s"
+msgstr ""
 
 #. module: web
 #. odoo-javascript
@@ -4194,7 +4194,7 @@ msgstr "طرح بندی"
 #. module: web
 #: model:ir.model.fields,field_description:web.field_base_document_layout__layout_background
 msgid "Layout Background"
-msgstr "پس زمینه چیدمان"
+msgstr ""
 
 #. module: web
 #. odoo-javascript
@@ -7057,8 +7057,6 @@ msgid ""
 "country format. You can use '/' to indicate that the partner is not subject "
 "to tax."
 msgstr ""
-"شماره شناسایی مالیاتی مقادیر در اینجا بر اساس قالب کشور تأیید می شوند. "
-"می‌توانید از «/» برای نشان دادن اینکه شریک مشمول مالیات نیست استفاده کنید."
 
 #. module: web
 #. odoo-python
@@ -7286,7 +7284,7 @@ msgstr "امروز"
 #: code:addons/web/static/src/views/fields/boolean_toggle/boolean_toggle_field.js:0
 #, python-format
 msgid "Toggle"
-msgstr "toggle"
+msgstr ""
 
 #. module: web
 #. odoo-javascript
@@ -8060,7 +8058,7 @@ msgstr ""
 #: code:addons/web/controllers/binary.py:0
 #, python-format
 msgid "You are not allowed to upload an attachment here."
-msgstr "شما مجاز به آپلود پیوست در اینجا نیستید."
+msgstr ""
 
 #. module: web
 #: model_terms:ir.ui.view,arch_db:web.webclient_offline
@@ -11073,7 +11071,7 @@ msgstr ""
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 #, python-format
 msgid "camera"
-msgstr "دوربین"
+msgstr ""
 
 #. module: web
 #. odoo-javascript
@@ -13460,7 +13458,7 @@ msgstr ""
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 #, python-format
 msgid "deaf"
-msgstr "ناشنوا"
+msgstr ""
 
 #. module: web
 #. odoo-javascript
@@ -25687,7 +25685,7 @@ msgstr ""
 #: code:addons/web/static/src/views/fields/many2many_tags_avatar/many2many_tags_avatar_field.xml:0
 #, python-format
 msgid "props.placeholder"
-msgstr "props.placeholder"
+msgstr ""
 
 #. module: web
 #. odoo-javascript
@@ -26105,7 +26103,7 @@ msgstr ""
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 #, python-format
 msgid "raising hand"
-msgstr "بالا بردن دست"
+msgstr ""
 
 #. module: web
 #. odoo-javascript
@@ -28792,7 +28790,7 @@ msgstr ""
 #: code:addons/web/static/src/core/emoji_picker/emoji_data.js:0
 #, python-format
 msgid "speak"
-msgstr "سخنرانی"
+msgstr ""
 
 #. module: web
 #. odoo-javascript

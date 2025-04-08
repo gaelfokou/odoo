@@ -5,80 +5,45 @@ import { Domain } from "@web/core/domain";
 
 import { CommandResult } from "@spreadsheet/o_spreadsheet/cancelled_reason";
 import { RELATIVE_DATE_RANGE_TYPES } from "@spreadsheet/helpers/constants";
-import { monthsOptions } from "@spreadsheet/assets_backend/constants";
-import { QUARTER_OPTIONS } from "@web/search/utils/dates";
 
 /**
  * @typedef {import("@spreadsheet/global_filters/plugins/global_filters_core_plugin").FieldMatching} FieldMatching
  */
 
-const monthsOptionsIds = monthsOptions.map((option) => option.id);
-const quarterOptionsIds = Object.values(QUARTER_OPTIONS).map((option) => option.id);
-
-/**
- * Check if the value is valid for given filter.
- * @param {GlobalFilter | CmdGlobalFilter} filter
- * @param {any} value
- * @returns {boolean}
- */
-export function checkFilterValueIsValid(filter, value) {
-    const { type } = filter;
+export function checkFiltersTypeValueCombination(type, value) {
     if (value !== undefined) {
         switch (type) {
             case "text":
                 if (typeof value !== "string") {
-                    return false;
+                    return CommandResult.InvalidValueTypeCombination;
                 }
                 break;
             case "date": {
-                return checkDateFilterValueIsValid(filter, value);
+                if (value === "") {
+                    return CommandResult.Success;
+                } else if (typeof value === "string") {
+                    const expectedValues = RELATIVE_DATE_RANGE_TYPES.map((val) => val.type);
+                    expectedValues.push("this_month", "this_quarter", "this_year");
+                    if (expectedValues.includes(value)) {
+                        return CommandResult.Success;
+                    }
+                    return CommandResult.InvalidValueTypeCombination;
+                } else if (typeof value !== "object") {
+                    return CommandResult.InvalidValueTypeCombination;
+                }
+                break;
             }
             case "relation":
                 if (value === "current_user") {
-                    return true;
+                    return CommandResult.Success;
                 }
                 if (!Array.isArray(value)) {
-                    return false;
+                    return CommandResult.InvalidValueTypeCombination;
                 }
                 break;
         }
     }
-    return true;
-}
-
-/**
- * Check if the value is valid for given filter.
- * @param {DateGlobalFilter} filter
- * @param {any} value
- * @returns {boolean}
- */
-function checkDateFilterValueIsValid(filter, value) {
-    if (!value) {
-        return true;
-    }
-    switch (filter.rangeType) {
-        case "fixedPeriod": {
-            const period = value.period;
-            if (!filter.disabledPeriods || !filter.disabledPeriods.length) {
-                return true;
-            }
-            if (filter.disabledPeriods.includes("month")) {
-                return value !== "this_month" && !monthsOptionsIds.includes(period);
-            }
-            if (filter.disabledPeriods.includes("quarter")) {
-                return value !== "this_quarter" && !quarterOptionsIds.includes(period);
-            }
-            return true;
-        }
-        case "relative": {
-            const expectedValues = RELATIVE_DATE_RANGE_TYPES.map((val) => val.type);
-            expectedValues.push("this_month", "this_quarter", "this_year");
-            return expectedValues.includes(value);
-        }
-        case "from_to":
-            return typeof value === "object";
-    }
-    return true;
+    return CommandResult.Success;
 }
 
 /**

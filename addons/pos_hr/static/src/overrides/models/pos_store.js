@@ -17,9 +17,9 @@ patch(PosStore.prototype, {
         if (this.config.module_pos_hr) {
             this.employees = loadedData["hr.employee"];
             this.employee_by_id = loadedData["employee_by_id"];
-            const savedCashier = this._getConnectedCashier();
-            if (savedCashier) {
-                this.set_cashier(savedCashier);
+            const saved_cashier_id = sessionStorage.getItem("connected_cashier");
+            if (saved_cashier_id) {
+                this.set_cashier(this.employee_by_id[saved_cashier_id]);
             } else {
                 this.reset_cashier();
             }
@@ -28,7 +28,7 @@ patch(PosStore.prototype, {
     async after_load_server_data() {
         await super.after_load_server_data(...arguments);
         if (this.config.module_pos_hr) {
-            const saved_cashier = this._getConnectedCashier();
+            const saved_cashier = sessionStorage.getItem("connected_cashier");
             this.hasLoggedIn = saved_cashier ? true : false;
         }
     },
@@ -41,11 +41,11 @@ patch(PosStore.prototype, {
             pin: null,
             role: null,
         };
-        this._resetConnectedCashier();
+        sessionStorage.removeItem("connected_cashier");
     },
     set_cashier(employee) {
         this.cashier = employee;
-        this._storeConnectedCashier(employee);
+        sessionStorage.setItem("connected_cashier", employee.id);
         const selectedOrder = this.get_order();
         if (selectedOrder && !selectedOrder.get_orderlines().length) {
             // Order without lines can be considered to be un-owned by any employee.
@@ -84,19 +84,6 @@ patch(PosStore.prototype, {
             message,
         ]);
     },
-    _getConnectedCashier() {
-        const cashier_id = sessionStorage.getItem(`connected_cashier_${this.config.id}`);
-        if (cashier_id && this.employee_by_id[cashier_id]) {
-            return this.employee_by_id[cashier_id];
-        }
-        return false;
-    },
-    _storeConnectedCashier(employee) {
-        sessionStorage.setItem(`connected_cashier_${this.config.id}`, employee.id);
-    },
-    _resetConnectedCashier() {
-        sessionStorage.removeItem(`connected_cashier_${this.config.id}`);
-    },
 
     /**
      * @override
@@ -106,11 +93,5 @@ patch(PosStore.prototype, {
             return super.shouldShowCashControl(...arguments) && this.hasLoggedIn;
         }
         return super.shouldShowCashControl(...arguments);
-    },
-    closePos() {
-        if (this.config.module_pos_hr) {
-            this._resetConnectedCashier();
-        }
-        return super.closePos(...arguments);
     },
 });

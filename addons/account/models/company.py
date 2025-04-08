@@ -82,7 +82,7 @@ class ResCompany(models.Model):
         string="Gain Exchange Rate Account",
         check_company=True,
         domain="[('deprecated', '=', False),\
-                ('internal_group', '=', 'income')]")
+                ('account_type', 'in', ('income', 'income_other'))]")
     expense_currency_exchange_account_id = fields.Many2one(
         comodel_name='account.account',
         string="Loss Exchange Rate Account",

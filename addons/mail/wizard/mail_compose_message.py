@@ -623,11 +623,6 @@ class MailComposer(models.TransientModel):
         non_mass_mail.can_edit_body = True
         super(MailComposer, self - non_mass_mail)._compute_can_edit_body()
 
-    def _compute_field_value(self, field):
-        if field.compute_sudo:
-            return super(MailComposer, self.with_context(prefetch_fields=False))._compute_field_value(field)
-        return super()._compute_field_value(field)
-
     # ------------------------------------------------------------
     # CRUD / ORM
     # ------------------------------------------------------------
@@ -672,7 +667,8 @@ class MailComposer(models.TransientModel):
         for wizard in self:
             if wizard.res_domain:
                 search_domain = wizard._evaluate_res_domain()
-                res_ids = self.env[wizard.model].search(search_domain).ids
+                search_user = wizard.res_domain_user_id or self.env.user
+                res_ids = self.env[wizard.model].with_user(search_user).search(search_domain).ids
             else:
                 res_ids = wizard._evaluate_res_ids()
             # in comment mode: raise here as anyway message_post will raise.
@@ -1264,7 +1260,7 @@ class MailComposer(models.TransientModel):
         template_values = self.template_id._generate_template(
             res_ids,
             template_fields,
-            find_or_create_partners=find_or_create_partners,
+            find_or_create_partners=True
         )
 
         exclusion_list = ('email_cc', 'email_to') if find_or_create_partners else ()

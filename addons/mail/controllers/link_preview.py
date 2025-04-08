@@ -19,9 +19,7 @@ class LinkPreviewController(http.Controller):
             return
         if clear:
             message.sudo().link_preview_ids._unlink_and_notify()
-        guest.env["mail.link.preview"].sudo()._create_from_message_and_notify(
-            message, request_url=request.httprequest.url_root
-        )
+        guest.env["mail.link.preview"].sudo()._create_from_message_and_notify(message)
 
     @http.route("/mail/link_preview/delete", methods=["POST"], type="json", auth="public")
     @add_guest_to_context

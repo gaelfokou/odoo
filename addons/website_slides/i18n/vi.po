@@ -73,7 +73,7 @@ msgstr "# Câu hỏi"
 #. module: website_slides
 #: model_terms:ir.ui.view,arch_db:website_slides.slide_slide_partner_view_tree
 msgid "# Quizz Attempts"
-msgstr "# Số lần làm quiz"
+msgstr "# Số lần làm bài kiểm tra"
 
 #. module: website_slides
 #: model_terms:ir.ui.view,arch_db:website_slides.slide_slide_partner_view_tree
@@ -543,7 +543,9 @@ msgstr ""
 #. module: website_slides
 #: model_terms:ir.ui.view,arch_db:website_slides.slide_slide_view_kanban
 msgid "<i class=\"fa fa-flag me-2\" aria-label=\"Quiz\" role=\"img\" title=\"Quiz\"/>"
-msgstr "<i class=\"fa fa-flag me-2\" aria-label=\"Quiz\" role=\"img\" title=\"Quiz\"/>"
+msgstr ""
+"<i class=\"fa fa-flag me-2\" aria-label=\"Bài kiểm tra\" role=\"img\" "
+"title=\"Bài kiểm tra\"/>"
 
 #. module: website_slides
 #: model_terms:ir.ui.view,arch_db:website_slides.slide_aside_training_category
@@ -553,7 +555,7 @@ msgstr "<i class=\"fa fa-flag text-warning\"/> Quiz"
 #. module: website_slides
 #: model_terms:ir.ui.view,arch_db:website_slides.slide_fullscreen_sidebar_category
 msgid "<i class=\"fa fa-flag-checkered text-warning\"/>Quiz"
-msgstr "<i class=\"fa fa-flag-checkered text-warning\"/>Quiz"
+msgstr "<i class=\"fa fa-flag-checkered text-warning\"/>Bài kiểm tra"
 
 #. module: website_slides
 #: model_terms:ir.ui.view,arch_db:website_slides.course_slides_list
@@ -633,7 +635,7 @@ msgid ""
 "            <span>Add Quiz</span>"
 msgstr ""
 "<i class=\"fa fa-plus me-2\"/>\n"
-"            <span>Thêm quiz</span>"
+"            <span>Thêm bài kiểm tra</span>"
 
 #. module: website_slides
 #: model_terms:ir.ui.view,arch_db:website_slides.slide_slide_view_kanban
@@ -764,7 +766,7 @@ msgid ""
 "m-1\">Add Quiz</span>"
 msgstr ""
 "<span class=\"badge text-bg-light badge-hide border fw-normal px-2 py-1 "
-"m-1\">Thêm quiz</span>"
+"m-1\">Thêm bài kiểm tra</span>"
 
 #. module: website_slides
 #: model_terms:ir.ui.view,arch_db:website_slides.course_slides_list_slide
@@ -1211,7 +1213,7 @@ msgstr "Thành tựu"
 #: model:ir.model.fields,field_description:website_slides.field_slide_channel__message_needaction
 #: model:ir.model.fields,field_description:website_slides.field_slide_slide__message_needaction
 msgid "Action Needed"
-msgstr "Tác vụ cần thiết"
+msgstr "Hành động cần thiết"
 
 #. module: website_slides
 #: model:ir.model.fields,field_description:website_slides.field_slide_channel__active
@@ -1328,7 +1330,7 @@ msgstr "Thêm liên hệ..."
 #. module: website_slides
 #: model_terms:ir.ui.view,arch_db:website_slides.course_slides_list_slide
 msgid "Add quiz"
-msgstr "Thêm quiz"
+msgstr "Thêm bài kiểm tra"
 
 #. module: website_slides
 #: model_terms:ir.ui.view,arch_db:website_slides.slide_content_detailed
@@ -2386,7 +2388,7 @@ msgstr "Trang khoá học"
 #: code:addons/website_slides/models/gamification_karma_tracking.py:0
 #, python-format
 msgid "Course Quiz"
-msgstr "Quiz khoá học"
+msgstr "Bài kiểm tra khoá học"
 
 #. module: website_slides
 #. odoo-python
@@ -3540,8 +3542,8 @@ msgid ""
 "If you want to be sure that attendees have understood and memorized the "
 "content, you can add a Quiz on the lesson. Click on <b>Add Quiz</b>."
 msgstr ""
-"Nếu bạn muốn bảo đảm học viên hiểu và nhớ nội dung, bạn có thể thêm Quiz vào"
-" mỗi bài học. Bấm vào <b>Thêm quiz</b>."
+"Nếu bạn muốn bảo đảm học viên hiểu và nhớ nội dung, bạn có thể thêm Bài kiểm"
+" tra vào mỗi bài học. Bấm vào <b>Thêm bài kiểm tra</b>."
 
 #. module: website_slides
 #. odoo-javascript
@@ -3864,7 +3866,8 @@ msgstr "Tham gia khóa học"
 #: code:addons/website_slides/static/src/xml/slide_quiz.xml:0
 #, python-format
 msgid "Join the course to take the quiz and verify your answers!"
-msgstr "Tham gia khóa học để làm quiz và xác minh câu trả lời của bạn!"
+msgstr ""
+"Tham gia khóa học để làm bài kiểm tra và xác minh câu trả lời của bạn!"
 
 #. module: website_slides
 #. odoo-javascript
@@ -4440,7 +4443,7 @@ msgstr "Không có thông báo"
 #. module: website_slides
 #: model_terms:ir.actions.act_window,help:website_slides.slide_question_action_report
 msgid "No Quiz data yet!"
-msgstr "Chưa có dữ liệu quiz!"
+msgstr "Chưa có dữ liệu bài kiểm tra!"
 
 #. module: website_slides
 #: model_terms:ir.actions.act_window,help:website_slides.rating_rating_action_slide_channel
@@ -4532,7 +4535,7 @@ msgstr "Thông báo"
 #: model:ir.model.fields,field_description:website_slides.field_slide_channel__message_needaction_counter
 #: model:ir.model.fields,field_description:website_slides.field_slide_slide__message_needaction_counter
 msgid "Number of Actions"
-msgstr "Số lượng tác vụ"
+msgstr "Số lượng hành động"
 
 #. module: website_slides
 #: model:ir.model.fields,field_description:website_slides.field_slide_slide__nbr_article
@@ -4960,7 +4963,7 @@ msgstr "Quiz"
 #: code:addons/website_slides/models/slide_slide.py:0
 #, python-format
 msgid "Quiz Completed"
-msgstr "Quiz đã hoàn thành"
+msgstr "Bài kiểm tra đã hoàn thành"
 
 #. module: website_slides
 #. odoo-javascript
@@ -4974,7 +4977,7 @@ msgstr "Dữ liệu Demo Quiz"
 #: code:addons/website_slides/models/slide_slide.py:0
 #, python-format
 msgid "Quiz Set Uncompleted"
-msgstr "Quiz được đặt là chưa hoàn thành"
+msgstr "Bài kiểm tra được đặt là chưa hoàn thành"
 
 #. module: website_slides
 #: model:ir.model.fields,field_description:website_slides.field_slide_slide_partner__quiz_attempts_count
@@ -5872,7 +5875,7 @@ msgstr "Từ khóa..."
 #. module: website_slides
 #: model_terms:ir.ui.view,arch_db:website_slides.slide_content_detailed
 msgid "Take Quiz"
-msgstr "Làm quiz"
+msgstr "Làm bài kiểm tra"
 
 #. module: website_slides
 #: model:slide.channel,name:website_slides.slide_channel_demo_1_gard1
@@ -5911,7 +5914,7 @@ msgstr "Kiểm tra kiến thức!"
 #: code:addons/website_slides/static/src/xml/website_slides_upload.xml:0
 #, python-format
 msgid "Test your students with small Quizzes"
-msgstr "Kiểm tra học sinh của bạn bằng các quiz nhỏ"
+msgstr "Kiểm tra học sinh của bạn bằng các câu đố nhỏ"
 
 #. module: website_slides
 #. odoo-javascript
@@ -6069,7 +6072,7 @@ msgstr ""
 #: code:addons/website_slides/static/src/js/slides_course_quiz.js:0
 #, python-format
 msgid "There was an error validating this quiz."
-msgstr "Có một lỗi khi xác nhận quiz này."
+msgstr "Có một lỗi khi xác nhận bài kiểm tra này."
 
 #. module: website_slides
 #: model:ir.model.fields,field_description:website_slides.field_slide_embed__url
@@ -6307,7 +6310,7 @@ msgstr "Loại"
 #. module: website_slides
 #: model:ir.model.fields,help:website_slides.field_slide_channel__activity_exception_decoration
 msgid "Type of the exception activity on record."
-msgstr "Loại hoạt động ngoại lệ trong bản ghi."
+msgstr "Loại hoạt động ngoại lệ trong tập dữ liệu."
 
 #. module: website_slides
 #: model:ir.model.fields,help:website_slides.field_slide_slide__url
@@ -6739,8 +6742,8 @@ msgid ""
 "With Quizzes you can keep your students focused and motivated by answering "
 "some questions and gaining some karma points"
 msgstr ""
-"Với quiz, bạn có thể giúp học viên tập trung và có động lực hơn bằng cách "
-"trả lời câu hỏi và giành thêm điểm "
+"Với bài kiểm tra, bạn có thể giúp học viên tập trung và có động lực hơn bằng"
+" cách trả lời câu hỏi và giành thêm điểm "
 
 #. module: website_slides
 #: model:slide.slide,name:website_slides.slide_category_demo_2_1
@@ -6838,7 +6841,8 @@ msgstr ""
 #. module: website_slides
 #: model_terms:ir.ui.view,arch_db:website_slides.view_slide_slide_form
 msgid "You can add questions to this quiz in the 'Quiz' tab."
-msgstr "Bạn có thể thêm câu hỏi vào quiz này trong tab 'Quiz'."
+msgstr ""
+"Bạn có thể thêm câu hỏi vào bài kiểm tra này trong tab 'Bài kiểm tra'."
 
 #. module: website_slides
 #. odoo-javascript
@@ -6901,8 +6905,8 @@ msgid ""
 "You cannot mark a slide quiz as completed if you are not among its members "
 "or it is unpublished."
 msgstr ""
-"Bạn không thể đánh dấu một quiz slide là đã hoàn thành nếu bạn không phải là"
-" thành viên hoặc nó đã bị huỷ đăng. "
+"Bạn không thể đánh dấu một bài kiểm tra slide là đã hoàn thành nếu bạn không"
+" phải là thành viên hoặc nó đã bị huỷ đăng. "
 
 #. module: website_slides
 #. odoo-python
@@ -6912,8 +6916,8 @@ msgid ""
 "You cannot mark a slide quiz as not completed if you are not among its "
 "members or it is unpublished."
 msgstr ""
-"Bạn không thể đánh dấu một quiz slide là chưa hoàn thành nếu bạn không phải "
-"là thành viên hoặc nó đã bị huỷ đăng. "
+"Bạn không thể đánh dấu một bài kiểm tra slide là chưa hoàn thành nếu bạn "
+"không phải là thành viên hoặc nó đã bị huỷ đăng. "
 
 #. module: website_slides
 #. odoo-python
@@ -6997,7 +7001,7 @@ msgstr "Bây giờ bạn có thể tham gia khóa eLearning. "
 #: code:addons/website_slides/static/src/js/slides_course_quiz.js:0
 #, python-format
 msgid "You must be logged to submit the quiz."
-msgstr "Bạn phải đăng nhập để gửi quiz."
+msgstr "Bạn phải đăng nhập để gửi bài kiểm tra."
 
 #. module: website_slides
 #. odoo-javascript
@@ -7240,7 +7244,7 @@ msgid ""
 msgstr ""
 "ví dụ. Trong video này, chúng tôi sẽ cung cấp cho bạn các nội dung chính về "
 "cách Odoo có thể giúp bạn phát triển doanh nghiệp của mình. Cuối cùng, chúng"
-" tôi đề xuất cho bạn một quiz để kiểm tra kiến thức của bạn."
+" tôi đề xuất cho bạn một bài kiểm tra để kiểm tra kiến thức của bạn."
 
 #. module: website_slides
 #: model_terms:ir.ui.view,arch_db:website_slides.view_slide_slide_form

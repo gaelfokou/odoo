@@ -228,7 +228,7 @@ SNAILMAIL_COUNTRIES = {
     "TM": "Turkmenistan",
     "TN": "Tunisia",
     "TO": "Tonga",
-    "TR": "Türkiye",
+    "TR": "Turkey",
     "TT": "Trinidad and Tobago",
     "TV": "Tuvalu",
     "TW": "China Taiwan",

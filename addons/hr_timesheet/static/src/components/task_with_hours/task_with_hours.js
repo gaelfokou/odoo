@@ -2,18 +2,33 @@
 
 import { registry } from "@web/core/registry";
 import { Many2OneField, many2OneField } from "@web/views/fields/many2one/many2one_field";
+import { useService } from "@web/core/utils/hooks";
 import { onWillStart } from "@odoo/owl";
 
-export class TaskWithHours extends Many2OneField {
+class TaskWithHours extends Many2OneField {
     setup() {
         super.setup();
+        this.orm = useService("orm");
         onWillStart(this.onWillStart);
     }
 
-    async onWillStart() { }
+    async onWillStart() {
+        this.createEditProject = await this.orm.call(
+            "project.project",
+            "get_create_edit_project_ids",
+            []
+        );
+    }
 
     canCreate() {
-        return Boolean(this.context.default_project_id);
+        if (this.createEditProject !== undefined) {
+            return (
+                Boolean(this.context.default_project_id) &&
+                !this.createEditProject.includes(this.props.record.data.project_id[0])
+            );
+        } else {
+            return Boolean(this.context.default_project_id);
+        }
     }
 
     /**
@@ -28,7 +43,7 @@ export class TaskWithHours extends Many2OneField {
      * @override
      */
     get context() {
-        return { ...super.context, hr_timesheet_display_remaining_hours: true };
+        return {...super.context, hr_timesheet_display_remaining_hours: true};
     }
 
     /**
@@ -54,9 +69,7 @@ export class TaskWithHours extends Many2OneField {
 
 }
 
-export const taskWithHours = {
+registry.category("fields").add("task_with_hours", {
     ...many2OneField,
     component: TaskWithHours,
-};
-
-registry.category("fields").add("task_with_hours", taskWithHours);
+});

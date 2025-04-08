@@ -445,8 +445,8 @@ msgstr "9951 - San Marino VAT number"
 
 #. module: account_edi_ubl_cii
 #: model:ir.model.fields.selection,name:account_edi_ubl_cii.selection__res_partner__peppol_eas__9952
-msgid "9952 - Türkiye VAT number"
-msgstr ""
+msgid "9952 - Turkey VAT number"
+msgstr "9952 - Turkey VAT number"
 
 #. module: account_edi_ubl_cii
 #: model:ir.model.fields.selection,name:account_edi_ubl_cii.selection__res_partner__peppol_eas__9953
@@ -822,8 +822,6 @@ msgid ""
 "Please fill in Peppol EAS and Peppol Endpoint in your company form to "
 "generate a complete file."
 msgstr ""
-"Gelieve Peppol EAS en Peppol Endpoint in het bedrijfsformulier in te vullen "
-"om een volledig dossier te genereren."
 
 #. module: account_edi_ubl_cii
 #: model:ir.model,name:account_edi_ubl_cii.model_account_edi_xml_ubl_sg

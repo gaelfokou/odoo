@@ -10,7 +10,7 @@ export class ReprintReceiptScreen extends Component {
     static template = "point_of_sale.ReprintReceiptScreen";
     static components = { OrderReceipt };
     static storeOnOrder = false;
-    static props = ["order", "isShown"];
+    static props = ["order"];
     setup() {
         super.setup();
         this.pos = usePos();

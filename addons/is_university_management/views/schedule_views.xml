@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_timetable_schedule_form" model="ir.ui.view">
+        <field name="name">timetable.schedule.form</field>
+        <field name="model">is.university.school.timetable.schedule</field>
+        <field name="arch" type="xml">
+            <form string="Horaires de l'emploi du temps">
+                <sheet>
+                    <group>
+                        <field name="timetable_id"/>
+                        <field name="batch_id"/>
+                        <field name="classroom_id"/>
+                        <field name="teacher_id"/>
+                        <field name="program_id"/>
+                        <field name="day_of_week"/>
+                        <field name="start_time"/>
+                        <field name="end_time"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_timetable_schedule_tree" model="ir.ui.view">
+        <field name="name">timetable.schedule.tree</field>
+        <field name="model">is.university.school.timetable.schedule</field>
+        <field name="arch" type="xml">
+            <tree string="Horaires">
+                <field name="timetable_id"/>
+                <field name="batch_id"/>
+                <field name="classroom_id"/>
+                <field name="teacher_id"/>
+                <field name="program_id"/>
+                <field name="day_of_week"/>
+                <field name="start_time"/>
+                <field name="end_time"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_timetable_schedule" model="ir.actions.act_window">
+        <field name="name">Horaires de l'emploi du temps</field>
+        <field name="res_model">is.university.school.timetable.schedule</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>

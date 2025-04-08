@@ -6,7 +6,6 @@
 # Ivana Bartonkova, 2023
 # Wil Odoo, 2024
 # Jakub Smolka, 2024
-# Jiří Podhorecký <jirka.p@volny.cz>, 2024
 # 
 msgid ""
 msgstr ""
@@ -14,7 +13,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-01-05 12:32+0000\n"
 "PO-Revision-Date: 2023-10-26 23:09+0000\n"
-"Last-Translator: Jiří Podhorecký <jirka.p@volny.cz>, 2024\n"
+"Last-Translator: Jakub Smolka, 2024\n"
 "Language-Team: Czech (https://app.transifex.com/odoo/teams/41243/cs/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -51,8 +50,6 @@ msgid ""
 "A pricelist item with a positive min. quantity cannot be applied to this "
 "event tickets product."
 msgstr ""
-"Na tento produkt vstupenek na akci nelze použít ceníkovou položku s kladným "
-"min. množstvím."
 
 #. module: website_event_sale
 #. odoo-python
@@ -62,8 +59,6 @@ msgid ""
 "A pricelist item with a positive min. quantity will not be applied to the "
 "event tickets products."
 msgstr ""
-"Položka ceníku s kladným minimálním množstvím se na produkty vstupenek na "
-"událost nevztahuje."
 
 #. module: website_event_sale
 #: model_terms:ir.ui.view,arch_db:website_event_sale.registration_attendee_details
@@ -73,7 +68,7 @@ msgstr "Potvrdit registraci"
 #. module: website_event_sale
 #: model_terms:ir.ui.view,arch_db:website_event_sale.event_confirmation
 msgid "Download Tickets <i class=\"ms-1 fa fa-download\"/>"
-msgstr "Stáhnout vstupenky <i class=\"ms-1 fa fa-download\"/>"
+msgstr ""
 
 #. module: website_event_sale
 #: model:ir.model,name:website_event_sale.model_event_sale_report
@@ -98,12 +93,12 @@ msgstr "Od"
 #. module: website_event_sale
 #: model_terms:ir.ui.view,arch_db:website_event_sale.event_confirmation
 msgid "Go to Event"
-msgstr "Přejít na událost"
+msgstr ""
 
 #. module: website_event_sale
 #: model_terms:ir.ui.view,arch_db:website_event_sale.registration_attendee_details
 msgid "Go to Payment"
-msgstr "Přejít na Platby"
+msgstr ""
 
 #. module: website_event_sale
 #: model:ir.model,name:website_event_sale.model_product_pricelist_item
@@ -124,7 +119,7 @@ msgstr "Produktová varianta"
 #: model:ir.model.fields,field_description:website_event_sale.field_event_sale_report__is_published
 #: model_terms:ir.ui.view,arch_db:website_event_sale.event_sale_report_view_search
 msgid "Published Events"
-msgstr "Zveřejněné Akce"
+msgstr ""
 
 #. module: website_event_sale
 #: model:ir.model,name:website_event_sale.model_sale_order
@@ -157,7 +152,7 @@ msgstr ""
 #: code:addons/website_event_sale/models/sale_order.py:0
 #, python-format
 msgid "The provided ticket doesn't exist"
-msgstr "Předložená vstupenka neexistuje"
+msgstr ""
 
 #. module: website_event_sale
 #. odoo-python
@@ -176,7 +171,7 @@ msgstr "Varování"
 #. module: website_event_sale
 #: model_terms:ir.ui.view,arch_db:website_event_sale.event_confirmation
 msgid "We are looking forward to meeting you at the following"
-msgstr "Těšíme se na setkání s vámi na následujících akcích."
+msgstr ""
 
 #. module: website_event_sale
 #: model:ir.model,name:website_event_sale.model_website
@@ -188,17 +183,17 @@ msgstr "Webová stránka"
 #: code:addons/website_event_sale/models/sale_order.py:0
 #, python-format
 msgid "You cannot raise manually the event ticket quantity in your cart"
-msgstr "Množství vstupenek na událost v košíku nelze zvýšit ručně"
+msgstr ""
 
 #. module: website_event_sale
 #: model_terms:ir.ui.view,arch_db:website_event_sale.event_confirmation
 msgid "event"
-msgstr "událost"
+msgstr ""
 
 #. module: website_event_sale
 #: model_terms:ir.ui.view,arch_db:website_event_sale.event_confirmation
 msgid "events"
-msgstr "události"
+msgstr ""
 
 #. module: website_event_sale
 #: model_terms:ir.ui.view,arch_db:website_event_sale.modal_ticket_registration

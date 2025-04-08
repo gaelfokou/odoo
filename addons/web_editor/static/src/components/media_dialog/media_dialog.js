@@ -15,22 +15,22 @@ import { Component, useState, useRef, useEffect } from "@odoo/owl";
 export const TABS = {
     IMAGES: {
         id: 'IMAGES',
-        title: _t("Images"),
+        title: "Images",
         Component: ImageSelector,
     },
     DOCUMENTS: {
         id: 'DOCUMENTS',
-        title: _t("Documents"),
+        title: "Documents",
         Component: DocumentSelector,
     },
     ICONS: {
         id: 'ICONS',
-        title: _t("Icons"),
+        title: "Icons",
         Component: IconSelector,
     },
     VIDEOS: {
         id: 'VIDEOS',
-        title: _t("Videos"),
+        title: "Videos",
         Component: VideoSelector,
     },
 };

@@ -25,12 +25,13 @@ class TestLeadTime(TestCommonSalePurchaseNoChart):
             'email': 'grand.horus@chansonbelge.dz',
         })
 
+
     def test_supplier_lead_time(self):
         """ Basic stock configuration and a supplier with a minimum qty and a lead time """
 
         self.env.user.company_id.po_lead = 7
         seller = self.env['product.supplierinfo'].create({
-            'partner_id': self.vendor.id,
+            'name': self.vendor.id,
             'min_qty': 1,
             'price': 10,
             'date_start': fields.Date.today() - timedelta(days=1),

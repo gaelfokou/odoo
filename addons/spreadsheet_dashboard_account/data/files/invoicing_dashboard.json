@@ -1579,15 +1579,6 @@
                 "state"
             ],
             "domain": [
-                "&",
-                [
-                    "state",
-                    "not in",
-                    [
-                        "draft",
-                        "cancel"
-                    ]
-                ],
                 [
                     "move_type",
                     "=",

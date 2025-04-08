@@ -29,7 +29,6 @@ PAYMENT_METHODS_MAPPING = {
     'sepa_direct_debit': 'sepa_debit',
     'afterpay': 'afterpay_clearpay',
     'clearpay': 'afterpay_clearpay',
-    'cash_app_pay': 'cashapp',
     'mobile_pay': 'mobilepay',
     'unknown': 'card',  # For express checkout.
 }

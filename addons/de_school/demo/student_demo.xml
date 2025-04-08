@@ -1,0 +1,184 @@
+<odoo>
+    <data noupdate="0">
+        <!--
+        Resource: res.partner.category
+        -->
+        
+        <record id="res_partner_category_student" model="res.partner.category">
+            <field name="name">Student</field>
+            <field name="color" eval="2"/>
+        </record>
+        <!-- Student -->
+        <record id="res_partner_student_1" model="res.partner">
+            <field name="name">Ivan KAMGA</field>
+            <field eval="[Command.set([ref('res_partner_category_student')])]" name="category_id"/>
+            <field name="is_company">0</field>
+            <field name="is_student">1</field>
+            <field name="company_type">person</field>
+            <field name="street">Eleveur</field>
+            <field name="city">Yaoundé</field>
+            <field name="country_id" ref="base.cm"/>
+            <field name="email">ivan.kamga@example.com</field>
+            <field name="phone">+237655555555</field>
+            <field name="website"/>
+<!--            <field name="image_1920" type="base64" file="de_school/static/img/student_1.jpg"/>-->
+            <field name="course_id" ref="course_mba"/>
+            <field name="batch_id" ref="course_mba_batch1"/>
+            <field name="roll_no">mba/0001</field>
+        </record>
+
+        <record id="res_partner_student_2" model="res.partner">
+            <field name="name">Giresse WAFFO</field>
+            <field eval="[Command.set([ref('res_partner_category_student')])]" name="category_id"/>
+            <field name="is_company">0</field>
+            <field name="is_student">1</field>
+            <field name="company_type">person</field>
+            <field name="street">Eleveur</field>
+            <field name="city">Yaoundé</field>
+            <field name="country_id" ref="base.cm"/>
+            <field name="email">ivan.kamga@example.com</field>
+            <field name="phone">+237655555555</field>
+            <field name="website"/>
+<!--            <field name="image_1920" type="base64" file="de_school/static/img/student_1.jpg"/>-->
+            <field name="course_id" ref="course_mba"/>
+            <field name="batch_id" ref="course_mba_batch1"/>
+            <field name="roll_no">mba/0002</field>
+        </record>
+        <record id="res_partner_student_3" model="res.partner">
+            <field name="name">Valentin EKWE</field>
+            <field eval="[Command.set([ref('res_partner_category_student')])]" name="category_id"/>
+            <field name="is_company">0</field>
+            <field name="is_student">1</field>
+            <field name="company_type">person</field>
+            <field name="street">Eleveur</field>
+            <field name="city">Yaoundé</field>
+            <field name="country_id" ref="base.cm"/>
+            <field name="email">ivan.kamga@example.com</field>
+            <field name="phone">+237655555555</field>
+            <field name="website"/>
+<!--            <field name="image_1920" type="base64" file="de_school/static/img/student_1.jpg"/>-->
+            <field name="course_id" ref="course_mba"/>
+            <field name="batch_id" ref="course_mba_batch1"/>
+            <field name="roll_no">mba/0003</field>
+        </record>
+        <record id="res_partner_student_4" model="res.partner">
+            <field name="name">Yannick EWANE</field>
+            <field eval="[Command.set([ref('res_partner_category_student')])]" name="category_id"/>
+            <field name="is_company">0</field>
+            <field name="is_student">1</field>
+            <field name="company_type">person</field>
+            <field name="street">Eleveur</field>
+            <field name="city">Yaoundé</field>
+            <field name="country_id" ref="base.cm"/>
+            <field name="email">ivan.kamga@example.com</field>
+            <field name="phone">+237655555555</field>
+            <field name="website"/>
+<!--            <field name="image_1920" type="base64" file="de_school/static/img/student_1.jpg"/>-->
+            <field name="course_id" ref="course_mba"/>
+            <field name="batch_id" ref="course_mba_batch2"/>
+            <field name="roll_no">mba/0004</field>
+        </record>
+        <record id="res_partner_student_5" model="res.partner">
+            <field name="name">Sarah KOYAMBA</field>
+            <field eval="[Command.set([ref('res_partner_category_student')])]" name="category_id"/>
+            <field name="is_company">0</field>
+            <field name="is_student">1</field>
+            <field name="company_type">person</field>
+            <field name="street">Eleveur</field>
+            <field name="city">Yaoundé</field>
+            <field name="country_id" ref="base.cm"/>
+            <field name="email">ivan.kamga@example.com</field>
+            <field name="phone">+237655555555</field>
+            <field name="website"/>
+<!--            <field name="image_1920" type="base64" file="de_school/static/img/student_1.jpg"/>-->
+            <field name="course_id" ref="course_mba"/>
+            <field name="batch_id" ref="course_mba_batch2"/>
+            <field name="roll_no">mba/0005</field>
+        </record>
+        <record id="res_partner_student_6" model="res.partner">
+            <field name="name">Laetitia FONGANG</field>
+            <field eval="[Command.set([ref('res_partner_category_student')])]" name="category_id"/>
+            <field name="is_company">0</field>
+            <field name="is_student">1</field>
+            <field name="company_type">person</field>
+            <field name="street">Eleveur</field>
+            <field name="city">Yaoundé</field>
+            <field name="country_id" ref="base.cm"/>
+            <field name="email">ivan.kamga@example.com</field>
+            <field name="phone">+237655555555</field>
+            <field name="website"/>
+<!--            <field name="image_1920" type="base64" file="de_school/static/img/student_1.jpg"/>-->
+            <field name="course_id" ref="course_bba"/>
+            <field name="batch_id" ref="course_bba_batch1"/>
+            <field name="roll_no">bba/0001</field>
+        </record>
+        <record id="res_partner_student_7" model="res.partner">
+            <field name="name">Loïc ETOGA</field>
+            <field eval="[Command.set([ref('res_partner_category_student')])]" name="category_id"/>
+            <field name="is_company">0</field>
+            <field name="is_student">1</field>
+            <field name="company_type">person</field>
+            <field name="street">Eleveur</field>
+            <field name="city">Yaoundé</field>
+            <field name="country_id" ref="base.cm"/>
+            <field name="email">ivan.kamga@example.com</field>
+            <field name="phone">+237655555555</field>
+            <field name="website"/>
+<!--            <field name="image_1920" type="base64" file="de_school/static/img/student_1.jpg"/>-->
+            <field name="course_id" ref="course_bba"/>
+            <field name="batch_id" ref="course_bba_batch1"/>
+            <field name="roll_no">bba/0002</field>
+        </record>
+        <record id="res_partner_student_8" model="res.partner">
+            <field name="name">Paul ZE MEKA</field>
+            <field eval="[Command.set([ref('res_partner_category_student')])]" name="category_id"/>
+            <field name="is_company">0</field>
+            <field name="is_student">1</field>
+            <field name="company_type">person</field>
+            <field name="street">Eleveur</field>
+            <field name="city">Yaoundé</field>
+            <field name="country_id" ref="base.cm"/>
+            <field name="email">ivan.kamga@example.com</field>
+            <field name="phone">+237655555555</field>
+            <field name="website"/>
+<!--            <field name="image_1920" type="base64" file="de_school/static/img/student_1.jpg"/>-->
+            <field name="course_id" ref="course_mca"/>
+            <field name="batch_id" ref="course_mca_batch1"/>
+            <field name="roll_no">mca/0001</field>
+        </record>
+        <record id="res_partner_student_9" model="res.partner">
+            <field name="name">Floriane DJAPPA</field>
+            <field eval="[Command.set([ref('res_partner_category_student')])]" name="category_id"/>
+            <field name="is_company">0</field>
+            <field name="is_student">1</field>
+            <field name="company_type">person</field>
+            <field name="street">Eleveur</field>
+            <field name="city">Yaoundé</field>
+            <field name="country_id" ref="base.cm"/>
+            <field name="email">ivan.kamga@example.com</field>
+            <field name="phone">+237655555555</field>
+            <field name="website"/>
+<!--            <field name="image_1920" type="base64" file="de_school/static/img/student_1.jpg"/>-->
+            <field name="course_id" ref="course_mca"/>
+            <field name="batch_id" ref="course_mca_batch1"/>
+            <field name="roll_no">mca/0002</field>
+        </record>
+        <record id="res_partner_student_10" model="res.partner">
+            <field name="name">Jean KUETE</field>
+            <field eval="[Command.set([ref('res_partner_category_student')])]" name="category_id"/>
+            <field name="is_company">0</field>
+            <field name="is_student">1</field>
+            <field name="company_type">person</field>
+            <field name="street">Eleveur</field>
+            <field name="city">Yaoundé</field>
+            <field name="country_id" ref="base.cm"/>
+            <field name="email">ivan.kamga@example.com</field>
+            <field name="phone">+237655555555</field>
+            <field name="website"/>
+<!--            <field name="image_1920" type="base64" file="de_school/static/img/student_1.jpg"/>-->
+            <field name="course_id" ref="course_mca"/>
+            <field name="batch_id" ref="course_mca_batch1"/>
+            <field name="roll_no">mca/0003</field>
+        </record>
+    </data>
+</odoo>

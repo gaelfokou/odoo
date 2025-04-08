@@ -762,11 +762,9 @@ export class Record extends DataPoint {
                         });
                     }
                     staticList = this._createStaticListDatapoint(data, fieldName);
-                    if (valueIsCommandList) {
-                        staticList._applyInitialCommands(value);
-                    }
-                } else if (valueIsCommandList) {
-                    staticList._applyCommands(value);
+                }
+                if (valueIsCommandList) {
+                    staticList._applyInitialCommands(value);
                 }
                 parsedValues[fieldName] = staticList;
             } else {

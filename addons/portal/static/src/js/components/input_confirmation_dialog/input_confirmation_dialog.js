@@ -6,7 +6,7 @@ import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_d
 export class InputConfirmationDialog extends ConfirmationDialog {
     static props = {
         ...ConfirmationDialog.props,
-        onInput: { type: Function, optional: true },
+        onInput: Function,
     };
     static template = "portal.InputConfirmationDialog";
 

@@ -17,7 +17,7 @@ def _l10n_in_withholding_post_init(env):
             'account.tax',
         ]
     }
-    for company in env['res.company'].search([('chart_template', '=', 'in'), ('parent_id', '=', False)]):
+    for company in env['res.company'].search([('chart_template', '=', 'in')]):
         _logger.info("Company %s already has the Indian localization installed, updating...", company.name)
         ChartTemplate = env['account.chart.template'].with_company(company)
         try:
@@ -28,6 +28,5 @@ def _l10n_in_withholding_post_init(env):
         except ValidationError as e:
             _logger.warning("Error while updating Chart of Accounts for company %s: %s", company.name, e.args[0])
         tds_group_id = env.ref(f'account.{company.id}_tds_group', raise_if_not_found=False)
-        if tds_group_id:
-            tds_purchase_taxes = env['account.tax'].with_context(active_test=False).search([('tax_group_id', '=', tds_group_id.id), ('type_tax_use', '=', 'purchase')])
-            tds_purchase_taxes.write({'l10n_in_tds_tax_type': 'purchase', 'type_tax_use': 'none'})
+        tds_purchase_taxes = env['account.tax'].with_context(active_test=False).search([('tax_group_id', '=', tds_group_id.id), ('type_tax_use', '=', 'purchase')])
+        tds_purchase_taxes.write({'l10n_in_tds_tax_type': 'purchase', 'type_tax_use': 'none'})

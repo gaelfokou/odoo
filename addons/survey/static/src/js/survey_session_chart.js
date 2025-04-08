@@ -312,8 +312,7 @@ publicWidget.registry.SurveySessionChart = publicWidget.Widget.extend({
                 opacity = '0.2';
             }
         }
-        // If metaData.dataIndex is greater than SESSION_CHART_COLORS.length, it should start from the beginning
-        var rgb = SESSION_CHART_COLORS[metaData.dataIndex % SESSION_CHART_COLORS.length];
+        var rgb = SESSION_CHART_COLORS[metaData.dataIndex];
         return `rgba(${rgb},${opacity})`;
     },
 

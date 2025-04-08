@@ -13,13 +13,6 @@ patch(PosStore.prototype, {
 });
 
 patch(Order.prototype, {
-    setup() {
-        super.setup(...arguments);
-        if (this.name.startsWith('Self-Order')) {
-            this.trackingNumber = "S" + this.trackingNumber
-        }
-    },
-
     defaultTableNeeded(options) {
         return (
             super.defaultTableNeeded(...arguments) &&
@@ -27,10 +20,4 @@ patch(Order.prototype, {
             !this.name.includes("Self-Order")
         );
     },
-
-    updateSequenceNumber(json){
-        if(!json.name.startsWith('Self-Order')) {
-            super.updateSequenceNumber(json);
-        }
-    }
 });

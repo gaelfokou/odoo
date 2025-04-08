@@ -10,7 +10,6 @@
 # Martin Trigaux, 2023
 # aleksandar ivanov, 2023
 # Maria Boyadjieva <marabo2000@gmail.com>, 2024
-# Elena Varbanova, 2024
 # 
 msgid ""
 msgstr ""
@@ -18,7 +17,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-08-13 10:26+0000\n"
 "PO-Revision-Date: 2023-10-26 23:09+0000\n"
-"Last-Translator: Elena Varbanova, 2024\n"
+"Last-Translator: Maria Boyadjieva <marabo2000@gmail.com>, 2024\n"
 "Language-Team: Bulgarian (https://app.transifex.com/odoo/teams/41243/bg/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -85,7 +84,7 @@ msgstr ""
 #. module: website_event
 #: model_terms:ir.ui.view,arch_db:website_event.events_list
 msgid "<i class=\"fa fa-ban me-2\"/>Unpublished"
-msgstr "<i class=\"fa fa-ban me-2\"/>Непубликувано"
+msgstr ""
 
 #. module: website_event
 #: model_terms:ir.ui.view,arch_db:website_event.event_description_full
@@ -104,8 +103,6 @@ msgid ""
 "<i class=\"fa fa-chevron-left me-2\"/>\n"
 "            <span>Back to events</span>"
 msgstr ""
-"<i class=\"fa fa-chevron-left me-2\"/>\n"
-"            <span>Връщане към събития</span>"
 
 #. module: website_event
 #: model_terms:ir.ui.view,arch_db:website_event.index_sidebar_follow_us
@@ -183,13 +180,11 @@ msgid ""
 "<span class=\"badge text-bg-secondary text-uppercase "
 "o_wevent_badge\">Speaker</span>"
 msgstr ""
-"<span class=\"badge text-bg-secondary text-uppercase "
-"o_wevent_badge\">Лектор</span>"
 
 #. module: website_event
 #: model_terms:ir.ui.view,arch_db:website_event.events_list
 msgid "<span class=\"fa fa-plus me-1\"/> Create an Event"
-msgstr "<span class=\"fa fa-plus me-1\"/> Създаване на събитие"
+msgstr ""
 
 #. module: website_event
 #: model_terms:ir.ui.view,arch_db:website_event.display_timer_widget
@@ -197,8 +192,6 @@ msgid ""
 "<span class=\"o_countdown_remaining o_timer_days pe-1\">0</span><span "
 "class=\"o_countdown_metric pe-1\">days</span>"
 msgstr ""
-"<span class=\"o_countdown_remaining o_timer_days pe-1\">0</span><span "
-"class=\"o_countdown_metric pe-1\">дни</span>"
 
 #. module: website_event
 #: model_terms:ir.ui.view,arch_db:website_event.display_timer_widget
@@ -228,9 +221,6 @@ msgid ""
 "                                        <i class=\"fa fa-ban me-2\"/>Sold Out\n"
 "                                    </span>"
 msgstr ""
-"<span itemprop=\"availability\" content=\"http://schema.org/SoldOut\" class=\"text-danger\">\n"
-"                                        <i class=\"fa fa-ban me-2\"/>Разпродаден\n"
-"                                    </span>"
 
 #. module: website_event
 #: model_terms:ir.ui.view,arch_db:website_event.event_location
@@ -356,7 +346,7 @@ msgstr "Блогова публикация"
 #. module: website_event
 #: model:ir.model.fields,field_description:website_event.field_event_registration_answer__partner_id
 msgid "Booked by"
-msgstr "Резервирано от"
+msgstr ""
 
 #. module: website_event
 #. odoo-python
@@ -370,7 +360,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:website_event.field_event_tag__can_publish
 #: model:ir.model.fields,field_description:website_event.field_event_tag_category__can_publish
 msgid "Can Publish"
-msgstr "Може да публикува"
+msgstr ""
 
 #. module: website_event
 #: model_terms:ir.ui.view,arch_db:website_event.registration_attendee_details
@@ -531,7 +521,7 @@ msgstr ""
 #. module: website_event
 #: model_terms:ir.ui.view,arch_db:website_event.registration_complete
 msgid "Download Tickets <i class=\"ms-1 fa fa-download\"/>"
-msgstr "Изтегли билети <i class=\"ms-1 fa fa-download\"/>"
+msgstr ""
 
 #. module: website_event
 #. odoo-python
@@ -623,12 +613,12 @@ msgstr ""
 #. module: website_event
 #: model:ir.model,name:website_event.model_event_tag
 msgid "Event Tag"
-msgstr "Маркер на събитието"
+msgstr ""
 
 #. module: website_event
 #: model:ir.model,name:website_event.model_event_tag_category
 msgid "Event Tag Category"
-msgstr "Маркер на катагорията на събитието"
+msgstr ""
 
 #. module: website_event
 #: model_terms:ir.ui.view,arch_db:website_event.s_dynamic_snippet_options_template
@@ -638,7 +628,7 @@ msgstr ""
 #. module: website_event
 #: model:ir.model,name:website_event.model_event_type
 msgid "Event Template"
-msgstr "Обрзец на събитие"
+msgstr ""
 
 #. module: website_event
 #: model_terms:ir.ui.view,arch_db:website_event.event_description_full
@@ -826,7 +816,7 @@ msgstr "Участва"
 #: model:ir.model.fields,field_description:website_event.field_event_tag__is_published
 #: model:ir.model.fields,field_description:website_event.field_event_tag_category__is_published
 msgid "Is Published"
-msgstr "Е публикувано"
+msgstr ""
 
 #. module: website_event
 #: model_terms:ir.ui.view,arch_db:website_event.s_speaker_bio
@@ -984,7 +974,7 @@ msgstr ""
 #. module: website_event
 #: model_terms:ir.ui.view,arch_db:website_event.event_pages_kanban_view
 msgid "Not Published"
-msgstr "Непубликуван"
+msgstr ""
 
 #. module: website_event
 #: model_terms:ir.ui.view,arch_db:website_event.event_event_view_form
@@ -1024,7 +1014,7 @@ msgstr ""
 #: code:addons/website_event/models/event_event.py:0
 #, python-format
 msgid "Past Events"
-msgstr "Минали събития"
+msgstr ""
 
 #. module: website_event
 #: model:event.question.answer,name:website_event.event_0_question_0_answer_2
@@ -1317,7 +1307,7 @@ msgstr ""
 #. module: website_event
 #: model_terms:ir.ui.view,arch_db:website_event.display_timer_alert_widget
 msgid "Starts <span/>"
-msgstr "Начало <span/>"
+msgstr ""
 
 #. module: website_event
 #: model_terms:ir.ui.view,arch_db:website_event.event_event_view_form

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_timetable_form" model="ir.ui.view">
+        <field name="name">school.timetable.form</field>
+        <field name="model">is.university.school.timetable</field>
+        <field name="arch" type="xml">
+            <form string="Emploi du temps">
+                <header>
+                    <button name="action_open_generate_wizard" type="object" string="Générer l'emploi du temps" class="btn-primary"/>
+                </header>
+                <sheet>
+                    <group>
+                        <field name="program_id"/>
+                        <field name="semester_id"/>
+                        <field name="batch_id"/>
+                        <field name="subject_id"/>
+                        <field name="classroom_id"/>
+                        <field name="teacher_id"/>
+                        <field name="start_time"/>
+                        <field name="end_time"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_school_timetable_tree" model="ir.ui.view">
+        <field name="name">school.timetable.tree</field>
+        <field name="model">is.university.school.timetable</field>
+        <field name="arch" type="xml">
+            <tree string="Emploi du temps">
+                <field name="program_id"/>
+                <field name="semester_id"/>
+                <field name="batch_id"/>
+                <field name="subject_id"/>
+                <field name="classroom_id"/>
+                <field name="teacher_id"/>
+                <field name="start_time"/>
+                <field name="end_time"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_school_timetable" model="ir.actions.act_window">
+        <field name="name">Emploi de temps</field>
+        <field name="res_model">is.university.school.timetable</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_school_timetable_tree"/>
+    </record>
+</odoo>

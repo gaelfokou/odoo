@@ -401,16 +401,13 @@ msgstr "25%"
 msgid ""
 "250 Executive Park Blvd, Suite 3400 <br/> San Francisco CA 94134 <br/>United"
 " States"
-msgstr ""
-"250 Executive Park Blvd, Suite 3400 <br/> San Francisco CA 94134 <br/>United"
-" States"
+msgstr "<br/>94134美國<br/>舊金山市行政公園大道250號之3400"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.template_footer_centered
 msgid ""
 "250 Executive Park Blvd, Suite 3400 • San Francisco CA 94134 • United States"
-msgstr ""
-"250 Executive Park Blvd, Suite 3400 • San Francisco CA 94134 • United States"
+msgstr "94134．美國舊金山市行政公園大道250號之3400"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_countdown
@@ -5284,7 +5281,7 @@ msgstr "關注我們"
 #: model_terms:ir.ui.view,arch_db:website.template_footer_links
 #: model_terms:ir.ui.view,arch_db:website.template_footer_minimalist
 msgid "Follow us"
-msgstr "追蹤我們"
+msgstr "訂閱我們"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.snippet_options
@@ -7056,7 +7053,7 @@ msgstr "導言文字"
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_text_image
 msgid "Learn more"
-msgstr "了解更多"
+msgstr "知道更多"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.bs_debug_view
@@ -7750,7 +7747,7 @@ msgstr "模式"
 #: model:ir.model.fields,field_description:website.field_website_controller_page__model
 #: model:ir.model.fields,field_description:website.field_website_page__model
 msgid "Model"
-msgstr "模型"
+msgstr "資料集"
 
 #. module: website
 #: model:ir.model,name:website.model_ir_model_data
@@ -10671,7 +10668,7 @@ msgstr "今天開始銷售你的產品和服務。"
 #: model_terms:ir.ui.view,arch_db:website.s_tabs
 #: model_terms:ir.ui.view,arch_db:website.s_text_image
 msgid "Start with the customer – find out what they want and give it to them."
-msgstr "由客戶工作開始：找出他們想要甚麼，盡量滿足他們的需要。"
+msgstr "從顧客開始 – 找到他們想要什麼並提供他們."
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_carousel
@@ -11635,7 +11632,7 @@ msgstr "要添加第四列，請使用每個塊的右圖示減小這三列的大
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_tabs
 msgid "To be successful your content needs to be useful to your readers."
-msgstr "成功的內容必須對讀者有用。"
+msgstr "要成功，你的內容必須對讀者有用。"
 
 #. module: website
 #: model_terms:digest.tip,tip_description:website.digest_tip_website_2
@@ -12378,7 +12375,7 @@ msgstr "訪問頁面歷史記錄"
 #: model_terms:ir.ui.view,arch_db:website.website_visitor_page_view_search
 #: model_terms:ir.ui.view,arch_db:website.website_visitor_view_kanban
 msgid "Visitor"
-msgstr "訪客"
+msgstr "訪問者"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.website_visitor_page_view_graph
@@ -12483,7 +12480,7 @@ msgstr "我們就快完成了！"
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_references
 msgid "We are in good company."
-msgstr "一致好評"
+msgstr "有很多人都是這樣。"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.new_page_template_landing_s_text_image
@@ -12975,7 +12972,7 @@ msgstr "節錄一段您客戶的話.引用他人的話是個建立產品或服�
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_tabs
 msgid "Write one or two paragraphs describing your product or services."
-msgstr "寫一兩段文字，描述你的產品或服務。"
+msgstr "寫一兩段描述您的產品或服務的內容."
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_image_text
@@ -12983,14 +12980,14 @@ msgstr "寫一兩段文字，描述你的產品或服務。"
 msgid ""
 "Write one or two paragraphs describing your product or services. To be "
 "successful your content needs to be useful to your readers."
-msgstr "寫一兩段文字，描述你的產品或服務。成功的內容必須對讀者有用。"
+msgstr "寫一兩段描述您的產品或服務的文件.要取得成功，您的內容需要對您的讀者有用."
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_text_cover
 msgid ""
 "Write one or two paragraphs describing your product, services or a specific "
 "feature. To be successful your content needs to be useful to your readers."
-msgstr "寫一兩段文字，描述你的產品或服務，或個別特色及功能。成功的內容必須對讀者有用。"
+msgstr "寫一兩段話描述你的產品、服務或特別功能。要這些話有效用，內容必須是對讀者有用的。"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_cover
@@ -12998,7 +12995,7 @@ msgid ""
 "Write one or two paragraphs describing your product, services or a specific "
 "feature.<br/> To be successful your content needs to be useful to your "
 "readers."
-msgstr "寫一兩段文字，描述你的產品或服務，或個別特色及功能。<br/>成功的內容必須對讀者有用。"
+msgstr "寫一兩段話描述你的產品、服務或特定的功能.<br/>這些話要有效，內容必須是對讀者有用的."
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_features

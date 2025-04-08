@@ -7,7 +7,6 @@
         <field name="default_code">AFIP_DESPACHO</field>
         <field name="sale_ok" eval="False"/>
         <field name="uom_id" ref="uom.product_uom_unit"/>
-        <field name="company_id" ref="l10n_ar.company_ri"/>
         <field name="taxes_id" search="[('type_tax_use', '=', 'sale'), ('tax_group_id', '=', 'VAT Untaxed')]"/>
         <field name="supplier_taxes_id" search="[('type_tax_use', '=', 'purchase'), ('tax_group_id', '=', 'VAT Untaxed')]"/>
     </record>
@@ -18,7 +17,6 @@
         <field name="default_code">AFIP_TASA_EST</field>
         <field name="sale_ok" eval="False"/>
         <field name="uom_id" ref="uom.product_uom_unit"/>
-        <field name="company_id" ref="l10n_ar.company_ri"/>
         <field name="taxes_id" search="[('type_tax_use', '=', 'sale'), ('tax_group_id', '=', 'VAT Untaxed')]"/>
         <field name="supplier_taxes_id" search="[('type_tax_use', '=', 'purchase'), ('tax_group_id', '=', 'VAT Untaxed')]"/>
     </record>
@@ -29,7 +27,6 @@
         <field name="default_code">AFIP_ARANCEL</field>
         <field name="sale_ok" eval="False"/>
         <field name="uom_id" ref="uom.product_uom_unit"/>
-        <field name="company_id" ref="l10n_ar.company_ri"/>
         <field name="taxes_id" search="[('type_tax_use', '=', 'sale'), ('tax_group_id', '=', 'VAT Untaxed')]"/>
         <field name="supplier_taxes_id" search="[('type_tax_use', '=', 'purchase'), ('tax_group_id', '=', 'VAT Untaxed')]"/>
     </record>
@@ -40,7 +37,6 @@
         <field name="default_code">AFIP_SERV_GUARDA</field>
         <field name="sale_ok" eval="False"/>
         <field name="uom_id" ref="uom.product_uom_unit"/>
-        <field name="company_id" ref="l10n_ar.company_ri"/>
         <field name="taxes_id" search="[('type_tax_use', '=', 'sale'), ('tax_group_id', '=', 'VAT Untaxed')]"/>
         <field name="supplier_taxes_id" search="[('type_tax_use', '=', 'purchase'), ('tax_group_id', '=', 'VAT Untaxed')]"/>
     </record>
@@ -54,7 +50,6 @@
         <field name="uom_id" ref="uom.product_uom_unit"/>
         <field name="uom_po_id" ref="uom.product_uom_unit"/>
         <field name="default_code">EXENTO</field>
-        <field name="company_id" ref="l10n_ar.company_ri"/>
         <field name="taxes_id" search="[('type_tax_use', '=', 'sale'), ('tax_group_id', '=', 'VAT Exempt')]"/>
         <field name="supplier_taxes_id" search="[('type_tax_use', '=', 'purchase'), ('tax_group_id', '=', 'VAT Exempt')]"/>
     </record>
@@ -68,7 +63,6 @@
         <field name="uom_id" ref="uom.product_uom_unit"/>
         <field name="uom_po_id" ref="uom.product_uom_unit"/>
         <field name="default_code">CERO</field>
-        <field name="company_id" ref="l10n_ar.company_ri"/>
         <field name="taxes_id" search="[('type_tax_use', '=', 'sale'), ('tax_group_id', '=', 'VAT 0%')]"/>
         <field name="supplier_taxes_id" search="[('type_tax_use', '=', 'purchase'), ('tax_group_id', '=', 'VAT 0%')]"/>
     </record>
@@ -81,7 +75,6 @@
         <field name="uom_id" ref="uom.product_uom_unit"/>
         <field name="uom_po_id" ref="uom.product_uom_unit"/>
         <field name="default_code">NOGRAVADO</field>
-        <field name="company_id" ref="l10n_ar.company_ri"/>
         <field name="taxes_id" search="[('type_tax_use', '=', 'sale'), ('tax_group_id', '=', 'VAT Untaxed')]"/>
         <field name="supplier_taxes_id" search="[('type_tax_use', '=', 'purchase'), ('tax_group_id', '=', 'VAT Untaxed')]"/>
     </record>
@@ -94,7 +87,6 @@
         <field name="uom_id" ref="uom.product_uom_unit"/>
         <field name="uom_po_id" ref="uom.product_uom_unit"/>
         <field name="default_code">TELEFONIA</field>
-        <field name="company_id" ref="l10n_ar.company_ri"/>
         <field name="taxes_id" search="[('type_tax_use', '=', 'sale'), ('tax_group_id', '=', 'VAT 27%')]"/>
         <field name="supplier_taxes_id" search="[('type_tax_use', '=', 'purchase'), ('tax_group_id', '=', 'VAT 27%')]"/>
     </record>

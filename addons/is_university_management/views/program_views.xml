@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_school_program_form" model="ir.ui.view">
+        <field name="name">school.program.form</field>
+        <field name="model">is.university.school.program</field>
+        <field name="arch" type="xml">
+            <form string="Programme">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="field_of_study_id"/>
+                        <field name="level_id"/>
+                        <field name="subject_ids"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_school_program_tree" model="ir.ui.view">
+        <field name="name">school.program.tree</field>
+        <field name="model">is.university.school.program</field>
+        <field name="arch" type="xml">
+            <tree string="Programmes">
+                <field name="name"/>
+                <field name="field_of_study_id"/>
+                <field name="level_id"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_school_program" model="ir.actions.act_window">
+        <field name="name">Programmes</field>
+        <field name="res_model">is.university.school.program</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>

@@ -1,21 +1,16 @@
 from odoo.tests.common import HttpCase, tagged
-
-from odoo.addons.account.tests.common import AccountTestInvoicingCommon
+from odoo.addons.l10n_ec_edi.tests.common import TestEcEdiCommon
 
 
 @tagged('post_install_l10n', 'post_install', '-at_install')
-class TestUi(HttpCase, AccountTestInvoicingCommon):
-
-    @classmethod
-    def setUpClass(cls):
-        super().setUpClass()
+class TestUi(HttpCase, TestEcEdiCommon):
 
     def test_checkout_address_ec(self):
-        self.env.company.country_id = self.env.ref('base.ec').id
         self.env.ref('base.user_admin').write({
             'company_id': self.env.company.id,
             'company_ids': [(4, self.env.company.id)],
         })
+        self.env.company = self.company_data['company']
         self.env['product.product'].create({
             'name': 'Test Product',
             'sale_ok': True,

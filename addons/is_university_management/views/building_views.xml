@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_university_building_form" model="ir.ui.view">
+        <field name="name">university.building.form</field>
+        <field name="model">is.university.building</field>
+        <field name="arch" type="xml">
+            <form string="Bâtiment">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="university_id"/>
+                        <field name="address_id"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_university_building_tree" model="ir.ui.view">
+        <field name="name">university.building.tree</field>
+        <field name="model">is.university.building</field>
+        <field name="arch" type="xml">
+            <tree string="Bâtiments">
+                <field name="name"/>
+                <field name="university_id"/>
+                <field name="address_id"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_university_building" model="ir.actions.act_window">
+        <field name="name">Bâtiments</field>
+        <field name="res_model">is.university.building</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>

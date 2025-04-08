@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Medical Category -->
+        <record model="oe.school.medical.cat" id="school_medical_category_allergy">
+          <field name="name">Allergies</field>
+        </record>
+        <record model="oe.school.medical.cat" id="school_medical_category_disease">
+          <field name="name">Maladie</field>
+        </record>
+        <record model="oe.school.medical.cat" id="school_medical_category_injury">
+          <field name="name">Blessure</field>
+        </record>
+        <record model="oe.school.medical.cat" id="school_medical_category_immunization">
+          <field name="name">Vaccination</field>
+        </record>
+        <record model="oe.school.medical.cat" id="school_medical_category_surgery">
+          <field name="name">Chirurgie</field>
+        </record>
+        <record model="oe.school.medical.cat" id="school_medical_category_others">
+          <field name="name">Autres</field>
+        </record>
+
+        <record model="oe.school.medical.type" id="school_medical_type_food">
+            <field name="name">Allergie culinaire</field>
+            <field name="med_cat_id" ref="school_medical_category_allergy"/>
+        </record>
+        <record model="oe.school.medical.type" id="school_medical_type_pet">
+            <field name="name">Allergie aux animaux de companie</field>
+            <field name="med_cat_id" ref="school_medical_category_allergy"/>
+        </record>
+        <record model="oe.school.medical.type" id="school_medical_type_environment">
+            <field name="name">Allergie environnementale</field>
+            <field name="med_cat_id" ref="school_medical_category_allergy"/>
+        </record>
+        <record model="oe.school.medical.type" id="school_medical_type_others">
+            <field name="name">Autres</field>
+            <field name="med_cat_id" ref="school_medical_category_allergy"/>
+        </record>
+
+        <record model="oe.school.medical.type" id="school_medical_type_asthma">
+            <field name="name">Asthme</field>
+            <field name="med_cat_id" ref="school_medical_category_disease"/>
+        </record>
+        <record model="oe.school.medical.type" id="school_medical_type_diabetes">
+            <field name="name">Diabète</field>
+            <field name="med_cat_id" ref="school_medical_category_disease"/>
+        </record>
+        <record model="oe.school.medical.type" id="school_medical_type_epilepsy">
+            <field name="name">Epilepsie</field>
+            <field name="med_cat_id" ref="school_medical_category_disease"/>
+        </record>
+        <record model="oe.school.medical.type" id="school_medical_type_drepanocytose">
+            <field name="name">Drépanocytose</field>
+            <field name="med_cat_id" ref="school_medical_category_disease"/>
+        </record>
+        <record model="oe.school.medical.type" id="school_medical_type_depression">
+            <field name="name">Dépression</field>
+            <field name="med_cat_id" ref="school_medical_category_disease"/>
+        </record>
+        <record model="oe.school.medical.type" id="school_medical_type_others">
+            <field name="name">Autres</field>
+            <field name="med_cat_id" ref="school_medical_category_disease"/>
+        </record>
+
+        <record model="oe.school.medical.type" id="school_medical_type_hernia">
+            <field name="name">Chirurgie pour la hernie</field>
+            <field name="med_cat_id" ref="school_medical_category_surgery"/>
+        </record>
+        <record model="oe.school.medical.type" id="school_medical_type_acl">
+            <field name="name">Reconstitution du ligament croisé</field>
+            <field name="med_cat_id" ref="school_medical_category_surgery"/>
+        </record>
+    </data>
+</odoo>

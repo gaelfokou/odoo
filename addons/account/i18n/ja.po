@@ -11,9 +11,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 17.0+e\n"
+"Project-Id-Version: Odoo Server 17.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-09-06 12:08+0000\n"
+"POT-Creation-Date: 2024-08-14 16:15+0000\n"
 "PO-Revision-Date: 2023-10-26 23:09+0000\n"
 "Last-Translator: Junko Augias, 2024\n"
 "Language-Team: Japanese (https://app.transifex.com/odoo/teams/41243/ja/)\n"
@@ -4481,7 +4481,7 @@ msgstr "新規の販売可能なプロダクトを作成します。"
 #. module: account
 #: model_terms:ir.actions.act_window,help:account.res_partner_action_supplier
 msgid "Create a new supplier in your address book"
-msgstr "アドレス帳に新しい仕入先を作成します。"
+msgstr "アドレス帳に新しいサプライヤを作成します。"
 
 #. module: account
 #: model_terms:ir.actions.act_window,help:account.action_tax_form
@@ -5061,7 +5061,7 @@ msgstr "ダッシュボード"
 #. module: account
 #: model:ir.actions.server,name:account.action_check_hash_integrity
 msgid "Data Inalterability Check"
-msgstr "データの変更不可チェック"
+msgstr "データの不変性チェック"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.report_hash_integrity
@@ -6331,7 +6331,7 @@ msgstr "式"
 #. module: account
 #: model:ir.model.constraint,message:account.constraint_account_report_expression_domain_engine_subformula_required
 msgid "Expressions using 'domain' engine should all have a subformula."
-msgstr "'ドメイン' エンジンを用いた式は全てサブ計算式を持っている必要があります。"
+msgstr "「ドメイン」エンジンを用いた式は全て部分論理式を持っている必要があります。"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_report_line__external_formula
@@ -6797,8 +6797,6 @@ msgid ""
 "target of the carryover for this expression (on a _carryover_*-labeled "
 "expression), in case it is different from the parent line."
 msgstr ""
-" "
-"line_code.expression_label形式の式。これにより、(_carryover_*ラベルの付いた式で)親行と異なる場合に、この式のキャリーオーバーの対象を設定することができます。"
 
 #. module: account
 msgid ""
@@ -6938,7 +6936,7 @@ msgstr "生成された記帳"
 #. module: account
 #: model:account.report,name:account.generic_tax_report
 msgid "Generic Tax report"
-msgstr "汎用税レポート"
+msgstr "汎用税務申告書"
 
 #. module: account
 #: model:ir.model,name:account.model_report_account_report_hash_integrity
@@ -7039,7 +7037,7 @@ msgstr "成長率比較"
 #. module: account
 #: model:ir.model.fields.selection,name:account.selection__account_cash_rounding__rounding_method__half-up
 msgid "HALF-UP"
-msgstr "切上げ"
+msgstr "五入"
 
 #. module: account
 #: model:ir.model,name:account.model_ir_http
@@ -7094,7 +7092,7 @@ msgstr "消込済エントリあり"
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_journal__has_sequence_holes
 msgid "Has Sequence Holes"
-msgstr "シーケンスに穴あり"
+msgstr "付番に穴あり"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_journal__has_statement_lines
@@ -7539,14 +7537,14 @@ msgstr "変更不可ハッシュ"
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.report_hash_integrity
 msgid "Inalterability check"
-msgstr "変更不可チェック"
+msgstr "不変性チェック"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_bank_statement_line__secure_sequence_number
 #: model:ir.model.fields,field_description:account.field_account_move__secure_sequence_number
 #: model:ir.model.fields,field_description:account.field_account_payment__secure_sequence_number
 msgid "Inalteralbility No Gap Sequence #"
-msgstr "変更不可ギャップなしシーケンス"
+msgstr "不変性ギャップなし付番数"
 
 #. module: account
 #: model:ir.model.fields.selection,name:account.selection__account_payment_method__payment_type__inbound
@@ -9513,7 +9511,7 @@ msgstr "支払タイプが出金の場合の金額フィールドの負の値"
 #: code:addons/account/models/account_tax.py:0
 #, python-format
 msgid "Nested group of taxes are not allowed."
-msgstr "ネストされた税グループは使用できません。"
+msgstr ""
 
 #. module: account
 #: model:account.report.column,name:account.generic_tax_report_account_tax_column_net
@@ -9921,7 +9919,7 @@ msgstr "Odooで顧客に関連したあらゆる活動を簡単に追跡でき�
 #. module: account
 #: model_terms:ir.actions.act_window,help:account.res_partner_action_supplier
 msgid "Odoo helps you easily track all activities related to a supplier."
-msgstr "Odooで仕入先に関連したあらゆる活動を簡単に追跡できます。"
+msgstr "Odooでサプライヤに関連したあらゆる活動を簡単に追跡できます。"
 
 #. module: account
 #: model:ir.model.fields.selection,name:account.selection__account_account__internal_group__off_balance
@@ -11738,7 +11736,7 @@ msgstr "非ゼロ値最小貨幣(例えば、0.05)を表します。"
 #: model_terms:ir.ui.view,arch_db:account.view_account_payment_form
 #: model_terms:ir.ui.view,arch_db:account.view_move_form
 msgid "Request Cancel"
-msgstr "取消要求"
+msgstr "キャンセル要求"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_payment__require_partner_bank_account
@@ -11987,17 +11985,17 @@ msgstr "丸めツリー"
 #. module: account
 #: model:ir.model.fields.selection,name:account.selection__account_reconcile_model__rule_type__invoice_matching
 msgid "Rule to match invoices/bills"
-msgstr "顧客請求書/仕入先請求書を突合するルール"
+msgstr "顧客請求書・仕入先請求書の照合規則"
 
 #. module: account
 #: model:ir.model.fields.selection,name:account.selection__account_reconcile_model__rule_type__writeoff_suggestion
 msgid "Rule to suggest counterpart entry"
-msgstr "相手勘定仕訳を提案するルール"
+msgstr "相手勘定仕訳を提案する規則"
 
 #. module: account
 #: model:ir.model,name:account.model_account_reconcile_model_line
 msgid "Rules for the reconciliation model"
-msgstr "消込モデルルール"
+msgstr "消込モデルの規則"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_bank_statement_line__running_balance
@@ -13107,7 +13105,7 @@ msgstr "適しジャーナル"
 #: model:ir.model.fields,field_description:account.field_res_partner_bank__partner_supplier_rank
 #: model:ir.model.fields,field_description:account.field_res_users__supplier_rank
 msgid "Supplier Rank"
-msgstr "仕入先ランク"
+msgstr "サプライヤランク"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_journal__suspense_account_id
@@ -14820,14 +14818,6 @@ msgstr "与信限度額が指定されていない取引先に対して、この
 
 #. module: account
 #. odoo-python
-#: code:addons/account/models/account_journal.py:0
-#, python-format
-msgid ""
-"This journal is associated with a payment method. You cannot archive it"
-msgstr "この仕訳帳は支払方法に関連付けられています。アーカイブできません。"
-
-#. module: account
-#. odoo-python
 #: code:addons/account/models/company.py:0
 #, python-format
 msgid "This journal is not in strict mode."
@@ -15367,13 +15357,6 @@ msgstr "単価:"
 #: model:ir.model.fields,field_description:account.field_account_move_line__product_uom_id
 msgid "Unit of Measure"
 msgstr "単位"
-
-#. module: account
-#. odoo-python
-#: code:addons/account/models/template_generic_coa.py:0
-#, python-format
-msgid "United States of America (Generic)"
-msgstr "アメリカ合衆国 (汎用)"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.view_account_payment_form
@@ -15991,7 +15974,7 @@ msgstr "チェックを入れると、この式の値を表示する際に0値�
 msgid ""
 "When targeting an expression for carryover, the label of that expression "
 "must start with _applied_carryover_"
-msgstr "キャリーオーバーの対象となる式を指定する場合、その式のラベルは_applied_carryover_で始まる必要があります。"
+msgstr ""
 
 #. module: account
 #: model_terms:ir.actions.act_window,help:account.action_move_in_receipt_type
@@ -16447,7 +16430,7 @@ msgstr "支払条件と一致しないため、支払/受取行を削除する�
 #: code:addons/account/models/account_move_line.py:0
 #, python-format
 msgid "You cannot delete a tax line as it would impact the tax report"
-msgstr "税レポートに影響を与えるため、税目を削除することはできません。"
+msgstr "税務申告に影響を与えるため、税目を削除することはできません。"
 
 #. module: account
 #. odoo-python
@@ -16718,7 +16701,7 @@ msgstr "簿外取引がある明細に税が使用できません"
 msgid ""
 "You cannot use the field carryover_target in an expression that does not "
 "have the label starting with _carryover_"
-msgstr "carryover_targetフィールドは、_carryover_で始まるラベルを持たない式では使用できません。"
+msgstr ""
 
 #. module: account
 #. odoo-python

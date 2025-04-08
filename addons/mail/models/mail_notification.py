@@ -99,10 +99,7 @@ class MailNotification(models.Model):
             ('res_partner_id.partner_share', '=', False),
             ('notification_status', 'in', ('sent', 'canceled'))
         ]
-        records = self.search(domain, limit=models.GC_UNLINK_LIMIT)
-        if len(records) >= models.GC_UNLINK_LIMIT:
-            self.env.ref('base.autovacuum_job')._trigger()
-        return records.unlink()
+        return self.search(domain).unlink()
 
     # ------------------------------------------------------------
     # TOOLS

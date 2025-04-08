@@ -78,8 +78,7 @@ messageActionsRegistry
         sequence: 90,
     })
     .add("download_files", {
-        condition: (component) =>
-            component.message.attachments.length > 1 && component.store.self?.user?.isInternalUser,
+        condition: (component) => component.message.attachments.length > 1,
         icon: "fa-download",
         title: _t("Download Files"),
         onClick: (component) =>

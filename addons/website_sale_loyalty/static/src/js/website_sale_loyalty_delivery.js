@@ -2,6 +2,7 @@
 
 import publicWidget from "@web/legacy/js/public/public_widget";
 
+
 publicWidget.registry.websiteSaleDelivery.include({
     //--------------------------------------------------------------------------
     // Private
@@ -21,8 +22,8 @@ publicWidget.registry.websiteSaleDelivery.include({
                 cart_summary_discount_line.innerHTML = this.result.new_amount_delivery_discount;
             }
         }
-        if (this.result.new_amount_order_discounted) {
-            const cart_summary_discount_line = document.querySelector(
+        else if (this.result.new_amount_order_discounted) {
+             const cart_summary_discount_line = document.querySelector(
                 '[data-reward-type="discount"]'
             );
             if (cart_summary_discount_line) {

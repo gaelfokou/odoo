@@ -12,25 +12,19 @@ registry.category("web_tour.tours").add('order_lunch_tour', {
     position: 'bottom',
 },
 {
-    content:"click on location",
-    trigger: ".lunch_location .o_input_dropdown input",
-    run: 'click'
+    trigger: ".o_search_panel_filter_value .form-check-input",
+    content: _t("Restrict your search using filters"),
+    position: 'bottom',
 },
 {
-    content: "Pick 'Farm 1' option",
-    trigger: '.o_input_dropdown a:contains(Farm 1)',
-},
-{
-    trigger: '.lunch_location input:propValueContains(Farm 1)',
-    run: () => {},  // wait for article to be correctly loaded
-},
-{
-    trigger: "div[role=article] .oe_kanban_global_click",
+    trigger: "div[role=article]",
+    extra_trigger: '.o_search_panel_filter_value .form-check-input:checked',
     content: _t("Click on a product you want to order and is available."),
-    run:'click',
+    position: 'bottom',
 },
 {
-    trigger: 'textarea[id="note_0"]',
+    trigger: 'textarea[name="note"]',
+    extra_trigger: 'button[name="add_to_cart"]',
     content: _t("Add additionnal information about your order."),
     position: 'bottom',
     run: 'text allergy to peanuts',
@@ -41,7 +35,7 @@ registry.category("web_tour.tours").add('order_lunch_tour', {
     position: 'bottom',
 },
 {
-    trigger: 'button:contains("Order Now")',
+    trigger: '.o_lunch_widget_order_button',
     content: _t("Validate your order"),
     position: 'left',
     run: 'click',

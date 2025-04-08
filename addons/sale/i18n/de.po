@@ -4,7 +4,6 @@
 # 
 # Translators:
 # Wil Odoo, 2024
-# Tiffany Chang, 2024
 # Larissa Manderfeld, 2024
 # 
 msgid ""
@@ -645,7 +644,7 @@ msgid ""
 msgstr ""
 "<div style=\"margin: 0px; padding: 0px;\">\n"
 "    <p style=\"margin: 0px; padding: 0px; font-size: 13px;\">\n"
-"        <t t-set=\"doc_name\" t-value=\"'Angebot' if object.state in ('draft', 'sent') else 'Auftrag'\"></t>\n"
+"        <t t-set=\"doc_name\" t-value=\"'Angebot' if object.state in ('draft', 'sent') else 'Auftrag'\"/>\n"
 "        Hallo,\n"
 "        <br/><br/>\n"
 "       \n"
@@ -1435,7 +1434,7 @@ msgstr "Kann Produkt bearbeiten"
 #: model_terms:ir.ui.view,arch_db:sale.view_order_form
 #: model_terms:ir.ui.view,arch_db:sale.view_sale_advance_payment_inv
 msgid "Cancel"
-msgstr "Stornieren"
+msgstr "Abbrechen"
 
 #. module: sale
 #. odoo-python
@@ -4211,7 +4210,7 @@ msgstr "Verkaufsauftrag bestätigt"
 #: model:ir.model.fields,field_description:sale.field_account_analytic_line__so_line
 #: model_terms:ir.ui.view,arch_db:sale.sale_order_line_view_form_readonly
 msgid "Sales Order Item"
-msgstr "Auftragsposition"
+msgstr "Verkaufsauftragsposition"
 
 #. module: sale
 #: model:ir.model,name:sale.model_sale_order_line

@@ -201,7 +201,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:mrp.report_mrp_production_components
 #: model_terms:ir.ui.view,arch_db:mrp.report_mrp_workorder
 msgid "12345678901"
-msgstr "12345678901"
+msgstr ""
 
 #. module: mrp
 #: model_terms:product.template,description:mrp.product_product_computer_desk_leg_product_template
@@ -352,7 +352,7 @@ msgstr "<span class=\"o_stat_text\">عملکرد</span>"
 #: model_terms:ir.ui.view,arch_db:mrp.mrp_production_form_view
 #: model_terms:ir.ui.view,arch_db:mrp.mrp_unbuild_form_view
 msgid "<span class=\"o_stat_text\">Product Moves</span>"
-msgstr "<span class=\"o_stat_text\">حرکات محصول</span>"
+msgstr ""
 
 #. module: mrp
 #: model_terms:ir.ui.view,arch_db:mrp.mrp_production_form_view
@@ -368,7 +368,7 @@ msgstr "<span class=\"o_stat_text\">سفارش تولید مرجع</span>"
 #. module: mrp
 #: model_terms:ir.ui.view,arch_db:mrp.mrp_production_form_view
 msgid "<span class=\"o_stat_text\">Traceability</span>"
-msgstr "<span class=\"o_stat_text\">قابلیت ردیابی</span>"
+msgstr ""
 
 #. module: mrp
 #: model_terms:ir.ui.view,arch_db:mrp.mrp_production_form_view
@@ -1379,13 +1379,12 @@ msgstr "انتخاب چیدمان لیبل ها"
 #: code:addons/mrp/models/mrp_production.py:0
 #, python-format
 msgid "Choose Type of Labels To Print"
-msgstr "نوع برچسب‌هایی که می‌خواهید چاپ کنید را انتخاب کنید."
+msgstr ""
 
 #. module: mrp
 #: model:ir.model,name:mrp.model_picking_label_type
 msgid "Choose whether to print product or lot/sn labels"
 msgstr ""
-"انتخاب کنید که آیا برچسب‌های محصول یا برچسب‌های بچه/شماره سریال را چاپ کنید."
 
 #. module: mrp
 #: model:ir.model.fields,field_description:mrp.field_mrp_workcenter__time_stop
@@ -2698,7 +2697,7 @@ msgstr "عرض تصویر"
 #. module: mrp
 #: model_terms:ir.ui.view,arch_db:mrp.view_document_file_kanban_mrp
 msgid "Image is a link"
-msgstr "تصویر یک لینک است"
+msgstr ""
 
 #. module: mrp
 #: model_terms:ir.ui.view,arch_db:mrp.exception_on_mo
@@ -3954,8 +3953,6 @@ msgid ""
 "Paste the url of your Google Slide. Make sure the access to the document is "
 "public."
 msgstr ""
-"آدرس URL گوگل اسلاید خود را بچسبانید. اطمینان حاصل کنید که دسترسی به سند "
-"عمومی است."
 
 #. module: mrp
 #: model_terms:ir.ui.view,arch_db:mrp.mrp_production_workorder_tree_editable_view
@@ -4592,7 +4589,7 @@ msgstr ""
 #. module: mrp
 #: model:ir.model,name:mrp.model_stock_quant
 msgid "Quants"
-msgstr "مقدار"
+msgstr ""
 
 #. module: mrp
 #: model_terms:ir.ui.view,arch_db:mrp.report_mrp_workorder
@@ -6073,7 +6070,7 @@ msgstr "عدد"
 #: model_terms:ir.ui.view,arch_db:mrp.mo_overview_content
 #, python-format
 msgid "Unit Cost"
-msgstr "هزینه واحد"
+msgstr ""
 
 #. module: mrp
 #. odoo-javascript
@@ -6282,7 +6279,7 @@ msgstr ""
 #. module: mrp
 #: model:ir.model.fields,field_description:mrp.field_mrp_document__voice_ids
 msgid "Voice"
-msgstr "صدا"
+msgstr ""
 
 #. module: mrp
 #: model:ir.model.fields.selection,name:mrp.selection__mrp_production__reservation_state__confirmed

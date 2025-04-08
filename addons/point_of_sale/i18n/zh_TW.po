@@ -126,7 +126,7 @@ msgstr "%s 找到\"%s\"的產品."
 #: code:addons/point_of_sale/models/pos_session.py:0
 #, python-format
 msgid "%s untaxed"
-msgstr "%s 未連稅"
+msgstr ""
 
 #. module: point_of_sale
 #. odoo-python
@@ -918,7 +918,7 @@ msgstr ""
 #. module: point_of_sale
 #: model:ir.model.fields,field_description:point_of_sale.field_pos_session__message_attachment_count
 msgid "Attachment Count"
-msgstr "附件數目"
+msgstr "附件數"
 
 #. module: point_of_sale
 #. odoo-javascript
@@ -1287,7 +1287,7 @@ msgstr "期初現金"
 #: code:addons/point_of_sale/static/src/app/navbar/cash_move_popup/cash_move_popup.xml:0
 #, python-format
 msgid "Cash Out"
-msgstr "現金提取"
+msgstr "現金支出"
 
 #. module: point_of_sale
 #: model:ir.model.fields,field_description:point_of_sale.field_pos_config__cash_rounding
@@ -1573,7 +1573,7 @@ msgstr "關閉營業點錯誤"
 #. module: point_of_sale
 #: model:ir.model.fields,field_description:point_of_sale.field_pos_bill__value
 msgid "Coin/Bill Value"
-msgstr "硬幣/紙幣價值"
+msgstr "硬幣／帳單　價值"
 
 #. module: point_of_sale
 #. odoo-javascript
@@ -1585,7 +1585,7 @@ msgstr "硬幣/紙幣價值"
 #: model:ir.ui.menu,name:point_of_sale.menu_pos_bill
 #, python-format
 msgid "Coins/Bills"
-msgstr "硬幣/紙幣"
+msgstr "貨幣/帳單"
 
 #. module: point_of_sale
 #: model:ir.model.fields,field_description:point_of_sale.field_product_product__combo_ids
@@ -2041,7 +2041,7 @@ msgstr "客戶螢幕"
 #: code:addons/point_of_sale/static/src/app/navbar/customer_facing_display_button/customer_facing_display_button.xml:0
 #, python-format
 msgid "Customer Screen : {{message}}"
-msgstr "客戶螢幕：{{message}}"
+msgstr ""
 
 #. module: point_of_sale
 #. odoo-javascript
@@ -2057,7 +2057,7 @@ msgstr "已連接客戶螢幕"
 #: code:addons/point_of_sale/static/src/app/navbar/customer_facing_display_button/customer_facing_display_button.xml:0
 #, python-format
 msgid "Customer Screen Not Found : {{message}}"
-msgstr "找不到客戶螢幕：{{message}}"
+msgstr ""
 
 #. module: point_of_sale
 #. odoo-javascript
@@ -2072,7 +2072,7 @@ msgstr "客戶螢幕不支持,請升級IoT Box"
 #: code:addons/point_of_sale/static/src/app/navbar/customer_facing_display_button/customer_facing_display_button.xml:0
 #, python-format
 msgid "Customer Screen Warning : {{message}}"
-msgstr "客戶螢幕警告：{{message}}"
+msgstr ""
 
 #. module: point_of_sale
 #. odoo-javascript
@@ -2585,7 +2585,7 @@ msgstr "發送電子郵件."
 #: code:addons/point_of_sale/static/src/app/screens/receipt_screen/receipt_screen.xml:0
 #, python-format
 msgid "Email: {{currentOrder.getEmailItems().join(', ')}}"
-msgstr "電郵：{{currentOrder.getEmailItems().join(', ')}}"
+msgstr ""
 
 #. module: point_of_sale
 #: model_terms:ir.ui.view,arch_db:point_of_sale.pos_config_view_form
@@ -5796,7 +5796,7 @@ msgstr "刷新顯示"
 #: code:addons/point_of_sale/static/src/app/screens/ticket_screen/ticket_screen.js:0
 #, python-format
 msgid "Refund"
-msgstr "退款"
+msgstr "折讓"
 
 #. module: point_of_sale
 #: model:ir.model.fields,field_description:point_of_sale.field_pos_order_line__refund_orderline_ids
@@ -5863,7 +5863,7 @@ msgstr "退款中"
 #: model_terms:ir.ui.view,arch_db:point_of_sale.report_saledetails
 #: model_terms:ir.ui.view,arch_db:point_of_sale.view_pos_pos_form
 msgid "Refunds"
-msgstr "退款"
+msgstr "折讓"
 
 #. module: point_of_sale
 #: model:ir.actions.client,name:point_of_sale.action_client_pos_menu
@@ -6786,7 +6786,7 @@ msgstr "匯入成功"
 #: code:addons/point_of_sale/static/src/app/navbar/cash_move_popup/cash_move_popup.js:0
 #, python-format
 msgid "Successfully made a cash %s of %s."
-msgstr "成功存入/提取現金（%s），金額為 %s。"
+msgstr "成功賺了 %s 的現金 %s。"
 
 #. module: point_of_sale
 #: model_terms:ir.ui.view,arch_db:point_of_sale.view_pos_order_line
@@ -7021,8 +7021,6 @@ msgid ""
 "The amount of your payment lines must be rounded to validate the transaction.\n"
 "The rounding precision is %s so you should set %s or %s as payment amount instead of %s."
 msgstr ""
-"付款資料行的金額必須捨入取整，才可驗證交易。\n"
-"捨入精確度為 %s，因此付款金額應設為 %s 或 %s，而不是 %s。"
 
 #. module: point_of_sale
 #. odoo-python
@@ -7264,7 +7262,7 @@ msgid ""
 "The session has been already closed by another User. All sales completed in "
 "the meantime have been saved in a Rescue Session, which can be reviewed "
 "anytime and posted to Accounting from Point of Sale's dashboard."
-msgstr "時段已被另一用戶關閉,在此期間完成的所有銷售已保存在救援時段中，可以隨時查看，並從銷售點Dashboard過賬至會計應用程式。"
+msgstr "時段已被另一用戶關閉,在此期間完成的所有銷售已保存在救援時段中，可以隨時查看，並從銷售點概覽畫面過賬至會計應用程式。"
 
 #. module: point_of_sale
 #: model_terms:ir.ui.view,arch_db:point_of_sale.view_pos_config_kanban
@@ -8219,15 +8217,6 @@ msgstr "不可在多種現金支付方式中使用同一日記賬。"
 #: code:addons/point_of_sale/models/pos_session.py:0
 #, python-format
 msgid ""
-"You do not have permission to open a POS session. Please try opening a "
-"session with a different user"
-msgstr ""
-
-#. module: point_of_sale
-#. odoo-python
-#: code:addons/point_of_sale/models/pos_session.py:0
-#, python-format
-msgid ""
 "You don't have the access rights to get the point of sale closing control "
 "data."
 msgstr "你沒有獲取銷售點結算控制數據的存取權限."
@@ -8572,4 +8561,4 @@ msgstr "{{ line.has_valid_product_lot() ? '產品批次有效' : '產品批次�
 #: code:addons/point_of_sale/static/src/app/screens/partner_list/partner_editor/partner_editor.xml:0
 #, python-format
 msgid "{{partnerDetailsFields[item]}}"
-msgstr "{{partnerDetailsFields[item]}}"
+msgstr ""

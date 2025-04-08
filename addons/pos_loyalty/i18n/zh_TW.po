@@ -473,7 +473,7 @@ msgstr "對於電子錢包或禮品卡方案,不允許退款充值或獎勵產�
 #: code:addons/pos_loyalty/static/src/app/control_buttons/reset_programs_button/reset_programs_button.xml:0
 #, python-format
 msgid "Reset Programs"
-msgstr "重設計劃"
+msgstr "重置計畫"
 
 #. module: pos_loyalty
 #: model:ir.model.fields,help:pos_loyalty.field_loyalty_program__pos_config_ids

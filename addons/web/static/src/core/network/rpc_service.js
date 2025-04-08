@@ -94,11 +94,7 @@ export function jsonrpc(url, params = {}, settings = {}) {
         });
         // configure and send request
         request.open("POST", url);
-        const headers = settings.headers || {};
-        headers["Content-Type"] = "application/json";
-        for (let [header, value] of Object.entries(headers)) {
-            request.setRequestHeader(header, value);
-        }
+        request.setRequestHeader("Content-Type", "application/json");
         request.send(JSON.stringify(data));
     });
     /**

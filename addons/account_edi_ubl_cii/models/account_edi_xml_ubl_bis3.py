@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
 from odoo import models, _
-from odoo.addons.account_edi_ubl_cii.models.account_edi_xml_ubl_20 import UBL_NAMESPACES
 
 from stdnum.no import mva
 
@@ -359,9 +358,6 @@ class AccountEdiXmlUBLBIS3(models.AbstractModel):
                 constraints.update({f'cen_en16931_{role}_vat_country_code': _(
                     "The VAT of the %s should be prefixed with its country code.", role)})
 
-        if invoice.partner_shipping_id:
-            # [BR-57]-Each Deliver to address (BG-15) shall contain a Deliver to country code (BT-80).
-            constraints['cen_en16931_delivery_address'] = self._check_required_fields(invoice.partner_shipping_id, 'country_id')
         return constraints
 
     def _invoice_constraints_peppol_en16931_ubl(self, invoice, vals):
@@ -437,7 +433,8 @@ class AccountEdiXmlUBLBIS3(models.AbstractModel):
     def _import_retrieve_partner_vals(self, tree, role):
         # EXTENDS account.edi.xml.ubl_20
         partner_vals = super()._import_retrieve_partner_vals(tree, role)
-        endpoint_node = tree.find(f'.//cac:Accounting{role}Party/cac:Party/cbc:EndpointID', UBL_NAMESPACES)
+        nsmap = {k: v for k, v in tree.nsmap.items() if k is not None}
+        endpoint_node = tree.find(f'.//cac:Accounting{role}Party/cac:Party/cbc:EndpointID', nsmap)
         if endpoint_node is not None:
             peppol_eas = endpoint_node.attrib.get('schemeID')
             peppol_endpoint = endpoint_node.text

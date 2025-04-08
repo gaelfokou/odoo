@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_university_teacher_form" model="ir.ui.view">
+        <field name="name">university.teacher.form</field>
+        <field name="model">is.university.teacher</field>
+        <field name="arch" type="xml">
+            <form string="Enseignants">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="subject_ids"/>
+                        <field name="availability_ids"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_university_teacher_tree" model="ir.ui.view">
+        <field name="name">university.teacher.tree</field>
+        <field name="model">is.university.teacher</field>
+        <field name="arch" type="xml">
+            <tree string="Enseignants">
+                <field name="name"/>
+                <field name="subject_ids"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_university_teacher" model="ir.actions.act_window">
+        <field name="name">Enseignants</field>
+        <field name="res_model">is.university.teacher</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>

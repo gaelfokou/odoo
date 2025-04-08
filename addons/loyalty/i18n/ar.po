@@ -1181,7 +1181,7 @@ msgstr "إنشاء المحفظة الإلكترونية "
 #: code:addons/loyalty/static/src/xml/loyalty_templates.xml:0
 #, python-format
 msgid "Generate {{props.context.program_item_name}}"
-msgstr "قم بإنشاء {{props.context.program_item_name}} "
+msgstr ""
 
 #. module: loyalty
 #. odoo-python
@@ -1895,7 +1895,7 @@ msgstr "يجب أن تكون النقاط المطلوبة للحصول على �
 #: code:addons/loyalty/models/loyalty_reward.py:0
 #, python-format
 msgid "The reward description field cannot be empty."
-msgstr "لا يمكن أن يكون حقل وصف المكافأة فارغاً. "
+msgstr ""
 
 #. module: loyalty
 #: model:ir.model.constraint,message:loyalty.constraint_loyalty_reward_product_qty_positive

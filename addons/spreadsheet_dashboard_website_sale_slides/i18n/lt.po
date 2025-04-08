@@ -8,7 +8,6 @@
 # digitouch UAB <digitouchagencyeur@gmail.com>, 2023
 # Jonas Zinkevicius <jozi@odoo.com>, 2023
 # Rolandas <panauto1@gmail.com>, 2023
-# Gailius Kazlauskas <gailius@vialaurea.lt>, 2024
 # 
 msgid ""
 msgstr ""
@@ -16,7 +15,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-10-26 21:56+0000\n"
 "PO-Revision-Date: 2023-10-26 23:09+0000\n"
-"Last-Translator: Gailius Kazlauskas <gailius@vialaurea.lt>, 2024\n"
+"Last-Translator: Rolandas <panauto1@gmail.com>, 2023\n"
 "Language-Team: Lithuanian (https://app.transifex.com/odoo/teams/41243/lt/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -37,7 +36,7 @@ msgstr "Dalyviai"
 #: code:addons/spreadsheet_dashboard_website_sale_slides/data/files/elearning_dashboard.json:0
 #, python-format
 msgid "Attendees by Course"
-msgstr "Dalyviai pagal kursą"
+msgstr ""
 
 #. module: spreadsheet_dashboard_website_sale_slides
 #. odoo-javascript
@@ -106,35 +105,35 @@ msgstr "Pajamos"
 #: code:addons/spreadsheet_dashboard_website_sale_slides/data/files/elearning_dashboard.json:0
 #, python-format
 msgid "Views by Course"
-msgstr "Peržiūros pagal kursą"
+msgstr ""
 
 #. module: spreadsheet_dashboard_website_sale_slides
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_website_sale_slides/data/files/elearning_dashboard.json:0
 #, python-format
 msgid "attendees - current"
-msgstr "dalyviai – dabartiniai"
+msgstr ""
 
 #. module: spreadsheet_dashboard_website_sale_slides
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_website_sale_slides/data/files/elearning_dashboard.json:0
 #, python-format
 msgid "attendees - previous"
-msgstr "dalyviai – ankstesni"
+msgstr ""
 
 #. module: spreadsheet_dashboard_website_sale_slides
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_website_sale_slides/data/files/elearning_dashboard.json:0
 #, python-format
 msgid "content"
-msgstr "turinys"
+msgstr ""
 
 #. module: spreadsheet_dashboard_website_sale_slides
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_website_sale_slides/data/files/elearning_dashboard.json:0
 #, python-format
 msgid "courses"
-msgstr "kursai"
+msgstr ""
 
 #. module: spreadsheet_dashboard_website_sale_slides
 #: model:spreadsheet.dashboard,name:spreadsheet_dashboard_website_sale_slides.spreadsheet_dashboard_elearning
@@ -146,21 +145,21 @@ msgstr "eMokymas"
 #: code:addons/spreadsheet_dashboard_website_sale_slides/data/files/elearning_dashboard.json:0
 #, python-format
 msgid "rating"
-msgstr "vertinimas"
+msgstr ""
 
 #. module: spreadsheet_dashboard_website_sale_slides
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_website_sale_slides/data/files/elearning_dashboard.json:0
 #, python-format
 msgid "revenue - current"
-msgstr "pajamos – dabartiniai"
+msgstr ""
 
 #. module: spreadsheet_dashboard_website_sale_slides
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_website_sale_slides/data/files/elearning_dashboard.json:0
 #, python-format
 msgid "revenue - previous"
-msgstr "pajamos – anstesni"
+msgstr ""
 
 #. module: spreadsheet_dashboard_website_sale_slides
 #. odoo-javascript
@@ -168,4 +167,4 @@ msgstr "pajamos – anstesni"
 #: code:addons/spreadsheet_dashboard_website_sale_slides/data/files/elearning_dashboard.json:0
 #, python-format
 msgid "since last period"
-msgstr "nuo praėjusio laikotarpio"
+msgstr ""

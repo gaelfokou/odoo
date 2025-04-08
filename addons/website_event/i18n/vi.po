@@ -1364,7 +1364,7 @@ msgstr "Câu trả lời được gợi ý"
 #. module: website_event
 #: model_terms:ir.ui.view,arch_db:website_event.snippet_options
 msgid "Template badge"
-msgstr "Thẻ mẫu"
+msgstr "Huy hiệu mẫu"
 
 #. module: website_event
 #: model:ir.model.fields.selection,name:website_event.selection__event_question__question_type__text_box

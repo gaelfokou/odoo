@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_university_semester_form" model="ir.ui.view">
+        <field name="name">university.semester.form</field>
+        <field name="model">is.university.semester</field>
+        <field name="arch" type="xml">
+            <form string="Semestre">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="academic_year_id"/>
+                        <field name="start_date"/>
+                        <field name="end_date"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_university_semester_tree" model="ir.ui.view">
+        <field name="name">university.semester.tree</field>
+        <field name="model">is.university.semester</field>
+        <field name="arch" type="xml">
+            <tree string="Semestre">
+                <field name="name"/>
+                <field name="academic_year_id"/>
+                <field name="start_date"/>
+                <field name="end_date"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_university_semester" model="ir.actions.act_window">
+        <field name="name">Semestres</field>
+        <field name="res_model">is.university.semester</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>

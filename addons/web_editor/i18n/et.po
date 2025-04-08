@@ -16,10 +16,10 @@
 # Eneli Õigus <enelioigus@gmail.com>, 2023
 # Triine Aavik <triine@avalah.ee>, 2023
 # Katrin Kampura, 2023
-# Rivo Zängov <eraser@eraser.ee>, 2024
 # Siim Raasuke, 2024
-# Stevin Lilla, 2024
 # Anna, 2024
+# Stevin Lilla, 2024
+# Rivo Zängov <eraser@eraser.ee>, 2024
 # 
 msgid ""
 msgstr ""
@@ -27,7 +27,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-08-13 10:28+0000\n"
 "PO-Revision-Date: 2023-10-26 23:09+0000\n"
-"Last-Translator: Anna, 2024\n"
+"Last-Translator: Rivo Zängov <eraser@eraser.ee>, 2024\n"
 "Language-Team: Estonian (https://app.transifex.com/odoo/teams/41243/et/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -547,7 +547,7 @@ msgstr "Tausta kujud"
 #: code:addons/web_editor/static/src/js/wysiwyg/wysiwyg.js:0
 #, python-format
 msgid "Banner Danger"
-msgstr "Ohtlik bänner"
+msgstr ""
 
 #. module: web_editor
 #. odoo-javascript
@@ -561,7 +561,7 @@ msgstr "Bänneri info"
 #: code:addons/web_editor/static/src/js/wysiwyg/wysiwyg.js:0
 #, python-format
 msgid "Banner Success"
-msgstr "Õnnestunud bänner"
+msgstr ""
 
 #. module: web_editor
 #. odoo-javascript
@@ -677,7 +677,7 @@ msgstr "Heledus"
 #. module: web_editor
 #: model_terms:ir.ui.view,arch_db:web_editor.snippet_options
 msgid "Brushed"
-msgstr "Harjatud "
+msgstr ""
 
 #. module: web_editor
 #. odoo-javascript
@@ -767,7 +767,7 @@ msgstr "Koodivaade"
 #: code:addons/web_editor/static/src/js/backend/html_field.js:0
 #, python-format
 msgid "Collaborative edition"
-msgstr "Koostööna valminud väljaanne"
+msgstr ""
 
 #. module: web_editor
 #. odoo-javascript
@@ -922,7 +922,7 @@ msgstr "Loo nummerdamisega loend"
 #: code:addons/web_editor/static/src/js/editor/odoo-editor/src/OdooEditor.js:0
 #, python-format
 msgid "Create a simple bulleted list"
-msgstr "Loo lihtne täpploend"
+msgstr ""
 
 #. module: web_editor
 #. odoo-javascript
@@ -1200,7 +1200,7 @@ msgstr "Manusta Youtube video"
 #: code:addons/web_editor/static/src/js/editor/odoo-editor/src/OdooEditor.js:0
 #, python-format
 msgid "Embed the image in the document."
-msgstr "Lisa pilt dokumenti"
+msgstr ""
 
 #. module: web_editor
 #. odoo-javascript
@@ -1221,7 +1221,7 @@ msgstr "Emoticon"
 #: code:addons/web_editor/static/src/js/editor/odoo-editor/src/OdooEditor.js:0
 #, python-format
 msgid "Empty quote"
-msgstr "Tühi tsitaat"
+msgstr ""
 
 #. module: web_editor
 #. odoo-javascript
@@ -1233,22 +1233,22 @@ msgstr "Viga"
 #. module: web_editor
 #: model_terms:ir.ui.view,arch_db:web_editor.colorpicker
 msgid "Extend to the closest corner"
-msgstr "Laienda lähima nurgani"
+msgstr ""
 
 #. module: web_editor
 #: model_terms:ir.ui.view,arch_db:web_editor.colorpicker
 msgid "Extend to the closest side"
-msgstr "Laienda lähima küljeni"
+msgstr ""
 
 #. module: web_editor
 #: model_terms:ir.ui.view,arch_db:web_editor.colorpicker
 msgid "Extend to the farthest corner"
-msgstr " Laienda kaugema nurgani"
+msgstr ""
 
 #. module: web_editor
 #: model_terms:ir.ui.view,arch_db:web_editor.colorpicker
 msgid "Extend to the farthest side"
-msgstr "Laienda kaugema küljeni"
+msgstr ""
 
 #. module: web_editor
 #: model:ir.model,name:web_editor.model_html_field_history_mixin
@@ -1360,7 +1360,7 @@ msgstr "Kirja suurus"
 #: code:addons/web_editor/static/src/js/editor/snippets.editor.js:0
 #, python-format
 msgid "For technical reasons, this block cannot be dropped here"
-msgstr "Tehnilistel põhjustel ei saa seda plokki siia lohistada."
+msgstr ""
 
 #. module: web_editor
 #. odoo-javascript
@@ -1781,7 +1781,7 @@ msgstr ""
 #: code:addons/web_editor/static/src/js/editor/odoo-editor/src/OdooEditor.js:0
 #, python-format
 msgid "Insert a horizontal rule separator"
-msgstr "Lisa horisontaalne joon"
+msgstr ""
 
 #. module: web_editor
 #. odoo-javascript
@@ -1964,7 +1964,7 @@ msgstr "Viimati uuendatud"
 #: model_terms:ir.ui.view,arch_db:web_editor.snippet_options
 #, python-format
 msgid "Left"
-msgstr "Vasakul"
+msgstr "Jääk"
 
 #. module: web_editor
 #. odoo-javascript
@@ -2101,7 +2101,7 @@ msgstr "Levitamise vahend"
 #: code:addons/web_editor/static/src/js/editor/odoo-editor/src/OdooEditor.js:0
 #, python-format
 msgid "Medium section heading"
-msgstr "Keskmise jaotise pealkiri"
+msgstr ""
 
 #. module: web_editor
 #. odoo-javascript
@@ -2269,7 +2269,7 @@ msgstr "Odoo Editor'i testid"
 #: code:addons/web_editor/controllers/main.py:0
 #, python-format
 msgid "Oops, it looks like our AI is unreachable!"
-msgstr "Oih, tundub, et meie tehisintellekt ei ole kättesaadav! "
+msgstr ""
 
 #. module: web_editor
 #. odoo-javascript
@@ -2367,7 +2367,7 @@ msgstr "Amet"
 #: code:addons/web_editor/static/src/xml/snippets.xml:0
 #, python-format
 msgid "Preset #{number}"
-msgstr "Eelseadistus #{number}"
+msgstr ""
 
 #. module: web_editor
 #. odoo-javascript
@@ -2969,7 +2969,7 @@ msgstr "Väike"
 #: code:addons/web_editor/static/src/js/editor/odoo-editor/src/OdooEditor.js:0
 #, python-format
 msgid "Small section heading"
-msgstr "Väikese jaotise pealkiri"
+msgstr ""
 
 #. module: web_editor
 #. odoo-javascript
@@ -3082,7 +3082,7 @@ msgstr "Vaheta suunda"
 #: code:addons/web_editor/static/src/js/editor/odoo-editor/src/OdooEditor.js:0
 #, python-format
 msgid "Switch the text's direction"
-msgstr "Muuda teksti suunda."
+msgstr ""
 
 #. module: web_editor
 #. odoo-javascript
@@ -3221,7 +3221,7 @@ msgstr "Mõtlen... "
 #: code:addons/web_editor/static/src/js/wysiwyg/widgets/link_popover_widget.js:0
 #, python-format
 msgid "This URL is invalid. Preview couldn't be updated."
-msgstr "See URL on kehtetu. Eelvaadet ei saanud uuendada."
+msgstr ""
 
 #. module: web_editor
 #. odoo-javascript
@@ -3249,7 +3249,7 @@ msgstr ""
 #: code:addons/web_editor/static/src/components/media_dialog/file_selector.js:0
 #, python-format
 msgid "This file is attached to the current record."
-msgstr "See fail on seotud praeguse kirjega."
+msgstr ""
 
 #. module: web_editor
 #. odoo-javascript
@@ -3343,7 +3343,7 @@ msgstr ""
 #: code:addons/web_editor/static/src/xml/editor.xml:0
 #, python-format
 msgid "Toggle strikethrough"
-msgstr "Läbikriipsutuse lülitamine"
+msgstr ""
 
 #. module: web_editor
 #. odoo-javascript
@@ -3373,7 +3373,7 @@ msgstr "Vihje"
 #: code:addons/web_editor/static/src/js/editor/odoo-editor/src/OdooEditor.js:0
 #, python-format
 msgid "Track tasks with a checklist"
-msgstr "Jälgi ülesandeid kontrollnimekirjas"
+msgstr ""
 
 #. module: web_editor
 #: model_terms:ir.ui.view,arch_db:web_editor.snippet_options
@@ -3506,7 +3506,7 @@ msgstr "Video kood"
 #: code:addons/web_editor/static/src/components/media_dialog/video_selector.js:0
 #, python-format
 msgid "Videos are muted when autoplay is enabled"
-msgstr "Videod on vaigistatud, kui automaatne esitamine on lubatud"
+msgstr ""
 
 #. module: web_editor
 #: model:ir.model,name:web_editor.model_ir_ui_view
@@ -3581,8 +3581,6 @@ msgid ""
 "Wow, it feels a bit empty in here. Upload from the button in the top right "
 "corner!"
 msgstr ""
-"Siin on hetkel tühjus. Laadige üles vajutades paremal üleval nurgas olevat "
-"nuppu!"
 
 #. module: web_editor
 #. odoo-javascript
@@ -3671,7 +3669,7 @@ msgstr "Sinu URL"
 #: code:addons/web_editor/static/src/js/wysiwyg/wysiwyg.js:0
 #, python-format
 msgid "Your content was successfully generated."
-msgstr "Sinu sisu on edukalt genereeritud. "
+msgstr ""
 
 #. module: web_editor
 #. odoo-javascript
@@ -3735,7 +3733,7 @@ msgstr "tumestama"
 #: code:addons/web_editor/static/src/components/media_dialog/file_selector.xml:0
 #, python-format
 msgid "database"
-msgstr "andmebaas"
+msgstr ""
 
 #. module: web_editor
 #: model_terms:ir.ui.view,arch_db:web_editor.snippet_options_image_optimization_widgets
@@ -3747,7 +3745,7 @@ msgstr "välistamine"
 #: code:addons/web_editor/static/src/xml/wysiwyg.xml:0
 #, python-format
 msgid "fill"
-msgstr "täida"
+msgstr ""
 
 #. module: web_editor
 #. odoo-javascript
@@ -3761,14 +3759,14 @@ msgstr ""
 #: code:addons/web_editor/static/src/xml/wysiwyg.xml:0
 #, python-format
 msgid "flat"
-msgstr "lame"
+msgstr ""
 
 #. module: web_editor
 #. odoo-javascript
 #: code:addons/web_editor/static/src/xml/wysiwyg.xml:0
 #, python-format
 msgid "lg"
-msgstr "lg"
+msgstr ""
 
 #. module: web_editor
 #: model_terms:ir.ui.view,arch_db:web_editor.snippet_options_image_optimization_widgets
@@ -3780,7 +3778,7 @@ msgstr "helendama"
 #: code:addons/web_editor/static/src/components/media_dialog/file_selector.xml:0
 #, python-format
 msgid "media-library"
-msgstr "meediakogu"
+msgstr ""
 
 #. module: web_editor
 #: model_terms:ir.ui.view,arch_db:web_editor.snippet_options_image_optimization_widgets
@@ -3792,7 +3790,7 @@ msgstr "korrutama"
 #: code:addons/web_editor/static/src/xml/wysiwyg.xml:0
 #, python-format
 msgid "outline"
-msgstr "kontuur"
+msgstr ""
 
 #. module: web_editor
 #. odoo-javascript
@@ -3830,7 +3828,7 @@ msgstr "ekraan"
 #: code:addons/web_editor/static/src/xml/wysiwyg.xml:0
 #, python-format
 msgid "sm"
-msgstr "sm"
+msgstr ""
 
 #. module: web_editor
 #. odoo-javascript

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Vue Formulaire pour le wizard de génération d'emploi du temps -->
+    <record id="view_generate_timetable_wizard_form" model="ir.ui.view">
+        <field name="name">generate.timetable.wizard.form</field>
+        <field name="model">is.university.school.timetable.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Générer Emploi du Temps">
+                <group>
+                    <field name="program_id"/>
+                    <field name="semester_id"/>
+                </group>
+                <footer>
+                    <button name="generate_timetable" type="object" string="Générer" class="btn-primary"/>
+                    <button string="Annuler" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

@@ -14,34 +14,19 @@ export class FormRendererWithHtmlExpander extends FormRenderer {
                 if (el && size === 6) {
                     const descriptionField = el.querySelector(this.htmlFieldQuerySelector);
                     if (descriptionField) {
-                        const containerEL = descriptionField.closest(
-                            this.getHTMLFieldContainerQuerySelector
-                        );
                         const editor = descriptionField.querySelector('.note-editable');
                         const elementToResize = editor || descriptionField;
-                        const { top, bottom } = elementToResize.getBoundingClientRect();
-                        const { bottom: containerBottom } = containerEL.getBoundingClientRect();
-                        const { paddingTop, paddingBottom } = window.getComputedStyle(containerEL);
-                        const nonEditableHeight =
-                            containerBottom -
-                            bottom +
-                            parseInt(paddingTop) +
-                            parseInt(paddingBottom);
-                        const minHeight =
-                            document.documentElement.clientHeight - top - nonEditableHeight;
+                        const { bottom, height } = elementToResize.getBoundingClientRect();
+                        const minHeight = document.documentElement.clientHeight - bottom - height;
                         elementToResize.style.minHeight = `${minHeight}px`;
                     }
                 }
             },
-            () => [ref.el, this.ui.size, this.props.record.resId]
+            () => [ref.el, this.ui.size, this.props.record.mode],
         );
     }
 
     get htmlFieldQuerySelector() {
         return '.oe_form_field.oe_form_field_html';
-    }
-
-    get getHTMLFieldContainerQuerySelector() {
-        return ".o_form_sheet";
     }
 }

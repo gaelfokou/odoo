@@ -7,7 +7,7 @@ import threading
 import odoo
 from odoo.tests import TransactionCase
 
-from ..models.bus import json_dump, get_notify_payloads, NOTIFY_PAYLOAD_MAX_LENGTH, ODOO_NOTIFY_FUNCTION
+from ..models.bus import json_dump, get_notify_payloads, NOTIFY_PAYLOAD_MAX_LENGTH
 
 
 class NotifyTests(TransactionCase):
@@ -55,8 +55,6 @@ class NotifyTests(TransactionCase):
 
     def test_postcommit(self):
         """Asserts all ``postcommit`` channels are fetched with a single listen."""
-        if ODOO_NOTIFY_FUNCTION != 'pg_notify':
-            return
         channels = []
         stop_event = threading.Event()
 

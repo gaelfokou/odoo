@@ -190,37 +190,13 @@
     </xpath>
 
     <xpath expr="//div[@id='wrapwrap']" position="after">
-        <t t-if="website and website.google_analytics_key and not editable">
+        <t t-if="website and website.google_analytics_key and request.env['ir.http']._is_allowed_cookie('optional') and not editable">
             <script id="tracking_code" t-attf-src="https://www.googletagmanager.com/gtag/js?id={{ website.google_analytics_key }}" async="async"/>
-            <script id="tracking_code_config">
+            <script>
                 window.dataLayer = window.dataLayer || [];
                 function gtag(){dataLayer.push(arguments);}
-                gtag('consent', 'default', {
-                    'ad_storage': 'denied',
-                    'ad_user_data': 'denied',
-                    'ad_personalization': 'denied',
-                    'analytics_storage': 'denied',
-                });
                 gtag('js', new Date());
                 gtag('config', '<t t-esc="website.google_analytics_key"/>');
-                function allConsentsGranted() {
-                    gtag('consent', 'update', {
-                        'ad_storage': 'granted',
-                        'ad_user_data': 'granted',
-                        'ad_personalization': 'granted',
-                        'analytics_storage': 'granted',
-                    });
-                }
-                <t t-if="website._allConsentsGranted()">
-                    allConsentsGranted();
-                </t>
-                <t t-else="">
-                    document.addEventListener(
-                        "optionalCookiesAccepted",
-                        allConsentsGranted,
-                        {once: true}
-                    );
-                </t>
             </script>
         </t>
         <t t-if="website and website.plausible_shared_key and not editable">
@@ -2621,7 +2597,7 @@ Sitemap: <t t-esc="url_root"/>sitemap.xml
 </template>
 
 <template id="website_search_box" name="Website Searchbox">
-    <div t-attf-class="input-group #{_classes}" role="search" t-nocache="The searchbox should not cache previous searches.">
+    <div t-attf-class="input-group #{_classes}" role="search">
         <t t-set="search_placeholder">Search...</t>
         <input type="search" name="search" t-att-class="'search-query form-control oe_search_box border-0 bg-light %s' % _input_classes" t-att-placeholder="placeholder if placeholder else search_placeholder" t-att-value="search"/>
         <button type="submit" t-att-class="'btn oe_search_button %s' % (_submit_classes or 'btn-light')" aria-label="Search" title="Search">

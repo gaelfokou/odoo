@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_university_school_form" model="ir.ui.view">
+        <field name="name">university.school.form</field>
+        <field name="model">is.university.school</field>
+        <field name="arch" type="xml">
+            <form string="Ecole">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="field_of_study_ids"/>
+                        <field name="max_students_per_batch"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_university_school_tree" model="ir.ui.view">
+        <field name="name">university.school.tree</field>
+        <field name="model">is.university.school</field>
+        <field name="arch" type="xml">
+            <tree string="Ecole">
+                <field name="name"/>
+                <field name="max_students_per_batch"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_university_school" model="ir.actions.act_window">
+        <field name="name">Écoles</field>
+        <field name="res_model">is.university.school</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>

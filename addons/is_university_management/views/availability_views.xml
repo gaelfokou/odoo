@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_teacher_availability_form" model="ir.ui.view">
+        <field name="name">teacher.availability.form</field>
+        <field name="model">is.university.teacher.availability</field>
+        <field name="arch" type="xml">
+            <form string="Disponibilité de l'enseignant">
+                <sheet>
+                    <group>
+                        <field name="teacher_id"/>
+                        <field name="day_of_week"/>
+                        <field name="start_time"/>
+                        <field name="end_time"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_teacher_availability_tree" model="ir.ui.view">
+        <field name="name">teacher.availability.tree</field>
+        <field name="model">is.university.teacher.availability</field>
+        <field name="arch" type="xml">
+            <tree string="Disponibilités de l'enseignant">
+                <field name="teacher_id"/>
+                <field name="day_of_week"/>
+                <field name="start_time"/>
+                <field name="end_time"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_teacher_availability" model="ir.actions.act_window">
+        <field name="name">Disponibilités des enseignants</field>
+        <field name="res_model">is.university.teacher.availability</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>
+

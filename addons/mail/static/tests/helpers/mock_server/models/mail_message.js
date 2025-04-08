@@ -65,16 +65,6 @@ patch(MockServer.prototype, {
             ["content", "=", content],
         ]);
         const guest = this._mockMailGuest__getGuestFromContext();
-        const persona = {
-            id: guest ? guest.id : this.pyEnv.currentPartnerId,
-            type: guest ? "guest" : "partner",
-        };
-        if (reactions.length > 0) {
-            Object.assign(persona, {
-                name: guest ? guest.name : this.pyEnv.currentPartner.name,
-                write_date: guest ? guest.write_date : this.pyEnv.currentPartner.write_date,
-            });
-        }
         const result = {
             id: messageId,
             reactions: [
@@ -84,7 +74,16 @@ patch(MockServer.prototype, {
                         content,
                         count: reactions.length,
                         message: { id: messageId },
-                        personas: [[action === "add" ? "ADD" : "DELETE", persona]],
+                        personas: [
+                            [
+                                action === "add" ? "ADD" : "DELETE",
+                                {
+                                    id: guest ? guest.id : this.pyEnv.currentPartnerId,
+                                    name: guest ? guest.name : this.pyEnv.currentPartner.name,
+                                    type: guest ? "guest" : "partner",
+                                },
+                            ],
+                        ],
                     },
                 ],
             ],

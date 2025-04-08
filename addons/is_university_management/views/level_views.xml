@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<odoo>
+    <record id="view_school_level_form" model="ir.ui.view">
+        <field name="name">school.level.form</field>
+        <field name="model">is.university.school.level</field>
+        <field name="arch" type="xml">
+            <form string="Niveau d'étude">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="level"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_school_level_tree" model="ir.ui.view">
+        <field name="name">school.level.tree</field>
+        <field name="model">is.university.school.level</field>
+        <field name="arch" type="xml">
+            <tree string="Niveaux d'étude">
+                <field name="name"/>
+                <field name="level"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_school_level" model="ir.actions.act_window">
+        <field name="name">Niveaux d'études</field>
+        <field name="res_model">is.university.school.level</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>

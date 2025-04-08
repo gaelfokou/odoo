@@ -10,14 +10,7 @@ class StockMove(models.Model):
         self.ensure_one()
         if line_id := self.sale_line_id:
             if qty := line_id.product_uom_qty:
-                company_id = line_id.company_id
-                return line_id.currency_id._convert(
-                    line_id.price_subtotal / qty,
-                    company_id.currency_id,
-                    company_id,
-                    self.date,
-                    round=False
-                )
+                return line_id.price_subtotal / qty
             return 0.00
         return super()._l10n_in_get_product_price_unit()
 

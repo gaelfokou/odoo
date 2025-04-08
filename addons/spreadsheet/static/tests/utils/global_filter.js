@@ -5,7 +5,7 @@
  *
  */
 
-/** @type FixedPeriodDateGlobalFilter */
+/** @type GlobalFilter */
 export const THIS_YEAR_GLOBAL_FILTER = {
     id: "43",
     type: "date",
@@ -14,7 +14,7 @@ export const THIS_YEAR_GLOBAL_FILTER = {
     defaultValue: { yearOffset: 0 },
 };
 
-/** @type FixedPeriodDateGlobalFilter */
+/** @type GlobalFilter */
 export const LAST_YEAR_GLOBAL_FILTER = {
     id: "42",
     type: "date",
@@ -23,11 +23,11 @@ export const LAST_YEAR_GLOBAL_FILTER = {
     defaultValue: { yearOffset: -1 },
 };
 
-/** @type FixedPeriodDateGlobalFilter */
+/** @type GlobalFilter */
 export const NEXT_YEAR_GLOBAL_FILTER = {
     id: "44",
     type: "date",
     label: "Next Year",
-    rangeType: "fixedPeriod",
+    rangeType: "year",
     defaultValue: { yearOffset: 1 },
 };

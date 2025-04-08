@@ -6,8 +6,8 @@
 # Abdelouahab Laaroussi, 2023
 # Bohdan Lisnenko, 2023
 # Martin Trigaux, 2024
-# Wil Odoo, 2024
 # Alina Lisnenko <alina.lisnenko@erp.co.ua>, 2024
+# Wil Odoo, 2024
 # 
 msgid ""
 msgstr ""
@@ -15,7 +15,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-08-13 10:26+0000\n"
 "PO-Revision-Date: 2023-10-26 23:09+0000\n"
-"Last-Translator: Alina Lisnenko <alina.lisnenko@erp.co.ua>, 2024\n"
+"Last-Translator: Wil Odoo, 2024\n"
 "Language-Team: Ukrainian (https://app.transifex.com/odoo/teams/41243/uk/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -2571,7 +2571,7 @@ msgstr "Карпаччо з яловичини"
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_three_columns_menu
 msgid "Beef Carpaccio, Filet Mignon 8oz and Cheesecake"
-msgstr "Карпаччо з яловичини, філе міньйон 8 унцій і чізкейк"
+msgstr ""
 
 #. module: website
 #: model:ir.model.fields.selection,name:website.selection__theme_ir_asset__directive__before
@@ -2619,7 +2619,7 @@ msgstr "Чорний список у веб-формах"
 #: code:addons/website/static/src/components/dialog/add_page_dialog.xml:0
 #, python-format
 msgid "Blank Page"
-msgstr "Сторінка замовлення"
+msgstr ""
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_mega_menu_menus_logos
@@ -2667,7 +2667,7 @@ msgstr "Замилювання"
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_call_to_action_menu
 msgid "Book your table today"
-msgstr "Забронюйте ваш столик на сьогодні"
+msgstr ""
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_product_list
@@ -2714,22 +2714,22 @@ msgstr "Ширина межі"
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.bs_debug_view
 msgid "Border radius large"
-msgstr "Радіус межі великий"
+msgstr ""
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.bs_debug_view
 msgid "Border radius medium"
-msgstr "Радіус межі середній"
+msgstr ""
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.bs_debug_view
 msgid "Border radius none"
-msgstr "Радіусу межі немає"
+msgstr ""
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.bs_debug_view
 msgid "Border radius small"
-msgstr "Радіус межі малий"
+msgstr ""
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.snippet_options
@@ -2800,7 +2800,7 @@ msgstr "Створіть ваш %s"
 #: code:addons/website/static/src/components/website_loader/website_loader.js:0
 #, python-format
 msgid "Building your website."
-msgstr "Створіть ваш веб-сайт."
+msgstr ""
 
 #. module: website
 #. odoo-javascript
@@ -2841,7 +2841,6 @@ msgid ""
 "By Crafting unique and compelling brand identities that leave a lasting "
 "impact."
 msgstr ""
-"Розробляючи унікальні та переконливі бренди, які залишають тривалий вплив."
 
 #. module: website
 #: model:ir.model.fields,field_description:website.field_res_config_settings__cdn_url
@@ -2915,8 +2914,6 @@ msgid ""
 "Cannot apply this option on current text selection. Try clearing the format "
 "and try again."
 msgstr ""
-"Неможливо застосувати цей параметр до поточного виділеного тексту. Спробуйте"
-" очистити формат і повторіть спробу."
 
 #. module: website
 #. odoo-python
@@ -2949,12 +2946,12 @@ msgstr "Стиль картки"
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.bs_debug_view
 msgid "Card link"
-msgstr "Посилання на картку"
+msgstr ""
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.bs_debug_view
 msgid "Card title"
-msgstr "Назва картки"
+msgstr ""
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.snippet_options
@@ -2971,7 +2968,7 @@ msgstr "Кар'єра"
 #: code:addons/website/static/src/components/resource_editor/resource_editor.js:0
 #, python-format
 msgid "Careful"
-msgstr "Обережно"
+msgstr ""
 
 #. module: website
 #. odoo-javascript
@@ -3234,7 +3231,7 @@ msgstr "Натисніть, щоб обрати"
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.new_page_template_about_personal_s_numbers
 msgid "Clients"
-msgstr "Клієнти"
+msgstr ""
 
 #. module: website
 #. odoo-javascript
@@ -3263,7 +3260,7 @@ msgstr "Колір кнопки закриття"
 #: code:addons/website/static/src/components/resource_editor/resource_editor_warning.xml:0
 #, python-format
 msgid "Close editor"
-msgstr "Закрити редактор"
+msgstr ""
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_product_list
@@ -3275,7 +3272,7 @@ msgstr "Речі"
 #: code:addons/website/static/src/client_actions/configurator/configurator.xml:0
 #, python-format
 msgid "Clothes, Marketing, ..."
-msgstr "Одяг, маркетинг, ..."
+msgstr ""
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.res_config_settings_view_form
@@ -3348,7 +3345,7 @@ msgstr "Стовпці"
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.new_page_template_landing_0_s_cover
 msgid "Coming Soon"
-msgstr "Скоро"
+msgstr ""
 
 #. module: website
 #: model:ir.model.fields,help:website.field_website_configurator_feature__website_config_preselection
@@ -3424,7 +3421,7 @@ msgstr "Конфігуратор виконано"
 #: code:addons/website/static/src/components/website_loader/website_loader.js:0
 #, python-format
 msgid "Configuring your %s."
-msgstr "Налаштуйте ваш %s."
+msgstr ""
 
 #. module: website
 #. odoo-javascript
@@ -3527,8 +3524,6 @@ msgid ""
 "Contact us today to embark on your path to a healthier, more vibrant you. "
 "Your fitness journey begins here."
 msgstr ""
-"Зв’яжіться з нами сьогодні, щоб почати свій шлях до здоров’я та бадьорості. "
-"Ваша фітнес-мандрівка починається тут."
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.website_visitor_view_search
@@ -3588,7 +3583,7 @@ msgstr "Продовдити читати <i class=\"fa fa-long-arrow-right alig
 #: model:ir.model.fields,field_description:website.field_website_controller_page__controller_page_ids
 #: model:ir.model.fields,field_description:website.field_website_page__controller_page_ids
 msgid "Controller Page"
-msgstr "Сторінка перевірки"
+msgstr ""
 
 #. module: website
 #. odoo-javascript
@@ -3699,12 +3694,12 @@ msgstr "Cover Properties Website Mixin"
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.new_page_template_services_s_text_cover
 msgid "Crafting Your Digital Success Story"
-msgstr "Створення вашої цифрової історії успіху"
+msgstr ""
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.bs_debug_view
 msgid "Cras justo odio"
-msgstr "Cras justo odio"
+msgstr ""
 
 #. module: website
 #. odoo-javascript
@@ -3805,7 +3800,7 @@ msgstr "Створено"
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.new_page_template_landing_s_color_blocks_2
 msgid "Crystal Clear Sound"
-msgstr "Кристально чистий звук"
+msgstr ""
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_process_steps_options
@@ -3984,7 +3979,7 @@ msgstr "Права доступу за замовчуванням"
 #: code:addons/website/static/src/snippets/s_searchbar/options.js:0
 #, python-format
 msgid "Default Input Style"
-msgstr "Типовий стиль введення"
+msgstr ""
 
 #. module: website
 #: model:ir.model.fields,field_description:website.field_website__default_lang_id
@@ -3994,7 +3989,7 @@ msgstr "Мова за замовчуванням"
 #. module: website
 #: model:ir.model.fields,field_description:website.field_website_controller_page__default_layout
 msgid "Default Layout"
-msgstr "Типовий шаблон"
+msgstr ""
 
 #. module: website
 #: model:website.menu,name:website.main_menu
@@ -4021,7 +4016,7 @@ msgstr "Типове значення"
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.bs_debug_view
 msgid "Default checkbox"
-msgstr "Типовий чекбокс"
+msgstr ""
 
 #. module: website
 #: model:ir.model.fields,field_description:website.field_res_config_settings__website_default_lang_id
@@ -4036,17 +4031,17 @@ msgstr "Код мови за замовчуванням"
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_website_controller_page_listing_layout
 msgid "Default layout"
-msgstr "Типовий шаблон"
+msgstr ""
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.bs_debug_view
 msgid "Default radio"
-msgstr "Типова радіо кнопка"
+msgstr ""
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.bs_debug_view
 msgid "Default switch checkbox input"
-msgstr "Типове введення перемикача чекбокса"
+msgstr ""
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_popup_options
@@ -4173,7 +4168,7 @@ msgstr "Створений для запуску конверсії"
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.new_page_template_landing_s_text_cover
 msgid "Designed to provide an immersive audio experience on the go."
-msgstr "Створено, щоб забезпечити захоплюючий звук на льоту."
+msgstr ""
 
 #. module: website
 #. odoo-javascript
@@ -4207,7 +4202,7 @@ msgstr "Виявити"
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.new_page_template_services_s_image_text_2nd
 msgid "Digital Consulting Expertise"
-msgstr "Експертиза цифрового консалтингу"
+msgstr ""
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_tabs_options
@@ -4253,7 +4248,7 @@ msgstr "Відмінити"
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.new_page_template_gallery_s_banner
 msgid "Discover Our Univers"
-msgstr "Відкрийте наш Всесвіт"
+msgstr ""
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_showcase
@@ -4268,7 +4263,7 @@ msgstr "Відкрити більше"
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_media_list
 msgid "Discover more <i class=\"fa fa-long-arrow-right align-middle ms-1\"/>"
-msgstr "Дізнатися більше <i class=\"fa fa-long-arrow-right align-middle ms-1\"/>"
+msgstr ""
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.new_page_template_services_s_image_text
@@ -4276,8 +4271,6 @@ msgid ""
 "Discover our comprehensive marketing service designed to amplify your "
 "brand's reach and impact."
 msgstr ""
-"Відкрийте для себе наші комплексні маркетингові послуги, розроблені для "
-"розширення охоплення та впливу вашого бренду."
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_mega_menu_big_icons_subtitles
@@ -4349,12 +4342,12 @@ msgstr "Відображення 4"
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.bs_debug_view
 msgid "Display 5"
-msgstr "Дисплей 5"
+msgstr ""
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.bs_debug_view
 msgid "Display 6"
-msgstr "Дисплей 6"
+msgstr ""
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_rating_options
@@ -4434,8 +4427,6 @@ msgid ""
 "Do not copy/paste code you do not understand, this could put your data at "
 "risk."
 msgstr ""
-"Не копіюйте та не вставляйте код, який ви не розумієте, це може поставити "
-"під загрозу ваші дані."
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_mega_menu_cards
@@ -4466,7 +4457,7 @@ msgstr "Не містить"
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.snippet_options
 msgid "Dolly Zoom"
-msgstr "Dolly Zoom"
+msgstr ""
 
 #. module: website
 #: model:ir.model.fields,field_description:website.field_website_controller_page__record_domain
@@ -4477,7 +4468,7 @@ msgstr "Домен"
 #. module: website
 #: model:ir.model.fields,help:website.field_website_controller_page__record_domain
 msgid "Domain to restrict records that can be viewed publicly"
-msgstr "Домен для обмеження записів, які можна переглядати публічно"
+msgstr ""
 
 #. module: website
 #. odoo-javascript
@@ -4647,7 +4638,7 @@ msgstr "Легко відстежуйте ваших відвідувачів ч
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.new_page_template_landing_s_text_cover
 msgid "EchoTunes Wireless Earbuds"
-msgstr "Бездротові навушники EchoTunes"
+msgstr ""
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.new_page_template_landing_s_showcase

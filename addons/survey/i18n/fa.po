@@ -3390,7 +3390,7 @@ msgstr "صفحات"
 #. module: survey
 #: model:ir.model.fields,field_description:survey.field_survey_survey__questions_layout
 msgid "Pagination"
-msgstr "صفحه‌بندی"
+msgstr ""
 
 #. module: survey
 #: model:survey.question.answer,value:survey.survey_demo_burger_quiz_p3_q2_sug4
@@ -3414,7 +3414,7 @@ msgstr "شرکت کننده"
 #. module: survey
 #: model_terms:ir.ui.view,arch_db:survey.survey_survey_view_form
 msgid "Participants"
-msgstr "شرکت‌کنندگان"
+msgstr ""
 
 #. module: survey
 #. odoo-python

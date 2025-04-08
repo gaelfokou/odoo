@@ -18,7 +18,7 @@ import { CommandResult } from "@spreadsheet/o_spreadsheet/cancelled_reason";
 import { isEmpty } from "@spreadsheet/helpers/helpers";
 import { FILTER_DATE_OPTION } from "@spreadsheet/assets_backend/constants";
 import {
-    checkFilterValueIsValid,
+    checkFiltersTypeValueCombination,
     getRelativeDateDomain,
 } from "@spreadsheet/global_filters/helpers";
 import { RELATIVE_DATE_RANGE_TYPES } from "@spreadsheet/helpers/constants";
@@ -65,7 +65,7 @@ export class GlobalFiltersUIPlugin extends spreadsheet.UIPlugin {
     /**
      * Check if the given command can be dispatched
      *
-     * @param {import("@spreadsheet").AllCommand} cmd Command
+     * @param {Object} cmd Command
      */
     allowDispatch(cmd) {
         switch (cmd.type) {
@@ -74,10 +74,7 @@ export class GlobalFiltersUIPlugin extends spreadsheet.UIPlugin {
                 if (!filter) {
                     return CommandResult.FilterNotFound;
                 }
-                if (!checkFilterValueIsValid(filter, cmd.value)) {
-                    return CommandResult.InvalidValueTypeCombination;
-                }
-                break;
+                return checkFiltersTypeValueCombination(filter.type, cmd.value);
             }
         }
         return CommandResult.Success;
@@ -86,30 +83,19 @@ export class GlobalFiltersUIPlugin extends spreadsheet.UIPlugin {
     /**
      * Handle a spreadsheet command
      *
-     * @param {import("@spreadsheet").AllCommand} cmd
+     * @param {Object} cmd Command
      */
     handle(cmd) {
         switch (cmd.type) {
             case "ADD_GLOBAL_FILTER":
-                this.recordsDisplayName[cmd.filter.id] =
-                    cmd.filter.type === "relation"
-                        ? cmd.filter.defaultValueDisplayNames
-                        : undefined;
+                this.recordsDisplayName[cmd.filter.id] = cmd.filter.defaultValueDisplayNames;
                 break;
             case "EDIT_GLOBAL_FILTER": {
-                const filter = cmd.filter;
-                const id = filter.id;
-                if (
-                    filter.type === "date" &&
-                    this.values[id] &&
-                    this.values[id].rangeType !== filter.rangeType
-                ) {
-                    delete this.values[id];
-                } else if (!checkFilterValueIsValid(filter, this.values[id]?.value)) {
+                const id = cmd.filter.id;
+                if (this.values[id] && this.values[id].rangeType !== cmd.filter.rangeType) {
                     delete this.values[id];
                 }
-                this.recordsDisplayName[id] =
-                    filter.type === "relation" ? filter.defaultValueDisplayNames : undefined;
+                this.recordsDisplayName[id] = cmd.filter.defaultValueDisplayNames;
                 break;
             }
             case "SET_GLOBAL_FILTER_VALUE":

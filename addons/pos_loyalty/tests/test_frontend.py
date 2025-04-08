@@ -378,20 +378,6 @@ class TestUi(TestPointOfSaleHttpCommon):
         reward_orderline = self.main_pos_config.current_session_id.order_ids[-1].lines.filtered(lambda line: line.is_reward_line)
         self.assertEqual(len(reward_orderline.ids), 0, msg='Reference: Order4_no_reward. Last order should have no reward line.')
 
-        # Part 3
-        partner_ddd = self.env['res.partner'].create({'name': 'Test Partner DDD'})
-        self.env['loyalty.card'].create({
-            'partner_id': partner_ddd.id,
-            'program_id': loyalty_program.id,
-            'points': 100,
-        })
-
-        self.start_tour(
-            "/pos/web?config_id=%d" % self.main_pos_config.id,
-            "PosLoyaltyChangeRewardQty",
-            login="pos_user",
-        )
-
     def test_loyalty_free_product_zero_sale_price_loyalty_program(self):
         # In this program, each $ spent gives 1 point.
         # 5 points can be used to get a free whiteboard pen.
@@ -434,7 +420,7 @@ class TestUi(TestPointOfSaleHttpCommon):
         aaa_loyalty_card = loyalty_program.coupon_ids.filtered(lambda coupon: coupon.partner_id.id == partner_aaa.id)
 
         self.assertEqual(loyalty_program.pos_order_count, 1)
-        self.assertAlmostEqual(aaa_loyalty_card.points, 5.2)
+        self.assertAlmostEqual(aaa_loyalty_card.points, 0.2)
 
     def test_pos_loyalty_tour_max_amount(self):
         """Test the loyalty program with a maximum amount and product with different taxe."""
@@ -972,7 +958,7 @@ class TestUi(TestPointOfSaleHttpCommon):
             'pos_ok': True,
             'rule_ids': [(0, 0, {
                 'reward_point_mode': 'order',
-                'reward_point_amount': 10,
+                'reward_point_amount': 5,
                 'minimum_qty': 2,
                 'product_ids': [(6, 0, [self.product_a.id, self.product_b.id])],
             })],
@@ -981,13 +967,6 @@ class TestUi(TestPointOfSaleHttpCommon):
                 'discount_mode': 'per_order',
                 'required_points': 2,
                 'discount': 10,
-                'discount_applicability': 'specific',
-                'discount_product_ids': (self.product_a | self.product_b).ids,
-            }), (0, 0, {
-                'reward_type': 'discount',
-                'discount_mode': 'per_order',
-                'required_points': 5,
-                'discount': 30,
                 'discount_applicability': 'specific',
                 'discount_product_ids': (self.product_a | self.product_b).ids,
             })],
@@ -2213,16 +2192,6 @@ class TestUi(TestPointOfSaleHttpCommon):
         )
 
     def test_cheapest_product_reward_pos_combo(self):
-        self.env['product.product'].create({
-            "name": "Expensive product",
-            "lst_price": 1000,
-            "available_in_pos": True,
-        })
-        self.env['product.product'].create({
-            "name": "Cheap product",
-            "lst_price": 1,
-            "available_in_pos": True,
-        })
         setup_pos_combo_items(self)
         self.office_combo.write({'lst_price': 50})
         self.env['loyalty.program'].search([]).write({'active': False})
@@ -2243,78 +2212,3 @@ class TestUi(TestPointOfSaleHttpCommon):
 
         self.main_pos_config.with_user(self.pos_user).open_ui()
         self.start_tour(f"/pos/ui?config_id={self.main_pos_config.id}", 'PosComboCheapestRewardProgram', login="pos_user")
-
-    def test_apply_reward_on_product_scan(self):
-        """
-        Test that the rewards are correctly applied if the
-        product is scanned rather than added by hand.
-        """
-        product = self.product_a
-        product.write({
-            'available_in_pos': True,
-            'barcode': '95412427100283',
-        })
-        self.env['loyalty.program'].search([]).write({'active': False})
-        self.env['loyalty.program'].create({
-            'name': 'My super program',
-            'program_type': 'promotion',
-            'trigger': 'auto',
-            'applies_on': 'current',
-            'rule_ids': [Command.create({
-                'product_ids': [Command.set(product.ids)],
-                'reward_point_mode': 'order',
-            })],
-            'reward_ids': [Command.create({
-                'reward_type': 'discount',
-                'discount': 50,
-                'discount_mode': 'percent',
-                'discount_applicability': 'order',
-            })],
-            'pos_config_ids': [Command.link(self.main_pos_config.id)],
-        })
-        self.main_pos_config.with_user(self.pos_admin).open_ui()
-        self.start_tour(
-            "/pos/web?config_id=%d" % self.main_pos_config.id,
-            "PosRewardProductScan",
-            login="pos_admin",
-        )
-        # check the same flow with gs1 nomenclature
-        self.env.company.nomenclature_id = self.env.ref('barcodes_gs1_nomenclature.default_gs1_nomenclature')
-        self.start_tour(
-            "/pos/web?config_id=%d" % self.main_pos_config.id,
-            "PosRewardProductScanGS1",
-            login="pos_admin",
-        )
-
-    def test_next_order_coupon_program_expiration_date(self):
-        self.env['loyalty.program'].search([]).write({'active': False})
-
-        loyalty_program = self.env['loyalty.program'].create({
-            'name': 'Next Order Coupon Program',
-            'program_type': 'next_order_coupons',
-            'applies_on': 'future',
-            'trigger': 'auto',
-            'portal_visible': True,
-            'date_to': date.today() + timedelta(days=2),
-            'rule_ids': [(0, 0, {
-                'minimum_amount': 10,
-                'minimum_qty': 0
-            })],
-            'reward_ids': [(0, 0, {
-                'reward_type': 'discount',
-                'discount': 10,
-                'discount_mode': 'percent',
-                'discount_applicability': 'order',
-            })],
-        })
-
-        self.main_pos_config.with_user(self.pos_user).open_ui()
-        self.start_tour(
-            "/pos/web?config_id=%d" % self.main_pos_config.id,
-            "PosLoyaltyNextOrderCouponExpirationDate",
-            login="pos_user",
-        )
-
-        coupon = loyalty_program.coupon_ids
-        self.assertEqual(len(coupon), 1, "Coupon not generated")
-        self.assertEqual(coupon.expiration_date, date.today() + timedelta(days=2), "Coupon not generated with correct expiration date")

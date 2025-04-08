@@ -11680,14 +11680,14 @@ msgstr "الافتراضي: "
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.xml:0
 #, python-format
 msgid "difference"
-msgstr "الفرق "
+msgstr ""
 
 #. module: spreadsheet
 #. odoo-javascript
 #: code:addons/spreadsheet/static/src/global_filters/components/filter_date_value/filter_date_value.xml:0
 #, python-format
 msgid "empty"
-msgstr "فارغ "
+msgstr ""
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -11710,7 +11710,7 @@ msgstr "خاطئ"
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.xml:0
 #, python-format
 msgid "formula"
-msgstr "الصيغة "
+msgstr ""
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -11800,7 +11800,7 @@ msgstr "لا شيء "
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.xml:0
 #, python-format
 msgid "number"
-msgstr "عدد "
+msgstr ""
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -11839,7 +11839,7 @@ msgstr "قبل عام "
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.xml:0
 #, python-format
 msgid "percentage"
-msgstr "النسبة "
+msgstr ""
 
 #. module: spreadsheet
 #. odoo-javascript
@@ -11848,7 +11848,7 @@ msgstr "النسبة "
 #: code:addons/spreadsheet/static/src/o_spreadsheet/o_spreadsheet.xml:0
 #, python-format
 msgid "percentile"
-msgstr "النسبة "
+msgstr ""
 
 #. module: spreadsheet
 #. odoo-javascript

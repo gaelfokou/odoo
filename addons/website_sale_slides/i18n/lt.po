@@ -9,7 +9,6 @@
 # Linas Versada <linaskrisiukenas@gmail.com>, 2023
 # Jonas Zinkevicius <jozi@odoo.com>, 2023
 # Ramunė ViaLaurea <ramune.vialaurea@gmail.com>, 2024
-# Gailius Kazlauskas <gailius@vialaurea.lt>, 2024
 # 
 msgid ""
 msgstr ""
@@ -17,7 +16,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-10-26 21:56+0000\n"
 "PO-Revision-Date: 2023-10-26 23:09+0000\n"
-"Last-Translator: Gailius Kazlauskas <gailius@vialaurea.lt>, 2024\n"
+"Last-Translator: Ramunė ViaLaurea <ramune.vialaurea@gmail.com>, 2024\n"
 "Language-Team: Lithuanian (https://app.transifex.com/odoo/teams/41243/lt/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -57,12 +56,12 @@ msgstr ""
 #. module: website_sale_slides
 #: model:product.template,name:website_sale_slides.product_course_channel_5_product_template
 msgid "Basics of Furniture Creation"
-msgstr "Baldų kūrimo pagrindai"
+msgstr ""
 
 #. module: website_sale_slides
 #: model_terms:ir.ui.view,arch_db:website_sale_slides.snippet_options
 msgid "Buy Now Button"
-msgstr "Mygtukas Pirkti dabar"
+msgstr ""
 
 #. module: website_sale_slides
 #. odoo-javascript
@@ -82,8 +81,6 @@ msgstr "Pirkti šiuos mokymus"
 #: model_terms:ir.actions.act_window,help:website_sale_slides.sale_report_action_slides
 msgid "Come back once your courses starts selling to report on your revenues."
 msgstr ""
-"Grįžkite, kai jūsų kursai pradės pardavinėti, kad galėtumėte pateikti "
-"ataskaitą apie savo pajamas."
 
 #. module: website_sale_slides
 #: model:ir.model,name:website_sale_slides.model_slide_channel
@@ -99,7 +96,7 @@ msgstr "Prisijungimas prie kursų"
 #. module: website_sale_slides
 #: model_terms:ir.ui.view,arch_db:website_sale_slides.snippet_options
 msgid "Course Page"
-msgstr "Kurso puslapis"
+msgstr ""
 
 #. module: website_sale_slides
 #: model_terms:ir.ui.view,arch_db:website_sale_slides.course_buy_course_button
@@ -177,7 +174,7 @@ msgstr ""
 #. module: website_sale_slides
 #: model_terms:ir.ui.view,arch_db:website_sale_slides.course_buy_course_button
 msgid "Prerequisite:"
-msgstr "Būtina sąlyga:"
+msgstr ""
 
 #. module: website_sale_slides
 #: model_terms:ir.ui.view,arch_db:website_sale_slides.course_slides_list_slide
@@ -254,12 +251,12 @@ msgstr "Kursas 'Rūpinkitės gamta'"
 #. module: website_sale_slides
 #: model_terms:ir.ui.view,arch_db:website_sale_slides.course_buy_course_button
 msgid "There are some"
-msgstr "Yra keletas"
+msgstr ""
 
 #. module: website_sale_slides
 #: model_terms:ir.ui.view,arch_db:website_sale_slides.course_main
 msgid "This course cannot be bought because its linked product"
-msgstr "Šio kurso negalima įsigyti, nes jo susijęs produktas"
+msgstr ""
 
 #. module: website_sale_slides
 #. odoo-javascript
@@ -291,8 +288,6 @@ msgid ""
 "You are not allowed to add members to this course. Please contact the course"
 " responsible or an administrator."
 msgstr ""
-"Jums neleidžiama pridėti narių prie šio kurso. Prašome kreiptis į kurso "
-"atsakingą asmenį arba administratorius."
 
 #. module: website_sale_slides
 #. odoo-python
@@ -324,7 +319,7 @@ msgstr "nepaskelbta"
 #. module: website_sale_slides
 #: model_terms:ir.ui.view,arch_db:website_sale_slides.course_buy_course_button
 msgid "prerequisite courses."
-msgstr "būtini kursai."
+msgstr ""
 
 #. module: website_sale_slides
 #: model_terms:ir.ui.view,arch_db:website_sale_slides.course_purchased_confirmation_message
@@ -334,4 +329,4 @@ msgstr "žingsnis(-ai)"
 #. module: website_sale_slides
 #: model_terms:ir.ui.view,arch_db:website_sale_slides.course_buy_course_link
 msgid "to access resources"
-msgstr "prieiti prie resursų"
+msgstr ""

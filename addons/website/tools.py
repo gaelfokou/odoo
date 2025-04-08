@@ -91,8 +91,7 @@ def MockRequest(
         match.side_effect = NotFound
 
     def update_context(**overrides):
-        request.env = request.env(context=dict(request.context, **overrides))
-        request.context = request.env.context
+        request.context = dict(request.context, **overrides)
 
     request.update_context = update_context
 

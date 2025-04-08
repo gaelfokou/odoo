@@ -44,8 +44,14 @@ paymentButton.include({
             const address = carriersContainer.querySelector(
                 '.o_order_location_address'
             ).innerText;
-            return address !== '';  // A pickup point is required but not selected.
+            const isPickUp = carriersContainer.lastChild.previousSibling.children;
+            if (
+                isPickUp.length > 1 && (address === '' || isPickUp[0].classList.contains('d-none'))
+            ) { // A pickup point is required but not selected
+                return false;
+            }
         }
+
         return true;
     },
 

@@ -36,16 +36,16 @@
 # darloof, 2024
 # Abbas Ebadian, 2024
 # Hanna Kheradroosta, 2024
-# Hamid Mirzapour, 2024
 # Mostafa Barmshory <mostafa.barmshory@gmail.com>, 2024
+# Hamid Mirzapour, 2024
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 17.0+e\n"
+"Project-Id-Version: Odoo Server 17.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-09-06 12:08+0000\n"
+"POT-Creation-Date: 2024-08-14 16:15+0000\n"
 "PO-Revision-Date: 2023-10-26 23:09+0000\n"
-"Last-Translator: Mostafa Barmshory <mostafa.barmshory@gmail.com>, 2024\n"
+"Last-Translator: Hamid Mirzapour, 2024\n"
 "Language-Team: Persian (https://app.transifex.com/odoo/teams/41243/fa/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -968,7 +968,7 @@ msgid ""
 "<span class=\"text-nowrap\">$ <span "
 "class=\"oe_currency_value\">11,750.00</span></span>"
 msgstr ""
-"<span class=\"text-nowrap\">دلار <span "
+"<span class=\"text-nowrap\">$<span "
 "class=\"oe_currency_value\">11,750.00</span></span>"
 
 #. module: account
@@ -977,7 +977,7 @@ msgid ""
 "<span class=\"text-nowrap\">$ <span "
 "class=\"oe_currency_value\">19,250.00</span></span>"
 msgstr ""
-"<span class=\"text-nowrap\">دلار <span "
+"<span class=\"text-nowrap\">$<span "
 "class=\"oe_currency_value\">19,250.00</span></span>"
 
 #. module: account
@@ -986,7 +986,7 @@ msgid ""
 "<span class=\"text-nowrap\">$ <span "
 "class=\"oe_currency_value\">7,500.00</span></span>"
 msgstr ""
-"<span class=\"text-nowrap\">دلار <span "
+"<span class=\"text-nowrap\">$<span "
 "class=\"oe_currency_value\">7,500.00</span></span>"
 
 #. module: account
@@ -1113,7 +1113,7 @@ msgstr "<span> روی </span>"
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.bill_preview
 msgid "<span>$ <span class=\"oe_currency_value\">19,250.00</span></span>"
-msgstr "<span>دلار <span class=\"oe_currency_value\">19,250.00</span></span>"
+msgstr "<span>$ <span class=\"oe_currency_value\">19,250.00</span></span>"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.bill_preview
@@ -1927,7 +1927,7 @@ msgstr ""
 #. module: account
 #: model:res.groups,name:account.group_account_manager
 msgid "Accountant"
-msgstr "حسابدار"
+msgstr ""
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_res_config_settings__module_account_accountant
@@ -3459,7 +3459,7 @@ msgstr "مسدود کردن پیام"
 #. module: account
 #: model:res.groups,name:account.group_account_user
 msgid "Bookkeeper"
-msgstr "کتابدار"
+msgstr ""
 
 #. module: account
 #: model:ir.model.fields.selection,name:account.selection__account_report_column__figure_type__boolean
@@ -3800,7 +3800,7 @@ msgstr "دفاتر ثبت نقدی"
 #. module: account
 #: model:account.account,name:account.1_cash_journal_default_account_48
 msgid "Cash Restaurant"
-msgstr "رستوران نقدی"
+msgstr ""
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_res_config_settings__group_cash_rounding
@@ -6966,9 +6966,6 @@ msgid ""
 "target of the carryover for this expression (on a _carryover_*-labeled "
 "expression), in case it is different from the parent line."
 msgstr ""
-"فرمول به صورت `line_code.expression_label`. این امکان را می‌دهد که هدف "
-"انتقال برای این فرمول (در یک فرمول با برچسب _carryover_*) تنظیم شود، در "
-"صورتی که متفاوت از خط والد باشد."
 
 #. module: account
 msgid ""
@@ -7989,8 +7986,6 @@ msgstr "فیلد داخلی برای کوتاه کردن عبارت _ids  بر�
 msgid ""
 "Internal field to shorten expression_ids creation for the tax_tags engine"
 msgstr ""
-"فیلد داخلی برای تسهیل و تسریع در ایجاد `expression_ids` برای موتور "
-"`tax_tags`."
 
 #. module: account
 #: model:ir.model.fields,help:account.field_account_bank_statement_line__invoice_incoterm_id
@@ -8678,14 +8673,14 @@ msgstr "آیتم دفترروزنامه"
 #: code:addons/account/models/account_move_line.py:0
 #, python-format
 msgid "Journal Item %s created"
-msgstr "آیتم دفترکل%s ایجاد شد"
+msgstr ""
 
 #. module: account
 #. odoo-python
 #: code:addons/account/models/account_move_line.py:0
 #, python-format
 msgid "Journal Item %s deleted"
-msgstr "آیتم دفترکل %s حذف شد"
+msgstr ""
 
 #. module: account
 #. odoo-python
@@ -11729,7 +11724,7 @@ msgstr "توالی مجدد"
 #. module: account
 #: model:res.groups,name:account.group_account_readonly
 msgid "Read-only"
-msgstr "فقط خواندنی"
+msgstr ""
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_move_reversal__reason
@@ -13711,7 +13706,7 @@ msgstr "برچسب‌های مالیاتی"
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_report_line__tax_tags_formula
 msgid "Tax Tags Formula Shortcut"
-msgstr "میانبر فرمول برچسب‌های مالیاتی"
+msgstr ""
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_tax__type_tax_use
@@ -14222,7 +14217,7 @@ msgstr "شرکتی که این سطر توزیع به آن تعلق دارد."
 msgid ""
 "The country code of the foreign VAT number does not match any country in the"
 " group."
-msgstr "کد کشور شماره VAT خارجی با هیچ کشوری در این گروه مطابقت ندارد."
+msgstr ""
 
 #. module: account
 #: model:ir.model.fields,help:account.field_account_tax_group__country_id
@@ -15266,14 +15261,6 @@ msgstr ""
 
 #. module: account
 #. odoo-python
-#: code:addons/account/models/account_journal.py:0
-#, python-format
-msgid ""
-"This journal is associated with a payment method. You cannot archive it"
-msgstr ""
-
-#. module: account
-#. odoo-python
 #: code:addons/account/models/company.py:0
 #, python-format
 msgid "This journal is not in strict mode."
@@ -15388,8 +15375,6 @@ msgid ""
 "This will update all taxes and accounts based on the currently selected "
 "fiscal position."
 msgstr ""
-"این کار تمامی مالیات‌ها و حساب‌ها را بر اساس موقعیت مالی فعلی انتخاب‌شده "
-"به‌روزرسانی می‌کند."
 
 #. module: account
 #: model_terms:ir.actions.act_window,help:account.action_validate_account_move
@@ -15840,13 +15825,6 @@ msgid "Unit of Measure"
 msgstr "واحد اندازه‌گیری"
 
 #. module: account
-#. odoo-python
-#: code:addons/account/models/template_generic_coa.py:0
-#, python-format
-msgid "United States of America (Generic)"
-msgstr "ایالات متحده آمریکا (عمومی)"
-
-#. module: account
 #: model_terms:ir.ui.view,arch_db:account.view_account_payment_form
 msgid "Unmark as Sent"
 msgstr "علامت‌نزدن به‌عنوان ارسال‌شده"
@@ -15968,7 +15946,7 @@ msgstr "واحد اندازه گیری"
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.view_move_form
 msgid "Update Taxes and Accounts"
-msgstr "به‌روزرسانی مالیات‌ها و حساب‌ها"
+msgstr ""
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.res_config_settings_view_form
@@ -16483,8 +16461,6 @@ msgid ""
 "When targeting an expression for carryover, the label of that expression "
 "must start with _applied_carryover_"
 msgstr ""
-"هنگام هدف‌گذاری یک فرمول برای انتقال، برچسب آن فرمول باید با "
-"`_applied_carryover_` شروع شود."
 
 #. module: account
 #: model_terms:ir.actions.act_window,help:account.action_move_in_receipt_type
@@ -16878,8 +16854,6 @@ msgid ""
 "You can't reset to draft those journal entries. You need to request a "
 "cancellation instead."
 msgstr ""
-"شما نمی‌توانید این موارد دفترکل را به پیش‌نویس بازنشانی کنید. باید درخواست "
-"لغو آنها را بدهید."
 
 #. module: account
 #. odoo-python
@@ -16931,8 +16905,6 @@ msgid ""
 "You cannot create a fiscal position with a country outside of the selected "
 "country group."
 msgstr ""
-"شما نمی‌توانید یک موقعیت مالیاتی با کشوری خارج از گروه کشورهای انتخاب‌شده "
-"ایجاد کنید."
 
 #. module: account
 #. odoo-python
@@ -17317,8 +17289,6 @@ msgid ""
 "You cannot use the field carryover_target in an expression that does not "
 "have the label starting with _carryover_"
 msgstr ""
-"شما نمی‌توانید از فیلد هدف انتقال در یک فرمولی که برچسب آن با `_انتقال_` "
-"شروع نمی‌شود، استفاده کنید."
 
 #. module: account
 #. odoo-python
@@ -17672,7 +17642,7 @@ msgstr ""
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.view_account_payment_register_form
 msgid "has been applied."
-msgstr "اعمال شده است."
+msgstr ""
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.view_account_position_form

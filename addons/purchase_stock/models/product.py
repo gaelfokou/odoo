@@ -100,7 +100,7 @@ class SupplierInfo(models.Model):
             ('order_line.product_id', 'in',
              self.product_tmpl_id.product_variant_ids.ids),
             ('partner_id', 'in', self.partner_id.ids),
-        ], order='date_order desc')
+        ], order='date_order')
         for supplier in self:
             products = supplier.product_tmpl_id.product_variant_ids
             for purchase in purchases:

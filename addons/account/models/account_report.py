@@ -157,12 +157,12 @@ class AccountReport(models.Model):
             else:
                 report[field_name] = default_value
 
-    @api.depends('root_report_id', 'country_id')
+    @api.depends('root_report_id')
     def _compute_default_availability_condition(self):
         for report in self:
-            if report.root_report_id and report.country_id:
+            if report.root_report_id:
                 report.availability_condition = 'country'
-            elif not report.availability_condition:
+            else:
                 report.availability_condition = 'always'
 
     @api.depends('section_report_ids')

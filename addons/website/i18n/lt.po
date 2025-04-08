@@ -21,12 +21,10 @@
 # digitouch UAB <digitouchagencyeur@gmail.com>, 2023
 # Jonas Zinkevicius <jozi@odoo.com>, 2023
 # Linas Versada <linaskrisiukenas@gmail.com>, 2024
-# Sarunas M., 2024
+# Šarūnas Misevičius, 2024
+# Ramunė ViaLaurea <ramune.vialaurea@gmail.com>, 2024
 # Martin Trigaux, 2024
 # Antanas Muliuolis <an.muliuolis@gmail.com>, 2024
-# Ramunė ViaLaurea <ramune.vialaurea@gmail.com>, 2024
-# Gailius Kazlauskas <gailius@vialaurea.lt>, 2024
-# Aurelija Vitkauskiene, 2024
 # 
 msgid ""
 msgstr ""
@@ -34,7 +32,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-08-13 10:26+0000\n"
 "PO-Revision-Date: 2023-10-26 23:09+0000\n"
-"Last-Translator: Aurelija Vitkauskiene, 2024\n"
+"Last-Translator: Antanas Muliuolis <an.muliuolis@gmail.com>, 2024\n"
 "Language-Team: Lithuanian (https://app.transifex.com/odoo/teams/41243/lt/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -222,7 +220,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:website.list_website_public_pages
 #, python-format
 msgid "'. Showing results for '"
-msgstr "'. Rezultatai rodomi pagal '"
+msgstr ""
 
 #. module: website
 #. odoo-javascript
@@ -2965,7 +2963,7 @@ msgstr "Žymimas laukas"
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_product_catalog
 msgid "Cheese Onion Rings"
-msgstr "Sūrio-svogūnų žiedai"
+msgstr ""
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_product_catalog
@@ -3011,14 +3009,14 @@ msgstr ""
 #: code:addons/website/static/src/components/views/theme_preview.xml:0
 #, python-format
 msgid "Choose another theme"
-msgstr "Pasirinkite kitą temą"
+msgstr ""
 
 #. module: website
 #. odoo-javascript
 #: code:addons/website/static/src/client_actions/configurator/configurator.xml:0
 #, python-format
 msgid "Choose your favorite"
-msgstr "Pasirinkite mėgiamiausią"
+msgstr ""
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_countdown_options
@@ -3030,7 +3028,7 @@ msgstr "Apskritimas"
 #: model_terms:ir.ui.view,arch_db:website.s_blockquote_options
 #: model_terms:ir.ui.view,arch_db:website.snippet_options
 msgid "Classic"
-msgstr "Klasikinis"
+msgstr ""
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_countdown_options
@@ -3068,7 +3066,7 @@ msgstr ""
 #: code:addons/website/static/src/client_actions/website_preview/website_preview.xml:0
 #, python-format
 msgid "Click on"
-msgstr "Spragtelėkite"
+msgstr ""
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_embed_code
@@ -3096,7 +3094,7 @@ msgstr "Norėdami pasirinkti daugiau paveikslėlių, paspauskite"
 #: code:addons/website/static/src/client_actions/configurator/configurator.xml:0
 #, python-format
 msgid "Click to select"
-msgstr "Norėdami pasirinkti, spragtelėkite"
+msgstr ""
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.new_page_template_about_personal_s_numbers
@@ -3186,7 +3184,7 @@ msgstr ""
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_map_options
 msgid "Color filter"
-msgstr "Spalvų filtras"
+msgstr ""
 
 #. module: website
 #. odoo-javascript
@@ -10753,7 +10751,7 @@ msgstr ""
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.searchbar_input_snippet_options
 msgid "Suggestions"
-msgstr "Siūlymai"
+msgstr ""
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.s_countdown_options
@@ -13377,7 +13375,7 @@ msgstr ""
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.snippets
 msgid "content"
-msgstr "turinys"
+msgstr ""
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.snippets
