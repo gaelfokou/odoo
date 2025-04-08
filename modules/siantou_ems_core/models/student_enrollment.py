@@ -279,6 +279,14 @@ class StudentEnrollment(models.Model):
                 class_id.option_id.id,
                 class_id.level_id.id
             )
+
+        cycle_id = self.env['oe.school.course'].browse(vals['cycle_id'])
+        if not cycle_id:
+            field_of_study_id = self.env['siantou.ems.core.field_of_study'].search([('id', '=', vals['field_of_study_id'])], limit=1)
+            if field_of_study_id:
+                cycle_id = field_of_study_id.cycle_id
+                vals['cycle_id'] = cycle_id.id
+
         student_id.write({
             'year_id': vals['year_id'],
             'cycle_id': vals['cycle_id'],
@@ -292,7 +300,6 @@ class StudentEnrollment(models.Model):
             'batch_id': batch_id.id,
         })
 
-        cycle_id = self.env['oe.school.course'].browse(vals['cycle_id'])
         diplo_requis = self.env['oe.school.course.degree'].search([('cycle_ids', '=', vals['cycle_id'])])
         diplo_requis_ids = diplo_requis.ids
         if len(diplo_requis_ids) == 0:
