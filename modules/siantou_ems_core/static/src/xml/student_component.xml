@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Template for the Advanced Dashboard -->
-<templates id="siantou_ems_core_student_action" xml:space="preserve">
-    <t t-name="siantou_ems_core.student_action">
+<templates id="siantou_ems_core_student_component" xml:space="preserve">
+    <t t-name="siantou_ems_core.student_component">
         <div class="title">
             <h1>Étudiants</h1>
         </div>

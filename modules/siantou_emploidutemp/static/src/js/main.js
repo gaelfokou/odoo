@@ -1,32 +1,28 @@
 /** @odoo-module **/
 
 import { registry } from "@web/core/registry";
-import { download } from "@web/core/network/download";
-import { useService } from "@web/core/utils/hooks";
-import { useRef, useState, onRendered, onMounted, onWillUnmount } from "@odoo/owl";
-import { BlockUI } from "@web/core/ui/block_ui";
-const { Component, mount } = owl;
+const { Component, mount, xml, useRef, useState, onRendered, onMounted, onWillUnmount, onWillStart } = owl;
 
-console.log('Welcome to siantou_emploidutemp module');
+console.log('Welcome to DocumentScannerComponent component');
 
-var siantou_emploidutemp_document_scanner_width = 320;
-var siantou_emploidutemp_document_scanner_height = 0;
-var siantou_emploidutemp_document_scanner_streaming = false;
-var siantou_emploidutemp_document_scanner_video_element = null;
-var siantou_emploidutemp_document_scanner_canvas_element = null;
-var siantou_emploidutemp_document_photo_canvas_element = null;
-var siantou_emploidutemp_document_start_button = null;
-var siantou_emploidutemp_document_capture_button = null;
-var siantou_emploidutemp_document_stream = null;
+var document_scanner_width = 320;
+var document_scanner_height = 0;
+var document_scanner_streaming = false;
+var document_scanner_video_element = null;
+var document_scanner_canvas_element = null;
+var document_photo_canvas_element = null;
+var document_start_button = null;
+var document_capture_button = null;
+var document_stream = null;
 
-export class SiantouEmploidutempDocumentScannerComponent extends Component {
+export class DocumentScannerComponent extends Component {
 	delay = ms => new Promise(res => setTimeout(res, ms));
 	setup() {
 		this.state = useState({
 			count: 0,
 		});
 		onRendered(async () => {
-			if(!siantou_emploidutemp_document_scanner_video_element || !siantou_emploidutemp_document_scanner_canvas_element || !siantou_emploidutemp_document_photo_canvas_element || !siantou_emploidutemp_document_start_button || !siantou_emploidutemp_document_capture_button) {
+			if(!document_scanner_video_element || !document_scanner_canvas_element || !document_photo_canvas_element || !document_start_button || !document_capture_button) {
 				this.getElements();
 				console.log('Count :', this.state.count);
 				await this.delay(2000);
@@ -48,58 +44,58 @@ export class SiantouEmploidutempDocumentScannerComponent extends Component {
 		});
 	}
 	getElements() {
-		siantou_emploidutemp_document_scanner_video_element = document.getElementById('siantou_emploidutemp.video_element');
-		siantou_emploidutemp_document_scanner_canvas_element = document.getElementById('siantou_emploidutemp.canvas_element');
-		siantou_emploidutemp_document_photo_canvas_element = document.getElementById('siantou_emploidutemp.photo_element');
-		siantou_emploidutemp_document_start_button = document.getElementById('siantou_emploidutemp.start_button');
-		siantou_emploidutemp_document_capture_button = document.getElementById('siantou_emploidutemp.capture_button');
-		siantou_emploidutemp_document_stream = null;
+		document_scanner_video_element = document.getElementById('siantou_emploidutemp.video_element');
+		document_scanner_canvas_element = document.getElementById('siantou_emploidutemp.canvas_element');
+		document_photo_canvas_element = document.getElementById('siantou_emploidutemp.photo_element');
+		document_start_button = document.getElementById('siantou_emploidutemp.start_button');
+		document_capture_button = document.getElementById('siantou_emploidutemp.capture_button');
+		document_stream = null;
 		console.log('Get all elements');
 	}
 	resetElements() {
-		siantou_emploidutemp_document_scanner_streaming = false;
-		siantou_emploidutemp_document_scanner_video_element = null;
-		siantou_emploidutemp_document_scanner_canvas_element = null;
-		siantou_emploidutemp_document_photo_canvas_element = null;
-		siantou_emploidutemp_document_start_button = null;
-		siantou_emploidutemp_document_capture_button = null;
-		siantou_emploidutemp_document_stream = null;
+		document_scanner_streaming = false;
+		document_scanner_video_element = null;
+		document_scanner_canvas_element = null;
+		document_photo_canvas_element = null;
+		document_start_button = null;
+		document_capture_button = null;
+		document_stream = null;
 		console.log('Reset all elements');
 	}
 	addEventElements() {
-		if(siantou_emploidutemp_document_start_button) {
-			siantou_emploidutemp_document_start_button.disabled = false;
-			siantou_emploidutemp_document_start_button.addEventListener('click', this.startWebcam, false);
+		if(document_start_button) {
+			document_start_button.disabled = false;
+			document_start_button.addEventListener('click', this.startWebcam, false);
 			console.log('Add event listener on start button');
 		}
-		if(siantou_emploidutemp_document_scanner_video_element) {
-			siantou_emploidutemp_document_scanner_video_element.addEventListener('canplay', this.canPlayVideo, false);
+		if(document_scanner_video_element) {
+			document_scanner_video_element.addEventListener('canplay', this.canPlayVideo, false);
 			console.log('Add event listener on video element');
 		}
-		if(siantou_emploidutemp_document_capture_button) {
-			siantou_emploidutemp_document_capture_button.addEventListener('click', this.capturePhoto, false);
+		if(document_capture_button) {
+			document_capture_button.addEventListener('click', this.capturePhoto, false);
 			console.log('Add event listener on capture button');
 		}
 	}
 	removeEventElements() {
-		if(siantou_emploidutemp_document_start_button) {
-			siantou_emploidutemp_document_start_button.removeEventListener('click', this.startWebcam);
+		if(document_start_button) {
+			document_start_button.removeEventListener('click', this.startWebcam);
 			console.log('Remove event listener on start button');
 		}
-		if(siantou_emploidutemp_document_scanner_video_element) {
-			siantou_emploidutemp_document_scanner_video_element.removeEventListener('canplay', this.canPlayVideo);
+		if(document_scanner_video_element) {
+			document_scanner_video_element.removeEventListener('canplay', this.canPlayVideo);
 			console.log('Remove event listener on video element');
 		}
-		if(siantou_emploidutemp_document_capture_button) {
-			siantou_emploidutemp_document_capture_button.removeEventListener('click', this.capturePhoto);
+		if(document_capture_button) {
+			document_capture_button.removeEventListener('click', this.capturePhoto);
 			console.log('Remove event listener on capture button');
 		}
 	}
 	stopWebcam() {
-		if(siantou_emploidutemp_document_stream) {
-			var track = siantou_emploidutemp_document_stream.getTracks()[0];
+		if(document_stream) {
+			var track = document_stream.getTracks()[0];
 			track.stop();
-			siantou_emploidutemp_document_scanner_video_element.load();
+			document_scanner_video_element.load();
 			console.log('Successful stoping video streaming');
 		} else {
 			console.log('Error stoping video');
@@ -114,13 +110,13 @@ export class SiantouEmploidutempDocumentScannerComponent extends Component {
 				navigator.mediaDevices.mozGetUserMedia ||
 				navigator.mediaDevices.msGetUserMedia
 			);
-			siantou_emploidutemp_document_stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
-			if(siantou_emploidutemp_document_stream) {
-				if(siantou_emploidutemp_document_scanner_video_element) {
-					siantou_emploidutemp_document_scanner_video_element.srcObject = siantou_emploidutemp_document_stream;
-					siantou_emploidutemp_document_scanner_video_element.play();
-					siantou_emploidutemp_document_start_button.disabled = true;
-					siantou_emploidutemp_document_capture_button.disabled = false;
+			document_stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
+			if(document_stream) {
+				if(document_scanner_video_element) {
+					document_scanner_video_element.srcObject = document_stream;
+					document_scanner_video_element.play();
+					document_start_button.disabled = true;
+					document_capture_button.disabled = false;
 					console.log('Successful starting video streaming');
 				} else {
 					console.log('Error starting video');
@@ -133,47 +129,47 @@ export class SiantouEmploidutempDocumentScannerComponent extends Component {
 		}
 	}
 	canPlayVideo() {
-		if (!siantou_emploidutemp_document_scanner_streaming) {
-			siantou_emploidutemp_document_scanner_height = siantou_emploidutemp_document_scanner_video_element.videoHeight / (siantou_emploidutemp_document_scanner_video_element.videoWidth / siantou_emploidutemp_document_scanner_width);
+		if (!document_scanner_streaming) {
+			document_scanner_height = document_scanner_video_element.videoHeight / (document_scanner_video_element.videoWidth / document_scanner_width);
 
-			if (isNaN(siantou_emploidutemp_document_scanner_height)) {
-				siantou_emploidutemp_document_scanner_height = siantou_emploidutemp_document_scanner_width / (4 / 3);
+			if (isNaN(document_scanner_height)) {
+				document_scanner_height = document_scanner_width / (4 / 3);
 			}
 
-			siantou_emploidutemp_document_scanner_video_element.setAttribute('width', siantou_emploidutemp_document_scanner_width);
-			siantou_emploidutemp_document_scanner_video_element.setAttribute('height', siantou_emploidutemp_document_scanner_height);
-			siantou_emploidutemp_document_scanner_canvas_element.setAttribute('width', siantou_emploidutemp_document_scanner_width);
-			siantou_emploidutemp_document_scanner_canvas_element.setAttribute('height', siantou_emploidutemp_document_scanner_height);
-			siantou_emploidutemp_document_scanner_streaming = true;
+			document_scanner_video_element.setAttribute('width', document_scanner_width);
+			document_scanner_video_element.setAttribute('height', document_scanner_height);
+			document_scanner_canvas_element.setAttribute('width', document_scanner_width);
+			document_scanner_canvas_element.setAttribute('height', document_scanner_height);
+			document_scanner_streaming = true;
 		}
 	}
 	clearPhoto() {
-		var context = siantou_emploidutemp_document_scanner_canvas_element.getContext('2d');
+		var context = document_scanner_canvas_element.getContext('2d');
 		context.fillStyle = "#AAA";
-		context.fillRect(0, 0, siantou_emploidutemp_document_scanner_canvas_element.width, siantou_emploidutemp_document_scanner_canvas_element.height);
+		context.fillRect(0, 0, document_scanner_canvas_element.width, document_scanner_canvas_element.height);
 
-		const photoDataUrl = siantou_emploidutemp_document_scanner_canvas_element.toDataURL('image/png');
-		siantou_emploidutemp_document_photo_canvas_element.setAttribute('src', photoDataUrl);
-		/* siantou_emploidutemp_document_photo_canvas_element.src = photoDataUrl;
-		siantou_emploidutemp_document_photo_canvas_element.style.display = 'block'; */
+		const photoDataUrl = document_scanner_canvas_element.toDataURL('image/png');
+		document_photo_canvas_element.setAttribute('src', photoDataUrl);
+		/* document_photo_canvas_element.src = photoDataUrl;
+		document_photo_canvas_element.style.display = 'block'; */
 	}
 	capturePhoto() {
-		var context = siantou_emploidutemp_document_scanner_canvas_element.getContext('2d');
-		if (siantou_emploidutemp_document_scanner_width && siantou_emploidutemp_document_scanner_height) {
-			siantou_emploidutemp_document_scanner_canvas_element.width = siantou_emploidutemp_document_scanner_width;
-			siantou_emploidutemp_document_scanner_canvas_element.height = siantou_emploidutemp_document_scanner_height;
-			context.drawImage(siantou_emploidutemp_document_scanner_video_element, 0, 0, siantou_emploidutemp_document_scanner_width, siantou_emploidutemp_document_scanner_height);
+		var context = document_scanner_canvas_element.getContext('2d');
+		if (document_scanner_width && document_scanner_height) {
+			document_scanner_canvas_element.width = document_scanner_width;
+			document_scanner_canvas_element.height = document_scanner_height;
+			context.drawImage(document_scanner_video_element, 0, 0, document_scanner_width, document_scanner_height);
 
-			const photoDataUrl = siantou_emploidutemp_document_scanner_canvas_element.toDataURL('image/png');
-			siantou_emploidutemp_document_photo_canvas_element.setAttribute('src', photoDataUrl);
-			/* siantou_emploidutemp_document_photo_canvas_element.src = photoDataUrl;
-			siantou_emploidutemp_document_photo_canvas_element.style.display = 'block'; */
+			const photoDataUrl = document_scanner_canvas_element.toDataURL('image/png');
+			document_photo_canvas_element.setAttribute('src', photoDataUrl);
+			/* document_photo_canvas_element.src = photoDataUrl;
+			document_photo_canvas_element.style.display = 'block'; */
 		} else {
 			this.clearPhoto();
 		}
 	}
 }
 
-SiantouEmploidutempDocumentScannerComponent.template = 'siantou_emploidutemp.document_scanner'
+DocumentScannerComponent.template = 'siantou_emploidutemp.document_scanner'
 
-registry.category('actions').add('siantou_emploidutemp.document_scanner', SiantouEmploidutempDocumentScannerComponent)
+registry.category('actions').add('siantou_emploidutemp.document_scanner', DocumentScannerComponent)

@@ -4,13 +4,15 @@ import { useService } from "@web/core/utils/hooks";
 import { _t } from "@web/core/l10n/translation";
 const { Component, mount, xml, useRef, useState, onRendered, onMounted, onWillUnmount, onWillStart } = owl;
 
+console.log('Welcome to StudentComponent component');
+
 export class Span extends Component {
 	static template = xml`
 		<span t-esc="props.text"/>`;
 	// static components = { Exemple };
 }
 
-export class StudentAction extends Component {
+export class StudentComponent extends Component {
 	setup() {
 		super.setup();
     	this.action = useService("action");
@@ -41,6 +43,8 @@ export class StudentAction extends Component {
         });
     }
 }
-StudentAction.template = "siantou_ems_core.student_action";
-StudentAction.components = { Span }
-registry.category("actions").add("siantou_ems_core.student_action", StudentAction);
+
+StudentComponent.template = "siantou_ems_core.student_component";
+StudentComponent.components = { Span }
+
+registry.category("actions").add("siantou_ems_core.student_component", StudentComponent);
