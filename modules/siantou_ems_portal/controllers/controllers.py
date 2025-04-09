@@ -3,6 +3,8 @@ from odoo import http
 from odoo.http import request, content_disposition
 from odoo.addons.portal.controllers import portal
 from odoo.exceptions import UserError, ValidationError
+from odoo.addons.web.controllers.home import Home as WebHome
+from odoo.addons.web.controllers.utils import is_user_internal
 from datetime import date, datetime, timedelta, time
 from dateutil.relativedelta import relativedelta
 from .helpers import Helpers
@@ -44,6 +46,31 @@ STATUS_NOTIFICATION = {
 
 _logger = logging.getLogger(__name__)
 
+class Home(WebHome):
+    def _login_redirect(self, uid, redirect=None):
+        if not redirect and not is_user_internal(uid):
+            res_user_id = request.env['res.users'].search([
+                ('id', '=', uid),
+            ], limit=1)
+            user = None
+            is_user = None
+            if res_user_id.employee_id.id:
+                user = res_user_id.employee_id
+                if res_user_id.employee_id.is_teacher:
+                    is_user = 'is_teacher'
+                else:
+                    is_user = 'is_employee'
+            else:
+                user = request.env['oe.school.student'].sudo().search([('user_id', '=', res_user_id.id)], limit=1)
+                if user:
+                    is_user = 'is_student'
+            if user:
+                if is_user == 'is_teacher':
+                    redirect = '/my/request'
+                elif is_user == 'is_student':
+                    redirect = '/my/request'
+        return super()._login_redirect(uid, redirect=redirect)
+
 class PortalAccount(portal.CustomerPortal):
     def _prepare_home_portal_values(self, counters):
         values = super()._prepare_home_portal_values(counters)
@@ -62,6 +89,7 @@ class PortalAccount(portal.CustomerPortal):
             values['portal_schoolfee'] = 1 if is_user == 'is_student' else 0
             values['portal_paymenthistory'] = 1 if is_user == 'is_teacher' else 0
             values['portal_notification'] = 1 if is_user == 'is_teacher' else 0
+            values['portal_request'] = 0
         return values
 
     @http.route(['/my/timetable', '/my/timetable/page/<int:page>'], type='http', auth="user", website=True)
@@ -303,4 +331,11 @@ class PortalAccount(portal.CustomerPortal):
                                 {
                                     'notifications': notifications,
                                     'page_name': 'notification',
+                                })
+
+    @http.route(['/my/request'], type='http', auth="user", website=True)
+    def portal_request(self, **kw):
+        return request.render('siantou_ems_portal.siantou_ems_portal_my_home_request_views',
+                                {
+                                    'page_name': 'request',
                                 })

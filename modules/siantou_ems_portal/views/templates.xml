@@ -598,5 +598,74 @@
                 </t>
             </t>
         </template>
+
+        <!-- Données requises -->
+
+        <template id="siantou_ems_portal_request" name="siantou_ems_portal.request" inherit_id="portal.portal_breadcrumbs" priority="30">
+            <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
+                <li t-if="page_name == 'request'" t-attf-class="breadcrumb-item #{'active ' if request else ''}">
+                    <a t-if="request" t-attf-href="/my/request?{{ keep_query() }}">Données requises</a>
+                    <t t-else="">Données requises</t>
+                </li>
+            </xpath>
+        </template>
+
+        <template id="siantou_ems_portal_my_home_menu_request" name="siantou_ems_portal.request" inherit_id="portal.portal_my_home" priority="30">
+            <xpath expr="//div[hasclass('o_portal_docs')]" position="before">
+                <t t-set="portal_client_category_enable" t-value="True"/>
+            </xpath>
+            <div id="portal_client_category" position="inside">
+                <t t-call="portal.portal_docs_entry">
+                    <t t-set="icon" t-value="'/siantou_ems_portal/static/src/img/timesheet_grid.png'"/>
+                    <t t-set="title">Données requises</t>
+                    <t t-set="url" t-value="'/my/request'"/>
+                    <t t-set="text">Affichez vos requests</t>
+                    <t t-set="placeholder_count" t-value="'portal_request'"/>
+                </t>
+            </div>
+        </template>
+
+        <template id="siantou_ems_portal_my_home_request_views" name="siantou_ems_portal.data_request">
+            <t t-call="portal.portal_layout">
+                <t t-set="breadcrumbs_searchbar" t-value="True"/>
+                <t t-call="portal.portal_searchbar">
+                    <t t-set="title">Données requises</t>
+                </t>
+                <t t-call="portal.portal_table">
+                    <div id="wrap">
+                        <section>
+                            <div class="container">
+                                <form action="/webform/submit" enctype="multipart/form-data" class="o_mark_required" data-mark="*" data-model_name="" data-success-page="">
+                                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                    <!-- <div class="form-group row mb-3" style="width: 100%">
+                                        <div class="col-6">
+                                            <label class="form-label">Name</label>
+                                            <input id="name" type="text" class="form-control" name="name" required="1"/>
+                                        </div>
+                                    </div> -->
+                                    <div class="form-group row mb-3" style="width: 100%">
+                                        <div class="col-6">
+                                            <label class="form-label">N° de Téléphone</label>
+                                            <input id="phone" type="text" class="form-control" name="phone" required="1"/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row mb-3" style="width: 100%">
+                                        <div class="col-6">
+                                            <label class="form-label">E-mail</label>
+                                            <input id="email" type="email" class="form-control" name="email" required="1"/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row mb-3" style="width: 100%">
+                                        <div class="col-6">
+                                            <button type="submit" class="btn btn-primary">Submit</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </section>
+                    </div>
+                </t>
+            </t>
+        </template>
     </data>
 </odoo>

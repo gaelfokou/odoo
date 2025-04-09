@@ -15,12 +15,14 @@ class ResUsers(models.Model):
             if employee_id.is_teacher:
                 group_id = self.env.ref('base.group_portal')
                 user.write({
+                    'employee_id': employee_id.id,
                     'password' : password,
                     'groups_id': [(6, 0, [group_id.id])],
                 })
             else:
                 group_id = self.env.ref('base.group_user')
                 user.write({
+                    'employee_id': employee_id.id,
                     'password' : password,
                     'groups_id': [(6, 0, [group_id.id])],
                 })

@@ -188,6 +188,7 @@ class HrEmployee(models.Model):
                 group_id = self.env.ref('base.group_portal')
                 user_id = self.env['res.users'].with_context(no_reset_password=True).create({
                     'login': email,
+                    'employee_id': employee.id,
                     'name': employee.name,
                     'password' : password,
                     'groups_id': [(6, 0, [group_id.id])],
@@ -195,6 +196,7 @@ class HrEmployee(models.Model):
             else:
                 user_id = self.env['res.users'].with_context(no_reset_password=True).create({
                     'login': email,
+                    'employee_id': employee.id,
                     'name': employee.name,
                     'password' : password,
                 })
