@@ -76,15 +76,16 @@ class PortalAccount(portal.CustomerPortal):
         values = super()._prepare_home_portal_values(counters)
         if 'portal_timetable' in counters:
             is_user = None
-            if http.request.env.user.employee_id.id:
-                if http.request.env.user.employee_id.is_teacher:
-                    is_user = 'is_teacher'
+            if http.request.env.user.partner_id.id:
+                if http.request.env.user.partner_id.employee.id:
+                    if http.request.env.user.partner_id.employee.is_teacher:
+                        is_user = 'is_teacher'
+                    else:
+                        is_user = 'is_employee'
                 else:
-                    is_user = 'is_employee'
-            else:
-                user = http.request.env['oe.school.student'].sudo().search([('user_id', '=', http.request.env.user.id)], limit=1)
-                if user:
-                    is_user = 'is_student'
+                    user = http.request.env['oe.school.student'].sudo().search([('user_id', '=', http.request.env.user.id)], limit=1)
+                    if user:
+                        is_user = 'is_student'
             values['portal_timetable'] = 1
             values['portal_schoolfee'] = 1 if is_user == 'is_student' else 0
             values['portal_paymenthistory'] = 1 if is_user == 'is_teacher' else 0
@@ -195,16 +196,17 @@ class PortalAccount(portal.CustomerPortal):
     def portal_timetable_download(self, page=1, search='', search_in='all', **kw):
         user = None
         is_user = None
-        if http.request.env.user.employee_id.id:
-            user = http.request.env.user.employee_id
-            if http.request.env.user.employee_id.is_teacher:
-                is_user = 'is_teacher'
+        if http.request.env.user.partner_id.id:
+            if http.request.env.user.partner_id.employee.id:
+                user = http.request.env.user.partner_id.employee
+                if http.request.env.user.partner_id.employee.is_teacher:
+                    is_user = 'is_teacher'
+                else:
+                    is_user = 'is_employee'
             else:
-                is_user = 'is_employee'
-        else:
-            user = http.request.env['oe.school.student'].sudo().search([('user_id', '=', http.request.env.user.id)], limit=1)
-            if user:
-                is_user = 'is_student'
+                user = http.request.env['oe.school.student'].sudo().search([('user_id', '=', http.request.env.user.id)], limit=1)
+                if user:
+                    is_user = 'is_student'
         if user:
             report_name = 'siantou_ems_core.report_timetable'
             report_action = 'siantou_ems_core.action_report_timetable'
@@ -344,16 +346,17 @@ class PortalAccount(portal.CustomerPortal):
     def portal_request_submit(self, **kw):
         user = None
         is_user = None
-        if request.env.user.employee_id.id:
-            user = request.env.user.employee_id
-            if request.env.user.employee_id.is_teacher:
-                is_user = 'is_teacher'
+        if http.request.env.user.partner_id.id:
+            if request.env.user.partner_id.employee.id:
+                user = request.env.user.partner_id.employee
+                if request.env.user.partner_id.employee.is_teacher:
+                    is_user = 'is_teacher'
+                else:
+                    is_user = 'is_employee'
             else:
-                is_user = 'is_employee'
-        else:
-            user = request.env['oe.school.student'].sudo().search([('user_id', '=', request.env.user.id)], limit=1)
-            if user:
-                is_user = 'is_student'
+                user = request.env['oe.school.student'].sudo().search([('user_id', '=', request.env.user.id)], limit=1)
+                if user:
+                    is_user = 'is_student'
         if user:
             user.sudo().write({
                 'other_phone': kw.get('phone'),

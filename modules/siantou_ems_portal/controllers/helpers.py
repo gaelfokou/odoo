@@ -45,19 +45,20 @@ class Helpers:
         search_timetables = []
         user = None
         is_user = None
-        if http.request.env.user.employee_id.id:
-            user = http.request.env.user.employee_id
-            if http.request.env.user.employee_id.is_teacher:
-                is_user = 'is_teacher'
+        if http.request.env.user.partner_id.id:
+            if http.request.env.user.partner_id.employee.id:
+                user = http.request.env.user.partner_id.employee
+                if http.request.env.user.partner_id.employee.is_teacher:
+                    is_user = 'is_teacher'
+                else:
+                    is_user = 'is_employee'
             else:
-                is_user = 'is_employee'
-        else:
-            user = http.request.env['oe.school.student'].sudo().search([('user_id', '=', http.request.env.user.id)], limit=1)
-            if user:
-                is_user = 'is_student'
+                user = http.request.env['oe.school.student'].sudo().search([('user_id', '=', http.request.env.user.id)], limit=1)
+                if user:
+                    is_user = 'is_student'
         if user:
             if is_user == 'is_teacher':
-                user = http.request.env.user.employee_id
+                user = http.request.env.user.partner_id.employee
                 search_domain.append(('employee_id', '=', user.id))
 
                 timetables = http.request.env['siantou.ems.timetable.timetable'].sudo().search(search_domain, order=order)
@@ -121,14 +122,15 @@ class Helpers:
         order = 'date_from asc'
 
         search_paymenthistories = []
-        if http.request.env.user.employee_id.id:
-            if http.request.env.user.employee_id.is_teacher:
-                user = http.request.env.user.employee_id
-                search_domain.append(('employee_id', '=', user.id))
+        if http.request.env.user.partner_id.id:
+            if http.request.env.user.partner_id.employee.id:
+                if http.request.env.user.partner_id.employee.is_teacher:
+                    user = http.request.env.user.partner_id.employee
+                    search_domain.append(('employee_id', '=', user.id))
 
-                paymenthistories = http.request.env['hr.payslip'].sudo().search(search_domain, order=order)
-                paymenthistories = list(paymenthistories)
-                search_paymenthistories = paymenthistories
+                    paymenthistories = http.request.env['hr.payslip'].sudo().search(search_domain, order=order)
+                    paymenthistories = list(paymenthistories)
+                    search_paymenthistories = paymenthistories
 
         _logger.info(f'----------- tototototototo search_paymenthistories {search_paymenthistories} -----------')
 
@@ -146,14 +148,15 @@ class Helpers:
         order = 'date asc'
 
         search_notifications = []
-        if http.request.env.user.employee_id.id:
-            if http.request.env.user.employee_id.is_teacher:
-                user = http.request.env.user.employee_id
-                search_domain.append(('employee_id', '=', user.id))
+        if http.request.env.user.partner_id.id:
+            if http.request.env.user.partner_id.employee.id:
+                if http.request.env.user.partner_id.employee.is_teacher:
+                    user = http.request.env.user.partner_id.employee
+                    search_domain.append(('employee_id', '=', user.id))
 
-                notifications = http.request.env['siantou.ems.timetable.notification'].sudo().search(search_domain, order=order)
-                notifications = list(notifications)
-                search_notifications = notifications
+                    notifications = http.request.env['siantou.ems.timetable.notification'].sudo().search(search_domain, order=order)
+                    notifications = list(notifications)
+                    search_notifications = notifications
 
         _logger.info(f'----------- tototototototo search_notifications {search_notifications} -----------')
 
