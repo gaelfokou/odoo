@@ -645,13 +645,13 @@
                                     </div> -->
                                     <div class="row mb-3" style="width: 100%">
                                         <div class="col-6">
-                                            <label class="form-label">Numéro de téléphone privé</label>
+                                            <label class="form-label">Numéro de téléphone</label>
                                             <input id="phone" type="text" class="form-control" name="phone" t-att-value="phone" required="1"/>
                                         </div>
                                     </div>
                                     <div class="row mb-3" style="width: 100%">
                                         <div class="col-6">
-                                            <label class="form-label">E-mail</label>
+                                            <label class="form-label">Adresse e-mail</label>
                                             <input id="email" type="email" class="form-control" name="email" t-att-value="email" required="1"/>
                                         </div>
                                     </div>

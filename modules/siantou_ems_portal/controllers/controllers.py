@@ -65,9 +65,15 @@ class Home(WebHome):
                     is_user = 'is_student'
             if user:
                 if is_user == 'is_student':
-                    if not user.private_phone or not user.private_phone.strip():
+                    if not user.private_phone:
                         redirect = '/my/request'
-                    if not user.private_email or not user.private_email.strip():
+                    if not user.private_email:
+                        redirect = '/my/request'
+                    if not user.date_naissance:
+                        redirect = '/my/request'
+                    if not user.nationalite.id:
+                        redirect = '/my/request'
+                    if not user.city_id.id:
                         redirect = '/my/request'
         return super()._login_redirect(uid, redirect=redirect)
 
@@ -364,10 +370,22 @@ class PortalAccount(portal.CustomerPortal):
             user = http.request.env.user.student_id
             is_user = 'is_student'
         if user:
-            user.sudo().write({
-                'private_phone': kw.get('phone'),
-                'private_email': kw.get('email'),
-            })
-            return http.request.redirect('/my')
-        else:
-            return http.request.redirect('/my/request')
+            if is_user == 'is_student':
+                if not kw.get('phone'):
+                    return http.request.redirect('/my/request')
+                if not kw.get('email'):
+                    return http.request.redirect('/my/request')
+                if not kw.get('birthday'):
+                    return http.request.redirect('/my/request')
+                if not kw.get('country'):
+                    return http.request.redirect('/my/request')
+                if not kw.get('city'):
+                    return http.request.redirect('/my/request')
+                user.sudo().write({
+                    'private_phone': kw.get('phone'),
+                    'private_email': kw.get('email'),
+                    'date_naissance': kw.get('birthday'),
+                    'nationalite': kw.get('country'),
+                    'city_id': kw.get('city'),
+                })
+        return http.request.redirect('/my')

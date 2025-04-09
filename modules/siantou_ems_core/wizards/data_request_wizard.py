@@ -17,7 +17,7 @@ class DataRequestWizard(models.TransientModel):
     )
 
     phone = fields.Char(
-        string='N° de téléphone',
+        string='Numéro de téléphone',
         required=True,
     )
 
