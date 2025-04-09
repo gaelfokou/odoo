@@ -6,6 +6,17 @@ from odoo import models, fields, api, tools, _
 class ResUsers(models.Model):
     _inherit = 'res.users'
 
+    employee_id = fields.Many2one(
+        'hr.employee',
+        'Enseignant',
+        ondelete='cascade'
+    )
+    student_id = fields.Many2one(
+        'oe.school.student',
+        string='Étudiant',
+        ondelete='cascade',
+    )
+
     def create_user_employee_or_student(self, user):
         partner_id = user.partner_id
         company_id = None
@@ -26,12 +37,14 @@ class ResUsers(models.Model):
                 user.write({
                     'password' : password,
                     'groups_id': [(6, 0, [group_id.id])],
+                    'employee_id': employee_id.id,
                 })
             else:
                 group_id = self.env.ref('base.group_user')
                 user.write({
                     'password' : password,
                     'groups_id': [(6, 0, [group_id.id])],
+                    'employee_id': employee_id.id,
                 })
             partner_id.write({
                 'name': employee_id.name,
@@ -40,7 +53,7 @@ class ResUsers(models.Model):
                 'is_company': False,
                 'company_id': company_id.id,
                 'user_id': user.id,
-                'employee': employee_id.id,
+                'employee': True,
             })
         else:
             student_id = self.env['oe.school.student'].search([
@@ -55,6 +68,7 @@ class ResUsers(models.Model):
                 user.write({
                     'password' : password,
                     'groups_id': [(6, 0, [group_id.id])],
+                    'student_id': student_id.id,
                 })
                 partner_id.write({
                     'name': student_id.name,
@@ -63,6 +77,7 @@ class ResUsers(models.Model):
                     'is_company': False,
                     'company_id': company_id.id,
                     'user_id': user.id,
+                    'employee': False,
                 })
 
     @api.model
