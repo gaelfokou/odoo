@@ -65,9 +65,9 @@ class Home(WebHome):
                 if user:
                     is_user = 'is_student'
             if user:
-                if not user.other_phone or not user.other_phone.strip():
+                if not user.num_tel or not user.num_tel.strip():
                     redirect = '/my/request'
-                if not user.other_email or not user.other_email.strip():
+                if not user.private_email or not user.private_email.strip():
                     redirect = '/my/request'
         return super()._login_redirect(uid, redirect=redirect)
 
@@ -352,8 +352,8 @@ class PortalAccount(portal.CustomerPortal):
             is_user = 'is_student'
         if user:
             user.sudo().write({
-                'other_phone': kw.get('phone'),
-                'other_email': kw.get('email'),
+                'num_tel': kw.get('phone'),
+                'private_email': kw.get('email'),
             })
             return request.redirect('/my')
         else:

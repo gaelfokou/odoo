@@ -60,8 +60,7 @@
                                     <field name="situat_matri"  widget="radio"/>
                                     <field name="email" widget="email"/>
                                     <field name="num_tel" widget="phone"/>
-                                    <field name="other_phone"/>
-                                    <field name="other_email"/>
+                                    <field name="private_email"/>
                                     <field name="user_id"/>
                                 </group>
                                 <group colspan="2">

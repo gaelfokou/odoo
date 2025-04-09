@@ -24,8 +24,7 @@ class Student(models.Model):
     last_name = fields.Char(string="Nom(s)", required=True)
     first_name = fields.Char(string="Prénom(s)")
     matricule = fields.Char(string="Matricule")
-    other_phone = fields.Char(string="Autre n° de téléphone")
-    other_email = fields.Char(string="Autre e-mail")
+    private_email = fields.Char(string="Autre e-mail")
     student_enroll_ids = fields.One2many(
         'oe.school.student.enrollment',
         'student_id',
@@ -94,7 +93,7 @@ class Student(models.Model):
     is_autre_pays = fields.Boolean(string="Autre pays ?", default=False)
     lieu_residence = fields.Char(string="Lieu de résidence")
     email = fields.Char(string="E-mail")
-    num_tel = fields.Char(string="N° de Téléphone")
+    num_tel = fields.Char(string="N° de téléphone")
     level_id = fields.Many2one(
         'siantou.ems.core.level',
         string="Niveau",
