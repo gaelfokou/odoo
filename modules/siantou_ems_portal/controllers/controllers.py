@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 from odoo import http
-from odoo.http import request, content_disposition
 from odoo.addons.portal.controllers import portal
 from odoo.exceptions import UserError, ValidationError
 from odoo.addons.web.controllers.home import Home as WebHome
@@ -49,7 +48,7 @@ _logger = logging.getLogger(__name__)
 class Home(WebHome):
     def _login_redirect(self, uid, redirect=None):
         if not redirect and not is_user_internal(uid):
-            res_user_id = request.env['res.users'].search([
+            res_user_id = http.request.env['res.users'].search([
                 ('id', '=', uid),
             ], limit=1)
             user = None
@@ -61,14 +60,15 @@ class Home(WebHome):
                 else:
                     is_user = 'is_employee'
             else:
-                user = request.env['oe.school.student'].sudo().search([('user_id', '=', res_user_id.id)], limit=1)
+                user = http.request.env['oe.school.student'].sudo().search([('user_id', '=', res_user_id.id)], limit=1)
                 if user:
                     is_user = 'is_student'
             if user:
-                if not user.num_tel or not user.num_tel.strip():
-                    redirect = '/my/request'
-                if not user.private_email or not user.private_email.strip():
-                    redirect = '/my/request'
+                if is_user == 'is_student':
+                    if not user.num_tel or not user.num_tel.strip():
+                        redirect = '/my/request'
+                    if not user.private_email or not user.private_email.strip():
+                        redirect = '/my/request'
         return super()._login_redirect(uid, redirect=redirect)
 
 class PortalAccount(portal.CustomerPortal):
@@ -177,7 +177,7 @@ class PortalAccount(portal.CustomerPortal):
                 timetable['start_time'] = Helpers.convert_float_to_time(timetable['start_time'])
                 timetable['end_time'] = Helpers.convert_float_to_time(timetable['end_time'])
             timetables = Helpers.paginate_list(timetables, 10, page)
-        return request.render(f'siantou_ems_portal.siantou_ems_portal_my_home_timetable_{view_type}_views',
+        return http.request.render(f'siantou_ems_portal.siantou_ems_portal_my_home_timetable_{view_type}_views',
                                 {
                                     'timetables': timetables['pages'],
                                     'timetable_pages_total': timetables['pages_total'],
@@ -205,19 +205,19 @@ class PortalAccount(portal.CustomerPortal):
         if user:
             report_name = 'siantou_ems_core.report_timetable'
             report_action = 'siantou_ems_core.action_report_timetable'
-            pdf_report = request.env['ir.actions.report'].sudo()._get_report_from_name(report_action)
+            pdf_report = http.request.env['ir.actions.report'].sudo()._get_report_from_name(report_action)
             domain = []
             if is_user == 'is_teacher':
                 domain.append(('employee_id', '=', user.id))
             elif is_user == 'is_student':
                 domain.append(('level_id', '=', user.level_id.id))
                 domain.append(('field_of_study_id', '=', user.field_of_study_id.id))
-            timetable_ids = request.env['siantou.ems.timetable.timetable'].sudo().search(domain, order='date asc')
+            timetable_ids = http.request.env['siantou.ems.timetable.timetable'].sudo().search(domain, order='date asc')
             timetable_ids = list(timetable_ids)
             if len(timetable_ids) > 0:
                 n = len(timetable_ids)
                 timetable_id = timetable_ids[n - 1]
-                report_data = request.env['siantou.ems.timetable.timetable_print_wizard'].sudo().create({
+                report_data = http.request.env['siantou.ems.timetable.timetable_print_wizard'].sudo().create({
                     'semester_id': timetable_id.semester_id.id,
                     'group_id': timetable_id.group_id.id,
                 })
@@ -231,9 +231,9 @@ class PortalAccount(portal.CustomerPortal):
         headers = [
             ('Content-Type', 'application/pdf'),
             ('Content-Length', len(pdf)),
-            ('Content-Disposition', content_disposition(filename)),
+            ('Content-Disposition', http.content_disposition(filename)),
         ]
-        return request.make_response(
+        return http.request.make_response(
             pdf,
             headers=headers,
             status=200
@@ -261,7 +261,7 @@ class PortalAccount(portal.CustomerPortal):
             total_amount += schoolfee['amount']
             total_structure_amount += schoolfee['structure_frais_amount_total']
             total_rest_amount = total_structure_amount - total_amount
-        return request.render('siantou_ems_portal.siantou_ems_portal_my_home_schoolfee_views',
+        return http.request.render('siantou_ems_portal.siantou_ems_portal_my_home_schoolfee_views',
                                 {
                                     'schoolfees': schoolfees,
                                     'page_name': 'schoolfee',
@@ -293,7 +293,7 @@ class PortalAccount(portal.CustomerPortal):
             paymenthistories.append(paymenthistory)
             total_amount += paymenthistory['amount']
             total_number_of_hours += paymenthistory['number_of_hours']
-        return request.render('siantou_ems_portal.siantou_ems_portal_my_home_paymenthistory_views',
+        return http.request.render('siantou_ems_portal.siantou_ems_portal_my_home_paymenthistory_views',
                                 {
                                     'paymenthistories': paymenthistories,
                                     'page_name': 'paymenthistory',
@@ -324,7 +324,7 @@ class PortalAccount(portal.CustomerPortal):
             notification['message'] = search_notification.message
             notification['status'] = STATUS_NOTIFICATION[search_notification.status]
             notifications.append(notification)
-        return request.render('siantou_ems_portal.siantou_ems_portal_my_home_notification_views',
+        return http.request.render('siantou_ems_portal.siantou_ems_portal_my_home_notification_views',
                                 {
                                     'notifications': notifications,
                                     'page_name': 'notification',
@@ -332,8 +332,21 @@ class PortalAccount(portal.CustomerPortal):
 
     @http.route(['/my/request'], type='http', auth="user", website=True)
     def portal_request(self, **kw):
-        return request.render('siantou_ems_portal.siantou_ems_portal_my_home_request_views',
+        num_tel = None
+        private_email = None
+        user = None
+        is_user = None
+        if http.request.env.user.employee_id.id:
+            user = http.request.env.user.employee_id
+        elif http.request.env.user.student_id.id:
+            user = http.request.env.user.student_id
+        if user:
+            num_tel = user.num_tel
+            private_email = user.private_email
+        return http.request.render('siantou_ems_portal.siantou_ems_portal_my_home_request_views',
                                 {
+                                    'phone': num_tel,
+                                    'email': private_email,
                                     'page_name': 'request',
                                 })
 
@@ -341,9 +354,9 @@ class PortalAccount(portal.CustomerPortal):
     def portal_request_submit(self, **kw):
         user = None
         is_user = None
-        if request.env.user.employee_id.id:
-            user = request.env.user.employee_id
-            if request.env.user.employee_id.is_teacher:
+        if http.request.env.user.employee_id.id:
+            user = http.request.env.user.employee_id
+            if http.request.env.user.employee_id.is_teacher:
                 is_user = 'is_teacher'
             else:
                 is_user = 'is_employee'
@@ -355,6 +368,6 @@ class PortalAccount(portal.CustomerPortal):
                 'num_tel': kw.get('phone'),
                 'private_email': kw.get('email'),
             })
-            return request.redirect('/my')
+            return http.request.redirect('/my')
         else:
-            return request.redirect('/my/request')
+            return http.request.redirect('/my/request')

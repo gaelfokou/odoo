@@ -6,7 +6,6 @@ from odoo import http
 import json
 import base64
 import logging
-from odoo.http import request, content_disposition, Response
 from odoo.exceptions import ValidationError  # Import the ValidationError class
 import requests
 
@@ -17,21 +16,21 @@ class DeSchool(http.Controller):
     @http.route(['/api/v1/niveaux'], type="http", methods=['GET'], cors="*", auth="none")
     def list_niveaux(self, **kw):
         data = []
-        niveaux = request.env['siantou.ems.core.level'].sudo().search([])
+        niveaux = http.request.env['siantou.ems.core.level'].sudo().search([])
         for niv in niveaux:
             data.append({
                 'id': niv.id,
                 'name': niv.name,
             })
 
-        return Response(
+        return http.Response(
             json.dumps(data)
         )
 
     @http.route('/api/v1/pays', type="http", methods=['GET'], cors="*", auth="none")
     def list_country(self, **kwargs):
         datas = []
-        pays = request.env['siantou.ems.core.country'].sudo().search([])
+        pays = http.request.env['siantou.ems.core.country'].sudo().search([])
         for p in pays:
             datas.append({
                 'id': p.id,
@@ -39,43 +38,43 @@ class DeSchool(http.Controller):
                 'name': p.name,
             })
 
-        return Response(
+        return http.Response(
             json.dumps(datas)
         )
 
     @http.route('/api/v1/pays/<int:id_country>/regions', type="http", methods=['GET'], cors="*", auth="none")
     def list_region_of_country(self, id_country):
         datas = []
-        p = request.env['siantou.ems.core.country'].sudo().search([('id', '=', id_country)], limit=1)
+        p = http.request.env['siantou.ems.core.country'].sudo().search([('id', '=', id_country)], limit=1)
         if len(p)>0:
-            regions = request.env['siantou.ems.core.region'].sudo().search([('country_id', '=', p.id)])
+            regions = http.request.env['siantou.ems.core.region'].sudo().search([('country_id', '=', p.id)])
             datas =[{'id':reg.id, 'name': reg.name} for reg in regions]
 
-        return Response(
+        return http.Response(
             json.dumps(datas)
         )
 
     @http.route('/api/v1/regions/<int:id_region>/cities', type="http", methods=['GET'], cors="*", auth="none")
     def list_cities_of_region(self, id_region):
         datas = []
-        region_id = request.env['siantou.ems.core.region'].sudo().search([('id','=',id_region)], limit=1)
+        region_id = http.request.env['siantou.ems.core.region'].sudo().search([('id','=',id_region)], limit=1)
         if region_id:
-            cities = request.env['siantou.ems.core.city'].sudo().search([('region_id', '=', region_id.id)])
+            cities = http.request.env['siantou.ems.core.city'].sudo().search([('region_id', '=', region_id.id)])
             datas=[{'id':city.id, 'name': city.name} for city in cities]
 
-        return Response(
+        return http.Response(
             json.dumps(datas)
         )
 
     @http.route('/api/v1/cities/<int:id_city>/quarters', type="http", methods=['GET'], cors="*", auth="none")
     def list_quarters_of_city(self, id_city):
         datas = []
-        city = request.env['siantou.ems.core.city'].sudo().search([('id', '=', id_city)], limit=1)
+        city = http.request.env['siantou.ems.core.city'].sudo().search([('id', '=', id_city)], limit=1)
         if len(city)>0:
-            quarters = request.env['siantou.ems.core.quarter'].sudo().search([('city_id', '=', city.id)])
+            quarters = http.request.env['siantou.ems.core.quarter'].sudo().search([('city_id', '=', city.id)])
             datas=[{'id':quart.id, 'name': quart.name} for quart in quarters]
 
-        return Response(
+        return http.Response(
             json.dumps(datas)
         )
 
@@ -83,13 +82,13 @@ class DeSchool(http.Controller):
     def list_courses(self, **kw):
         data = []
         cycles = []
-        year_id = request.env['siantou.ems.core.year'].sudo().search(
+        year_id = http.request.env['siantou.ems.core.year'].sudo().search(
             [('is_active', '=', True),],
             limit=1
         )
 
         #=== récupération de la session d'admission active de l'année active
-        session_ids = request.env['siantou.session'].sudo().search(
+        session_ids = http.request.env['siantou.session'].sudo().search(
             [
                 ('is_active', '=', True),
                 ('year_id', '=', year_id.id),
@@ -105,8 +104,8 @@ class DeSchool(http.Controller):
         if cycles:
             for cycle in cycles:
                 niveaux = cycle.level_ids
-                filieres = request.env['siantou.ems.core.field_of_study'].sudo().search([('cycle_id', '=', cycle.id)])
-                diplo_requis = request.env['oe.school.course.degree'].sudo().search([('cycle_id', '=', cycle.id)])
+                filieres = http.request.env['siantou.ems.core.field_of_study'].sudo().search([('cycle_id', '=', cycle.id)])
+                diplo_requis = http.request.env['oe.school.course.degree'].sudo().search([('cycle_id', '=', cycle.id)])
 
                 if len(diplo_requis)>0 and len(filieres)>0 and len(niveaux)>0:
                     data.append({
@@ -120,31 +119,31 @@ class DeSchool(http.Controller):
 
         _logger.info(data) 
 
-        return Response(
+        return http.Response(
             json.dumps(data)
         )
 
     @http.route('/api/v1/filieres/<int:id>/specialites', type="http", methods=['GET'], cors="*", auth="none")
     def list_specialites_of_filiere(self, id):
         datas = []
-        field_of_study_id = request.env['siantou.ems.core.field_of_study'].sudo().search([('id', '=', id)], limit=1)
+        field_of_study_id = http.request.env['siantou.ems.core.field_of_study'].sudo().search([('id', '=', id)], limit=1)
         if field_of_study_id:
-            options = request.env['siantou.ems.core.specialty'].sudo().search([('field_of_study_id', '=', field_of_study_id.id)])
+            options = http.request.env['siantou.ems.core.specialty'].sudo().search([('field_of_study_id', '=', field_of_study_id.id)])
             datas=[{'id':opt.id, 'name': opt.name} for opt in options]
         _logger.info(datas)
-        return Response(
+        return http.Response(
             json.dumps(datas)
         )
 
     @http.route('/api/v1/<int:id>/etudiants', type="http", methods=['GET'], cors="*", auth="none")
     def get_etudiant_by_id(self, id,**kw):
         try:
-            etudiant = request.env['oe.school.student.enrollment'].sudo().search([('id', '=', id)], limit=1)
-            code_bank_paie_frais = request.env['siantou.ems.fee.config.bank'].sudo().search([('active', '=', True)], limit=1)
+            etudiant = http.request.env['oe.school.student.enrollment'].sudo().search([('id', '=', id)], limit=1)
+            code_bank_paie_frais = http.request.env['siantou.ems.fee.config.bank'].sudo().search([('active', '=', True)], limit=1)
             _logger.info(f'Étudiant: {etudiant}')
             _logger.info(f'numero: {code_bank_paie_frais.numero}')
             if etudiant:
-                return Response(
+                return http.Response(
                     json.dumps({
                         'status': 'success',
                         'etudiant_id':etudiant.id,
@@ -163,14 +162,14 @@ class DeSchool(http.Controller):
                     })
                 )
             else:
-                return Response(
+                return http.Response(
                     json.dumps({
                         'status': 'error',
                         'data': f"Erreur lors de la recuperation de l'etudiant"
                     })
                 )
         except Exception as e:
-            return Response(
+            return http.Response(
                 json.dumps({
                     'status': 'error',
                     'data': f"{e.args}"
@@ -182,7 +181,7 @@ class DeSchool(http.Controller):
         current_year = datetime.now().year
         # Generate two random alphabet letters
         letters = ''.join(random.choices(string.ascii_uppercase, k=2))
-        student_enroll = request.env['oe.school.student.enrollment'].sudo().search([])
+        student_enroll = http.request.env['oe.school.student.enrollment'].sudo().search([])
         # Combine year and letters
         nbre = len(student_enroll) + 1
         code = f"{current_year}{letters}0000{nbre}"
@@ -190,7 +189,7 @@ class DeSchool(http.Controller):
 
     def create_enroll_document(self, candidat, file):
         # Création des document pour chaque candidature
-        document_obj = request.env['oe.school.student.enrollment.file']
+        document_obj = http.request.env['oe.school.student.enrollment.file']
 
         if file:
             dmd_id = document_obj.create({
@@ -198,7 +197,7 @@ class DeSchool(http.Controller):
             })
             file_dmd = file
             mime_type = file_dmd.content_type
-            attachment_id = request.env['ir.attachment'].sudo().create({
+            attachment_id = http.request.env['ir.attachment'].sudo().create({
                 'name': "%s-CANDIDAT-%s" % (candidat.code_enrol),
                 'type': 'binary',
                 'datas': base64.b64encode(file_dmd.read()),
@@ -219,10 +218,10 @@ class DeSchool(http.Controller):
     def upload_doc_etudiant_by_id(self, id,**kw):
         documents = []
         try:
-            etudiant = request.env['oe.school.student.enrollment'].sudo().search([('id', '=', id)], limit=1)
+            etudiant = http.request.env['oe.school.student.enrollment'].sudo().search([('id', '=', id)], limit=1)
             _logger.info(f'Étudiant: {etudiant}')
 
-            files = request.httprequest.files.getlist('file')
+            files = http.request.httprequest.files.getlist('file')
             _logger.info(request.httprequest.files)
             _logger.info(files)
             if etudiant:
@@ -230,7 +229,7 @@ class DeSchool(http.Controller):
                     for file in files:
                         _logger.info(file.filename)
                         file_name = file.filename
-                        attachment_id = request.env['ir.attachment'].sudo().create({
+                        attachment_id = http.request.env['ir.attachment'].sudo().create({
                             'name': file_name,
                             'type': 'binary',
                             'datas': base64.b64encode(file.read()),
@@ -248,21 +247,21 @@ class DeSchool(http.Controller):
                 #         documents.append(dmd_id.id)
                 # _logger.info(documents)
                 # etudiant.files_ids = [(6, 0, documents)]
-                return Response(
+                return http.Response(
                     json.dumps({
                         'status': 'success',
                         'etudiant_id':etudiant.id,
                     })
                 )
             else:
-                return Response(
+                return http.Response(
                     json.dumps({
                         'status': 'error',
                         'data': f"Erreur lors de la savegarde des documents"
                     })
                 )
         except Exception as e:
-            return Response(
+            return http.Response(
                 json.dumps({
                     'status': 'error',
                     'data': f"{e.args}"
@@ -283,7 +282,7 @@ class DeSchool(http.Controller):
             #=== Get matricule generated
             code_enrol = self.generate_code()
             while is_existing:
-                etudiant = request.env['oe.school.student.enrollment'].sudo().search(
+                etudiant = http.request.env['oe.school.student.enrollment'].sudo().search(
                     [('code_enrol', '=', code_enrol)],
                     limit=1
                 )
@@ -292,7 +291,7 @@ class DeSchool(http.Controller):
                     is_existing = False
 
             #===== create res partner instance =================
-            # partner = request.env['res.partner'].sudo().create({
+            # partner = http.request.env['res.partner'].sudo().create({
             #     "name":data['name']
             # })
 
@@ -300,13 +299,13 @@ class DeSchool(http.Controller):
             #=== Create a new student
             # data['partner_id'] = partner.id
 
-            year_id = request.env['siantou.ems.core.year'].sudo().search(
+            year_id = http.request.env['siantou.ems.core.year'].sudo().search(
                 [('is_active', '=', True),],
                 limit=1
             )
 
             #=== récupération de la session d'admission active
-            session_id = request.env['siantou.session'].sudo().search(
+            session_id = http.request.env['siantou.session'].sudo().search(
                 [
                     ('state', '=', 'admission'),
                     ('year_id', '=', year_id.id),
@@ -323,7 +322,7 @@ class DeSchool(http.Controller):
                 _logger.info(is_present)
                 _logger.info(session_id.cycle_ids)
                 #=== récupération du régistre de la session d'admission active et correspondant au cycle choisi par l'utilisateur
-                registre_id = request.env['siantou.session.registre'].sudo().search(
+                registre_id = http.request.env['siantou.session.registre'].sudo().search(
                     [
                         ('session_id', '=', session_id.id),
                         ('cycle_id', '=', int(data['cycle_id']))
@@ -344,33 +343,33 @@ class DeSchool(http.Controller):
                         data['is_autre_pays'] = True
                     else:
                         data['is_autre_pays'] = False
-                    etudiant = request.env['oe.school.student.enrollment'].sudo().create(data)
+                    etudiant = http.request.env['oe.school.student.enrollment'].sudo().create(data)
                     # _logger.info(files)
 
                     if etudiant:
                         _logger.info(etudiant)
-                        return Response(
+                        return http.Response(
                             json.dumps({
                                 'status': 'success',
                                 'etudiant_id':etudiant.id,
                             })
                         )
                 else:
-                    return Response(
+                    return http.Response(
                             json.dumps({
                                 'status': 'error',
                                 'data':"Aucune session d'admission ouverte pour le cycle choisi",
                             })
                         )
             else:
-                return Response(
+                return http.Response(
                         json.dumps({
                             'status': 'error',
                             'data':"Aucune session d'admission ouverte pour le cycle choisi",
                         })
                     )
         except Exception as e:
-            return Response(
+            return http.Response(
                 json.dumps({
                     'status': 'error',
                     'data':f"{e.args}"

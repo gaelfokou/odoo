@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 from odoo import http
-from odoo.http import request, content_disposition
 import json
 from odoo.addons.portal.controllers import portal
 from odoo.exceptions import UserError, ValidationError
@@ -166,19 +165,19 @@ class ApiAccount(http.Controller):
         if user:
             report_name = 'siantou_ems_core.report_timetable'
             report_action = 'siantou_ems_core.action_report_timetable'
-            pdf_report = request.env['ir.actions.report'].sudo()._get_report_from_name(report_action)
+            pdf_report = http.request.env['ir.actions.report'].sudo()._get_report_from_name(report_action)
             domain = []
             if is_user == 'is_teacher':
                 domain.append(('employee_id', '=', user.id))
             elif is_user == 'is_student':
                 domain.append(('level_id', '=', user.level_id.id))
                 domain.append(('field_of_study_id', '=', user.field_of_study_id.id))
-            timetable_ids = request.env['siantou.ems.timetable.timetable'].sudo().search(domain, order='date asc')
+            timetable_ids = http.request.env['siantou.ems.timetable.timetable'].sudo().search(domain, order='date asc')
             timetable_ids = list(timetable_ids)
             if len(timetable_ids) > 0:
                 n = len(timetable_ids)
                 timetable_id = timetable_ids[n - 1]
-                report_data = request.env['siantou.ems.timetable.timetable_print_wizard'].sudo().create({
+                report_data = http.request.env['siantou.ems.timetable.timetable_print_wizard'].sudo().create({
                     'semester_id': timetable_id.semester_id.id,
                     'group_id': timetable_id.group_id.id,
                 })
@@ -192,9 +191,9 @@ class ApiAccount(http.Controller):
         headers = [
             ('Content-Type', 'application/pdf'),
             ('Content-Length', len(pdf)),
-            ('Content-Disposition', content_disposition(filename)),
+            ('Content-Disposition', http.content_disposition(filename)),
         ]
-        return request.make_response(
+        return http.request.make_response(
             pdf,
             headers=headers,
             status=200
@@ -345,7 +344,7 @@ class ApiAccount(http.Controller):
     def api_password_reset(self, **kw):
         # Utilisation de la fonction du helper
         data = {}
-        if request.httprequest.method == 'POST':
+        if http.request.httprequest.method == 'POST':
             json_data = json.loads(request.httprequest.data)
             if 'params' in json_data:
                 if 'email' in json_data['params']:
@@ -379,7 +378,7 @@ class ApiAccount(http.Controller):
     def api_password_confirm(self, **kw):
         # Utilisation de la fonction du helper
         data = {}
-        if request.httprequest.method == 'POST':
+        if http.request.httprequest.method == 'POST':
             json_data = json.loads(request.httprequest.data)
             if 'params' in json_data:
                 if 'code' in json_data['params']:
@@ -391,7 +390,7 @@ class ApiAccount(http.Controller):
     def api_password_update(self, **kw):
         # Utilisation de la fonction du helper
         data = {}
-        if request.httprequest.method == 'POST':
+        if http.request.httprequest.method == 'POST':
             json_data = json.loads(request.httprequest.data)
             if 'params' in json_data:
                 if 'email' in json_data['params'] and 'password' in json_data['params']:

@@ -12,4 +12,4 @@ class RestApi(http.Controller):
     @http.route(['/odoo_connect'], type="http", auth="none", csrf=False, methods=['GET'])
     def odoo_connect(self, **kw):
         datas = json.dumps({"Status": "auth successful","User": "landry",})
-        return request.make_response(data=datas)
+        return http.request.make_response(data=datas)

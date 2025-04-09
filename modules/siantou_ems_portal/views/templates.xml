@@ -640,19 +640,43 @@
                                     <!-- <div class="row mb-3" style="width: 100%">
                                         <div class="col-6">
                                             <label class="form-label">Name</label>
-                                            <input id="name" type="text" class="form-control" name="name" required="1"/>
+                                            <input id="name" type="text" class="form-control" name="name" t-att-value="" required="1"/>
                                         </div>
                                     </div> -->
                                     <div class="row mb-3" style="width: 100%">
                                         <div class="col-6">
                                             <label class="form-label">N° de téléphone</label>
-                                            <input id="phone" type="text" class="form-control" name="phone" required="1"/>
+                                            <input id="phone" type="text" class="form-control" name="phone" t-att-value="phone" required="1"/>
                                         </div>
                                     </div>
                                     <div class="row mb-3" style="width: 100%">
                                         <div class="col-6">
                                             <label class="form-label">E-mail</label>
-                                            <input id="email" type="email" class="form-control" name="email" required="1"/>
+                                            <input id="email" type="email" class="form-control" name="email" t-att-value="email" required="1"/>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3" style="width: 100%">
+                                        <div class="col-6">
+                                            <label class="form-label">Date de naissance</label>
+                                            <input id="birthday" type="date" class="form-control" name="birthday" t-att-value="" required="1"/>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3" style="width: 100%">
+                                        <div class="col-6">
+                                            <label class="form-label">Pays d'origine</label>
+                                            <input id="country" type="text" class="form-control" name="country" t-att-value="" required="1"/>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3" style="width: 100%">
+                                        <div class="col-6">
+                                            <label class="form-label">Dernière ville de résidence</label>
+                                            <input id="city" type="text" class="form-control" name="city" t-att-value="" required="1"/>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3" style="width: 100%">
+                                        <div class="col-6">
+                                            <label class="form-label">Si Yaoundé, Quartier</label>
+                                            <input id="quarter" type="text" class="form-control" name="quarter" t-att-value=""/>
                                         </div>
                                     </div>
                                     <div class="row mb-3" style="width: 100%">

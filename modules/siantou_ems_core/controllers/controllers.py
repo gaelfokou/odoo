@@ -6,7 +6,6 @@ from odoo import http
 import json
 import base64
 import logging
-from odoo.http import request, content_disposition, Response
 from odoo.exceptions import ValidationError  # Import the ValidationError class
 import requests
 
@@ -17,21 +16,21 @@ class DeSchool(http.Controller):
     @http.route('/api/v1/niveaux', type="http", auth='none', methods=['GET'], cors="*", website=True)
     def list_niveaux(self, **kw):
         data = []
-        niveaux = request.env['siantou.ems.core.level'].sudo().search([])
+        niveaux = http.request.env['siantou.ems.core.level'].sudo().search([])
         for niv in niveaux:
             data.append({
                 'id': niv.id,
                 'name': niv.name,
             })
 
-        return Response(
+        return http.Response(
             json.dumps(data)
         )
 
     @http.route('/api/v1/pays', type="http", auth='none', methods=['GET'], cors="*", website=True)
     def list_country(self, **kw):
         data = []
-        pays = request.env['siantou.ems.core.country'].sudo().search([])
+        pays = http.request.env['siantou.ems.core.country'].sudo().search([])
         for p in pays:
             data.append({
                 'id': p.id,
@@ -41,60 +40,60 @@ class DeSchool(http.Controller):
     @http.route('/api/v1/pays', type="http", auth='none', methods=['GET'], cors="*", website=True)
     def list_country(self, **kwargs):
         datas = []
-        pays = request.env['siantou.ems.core.country'].sudo().search([])
+        pays = http.request.env['siantou.ems.core.country'].sudo().search([])
         for p in pays:
             datas.append({
                 'id': p.id,
                 'name': p.name,
             })
 
-        return Response(
+        return http.Response(
             json.dumps(datas)
         )
 
     @http.route('/api/v1/pays/<int:id_country>/regions', type="http", auth='none', methods=['GET'], cors="*", website=True)
     def list_region_of_country(self, id_country):
         datas = []
-        p = request.env['siantou.ems.core.country'].sudo().search([('id', '=', id_country)], limit=1)
+        p = http.request.env['siantou.ems.core.country'].sudo().search([('id', '=', id_country)], limit=1)
         if len(p)>0:
-            regions = request.env['siantou.ems.core.region'].sudo().search([('country_id', '=', p.id)])
+            regions = http.request.env['siantou.ems.core.region'].sudo().search([('country_id', '=', p.id)])
             datas =[{'id':reg.id, 'name': reg.name} for reg in regions]
 
-        return Response(
+        return http.Response(
             json.dumps(datas)
         )
 
     @http.route('/api/v1/regions/<int:id_region>/cities', type="http", auth='none', methods=['GET'], cors="*", website=True)
     def list_cities_of_region(self, id_region):
         datas = []
-        reg = request.env['siantou.ems.core.region'].sudo().search([('id', '=', id_region)], limit=1)
+        reg = http.request.env['siantou.ems.core.region'].sudo().search([('id', '=', id_region)], limit=1)
         if len(reg)>0:
-            cities = request.env['siantou.ems.core.city'].sudo().search([('region_id', '=', reg.id)])
+            cities = http.request.env['siantou.ems.core.city'].sudo().search([('region_id', '=', reg.id)])
             datas=[{'id':city.id, 'name': city.name} for city in cities]
 
-        return Response(
+        return http.Response(
             json.dumps(datas)
         )
 
     @http.route('/api/v1/cities/<int:id_city>/quarters', type="http", auth='none', methods=['GET'], cors="*", website=True)
     def list_quarters_of_city(self, id_city):
         datas = []
-        city = request.env['siantou.ems.core.city'].sudo().search([('id', '=', id_city)], limit=1)
+        city = http.request.env['siantou.ems.core.city'].sudo().search([('id', '=', id_city)], limit=1)
         if len(city)>0:
-            quarters = request.env['siantou.ems.core.quarter'].sudo().search([('city_id', '=', city.id)])
+            quarters = http.request.env['siantou.ems.core.quarter'].sudo().search([('city_id', '=', city.id)])
             datas=[{'id':quart.id, 'name': quart.name} for quart in quarters]
 
-        return Response(
+        return http.Response(
             json.dumps(datas)
         )
 
     @http.route('/api/v1/cycles', type="http", auth='none', methods=['GET'], cors="*", website=True)
     def list_courses(self, **kw):
         data = []
-        cycles = request.env['oe.school.course'].sudo().search([])
+        cycles = http.request.env['oe.school.course'].sudo().search([])
         for cycle in cycles:
-            filieres = request.env['siantou.ems.core.field_of_study'].sudo().search([('cycle_id', '=', cycle.id)])
-            diplo_requis = request.env['oe.school.course.degree'].sudo().search([('cycle_id', '=', cycle.id)])
+            filieres = http.request.env['siantou.ems.core.field_of_study'].sudo().search([('cycle_id', '=', cycle.id)])
+            diplo_requis = http.request.env['oe.school.course.degree'].sudo().search([('cycle_id', '=', cycle.id)])
 
             if len(diplo_requis)>0:
                 data.append({
@@ -105,17 +104,17 @@ class DeSchool(http.Controller):
                     'diplo_requis': [{'id': diplo.id, 'name': diplo.name} for diplo in diplo_requis]
                 })
 
-        return Response(
+        return http.Response(
             json.dumps(data)
         )
 
     @http.route('/api/v1/<int:id>/etudiants', type="http", auth='none', methods=['GET'], cors="*", website=True)
     def get_etudiant_by_id(self, id,**kw):
         try:
-            etudiant = request.env['oe.school.student.enrollment'].sudo().search([('id', '=', id)], limit=1)
+            etudiant = http.request.env['oe.school.student.enrollment'].sudo().search([('id', '=', id)], limit=1)
             _logger.info(f'Étudiant: {etudiant}')
             if etudiant:
-                return Response(
+                return http.Response(
                     json.dumps({
                         'status': 'success',
                         'etudiant_id':etudiant.id,
@@ -124,14 +123,14 @@ class DeSchool(http.Controller):
                     })
                 )
             else:
-                return Response(
+                return http.Response(
                     json.dumps({
                         'status': 'error',
                         'data': f"Erreur lors de la recuperation de l'etudiant"
                     })
                 )
         except Exception as e:
-            return Response(
+            return http.Response(
                 json.dumps({
                     'status': 'error',
                     'data': f"{e.args}"
@@ -143,7 +142,7 @@ class DeSchool(http.Controller):
         current_year = datetime.now().year
         # Generate two random alphabet letters
         letters = ''.join(random.choices(string.ascii_uppercase, k=2))
-        student_enroll = request.env['oe.school.student.enrollment'].sudo().search([])
+        student_enroll = http.request.env['oe.school.student.enrollment'].sudo().search([])
         # Combine year and letters
         nbre = len(student_enroll) + 1
         code = f"{current_year}{letters}0000{nbre}"
@@ -161,7 +160,7 @@ class DeSchool(http.Controller):
             #=== Get matricule generated
             code_enrol = self.generate_code()
             while is_existing:
-                etudiant = request.env['oe.school.student.enrollment'].sudo().search(
+                etudiant = http.request.env['oe.school.student.enrollment'].sudo().search(
                     [('code_enrol', '=', code_enrol)],
                     limit=1
                 )
@@ -170,7 +169,7 @@ class DeSchool(http.Controller):
                     is_existing = False
 
             #===== create res partner instance =================
-            partner = request.env['res.partner'].sudo().create({
+            partner = http.request.env['res.partner'].sudo().create({
                 "name":data['name']
             })
 
@@ -179,18 +178,18 @@ class DeSchool(http.Controller):
             data['partner_id'] = partner.id
 
             #=== Create a new student
-            etudiant = request.env['oe.school.student.enrollment'].sudo().create(data)
+            etudiant = http.request.env['oe.school.student.enrollment'].sudo().create(data)
 
             if etudiant:
                 _logger.info(etudiant)
-                return Response(
+                return http.Response(
                     json.dumps({
                         'status': 'success',
                         'etudiant_id':etudiant.id,
                     })
                 )
         except Exception as e:
-            return Response(
+            return http.Response(
                 json.dumps({
                     'status': 'error',
                     'data':f"{e.args}"
