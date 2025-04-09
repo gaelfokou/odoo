@@ -38,6 +38,7 @@ class ResUsers(models.Model):
                 'email': employee_id.work_email,
                 'phone': employee_id.work_phone,
                 'is_company': False,
+                'company_id': company_id.id,
                 'user_id': user.id,
                 'employee': employee_id.id,
             })
@@ -60,6 +61,7 @@ class ResUsers(models.Model):
                     'email': student_id.email,
                     'phone': student_id.num_tel,
                     'is_company': False,
+                    'company_id': company_id.id,
                     'user_id': user.id,
                 })
 
