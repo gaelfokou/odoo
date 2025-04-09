@@ -268,6 +268,7 @@ class Student(models.Model):
                     name = name.replace('  ', ' ')
                 else:
                     break
+            name = re.sub(r'\W+', '', name)
             name = name.strip()
             username = name.lower()
             username = username.split(' ')
