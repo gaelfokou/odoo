@@ -186,11 +186,19 @@ class HrEmployee(models.Model):
                         email = username + f'{i}' + '@siantou.net'
                     else:
                         break
+            employee.write({
+                'identifier': identifier,
+                'work_email': email,
+            })
+            user_id = self.env['res.users'].search([
+                ('login', '=', email),
+            ], limit=1)
+            if user_id:
+                user_id.unlink()
             if employee.is_teacher:
                 group_id = self.env.ref('base.group_portal')
                 user_id = self.env['res.users'].with_context(no_reset_password=True).create({
                     'login': email,
-                    'employee_id': employee.id,
                     'name': employee.name,
                     'password' : password,
                     'groups_id': [(6, 0, [group_id.id])],
@@ -198,15 +206,9 @@ class HrEmployee(models.Model):
             else:
                 user_id = self.env['res.users'].with_context(no_reset_password=True).create({
                     'login': email,
-                    'employee_id': employee.id,
                     'name': employee.name,
                     'password' : password,
                 })
-            employee.write({
-                'identifier': identifier,
-                'work_email': email,
-                'user_id': user_id.id,
-            })
             # self.env.cr.commit()
         except psycopg2.errors.NotNullViolation as error:
             _logger.info(f'----------- tototototototo Exception {error} -----------')

@@ -31,10 +31,6 @@ class Student(models.Model):
         'student_id',
         string='Candidatures',
     )
-    partner_id = fields.Many2one(
-        'res.partner',
-        string='Rest partner',
-    )
     batch_id = fields.Many2one(
         'siantou.ems.core.student.batch',
         string='Lot de l\'étudiant',
@@ -295,25 +291,9 @@ class Student(models.Model):
                         email = username + f'{i}' + '@siantou.net'
                     else:
                         break
-            partner_id = self.env['res.partner'].create({
-                'name': student.name,
-                'email': email,
-                'phone': student.num_tel,
-                'is_company': False,
-            })
-            group_id = self.env.ref('base.group_portal')
-            user_id = self.env['res.users'].with_context(no_reset_password=True).create({
-                'login': email,
-                'name': student.name,
-                'password' : password,
-                'partner_id': partner_id.id,
-                'groups_id': [(6, 0, [group_id.id])],
-            })
             student.write({
                 'matricule': matricule,
                 'email': email,
-                'user_id': user_id.id,
-                'partner_id': partner_id.id,
             })
             student.student_enroll_ids.create({
                 'year_id': student.year_id.id,
@@ -328,6 +308,18 @@ class Student(models.Model):
                 'dern_etab_freq': student.lieu_residence,
                 'level_id': student.level_id.id,
                 'student_id': student.id,
+            })
+            user_id = self.env['res.users'].search([
+                ('login', '=', email),
+            ], limit=1)
+            if user_id:
+                user_id.unlink()
+            group_id = self.env.ref('base.group_portal')
+            user_id = self.env['res.users'].with_context(no_reset_password=True).create({
+                'login': email,
+                'name': student.name,
+                'password' : password,
+                'groups_id': [(6, 0, [group_id.id])],
             })
             # self.env.cr.commit()
         except psycopg2.errors.NotNullViolation as error:
