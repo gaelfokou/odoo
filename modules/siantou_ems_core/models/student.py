@@ -117,6 +117,12 @@ class Student(models.Model):
         string="Utilisateur associé",
         help="Utilisateur associé à cet étudiant"
     )
+    partner_id = fields.Many2one(
+        'res.partner',
+        string='Rest partner',
+        related='user_id.partner_id',
+        store=True
+    )
     status_user = fields.Selection([
             ('new', 'Jamais connecté'),
             ('active', 'Confirmé'),
