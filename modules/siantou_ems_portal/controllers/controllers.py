@@ -411,7 +411,7 @@ class PortalAccount(portal.CustomerPortal):
                     'private_phone': kw.get('phone'),
                     'private_email': kw.get('email'),
                     'date_naissance': kw.get('birthday'),
-                    'nationalite': kw.get('country'),
-                    'city_id': kw.get('city'),
+                    'nationalite': int(kw.get('country')),
+                    'city_id': int(kw.get('city')),
                 })
         return http.request.redirect('/my')
