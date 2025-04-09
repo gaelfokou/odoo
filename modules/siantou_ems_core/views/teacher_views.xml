@@ -15,7 +15,6 @@
                         <field name="last_name"/>
                         <field name="first_name"/>
                         <field name="birthday"/>
-                        <field name="num_tel"/>
                     </group>
 
                     <group string="Informations académiques pour les enseignants">

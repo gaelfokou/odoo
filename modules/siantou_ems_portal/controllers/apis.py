@@ -331,7 +331,7 @@ class ApiAccount(http.Controller):
                 data['phone'] = user.work_phone
             elif is_user == 'is_student':
                 data['email'] = user.email
-                data['phone'] = user.num_tel
+                data['phone'] = user.private_phone
         body = {
             'code': 200,
             'message': '',

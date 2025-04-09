@@ -35,7 +35,7 @@ class FeeEnrollmentWizard(models.TransientModel):
     )
     student_phone = fields.Char(
         string='Téléphone du déposant',
-        related='student_id.num_tel'
+        related='student_id.private_phone'
     )
     structure_frais_name = fields.Char(
         string='Structure de frais'

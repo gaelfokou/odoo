@@ -12,7 +12,6 @@ class HrEmployee(models.Model):
     name = fields.Char(string="Nom(s) et prénom(s)", compute='_compute_name', store=True)
     last_name = fields.Char(string="Nom(s)", required=True)
     first_name = fields.Char(string="Prénom(s)")
-    num_tel = fields.Char(string="N° de téléphone")
 
     # Variable booléenne pour identifier un enseignant
     is_teacher = fields.Boolean(

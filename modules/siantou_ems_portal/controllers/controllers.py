@@ -65,7 +65,7 @@ class Home(WebHome):
                     is_user = 'is_student'
             if user:
                 if is_user == 'is_student':
-                    if not user.num_tel or not user.num_tel.strip():
+                    if not user.private_phone or not user.private_phone.strip():
                         redirect = '/my/request'
                     if not user.private_email or not user.private_email.strip():
                         redirect = '/my/request'
@@ -332,7 +332,7 @@ class PortalAccount(portal.CustomerPortal):
 
     @http.route(['/my/request'], type='http', auth="user", website=True)
     def portal_request(self, **kw):
-        num_tel = None
+        private_phone = None
         private_email = None
         user = None
         is_user = None
@@ -341,11 +341,11 @@ class PortalAccount(portal.CustomerPortal):
         elif http.request.env.user.student_id.id:
             user = http.request.env.user.student_id
         if user:
-            num_tel = user.num_tel
+            private_phone = user.private_phone
             private_email = user.private_email
         return http.request.render('siantou_ems_portal.siantou_ems_portal_my_home_request_views',
                                 {
-                                    'phone': num_tel,
+                                    'phone': private_phone,
                                     'email': private_email,
                                     'page_name': 'request',
                                 })
@@ -365,7 +365,7 @@ class PortalAccount(portal.CustomerPortal):
             is_user = 'is_student'
         if user:
             user.sudo().write({
-                'num_tel': kw.get('phone'),
+                'private_phone': kw.get('phone'),
                 'private_email': kw.get('email'),
             })
             return http.request.redirect('/my')

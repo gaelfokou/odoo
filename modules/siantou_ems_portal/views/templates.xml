@@ -645,7 +645,7 @@
                                     </div> -->
                                     <div class="row mb-3" style="width: 100%">
                                         <div class="col-6">
-                                            <label class="form-label">N° de téléphone</label>
+                                            <label class="form-label">Numéro de téléphone privé</label>
                                             <input id="phone" type="text" class="form-control" name="phone" t-att-value="phone" required="1"/>
                                         </div>
                                     </div>

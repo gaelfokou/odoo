@@ -73,7 +73,7 @@ class ResUsers(models.Model):
                 partner_id.write({
                     'name': student_id.name,
                     'email': student_id.email,
-                    'phone': student_id.num_tel,
+                    'phone': student_id.private_phone,
                     'is_company': False,
                     'company_id': company_id.id,
                     'user_id': user.id,

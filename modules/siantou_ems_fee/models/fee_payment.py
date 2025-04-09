@@ -422,7 +422,7 @@ class FeePaymentEnrollment(models.Model):
     )
     student_phone = fields.Char(
         string='Téléphone du déposant',
-        related='student_id.num_tel'
+        related='student_id.private_phone'
     )
     structure_frais_id = fields.Many2one(
         'siantou.ems.fee.structure',

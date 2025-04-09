@@ -92,7 +92,7 @@ class StudentEnrollmentAdmissionWizard(models.TransientModel):
                     'situat_matri': self.student_enrollement_id.situat_matri,
                     'lieu_residence': self.student_enrollement_id.lieu_residence,
                     'email': self.student_enrollement_id.email,
-                    'num_tel': self.student_enrollement_id.num_tel,
+                    'private_phone': self.student_enrollement_id.private_phone,
                     'level_id': self.student_enrollement_id.level_id.id,
                     'is_autre_pays': self.student_enrollement_id.is_autre_pays,
                 }
