@@ -65,9 +65,9 @@ class Home(WebHome):
                 if user:
                     is_user = 'is_student'
             if user:
-                if is_user == 'is_teacher':
+                if not user.other_phone or not user.other_phone.strip():
                     redirect = '/my/request'
-                elif is_user == 'is_student':
+                if not user.other_email or not user.other_email.strip():
                     redirect = '/my/request'
         return super()._login_redirect(uid, redirect=redirect)
 
@@ -339,3 +339,26 @@ class PortalAccount(portal.CustomerPortal):
                                 {
                                     'page_name': 'request',
                                 })
+
+    @http.route(['/my/request/submit'], type='http', auth="user", website=True, methods=['POST'])
+    def portal_request_submit(self, **kw):
+        user = None
+        is_user = None
+        if request.env.user.employee_id.id:
+            user = request.env.user.employee_id
+            if request.env.user.employee_id.is_teacher:
+                is_user = 'is_teacher'
+            else:
+                is_user = 'is_employee'
+        else:
+            user = request.env['oe.school.student'].sudo().search([('user_id', '=', request.env.user.id)], limit=1)
+            if user:
+                is_user = 'is_student'
+        if user:
+            user.sudo().write({
+                'other_phone': kw.get('phone'),
+                'other_email': kw.get('email'),
+            })
+            return request.redirect('/my')
+        else:
+            return request.redirect('/my/request')
