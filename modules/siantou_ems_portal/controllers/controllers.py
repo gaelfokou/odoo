@@ -340,6 +340,9 @@ class PortalAccount(portal.CustomerPortal):
     def portal_request(self, **kw):
         private_phone = None
         private_email = None
+        date_naissance = None
+        nationalite = None
+        city_id = None
         user = None
         is_user = None
         if http.request.env.user.employee_id.id:
@@ -349,10 +352,16 @@ class PortalAccount(portal.CustomerPortal):
         if user:
             private_phone = user.private_phone
             private_email = user.private_email
+            date_naissance = user.date_naissance
+            nationalite = user.nationalite.id
+            city_id = user.city_id.id
         return http.request.render('siantou_ems_portal.siantou_ems_portal_my_home_request_views',
                                 {
                                     'phone': private_phone,
                                     'email': private_email,
+                                    'birthday': date_naissance,
+                                    'country': nationalite,
+                                    'city': city_id,
                                     'page_name': 'request',
                                 })
 
