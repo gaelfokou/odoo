@@ -1,13 +1,9 @@
 /** @odoo-module **/
 
 import { registry } from "@web/core/registry";
-import { download } from "@web/core/network/download";
-import { useService } from "@web/core/utils/hooks";
-import { useRef, useState, onRendered, onMounted, onWillUnmount } from "@odoo/owl";
-import { BlockUI } from "@web/core/ui/block_ui";
-const { Component, whenReady, mount, xml } = owl;
+const { Component, whenReady, mount, xml, useRef, useState, onRendered, onMounted, onWillUnmount, onWillStart } = owl;
 
-console.log('Welcome to siantou_ems_portal module');
+console.log('Welcome to PrintTimetableComponent component');
 
 var siantou_ems_portal_print_timetable_container = null;
 

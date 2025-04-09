@@ -1,7 +1,7 @@
 /** @odoo-module **/
 
 import { registry } from "@web/core/registry";
-const { Component, mount, xml, useRef, useState, onRendered, onMounted, onWillUnmount, onWillStart } = owl;
+const { Component, whenReady, mount, xml, useRef, useState, onRendered, onMounted, onWillUnmount, onWillStart } = owl;
 
 console.log('Welcome to DocumentScannerComponent component');
 
