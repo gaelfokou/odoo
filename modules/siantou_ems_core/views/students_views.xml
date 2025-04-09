@@ -10,10 +10,10 @@
                             type="object" 
                             string="Créer les comptes utilisateurs" 
                             class="oe_highlight"/>
-                    <button name="open_data_request_wizard_form" 
+                    <!-- <button name="open_data_request_wizard_form" 
                             type="object" 
                             string="Données requises" 
-                            class="oe_highlight"/>
+                            class="oe_highlight"/> -->
                 </header>
                 <field name="matricule"/>
                 <field name="name"/>
