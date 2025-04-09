@@ -338,6 +338,21 @@ class PortalAccount(portal.CustomerPortal):
 
     @http.route(['/my/request'], type='http', auth="user", website=True)
     def portal_request(self, **kw):
+        all_countries = []
+        countries = http.request.env['siantou.ems.core.country'].sudo().search([])
+        for country in countries:
+            all_countries.append({
+                'id': country.id,
+                'code': country.code,
+                'name': country.name,
+            })
+        all_cities = []
+        cities = http.request.env['siantou.ems.core.city'].sudo().search([])
+        for city in cities:
+            all_cities.append({
+                'id': city.id,
+                'name': city.name,
+            })
         private_phone = None
         private_email = None
         date_naissance = None
@@ -360,7 +375,9 @@ class PortalAccount(portal.CustomerPortal):
                                     'phone': private_phone,
                                     'email': private_email,
                                     'birthday': date_naissance,
+                                    'all_countries': all_countries,
                                     'country': nationalite,
+                                    'all_cities': all_cities,
                                     'city': city_id,
                                     'page_name': 'request',
                                 })

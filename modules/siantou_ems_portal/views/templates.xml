@@ -664,13 +664,21 @@
                                     <div class="row mb-3" style="width: 100%">
                                         <div class="col-6">
                                             <label class="form-label">Pays d'origine</label>
-                                            <input id="country" type="text" class="form-control" name="country" t-att-value="country" required="1"/>
+                                            <select id="country" class="form-control" name="country" required="1">
+                                                <t t-foreach="all_countries" t-as="c">
+                                                    <option t-att-value="country" t-att-selected="country == c['id']"><t t-esc="c['name']"/></option>
+                                                </t>
+                                            </select>
                                         </div>
                                     </div>
                                     <div class="row mb-3" style="width: 100%">
                                         <div class="col-6">
                                             <label class="form-label">Dernière ville de résidence</label>
-                                            <input id="city" type="text" class="form-control" name="city" t-att-value="city" required="1"/>
+                                            <select id="city" class="form-control" name="city" required="1">
+                                                <t t-foreach="all_cities" t-as="c">
+                                                    <option t-att-value="city" t-att-selected="city == c['id']"><t t-esc="c['name']"/></option>
+                                                </t>
+                                            </select>
                                         </div>
                                     </div>
                                     <div class="row mb-3" style="width: 100%">
