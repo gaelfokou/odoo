@@ -26,7 +26,6 @@
                                 class="oe_highlight"/> -->
                     </header>
                     <field name="group_id"/>
-                    <field name="date"/>
                     <field name="semester_id"/>
                     <field name="year_id"/>
                     <field name="school_id"/>
@@ -41,6 +40,7 @@
 					<field name="building_id"/>
 					<field name="classroom_id"/>
 					<field name="employee_id"/>
+                    <field name="date"/>
 					<field name="day_of_week"/>
 					<field name="start_time"/>
 					<field name="end_time"/>
@@ -93,6 +93,7 @@
                             <field name="building_id" options="{'no_create': True}"/>
                             <field name="classroom_id" options="{'no_create': True}" domain="[('building_id', '=', building_id)]"/>
                             <field name="employee_id" options="{'no_create': True}" domain="[('subject_ids', '=', subject_id)]"/>
+                            <field name="date"/>
         					<field name="day_of_week" invisible="id == False or start_time == end_time"/>
                             <field name="start_time" invisible="id == False or start_time == end_time"/>
                             <field name="end_time" invisible="id == False or start_time == end_time"/>
@@ -119,7 +120,6 @@
             <field name="arch" type="xml">
                 <search>
                     <field name="group_id"/>
-                    <field name="date"/>
                     <field name="semester_id"/>
                     <field name="year_id"/>
                     <field name="school_id"/>
@@ -134,6 +134,7 @@
 					<field name="building_id"/>
 					<field name="classroom_id"/>
 					<field name="employee_id"/>
+                    <field name="date"/>
 					<field name="day_of_week"/>
 					<field name="start_time"/>
 					<field name="end_time"/>
