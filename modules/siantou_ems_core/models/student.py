@@ -43,7 +43,7 @@ class Student(models.Model):
     )
     region_id = fields.Many2one("siantou.ems.core.region", string="Région")
     city_id = fields.Many2one('siantou.ems.core.city', string="Ville")
-    quarter_id = fields.Many2one("siantou.ems.core.quarter", string="Quartier")
+    quarter_id = fields.Many2one('siantou.ems.core.quarter', string="Quartier")
     field_of_study_id = fields.Many2one(
         'siantou.ems.core.field_of_study',
         string='Filière',

@@ -353,11 +353,19 @@ class PortalAccount(portal.CustomerPortal):
                 'id': city.id,
                 'name': city.name,
             })
+        all_quarters = []
+        quarters = http.request.env['siantou.ems.core.quarter'].sudo().search([])
+        for quarter in quarters:
+            all_quarters.append({
+                'id': quarter.id,
+                'name': quarter.name,
+            })
         private_phone = None
         private_email = None
         date_naissance = None
         nationalite = None
         city_id = None
+        quarter_id = None
         user = None
         is_user = None
         if http.request.env.user.employee_id.id:
@@ -370,6 +378,7 @@ class PortalAccount(portal.CustomerPortal):
             date_naissance = user.date_naissance
             nationalite = user.nationalite.id
             city_id = user.city_id.id
+            quarter_id = user.quarter_id.id
         return http.request.render('siantou_ems_portal.siantou_ems_portal_my_home_request_views',
                                 {
                                     'phone': private_phone,
@@ -379,6 +388,8 @@ class PortalAccount(portal.CustomerPortal):
                                     'country': nationalite,
                                     'all_cities': all_cities,
                                     'city': city_id,
+                                    'all_quarters': all_quarters,
+                                    'quarter': quarter_id,
                                     'page_name': 'request',
                                 })
 
@@ -413,5 +424,6 @@ class PortalAccount(portal.CustomerPortal):
                     'date_naissance': kw.get('birthday'),
                     'nationalite': int(kw.get('country')),
                     'city_id': int(kw.get('city')),
+                    'quarter_id': int(kw.get('quarter')) if kw.get('quarter') else None,
                 })
         return http.request.redirect('/my')
