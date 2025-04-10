@@ -90,7 +90,7 @@
         'data/student_sequence.xml',
         'data/action_server_student.xml',
         'views/student_component_views.xml',
-        'views/data_request_wizard_views.xml',
+        'wizard/data_request_wizard_views.xml',
     ],
     'license': 'LGPL-3',
     'installable': True,
