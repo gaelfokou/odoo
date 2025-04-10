@@ -97,8 +97,8 @@
                             </group>
                         </page>
 
-                        <!-- Informations sur l'emplois de temps en vue page -->
-                        <page string="Emplois de temps">
+                        <!-- Informations sur l'emplois du temps en vue page -->
+                        <page string="Emplois du temps">
 
                             <field name="timetable_ids">
                                 <tree string="Emplois du temps">

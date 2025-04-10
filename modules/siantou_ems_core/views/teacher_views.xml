@@ -50,7 +50,7 @@
                             </tree>
                         </field>
                     </page>
-                    <page string="Emplois de temps" name="emplois_de_temps"
+                    <page string="Emplois du temps" name="emplois_du_temps"
                         invisible="is_teacher == False">
                         <field name="timetable_ids" widget="one2many_list">
                             <tree string="Horaires" delete="false">

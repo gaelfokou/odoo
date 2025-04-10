@@ -564,7 +564,7 @@ class Timetable(models.Model):
 
 class TimetableGroup(models.Model):
     _name = 'siantou.ems.timetable.group'
-    _description = 'Version d\'emploi de temps'
+    _description = 'Version d\'emploi du temps'
 
     name = fields.Char('Nom du groupe', required=True)
 

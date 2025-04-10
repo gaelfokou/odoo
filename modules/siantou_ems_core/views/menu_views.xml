@@ -34,7 +34,7 @@
 			parent="menu_siantou_ems_core"
             sequence = "45"/>
 
-    <!-- Menu principal de gestion des emplois de temps -->
+    <!-- Menu principal de gestion des emplois du temps -->
     <menuitem
             id="menu_siantou_ems_core_program"
             name="Programmes"
