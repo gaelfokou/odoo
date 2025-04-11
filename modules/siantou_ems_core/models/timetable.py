@@ -567,7 +567,7 @@ class TimetableGroup(models.Model):
     _name = 'siantou.ems.timetable.group'
     _description = 'Version d\'emploi du temps'
 
-    name = fields.Char('Nom du groupe', required=True)
+    name = fields.Char(string='Nom du groupe', required=True)
 
     timetables = fields.One2many(
         'siantou.ems.timetable.timetable',

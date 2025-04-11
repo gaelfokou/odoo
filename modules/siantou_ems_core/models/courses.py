@@ -25,7 +25,7 @@ class OeSchoolCourse(models.Model):
 
     name = fields.Char(string='Nom', required=True)
     code = fields.Char(string='Code', required=True, size=10)
-    complete_name = fields.Char('Nom complet', compute='_compute_complete_name', recursive=True, )
+    complete_name = fields.Char(string='Nom complet', compute='_compute_complete_name', recursive=True, )
     parent_id = fields.Many2one(
         'oe.school.course',
         string='Cursus parent', index=True,
@@ -327,7 +327,7 @@ class SchoolCourseSubject(models.Model):
 
     syllabus_ids = fields.One2many('siantou.ems.core.syllabus', 'ue_id', string='Syllabus')
 
-    total_credit = fields.Integer('Nombre de crédit total',  compute="_compute_total_credit",)
+    total_credit = fields.Integer('Nombre de crédit total',  compute='_compute_total_credit',)
 
     _sql_constraints = [
         ('unique_code', 'unique(code)', "Le code de l'unité d'enseignement doit être unique."),

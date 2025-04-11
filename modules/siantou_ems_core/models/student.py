@@ -133,7 +133,7 @@ class Student(models.Model):
     timetable_ids = fields.One2many(
         'siantou.ems.timetable.timetable',
         string="Emplois du temps",
-        compute="_compute_timetables",
+        compute='_compute_timetables',
         store=False
     )
 

@@ -13,7 +13,7 @@ class FeeEnrollmentWizard(models.TransientModel):
     _name = 'siantou.ems.core.fee.enrollment.student'
     _description = 'modale pour valider un paiement'
 
-    name = fields.Char('Réference du paiement', default='/')
+    name = fields.Char(string='Réference du paiement', default='/')
     year_id = fields.Many2one(
         'siantou.ems.core.year',
         string='Année académique active'
@@ -51,7 +51,7 @@ class FeeEnrollmentWizard(models.TransientModel):
         required=True
     )
     # caisse_domain = fields.Binary()
-    # reference = fields.Char('Réference du reçu', required=True)
+    # reference = fields.Char(string='Réference du reçu', required=True)
     mode_payment = fields.Selection(
         [
             ('bank', 'Virement bancaire'),
