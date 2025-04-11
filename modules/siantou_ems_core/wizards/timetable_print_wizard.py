@@ -102,10 +102,15 @@ class TimetablePrintWizard(models.TransientModel):
 
     def print_timetable_report_data(self, domains=None):
         # Récupérer les emplois du temps pour le semestre sélectionné
-        domain = [
-            ('semester_id', '=', self.semester_id.id),
-            ('group_id', '=', self.group_id.id)
-        ]
+        domain = []
+
+        # Ajouter le critère Semestre seulement s'il est sélectionné
+        if self.semester_id.id:
+            domain.append(('semester_id', '=', self.semester_id.id))
+
+        # Ajouter le critère Version seulement s'il est sélectionné
+        if self.group_id.id:
+            domain.append(('group_id', '=', self.group_id.id))
 
         # Ajouter le critère Filière seulement s'il est sélectionné
         if self.department_id.id:
@@ -125,10 +130,6 @@ class TimetablePrintWizard(models.TransientModel):
             domain.append(('date', '<=', self.period_to))
 
         if domains:
-            domain = [
-                ('semester_id', '=', self.semester_id.id),
-                ('group_id', '=', self.group_id.id)
-            ]
             for d in domains:
                 domain.append(d)
 
@@ -177,7 +178,7 @@ class TimetablePrintWizard(models.TransientModel):
                 field_of_study_id = timetables[key][0]['field_of_study_id']
 
                 slots = self.env['siantou.ems.timetable.slot'].search([
-                    ('active', '=', False),
+                    ('is_active', '=', False),
                 ])
                 slots = list(slots)
 
@@ -197,7 +198,7 @@ class TimetablePrintWizard(models.TransientModel):
                     ])
                 else:
                     slots = self.env['siantou.ems.timetable.slot'].search([
-                        ('active', '=', True),
+                        ('is_active', '=', True),
                     ])
 
                 slots = list(slots)

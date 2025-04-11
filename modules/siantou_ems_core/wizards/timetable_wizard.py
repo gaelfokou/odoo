@@ -109,7 +109,7 @@ class TimetableWizard(models.TransientModel):
                 new_group = all_groups[i]
 
             slots = self.env['siantou.ems.timetable.slot'].search([
-                ('active', '=', False),
+                ('is_active', '=', False),
             ])
             slots = list(slots)
 
@@ -129,7 +129,7 @@ class TimetableWizard(models.TransientModel):
                 ])
             else:
                 slots = self.env['siantou.ems.timetable.slot'].search([
-                    ('active', '=', True),
+                    ('is_active', '=', True),
                 ])
 
             slots = list(slots)
