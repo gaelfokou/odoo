@@ -155,9 +155,9 @@ class Timetable(models.Model):
     # Filière liée à la programmation de cours
     field_of_study_id = fields.Many2one(
         'siantou.ems.core.field_of_study',
-        'Filière',
-        required=True,
-        ondelete='restrict'
+        string='Filière',
+        related='specialty_id.field_of_study_id',
+        store=True
     )
 
     # Niveau lié à la programmation de cours
@@ -312,6 +312,17 @@ class Timetable(models.Model):
         string='Jours et heures du cours'
     )
 
+    specialty_id_domain = fields.Binary(compute='_compute_school_domain', default=[])
+
+    @api.depends('school_id')
+    def _compute_school_domain(self):
+        for record in self:
+            domain = []
+            if record.school_id.id:
+                field_of_study_ids = self.env['siantou.ems.core.field_of_study'].search([('school_id', '=', record.school_id.id)])
+                domain = [('field_of_study_id', 'in', field_of_study_ids.ids)]
+            record.specialty_id_domain = domain
+
     @api.onchange('school_id')
     def _onchange_school(self):
         for record in self:
@@ -324,16 +335,16 @@ class Timetable(models.Model):
             record.ue_id = None
             record.subject_id = None
 
-    @api.onchange('field_of_study_id')
-    def _onchange_field_of_study(self):
-        for record in self:
-            record.level_id = None
-            record.class_id = None
-            record.class_group_id = None
-            record.specialty_id = None
-            record.option_id = None
-            record.ue_id = None
-            record.subject_id = None
+    # @api.onchange('field_of_study_id')
+    # def _onchange_field_of_study(self):
+    #     for record in self:
+    #         record.level_id = None
+    #         record.class_id = None
+    #         record.class_group_id = None
+    #         record.specialty_id = None
+    #         record.option_id = None
+    #         record.ue_id = None
+    #         record.subject_id = None
 
     @api.onchange('level_id')
     def _onchange_level(self):
