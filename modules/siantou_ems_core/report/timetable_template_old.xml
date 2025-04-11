@@ -7,7 +7,7 @@
                 <t t-if="docdata and docdata['timetable_data']">
                     <t t-foreach="docdata['timetable_data']" t-as="record">
                         <h1 style="text-center">INSTITUT UNIVERSITAIRE SIANTOU</h1>
-                        <h3 style="text-center">Emploi du Temps <t t-esc="record['semester']"/></h3>
+                        <h3 style="text-center">Emploi du temps <t t-esc="record['semester']"/></h3>
                         <!-- Titre de la filière et du niveau -->
                         <h5>Filière : <t t-esc="record['field_of_study']"/> - Niveau : <t t-esc="record['level']"/></h5>
                         <!-- Tableau des emplois du temps -->

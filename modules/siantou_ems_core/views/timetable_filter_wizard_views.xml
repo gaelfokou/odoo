@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-        <record id="view_timetable_print_wizard" model="ir.ui.view">
-            <field name="name">siantou.ems.timetable.timetable_print_wizard.form</field>
-            <field name="model">siantou.ems.timetable.timetable_print_wizard</field>
+        <record id="view_timetable_filter_wizard" model="ir.ui.view">
+            <field name="name">siantou.ems.timetable.timetable_filter_wizard.form</field>
+            <field name="model">siantou.ems.timetable.timetable_filter_wizard</field>
             <field name="arch" type="xml">
-                <form string="Impression Emploi du temps">
+                <form string="Filtre Emploi du temps">
                     <group>
                         <field name="semester_id"/>
                         <field name="level_id"/>
@@ -16,7 +16,7 @@
                         <field name="group_id" options="{'no_create': True}" domain="[('semester_id', '=', semester_id)]"/>
                     </group>
                     <footer>
-                        <button string="Imprimer" type="object" name="print_timetable" class="btn-primary"/>
+                        <button string="Filtrer" type="object" name="action_timetable_filter" class="btn-primary"/>
                         <button string="Annuler" class="btn-secondary" special="cancel"/>
                     </footer>
                 </form>
@@ -24,12 +24,12 @@
         </record>
 
         <!-- Define an action to open the form view -->
-        <record id="action_print_timetable_wizard" model="ir.actions.act_window">
-            <field name="name">Impression de l'emploi du temps</field>
-            <field name="res_model">siantou.ems.timetable.timetable_print_wizard</field>
+        <record id="action_filter_timetable_wizard" model="ir.actions.act_window">
+            <field name="name">Filtre de l'emploi du temps</field>
+            <field name="res_model">siantou.ems.timetable.timetable_filter_wizard</field>
             <field name="view_mode">form</field>
             <field name="target">new</field>
-            <field name="view_id" ref="view_timetable_print_wizard"/>
+            <field name="view_id" ref="view_timetable_filter_wizard"/>
         </record>
 
         <!-- <record id="action_report_timetable" model="ir.actions.report">

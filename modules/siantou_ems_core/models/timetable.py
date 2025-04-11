@@ -517,6 +517,30 @@ class Timetable(models.Model):
         })
         return action
 
+    def action_timetable_filter(self):
+        action = self.env.ref('siantou_ems_core.action_filter_timetable_wizard').read()[0]
+        action.update({
+            'name': 'Filtre de l\'emploi du temps',
+            'res_model': 'siantou.ems.timetable.timetable_filter_wizard',
+            'type': 'ir.actions.act_window',
+        })
+        return action
+
+    # def action_timetable_filter(self):
+    #     view_id = self.env.ref('siantou_ems_core.view_timetable_filter_wizard').id
+    #     return {
+    #         'name': 'Filtre de l\'emploi du temps',
+    #         'type': 'ir.actions.act_window',
+    #         'view_type': 'form',
+    #         'view_mode': 'form',
+    #         'res_model': 'siantou.ems.timetable.timetable_filter_wizard',
+    #         'views': [(view_id, 'form')],
+    #         'view_id': view_id,
+    #         'target': 'new',
+    #         # 'domain' : [('id', 'in', search_ids)],
+    #         ### in domain pass ids if you want to show only filter data else it will display all data of that model.
+    #     }
+
     def action_timetable_print(self):
         action = self.env.ref('siantou_ems_core.action_print_timetable_wizard').read()[0]
         action.update({

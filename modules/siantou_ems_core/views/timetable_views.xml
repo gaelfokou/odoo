@@ -15,6 +15,11 @@
                             string="Génération automatique" 
                             class="oe_highlight" 
                             display="always"/>
+                        <button name="action_timetable_filter" 
+                            type="object" 
+                            string="Filtrer" 
+                            class="oe_highlight" 
+                            display="always"/>
                         <button name="action_timetable_print" 
                             type="object" 
                             string="Imprimer PDF" 
