@@ -508,29 +508,6 @@ class Timetable(models.Model):
 
         return timetable
 
-    def action_create_timetable(self):
-        timetable = self.env['siantou.ems.timetable.timetable'].search([
-            ('id', '=', self.id),
-        ], limit=1)
-        if timetable:
-            self.create_timetable(timetable)
-
-        return {
-            'type': 'ir.actions.client',
-            'tag': 'reload',
-        }
-
-    def action_create_all_timetable(self):
-        active_ids = self.env.context.get('active_ids', [])
-        timetable_ids = self.env['siantou.ems.timetable.timetable'].browse(active_ids)
-        for timetable in timetable_ids:
-            self.create_timetable(timetable)
-
-        return {
-            'type': 'ir.actions.client',
-            'tag': 'reload',
-        }
-
     def action_timetable_automatic(self):
         action = self.env.ref('siantou_ems_core.action_generatetimetable_wizard').read()[0]
         action.update({

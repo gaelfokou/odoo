@@ -17,13 +17,9 @@
                             display="always"/>
                         <button name="action_timetable_print" 
                             type="object" 
-                            string="Impression" 
+                            string="Imprimer PDF" 
                             class="oe_highlight" 
                             display="always"/>
-                        <!-- <button name="action_create_all_timetable" 
-                                type="object" 
-                                string="Dupliquer les emplois du temps" 
-                                class="oe_highlight"/> -->
                     </header>
                     <field name="group_id"/>
                     <field name="semester_id"/>
@@ -50,11 +46,6 @@
                         decoration-danger="status == '2'"
                         decoration-info="status == '3'"
                         decoration-warning="status == '4'"/>
-                    <!-- <button name="action_create_timetable" 
-                            type="object" 
-                            string="Dupliquer l'emploi du temps" 
-                            class="oe_highlight" 
-                            invisible="id != False and start_time != end_time"/> -->
 				</tree>
 			</field>
 		</record>
@@ -67,13 +58,6 @@
 			<field name="model">siantou.ems.timetable.timetable</field>
 			<field name="arch" type="xml">
 				<form string="Emploi du temps">
-                    <!-- <header>
-                        <button name="action_create_timetable" 
-                                type="object" 
-                                string="Dupliquer l'emploi du temps" 
-                                class="oe_highlight" 
-                                invisible="id != False and start_time != end_time"/>
-                    </header> -->
 					<sheet>
                         <group>
                             <field name="group_id" readonly="1" options="{'no_open': True, 'no_create': True}"/>
