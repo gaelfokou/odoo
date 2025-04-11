@@ -314,6 +314,8 @@ class Timetable(models.Model):
 
     specialty_id_domain = fields.Binary(compute='_compute_school_domain', default=[])
 
+    subject_id_domain = fields.Binary(compute='_compute_class_domain', default=[])
+
     @api.depends('school_id')
     def _compute_school_domain(self):
         for record in self:
@@ -322,6 +324,15 @@ class Timetable(models.Model):
                 field_of_study_ids = self.env['siantou.ems.core.field_of_study'].search([('school_id', '=', record.school_id.id)])
                 domain = [('field_of_study_id', 'in', field_of_study_ids.ids)]
             record.specialty_id_domain = domain
+
+    @api.depends('class_id')
+    def _compute_class_domain(self):
+        for record in self:
+            domain = []
+            if record.class_id.id:
+                ue_ids = record.class_id.ue_ids
+                domain = [('ue_ids', 'in', ue_ids.ids)]
+            record.subject_id_domain = domain
 
     @api.onchange('school_id')
     def _onchange_school(self):
@@ -378,10 +389,10 @@ class Timetable(models.Model):
             record.ue_id = None
             record.subject_id = None
 
-    @api.onchange('ue_id')
-    def _onchange_ue(self):
-        for record in self:
-            record.subject_id = None
+    # @api.onchange('ue_id')
+    # def _onchange_ue(self):
+    #     for record in self:
+    #         record.subject_id = None
 
     # Méthode pour remplir automatiquement le jour de la semaine
     @api.onchange('date')
