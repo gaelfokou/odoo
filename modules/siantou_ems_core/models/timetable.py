@@ -122,9 +122,9 @@ class Timetable(models.Model):
     semester_id = fields.Many2one(
         'siantou.ems.core.year.semester',
         string='Semestre',
-        required=True,
-        default=_default_semester,
-        ondelete='restrict'
+        # default=_default_semester,
+        related='group_id.semester_id',
+        store=True
     )
 
     year_id = fields.Many2one(

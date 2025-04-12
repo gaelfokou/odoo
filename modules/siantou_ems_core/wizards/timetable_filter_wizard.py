@@ -43,7 +43,8 @@ class TimetableFilterWizard(models.TransientModel):
     semester_id = fields.Many2one(
         'siantou.ems.core.year.semester',
         string='Semestre',
-        required=True
+        related='group_id.semester_id',
+        store=True
     )
 
     # Ajouter un champ de relation vers hr.department pour lier la filière au département
