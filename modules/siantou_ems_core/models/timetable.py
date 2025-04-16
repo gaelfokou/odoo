@@ -1,7 +1,7 @@
 import math
 from email.policy import default
 from odoo import models, fields, api, tools, _
-from odoo.exceptions import ValidationError
+from odoo.exceptions import UserError, ValidationError
 import psycopg2
 from datetime import date, datetime, timedelta, time
 from dateutil.relativedelta import relativedelta
@@ -549,7 +549,7 @@ class Timetable(models.Model):
         return action
 
     # def action_timetable_filter(self):
-    #     view_id = self.env.ref('siantou_ems_core.view_timetable_filter_wizard').id
+    #     view_id = self.env.ref('siantou_ems_core.timetable_filter_wizard').id
     #     return {
     #         'name': 'Filtre de l\'emploi du temps',
     #         'type': 'ir.actions.act_window',
@@ -564,13 +564,25 @@ class Timetable(models.Model):
     #     }
 
     def action_timetable_print(self):
-        action = self.env.ref('siantou_ems_core.action_print_timetable_wizard').read()[0]
-        action.update({
-            'name': 'Impression de l\'emploi du temps',
-            'res_model': 'siantou.ems.timetable.timetable_print_wizard',
-            'type': 'ir.actions.act_window',
+        active_ids = self.env.context.get('active_ids', [])
+        timetables = self.env['siantou.ems.timetable.timetable'].browse(active_ids)
+        if len(active_ids) == 0:
+            timetables = self.env['siantou.ems.timetable.timetable'].search([])
+            active_ids = timetables.ids
+        if len(active_ids) == 0:
+            raise UserError('Aucune donnée trouvée')
+        report_data = self.env['siantou.ems.timetable.timetable_print_wizard'].create({
+            'semester_id': timetables[0].semester_id.id,
+            'group_id': timetables[0].group_id.id,
         })
-        return action
+        domain = [('id', 'in', active_ids)]
+        data = report_data.print_timetable_report_data(domain)
+
+        # Appeler le rapport PDF
+        if not data['docdata']['timetable_data']:
+            raise UserError('Aucune donnée trouvée')
+        report_action = self.env.ref('siantou_ems_core.action_report_timetable')
+        return report_action.report_action(self, data=data)
 
     def action_cancel_all_timetable_exception(self):
         active_ids = self.env.context.get('active_ids', [])

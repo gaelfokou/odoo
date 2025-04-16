@@ -113,4 +113,4 @@ class Classroom(models.Model):
     def _check_capacity(self):
         for record in self:
             if record.capacity <= 0:
-                raise ValidationError("La capacité doit être strictement supérieure à 0.")
+                raise ValidationError('$1')

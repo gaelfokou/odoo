@@ -70,12 +70,12 @@ class FeeSchoolLine(models.Model):
     def _check_date_overlap(self):
         for record in self:
             if self.search([('id', '!=', record.id), ('date_debut', '<=', record.date_fin), ('date_fin', '>=', record.date_debut),]):
-                raise ValidationError("Les semestres ne peuvent se superposer.")
+                raise ValidationError('Les semestres ne peuvent se superposer')
 
     # Contrainte logique pour s'assurer que la date de fin est supérieure à la date de début
     @api.constrains('date_debut', 'date_fin')
     def _check_date_are_correct(self):
         for record in self:
             if record.date_debut >= record.date_fin:
-                raise ValidationError("La date de fin doit être supérieure à la date de début.")
+                raise ValidationError('$1')
 

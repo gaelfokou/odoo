@@ -38,7 +38,7 @@ export class StudentComponent extends Component {
     	}); */
 	}
 	showNotification() {
-        this.notificationService.add(_t("Your changes have been saved successfully."), {
+        this.notificationService.add(_t('Your changes have been saved successfully'), {
             title: "Success",
             type: "success"
         });

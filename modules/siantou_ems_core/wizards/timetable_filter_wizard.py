@@ -39,11 +39,19 @@ class TimetableFilterWizard(models.TransientModel):
     _name = 'siantou.ems.timetable.timetable_filter_wizard'
     _description = 'Filtre de l\'emploi du temps'
 
-    # Semestre pour lequel on souhaite tirer l'emploi du temps
+    # Semestre liée à la programmation de cours
     semester_id = fields.Many2one(
         'siantou.ems.core.year.semester',
         string='Semestre',
+        # default=_default_semester,
         related='group_id.semester_id',
+        store=True
+    )
+
+    year_id = fields.Many2one(
+        'siantou.ems.core.year',
+        'Année académique',
+        related='semester_id.year_id',
         store=True
     )
 
@@ -53,11 +61,18 @@ class TimetableFilterWizard(models.TransientModel):
         string='Département'
     )
 
+    school_id = fields.Many2one(
+        'siantou.ems.core.school',
+        string='Ecole',
+        ondelete='restrict'
+    )
+
     # Filière liée à la programmation de cours
     field_of_study_id = fields.Many2one(
         'siantou.ems.core.field_of_study',
-        'Filière',
-        ondelete='restrict'
+        string='Filière',
+        related='specialty_id.field_of_study_id',
+        store=True
     )
 
     # Niveau lié à la programmation de cours
@@ -67,36 +82,207 @@ class TimetableFilterWizard(models.TransientModel):
         ondelete='restrict'
     )
 
-    # Période de début
-    period_from = fields.Date(
-        'Période de',
+    class_id = fields.Many2one(
+        'siantou.ems.core.class',
+        string='Classe',
+        ondelete='restrict'
     )
 
-    # Période de fin
-    period_to = fields.Date(
-        'Période à',
+    specialty_id = fields.Many2one(
+        'siantou.ems.core.specialty',
+        string='Spécialité',
+        ondelete='restrict'
     )
 
+    option_id = fields.Many2one(
+        'siantou.ems.core.option',
+        string='Option',
+        ondelete='restrict'
+    )
+
+    ue_id = fields.Many2one(
+        'siantou.ems.core.unite.enseignement',
+        string='Unité d\'enseignement',
+        ondelete='restrict'
+    )
+
+    # Cours programmé
+    subject_id = fields.Many2one(
+        'siantou.ems.core.subject',
+        'Cours',
+        ondelete='restrict'
+    )
+
+    # Bâtiment auquel appartient la salle de classe
+    building_id = fields.Many2one(
+        'siantou.ems.core.building',
+        'Bâtiment',
+        ondelete='restrict'
+    )
+
+    # Salle liée à la programmation de cours
+    classroom_id = fields.Many2one(
+        'siantou.ems.core.building.classroom',
+        'Salle de classe',
+        ondelete='restrict'
+    )
+
+    # Enseignant lié à la programmation de cours
+    employee_id = fields.Many2one(
+        'hr.employee',
+        'Enseignant',
+        ondelete='restrict'
+    )
+
+    # Date du jour où le cours sera programmé
+    date = fields.Date(
+        'Date du jour',
+    )
+
+    # Version auquel appartient l'emploi du temps
     group_id = fields.Many2one(
         'siantou.ems.timetable.group',
         'Version',
-        required=True
+        required=True,
+        ondelete='restrict'
     )
 
-    @api.constrains('period_from', 'period_to')
-    def _check_constrains_period(self):
+    status = fields.Selection([
+        ('0', 'En attente'),
+        ('1', 'Présent'),
+        ('2', 'Absent'),
+        ('3', 'Permissionnaire'),
+        ('4', 'Exception'),
+    ], 'Statut',
+        # default='0',
+    )
+
+    class_group_id = fields.Many2one(
+        'siantou.ems.core.class.group',
+        'Groupe',
+        ondelete='restrict'
+    )
+
+    specialty_id_domain = fields.Binary(compute='_compute_school_domain', default=[])
+
+    subject_id_domain = fields.Binary(compute='_compute_class_domain', default=[])
+
+    @api.depends('school_id')
+    def _compute_school_domain(self):
         for record in self:
-            if record.period_from and record.period_to:
-                if record.period_from > record.period_to:
-                    raise ValidationError(f"La période de début ne doit pas être supérieure à la période de fin")
-                elif record.period_from + relativedelta(months=1) < record.period_to:
-                    raise ValidationError(f"La plage entre la période de début et la période de fin ne doit pas être supérieure 1 mois")
+            domain = []
+            if record.school_id.id:
+                field_of_study_ids = self.env['siantou.ems.core.field_of_study'].search([('school_id', '=', record.school_id.id)])
+                domain = [('field_of_study_id', 'in', field_of_study_ids.ids)]
+            record.specialty_id_domain = domain
+
+    @api.depends('class_id')
+    def _compute_class_domain(self):
+        for record in self:
+            domain = []
+            if record.class_id.id:
+                ue_ids = record.class_id.ue_ids
+                domain = [('ue_ids', 'in', ue_ids.ids)]
+            record.subject_id_domain = domain
+
+    @api.onchange('school_id')
+    def _onchange_school(self):
+        for record in self:
+            record.field_of_study_id = None
+            record.level_id = None
+            record.class_id = None
+            record.class_group_id = None
+            record.specialty_id = None
+            record.option_id = None
+            record.ue_id = None
+            record.subject_id = None
+
+    # @api.onchange('field_of_study_id')
+    # def _onchange_field_of_study(self):
+    #     for record in self:
+    #         record.level_id = None
+    #         record.class_id = None
+    #         record.class_group_id = None
+    #         record.specialty_id = None
+    #         record.option_id = None
+    #         record.ue_id = None
+    #         record.subject_id = None
+
+    @api.onchange('level_id')
+    def _onchange_level(self):
+        for record in self:
+            record.class_id = None
+            record.class_group_id = None
+            record.ue_id = None
+            record.subject_id = None
+
+    @api.onchange('specialty_id')
+    def _onchange_specialty(self):
+        for record in self:
+            record.class_id = None
+            record.class_group_id = None
+            record.option_id = None
+            record.ue_id = None
+            record.subject_id = None
+
+    @api.onchange('option_id')
+    def _onchange_option(self):
+        for record in self:
+            record.class_id = None
+            record.class_group_id = None
+            record.ue_id = None
+            record.subject_id = None
+
+    @api.onchange('class_id')
+    def _onchange_class(self):
+        for record in self:
+            record.class_group_id = None
+            record.ue_id = None
+            record.subject_id = None
 
     def action_timetable_filter(self):
+        domain = []
+        if self.semester_id.id:
+            domain.append(('semester_id', '=', self.semester_id.id))
+        if self.year_id.id:
+            domain.append(('year_id', '=', self.year_id.id))
+        if self.department_id.id:
+            domain.append(('department_id', '=', self.department_id.id))
+        if self.school_id.id:
+            domain.append(('school_id', '=', self.school_id.id))
+        if self.field_of_study_id.id:
+            domain.append(('field_of_study_id', '=', self.field_of_study_id.id))
+        if self.level_id.id:
+            domain.append(('level_id', '=', self.level_id.id))
+        if self.class_id.id:
+            domain.append(('class_id', '=', self.class_id.id))
+        if self.specialty_id.id:
+            domain.append(('specialty_id', '=', self.specialty_id.id))
+        if self.option_id.id:
+            domain.append(('option_id', '=', self.option_id.id))
+        if self.ue_id.id:
+            domain.append(('ue_id', '=', self.ue_id.id))
+        if self.subject_id.id:
+            domain.append(('subject_id', '=', self.subject_id.id))
+        if self.building_id.id:
+            domain.append(('building_id', '=', self.building_id.id))
+        if self.classroom_id.id:
+            domain.append(('classroom_id', '=', self.classroom_id.id))
+        if self.employee_id.id:
+            domain.append(('employee_id', '=', self.employee_id.id))
+        if self.date:
+            domain.append(('date', '=', self.date))
+        if self.group_id.id:
+            domain.append(('group_id', '=', self.group_id.id))
+        if self.status:
+            domain.append(('status', '=', self.status))
+        if self.class_group_id.id:
+            domain.append(('class_group_id', '=', self.class_group_id.id))
         action = self.env.ref('siantou_ems_core.action_show_timetable').read()[0]
         action.update({
             'name': 'Emploi du temps',
             'res_model': 'siantou.ems.timetable.timetable',
             'type': 'ir.actions.act_window',
+            'domain' : domain,
         })
         return action

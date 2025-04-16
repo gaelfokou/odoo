@@ -78,7 +78,6 @@
         'views/timetable_wizard_views.xml',
         'views/timetable_print_wizard_views.xml',
         'views/timetable_exception_views.xml',
-        'report/timetable_reports.xml',
         'report/timetable_template.xml',
         'report/report_student_core.xml',
 
@@ -90,7 +89,7 @@
         'data/student_sequence.xml',
         'data/action_server_student.xml',
         'views/student_component_views.xml',
-        'wizard/data_request_wizard_views.xml',
+        'views/data_request_wizard_views.xml',
         'views/timetable_filter_wizard_views.xml',
     ],
     'license': 'LGPL-3',

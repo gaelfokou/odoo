@@ -73,7 +73,7 @@ class FeeStruct(models.Model):
 #     def _check_date_overlap(self):
 #         for record in self:
 #             if self.search([('id', '!=', record.id), ('date_paie', '=', record.date_paie), ('date_paie', '>=', record.date_paie),]):
-#                 raise ValidationError("Entrer une date supérieur.")
+#                 raise ValidationError('Entrer une date supérieur')
 
 class FeeStudent(models.Model):
     _name = 'siantou.ems.core.fee.student'

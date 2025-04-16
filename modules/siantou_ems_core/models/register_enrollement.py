@@ -205,7 +205,7 @@ class SessionRegisterEnrollment(models.Model):
             end_date = fields.Date.from_string(record.end_date)
             if start_date > end_date:
                 raise ValidationError(
-                    _("End Date cannot be set before Start Date."))
+                    _('End Date cannot be set before Start Date'))
 
     def confirm_register(self):
         self.state = 'confirm'
