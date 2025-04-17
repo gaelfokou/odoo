@@ -13,7 +13,7 @@ class TimetableSubjectHour(models.Model):
     _name = 'siantou.ems.timetable.subject.day.hour'
     _description = 'Jour et heure du cours'
 
-    def _default_date(self):
+    def _default_start_date(self):
         group = self.env['siantou.ems.timetable.group'].search([('is_active', '=', True)], limit=1)
         if group:
             return group.semester_id.start_time
@@ -21,10 +21,24 @@ class TimetableSubjectHour(models.Model):
             return None
 
     # Date du jour où le cours sera programmé
-    date = fields.Date(
-        'Date du jour',
+    start_date = fields.Date(
+        'Date de début',
         required=True,
-        default=_default_date,
+        default=_default_start_date,
+    )
+
+    def _default_end_date(self):
+        group = self.env['siantou.ems.timetable.group'].search([('is_active', '=', True)], limit=1)
+        if group:
+            return group.semester_id.end_time
+        else:
+            return None
+
+    # Date du jour où le cours sera programmé
+    end_date = fields.Date(
+        'Date de fin',
+        required=True,
+        default=_default_end_date,
     )
 
     # Jour où le cours est programmé
@@ -38,7 +52,7 @@ class TimetableSubjectHour(models.Model):
             ('6', 'Dimanche'),
         ],
         'Jour de la semaine',
-        compute='_compute_date',
+        compute='_compute_start_date',
         store=True
     )
 
@@ -81,20 +95,27 @@ class TimetableSubjectHour(models.Model):
         default='0',
     )
 
-    # Méthode pour remplir automatiquement le jour de la semaine
-    @api.onchange('date')
-    def _onchange_date(self):
+    # Contrainte logique pour s'assurer que la date de fin est supérieure à la date de début
+    @api.constrains('start_date', 'end_date')
+    def _check_constrains_date(self):
         for record in self:
-            if record.date:
-                record.day_of_week = str(record.date.weekday())
+            if record.start_date >= record.end_date:
+                raise ValidationError('La date de fin doit être supérieure à la date de début')
+
+    # Méthode pour remplir automatiquement le jour de la semaine
+    @api.onchange('start_date')
+    def _onchange_start_date(self):
+        for record in self:
+            if record.start_date:
+                record.day_of_week = str(record.start_date.weekday())
             else:
                 record.day_of_week = None
 
-    @api.depends('date')
-    def _compute_date(self):
+    @api.depends('start_date')
+    def _compute_start_date(self):
         for record in self:
-            if record.date:
-                record.day_of_week = str(record.date.weekday())
+            if record.start_date:
+                record.day_of_week = str(record.start_date.weekday())
             else:
                 record.day_of_week = None
 
@@ -191,7 +212,7 @@ class Timetable(models.Model):
     ue_id = fields.Many2one(
         'siantou.ems.core.unite.enseignement',
         string='Unité d\'enseignement',
-        required=True,
+        # required=True,
         ondelete='restrict'
     )
 
@@ -439,47 +460,48 @@ class Timetable(models.Model):
     def create_timetable(self, timetable):
         try:
             timetables = []
+            times = [timetable.semester_id.start_time, timetable.semester_id.end_time]
             subject_day_hour_ids = list(timetable.subject_day_hour_ids)
             for i, subject_day_hour_id in enumerate(subject_day_hour_ids):
                 if i == 0:
                     timetable.write({
-                        'date': subject_day_hour_id.date,
+                        'date': subject_day_hour_id.start_date,
                         'start_time': subject_day_hour_id.start_time,
                         'end_time': subject_day_hour_id.end_time,
                     })
                     timetables.append(timetable)
+                    times = [subject_day_hour_id.start_date, subject_day_hour_id.end_date]
                 else:
-                    timetable_id = self.env['siantou.ems.timetable.timetable'].search([
-                        ('class_id', '=', timetable.class_id.id),
-                        ('subject_id', '=', timetable.subject_id.id),
-                        ('date', '=', subject_day_hour_id.date),
-                        ('start_time', '=', subject_day_hour_id.start_time),
-                        ('end_time', '=', subject_day_hour_id.end_time),
-                    ], limit=1)
-                    if not timetable_id:
-                        timetable_id = self.env['siantou.ems.timetable.timetable'].create({
-                            'semester_id': timetable.semester_id.id,
-                            'school_id': timetable.school_id.id,
-                            'field_of_study_id': timetable.field_of_study_id.id,
-                            'level_id': timetable.level_id.id,
-                            'specialty_id': timetable.specialty_id.id,
-                            'class_id': timetable.class_id.id,
-                            'class_group_id': timetable.class_group_id.id,
-                            'ue_id': timetable.ue_id.id,
-                            'subject_id': timetable.subject_id.id,
-                            'building_id': timetable.building_id.id,
-                            'classroom_id': timetable.classroom_id.id,
-                            'employee_id': timetable.employee_id.id,
-                            'date': subject_day_hour_id.date,
-                            'start_time': subject_day_hour_id.start_time,
-                            'end_time': subject_day_hour_id.end_time,
-                            'group_id': timetable.group_id.id,
-                        })
+                    timetable_id = self.env['siantou.ems.timetable.timetable'].create({
+                        'semester_id': timetable.semester_id.id,
+                        'school_id': timetable.school_id.id,
+                        'field_of_study_id': timetable.field_of_study_id.id,
+                        'level_id': timetable.level_id.id,
+                        'specialty_id': timetable.specialty_id.id,
+                        'class_id': timetable.class_id.id,
+                        'class_group_id': timetable.class_group_id.id,
+                        'ue_id': timetable.ue_id.id,
+                        'subject_id': timetable.subject_id.id,
+                        'building_id': timetable.building_id.id,
+                        'classroom_id': timetable.classroom_id.id,
+                        'employee_id': timetable.employee_id.id,
+                        'date': subject_day_hour_id.start_date,
+                        'start_time': subject_day_hour_id.start_time,
+                        'end_time': subject_day_hour_id.end_time,
+                        'group_id': timetable.group_id.id,
+                    })
                     timetables.append(timetable_id)
                 subject_day_hour_id.unlink()
             if len(timetables) > 0:
                 semester_hours_credit = timetable.subject_id.hours_credit
-                for week in range(0, timetable.ue_id.semestre_id.number_of_week):
+                if times[0] == timetable.ue_id.semestre_id.start_time and times[1] == timetable.ue_id.semestre_id.end_time:
+                    number_of_week = timetable.ue_id.semestre_id.number_of_week
+                else:
+                    start_time = times[0]
+                    end_time = times[1]
+                    diff_days = (end_time - start_time).days
+                    number_of_week = math.ceil(diff_days / 7)
+                for week in range(0, number_of_week):
                     if semester_hours_credit <= 0:
                         break
                     for first_timetable in timetables:
@@ -488,32 +510,24 @@ class Timetable(models.Model):
                         semester_hours_credit -= weekly_hours_credit
                         if week > 0:
                             target_date = first_timetable.date + timedelta(weeks=week)
-                            timetable_id = self.env['siantou.ems.timetable.timetable'].search([
-                                ('class_id', '=', first_timetable.class_id.id),
-                                ('subject_id', '=', first_timetable.subject_id.id),
-                                ('date', '=', target_date),
-                                ('start_time', '=', first_timetable.start_time),
-                                ('end_time', '=', first_timetable.end_time),
-                            ], limit=1)
-                            if not timetable_id:
-                                timetable_id = self.env['siantou.ems.timetable.timetable'].create({
-                                    'semester_id': first_timetable.semester_id.id,
-                                    'school_id': first_timetable.school_id.id,
-                                    'field_of_study_id': first_timetable.field_of_study_id.id,
-                                    'level_id': first_timetable.level_id.id,
-                                    'specialty_id': first_timetable.specialty_id.id,
-                                    'class_id': first_timetable.class_id.id,
-                                    'class_group_id': first_timetable.class_group_id.id,
-                                    'ue_id': first_timetable.ue_id.id,
-                                    'subject_id': first_timetable.subject_id.id,
-                                    'building_id': first_timetable.building_id.id,
-                                    'classroom_id': first_timetable.classroom_id.id,
-                                    'employee_id': first_timetable.employee_id.id,
-                                    'date': target_date,
-                                    'start_time': first_timetable.start_time,
-                                    'end_time': first_timetable.end_time,
-                                    'group_id': first_timetable.group_id.id,
-                                })
+                            timetable_id = self.env['siantou.ems.timetable.timetable'].create({
+                                'semester_id': first_timetable.semester_id.id,
+                                'school_id': first_timetable.school_id.id,
+                                'field_of_study_id': first_timetable.field_of_study_id.id,
+                                'level_id': first_timetable.level_id.id,
+                                'specialty_id': first_timetable.specialty_id.id,
+                                'class_id': first_timetable.class_id.id,
+                                'class_group_id': first_timetable.class_group_id.id,
+                                'ue_id': first_timetable.ue_id.id,
+                                'subject_id': first_timetable.subject_id.id,
+                                'building_id': first_timetable.building_id.id,
+                                'classroom_id': first_timetable.classroom_id.id,
+                                'employee_id': first_timetable.employee_id.id,
+                                'date': target_date,
+                                'start_time': first_timetable.start_time,
+                                'end_time': first_timetable.end_time,
+                                'group_id': first_timetable.group_id.id,
+                            })
             # self.env.cr.commit()
         except psycopg2.errors.NotNullViolation as error:
             _logger.info(f'----------- tototototototo Exception {error} -----------')

@@ -14,13 +14,13 @@ class Year(models.Model):
 
     # Date de début de l'année académique
     start_time = fields.Date(
-        'Date début',
+        'Date de début',
         required=True
     )
 
     # Date de fin de l'année académique
     end_time = fields.Date(
-        'Date fin',
+        'Date de fin',
         required=True
     )
 
@@ -41,7 +41,7 @@ class Year(models.Model):
 
     # Contrainte logique pour s'assurer que la date de fin est supérieure à la date de début
     @api.constrains('start_time', 'end_time')
-    def _check_date_are_correct(self):
+    def _check_constrains_date(self):
         for record in self:
             if record.start_time >= record.end_time:
                 raise ValidationError('$1')

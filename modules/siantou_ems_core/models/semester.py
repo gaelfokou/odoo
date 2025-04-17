@@ -16,13 +16,13 @@ class Semester(models.Model):
 
     # Date de début de l'année académique
     start_time = fields.Date(
-        'Date début',
+        'Date de début',
         required=True
     )
 
     # Date de fin de l'année académique
     end_time = fields.Date(
-        'Date fin',
+        'Date de fin',
         required=True
     )
 
@@ -84,28 +84,19 @@ class Semester(models.Model):
 
     # Contrainte logique pour s'assurer que la date de fin est supérieure à la date de début
     @api.constrains('start_time', 'end_time')
-    def _check_date_are_correct(self):
+    def _check_constrains_date(self):
         for record in self:
             if record.start_time >= record.end_time:
-                raise ValidationError('$1')
+                raise ValidationError('La date de fin doit être supérieure à la date de début')
 
     # Fonction pour le champ calculé number_of_week
     @api.depends('start_time', 'end_time')
     def _compute_number_of_week(self):
         for record in self:
             if record.start_time and record.end_time:
-                if isinstance(record.start_time, (date, datetime)):
-                    start_time_str = record.start_time.strftime('%Y-%m-%d')
-                else:
-                    start_time_str = record.start_time
-                if isinstance(record.end_time, (date, datetime)):
-                    end_time_str = record.end_time.strftime('%Y-%m-%d')
-                else:
-                    end_time_str = record.end_time
-                start_time = datetime.strptime(start_time_str, '%Y-%m-%d')
-                end_time = datetime.strptime(end_time_str, '%Y-%m-%d')
+                start_time = record.start_time
+                end_time = record.end_time
                 diff_days = (end_time - start_time).days
                 record.number_of_week = math.ceil(diff_days / 7)
             else:
                 record.number_of_week = 0
-
