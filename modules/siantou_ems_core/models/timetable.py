@@ -132,6 +132,11 @@ class Timetable(models.Model):
     _name = 'siantou.ems.timetable.timetable'
     _description = 'Emplois du temps'
 
+    name = fields.Char(
+        string='Nom',
+        compute='_compute_name', store=True,
+    )
+
     def _default_semester(self):
         group = self.env['siantou.ems.timetable.group'].search([('is_active', '=', True)], limit=1)
         if group:
@@ -336,6 +341,16 @@ class Timetable(models.Model):
     specialty_id_domain = fields.Binary(compute='_compute_school_domain', default=[])
 
     subject_id_domain = fields.Binary(compute='_compute_class_domain', default=[])
+
+    @api.onchange('subject_id')
+    def _onchange_name(self):
+        for record in self:
+            record.name = record.subject_id.name
+
+    @api.depends('subject_id')
+    def _compute_name(self):
+        for record in self:
+            record.name = record.subject_id.name
 
     @api.depends('school_id')
     def _compute_school_domain(self):

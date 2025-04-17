@@ -25,7 +25,7 @@
                     <field name="option_id"/>
                     <field name="class_id"/>
                     <field name="class_group_id"/>
-                    <field name="ue_id"/>
+                    <!-- <field name="ue_id"/> -->
 					<field name="subject_id"/>
 					<field name="building_id"/>
 					<field name="classroom_id"/>
@@ -59,7 +59,7 @@
                     <field name="option_id"/>
                     <field name="class_id"/>
                     <field name="class_group_id"/>
-                    <field name="ue_id"/>
+                    <!-- <field name="ue_id"/> -->
 					<field name="subject_id"/>
 					<field name="building_id"/>
 					<field name="classroom_id"/>
