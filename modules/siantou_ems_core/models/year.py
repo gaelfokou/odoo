@@ -44,7 +44,7 @@ class Year(models.Model):
     def _constrains_date(self):
         for record in self:
             if record.start_time >= record.end_time:
-                raise ValidationError('$1')
+                raise ValidationError('La date de fin doit être supérieure à la date de début')
 
     # Contrainte logique pour empêcher d'avoir plusieurs années académiques actives simultannément
     @api.constrains('is_active')

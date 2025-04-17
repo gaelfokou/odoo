@@ -77,5 +77,5 @@ class FeeSchoolLine(models.Model):
     def _constrains_date(self):
         for record in self:
             if record.date_debut >= record.date_fin:
-                raise ValidationError('$1')
+                raise ValidationError('La date de fin doit être supérieure à la date de début')
 

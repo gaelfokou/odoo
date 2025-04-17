@@ -101,7 +101,7 @@ class Subject(models.Model):
         for record in self:
             record.subject_child_ids = []
 
-    # Contrainte logique pour s'assurer que le volume horaire est précisé et strictement supérieur à 0
+    # Contrainte logique pour s'assurer que le volume horaire est précisé et supérieur à 0
     @api.constrains('hours_credit')
     def _check_hours_credit(self):
         for record in self:
