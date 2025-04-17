@@ -84,10 +84,22 @@ class Semester(models.Model):
 
     # Contrainte logique pour s'assurer que la date de fin est supérieure à la date de début
     @api.constrains('start_time', 'end_time')
-    def _check_constrains_date(self):
+    def _constrains_date(self):
         for record in self:
             if record.start_time >= record.end_time:
                 raise ValidationError('La date de fin doit être supérieure à la date de début')
+
+    # Fonction pour le champ calculé number_of_week
+    @api.onchange('start_time', 'end_time')
+    def _onchange_number_of_week(self):
+        for record in self:
+            if record.start_time and record.end_time:
+                start_time = record.start_time
+                end_time = record.end_time
+                diff_days = (end_time - start_time).days
+                record.number_of_week = math.ceil(diff_days / 7)
+            else:
+                record.number_of_week = 0
 
     # Fonction pour le champ calculé number_of_week
     @api.depends('start_time', 'end_time')

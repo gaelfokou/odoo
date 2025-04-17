@@ -41,7 +41,7 @@ class Year(models.Model):
 
     # Contrainte logique pour s'assurer que la date de fin est supérieure à la date de début
     @api.constrains('start_time', 'end_time')
-    def _check_constrains_date(self):
+    def _constrains_date(self):
         for record in self:
             if record.start_time >= record.end_time:
                 raise ValidationError('$1')

@@ -97,7 +97,7 @@ class TimetableSubjectHour(models.Model):
 
     # Contrainte logique pour s'assurer que la date de fin est supérieure à la date de début
     @api.constrains('start_date', 'end_date')
-    def _check_constrains_date(self):
+    def _constrains_date(self):
         for record in self:
             if record.start_date >= record.end_date:
                 raise ValidationError('La date de fin doit être supérieure à la date de début')
@@ -121,7 +121,7 @@ class TimetableSubjectHour(models.Model):
 
     # Contrainte logique pour s'assurer que les heures de début et de fin sont définies et que l'heure de fin est supérieure à l'heure de début
     @api.constrains('start_time', 'end_time')
-    def _check_constrains_time(self):
+    def _constrains_time(self):
         for record in self:
             if record.start_time <= 0.0 or record.end_time <= 0.0:
                 raise ValidationError("Vous devez définir des heures de début et de fin corrects")
@@ -434,7 +434,7 @@ class Timetable(models.Model):
 
     # Contrainte logique pour se rassurer que deux cours ne sont pas programmés dans la même salle de classe sur des horaires qui se chevauchent le même jour
     @api.constrains('classroom_id', 'date', 'subject_id', 'level_id', 'start_time', 'end_time')
-    def _check_constrains_classroom_is_free(self):
+    def _constrains_classroom_is_free(self):
         for record in self:
             timetables = self.search([
                 ('id', '!=', record.id),
@@ -450,7 +450,7 @@ class Timetable(models.Model):
 
     # Contrainte logique pour s'assurer que les heures de début et de fin sont définies et que l'heure de fin est supérieure à l'heure de début
     # @api.constrains('start_time', 'end_time')
-    # def _check_constrains_time(self):
+    # def _constrains_time(self):
     #     for record in self:
     #         if record.start_time <= 0.0 or record.end_time <= 0.0:
     #             raise ValidationError("Vous devez définir des heures de début et de fin corrects")
@@ -632,7 +632,7 @@ class TimetableGroup(models.Model):
     is_active = fields.Boolean(string="Actif", default=False)
 
     @api.constrains('is_active')
-    def _check_constrains_default(self):
+    def _constrains_default(self):
         for record in self:
             if record.is_active:
                 slots = self.env['siantou.ems.timetable.group'].search([
@@ -683,7 +683,7 @@ class TimetableSlotItem(models.Model):
         return abs(a - b) < tolerance
 
     @api.constrains('start_time', 'end_time')
-    def _check_constrains_time(self):
+    def _constrains_time(self):
         for record in self:
             if record.start_time > record.end_time:
                 raise ValidationError(f"L'heure de début ne doit pas être supérieure à l'heure de fin")
@@ -735,7 +735,7 @@ class TimetableSlot(models.Model):
     is_active = fields.Boolean(string="Actif", default=False)
 
     @api.constrains('is_active')
-    def _check_constrains_default(self):
+    def _constrains_default(self):
         for record in self:
             if record.is_active:
                 slots = self.env['siantou.ems.timetable.slot'].search([

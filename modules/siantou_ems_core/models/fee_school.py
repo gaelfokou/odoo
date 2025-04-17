@@ -74,7 +74,7 @@ class FeeSchoolLine(models.Model):
 
     # Contrainte logique pour s'assurer que la date de fin est supérieure à la date de début
     @api.constrains('date_debut', 'date_fin')
-    def _check_constrains_date(self):
+    def _constrains_date(self):
         for record in self:
             if record.date_debut >= record.date_fin:
                 raise ValidationError('$1')

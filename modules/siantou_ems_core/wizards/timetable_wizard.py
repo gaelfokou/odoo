@@ -48,7 +48,7 @@ class TimetableWizard(models.TransientModel):
     )
 
     @api.constrains('period_from', 'period_to')
-    def _check_constrains_period(self):
+    def _constrains_period(self):
         for record in self:
             if record.period_from and record.period_to:
                 if record.period_from > record.period_to:
