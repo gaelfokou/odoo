@@ -36,7 +36,7 @@ STATUS_TIMETABLE = {
 
 _logger = logging.getLogger(__name__)
 class TimetablePrintWizard(models.TransientModel):
-    _name = 'siantou.ems.timetable.timetable_print_wizard'
+    _name = 'timetable.print.wizard'
     _description = 'Assistant d\'impression de l\'emploi du temps'
 
     # Semestre pour lequel on souhaite tirer l'emploi du temps

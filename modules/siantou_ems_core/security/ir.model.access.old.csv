@@ -3,7 +3,7 @@ id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_super_user_groups,Access.Super.User.Groups,base.model_res_groups,siantou_ems_core.group_super_user,1,1,1,1
 access_super_user_timetable,Access.Super.User.timetable,model_siantou_ems_timetable_timetable,siantou_ems_core.group_super_user,1,1,1,1
 access_super_user_timetable_group,Access.Super.User.timetable.group,model_siantou_ems_timetable_group,siantou_ems_core.group_super_user,1,1,1,1
-access_super_user_timetable_print_wizard,Access.Super.User.timetable.print.wizard,model_siantou_ems_timetable_timetable_print_wizard,siantou_ems_core.group_super_user,1,1,1,1
+access_super_user_timetable_print_wizard,Access.Super.User.timetable.print.wizard,model_timetable_print_wizard,siantou_ems_core.group_super_user,1,1,1,1
 access_super_user_timetable_wizard,Access.Super.User.timetable.wizard,model_siantou_ems_timetable_timetable_wizard,siantou_ems_core.group_super_user,1,1,1,1
 access_super_user_year,Access.Super.User.year,model_siantou_ems_core_year,siantou_ems_core.group_super_user,1,1,1,1
 access_super_user_subject,Access.Super.User.subject,model_siantou_ems_core_subject,siantou_ems_core.group_super_user,1,1,1,1

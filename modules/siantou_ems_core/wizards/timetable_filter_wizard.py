@@ -36,7 +36,7 @@ STATUS_TIMETABLE = {
 
 _logger = logging.getLogger(__name__)
 class TimetableFilterWizard(models.TransientModel):
-    _name = 'siantou.ems.timetable.timetable_filter_wizard'
+    _name = 'timetable.filter.wizard'
     _description = 'Filtre de l\'emploi du temps'
 
     # Semestre liée à la programmation de cours

@@ -2,8 +2,8 @@
 <odoo>
     <data>
         <record id="timetable_filter_wizard" model="ir.ui.view">
-            <field name="name">siantou.ems.timetable.timetable_filter_wizard.form</field>
-            <field name="model">siantou.ems.timetable.timetable_filter_wizard</field>
+            <field name="name">timetable.filter.wizard.form</field>
+            <field name="model">timetable.filter.wizard</field>
             <field name="arch" type="xml">
                 <form string="Filtre Emploi du temps">
                     <group>
@@ -39,7 +39,7 @@
         <!-- Define an action to open the form view -->
         <record id="action_filter_timetable_wizard" model="ir.actions.act_window">
             <field name="name">Filtre de l'emploi du temps</field>
-            <field name="res_model">siantou.ems.timetable.timetable_filter_wizard</field>
+            <field name="res_model">timetable.filter.wizard</field>
             <field name="view_mode">form</field>
             <field name="target">new</field>
             <field name="view_id" ref="timetable_filter_wizard"/>

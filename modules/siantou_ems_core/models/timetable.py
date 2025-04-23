@@ -572,7 +572,7 @@ class Timetable(models.Model):
         action = self.env.ref('siantou_ems_core.action_filter_timetable_wizard').read()[0]
         action.update({
             'name': 'Filtre de l\'emploi du temps',
-            'res_model': 'siantou.ems.timetable.timetable_filter_wizard',
+            'res_model': 'timetable.filter.wizard',
             'type': 'ir.actions.act_window',
         })
         return action
@@ -584,7 +584,7 @@ class Timetable(models.Model):
     #         'type': 'ir.actions.act_window',
     #         'view_type': 'form',
     #         'view_mode': 'form',
-    #         'res_model': 'siantou.ems.timetable.timetable_filter_wizard',
+    #         'res_model': 'timetable.filter.wizard',
     #         'views': [(view_id, 'form')],
     #         'view_id': view_id,
     #         'target': 'new',
@@ -600,7 +600,7 @@ class Timetable(models.Model):
             active_ids = timetables.ids
         if len(active_ids) == 0:
             raise UserError('Aucune donnée trouvée')
-        report_data = self.env['siantou.ems.timetable.timetable_print_wizard'].create({
+        report_data = self.env['timetable.print.wizard'].create({
             'semester_id': timetables[0].semester_id.id,
             'group_id': timetables[0].group_id.id,
         })
