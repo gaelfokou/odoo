@@ -10,11 +10,11 @@
 			<field name="arch" type="xml">
 				<tree string="Emploi du temps">
                     <header>
-                        <button name="action_timetable_automatic" 
+                        <!-- <button name="action_timetable_automatic" 
                             type="object" 
                             string="Génération automatique" 
                             class="oe_highlight" 
-                            display="always"/>
+                            display="always"/> -->
                         <button name="action_timetable_filter" 
                             type="object" 
                             string="Filtrer" 
