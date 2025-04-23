@@ -206,16 +206,16 @@ class Student(models.Model):
     @api.depends('field_of_study_id', 'specialty_id', 'option_id', 'level_id')
     def _compute_timetables(self):
         # Recherche des emplois du temps qui correspondent à la filière et au niveau de l'étudiant
-        for student in self:
+        for record in self:
             timetables = self.env['siantou.ems.timetable.timetable'].search([
-                ('field_of_study_id', '=', student.field_of_study_id.id),
-                ('specialty_id', '=', student.specialty_id.id),
-                ('option_id', '=', student.option_id.id),
-                ('level_id', '=', student.level_id.id)
+                ('field_of_study_id', '=', record.field_of_study_id.id),
+                ('specialty_id', '=', record.specialty_id.id),
+                ('option_id', '=', record.option_id.id),
+                ('level_id', '=', record.level_id.id)
             ])
 
             # Affecter les emplois du temps trouvés à l'attribut timetable_ids
-            student.timetable_ids = timetables
+            record.timetable_ids = timetables
 
     def create_student_user(self, student):
         try:

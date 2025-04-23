@@ -85,11 +85,11 @@ class OeSchoolCourse(models.Model):
 
     @api.depends('name', 'parent_id.complete_name')
     def _compute_complete_name(self):
-        for course in self:
-            if course.parent_id:
-                course.complete_name = '%s/%s' % (course.parent_id.complete_name, course.name)
+        for record in self:
+            if record.parent_id:
+                record.complete_name = '%s/%s' % (record.parent_id.complete_name, record.name)
             else:
-                course.complete_name = course.name
+                record.complete_name = record.name
 
     @api.model
     def create(self, vals):
@@ -106,22 +106,22 @@ class OeSchoolCourse(models.Model):
 
     def write(self, vals):
         if 'code' in vals:
-            for course in self:
+            for record in self:
                 sequence_vals = {
                     'name': _('Sequence') + ' ' + vals['code'],
                     'padding': 5,
                     'prefix': vals['code'],
                 }
-                if course.sequence_id:
-                    course.sequence_id.write(sequence_vals)
+                if record.sequence_id:
+                    record.sequence_id.write(sequence_vals)
                 else:
-                    sequence_vals['company_id'] = vals.get('company_id', course.company_id.id)
+                    sequence_vals['company_id'] = vals.get('company_id', record.company_id.id)
                     sequence = self.env['ir.sequence'].create(sequence_vals)
-                    course.sequence_id = sequence
+                    record.sequence_id = sequence
         if 'company_id' in vals:
-            for course in self:
-                if course.sequence_id:
-                    course.sequence_id.company_id = vals.get('company_id')
+            for record in self:
+                if record.sequence_id:
+                    record.sequence_id.company_id = vals.get('company_id')
         return super().write(vals)
 
     # Actions
@@ -242,40 +242,40 @@ class SchoolSyllabus(models.Model):
 
     @api.depends('class_id')
     def _compute_name(self):
-        for line in self:
-            # if line.display_type in ('line_section', 'line_note'):
+        for record in self:
+            # if record.display_type in ('line_section', 'line_note'):
             #     continue
             values = []
-            if line.class_id:
-                values.append(line.class_id.name)
-            # if line.journal_id.type == 'sale':
+            if record.class_id:
+                values.append(record.class_id.name)
+            # if record.journal_id.type == 'sale':
             #     if product.description_sale:
             #         values.append(product.description_sale)
-            # elif line.journal_id.type == 'purchase':
+            # elif record.journal_id.type == 'purchase':
             #     if product.description_purchase:
             #         values.append(product.description_purchase)
-            line.name = '\n'.join(values)
+            record.name = '\n'.join(values)
 
     @api.depends('cm','td','tp')
     def _compute_vhp(self):
-        for rec in self: 
-            rec.vhp = rec.cm + rec.td + rec.tp
+        for record in self: 
+            record.vhp = record.cm + record.td + record.tp
 
     @api.depends('vhp','te')
     def _compute_vht(self):
-        for rec in self:
-            rec.vht = rec.vhp + rec.te
+        for record in self:
+            record.vht = record.vhp + record.te
 
     @api.depends('vht')
     def _compute_subject_credit(self):
-        for rec in self:
-            rec.subject_credit = rec.vht / 25
+        for record in self:
+            record.subject_credit = record.vht / 25
 
     # @api.constrains('total_hours')
     # def validate_time(self):
     #     """returns validation error if the hours is not a possitive value"""
-    #     for rec in self:
-    #         if rec.total_hours <= 0:
+    #     for record in self:
+    #         if record.total_hours <= 0:
     #             raise ValidationError(_('Hours must be greater than Zero'))
 
     # # ----------------------------------------

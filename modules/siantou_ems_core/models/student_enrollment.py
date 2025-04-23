@@ -99,31 +99,31 @@ class StudentEnrollment(models.Model):
     )
 
     def print_payement_student(self):
-        for rec in self:
+        for record in self:
             payment_id = self.env['education.fee.payment.enrollment'].search(
                 [
-                    ('student_id','=',rec.id),
-                    ('year_id','=',rec.year_id.id),
+                    ('student_id','=',record.id),
+                    ('year_id','=',record.year_id.id),
                 ], 
                 limit=1
             )
             data = {
-                # 'ids':rec.ids,
-                'model':rec,
+                # 'ids':record.ids,
+                'model':record,
                 'payment_id':{
                     'name':payment_id.name,
                     'year':payment_id.year_id.name,
                     'year':payment_id.year_id.name,
                 },
                 'student':{
-                    'name':rec.name,
-                    'code_enrol':rec.code_enrol,
-                    'level':rec.level_id.name,
-                    'field_of_study':rec.field_of_study_id.name,
+                    'name':record.name,
+                    'code_enrol':record.code_enrol,
+                    'level':record.level_id.name,
+                    'field_of_study':record.field_of_study_id.name,
                 },
                 'date': fields.date.today(),
                 'facture': {
-                    'name':f"INSCRIPTION {rec.field_of_study_id.name} {rec.level_id.name}",
+                    'name':f"INSCRIPTION {record.field_of_study_id.name} {record.level_id.name}",
                     'amount':payment_id.amount,
                     'date_payment':payment_id.date_payment,
                     'currency_id':payment_id.currency_id.name,

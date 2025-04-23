@@ -51,8 +51,8 @@ class StudentBatch(models.Model):
 
     @api.depends('student_ids')
     def _compute_current_size(self):
-        for batch in self:
-            batch.current_size = len(batch.student_ids)
+        for record in self:
+            record.current_size = len(record.student_ids)
 
     def create_new_batch(self, school_id, field_of_study_id, specialty_id, option_id, level_id):
         count_existing_batches = self.search_count([

@@ -42,23 +42,23 @@ class ProductionDpo(models.Model):
 
     @api.onchange('class_id')
     def _onchange_class_id(self):
-        for rec in self:
-            if rec.class_id:
-                classes_obj = self.env['siantou.ems.core.class'].search([('id', '=', rec.class_id.id)]) 
+        for record in self:
+            if record.class_id:
+                classes_obj = self.env['siantou.ems.core.class'].search([('id', '=', record.class_id.id)]) 
 
-                if len(rec.syllabus_ids) > 0: # Effacer les lignes du syllabus si la classe n'est pas défini
-                    for elt in rec.syllabus_ids:
+                if len(record.syllabus_ids) > 0: # Effacer les lignes du syllabus si la classe n'est pas défini
+                    for elt in record.syllabus_ids:
                         elt.unlink()
 
                 for line in classes_obj:
                     for ue in line.ue_ids:
                         for mat in ue.subject_ids:
-                            rec.syllabus_ids = [
+                            record.syllabus_ids = [
                                 (
                                     0,
                                     0,
                                     {
-                                        "class_id": rec.class_id.id,
+                                        "class_id": record.class_id.id,
                                         "ue_id" : ue.id,
                                         "subject_id": mat.id,
                                     },

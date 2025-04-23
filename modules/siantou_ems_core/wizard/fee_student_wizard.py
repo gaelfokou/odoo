@@ -87,13 +87,13 @@ class FeeEnrollmentWizard(models.TransientModel):
 
     # @api.onchange('mode_payment')
     # def onchange_mode_payment(self):
-    #     for rec in self:
+    #     for record in self:
 
     #         journals = self.env['account.journal'].search(
-    #             [('type','=',rec.mode_payment)],
+    #             [('type','=',record.mode_payment)],
     #         )
     #         _logger.info(journals)
-    #         rec.caisse_id = [(0,0,journals)]
+    #         record.caisse_id = [(0,0,journals)]
 
     @api.model
     def default_get(self, fields):

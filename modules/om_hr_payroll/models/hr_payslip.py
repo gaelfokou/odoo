@@ -1011,7 +1011,7 @@ class HrPayslipRun(models.Model):
         return self.write({'state': 'done'})
 
     def unlink(self):
-        for rec in self:
-            if rec.state == 'done':
+        for record in self:
+            if record.state == 'done':
                 raise ValidationError(_('You Cannot Delete Done Payslips Batches'))
         return super(HrPayslipRun, self).unlink()

@@ -137,15 +137,15 @@ class Subject(models.Model):
 
     @api.depends('syllabus_ids.subject_credit')
     def _compute_credit(self):
-        for rec in self:
+        for record in self:
             total = 0
             # On récupère tous les syllabus liés à cette sous matière
             syllabuses = self.env['siantou.ems.core.syllabus'].search([
-                ('subject_id', '=', rec.id)
+                ('subject_id', '=', record.id)
             ])
 
             # Additionner les crédits de chaque syllabus
             for syllabus in syllabuses:
                 total += syllabus.subject_credit
 
-            rec.total_credit = total
+            record.total_credit = total

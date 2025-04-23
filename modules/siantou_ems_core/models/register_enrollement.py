@@ -117,32 +117,32 @@ class SessionEnrollment(models.Model):
         self.state = 'cancel'
 
     def start_admission(self):
-        for rec in self:
-            for  c in rec.cycle_ids:
+        for record in self:
+            for  c in record.cycle_ids:
                 self.env["siantou.session.registre"].create({
                         "name":'Reg_'+c.name,
-                        "start_date": rec.start_date,
-                        "end_date": rec.end_date,
+                        "start_date": record.start_date,
+                        "end_date": record.end_date,
                         "cycle_id": c.id,
-                        "session_id": rec.id,
-                        "year_id": rec.year_id.id,
-                        # "campus": rec.campus_id.id,
-                        "session_id": rec.id,
+                        "session_id": record.id,
+                        "year_id": record.year_id.id,
+                        # "campus": record.campus_id.id,
+                        "session_id": record.id,
                         "state": "application",
                 })
         self.state = 'admission'
         self.active=True
 
     def close_register(self):
-        for rec in self:
+        for record in self:
             registres = self.env["siantou.session.registre"].search([('session_id','=',self.id)])
             for reg in registres:
                 for stud in reg.admission_ids:
                     if stud.status not in ['transfer', 'rej']:
                         raise ValidationError(
                         _("Veuillez d'abord valider les candidatures présentent les registres de cette session d'admission"))
-            rec.state = 'done'
-            rec.active = True
+            record.state = 'done'
+            record.active = True
 
 class SessionRegisterEnrollment(models.Model):
     _name = "siantou.session.registre"
@@ -220,15 +220,15 @@ class SessionRegisterEnrollment(models.Model):
         self.state = 'application'
 
     def start_admission(self):
-        for rec in self:
-            if len(rec.admission_ids)==0:
+        for record in self:
+            if len(record.admission_ids)==0:
                 raise ValidationError(
                     _("Aucune candidature n'a été enregistré sur ce registre!"))
             else:
-                data = [l for l in rec.admission_ids if l.state == "draft"]
+                data = [l for l in record.admission_ids if l.state == "draft"]
                 for  c in data:
                     c.send_to_verify()
-                rec.state = 'admission'
+                record.state = 'admission'
 
     def approve_all(self):
         for a in self.admission_ids:
@@ -241,9 +241,9 @@ class SessionRegisterEnrollment(models.Model):
                 a.approve_application()
 
     def close_register(self):
-        for rec in self:
-            for ad in rec.admission_ids:
+        for record in self:
+            for ad in record.admission_ids:
                 if ad.state not in ['approve','reject']:
                     raise ValidationError(
                     _("Veuillez d'abord approuver ou rejeter toutes les candidatures"))
-            rec.state = 'done'
+            record.state = 'done'
