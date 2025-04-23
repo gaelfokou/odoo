@@ -11,8 +11,8 @@
                         <field name="level_id"/>
                         <field name="department_id"/>
                         <field name="field_of_study_id"/>
-                        <field name="period_from"/>
-                        <field name="period_to"/>
+                        <field name="start_date"/>
+                        <field name="end_date"/>
                         <field name="group_id" options="{'no_create': True}" domain="[('semester_id', '=', semester_id)]"/>
                     </group>
                     <footer>

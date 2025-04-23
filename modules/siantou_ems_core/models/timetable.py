@@ -99,8 +99,8 @@ class TimetableSubjectHour(models.Model):
     @api.constrains('start_date', 'end_date')
     def _constrains_date(self):
         for record in self:
-            if record.start_date >= record.end_date:
-                raise ValidationError('La date de fin doit être supérieure à la date de début')
+            if record.start_date > record.end_date:
+                raise ValidationError('La date de fin doit être supérieure ou égale à la date de début')
 
     # Méthode pour remplir automatiquement le jour de la semaine
     @api.onchange('start_date')

@@ -35,6 +35,7 @@ STATUS_TIMETABLE = {
 }
 
 _logger = logging.getLogger(__name__)
+
 class TimetablePrintWizard(models.TransientModel):
     _name = 'timetable.print.wizard'
     _description = 'Assistant d\'impression de l\'emploi du temps'
@@ -66,30 +67,30 @@ class TimetablePrintWizard(models.TransientModel):
         ondelete='restrict'
     )
 
-    # Période de début
-    period_from = fields.Date(
-        'Période de',
-    )
-
-    # Période de fin
-    period_to = fields.Date(
-        'Période à',
-    )
-
     group_id = fields.Many2one(
         'siantou.ems.timetable.group',
         'Version',
         required=True
     )
 
-    @api.constrains('period_from', 'period_to')
-    def _constrains_period(self):
+    # Date du jour où le cours sera programmé
+    start_date = fields.Date(
+        'Date de début',
+    )
+
+    # Date du jour où le cours sera programmé
+    end_date = fields.Date(
+        'Date de fin',
+    )
+
+    @api.constrains('start_date', 'end_date')
+    def _constrains_date(self):
         for record in self:
-            if record.period_from and record.period_to:
-                if record.period_from > record.period_to:
-                    raise ValidationError(f"La période de début ne doit pas être supérieure à la période de fin")
-                elif record.period_from + relativedelta(months=1) < record.period_to:
-                    raise ValidationError(f"La plage entre la période de début et la période de fin ne doit pas être supérieure 1 mois")
+            if record.start_date and record.end_date:
+                if record.start_date > record.end_date:
+                    raise ValidationError('La date de fin doit être supérieure ou égale à la date de début')
+                elif record.start_date + relativedelta(months=1) < record.end_date:
+                    raise ValidationError(f"La plage entre la date de début et la date de fin ne doit pas être supérieure 1 mois")
 
     def print_timetable(self):
         data = self.print_timetable_report_data()
@@ -124,10 +125,10 @@ class TimetablePrintWizard(models.TransientModel):
         if self.level_id.id:
             domain.append(('level_id', '=', self.level_id.id))
 
-        # Ajouter le critère de période seulement si la période de début et la période de fin sont sélectionnées
-        if self.period_from and self.period_to:
-            domain.append(('date', '>=', self.period_from))
-            domain.append(('date', '<=', self.period_to))
+        # Ajouter le critère de période seulement si la date de début et la date de fin sont sélectionnées
+        if self.start_date and self.end_date:
+            domain.append(('date', '>=', self.start_date))
+            domain.append(('date', '<=', self.end_date))
 
         if domains:
             for d in domains:

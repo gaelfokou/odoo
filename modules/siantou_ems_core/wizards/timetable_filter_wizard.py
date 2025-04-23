@@ -1,5 +1,3 @@
-import logging
-
 from odoo import models, fields, api, tools, _
 from odoo.exceptions import UserError, ValidationError
 from pprint import pformat
@@ -9,6 +7,7 @@ import re
 from datetime import date, datetime, timedelta, time
 from dateutil.relativedelta import relativedelta
 import copy
+import logging
 
 DATE_FORMAT = '%Y-%m-%d'
 DATE_FORMAT_FR = '%d/%m/%Y'
@@ -35,6 +34,7 @@ STATUS_TIMETABLE = {
 }
 
 _logger = logging.getLogger(__name__)
+
 class TimetableFilterWizard(models.TransientModel):
     _name = 'timetable.filter.wizard'
     _description = 'Filtre de l\'emploi du temps'
@@ -134,11 +134,6 @@ class TimetableFilterWizard(models.TransientModel):
         ondelete='restrict'
     )
 
-    # Date du jour où le cours sera programmé
-    date = fields.Date(
-        'Date du jour',
-    )
-
     # Version auquel appartient l'emploi du temps
     group_id = fields.Many2one(
         'siantou.ems.timetable.group',
@@ -166,6 +161,42 @@ class TimetableFilterWizard(models.TransientModel):
     specialty_id_domain = fields.Binary(compute='_compute_school_domain', default=[])
 
     subject_id_domain = fields.Binary(compute='_compute_class_domain', default=[])
+
+    def _default_start_date(self):
+        first_time = date.today()
+        start_time = first_time + timedelta(days=0)
+        if start_time.weekday() != 0:
+            start_time = start_time - timedelta(days=start_time.weekday())
+        return start_time
+
+    # Date du jour où le cours sera programmé
+    start_date = fields.Date(
+        'Date de début',
+        default=_default_start_date,
+    )
+
+    def _default_end_date(self):
+        first_time = date.today()
+        start_time = first_time + timedelta(days=0)
+        if start_time.weekday() != 0:
+            start_time = start_time - timedelta(days=start_time.weekday())
+        end_time = start_time + timedelta(days=5)
+        return end_time
+
+    # Date du jour où le cours sera programmé
+    end_date = fields.Date(
+        'Date de fin',
+        default=_default_end_date,
+    )
+
+    @api.constrains('start_date', 'end_date')
+    def _constrains_date(self):
+        for record in self:
+            if record.start_date and record.end_date:
+                if record.start_date > record.end_date:
+                    raise ValidationError('La date de fin doit être supérieure ou égale à la date de début')
+                elif record.start_date + relativedelta(months=1) < record.end_date:
+                    raise ValidationError(f"La plage entre la date de début et la date de fin ne doit pas être supérieure 1 mois")
 
     @api.depends('school_id')
     def _compute_school_domain(self):
@@ -270,14 +301,15 @@ class TimetableFilterWizard(models.TransientModel):
             domain.append(('classroom_id', '=', self.classroom_id.id))
         if self.employee_id.id:
             domain.append(('employee_id', '=', self.employee_id.id))
-        if self.date:
-            domain.append(('date', '=', self.date))
         if self.group_id.id:
             domain.append(('group_id', '=', self.group_id.id))
         if self.status:
             domain.append(('status', '=', self.status))
         if self.class_group_id.id:
             domain.append(('class_group_id', '=', self.class_group_id.id))
+        if self.start_date and self.end_date:
+            domain.append(('date', '>=', self.start_date))
+            domain.append(('date', '<=', self.end_date))
         action = self.env.ref('siantou_ems_core.action_show_timetable').read()[0]
         action.update({
             'name': 'Emploi du temps',

@@ -7,6 +7,7 @@ from dateutil.relativedelta import relativedelta
 import logging
 
 _logger = logging.getLogger(__name__)
+
 class TimetableWizard(models.TransientModel):
     _name = 'siantou.ems.timetable.timetable_wizard'
     _description = 'Assistant de génération automatique de l\'emploi du temps'
@@ -32,29 +33,29 @@ class TimetableWizard(models.TransientModel):
         ondelete='restrict'
     )
 
-    # Période de début
-    period_from = fields.Date(
-        'Période de',
-    )
-
-    # Période de fin
-    period_to = fields.Date(
-        'Période à',
-    )
-
     # Version à laquelle appartient l'emploi du temps
     group = fields.Char(
         'Version'
     )
 
-    @api.constrains('period_from', 'period_to')
-    def _constrains_period(self):
+    # Date du jour où le cours sera programmé
+    start_date = fields.Date(
+        'Date de début',
+    )
+
+    # Date du jour où le cours sera programmé
+    end_date = fields.Date(
+        'Date de fin',
+    )
+
+    @api.constrains('start_date', 'end_date')
+    def _constrains_date(self):
         for record in self:
-            if record.period_from and record.period_to:
-                if record.period_from > record.period_to:
-                    raise ValidationError(f"La période de début ne doit pas être supérieure à la période de fin")
-                elif record.period_from + relativedelta(months=1) < record.period_to:
-                    raise ValidationError(f"La plage entre la période de début et la période de fin ne doit pas être supérieure 1 mois")
+            if record.start_date and record.end_date:
+                if record.start_date > record.end_date:
+                    raise ValidationError('La date de fin doit être supérieure ou égale à la date de début')
+                elif record.start_date + relativedelta(months=1) < record.end_date:
+                    raise ValidationError(f"La plage entre la date de début et la date de fin ne doit pas être supérieure 1 mois")
 
     def generate_timetable(self):
         all_groups = {}
@@ -203,9 +204,9 @@ class TimetableWizard(models.TransientModel):
                                                 break
                                             check_weekly_hours_credit += subject_hours_credit
                                             first_time = ue_id.semestre_id.start_time
-                                            if first_time.weekday() == 6:
-                                                first_time = first_time + timedelta(days=1)
-                                            start_time = first_time - timedelta(days=first_time.weekday())
+                                            start_time = first_time + timedelta(days=0)
+                                            if start_time.weekday() != 0:
+                                                start_time = start_time - timedelta(days=start_time.weekday())
                                             end_time = start_time + timedelta(days=5)
                                             weekly_hours_credit = min(4, subject_hours_credit)
                                             subject_hours_credit = subject_hours_credit - weekly_hours_credit
@@ -266,8 +267,8 @@ class TimetableWizard(models.TransientModel):
                                                         continue
                                                 # On parcours les jours de la semaine de Lundi - Samedi
                                                 target_date = start_time + timedelta(weeks=week, days=day)
-                                                if self.period_from and self.period_to:
-                                                    if self.period_from > target_date or self.period_to < target_date:
+                                                if self.start_date and self.end_date:
+                                                    if self.start_date > target_date or self.end_date < target_date:
                                                         continue
                                                 available_slot = self.env['siantou.ems.timetable.check_available_slot'].find_available_slot(target_date, classe, batch.id, weekly_hours_credit, active_slotitems, not_active_slotitems)
                                                 # On trouve une salle de classe et un créneau horaire disponiblent pour le cours
