@@ -16,7 +16,7 @@ class Subject(models.Model):
     # Variable booléenne pour savoir si c'est un tronc commun ou pas
     shared_subject = fields.Boolean(
         'Tronc commun',
-        default=True
+        default=False
     )
 
     subject_parent_ids = fields.Many2many(
