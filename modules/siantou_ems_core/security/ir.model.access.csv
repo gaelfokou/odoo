@@ -86,6 +86,9 @@ timetable_print_wizard_admin,timetable_print_wizard.admin,model_timetable_print_
 timetable_filter_wizard_user,timetable_filter_wizard.user,model_timetable_filter_wizard,siantou_ems_core.group_timetable_user,1,0,0,0
 timetable_filter_wizard_admin,timetable_filter_wizard.admin,model_timetable_filter_wizard,siantou_ems_core.group_timetable_admin,1,1,1,1
 
+teacher_filter_wizard_user,teacher_filter_wizard.user,model_teacher_filter_wizard,siantou_ems_core.group_teacher_user,1,0,0,0
+teacher_filter_wizard_admin,teacher_filter_wizard.admin,model_teacher_filter_wizard,siantou_ems_core.group_teacher_admin,1,1,1,1
+
 university_user,university.user,model_res_company,siantou_ems_core.group_university_user,1,0,0,0
 university_admin,university.admin,model_res_company,siantou_ems_core.group_university_admin,1,1,1,1
 

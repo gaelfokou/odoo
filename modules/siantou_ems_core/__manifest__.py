@@ -91,6 +91,7 @@
         'views/student_component_views.xml',
         'views/data_request_wizard_views.xml',
         'views/timetable_filter_wizard_views.xml',
+        'views/teacher_filter_wizard_views.xml',
     ],
     'license': 'LGPL-3',
     'installable': True,

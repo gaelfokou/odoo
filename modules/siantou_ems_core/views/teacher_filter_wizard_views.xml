@@ -1,34 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-        <record id="timetable_filter_wizard" model="ir.ui.view">
-            <field name="name">timetable.filter.wizard.form</field>
-            <field name="model">timetable.filter.wizard</field>
+        <record id="teacher_filter_wizard" model="ir.ui.view">
+            <field name="name">teacher.filter.wizard.form</field>
+            <field name="model">teacher.filter.wizard</field>
             <field name="arch" type="xml">
-                <form string="Filtre des emplois du temps">
+                <form string="Filtre des enseignants">
                     <group>
-                        <field name="group_id" options="{'no_open': True, 'no_create': True}"/>
-                        <field name="semester_id" readonly="1" options="{'no_open': True, 'no_create': True}"/>
-                        <field name="year_id" readonly="1" options="{'no_open': True, 'no_create': True}"/>
+                        <field name="year_id" options="{'no_create': True}"/>
                         <field name="school_id" options="{'no_create': True}"/>
+                        <field name="department_id" options="{'no_create': True}"/>
                         <field name="field_of_study_id" options="{'no_create': True}" domain="[('school_id', '=', school_id)]"/>
-                        <field name="level_id" options="{'no_create': True}" domain="[('semester_ids', '=', semester_id)]"/>
+                        <field name="level_id" options="{'no_create': True}"/>
                         <field name="specialty_id_domain" invisible="1"/>
                         <field name="specialty_id" options="{'no_create': True}" domain="specialty_id_domain"/>
                         <field name="option_id" options="{'no_create': True}" domain="[('specialty_id', '=', specialty_id)]"/>
                         <field name="class_id" options="{'no_create': True}" domain="[('field_of_study_id', '=', field_of_study_id), ('specialty_id', '=', specialty_id), ('option_id', '=', option_id), ('level_id', '=', level_id), ('year_id', '=', year_id)]"/>
-                        <!-- <field name="ue_id" readonly="1" options="{'no_create': True}" domain="[('class_ids', '=', class_id), ('semestre_id', '=', semester_id)]"/> -->
                         <field name="subject_id_domain" invisible="1"/>
                         <field name="subject_id" options="{'no_create': True}" domain="subject_id_domain"/>
-                        <field name="building_id" options="{'no_create': True}"/>
-                        <field name="classroom_id" options="{'no_create': True}" domain="[('building_id', '=', building_id)]"/>
-                        <field name="employee_id" options="{'no_create': True}" domain="[('subject_ids', '=', subject_id)]"/>
-                        <field name="start_date"/>
-                        <field name="end_date"/>
-                        <field name="status"/>
                     </group>
                     <footer>
-                        <button string="Filtrer" type="object" name="action_timetable_filter" class="btn-primary"/>
+                        <button string="Filtrer" type="object" name="action_teacher_filter" class="btn-primary"/>
                         <button string="Annuler" class="btn-secondary" special="cancel"/>
                     </footer>
                 </form>
@@ -36,22 +28,22 @@
         </record>
 
         <!-- Define an action to open the form view -->
-        <record id="action_filter_timetable_wizard" model="ir.actions.act_window">
-            <field name="name">Filtre des emplois du temps</field>
-            <field name="res_model">timetable.filter.wizard</field>
+        <record id="action_filter_teacher_wizard" model="ir.actions.act_window">
+            <field name="name">Filtre des enseignants</field>
+            <field name="res_model">teacher.filter.wizard</field>
             <field name="view_mode">form</field>
             <field name="target">new</field>
-            <field name="view_id" ref="timetable_filter_wizard"/>
+            <field name="view_id" ref="teacher_filter_wizard"/>
         </record>
 
-        <!-- <record id="action_report_timetable" model="ir.actions.report">
+        <!-- <record id="action_report_teacher" model="ir.actions.report">
             <field name="name">Emploi du temps PDF</field>
-            <field name="model">siantou.ems.timetable.timetable</field>
+            <field name="model">siantou.ems.teacher.teacher</field>
             <field name="report_type">qweb-pdf</field>
-            <field name="report_name">siantou_ems_timetable.report_timetable</field>
-            <field name="report_file">siantou_ems_timetable.report_timetable</field>
+            <field name="report_name">siantou_ems_teacher.report_teacher</field>
+            <field name="report_file">siantou_ems_teacher.report_teacher</field>
             <field name="paperformat_id" ref="paperformat_paysage"/>
-            <field name="binding_model_id" ref="model_siantou_ems_timetable_timetable"/>
+            <field name="binding_model_id" ref="model_siantou_ems_teacher_teacher"/>
             <field name="binding_type">report</field>
         </record> -->
 

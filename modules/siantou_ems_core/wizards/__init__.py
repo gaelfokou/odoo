@@ -4,3 +4,4 @@ from . import check_priority
 from . import check_avaible_slot
 from . import data_request_wizard
 from . import timetable_filter_wizard
+from . import teacher_filter_wizard

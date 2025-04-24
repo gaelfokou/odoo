@@ -221,7 +221,6 @@ class Timetable(models.Model):
         ondelete='restrict'
     )
 
-    # Cours programmé
     subject_id = fields.Many2one(
         'siantou.ems.core.subject',
         'Cours',
@@ -571,7 +570,7 @@ class Timetable(models.Model):
     def action_timetable_filter(self):
         action = self.env.ref('siantou_ems_core.action_filter_timetable_wizard').read()[0]
         action.update({
-            'name': 'Filtre de l\'emploi du temps',
+            'name': 'Filtre des emplois du temps',
             'res_model': 'timetable.filter.wizard',
             'type': 'ir.actions.act_window',
         })
@@ -580,7 +579,7 @@ class Timetable(models.Model):
     # def action_timetable_filter(self):
     #     view_id = self.env.ref('siantou_ems_core.timetable_filter_wizard').id
     #     return {
-    #         'name': 'Filtre de l\'emploi du temps',
+    #         'name': 'Filtre des emplois du temps',
     #         'type': 'ir.actions.act_window',
     #         'view_type': 'form',
     #         'view_mode': 'form',

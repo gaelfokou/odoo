@@ -279,6 +279,36 @@ class HrEmployee(models.Model):
     #         to_remove = set(current_subject_ids) - set(new_subject_ids)
     #         record.subject_priority_ids.filtered(lambda p: p.subject_id.id in to_remove).unlink()
 
+    def action_teacher_filter(self):
+        action = self.env.ref('siantou_ems_core.action_filter_teacher_wizard').read()[0]
+        action.update({
+            'name': 'Filtre des enseignants',
+            'res_model': 'teacher.filter.wizard',
+            'type': 'ir.actions.act_window',
+        })
+        return action
+
+    def action_teacher_print(self):
+        active_ids = self.env.context.get('active_ids', [])
+        teachers = self.env['hr.employee'].browse(active_ids)
+        if len(active_ids) == 0:
+            teachers = self.env['hr.employee'].search([])
+            active_ids = teachers.ids
+        if len(active_ids) == 0:
+            raise UserError('Aucune donnée trouvée')
+        report_data = self.env['teacher.print.wizard'].create({
+            'semester_id': teachers[0].semester_id.id,
+            'group_id': teachers[0].group_id.id,
+        })
+        domain = [('id', 'in', active_ids)]
+        data = report_data.print_teacher_report_data(domain)
+
+        # Appeler le rapport PDF
+        if not data['docdata']['teacher_data']:
+            raise UserError('Aucune donnée trouvée')
+        report_action = self.env.ref('siantou_ems_core.action_report_teacher')
+        return report_action.report_action(self, data=data)
+
 class TeacherAvailability(models.Model):
     _name = 'siantou.ems.core.teacher.availability'
     _description = 'Disponibilité des enseignants'

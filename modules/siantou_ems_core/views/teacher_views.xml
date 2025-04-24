@@ -89,21 +89,31 @@
             <field name="arch" type="xml">
                 <xpath expr="//header" position="inside">
                     <button name="action_create_all_employee_user" type="object" string="Créer les comptes utilisateurs" class="oe_highlight"/>
+                    <button name="action_teacher_filter" 
+                        type="object" 
+                        string="Filtrer" 
+                        class="oe_highlight" 
+                        display="always"/>
+                    <button name="action_teacher_print" 
+                        type="object" 
+                        string="Imprimer PDF" 
+                        class="oe_highlight" 
+                        display="always"/>
                 </xpath>
             </field>
         </record>
 
         <record id="action_hr_employees_teachers"
             model="ir.actions.act_window">
-            <field name="name">Enseignant</field>
+            <field name="name">Enseignants</field>
             <field name="res_model">hr.employee</field>
             <field name="view_mode">kanban,tree,form</field>
             <field name="context">{'default_is_teacher':'True'}</field>
             <field name="domain">[('is_teacher','=','True')]</field>
             <field name="view_ids"
                 eval="[(5, 0, 0),
-                (0, 0, {'view_mode': 'kanban', 'view_id': ref('hr.hr_kanban_view_employees')}),
                 (0, 0, {'view_mode': 'tree', 'view_id': ref('hr.view_employee_tree')}),
+                (0, 0, {'view_mode': 'kanban', 'view_id': ref('hr.hr_kanban_view_employees')}),
                 (0, 0, {'view_mode': 'form', 'view_id': ref('hr.view_employee_form')})]"/>
         </record>
 
