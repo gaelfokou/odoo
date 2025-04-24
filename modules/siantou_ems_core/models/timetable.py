@@ -342,13 +342,13 @@ class Timetable(models.Model):
 
     subject_id_domain = fields.Binary(compute='_compute_class_domain', default=[])
 
-    @api.onchange('subject_id')
-    def _onchange_name(self):
+    @api.depends('subject_id')
+    def _compute_name(self):
         for record in self:
             record.name = record.subject_id.name
 
-    @api.depends('subject_id')
-    def _compute_name(self):
+    @api.onchange('subject_id')
+    def _onchange_name(self):
         for record in self:
             record.name = record.subject_id.name
 
@@ -360,15 +360,6 @@ class Timetable(models.Model):
                 field_of_study_ids = self.env['siantou.ems.core.field_of_study'].search([('school_id', '=', record.school_id.id)])
                 domain = [('field_of_study_id', 'in', field_of_study_ids.ids)]
             record.specialty_id_domain = domain
-
-    @api.depends('class_id')
-    def _compute_class_domain(self):
-        for record in self:
-            domain = []
-            if record.class_id.id:
-                ue_ids = record.class_id.ue_ids
-                domain = [('ue_ids', 'in', ue_ids.ids)]
-            record.subject_id_domain = domain
 
     @api.onchange('school_id')
     def _onchange_school(self):
@@ -417,6 +408,15 @@ class Timetable(models.Model):
             record.class_group_id = None
             record.ue_id = None
             record.subject_id = None
+
+    @api.depends('class_id')
+    def _compute_class_domain(self):
+        for record in self:
+            domain = []
+            if record.class_id.id:
+                ue_ids = record.class_id.ue_ids
+                domain = [('ue_ids', 'in', ue_ids.ids)]
+            record.subject_id_domain = domain
 
     @api.onchange('class_id')
     def _onchange_class(self):

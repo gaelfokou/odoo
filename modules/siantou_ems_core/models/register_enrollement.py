@@ -9,7 +9,7 @@ _logger = logging.getLogger(__name__)
 
 class SessionEnrollment(models.Model):
     _name = 'siantou.session'
-    _inherit = "mail.thread"
+    _inherit = 'mail.thread'
     _description = "Gestion des Session d'admission"
     _order = 'id desc'
     _sql_constraints = [
@@ -146,7 +146,7 @@ class SessionEnrollment(models.Model):
 
 class SessionRegisterEnrollment(models.Model):
     _name = "siantou.session.registre"
-    _inherit = "mail.thread"
+    _inherit = 'mail.thread'
     _description = "Gestion des Registre d'admission"
     _order = 'id desc'
     _sql_constraints = [

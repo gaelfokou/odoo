@@ -34,7 +34,7 @@ class OeSchoolCourse(models.Model):
     company_id = fields.Many2one('res.company',
         string='Université', index=True,
         default=lambda self: self.env.company,
-        domain=[('active', '=', True),('is_school', '=', True)]
+        domain=[('active', '=', True),('is_university', '=', True)]
     )
     level_ids = fields.Many2many('siantou.ems.core.level', 'course_level_rel', 'cycle_id', 'level_id', string='Niveaux')
     diplo_requis_ids = fields.Many2many('oe.school.course.degree', 'course_degree_rel', 'cycle_id', 'diplo_requis_id', string='Diplômes requis')
@@ -243,18 +243,7 @@ class SchoolSyllabus(models.Model):
     @api.depends('class_id')
     def _compute_name(self):
         for record in self:
-            # if record.display_type in ('line_section', 'line_note'):
-            #     continue
-            values = []
-            if record.class_id:
-                values.append(record.class_id.name)
-            # if record.journal_id.type == 'sale':
-            #     if product.description_sale:
-            #         values.append(product.description_sale)
-            # elif record.journal_id.type == 'purchase':
-            #     if product.description_purchase:
-            #         values.append(product.description_purchase)
-            record.name = '\n'.join(values)
+            record.name = record.class_id.name
 
     @api.depends('cm','td','tp')
     def _compute_vhp(self):

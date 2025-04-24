@@ -12,7 +12,7 @@ class FeeStruct(models.Model):
     company_id = fields.Many2one('res.company',
         string='Université', index=True,
         default=lambda self: self.env.company,
-        domain=[('active', '=', True),('is_school', '=', True)]
+        domain=[('active', '=', True),('is_university', '=', True)]
     )
     note = fields.Html(string='Description')
     journal_id = fields.Many2one(

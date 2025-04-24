@@ -142,6 +142,34 @@ class Student(models.Model):
         string='Classe',
     )
 
+    @api.depends('last_name', 'first_name')
+    def _compute_name(self):
+        for record in self:
+            last_name = record.last_name if record.last_name else ''
+            first_name = record.first_name if record.first_name else ''
+            name = '{} {}'.format(last_name, first_name)
+            while True:
+                if name.find('  ') != -1:
+                    name = name.replace('  ', ' ')
+                else:
+                    break
+            name = name.strip()
+            record.name = name
+
+    @api.onchange('last_name', 'first_name')
+    def _onchange_name(self):
+        for record in self:
+            last_name = record.last_name if record.last_name else ''
+            first_name = record.first_name if record.first_name else ''
+            name = '{} {}'.format(last_name, first_name)
+            while True:
+                if name.find('  ') != -1:
+                    name = name.replace('  ', ' ')
+                else:
+                    break
+            name = name.strip()
+            record.name = name
+
     @api.onchange('cycle_id')
     def _onchange_school(self):
         for record in self:
@@ -174,34 +202,6 @@ class Student(models.Model):
     def _onchange_option(self):
         for record in self:
             record.class_id = None
-
-    @api.onchange('last_name', 'first_name')
-    def _onchange_name(self):
-        for record in self:
-            last_name = record.last_name if record.last_name else ''
-            first_name = record.first_name if record.first_name else ''
-            name = '{} {}'.format(last_name, first_name)
-            while True:
-                if name.find('  ') != -1:
-                    name = name.replace('  ', ' ')
-                else:
-                    break
-            name = name.strip()
-            record.name = name
-
-    @api.depends('last_name', 'first_name')
-    def _compute_name(self):
-        for record in self:
-            last_name = record.last_name if record.last_name else ''
-            first_name = record.first_name if record.first_name else ''
-            name = '{} {}'.format(last_name, first_name)
-            while True:
-                if name.find('  ') != -1:
-                    name = name.replace('  ', ' ')
-                else:
-                    break
-            name = name.strip()
-            record.name = name
 
     @api.depends('field_of_study_id', 'specialty_id', 'option_id', 'level_id')
     def _compute_timetables(self):

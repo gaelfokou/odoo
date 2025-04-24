@@ -70,8 +70,8 @@ class HrEmployee(models.Model):
         'Date de naissance',
     )
 
-    @api.onchange('last_name', 'first_name')
-    def _onchange_name(self):
+    @api.depends('last_name', 'first_name')
+    def _compute_name(self):
         for record in self:
             last_name = record.last_name if record.last_name else ''
             first_name = record.first_name if record.first_name else ''
@@ -84,8 +84,8 @@ class HrEmployee(models.Model):
             name = name.strip()
             record.name = name
 
-    @api.depends('last_name', 'first_name')
-    def _compute_name(self):
+    @api.onchange('last_name', 'first_name')
+    def _onchange_name(self):
         for record in self:
             last_name = record.last_name if record.last_name else ''
             first_name = record.first_name if record.first_name else ''

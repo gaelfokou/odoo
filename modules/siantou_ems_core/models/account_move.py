@@ -6,7 +6,7 @@ import logging
 _logger = logging.getLogger(__name__)
 
 class AccountMove(models.Model):
-    _inherit = "account.move"
+    _inherit = 'account.move'
 
     # cycle_id = fields.Many2one(
     #     'oe.school.course',

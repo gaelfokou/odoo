@@ -64,7 +64,6 @@ class TimetableFilterWizard(models.TransientModel):
     school_id = fields.Many2one(
         'siantou.ems.core.school',
         string='Ecole',
-        ondelete='restrict'
     )
 
     # Filière liée à la programmation de cours
@@ -79,59 +78,50 @@ class TimetableFilterWizard(models.TransientModel):
     level_id = fields.Many2one(
         'siantou.ems.core.level',
         'Niveau',
-        ondelete='restrict'
     )
 
     class_id = fields.Many2one(
         'siantou.ems.core.class',
         string='Classe',
-        ondelete='restrict'
     )
 
     specialty_id = fields.Many2one(
         'siantou.ems.core.specialty',
         string='Spécialité',
-        ondelete='restrict'
     )
 
     option_id = fields.Many2one(
         'siantou.ems.core.option',
         string='Option',
-        ondelete='restrict'
     )
 
     ue_id = fields.Many2one(
         'siantou.ems.core.unite.enseignement',
         string='Unité d\'enseignement',
-        ondelete='restrict'
     )
 
     # Cours programmé
     subject_id = fields.Many2one(
         'siantou.ems.core.subject',
         'Cours',
-        ondelete='restrict'
     )
 
     # Bâtiment auquel appartient la salle de classe
     building_id = fields.Many2one(
         'siantou.ems.core.building',
         'Bâtiment',
-        ondelete='restrict'
     )
 
     # Salle liée à la programmation de cours
     classroom_id = fields.Many2one(
         'siantou.ems.core.building.classroom',
         'Salle de classe',
-        ondelete='restrict'
     )
 
     # Enseignant lié à la programmation de cours
     employee_id = fields.Many2one(
         'hr.employee',
         'Enseignant',
-        ondelete='restrict'
     )
 
     # Version auquel appartient l'emploi du temps
@@ -139,7 +129,6 @@ class TimetableFilterWizard(models.TransientModel):
         'siantou.ems.timetable.group',
         'Version',
         required=True,
-        ondelete='restrict'
     )
 
     status = fields.Selection([
@@ -150,12 +139,6 @@ class TimetableFilterWizard(models.TransientModel):
         ('4', 'Exception'),
     ], 'Statut',
         # default='0',
-    )
-
-    class_group_id = fields.Many2one(
-        'siantou.ems.core.class.group',
-        'Groupe',
-        ondelete='restrict'
     )
 
     specialty_id_domain = fields.Binary(compute='_compute_school_domain', default=[])
@@ -189,14 +172,18 @@ class TimetableFilterWizard(models.TransientModel):
         default=_default_end_date,
     )
 
-    @api.constrains('start_date', 'end_date')
-    def _constrains_date(self):
+    @api.onchange('group_id')
+    def _onchange_group(self):
         for record in self:
-            if record.start_date and record.end_date:
-                if record.start_date > record.end_date:
-                    raise ValidationError('La date de fin doit être supérieure ou égale à la date de début')
-                elif record.start_date + relativedelta(months=1) < record.end_date:
-                    raise ValidationError(f"La plage entre la date de début et la date de fin ne doit pas être supérieure 1 mois")
+            record.semester_id = record.group_id.semester_id.id
+            record.school_id = None
+            record.field_of_study_id = None
+            record.level_id = None
+            record.class_id = None
+            record.specialty_id = None
+            record.option_id = None
+            record.ue_id = None
+            record.subject_id = None
 
     @api.depends('school_id')
     def _compute_school_domain(self):
@@ -207,22 +194,12 @@ class TimetableFilterWizard(models.TransientModel):
                 domain = [('field_of_study_id', 'in', field_of_study_ids.ids)]
             record.specialty_id_domain = domain
 
-    @api.depends('class_id')
-    def _compute_class_domain(self):
-        for record in self:
-            domain = []
-            if record.class_id.id:
-                ue_ids = record.class_id.ue_ids
-                domain = [('ue_ids', 'in', ue_ids.ids)]
-            record.subject_id_domain = domain
-
     @api.onchange('school_id')
     def _onchange_school(self):
         for record in self:
             record.field_of_study_id = None
             record.level_id = None
             record.class_id = None
-            record.class_group_id = None
             record.specialty_id = None
             record.option_id = None
             record.ue_id = None
@@ -233,7 +210,6 @@ class TimetableFilterWizard(models.TransientModel):
     #     for record in self:
     #         record.level_id = None
     #         record.class_id = None
-    #         record.class_group_id = None
     #         record.specialty_id = None
     #         record.option_id = None
     #         record.ue_id = None
@@ -243,7 +219,6 @@ class TimetableFilterWizard(models.TransientModel):
     def _onchange_level(self):
         for record in self:
             record.class_id = None
-            record.class_group_id = None
             record.ue_id = None
             record.subject_id = None
 
@@ -251,7 +226,6 @@ class TimetableFilterWizard(models.TransientModel):
     def _onchange_specialty(self):
         for record in self:
             record.class_id = None
-            record.class_group_id = None
             record.option_id = None
             record.ue_id = None
             record.subject_id = None
@@ -260,16 +234,32 @@ class TimetableFilterWizard(models.TransientModel):
     def _onchange_option(self):
         for record in self:
             record.class_id = None
-            record.class_group_id = None
             record.ue_id = None
             record.subject_id = None
+
+    @api.depends('class_id')
+    def _compute_class_domain(self):
+        for record in self:
+            domain = []
+            if record.class_id.id:
+                ue_ids = record.class_id.ue_ids
+                domain = [('ue_ids', 'in', ue_ids.ids)]
+            record.subject_id_domain = domain
 
     @api.onchange('class_id')
     def _onchange_class(self):
         for record in self:
-            record.class_group_id = None
             record.ue_id = None
             record.subject_id = None
+
+    @api.constrains('start_date', 'end_date')
+    def _constrains_date(self):
+        for record in self:
+            if record.start_date and record.end_date:
+                if record.start_date > record.end_date:
+                    raise ValidationError('La date de fin doit être supérieure ou égale à la date de début')
+                elif record.start_date + relativedelta(months=1) < record.end_date:
+                    raise ValidationError(f"La plage entre la date de début et la date de fin ne doit pas être supérieure 1 mois")
 
     def action_timetable_filter(self):
         domain = []
@@ -305,8 +295,6 @@ class TimetableFilterWizard(models.TransientModel):
             domain.append(('group_id', '=', self.group_id.id))
         if self.status:
             domain.append(('status', '=', self.status))
-        if self.class_group_id.id:
-            domain.append(('class_group_id', '=', self.class_group_id.id))
         if self.start_date and self.end_date:
             domain.append(('date', '>=', self.start_date))
             domain.append(('date', '<=', self.end_date))

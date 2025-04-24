@@ -9,7 +9,7 @@ from odoo.tools import float_utils
 ROUNDING_FACTOR = 16
 
 class ResourceMixin(models.AbstractModel):
-    _inherit = "resource.mixin"
+    _inherit = 'resource.mixin'
 
     def _get_work_days_data(self, from_datetime, to_datetime, compute_leaves=True, calendar=None, domain=None):
         """

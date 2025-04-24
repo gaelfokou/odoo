@@ -63,23 +63,25 @@ class EducationClass(models.Model):
         string='Liste des groupes'
     )
 
-    @api.onchange('school_id')
-    def _onchange_school(self):
+    @api.depends('specialty_id', 'option_id', 'level_id', 'type_cour')
+    def _compute_name(self):
         for record in self:
-            record.field_of_study_id = None
-            record.specialty_id = None
-            record.option_id = None
-
-    @api.onchange('field_of_study_id')
-    def _onchange_filiere(self):
-        for record in self:
-            record.specialty_id = None
-            record.option_id = None
-
-    @api.onchange('specialty_id')
-    def _onchange_specialty(self):
-        for record in self:
-            record.option_id = None
+            specialty_name = record.specialty_id.name if record.specialty_id.id else ''
+            option_name = record.option_id.name if record.option_id.id else ''
+            if option_name != '':
+                option_name = f'- {option_name}'
+            niveau_name = record.level_id.name if record.level_id.id else ''
+            niveau_name = re.sub(r'Niveau ', '', niveau_name)
+            type_cour_name = record.type_cour if record.type_cour == 'cs' else ''
+            name = '{} {} {} {}'.format(specialty_name, option_name, niveau_name, type_cour_name)
+            while True:
+                if name.find('  ') != -1:
+                    name = name.replace('  ', ' ')
+                else:
+                    break
+            name = name.strip()
+            name = name.upper()
+            record.name = name
 
     @api.onchange('specialty_id', 'option_id', 'level_id', 'type_cour')
     def _onchange_name(self):
@@ -101,25 +103,23 @@ class EducationClass(models.Model):
             name = name.upper()
             record.name = name
 
-    @api.depends('specialty_id', 'option_id', 'level_id', 'type_cour')
-    def _compute_name(self):
+    @api.onchange('school_id')
+    def _onchange_school(self):
         for record in self:
-            specialty_name = record.specialty_id.name if record.specialty_id.id else ''
-            option_name = record.option_id.name if record.option_id.id else ''
-            if option_name != '':
-                option_name = f'- {option_name}'
-            niveau_name = record.level_id.name if record.level_id.id else ''
-            niveau_name = re.sub(r'Niveau ', '', niveau_name)
-            type_cour_name = record.type_cour if record.type_cour == 'cs' else ''
-            name = '{} {} {} {}'.format(specialty_name, option_name, niveau_name, type_cour_name)
-            while True:
-                if name.find('  ') != -1:
-                    name = name.replace('  ', ' ')
-                else:
-                    break
-            name = name.strip()
-            name = name.upper()
-            record.name = name
+            record.field_of_study_id = None
+            record.specialty_id = None
+            record.option_id = None
+
+    @api.onchange('field_of_study_id')
+    def _onchange_filiere(self):
+        for record in self:
+            record.specialty_id = None
+            record.option_id = None
+
+    @api.onchange('specialty_id')
+    def _onchange_specialty(self):
+        for record in self:
+            record.option_id = None
 
 class EducationClassGroup(models.Model):
     _name = 'siantou.ems.core.class.group'
