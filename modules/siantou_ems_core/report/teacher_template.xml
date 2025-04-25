@@ -49,14 +49,17 @@
                         <table class="table table-bordered table-sm text-center">
                             <thead>
                                 <tr>
-                                    <th class="text-center" colspan="8" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;">
+                                    <th class="text-center" colspan="9" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;">
                                         <h3>INSTITUT UNIVERSITAIRE SIANTOU</h3>
+                                        <h4>
+                                            <span t-esc="'Liste des enseignants'"/>
+                                        </h4>
                                     </th>
                                 </tr>
                             </thead>
                             <thead>
                                 <tr>
-                                    <th class="text-left" colspan="8" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
+                                    <th class="text-left" colspan="9" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
                                 </tr>
                             </thead>
                             <thead class="thead">
@@ -92,10 +95,10 @@
                                             <span t-esc="teacher['birthday']"/>
                                         </td>
                                         <td class='text-center'>
-                                            <span t-esc="teacher['is_teacher']"/>
+                                            <span t-esc="'Oui' if teacher['is_teacher'] else 'Non'"/>
                                         </td>
                                         <td class='text-center'>
-                                            <span t-esc="teacher['is_permanent']"/>
+                                            <span t-esc="'Oui' if teacher['is_permanent'] else 'Non'"/>
                                         </td>
                                         <td class='text-center'>
                                             <span t-esc="teacher['identifier']"/>
