@@ -612,12 +612,25 @@ class Timetable(models.Model):
         report_action = self.env.ref('siantou_ems_core.action_report_timetable')
         return report_action.report_action(self, data=data)
 
-    def action_cancel_all_timetable_exception(self):
+    def action_present_all_timetable_exception(self):
         active_ids = self.env.context.get('active_ids', [])
         timetable_ids = self.env['siantou.ems.timetable.timetable'].browse(active_ids)
         for timetable in timetable_ids:
             timetable.write({
                 'status': '1',
+            })
+
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'reload',
+        }
+
+    def action_absent_all_timetable_exception(self):
+        active_ids = self.env.context.get('active_ids', [])
+        timetable_ids = self.env['siantou.ems.timetable.timetable'].browse(active_ids)
+        for timetable in timetable_ids:
+            timetable.write({
+                'status': '2',
             })
 
         return {
