@@ -15,12 +15,16 @@ class HrEmployee(models.Model):
 
     # Variable booléenne pour identifier un enseignant
     is_teacher = fields.Boolean(
-        'Est un enseignant'
+        'Est un enseignant',
+        default=True,
     )
+
     # Variable booléenne pour identifier un employé permanent
     is_permanent = fields.Boolean(
-        'Est un employé permanent'
+        'Est un permanent',
+        default=False,
     )
+
     # Matricule de l'enseignant
     identifier = fields.Char(
         'Matricule',
@@ -297,8 +301,7 @@ class HrEmployee(models.Model):
         if len(active_ids) == 0:
             raise UserError('Aucune donnée trouvée')
         report_data = self.env['teacher.print.wizard'].create({
-            'semester_id': teachers[0].semester_id.id,
-            'group_id': teachers[0].group_id.id,
+            'is_teacher': True,
         })
         domain = [('id', 'in', active_ids)]
         data = report_data.print_teacher_report_data(domain)

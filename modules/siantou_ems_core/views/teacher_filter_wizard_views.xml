@@ -38,7 +38,7 @@
 
         <!-- <record id="action_report_teacher" model="ir.actions.report">
             <field name="name">Emploi du temps PDF</field>
-            <field name="model">siantou.ems.teacher.teacher</field>
+            <field name="model">hr.employee</field>
             <field name="report_type">qweb-pdf</field>
             <field name="report_name">siantou_ems_teacher.report_teacher</field>
             <field name="report_file">siantou_ems_teacher.report_teacher</field>

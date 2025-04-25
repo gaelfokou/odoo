@@ -38,7 +38,7 @@ _logger = logging.getLogger(__name__)
 
 class TimetablePrintWizard(models.TransientModel):
     _name = 'timetable.print.wizard'
-    _description = 'Assistant d\'impression de l\'emploi du temps'
+    _description = 'Assistant d\'impression des emplois du temps'
 
     # Semestre pour lequel on souhaite tirer l'emploi du temps
     semester_id = fields.Many2one(

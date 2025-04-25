@@ -79,6 +79,7 @@
         'views/timetable_print_wizard_views.xml',
         'views/timetable_exception_views.xml',
         'report/timetable_template.xml',
+        'report/teacher_template.xml',
         'report/report_student_core.xml',
 
         #=========== Fichier du dashboard
