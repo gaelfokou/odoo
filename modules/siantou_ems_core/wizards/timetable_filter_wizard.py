@@ -154,7 +154,7 @@ class TimetableFilterWizard(models.TransientModel):
     # Date du jour où le cours sera programmé
     start_date = fields.Date(
         'Date de début',
-        default=_default_start_date,
+        # default=_default_start_date,
     )
 
     def _default_end_date(self):
@@ -168,7 +168,7 @@ class TimetableFilterWizard(models.TransientModel):
     # Date du jour où le cours sera programmé
     end_date = fields.Date(
         'Date de fin',
-        default=_default_end_date,
+        # default=_default_end_date,
     )
 
     @api.onchange('group_id')
@@ -257,8 +257,8 @@ class TimetableFilterWizard(models.TransientModel):
             if record.start_date and record.end_date:
                 if record.start_date > record.end_date:
                     raise ValidationError('La date de fin doit être supérieure ou égale à la date de début')
-                elif record.start_date + relativedelta(months=1) < record.end_date:
-                    raise ValidationError(f"La plage entre la date de début et la date de fin ne doit pas être supérieure 1 mois")
+                # elif record.start_date + relativedelta(months=1) < record.end_date:
+                #     raise ValidationError(f"La plage entre la date de début et la date de fin ne doit pas être supérieure 1 mois")
 
     def action_timetable_filter(self):
         domain = []
