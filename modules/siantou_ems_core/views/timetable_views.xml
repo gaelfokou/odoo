@@ -20,6 +20,11 @@
                             string="Filtrer" 
                             class="oe_highlight" 
                             display="always"/>
+                        <button name="action_cancel_timetable_filter" 
+                            type="object" 
+                            string="Annuler le filtre" 
+                            class="oe_highlight" 
+                            display="always"/>
                         <button name="action_timetable_print" 
                             type="object" 
                             string="Imprimer PDF" 

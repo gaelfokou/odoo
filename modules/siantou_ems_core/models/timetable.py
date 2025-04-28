@@ -593,6 +593,13 @@ class Timetable(models.Model):
     #         ### in domain pass ids if you want to show only filter data else it will display all data of that model.
     #     }
 
+    def action_cancel_timetable_filter(self):
+        action = self.env.ref('siantou_ems_core.action_show_timetable').read()[0]
+        action.update({
+            'context': {'no_breadcrumbs': True},
+        })
+        return action
+
     def action_timetable_print(self):
         active_ids = self.env.context.get('active_ids', [])
         timetables = self.env['siantou.ems.timetable.timetable'].browse(active_ids)

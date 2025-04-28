@@ -293,6 +293,13 @@ class HrEmployee(models.Model):
         })
         return action
 
+    def action_cancel_teacher_filter(self):
+        action = self.env.ref('siantou_ems_core.action_hr_employees_teachers').read()[0]
+        action.update({
+            'context': {'no_breadcrumbs': True},
+        })
+        return action
+
     def action_teacher_print(self):
         active_ids = self.env.context.get('active_ids', [])
         teachers = self.env['hr.employee'].browse(active_ids)
