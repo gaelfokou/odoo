@@ -219,5 +219,6 @@ class TeacherFilterWizard(models.TransientModel):
             'res_model': 'hr.employee',
             'type': 'ir.actions.act_window',
             'domain' : domain,
+            'context': {'no_breadcrumbs': True},
         })
         return action

@@ -303,5 +303,6 @@ class TimetableFilterWizard(models.TransientModel):
             'res_model': 'siantou.ems.timetable.timetable',
             'type': 'ir.actions.act_window',
             'domain' : domain,
+            'context': {'no_breadcrumbs': True},
         })
         return action

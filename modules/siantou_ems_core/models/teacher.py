@@ -289,6 +289,7 @@ class HrEmployee(models.Model):
             'name': 'Filtre des enseignants',
             'res_model': 'teacher.filter.wizard',
             'type': 'ir.actions.act_window',
+            'context': {'no_breadcrumbs': True},
         })
         return action
 
