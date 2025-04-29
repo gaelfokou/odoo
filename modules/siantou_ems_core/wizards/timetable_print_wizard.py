@@ -272,7 +272,7 @@ class TimetablePrintWizard(models.TransientModel):
         n = n.split('.')
         if len(n[1]) == 1:
             n[1] = '{}0'.format(n[1])
-        tm = datetime.combine(date.today(), tm) + timedelta(hours=int(n[0]), minutes=int(n[1]))
+        tm = datetime.combine(date.min, tm) + timedelta(hours=int(n[0]), minutes=int(n[1]))
         tm = datetime.strftime(tm, TIME_FORMAT)
         tm = TimetablePrintWizard.convert_time_to_float(tm)
         return tm

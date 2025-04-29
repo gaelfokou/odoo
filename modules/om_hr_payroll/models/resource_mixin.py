@@ -38,7 +38,7 @@ class ResourceMixin(models.AbstractModel):
         intervals = calendar._attendance_intervals_batch(from_full, to_full, resource)
         day_total = defaultdict(float)
         for start, stop, meta in intervals[resource.id]:
-            day_total[start.date()] += (stop - start).total_seconds() / 3600
+            day_total[start.date()] += (stop - start).total_seconds() / 3600.0
 
         # actual hours per day
         if compute_leaves:
@@ -47,7 +47,7 @@ class ResourceMixin(models.AbstractModel):
             intervals = calendar._attendance_intervals_batch(from_datetime, to_datetime, resource)
         day_hours = defaultdict(float)
         for start, stop, meta in intervals[resource.id]:
-            day_hours[start.date()] += (stop - start).total_seconds() / 3600
+            day_hours[start.date()] += (stop - start).total_seconds() / 3600.0
 
         # compute number of days as quarters
         days = sum(
