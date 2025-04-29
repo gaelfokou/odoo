@@ -299,10 +299,11 @@ class TimetableFilterWizard(models.TransientModel):
             domain.append(('date', '<=', self.end_date))
         action = self.env.ref('siantou_ems_core.action_show_timetable').read()[0]
         action.update({
-            'name': 'Emploi du temps',
+            'name': 'Emplois du temps filtrés',
             'res_model': 'siantou.ems.timetable.timetable',
             'type': 'ir.actions.act_window',
             'domain' : domain,
-            'context': {'no_breadcrumbs': True},
+            'target': 'main',
+            # 'context': {'no_breadcrumbs': True},
         })
         return action

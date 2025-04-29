@@ -8,7 +8,7 @@
             <field name="name">timetable.tree.view</field>
 			<field name="model">siantou.ems.timetable.timetable</field>
 			<field name="arch" type="xml">
-				<tree string="Emploi du temps">
+				<tree string="Emplois du temps">
                     <header>
                         <!-- <button name="action_timetable_automatic" 
                             type="object" 
@@ -67,7 +67,7 @@
 			<field name="name">timetable.form.view</field>
 			<field name="model">siantou.ems.timetable.timetable</field>
 			<field name="arch" type="xml">
-				<form string="Emploi du temps">
+				<form string="Emplois du temps">
 					<sheet>
                         <group>
                             <field name="group_id" readonly="1" options="{'no_open': True, 'no_create': True}"/>
@@ -155,7 +155,7 @@
         <record
                 id="action_show_timetable"
                 model="ir.actions.act_window">
-            <field name="name">Emploi du temps</field>
+            <field name="name">Emplois du temps</field>
             <field name="res_model">siantou.ems.timetable.timetable</field>
             <field name="view_mode">tree,form</field>
             <field name="view_ids"
@@ -173,7 +173,7 @@
 
         <menuitem
             id="menu_timetable"
-            name="Emploi du temps"
+            name="Emplois du temps"
             parent="menu_siantou_ems_timetable_planning"
             action="action_show_timetable"
             groups="siantou_ems_core.group_timetable_user,siantou_ems_core.group_timetable_admin,base.group_system"

@@ -573,7 +573,8 @@ class Timetable(models.Model):
             'name': 'Filtre des emplois du temps',
             'res_model': 'timetable.filter.wizard',
             'type': 'ir.actions.act_window',
-            'context': {'no_breadcrumbs': True},
+            'target': 'new',
+            # 'context': {'no_breadcrumbs': True},
         })
         return action
 
@@ -588,15 +589,13 @@ class Timetable(models.Model):
     #         'views': [(view_id, 'form')],
     #         'view_id': view_id,
     #         'target': 'new',
-    #         # 'domain' : [('id', 'in', search_ids)],
-    #         # 'context': {'no_breadcrumbs': True},
-    #         ### in domain pass ids if you want to show only filter data else it will display all data of that model.
     #     }
 
     def action_cancel_timetable_filter(self):
         action = self.env.ref('siantou_ems_core.action_show_timetable').read()[0]
         action.update({
-            'context': {'no_breadcrumbs': True},
+            'target': 'main',
+            # 'context': {'no_breadcrumbs': True},
         })
         return action
 

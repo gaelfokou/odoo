@@ -215,10 +215,11 @@ class TeacherFilterWizard(models.TransientModel):
 
         action = self.env.ref('siantou_ems_core.action_hr_employees_teachers').read()[0]
         action.update({
-            'name': 'Enseignants',
+            'name': 'Enseignants filtrés',
             'res_model': 'hr.employee',
             'type': 'ir.actions.act_window',
             'domain' : domain,
-            'context': {'no_breadcrumbs': True},
+            'target': 'main',
+            # 'context': {'no_breadcrumbs': True},
         })
         return action

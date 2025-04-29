@@ -289,14 +289,16 @@ class HrEmployee(models.Model):
             'name': 'Filtre des enseignants',
             'res_model': 'teacher.filter.wizard',
             'type': 'ir.actions.act_window',
-            'context': {'no_breadcrumbs': True},
+            'target': 'new',
+            # 'context': {'no_breadcrumbs': True},
         })
         return action
 
     def action_cancel_teacher_filter(self):
         action = self.env.ref('siantou_ems_core.action_hr_employees_teachers').read()[0]
         action.update({
-            'context': {'no_breadcrumbs': True},
+            'target': 'main',
+            # 'context': {'no_breadcrumbs': True},
         })
         return action
 
