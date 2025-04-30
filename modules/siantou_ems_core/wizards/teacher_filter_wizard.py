@@ -172,22 +172,30 @@ class TeacherFilterWizard(models.TransientModel):
 
     def action_filter(self):
         domain = []
+        title = []
         if self.year_id.id:
             domain.append(('year_id', '=', self.year_id.id))
         if self.school_id.id:
             domain.append(('school_id', '=', self.school_id.id))
+            title.append(self.school_id.name)
         if self.field_of_study_id.id:
             domain.append(('field_of_study_id', '=', self.field_of_study_id.id))
+            title.append(self.field_of_study_id.name)
         if self.level_id.id:
             domain.append(('level_id', '=', self.level_id.id))
+            title.append(self.level_id.name)
         if self.class_id.id:
             domain.append(('id', '=', self.class_id.id))
+            title.append(self.class_id.name)
         if self.specialty_id.id:
             domain.append(('specialty_id', '=', self.specialty_id.id))
+            title.append(self.specialty_id.name)
         if self.option_id.id:
             domain.append(('option_id', '=', self.option_id.id))
+            title.append(self.option_id.name)
         if self.ue_id.id:
             domain.append(('ue_ids', '=', self.ue_id.id))
+            title.append(self.ue_id.name)
 
         ue_ids = []
         classes = self.env['siantou.ems.core.class'].search(domain)
@@ -212,10 +220,16 @@ class TeacherFilterWizard(models.TransientModel):
 
         if self.department_id.id:
             domain.append(('department_id', '=', self.department_id.id))
+            title.append(self.department_id.name)
+
+        if len(title) > 0:
+            title = '/'.join(title)
+        else:
+            title = 'Enseignants filtrés'
 
         view_id = self.env.ref('hr.view_employee_tree').id
         return {
-            'name': 'Enseignants filtrés',
+            'name': title,
             'type': 'ir.actions.act_window',
             'view_type': 'form',
             'view_mode': 'tree',

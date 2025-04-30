@@ -262,34 +262,47 @@ class TimetableFilterWizard(models.TransientModel):
 
     def action_filter(self):
         domain = []
-        if self.semester_id.id:
-            domain.append(('semester_id', '=', self.semester_id.id))
+        title = []
         if self.year_id.id:
             domain.append(('year_id', '=', self.year_id.id))
+        if self.semester_id.id:
+            domain.append(('semester_id', '=', self.semester_id.id))
         if self.department_id.id:
             domain.append(('department_id', '=', self.department_id.id))
+            title.append(self.department_id.name)
         if self.school_id.id:
             domain.append(('school_id', '=', self.school_id.id))
+            title.append(self.school_id.name)
         if self.field_of_study_id.id:
             domain.append(('field_of_study_id', '=', self.field_of_study_id.id))
+            title.append(self.field_of_study_id.name)
         if self.level_id.id:
             domain.append(('level_id', '=', self.level_id.id))
+            title.append(self.level_id.name)
         if self.class_id.id:
             domain.append(('class_id', '=', self.class_id.id))
+            title.append(self.class_id.name)
         if self.specialty_id.id:
             domain.append(('specialty_id', '=', self.specialty_id.id))
+            title.append(self.specialty_id.name)
         if self.option_id.id:
             domain.append(('option_id', '=', self.option_id.id))
+            title.append(self.option_id.name)
         if self.ue_id.id:
             domain.append(('ue_id', '=', self.ue_id.id))
+            title.append(self.ue_id.name)
         if self.subject_id.id:
             domain.append(('subject_id', '=', self.subject_id.id))
+            title.append(self.subject_id.name)
         if self.building_id.id:
             domain.append(('building_id', '=', self.building_id.id))
+            title.append(self.building_id.name)
         if self.classroom_id.id:
             domain.append(('classroom_id', '=', self.classroom_id.id))
+            title.append(self.classroom_id.name)
         if self.employee_id.id:
             domain.append(('employee_id', '=', self.employee_id.id))
+            title.append(self.employee_id.name)
         if self.group_id.id:
             domain.append(('group_id', '=', self.group_id.id))
         if self.status:
@@ -298,9 +311,14 @@ class TimetableFilterWizard(models.TransientModel):
             domain.append(('date', '>=', self.start_date))
             domain.append(('date', '<=', self.end_date))
 
+        if len(title) > 0:
+            title = '/'.join(title)
+        else:
+            title = 'Emplois du temps filtrés'
+
         view_id = self.env.ref('siantou_ems_core.timetable_tree_view').id
         return {
-            'name': 'Emplois du temps filtrés',
+            'name': title,
             'type': 'ir.actions.act_window',
             'view_type': 'form',
             'view_mode': 'tree',
