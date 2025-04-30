@@ -240,7 +240,7 @@ class TeacherFilterWizard(models.TransientModel):
             'target': 'main',
         }
 
-    def action_cancel_filter(self):
+    def action_reset_filter(self):
         action = self.env.ref('siantou_ems_core.action_hr_employees_teachers').read()[0]
         action.update({
             'target': 'main',
