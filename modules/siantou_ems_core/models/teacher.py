@@ -284,21 +284,22 @@ class HrEmployee(models.Model):
     #         record.subject_priority_ids.filtered(lambda p: p.subject_id.id in to_remove).unlink()
 
     def action_open_filter(self):
-        action = self.env.ref('siantou_ems_core.action_filter_teacher_wizard').read()[0]
-        action.update({
+        view_id = self.env.ref('siantou_ems_core.teacher_filter_wizard').id
+        return {
             'name': 'Filtre des enseignants',
-            'res_model': 'teacher.filter.wizard',
             'type': 'ir.actions.act_window',
+            'view_type': 'form',
+            'view_mode': 'form',
+            'res_model': 'teacher.filter.wizard',
+            'views': [(view_id, 'form')],
+            'view_id': view_id,
             'target': 'new',
-            # 'context': {'no_breadcrumbs': True},
-        })
-        return action
+        }
 
     def action_cancel_filter(self):
         action = self.env.ref('siantou_ems_core.action_hr_employees_teachers').read()[0]
         action.update({
             'target': 'main',
-            # 'context': {'no_breadcrumbs': True},
         })
         return action
 

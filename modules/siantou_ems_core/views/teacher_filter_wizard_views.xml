@@ -20,7 +20,7 @@
                         <field name="subject_id" options="{'no_create': True}" domain="subject_id_domain"/>
                     </group>
                     <footer>
-                        <button string="Filtrer" type="object" name="action_teacher_filter" class="btn-primary"/>
+                        <button string="Filtrer" type="object" name="action_filter" class="btn-primary"/>
                         <button string="Réinitialiser le filtre" type="object" name="action_cancel_filter" class="btn-primary"/>
                         <button string="Annuler" class="btn-secondary" special="cancel"/>
                     </footer>

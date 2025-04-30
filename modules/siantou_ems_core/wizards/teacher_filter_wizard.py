@@ -170,7 +170,7 @@ class TeacherFilterWizard(models.TransientModel):
             record.ue_id = None
             record.subject_id = None
 
-    def action_teacher_filter(self):
+    def action_filter(self):
         domain = []
         if self.year_id.id:
             domain.append(('year_id', '=', self.year_id.id))
@@ -213,21 +213,22 @@ class TeacherFilterWizard(models.TransientModel):
         if self.department_id.id:
             domain.append(('department_id', '=', self.department_id.id))
 
-        action = self.env.ref('siantou_ems_core.action_hr_employees_teachers').read()[0]
-        action.update({
+        view_id = self.env.ref('hr.view_employee_tree').id
+        return {
             'name': 'Enseignants filtrés',
-            'res_model': 'hr.employee',
             'type': 'ir.actions.act_window',
+            'view_type': 'form',
+            'view_mode': 'tree',
+            'res_model': 'hr.employee',
+            'views': [(view_id, 'tree')],
+            'view_id': view_id,
             'domain' : domain,
             'target': 'main',
-            # 'context': {'no_breadcrumbs': True},
-        })
-        return action
+        }
 
     def action_cancel_filter(self):
         action = self.env.ref('siantou_ems_core.action_hr_employees_teachers').read()[0]
         action.update({
             'target': 'main',
-            # 'context': {'no_breadcrumbs': True},
         })
         return action

@@ -260,7 +260,7 @@ class TimetableFilterWizard(models.TransientModel):
                 # elif record.start_date + relativedelta(months=1) < record.end_date:
                 #     raise ValidationError(f"La plage entre la date de début et la date de fin ne doit pas être supérieure 1 mois")
 
-    def action_timetable_filter(self):
+    def action_filter(self):
         domain = []
         if self.semester_id.id:
             domain.append(('semester_id', '=', self.semester_id.id))
@@ -297,21 +297,23 @@ class TimetableFilterWizard(models.TransientModel):
         if self.start_date and self.end_date:
             domain.append(('date', '>=', self.start_date))
             domain.append(('date', '<=', self.end_date))
-        action = self.env.ref('siantou_ems_core.action_show_timetable').read()[0]
-        action.update({
+
+        view_id = self.env.ref('siantou_ems_core.timetable_tree_view').id
+        return {
             'name': 'Emplois du temps filtrés',
-            'res_model': 'siantou.ems.timetable.timetable',
             'type': 'ir.actions.act_window',
+            'view_type': 'form',
+            'view_mode': 'tree',
+            'res_model': 'siantou.ems.timetable.timetable',
+            'views': [(view_id, 'tree')],
+            'view_id': view_id,
             'domain' : domain,
             'target': 'main',
-            # 'context': {'no_breadcrumbs': True},
-        })
-        return action
+        }
 
     def action_cancel_filter(self):
         action = self.env.ref('siantou_ems_core.action_show_timetable').read()[0]
         action.update({
             'target': 'main',
-            # 'context': {'no_breadcrumbs': True},
         })
         return action

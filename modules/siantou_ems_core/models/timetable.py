@@ -568,34 +568,22 @@ class Timetable(models.Model):
         return action
 
     def action_open_filter(self):
-        action = self.env.ref('siantou_ems_core.action_filter_timetable_wizard').read()[0]
-        action.update({
+        view_id = self.env.ref('siantou_ems_core.timetable_filter_wizard').id
+        return {
             'name': 'Filtre des emplois du temps',
-            'res_model': 'timetable.filter.wizard',
             'type': 'ir.actions.act_window',
+            'view_type': 'form',
+            'view_mode': 'form',
+            'res_model': 'timetable.filter.wizard',
+            'views': [(view_id, 'form')],
+            'view_id': view_id,
             'target': 'new',
-            # 'context': {'no_breadcrumbs': True},
-        })
-        return action
-
-    # def action_open_filter(self):
-    #     view_id = self.env.ref('siantou_ems_core.timetable_filter_wizard').id
-    #     return {
-    #         'name': 'Filtre des emplois du temps',
-    #         'type': 'ir.actions.act_window',
-    #         'view_type': 'form',
-    #         'view_mode': 'form',
-    #         'res_model': 'timetable.filter.wizard',
-    #         'views': [(view_id, 'form')],
-    #         'view_id': view_id,
-    #         'target': 'new',
-    #     }
+        }
 
     def action_cancel_filter(self):
         action = self.env.ref('siantou_ems_core.action_show_timetable').read()[0]
         action.update({
             'target': 'main',
-            # 'context': {'no_breadcrumbs': True},
         })
         return action
 
