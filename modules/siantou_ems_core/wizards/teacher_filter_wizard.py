@@ -223,3 +223,11 @@ class TeacherFilterWizard(models.TransientModel):
             # 'context': {'no_breadcrumbs': True},
         })
         return action
+
+    def action_cancel_teacher_filter(self):
+        action = self.env.ref('siantou_ems_core.action_hr_employees_teachers').read()[0]
+        action.update({
+            'target': 'main',
+            # 'context': {'no_breadcrumbs': True},
+        })
+        return action

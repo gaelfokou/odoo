@@ -89,14 +89,14 @@
             <field name="arch" type="xml">
                 <xpath expr="//header" position="inside">
                     <button name="action_create_all_employee_user" type="object" string="Créer les comptes utilisateurs" class="oe_highlight"/>
+                    <button name="action_cancel_teacher_filter" 
+                        type="object" 
+                        string="Retour" 
+                        class="oe_highlight" 
+                        display="always"/>
                     <button name="action_teacher_filter" 
                         type="object" 
                         string="Filtrer" 
-                        class="oe_highlight" 
-                        display="always"/>
-                    <button name="action_cancel_teacher_filter" 
-                        type="object" 
-                        string="Annuler le filtre" 
                         class="oe_highlight" 
                         display="always"/>
                     <button name="action_teacher_print" 

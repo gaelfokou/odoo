@@ -29,6 +29,7 @@
                     </group>
                     <footer>
                         <button string="Filtrer" type="object" name="action_timetable_filter" class="btn-primary"/>
+                        <button string="Réinitialiser le filtre" type="object" name="action_cancel_timetable_filter" class="btn-primary"/>
                         <button string="Annuler" class="btn-secondary" special="cancel"/>
                     </footer>
                 </form>

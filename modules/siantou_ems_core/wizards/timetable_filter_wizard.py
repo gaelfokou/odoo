@@ -307,3 +307,11 @@ class TimetableFilterWizard(models.TransientModel):
             # 'context': {'no_breadcrumbs': True},
         })
         return action
+
+    def action_cancel_timetable_filter(self):
+        action = self.env.ref('siantou_ems_core.action_show_timetable').read()[0]
+        action.update({
+            'target': 'main',
+            # 'context': {'no_breadcrumbs': True},
+        })
+        return action
