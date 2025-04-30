@@ -283,7 +283,7 @@ class HrEmployee(models.Model):
     #         to_remove = set(current_subject_ids) - set(new_subject_ids)
     #         record.subject_priority_ids.filtered(lambda p: p.subject_id.id in to_remove).unlink()
 
-    def action_teacher_filter(self):
+    def action_open_filter(self):
         action = self.env.ref('siantou_ems_core.action_filter_teacher_wizard').read()[0]
         action.update({
             'name': 'Filtre des enseignants',
@@ -294,7 +294,7 @@ class HrEmployee(models.Model):
         })
         return action
 
-    def action_cancel_teacher_filter(self):
+    def action_cancel_filter(self):
         action = self.env.ref('siantou_ems_core.action_hr_employees_teachers').read()[0]
         action.update({
             'target': 'main',
@@ -302,7 +302,7 @@ class HrEmployee(models.Model):
         })
         return action
 
-    def action_teacher_print(self):
+    def action_print_pdf(self):
         active_ids = self.env.context.get('active_ids', [])
         teachers = self.env['hr.employee'].browse(active_ids)
         if len(active_ids) == 0:

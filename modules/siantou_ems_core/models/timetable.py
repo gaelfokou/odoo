@@ -567,7 +567,7 @@ class Timetable(models.Model):
         })
         return action
 
-    def action_timetable_filter(self):
+    def action_open_filter(self):
         action = self.env.ref('siantou_ems_core.action_filter_timetable_wizard').read()[0]
         action.update({
             'name': 'Filtre des emplois du temps',
@@ -578,7 +578,7 @@ class Timetable(models.Model):
         })
         return action
 
-    # def action_timetable_filter(self):
+    # def action_open_filter(self):
     #     view_id = self.env.ref('siantou_ems_core.timetable_filter_wizard').id
     #     return {
     #         'name': 'Filtre des emplois du temps',
@@ -591,7 +591,7 @@ class Timetable(models.Model):
     #         'target': 'new',
     #     }
 
-    def action_cancel_timetable_filter(self):
+    def action_cancel_filter(self):
         action = self.env.ref('siantou_ems_core.action_show_timetable').read()[0]
         action.update({
             'target': 'main',
@@ -599,7 +599,7 @@ class Timetable(models.Model):
         })
         return action
 
-    def action_timetable_print(self):
+    def action_print_pdf(self):
         active_ids = self.env.context.get('active_ids', [])
         timetables = self.env['siantou.ems.timetable.timetable'].browse(active_ids)
         if len(active_ids) == 0:
