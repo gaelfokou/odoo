@@ -242,46 +242,45 @@ class Student(models.Model):
                         break
                 matricule = '{}2024'.format(matricule)
             password = matricule
-            last_name = student.last_name if student.last_name else ''
-            while True:
-                if last_name.find('  ') != -1:
-                    last_name = last_name.replace('  ', ' ')
-                else:
-                    break
-            last_name = last_name.strip()
-            last_name = last_name.split(' ')
-            first_name = student.first_name if student.first_name else ''
-            while True:
-                if first_name.find('  ') != -1:
-                    first_name = first_name.replace('  ', ' ')
-                else:
-                    break
-            first_name = first_name.strip()
-            first_name = first_name.split(' ')
-            if len(first_name) > 1:
-                name = '{} {} {}'.format(first_name[0], last_name[0], first_name[1])
-            else:
-                name = '{} {}'.format(first_name[0], last_name[0])
-            # name = student.name
-            while True:
-                if name.find('  ') != -1:
-                    name = name.replace('  ', ' ')
-                else:
-                    break
-            name = re.sub(r'\W+', '', name)
-            name = name.strip()
-            username = name.lower()
-            username = username.split(' ')
-            username = username[0:3]
-            if len(username) == 1:
-                username = username[0]
-            elif len(username) == 2:
-                username = '{}{}'.format(username[0][0:1], username[1])
-            elif len(username) == 3:
-                username = '{}{}{}'.format(username[0][0:1], username[1], username[2][0:1])
             if student.email and student.email.strip():
                 email = student.email
             else:
+                last_name = student.last_name if student.last_name else ''
+                while True:
+                    if last_name.find('  ') != -1:
+                        last_name = last_name.replace('  ', ' ')
+                    else:
+                        break
+                last_name = last_name.strip()
+                last_name = last_name.split(' ')
+                first_name = student.first_name if student.first_name else ''
+                while True:
+                    if first_name.find('  ') != -1:
+                        first_name = first_name.replace('  ', ' ')
+                    else:
+                        break
+                first_name = first_name.strip()
+                first_name = first_name.split(' ')
+                if len(first_name) > 1:
+                    name = '{} {} {}'.format(first_name[0], last_name[0], first_name[1])
+                else:
+                    name = '{} {}'.format(first_name[0], last_name[0])
+                # name = student.name
+                while True:
+                    if name.find('  ') != -1:
+                        name = name.replace('  ', ' ')
+                    else:
+                        break
+                name = name.strip()
+                username = name.lower()
+                username = username.split(' ')
+                username = username[0:3]
+                if len(username) == 1:
+                    username = username[0]
+                elif len(username) == 2:
+                    username = '{}{}'.format(username[0][0:1], username[1])
+                elif len(username) == 3:
+                    username = '{}{}{}'.format(username[0][0:1], username[1], username[2][0:1])
                 email = username + '@siantou.net'
                 i = 0
                 while True:

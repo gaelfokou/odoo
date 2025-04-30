@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <!-- Menu principal du module -->
-    <menuitem name="Université"
+    <menuitem name="Accueil"
         id="menu_siantou_ems_core"
         sequence="2"
     />
