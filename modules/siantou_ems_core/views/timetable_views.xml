@@ -15,9 +15,9 @@
                             string="Génération automatique" 
                             class="oe_highlight" 
                             display="always"/> -->
-                        <button name="action_cancel_filter" 
+                        <button name="action_reset_filter" 
                             type="object" 
-                            string="Retour" 
+                            string="Réinitialiser" 
                             class="oe_highlight" 
                             display="always"/>
                         <button name="action_open_filter" 

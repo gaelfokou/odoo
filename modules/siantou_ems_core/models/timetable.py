@@ -580,7 +580,7 @@ class Timetable(models.Model):
             'target': 'new',
         }
 
-    def action_cancel_filter(self):
+    def action_reset_filter(self):
         action = self.env.ref('siantou_ems_core.action_show_timetable').read()[0]
         action.update({
             'target': 'main',
@@ -591,10 +591,7 @@ class Timetable(models.Model):
         active_ids = self.env.context.get('active_ids', [])
         timetables = self.env['siantou.ems.timetable.timetable'].browse(active_ids)
         if len(active_ids) == 0:
-            timetables = self.env['siantou.ems.timetable.timetable'].search([])
-            active_ids = timetables.ids
-        if len(active_ids) == 0:
-            raise UserError('Aucune donnée trouvée')
+            raise UserError('Aucune donnée sélectionnée')
         report_data = self.env['timetable.print.wizard'].create({
             'semester_id': timetables[0].semester_id.id,
             'group_id': timetables[0].group_id.id,

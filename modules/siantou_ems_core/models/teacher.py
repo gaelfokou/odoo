@@ -296,7 +296,7 @@ class HrEmployee(models.Model):
             'target': 'new',
         }
 
-    def action_cancel_filter(self):
+    def action_reset_filter(self):
         action = self.env.ref('siantou_ems_core.action_hr_employees_teachers').read()[0]
         action.update({
             'target': 'main',
@@ -307,10 +307,7 @@ class HrEmployee(models.Model):
         active_ids = self.env.context.get('active_ids', [])
         teachers = self.env['hr.employee'].browse(active_ids)
         if len(active_ids) == 0:
-            teachers = self.env['hr.employee'].search([])
-            active_ids = teachers.ids
-        if len(active_ids) == 0:
-            raise UserError('Aucune donnée trouvée')
+            raise UserError('Aucune donnée sélectionnée')
         report_data = self.env['teacher.print.wizard'].create({
             'is_teacher': True,
         })
