@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
-# Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import models, fields, api, tools, _
+import logging
+
+_logger = logging.getLogger(__name__)
 
 class ResUsers(models.Model):
     _inherit = 'res.users'
@@ -28,10 +30,11 @@ class ResUsers(models.Model):
             ('work_email', '=', user.login),
         ], limit=1)
         if employee_id:
+            password = employee_id.identifier
             employee_id.write({
                 'user_id': user.id,
+                'work_email': user.login,
             })
-            password = employee_id.identifier
             if employee_id.is_teacher:
                 group_id = self.env.ref('base.group_portal')
                 user.write({
@@ -60,10 +63,11 @@ class ResUsers(models.Model):
                 ('email', '=', user.login),
             ], limit=1)
             if student_id:
+                password = student_id.matricule
                 student_id.write({
                     'user_id': user.id,
+                    'email': user.login,
                 })
-                password = student_id.matricule
                 group_id = self.env.ref('base.group_portal')
                 user.write({
                     'password' : password,
