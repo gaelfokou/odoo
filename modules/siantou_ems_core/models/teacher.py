@@ -430,7 +430,7 @@ class TeacherSubjectPriority(models.Model):
 
     # Taux horaire du cours sur un enseignant
     hourly_rate = fields.Float(
-        'Taux horaire cours enseignant',
+        'Taux horaire',
         help='Taux horaire du cours sur un enseignant',
         default=0,
         required=True
