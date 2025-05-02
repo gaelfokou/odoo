@@ -149,3 +149,43 @@ class Subject(models.Model):
                 total += syllabus.subject_credit
 
             record.total_credit = total
+
+    def update_teacher_priority(self, subject):
+        try:
+            teacher_ids = subject.teacher_ids.ids
+            exist_teacher_ids = []
+            for teacher_priority_id in subject.teacher_priority_ids:
+                if teacher_priority_id.employee_id.id not in teacher_ids:
+                    teacher_priority_id.unlink()
+                else:
+                    exist_teacher_ids.append(teacher_priority_id.employee_id.id)
+            for teacher_id in subject.teacher_ids:
+                if teacher_id.id not in exist_teacher_ids:
+                    subject.teacher_priority_ids.create({
+                        'employee_id': teacher_id.id,
+                        'subject_id': subject.id,
+                    })
+            # self.env.cr.commit()
+        except psycopg2.errors.NotNullViolation as error:
+            _logger.info(f'----------- tototototototo Exception {error} -----------')
+        except psycopg2.Error as error:
+            _logger.info(f'----------- tototototototo Exception {error} -----------')
+        except Exception as error:
+            _logger.info(f'----------- tototototototo Exception {error} -----------')
+
+    @api.model
+    def create(self, vals):
+        subject = super(Subject, self).create(vals)
+
+        self.update_teacher_priority(subject)
+
+        return subject
+
+    def write(self, vals):
+        subject = self.env['siantou.ems.core.subject'].search([('id', '=', self.id)], limit=1)
+
+        res = super(Subject, self).write(vals)
+
+        self.update_teacher_priority(subject)
+
+        return res
