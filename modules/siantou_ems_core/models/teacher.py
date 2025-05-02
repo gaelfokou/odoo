@@ -220,6 +220,29 @@ class HrEmployee(models.Model):
         except Exception as error:
             _logger.info(f'----------- tototototototo Exception {error} -----------')
 
+    def update_subject_priority(self, employee):
+        try:
+            subject_ids = employee.subject_ids.ids
+            exist_subject_ids = []
+            for subject_priority_id in employee.subject_priority_ids:
+                if subject_priority_id.subject_id.id not in subject_ids:
+                    subject_priority_id.unlink()
+                else:
+                    exist_subject_ids.append(subject_priority_id.subject_id.id)
+            for subject_id in employee.subject_ids:
+                if subject_id.id not in exist_subject_ids:
+                    employee.subject_priority_ids.create({
+                        'employee_id': employee.id,
+                        'subject_id': subject_id.id,
+                    })
+            # self.env.cr.commit()
+        except psycopg2.errors.NotNullViolation as error:
+            _logger.info(f'----------- tototototototo Exception {error} -----------')
+        except psycopg2.Error as error:
+            _logger.info(f'----------- tototototototo Exception {error} -----------')
+        except Exception as error:
+            _logger.info(f'----------- tototototototo Exception {error} -----------')
+
     @api.model
     def create(self, vals):
         if vals['work_email'] and vals['work_email'].strip():
@@ -231,7 +254,18 @@ class HrEmployee(models.Model):
 
         self.create_employee_user(employee)
 
+        self.update_subject_priority(employee)
+
         return employee
+
+    def write(self, vals):
+        employee = self.env['hr.employee'].search([('id', '=', self.id)], limit=1)
+
+        res = super(HrEmployee, self).write(vals)
+
+        self.update_subject_priority(employee)
+
+        return res
 
     def action_create_employee_user(self):
         employee = self.env['hr.employee'].search([
