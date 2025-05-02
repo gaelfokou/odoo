@@ -325,6 +325,18 @@ class Timetable(models.Model):
         default='0',
     )
 
+    state = fields.Selection([
+        ('0', 'En attente'),
+        ('1', 'Présent'),
+        ('2', 'Absent'),
+        ('3', 'Permissionnaire'),
+        ('4', 'Exception'),
+    ], 'Statut',
+        related='status',
+        store=True,
+        tracking=True
+    )
+
     class_group_id = fields.Many2one(
         'siantou.ems.core.class.group',
         'Groupe',
@@ -605,7 +617,7 @@ class Timetable(models.Model):
         report_action = self.env.ref('siantou_ems_core.action_report_timetable')
         return report_action.report_action(self, data=data)
 
-    def action_present_all_timetable_exception(self):
+    def action_present_timetable(self):
         active_ids = self.env.context.get('active_ids', [])
         timetable_ids = self.env['siantou.ems.timetable.timetable'].browse(active_ids)
         for timetable in timetable_ids:
@@ -618,13 +630,63 @@ class Timetable(models.Model):
             'tag': 'reload',
         }
 
-    def action_absent_all_timetable_exception(self):
+    def action_absent_timetable(self):
         active_ids = self.env.context.get('active_ids', [])
         timetable_ids = self.env['siantou.ems.timetable.timetable'].browse(active_ids)
         for timetable in timetable_ids:
             timetable.write({
                 'status': '2',
             })
+
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'reload',
+        }
+
+    def state_pending_timetable(self):
+        self.write({
+            'status': '0',
+        })
+
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'reload',
+        }
+
+    def state_present_timetable(self):
+        self.write({
+            'status': '1',
+        })
+
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'reload',
+        }
+
+    def state_absent_timetable(self):
+        self.write({
+            'status': '2',
+        })
+
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'reload',
+        }
+
+    def state_permissionary_timetable(self):
+        self.write({
+            'status': '3',
+        })
+
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'reload',
+        }
+
+    def state_exception_timetable(self):
+        self.write({
+            'status': '4',
+        })
 
         return {
             'type': 'ir.actions.client',

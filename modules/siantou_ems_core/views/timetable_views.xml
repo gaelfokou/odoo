@@ -68,6 +68,14 @@
 			<field name="model">siantou.ems.timetable.timetable</field>
 			<field name="arch" type="xml">
 				<form string="Emplois du temps">
+                    <header>
+                        <button name="state_pending_timetable" class="oe_highlight" invisible="state in ['0']" string="En attente" type="object"/>
+                        <button name="state_present_timetable" class="oe_highlight" invisible="state in ['1']" string="Présent" type="object"/>
+                        <button name="state_absent_timetable" class="oe_highlight" invisible="state in ['2']" string="Absent" type="object"/>
+                        <button name="state_permissionary_timetable" class="oe_highlight" invisible="state in ['3']" string="Permissionnaire" type="object"/>
+                        <button name="state_exception_timetable" class="oe_highlight" invisible="state in ['4']" string="Exception" type="object"/>
+                        <field name="state" widget="statusbar" statusbar_visible="0,1,2,3,4"/>
+                    </header>
 					<sheet>
                         <group>
                             <field name="group_id" readonly="1" options="{'no_open': True, 'no_create': True}"/>
@@ -104,7 +112,7 @@
                                 </tree>
                             </field>
                             <field name="not_active_slotitems" invisible="1"/>
-                            <field name="status"/>
+                            <field name="status" invisible="1"/>
                         </group>
 					</sheet>
 				</form>

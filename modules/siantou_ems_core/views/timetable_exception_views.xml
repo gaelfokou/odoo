@@ -10,11 +10,11 @@
 			<field name="arch" type="xml">
 				<tree create="False" string="Exceptions d'emploi du temps">
                     <header>
-                        <button name="action_present_all_timetable_exception" 
+                        <button name="action_present_timetable" 
                                 type="object" 
                                 string="Présent" 
                                 class="oe_highlight"/>
-                        <button name="action_absent_all_timetable_exception" 
+                        <button name="action_absent_timetable" 
                                 type="object" 
                                 string="Absent" 
                                 class="oe_highlight"/>
