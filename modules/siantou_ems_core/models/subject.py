@@ -71,7 +71,7 @@ class Subject(models.Model):
         # inverse='_set_teacher_ids'
     )
 
-    # Les priorités pour chaque enseignant sur ce cours
+    # Les priorités de chaque enseignant sur ce cours
     teacher_priority_ids = fields.One2many(
         'siantou.ems.core.teacher.subject.priority',
         'subject_id',

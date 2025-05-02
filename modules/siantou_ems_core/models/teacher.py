@@ -43,11 +43,11 @@ class HrEmployee(models.Model):
         # inverse='_set_subject_ids'
     )
 
-    # Les priorités aux cours dispensés
+    # Les priorités de chaque cours sur cet enseignant
     subject_priority_ids = fields.One2many(
         'siantou.ems.core.teacher.subject.priority',
         'employee_id',
-        'Cours dispensés avec les priorités'
+        'Priorités des cours'
     )
 
     # Quota horaire hebdommadaire de cours pour un enseignant permanent
@@ -390,6 +390,15 @@ class TeacherSubjectPriority(models.Model):
     priority = fields.Integer(
         'Priorité',
         help='Le enseignant avec le nombre le plus élevé est prioritaire (va de 1 à 10)',
+        default=1,
+        required=True
+    )
+
+    # Taux horaire du cours sur un enseignant
+    hourly_rate = fields.Float(
+        'Taux horaire cours enseignant',
+        help='Taux horaire du cours sur un enseignant',
+        default=0,
         required=True
     )
 

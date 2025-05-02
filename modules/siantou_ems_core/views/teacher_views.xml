@@ -47,6 +47,7 @@
                             <tree editable="bottom">
                                 <field name="subject_id" options="{'no_open': True}"/>
                                 <field name="priority"/>
+                                <field name="hourly_rate"/>
                             </tree>
                         </field>
                     </page>
