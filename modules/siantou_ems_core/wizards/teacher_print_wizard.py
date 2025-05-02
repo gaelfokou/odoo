@@ -88,8 +88,8 @@ class TeacherPrintWizard(models.TransientModel):
             teacher['weekly_hours_limit'] = search_teacher.weekly_hours_limit
             teachers.append(teacher)
 
-        title = self.env['ir.config_parameter'].get_param(f'hr.employee.title.{self.env.user.id}', '')
-        self.env['ir.config_parameter'].set_param(f'hr.employee.title.{self.env.user.id}', '')
+        title = self.env['ir.config_parameter'].get_param(f'hr.employee.filter.{self.env.user.id}', '')
+        self.env['ir.config_parameter'].set_param(f'hr.employee.filter.{self.env.user.id}', '')
 
         _logger.info(f'----------- tototototototo teachers {teachers} -----------')
 
