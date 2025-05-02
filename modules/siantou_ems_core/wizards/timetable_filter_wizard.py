@@ -316,6 +316,8 @@ class TimetableFilterWizard(models.TransientModel):
         else:
             title = 'Emplois du temps filtrés'
 
+        self.env['ir.config_parameter'].set_param(f'siantou.ems.timetable.timetable.title.{self.env.user.id}', title)
+
         view_id = self.env.ref('siantou_ems_core.timetable_tree_view').id
         return {
             'name': title,

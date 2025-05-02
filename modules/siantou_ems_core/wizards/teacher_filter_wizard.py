@@ -227,6 +227,8 @@ class TeacherFilterWizard(models.TransientModel):
         else:
             title = 'Enseignants filtrés'
 
+        self.env['ir.config_parameter'].set_param(f'hr.employee.title.{self.env.user.id}', title)
+
         view_id = self.env.ref('hr.view_employee_tree').id
         return {
             'name': title,
