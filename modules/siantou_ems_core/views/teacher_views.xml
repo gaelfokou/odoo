@@ -6,9 +6,9 @@
             <field name="model">hr.employee</field>
             <field name="inherit_id" ref="hr.view_employee_form"/>
             <field name="arch" type="xml">
-                <xpath expr="//field[@name='name']" position="attributes">
+                <!-- <xpath expr="//field[@name='name']" position="attributes">
                     <attribute name="readonly">1</attribute>
-                </xpath>
+                </xpath> -->
                 <xpath expr="//field[@name='name']" position="after">
                     <button name="action_create_employee_user" type="object" string="Créer un compte utilisateur" class="oe_highlight" invisible="user_id.id != False"/>
                 </xpath>
