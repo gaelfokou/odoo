@@ -6,17 +6,18 @@
             <field name="model">hr.employee</field>
             <field name="inherit_id" ref="hr.view_employee_form"/>
             <field name="arch" type="xml">
+                <xpath expr="//field[@name='name']" position="attributes">
+                    <attribute name="readonly">1</attribute>
+                </xpath>
                 <xpath expr="//field[@name='name']" position="after">
                     <button name="action_create_employee_user" type="object" string="Créer un compte utilisateur" class="oe_highlight" invisible="user_id.id != False"/>
                 </xpath>
-
                 <xpath expr="//field[@name = 'category_ids']" position="after">
                     <group string="Informations personnelles">
                         <field name="last_name"/>
                         <field name="first_name"/>
                         <field name="birthday"/>
                     </group>
-
                     <group string="Informations académiques pour les enseignants">
                         <field name="is_teacher"/>
                         <field name="is_permanent"/>
@@ -24,7 +25,6 @@
                         <field name="weekly_hours_limit"/>
                     </group>
                 </xpath>
-
                 <xpath expr="//notebook[1]" position="inside">
                     <page string="Cours dispensables" name="subjects"
                         invisible="is_teacher == False">
