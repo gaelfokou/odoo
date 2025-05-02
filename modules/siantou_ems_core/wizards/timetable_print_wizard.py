@@ -147,6 +147,8 @@ class TimetablePrintWizard(models.TransientModel):
                 info_timetables[key] = {}
                 info_timetables[key]['semester'] = semester
                 info_timetables[key]['study'] = study
+                info_timetables[key]['filter'] = self.env['ir.config_parameter'].get_param(f'siantou.ems.timetable.timetable.title.{self.env.user.id}', '')
+                self.env['ir.config_parameter'].set_param(f'siantou.ems.timetable.timetable.title.{self.env.user.id}', '')
             timetable = {}
             timetable['id'] = search_timetable.id
             timetable['date'] = search_timetable.date
@@ -227,6 +229,7 @@ class TimetablePrintWizard(models.TransientModel):
             timetables[key] = TimetablePrintWizard.paginate_calendar(timetables[key], len(timetables[key].keys()))
             timetables[key]['semester'] = info_timetables[key]['semester']
             timetables[key]['study'] = info_timetables[key]['study']
+            timetables[key]['filter'] = info_timetables[key]['filter']
 
         _logger.info(f'----------- tototototototo timetables {timetables} -----------')
 

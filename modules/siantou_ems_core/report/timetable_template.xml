@@ -64,6 +64,10 @@
                                                     <span t-esc="docdata['timetable_data'][key]['study']"/>
                                                 </h5>
                                                 <h5 class="text-left">
+                                                    <span t-esc="'Filtre :'"/>
+                                                    <span t-esc="docdata['timetable_data'][key]['filter'] or 'Non spécifié'"/>
+                                                </h5>
+                                                <h5 class="text-left">
                                                     <span t-esc="'Période :'"/>
                                                     <span t-esc="monday"/>
                                                 </h5>
