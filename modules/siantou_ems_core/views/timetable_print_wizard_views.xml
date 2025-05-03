@@ -16,7 +16,7 @@
                         <field name="group_id" options="{'no_create': True}" domain="[('semester_id', '=', semester_id)]"/>
                     </group>
                     <footer>
-                        <button string="Imprimer" type="object" name="print_timetable" class="btn-primary"/>
+                        <button string="Imprimer" type="object" name="action_print_pdf" class="btn-primary"/>
                         <button string="Annuler" class="btn-secondary" special="cancel"/>
                     </footer>
                 </form>

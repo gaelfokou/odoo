@@ -92,7 +92,7 @@ class TimetablePrintWizard(models.TransientModel):
                 elif record.start_date + relativedelta(months=1) < record.end_date:
                     raise ValidationError(f"La plage entre la date de début et la date de fin ne doit pas être supérieure 1 mois")
 
-    def print_timetable(self):
+    def action_print_pdf(self):
         data = self.print_timetable_report_data()
 
         # Appeler le rapport PDF
