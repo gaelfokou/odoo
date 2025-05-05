@@ -49,7 +49,7 @@
                         <table class="table table-bordered table-sm text-center">
                             <thead>
                                 <tr>
-                                    <th class="text-center" colspan="6" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;">
+                                    <th class="text-center" colspan="4" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;">
                                         <h3>INSTITUT UNIVERSITAIRE SIANTOU</h3>
                                         <h4>
                                             <span t-esc="'Liste des salles de classe'"/>
@@ -63,17 +63,15 @@
                             </thead>
                             <thead>
                                 <tr>
-                                    <th class="text-left" colspan="6" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
+                                    <th class="text-left" colspan="4" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
                                 </tr>
                             </thead>
                             <thead class="thead">
                                 <tr class="active">
-                                    <th class="text-center">Nom(s) et prénom(s)</th>
-                                    <th class="text-center">Nom(s)</th>
-                                    <th class="text-center">Prénom(s)</th>
-                                    <th class="text-center">E-mail</th>
-                                    <th class="text-center">Date de naissance</th>
-                                    <th class="text-center">Matricule</th>
+                                    <th class="text-center">Code</th>
+                                    <th class="text-center">Nom de la salle</th>
+                                    <th class="text-center">Bâtiment</th>
+                                    <th class="text-center">Capacité</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -81,22 +79,16 @@
                                 <t t-foreach="classrooms" t-as="classroom">
                                     <tr>
                                         <td class='text-center'>
+                                            <span t-esc="classroom['code']"/>
+                                        </td>
+                                        <td class='text-center'>
                                             <span t-esc="classroom['name']"/>
                                         </td>
                                         <td class='text-center'>
-                                            <span t-esc="classroom['last_name']"/>
+                                            <span t-esc="classroom['building_name']"/>
                                         </td>
                                         <td class='text-center'>
-                                            <span t-esc="classroom['first_name']"/>
-                                        </td>
-                                        <td class='text-center'>
-                                            <span t-esc="classroom['email']"/>
-                                        </td>
-                                        <td class='text-center'>
-                                            <span t-esc="classroom['date_naissance']"/>
-                                        </td>
-                                        <td class='text-center'>
-                                            <span t-esc="classroom['matricule']"/>
+                                            <span t-esc="classroom['capacity']"/>
                                         </td>
                                     </tr>
                                 </t>

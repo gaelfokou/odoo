@@ -68,9 +68,7 @@ class ClassroomFilterWizard(models.TransientModel):
     @api.constrains('start_time', 'end_time')
     def _constrains_time(self):
         for record in self:
-            if record.start_time <= 0.0 or record.end_time <= 0.0:
-                raise ValidationError("Vous devez définir des heures de début et de fin corrects")
-            elif record.end_time <= record.start_time:
+            if record.end_time < record.start_time:
                 raise ValidationError("L'heure de fin du cours doit être supérieure à l'heure de début du cours")
 
     def action_filter(self):
@@ -78,11 +76,26 @@ class ClassroomFilterWizard(models.TransientModel):
         title = []
         if self.date:
             domain.append(('date', '=', self.date))
+
+        classroom_ids = []
         if self.start_time and self.end_time:
-            domain.append(('end_time', '>=', self.start_time))
-            domain.append(('start_time', '<=', self.end_time))
-        if self.status:
-            domain.append(('status', '=', self.status))
+            timetables = self.env['siantou.ems.timetable.timetable'].search(domain).filtered(lambda rec: not (rec.start_time >= self.end_time or rec.end_time <= self.start_time))
+        else:
+            timetables = self.env['siantou.ems.timetable.timetable'].search(domain)
+        for timetable in timetables:
+            classroom_ids.append(timetable.classroom_id.id)
+        classroom_ids = list(set(classroom_ids))
+
+        if self.status == '0':
+            domain = [
+                ('id', 'not in', classroom_ids),
+            ]
+            title.append('Disponible')
+        elif self.status == '1':
+            domain = [
+                ('id', 'in', classroom_ids),
+            ]
+            title.append('Pas disponible')
 
         if len(title) > 0:
             title = '/'.join(title)

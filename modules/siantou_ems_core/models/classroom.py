@@ -118,7 +118,7 @@ class Classroom(models.Model):
     def action_open_filter(self):
         view_id = self.env.ref('siantou_ems_core.classroom_filter_wizard').id
         return {
-            'name': 'Filtre des emplois du temps',
+            'name': 'Filtre des salles de classe',
             'type': 'ir.actions.act_window',
             'view_type': 'form',
             'view_mode': 'form',
@@ -141,10 +141,7 @@ class Classroom(models.Model):
         classrooms = self.env['siantou.ems.core.building.classroom'].browse(active_ids)
         if len(active_ids) == 0:
             raise UserError('Aucune donnée sélectionnée')
-        report_data = self.env['classroom.print.wizard'].create({
-            'semester_id': classrooms[0].semester_id.id,
-            'group_id': classrooms[0].group_id.id,
-        })
+        report_data = self.env['classroom.print.wizard'].create({})
         domain = [('id', 'in', active_ids)]
         data = report_data.print_classroom_report_data(domain)
 

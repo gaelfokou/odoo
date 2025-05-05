@@ -68,13 +68,10 @@ class ClassroomPrintWizard(models.TransientModel):
         for search_classroom in search_classrooms:
             classroom = {}
             classroom['id'] = search_classroom.id
+            classroom['code'] = search_classroom.code
             classroom['name'] = search_classroom.name
-            classroom['last_name'] = search_classroom.last_name
-            classroom['first_name'] = search_classroom.first_name
-            classroom['work_email'] = search_classroom.work_email
-            classroom['birthday'] = search_classroom.birthday
-            classroom['identifier'] = search_classroom.identifier
-            classroom['weekly_hours_limit'] = search_classroom.weekly_hours_limit
+            classroom['building_name'] = search_classroom.building_id.name
+            classroom['capacity'] = search_classroom.capacity
             classrooms.append(classroom)
 
         title = self.env['ir.config_parameter'].get_param(f'filter.{self.env.user.id}', '')
