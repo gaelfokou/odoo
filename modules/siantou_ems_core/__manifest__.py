@@ -81,6 +81,7 @@
         'report/timetable_template.xml',
         'report/teacher_template.xml',
         'report/student_template.xml',
+        'report/classroom_template.xml',
         'report/report_student_core.xml',
 
         #=========== Fichier du dashboard
@@ -95,6 +96,7 @@
         'views/timetable_filter_wizard_views.xml',
         'views/teacher_filter_wizard_views.xml',
         'views/student_filter_wizard_views.xml',
+        'views/classroom_filter_wizard_views.xml',
     ],
     'license': 'LGPL-3',
     'installable': True,

@@ -114,3 +114,42 @@ class Classroom(models.Model):
         for record in self:
             if record.capacity <= 0:
                 raise ValidationError('La capacité doit être supérieure à 0')
+
+    def action_open_filter(self):
+        view_id = self.env.ref('siantou_ems_core.classroom_filter_wizard').id
+        return {
+            'name': 'Filtre des emplois du temps',
+            'type': 'ir.actions.act_window',
+            'view_type': 'form',
+            'view_mode': 'form',
+            'res_model': 'classroom.filter.wizard',
+            'views': [(view_id, 'form')],
+            'view_id': view_id,
+            'target': 'new',
+        }
+
+    def action_reset_filter(self):
+        self.env['ir.config_parameter'].set_param(f'filter.{self.env.user.id}', '')
+        action = self.env.ref('siantou_ems_core.action_show_classroom').read()[0]
+        action.update({
+            'target': 'main',
+        })
+        return action
+
+    def action_print_pdf(self):
+        active_ids = self.env.context.get('active_ids', [])
+        classrooms = self.env['siantou.ems.core.building.classroom'].browse(active_ids)
+        if len(active_ids) == 0:
+            raise UserError('Aucune donnée sélectionnée')
+        report_data = self.env['classroom.print.wizard'].create({
+            'semester_id': classrooms[0].semester_id.id,
+            'group_id': classrooms[0].group_id.id,
+        })
+        domain = [('id', 'in', active_ids)]
+        data = report_data.print_classroom_report_data(domain)
+
+        # Appeler le rapport PDF
+        if not data['docdata']['classroom_data']:
+            raise UserError('Aucune donnée trouvée')
+        report_action = self.env.ref('siantou_ems_core.action_report_classroom')
+        return report_action.report_action(self, data=data)
