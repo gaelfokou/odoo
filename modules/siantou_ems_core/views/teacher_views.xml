@@ -109,7 +109,7 @@
             </field>
         </record>
 
-        <record id="action_hr_employees_teachers"
+        <record id="action_show_teacher"
             model="ir.actions.act_window">
             <field name="name">Enseignants</field>
             <field name="res_model">hr.employee</field>
@@ -127,7 +127,7 @@
                 id="menu_siantou_ems_core_employee_teacher"
                 name="Enseignants"
                 parent="menu_siantou_ems_core_employee"
-                action="action_hr_employees_teachers"
+                action="action_show_teacher"
                 groups="siantou_ems_core.group_teacher_user,siantou_ems_core.group_teacher_admin,base.group_system"
                 sequence="10"
             />

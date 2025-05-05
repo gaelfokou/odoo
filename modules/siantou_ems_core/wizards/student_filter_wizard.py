@@ -36,18 +36,12 @@ STATUS_TIMETABLE = {
 _logger = logging.getLogger(__name__)
 
 class TeacherFilterWizard(models.TransientModel):
-    _name = 'teacher.filter.wizard'
+    _name = 'student.filter.wizard'
     _description = 'Filtre des emplois du temps'
 
     year_id = fields.Many2one(
         'siantou.ems.core.year',
         'Année académique',
-    )
-
-    # Ajouter un champ de relation vers hr.department pour lier la filière au département
-    department_id = fields.Many2one(
-        'hr.department',
-        string='Département'
     )
 
     school_id = fields.Many2one(
@@ -210,17 +204,12 @@ class TeacherFilterWizard(models.TransientModel):
 
         domain = [
             ('subject_ids', 'in', subject_ids),
-            ('is_teacher', '=', True),
         ]
-
-        if self.department_id.id:
-            domain.append(('department_id', '=', self.department_id.id))
-            title.append(self.department_id.name)
 
         if len(title) > 0:
             title = '/'.join(title)
         else:
-            title = 'Enseignants filtrés'
+            title = 'Étudiants filtrés'
 
         self.env['ir.config_parameter'].set_param(f'filter.{self.env.user.id}', title)
 
@@ -230,7 +219,7 @@ class TeacherFilterWizard(models.TransientModel):
             'type': 'ir.actions.act_window',
             'view_type': 'form',
             'view_mode': 'tree',
-            'res_model': 'hr.employee',
+            'res_model': 'oe.school.student',
             'views': [(view_id, 'tree')],
             'view_id': view_id,
             'domain' : domain,

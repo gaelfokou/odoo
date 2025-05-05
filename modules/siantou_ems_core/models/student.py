@@ -412,6 +412,42 @@ class Student(models.Model):
         students = self.env['oe.school.student'].search(domain)
         return students.read()
 
+    def action_open_filter(self):
+        view_id = self.env.ref('siantou_ems_core.student_filter_wizard').id
+        return {
+            'name': 'Filtre des étudiants',
+            'type': 'ir.actions.act_window',
+            'view_type': 'form',
+            'view_mode': 'form',
+            'res_model': 'student.filter.wizard',
+            'views': [(view_id, 'form')],
+            'view_id': view_id,
+            'target': 'new',
+        }
+
+    def action_reset_filter(self):
+        self.env['ir.config_parameter'].set_param(f'filter.{self.env.user.id}', '')
+        action = self.env.ref('siantou_ems_core.action_show_student').read()[0]
+        action.update({
+            'target': 'main',
+        })
+        return action
+
+    def action_print_pdf(self):
+        active_ids = self.env.context.get('active_ids', [])
+        students = self.env['oe.school.student'].browse(active_ids)
+        if len(active_ids) == 0:
+            raise UserError('Aucune donnée sélectionnée')
+        report_data = self.env['student.print.wizard'].create({})
+        domain = [('id', 'in', active_ids)]
+        data = report_data.print_student_report_data(domain)
+
+        # Appeler le rapport PDF
+        if not data['docdata']['student_data']:
+            raise UserError('Aucune donnée trouvée')
+        report_action = self.env.ref('siantou_ems_core.action_report_student')
+        return report_action.report_action(self, data=data)
+
 class StudentCareer(models.Model):
     _name = 'oe.school.student.career'
     _description = 'Gestion du parcours des étudiants'

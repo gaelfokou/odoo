@@ -10,6 +10,21 @@
                             type="object" 
                             string="Créer les comptes utilisateurs" 
                             class="oe_highlight"/>
+                    <button name="action_reset_filter" 
+                        type="object" 
+                        string="Réinitialiser" 
+                        class="oe_highlight" 
+                        display="always"/>
+                    <button name="action_open_filter" 
+                        type="object" 
+                        string="Filtrer" 
+                        class="oe_highlight" 
+                        display="always"/>
+                    <button name="action_print_pdf" 
+                        type="object" 
+                        string="Imprimer PDF" 
+                        class="oe_highlight" 
+                        display="always"/>
                     <!-- <button name="open_data_request_wizard_form" 
                             type="object" 
                             string="Données requises" 
@@ -140,7 +155,7 @@
         </field>
     </record>
 
-    <record model="ir.actions.act_window" id="action_student">
+    <record model="ir.actions.act_window" id="action_show_student">
         <field name="name">Étudiants</field>
         <field name="res_model">oe.school.student</field>
         <field name="view_mode">tree,form</field>
@@ -155,7 +170,7 @@
         id="menu_siantou_ems_core_students_student"
         name="Étudiants"
         parent="menu_siantou_ems_core_students"
-        action="action_student"
+        action="action_show_student"
         groups="siantou_ems_core.group_student_user,siantou_ems_core.group_student_admin,base.group_system"
         sequence="2"
     />

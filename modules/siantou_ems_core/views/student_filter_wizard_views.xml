@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="student_filter_wizard" model="ir.ui.view">
+            <field name="name">student.filter.wizard.form</field>
+            <field name="model">student.filter.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Filtre des étudiants">
+                    <group>
+                        <field name="year_id" options="{'no_create': True}"/>
+                        <field name="school_id" options="{'no_create': True}"/>
+                        <field name="field_of_study_id" options="{'no_create': True}" domain="[('school_id', '=', school_id)]"/>
+                        <field name="level_id" options="{'no_create': True}"/>
+                        <field name="specialty_id_domain" invisible="1"/>
+                        <field name="specialty_id" options="{'no_create': True}" domain="specialty_id_domain"/>
+                        <field name="option_id" options="{'no_create': True}" domain="[('specialty_id', '=', specialty_id)]"/>
+                        <field name="class_id" options="{'no_create': True}" domain="[('field_of_study_id', '=', field_of_study_id), ('specialty_id', '=', specialty_id), ('option_id', '=', option_id), ('level_id', '=', level_id), ('year_id', '=', year_id)]"/>
+                        <field name="subject_id_domain" invisible="1"/>
+                        <field name="subject_id" options="{'no_create': True}" domain="subject_id_domain"/>
+                    </group>
+                    <footer>
+                        <button string="Filtrer" type="object" name="action_filter" class="btn-primary"/>
+                        <button string="Annuler" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <!-- Define an action to open the form view -->
+        <record id="action_filter_student_wizard" model="ir.actions.act_window">
+            <field name="name">Filtre des étudiants</field>
+            <field name="res_model">student.filter.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="view_id" ref="student_filter_wizard"/>
+        </record>
+
+        <!-- <record id="action_report_student" model="ir.actions.report">
+            <field name="name">Emploi du temps PDF</field>
+            <field name="model">hr.employee</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">siantou_ems_student.report_student</field>
+            <field name="report_file">siantou_ems_student.report_student</field>
+            <field name="paperformat_id" ref="paperformat_paysage"/>
+            <field name="binding_model_id" ref="model_siantou_ems_student_student"/>
+            <field name="binding_type">report</field>
+        </record> -->
+
+        <!-- Définir le format de papier pour le mode paysage -->
+        <!-- <record id="paperformat_paysage" model="report.paperformat">
+            <field name="name">Format Paysage</field>
+            <field name="default" eval="True"/>
+            <field name="orientation">Landscape</field>
+            <field name="margin_top">5</field>
+            <field name="margin_bottom">10</field>
+            <field name="margin_left">3</field>
+            <field name="margin_right">3</field>
+            <field name="header_line" eval="True"/>
+            <field name="header_spacing">5</field>
+            <field name="dpi">90</field>
+        </record> -->
+    </data>
+</odoo>
