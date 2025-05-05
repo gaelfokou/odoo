@@ -218,6 +218,11 @@ class TeacherFilterWizard(models.TransientModel):
             ('is_teacher', '=', True),
         ]
 
+        if len(title) == 0:
+            domain = [
+                ('is_teacher', '=', True),
+            ]
+
         if self.department_id.id:
             domain.append(('department_id', '=', self.department_id.id))
             title.append(self.department_id.name)
