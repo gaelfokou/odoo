@@ -1,0 +1,89 @@
+import logging
+
+from odoo import models, fields, api, tools, _
+from odoo.exceptions import UserError, ValidationError
+from pprint import pformat
+import pandas as pd
+import numpy as np
+import re
+from datetime import date, datetime, timedelta, time
+from dateutil.relativedelta import relativedelta
+import copy
+
+DATE_FORMAT = '%Y-%m-%d'
+DATE_FORMAT_FR = '%d/%m/%Y'
+DATETIME_FORMAT = '%Y-%m-%d %H:%M:%S'
+DATETIME_FORMAT_FR = '%d/%m/%Y %H:%M'
+TIME_FORMAT = '%H:%M'
+
+CURRENT_WEEKDAY = {
+    0: 'Lundi',
+    1: 'Mardi',
+    2: 'Mercredi',
+    3: 'Jeudi',
+    4: 'Vendredi',
+    5: 'Samedi',
+    6: 'Dimanche',
+}
+
+STATUS_TIMETABLE = {
+    '0': 'En attente',
+    '1': 'Présent',
+    '2': 'Absent',
+    '3': 'Permissionnaire',
+    '4': 'Exception',
+}
+
+_logger = logging.getLogger(__name__)
+
+class ClassroomPrintWizard(models.TransientModel):
+    _name = 'classroom.print.wizard'
+    _description = 'Assistant d\'impression des enseignants'
+
+    is_classroom = fields.Boolean(
+        'Est un enseignant',
+        default=True,
+    )
+
+    def print_classroom(self):
+        data = self.print_classroom_report_data()
+
+        # Appeler le rapport PDF
+        if not data['docdata']['classroom_data']:
+            raise UserError("Aucune donnée trouvée")
+        report_action = self.env.ref('siantou_ems_core.action_report_classroom')
+        return report_action.report_action(self, data=data)
+
+    def print_classroom_report_data(self, domains=None):
+        # Récupérer les emplois du temps pour le semestre sélectionné
+        domain = []
+
+        if domains:
+            for d in domains:
+                domain.append(d)
+
+        search_classrooms = self.env['siantou.ems.core.building.classroom'].search(domain)
+
+        classrooms = []
+        for search_classroom in search_classrooms:
+            classroom = {}
+            classroom['id'] = search_classroom.id
+            classroom['name'] = search_classroom.name
+            classroom['last_name'] = search_classroom.last_name
+            classroom['first_name'] = search_classroom.first_name
+            classroom['work_email'] = search_classroom.work_email
+            classroom['birthday'] = search_classroom.birthday
+            classroom['identifier'] = search_classroom.identifier
+            classroom['weekly_hours_limit'] = search_classroom.weekly_hours_limit
+            classrooms.append(classroom)
+
+        title = self.env['ir.config_parameter'].get_param(f'filter.{self.env.user.id}', '')
+
+        _logger.info(f'----------- tototototototo classrooms {classrooms} -----------')
+
+        return {
+            'docdata': {
+                'filter': title,
+                'classroom_data': classrooms,
+            }
+        }

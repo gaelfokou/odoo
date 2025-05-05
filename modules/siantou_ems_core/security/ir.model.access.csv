@@ -89,6 +89,9 @@ teacher_print_wizard_admin,teacher_print_wizard.admin,model_teacher_print_wizard
 student_print_wizard_user,student_print_wizard.user,model_student_print_wizard,siantou_ems_core.group_student_user,1,0,0,0
 student_print_wizard_admin,student_print_wizard.admin,model_student_print_wizard,siantou_ems_core.group_student_admin,1,1,1,1
 
+classroom_print_wizard_user,classroom_print_wizard.user,model_classroom_print_wizard,siantou_ems_core.group_classroom_user,1,0,0,0
+classroom_print_wizard_admin,classroom_print_wizard.admin,model_classroom_print_wizard,siantou_ems_core.group_classroom_admin,1,1,1,1
+
 timetable_filter_wizard_user,timetable_filter_wizard.user,model_timetable_filter_wizard,siantou_ems_core.group_timetable_user,1,0,0,0
 timetable_filter_wizard_admin,timetable_filter_wizard.admin,model_timetable_filter_wizard,siantou_ems_core.group_timetable_admin,1,1,1,1
 
@@ -97,6 +100,9 @@ teacher_filter_wizard_admin,teacher_filter_wizard.admin,model_teacher_filter_wiz
 
 student_filter_wizard_user,student_filter_wizard.user,model_student_filter_wizard,siantou_ems_core.group_student_user,1,0,0,0
 student_filter_wizard_admin,student_filter_wizard.admin,model_student_filter_wizard,siantou_ems_core.group_student_admin,1,1,1,1
+
+classroom_filter_wizard_user,classroom_filter_wizard.user,model_classroom_filter_wizard,siantou_ems_core.group_classroom_user,1,0,0,0
+classroom_filter_wizard_admin,classroom_filter_wizard.admin,model_classroom_filter_wizard,siantou_ems_core.group_classroom_admin,1,1,1,1
 
 university_user,university.user,model_res_company,siantou_ems_core.group_university_user,1,0,0,0
 university_admin,university.admin,model_res_company,siantou_ems_core.group_university_admin,1,1,1,1
