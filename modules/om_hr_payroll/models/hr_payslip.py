@@ -213,13 +213,25 @@ class HrPayslip(models.Model):
                     # Vérification du temps de cours de l'enseignant en biométrie
                     daily_attendances = self.filter_daily_attendance_teacher(employee_timetable.date, employee_timetable.end_time, employee_timetable.start_time, employee_timetable.employee_id)
                     if employee_timetable.status in ['3']:
-                        weekly_hours_credit = employee_timetable.end_time - employee_timetable.start_time
-                        weekly_hours_credit = weekly_hours_credit - employee_timetable.not_active_slotitems
+                        end_time = self.convert_float_to_time(employee_timetable.end_time)
+                        start_time = self.convert_float_to_time(employee_timetable.start_time)
+                        datetime_to = datetime.strptime(f'{employee_timetable.date} {end_time}', DATETIME_FORMAT)
+                        datetime_from = datetime.strptime(f'{employee_timetable.date} {start_time}', DATETIME_FORMAT)
+                        weekly_hours_credit = datetime_to - datetime_from
+                        weekly_hours_credit = weekly_hours_credit - timedelta(hours=employee_timetable.not_active_slotitems)
+                        weekly_hours_credit = weekly_hours_credit.total_seconds() / 3600.0
+                        weekly_hours_credit = round(weekly_hours_credit, 2)
                         total_weekly_hours_credit += weekly_hours_credit
                     elif len(daily_attendances) > 1:
                         for daily_attendance in daily_attendances:
-                            weekly_hours_credit = employee_timetable.end_time - employee_timetable.start_time
-                            weekly_hours_credit = weekly_hours_credit - employee_timetable.not_active_slotitems
+                            end_time = self.convert_float_to_time(employee_timetable.end_time)
+                            start_time = self.convert_float_to_time(employee_timetable.start_time)
+                            datetime_to = datetime.strptime(f'{employee_timetable.date} {end_time}', DATETIME_FORMAT)
+                            datetime_from = datetime.strptime(f'{employee_timetable.date} {start_time}', DATETIME_FORMAT)
+                            weekly_hours_credit = datetime_to - datetime_from
+                            weekly_hours_credit = weekly_hours_credit - timedelta(hours=employee_timetable.not_active_slotitems)
+                            weekly_hours_credit = weekly_hours_credit.total_seconds() / 3600.0
+                            weekly_hours_credit = round(weekly_hours_credit, 2)
                             total_weekly_hours_credit += weekly_hours_credit
                             break
                 # if payslip.employee_id.is_permanent:
@@ -239,6 +251,7 @@ class HrPayslip(models.Model):
                     else:
                         worked_hours[punching_day] = daily_attendance.punching_time - worked_hours[punching_day]
                         worked_hours[punching_day] = worked_hours[punching_day].total_seconds() / 3600.0
+                        worked_hours[punching_day] = round(worked_hours[punching_day], 2)
                         total_weekly_hours_credit += worked_hours[punching_day]
                         worked_hours[punching_day] = None
         payslip.total_hours = total_weekly_hours_credit
