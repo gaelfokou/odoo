@@ -68,7 +68,7 @@ class TeacherPrintWizard(models.TransientModel):
             student['first_name'] = search_student.first_name
             student['email'] = search_student.email
             student['birthday'] = search_student.birthday
-            student['identifier'] = search_student.identifier
+            student['matricule'] = search_student.matricule
             student['weekly_hours_limit'] = search_student.weekly_hours_limit
             students.append(student)
 
