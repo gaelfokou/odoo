@@ -67,9 +67,8 @@ class TeacherPrintWizard(models.TransientModel):
             student['last_name'] = search_student.last_name
             student['first_name'] = search_student.first_name
             student['email'] = search_student.email
-            student['birthday'] = search_student.birthday
+            student['date_naissance'] = search_student.date_naissance
             student['matricule'] = search_student.matricule
-            student['weekly_hours_limit'] = search_student.weekly_hours_limit
             students.append(student)
 
         title = self.env['ir.config_parameter'].get_param(f'filter.{self.env.user.id}', '')

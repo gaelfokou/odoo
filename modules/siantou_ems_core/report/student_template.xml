@@ -93,7 +93,7 @@
                                             <span t-esc="student['email']"/>
                                         </td>
                                         <td class='text-center'>
-                                            <span t-esc="student['birthday']"/>
+                                            <span t-esc="student['date_naissance']"/>
                                         </td>
                                         <td class='text-center'>
                                             <span t-esc="student['matricule']"/>

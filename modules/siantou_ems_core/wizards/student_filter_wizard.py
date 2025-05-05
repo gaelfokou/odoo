@@ -186,24 +186,17 @@ class TeacherFilterWizard(models.TransientModel):
             domain.append(('ue_ids', '=', self.ue_id.id))
             title.append(self.ue_id.name)
 
-        ue_ids = []
+        if self.subject_id.id:
+            domain.append(('ue_ids', 'in', self.subject_id.ue_ids.ids))
+
+        student_ids = []
         classes = self.env['siantou.ems.core.class'].search(domain)
         for classe in classes:
-            ue_ids += classe.ue_ids.ids
-        ue_ids = list(set(ue_ids))
+            student_ids += classe.student_ids.ids
+        student_ids = list(set(student_ids))
 
         domain = [
-            ('ue_ids', 'in', ue_ids),
-        ]
-
-        if self.subject_id.id:
-            domain.append(('id', '=', self.subject_id.id))
-
-        subjects = self.env['siantou.ems.core.subject'].search(domain)
-        subject_ids = subjects.ids
-
-        domain = [
-            ('subject_ids', 'in', subject_ids),
+            ('id', 'in', student_ids),
         ]
 
         if len(title) > 0:
@@ -213,7 +206,7 @@ class TeacherFilterWizard(models.TransientModel):
 
         self.env['ir.config_parameter'].set_param(f'filter.{self.env.user.id}', title)
 
-        view_id = self.env.ref('hr.view_employee_tree').id
+        view_id = self.env.ref('siantou_ems_core.student_tree_view').id
         return {
             'name': title,
             'type': 'ir.actions.act_window',
