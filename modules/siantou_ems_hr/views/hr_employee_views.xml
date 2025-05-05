@@ -99,12 +99,12 @@
             </xpath>
 
             <xpath
-                expr="//page[@name='personal_information']/group/group[4]"
-                position="after">
+                expr="//page[@name='personal_information']/group/group[4]" position="after">
                 <group string="Diplome (s)" colspan="4">
                     <field name="diplome_ids">
                         <tree editable="bottom">
-                            <field name="nom_diplome" />
+                            <!-- <field name="name" /> -->
+                            <field name="diplome_availability_id" />
                             <field name="equivalence_id" />
                             <field name="ecole" />
                             <field name="annee_obtention" />

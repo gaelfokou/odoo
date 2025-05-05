@@ -355,16 +355,6 @@ class HrEmployee(models.Model):
         report_action = self.env.ref('siantou_ems_core.action_report_teacher')
         return report_action.report_action(self, data=data)
 
-class HrEducationDiplome(models.Model):
-    _inherit = 'hr.education.diplome'
-
-    name = fields.Char(string="Diplôme", compute='_compute_name', store=True)
-
-    @api.depends('nom_diplome')
-    def _compute_name(self):
-        for record in self:
-            record.name = record.nom_diplome
-
 class TeacherAvailability(models.Model):
     _name = 'siantou.ems.core.teacher.availability'
     _description = 'Disponibilité des enseignants'

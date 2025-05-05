@@ -29,5 +29,7 @@ access_hr_carriere_licencier_admin,access admin for carriere_licencier,model_hr_
 access_hr_carriere_licencier_user,access user for carriere_licencier,model_hr_carriere_licencier,base.group_user,1,0,0,0
 acces_hr_eduction_diplome_admin,access admin for_education_diplome,model_hr_education_diplome,hr.group_hr_manager,1,1,1,1
 acces_hr_eduction_diplome_user,access user for_education_diplome,model_hr_education_diplome,base.group_user,1,0,0,0
+acces_hr_eduction_diplome_availability_admin,access admin for_education_diplome_availability,model_hr_education_diplome_availability,hr.group_hr_manager,1,1,1,1
+acces_hr_eduction_diplome_availability_user,access user for_education_diplome_availability,model_hr_education_diplome_availability,base.group_user,1,0,0,0
 access_hr_motif_licenciement_admin,access admin for motif_licenciement,model_hr_motif_licenciement,hr.group_hr_manager,1,1,1,1
 access_hr_motif_licenciement_user,access user for motif_licenciement,model_hr_motif_licenciement,base.group_user,1,0,0,0

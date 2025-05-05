@@ -2,7 +2,7 @@
 from odoo import models, fields, api
 import logging
 from odoo.exceptions import UserError, ValidationError
-_logger = logging.getLogger("++++++++++++++++++++++++++++++++++++")
+_logger = logging.getLogger(__name__)
 
 class ExamenDeliberationStudent(models.Model):
     """

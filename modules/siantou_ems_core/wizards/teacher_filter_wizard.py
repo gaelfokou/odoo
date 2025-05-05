@@ -94,8 +94,8 @@ class TeacherFilterWizard(models.TransientModel):
         string='Cours',
     )
 
-    diplome_id = fields.Many2one(
-        'hr.education.diplome',
+    diplome_availability_id = fields.Many2one(
+        'hr.education.diplome.availability',
         string='Diplôme',
     )
 
@@ -227,9 +227,9 @@ class TeacherFilterWizard(models.TransientModel):
             domain.append(('department_id', '=', self.department_id.id))
             title.append(self.department_id.name)
 
-        if self.diplome_id.id:
-            domain.append(('diplome_ids', '=', self.diplome_id.id))
-            title.append(self.diplome_id.name)
+        if self.diplome_availability_id.id:
+            domain.append(('diplome_ids', 'in', self.diplome_availability_id.diplome_ids.ids))
+            title.append(self.diplome_availability_id.name)
 
         if len(title) > 0:
             title = '/'.join(title)

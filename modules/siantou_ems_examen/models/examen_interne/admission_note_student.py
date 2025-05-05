@@ -4,7 +4,7 @@ from odoo import models, fields, api,tools, _
 import logging
 from odoo.exceptions import UserError, ValidationError
 
-_logger = logging.getLogger("++++++++++++++")
+_logger = logging.getLogger(__name__)
 
 class RunNoteCandidat(models.Model):
     """

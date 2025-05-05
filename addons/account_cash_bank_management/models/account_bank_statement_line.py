@@ -5,7 +5,7 @@ from odoo.tools import formatLang
 
 import logging
 
-_logger = logging.getLogger("++++++++++++")
+_logger = logging.getLogger(__name__)
 
 class AccountBankStatementLine (models.Model):
     _inherit = 'account.bank.statement.line'

@@ -7,7 +7,7 @@ from odoo.exceptions import UserError, ValidationError
 
 import logging
 
-_logger = logging.getLogger("++++++++++++")
+_logger = logging.getLogger(__name__)
 
 class ResulteWizard(models.TransientModel):
     _name = "examen.session.line.result.wizard"

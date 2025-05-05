@@ -9,7 +9,7 @@ from datetime import datetime, timedelta
 
 import logging
 
-_logger = logging.getLogger("+++++++++++++++++++==")
+_logger = logging.getLogger(__name__)
 
 
 class Employe(models.Model):
@@ -23,7 +23,7 @@ class Employe(models.Model):
     
     # Education information
     diplome_ids = fields.One2many(
-        comodel_name="hr.education.diplome",
+        comodel_name='hr.education.diplome',
         inverse_name="employee_id",
         string="Diplômes",
         tracking=True

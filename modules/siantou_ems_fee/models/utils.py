@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import logging
 
-_logger = logging.getLogger("+++++++++++++++++++++")
+_logger = logging.getLogger(__name__)
 
 def create_payment(payment_obj, montant, name, currency_id, journal_id,
                    partner_id, partner_type, date, payment_method_id,

@@ -4,7 +4,7 @@ from odoo import fields, models, _, api
 from odoo.exceptions import UserError, ValidationError
 from bs4 import BeautifulSoup
 
-_logger = logging.getLogger("++++++++++++")
+_logger = logging.getLogger(__name__)
 
 class TicketMergeWizard(models.TransientModel):
     _name = 'session.line.attende.attend'

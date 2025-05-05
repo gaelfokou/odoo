@@ -6,7 +6,7 @@ from odoo import fields, models, _, api
 from odoo.exceptions import ValidationError
 
 import logging
-_logger = logging.getLogger("+++++++++++++++++++++++++++++")
+_logger = logging.getLogger(__name__)
 
 class StudentApplication(models.Model):
     _inherit = 'oe.school.student.enrollment'

@@ -1,17 +1,44 @@
 # -*- coding:utf-8 -*-
 
-from datetime import date
-
 from odoo import api, fields, models, tools, _
 from odoo.exceptions import UserError, ValidationError
+from datetime import date
+import logging
 
+_logger = logging.getLogger(__name__)
+
+class DiplomeAvailability(models.Model):
+    _name = 'hr.education.diplome.availability'
+    _description = 'Diplôme disponible'
+
+    code = fields.Char(string="Code", required=True,)
+
+    name = fields.Char(string="Diplôme", required=True)
+
+    diplome_ids = fields.One2many(
+        'hr.education.diplome',
+        'diplome_availability_id',
+        'Diplômes'
+    )
+
+    _sql_constraints = [
+        ('unique_code', 'unique(code)', 'Le code du diplôme doit être unique.'),
+        ('unique_name', 'unique(name)', 'Le nom du diplôme doit être unique.'),
+    ]
 
 class DiplomePersonnel(models.Model):
-    _name = "hr.education.diplome"
+    _name = 'hr.education.diplome'
     _description = "Model pour gérér les diplomes du personnel"
     _inherit = ["mail.thread", "mail.activity.mixin"]
 
-    nom_diplome = fields.Char(string='Diplome', tracking=True)
+    name = fields.Char(string='Diplôme', related='diplome_availability_id.name', store=True, tracking=True)
+
+    diplome_availability_id = fields.Many2one(
+        'hr.education.diplome.availability',
+        'Diplôme disponible',
+        required=True,
+        ondelete='cascade'
+    )
 
     equivalence_id = fields.Many2one('hr.education.equivalence', string='Equivalence', tracking=True)
 

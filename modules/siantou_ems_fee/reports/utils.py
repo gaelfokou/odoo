@@ -2,7 +2,7 @@
 from odoo.exceptions import Warning, ValidationError
 import re
 import logging
-_logger = logging.getLogger("++++++++++++++=============")
+_logger = logging.getLogger(__name__)
 
 ######################################################################################
 #  Source du code de conversion en chiffre                                           #

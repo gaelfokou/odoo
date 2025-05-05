@@ -6,7 +6,7 @@ from . import utils
 # from odoo.addons.siantou_ems_fee.models.utils import create_payment
 import logging
 
-_logger = logging.getLogger("+++++++++++++++++++++")
+_logger = logging.getLogger(__name__)
 
 class FeePaymentLine(models.Model):
     _name = 'siantou.ems.fee.payment.line'

@@ -3,7 +3,7 @@ from odoo.exceptions import UserError,ValidationError
 
 import logging
 
-_logger = logging.getLogger("++++============")
+_logger = logging.getLogger(__name__)
 
 try:
   import qrcode
