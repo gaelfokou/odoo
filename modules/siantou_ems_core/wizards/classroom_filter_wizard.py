@@ -9,30 +9,6 @@ from dateutil.relativedelta import relativedelta
 import copy
 import logging
 
-DATE_FORMAT = '%Y-%m-%d'
-DATE_FORMAT_FR = '%d/%m/%Y'
-DATETIME_FORMAT = '%Y-%m-%d %H:%M:%S'
-DATETIME_FORMAT_FR = '%d/%m/%Y %H:%M'
-TIME_FORMAT = '%H:%M'
-
-CURRENT_WEEKDAY = {
-    0: 'Lundi',
-    1: 'Mardi',
-    2: 'Mercredi',
-    3: 'Jeudi',
-    4: 'Vendredi',
-    5: 'Samedi',
-    6: 'Dimanche',
-}
-
-STATUS_TIMETABLE = {
-    '0': 'En attente',
-    '1': 'Présent',
-    '2': 'Absent',
-    '3': 'Permissionnaire',
-    '4': 'Exception',
-}
-
 _logger = logging.getLogger(__name__)
 
 class ClassroomFilterWizard(models.TransientModel):

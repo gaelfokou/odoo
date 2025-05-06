@@ -112,7 +112,7 @@
                             </group>
                         </page>
 
-                        <!-- Informations sur l'emplois du temps en vue page -->
+                        <!-- Informations sur l'emploi du temps en vue page -->
                         <page string="Emplois du temps">
 
                             <field name="timetable_ids">
