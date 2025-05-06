@@ -40,11 +40,6 @@ class ClassroomPrintWizard(models.TransientModel):
     _name = 'classroom.print.wizard'
     _description = 'Assistant d\'impression des enseignants'
 
-    is_classroom = fields.Boolean(
-        'Est un enseignant',
-        default=True,
-    )
-
     def print_classroom(self):
         data = self.print_classroom_report_data()
 
