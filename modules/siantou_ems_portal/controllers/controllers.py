@@ -418,12 +418,14 @@ class PortalAccount(portal.CustomerPortal):
                     return http.request.redirect('/my/request')
                 if not kw.get('city'):
                     return http.request.redirect('/my/request')
-                user.sudo().write({
+                vals = {
                     'private_phone': kw.get('phone'),
                     'private_email': kw.get('email'),
                     'date_naissance': kw.get('birthday'),
                     'nationalite': int(kw.get('country')),
                     'city_id': int(kw.get('city')),
-                    'quarter_id': int(kw.get('quarter')) if kw.get('quarter') else None,
-                })
+                }
+                if kw.get('quarter') and kw.get('quarter') != '':
+                    vals['quarter_id'] = int(kw.get('quarter'))
+                user.sudo().write(vals)
         return http.request.redirect('/my')
