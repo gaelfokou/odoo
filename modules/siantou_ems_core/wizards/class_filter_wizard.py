@@ -11,9 +11,9 @@ import logging
 
 _logger = logging.getLogger(__name__)
 
-class StudentFilterWizard(models.TransientModel):
-    _name = 'student.filter.wizard'
-    _description = 'Filtre des étudiants'
+class ClassFilterWizard(models.TransientModel):
+    _name = 'class.filter.wizard'
+    _description = 'Filtre des classes'
 
     year_id = fields.Many2one(
         'siantou.ems.core.year',
@@ -165,30 +165,30 @@ class StudentFilterWizard(models.TransientModel):
         if self.subject_id.id:
             domain.append(('ue_ids', 'in', self.subject_id.ue_ids.ids))
 
-        student_ids = []
+        class_ids = []
         classes = self.env['siantou.ems.core.class'].search(domain)
         for classe in classes:
-            student_ids += classe.student_ids.ids
-        student_ids = list(set(student_ids))
+            class_ids.append(classe.id)
+        class_ids = list(set(class_ids))
 
         domain = [
-            ('id', 'in', student_ids),
+            ('id', 'in', class_ids),
         ]
 
         if len(title) > 0:
             title = '/'.join(title)
         else:
-            title = 'Étudiants filtrés'
+            title = 'Classes filtrées'
 
         self.env['ir.config_parameter'].set_param(f'filter.{self.env.user.id}', title)
 
-        view_id = self.env.ref('siantou_ems_core.student_tree_view').id
+        view_id = self.env.ref('siantou_ems_core.class_tree_view').id
         return {
             'name': title,
             'type': 'ir.actions.act_window',
             'view_type': 'form',
             'view_mode': 'tree',
-            'res_model': 'oe.school.student',
+            'res_model': 'siantou.ems.core.class',
             'views': [(view_id, 'tree')],
             'view_id': view_id,
             'domain' : domain,

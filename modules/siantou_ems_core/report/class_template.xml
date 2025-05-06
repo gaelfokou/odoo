@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-    <record id="paperformat_student" model="report.paperformat">
+    <record id="paperformat_class" model="report.paperformat">
         <field name="name">Format du diplome</field>
         <field name="default" eval="True"/>
         <field name="format">A2</field>
@@ -14,22 +14,22 @@
         <field name="header_spacing">5</field>
         <field name="dpi">90</field>
     </record>
-    <record id="action_report_student" model="ir.actions.report">
+    <record id="action_report_class" model="ir.actions.report">
         <field name="name">Emploi du temps PDF</field>
-        <field name="model">oe.school.student</field>
+        <field name="model">siantou.ems.core.class</field>
         <field name="report_type">qweb-pdf</field>
-        <field name="report_name">siantou_ems_core.report_student</field>
-        <field name="report_file">siantou_ems_core.report_student</field>
+        <field name="report_name">siantou_ems_core.report_class</field>
+        <field name="report_file">siantou_ems_core.report_class</field>
         <field name="print_report_name">'Fiche de - %s' % (docdata.semester)</field>
         <field name="binding_model_id" eval="False"/>
-        <field name="paperformat_id" ref="paperformat_student"/>
+        <field name="paperformat_id" ref="paperformat_class"/>
         <field name="binding_type">report</field>
     </record>
 
     <!-- Template du rapport -->
-    <template id="report_student">
+    <template id="report_class">
         <t t-call="web.html_container">
-            <t t-if="docdata and docdata['student_data']">
+            <t t-if="docdata and docdata['class_data']">
                 <t t-call="web.external_layout">
                     <style>
                         .table {
@@ -77,26 +77,26 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <t t-set="students" t-value="docdata['student_data']"/>
-                                <t t-foreach="students" t-as="student">
+                                <t t-set="classs" t-value="docdata['class_data']"/>
+                                <t t-foreach="classs" t-as="class">
                                     <tr>
                                         <td class='text-center'>
-                                            <span t-esc="student['name']"/>
+                                            <span t-esc="class['name']"/>
                                         </td>
                                         <td class='text-center'>
-                                            <span t-esc="student['last_name']"/>
+                                            <span t-esc="class['last_name']"/>
                                         </td>
                                         <td class='text-center'>
-                                            <span t-esc="student['first_name']"/>
+                                            <span t-esc="class['first_name']"/>
                                         </td>
                                         <td class='text-center'>
-                                            <span t-esc="student['email']"/>
+                                            <span t-esc="class['email']"/>
                                         </td>
                                         <td class='text-center'>
-                                            <span t-esc="student['date_naissance']"/>
+                                            <span t-esc="class['date_naissance']"/>
                                         </td>
                                         <td class='text-center'>
-                                            <span t-esc="student['matricule']"/>
+                                            <span t-esc="class['matricule']"/>
                                         </td>
                                     </tr>
                                 </t>
