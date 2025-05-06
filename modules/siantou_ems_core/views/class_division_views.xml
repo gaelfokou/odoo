@@ -9,6 +9,23 @@
 			<field name="model">siantou.ems.core.class</field>
 			<field name="arch" type="xml">
 				<tree string="Classe standard">
+                    <header>
+                        <button name="action_reset_filter" 
+                            type="object" 
+                            string="Réinitialiser" 
+                            class="oe_highlight" 
+                            display="always"/>
+                        <button name="action_open_filter" 
+                            type="object" 
+                            string="Filtrer" 
+                            class="oe_highlight" 
+                            display="always"/>
+                        <button name="action_print_pdf" 
+                            type="object" 
+                            string="Imprimer PDF" 
+                            class="oe_highlight" 
+                            display="always"/>
+                    </header>
 					<field name="name"/>
                 	<field name="field_of_study_id"/>
                 	<field name="specialty_id"/>
@@ -59,6 +76,9 @@
                             </page>
                             <page name="student_ids" string="Étudiants">
                                 <field name="student_ids" options="{'create': false, 'create_edit': false}"/>
+                            </page>
+                            <page name="timetable_ids" string="Emplois du temps">
+                                <field name="timetable_ids" options="{'create': false, 'create_edit': false}"/>
                             </page>
                         </notebook>
 					</sheet>

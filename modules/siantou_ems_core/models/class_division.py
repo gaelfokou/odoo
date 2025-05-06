@@ -29,6 +29,12 @@ class EducationClass(models.Model):
         string='Liste des étudiants'
     )
 
+    timetable_ids = fields.One2many(
+        'siantou.ems.timetable.timetable',
+        'class_id',
+        string='Liste des emplois du temps'
+    )
+
     specialty_id = fields.Many2one('siantou.ems.core.specialty', string='Spécialité',
                                  required=True, help="Spécialité")
 
@@ -120,6 +126,42 @@ class EducationClass(models.Model):
     def _onchange_specialty(self):
         for record in self:
             record.option_id = None
+
+    def action_open_filter(self):
+        view_id = self.env.ref('siantou_ems_core.class_filter_wizard').id
+        return {
+            'name': 'Filtre des étudiants',
+            'type': 'ir.actions.act_window',
+            'view_type': 'form',
+            'view_mode': 'form',
+            'res_model': 'class.filter.wizard',
+            'views': [(view_id, 'form')],
+            'view_id': view_id,
+            'target': 'new',
+        }
+
+    def action_reset_filter(self):
+        self.env['ir.config_parameter'].set_param(f'filter.{self.env.user.id}', '')
+        action = self.env.ref('siantou_ems_core.action_show_class').read()[0]
+        action.update({
+            'target': 'main',
+        })
+        return action
+
+    def action_print_pdf(self):
+        active_ids = self.env.context.get('active_ids', [])
+        classs = self.env['siantou.ems.core.class'].browse(active_ids)
+        if len(active_ids) == 0:
+            raise UserError('Aucune donnée sélectionnée')
+        report_data = self.env['class.print.wizard'].create({})
+        domain = [('id', 'in', active_ids)]
+        data = report_data.print_class_report_data(domain)
+
+        # Appeler le rapport PDF
+        if not data['docdata']['class_data']:
+            raise UserError('Aucune donnée trouvée')
+        report_action = self.env.ref('siantou_ems_core.action_report_class')
+        return report_action.report_action(self, data=data)
 
 class EducationClassGroup(models.Model):
     _name = 'siantou.ems.core.class.group'

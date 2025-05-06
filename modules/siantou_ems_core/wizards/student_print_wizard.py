@@ -12,7 +12,7 @@ import copy
 
 _logger = logging.getLogger(__name__)
 
-class TeacherPrintWizard(models.TransientModel):
+class StudentPrintWizard(models.TransientModel):
     _name = 'student.print.wizard'
     _description = 'Assistant d\'impression des étudiants'
 

@@ -39,11 +39,6 @@ class ClassFilterWizard(models.TransientModel):
         'Niveau',
     )
 
-    class_id = fields.Many2one(
-        'siantou.ems.core.class',
-        string='Classe',
-    )
-
     specialty_id = fields.Many2one(
         'siantou.ems.core.specialty',
         string='Spécialité',
@@ -66,7 +61,7 @@ class ClassFilterWizard(models.TransientModel):
 
     specialty_id_domain = fields.Binary(compute='_compute_school_domain', default=[])
 
-    subject_id_domain = fields.Binary(compute='_compute_class_domain', default=[])
+    subject_id_domain = fields.Binary(compute='_compute_specialty_domain', default=[])
 
     @api.depends('school_id')
     def _compute_school_domain(self):
@@ -82,7 +77,6 @@ class ClassFilterWizard(models.TransientModel):
         for record in self:
             record.field_of_study_id = None
             record.level_id = None
-            record.class_id = None
             record.specialty_id = None
             record.option_id = None
             record.ue_id = None
@@ -92,7 +86,6 @@ class ClassFilterWizard(models.TransientModel):
     # def _onchange_field_of_study(self):
     #     for record in self:
     #         record.level_id = None
-    #         record.class_id = None
     #         record.specialty_id = None
     #         record.option_id = None
     #         record.ue_id = None
@@ -101,14 +94,12 @@ class ClassFilterWizard(models.TransientModel):
     @api.onchange('level_id')
     def _onchange_level(self):
         for record in self:
-            record.class_id = None
             record.ue_id = None
             record.subject_id = None
 
     @api.onchange('specialty_id')
     def _onchange_specialty(self):
         for record in self:
-            record.class_id = None
             record.option_id = None
             record.ue_id = None
             record.subject_id = None
@@ -116,24 +107,34 @@ class ClassFilterWizard(models.TransientModel):
     @api.onchange('option_id')
     def _onchange_option(self):
         for record in self:
-            record.class_id = None
             record.ue_id = None
             record.subject_id = None
 
-    @api.depends('class_id')
-    def _compute_class_domain(self):
+    @api.depends('year_id', 'field_of_study_id', 'level_id', 'specialty_id', 'option_id')
+    def _compute_specialty_domain(self):
         for record in self:
             domain = []
-            if record.class_id.id:
-                ue_ids = record.class_id.ue_ids
-                domain = [('ue_ids', 'in', ue_ids.ids)]
+            if record.year_id.id:
+                domain.append(('year_id', '=', record.year_id.id))
+            if record.school_id.id:
+                domain.append(('school_id', '=', record.school_id.id))
+            if record.field_of_study_id.id:
+                domain.append(('field_of_study_id', '=', record.field_of_study_id.id))
+            if record.level_id.id:
+                domain.append(('level_id', '=', record.level_id.id))
+            if record.specialty_id.id:
+                domain.append(('specialty_id', '=', record.specialty_id.id))
+            if record.option_id.id:
+                domain.append(('option_id', '=', record.option_id.id))
+            if record.ue_id.id:
+                domain.append(('ue_ids', '=', record.ue_id.id))
+            class_ids = self.env['siantou.ems.core.class'].search(domain)
+            ue_ids = []
+            for class_id in class_ids:
+                ue_ids += class_id.ue_ids.ids
+            ue_ids = list(set(ue_ids))
+            domain = [('ue_ids', 'in', ue_ids)]
             record.subject_id_domain = domain
-
-    @api.onchange('class_id')
-    def _onchange_class(self):
-        for record in self:
-            record.ue_id = None
-            record.subject_id = None
 
     def action_filter(self):
         domain = []
@@ -149,9 +150,6 @@ class ClassFilterWizard(models.TransientModel):
         if self.level_id.id:
             domain.append(('level_id', '=', self.level_id.id))
             title.append(self.level_id.name)
-        if self.class_id.id:
-            domain.append(('id', '=', self.class_id.id))
-            title.append(self.class_id.name)
         if self.specialty_id.id:
             domain.append(('specialty_id', '=', self.specialty_id.id))
             title.append(self.specialty_id.name)
