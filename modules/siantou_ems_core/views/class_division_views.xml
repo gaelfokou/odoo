@@ -3,7 +3,7 @@
 	<data>
 		<!-- Affichage en vue liste -->
 		<record
-                id="siantou_ems_core_class_tree_view"
+                id="class_tree_view"
                 model="ir.ui.view">
             <field name="name">siantou_ems_core_class.tree.view</field>
 			<field name="model">siantou.ems.core.class</field>
