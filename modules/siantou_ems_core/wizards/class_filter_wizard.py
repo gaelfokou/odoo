@@ -59,6 +59,13 @@ class ClassFilterWizard(models.TransientModel):
         string='Cours',
     )
 
+    status = fields.Selection([
+        ('0', 'Emploi du temps disponible'),
+        ('1', 'Emploi du temps pas disponible'),
+    ], 'Statut',
+        default='0',
+    )
+
     specialty_id_domain = fields.Binary(compute='_compute_school_domain', default=[])
 
     subject_id_domain = fields.Binary(compute='_compute_specialty_domain', default=[])
@@ -169,9 +176,16 @@ class ClassFilterWizard(models.TransientModel):
             class_ids.append(timetable.class_id.id)
         class_ids = list(set(class_ids))
 
-        domain = [
-            ('id', 'in', class_ids),
-        ]
+        if self.status == '0':
+            domain = [
+                ('id', 'in', class_ids),
+            ]
+            title.append('Emploi du temps disponible')
+        elif self.status == '1':
+            domain = [
+                ('id', 'not in', class_ids),
+            ]
+            title.append('Emploi du temps pas disponible')
 
         if len(title) > 0:
             title = '/'.join(title)

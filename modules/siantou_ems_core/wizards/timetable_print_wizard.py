@@ -11,6 +11,30 @@ from dateutil.relativedelta import relativedelta
 import copy
 import logging
 
+DATE_FORMAT = '%Y-%m-%d'
+DATE_FORMAT_FR = '%d/%m/%Y'
+DATETIME_FORMAT = '%Y-%m-%d %H:%M:%S'
+DATETIME_FORMAT_FR = '%d/%m/%Y %H:%M'
+TIME_FORMAT = '%H:%M'
+
+CURRENT_WEEKDAY = {
+    0: 'Lundi',
+    1: 'Mardi',
+    2: 'Mercredi',
+    3: 'Jeudi',
+    4: 'Vendredi',
+    5: 'Samedi',
+    6: 'Dimanche',
+}
+
+STATUS_TIMETABLE = {
+    '0': 'En attente',
+    '1': 'Présent',
+    '2': 'Absent',
+    '3': 'Permissionnaire',
+    '4': 'Exception',
+}
+
 _logger = logging.getLogger(__name__)
 
 class TimetablePrintWizard(models.TransientModel):
@@ -126,6 +150,7 @@ class TimetablePrintWizard(models.TransientModel):
                 info_timetables[key]['study'] = study
                 info_timetables[key]['filter'] = self.env['ir.config_parameter'].get_param(f'filter.{self.env.user.id}', '')
             timetable = {}
+            timetable['id'] = search_timetable.id
             timetable['date'] = search_timetable.date
             timetable['date_of_week'] = datetime.strftime(search_timetable.date, DATE_FORMAT_FR)
             timetable['class_id'] = search_timetable.class_id.id

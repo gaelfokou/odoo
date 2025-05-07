@@ -54,6 +54,7 @@ class ApiAccount(http.Controller):
         timetables = []
         for search_timetable in search_timetables:
             timetable = {}
+            timetable['id'] = search_timetable.id
             timetable['date'] = search_timetable.date
             timetable['date_of_week'] = datetime.strftime(search_timetable.date, DATE_FORMAT_FR)
             timetable['field_of_study_id'] = search_timetable.field_of_study_id.id
