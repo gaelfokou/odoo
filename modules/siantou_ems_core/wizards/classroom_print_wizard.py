@@ -38,7 +38,6 @@ class ClassroomPrintWizard(models.TransientModel):
         classrooms = []
         for search_classroom in search_classrooms:
             classroom = {}
-            classroom['id'] = search_classroom.id
             classroom['code'] = search_classroom.code
             classroom['name'] = search_classroom.name
             classroom['building_name'] = search_classroom.building_id.name

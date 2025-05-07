@@ -52,7 +52,6 @@ class TeacherPrintWizard(models.TransientModel):
         teachers = []
         for search_teacher in search_teachers:
             teacher = {}
-            teacher['id'] = search_teacher.id
             teacher['name'] = search_teacher.name
             teacher['last_name'] = search_teacher.last_name
             teacher['first_name'] = search_teacher.first_name

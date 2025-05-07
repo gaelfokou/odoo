@@ -126,7 +126,6 @@ class TimetablePrintWizard(models.TransientModel):
                 info_timetables[key]['study'] = study
                 info_timetables[key]['filter'] = self.env['ir.config_parameter'].get_param(f'filter.{self.env.user.id}', '')
             timetable = {}
-            timetable['id'] = search_timetable.id
             timetable['date'] = search_timetable.date
             timetable['date_of_week'] = datetime.strftime(search_timetable.date, DATE_FORMAT_FR)
             timetable['class_id'] = search_timetable.class_id.id

@@ -38,7 +38,6 @@ class StudentPrintWizard(models.TransientModel):
         students = []
         for search_student in search_students:
             student = {}
-            student['id'] = search_student.id
             student['name'] = search_student.name
             student['last_name'] = search_student.last_name
             student['first_name'] = search_student.first_name

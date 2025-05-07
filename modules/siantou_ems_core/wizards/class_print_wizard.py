@@ -43,7 +43,6 @@ class ClassPrintWizard(models.TransientModel):
         classes = []
         for search_classe in search_classes:
             classe = {}
-            classe['id'] = search_classe.id
             classe['name'] = search_classe.name
             classe['year'] = search_classe.year_id.name
             classe['school'] = search_classe.school_id.name
