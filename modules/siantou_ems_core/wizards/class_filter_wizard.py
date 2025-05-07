@@ -157,16 +157,16 @@ class ClassFilterWizard(models.TransientModel):
             domain.append(('option_id', '=', self.option_id.id))
             title.append(self.option_id.name)
         if self.ue_id.id:
-            domain.append(('ue_ids', '=', self.ue_id.id))
+            domain.append(('ue_id', '=', self.ue_id.id))
             title.append(self.ue_id.name)
 
         if self.subject_id.id:
-            domain.append(('ue_ids', 'in', self.subject_id.ue_ids.ids))
+            domain.append(('subject_id', '=', self.subject_id.id))
 
         class_ids = []
-        classes = self.env['siantou.ems.core.class'].search(domain)
-        for classe in classes:
-            class_ids.append(classe.id)
+        timetables = self.env['siantou.ems.timetable.timetable'].search(domain)
+        for timetable in timetables:
+            class_ids.append(timetable.class_id.id)
         class_ids = list(set(class_ids))
 
         domain = [

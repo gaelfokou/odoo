@@ -52,7 +52,7 @@
                                     <th class="text-center" colspan="6" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;">
                                         <h3>INSTITUT UNIVERSITAIRE SIANTOU</h3>
                                         <h4>
-                                            <span t-esc="'Liste des étudiants'"/>
+                                            <span t-esc="'Liste des classes'"/>
                                         </h4>
                                         <h5 class="text-left">
                                             <span t-esc="'Filtre :'"/>
@@ -68,35 +68,43 @@
                             </thead>
                             <thead class="thead">
                                 <tr class="active">
-                                    <th class="text-center">Nom(s) et prénom(s)</th>
-                                    <th class="text-center">Nom(s)</th>
-                                    <th class="text-center">Prénom(s)</th>
-                                    <th class="text-center">E-mail</th>
-                                    <th class="text-center">Date de naissance</th>
-                                    <th class="text-center">Matricule</th>
+                                    <th class="text-center">Nom de la classe</th>
+                                    <th class="text-center">Année académique</th>
+                                    <th class="text-center">École</th>
+                                    <th class="text-center">Filière</th>
+                                    <th class="text-center">Niveau</th>
+                                    <th class="text-center">Spécialité</th>
+                                    <th class="text-center">Option</th>
+                                    <th class="text-center">Type de cours</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <t t-set="classs" t-value="docdata['class_data']"/>
-                                <t t-foreach="classs" t-as="class">
+                                <t t-set="classes" t-value="docdata['class_data']"/>
+                                <t t-foreach="classes" t-as="classe">
                                     <tr>
                                         <td class='text-center'>
-                                            <span t-esc="class['name']"/>
+                                            <span t-esc="classe['name']"/>
                                         </td>
                                         <td class='text-center'>
-                                            <span t-esc="class['last_name']"/>
+                                            <span t-esc="classe['year']"/>
                                         </td>
                                         <td class='text-center'>
-                                            <span t-esc="class['first_name']"/>
+                                            <span t-esc="classe['school']"/>
                                         </td>
                                         <td class='text-center'>
-                                            <span t-esc="class['email']"/>
+                                            <span t-esc="classe['field_of_study']"/>
                                         </td>
                                         <td class='text-center'>
-                                            <span t-esc="class['date_naissance']"/>
+                                            <span t-esc="classe['level']"/>
                                         </td>
                                         <td class='text-center'>
-                                            <span t-esc="class['matricule']"/>
+                                            <span t-esc="classe['specialty']"/>
+                                        </td>
+                                        <td class='text-center'>
+                                            <span t-esc="classe['option']"/>
+                                        </td>
+                                        <td class='text-center'>
+                                            <span t-esc="classe['type_cour']"/>
                                         </td>
                                     </tr>
                                 </t>

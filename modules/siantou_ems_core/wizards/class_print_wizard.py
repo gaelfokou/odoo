@@ -33,18 +33,20 @@ class ClassPrintWizard(models.TransientModel):
             for d in domains:
                 domain.append(d)
 
-        search_classes = self.env['oe.school.class'].search(domain)
+        search_classes = self.env['siantou.ems.core.class'].search(domain)
 
         classes = []
         for search_classe in search_classes:
             classe = {}
             classe['id'] = search_classe.id
             classe['name'] = search_classe.name
-            classe['last_name'] = search_classe.last_name
-            classe['first_name'] = search_classe.first_name
-            classe['email'] = search_classe.email
-            classe['date_naissance'] = search_classe.date_naissance
-            classe['matricule'] = search_classe.matricule
+            classe['year'] = search_classe.year_id.name
+            classe['school'] = search_classe.school_id.name
+            classe['field_of_study'] = search_classe.field_of_study_id.name
+            classe['level'] = search_classe.level_id.name
+            classe['specialty'] = search_classe.specialty_id.name
+            classe['option'] = search_classe.option_id.name
+            classe['type_cour'] = search_classe.type_cour
             classes.append(classe)
 
         title = self.env['ir.config_parameter'].get_param(f'filter.{self.env.user.id}', '')
