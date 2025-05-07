@@ -56,6 +56,6 @@ class ClassPrintWizard(models.TransientModel):
         return {
             'docdata': {
                 'filter': title,
-                'classe_data': classes,
+                'class_data': classes,
             }
         }
