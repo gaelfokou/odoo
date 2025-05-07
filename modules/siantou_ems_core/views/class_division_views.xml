@@ -92,7 +92,7 @@
 
         <!-- Action pour le menu s'affichage des classes standards -->
         <record
-                id="action_show_siantou_ems_core_class"
+                id="action_show_class"
                 model="ir.actions.act_window">
             <field name="name">Classe Standard</field>
             <field name="res_model">siantou.ems.core.class</field>
@@ -109,7 +109,7 @@
                 id="menu_siantou_ems_core_class"
                 name="Classes"
                 parent="menu_siantou_ems_core_config_fa"
-                action="action_show_siantou_ems_core_class"
+                action="action_show_class"
                 sequence="4"/>
 
 	</data>
