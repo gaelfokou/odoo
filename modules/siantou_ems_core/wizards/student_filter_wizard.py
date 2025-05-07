@@ -178,7 +178,7 @@ class StudentFilterWizard(models.TransientModel):
         if len(title) > 0:
             title = '/'.join(title)
         else:
-            title = 'Étudiants filtrés'
+            title = 'Non spécifié'
 
         self.env['ir.config_parameter'].set_param(f'filter.{self.env.user.id}', title)
 

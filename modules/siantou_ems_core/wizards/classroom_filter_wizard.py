@@ -76,7 +76,7 @@ class ClassroomFilterWizard(models.TransientModel):
         if len(title) > 0:
             title = '/'.join(title)
         else:
-            title = 'Salles de classe filtrées'
+            title = 'Non spécifié'
 
         self.env['ir.config_parameter'].set_param(f'filter.{self.env.user.id}', title)
 
