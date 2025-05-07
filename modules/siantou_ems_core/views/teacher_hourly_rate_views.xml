@@ -5,7 +5,7 @@
             <field name="name">teacher.hourly.rate.tree</field>
             <field name="model">siantou.ems.core.teacher.hourly.rate</field>
             <field name="arch" type="xml">
-                <tree string="Taux horaires des enseignants">
+                <tree string="Taux horaires personnalisés">
                     <field name="employee_id"/>
                     <field name="subject_id"/>
                     <field name="hourly_rate_id"/>
@@ -32,13 +32,13 @@
         </record>
 
         <record id="action_teacher_hourly_rate" model="ir.actions.act_window">
-            <field name="name">Taux horaires des enseignants</field>
+            <field name="name">Taux horaires personnalisés</field>
             <field name="res_model">siantou.ems.core.teacher.hourly.rate</field>
             <field name="view_mode">tree,form</field>
         </record>
 
         <menuitem id="siantou_menu_teacher_hourly_rate"
-                name="Taux horaires des enseignants"
+                name="Taux horaires personnalisés"
                 parent="menu_siantou_ems_core_employee"
                 action="action_teacher_hourly_rate"
                 sequence="20"/>
