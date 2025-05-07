@@ -10,6 +10,11 @@ from datetime import date, datetime, timedelta, time
 from dateutil.relativedelta import relativedelta
 import copy
 
+TYPE_COUR = {
+    'cj': 'Cours du jour',
+    'cs': 'Cours du soir',
+}
+
 _logger = logging.getLogger(__name__)
 
 class ClassPrintWizard(models.TransientModel):
@@ -46,7 +51,7 @@ class ClassPrintWizard(models.TransientModel):
             classe['level'] = search_classe.level_id.name
             classe['specialty'] = search_classe.specialty_id.name
             classe['option'] = search_classe.option_id.name
-            classe['type_cour'] = search_classe.type_cour
+            classe['type_cour'] = TYPE_COUR[search_classe.type_cour]
             classes.append(classe)
 
         title = self.env['ir.config_parameter'].get_param(f'filter.{self.env.user.id}', '')
