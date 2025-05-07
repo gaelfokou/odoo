@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_teacher_hourly_rate_tree" model="ir.ui.view">
+            <field name="name">teacher.hourly.rate.tree</field>
+            <field name="model">siantou.ems.core.teacher.hourly.rate</field>
+            <field name="arch" type="xml">
+                <tree string="Taux horaires des enseignants">
+                    <field name="employee_id"/>
+                    <field name="subject_id"/>
+                    <field name="hourly_rate_id"/>
+                    <field name="rate"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_teacher_hourly_rate_form" model="ir.ui.view">
+            <field name="name">teacher.hourly.rate.form</field>
+            <field name="model">siantou.ems.core.teacher.hourly.rate</field>
+            <field name="arch" type="xml">
+                <form string="Taux horaire des enseignants">
+                    <sheet>
+                        <group>
+                            <field name="employee_id"/>
+                            <field name="subject_id"/>
+                            <field name="hourly_rate_id"/>
+                            <field name="rate"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_teacher_hourly_rate" model="ir.actions.act_window">
+            <field name="name">Taux horaires des enseignants</field>
+            <field name="res_model">siantou.ems.core.teacher.hourly.rate</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem id="siantou_menu_teacher_hourly_rate"
+                name="Taux horaires des enseignants"
+                parent="menu_siantou_ems_core_employee"
+                action="action_teacher_hourly_rate"
+                sequence="20"/>
+
+    </data>
+</odoo>

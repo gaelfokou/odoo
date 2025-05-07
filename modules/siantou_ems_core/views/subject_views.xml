@@ -53,7 +53,6 @@
                                     <tree create="False" editable="bottom">
                                         <field name="employee_id" options="{'no_open': True}"/>
                                         <field name="priority"/>
-                                        <field name="hourly_rate"/>
                                     </tree>
                                 </field>
                             </page>

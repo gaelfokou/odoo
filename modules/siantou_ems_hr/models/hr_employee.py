@@ -75,7 +75,7 @@ class Employe(models.Model):
     qualite = fields.Selection([
         ('dg', 'Directeur Général'),
         ('daf', 'Directeur Adm & Fin'),
-        ('de', 'Directeur des Etudes'),
+        ('de', 'Directeur des etudes'),
         ], 'Qualité', select=True, index=True)
     
     class_type = fields.Selection([

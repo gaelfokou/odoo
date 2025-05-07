@@ -71,6 +71,12 @@ teacher_admin,teacher.admin,model_hr_employee,siantou_ems_core.group_teacher_adm
 teacher_avaibility_user,teacher.avaibility.user,model_siantou_ems_core_teacher_availability,,1,0,0,0
 teacher_avaibility_admin,teacher.avaibility.admin,model_siantou_ems_core_teacher_availability,,1,1,1,1
 
+hourly_rate_user,hourly.rate.user,model_siantou_ems_core_hourly_rate,,1,0,0,0
+hourly_rate_admin,hourly.rate.admin,model_siantou_ems_core_hourly_rate,,1,1,1,1
+
+teacher_hourly_rate_user,teacher.hourly.rate.user,model_siantou_ems_core_teacher_hourly_rate,,1,0,0,0
+teacher_hourly_rate_admin,teacher.hourly.rate.admin,model_siantou_ems_core_teacher_hourly_rate,,1,1,1,1
+
 timetable_user,timetable.user,model_siantou_ems_timetable_timetable,siantou_ems_core.group_timetable_user,1,0,0,0
 timetable_admin,timetable.admin,model_siantou_ems_timetable_timetable,siantou_ems_core.group_timetable_admin,1,1,1,1
 

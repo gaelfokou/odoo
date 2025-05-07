@@ -5,7 +5,7 @@
             <field name="name">teacher.availability.tree</field>
             <field name="model">siantou.ems.core.teacher.availability</field>
             <field name="arch" type="xml">
-                <tree string="Disponibilités des Enseignants">
+                <tree string="Disponibilités des enseignants">
                     <field name="employee_id"/>
                     <field name="day_of_week"/>
                     <field name="start_time"/>
@@ -18,7 +18,7 @@
             <field name="name">teacher.availability.form</field>
             <field name="model">siantou.ems.core.teacher.availability</field>
             <field name="arch" type="xml">
-                <form string="Disponibilité des Enseignants">
+                <form string="Disponibilité des enseignants">
                     <sheet>
                         <group>
                             <field name="employee_id"/>
@@ -32,7 +32,7 @@
         </record>
 
         <record id="action_teacher_availability" model="ir.actions.act_window">
-            <field name="name">Disponibilités Enseignants</field>
+            <field name="name">Disponibilités des enseignants</field>
             <field name="res_model">siantou.ems.core.teacher.availability</field>
             <field name="view_mode">tree,form</field>
         </record>
