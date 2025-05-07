@@ -1,9 +1,12 @@
 # -*- coding: utf-8 -*-
-import logging
+
 import re
 from odoo import fields, models, api, _
-from odoo.exceptions import ValidationError
+from odoo.exceptions import UserError, ValidationError
 from odoo.tools import unique
+import logging
+
+_logger = logging.getLogger(__name__)
 
 class EducationClass(models.Model):
     _name = 'siantou.ems.core.class'

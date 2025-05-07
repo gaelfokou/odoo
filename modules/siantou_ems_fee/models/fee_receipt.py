@@ -3,7 +3,7 @@
 import datetime
 from xml.dom import ValidationErr
 from odoo import models, fields, api, _
-from odoo.exceptions import ValidationError, UserError
+from odoo.exceptions import UserError, ValidationError
 
 class FeeReceipts(models.Model):
     _inherit = 'account.move'

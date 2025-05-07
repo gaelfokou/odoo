@@ -1,4 +1,4 @@
-import logging
+# -*- coding: utf-8 -*-
 
 from odoo import models, fields, api, tools, _
 from odoo.exceptions import UserError, ValidationError
@@ -9,6 +9,7 @@ import re
 from datetime import date, datetime, timedelta, time
 from dateutil.relativedelta import relativedelta
 import copy
+import logging
 
 _logger = logging.getLogger(__name__)
 

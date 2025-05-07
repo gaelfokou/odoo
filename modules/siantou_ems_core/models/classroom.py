@@ -1,6 +1,11 @@
+# -*- coding: utf-8 -*-
+
 from odoo import fields, models, api
-from odoo.exceptions import ValidationError
+from odoo.exceptions import UserError, ValidationError
 from odoo.tools import unique
+import logging
+
+_logger = logging.getLogger(__name__)
 
 class Campus(models.Model):
     _name = 'siantou.ems.core.campus'

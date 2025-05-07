@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import math
 from email.policy import default
 from odoo import models, fields, api, tools, _
