@@ -213,6 +213,10 @@ class TimetableFilterWizard(models.TransientModel):
         for record in self:
             record.subject_id = None
 
+    def search_filtered(self, rec):
+        result = not (rec.start_time >= self.end_time or rec.end_time <= self.start_time)
+        return result
+
     def action_filter(self):
         domain = []
         title = []
@@ -262,7 +266,8 @@ class TimetableFilterWizard(models.TransientModel):
 
         timetable_ids = []
         if self.start_time and self.end_time:
-            timetables = self.env['siantou.ems.timetable.timetable'].search(domain).filtered(lambda rec: rec.start_time >= self.start_time and rec.end_time <= self.end_time)
+            timetables = self.env['siantou.ems.timetable.timetable'].search(domain).filtered(lambda rec: not (rec.start_time >= self.end_time or rec.end_time <= self.start_time))
+            # timetables = self.env['siantou.ems.timetable.timetable'].search(domain).filtered(lambda rec: self.search_filtered(rec))
         else:
             timetables = self.env['siantou.ems.timetable.timetable'].search(domain)
         for timetable in timetables:
