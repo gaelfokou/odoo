@@ -45,6 +45,11 @@ class HourlyRate(models.Model):
         required=True
     )
 
+    # Contrainte SQL pour empêcher d'avoir le même code pour différentes filières
+    _sql_constraints = [
+        ('unique_code', 'unique(code)', 'Le code de la filière doit être unique.'),
+    ]
+
     @api.depends('school_id', 'cycle_id', 'level_id')
     def _compute_name(self):
         for record in self:
@@ -115,6 +120,11 @@ class TeacherHourlyRate(models.Model):
         default=0,
         required=True
     )
+
+    # Contrainte SQL pour empêcher d'avoir le même code pour différentes filières
+    _sql_constraints = [
+        ('unique_code', 'unique(code)', 'Le code de la filière doit être unique.'),
+    ]
 
     @api.depends('employee_id', 'subject_id')
     def _compute_name(self):
