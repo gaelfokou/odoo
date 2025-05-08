@@ -15,7 +15,7 @@
         <field name="dpi">90</field>
     </record>
     <record id="action_report_student" model="ir.actions.report">
-        <field name="name">Emploi du temps PDF</field>
+        <field name="name">Étudiant PDF</field>
         <field name="model">oe.school.student</field>
         <field name="report_type">qweb-pdf</field>
         <field name="report_name">siantou_ems_core.report_student</field>

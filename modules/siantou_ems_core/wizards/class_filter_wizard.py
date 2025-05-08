@@ -143,7 +143,7 @@ class ClassFilterWizard(models.TransientModel):
                     student_class_ids.append(classe.id)
             student_class_ids = list(set(student_class_ids))
             class_ids = list(filter(lambda i: i in student_class_ids, class_ids))
-            title.append('Étudiants pas disponibles')
+            title.append('Étudiants disponibles')
         elif self.status == '3':
             domain = [
                 ('id', 'in', class_ids),
