@@ -57,7 +57,7 @@ class HourlyRate(models.Model):
             cycle_name = record.cycle_id.name if record.cycle_id.id else ''
             niveau_name = record.level_id.name if record.level_id.id else ''
             niveau_name = re.sub(r'Niveau ', '', niveau_name)
-            name = '{} {} {}'.format(school_name, cycle_name, niveau_name)
+            name = '{} - {} - {}'.format(school_name, cycle_name, niveau_name)
             while True:
                 if name.find('  ') != -1:
                     name = name.replace('  ', ' ')
@@ -74,7 +74,7 @@ class HourlyRate(models.Model):
             cycle_name = record.cycle_id.name if record.cycle_id.id else ''
             niveau_name = record.level_id.name if record.level_id.id else ''
             niveau_name = re.sub(r'Niveau ', '', niveau_name)
-            name = '{} {} {}'.format(school_name, cycle_name, niveau_name)
+            name = '{} - {} - {}'.format(school_name, cycle_name, niveau_name)
             while True:
                 if name.find('  ') != -1:
                     name = name.replace('  ', ' ')
@@ -133,7 +133,7 @@ class TeacherHourlyRate(models.Model):
             employee_name = record.employee_id.name if record.employee_id.id else ''
             subject_name = record.subject_id.name if record.subject_id.id else ''
             hourly_rate_name = record.hourly_rate_id.name if record.hourly_rate_id.id else ''
-            name = '{} {} {}'.format(employee_name, subject_name, hourly_rate_name)
+            name = '{} - {} - {}'.format(employee_name, subject_name, hourly_rate_name)
             while True:
                 if name.find('  ') != -1:
                     name = name.replace('  ', ' ')
@@ -149,7 +149,7 @@ class TeacherHourlyRate(models.Model):
             employee_name = record.employee_id.name if record.employee_id.id else ''
             subject_name = record.subject_id.name if record.subject_id.id else ''
             hourly_rate_name = record.hourly_rate_id.name if record.hourly_rate_id.id else ''
-            name = '{} {} {}'.format(employee_name, subject_name, hourly_rate_name)
+            name = '{} - {} - {}'.format(employee_name, subject_name, hourly_rate_name)
             while True:
                 if name.find('  ') != -1:
                     name = name.replace('  ', ' ')
