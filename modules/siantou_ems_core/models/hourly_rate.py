@@ -137,7 +137,7 @@ class TeacherHourlyRate(models.Model):
         ('unique_employee_subject_hourly_rate', 'unique(employee_id,subject_id,hourly_rate_id)', 'L\enseignant, le cours, et le taux horaire doivent être uniques.'),
     ]
 
-    subject_id_domain = fields.Binary(compute='_compute_class_domain', default=[])
+    subject_id_domain = fields.Binary(compute='_compute_employee_domain', default=[])
 
     @api.depends('employee_id')
     def _compute_employee_domain(self):
