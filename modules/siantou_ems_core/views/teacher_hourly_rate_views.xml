@@ -24,7 +24,8 @@
                         <group>
                             <field name="name"/>
                             <field name="employee_id"/>
-                            <field name="subject_id"/>
+                            <field name="subject_id_domain" invisible="1"/>
+                            <field name="subject_id" domain="subject_id_domain"/>
                             <field name="hourly_rate_id"/>
                             <field name="rate"/>
                         </group>

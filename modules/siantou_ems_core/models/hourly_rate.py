@@ -137,6 +137,17 @@ class TeacherHourlyRate(models.Model):
         ('unique_employee_subject_hourly_rate', 'unique(employee_id,subject_id,hourly_rate_id)', 'L\enseignant, le cours, et le taux horaire doivent être uniques.'),
     ]
 
+    subject_id_domain = fields.Binary(compute='_compute_class_domain', default=[])
+
+    @api.depends('employee_id')
+    def _compute_employee_domain(self):
+        for record in self:
+            domain = []
+            if record.employee_id.id:
+                subject_ids = record.employee_id.subject_ids.ids
+                domain = [('id', 'in', subject_ids)]
+            record.subject_id_domain = domain
+
     @api.depends('employee_id', 'subject_id', 'hourly_rate_id')
     def _compute_name(self):
         for record in self:
