@@ -15,11 +15,11 @@ class DiplomeAvailability(models.Model):
 
     name = fields.Char(string="Diplôme", required=True)
 
-    diplome_ids = fields.One2many(
-        'hr.education.diplome',
-        'diplome_availability_id',
-        'Diplômes'
-    )
+    # diplome_ids = fields.One2many(
+    #     'hr.education.diplome',
+    #     'diplome_availability_id',
+    #     'Diplômes'
+    # )
 
     _sql_constraints = [
         ('unique_code', 'unique(code)', 'Le code du diplôme doit être unique.'),

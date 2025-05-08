@@ -30,6 +30,13 @@ class HourlyRate(models.Model):
         ondelete='cascade'
     )
 
+    diplome_availability_id = fields.Many2one(
+        'hr.education.diplome.availability',
+        'Diplôme disponible',
+        required=True,
+        ondelete='cascade'
+    )
+
     level_id = fields.Many2one(
         'siantou.ems.core.level',
         'Niveau',
@@ -47,17 +54,18 @@ class HourlyRate(models.Model):
 
     # Contrainte SQL pour empêcher d'avoir le même code pour différentes filières
     _sql_constraints = [
-        ('unique_school_cycle_level', 'unique(school_id,cycle_id,level_id)', 'L\'école, le cursus ou cycle, et le niveau doivent être uniques.'),
+        ('unique_school_cycle_level_diplome_availability', 'unique(school_id,cycle_id,level_id,diplome_availability_id)', 'L\'école, le cursus ou cycle, le niveau, et le diplôme doivent être uniques.'),
     ]
 
-    @api.depends('school_id', 'cycle_id', 'level_id')
+    @api.depends('school_id', 'cycle_id', 'diplome_availability_id', 'level_id')
     def _compute_name(self):
         for record in self:
             school_name = record.school_id.name if record.school_id.id else ''
             cycle_name = record.cycle_id.name if record.cycle_id.id else ''
+            diplome_availability_name = record.diplome_availability_id.name if record.diplome_availability_id.id else ''
             niveau_name = record.level_id.name if record.level_id.id else ''
             niveau_name = re.sub(r'Niveau ', '', niveau_name)
-            name = '{} - {} - {}'.format(school_name, cycle_name, niveau_name)
+            name = '{} - {} - {} - {}'.format(school_name, cycle_name, diplome_availability_name, niveau_name)
             while True:
                 if name.find('  ') != -1:
                     name = name.replace('  ', ' ')
@@ -67,14 +75,15 @@ class HourlyRate(models.Model):
             name = name.upper()
             record.name = name
 
-    @api.onchange('school_id', 'cycle_id', 'level_id')
+    @api.onchange('school_id', 'cycle_id', 'diplome_availability_id', 'level_id')
     def _onchange_name(self):
         for record in self:
             school_name = record.school_id.name if record.school_id.id else ''
             cycle_name = record.cycle_id.name if record.cycle_id.id else ''
+            diplome_availability_name = record.diplome_availability_id.name if record.diplome_availability_id.id else ''
             niveau_name = record.level_id.name if record.level_id.id else ''
             niveau_name = re.sub(r'Niveau ', '', niveau_name)
-            name = '{} - {} - {}'.format(school_name, cycle_name, niveau_name)
+            name = '{} - {} - {} - {}'.format(school_name, cycle_name, diplome_availability_name, niveau_name)
             while True:
                 if name.find('  ') != -1:
                     name = name.replace('  ', ' ')

@@ -9,6 +9,7 @@
                     <field name="name"/>
                     <field name="school_id"/>
                     <field name="cycle_id"/>
+                    <field name="diplome_availability_id"/>
                     <field name="level_id"/>
                     <field name="rate"/>
                 </tree>
@@ -25,6 +26,7 @@
                             <field name="name"/>
                             <field name="school_id"/>
                             <field name="cycle_id"/>
+                            <field name="diplome_availability_id"/>
                             <field name="level_id"/>
                             <field name="rate"/>
                         </group>
