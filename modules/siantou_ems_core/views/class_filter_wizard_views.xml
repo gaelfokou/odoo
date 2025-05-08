@@ -14,6 +14,7 @@
                         <field name="specialty_id_domain" invisible="1"/>
                         <field name="specialty_id" options="{'no_create': True}" domain="specialty_id_domain"/>
                         <field name="option_id" options="{'no_create': True}" domain="[('specialty_id', '=', specialty_id)]"/>
+                        <field name="type_cour" widget="radio"/>
                         <field name="status"/>
                     </group>
                     <footer>

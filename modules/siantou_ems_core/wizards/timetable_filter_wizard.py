@@ -125,6 +125,11 @@ class TimetableFilterWizard(models.TransientModel):
         # default='0',
     )
 
+    type_cour = fields.Selection([
+        ('cj', 'Cours du jour'),
+        ('cs', 'Cours du soir'),
+    ], string="Type de cours")
+
     specialty_id_domain = fields.Binary(compute='_compute_school_domain', default=[])
 
     subject_id_domain = fields.Binary(compute='_compute_class_domain', default=[])

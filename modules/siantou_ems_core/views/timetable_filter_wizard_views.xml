@@ -25,6 +25,7 @@
                         <field name="date"/>
                         <field name="start_time"/>
                         <field name="end_time"/>
+                        <field name="type_cour" widget="radio"/>
                         <field name="status"/>
                     </group>
                     <footer>
