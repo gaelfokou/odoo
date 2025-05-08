@@ -52,9 +52,13 @@ class ClassroomFilterWizard(models.TransientModel):
         title = []
         if self.date:
             domain.append(('date', '=', self.date))
+            title.append(datetime.strftime(self.date, DATE_FORMAT_FR))
 
         classroom_ids = []
         if self.start_time and self.end_time:
+            start_time = ClassroomFilterWizard.convert_float_to_time(self.start_time)
+            end_time = ClassroomFilterWizard.convert_float_to_time(self.end_time)
+            title.append('{} - {}'.format(start_time, end_time))
             timetables = self.env['siantou.ems.timetable.timetable'].search(domain).filtered(lambda rec: not (rec.start_time >= self.end_time or rec.end_time <= self.start_time))
         else:
             timetables = self.env['siantou.ems.timetable.timetable'].search(domain)
@@ -92,3 +96,16 @@ class ClassroomFilterWizard(models.TransientModel):
             'domain' : domain,
             'target': 'main',
         }
+
+    @staticmethod
+    def convert_float_to_time(tm, has_second=False):
+        tm = str(tm)
+        tm = tm.split('.')
+        if len(tm[0]) == 1:
+            tm[0] = '0{}'.format(tm[0])
+        if len(tm[1]) == 1:
+            tm[1] = '{}0'.format(tm[1])
+        tm = ':'.join(tm)
+        if has_second:
+            tm = '{}:00'.format(tm)
+        return tm
