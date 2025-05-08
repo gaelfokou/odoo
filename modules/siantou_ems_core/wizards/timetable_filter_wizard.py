@@ -9,6 +9,20 @@ from dateutil.relativedelta import relativedelta
 import copy
 import logging
 
+DATE_FORMAT = '%Y-%m-%d'
+DATE_FORMAT_FR = '%d/%m/%Y'
+DATETIME_FORMAT = '%Y-%m-%d %H:%M:%S'
+DATETIME_FORMAT_FR = '%d/%m/%Y %H:%M'
+TIME_FORMAT = '%H:%M'
+
+STATUS_TIMETABLE = {
+    '0': 'En attente',
+    '1': 'Présent',
+    '2': 'Absent',
+    '3': 'Permissionnaire',
+    '4': 'Exception',
+}
+
 _logger = logging.getLogger(__name__)
 
 class TimetableFilterWizard(models.TransientModel):
@@ -261,11 +275,16 @@ class TimetableFilterWizard(models.TransientModel):
             domain.append(('group_id', '=', self.group_id.id))
         if self.status:
             domain.append(('status', '=', self.status))
+            title.append(STATUS_TIMETABLE[self.status])
         if self.date:
             domain.append(('date', '=', self.date))
+            title.append(datetime.strftime(self.date, DATE_FORMAT_FR))
 
         timetable_ids = []
         if self.start_time and self.end_time:
+            start_time = TimetableFilterWizard.convert_float_to_time(self.start_time)
+            end_time = TimetableFilterWizard.convert_float_to_time(self.end_time)
+            title.append('{} - {}'.format(start_time, end_time))
             timetables = self.env['siantou.ems.timetable.timetable'].search(domain).filtered(lambda rec: not (rec.start_time >= self.end_time or rec.end_time <= self.start_time))
             # timetables = self.env['siantou.ems.timetable.timetable'].search(domain).filtered(lambda rec: self.search_filtered(rec))
         else:
@@ -295,3 +314,16 @@ class TimetableFilterWizard(models.TransientModel):
             'domain' : domain,
             'target': 'main',
         }
+
+    @staticmethod
+    def convert_float_to_time(tm, has_second=False):
+        tm = str(tm)
+        tm = tm.split('.')
+        if len(tm[0]) == 1:
+            tm[0] = '0{}'.format(tm[0])
+        if len(tm[1]) == 1:
+            tm[1] = '{}0'.format(tm[1])
+        tm = ':'.join(tm)
+        if has_second:
+            tm = '{}:00'.format(tm)
+        return tm
