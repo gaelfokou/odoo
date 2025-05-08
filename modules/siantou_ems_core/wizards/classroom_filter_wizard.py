@@ -9,6 +9,12 @@ from dateutil.relativedelta import relativedelta
 import copy
 import logging
 
+DATE_FORMAT = '%Y-%m-%d'
+DATE_FORMAT_FR = '%d/%m/%Y'
+DATETIME_FORMAT = '%Y-%m-%d %H:%M:%S'
+DATETIME_FORMAT_FR = '%d/%m/%Y %H:%M'
+TIME_FORMAT = '%H:%M'
+
 _logger = logging.getLogger(__name__)
 
 class ClassroomFilterWizard(models.TransientModel):
