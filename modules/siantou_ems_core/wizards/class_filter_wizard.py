@@ -111,31 +111,34 @@ class ClassFilterWizard(models.TransientModel):
             title.append(self.option_id.name)
 
         class_ids = []
-        timetables = self.env['siantou.ems.timetable.timetable'].search(domain)
-        for timetable in timetables:
-            class_ids.append(timetable.class_id.id)
+        classes = self.env['siantou.ems.core.class'].search(domain)
+        for classe in classes:
+            class_ids.append(classe.id)
         class_ids = list(set(class_ids))
 
         if self.status == '0':
-            domain = [
-                ('id', 'in', class_ids),
-            ]
+            timetable_class_ids = []
+            timetables = self.env['siantou.ems.timetable.timetable'].search(domain)
+            for timetable in timetables:
+                timetable_class_ids.append(timetable.class_id.id)
+            timetable_class_ids = list(set(timetable_class_ids))
+            class_ids = list(filter(lambda i: i in timetable_class_ids, class_ids))
             title.append('Emplois du temps disponibles')
         elif self.status == '1':
-            domain = [
-                ('id', 'not in', class_ids),
-            ]
+            timetable_class_ids = []
+            timetables = self.env['siantou.ems.timetable.timetable'].search(domain)
+            for timetable in timetables:
+                timetable_class_ids.append(timetable.class_id.id)
+            timetable_class_ids = list(set(timetable_class_ids))
+            class_ids = list(filter(lambda i: i not in timetable_class_ids, class_ids))
             title.append('Emplois du temps pas disponibles')
         elif self.status == '2':
-            domain = [
-                ('id', 'not in', class_ids),
-            ]
             title.append('Étudiants pas disponibles')
         elif self.status == '3':
-            domain = [
-                ('id', 'not in', class_ids),
-            ]
             title.append('Étudiants pas disponibles')
+        domain = [
+            ('id', 'in', class_ids),
+        ]
 
         if len(title) > 0:
             title = '/'.join(title)
