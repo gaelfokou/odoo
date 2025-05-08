@@ -71,11 +71,6 @@ class TimetableFilterWizard(models.TransientModel):
         string='Option',
     )
 
-    ue_id = fields.Many2one(
-        'siantou.ems.core.unite.enseignement',
-        string='Unité d\'enseignement',
-    )
-
     subject_id = fields.Many2one(
         'siantou.ems.core.subject',
         'Cours',
@@ -155,7 +150,6 @@ class TimetableFilterWizard(models.TransientModel):
             record.class_id = None
             record.specialty_id = None
             record.option_id = None
-            record.ue_id = None
             record.subject_id = None
 
     @api.depends('school_id')
@@ -175,7 +169,6 @@ class TimetableFilterWizard(models.TransientModel):
             record.class_id = None
             record.specialty_id = None
             record.option_id = None
-            record.ue_id = None
             record.subject_id = None
 
     # @api.onchange('field_of_study_id')
@@ -185,14 +178,12 @@ class TimetableFilterWizard(models.TransientModel):
     #         record.class_id = None
     #         record.specialty_id = None
     #         record.option_id = None
-    #         record.ue_id = None
     #         record.subject_id = None
 
     @api.onchange('level_id')
     def _onchange_level(self):
         for record in self:
             record.class_id = None
-            record.ue_id = None
             record.subject_id = None
 
     @api.onchange('specialty_id')
@@ -200,14 +191,12 @@ class TimetableFilterWizard(models.TransientModel):
         for record in self:
             record.class_id = None
             record.option_id = None
-            record.ue_id = None
             record.subject_id = None
 
     @api.onchange('option_id')
     def _onchange_option(self):
         for record in self:
             record.class_id = None
-            record.ue_id = None
             record.subject_id = None
 
     @api.depends('class_id')
@@ -222,7 +211,6 @@ class TimetableFilterWizard(models.TransientModel):
     @api.onchange('class_id')
     def _onchange_class(self):
         for record in self:
-            record.ue_id = None
             record.subject_id = None
 
     def action_filter(self):
@@ -253,9 +241,6 @@ class TimetableFilterWizard(models.TransientModel):
         if self.option_id.id:
             domain.append(('option_id', '=', self.option_id.id))
             title.append(self.option_id.name)
-        if self.ue_id.id:
-            domain.append(('ue_id', '=', self.ue_id.id))
-            title.append(self.ue_id.name)
         if self.subject_id.id:
             domain.append(('subject_id', '=', self.subject_id.id))
             title.append(self.subject_id.name)
