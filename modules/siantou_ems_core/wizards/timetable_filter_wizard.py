@@ -120,18 +120,30 @@ class TimetableFilterWizard(models.TransientModel):
 
     subject_id_domain = fields.Binary(compute='_compute_class_domain', default=[])
 
-    def _default_date(self):
-        first_time = date.today()
-        start_time = first_time + timedelta(days=0)
-        if start_time.weekday() != 0:
-            start_time = start_time - timedelta(days=start_time.weekday())
-        return start_time
-
-    # Date du jour où le cours sera programmé
     date = fields.Date(
-        'Date',
-        # default=_default_date,
+        'Date du jour',
     )
+
+    # Heure de début du cours
+    start_time = fields.Float(
+        'Heure de début',
+        default=0,
+        widget='time'
+    )
+
+    # Heure de fin du cours
+    end_time = fields.Float(
+        'Heure de fin',
+        default=0,
+        widget='time'
+    )
+
+    # Contrainte logique pour s'assurer que les heures de début et de fin sont définies et que l'heure de fin est supérieure à l'heure de début
+    @api.constrains('start_time', 'end_time')
+    def _constrains_time(self):
+        for record in self:
+            if record.end_time < record.start_time:
+                raise ValidationError("L'heure de fin du cours doit être supérieure à l'heure de début du cours")
 
     @api.onchange('group_id')
     def _onchange_group(self):
@@ -262,6 +274,17 @@ class TimetableFilterWizard(models.TransientModel):
             domain.append(('status', '=', self.status))
         if self.date:
             domain.append(('date', '=', self.date))
+
+        timetable_ids = []
+        if self.start_time and self.end_time:
+            timetables = self.env['siantou.ems.timetable.timetable'].search(domain).filtered(lambda rec: rec.start_time >= self.start_time and rec.end_time <= self.end_time)
+        else:
+            timetables = self.env['siantou.ems.timetable.timetable'].search(domain)
+        for timetable in timetables:
+            timetable_ids.append(timetable.id)
+        timetable_ids = list(set(timetable_ids))
+
+        domain = [('id', 'in', timetable_ids)]
 
         if len(title) > 0:
             title = '/'.join(title)
