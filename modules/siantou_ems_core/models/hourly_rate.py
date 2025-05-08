@@ -127,12 +127,13 @@ class TeacherHourlyRate(models.Model):
         ('unique_employee_subject_hourly_rate', 'unique(employee_id,subject_id,hourly_rate_id)', 'L\enseignant, le cours, et le taux horaire doivent être uniques.'),
     ]
 
-    @api.depends('employee_id', 'subject_id')
+    @api.depends('employee_id', 'subject_id', 'hourly_rate_id')
     def _compute_name(self):
         for record in self:
             employee_name = record.employee_id.name if record.employee_id.id else ''
             subject_name = record.subject_id.name if record.subject_id.id else ''
-            name = '{} {}'.format(employee_name, subject_name)
+            hourly_rate_name = record.hourly_rate_id.name if record.hourly_rate_id.id else ''
+            name = '{} {} {}'.format(employee_name, subject_name, hourly_rate_name)
             while True:
                 if name.find('  ') != -1:
                     name = name.replace('  ', ' ')
@@ -142,12 +143,13 @@ class TeacherHourlyRate(models.Model):
             name = name.upper()
             record.name = name
 
-    @api.onchange('employee_id', 'subject_id')
+    @api.onchange('employee_id', 'subject_id', 'hourly_rate_id')
     def _onchange_name(self):
         for record in self:
             employee_name = record.employee_id.name if record.employee_id.id else ''
             subject_name = record.subject_id.name if record.subject_id.id else ''
-            name = '{} {}'.format(employee_name, subject_name)
+            hourly_rate_name = record.hourly_rate_id.name if record.hourly_rate_id.id else ''
+            name = '{} {} {}'.format(employee_name, subject_name, hourly_rate_name)
             while True:
                 if name.find('  ') != -1:
                     name = name.replace('  ', ' ')
