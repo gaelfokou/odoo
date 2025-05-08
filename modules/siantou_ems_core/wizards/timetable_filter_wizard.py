@@ -120,7 +120,7 @@ class TimetableFilterWizard(models.TransientModel):
 
     subject_id_domain = fields.Binary(compute='_compute_class_domain', default=[])
 
-    def _default_start_date(self):
+    def _default_date(self):
         first_time = date.today()
         start_time = first_time + timedelta(days=0)
         if start_time.weekday() != 0:
@@ -128,23 +128,9 @@ class TimetableFilterWizard(models.TransientModel):
         return start_time
 
     # Date du jour où le cours sera programmé
-    start_date = fields.Date(
-        'Date de début',
-        # default=_default_start_date,
-    )
-
-    def _default_end_date(self):
-        first_time = date.today()
-        start_time = first_time + timedelta(days=0)
-        if start_time.weekday() != 0:
-            start_time = start_time - timedelta(days=start_time.weekday())
-        end_time = start_time + timedelta(days=5)
-        return end_time
-
-    # Date du jour où le cours sera programmé
-    end_date = fields.Date(
-        'Date de fin',
-        # default=_default_end_date,
+    date = fields.Date(
+        'Date',
+        # default=_default_date,
     )
 
     @api.onchange('group_id')
@@ -227,15 +213,6 @@ class TimetableFilterWizard(models.TransientModel):
             record.ue_id = None
             record.subject_id = None
 
-    @api.constrains('start_date', 'end_date')
-    def _constrains_date(self):
-        for record in self:
-            if record.start_date and record.end_date:
-                if record.start_date > record.end_date:
-                    raise ValidationError('La date de fin doit être supérieure ou égale à la date de début')
-                # elif record.start_date + relativedelta(months=1) < record.end_date:
-                #     raise ValidationError(f"La plage entre la date de début et la date de fin ne doit pas être supérieure 1 mois")
-
     def action_filter(self):
         domain = []
         title = []
@@ -283,9 +260,8 @@ class TimetableFilterWizard(models.TransientModel):
             domain.append(('group_id', '=', self.group_id.id))
         if self.status:
             domain.append(('status', '=', self.status))
-        if self.start_date and self.end_date:
-            domain.append(('date', '>=', self.start_date))
-            domain.append(('date', '<=', self.end_date))
+        if self.date:
+            domain.append(('date', '=', self.date))
 
         if len(title) > 0:
             title = '/'.join(title)

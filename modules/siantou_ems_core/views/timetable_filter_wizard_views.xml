@@ -23,8 +23,7 @@
                         <field name="building_id" options="{'no_create': True}"/>
                         <field name="classroom_id" options="{'no_create': True}" domain="[('building_id', '=', building_id)]"/>
                         <field name="employee_id" options="{'no_create': True}" domain="[('subject_ids', '=', subject_id)]"/>
-                        <field name="start_date"/>
-                        <field name="end_date"/>
+                        <field name="date"/>
                         <field name="status"/>
                     </group>
                     <footer>

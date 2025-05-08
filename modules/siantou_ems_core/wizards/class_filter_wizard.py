@@ -49,26 +49,16 @@ class ClassFilterWizard(models.TransientModel):
         string='Option',
     )
 
-    ue_id = fields.Many2one(
-        'siantou.ems.core.unite.enseignement',
-        string='Unité d\'enseignement',
-    )
-
-    subject_id = fields.Many2one(
-        'siantou.ems.core.subject',
-        string='Cours',
-    )
-
     status = fields.Selection([
-        ('0', 'Emploi du temps disponible'),
-        ('1', 'Emploi du temps pas disponible'),
+        ('0', 'Emplois du temps disponibles'),
+        ('1', 'Emplois du temps pas disponibles'),
+        ('2', 'Étudiants disponibles'),
+        ('3', 'Étudiants pas disponibles'),
     ], 'Statut',
         default='0',
     )
 
     specialty_id_domain = fields.Binary(compute='_compute_school_domain', default=[])
-
-    subject_id_domain = fields.Binary(compute='_compute_specialty_domain', default=[])
 
     @api.depends('school_id')
     def _compute_school_domain(self):
@@ -86,8 +76,6 @@ class ClassFilterWizard(models.TransientModel):
             record.level_id = None
             record.specialty_id = None
             record.option_id = None
-            record.ue_id = None
-            record.subject_id = None
 
     # @api.onchange('field_of_study_id')
     # def _onchange_field_of_study(self):
@@ -95,53 +83,11 @@ class ClassFilterWizard(models.TransientModel):
     #         record.level_id = None
     #         record.specialty_id = None
     #         record.option_id = None
-    #         record.ue_id = None
-    #         record.subject_id = None
-
-    @api.onchange('level_id')
-    def _onchange_level(self):
-        for record in self:
-            record.ue_id = None
-            record.subject_id = None
 
     @api.onchange('specialty_id')
     def _onchange_specialty(self):
         for record in self:
             record.option_id = None
-            record.ue_id = None
-            record.subject_id = None
-
-    @api.onchange('option_id')
-    def _onchange_option(self):
-        for record in self:
-            record.ue_id = None
-            record.subject_id = None
-
-    @api.depends('year_id', 'field_of_study_id', 'level_id', 'specialty_id', 'option_id')
-    def _compute_specialty_domain(self):
-        for record in self:
-            domain = []
-            if record.year_id.id:
-                domain.append(('year_id', '=', record.year_id.id))
-            if record.school_id.id:
-                domain.append(('school_id', '=', record.school_id.id))
-            if record.field_of_study_id.id:
-                domain.append(('field_of_study_id', '=', record.field_of_study_id.id))
-            if record.level_id.id:
-                domain.append(('level_id', '=', record.level_id.id))
-            if record.specialty_id.id:
-                domain.append(('specialty_id', '=', record.specialty_id.id))
-            if record.option_id.id:
-                domain.append(('option_id', '=', record.option_id.id))
-            if record.ue_id.id:
-                domain.append(('ue_ids', '=', record.ue_id.id))
-            class_ids = self.env['siantou.ems.core.class'].search(domain)
-            ue_ids = []
-            for class_id in class_ids:
-                ue_ids += class_id.ue_ids.ids
-            ue_ids = list(set(ue_ids))
-            domain = [('ue_ids', 'in', ue_ids)]
-            record.subject_id_domain = domain
 
     def action_filter(self):
         domain = []
@@ -163,12 +109,6 @@ class ClassFilterWizard(models.TransientModel):
         if self.option_id.id:
             domain.append(('option_id', '=', self.option_id.id))
             title.append(self.option_id.name)
-        if self.ue_id.id:
-            domain.append(('ue_id', '=', self.ue_id.id))
-            title.append(self.ue_id.name)
-
-        if self.subject_id.id:
-            domain.append(('subject_id', '=', self.subject_id.id))
 
         class_ids = []
         timetables = self.env['siantou.ems.timetable.timetable'].search(domain)
@@ -180,12 +120,22 @@ class ClassFilterWizard(models.TransientModel):
             domain = [
                 ('id', 'in', class_ids),
             ]
-            title.append('Emploi du temps disponible')
+            title.append('Emplois du temps disponibles')
         elif self.status == '1':
             domain = [
                 ('id', 'not in', class_ids),
             ]
-            title.append('Emploi du temps pas disponible')
+            title.append('Emplois du temps pas disponibles')
+        elif self.status == '2':
+            domain = [
+                ('id', 'not in', class_ids),
+            ]
+            title.append('Étudiants pas disponibles')
+        elif self.status == '3':
+            domain = [
+                ('id', 'not in', class_ids),
+            ]
+            title.append('Étudiants pas disponibles')
 
         if len(title) > 0:
             title = '/'.join(title)

@@ -15,8 +15,6 @@
                         <field name="specialty_id" options="{'no_create': True}" domain="specialty_id_domain"/>
                         <field name="option_id" options="{'no_create': True}" domain="[('specialty_id', '=', specialty_id)]"/>
                         <field name="class_id" options="{'no_create': True}" domain="[('field_of_study_id', '=', field_of_study_id), ('specialty_id', '=', specialty_id), ('option_id', '=', option_id), ('level_id', '=', level_id), ('year_id', '=', year_id)]"/>
-                        <field name="subject_id_domain" invisible="1"/>
-                        <field name="subject_id" options="{'no_create': True}" domain="subject_id_domain"/>
                     </group>
                     <footer>
                         <button string="Filtrer" type="object" name="action_filter" class="btn-primary"/>

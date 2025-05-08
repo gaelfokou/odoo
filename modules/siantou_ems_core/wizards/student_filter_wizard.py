@@ -54,19 +54,7 @@ class StudentFilterWizard(models.TransientModel):
         string='Option',
     )
 
-    ue_id = fields.Many2one(
-        'siantou.ems.core.unite.enseignement',
-        string='Unité d\'enseignement',
-    )
-
-    subject_id = fields.Many2one(
-        'siantou.ems.core.subject',
-        string='Cours',
-    )
-
     specialty_id_domain = fields.Binary(compute='_compute_school_domain', default=[])
-
-    subject_id_domain = fields.Binary(compute='_compute_class_domain', default=[])
 
     @api.depends('school_id')
     def _compute_school_domain(self):
@@ -85,8 +73,6 @@ class StudentFilterWizard(models.TransientModel):
             record.class_id = None
             record.specialty_id = None
             record.option_id = None
-            record.ue_id = None
-            record.subject_id = None
 
     # @api.onchange('field_of_study_id')
     # def _onchange_field_of_study(self):
@@ -95,45 +81,22 @@ class StudentFilterWizard(models.TransientModel):
     #         record.class_id = None
     #         record.specialty_id = None
     #         record.option_id = None
-    #         record.ue_id = None
-    #         record.subject_id = None
 
     @api.onchange('level_id')
     def _onchange_level(self):
         for record in self:
             record.class_id = None
-            record.ue_id = None
-            record.subject_id = None
 
     @api.onchange('specialty_id')
     def _onchange_specialty(self):
         for record in self:
             record.class_id = None
             record.option_id = None
-            record.ue_id = None
-            record.subject_id = None
 
     @api.onchange('option_id')
     def _onchange_option(self):
         for record in self:
             record.class_id = None
-            record.ue_id = None
-            record.subject_id = None
-
-    @api.depends('class_id')
-    def _compute_class_domain(self):
-        for record in self:
-            domain = []
-            if record.class_id.id:
-                ue_ids = record.class_id.ue_ids
-                domain = [('ue_ids', 'in', ue_ids.ids)]
-            record.subject_id_domain = domain
-
-    @api.onchange('class_id')
-    def _onchange_class(self):
-        for record in self:
-            record.ue_id = None
-            record.subject_id = None
 
     def action_filter(self):
         domain = []
@@ -158,12 +121,6 @@ class StudentFilterWizard(models.TransientModel):
         if self.option_id.id:
             domain.append(('option_id', '=', self.option_id.id))
             title.append(self.option_id.name)
-        if self.ue_id.id:
-            domain.append(('ue_ids', '=', self.ue_id.id))
-            title.append(self.ue_id.name)
-
-        if self.subject_id.id:
-            domain.append(('ue_ids', 'in', self.subject_id.ue_ids.ids))
 
         student_ids = []
         classes = self.env['siantou.ems.core.class'].search(domain)
