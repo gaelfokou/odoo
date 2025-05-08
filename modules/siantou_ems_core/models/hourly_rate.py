@@ -148,6 +148,11 @@ class TeacherHourlyRate(models.Model):
                 domain = [('id', 'in', subject_ids)]
             record.subject_id_domain = domain
 
+    @api.onchange('employee_id')
+    def _onchange_employee(self):
+        for record in self:
+            record.subject_id = None
+
     @api.depends('employee_id', 'subject_id', 'hourly_rate_id')
     def _compute_name(self):
         for record in self:
