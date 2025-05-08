@@ -96,7 +96,8 @@ class TeacherHourlyRate(models.Model):
         'hr.employee',
         'Enseignant',
         required=True,
-        ondelete='cascade'
+        ondelete='cascade',
+        domain=[('is_teacher', '=', True)]
     )
 
     # Cours pour lequel on souhaite définir la priorité de l'enseignant
