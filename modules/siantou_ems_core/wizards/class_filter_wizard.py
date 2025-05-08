@@ -133,8 +133,28 @@ class ClassFilterWizard(models.TransientModel):
             class_ids = list(filter(lambda i: i not in timetable_class_ids, class_ids))
             title.append('Emplois du temps pas disponibles')
         elif self.status == '2':
+            domain = [
+                ('id', 'in', class_ids),
+            ]
+            student_class_ids = []
+            classes = self.env['siantou.ems.core.class'].search(domain)
+            for classe in classes:
+                if len(classe.student_ids.ids) > 0:
+                    student_class_ids.append(classe.id)
+            student_class_ids = list(set(student_class_ids))
+            class_ids = list(filter(lambda i: i in student_class_ids, class_ids))
             title.append('Étudiants pas disponibles')
         elif self.status == '3':
+            domain = [
+                ('id', 'in', class_ids),
+            ]
+            student_class_ids = []
+            classes = self.env['siantou.ems.core.class'].search(domain)
+            for classe in classes:
+                if len(classe.student_ids.ids) > 0:
+                    student_class_ids.append(classe.id)
+            student_class_ids = list(set(student_class_ids))
+            class_ids = list(filter(lambda i: i not in student_class_ids, class_ids))
             title.append('Étudiants pas disponibles')
         domain = [
             ('id', 'in', class_ids),
