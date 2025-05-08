@@ -6,6 +6,7 @@
             <field name="model">siantou.ems.core.teacher.hourly.rate</field>
             <field name="arch" type="xml">
                 <tree string="Taux horaires personnalisés">
+                    <field name="name"/>
                     <field name="employee_id"/>
                     <field name="subject_id"/>
                     <field name="hourly_rate_id"/>
@@ -21,6 +22,7 @@
                 <form string="Taux horaire des enseignants">
                     <sheet>
                         <group>
+                            <field name="name"/>
                             <field name="employee_id"/>
                             <field name="subject_id"/>
                             <field name="hourly_rate_id"/>

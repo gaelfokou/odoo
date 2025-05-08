@@ -37,17 +37,17 @@ class HourlyRate(models.Model):
         ondelete='cascade'
     )
 
-    # Taux horaire
+    # Taux
     rate = fields.Float(
-        'Taux horaire',
-        help='Taux horaire',
+        'Taux',
+        help='Taux',
         default=0,
         required=True
     )
 
     # Contrainte SQL pour empêcher d'avoir le même code pour différentes filières
     _sql_constraints = [
-        ('unique_code', 'unique(code)', 'Le code de la filière doit être unique.'),
+        ('unique_school_cycle_level', 'unique(school_id,cycle_id,level_id)', 'L\'école, le cursus ou cycle, et le niveau doivent être uniques.'),
     ]
 
     @api.depends('school_id', 'cycle_id', 'level_id')
@@ -86,7 +86,7 @@ class HourlyRate(models.Model):
 
 class TeacherHourlyRate(models.Model):
     _name = 'siantou.ems.core.teacher.hourly.rate'
-    _description = 'Taux horaire de l\'enseignant sur un cours'
+    _description = 'Taux horaire de l\'enseignant'
 
     name = fields.Char(string='Nom',
                        compute='_compute_name', store=True)
@@ -110,20 +110,21 @@ class TeacherHourlyRate(models.Model):
     hourly_rate_id = fields.Many2one(
         'siantou.ems.core.hourly.rate',
         'Taux horaire',
+        required=True,
         ondelete='cascade'
     )
 
-    # Taux horaire de l\'enseignant
+    # Taux de l\'enseignant
     rate = fields.Float(
-        'Taux horaire',
-        help='Taux horaire de l\'enseignant',
+        'Taux',
+        help='Taux de l\'enseignant',
         default=0,
         required=True
     )
 
     # Contrainte SQL pour empêcher d'avoir le même code pour différentes filières
     _sql_constraints = [
-        ('unique_code', 'unique(code)', 'Le code de la filière doit être unique.'),
+        ('unique_employee_subject_hourly_rate', 'unique(employee_id,subject_id,hourly_rate_id)', 'L\enseignant, le cours, et le taux horaire doivent être uniques.'),
     ]
 
     @api.depends('employee_id', 'subject_id')
