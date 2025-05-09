@@ -114,6 +114,9 @@ class ClassFilterWizard(models.TransientModel):
         if self.option_id.id:
             domain.append(('option_id', '=', self.option_id.id))
             title.append(self.option_id.name)
+        if self.type_cour:
+            domain.append(('type_cour', '=', self.type_cour))
+            title.append(self.type_cour)
 
         class_ids = []
         classes = self.env['siantou.ems.core.class'].search(domain)
@@ -122,6 +125,9 @@ class ClassFilterWizard(models.TransientModel):
         class_ids = list(set(class_ids))
 
         if self.status == '0':
+            domain = [
+                ('class_id', 'in', class_ids),
+            ]
             timetable_class_ids = []
             timetables = self.env['siantou.ems.timetable.timetable'].search(domain)
             for timetable in timetables:
@@ -130,6 +136,9 @@ class ClassFilterWizard(models.TransientModel):
             class_ids = list(filter(lambda i: i in timetable_class_ids, class_ids))
             title.append('Emplois du temps disponibles')
         elif self.status == '1':
+            domain = [
+                ('class_id', 'in', class_ids),
+            ]
             timetable_class_ids = []
             timetables = self.env['siantou.ems.timetable.timetable'].search(domain)
             for timetable in timetables:

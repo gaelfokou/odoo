@@ -284,6 +284,9 @@ class TimetableFilterWizard(models.TransientModel):
         if self.date:
             domain.append(('date', '=', self.date))
             title.append(datetime.strftime(self.date, DATE_FORMAT_FR))
+        if self.type_cour:
+            domain.append(('class_id.type_cour', '=', self.type_cour))
+            title.append(self.type_cour)
 
         timetable_ids = []
         if self.start_time and self.end_time:

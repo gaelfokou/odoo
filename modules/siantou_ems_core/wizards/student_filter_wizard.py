@@ -126,6 +126,9 @@ class StudentFilterWizard(models.TransientModel):
         if self.option_id.id:
             domain.append(('option_id', '=', self.option_id.id))
             title.append(self.option_id.name)
+        if self.type_cour:
+            domain.append(('type_cour', '=', self.type_cour))
+            title.append(self.type_cour)
 
         student_ids = []
         classes = self.env['siantou.ems.core.class'].search(domain)

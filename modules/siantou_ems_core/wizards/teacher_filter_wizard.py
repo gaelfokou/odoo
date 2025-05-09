@@ -137,6 +137,9 @@ class TeacherFilterWizard(models.TransientModel):
         if self.option_id.id:
             domain.append(('option_id', '=', self.option_id.id))
             title.append(self.option_id.name)
+        if self.type_cour:
+            domain.append(('class_id.type_cour', '=', self.type_cour))
+            title.append(self.type_cour)
 
         employee_ids = []
         timetables = self.env['siantou.ems.timetable.timetable'].search(domain)
