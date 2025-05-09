@@ -462,10 +462,13 @@ class HrPayslip(models.Model):
                 if daily_attendance.employee_id.is_teacher:
                     employee_timetables = self.env['siantou.ems.timetable.timetable'].search([
                         ('employee_id', '=', daily_attendance.employee_id.id),
-                        ('status', 'in', ['pending', 'progress']),
+                        ('status', '=', 'pending'),
                     ], order='date asc').filtered(lambda rec: (UTC_TZ.localize(punching_time) >= self.convert_datetime_to_utc(datetime.strptime(f'{rec.date} {self.convert_float_to_time(rec.start_time)}', DATETIME_FORMAT) - timedelta(minutes=15)) and UTC_TZ.localize(punching_time) <= self.convert_datetime_to_utc(datetime.strptime(f'{rec.date} {self.convert_float_to_time(rec.start_time)}', DATETIME_FORMAT) + timedelta(minutes=15))) or (UTC_TZ.localize(punching_time) >= self.convert_datetime_to_utc(datetime.strptime(f'{rec.date} {self.convert_float_to_time(rec.end_time)}', DATETIME_FORMAT)) and UTC_TZ.localize(punching_time) <= self.convert_datetime_to_utc(datetime.strptime(f'{rec.date} {self.convert_float_to_time(rec.end_time)}', DATETIME_FORMAT) + timedelta(minutes=15))))
                     employee_timetables = list(employee_timetables)
-                    if len(employee_timetables) == 0:
+                    if len(employee_timetables) > 0:
+                        for employee_timetable in employee_timetables:
+                            employee_timetable.sudo().write({'status': 'progress'})
+                    else:
                         template = 'om_hr_payroll.om_hr_payroll_template_timetable_notification_exception'
                         punching_time = datetime.strftime(self.convert_datetime_from_utc(punching_time), TIME_FORMAT)
                         message = 'Exception de {}'.format(punching_time)
