@@ -47,7 +47,7 @@ class StudentPrintWizard(models.TransientModel):
             student['matricule'] = search_student.matricule
             students.append(student)
 
-        title = self.env['ir.config_parameter'].get_param(f'filter.{self.env.user.id}', '')
+        title = self.env['ir.config_parameter'].sudo().get_param(f'filter.{self.env.user.id}', '')
 
         _logger.info(f'----------- tototototototo students {students} -----------')
 

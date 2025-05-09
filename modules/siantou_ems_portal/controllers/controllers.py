@@ -13,7 +13,7 @@ DATE_FORMAT = '%Y-%m-%d'
 DATE_FORMAT_FR = '%d/%m/%Y'
 DATETIME_FORMAT = '%Y-%m-%d %H:%M:%S'
 DATETIME_FORMAT_FR = '%d/%m/%Y %H:%M'
-TIME_FORMAT = '%H:%M'
+TIME_FORMAT_FR = '%H:%M'
 
 CURRENT_WEEKDAY = {
     0: 'Lundi',

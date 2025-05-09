@@ -13,7 +13,7 @@ DATE_FORMAT = '%Y-%m-%d'
 DATE_FORMAT_FR = '%d/%m/%Y'
 DATETIME_FORMAT = '%Y-%m-%d %H:%M:%S'
 DATETIME_FORMAT_FR = '%d/%m/%Y %H:%M'
-TIME_FORMAT = '%H:%M'
+TIME_FORMAT_FR = '%H:%M'
 
 STATUS_CLASSROOM = {
     'available': 'Disponible',
@@ -93,7 +93,7 @@ class ClassroomFilterWizard(models.TransientModel):
         else:
             title = 'Non spécifié'
 
-        self.env['ir.config_parameter'].set_param(f'filter.{self.env.user.id}', title)
+        self.env['ir.config_parameter'].sudo().set_param(f'filter.{self.env.user.id}', title)
 
         view_id = self.env.ref('siantou_ems_core.classroom_tree_view').id
         return {

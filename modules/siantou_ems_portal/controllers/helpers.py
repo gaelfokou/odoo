@@ -15,7 +15,7 @@ DATE_FORMAT = '%Y-%m-%d'
 DATE_FORMAT_FR = '%d/%m/%Y'
 DATETIME_FORMAT = '%Y-%m-%d %H:%M:%S'
 DATETIME_FORMAT_FR = '%d/%m/%Y %H:%M'
-TIME_FORMAT = '%H:%M'
+TIME_FORMAT_FR = '%H:%M'
 
 _logger = logging.getLogger(__name__)
 
@@ -352,7 +352,7 @@ class Helpers:
         if len(n[1]) == 1:
             n[1] = '{}0'.format(n[1])
         tm = datetime.combine(date.min, tm) + timedelta(hours=int(n[0]), minutes=int(n[1]))
-        tm = datetime.strftime(tm, TIME_FORMAT)
+        tm = datetime.strftime(tm, TIME_FORMAT_FR)
         tm = Helpers.convert_time_to_float(tm)
         return tm
 
@@ -398,6 +398,6 @@ class Helpers:
         elif isinstance(obj, datetime):
             return datetime.strftime(obj, DATETIME_FORMAT_FR)
         elif isinstance(obj, time):
-            return datetime.strftime(obj, TIME_FORMAT)
+            return datetime.strftime(obj, TIME_FORMAT_FR)
         else:
             return obj

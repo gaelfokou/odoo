@@ -15,7 +15,7 @@ DATE_FORMAT = '%Y-%m-%d'
 DATE_FORMAT_FR = '%d/%m/%Y'
 DATETIME_FORMAT = '%Y-%m-%d %H:%M:%S'
 DATETIME_FORMAT_FR = '%d/%m/%Y %H:%M'
-TIME_FORMAT = '%H:%M'
+TIME_FORMAT_FR = '%H:%M'
 
 CURRENT_WEEKDAY = {
     0: 'Lundi',
@@ -149,7 +149,7 @@ class TimetablePrintWizard(models.TransientModel):
                 info_timetables[key] = {}
                 info_timetables[key]['semester'] = semester
                 info_timetables[key]['study'] = study
-                info_timetables[key]['filter'] = self.env['ir.config_parameter'].get_param(f'filter.{self.env.user.id}', '')
+                info_timetables[key]['filter'] = self.env['ir.config_parameter'].sudo().get_param(f'filter.{self.env.user.id}', '')
             timetable = {}
             timetable['id'] = search_timetable.id
             timetable['date'] = search_timetable.date
@@ -277,7 +277,7 @@ class TimetablePrintWizard(models.TransientModel):
         if len(n[1]) == 1:
             n[1] = '{}0'.format(n[1])
         tm = datetime.combine(date.min, tm) + timedelta(hours=int(n[0]), minutes=int(n[1]))
-        tm = datetime.strftime(tm, TIME_FORMAT)
+        tm = datetime.strftime(tm, TIME_FORMAT_FR)
         tm = TimetablePrintWizard.convert_time_to_float(tm)
         return tm
 

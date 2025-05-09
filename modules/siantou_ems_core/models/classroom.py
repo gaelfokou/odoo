@@ -134,7 +134,7 @@ class Classroom(models.Model):
         }
 
     def action_reset_filter(self):
-        self.env['ir.config_parameter'].set_param(f'filter.{self.env.user.id}', '')
+        self.env['ir.config_parameter'].sudo().set_param(f'filter.{self.env.user.id}', '')
         action = self.env.ref('siantou_ems_core.action_show_classroom').read()[0]
         action.update({
             'target': 'main',
