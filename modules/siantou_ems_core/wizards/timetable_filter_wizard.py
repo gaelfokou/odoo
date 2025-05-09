@@ -152,7 +152,7 @@ class TimetableFilterWizard(models.TransientModel):
         ('permission', 'Permission'),
         ('exception', 'Exception'),
     ], 'Statut',
-        # default='0',
+        # default='pending',
     )
 
     specialty_id_domain = fields.Binary(compute='_compute_school_domain', default=[])
