@@ -399,7 +399,7 @@ class HrPayslip(models.Model):
 
         # Recherche des emplois du temps de l'enseignant pour une période donnée
         employee_timetables = self.env['siantou.ems.timetable.timetable'].search([
-            ('status', '=', 'pending'),
+            ('status', 'in', ['pending', 'progress']),
         ], order='date asc').filtered(lambda rec: (rec.date < current_date) or (rec.date == current_date and rec.end_time <= time_before))
         employee_timetables = list(employee_timetables)
         for employee_timetable in employee_timetables:
@@ -462,7 +462,7 @@ class HrPayslip(models.Model):
                 if daily_attendance.employee_id.is_teacher:
                     employee_timetables = self.env['siantou.ems.timetable.timetable'].search([
                         ('employee_id', '=', daily_attendance.employee_id.id),
-                        ('status', '=', 'pending'),
+                        ('status', 'in', ['pending', 'progress']),
                     ], order='date asc').filtered(lambda rec: (UTC_TZ.localize(punching_time) >= self.convert_datetime_to_utc(datetime.strptime(f'{rec.date} {self.convert_float_to_time(rec.start_time)}', DATETIME_FORMAT) - timedelta(minutes=15)) and UTC_TZ.localize(punching_time) <= self.convert_datetime_to_utc(datetime.strptime(f'{rec.date} {self.convert_float_to_time(rec.start_time)}', DATETIME_FORMAT) + timedelta(minutes=15))) or (UTC_TZ.localize(punching_time) >= self.convert_datetime_to_utc(datetime.strptime(f'{rec.date} {self.convert_float_to_time(rec.end_time)}', DATETIME_FORMAT)) and UTC_TZ.localize(punching_time) <= self.convert_datetime_to_utc(datetime.strptime(f'{rec.date} {self.convert_float_to_time(rec.end_time)}', DATETIME_FORMAT) + timedelta(minutes=15))))
                     employee_timetables = list(employee_timetables)
                     if len(employee_timetables) == 0:
