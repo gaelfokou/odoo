@@ -14,6 +14,15 @@ TYPE_COUR = {
     'cs': 'Cours du soir',
 }
 
+STATUS_CLASS = {
+    'timetable_available': 'Emplois du temps disponibles',
+    'timetable_not_available': 'Emplois du temps pas disponibles',
+    'student_available': 'Étudiants disponibles',
+    'student_not_available': 'Étudiants pas disponibles',
+    'student_max': 'Étudiants maximum',
+    'student_min': 'Étudiants minimum',
+}
+
 _logger = logging.getLogger(__name__)
 
 class ClassFilterWizard(models.TransientModel):
@@ -141,7 +150,7 @@ class ClassFilterWizard(models.TransientModel):
                 timetable_class_ids.append(timetable.class_id.id)
             timetable_class_ids = list(set(timetable_class_ids))
             class_ids = list(filter(lambda i: i in timetable_class_ids, class_ids))
-            title.append('Emplois du temps disponibles')
+            title.append(STATUS_CLASS[self.status])
         elif self.status == 'timetable_not_available':
             domain = [
                 ('class_id', 'in', class_ids),
@@ -152,7 +161,7 @@ class ClassFilterWizard(models.TransientModel):
                 timetable_class_ids.append(timetable.class_id.id)
             timetable_class_ids = list(set(timetable_class_ids))
             class_ids = list(filter(lambda i: i not in timetable_class_ids, class_ids))
-            title.append('Emplois du temps pas disponibles')
+            title.append(STATUS_CLASS[self.status])
         elif self.status == 'student_available':
             domain = [
                 ('id', 'in', class_ids),
@@ -164,7 +173,7 @@ class ClassFilterWizard(models.TransientModel):
                     student_class_ids.append(classe.id)
             student_class_ids = list(set(student_class_ids))
             class_ids = list(filter(lambda i: i in student_class_ids, class_ids))
-            title.append('Étudiants disponibles')
+            title.append(STATUS_CLASS[self.status])
         elif self.status == 'student_not_available':
             domain = [
                 ('id', 'in', class_ids),
@@ -176,7 +185,7 @@ class ClassFilterWizard(models.TransientModel):
                     student_class_ids.append(classe.id)
             student_class_ids = list(set(student_class_ids))
             class_ids = list(filter(lambda i: i not in student_class_ids, class_ids))
-            title.append('Étudiants pas disponibles')
+            title.append(STATUS_CLASS[self.status])
         domain = [
             ('id', 'in', class_ids),
         ]

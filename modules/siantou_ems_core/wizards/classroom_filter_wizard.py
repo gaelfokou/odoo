@@ -15,6 +15,11 @@ DATETIME_FORMAT = '%Y-%m-%d %H:%M:%S'
 DATETIME_FORMAT_FR = '%d/%m/%Y %H:%M'
 TIME_FORMAT = '%H:%M'
 
+STATUS_CLASSROOM = {
+    'available': 'Disponible',
+    'not_available': 'Pas disponible',
+}
+
 _logger = logging.getLogger(__name__)
 
 class ClassroomFilterWizard(models.TransientModel):
@@ -40,10 +45,10 @@ class ClassroomFilterWizard(models.TransientModel):
     )
 
     status = fields.Selection([
-        ('0', 'Disponible'),
-        ('1', 'Pas disponible'),
+        ('available', 'Disponible'),
+        ('not_available', 'Pas disponible'),
     ], 'Statut',
-        default='0',
+        default='available',
     )
 
     # Contrainte logique pour s'assurer que les heures de début et de fin sont définies et que l'heure de fin est supérieure à l'heure de début
@@ -72,16 +77,16 @@ class ClassroomFilterWizard(models.TransientModel):
             classroom_ids.append(timetable.classroom_id.id)
         classroom_ids = list(set(classroom_ids))
 
-        if self.status == '0':
+        if self.status == 'available':
             domain = [
                 ('id', 'not in', classroom_ids),
             ]
-            title.append('Disponible')
-        elif self.status == '1':
+            title.append(STATUS_CLASSROOM[self.status])
+        elif self.status == 'not_available':
             domain = [
                 ('id', 'in', classroom_ids),
             ]
-            title.append('Pas disponible')
+            title.append(STATUS_CLASSROOM[self.status])
 
         if len(title) > 0:
             title = '/'.join(title)
