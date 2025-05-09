@@ -9,6 +9,11 @@ from dateutil.relativedelta import relativedelta
 import copy
 import logging
 
+TYPE_COUR = {
+    'cj': 'Cours du jour',
+    'cs': 'Cours du soir',
+}
+
 _logger = logging.getLogger(__name__)
 
 class ClassFilterWizard(models.TransientModel):
@@ -50,12 +55,14 @@ class ClassFilterWizard(models.TransientModel):
     )
 
     status = fields.Selection([
-        ('0', 'Emplois du temps disponibles'),
-        ('1', 'Emplois du temps pas disponibles'),
-        ('2', 'Étudiants disponibles'),
-        ('3', 'Étudiants pas disponibles'),
+        ('timetable_available', 'Emplois du temps disponibles'),
+        ('timetable_not_available', 'Emplois du temps pas disponibles'),
+        ('student_available', 'Étudiants disponibles'),
+        ('student_not_available', 'Étudiants pas disponibles'),
+        ('student_max', 'Étudiants maximum'),
+        ('student_min', 'Étudiants minimum'),
     ], 'Statut',
-        default='0',
+        default='timetable_available',
     )
 
     type_cour = fields.Selection([
@@ -116,7 +123,7 @@ class ClassFilterWizard(models.TransientModel):
             title.append(self.option_id.name)
         if self.type_cour:
             domain.append(('type_cour', '=', self.type_cour))
-            title.append(self.type_cour)
+            title.append(TYPE_COUR[self.type_cour])
 
         class_ids = []
         classes = self.env['siantou.ems.core.class'].search(domain)
@@ -124,7 +131,7 @@ class ClassFilterWizard(models.TransientModel):
             class_ids.append(classe.id)
         class_ids = list(set(class_ids))
 
-        if self.status == '0':
+        if self.status == 'timetable_available':
             domain = [
                 ('class_id', 'in', class_ids),
             ]
@@ -135,7 +142,7 @@ class ClassFilterWizard(models.TransientModel):
             timetable_class_ids = list(set(timetable_class_ids))
             class_ids = list(filter(lambda i: i in timetable_class_ids, class_ids))
             title.append('Emplois du temps disponibles')
-        elif self.status == '1':
+        elif self.status == 'timetable_not_available':
             domain = [
                 ('class_id', 'in', class_ids),
             ]
@@ -146,7 +153,7 @@ class ClassFilterWizard(models.TransientModel):
             timetable_class_ids = list(set(timetable_class_ids))
             class_ids = list(filter(lambda i: i not in timetable_class_ids, class_ids))
             title.append('Emplois du temps pas disponibles')
-        elif self.status == '2':
+        elif self.status == 'student_available':
             domain = [
                 ('id', 'in', class_ids),
             ]
@@ -158,7 +165,7 @@ class ClassFilterWizard(models.TransientModel):
             student_class_ids = list(set(student_class_ids))
             class_ids = list(filter(lambda i: i in student_class_ids, class_ids))
             title.append('Étudiants disponibles')
-        elif self.status == '3':
+        elif self.status == 'student_not_available':
             domain = [
                 ('id', 'in', class_ids),
             ]

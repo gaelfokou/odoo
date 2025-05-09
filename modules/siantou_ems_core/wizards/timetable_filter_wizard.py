@@ -23,6 +23,11 @@ STATUS_TIMETABLE = {
     '4': 'Exception',
 }
 
+TYPE_COUR = {
+    'cj': 'Cours du jour',
+    'cs': 'Cours du soir',
+}
+
 _logger = logging.getLogger(__name__)
 
 class TimetableFilterWizard(models.TransientModel):
@@ -286,7 +291,7 @@ class TimetableFilterWizard(models.TransientModel):
             title.append(datetime.strftime(self.date, DATE_FORMAT_FR))
         if self.type_cour:
             domain.append(('class_id.type_cour', '=', self.type_cour))
-            title.append(self.type_cour)
+            title.append(TYPE_COUR[self.type_cour])
 
         timetable_ids = []
         if self.start_time and self.end_time:

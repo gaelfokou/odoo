@@ -9,6 +9,11 @@ from dateutil.relativedelta import relativedelta
 import copy
 import logging
 
+TYPE_COUR = {
+    'cj': 'Cours du jour',
+    'cs': 'Cours du soir',
+}
+
 _logger = logging.getLogger(__name__)
 
 class StudentFilterWizard(models.TransientModel):
@@ -128,7 +133,7 @@ class StudentFilterWizard(models.TransientModel):
             title.append(self.option_id.name)
         if self.type_cour:
             domain.append(('type_cour', '=', self.type_cour))
-            title.append(self.type_cour)
+            title.append(TYPE_COUR[self.type_cour])
 
         student_ids = []
         classes = self.env['siantou.ems.core.class'].search(domain)
