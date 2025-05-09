@@ -26,6 +26,7 @@ CURRENT_WEEKDAY = {
 
 STATUS_TIMETABLE = {
     'pending': 'En attente',
+    'progress': 'En cours',
     'present': 'Présent',
     'absent': 'Absent',
     'permission': 'Permission',

@@ -17,6 +17,7 @@ TIME_FORMAT = '%H:%M'
 
 STATUS_TIMETABLE = {
     'pending': 'En attente',
+    'progress': 'En cours',
     'present': 'Présent',
     'absent': 'Absent',
     'permission': 'Permission',
@@ -145,6 +146,7 @@ class TimetableFilterWizard(models.TransientModel):
 
     status = fields.Selection([
         ('pending', 'En attente'),
+        ('progress', 'En cours'),
         ('present', 'Présent'),
         ('absent', 'Absent'),
         ('permission', 'Permission'),

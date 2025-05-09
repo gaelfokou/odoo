@@ -89,6 +89,7 @@ class TimetableSubjectHour(models.Model):
 
     status = fields.Selection([
         ('pending', 'En attente'),
+        ('progress', 'En cours'),
         ('present', 'Présent'),
         ('absent', 'Absent'),
         ('permission', 'Permission'),
@@ -319,6 +320,7 @@ class Timetable(models.Model):
 
     status = fields.Selection([
         ('pending', 'En attente'),
+        ('progress', 'En cours'),
         ('present', 'Présent'),
         ('absent', 'Absent'),
         ('permission', 'Permission'),
@@ -329,6 +331,7 @@ class Timetable(models.Model):
 
     state = fields.Selection([
         ('pending', 'En attente'),
+        ('progress', 'En cours'),
         ('present', 'Présent'),
         ('absent', 'Absent'),
         ('permission', 'Permission'),
