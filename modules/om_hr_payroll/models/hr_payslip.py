@@ -206,7 +206,7 @@ class HrPayslip(models.Model):
                     ('employee_id', '=', payslip.employee_id.id),
                     ('date', '<=', date_to),
                     ('date', '>=', date_from),
-                    ('status', 'in', ['1', '3']),
+                    ('status', 'in', ['present', 'permission']),
                 ], order='date asc')
                 employee_timetables = list(employee_timetables)
                 for employee_timetable in employee_timetables:
@@ -307,7 +307,7 @@ class HrPayslip(models.Model):
                     ('employee_id', '=', payslip_id.employee_id.id),
                     ('date', '<=', date_to),
                     ('date', '>=', date_from),
-                    ('status', 'in', ['1', '3']),
+                    ('status', 'in', ['present', 'permission']),
                 ], order='date asc')
                 employee_timetables = list(employee_timetables)
                 for employee_timetable in employee_timetables:
