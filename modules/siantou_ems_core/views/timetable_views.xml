@@ -51,11 +51,12 @@
 					<field name="start_time"/>
 					<field name="end_time"/>
 					<field name="status" widget="badge"
-                        decoration-muted="status == '0'"
-                        decoration-success="status == '1'"
-                        decoration-danger="status == '2'"
-                        decoration-info="status == '3'"
-                        decoration-warning="status == '4'"/>
+                        decoration-muted="status == 'pending'"
+                        decoration-primary="status == 'progress'"
+                        decoration-success="status == 'present'"
+                        decoration-danger="status == 'absent'"
+                        decoration-info="status == 'permission'"
+                        decoration-warning="status == 'exception'"/>
 				</tree>
 			</field>
 		</record>
@@ -69,12 +70,13 @@
 			<field name="arch" type="xml">
 				<form string="Emplois du temps">
                     <header>
-                        <button name="state_pending_timetable" class="oe_highlight" invisible="state in ['0']" string="En attente" type="object"/>
-                        <button name="state_present_timetable" class="oe_highlight" invisible="state in ['1']" string="Présent" type="object"/>
-                        <button name="state_absent_timetable" class="oe_highlight" invisible="state in ['2']" string="Absent" type="object"/>
-                        <button name="state_permissionary_timetable" class="oe_highlight" invisible="state in ['3']" string="Permissionnaire" type="object"/>
-                        <button name="state_exception_timetable" class="oe_highlight" invisible="state in ['4']" string="Exception" type="object"/>
-                        <field name="state" widget="statusbar" statusbar_visible="0,1,2,3,4"/>
+                        <button name="state_pending_timetable" class="oe_highlight" invisible="state in ['pending']" string="En attente" type="object"/>
+                        <button name="state_progress_timetable" class="oe_highlight" invisible="state in ['progress']" string="En cours" type="object"/>
+                        <button name="state_present_timetable" class="oe_highlight" invisible="state in ['present']" string="Présent" type="object"/>
+                        <button name="state_absent_timetable" class="oe_highlight" invisible="state in ['absent']" string="Absent" type="object"/>
+                        <button name="state_permission_timetable" class="oe_highlight" invisible="state in ['permission']" string="Permissionnaire" type="object"/>
+                        <button name="state_exception_timetable" class="oe_highlight" invisible="state in ['exception']" string="Exception" type="object"/>
+                        <field name="state" widget="statusbar" statusbar_visible="pending,progress,present,absent,permission,exception"/>
                     </header>
 					<sheet>
                         <group>

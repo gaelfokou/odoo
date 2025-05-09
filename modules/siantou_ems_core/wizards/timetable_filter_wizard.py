@@ -16,11 +16,11 @@ DATETIME_FORMAT_FR = '%d/%m/%Y %H:%M'
 TIME_FORMAT = '%H:%M'
 
 STATUS_TIMETABLE = {
-    '0': 'En attente',
-    '1': 'Présent',
-    '2': 'Absent',
-    '3': 'Permissionnaire',
-    '4': 'Exception',
+    'pending': 'En attente',
+    'present': 'Présent',
+    'absent': 'Absent',
+    'permission': 'Permission',
+    'exception': 'Exception',
 }
 
 TYPE_COUR = {
@@ -120,24 +120,10 @@ class TimetableFilterWizard(models.TransientModel):
         required=True,
     )
 
-    status = fields.Selection([
-        ('0', 'En attente'),
-        ('1', 'Présent'),
-        ('2', 'Absent'),
-        ('3', 'Permissionnaire'),
-        ('4', 'Exception'),
-    ], 'Statut',
-        # default='0',
-    )
-
     type_cour = fields.Selection([
         ('cj', 'Cours du jour'),
         ('cs', 'Cours du soir'),
     ], string="Type de cours")
-
-    specialty_id_domain = fields.Binary(compute='_compute_school_domain', default=[])
-
-    subject_id_domain = fields.Binary(compute='_compute_class_domain', default=[])
 
     date = fields.Date(
         'Date du jour',
@@ -156,6 +142,20 @@ class TimetableFilterWizard(models.TransientModel):
         default=0,
         widget='time'
     )
+
+    status = fields.Selection([
+        ('pending', 'En attente'),
+        ('present', 'Présent'),
+        ('absent', 'Absent'),
+        ('permission', 'Permission'),
+        ('exception', 'Exception'),
+    ], 'Statut',
+        # default='0',
+    )
+
+    specialty_id_domain = fields.Binary(compute='_compute_school_domain', default=[])
+
+    subject_id_domain = fields.Binary(compute='_compute_class_domain', default=[])
 
     # Contrainte logique pour s'assurer que les heures de début et de fin sont définies et que l'heure de fin est supérieure à l'heure de début
     @api.constrains('start_time', 'end_time')
@@ -283,15 +283,15 @@ class TimetableFilterWizard(models.TransientModel):
             title.append(self.employee_id.name)
         if self.group_id.id:
             domain.append(('group_id', '=', self.group_id.id))
-        if self.status:
-            domain.append(('status', '=', self.status))
-            title.append(STATUS_TIMETABLE[self.status])
-        if self.date:
-            domain.append(('date', '=', self.date))
-            title.append(datetime.strftime(self.date, DATE_FORMAT_FR))
         if self.type_cour:
             domain.append(('class_id.type_cour', '=', self.type_cour))
             title.append(TYPE_COUR[self.type_cour])
+        if self.date:
+            domain.append(('date', '=', self.date))
+            title.append(datetime.strftime(self.date, DATE_FORMAT_FR))
+        if self.status:
+            domain.append(('status', '=', self.status))
+            title.append(STATUS_TIMETABLE[self.status])
 
         timetable_ids = []
         if self.start_time and self.end_time:

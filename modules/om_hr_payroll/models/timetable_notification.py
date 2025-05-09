@@ -22,10 +22,10 @@ class TimetableNotification(models.Model):
     message = fields.Text(string='Message')
 
     status = fields.Selection([
-        ('0', 'En attente'),
-        ('1', 'Envoyé'),
+        ('pending', 'En attente'),
+        ('sent', 'Envoyé'),
     ], 'Statut',
-        default='0',
+        default='pending',
     )
 
     # Contrainte logique pour s'assurer que les heures de début et de fin sont définies
@@ -38,9 +38,9 @@ class TimetableNotification(models.Model):
     @api.model
     def cron_timetable_notification(self):
         timetable_notifications = self.env['siantou.ems.timetable.notification'].search([
-            ('status', '=', '0'),
+            ('status', '=', 'pending'),
         ])
         for timetable_notification in timetable_notifications:
             template = self.env.ref(timetable_notification.template)
             template.send_mail(timetable_notification.id, force_send=True)
-            timetable_notification.sudo().write({'status': '1'})
+            timetable_notification.sudo().write({'status': 'sent'})

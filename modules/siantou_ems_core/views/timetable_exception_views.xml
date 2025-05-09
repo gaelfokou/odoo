@@ -39,11 +39,12 @@
 					<field name="start_time"/>
 					<field name="end_time"/>
 					<field name="status" widget="badge"
-                        decoration-muted="status == '0'"
-                        decoration-success="status == '1'"
-                        decoration-danger="status == '2'"
-                        decoration-info="status == '3'"
-                        decoration-warning="status == '4'"/>
+                        decoration-muted="status == 'pending'"
+                        decoration-primary="status == 'progress'"
+                        decoration-success="status == 'present'"
+                        decoration-danger="status == 'absent'"
+                        decoration-info="status == 'permission'"
+                        decoration-warning="status == 'exception'"/>
 				</tree>
 			</field>
 		</record>

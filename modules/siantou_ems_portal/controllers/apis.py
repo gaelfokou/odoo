@@ -25,11 +25,11 @@ CURRENT_WEEKDAY = {
 }
 
 STATUS_TIMETABLE = {
-    '0': 'En attente',
-    '1': 'Présent',
-    '2': 'Absent',
-    '3': 'Permissionnaire',
-    '4': 'Exception',
+    'pending': 'En attente',
+    'present': 'Présent',
+    'absent': 'Absent',
+    'permission': 'Permission',
+    'exception': 'Exception',
 }
 
 TYPE_PAIEMENT = {
@@ -38,7 +38,7 @@ TYPE_PAIEMENT = {
 }
 
 STATUS_NOTIFICATION = {
-    '0': 'En attente',
+    'pending': 'En attente',
     '1': 'Envoyé',
 }
 

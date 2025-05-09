@@ -88,11 +88,11 @@ class TimetableSubjectHour(models.Model):
     )
 
     status = fields.Selection([
-        ('0', 'En attente'),
-        ('1', 'Présent'),
-        ('2', 'Absent'),
-        ('3', 'Permissionnaire'),
-        ('4', 'Exception'),
+        ('pending', 'En attente'),
+        ('present', 'Présent'),
+        ('absent', 'Absent'),
+        ('permission', 'Permission'),
+        ('exception', 'Exception'),
     ], 'Statut',
         default='0',
     )
@@ -318,21 +318,21 @@ class Timetable(models.Model):
     )
 
     status = fields.Selection([
-        ('0', 'En attente'),
-        ('1', 'Présent'),
-        ('2', 'Absent'),
-        ('3', 'Permissionnaire'),
-        ('4', 'Exception'),
+        ('pending', 'En attente'),
+        ('present', 'Présent'),
+        ('absent', 'Absent'),
+        ('permission', 'Permission'),
+        ('exception', 'Exception'),
     ], 'Statut',
         default='0',
     )
 
     state = fields.Selection([
-        ('0', 'En attente'),
-        ('1', 'Présent'),
-        ('2', 'Absent'),
-        ('3', 'Permissionnaire'),
-        ('4', 'Exception'),
+        ('pending', 'En attente'),
+        ('present', 'Présent'),
+        ('absent', 'Absent'),
+        ('permission', 'Permission'),
+        ('exception', 'Exception'),
     ], 'Statut',
         related='status',
         store=True,
@@ -625,7 +625,7 @@ class Timetable(models.Model):
         timetable_ids = self.env['siantou.ems.timetable.timetable'].browse(active_ids)
         for timetable in timetable_ids:
             timetable.write({
-                'status': '1',
+                'status': 'present',
             })
 
         return {
@@ -638,7 +638,7 @@ class Timetable(models.Model):
         timetable_ids = self.env['siantou.ems.timetable.timetable'].browse(active_ids)
         for timetable in timetable_ids:
             timetable.write({
-                'status': '2',
+                'status': 'absent',
             })
 
         return {
@@ -648,7 +648,17 @@ class Timetable(models.Model):
 
     def state_pending_timetable(self):
         self.write({
-            'status': '0',
+            'status': 'pending',
+        })
+
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'reload',
+        }
+
+    def state_progress_timetable(self):
+        self.write({
+            'status': 'progress',
         })
 
         return {
@@ -658,7 +668,7 @@ class Timetable(models.Model):
 
     def state_present_timetable(self):
         self.write({
-            'status': '1',
+            'status': 'present',
         })
 
         return {
@@ -668,7 +678,7 @@ class Timetable(models.Model):
 
     def state_absent_timetable(self):
         self.write({
-            'status': '2',
+            'status': 'absent',
         })
 
         return {
@@ -676,9 +686,9 @@ class Timetable(models.Model):
             'tag': 'reload',
         }
 
-    def state_permissionary_timetable(self):
+    def state_permission_timetable(self):
         self.write({
-            'status': '3',
+            'status': 'permission',
         })
 
         return {
@@ -688,7 +698,7 @@ class Timetable(models.Model):
 
     def state_exception_timetable(self):
         self.write({
-            'status': '4',
+            'status': 'exception',
         })
 
         return {

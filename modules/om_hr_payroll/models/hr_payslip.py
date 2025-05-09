@@ -212,7 +212,7 @@ class HrPayslip(models.Model):
                 for employee_timetable in employee_timetables:
                     # Vérification du temps de cours de l'enseignant en biométrie
                     daily_attendances = self.filter_daily_attendance_teacher(employee_timetable.date, employee_timetable.end_time, employee_timetable.start_time, employee_timetable.employee_id)
-                    if employee_timetable.status in ['3']:
+                    if employee_timetable.status in ['permission']:
                         end_time = self.convert_float_to_time(employee_timetable.end_time)
                         start_time = self.convert_float_to_time(employee_timetable.start_time)
                         datetime_to = datetime.strptime(f'{employee_timetable.date} {end_time}', DATETIME_FORMAT)
@@ -295,7 +295,7 @@ class HrPayslip(models.Model):
                 for employee_timetable in employee_timetables:
                     # Vérification du temps de cours de l'enseignant en biométrie
                     daily_attendances = self.filter_daily_attendance_teacher(employee_timetable.date, employee_timetable.end_time, employee_timetable.start_time, employee_timetable.employee_id)
-                    if employee_timetable.status in ['3']:
+                    if employee_timetable.status in ['permission']:
                         end_time = self.convert_float_to_time(employee_timetable.end_time)
                         start_time = self.convert_float_to_time(employee_timetable.start_time)
                         datetime_to = datetime.strptime(f'{employee_timetable.date} {end_time}', DATETIME_FORMAT)
@@ -381,7 +381,7 @@ class HrPayslip(models.Model):
 
         # Recherche des emplois du temps de l'enseignant pour une période donnée
         employee_timetables = self.env['siantou.ems.timetable.timetable'].search([
-            ('status', '=', '0'),
+            ('status', '=', 'pending'),
         ], order='date asc').filtered(lambda rec: (rec.date < current_date) or (rec.date == current_date and rec.end_time <= time_before))
         employee_timetables = list(employee_timetables)
         for employee_timetable in employee_timetables:
@@ -390,9 +390,9 @@ class HrPayslip(models.Model):
                     # Vérification du temps de cours de l'enseignant en biométrie
                     daily_attendances = self.filter_daily_attendance_teacher(employee_timetable.date, employee_timetable.end_time, employee_timetable.start_time, employee_timetable.employee_id)
                     if len(daily_attendances) == 1:
-                        employee_timetable.sudo().write({'status': '4'})
+                        employee_timetable.sudo().write({'status': 'exception'})
                     elif len(daily_attendances) > 1:
-                        employee_timetable.sudo().write({'status': '1'})
+                        employee_timetable.sudo().write({'status': 'present'})
                     else:
                         template = 'om_hr_payroll.om_hr_payroll_template_timetable_notification_absence'
                         start_time = datetime.strptime(f'{employee_timetable.date} {self.convert_float_to_time(employee_timetable.start_time)}', DATETIME_FORMAT)
@@ -404,7 +404,7 @@ class HrPayslip(models.Model):
                             ('template', '=', template),
                             ('timetable_id', '=', employee_timetable.id),
                             ('employee_id', '=', employee_timetable.employee_id.id),
-                            # ('status', '=', '0'),
+                            # ('status', '=', 'pending'),
                         ])
                         timetable_notifications = list(timetable_notifications)
                         if len(timetable_notifications) == 0:
@@ -415,11 +415,11 @@ class HrPayslip(models.Model):
                                 'date': employee_timetable.date,
                                 'message': message,
                             })
-                        employee_timetable.sudo().write({'status': '2'})
+                        employee_timetable.sudo().write({'status': 'absent'})
                     # if employee_timetable.employee_id.is_permanent:
                     #     pass
             else:
-                employee_timetable.sudo().write({'status': '2'})
+                employee_timetable.sudo().write({'status': 'absent'})
 
     @api.model
     def cron_timetable_exception(self):
@@ -445,7 +445,7 @@ class HrPayslip(models.Model):
                 if daily_attendance.employee_id.is_teacher:
                     employee_timetables = self.env['siantou.ems.timetable.timetable'].search([
                         ('employee_id', '=', daily_attendance.employee_id.id),
-                        ('status', '=', '0'),
+                        ('status', '=', 'pending'),
                     ], order='date asc').filtered(lambda rec: (UTC_TZ.localize(punching_time) >= self.convert_datetime_to_utc(datetime.strptime(f'{rec.date} {self.convert_float_to_time(rec.start_time)}', DATETIME_FORMAT) - timedelta(minutes=15)) and UTC_TZ.localize(punching_time) <= self.convert_datetime_to_utc(datetime.strptime(f'{rec.date} {self.convert_float_to_time(rec.start_time)}', DATETIME_FORMAT) + timedelta(minutes=15))) or (UTC_TZ.localize(punching_time) >= self.convert_datetime_to_utc(datetime.strptime(f'{rec.date} {self.convert_float_to_time(rec.end_time)}', DATETIME_FORMAT)) and UTC_TZ.localize(punching_time) <= self.convert_datetime_to_utc(datetime.strptime(f'{rec.date} {self.convert_float_to_time(rec.end_time)}', DATETIME_FORMAT) + timedelta(minutes=15))))
                     employee_timetables = list(employee_timetables)
                     if len(employee_timetables) == 0:
@@ -456,7 +456,7 @@ class HrPayslip(models.Model):
                             ('template', '=', template),
                             ('attendance_id', '=', daily_attendance.id),
                             ('employee_id', '=', daily_attendance.employee_id.id),
-                            # ('status', '=', '0'),
+                            # ('status', '=', 'pending'),
                         ])
                         timetable_notifications = list(timetable_notifications)
                         if len(timetable_notifications) == 0:
