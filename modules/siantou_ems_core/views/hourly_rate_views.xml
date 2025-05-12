@@ -6,7 +6,7 @@
             <field name="model">siantou.ems.core.hourly.rate</field>
             <field name="arch" type="xml">
                 <tree string="Taux horaires standards">
-                    <field name="name"/>
+                    <!-- <field name="name"/> -->
                     <field name="school_id"/>
                     <field name="cycle_id"/>
                     <field name="diplome_availability_id"/>

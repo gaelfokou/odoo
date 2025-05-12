@@ -95,7 +95,7 @@ class TimetableSubjectHour(models.Model):
         ('permission', 'Permission'),
         ('exception', 'Exception'),
     ], 'Statut',
-        default='0',
+        default='pending',
     )
 
     # Contrainte logique pour s'assurer que la date de fin est supérieure à la date de début
@@ -181,14 +181,6 @@ class Timetable(models.Model):
         ondelete='restrict'
     )
 
-    # Filière liée à la programmation de cours
-    field_of_study_id = fields.Many2one(
-        'siantou.ems.core.field_of_study',
-        string='Filière',
-        related='specialty_id.field_of_study_id',
-        store=True
-    )
-
     # Niveau lié à la programmation de cours
     level_id = fields.Many2one(
         'siantou.ems.core.level',
@@ -197,11 +189,12 @@ class Timetable(models.Model):
         ondelete='restrict'
     )
 
-    class_id = fields.Many2one(
-        'siantou.ems.core.class',
-        string='Classe',
-        required=True,
-        ondelete='restrict'
+    # Filière liée à la programmation de cours
+    field_of_study_id = fields.Many2one(
+        'siantou.ems.core.field_of_study',
+        string='Filière',
+        related='specialty_id.field_of_study_id',
+        store=True
     )
 
     specialty_id = fields.Many2one(
@@ -214,6 +207,13 @@ class Timetable(models.Model):
     option_id = fields.Many2one(
         'siantou.ems.core.option',
         string='Option',
+        ondelete='restrict'
+    )
+
+    class_id = fields.Many2one(
+        'siantou.ems.core.class',
+        string='Classe',
+        required=True,
         ondelete='restrict'
     )
 
@@ -326,7 +326,7 @@ class Timetable(models.Model):
         ('permission', 'Permission'),
         ('exception', 'Exception'),
     ], 'Statut',
-        default='0',
+        default='pending',
     )
 
     state = fields.Selection([
@@ -389,17 +389,6 @@ class Timetable(models.Model):
             record.ue_id = None
             record.subject_id = None
 
-    # @api.onchange('field_of_study_id')
-    # def _onchange_field_of_study(self):
-    #     for record in self:
-    #         record.level_id = None
-    #         record.class_id = None
-    #         record.class_group_id = None
-    #         record.specialty_id = None
-    #         record.option_id = None
-    #         record.ue_id = None
-    #         record.subject_id = None
-
     @api.onchange('level_id')
     def _onchange_level(self):
         for record in self:
@@ -425,6 +414,14 @@ class Timetable(models.Model):
             record.ue_id = None
             record.subject_id = None
 
+    @api.onchange('type_cour')
+    def _onchange_type_cour(self):
+        for record in self:
+            record.class_id = None
+            record.class_group_id = None
+            record.ue_id = None
+            record.subject_id = None
+
     @api.depends('class_id')
     def _compute_class_domain(self):
         for record in self:
@@ -440,11 +437,6 @@ class Timetable(models.Model):
             record.class_group_id = None
             record.ue_id = None
             record.subject_id = None
-
-    # @api.onchange('ue_id')
-    # def _onchange_ue(self):
-    #     for record in self:
-    #         record.subject_id = None
 
     # Méthode pour remplir automatiquement le jour de la semaine
     @api.onchange('date')

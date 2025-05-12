@@ -19,8 +19,8 @@ STATUS_CLASS = {
     'timetable_not_available': 'Emplois du temps pas disponibles',
     'student_available': 'Étudiants disponibles',
     'student_not_available': 'Étudiants pas disponibles',
-    'student_max': 'Étudiants maximum',
-    'student_min': 'Étudiants minimum',
+    'student_more_than_or_equal': 'Étudiants plus de ou égal à',
+    'student_less_than': 'Étudiants moins de',
 }
 
 _logger = logging.getLogger(__name__)
@@ -39,18 +39,18 @@ class ClassFilterWizard(models.TransientModel):
         string='Ecole',
     )
 
+    # Niveau lié à la programmation de cours
+    level_id = fields.Many2one(
+        'siantou.ems.core.level',
+        'Niveau',
+    )
+
     # Filière liée à la programmation de cours
     field_of_study_id = fields.Many2one(
         'siantou.ems.core.field_of_study',
         string='Filière',
         related='specialty_id.field_of_study_id',
         store=True
-    )
-
-    # Niveau lié à la programmation de cours
-    level_id = fields.Many2one(
-        'siantou.ems.core.level',
-        'Niveau',
     )
 
     specialty_id = fields.Many2one(
@@ -73,10 +73,15 @@ class ClassFilterWizard(models.TransientModel):
         ('timetable_not_available', 'Emplois du temps pas disponibles'),
         ('student_available', 'Étudiants disponibles'),
         ('student_not_available', 'Étudiants pas disponibles'),
-        ('student_max', 'Étudiants maximum'),
-        ('student_min', 'Étudiants minimum'),
+        ('student_more_than_or_equal', 'Étudiants plus de ou égal à'),
+        ('student_less_than', 'Étudiants moins de'),
     ], 'Statut',
         default='timetable_available',
+    )
+
+    number_of_student = fields.Integer(
+        string='Nombre d\'étudiants',
+        default=0,
     )
 
     specialty_id_domain = fields.Binary(compute='_compute_school_domain', default=[])
@@ -97,13 +102,6 @@ class ClassFilterWizard(models.TransientModel):
             record.level_id = None
             record.specialty_id = None
             record.option_id = None
-
-    # @api.onchange('field_of_study_id')
-    # def _onchange_field_of_study(self):
-    #     for record in self:
-    #         record.level_id = None
-    #         record.specialty_id = None
-    #         record.option_id = None
 
     @api.onchange('specialty_id')
     def _onchange_specialty(self):
@@ -185,6 +183,30 @@ class ClassFilterWizard(models.TransientModel):
                     student_class_ids.append(classe.id)
             student_class_ids = list(set(student_class_ids))
             class_ids = list(filter(lambda i: i not in student_class_ids, class_ids))
+            title.append(STATUS_CLASS[self.status])
+        elif self.status == 'student_more_than_or_equal':
+            domain = [
+                ('id', 'in', class_ids),
+            ]
+            student_class_ids = []
+            classes = self.env['siantou.ems.core.class'].search(domain)
+            for classe in classes:
+                if len(classe.student_ids.ids) >= self.number_of_student:
+                    student_class_ids.append(classe.id)
+            student_class_ids = list(set(student_class_ids))
+            class_ids = list(filter(lambda i: i in student_class_ids, class_ids))
+            title.append(STATUS_CLASS[self.status])
+        elif self.status == 'student_less_than':
+            domain = [
+                ('id', 'in', class_ids),
+            ]
+            student_class_ids = []
+            classes = self.env['siantou.ems.core.class'].search(domain)
+            for classe in classes:
+                if len(classe.student_ids.ids) < self.number_of_student:
+                    student_class_ids.append(classe.id)
+            student_class_ids = list(set(student_class_ids))
+            class_ids = list(filter(lambda i: i in student_class_ids, class_ids))
             title.append(STATUS_CLASS[self.status])
         domain = [
             ('id', 'in', class_ids),
