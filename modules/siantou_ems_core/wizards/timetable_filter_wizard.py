@@ -160,6 +160,34 @@ class TimetableFilterWizard(models.TransientModel):
 
     subject_id_domain = fields.Binary(compute='_compute_class_domain', default=[])
 
+    class_id_domain = fields.Binary(compute='_compute_all_domain', default=[])
+
+    @api.depends('level_id', 'field_of_study_id', 'specialty_id', 'option_id', 'type_cour')
+    def _compute_all_domain(self):
+        for record in self:
+            domain = []
+            if record.year_id.id:
+                domain.append(('year_id', '=', record.year_id.id))
+            if record.level_id.id:
+                domain.append(('level_id', '=', record.level_id.id))
+            if record.field_of_study_id.id:
+                domain.append(('field_of_study_id', '=', record.field_of_study_id.id))
+            if record.specialty_id.id:
+                domain.append(('specialty_id', '=', record.specialty_id.id))
+            if record.option_id.id:
+                domain.append(('option_id', '=', record.option_id.id))
+            if record.type_cour:
+                domain.append(('type_cour', '=', record.type_cour))
+            class_ids = []
+            classes = self.env['siantou.ems.core.class'].search(domain)
+            for classe in classes:
+                class_ids.append(classe.id)
+            class_ids = list(set(class_ids))
+            domain = [
+                ('id', 'in', class_ids),
+            ]
+            record.class_id_domain = domain
+
     # Contrainte logique pour s'assurer que les heures de début et de fin sont définies et que l'heure de fin est supérieure à l'heure de début
     @api.constrains('start_time', 'end_time')
     def _constrains_time(self):
