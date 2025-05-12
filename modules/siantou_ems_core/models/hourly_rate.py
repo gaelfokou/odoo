@@ -153,13 +153,12 @@ class TeacherHourlyRate(models.Model):
         for record in self:
             record.subject_id = None
 
-    @api.depends('employee_id', 'subject_id', 'hourly_rate_id')
+    @api.depends('employee_id', 'subject_id')
     def _compute_name(self):
         for record in self:
             employee_name = record.employee_id.name if record.employee_id.id else ''
             subject_name = record.subject_id.name if record.subject_id.id else ''
-            hourly_rate_name = record.hourly_rate_id.name if record.hourly_rate_id.id else ''
-            name = '{} - {} - {}'.format(employee_name, subject_name, hourly_rate_name)
+            name = '{} - {}'.format(employee_name, subject_name)
             while True:
                 if name.find('  ') != -1:
                     name = name.replace('  ', ' ')
@@ -169,13 +168,12 @@ class TeacherHourlyRate(models.Model):
             name = name.upper()
             record.name = name
 
-    @api.onchange('employee_id', 'subject_id', 'hourly_rate_id')
+    @api.onchange('employee_id', 'subject_id')
     def _onchange_name(self):
         for record in self:
             employee_name = record.employee_id.name if record.employee_id.id else ''
             subject_name = record.subject_id.name if record.subject_id.id else ''
-            hourly_rate_name = record.hourly_rate_id.name if record.hourly_rate_id.id else ''
-            name = '{} - {} - {}'.format(employee_name, subject_name, hourly_rate_name)
+            name = '{} - {}'.format(employee_name, subject_name)
             while True:
                 if name.find('  ') != -1:
                     name = name.replace('  ', ' ')
