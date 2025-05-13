@@ -41,7 +41,8 @@ class DailyAttendanceFilterWizard(models.TransientModel):
 
     employee_id = fields.Many2one('hr.employee', string='Employee',
                                   help='Employee Name')
-    punching_day = fields.Datetime(string='Date', help='Date of punching')
+    start_punching_day = fields.Datetime(string='Start Date', help='Start date of punching')
+    end_punching_day = fields.Datetime(string='End Date', help='End date of punching')
     address_id = fields.Many2one('res.partner', string='Working Address',
                                  help='Working address of the employee')
     attendance_type = fields.Selection([('1', 'Finger'), ('15', 'Face'),
@@ -53,8 +54,36 @@ class DailyAttendanceFilterWizard(models.TransientModel):
                                    ('4', 'Overtime In'), ('5', 'Overtime Out')],
                                   string='Punching Type',
                                   help='The Punching Type of attendance')
-    punching_time = fields.Datetime(string='Punching Time',
-                                    help='Punching time in the device')
+    start_punching_time = fields.Datetime(string='Start Punching Time',
+                                    help='Start punching time in the device')
+    end_punching_time = fields.Datetime(string='End Punching Time',
+                                    help='End punching time in the device')
+
+    # Contrainte logique pour s'assurer que les dates de début et de fin sont définies et que la date de fin est supérieure à la date de début
+    @api.constrains('start_punching_day', 'end_punching_day')
+    def _constrains_punching_day(self):
+        for record in self:
+            if record.end_punching_day < record.start_punching_day:
+                raise ValidationError("La date de fin doit être supérieure à la date de début")
+
+    # Contrainte logique pour s'assurer que les dates de début et de fin sont définies et que la date de fin est supérieure à la date de début
+    @api.constrains('start_punching_time', 'end_punching_time')
+    def _constrains_punching_time(self):
+        for record in self:
+            if record.end_punching_time < record.start_punching_time:
+                raise ValidationError("La date de fin doit être supérieure à la date de début")
+
+    @api.onchange('start_punching_day', 'end_punching_day')
+    def _onchange_punching_day(self):
+        for record in self:
+            record.start_punching_time = None
+            record.end_punching_time = None
+
+    @api.onchange('start_punching_time', 'end_punching_time')
+    def _onchange_punching_time(self):
+        for record in self:
+            record.start_punching_day = None
+            record.end_punching_day = None
 
     def action_filter(self):
         domain = []
@@ -71,15 +100,20 @@ class DailyAttendanceFilterWizard(models.TransientModel):
         if self.punch_type:
             domain.append(('punch_type', '=', self.punch_type))
             title.append(PUNCH_TYPE[self.punch_type])
-        if self.punching_day:
-            domain.append(('punching_day', '=', self.punching_day))
-            title.append(datetime.strftime(self.punching_day, DATE_FORMAT_FR))
-        if self.punching_time:
-            domain.append(('punching_time', '=', self.punching_time))
-            title.append(datetime.strftime(self.punching_time, DATE_FORMAT_FR))
 
         attendance_ids = []
-        attendances = self.env['daily.attendance'].search(domain)
+        if self.start_punching_day and self.end_punching_day:
+            start_punching_day = datetime.strftime(self.start_punching_day, DATE_FORMAT_FR)
+            end_punching_day = datetime.strftime(self.end_punching_day, DATE_FORMAT_FR)
+            title.append('{} - {}'.format(start_punching_day, end_punching_day))
+            attendances = self.env['daily.attendance'].search(domain).filtered(lambda rec: not (rec.punching_time >= self.start_punching_day and rec.punching_time <= self.end_punching_day))
+        elif self.start_punching_time and self.end_punching_time:
+            start_punching_time = datetime.strftime(self.start_punching_time, DATE_FORMAT_FR)
+            end_punching_time = datetime.strftime(self.end_punching_time, DATE_FORMAT_FR)
+            title.append('{} - {}'.format(start_punching_time, end_punching_time))
+            attendances = self.env['daily.attendance'].search(domain).filtered(lambda rec: not (rec.punching_time >= self.start_punching_time and rec.punching_time <= self.end_punching_time))
+        else:
+            attendances = self.env['daily.attendance'].search(domain)
         for attendance in attendances:
             attendance_ids.append(attendance.id)
         attendance_ids = list(set(attendance_ids))

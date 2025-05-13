@@ -11,8 +11,10 @@
                         <field name="address_id" options="{'no_create': True}"/>
                         <field name="attendance_type"/>
                         <field name="punch_type"/>
-                        <field name="punching_day"/>
-                        <field name="punching_time"/>
+                        <field name="start_punching_day"/>
+                        <field name="end_punching_day"/>
+                        <field name="start_punching_time"/>
+                        <field name="end_punching_time"/>
                     </group>
                     <footer>
                         <button string="Filtrer" type="object" name="action_filter" class="btn-primary"/>
