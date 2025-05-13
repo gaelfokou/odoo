@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 	<data>
-        <!-- <menuitem name="Filières" id="menu_school_config_course"
+        <!-- <menuitem name="Filières" id="menu_school_config_course_supervision"
                     parent="menu_school_config" 
                      /> -->
 
         <!-- Grading Type -->
-        <!-- <record id="school_course_grading_type_tree_view" model="ir.ui.view">
-			<field name="name">school.course.grading.type.tree.view</field>
-			<field name="model">oe.school.course.grading.type</field>
+        <!-- <record id="school_course_supervision_grading_type_tree_view" model="ir.ui.view">
+			<field name="name">school.course.supervision.grading.type.tree.view</field>
+			<field name="model">oe.school.course.supervision.grading.type</field>
 			<field name="arch" type="xml">
 				<tree string="Filières" editable="bottom">
 					<field name="name"/>
@@ -16,9 +16,9 @@
 			</field>
 		</record>
 
-        <record id="action_school_course_grading_type" model="ir.actions.act_window">
+        <record id="action_school_course_supervision_grading_type" model="ir.actions.act_window">
             <field name="name">Type de notation</field>
-            <field name="res_model">oe.school.course.grading.type</field>
+            <field name="res_model">oe.school.course.supervision.grading.type</field>
             <field name="view_mode">tree,form</field>
             <field name="help" type="html">
                 <p class="o_view_nocontent_smiling_face">
@@ -28,29 +28,27 @@
         </record> -->
 
         <!--
-        <menuitem name="Grading Type" id="menu_school_config_course_grading_type"
-                    parent="menu_school_config_course" action="action_school_course_grading_type"
+        <menuitem name="Grading Type" id="menu_school_config_course_supervision_grading_type"
+                    parent="menu_school_config_course_supervision" action="action_school_course_supervision_grading_type"
                      />
         -->
         <!-- Course -->
-        <record id="school_course_tree_view" model="ir.ui.view">
-			<field name="name">school.course.tree.view</field>
-			<field name="model">oe.school.course</field>
+        <record id="school_course_supervision_tree_view" model="ir.ui.view">
+			<field name="name">school.course.supervision.tree.view</field>
+			<field name="model">oe.school.course.supervision</field>
 			<field name="arch" type="xml">
-				<tree string='Cursus ou Cycles'>
+				<tree string='Tutelles académiques'>
                     <field name="code"/>
 					<field name="name"/>
-                    <field name="company_id"/>
-                    <field name="level_ids" widget="many2many_tags"/>
-                    <field name="supervision_ids" widget="many2many_tags"/>
+                    <field name="cycle_ids" widget="many2many_tags"/>
 				</tree>
 			</field>
 		</record>
-		<record id="school_course_form_view" model="ir.ui.view">
-			<field name="name">school.course.form.view</field>
-			<field name="model">oe.school.course</field>
+		<record id="school_course_supervision_form_view" model="ir.ui.view">
+			<field name="name">school.course.supervision.form.view</field>
+			<field name="model">oe.school.course.supervision</field>
 			<field name="arch" type="xml">
-				<form string='Cursus ou Cycles'>
+				<form string='Tutelles académiques'>
 					<sheet>
                         <!-- <div class="oe_button_box" name="button_box">
                             <button name="action_open_batch" 
@@ -85,13 +83,7 @@
                             <group>
                                 <field name="code"/>
                                 <field name="name"/>
-                                <field name="level_ids" widget="many2many_tags"/>
-                                <field name="supervision_ids" widget="many2many_tags"/>
-                                <field name="sequence_id" readonly="1"/>
-                            </group>
-                            <group>
-                                <field name="color" widget="color_picker"/>
-                                <field name="company_id" options="{'no_create': True}"/>
+                                <field name="cycle_ids" widget="many2many_tags"/>
                             </group>
                         </group>
 
@@ -120,23 +112,21 @@
 			</field>
 		</record>
 
-        <record id="view_course_filter" model="ir.ui.view">
-            <field name="name">school.course.search</field>
-            <field name="model">oe.school.course</field>
+        <record id="view_course_supervision_filter" model="ir.ui.view">
+            <field name="name">school.course.supervision.search</field>
+            <field name="model">oe.school.course.supervision</field>
             <field name="arch" type="xml">
-                <search string='Cursus ou Cycles'>
-                    <field name="name" string="Filière"/>
-                    <separator/>
-                    <filter string="Archivé" name="inactive" domain="[('is_active', '=', False)]"/>
+                <search string='Tutelles académiques'>
+                    <field name="name" string="Tutelle académique"/>
                 </search>
              </field>
         </record>
 
-        <record id="action_oe_school_course" model="ir.actions.act_window">
-            <field name="name">Cursus ou Cycles</field>
-            <field name="res_model">oe.school.course</field>
+        <record id="action_oe_school_course_supervision" model="ir.actions.act_window">
+            <field name="name">Tutelles académiques</field>
+            <field name="res_model">oe.school.course.supervision</field>
             <field name="view_mode">tree,form</field>
-            <field name="search_view_id" ref="view_course_filter"/>
+            <field name="search_view_id" ref="view_course_supervision_filter"/>
             <field name="help" type="html">
                 <p class="o_view_nocontent_smiling_face">
                     Créer une nouvelle filière
@@ -146,15 +136,15 @@
             </field>
         </record>
 
-        <!-- <menuitem name='Cursus ou Cycles' id="menu_school_courses_courses"
-                    parent="menu_school_courses" action="action_oe_school_course"
+        <!-- <menuitem name='Tutelles académiques' id="menu_school_course_supervisions_course_supervisions"
+                    parent="menu_school_course_supervisions" action="action_oe_school_course_supervision"
                      sequence="1"/> -->
 
         <menuitem
-            id="menu_siantou_ems_core_cycle"
-            name='Cursus ou Cycles'
+            id="menu_siantou_ems_core_supervision"
+            name='Tutelles académiques'
             parent="menu_siantou_ems_core_config_fa"
-            action="action_oe_school_course"
+            action="action_oe_school_course_supervision"
             groups="siantou_ems_core.group_courses_user,siantou_ems_core.group_courses_admin,base.group_system"
             sequence="7"/>
     </data>

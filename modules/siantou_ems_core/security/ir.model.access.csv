@@ -29,6 +29,9 @@ quarter_admin,quarter.admin,model_siantou_ems_core_quarter,siantou_ems_core.grou
 courses_user,courses.user,model_oe_school_course,siantou_ems_core.group_courses_user,1,0,0,0
 courses_admin,courses.admin,model_oe_school_course,siantou_ems_core.group_courses_admin,1,1,1,1
 
+course_supervision_user,course_supervision.user,model_oe_school_course_supervision,siantou_ems_core.group_courses_user,1,0,0,0
+course_supervision_admin,course_supervision.admin,model_oe_school_course_supervision,siantou_ems_core.group_courses_admin,1,1,1,1
+
 degree_required_user,degree_required.user,model_oe_school_course_degree,siantou_ems_core.group_degree_required_user,1,0,0,0
 degree_required_admin,degree_required.admin,model_oe_school_course_degree,siantou_ems_core.group_degree_required_admin,1,1,1,1
 

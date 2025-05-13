@@ -101,6 +101,7 @@
         'views/class_filter_wizard_views.xml',
         'views/hourly_rate_views.xml',
         'views/teacher_hourly_rate_views.xml',
+        'views/supervision_views.xml',
     ],
     'license': 'LGPL-3',
     'installable': True,

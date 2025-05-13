@@ -14,6 +14,18 @@ _logger = logging.getLogger(__name__)
 #     _description = 'Type de notation'
 #     name = fields.Char(string='Type', required=True) 
 
+class OeSchoolCourseSupervision(models.Model):
+    _name = 'oe.school.course.supervision'
+    _description = 'Tutelle académique'
+
+    name = fields.Char(string='Nom', required=True)
+    code = fields.Char(string='Code', required=True)
+    cycle_ids = fields.Many2many('oe.school.course', 'course_supervision_rel', 'supervision_id', 'cycle_id', string='Cursus ou Cycles')
+
+    _sql_constraints = [
+        ('unique_code', 'unique(code)', "Le code de la tutelle académique doit être unique."),
+    ]
+
 class OeSchoolCourse(models.Model):
     _name = 'oe.school.course'
     _description = 'Gestion des Cycles'
@@ -37,6 +49,7 @@ class OeSchoolCourse(models.Model):
     )
     level_ids = fields.Many2many('siantou.ems.core.level', 'course_level_rel', 'cycle_id', 'level_id', string='Niveaux')
     diplo_requis_ids = fields.Many2many('oe.school.course.degree', 'course_degree_rel', 'cycle_id', 'diplo_requis_id', string='Diplômes requis')
+    supervision_ids = fields.Many2many('oe.school.course.supervision', 'course_supervision_rel', 'cycle_id', 'supervision_id', string='Tutelles académiques')
     enable_elective = fields.Boolean('Activer la sélection des cours facultatifs')
     color = fields.Integer(default=_default_color)
 
