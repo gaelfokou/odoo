@@ -102,6 +102,7 @@
         'views/hourly_rate_views.xml',
         'views/teacher_hourly_rate_views.xml',
         'views/supervision_views.xml',
+        'views/daily_attendance_views.xml',
     ],
     'license': 'LGPL-3',
     'installable': True,

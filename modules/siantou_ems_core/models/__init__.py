@@ -26,4 +26,5 @@ from . import class_division
 from . import production_pe
 from . import res_user
 from . import hourly_rate
+from . import daily_attendance
 # from . import account_move

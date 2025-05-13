@@ -42,7 +42,8 @@
 					<field name="name"/>
                     <field name="company_id"/>
                     <field name="level_ids" widget="many2many_tags"/>
-                    <field name="supervision_ids" widget="many2many_tags"/>
+                    <field name="has_supervision"/>
+                    <field name="supervision_id"/>
 				</tree>
 			</field>
 		</record>
@@ -86,7 +87,8 @@
                                 <field name="code"/>
                                 <field name="name"/>
                                 <field name="level_ids" widget="many2many_tags"/>
-                                <field name="supervision_ids" widget="many2many_tags"/>
+                                <field name="has_supervision"/>
+                                <field name="supervision_id" invisible="has_supervision==False"/>
                                 <field name="sequence_id" readonly="1"/>
                             </group>
                             <group>

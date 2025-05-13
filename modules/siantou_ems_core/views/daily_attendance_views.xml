@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="attendance_view_tree_inherit_daily_attendance" model="ir.ui.view">
+            <field name="name">view.attendance.tree.inherit.daily_attendance</field>
+            <field name="model">daily.attendance</field>
+            <field name="inherit_id" ref="hr_zk_attendance.daily_attendance_view_tree"/>
+            <field name="arch" type="xml">
+                <!-- <xpath expr="//header" position="inside">
+                    <button name="action_reset_filter" 
+                        type="object" 
+                        string="Réinitialiser" 
+                        class="oe_highlight" 
+                        display="always"/>
+                    <button name="action_open_filter" 
+                        type="object" 
+                        string="Filtrer" 
+                        class="oe_highlight" 
+                        display="always"/>
+                    <button name="action_print_pdf" 
+                        type="object" 
+                        string="Imprimer PDF" 
+                        class="oe_highlight" 
+                        display="always"/>
+                </xpath> -->
+                <xpath expr="//tree" position="inside">
+                    <header>
+                        <button name="action_reset_filter" 
+                            type="object" 
+                            string="Réinitialiser" 
+                            class="oe_highlight" 
+                            display="always"/>
+                        <button name="action_open_filter" 
+                            type="object" 
+                            string="Filtrer" 
+                            class="oe_highlight" 
+                            display="always"/>
+                        <button name="action_print_pdf" 
+                            type="object" 
+                            string="Imprimer PDF" 
+                            class="oe_highlight" 
+                            display="always"/>
+                    </header>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="action_show_daily_attendance"
+            model="ir.actions.act_window">
+            <field name="name">Présences</field>
+            <field name="res_model">daily.attendance</field>
+            <field name="view_mode">tree</field>
+            <field name="view_ids"
+                eval="[(5, 0, 0),
+                (0, 0, {'view_mode': 'tree', 'view_id': ref('hr_zk_attendance.daily_attendance_view_tree')})]"/>
+        </record>
+
+        <menuitem
+                id="menu_siantou_ems_core_daily_attendance"
+                name="Présences"
+                parent="menu_siantou_ems_core_employee"
+                action="action_show_daily_attendance"
+                groups="siantou_ems_core.group_teacher_user,siantou_ems_core.group_teacher_admin,base.group_system"
+                sequence="10"
+            />
+    </data>
+</odoo>
