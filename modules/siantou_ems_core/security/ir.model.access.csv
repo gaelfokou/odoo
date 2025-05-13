@@ -119,6 +119,9 @@ classroom_filter_wizard_admin,classroom_filter_wizard.admin,model_classroom_filt
 class_filter_wizard_user,class_filter_wizard.user,model_class_filter_wizard,,1,0,0,0
 class_filter_wizard_admin,class_filter_wizard.admin,model_class_filter_wizard,,1,1,1,1
 
+daily_attendance_filter_wizard_user,daily_attendance_filter_wizard.user,model_daily_attendance_filter_wizard,,1,0,0,0
+daily_attendance_filter_wizard_admin,daily_attendance_filter_wizard.admin,model_daily_attendance_filter_wizard,,1,1,1,1
+
 university_user,university.user,model_res_company,siantou_ems_core.group_university_user,1,0,0,0
 university_admin,university.admin,model_res_company,siantou_ems_core.group_university_admin,1,1,1,1
 

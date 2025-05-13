@@ -292,33 +292,6 @@ class HrEmployee(models.Model):
             'tag': 'reload',
         }
 
-    # @api.depends('subject_priority_ids')
-    # def _compute_subject_ids(self):
-    #     """ Méthode de calcul pour subject_ids pour afficher les cours à partir des enregistrements de priorité. """
-    #     for record in self:
-    #         record.subject_ids = record.subject_priority_ids.mapped('subject_id')
-
-    # def _set_subject_ids(self):
-    #     """ Méthode inverse pour ajouter/met à jour les cours dans le modèle des priorités avec une priorité de 1. """
-    #     for record in self:
-    #         # Identifie les cours actuels associés aux priorités
-    #         current_subject_ids = record.subject_priority_ids.mapped('subject_id').ids
-    #         # Identifie les nouveaux cours ajoutés dans subject_ids
-    #         new_subject_ids = record.subject_ids.ids
-
-    #         # Ajouter les nouveaux cours avec priorité 1
-    #         to_add = set(new_subject_ids) - set(current_subject_ids)
-    #         for subject_id in to_add:
-    #             self.env['siantou.ems.core.teacher.subject.priority'].create({
-    #                 'employee_id': record.id,
-    #                 'subject_id': subject_id,
-    #                 'priority': 1,
-    #             })
-
-    #         # Supprimer les cours retirés de subject_ids
-    #         to_remove = set(current_subject_ids) - set(new_subject_ids)
-    #         record.subject_priority_ids.filtered(lambda p: p.subject_id.id in to_remove).unlink()
-
     def action_open_filter(self):
         view_id = self.env.ref('siantou_ems_core.teacher_filter_wizard').id
         return {

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="daily_attendance_filter_wizard" model="ir.ui.view">
+            <field name="name">daily.attendance.filter.wizard.form</field>
+            <field name="model">daily.attendance.filter.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Filtre des présences">
+                    <group>
+                        <field name="employee_id" options="{'no_create': True}"/>
+                        <field name="address_id" options="{'no_create': True}"/>
+                        <field name="attendance_type"/>
+                        <field name="punch_type"/>
+                        <field name="punching_day"/>
+                        <field name="punching_time"/>
+                    </group>
+                    <footer>
+                        <button string="Filtrer" type="object" name="action_filter" class="btn-primary"/>
+                        <button string="Annuler" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <!-- Define an action to open the form view -->
+        <record id="action_filter_daily_attendance_wizard" model="ir.actions.act_window">
+            <field name="name">Filtre des présences</field>
+            <field name="res_model">daily.attendance.filter.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="view_id" ref="daily_attendance_filter_wizard"/>
+        </record>
+
+        <!-- <record id="action_report_daily_attendance" model="ir.actions.report">
+            <field name="name">Emploi du temps PDF</field>
+            <field name="model">daily.attendance</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">siantou_ems_daily.attendance.report_daily_attendance</field>
+            <field name="report_file">siantou_ems_daily.attendance.report_daily_attendance</field>
+            <field name="paperformat_id" ref="paperformat_paysage"/>
+            <field name="binding_model_id" ref="model_siantou_ems_daily_attendance_daily_attendance"/>
+            <field name="binding_type">report</field>
+        </record> -->
+
+        <!-- Définir le format de papier pour le mode paysage -->
+        <!-- <record id="paperformat_paysage" model="report.paperformat">
+            <field name="name">Format Paysage</field>
+            <field name="default" eval="True"/>
+            <field name="orientation">Landscape</field>
+            <field name="margin_top">5</field>
+            <field name="margin_bottom">10</field>
+            <field name="margin_left">3</field>
+            <field name="margin_right">3</field>
+            <field name="header_line" eval="True"/>
+            <field name="header_spacing">5</field>
+            <field name="dpi">90</field>
+        </record> -->
+    </data>
+</odoo>
