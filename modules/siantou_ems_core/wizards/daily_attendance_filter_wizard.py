@@ -7,7 +7,10 @@ import re
 from datetime import date, datetime, timedelta, time
 from dateutil.relativedelta import relativedelta
 import copy
+import pytz
 import logging
+
+UTC_TZ = pytz.utc
 
 DATE_FORMAT = '%Y-%m-%d'
 DATE_FORMAT_FR = '%d/%m/%Y'
@@ -85,6 +88,20 @@ class DailyAttendanceFilterWizard(models.TransientModel):
             record.start_punching_day = None
             record.end_punching_day = None
 
+    def convert_datetime_from_utc(self, dt):
+        new_tz = pytz.timezone('Africa/Douala')
+        old_tz = pytz.utc
+        local_dt = old_tz.localize(dt)
+        dt = local_dt.astimezone(new_tz)
+        return dt
+
+    def convert_datetime_to_utc(self, dt):
+        old_tz = pytz.timezone('Africa/Douala')
+        new_tz = pytz.utc
+        local_dt = old_tz.localize(dt)
+        dt = local_dt.astimezone(new_tz)
+        return dt
+
     def action_filter(self):
         domain = []
         title = []
@@ -103,15 +120,19 @@ class DailyAttendanceFilterWizard(models.TransientModel):
 
         attendance_ids = []
         if self.start_punching_day and self.end_punching_day:
+            datetime_before = self.convert_datetime_to_utc(self.start_punching_day)
+            datetime_after = self.convert_datetime_to_utc(self.end_punching_day)
             start_punching_day = datetime.strftime(self.start_punching_day, DATE_FORMAT_FR)
             end_punching_day = datetime.strftime(self.end_punching_day, DATE_FORMAT_FR)
             title.append('{} - {}'.format(start_punching_day, end_punching_day))
-            attendances = self.env['daily.attendance'].search(domain).filtered(lambda rec: not (rec.punching_time >= self.start_punching_day and rec.punching_time <= self.end_punching_day))
+            attendances = self.env['daily.attendance'].search(domain).filtered(lambda rec: not (UTC_TZ.localize(rec.punching_day) >= datetime_before and UTC_TZ.localize(rec.punching_day) <= datetime_after))
         elif self.start_punching_time and self.end_punching_time:
+            datetime_before = self.convert_datetime_to_utc(self.start_punching_time)
+            datetime_after = self.convert_datetime_to_utc(self.end_punching_time)
             start_punching_time = datetime.strftime(self.start_punching_time, DATE_FORMAT_FR)
             end_punching_time = datetime.strftime(self.end_punching_time, DATE_FORMAT_FR)
             title.append('{} - {}'.format(start_punching_time, end_punching_time))
-            attendances = self.env['daily.attendance'].search(domain).filtered(lambda rec: not (rec.punching_time >= self.start_punching_time and rec.punching_time <= self.end_punching_time))
+            attendances = self.env['daily.attendance'].search(domain).filtered(lambda rec: not (UTC_TZ.localize(rec.punching_time) >= datetime_before and UTC_TZ.localize(rec.punching_time) <= datetime_after))
         else:
             attendances = self.env['daily.attendance'].search(domain)
         for attendance in attendances:
