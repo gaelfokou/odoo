@@ -26,6 +26,16 @@ class EducationClass(models.Model):
     field_of_study_id = fields.Many2one('siantou.ems.core.field_of_study', string='Filière',
                                  required=True, help="Filière")
 
+    cycle_id = fields.Many2one(
+        'oe.school.course',
+        string='Cursus ou Cycle',
+        related='field_of_study_id.cycle_id',
+        store=True
+    )
+
+    supervision_id = fields.Many2one('oe.school.course.supervision', string='Tutelle académique',
+                                 help="Tutelle académique")
+
     student_ids = fields.One2many(
         'oe.school.student',
         'class_id',
