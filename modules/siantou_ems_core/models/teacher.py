@@ -247,7 +247,7 @@ class HrEmployee(models.Model):
 
     @api.model
     def create(self, vals):
-        if 'work_email' in vals and if vals['work_email'] and vals['work_email'].strip():
+        if 'work_email' in vals and vals['work_email'] and vals['work_email'].strip():
             employee_id = self.env['hr.employee'].search([('work_email', '=', vals['work_email'])], limit=1)
             if employee_id:
                 return None
