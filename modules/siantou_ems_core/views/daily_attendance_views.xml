@@ -53,6 +53,7 @@
             <field name="view_ids"
                 eval="[(5, 0, 0),
                 (0, 0, {'view_mode': 'tree', 'view_id': ref('hr_zk_attendance.daily_attendance_view_tree')})]"/>
+            <field name="domain">[('punching_day', '&gt;=', datetime.datetime(year=datetime.date.today().year, month=datetime.date.today().month, day=datetime.date.today().day, hour=0, minute=0, second=0, microsecond=0))]</field>
         </record>
 
         <menuitem
