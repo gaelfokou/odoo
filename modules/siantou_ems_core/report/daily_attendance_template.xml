@@ -49,7 +49,7 @@
                         <table class="table table-bordered table-sm text-center">
                             <thead>
                                 <tr>
-                                    <th class="text-center" colspan="9" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;">
+                                    <th class="text-center" colspan="6" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;">
                                         <h3>INSTITUT UNIVERSITAIRE SIANTOU</h3>
                                         <h4>
                                             <span t-esc="'Liste des présences'"/>
@@ -63,20 +63,17 @@
                             </thead>
                             <thead>
                                 <tr>
-                                    <th class="text-left" colspan="9" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
+                                    <th class="text-left" colspan="6" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
                                 </tr>
                             </thead>
                             <thead class="thead">
                                 <tr class="active">
-                                    <th class="text-center">Nom(s) et prénom(s)</th>
-                                    <th class="text-center">Nom(s)</th>
-                                    <th class="text-center">Prénom(s)</th>
-                                    <th class="text-center">E-mail</th>
-                                    <th class="text-center">Date de naissance</th>
-                                    <th class="text-center">Est un présence</th>
-                                    <th class="text-center">Est un permanent</th>
-                                    <th class="text-center">Matricule</th>
-                                    <th class="text-center">Quota horaire hebdommadaire</th>
+                                    <th class="text-center">Employee</th>
+                                    <th class="text-center">Working Address</th>
+                                    <th class="text-center">Category</th>
+                                    <th class="text-center">Punching Type</th>
+                                    <th class="text-center">Date</th>
+                                    <th class="text-center">Punching Time</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -84,31 +81,22 @@
                                 <t t-foreach="attendances" t-as="attendance">
                                     <tr>
                                         <td class='text-center'>
-                                            <span t-esc="attendance['name']"/>
+                                            <span t-esc="attendance['employee_name']"/>
                                         </td>
                                         <td class='text-center'>
-                                            <span t-esc="attendance['last_name']"/>
+                                            <span t-esc="attendance['address_name']"/>
                                         </td>
                                         <td class='text-center'>
-                                            <span t-esc="attendance['first_name']"/>
+                                            <span t-esc="attendance['attendance_type']"/>
                                         </td>
                                         <td class='text-center'>
-                                            <span t-esc="attendance['work_email']"/>
+                                            <span t-esc="attendance['punch_type']"/>
                                         </td>
                                         <td class='text-center'>
-                                            <span t-esc="attendance['birthday']"/>
+                                            <span t-esc="attendance['punching_day']"/>
                                         </td>
                                         <td class='text-center'>
-                                            <span t-esc="'Oui' if attendance['is_attendance'] else 'Non'"/>
-                                        </td>
-                                        <td class='text-center'>
-                                            <span t-esc="'Oui' if attendance['is_permanent'] else 'Non'"/>
-                                        </td>
-                                        <td class='text-center'>
-                                            <span t-esc="attendance['identifier']"/>
-                                        </td>
-                                        <td class='text-center'>
-                                            <span t-esc="attendance['weekly_hours_limit']"/>
+                                            <span t-esc="attendance['punching_time']"/>
                                         </td>
                                     </tr>
                                 </t>

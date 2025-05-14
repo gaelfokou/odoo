@@ -1,6 +1,6 @@
 from markupsafe import Markup
 
-from odoo import fields, models, api, _
+from odoo import models, fields, api, tools, _
 import logging
 
 from odoo.exceptions import ValidationError

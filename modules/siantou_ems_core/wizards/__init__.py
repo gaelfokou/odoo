@@ -1,6 +1,7 @@
 from . import timetable_print_wizard
 from . import teacher_print_wizard
 from . import student_print_wizard
+from . import daily_attendance_print_wizard
 from . import classroom_print_wizard
 from . import class_print_wizard
 from . import timetable_wizard
