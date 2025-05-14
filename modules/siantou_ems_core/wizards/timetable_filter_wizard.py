@@ -127,8 +127,12 @@ class TimetableFilterWizard(models.TransientModel):
         required=True,
     )
 
-    date = fields.Date(
-        'Date du jour',
+    start_date = fields.Date(
+        'Date de début',
+    )
+
+    end_date = fields.Date(
+        'Date de fin',
     )
 
     # Heure de début du cours
@@ -187,6 +191,13 @@ class TimetableFilterWizard(models.TransientModel):
                 ('id', 'in', class_ids),
             ]
             record.class_id_domain = domain
+
+    # Contrainte logique pour s'assurer que les dates de début et de fin sont définies et que la date de fin est supérieure à la date de début
+    @api.constrains('start_date', 'end_date')
+    def _constrains_date(self):
+        for record in self:
+            if record.end_date < record.start_date:
+                raise ValidationError("La date de fin doit être supérieure à la date de début")
 
     # Contrainte logique pour s'assurer que les heures de début et de fin sont définies et que l'heure de fin est supérieure à l'heure de début
     @api.constrains('start_time', 'end_time')
@@ -314,15 +325,17 @@ class TimetableFilterWizard(models.TransientModel):
             title.append(self.employee_id.name)
         if self.group_id.id:
             domain.append(('group_id', '=', self.group_id.id))
-        if self.date:
-            domain.append(('date', '=', self.date))
-            title.append(datetime.strftime(self.date, DATE_FORMAT_FR))
         if self.status:
             domain.append(('status', '=', self.status))
             title.append(STATUS_TIMETABLE[self.status])
 
         timetable_ids = []
         timetables = self.env['siantou.ems.timetable.timetable'].search(domain)
+        if self.start_date and self.end_date:
+            start_date = datetime.strftime(self.start_date, DATE_FORMAT_FR)
+            end_date = datetime.strftime(self.end_date, DATE_FORMAT_FR)
+            title.append('{} - {}'.format(start_date, end_date))
+            timetables = timetables.filtered(lambda rec: rec.date >= self.start_date and rec.date <= self.end_date)
         if self.start_time and self.end_time:
             start_time = TimetableFilterWizard.convert_float_to_time(self.start_time)
             end_time = TimetableFilterWizard.convert_float_to_time(self.end_time)
