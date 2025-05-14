@@ -43,7 +43,7 @@
 
     <menuitem
             id="menu_siantou_ems_timetable_planning"
-            name="Planification"
+            name="Planifications"
 			parent="menu_siantou_ems_core"
             sequence = "60"/>
 

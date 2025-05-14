@@ -59,7 +59,7 @@
         <menuitem
                 id="menu_siantou_ems_core_daily_attendance"
                 name="Présences"
-                parent="menu_siantou_ems_core_employee"
+                parent="menu_siantou_ems_timetable_planning"
                 action="action_show_daily_attendance"
                 groups="siantou_ems_core.group_teacher_user,siantou_ems_core.group_teacher_admin,base.group_system"
                 sequence="10"
