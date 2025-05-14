@@ -84,21 +84,24 @@ class HrPayslip(models.Model):
     total_hours = fields.Float(compute='_compute_total_hours', string='Total hours')
     code = fields.Char(help="The code that can be used in the salary rules")
 
-    def convert_datetime_from_utc(self, dt):
+    @staticmethod
+    def convert_datetime_from_utc(dt):
         new_tz = pytz.timezone('Africa/Douala')
         old_tz = pytz.utc
         local_dt = old_tz.localize(dt)
         dt = local_dt.astimezone(new_tz)
         return dt
 
-    def convert_datetime_to_utc(self, dt):
+    @staticmethod
+    def convert_datetime_to_utc(dt):
         old_tz = pytz.timezone('Africa/Douala')
         new_tz = pytz.utc
         local_dt = old_tz.localize(dt)
         dt = local_dt.astimezone(new_tz)
         return dt
 
-    def convert_float_to_time(self, tm):
+    @staticmethod
+    def convert_float_to_time(tm):
         tm = str(tm)
         tm = tm.split('.')
         if len(tm[0]) == 1:
@@ -109,7 +112,8 @@ class HrPayslip(models.Model):
         tm = '{}:00'.format(tm)
         return tm
 
-    def convert_time_to_float(self, tm):
+    @staticmethod
+    def convert_time_to_float(tm):
         tm = str(tm)
         tm = tm.split(':')
         tm = tm[0:2]
@@ -136,10 +140,10 @@ class HrPayslip(models.Model):
         datetime_after = datetime_to + timedelta(minutes=15)
         # datetime_to = datetime_to - timedelta(minutes=15)
 
-        datetime_before = self.convert_datetime_to_utc(datetime_before)
-        # datetime_from = self.convert_datetime_to_utc(datetime_from)
-        datetime_after = self.convert_datetime_to_utc(datetime_after)
-        # datetime_to = self.convert_datetime_to_utc(datetime_to)
+        datetime_before = HrPayslip.convert_datetime_to_utc(datetime_before)
+        # datetime_from = HrPayslip.convert_datetime_to_utc(datetime_from)
+        datetime_after = HrPayslip.convert_datetime_to_utc(datetime_after)
+        # datetime_to = HrPayslip.convert_datetime_to_utc(datetime_to)
 
         domain = []
         if employee:
@@ -154,8 +158,8 @@ class HrPayslip(models.Model):
         # Filtre des données biométriques de l'enseignant pour une période donnée
         current_date = datetime.strftime(current_date, DATE_FORMAT)
 
-        end_time = self.convert_float_to_time(end_time)
-        start_time = self.convert_float_to_time(start_time)
+        end_time = HrPayslip.convert_float_to_time(end_time)
+        start_time = HrPayslip.convert_float_to_time(start_time)
 
         datetime_to = datetime.strptime(f'{current_date} {end_time}', DATETIME_FORMAT)
         datetime_from = datetime.strptime(f'{current_date} {start_time}', DATETIME_FORMAT)
@@ -166,10 +170,10 @@ class HrPayslip(models.Model):
         datetime_after = datetime_to + timedelta(minutes=15)
         # datetime_to = datetime_to - timedelta(minutes=15)
 
-        datetime_before = self.convert_datetime_to_utc(datetime_before)
-        datetime_from = self.convert_datetime_to_utc(datetime_from)
-        datetime_after = self.convert_datetime_to_utc(datetime_after)
-        datetime_to = self.convert_datetime_to_utc(datetime_to)
+        datetime_before = HrPayslip.convert_datetime_to_utc(datetime_before)
+        datetime_from = HrPayslip.convert_datetime_to_utc(datetime_from)
+        datetime_after = HrPayslip.convert_datetime_to_utc(datetime_after)
+        datetime_to = HrPayslip.convert_datetime_to_utc(datetime_to)
 
         domain = []
         if employee:
@@ -214,8 +218,8 @@ class HrPayslip(models.Model):
                     # Vérification du temps de cours de l'enseignant en biométrie
                     daily_attendances = self.filter_daily_attendance_teacher(employee_timetable.date, employee_timetable.end_time, employee_timetable.start_time, employee_timetable.employee_id)
                     if employee_timetable.status in ['permission']:
-                        end_time = self.convert_float_to_time(employee_timetable.end_time)
-                        start_time = self.convert_float_to_time(employee_timetable.start_time)
+                        end_time = HrPayslip.convert_float_to_time(employee_timetable.end_time)
+                        start_time = HrPayslip.convert_float_to_time(employee_timetable.start_time)
                         datetime_to = datetime.strptime(f'{employee_timetable.date} {end_time}', DATETIME_FORMAT)
                         datetime_from = datetime.strptime(f'{employee_timetable.date} {start_time}', DATETIME_FORMAT)
                         weekly_hours_credit = datetime_to - datetime_from
@@ -223,8 +227,8 @@ class HrPayslip(models.Model):
                         total_weekly_hours_credit += weekly_hours_credit.total_seconds()
                     elif len(daily_attendances) > 1:
                         for daily_attendance in daily_attendances:
-                            end_time = self.convert_float_to_time(employee_timetable.end_time)
-                            start_time = self.convert_float_to_time(employee_timetable.start_time)
+                            end_time = HrPayslip.convert_float_to_time(employee_timetable.end_time)
+                            start_time = HrPayslip.convert_float_to_time(employee_timetable.start_time)
                             datetime_to = datetime.strptime(f'{employee_timetable.date} {end_time}', DATETIME_FORMAT)
                             datetime_from = datetime.strptime(f'{employee_timetable.date} {start_time}', DATETIME_FORMAT)
                             weekly_hours_credit = datetime_to - datetime_from
@@ -294,8 +298,8 @@ class HrPayslip(models.Model):
                     # Vérification du temps de cours de l'enseignant en biométrie
                     daily_attendances = self.filter_daily_attendance_teacher(employee_timetable.date, employee_timetable.end_time, employee_timetable.start_time, employee_timetable.employee_id)
                     if employee_timetable.status in ['permission']:
-                        end_time = self.convert_float_to_time(employee_timetable.end_time)
-                        start_time = self.convert_float_to_time(employee_timetable.start_time)
+                        end_time = HrPayslip.convert_float_to_time(employee_timetable.end_time)
+                        start_time = HrPayslip.convert_float_to_time(employee_timetable.start_time)
                         datetime_to = datetime.strptime(f'{employee_timetable.date} {end_time}', DATETIME_FORMAT)
                         datetime_from = datetime.strptime(f'{employee_timetable.date} {start_time}', DATETIME_FORMAT)
                         weekly_hours_credit = datetime_to - datetime_from
@@ -313,8 +317,8 @@ class HrPayslip(models.Model):
                         })
                     elif len(daily_attendances) > 1:
                         for daily_attendance in daily_attendances:
-                            end_time = self.convert_float_to_time(employee_timetable.end_time)
-                            start_time = self.convert_float_to_time(employee_timetable.start_time)
+                            end_time = HrPayslip.convert_float_to_time(employee_timetable.end_time)
+                            start_time = HrPayslip.convert_float_to_time(employee_timetable.start_time)
                             datetime_to = datetime.strptime(f'{employee_timetable.date} {end_time}', DATETIME_FORMAT)
                             datetime_from = datetime.strptime(f'{employee_timetable.date} {start_time}', DATETIME_FORMAT)
                             weekly_hours_credit = datetime_to - datetime_from
@@ -351,7 +355,7 @@ class HrPayslip(models.Model):
                         worked_hours[punching_day] = daily_attendance.punching_time - worked_hours[punching_day]
                         worked_hours[punching_day] = worked_hours[punching_day].total_seconds() / 3600.0
                         self.env['hr.payslip.worked_days'].create({
-                            'name': 'Journée du {} {}'.format(CURRENT_WEEKDAY[punching_time.weekday()], datetime.strftime(self.convert_datetime_from_utc(punching_time), DATETIME_FORMAT_FR)),
+                            'name': 'Journée du {} {}'.format(CURRENT_WEEKDAY[punching_time.weekday()], datetime.strftime(HrPayslip.convert_datetime_from_utc(punching_time), DATETIME_FORMAT_FR)),
                             'payslip_id': payslip_id.id,
                             'code': payslip_id.code,
                             'number_of_days': 1,
@@ -372,7 +376,7 @@ class HrPayslip(models.Model):
         current_date = datetime_before.date()
 
         time_before = datetime.strftime(datetime_before, TIME_FORMAT_FR)
-        time_before = self.convert_time_to_float(time_before)
+        time_before = HrPayslip.convert_time_to_float(time_before)
 
         _logger.info(f'----------- tototototototo current_date {datetime.strftime(current_date, DATE_FORMAT)} -----------')
         _logger.info(f'----------- tototototototo time_before {time_before} -----------')
@@ -393,9 +397,9 @@ class HrPayslip(models.Model):
                         employee_timetable.sudo().write({'status': 'present'})
                     else:
                         template = 'om_hr_payroll.om_hr_payroll_template_timetable_notification_absence'
-                        start_time = datetime.strptime(f'{employee_timetable.date} {self.convert_float_to_time(employee_timetable.start_time)}', DATETIME_FORMAT)
+                        start_time = datetime.strptime(f'{employee_timetable.date} {HrPayslip.convert_float_to_time(employee_timetable.start_time)}', DATETIME_FORMAT)
                         start_time = datetime.strftime(start_time, TIME_FORMAT_FR)
-                        end_time = datetime.strptime(f'{employee_timetable.date} {self.convert_float_to_time(employee_timetable.end_time)}', DATETIME_FORMAT)
+                        end_time = datetime.strptime(f'{employee_timetable.date} {HrPayslip.convert_float_to_time(employee_timetable.end_time)}', DATETIME_FORMAT)
                         end_time = datetime.strftime(end_time, TIME_FORMAT_FR)
                         message = 'Absence de {} {}'.format(start_time, end_time)
                         timetable_notifications = self.env['siantou.ems.timetable.notification'].search([
@@ -429,8 +433,8 @@ class HrPayslip(models.Model):
         _logger.info(f'----------- tototototototo datetime_from {datetime.strftime(datetime_from, DATETIME_FORMAT)} -----------')
         _logger.info(f'----------- tototototototo datetime_before {datetime.strftime(datetime_before, DATETIME_FORMAT)} -----------')
 
-        datetime_before = self.convert_datetime_to_utc(datetime_before)
-        datetime_from = self.convert_datetime_to_utc(datetime_from)
+        datetime_before = HrPayslip.convert_datetime_to_utc(datetime_before)
+        datetime_from = HrPayslip.convert_datetime_to_utc(datetime_from)
 
         daily_attendances = self.env['daily.attendance'].search([
         ], order='punching_time asc').filtered(lambda rec: UTC_TZ.localize(rec.punching_time) >= datetime_before and UTC_TZ.localize(rec.punching_time) <= datetime_from)
@@ -443,14 +447,14 @@ class HrPayslip(models.Model):
                     employee_timetables = self.env['siantou.ems.timetable.timetable'].search([
                         ('employee_id', '=', daily_attendance.employee_id.id),
                         ('status', '=', 'pending'),
-                    ], order='date asc').filtered(lambda rec: (UTC_TZ.localize(punching_time) >= self.convert_datetime_to_utc(datetime.strptime(f'{rec.date} {self.convert_float_to_time(rec.start_time)}', DATETIME_FORMAT) - timedelta(minutes=15)) and UTC_TZ.localize(punching_time) <= self.convert_datetime_to_utc(datetime.strptime(f'{rec.date} {self.convert_float_to_time(rec.start_time)}', DATETIME_FORMAT) + timedelta(minutes=15))) or (UTC_TZ.localize(punching_time) >= self.convert_datetime_to_utc(datetime.strptime(f'{rec.date} {self.convert_float_to_time(rec.end_time)}', DATETIME_FORMAT)) and UTC_TZ.localize(punching_time) <= self.convert_datetime_to_utc(datetime.strptime(f'{rec.date} {self.convert_float_to_time(rec.end_time)}', DATETIME_FORMAT) + timedelta(minutes=15))))
+                    ], order='date asc').filtered(lambda rec: (UTC_TZ.localize(punching_time) >= HrPayslip.convert_datetime_to_utc(datetime.strptime(f'{rec.date} {HrPayslip.convert_float_to_time(rec.start_time)}', DATETIME_FORMAT) - timedelta(minutes=15)) and UTC_TZ.localize(punching_time) <= HrPayslip.convert_datetime_to_utc(datetime.strptime(f'{rec.date} {HrPayslip.convert_float_to_time(rec.start_time)}', DATETIME_FORMAT) + timedelta(minutes=15))) or (UTC_TZ.localize(punching_time) >= HrPayslip.convert_datetime_to_utc(datetime.strptime(f'{rec.date} {HrPayslip.convert_float_to_time(rec.end_time)}', DATETIME_FORMAT)) and UTC_TZ.localize(punching_time) <= HrPayslip.convert_datetime_to_utc(datetime.strptime(f'{rec.date} {HrPayslip.convert_float_to_time(rec.end_time)}', DATETIME_FORMAT) + timedelta(minutes=15))))
                     employee_timetables = list(employee_timetables)
                     if len(employee_timetables) > 0:
                         for employee_timetable in employee_timetables:
                             employee_timetable.sudo().write({'status': 'progress'})
                     else:
                         template = 'om_hr_payroll.om_hr_payroll_template_timetable_notification_exception'
-                        punching_time = datetime.strftime(self.convert_datetime_from_utc(punching_time), TIME_FORMAT_FR)
+                        punching_time = datetime.strftime(HrPayslip.convert_datetime_from_utc(punching_time), TIME_FORMAT_FR)
                         message = 'Exception de {}'.format(punching_time)
                         timetable_notifications = self.env['siantou.ems.timetable.notification'].search([
                             ('template', '=', template),

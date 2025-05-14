@@ -322,14 +322,13 @@ class TimetableFilterWizard(models.TransientModel):
             title.append(STATUS_TIMETABLE[self.status])
 
         timetable_ids = []
+        timetables = self.env['siantou.ems.timetable.timetable'].search(domain)
         if self.start_time and self.end_time:
             start_time = TimetableFilterWizard.convert_float_to_time(self.start_time)
             end_time = TimetableFilterWizard.convert_float_to_time(self.end_time)
             title.append('{} - {}'.format(start_time, end_time))
-            timetables = self.env['siantou.ems.timetable.timetable'].search(domain).filtered(lambda rec: not (rec.start_time >= self.end_time or rec.end_time <= self.start_time))
-            # timetables = self.env['siantou.ems.timetable.timetable'].search(domain).filtered(lambda rec: self.search_filtered(rec))
-        else:
-            timetables = self.env['siantou.ems.timetable.timetable'].search(domain)
+            timetables = timetables.filtered(lambda rec: not (rec.start_time >= self.end_time or rec.end_time <= self.start_time))
+            # timetables = timetables.filtered(lambda rec: self.search_filtered(rec))
         for timetable in timetables:
             timetable_ids.append(timetable.id)
         timetable_ids = list(set(timetable_ids))
