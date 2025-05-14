@@ -76,17 +76,17 @@ class DailyAttendanceFilterWizard(models.TransientModel):
             if record.end_punching_time < record.start_punching_time:
                 raise ValidationError("La date de fin doit être supérieure à la date de début")
 
-    @api.onchange('start_punching_day', 'end_punching_day')
-    def _onchange_punching_day(self):
-        for record in self:
-            record.start_punching_time = None
-            record.end_punching_time = None
+    # @api.onchange('start_punching_day', 'end_punching_day')
+    # def _onchange_punching_day(self):
+    #     for record in self:
+    #         record.start_punching_time = None
+    #         record.end_punching_time = None
 
-    @api.onchange('start_punching_time', 'end_punching_time')
-    def _onchange_punching_time(self):
-        for record in self:
-            record.start_punching_day = None
-            record.end_punching_day = None
+    # @api.onchange('start_punching_time', 'end_punching_time')
+    # def _onchange_punching_time(self):
+    #     for record in self:
+    #         record.start_punching_day = None
+    #         record.end_punching_day = None
 
     def convert_datetime_from_utc(self, dt):
         new_tz = pytz.timezone('Africa/Douala')
@@ -119,22 +119,23 @@ class DailyAttendanceFilterWizard(models.TransientModel):
             title.append(PUNCH_TYPE[self.punch_type])
 
         attendance_ids = []
+        attendances = self.env['daily.attendance'].search(domain)
         if self.start_punching_day and self.end_punching_day:
             datetime_before = self.convert_datetime_to_utc(self.start_punching_day)
             datetime_after = self.convert_datetime_to_utc(self.end_punching_day)
             start_punching_day = datetime.strftime(self.start_punching_day, DATE_FORMAT_FR)
             end_punching_day = datetime.strftime(self.end_punching_day, DATE_FORMAT_FR)
+            title.append('Date')
             title.append('{} - {}'.format(start_punching_day, end_punching_day))
-            attendances = self.env['daily.attendance'].search(domain).filtered(lambda rec: not (UTC_TZ.localize(rec.punching_day) >= datetime_before and UTC_TZ.localize(rec.punching_day) <= datetime_after))
-        elif self.start_punching_time and self.end_punching_time:
+            attendances = attendances.filtered(lambda rec: UTC_TZ.localize(rec.punching_day) >= datetime_before and UTC_TZ.localize(rec.punching_day) <= datetime_after)
+        if self.start_punching_time and self.end_punching_time:
             datetime_before = self.convert_datetime_to_utc(self.start_punching_time)
             datetime_after = self.convert_datetime_to_utc(self.end_punching_time)
             start_punching_time = datetime.strftime(self.start_punching_time, DATE_FORMAT_FR)
             end_punching_time = datetime.strftime(self.end_punching_time, DATE_FORMAT_FR)
+            title.append('Punching Time')
             title.append('{} - {}'.format(start_punching_time, end_punching_time))
-            attendances = self.env['daily.attendance'].search(domain).filtered(lambda rec: not (UTC_TZ.localize(rec.punching_time) >= datetime_before and UTC_TZ.localize(rec.punching_time) <= datetime_after))
-        else:
-            attendances = self.env['daily.attendance'].search(domain)
+            attendances = attendances.filtered(lambda rec: UTC_TZ.localize(rec.punching_time) >= datetime_before and UTC_TZ.localize(rec.punching_time) <= datetime_after)
         for attendance in attendances:
             attendance_ids.append(attendance.id)
         attendance_ids = list(set(attendance_ids))
