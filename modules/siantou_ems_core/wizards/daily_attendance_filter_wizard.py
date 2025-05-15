@@ -139,7 +139,7 @@ class DailyAttendanceFilterWizard(models.TransientModel):
 
         self.env['ir.config_parameter'].sudo().set_param(f'filter.{self.env.user.id}', title)
 
-        view_id = self.env.ref('siantou_ems_core.attendance_tree_view').id
+        view_id = self.env.ref('hr_zk_attendance.daily_attendance_view_tree').id
         return {
             'name': title,
             'type': 'ir.actions.act_window',
