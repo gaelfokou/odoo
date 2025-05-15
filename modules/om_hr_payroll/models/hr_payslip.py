@@ -423,6 +423,30 @@ class HrPayslip(models.Model):
             else:
                 employee_timetable.sudo().write({'status': 'absent'})
 
+    def search_filtered_daily_attendance_teacher(self, rec, punching_time):
+        # Filtre des données biométriques de l'enseignant pour une période donnée
+        current_date = datetime.strftime(rec.date, DATE_FORMAT)
+
+        end_time = HrPayslip.convert_float_to_time(rec.end_time)
+        start_time = HrPayslip.convert_float_to_time(rec.start_time)
+
+        datetime_to = datetime.strptime(f'{current_date} {end_time}', DATETIME_FORMAT)
+        datetime_from = datetime.strptime(f'{current_date} {start_time}', DATETIME_FORMAT)
+
+        datetime_before = datetime_from - timedelta(minutes=15)
+        datetime_from = datetime_from + timedelta(minutes=15)
+
+        datetime_after = datetime_to + timedelta(minutes=15)
+        # datetime_to = datetime_to - timedelta(minutes=15)
+
+        datetime_before = HrPayslip.convert_datetime_to_utc(datetime_before)
+        datetime_from = HrPayslip.convert_datetime_to_utc(datetime_from)
+        datetime_after = HrPayslip.convert_datetime_to_utc(datetime_after)
+        datetime_to = HrPayslip.convert_datetime_to_utc(datetime_to)
+
+        result = (UTC_TZ.localize(punching_time) >= datetime_before and UTC_TZ.localize(punching_time) <= datetime_from) or (UTC_TZ.localize(punching_time) >= datetime_to and UTC_TZ.localize(punching_time) <= datetime_after)
+        return result
+
     @api.model
     def cron_timetable_exception(self):
         _logger.info(f'+++++++++++ Cron Timetable Exception Executed +++++++++++')
@@ -445,11 +469,16 @@ class HrPayslip(models.Model):
             punching_time = daily_attendance.punching_time
 
             if daily_attendance.employee_id.id:
-                if daily_attendance.employee_id.is_teacher:
+                employee_id = daily_attendance.employee_id
+                if employee_id.is_teacher:
+                    # employee_timetables = self.env['siantou.ems.timetable.timetable'].search([
+                    #     ('employee_id', '=', employee_id.id),
+                    #     ('status', '=', 'pending'),
+                    # ], order='date asc').filtered(lambda rec: (UTC_TZ.localize(punching_time) >= HrPayslip.convert_datetime_to_utc(datetime.strptime(f'{rec.date} {HrPayslip.convert_float_to_time(rec.start_time)}', DATETIME_FORMAT) - timedelta(minutes=15)) and UTC_TZ.localize(punching_time) <= HrPayslip.convert_datetime_to_utc(datetime.strptime(f'{rec.date} {HrPayslip.convert_float_to_time(rec.start_time)}', DATETIME_FORMAT) + timedelta(minutes=15))) or (UTC_TZ.localize(punching_time) >= HrPayslip.convert_datetime_to_utc(datetime.strptime(f'{rec.date} {HrPayslip.convert_float_to_time(rec.end_time)}', DATETIME_FORMAT)) and UTC_TZ.localize(punching_time) <= HrPayslip.convert_datetime_to_utc(datetime.strptime(f'{rec.date} {HrPayslip.convert_float_to_time(rec.end_time)}', DATETIME_FORMAT) + timedelta(minutes=15))))
                     employee_timetables = self.env['siantou.ems.timetable.timetable'].search([
-                        ('employee_id', '=', daily_attendance.employee_id.id),
+                        ('employee_id', '=', employee_id.id),
                         ('status', '=', 'pending'),
-                    ], order='date asc').filtered(lambda rec: (UTC_TZ.localize(punching_time) >= HrPayslip.convert_datetime_to_utc(datetime.strptime(f'{rec.date} {HrPayslip.convert_float_to_time(rec.start_time)}', DATETIME_FORMAT) - timedelta(minutes=15)) and UTC_TZ.localize(punching_time) <= HrPayslip.convert_datetime_to_utc(datetime.strptime(f'{rec.date} {HrPayslip.convert_float_to_time(rec.start_time)}', DATETIME_FORMAT) + timedelta(minutes=15))) or (UTC_TZ.localize(punching_time) >= HrPayslip.convert_datetime_to_utc(datetime.strptime(f'{rec.date} {HrPayslip.convert_float_to_time(rec.end_time)}', DATETIME_FORMAT)) and UTC_TZ.localize(punching_time) <= HrPayslip.convert_datetime_to_utc(datetime.strptime(f'{rec.date} {HrPayslip.convert_float_to_time(rec.end_time)}', DATETIME_FORMAT) + timedelta(minutes=15))))
+                    ], order='date asc').filtered(lambda rec: self.search_filtered_daily_attendance_teacher(rec, punching_time)).sorted('punching_time')
                     employee_timetables = list(employee_timetables)
                     if len(employee_timetables) > 0:
                         for employee_timetable in employee_timetables:
@@ -461,14 +490,14 @@ class HrPayslip(models.Model):
                         timetable_notifications = self.env['siantou.ems.timetable.notification'].search([
                             ('template', '=', template),
                             ('attendance_id', '=', daily_attendance.id),
-                            ('employee_id', '=', daily_attendance.employee_id.id),
+                            ('employee_id', '=', employee_id.id),
                         ])
                         timetable_notifications = list(timetable_notifications)
                         if len(timetable_notifications) == 0:
                             self.env['siantou.ems.timetable.notification'].sudo().create({
                                 'template': template,
                                 'attendance_id': daily_attendance.id,
-                                'employee_id': daily_attendance.employee_id.id,
+                                'employee_id': employee_id.id,
                                 'date': daily_attendance.punching_time.date(),
                                 'message': message,
                             })
