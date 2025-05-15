@@ -112,6 +112,40 @@ class HrEmployee(models.Model):
             if record.is_permanent and record.weekly_hours_limit != 24:
                 raise ValidationError("Vous devez définir le quota horaire hebdommadaire de cours pour un enseignant permanent à 24")
 
+    @staticmethod
+    def get_last_name(x):
+        while True:
+            if x.find('  ') != -1:
+                x = x.replace('  ', ' ')
+            else:
+                break
+        x = x.strip()
+        x = x.split(' ')
+        if len(x) > 2:
+            x = ' '.join(x[:2])
+        elif len(x) == 2:
+            x = ' '.join(x[:1])
+        else:
+            x = x[0]
+        return x
+
+    @staticmethod
+    def get_first_name(x):
+        while True:
+            if x.find('  ') != -1:
+                x = x.replace('  ', ' ')
+            else:
+                break
+        x = x.strip()
+        x = x.split(' ')
+        if len(x) > 2:
+            x = ' '.join(x[2:])
+        elif len(x) == 2:
+            x = ' '.join(x[1:])
+        else:
+            x = ''
+        return x
+
     def create_employee_user(self, employee):
         try:
             ecole = 'IUS'
@@ -251,6 +285,12 @@ class HrEmployee(models.Model):
             employee_id = self.env['hr.employee'].search([('work_email', '=', vals['work_email'])], limit=1)
             if employee_id:
                 return None
+
+        if 'name' in vals and vals['name'] and vals['name'].strip():
+            if 'last_name' not in vals or not vals['last_name'] or not vals['last_name'].strip():
+                vals['last_name'] = HrEmployee.get_last_name(vals['name'])
+            if 'first_name' not in vals or not vals['first_name'] or not vals['first_name'].strip():
+                vals['first_name'] = HrEmployee.get_first_name(vals['name'])
 
         employee = super(HrEmployee, self).create(vals)
 

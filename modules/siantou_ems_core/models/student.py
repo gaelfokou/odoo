@@ -214,6 +214,40 @@ class Student(models.Model):
             # Affecter les emplois du temps trouvés à l'attribut timetable_ids
             record.timetable_ids = timetables
 
+    @staticmethod
+    def get_last_name(x):
+        while True:
+            if x.find('  ') != -1:
+                x = x.replace('  ', ' ')
+            else:
+                break
+        x = x.strip()
+        x = x.split(' ')
+        if len(x) > 2:
+            x = ' '.join(x[:2])
+        elif len(x) == 2:
+            x = ' '.join(x[:1])
+        else:
+            x = x[0]
+        return x
+
+    @staticmethod
+    def get_first_name(x):
+        while True:
+            if x.find('  ') != -1:
+                x = x.replace('  ', ' ')
+            else:
+                break
+        x = x.strip()
+        x = x.split(' ')
+        if len(x) > 2:
+            x = ' '.join(x[2:])
+        elif len(x) == 2:
+            x = ' '.join(x[1:])
+        else:
+            x = ''
+        return x
+
     def create_student_user(self, student):
         try:
             ecole = re.sub('[^A-Za-z]+', '', student.school_id.name)
@@ -356,10 +390,16 @@ class Student(models.Model):
 
     @api.model
     def create(self, vals):
-        if vals['email'] and vals['email'].strip():
+        if 'email' in vals and vals['email'] and vals['email'].strip():
             student_id = self.env['oe.school.student'].search([('email', '=', vals['email'])], limit=1)
             if student_id:
                 return None
+
+        if 'name' in vals and vals['name'] and vals['name'].strip():
+            if 'last_name' not in vals or not vals['last_name'] or not vals['last_name'].strip():
+                vals['last_name'] = Student.get_last_name(vals['name'])
+            if 'first_name' not in vals or not vals['first_name'] or not vals['first_name'].strip():
+                vals['first_name'] = Student.get_first_name(vals['name'])
 
         field_of_study_id = self.env['siantou.ems.core.field_of_study'].search([('id', '=', vals['field_of_study_id'])], limit=1)
         if field_of_study_id:
