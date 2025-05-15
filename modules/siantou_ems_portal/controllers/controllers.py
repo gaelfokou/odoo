@@ -110,10 +110,14 @@ class PortalAccount(portal.CustomerPortal):
             timetable['id'] = search_timetable.id
             timetable['date'] = search_timetable.date
             timetable['date_of_week'] = datetime.strftime(search_timetable.date, DATE_FORMAT_FR)
+            timetable['semester_name'] = search_timetable.semester_id.name
+            timetable['cycle_name'] = search_timetable.cycle_id.name
+            timetable['level_name'] = search_timetable.level_id.name
             timetable['field_of_study_id'] = search_timetable.field_of_study_id.id
             timetable['field_of_study_name'] = search_timetable.field_of_study_id.name
-            timetable['semester_name'] = search_timetable.semester_id.name
-            timetable['level_name'] = search_timetable.level_id.name
+            timetable['specialty_name'] = search_timetable.specialty_id.name
+            timetable['option_name'] = search_timetable.option_id.name
+            timetable['class_name'] = search_timetable.class_id.name
             timetable['department_id'] = search_timetable.department_id.id
             timetable['department_name'] = search_timetable.department_id.name
             timetable['subject_name'] = search_timetable.subject_id.name
@@ -218,8 +222,7 @@ class PortalAccount(portal.CustomerPortal):
             if is_user == 'is_teacher':
                 domain.append(('employee_id', '=', user.id))
             elif is_user == 'is_student':
-                domain.append(('level_id', '=', user.level_id.id))
-                domain.append(('field_of_study_id', '=', user.field_of_study_id.id))
+                domain.append(('class_id', '=', user.class_id.id))
             timetable_ids = http.request.env['siantou.ems.timetable.timetable'].sudo().search(domain, order='date asc')
             timetable_ids = list(timetable_ids)
             if len(timetable_ids) > 0:
