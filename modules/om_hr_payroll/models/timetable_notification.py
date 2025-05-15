@@ -37,6 +37,7 @@ class TimetableNotification(models.Model):
 
     @api.model
     def cron_timetable_notification(self):
+        _logger.info(f'+++++++++++ Cron Timetable Notification Executed +++++++++++')
         timetable_notifications = self.env['siantou.ems.timetable.notification'].search([
             ('status', '=', 'pending'),
         ])

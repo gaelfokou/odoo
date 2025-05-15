@@ -369,6 +369,7 @@ class HrPayslip(models.Model):
 
     @api.model
     def cron_timetable_presence(self):
+        _logger.info(f'+++++++++++ Cron Timetable Presence Executed +++++++++++')
         datetime_from = datetime.now()
         datetime_from = datetime_from + timedelta(hours=1)
 
@@ -424,6 +425,7 @@ class HrPayslip(models.Model):
 
     @api.model
     def cron_timetable_exception(self):
+        _logger.info(f'+++++++++++ Cron Timetable Exception Executed +++++++++++')
         datetime_from = datetime.now()
         datetime_from = datetime_from + timedelta(hours=1)
         current_date = datetime_from.date()

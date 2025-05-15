@@ -161,7 +161,7 @@ class BiometricDeviceDetails(models.Model):
 
     def action_download_attendance(self):
         """Function to download attendance records from the device"""
-        _logger.info("++++++++++++Cron Executed++++++++++++++++++++++")
+        _logger.info(f'+++++++++++ Cron Download Attendance Executed +++++++++++')
         zk_attendance = self.env['zk.machine.attendance']
         hr_attendance = self.env['hr.attendance']
         for info in self:
