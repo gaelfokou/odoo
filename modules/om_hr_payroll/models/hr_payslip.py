@@ -478,7 +478,7 @@ class HrPayslip(models.Model):
                     employee_timetables = self.env['siantou.ems.timetable.timetable'].search([
                         ('employee_id', '=', employee_id.id),
                         ('status', '=', 'pending'),
-                    ], order='date asc').filtered(lambda rec: self.search_filtered_daily_attendance_teacher(rec, punching_time)).sorted('punching_time')
+                    ], order='date asc').filtered(lambda rec: self.search_filtered_daily_attendance_teacher(rec, punching_time))
                     employee_timetables = list(employee_timetables)
                     if len(employee_timetables) > 0:
                         for employee_timetable in employee_timetables:
