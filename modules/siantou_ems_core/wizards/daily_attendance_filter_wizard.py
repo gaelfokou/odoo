@@ -20,6 +20,7 @@ TIME_FORMAT = '%H:%M:%S'
 TIME_FORMAT_FR = '%H:%M'
 
 ATTENDANCE_TYPE = {
+    '0': 'Type_0',
     '1': 'Finger',
     '2': 'Type_2',
     '3': 'Password',
@@ -50,7 +51,7 @@ class DailyAttendanceFilterWizard(models.TransientModel):
                                  help='Working address of the employee')
     attendance_type = fields.Selection([('1', 'Finger'), ('15', 'Face'),
                                         ('2', 'Type_2'), ('3', 'Password'),
-                                        ('4', 'Card')], string='Category',
+                                        ('0', 'Type_0'), ('4', 'Card')], string='Category',
                                        help='Attendance detecting methods')
     punch_type = fields.Selection([('0', 'Check In'), ('1', 'Check Out'),
                                    ('2', 'Break Out'), ('3', 'Break In'),

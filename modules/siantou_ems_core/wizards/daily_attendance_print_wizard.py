@@ -12,6 +12,7 @@ import copy
 import logging
 
 ATTENDANCE_TYPE = {
+    '0': 'Type_0',
     '1': 'Finger',
     '2': 'Type_2',
     '3': 'Password',

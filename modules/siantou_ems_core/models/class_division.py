@@ -82,6 +82,10 @@ class EducationClass(models.Model):
         string='Liste des groupes'
     )
 
+    _sql_constraints = [
+        ('unique_year_specialty_option_level_type_cour', 'unique(year_id,specialty_id,option_id,level_id,type_cour)', 'L\'année académique, la spécialité, l\'option, le niveau, et le type de cours doivent être uniques.'),
+    ]
+
     @api.depends('specialty_id', 'option_id', 'level_id', 'type_cour')
     def _compute_name(self):
         for record in self:
