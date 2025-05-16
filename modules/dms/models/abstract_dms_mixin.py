@@ -14,19 +14,19 @@ class AbstractDmsMixin(models.AbstractModel):
     )
     is_hidden = fields.Boolean(
         string="Storage is Hidden",
-        related="storage_id.is_hidden",
+        related='storage_id.is_hidden',
         readonly=True,
         store=True,
     )
     company_id = fields.Many2one(
-        related="storage_id.company_id",
+        related='storage_id.company_id',
         comodel_name="res.company",
         string="Company",
         readonly=True,
         store=True,
         index="btree",
     )
-    storage_id_save_type = fields.Selection(related="storage_id.save_type", store=False)
+    storage_id_save_type = fields.Selection(related='storage_id.save_type', store=False)
     color = fields.Integer(default=0)
     category_id = fields.Many2one(
         comodel_name="dms.category",

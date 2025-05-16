@@ -55,10 +55,10 @@ class DMSFile(models.Model):
         index="btree",
         tracking=True,  # Leave log if "moved" to another directory
     )
-    root_directory_id = fields.Many2one(related="directory_id.root_directory_id")
+    root_directory_id = fields.Many2one(related='directory_id.root_directory_id')
     # Override acording to defined in AbstractDmsMixin
     storage_id = fields.Many2one(
-        related="directory_id.storage_id",
+        related='directory_id.storage_id',
         readonly=True,
         prefetch=False,
     )
@@ -186,10 +186,10 @@ class DMSFile(models.Model):
         return False
 
     res_model = fields.Char(
-        string="Linked attachments model", related="directory_id.res_model"
+        string="Linked attachments model", related='directory_id.res_model'
     )
     res_id = fields.Integer(
-        string="Linked attachments record ID", related="directory_id.res_id"
+        string="Linked attachments record ID", related='directory_id.res_id'
     )
     attachment_id = fields.Many2one(
         comodel_name="ir.attachment",

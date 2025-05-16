@@ -37,7 +37,7 @@ class ScolariteEtudiant(models.TransientModel):
                                        domain=[('fee_special', '=', True)],
                                        string='Catégorie de frais',  tracking=True)
 	# campus = fields.Many2one('siantou.ems.core.campus',
-    #     'Campus', related="student_id.admission_class.campus", store=True, tracking=True)
+    #     'Campus', related='student_id.admission_class.campus', store=True, tracking=True)
 	campus = fields.Many2one(
 		'siantou.ems.core.campus',
         'Campus',

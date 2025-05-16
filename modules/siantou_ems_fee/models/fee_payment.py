@@ -49,7 +49,7 @@ class FeePaymentLine(models.Model):
     numero_compte = fields.Char(string="N° de compte")
     name_bank = fields.Char(string="Nom bank",)
     code_guichet = fields.Char(string="Code guichet")
-    # sequence = fields.Integer('Séquence', related="structure_frais_line_id.sequence")
+    # sequence = fields.Integer('Séquence', related='structure_frais_line_id.sequence')
     amount_total = fields.Monetary('Montant versé')
     # amount_reste = fields.Monetary('Montant à compléter')
     # amount_reste = fields.Monetary('Montant restant', related='invoice_id.amount_residual')

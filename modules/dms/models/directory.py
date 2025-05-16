@@ -299,7 +299,7 @@ class DmsDirectory(models.Model):
         return res_ids
 
     allowed_model_ids = fields.Many2many(
-        related="storage_id.model_ids",
+        related='storage_id.model_ids',
         comodel_name="ir.model",
     )
     model_id = fields.Many2one(
@@ -311,14 +311,14 @@ class DmsDirectory(models.Model):
         store=True,
     )
     storage_id_save_type = fields.Selection(
-        related="storage_id.save_type",
+        related='storage_id.save_type',
         related_sudo=True,
         readonly=True,
         store=False,
         prefetch=False,
     )
     storage_id_inherit_access_from_parent_record = fields.Boolean(
-        related="storage_id.inherit_access_from_parent_record",
+        related='storage_id.inherit_access_from_parent_record',
         related_sudo=True,
         store=True,
     )

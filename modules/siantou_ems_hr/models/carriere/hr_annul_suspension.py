@@ -29,19 +29,19 @@ class AnnulSuspension(models.Model):
 
     name = fields.Char(
         string="Code",
-        related="suspension_id.name",
+        related='suspension_id.name',
         states={"draft": [("readonly", False)]},
     )
 
     reference = fields.Char(
         string="Référence de l'acte",
-        related="suspension_id.reference",
+        related='suspension_id.reference',
         states={"draft": [("readonly", False)]},
     )
 
     date_suspension = fields.Date(
         string="Date de sanction",
-        related="suspension_id.date",
+        related='suspension_id.date',
         states={"draft": [("readonly", False)]},
     )
 

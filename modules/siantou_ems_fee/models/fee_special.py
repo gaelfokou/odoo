@@ -26,7 +26,7 @@ class FeeSpecial(models.Model):
     partner_id = fields.Many2one(
         'res.partner',
         string='partner',
-        related="student_id.partner_id"
+        related='student_id.partner_id'
     )
     fee_structure_id = fields.Many2one(
         'siantou.ems.fee.structure',
