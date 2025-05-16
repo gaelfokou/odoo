@@ -136,20 +136,20 @@
             </field>
         </record>
 
-        <!-- <menuitem name='Tutelles académiques' id="menu_school_course_supervisions_course_supervisions"
+        <!-- <menuitem name="$1" id="menu_school_course_supervisions_course_supervisions"
                     parent="menu_school_course_supervisions" action="action_oe_school_course_supervision"
                      sequence="1"/> -->
 
         <menuitem
             id="menu_siantou_ems_core_supervision"
-            name='Tutelles académiques'
+            name="$1"
             parent="menu_siantou_ems_core_config_fa"
             action="action_oe_school_course_supervision"
             groups="siantou_ems_core.group_courses_user,siantou_ems_core.group_courses_admin,base.group_system"
             sequence="7"/>
         <menuitem
             id="menu_siantou_ems_core_supervision_2"
-            name='Tutelles académiques'
+            name="$1"
             parent="menu_siantou_ems_core_program"
             action="action_oe_school_course_supervision"
             groups="siantou_ems_core.group_courses_user,siantou_ems_core.group_courses_admin,base.group_system"

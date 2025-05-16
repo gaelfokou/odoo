@@ -73,7 +73,7 @@
                                         <field name="to_pay" widget='checkbox' />
                                         <field name="pay_complet" widget='checkbox' />
                                         <field name="date_payment" />
-                                        <field name='currency_id' column_invisible="True"/>
+                                        <field name="currency_id" column_invisible="True"/>
                                     </tree>
                                 </field>
                             </page>

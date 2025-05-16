@@ -148,20 +148,20 @@
             </field>
         </record>
 
-        <!-- <menuitem name='Cursus ou Cycles' id="menu_school_courses_courses"
+        <!-- <menuitem name="Cursus ou Cycles" id="menu_school_courses_courses"
                     parent="menu_school_courses" action="action_oe_school_course"
                      sequence="1"/> -->
 
         <menuitem
             id="menu_siantou_ems_core_cycle"
-            name='Cursus ou Cycles'
+            name="Cursus ou Cycles"
             parent="menu_siantou_ems_core_config_fa"
             action="action_oe_school_course"
             groups="siantou_ems_core.group_courses_user,siantou_ems_core.group_courses_admin,base.group_system"
             sequence="7"/>
         <menuitem
             id="menu_siantou_ems_core_cycle_2"
-            name='Cursus ou Cycles'
+            name="Cursus ou Cycles"
             parent="menu_siantou_ems_core_program"
             action="action_oe_school_course"
             groups="siantou_ems_core.group_courses_user,siantou_ems_core.group_courses_admin,base.group_system"

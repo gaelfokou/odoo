@@ -40,7 +40,7 @@
                                         <field name="amount_total" sum="Total"/>
                                         <field name="amount_reste" sum="Reste à Payer"/>
                                         <field name="to_pay" widget='checkbox' />
-                                        <field name='currency_id' invisible='1' />
+                                        <field name="currency_id" invisible='1' />
                                     </tree>
                                 </field>
                             </page>
