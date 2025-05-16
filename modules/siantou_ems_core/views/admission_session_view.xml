@@ -121,6 +121,5 @@
             groups="siantou_ems_core.group_session_user,siantou_ems_core.group_session_admin"
             sequence="2"
         />
-
 	</data>
 </odoo>

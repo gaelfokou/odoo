@@ -44,7 +44,6 @@
                 name="Taux horaires personnalisés"
                 parent="menu_siantou_ems_core_employee"
                 action="action_teacher_hourly_rate"
-                sequence="20"/>
-
+            sequence="20"/>
     </data>
 </odoo>

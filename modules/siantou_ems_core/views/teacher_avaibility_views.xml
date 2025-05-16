@@ -41,7 +41,6 @@
                 name="Disponibilités"
                 parent="menu_siantou_ems_core_employee"
                 action="action_teacher_availability"
-                sequence="20"/>
-
+            sequence="20"/>
     </data>
 </odoo>

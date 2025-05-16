@@ -89,12 +89,12 @@
                 name="Unité d'enseignement"
                 parent="menu_siantou_ems_core_config_pe"
                 action="action_show_unite_enseignement"
-                sequence="2"/>
+            sequence="2"/>
         <menuitem
                 id="menu_siantou_ems_core_unite_enseignement_2"
                 name="Unité d'enseignement"
                 parent="menu_siantou_ems_core_program"
                 action="action_show_unite_enseignement"
-                sequence="2"/>
+            sequence="2"/>
 	</data>
 </odoo>

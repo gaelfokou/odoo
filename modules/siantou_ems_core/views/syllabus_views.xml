@@ -59,6 +59,6 @@
                 name="Syllabus"
                 parent="menu_siantou_ems_core_configuration"
                 action="action_show_syllabus"
-                sequence="2"/> -->
+            sequence="2"/> -->
 	</data>
 </odoo>

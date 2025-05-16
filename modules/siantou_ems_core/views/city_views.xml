@@ -74,6 +74,5 @@
             groups="siantou_ems_core.group_city_user,siantou_ems_core.group_city_admin,base.group_system"
             sequence="11"
         />
-
 	</data>
 </odoo>

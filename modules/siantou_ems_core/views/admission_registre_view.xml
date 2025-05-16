@@ -111,6 +111,5 @@
             parent="menu_siantou_ems_core_adminssions"
             action="action_siantou_admission_registre"
             sequence="3"/>
-
     </data>
 </odoo>

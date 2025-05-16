@@ -73,7 +73,7 @@
                 name="Frais de préinscription"
                 parent="menu_siantou_ems_core_configuration"
                 action="action_show_fee_enrollment"
-                sequence="8"/>
+            sequence="8"/>
 	</data>
 </odoo>
 

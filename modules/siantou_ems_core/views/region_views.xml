@@ -74,6 +74,5 @@
             groups="siantou_ems_core.group_region_user,siantou_ems_core.group_region_admin,base.group_system"
             sequence="10"
         />
-
 	</data>
 </odoo>

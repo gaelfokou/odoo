@@ -61,6 +61,11 @@
             id="menu_school_specialty"
             parent="menu_siantou_ems_core_config_fa" 
             action="action_school_specialty"
-                sequence="3"/>
+            sequence="3"/>
+        <menuitem name="Spécialités" 
+            id="menu_school_specialty_2"
+            parent="menu_siantou_ems_core_program" 
+            action="action_school_specialty"
+            sequence="3"/>
     </data>
 </odoo>

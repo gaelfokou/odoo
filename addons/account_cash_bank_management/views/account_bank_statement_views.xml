@@ -227,7 +227,7 @@
                 parent="account.menu_finance_entries_accounting_miscellaneous"
                 action="action_account_bank_statements"
                 id="menu_account_bank_statements"
-                sequence="30"
+            sequence="30"
         />
 
     </data>

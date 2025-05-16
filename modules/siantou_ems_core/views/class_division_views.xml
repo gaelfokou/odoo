@@ -114,7 +114,12 @@
                 name="Classes"
                 parent="menu_siantou_ems_core_config_fa"
                 action="action_show_class"
-                sequence="4"/>
-
+            sequence="4"/>
+        <menuitem
+                id="menu_siantou_ems_core_class_2"
+                name="Classes"
+                parent="menu_siantou_ems_core_program"
+                action="action_show_class"
+            sequence="4"/>
 	</data>
 </odoo>
