@@ -444,7 +444,8 @@ class HrPayslip(models.Model):
         datetime_after = HrPayslip.convert_datetime_to_utc(datetime_after)
         datetime_to = HrPayslip.convert_datetime_to_utc(datetime_to)
 
-        result = (UTC_TZ.localize(punching_time) >= datetime_before and UTC_TZ.localize(punching_time) <= datetime_from) or (UTC_TZ.localize(punching_time) >= datetime_to and UTC_TZ.localize(punching_time) <= datetime_after)
+        # result = (UTC_TZ.localize(punching_time) >= datetime_before and UTC_TZ.localize(punching_time) <= datetime_from) or (UTC_TZ.localize(punching_time) >= datetime_to and UTC_TZ.localize(punching_time) <= datetime_after)
+        result = (UTC_TZ.localize(punching_time) >= datetime_before and UTC_TZ.localize(punching_time) <= datetime_after)
         return result
 
     @api.model
