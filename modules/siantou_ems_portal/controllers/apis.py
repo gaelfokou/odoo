@@ -86,7 +86,7 @@ class ApiAccount(http.Controller):
                 field_of_study_id = timetables[0]['field_of_study_id']
 
                 slots = http.request.env['siantou.ems.timetable.slot'].sudo().search([
-                    ('is_default', '=', False),
+                    ('is_active', '=', False),
                 ])
                 slots = list(slots)
 
@@ -106,7 +106,7 @@ class ApiAccount(http.Controller):
                     ])
                 else:
                     slots = http.request.env['siantou.ems.timetable.slot'].sudo().search([
-                        ('is_default', '=', True),
+                        ('is_active', '=', True),
                     ])
 
                 slots = list(slots)
