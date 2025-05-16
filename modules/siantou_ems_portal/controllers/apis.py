@@ -41,7 +41,7 @@ TYPE_PAIEMENT = {
 
 STATUS_NOTIFICATION = {
     'pending': 'En attente',
-    '1': 'Envoyé',
+    'sent': 'Envoyé',
 }
 
 _logger = logging.getLogger(__name__)
