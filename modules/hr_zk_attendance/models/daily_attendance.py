@@ -36,7 +36,7 @@ class DailyAttendance(models.Model):
                                  help='Working address of the employee')
     attendance_type = fields.Selection([('1', 'Finger'), ('15', 'Face'),
                                         ('2', 'Type_2'), ('3', 'Password'),
-                                        ('0', 'Type_0'), ('4', 'Card')], string='Category',
+                                        ('4', 'Card')], string='Category',
                                        help='Attendance detecting methods')
     punch_type = fields.Selection([('0', 'Check In'), ('1', 'Check Out'),
                                    ('2', 'Break Out'), ('3', 'Break In'),

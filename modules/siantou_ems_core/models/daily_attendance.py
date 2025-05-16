@@ -9,6 +9,11 @@ _logger = logging.getLogger(__name__)
 class DailyAttendance(models.Model):
     _inherit = 'daily.attendance'
 
+    attendance_type = fields.Selection([('1', 'Finger'), ('15', 'Face'),
+                                        ('2', 'Type_2'), ('3', 'Password'),
+                                        ('0', 'Type_0'), ('4', 'Card')], string='Category',
+                                       help='Attendance detecting methods')
+
     def action_open_filter(self):
         view_id = self.env.ref('siantou_ems_core.daily_attendance_filter_wizard').id
         return {
