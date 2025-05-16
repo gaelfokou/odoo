@@ -69,14 +69,14 @@
             </field>
         </record> -->
 
-        <menuitem 
+        <menuitem
             action="siantou_ems_core.action_enrollment_history"
             name="Inscription à encaisser"
             id="menu_fee_payment_enrollment_action"
             parent="menu_student_fee_receipt"
             sequence="20"
         />
-        <menuitem 
+        <menuitem
             action="account.action_move_out_invoice_type"
             name="Créances étudiantes"
             id="menu_fee_payment_action"

@@ -85,7 +85,7 @@
             </field>
         </record>
 
-        <menuitem 
+        <menuitem
             id="menu_results_note_exam"
             name="Remplissage des notes" 
             action="action_exam_teacher_result"

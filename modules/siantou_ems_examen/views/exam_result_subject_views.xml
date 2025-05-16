@@ -104,7 +104,7 @@
             </field>
         </record>
 
-        <menuitem 
+        <menuitem
             id="menu_results_subject_exam"
             name="Résultat session normale/Contrôle continu par matière" 
             action="action_exam_result_subject"

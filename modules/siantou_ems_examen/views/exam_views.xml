@@ -152,7 +152,7 @@
             </field>
         </record>
 
-        <menuitem 
+        <menuitem
             name="Examens" 
             id="menu_examen_examen"
             parent="examen_menu_plannification_sn_cc"

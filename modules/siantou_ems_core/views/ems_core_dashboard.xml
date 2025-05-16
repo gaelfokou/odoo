@@ -5,7 +5,7 @@
             <field name="name">Tableau de bord</field>
             <field name="tag">owl.ems_core_dashboard</field>
         </record>
-        <menuitem 
+        <menuitem
             name="Accueil" 
             id="menu_owl_ems_core_dashboard" 
             parent="menu_siantou_ems_core" 

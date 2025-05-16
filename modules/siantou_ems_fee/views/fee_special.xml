@@ -109,7 +109,7 @@
             </field>
         </record>
 
-        <menuitem 
+        <menuitem
             action="fee_special_action"
             id="menu_fee_special_action"
             parent="menu_student_fee_receipt"

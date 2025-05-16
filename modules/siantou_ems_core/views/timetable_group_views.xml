@@ -30,7 +30,7 @@
             </field>
         </record>
 
-        <menuitem 
+        <menuitem
             id="menu_siantou_ems_timetable_group" 
             name="Versions d'emploi du temps"
             parent="menu_siantou_ems_timetable_planning" 

@@ -53,7 +53,7 @@
             <field name="view_mode">tree,form</field>
         </record>
 
-        <menuitem 
+        <menuitem
             id="menu_action_fee_bank_account_config" 
             action="action_fee_bank_account_config"
             parent="menu_fees_configuration"

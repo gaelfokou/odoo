@@ -37,7 +37,7 @@
     <!-- Menu principal de gestion des emplois du temps -->
     <menuitem
             id="menu_siantou_ems_core_program"
-            name="Programmes"
+            name="Académie"
 			parent="menu_siantou_ems_core"
             sequence = "50"/>
 
@@ -54,13 +54,13 @@
 			parent="menu_siantou_ems_core"
             sequence = "100"/>
 
-    <menuitem 
+    <menuitem
             id="menu_siantou_ems_core_config_pe" 
             name="Gestion des programmes d'enseignements" 
             parent="menu_siantou_ems_core_configuration" 
             sequence="2"/>
 
-    <menuitem 
+    <menuitem
             id="menu_siantou_ems_core_config_fa" 
             name="Gestion des formations académiques" 
             parent="menu_siantou_ems_core_configuration" 

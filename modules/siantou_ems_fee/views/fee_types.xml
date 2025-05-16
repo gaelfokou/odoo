@@ -43,7 +43,7 @@
             <field name="view_mode">tree,form</field>
         </record>
 
-        <menuitem 
+        <menuitem
             id="menu_student_fee_receipt" 
             name="Paiements étudiants"
             parent="menu_education_fee_root"

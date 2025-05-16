@@ -79,7 +79,7 @@
             </field>
         </record>
 
-        <!-- <menuitem 
+        <!-- <menuitem
             name="Participations" 
             id="menu_examen_attendees"
             parent="examen_menu_root_attendees"

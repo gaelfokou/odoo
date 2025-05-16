@@ -146,7 +146,7 @@
             </field>
         </record>
 
-        <menuitem 
+        <menuitem
             name="Matières programmées de session normal/Contrôle continu" 
             id="menu_examen_e"
             parent="examen_menu_plannification_cc_sn"

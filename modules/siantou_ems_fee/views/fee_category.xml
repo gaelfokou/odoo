@@ -40,7 +40,7 @@
             <field name="res_model">siantou.ems.fee.category</field>
             <field name="view_mode">tree,form</field>
         </record>
-        <menuitem 
+        <menuitem
             id="menu_action_fee_category" 
             action="action_fee_category"
             parent="menu_fees_configuration"

@@ -66,7 +66,7 @@
             </field>
         </record>
 
-        <!-- <menuitem 
+        <!-- <menuitem
             action="fee_payment_line_action"
             id="menu_fee_payment_line_action"
             parent="menu_student_fee_receipt"

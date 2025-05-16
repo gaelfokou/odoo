@@ -67,7 +67,7 @@
             </field>
         </record>
 
-        <menuitem 
+        <menuitem
             action="fee_moratoire_action"
             id="menu_fee_moratoire_action"
             parent="menu_fees_configuration"

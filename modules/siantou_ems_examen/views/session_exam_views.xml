@@ -155,7 +155,7 @@
             </field>
         </record>
 
-        <menuitem 
+        <menuitem
             id="menu_session_examen"
             parent="examen_menu_plannification_cc_sn"
             action="action_session_exam"

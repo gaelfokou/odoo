@@ -93,7 +93,7 @@
             </field>
         </record>
 
-        <menuitem 
+        <menuitem
             id="menu_results_codification_exam"
             name="Codification des étudiants" 
             action="action_exam_result"
