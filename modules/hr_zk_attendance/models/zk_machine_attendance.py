@@ -41,9 +41,10 @@ class ZkMachineAttendance(models.Model):
                                    ('255', 'Duplicate')],
                                   string='Punching Type',
                                   help='Punching type of the attendance')
-    attendance_type = fields.Selection([('1', 'Finger'), ('15', 'Face'),
-                                        ('2', 'Type_2'), ('3', 'Password'),
-                                        ('4', 'Card'), ('255', 'Duplicate')],
+    attendance_type = fields.Selection([('0', 'Type_0'), ('15', 'Face'),
+                                        ('1', 'Finger'), ('2', 'Type_2'),
+                                        ('3', 'Password'), ('4', 'Card'),
+                                        ('255', 'Duplicate')],
                                        string='Category',
                                        help="Attendance detecting methods")
     punching_time = fields.Datetime(string='Punching Time',
