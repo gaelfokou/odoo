@@ -29,7 +29,7 @@
                             <field name="semester_id"/>
                             <field name="is_submit" invisible="1"/>
                             <field name="group_parent_id" invisible="is_submit == False"/>
-                            <field name="group_child_ids" invisible="is_submit == True" domain="[('is_submit', '=', True)]"/>
+                            <field name="group_child_ids" widget="many2many_tags" invisible="is_submit == True" domain="[('is_submit', '=', True)]"/>
                             <field name="is_valid" invisible="is_submit == False"/>
                             <field name="is_active" invisible="is_submit == True"/>
                             <field name="timetables"/>
