@@ -728,7 +728,7 @@ class TimetableGroup(models.Model):
 
     is_active = fields.Boolean(string="Actif", default=False)
 
-    is_submit = fields.Boolean(string="Soumis", default=True)
+    is_submit = fields.Boolean(string="Soumis", default=False)
 
     group_parent_id = fields.Many2one(
         'siantou.ems.timetable.group',
