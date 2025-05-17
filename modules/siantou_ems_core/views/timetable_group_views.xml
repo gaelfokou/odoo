@@ -7,12 +7,35 @@
             <field name="name">siantou.ems.timetable.group.tree</field>
             <field name="model">siantou.ems.timetable.group</field>
             <field name="arch" type="xml">
-                <tree editable="bottom">
+                <tree>
                     <field name="name"/>
-                    <field name="timetables"/>
                     <field name="semester_id"/>
+                    <field name="is_submit"/>
+                    <field name="is_valid"/>
                     <field name="is_active"/>
                 </tree>
+            </field>
+        </record>
+
+        <!-- Vue en mode Liste (Tree) pour TimetableGroup -->
+        <record id="view_timetable_group_form" model="ir.ui.view">
+            <field name="name">siantou.ems.timetable.group.form</field>
+            <field name="model">siantou.ems.timetable.group</field>
+            <field name="arch" type="xml">
+                <form>
+					<sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="semester_id"/>
+                            <field name="is_submit"/>
+                            <field name="group_parent_id" invisible="is_submit == False"/>
+                            <field name="group_child_ids" invisible="is_submit == True" domain="[('is_submit', '=', True)]"/>
+                            <field name="is_valid" invisible="is_submit == False"/>
+                            <field name="is_active" invisible="is_submit == True"/>
+                            <field name="timetables"/>
+                        </group>
+					</sheet>
+                </form>
             </field>
         </record>
 
@@ -20,9 +43,15 @@
         <record
                 id="action_timetable_group"
                 model="ir.actions.act_window">
-            <field name="name">Liste des versions</field>
+            <field name="name">Liste des versions publiées</field>
             <field name="res_model">siantou.ems.timetable.group</field>
-            <field name="view_mode">tree</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_ids"
+                eval="[(5, 0, 0),
+                (0, 0, {'view_mode': 'tree', 'view_id': ref('view_timetable_group_tree')}),
+                (0, 0, {'view_mode': 'form', 'view_id': ref('view_timetable_group_form')})]"/>
+            <field name="domain">[('is_submit', '=', False)]</field>
+            <field name="context">{'default_is_submit': False}</field>
             <field name="help" type="html">
                 <p class="o_view_nocontent_smiling_face">
                     Liste des versions d'emploi du temps. Vous pouvez uniquement supprimer des versions.
@@ -32,9 +61,37 @@
 
         <menuitem
             id="menu_siantou_ems_timetable_group" 
-            name="Versions d'emploi du temps"
+            name="Versions d'emploi du temps publiées"
             parent="menu_siantou_ems_timetable_planning" 
             action="action_timetable_group" 
+            groups="siantou_ems_core.group_timetable_user,siantou_ems_core.group_timetable_admin,base.group_system"
+            sequence="2"/>
+
+        <!-- Action pour le menu d'affichage des versions -->
+        <record
+                id="action_timetable_group_submit"
+                model="ir.actions.act_window">
+            <field name="name">Liste des versions soumises</field>
+            <field name="res_model">siantou.ems.timetable.group</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_ids"
+                eval="[(5, 0, 0),
+                (0, 0, {'view_mode': 'tree', 'view_id': ref('view_timetable_group_tree')}),
+                (0, 0, {'view_mode': 'form', 'view_id': ref('view_timetable_group_form')})]"/>
+            <field name="domain">[('is_submit', '=', True)]</field>
+            <field name="context">{'default_is_submit': True}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Liste des versions d'emploi du temps soumis. Vous pouvez uniquement supprimer des versions.
+                </p>
+            </field>
+        </record>
+
+        <menuitem
+            id="menu_siantou_ems_timetable_group_submit" 
+            name="Versions d'emploi du temps soumises"
+            parent="menu_siantou_ems_timetable_planning" 
+            action="action_timetable_group_submit" 
             groups="siantou_ems_core.group_timetable_user,siantou_ems_core.group_timetable_admin,base.group_system"
             sequence="2"/>
 	</data>

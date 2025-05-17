@@ -728,6 +728,21 @@ class TimetableGroup(models.Model):
 
     is_active = fields.Boolean(string="Actif", default=False)
 
+    is_submit = fields.Boolean(string="Soumis", default=True)
+
+    group_parent_id = fields.Many2one(
+        'siantou.ems.timetable.group',
+        string='Version d\'emploi du temps publiée',
+    )
+
+    group_child_ids = fields.One2many(
+        'siantou.ems.timetable.group',
+        'group_parent_id',
+        string='Versions d\'emploi du temps soumises'
+    )
+
+    is_valid = fields.Boolean(string="Valide", default=False)
+
     @api.constrains('is_active')
     def _constrains_default(self):
         for record in self:
