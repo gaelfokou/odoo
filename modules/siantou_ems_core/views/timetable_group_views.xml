@@ -11,7 +11,7 @@
                     <field name="name"/>
                     <field name="semester_id"/>
                     <field name="is_submit"/>
-                    <field name="is_valid"/>
+                    <field name="status"/>
                     <field name="is_active"/>
                 </tree>
             </field>
@@ -28,10 +28,10 @@
                             <field name="name"/>
                             <field name="semester_id"/>
                             <field name="is_submit" invisible="1"/>
-                            <!-- <field name="group_parent_id" invisible="is_submit == False" domain="[('is_active', '=', True)]"/> -->
-                            <field name="group_parent_id" invisible="1"/>
-                            <field name="group_child_ids" widget="many2many_tags" invisible="is_submit == True" domain="[('is_submit', '=', True), ('is_valid', '=', True)]"/>
-                            <field name="is_valid" invisible="is_submit == False"/>
+                            <!-- <field name="group_parent_ids" invisible="is_submit == False" widget="many2many_tags"/> -->
+                            <field name="group_parent_ids" invisible="1" widget="many2many_tags"/>
+                            <field name="group_child_ids" invisible="is_submit == True" widget="many2many_tags"/>
+                            <field name="status" invisible="is_submit == False"/>
                             <field name="is_active" invisible="is_submit == True"/>
                             <field name="timetables"/>
                         </group>

@@ -12,8 +12,8 @@
                 <tree string="Cours">
                     <field name="code"/>
                     <field name="shared_subject"/>
-                    <field name="subject_parent_ids" invisible="shared_subject == True" widget="many2many_tags"/>
-                    <field name="subject_child_ids" invisible="shared_subject == False" widget="many2many_tags"/>
+                    <field name="subject_parent_ids" widget="many2many_tags"/>
+                    <field name="subject_child_ids" widget="many2many_tags"/>
                     <field name="name"/>
                     <field name="ue_ids" widget="many2many_tags"/>
                     <field name="hours_credit"/>
