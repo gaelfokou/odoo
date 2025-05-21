@@ -736,7 +736,7 @@ class TimetableGroup(models.Model):
         'group_parent_id',
         'group_child_id',
         string='Version d\'emploi du temps publiée',
-        domain="[('is_submit', '=', False)]",
+        domain="[('is_submit', '=', False), ('semester_id', '=', semester_id)]",
     )
 
     group_child_ids = fields.Many2many(
@@ -745,7 +745,7 @@ class TimetableGroup(models.Model):
         'group_child_id',
         'group_parent_id',
         string='Versions d\'emploi du temps soumises',
-        domain="[('is_submit', '=', True), ('status', '=', 'valid')]",
+        domain="[('is_submit', '=', True), ('semester_id', '=', semester_id), ('status', '=', 'valid')]",
     )
 
     status = fields.Selection([
@@ -779,6 +779,64 @@ class TimetableGroup(models.Model):
                 slots = list(slots)
                 if len(slots) > 0:
                     raise ValidationError(f"Version active déjà définie")
+
+    def update_timetable_group(self, group):
+        try:
+            group_child_ids = group.group_child_ids.ids
+            exist_group_child_ids = []
+            for timetable_id in group.timetables:
+                if timetable_id.group_id.id not in group_child_ids:
+                    timetable_id.unlink()
+                else:
+                    exist_group_child_ids.append(timetable_id.group_id.id)
+            exist_group_child_ids = list(set(exist_group_child_ids))
+            for group_child_id in group.group_child_ids:
+                if group_child_id.id not in exist_group_child_ids:
+                    for timetable_id in group_child_id.timetables:
+                        group.timetables.create({
+                            'semester_id': timetable_id.semester_id.id,
+                            'school_id': timetable_id.school_id.id,
+                            'field_of_study_id': timetable_id.field_of_study_id.id,
+                            'level_id': timetable_id.level_id.id,
+                            'specialty_id': timetable_id.specialty_id.id,
+                            'class_id': timetable_id.class_id.id,
+                            'class_group_id': timetable_id.class_group_id.id,
+                            'ue_id': timetable_id.ue_id.id,
+                            'subject_id': timetable_id.subject_id.id,
+                            'building_id': timetable_id.building_id.id,
+                            'classroom_id': timetable_id.classroom_id.id,
+                            'employee_id': timetable_id.employee_id.id,
+                            'date': timetable_id.date,
+                            'start_time': timetable_id.start_time,
+                            'end_time': timetable_id.end_time,
+                            'group_id': group.id,
+                        })
+            # self.env.cr.commit()
+        except psycopg2.errors.NotNullViolation as error:
+            _logger.info(f'----------- tototototototo Exception {error} -----------')
+        except psycopg2.Error as error:
+            _logger.info(f'----------- tototototototo Exception {error} -----------')
+        except Exception as error:
+            _logger.info(f'----------- tototototototo Exception {error} -----------')
+
+    @api.model
+    def create(self, vals):
+        group = super(TimetableGroup, self).create(vals)
+
+        if not group.is_submit:
+            self.update_timetable_group(group)
+
+        return group
+
+    def write(self, vals):
+        group = self.env['siantou.ems.timetable.group'].search([('id', '=', self.id)], limit=1)
+
+        res = super(TimetableGroup, self).write(vals)
+
+        if not group.is_submit:
+            self.update_timetable_group(group)
+
+        return res
 
     def state_pending_timetable_group(self):
         self.write({

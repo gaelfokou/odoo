@@ -265,6 +265,7 @@ class HrEmployee(models.Model):
                     subject_priority_id.unlink()
                 else:
                     exist_subject_ids.append(subject_priority_id.subject_id.id)
+            exist_subject_ids = list(set(exist_subject_ids))
             for subject_id in employee.subject_ids:
                 if subject_id.id not in exist_subject_ids:
                     employee.subject_priority_ids.create({

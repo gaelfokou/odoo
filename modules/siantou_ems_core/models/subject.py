@@ -159,6 +159,7 @@ class Subject(models.Model):
                     teacher_priority_id.unlink()
                 else:
                     exist_teacher_ids.append(teacher_priority_id.employee_id.id)
+            exist_teacher_ids = list(set(exist_teacher_ids))
             for teacher_id in subject.teacher_ids:
                 if teacher_id.id not in exist_teacher_ids:
                     subject.teacher_priority_ids.create({
