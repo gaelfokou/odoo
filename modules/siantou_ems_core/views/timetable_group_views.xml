@@ -43,7 +43,7 @@
                             <field name="group_parent_ids" invisible="1" widget="many2many_tags"/>
                             <field name="group_child_ids" invisible="is_submit == True" widget="many2many_tags"/>
                             <field name="is_active" invisible="is_submit == True"/>
-                            <field name="timetables"/>
+                            <field name="timetable_ids"/>
                             <!-- <field name="status" invisible="is_submit == False"/> -->
                             <field name="status" invisible="1"/>
                         </group>

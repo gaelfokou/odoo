@@ -362,7 +362,7 @@ class TimetableFilterWizard(models.TransientModel):
             'view_type': 'form',
             'view_mode': 'tree',
             'res_model': 'siantou.ems.timetable.timetable',
-            'views': [(view_id, 'tree')],
+            'views': [(view_id, 'tree'), (False, 'form')],
             'view_id': view_id,
             'domain' : domain,
             'target': 'main',

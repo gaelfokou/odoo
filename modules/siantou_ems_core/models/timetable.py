@@ -723,7 +723,7 @@ class TimetableGroup(models.Model):
 
     name = fields.Char(string='Nom du groupe', required=True)
 
-    timetables = fields.One2many(
+    timetable_ids = fields.One2many(
         'siantou.ems.timetable.timetable',
         'group_id',
         string='Emplois du temps'
@@ -793,7 +793,7 @@ class TimetableGroup(models.Model):
         try:
             group_child_ids = group.group_child_ids.ids
             exist_group_child_ids = []
-            for timetable_id in group.timetables:
+            for timetable_id in group.timetable_ids:
                 if timetable_id.group_id.id not in group_child_ids:
                     timetable_id.unlink()
                 else:
@@ -801,8 +801,8 @@ class TimetableGroup(models.Model):
             exist_group_child_ids = list(set(exist_group_child_ids))
             for group_child_id in group.group_child_ids:
                 if group_child_id.id not in exist_group_child_ids:
-                    for timetable_id in group_child_id.timetables:
-                        group.timetables.create({
+                    for timetable_id in group_child_id.timetable_ids:
+                        group.timetable_ids.create({
                             'semester_id': timetable_id.semester_id.id,
                             'school_id': timetable_id.school_id.id,
                             'field_of_study_id': timetable_id.field_of_study_id.id,
