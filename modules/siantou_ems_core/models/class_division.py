@@ -72,7 +72,7 @@ class EducationClass(models.Model):
             ('cj', 'Cours du jour'),
             ('cs', 'Cours du soir'),
         ],
-        string="Type de cours",
+        string='Type de cours',
         default='cj',
     )
 

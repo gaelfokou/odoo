@@ -224,6 +224,15 @@ class Timetable(models.Model):
         ondelete='restrict'
     )
 
+    type_cour = fields.Selection([
+            ('cj', 'Cours du jour'),
+            ('cs', 'Cours du soir'),
+        ],
+        string='Type de cours',
+        related='class_id.type_cour',
+        store=True,
+    )
+
     ue_id = fields.Many2one(
         'siantou.ems.core.unite.enseignement',
         string='Unité d\'enseignement',
@@ -810,6 +819,7 @@ class TimetableGroup(models.Model):
                             'start_time': timetable_id.start_time,
                             'end_time': timetable_id.end_time,
                             'group_id': group.id,
+                            'status': 'pending',
                         })
             # self.env.cr.commit()
         except psycopg2.errors.NotNullViolation as error:
