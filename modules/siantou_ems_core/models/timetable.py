@@ -757,6 +757,17 @@ class TimetableGroup(models.Model):
         default='pending',
     )
 
+    state = fields.Selection([
+        ('pending', 'En attente'),
+        ('valid', 'Valide'),
+        ('invalid', 'Invalide'),
+        ('draft', 'Brouillon'),
+    ], 'Statut',
+        related='status',
+        store=True,
+        tracking=True
+    )
+
     @api.constrains('is_active')
     def _constrains_default(self):
         for record in self:
@@ -768,6 +779,46 @@ class TimetableGroup(models.Model):
                 slots = list(slots)
                 if len(slots) > 0:
                     raise ValidationError(f"Version active déjà définie")
+
+    def state_pending_timetable_group(self):
+        self.write({
+            'status': 'pending',
+        })
+
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'reload',
+        }
+
+    def state_valid_timetable_group(self):
+        self.write({
+            'status': 'valid',
+        })
+
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'reload',
+        }
+
+    def state_invalid_timetable_group(self):
+        self.write({
+            'status': 'invalid',
+        })
+
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'reload',
+        }
+
+    def state_draft_timetable_group(self):
+        self.write({
+            'status': 'draft',
+        })
+
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'reload',
+        }
 
 class TimetableSlotItem(models.Model):
     _name = 'siantou.ems.timetable.slotitem'

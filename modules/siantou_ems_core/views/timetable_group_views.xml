@@ -11,8 +11,12 @@
                     <field name="name"/>
                     <field name="semester_id"/>
                     <field name="is_submit"/>
-                    <field name="status"/>
                     <field name="is_active"/>
+					<field name="status" widget="badge"
+                        decoration-muted="status == 'pending'"
+                        decoration-success="status == 'valid'"
+                        decoration-danger="status == 'invalid'"
+                        decoration-warning="status == 'draft'"/>
                 </tree>
             </field>
         </record>
@@ -23,6 +27,13 @@
             <field name="model">siantou.ems.timetable.group</field>
             <field name="arch" type="xml">
                 <form>
+                    <header invisible="is_submit == False">
+                        <button name="state_pending_timetable_group" class="oe_highlight" invisible="state in ['pending']" string="En attente" type="object"/>
+                        <button name="state_valid_timetable_group" class="oe_highlight" invisible="state in ['valid']" string="Valide" type="object"/>
+                        <button name="state_invalid_timetable_group" class="oe_highlight" invisible="state in ['invalid']" string="Invalide" type="object"/>
+                        <button name="state_draft_timetable_group" class="oe_highlight" invisible="state in ['draft']" string="Brouillon" type="object"/>
+                        <field name="state" widget="statusbar" statusbar_visible="pending,valid,invalid,draft"/>
+                    </header>
 					<sheet>
                         <group>
                             <field name="name"/>
@@ -31,9 +42,10 @@
                             <!-- <field name="group_parent_ids" invisible="is_submit == False" widget="many2many_tags"/> -->
                             <field name="group_parent_ids" invisible="1" widget="many2many_tags"/>
                             <field name="group_child_ids" invisible="is_submit == True" widget="many2many_tags"/>
-                            <field name="status" invisible="is_submit == False"/>
                             <field name="is_active" invisible="is_submit == True"/>
                             <field name="timetables"/>
+                            <!-- <field name="status" invisible="is_submit == False"/> -->
+                            <field name="status" invisible="1"/>
                         </group>
 					</sheet>
                 </form>
@@ -52,7 +64,7 @@
                 (0, 0, {'view_mode': 'tree', 'view_id': ref('view_timetable_group_tree')}),
                 (0, 0, {'view_mode': 'form', 'view_id': ref('view_timetable_group_form')})]"/>
             <field name="domain">[('is_submit', '=', False)]</field>
-            <field name="context">{'default_is_submit': False}</field>
+            <field name="context">{'default_is_submit': False, 'default_status': 'valid'}</field>
             <field name="help" type="html">
                 <p class="o_view_nocontent_smiling_face">
                     Liste des versions d'emploi du temps. Vous pouvez uniquement supprimer des versions.
