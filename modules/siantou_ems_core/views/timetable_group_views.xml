@@ -79,7 +79,7 @@
                 eval="[(5, 0, 0),
                 (0, 0, {'view_mode': 'tree', 'view_id': ref('view_timetable_group_tree')}),
                 (0, 0, {'view_mode': 'form', 'view_id': ref('view_timetable_group_form')})]"/>
-            <field name="domain">[('is_submit', '=', True)]</field>
+            <field name="domain">[('is_submit', '=', True), ('create_uid', '=', uid)]</field>
             <field name="context">{'default_is_submit': True}</field>
             <field name="help" type="html">
                 <p class="o_view_nocontent_smiling_face">
