@@ -572,7 +572,7 @@
         <field name="arch" type="xml">
             <tree
                 decoration-muted="(is_locked and not is_lock_editor)"
-                create="0"
+                create="False"
                 delete="0"
             >
                 <field name="is_locked" column_invisible="1" />
