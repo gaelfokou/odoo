@@ -80,7 +80,7 @@
                     </header>
 					<sheet>
                         <group>
-                            <field name="group_id" readonly="1" options="{'no_open': True, 'no_create': True}"/>
+                            <field name="group_id" options="{'no_open': True, 'no_create': True}" domain="[('is_submit', '=', False), ('is_active', '=', True)]"/>
                             <field name="batch_id" invisible="1" options="{'no_create': True}"/>
                             <field name="date" invisible="1"/>
                             <field name="semester_id" readonly="1" options="{'no_open': True, 'no_create': True}"/>

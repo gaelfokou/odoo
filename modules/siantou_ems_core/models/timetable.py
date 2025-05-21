@@ -316,7 +316,7 @@ class Timetable(models.Model):
         'siantou.ems.timetable.group',
         'Version',
         required=True,
-        default=_default_group,
+        # default=_default_group,
         ondelete='cascade'
     )
 
