@@ -62,7 +62,7 @@
                         <group>
                             <group string="Général">
                                 <field string="Etudiant(e)" name="etudiant_id" readonly="1"
-                                       options='{"no_open": True}'/>
+                                      />
                                 <field name="recherche_etudiant_date_naissance" string="Date de naissance"
                                        readonly="1"/>
                                 <field name="recherche_etudiant_matricule" string="Matricule" readonly="1"/>

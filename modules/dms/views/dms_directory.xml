@@ -449,7 +449,7 @@
                             />
                             <field
                                 name="storage_id"
-                                options="{'no_open': True}"
+                               
                                 readonly="not is_root_directory"
                                 required="is_root_directory"
                                 force_save="1"
@@ -486,7 +486,7 @@
                             <field
                                 name="category_id"
                                 placeholder="Internal / Human Resource"
-                                options="{'no_open': True, 'no_create': True}"
+                                options="{'no_create': True}"
                             />
                             <field
                                 name="tag_ids"
@@ -702,7 +702,7 @@
                         <field
                             name="category_id"
                             placeholder="Internal / Human Resource"
-                            options="{'no_open': True, 'no_create': True}"
+                            options="{'no_create': True}"
                         />
                         <field
                             name="tag_ids"

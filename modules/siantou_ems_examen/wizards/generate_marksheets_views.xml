@@ -8,11 +8,11 @@
                 <group>
                     <group>
                         <field name="marksheet_group_id"
-                            options="{'no_open':True,'no_create':True}"
+                            options="{'no_create': True}"
                             />
                         <field name="exam_session_ids" 
                             widget="many2many_tags"
-                            options="{'no_open':True,'no_create':True}"
+                            options="{'no_create': True}"
                         />
                     </group>
                 </group>

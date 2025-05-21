@@ -9,7 +9,7 @@
                     <group>
                         <field name="exam_attendee_ids" 
                             widget="many2many_tags"
-                            options="{'no_open':True,'no_create':True}"
+                            options="{'no_create': True}"
                             invisible="1"
                         />
                         <!-- <field name="exam_attendee_ids" column_invisible="1"/> -->

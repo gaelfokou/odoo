@@ -60,16 +60,16 @@
                         <group>
                             <group>
                                 <field name="exam_session_id" 
-                                    options="{'no_open':True,'no_create':True}"
+                                    options="{'no_create': True}"
                                     readonly="state != 'draft'"
                                 />
                                 <field name="field_of_study_id" 
-                                    options="{'no_open':True,'no_create':True}"
+                                    options="{'no_create': True}"
                                     required="1"
                                     readonly="state != 'draft'"
                                 />
                                 <field name="specialty_id" 
-                                    options="{'no_open':True,'no_create':True}"
+                                    options="{'no_create': True}"
                                     required="1"
                                     readonly="state != 'draft'"
                                 />
@@ -83,16 +83,16 @@
                             </group>
                             <group>
                                 <field name="year_id" 
-                                    options="{'no_open':True,'no_create':True}"
+                                    options="{'no_create': True}"
                                     readonly="state != 'draft'"
                                 />
                                 <field name="semester_id" 
-                                    options="{'no_open':True,'no_create':True}"
+                                    options="{'no_create': True}"
                                     required="1"
                                     readonly="state != 'draft'"
                                 />
                                 <field name="level_ids" 
-                                    options="{'no_open':True,'no_create':True}"
+                                    options="{'no_create': True}"
                                     required="1"
                                     readonly="state != 'draft'"
                                     widget="many2many_tags"
@@ -101,7 +101,7 @@
                         </group>
                         <notebook>
                             <page name="exam_subject_ids" string="Matières programmées">
-                                <field name="exam_subject_ids" options="{'no_open':True,'no_create':True}">
+                                <field name="exam_subject_ids" options="{'no_create': True}">
                                     <tree default_order="id desc" default_group_by="level_id">
                                         <field name="name"/>
                                         <field name="field_of_study_id"/>

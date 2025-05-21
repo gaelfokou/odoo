@@ -424,7 +424,7 @@
                             />
                             <field
                                 name="storage_id"
-                                options="{'no_open': True}"
+                               
                                 groups="!dms.group_dms_manager"
                             />
                             <field name="storage_id" groups="dms.group_dms_manager" />
@@ -433,7 +433,7 @@
                             <field
                                 name="category_id"
                                 placeholder="Internal / Human Resource"
-                                options="{'no_open': True, 'no_create': True}"
+                                options="{'no_create': True}"
                             />
                             <field
                                 name="tag_ids"

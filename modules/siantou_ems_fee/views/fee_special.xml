@@ -32,10 +32,10 @@
                         <group col="4" colspan="4">
                             <group col="2" colspan="2">
                                 <field name="name" invisible="1"/>
-                                <field name="student_id" options="{'no_open': True, 'no_create': True}" 
+                                <field name="student_id" options="{'no_create': True}" 
                                     readonly="state in ['validate']"/>
                                 <field name="fee_structure_id" domain="structure_frais_request_domain" 
-                                    options="{'no_open': True, 'no_create': True}" 
+                                    options="{'no_create': True}" 
                                     readonly="state in ['validate']"/>
                                 <field name="structure_frais_request_domain" invisible="1"/>
                                 <field name="amount" readonly="state in ['validate']"/>
@@ -43,7 +43,7 @@
                                 <field name="currency_id" invisible="1" />
                             </group>
                             <group col="2" colspan="2">
-                                <field name="academic_year_id" options="{'no_open': True, 'no_create': True}" readonly="state in ['validate']"/>
+                                <field name="academic_year_id" options="{'no_create': True}" readonly="state in ['validate']"/>
                                 <field name="date_payment" readonly="state in ['validate']"/>
                             </group>
                         </group>

@@ -49,7 +49,7 @@
 					<field name ="redoublant"/>
 				</group>
 				<group>
-					<field name="student_id" options="{'no_open': True, 'no_create': True}"/>
+					<field name="student_id" options="{'no_create': True}"/>
 					<field name ="scolarite" attrs="{'invisible': [('redoublant', '=', 'oui')],'required': [('redoublant', '=', 'non')]}"/>
 					<field name ="scolaritered" attrs="{'invisible': [('redoublant', '=', 'non')],'required': [('redoublant', '=', 'oui')]}"/>
 				</group>

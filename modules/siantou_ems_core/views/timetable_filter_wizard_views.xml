@@ -7,9 +7,9 @@
             <field name="arch" type="xml">
                 <form string="Filtre des emplois du temps">
                     <group>
-                        <field name="group_id" options="{'no_open': True, 'no_create': True}"/>
-                        <field name="semester_id" readonly="1" options="{'no_open': True, 'no_create': True}"/>
-                        <field name="year_id" readonly="1" options="{'no_open': True, 'no_create': True}"/>
+                        <field name="group_id" options="{'no_create': True}" domain="['|', '&amp;', ('is_submit', '=', False), ('is_active', '=', True), ('create_uid', '=', uid)]"/>
+                        <field name="semester_id" readonly="1" options="{'no_create': True}"/>
+                        <field name="year_id" readonly="1" options="{'no_create': True}"/>
                         <field name="school_id" options="{'no_create': True}"/>
                         <field name="field_of_study_id" options="{'no_create': True}" domain="[('school_id', '=', school_id)]"/>
                         <field name="level_id" options="{'no_create': True}" domain="[('semester_ids', '=', semester_id)]"/>

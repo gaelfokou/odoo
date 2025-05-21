@@ -57,15 +57,15 @@
                         <group col="4">
                             <group colspan="2">
                                 <field name="secretariat_examen_id" 
-                                    options="{'no_open':True,'no_create':True}"
+                                    options="{'no_create': True}"
                                     readonly="state != 'create'"
                                 />
                                 <field name="type_examen_id" 
-                                    options="{'no_open':True,'no_create':True}"
+                                    options="{'no_create': True}"
                                     readonly="state != 'create'"
                                 />
                                 <field name="year_id" 
-                                    options="{'no_open':True,'no_create':True}"
+                                    options="{'no_create': True}"
                                     readonly="state != 'create'"
                                 />
                                 <label for="date_start" string="Horaires"/>
@@ -79,22 +79,22 @@
                                 <field 
                                     name="school_id" 
                                     readonly="state != 'create'" 
-                                    options="{'no_open':True,'no_create':True}"/>
+                                    options="{'no_create': True}"/>
 
                                 <field 
                                     name="class_ids" widget="many2many_tags" 
                                     readonly="state != 'create'" 
-                                    options="{'no_open':True,'no_create':True}"/>
+                                    options="{'no_create': True}"/>
 
                                 <field 
                                     name="level_id" 
                                     readonly="state != 'create'" 
-                                    options="{'no_open':True,'no_create':True}"/>
+                                    options="{'no_create': True}"/>
 
                                 <field 
                                     name="semester_id" 
                                     readonly="state != 'create'" 
-                                    options="{'no_open':True,'no_create':True}"/>
+                                    options="{'no_create': True}"/>
 
                                 <!-- <field name="exam_hours" readonly="state != 'create'"/> -->
                             </group>
@@ -102,7 +102,7 @@
                         <notebook invisible="show_field==False">
                             <page name="exam_line_ids" string="Examens">
                                 <field name="exam_subject_ids" 
-                                    options="{'no_open':True,'no_create':True}">
+                                    options="{'no_create': True}">
                                     <tree string="Examens" default_order="id desc">
                                         <field name="name"/>
                                         <field name="field_of_study_id"/>

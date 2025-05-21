@@ -31,7 +31,7 @@
                     <group col="4" string="Informations générales">
                         <group colspan="2">
                             <field name="employee_id" required="1" 
-                                options="{'no_create': True, 'no_open': True}" />
+                                options="{'no_create': True}" />
                             <field name="motif_licenciement_ids" widget="many2many_tags" 
                                 string="Motifs de licenciement" placeholder="Sélectionnez les motifs" />
                             <field name="description" />

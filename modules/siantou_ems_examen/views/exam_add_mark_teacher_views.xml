@@ -24,7 +24,7 @@
                             <div class="oe_title">
                                 <label for="exam_subject_mark_id"/>
                                 <h1>
-                                    <field name="exam_subject_mark_id" options="{'no_open':True,'no_create':True}"/>
+                                    <field name="exam_subject_mark_id" options="{'no_create': True}"/>
                                 </h1>
                             </div>
                             <group>

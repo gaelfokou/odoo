@@ -7,8 +7,8 @@
 			<field name="model">examen.subject.rating.anonymous</field>
 			<field name="arch" type="xml">
 				<tree string="Examen" default_order="id desc" default_group_by="exam_session_id">
-                    <field name="name" readonly="1" options="{'no_open':True,'no_create':True}"/>
-                    <field name="exam_session_id" readonly="1" options="{'no_open':True,'no_create':True}"/>
+                    <field name="name" readonly="1" options="{'no_create': True}"/>
+                    <field name="exam_session_id" readonly="1" options="{'no_create': True}"/>
                     <field name="exam_subject_id" string="Matière" />
 				</tree>
 			</field>
@@ -19,7 +19,7 @@
 			<field name="model">examen.subject.rating.anonymous</field>
 			<field name="arch" type="xml">
 				<tree string="Exam" editable="bottom">
-                    <field name="student_id" readonly="1" options="{'no_open':True,'no_create':True}"/>
+                    <field name="student_id" readonly="1" options="{'no_create': True}"/>
                     <field name="attendance_status" />
                     <field name="exam_state" column_invisible="1"/>
                     <field name="marks" readonly="exam_state != 'prepare'" />
@@ -42,14 +42,14 @@
                         </div>
                         <group>
                             <group>
-                                <field name="exam_session_id" options="{'no_open':True,'no_create':True}"/>
+                                <field name="exam_session_id" options="{'no_create': True}"/>
                             </group>
                             <group>
-                                <field name="exam_id" options="{'no_open':True,'no_create':True}" domain="exam_request_domain"/>
+                                <field name="exam_id" options="{'no_create': True}" domain="exam_request_domain"/>
                                 <field name="exam_request_domain" invisible="1"/>
                             </group>
                             <group>
-                                <field name="exam_subject_id" options="{'no_open':True,'no_create':True}" domain="exam_subject_request_domain"/>
+                                <field name="exam_subject_id" options="{'no_create': True}" domain="exam_subject_request_domain"/>
                                 <field name="exam_subject_request_domain" invisible="1"/>
                             </group>
                         </group>

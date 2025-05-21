@@ -13,8 +13,8 @@
                             class="oe_highlight"
                         />
                     </header>
-                    <field name="exam_subject_id" optional="hide" options="{'no_open':True,'no_create':True}"/>
-                    <field name="student_id" readonly="1" options="{'no_open':True,'no_create':True}"/>
+                    <field name="exam_subject_id" optional="hide" options="{'no_create': True}"/>
+                    <field name="student_id" readonly="1" options="{'no_create': True}"/>
                     <field name="status"/>
                     <!-- <field name="status" readonly="exam_state not in ('draft','schedule')"/> -->
 
@@ -33,7 +33,7 @@
                         <field name="exam_subject_id" invisible="1" />
                         <group>
                             <group>
-                                <field name="student_id" options="{'no_open':True,'no_create':True}"/>
+                                <field name="student_id" options="{'no_create': True}"/>
                             </group>
                             <group>
                                 <field name="status"/>

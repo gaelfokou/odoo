@@ -154,9 +154,9 @@
                 <tree string="Journal Items" create="false" edit="false" sample="1">
                     <field name="date" optional="show"/>
                     <field name="company_id" groups="base.group_multi_company"/>
-                    <field name="journal_id" options='{"no_open":True}'/>
+                    <field name="journal_id"/>
                     <field name="move_id" optional="show"/>
-                    <field name="account_id" options="{'no_open': True}" groups="account.group_account_readonly"/>
+                    <field name="account_id" groups="account.group_account_readonly"/>
                     <field name="partner_id" optional="show"/>
                     <field name="statement_id" invisible="1"/>
                     <field name="ref" optional="show"/>
@@ -191,7 +191,7 @@
                     <field name="company_id" groups="base.group_multi_company" options="{'no_create': True}"
                            optional="show"/>
                     <field name="move_id" optional="show"/>
-                    <field name="account_id" optional="show" options="{'no_open': True, 'no_create': True}"
+                    <field name="account_id" optional="show" options="{'no_create': True}"
                            domain="[('company_id', '=', company_id)]"
                            groups="account.group_account_readonly"/>
                     <field name="statement_id" invisible="1"/>
@@ -214,7 +214,7 @@
                     <field name="parent_state" invisible="1"/>
                     <field name="tax_ids" widget="many2many_tags" width="0.5" optional="hide" readonly="1"/>
                     <field name="tax_tag_ids" widget="many2many_tags" width="0.5" optional="hide" string="Tax Grids"
-                           options="{'no_open': True, 'no_create': True}"
+                           options="{'no_create': True}"
                            domain="[('applicability', '=', 'taxes')]"/>
                     <groupby name="move_id">
                         <field name="state" invisible="1"/>

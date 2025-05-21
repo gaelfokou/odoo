@@ -8,11 +8,11 @@
 			<field name="arch" type="xml">
 				<tree string="Examen" default_order="id desc" default_group_by="level_id">
                     <field name="name" />
-                    <field name="type_examen_id" options="{'no_open':True,'no_create':True}" />
-                    <field name="exam_subject_id" string="Matière" options="{'no_open':True,'no_create':True}" />
-                    <field name="year_id" options="{'no_open':True,'no_create':True}"/>
-                    <field name="field_of_study_id" options="{'no_open':True,'no_create':True}"/>
-                    <field name="level_id" options="{'no_open':True,'no_create':True}"/>
+                    <field name="type_examen_id" options="{'no_create': True}" />
+                    <field name="exam_subject_id" string="Matière" options="{'no_create': True}" />
+                    <field name="year_id" options="{'no_create': True}"/>
+                    <field name="field_of_study_id" options="{'no_create': True}"/>
+                    <field name="level_id" options="{'no_create': True}"/>
                     <field name="state"/>
 				</tree>
 			</field>
@@ -43,28 +43,28 @@
                         <group>
                             <group>
                                 <field name="year_id" 
-                                    options="{'no_open':True,'no_create':True}" readonly="show_mark==True" />
+                                    options="{'no_create': True}" readonly="show_mark==True" />
                             </group>
                             <group>
                                 <field name="field_of_study_id" 
-                                    options="{'no_open':True,'no_create':True}" readonly="show_mark==True"/>
+                                    options="{'no_create': True}" readonly="show_mark==True"/>
                             </group>
                             <group>
                                 <field name="semester_id" 
-                                    options="{'no_open':True,'no_create':True}" readonly="show_mark==True" />
+                                    options="{'no_create': True}" readonly="show_mark==True" />
                             </group>
                             <group>
                                 <field name="type_examen_id" 
-                                    options="{'no_open':True,'no_create':True}" readonly="show_mark==True" />
+                                    options="{'no_create': True}" readonly="show_mark==True" />
                             </group>
                             <group>
                                 <field name="level_id" 
-                                    options="{'no_open':True,'no_create':True}" readonly="show_mark==True"/>
+                                    options="{'no_create': True}" readonly="show_mark==True"/>
                             </group>
                             <group>
                                 <field name="exam_subject_id" 
                                     domain="exam_subject_domain"
-                                    options="{'no_open':True,'no_create':True}"  
+                                    options="{'no_create': True}"  
                                     invisible="show_field==False" readonly="show_mark==True" />
                             </group>
                             <group>

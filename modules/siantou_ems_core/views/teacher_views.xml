@@ -45,7 +45,7 @@
                         invisible="is_teacher == False">
                         <field name="subject_priority_ids" domain="[('subject_id', 'in', subject_ids)]" widget="one2many_list">
                             <tree create="False" editable="bottom">
-                                <field name="subject_id" options="{'no_open': True}"/>
+                                <field name="subject_id"/>
                                 <field name="priority"/>
                             </tree>
                         </field>
