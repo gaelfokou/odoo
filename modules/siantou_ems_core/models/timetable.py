@@ -789,6 +789,26 @@ class TimetableGroup(models.Model):
                 if len(slots) > 0:
                     raise ValidationError(f"Version active déjà définie")
 
+    def update_timetable_group_name(self, group):
+        name = group.name
+        while True:
+            if name.find('(soumis)') != -1:
+                name = name.replace('(soumis)', '')
+            else:
+                break
+        if group.is_submit:
+            name = '{} (soumis)'.format(name)
+        while True:
+            if name.find('  ') != -1:
+                name = name.replace('  ', ' ')
+            else:
+                break
+        name = name.strip()
+        name = name.upper()
+        group.write({
+            'name': name,
+        })
+
     def update_timetable_group(self, group):
         try:
             group_child_ids = group.group_child_ids.ids
@@ -833,8 +853,7 @@ class TimetableGroup(models.Model):
     def create(self, vals):
         group = super(TimetableGroup, self).create(vals)
 
-        if not group.is_submit:
-            self.update_timetable_group(group)
+        self.update_timetable_group_name(group)
 
         return group
 
