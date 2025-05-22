@@ -49,7 +49,7 @@ class OeSchoolCourse(models.Model):
     )
     level_ids = fields.Many2many('siantou.ems.core.level', 'course_level_rel', 'cycle_id', 'level_id', string='Niveaux')
     diplo_requis_ids = fields.Many2many('oe.school.course.degree', 'course_degree_rel', 'cycle_id', 'diplo_requis_id', string='Diplômes requis')
-    supervision_id = fields.Many2one('oe.school.course.supervision', string='Tutelle académique', required=True)
+    supervision_id = fields.Many2one('oe.school.course.supervision', string='Tutelle académique')
     has_supervision = fields.Boolean('Est sous tutelle académique', default=False)
     enable_elective = fields.Boolean('Activer la sélection des cours facultatifs')
     color = fields.Integer(default=_default_color)
