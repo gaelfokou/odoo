@@ -721,7 +721,10 @@ class TimetableGroup(models.Model):
     _name = 'siantou.ems.timetable.group'
     _description = 'Version d\'emploi du temps'
 
-    name = fields.Char(string='Nom du groupe', required=True)
+    name = fields.Char(
+        string='Nom du groupe',
+        compute='_compute_name', store=True,
+    )
 
     timetable_ids = fields.One2many(
         'siantou.ems.timetable.timetable',
@@ -777,6 +780,27 @@ class TimetableGroup(models.Model):
         tracking=True
     )
 
+    @api.depends('is_submit')
+    def _compute_name(self):
+        for record in self:
+            if record.name:
+                name = record.name
+                while True:
+                    if name.find('(soumis)') != -1:
+                        name = name.replace('(soumis)', '')
+                    else:
+                        break
+                if record.is_submit:
+                    name = '{} (soumis)'.format(name)
+                while True:
+                    if name.find('  ') != -1:
+                        name = name.replace('  ', ' ')
+                    else:
+                        break
+                name = name.strip()
+                name = name.upper()
+                record.name = name
+
     @api.constrains('is_active')
     def _constrains_default(self):
         for record in self:
@@ -788,26 +812,6 @@ class TimetableGroup(models.Model):
                 slots = list(slots)
                 if len(slots) > 0:
                     raise ValidationError(f"Version active déjà définie")
-
-    def update_timetable_group_name(self, group):
-        name = group.name
-        while True:
-            if name.find('(soumis)') != -1:
-                name = name.replace('(soumis)', '')
-            else:
-                break
-        if group.is_submit:
-            name = '{} (soumis)'.format(name)
-        while True:
-            if name.find('  ') != -1:
-                name = name.replace('  ', ' ')
-            else:
-                break
-        name = name.strip()
-        name = name.upper()
-        group.write({
-            'name': name,
-        })
 
     def update_timetable_group(self, group):
         try:
@@ -853,7 +857,8 @@ class TimetableGroup(models.Model):
     def create(self, vals):
         group = super(TimetableGroup, self).create(vals)
 
-        self.update_timetable_group_name(group)
+        if not group.is_submit:
+            self.update_timetable_group(group)
 
         return group
 

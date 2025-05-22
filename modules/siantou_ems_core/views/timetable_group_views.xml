@@ -36,7 +36,7 @@
                     </header>
 					<sheet>
                         <group>
-                            <field name="name"/>
+                            <field name="name" readonly="0"/>
                             <field name="semester_id"/>
                             <field name="is_submit" invisible="1"/>
                             <!-- <field name="group_parent_ids" invisible="is_submit == False" widget="many2many_tags"/> -->
