@@ -329,6 +329,12 @@ class Timetable(models.Model):
         ondelete='cascade'
     )
 
+    group_child_id = fields.Many2one(
+        'siantou.ems.timetable.group',
+        'Version d\'emploi du temps soumise',
+        domain="[('is_submit', '=', True), ('semester_id', '=', semester_id), ('status', '=', 'valid')]",
+    )
+
     not_active_slotitems = fields.Integer(
         string='Créneau horaire inactif',
         default=0,
@@ -818,10 +824,11 @@ class TimetableGroup(models.Model):
             group_child_ids = group.group_child_ids.ids
             exist_group_child_ids = []
             for timetable_id in group.timetable_ids:
-                if timetable_id.group_id.id not in group_child_ids:
-                    timetable_id.unlink()
-                else:
-                    exist_group_child_ids.append(timetable_id.group_id.id)
+                if timetable_id.group_child_id.id:
+                    if timetable_id.group_child_id.id not in group_child_ids:
+                        timetable_id.unlink()
+                    else:
+                        exist_group_child_ids.append(timetable_id.group_child_id.id)
             exist_group_child_ids = list(set(exist_group_child_ids))
             for group_child_id in group.group_child_ids:
                 if group_child_id.id not in exist_group_child_ids:
@@ -843,6 +850,7 @@ class TimetableGroup(models.Model):
                             'start_time': timetable_id.start_time,
                             'end_time': timetable_id.end_time,
                             'group_id': group.id,
+                            'group_child_id': group_child_id.id,
                             'status': 'pending',
                         })
             # self.env.cr.commit()
