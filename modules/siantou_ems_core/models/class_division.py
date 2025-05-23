@@ -42,6 +42,11 @@ class EducationClass(models.Model):
         string='Liste des étudiants'
     )
 
+    number_of_student = fields.Integer(
+        string='Nombre d\'étudiants',
+        compute='_compute_student', store=True,
+    )
+
     timetable_ids = fields.One2many(
         'siantou.ems.timetable.timetable',
         'class_id',
@@ -125,6 +130,16 @@ class EducationClass(models.Model):
             name = name.strip()
             name = name.upper()
             record.name = name
+
+    @api.depends('student_ids')
+    def _compute_student(self):
+        for record in self:
+            record.number_of_student = len(record.student_ids.ids)
+
+    @api.depends('student_ids')
+    def _onchange_student(self):
+        for record in self:
+            record.number_of_student = len(record.student_ids.ids)
 
     @api.onchange('school_id')
     def _onchange_school(self):

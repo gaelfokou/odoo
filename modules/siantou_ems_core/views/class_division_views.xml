@@ -37,6 +37,7 @@
                 	<field name="supervision_id"/>
                     <field name="type_cour"/>
                     <field name="group_ids" widget="many2many_tags"/>
+                    <field name="number_of_student"/>
 				</tree>
 			</field>
 		</record>
@@ -56,6 +57,7 @@
                                 <field name="year_id"/>
                                 <field name="school_id"/>
                                 <field name="level_id"/>
+                                <field name="number_of_student"/>
                             </group>
                             <group>
                                 <field name="field_of_study_id" options="{'no_create': True}" domain="[('school_id', '=', school_id)]"/>
