@@ -786,18 +786,49 @@ class TimetableGroup(models.Model):
         tracking=True
     )
 
-    @api.depends('is_submit')
+    @api.depends('is_submit', 'is_active')
     def _compute_name(self):
         for record in self:
             if record.name:
                 name = record.name
+                name = name.lower()
                 while True:
                     if name.find('(soumis)') != -1:
                         name = name.replace('(soumis)', '')
+                    elif name.find('(actif)') != -1:
+                        name = name.replace('(actif)', '')
                     else:
                         break
                 if record.is_submit:
                     name = '{} (soumis)'.format(name)
+                elif record.is_active:
+                    name = '{} (actif)'.format(name)
+                while True:
+                    if name.find('  ') != -1:
+                        name = name.replace('  ', ' ')
+                    else:
+                        break
+                name = name.strip()
+                name = name.upper()
+                record.name = name
+
+    @api.onchange('is_submit', 'is_active')
+    def _onchange_name(self):
+        for record in self:
+            if record.name:
+                name = record.name
+                name = name.lower()
+                while True:
+                    if name.find('(soumis)') != -1:
+                        name = name.replace('(soumis)', '')
+                    elif name.find('(actif)') != -1:
+                        name = name.replace('(actif)', '')
+                    else:
+                        break
+                if record.is_submit:
+                    name = '{} (soumis)'.format(name)
+                elif record.is_active:
+                    name = '{} (actif)'.format(name)
                 while True:
                     if name.find('  ') != -1:
                         name = name.replace('  ', ' ')
