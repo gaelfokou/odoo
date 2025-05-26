@@ -13,6 +13,7 @@ class ResUsers(models.Model):
         'Enseignant',
         ondelete='cascade'
     )
+
     student_id = fields.Many2one(
         'oe.school.student',
         string='Étudiant',

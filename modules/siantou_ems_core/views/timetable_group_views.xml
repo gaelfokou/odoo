@@ -43,6 +43,7 @@
                             <field name="group_parent_ids" invisible="1" widget="many2many_tags"/>
                             <field name="group_child_ids" invisible="is_submit == True" widget="many2many_tags"/>
                             <field name="is_active" invisible="is_submit == True"/>
+                            <field name="user_ids" widget="many2many_tags"/>
                             <field name="timetable_ids"/>
                             <!-- <field name="status" invisible="is_submit == False"/> -->
                             <field name="status" invisible="1"/>
@@ -63,7 +64,7 @@
                 eval="[(5, 0, 0),
                 (0, 0, {'view_mode': 'tree', 'view_id': ref('view_timetable_group_tree')}),
                 (0, 0, {'view_mode': 'form', 'view_id': ref('view_timetable_group_form')})]"/>
-            <field name="domain">[('is_submit', '=', False)]</field>
+            <field name="domain">['|', '&amp;', ('is_submit', '=', False), ('create_uid', '=', uid), '&amp;', ('is_submit', '=', False), ('user_ids', '=', uid)]</field>
             <field name="context">{'default_is_submit': False, 'default_status': 'valid'}</field>
             <field name="help" type="html">
                 <p class="o_view_nocontent_smiling_face">
@@ -91,7 +92,7 @@
                 eval="[(5, 0, 0),
                 (0, 0, {'view_mode': 'tree', 'view_id': ref('view_timetable_group_tree')}),
                 (0, 0, {'view_mode': 'form', 'view_id': ref('view_timetable_group_form')})]"/>
-            <field name="domain">[('is_submit', '=', True), ('create_uid', '=', uid)]</field>
+            <field name="domain">['|', '&amp;', ('is_submit', '=', True), ('create_uid', '=', uid), '&amp;', ('is_submit', '=', True), ('user_ids', '=', uid)]</field>
             <field name="context">{'default_is_submit': True}</field>
             <field name="help" type="html">
                 <p class="o_view_nocontent_smiling_face">
