@@ -171,7 +171,9 @@ class TeacherFilterWizard(models.TransientModel):
             record.subject_id = None
 
     def action_filter(self):
-        domain = []
+        domain = [
+            ('group_id.is_active', '=', True),
+        ]
         title = []
         if self.year_id.id:
             domain.append(('year_id', '=', self.year_id.id))

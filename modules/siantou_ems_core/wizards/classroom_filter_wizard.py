@@ -60,7 +60,9 @@ class ClassroomFilterWizard(models.TransientModel):
                 raise ValidationError("L'heure de fin du cours doit être supérieure à l'heure de début du cours")
 
     def action_filter(self):
-        domain = []
+        domain = [
+            ('group_id.is_active', '=', True),
+        ]
         title = []
         if self.date:
             domain.append(('date', '=', self.date))

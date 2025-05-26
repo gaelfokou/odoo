@@ -325,6 +325,7 @@ class TimetableFilterWizard(models.TransientModel):
             title.append(self.employee_id.name)
         if self.group_id.id:
             domain.append(('group_id', '=', self.group_id.id))
+            title.append(self.group_id.name)
         if self.status:
             domain.append(('status', '=', self.status))
             title.append(STATUS_TIMETABLE[self.status])
