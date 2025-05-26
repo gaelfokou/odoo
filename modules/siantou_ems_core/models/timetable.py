@@ -748,20 +748,28 @@ class TimetableGroup(models.Model):
 
     is_submit = fields.Boolean(string="Soumis", default=True)
 
+    user_ids = fields.Many2many(
+        'res.users',
+        'user_group_rel',
+        'group_id',
+        'user_id',
+        string='Utilisateurs associés',
+    )
+
     group_parent_ids = fields.Many2many(
         'siantou.ems.timetable.group',
         'group_parent_child_rel',
-        'group_parent_id',
         'group_child_id',
-        string='Version d\'emploi du temps publiée',
+        'group_parent_id',
+        string='Versions d\'emploi du temps publiées',
         domain="[('is_submit', '=', False), ('semester_id', '=', semester_id)]",
     )
 
     group_child_ids = fields.Many2many(
         'siantou.ems.timetable.group',
         'group_parent_child_rel',
-        'group_child_id',
         'group_parent_id',
+        'group_child_id',
         string='Versions d\'emploi du temps soumises',
         domain="[('is_submit', '=', True), ('semester_id', '=', semester_id), ('status', '=', 'valid')]",
     )
