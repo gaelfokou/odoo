@@ -50,7 +50,7 @@ _logger = logging.getLogger(__name__)
 class Home(WebHome):
     def _login_redirect(self, uid, redirect=None):
         if not redirect and not is_user_internal(uid):
-            res_user_id = http.request.env['res.users'].search([
+            res_user_id = http.request.env['res.users'].sudo().search([
                 ('id', '=', uid),
             ], limit=1)
             user = None
