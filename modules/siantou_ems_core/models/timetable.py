@@ -728,7 +728,7 @@ class TimetableGroup(models.Model):
     _description = 'Version d\'emploi du temps'
 
     name = fields.Char(
-        string='Nom du groupe',
+        string='Nom de la version',
         compute='_compute_name', store=True,
     )
 
@@ -792,6 +792,10 @@ class TimetableGroup(models.Model):
         related='status',
         store=True,
         tracking=True
+    )
+
+    description = fields.Text(
+        string='Description de la version',
     )
 
     @api.depends('is_submit', 'is_active')
