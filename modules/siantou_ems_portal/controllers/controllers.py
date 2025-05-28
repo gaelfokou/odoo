@@ -94,6 +94,7 @@ class PortalAccount(portal.CustomerPortal):
             values['portal_timetable'] = 1
             values['portal_schoolfee'] = 1 if is_user == 'is_student' else 0
             values['portal_paymenthistory'] = 1 if is_user == 'is_teacher' else 0
+            values['portal_accountbalance'] = 1 if is_user == 'is_teacher' else 0
             values['portal_notification'] = 1 if is_user == 'is_teacher' else 0
             values['portal_request'] = 0
         return values
@@ -308,6 +309,37 @@ class PortalAccount(portal.CustomerPortal):
                                 {
                                     'paymenthistories': paymenthistories,
                                     'page_name': 'paymenthistory',
+                                    'total_amount': total_amount,
+                                    'total_number_of_hours': total_number_of_hours,
+                                })
+
+    @http.route(['/my/accountbalance', '/my/accountbalance/page/<int:page>'], type='http', auth="user", website=True)
+    def portal_accountbalance(self, page=1, search='', search_in='all', **kw):
+        # Utilisation de la fonction du helper
+        search_accountbalances, searchbar_inputs = Helpers.paymenthistory(search, search_in)
+        total_amount = 0.0
+        total_number_of_hours = 0.0
+        accountbalances = []
+        for search_accountbalance in search_accountbalances:
+            accountbalance = {}
+            accountbalance['date_from'] = datetime.strftime(search_accountbalance.date_from, DATE_FORMAT_FR)
+            accountbalance['name'] = search_accountbalance.name
+            accountbalance['number'] = search_accountbalance.number
+            accountbalance['code'] = search_accountbalance.code
+            accountbalance['contract'] = search_accountbalance.contract_id.name
+            if search_accountbalance.code:
+                accountbalance['amount'] = search_accountbalance.line_ids.filtered(lambda line: line.salary_rule_id.code == search_accountbalance.code).mapped('amount')[0] if (len(list(search_accountbalance.line_ids)) > 0 and len(search_accountbalance.line_ids.filtered(lambda line: line.salary_rule_id.code == search_accountbalance.code)) > 0) else 0.0
+            else:
+                accountbalance['amount'] = search_accountbalance.line_ids.mapped('amount')[0] if len(list(search_accountbalance.line_ids)) > 0 else 0.0
+            accountbalance['number_of_hours'] = sum(search_accountbalance.worked_days_line_ids.mapped('number_of_hours')) if len(list(search_accountbalance.worked_days_line_ids)) > 0 else 0.0
+            accountbalance['state'] = search_accountbalance.state
+            accountbalances.append(accountbalance)
+            total_amount += accountbalance['amount']
+            total_number_of_hours += accountbalance['number_of_hours']
+        return http.request.render('siantou_ems_portal.siantou_ems_portal_my_home_accountbalance_views',
+                                {
+                                    'accountbalances': accountbalances,
+                                    'page_name': 'accountbalance',
                                     'total_amount': total_amount,
                                     'total_number_of_hours': total_number_of_hours,
                                 })

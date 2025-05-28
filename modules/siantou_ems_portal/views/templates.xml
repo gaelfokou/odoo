@@ -527,6 +527,98 @@
             </t>
         </template>
 
+        <!-- Solde du compte -->
+
+        <template id="siantou_ems_portal_accountbalance" name="siantou_ems_portal.accountbalance" inherit_id="portal.portal_breadcrumbs" priority="30">
+            <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
+                <li t-if="page_name == 'accountbalance'" t-attf-class="breadcrumb-item #{'active ' if accountbalance else ''}">
+                    <a t-if="accountbalance" t-attf-href="/my/accountbalance?{{ keep_query() }}">Solde du compte</a>
+                    <t t-else="">Solde du compte</t>
+                </li>
+            </xpath>
+        </template>
+
+        <template id="siantou_ems_portal_my_home_menu_accountbalance" name="siantou_ems_portal.accountbalance" inherit_id="portal.portal_my_home" priority="30">
+            <xpath expr="//div[hasclass('o_portal_docs')]" position="before">
+                <t t-set="portal_client_category_enable" t-value="True"/>
+            </xpath>
+            <div id="portal_client_category" position="inside">
+                <t t-call="portal.portal_docs_entry">
+                    <t t-set="icon" t-value="'/siantou_ems_portal/static/src/img/payment_grid.png'"/>
+                    <t t-set="title">Solde du compte</t>
+                    <t t-set="url" t-value="'/my/accountbalance'"/>
+                    <t t-set="text">Affichez le solde de votre compte</t>
+                    <t t-set="placeholder_count" t-value="'portal_accountbalance'"/>
+                </t>
+            </div>
+        </template>
+
+        <template id="siantou_ems_portal_my_home_accountbalance_views" name="siantou_ems_portal.print_accountbalance">
+            <t t-call="portal.portal_layout">
+                <t t-set="breadcrumbs_searchbar" t-value="True"/>
+                <t t-call="portal.portal_searchbar">
+                    <t t-set="title">Solde du compte</t>
+                </t>
+                <t t-call="portal.portal_table">
+                    <thead>
+                        <tr class="active">
+                            <th class="text-left">Date</th>
+                            <th class="text-left">Description</th>
+                            <th class="text-left">Réference</th>
+                            <th class="text-left">Règles salariales</th>
+                            <th class="text-left">Contrat</th>
+                            <th class="text-left">Montant payé</th>
+                            <th class="text-left">Nombre d'heure</th>
+                            <th class="text-left">Statut</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-foreach="accountbalances" t-as="record">
+                            <tr>
+                                <td class='text-left'>
+                                    <span t-esc="record['date_from']"/>
+                                </td>
+                                <td class='text-left'>
+                                    <span t-esc="record['name']"/>
+                                </td>
+                                <td class='text-left'>
+                                    <span t-esc="record['number']"/>
+                                </td>
+                                <td class='text-left'>
+                                    <span t-esc="record['code']"/>
+                                </td>
+                                <td class='text-left'>
+                                    <span t-esc="record['contract']"/>
+                                </td>
+                                <td class='text-left'>
+                                    <span t-esc="record['amount']"/>
+                                </td>
+                                <td class='text-left'>
+                                    <span t-esc="record['number_of_hours']"/>
+                                </td>
+                                <td class='text-left'>
+                                    <span t-esc="record['state']"/>
+                                </td>
+                            </tr>
+                        </t>
+                    </tbody>
+                    <tfooter>
+                        <tr>
+                            <th class="text-left" colspan="8" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
+                        </tr>
+                        <tr>
+                            <th class="text-left" colspan="1">Total montant payé</th>
+                            <th class="text-left" colspan="7"><span t-esc="total_amount"/></th>
+                        </tr>
+                        <tr>
+                            <th class="text-left" colspan="1">Total nombre d'heure</th>
+                            <th class="text-left" colspan="7"><span t-esc="total_number_of_hours"/></th>
+                        </tr>
+                    </tfooter>
+                </t>
+            </t>
+        </template>
+
         <!-- Notifications -->
 
         <template id="siantou_ems_portal_notification" name="siantou_ems_portal.notification" inherit_id="portal.portal_breadcrumbs" priority="30">
