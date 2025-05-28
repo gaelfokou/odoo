@@ -544,7 +544,7 @@
             </xpath>
             <div id="portal_client_category" position="inside">
                 <t t-call="portal.portal_docs_entry">
-                    <t t-set="icon" t-value="'/siantou_ems_portal/static/src/img/payment_grid.png'"/>
+                    <t t-set="icon" t-value="'/siantou_ems_portal/static/src/img/balance_grid.png'"/>
                     <t t-set="title">Solde du compte</t>
                     <t t-set="url" t-value="'/my/accountbalance'"/>
                     <t t-set="text">Affichez le solde de votre compte</t>
@@ -607,7 +607,7 @@
                             <th class="text-left" colspan="8" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
                         </tr>
                         <tr>
-                            <th class="text-left" colspan="1">Total montant payé</th>
+                            <th class="text-left" colspan="1">Total montant</th>
                             <th class="text-left" colspan="7"><span t-esc="total_amount"/></th>
                         </tr>
                         <tr>
