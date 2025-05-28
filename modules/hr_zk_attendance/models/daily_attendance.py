@@ -45,6 +45,8 @@ class DailyAttendance(models.Model):
                                   help='The Punching Type of attendance')
     punching_time = fields.Datetime(string='Punching Time',
                                     help='Punching time in the device')
+    device_id = fields.Many2one('biometric.device.details', string='Biometric Device',
+                                  help='Biometric Device Details')
 
     def init(self):
         """Retrieve the data's for attendance report"""
@@ -58,6 +60,7 @@ class DailyAttendance(models.Model):
                         z.address_id as address_id,
                         z.attendance_type as attendance_type,
                         z.punching_time as punching_time,
+                        z.device_id as device_id,
                         z.punch_type as punch_type
                     from zk_machine_attendance z
                         join hr_employee e on (z.employee_id=e.id)
@@ -67,6 +70,7 @@ class DailyAttendance(models.Model):
                         z.address_id,
                         z.attendance_type,
                         z.punch_type,
+                        z.device_id,
                         z.punching_time
                 )
             """

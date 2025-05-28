@@ -12,6 +12,7 @@
                 <field name="attendance_type"/>
                 <field name="punching_time"/>
                 <field name="address_id"/>
+                <field name="device_id"/>
             </tree>
         </field>
     </record>

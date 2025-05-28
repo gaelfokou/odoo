@@ -51,3 +51,5 @@ class ZkMachineAttendance(models.Model):
                                     help="Punching time in the device")
     address_id = fields.Many2one('res.partner', string='Working Address',
                                  help="Working address of the employee")
+    device_id = fields.Many2one('biometric.device.details', string='Biometric Device',
+                                  help='Biometric Device Details')

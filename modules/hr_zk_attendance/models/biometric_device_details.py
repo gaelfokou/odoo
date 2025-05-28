@@ -211,7 +211,8 @@ class BiometricDeviceDetails(models.Model):
                                             'attendance_type': str(each.status),
                                             'punch_type': str(each.punch),
                                             'punching_time': atten_time,
-                                            'address_id': info.address_id.id
+                                            'address_id': info.address_id.id,
+                                            'device_id': info.id,
                                         })
                                         att_var = hr_attendance.search([(
                                             'employee_id', '=', get_user_id.id),
@@ -249,7 +250,8 @@ class BiometricDeviceDetails(models.Model):
                                         'attendance_type': str(each.status),
                                         'punch_type': str(each.punch),
                                         'punching_time': atten_time,
-                                        'address_id': info.address_id.id
+                                        'address_id': info.address_id.id,
+                                        'device_id': info.id,
                                     })
                                     hr_attendance.create({
                                         'employee_id': employee.id,
