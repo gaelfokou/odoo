@@ -141,6 +141,31 @@ class Helpers:
         return search_paymenthistories, searchbar_inputs
 
     @staticmethod
+    def accountbalance(search='', search_in='all'):
+        searchbar_inputs = {
+            'all': {'label': 'Tout', 'input': 'all', 'domain': []},
+        }
+        if search_in not in searchbar_inputs.keys():
+            search_in = 'all'
+        search_domain = searchbar_inputs[search_in]['domain']
+
+        order = 'date_from asc'
+
+        search_accountbalances = []
+        if http.request.env.user.employee_id.id:
+            if http.request.env.user.employee_id.is_teacher:
+                user = http.request.env.user.employee_id
+                search_domain.append(('employee_id', '=', user.id))
+
+                accountbalances = http.request.env['hr.payslip'].sudo().search(search_domain, order=order)
+                accountbalances = list(accountbalances)
+                search_accountbalances = accountbalances
+
+        _logger.info(f'----------- tototototototo search_accountbalances {search_accountbalances} -----------')
+
+        return search_accountbalances, searchbar_inputs
+
+    @staticmethod
     def notification(search='', search_in='all'):
         searchbar_inputs = {
             'all': {'label': 'Tout', 'input': 'all', 'domain': []},

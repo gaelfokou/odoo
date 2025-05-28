@@ -316,7 +316,7 @@ class PortalAccount(portal.CustomerPortal):
     @http.route(['/my/accountbalance', '/my/accountbalance/page/<int:page>'], type='http', auth="user", website=True)
     def portal_accountbalance(self, page=1, search='', search_in='all', **kw):
         # Utilisation de la fonction du helper
-        search_accountbalances, searchbar_inputs = Helpers.paymenthistory(search, search_in)
+        search_accountbalances, searchbar_inputs = Helpers.accountbalance(search, search_in)
         total_amount = 0.0
         total_number_of_hours = 0.0
         accountbalances = []
