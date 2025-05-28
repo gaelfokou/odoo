@@ -18,6 +18,25 @@ DATETIME_FORMAT_FR = '%d/%m/%Y %H:%M'
 TIME_FORMAT = '%H:%M:%S'
 TIME_FORMAT_FR = '%H:%M'
 
+CURRENT_WEEKDAY = {
+    0: 'Lundi',
+    1: 'Mardi',
+    2: 'Mercredi',
+    3: 'Jeudi',
+    4: 'Vendredi',
+    5: 'Samedi',
+    6: 'Dimanche',
+}
+
+STATUS_TIMETABLE = {
+    'pending': 'En attente',
+    'progress': 'En cours',
+    'present': 'Présent',
+    'absent': 'Absent',
+    'permission': 'Permission',
+    'exception': 'Exception',
+}
+
 _logger = logging.getLogger(__name__)
 
 class Helpers:
@@ -141,15 +160,16 @@ class Helpers:
         return search_paymenthistories, searchbar_inputs
 
     @staticmethod
-    def accountbalance(search='', search_in='all'):
+    def accountbalance(end_date=None, start_date=None, search='', search_in='all'):
         searchbar_inputs = {
             'all': {'label': 'Tout', 'input': 'all', 'domain': []},
         }
         if search_in not in searchbar_inputs.keys():
             search_in = 'all'
         search_domain = searchbar_inputs[search_in]['domain']
+        search_domain.append(('status', 'in', ['present', 'permission']))
 
-        order = 'date_from asc'
+        order = 'date asc'
 
         search_accountbalances = []
         if http.request.env.user.employee_id.id:
@@ -157,7 +177,42 @@ class Helpers:
                 user = http.request.env.user.employee_id
                 search_domain.append(('employee_id', '=', user.id))
 
-                accountbalances = http.request.env['hr.payslip'].sudo().search(search_domain, order=order)
+                search_timetables = http.request.env['siantou.ems.timetable.timetable'].sudo().search(search_domain, order=order)
+                if start_date and end_date:
+                    search_timetables = search_timetables.filtered(lambda rec: rec.date >= start_date and rec.date <= end_date)
+                search_timetables = list(search_timetables)
+        
+                timetables = []
+                for search_timetable in search_timetables:
+                    timetable = {}
+                    timetable['id'] = search_timetable.id
+                    timetable['date'] = search_timetable.date
+                    timetable['date_of_week'] = datetime.strftime(search_timetable.date, DATE_FORMAT_FR)
+                    timetable['semester_name'] = search_timetable.semester_id.name
+                    timetable['cycle_name'] = search_timetable.cycle_id.name
+                    timetable['level_name'] = search_timetable.level_id.name
+                    timetable['field_of_study_id'] = search_timetable.field_of_study_id.id
+                    timetable['field_of_study_name'] = search_timetable.field_of_study_id.name
+                    timetable['specialty_name'] = search_timetable.specialty_id.name
+                    timetable['option_name'] = search_timetable.option_id.name
+                    timetable['class_name'] = search_timetable.class_id.name
+                    timetable['department_id'] = search_timetable.department_id.id
+                    timetable['department_name'] = search_timetable.department_id.name
+                    timetable['subject_name'] = search_timetable.subject_id.name
+                    timetable['subject_code'] = search_timetable.subject_id.code
+                    timetable['subject_shared_subject'] = '(TC)' if search_timetable.subject_id.shared_subject else ''
+                    timetable['classroom_name'] = search_timetable.classroom_id.name
+                    timetable['building_name'] = search_timetable.classroom_id.building_id.name
+                    timetable['batch_name'] = search_timetable.batch_id.name
+                    timetable['employee_name'] = search_timetable.employee_id.name
+                    timetable['day_of_week'] = CURRENT_WEEKDAY[search_timetable.date.weekday()]
+                    timetable['start_time'] = search_timetable.start_time
+                    timetable['end_time'] = search_timetable.end_time
+                    timetable['status'] = STATUS_TIMETABLE[search_timetable.status]
+                    timetables.append(timetable)
+
+                accountbalances = http.request.env['siantou.ems.core.teacher.hourly.rate'].sudo().search(search_domain, order=order)
+                accountbalances = http.request.env['siantou.ems.core.hourly.rate'].sudo().search(search_domain, order=order)
                 accountbalances = list(accountbalances)
                 search_accountbalances = accountbalances
 
