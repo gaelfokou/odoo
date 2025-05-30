@@ -66,7 +66,7 @@ class TimetableSubjectHour(models.Model):
     start_time = fields.Float(
         'Heure de début',
         required=True,
-        default=0,
+        default=0.0,
         ondelete='restrict',
         widget='time'
     )
@@ -75,7 +75,7 @@ class TimetableSubjectHour(models.Model):
     end_time = fields.Float(
         'Heure de fin',
         required=True,
-        default=0,
+        default=0.0,
         ondelete='restrict',
         widget='time'
     )
@@ -291,7 +291,7 @@ class Timetable(models.Model):
     # Date du jour où le cours sera programmé
     date = fields.Date(
         'Date du jour',
-        required=True,
+        # required=True,
         default=_default_date,
     )
 
@@ -314,7 +314,7 @@ class Timetable(models.Model):
     start_time = fields.Float(
         'Heure de début',
         required=True,
-        default=0,
+        default=0.0,
         ondelete='restrict',
         widget='time'
     )
@@ -323,7 +323,7 @@ class Timetable(models.Model):
     end_time = fields.Float(
         'Heure de fin',
         required=True,
-        default=0,
+        default=0.0,
         ondelete='restrict',
         widget='time'
     )
@@ -1012,7 +1012,7 @@ class TimetableSlotItem(models.Model):
     start_time = fields.Float(
         string='Heure de début',
         required=True,
-        default=0,
+        default=0.0,
         widget='time'
     )
 
@@ -1020,7 +1020,7 @@ class TimetableSlotItem(models.Model):
     end_time = fields.Float(
         string='Heure de fin',
         required=True,
-        default=0,
+        default=0.0,
         widget='time'
     )
 

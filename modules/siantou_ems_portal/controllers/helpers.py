@@ -171,81 +171,16 @@ class Helpers:
 
         order = 'date asc'
 
-        search_accountbalances = {}
+        search_accountbalances = []
         if http.request.env.user.employee_id.id:
             if http.request.env.user.employee_id.is_teacher:
                 user = http.request.env.user.employee_id
                 search_domain.append(('employee_id', '=', user.id))
 
-                search_timetables = http.request.env['siantou.ems.timetable.timetable'].sudo().search(search_domain, order=order)
+                accountbalances = http.request.env['siantou.ems.timetable.timetable'].sudo().search(search_domain, order=order)
                 if start_date and end_date:
-                    search_timetables = search_timetables.filtered(lambda rec: rec.date >= start_date and rec.date <= end_date)
-                search_timetables = list(search_timetables)
-        
-                total_rate = 0
-
-                timetables = []
-                for search_timetable in search_timetables:
-                    timetable = {}
-                    timetable['id'] = search_timetable.id
-                    timetable['date'] = search_timetable.date
-                    timetable['date_of_week'] = datetime.strftime(search_timetable.date, DATE_FORMAT_FR)
-                    timetable['semester_name'] = search_timetable.semester_id.name
-                    timetable['cycle_name'] = search_timetable.cycle_id.name
-                    timetable['level_name'] = search_timetable.level_id.name
-                    timetable['field_of_study_id'] = search_timetable.field_of_study_id.id
-                    timetable['field_of_study_name'] = search_timetable.field_of_study_id.name
-                    timetable['specialty_name'] = search_timetable.specialty_id.name
-                    timetable['option_name'] = search_timetable.option_id.name
-                    timetable['class_name'] = search_timetable.class_id.name
-                    timetable['department_id'] = search_timetable.department_id.id
-                    timetable['department_name'] = search_timetable.department_id.name
-                    timetable['subject_name'] = search_timetable.subject_id.name
-                    timetable['subject_code'] = search_timetable.subject_id.code
-                    timetable['subject_shared_subject'] = '(TC)' if search_timetable.subject_id.shared_subject else ''
-                    timetable['classroom_name'] = search_timetable.classroom_id.name
-                    timetable['building_name'] = search_timetable.classroom_id.building_id.name
-                    timetable['batch_name'] = search_timetable.batch_id.name
-                    timetable['employee_name'] = search_timetable.employee_id.name
-                    timetable['day_of_week'] = CURRENT_WEEKDAY[search_timetable.date.weekday()]
-                    timetable['start_time'] = search_timetable.start_time
-                    timetable['end_time'] = search_timetable.end_time
-                    timetable['status'] = STATUS_TIMETABLE[search_timetable.status]
-
-                    domain = []
-                    if search_timetable.school_id.id:
-                        domain.append(('school_id', '=', search_timetable.school_id.id))
-                    if search_timetable.cycle_id.id:
-                        domain.append(('cycle_id', '=', search_timetable.cycle_id.id))
-                    if search_timetable.level_id.id:
-                        domain.append(('level_id', '=', search_timetable.level_id.id))
-                    if len(search_timetable.employee_id.diplome_ids.ids) > 0:
-                        domain.append(('diplome_availability_id.diplome_ids', 'in', search_timetable.employee_id.diplome_ids.ids))
-
-                    hourly_rate = http.request.env['siantou.ems.core.hourly.rate'].sudo().search(domain, limit=1)
-
-                    domain = []
-                    if hourly_rate:
-                        domain.append(('hourly_rate_id', '=', hourly_rate.id))
-                        if search_timetable.employee_id.id:
-                            domain.append(('employee_id', '=', search_timetable.employee_id.id))
-                        if search_timetable.subject_id.id:
-                            domain.append(('subject_id', '=', search_timetable.subject_id.id))
-
-                        teacher_hourly_rate = http.request.env['siantou.ems.core.teacher.hourly.rate'].sudo().search(domain, limit=1)
-                        if teacher_hourly_rate:
-                            timetable['rate'] = teacher_hourly_rate.rate
-                        else:
-                            timetable['rate'] = hourly_rate.rate
-                    else:
-                        timetable['rate'] = 0
-
-                    total_rate += timetable['rate']
-
-                    timetables.append(timetable)
-
-                accountbalances['timetables'] = timetables
-                accountbalances['total_rate'] = total_rate
+                    accountbalances = accountbalances.filtered(lambda rec: rec.date >= start_date and rec.date <= end_date)
+                accountbalances = list(accountbalances)
                 search_accountbalances = accountbalances
 
         _logger.info(f'----------- tototototototo search_accountbalances {search_accountbalances} -----------')

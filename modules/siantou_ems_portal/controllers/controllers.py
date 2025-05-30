@@ -317,31 +317,70 @@ class PortalAccount(portal.CustomerPortal):
     def portal_accountbalance(self, page=1, search='', search_in='all', **kw):
         # Utilisation de la fonction du helper
         search_accountbalances, searchbar_inputs = Helpers.accountbalance(search, search_in)
-        total_amount = 0.0
-        total_number_of_hours = 0.0
+        total_rate = 0.0
         accountbalances = []
         for search_accountbalance in search_accountbalances:
             accountbalance = {}
-            accountbalance['date_from'] = datetime.strftime(search_accountbalance.date_from, DATE_FORMAT_FR)
-            accountbalance['name'] = search_accountbalance.name
-            accountbalance['number'] = search_accountbalance.number
-            accountbalance['code'] = search_accountbalance.code
-            accountbalance['contract'] = search_accountbalance.contract_id.name
-            if search_accountbalance.code:
-                accountbalance['amount'] = search_accountbalance.line_ids.filtered(lambda line: line.salary_rule_id.code == search_accountbalance.code).mapped('amount')[0] if (len(list(search_accountbalance.line_ids)) > 0 and len(search_accountbalance.line_ids.filtered(lambda line: line.salary_rule_id.code == search_accountbalance.code)) > 0) else 0.0
+            accountbalance['id'] = search_accountbalance.id
+            accountbalance['date'] = search_accountbalance.date
+            accountbalance['date_of_week'] = datetime.strftime(search_accountbalance.date, DATE_FORMAT_FR)
+            accountbalance['semester_name'] = search_accountbalance.semester_id.name
+            accountbalance['cycle_name'] = search_accountbalance.cycle_id.name
+            accountbalance['level_name'] = search_accountbalance.level_id.name
+            accountbalance['field_of_study_id'] = search_accountbalance.field_of_study_id.id
+            accountbalance['field_of_study_name'] = search_accountbalance.field_of_study_id.name
+            accountbalance['specialty_name'] = search_accountbalance.specialty_id.name
+            accountbalance['option_name'] = search_accountbalance.option_id.name
+            accountbalance['class_name'] = search_accountbalance.class_id.name
+            accountbalance['department_id'] = search_accountbalance.department_id.id
+            accountbalance['department_name'] = search_accountbalance.department_id.name
+            accountbalance['subject_name'] = search_accountbalance.subject_id.name
+            accountbalance['subject_code'] = search_accountbalance.subject_id.code
+            accountbalance['subject_shared_subject'] = '(TC)' if search_accountbalance.subject_id.shared_subject else ''
+            accountbalance['classroom_name'] = search_accountbalance.classroom_id.name
+            accountbalance['building_name'] = search_accountbalance.classroom_id.building_id.name
+            accountbalance['batch_name'] = search_accountbalance.batch_id.name
+            accountbalance['employee_name'] = search_accountbalance.employee_id.name
+            accountbalance['day_of_week'] = CURRENT_WEEKDAY[search_accountbalance.date.weekday()]
+            accountbalance['start_time'] = search_accountbalance.start_time
+            accountbalance['end_time'] = search_accountbalance.end_time
+            accountbalance['status'] = STATUS_TIMETABLE[search_accountbalance.status]
+
+            domain = []
+            if search_accountbalance.school_id.id:
+                domain.append(('school_id', '=', search_accountbalance.school_id.id))
+            if search_accountbalance.cycle_id.id:
+                domain.append(('cycle_id', '=', search_accountbalance.cycle_id.id))
+            if search_accountbalance.level_id.id:
+                domain.append(('level_id', '=', search_accountbalance.level_id.id))
+            if len(search_accountbalance.employee_id.diplome_ids.ids) > 0:
+                domain.append(('diplome_availability_id.diplome_ids', 'in', search_accountbalance.employee_id.diplome_ids.ids))
+
+            hourly_rate = http.request.env['siantou.ems.core.hourly.rate'].sudo().search(domain, limit=1)
+
+            domain = []
+            if hourly_rate:
+                domain.append(('hourly_rate_id', '=', hourly_rate.id))
+                if search_accountbalance.employee_id.id:
+                    domain.append(('employee_id', '=', search_accountbalance.employee_id.id))
+                if search_accountbalance.subject_id.id:
+                    domain.append(('subject_id', '=', search_accountbalance.subject_id.id))
+
+                teacher_hourly_rate = http.request.env['siantou.ems.core.teacher.hourly.rate'].sudo().search(domain, limit=1)
+                if teacher_hourly_rate:
+                    accountbalance['rate'] = teacher_hourly_rate.rate
+                else:
+                    accountbalance['rate'] = hourly_rate.rate
             else:
-                accountbalance['amount'] = search_accountbalance.line_ids.mapped('amount')[0] if len(list(search_accountbalance.line_ids)) > 0 else 0.0
-            accountbalance['number_of_hours'] = sum(search_accountbalance.worked_days_line_ids.mapped('number_of_hours')) if len(list(search_accountbalance.worked_days_line_ids)) > 0 else 0.0
-            accountbalance['state'] = search_accountbalance.state
+                accountbalance['rate'] = 0
+
             accountbalances.append(accountbalance)
-            total_amount += accountbalance['amount']
-            total_number_of_hours += accountbalance['number_of_hours']
+            total_rate += accountbalance['rate']
         return http.request.render('siantou_ems_portal.siantou_ems_portal_my_home_accountbalance_views',
                                 {
                                     'accountbalances': accountbalances,
                                     'page_name': 'accountbalance',
-                                    'total_amount': total_amount,
-                                    'total_number_of_hours': total_number_of_hours,
+                                    'total_rate': total_rate,
                                 })
 
     @http.route(['/my/notification', '/my/notification/page/<int:page>'], type='http', auth="user", website=True)

@@ -52,7 +52,7 @@ class Subject(models.Model):
     hours_credit = fields.Float(
         'Volume horaire semestriel',
         help='Volume horaire du cours sur un semestre',
-        default=0,
+        default=0.0,
         required=True
     )
 
