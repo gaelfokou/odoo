@@ -26,6 +26,7 @@ class TimetableSubjectHour(models.Model):
     # Date du jour où le cours sera programmé
     start_date = fields.Date(
         'Date de début',
+        readonly=False,
         compute='_compute_start_date',
         store=True
     )
@@ -41,6 +42,7 @@ class TimetableSubjectHour(models.Model):
     # Date du jour où le cours sera programmé
     end_date = fields.Date(
         'Date de fin',
+        readonly=False,
         compute='_compute_end_date',
         store=True
     )
