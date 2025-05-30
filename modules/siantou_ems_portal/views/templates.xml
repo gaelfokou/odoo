@@ -562,13 +562,14 @@
                 <t t-call="portal.portal_table">
                     <thead>
                         <tr class="active">
+                            <th class="text-left">Semestre</th>
+                            <th class="text-left">Jour</th>
                             <th class="text-left">Date</th>
-                            <th class="text-left">Description</th>
-                            <th class="text-left">Réference</th>
-                            <th class="text-left">Règles salariales</th>
-                            <th class="text-left">Contrat</th>
-                            <th class="text-left">Montant</th>
-                            <th class="text-left">Nombre d'heure</th>
+                            <th class="text-left">Heure</th>
+                            <th class="text-left">Cours</th>
+                            <th class="text-left">Classe</th>
+                            <th class="text-left">Bâtiment</th>
+                            <th class="text-left">Salle de classe</th>
                             <th class="text-left">Statut</th>
                         </tr>
                     </thead>
@@ -576,43 +577,46 @@
                         <t t-foreach="accountbalances" t-as="record">
                             <tr>
                                 <td class='text-left'>
-                                    <span t-esc="record['date_from']"/>
+                                    <span t-esc="record['semester_name']"/>
                                 </td>
                                 <td class='text-left'>
-                                    <span t-esc="record['name']"/>
+                                    <span t-esc="record['day_of_week']"/>
                                 </td>
                                 <td class='text-left'>
-                                    <span t-esc="record['number']"/>
+                                    <span t-esc="record['date_of_week']"/>
                                 </td>
                                 <td class='text-left'>
-                                    <span t-esc="record['code']"/>
+                                    <span t-esc="record['time_of_week']"/>
                                 </td>
                                 <td class='text-left'>
-                                    <span t-esc="record['contract']"/>
+                                    <span t-esc="record['subject_name']"/>
                                 </td>
                                 <td class='text-left'>
-                                    <span t-esc="record['amount']"/>
+                                    <span t-esc="record['class_name']"/>
                                 </td>
                                 <td class='text-left'>
-                                    <span t-esc="record['number_of_hours']"/>
+                                    <span t-esc="record['building_name']"/>
                                 </td>
                                 <td class='text-left'>
-                                    <span t-esc="record['state']"/>
+                                    <span t-esc="record['classroom_name']"/>
+                                </td>
+                                <td class='text-left'>
+                                    <span t-esc="record['status']"/>
                                 </td>
                             </tr>
                         </t>
                     </tbody>
                     <tfooter>
                         <tr>
-                            <th class="text-left" colspan="8" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
+                            <th class="text-left" colspan="9" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
                         </tr>
                         <tr>
                             <th class="text-left" colspan="1">Total montant</th>
-                            <th class="text-left" colspan="7"><span t-esc="total_amount"/></th>
+                            <th class="text-left" colspan="8"><span t-esc="total_rate"/></th>
                         </tr>
                         <tr>
                             <th class="text-left" colspan="1">Total nombre d'heure</th>
-                            <th class="text-left" colspan="7"><span t-esc="total_number_of_hours"/></th>
+                            <th class="text-left" colspan="8"><span t-esc="total_number_of_hours"/></th>
                         </tr>
                     </tfooter>
                 </t>

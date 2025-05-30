@@ -344,6 +344,7 @@ class PortalAccount(portal.CustomerPortal):
             accountbalance['day_of_week'] = CURRENT_WEEKDAY[search_accountbalance.date.weekday()]
             accountbalance['start_time'] = search_accountbalance.start_time
             accountbalance['end_time'] = search_accountbalance.end_time
+            accountbalance['time_of_week'] = '{}-{}'.format(Helpers.convert_float_to_time(search_accountbalance.start_time), Helpers.convert_float_to_time(search_accountbalance.end_time))
             accountbalance['status'] = STATUS_TIMETABLE[search_accountbalance.status]
 
             domain = []
