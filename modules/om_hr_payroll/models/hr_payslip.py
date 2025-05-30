@@ -175,22 +175,22 @@ class HrPayslip(models.Model):
         datetime_after = HrPayslip.convert_datetime_to_utc(datetime_after)
         datetime_to = HrPayslip.convert_datetime_to_utc(datetime_to)
 
-        domain_in = [('punch_type', '=', '0')]
-        if employee:
-            domain_in.append(('employee_id', '=', employee.id))
-
         daily_attendances = []
 
-        daily_in_attendances = self.env['daily.attendance'].search(domain_in, order='punching_time asc').filtered(lambda rec: UTC_TZ.localize(rec.punching_time) >= datetime_before and UTC_TZ.localize(rec.punching_time) <= datetime_from).sorted('punching_time')
+        domain = [('punch_type', '=', '0')]
+        if employee:
+            domain.append(('employee_id', '=', employee.id))
+
+        daily_in_attendances = self.env['daily.attendance'].search(domain, order='punching_time asc').filtered(lambda rec: UTC_TZ.localize(rec.punching_time) >= datetime_before and UTC_TZ.localize(rec.punching_time) <= datetime_from).sorted('punching_time')
         daily_in_attendances = list(daily_in_attendances)
         if len(daily_in_attendances) > 0:
             daily_attendances.append(daily_in_attendances[0])
 
-        domain_out = [('punch_type', '=', '1')]
+        domain = [('punch_type', '=', '1')]
         if employee:
-            domain_out.append(('employee_id', '=', employee.id))
+            domain.append(('employee_id', '=', employee.id))
 
-        daily_out_attendances = self.env['daily.attendance'].search(domain_out, order='punching_time asc').filtered(lambda rec: UTC_TZ.localize(rec.punching_time) >= datetime_to and UTC_TZ.localize(rec.punching_time) <= datetime_after).sorted('punching_time')
+        daily_out_attendances = self.env['daily.attendance'].search(domain, order='punching_time asc').filtered(lambda rec: UTC_TZ.localize(rec.punching_time) >= datetime_to and UTC_TZ.localize(rec.punching_time) <= datetime_after).sorted('punching_time')
         daily_out_attendances = list(daily_out_attendances)
         if len(daily_out_attendances) > 0:
             daily_attendances.append(daily_out_attendances[-1])
