@@ -15,32 +15,34 @@ class TimetableSubjectHour(models.Model):
     _name = 'siantou.ems.timetable.subject.day.hour'
     _description = 'Jour et heure du cours'
 
-    def _default_start_date(self):
-        group = self.env['siantou.ems.timetable.group'].search([('is_active', '=', True)], limit=1)
-        if group:
-            return group.semester_id.start_time
-        else:
-            return None
+    @api.depends('group_id')
+    def _compute_start_date(self):
+        for record in self:
+            if record.group_id:
+                record.start_date = record.group_id.semester_id.start_time
+            else:
+                record.start_date = None
 
     # Date du jour où le cours sera programmé
     start_date = fields.Date(
         'Date de début',
-        required=True,
-        default=_default_start_date,
+        compute='_compute_start_date',
+        store=True
     )
 
-    def _default_end_date(self):
-        group = self.env['siantou.ems.timetable.group'].search([('is_active', '=', True)], limit=1)
-        if group:
-            return group.semester_id.end_time
-        else:
-            return None
+    @api.depends('group_id')
+    def _compute_end_date(self):
+        for record in self:
+            if record.group_id:
+                record.end_date = record.group_id.semester_id.end_time
+            else:
+                record.end_date = None
 
     # Date du jour où le cours sera programmé
     end_date = fields.Date(
         'Date de fin',
-        required=True,
-        default=_default_end_date,
+        compute='_compute_end_date',
+        store=True
     )
 
     # Jour où le cours est programmé
@@ -74,6 +76,13 @@ class TimetableSubjectHour(models.Model):
         default=0,
         ondelete='restrict',
         widget='time'
+    )
+
+    group_id = fields.Many2one(
+        'siantou.ems.timetable.group',
+        'Version',
+        required=True,
+        ondelete='cascade'
     )
 
     timetable_id = fields.Many2one(
