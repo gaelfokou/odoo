@@ -105,6 +105,7 @@
                             <field name="end_time" invisible="id == False or start_time == end_time"/>
                             <field name="subject_day_hour_ids" invisible="id != False and start_time != end_time" context="{'default_group_id': group_id}" widget="one2many_list">
                                 <tree>
+                                    <field name="group_id"/>
                                     <field name="start_date"/>
                                     <field name="end_date"/>
                                     <field name="day_of_week"/>
