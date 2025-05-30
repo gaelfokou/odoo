@@ -263,8 +263,6 @@ class HrPayslip(models.Model):
         machines = self.env['biometric.device.details'].search([])
         for machine in machines:
             try:
-                _logger.info(f'----------- tototototototo machine device_ip {machine.device_ip} -----------')
-                _logger.info(f'----------- tototototototo machine port_number {machine.port_number} -----------')
                 machine.action_download_attendance()
             except UserError as error:
                 _logger.info(f'----------- tototototototo UserError {error} -----------')

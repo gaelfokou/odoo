@@ -151,8 +151,6 @@ class BiometricDeviceDetails(models.Model):
         machines = self.env['biometric.device.details'].search([])
         for machine in machines:
             try:
-                _logger.info(f'----------- tototototototo machine device_ip {machine.device_ip} -----------')
-                _logger.info(f'----------- tototototototo machine port_number {machine.port_number} -----------')
                 machine.action_download_attendance()
             except UserError as error:
                 _logger.info(f'----------- tititititititi UserError {error} -----------')
@@ -167,6 +165,9 @@ class BiometricDeviceDetails(models.Model):
         zk_attendance = self.env['zk.machine.attendance']
         hr_attendance = self.env['hr.attendance']
         for info in self:
+            _logger.info(f'----------- tititititititi machine name {info.name} -----------')
+            _logger.info(f'----------- tititititititi machine device_ip {info.device_ip} -----------')
+            _logger.info(f'----------- tititititititi machine port_number {info.port_number} -----------')
             machine_ip = info.device_ip
             zk_port = info.port_number
             try:
@@ -186,27 +187,67 @@ class BiometricDeviceDetails(models.Model):
                 attendance = conn.get_attendance()
                 if attendance:
                     for each in attendance:
-                        atten_time = each.timestamp
-                        local_tz = pytz.timezone(
-                            self.env.user.partner_id.tz or 'GMT')
-                        local_dt = local_tz.localize(atten_time, is_dst=None)
-                        utc_dt = local_dt.astimezone(pytz.utc)
-                        utc_dt = utc_dt.strftime("%Y-%m-%d %H:%M:%S")
-                        atten_time = datetime.datetime.strptime(
-                            utc_dt, "%Y-%m-%d %H:%M:%S")
-                        atten_time = fields.Datetime.to_string(atten_time)
-                        for uid in user:
-                            if uid.user_id == each.user_id:
-                                get_user_id = self.env['hr.employee'].search(
-                                    [('device_id_num', '=', each.user_id)], limit=1)
-                                if get_user_id:
-                                    duplicate_attens = zk_attendance.search(
-                                        [('device_id_num', '=', each.user_id),
-                                         ('punching_time', '=', atten_time)])
-                                    duplicate_atten_ids = duplicate_attens.ids
-                                    if len(duplicate_atten_ids) == 0:
+                        try:
+                            atten_time = each.timestamp
+                            local_tz = pytz.timezone(
+                                self.env.user.partner_id.tz or 'GMT')
+                            local_dt = local_tz.localize(atten_time, is_dst=None)
+                            utc_dt = local_dt.astimezone(pytz.utc)
+                            utc_dt = utc_dt.strftime("%Y-%m-%d %H:%M:%S")
+                            atten_time = datetime.datetime.strptime(
+                                utc_dt, "%Y-%m-%d %H:%M:%S")
+                            atten_time = fields.Datetime.to_string(atten_time)
+                            for uid in user:
+                                if uid.user_id == each.user_id:
+                                    get_user_id = self.env['hr.employee'].search(
+                                        [('device_id_num', '=', each.user_id)], limit=1)
+                                    if get_user_id:
+                                        duplicate_attens = zk_attendance.search(
+                                            [('device_id_num', '=', each.user_id),
+                                            ('punching_time', '=', atten_time)])
+                                        duplicate_atten_ids = duplicate_attens.ids
+                                        if len(duplicate_atten_ids) == 0:
+                                            zk_attendance.create({
+                                                'employee_id': get_user_id.id,
+                                                'device_id_num': each.user_id,
+                                                'attendance_type': str(each.status),
+                                                'punch_type': str(each.punch),
+                                                'punching_time': atten_time,
+                                                'address_id': info.address_id.id,
+                                                'device_id': info.id,
+                                            })
+                                            att_var = hr_attendance.search([(
+                                                'employee_id', '=', get_user_id.id),
+                                                ('check_out', '=', False)])
+                                            att_var = list(att_var)
+                                            if each.punch == 0:  # check-in
+                                                if len(att_var) == 0:
+                                                    hr_attendance.create({
+                                                        'employee_id':
+                                                            get_user_id.id,
+                                                        'check_in': atten_time
+                                                    })
+                                            if each.punch == 1:  # check-out
+                                                if len(att_var) > 0:
+                                                    att_var[0].write({
+                                                        'check_out': atten_time
+                                                    })
+                                                else:
+                                                    att_var1 = hr_attendance.search(
+                                                        [('employee_id', '=',
+                                                        get_user_id.id)])
+                                                    att_var1 = list(att_var1)
+                                                    if len(att_var1) > 0:
+                                                        att_var1[-1].write({
+                                                            'check_out': atten_time
+                                                        })
+                                    else:
+                                        employee = self.env['hr.employee'].create({
+                                            'device_id_num': each.user_id,
+                                            'name': uid.name
+                                        })
                                         zk_attendance.create({
-                                            'employee_id': get_user_id.id,
+                                            'employee_id': employee.id,
                                             'device_id_num': each.user_id,
                                             'attendance_type': str(each.status),
                                             'punch_type': str(each.punch),
@@ -214,49 +255,16 @@ class BiometricDeviceDetails(models.Model):
                                             'address_id': info.address_id.id,
                                             'device_id': info.id,
                                         })
-                                        att_var = hr_attendance.search([(
-                                            'employee_id', '=', get_user_id.id),
-                                            ('check_out', '=', False)])
-                                        att_var = list(att_var)
-                                        if each.punch == 0:  # check-in
-                                            if len(att_var) == 0:
-                                                hr_attendance.create({
-                                                    'employee_id':
-                                                        get_user_id.id,
-                                                    'check_in': atten_time
-                                                })
-                                        if each.punch == 1:  # check-out
-                                            if len(att_var) > 0:
-                                                att_var[0].write({
-                                                    'check_out': atten_time
-                                                })
-                                            else:
-                                                att_var1 = hr_attendance.search(
-                                                    [('employee_id', '=',
-                                                      get_user_id.id)])
-                                                att_var1 = list(att_var1)
-                                                if len(att_var1) > 0:
-                                                    att_var1[-1].write({
-                                                        'check_out': atten_time
-                                                    })
-                                else:
-                                    employee = self.env['hr.employee'].create({
-                                        'device_id_num': each.user_id,
-                                        'name': uid.name
-                                    })
-                                    zk_attendance.create({
-                                        'employee_id': employee.id,
-                                        'device_id_num': each.user_id,
-                                        'attendance_type': str(each.status),
-                                        'punch_type': str(each.punch),
-                                        'punching_time': atten_time,
-                                        'address_id': info.address_id.id,
-                                        'device_id': info.id,
-                                    })
-                                    hr_attendance.create({
-                                        'employee_id': employee.id,
-                                        'check_in': atten_time
-                                    })
+                                        hr_attendance.create({
+                                            'employee_id': employee.id,
+                                            'check_in': atten_time
+                                        })
+                        except UserError as error:
+                            _logger.info(f'----------- tititititititi UserError {error} -----------')
+                        except ValidationError as error:
+                            _logger.info(f'----------- tititititititi ValidationError {error} -----------')
+                        except Exception as error:
+                            _logger.info(f'----------- tititititititi Exception {error} -----------')
                     conn.disconnect
                     return True
                 else:

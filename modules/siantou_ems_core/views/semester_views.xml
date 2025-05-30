@@ -37,12 +37,7 @@
                             <group colspan="2">
                                 <field name="end_time"/>
                                 <field name="number_of_week"/>
-                                <field name="level_ids">
-                                    <tree>
-                                        <field name="name"/>
-                                        <field name="description"/>
-                                    </tree>
-                                </field>
+            					<field name="level_ids" widget="many2many_tags"/>
                             </group>
                         </group>
                         <notebook>

@@ -380,15 +380,39 @@ class Timetable(models.Model):
 
     subject_id_domain = fields.Binary(compute='_compute_class_domain', default=[])
 
-    @api.depends('subject_id')
+    @api.depends('class_id', 'subject_id')
     def _compute_name(self):
         for record in self:
-            record.name = record.subject_id.name
+            class_name = record.class_id.name if record.class_id.id else ''
+            subject_name = record.subject_id.name if record.subject_id.id else ''
+            if subject_name != '':
+                subject_name = f'- {subject_name}'
+            name = '{} {}'.format(class_name, subject_name)
+            while True:
+                if name.find('  ') != -1:
+                    name = name.replace('  ', ' ')
+                else:
+                    break
+            name = name.strip()
+            name = name.upper()
+            record.name = name
 
-    @api.onchange('subject_id')
+    @api.onchange('class_id', 'subject_id')
     def _onchange_name(self):
         for record in self:
-            record.name = record.subject_id.name
+            class_name = record.class_id.name if record.class_id.id else ''
+            subject_name = record.subject_id.name if record.subject_id.id else ''
+            if subject_name != '':
+                subject_name = f'- {subject_name}'
+            name = '{} {}'.format(class_name, subject_name)
+            while True:
+                if name.find('  ') != -1:
+                    name = name.replace('  ', ' ')
+                else:
+                    break
+            name = name.strip()
+            name = name.upper()
+            record.name = name
 
     @api.depends('school_id')
     def _compute_school_domain(self):
