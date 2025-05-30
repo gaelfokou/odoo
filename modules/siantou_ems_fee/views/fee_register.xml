@@ -1184,7 +1184,7 @@
 
                             </group>
                             <field name="payed_line_ids">
-                                <tree string="Payments" create="False">
+                                <tree string="Payments" create="0">
                                     <field name="date" string="Date"/>
                                     <field name="receipt_no"/>
                                     <field name="product_id" string="Fee"/>

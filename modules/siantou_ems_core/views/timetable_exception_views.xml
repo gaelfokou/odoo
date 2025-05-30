@@ -8,7 +8,7 @@
             <field name="name">timetable.exception.tree.view</field>
 			<field name="model">siantou.ems.timetable.timetable</field>
 			<field name="arch" type="xml">
-				<tree create="False" string="Exceptions d'emploi du temps">
+				<tree create="0" string="Exceptions d'emploi du temps">
                     <header>
                         <button name="action_present_timetable" 
                                 type="object" 
