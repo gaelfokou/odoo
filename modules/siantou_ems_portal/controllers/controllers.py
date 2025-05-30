@@ -318,6 +318,7 @@ class PortalAccount(portal.CustomerPortal):
         # Utilisation de la fonction du helper
         search_accountbalances, searchbar_inputs = Helpers.accountbalance(search, search_in)
         total_rate = 0.0
+        total_number_of_hours = 0.0
         accountbalances = []
         for search_accountbalance in search_accountbalances:
             accountbalance = {}
@@ -347,6 +348,16 @@ class PortalAccount(portal.CustomerPortal):
             accountbalance['time_of_week'] = '{}-{}'.format(Helpers.convert_float_to_time(search_accountbalance.start_time), Helpers.convert_float_to_time(search_accountbalance.end_time))
             accountbalance['status'] = STATUS_TIMETABLE[search_accountbalance.status]
 
+            end_time = Helpers.convert_float_to_time(search_accountbalance.end_time)
+            start_time = Helpers.convert_float_to_time(search_accountbalance.start_time)
+            datetime_to = datetime.strptime(f'{search_accountbalance.date} {end_time}:00', DATETIME_FORMAT)
+            datetime_from = datetime.strptime(f'{search_accountbalance.date} {start_time}:00', DATETIME_FORMAT)
+            weekly_hours_credit = datetime_to - datetime_from
+            weekly_hours_credit = weekly_hours_credit - timedelta(hours=search_accountbalance.not_active_slotitems)
+            weekly_hours_credit = weekly_hours_credit.total_seconds() / 3600.0
+            weekly_hours_credit = round(weekly_hours_credit, 2)
+            accountbalance['number_of_hours'] = weekly_hours_credit
+
             domain = []
             if search_accountbalance.school_id.id:
                 domain.append(('school_id', '=', search_accountbalance.school_id.id))
@@ -375,13 +386,17 @@ class PortalAccount(portal.CustomerPortal):
             else:
                 accountbalance['rate'] = 0
 
+            accountbalance['amount'] = accountbalance['rate'] * accountbalance['number_of_hours']
+
             accountbalances.append(accountbalance)
             total_rate += accountbalance['rate']
+            total_number_of_hours += accountbalance['number_of_hours']
         return http.request.render('siantou_ems_portal.siantou_ems_portal_my_home_accountbalance_views',
                                 {
                                     'accountbalances': accountbalances,
                                     'page_name': 'accountbalance',
                                     'total_rate': total_rate,
+                                    'total_number_of_hours': total_number_of_hours,
                                 })
 
     @http.route(['/my/notification', '/my/notification/page/<int:page>'], type='http', auth="user", website=True)
