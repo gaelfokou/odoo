@@ -475,8 +475,8 @@
                             <th class="text-left">Réference</th>
                             <th class="text-left">Règles salariales</th>
                             <th class="text-left">Contrat</th>
-                            <th class="text-left">Montant payé</th>
                             <th class="text-left">Nombre d'heure</th>
+                            <th class="text-left">Montant payé</th>
                             <th class="text-left">Statut</th>
                         </tr>
                     </thead>
@@ -499,10 +499,10 @@
                                     <span t-esc="record['contract']"/>
                                 </td>
                                 <td class='text-left'>
-                                    <span t-esc="record['amount']"/>
+                                    <span t-esc="record['number_of_hours']"/>
                                 </td>
                                 <td class='text-left'>
-                                    <span t-esc="record['number_of_hours']"/>
+                                    <span t-esc="record['amount']"/>
                                 </td>
                                 <td class='text-left'>
                                     <span t-esc="record['state']"/>
@@ -515,12 +515,12 @@
                             <th class="text-left" colspan="8" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
                         </tr>
                         <tr>
-                            <th class="text-left" colspan="1">Total montant payé</th>
-                            <th class="text-left" colspan="7"><span t-esc="total_amount"/></th>
-                        </tr>
-                        <tr>
                             <th class="text-left" colspan="1">Total nombre d'heure</th>
                             <th class="text-left" colspan="7"><span t-esc="total_number_of_hours"/></th>
+                        </tr>
+                        <tr>
+                            <th class="text-left" colspan="1">Total montant payé</th>
+                            <th class="text-left" colspan="7"><span t-esc="total_amount"/></th>
                         </tr>
                     </tfooter>
                 </t>
@@ -571,6 +571,7 @@
                             <th class="text-left">Bâtiment</th>
                             <th class="text-left">Salle de classe</th>
                             <th class="text-left">Taux horaire</th>
+                            <th class="text-left">Nombre d'heure</th>
                             <th class="text-left">Montant</th>
                         </tr>
                     </thead>
@@ -605,6 +606,9 @@
                                     <span t-esc="record['rate']"/>
                                 </td>
                                 <td class='text-left'>
+                                    <span t-esc="record['number_of_hours']"/>
+                                </td>
+                                <td class='text-left'>
                                     <span t-esc="record['amount']"/>
                                 </td>
                             </tr>
@@ -612,15 +616,15 @@
                     </tbody>
                     <tfooter>
                         <tr>
-                            <th class="text-left" colspan="10" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
-                        </tr>
-                        <tr>
-                            <th class="text-left" colspan="1">Total montant</th>
-                            <th class="text-left" colspan="9"><span t-esc="total_rate"/></th>
+                            <th class="text-left" colspan="11" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
                         </tr>
                         <tr>
                             <th class="text-left" colspan="1">Total nombre d'heure</th>
-                            <th class="text-left" colspan="9"><span t-esc="total_number_of_hours"/></th>
+                            <th class="text-left" colspan="10"><span t-esc="total_number_of_hours"/></th>
+                        </tr>
+                        <tr>
+                            <th class="text-left" colspan="1">Total montant</th>
+                            <th class="text-left" colspan="10"><span t-esc="total_rate"/></th>
                         </tr>
                     </tfooter>
                 </t>
