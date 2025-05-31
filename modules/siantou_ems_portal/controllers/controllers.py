@@ -380,7 +380,7 @@ class PortalAccount(portal.CustomerPortal):
                 else:
                     accountbalance['rate'] = hourly_rate.rate
             else:
-                accountbalance['rate'] = 0
+                accountbalance['rate'] = 0.0
 
             accountbalance['amount'] = accountbalance['rate'] * accountbalance['number_of_hours']
 
