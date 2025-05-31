@@ -220,6 +220,7 @@ class HrPayslip(models.Model):
             if payslip.employee_id.is_teacher:
                 # Recherche des emplois du temps de l'enseignant pour une période donnée
                 employee_timetables = self.env['siantou.ems.timetable.timetable'].search([
+                    ('group_id.is_active', '=', True),
                     ('employee_id', '=', payslip.employee_id.id),
                     ('date', '<=', date_to),
                     ('date', '>=', date_from),
@@ -300,6 +301,7 @@ class HrPayslip(models.Model):
             if payslip_id.employee_id.is_teacher:
                 # Recherche des emplois du temps de l'enseignant pour une période donnée
                 employee_timetables = self.env['siantou.ems.timetable.timetable'].search([
+                    ('group_id.is_active', '=', True),
                     ('employee_id', '=', payslip_id.employee_id.id),
                     ('date', '<=', date_to),
                     ('date', '>=', date_from),
@@ -397,6 +399,7 @@ class HrPayslip(models.Model):
 
         # Recherche des emplois du temps de l'enseignant pour une période donnée
         employee_timetables = self.env['siantou.ems.timetable.timetable'].search([
+            ('group_id.is_active', '=', True),
             ('status', 'in', ['pending', 'progress']),
         ], order='date asc').filtered(lambda rec: (rec.date < current_date) or (rec.date == current_date and rec.end_time <= time_before))
         employee_timetables = list(employee_timetables)
@@ -487,10 +490,12 @@ class HrPayslip(models.Model):
                 employee_id = daily_attendance.employee_id
                 if employee_id.is_teacher:
                     # employee_timetables = self.env['siantou.ems.timetable.timetable'].search([
+                    #     ('group_id.is_active', '=', True),
                     #     ('employee_id', '=', employee_id.id),
                     #     ('status', '=', 'pending'),
                     # ], order='date asc').filtered(lambda rec: (UTC_TZ.localize(punching_time) >= HrPayslip.convert_datetime_to_utc(datetime.strptime(f'{rec.date} {HrPayslip.convert_float_to_time(rec.start_time)}', DATETIME_FORMAT) - timedelta(minutes=15)) and UTC_TZ.localize(punching_time) <= HrPayslip.convert_datetime_to_utc(datetime.strptime(f'{rec.date} {HrPayslip.convert_float_to_time(rec.start_time)}', DATETIME_FORMAT) + timedelta(minutes=15))) or (UTC_TZ.localize(punching_time) >= HrPayslip.convert_datetime_to_utc(datetime.strptime(f'{rec.date} {HrPayslip.convert_float_to_time(rec.end_time)}', DATETIME_FORMAT)) and UTC_TZ.localize(punching_time) <= HrPayslip.convert_datetime_to_utc(datetime.strptime(f'{rec.date} {HrPayslip.convert_float_to_time(rec.end_time)}', DATETIME_FORMAT) + timedelta(minutes=15))))
                     employee_timetables = self.env['siantou.ems.timetable.timetable'].search([
+                        ('group_id.is_active', '=', True),
                         ('employee_id', '=', employee_id.id),
                         ('status', '=', 'pending'),
                     ], order='date asc').filtered(lambda rec: self.search_filtered_daily_attendance_teacher(rec, punching_time))
