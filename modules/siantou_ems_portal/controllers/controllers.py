@@ -348,10 +348,10 @@ class PortalAccount(portal.CustomerPortal):
             accountbalance['time_of_week'] = '{}-{}'.format(Helpers.convert_float_to_time(search_accountbalance.start_time), Helpers.convert_float_to_time(search_accountbalance.end_time))
             accountbalance['status'] = STATUS_TIMETABLE[search_accountbalance.status]
 
-            end_time = Helpers.convert_float_to_time(search_accountbalance.end_time)
-            start_time = Helpers.convert_float_to_time(search_accountbalance.start_time)
-            datetime_to = datetime.strptime(f'{search_accountbalance.date} {end_time}:00', DATETIME_FORMAT)
-            datetime_from = datetime.strptime(f'{search_accountbalance.date} {start_time}:00', DATETIME_FORMAT)
+            end_time = Helpers.convert_float_to_time(search_accountbalance.end_time, True)
+            start_time = Helpers.convert_float_to_time(search_accountbalance.start_time, True)
+            datetime_to = datetime.strptime(f'{search_accountbalance.date} {end_time}', DATETIME_FORMAT)
+            datetime_from = datetime.strptime(f'{search_accountbalance.date} {start_time}', DATETIME_FORMAT)
             weekly_hours_credit = datetime_to - datetime_from
             weekly_hours_credit = weekly_hours_credit - timedelta(hours=search_accountbalance.not_active_slotitems)
             weekly_hours_credit = weekly_hours_credit.total_seconds() / 3600.0
