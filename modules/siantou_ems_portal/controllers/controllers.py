@@ -358,25 +358,21 @@ class PortalAccount(portal.CustomerPortal):
             weekly_hours_credit = round(weekly_hours_credit, 2)
             accountbalance['number_of_hours'] = weekly_hours_credit
 
-            domain = []
-            if search_accountbalance.school_id.id:
-                domain.append(('school_id', '=', search_accountbalance.school_id.id))
-            if search_accountbalance.cycle_id.id:
-                domain.append(('cycle_id', '=', search_accountbalance.cycle_id.id))
-            if search_accountbalance.level_id.id:
-                domain.append(('level_id', '=', search_accountbalance.level_id.id))
-            if len(search_accountbalance.employee_id.diplome_ids.ids) > 0:
-                domain.append(('diplome_availability_id.diplome_ids', 'in', search_accountbalance.employee_id.diplome_ids.ids))
+            domain = [
+                ('school_id', '=', search_accountbalance.school_id.id),
+                ('cycle_id', '=', search_accountbalance.cycle_id.id),
+                ('level_id', '=', search_accountbalance.level_id.id),
+                ('diplome_availability_id.diplome_ids', 'in', search_accountbalance.employee_id.diplome_ids.ids),
+            ]
 
             hourly_rate = http.request.env['siantou.ems.core.hourly.rate'].sudo().search(domain, limit=1)
 
-            domain = []
             if hourly_rate:
-                domain.append(('hourly_rate_id', '=', hourly_rate.id))
-                if search_accountbalance.employee_id.id:
-                    domain.append(('employee_id', '=', search_accountbalance.employee_id.id))
-                if search_accountbalance.subject_id.id:
-                    domain.append(('subject_id', '=', search_accountbalance.subject_id.id))
+                domain = [
+                    ('hourly_rate_id', '=', hourly_rate.id),
+                    ('employee_id', '=', search_accountbalance.employee_id.id),
+                    ('subject_id', '=', search_accountbalance.subject_id.id),
+                ]
 
                 teacher_hourly_rate = http.request.env['siantou.ems.core.teacher.hourly.rate'].sudo().search(domain, limit=1)
                 if teacher_hourly_rate:
