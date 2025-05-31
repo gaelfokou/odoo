@@ -546,7 +546,9 @@ class SessionExamenLineSubject(models.Model):
         # self.write({'state': 'prepare'})
 
         action = self.env['ir.actions.actions']._for_xml_id('siantou_ems_examen.action_exam_result')
-        domain = [('exam_subject_id', '=', self.id)]
+        domain = [
+            ('exam_subject_id', '=', self.id)
+        ]
         action['domain'] = domain
         action['view_mode'] = 'tree,form'
         context = {
@@ -575,7 +577,9 @@ class SessionExamenLineSubject(models.Model):
 
     def button_open_results(self):
         action = self.env['ir.actions.actions']._for_xml_id('siantou_ems_examen.action_exam_teacher_result')
-        domain = [('exam_subject_id', '=', self.id)]
+        domain = [
+            ('exam_subject_id', '=', self.id)
+        ]
         action['domain'] = domain
         action['view_mode'] = 'tree,form'
         context = {

@@ -431,7 +431,9 @@ class Timetable(models.Model):
             domain = []
             if record.school_id.id:
                 field_of_study_ids = self.env['siantou.ems.core.field_of_study'].search([('school_id', '=', record.school_id.id)])
-                domain = [('field_of_study_id', 'in', field_of_study_ids.ids)]
+                domain = [
+                    ('field_of_study_id', 'in', field_of_study_ids.ids)
+                ]
             record.specialty_id_domain = domain
 
     @api.onchange('school_id')
@@ -485,7 +487,9 @@ class Timetable(models.Model):
             domain = []
             if record.class_id.id:
                 ue_ids = record.class_id.ue_ids
-                domain = [('ue_ids', 'in', ue_ids.ids)]
+                domain = [
+                    ('ue_ids', 'in', ue_ids.ids)
+                ]
             record.subject_id_domain = domain
 
     @api.onchange('class_id')
@@ -663,7 +667,9 @@ class Timetable(models.Model):
             'semester_id': timetables[0].semester_id.id,
             'group_id': timetables[0].group_id.id,
         })
-        domain = [('id', 'in', active_ids)]
+        domain = [
+            ('id', 'in', active_ids)
+        ]
         data = report_data.print_timetable_report_data(domain)
 
         # Appeler le rapport PDF

@@ -131,7 +131,9 @@ class DailyAttendanceFilterWizard(models.TransientModel):
             attendance_ids.append(attendance.id)
         attendance_ids = list(set(attendance_ids))
 
-        domain = [('id', 'in', attendance_ids)]
+        domain = [
+            ('id', 'in', attendance_ids)
+        ]
 
         if len(title) > 0:
             title = '/'.join(title)

@@ -41,7 +41,9 @@ class DailyAttendance(models.Model):
         if len(active_ids) == 0:
             raise UserError('Aucune donnée sélectionnée')
         report_data = self.env['daily.attendance.print.wizard'].create({})
-        domain = [('id', 'in', active_ids)]
+        domain = [
+            ('id', 'in', active_ids)
+        ]
         data = report_data.print_daily_attendance_report_data(domain)
 
         # Appeler le rapport PDF

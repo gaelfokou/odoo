@@ -145,7 +145,9 @@ class HrPayslip(models.Model):
         datetime_after = HrPayslip.convert_datetime_to_utc(datetime_after)
         # datetime_to = HrPayslip.convert_datetime_to_utc(datetime_to)
 
-        domain = [('punch_type', 'in', ['0', '1'])]
+        domain = [
+            ('punch_type', 'in', ['0', '1'])
+        ]
         if employee:
             domain.append(('employee_id', '=', employee.id))
 
@@ -177,7 +179,9 @@ class HrPayslip(models.Model):
 
         daily_attendances = []
 
-        domain = [('punch_type', '=', '0')]
+        domain = [
+            ('punch_type', '=', '0')
+        ]
         if employee:
             domain.append(('employee_id', '=', employee.id))
 
@@ -186,7 +190,9 @@ class HrPayslip(models.Model):
         if len(daily_in_attendances) > 0:
             daily_attendances.append(daily_in_attendances[0])
 
-        domain = [('punch_type', '=', '1')]
+        domain = [
+            ('punch_type', '=', '1')
+        ]
         if employee:
             domain.append(('employee_id', '=', employee.id))
 

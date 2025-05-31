@@ -145,7 +145,9 @@ class TeacherHourlyRate(models.Model):
             domain = []
             if record.employee_id.id:
                 subject_ids = record.employee_id.subject_ids.ids
-                domain = [('id', 'in', subject_ids)]
+                domain = [
+                    ('id', 'in', subject_ids)
+                ]
             record.subject_id_domain = domain
 
     @api.onchange('employee_id')

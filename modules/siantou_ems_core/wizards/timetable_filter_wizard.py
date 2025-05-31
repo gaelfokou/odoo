@@ -224,7 +224,9 @@ class TimetableFilterWizard(models.TransientModel):
             domain = []
             if record.school_id.id:
                 field_of_study_ids = self.env['siantou.ems.core.field_of_study'].search([('school_id', '=', record.school_id.id)])
-                domain = [('field_of_study_id', 'in', field_of_study_ids.ids)]
+                domain = [
+                    ('field_of_study_id', 'in', field_of_study_ids.ids)
+                ]
             record.specialty_id_domain = domain
 
     @api.onchange('school_id')
@@ -268,7 +270,9 @@ class TimetableFilterWizard(models.TransientModel):
             domain = []
             if record.class_id.id:
                 ue_ids = record.class_id.ue_ids
-                domain = [('ue_ids', 'in', ue_ids.ids)]
+                domain = [
+                    ('ue_ids', 'in', ue_ids.ids)
+                ]
             record.subject_id_domain = domain
 
     @api.onchange('class_id')
@@ -347,7 +351,9 @@ class TimetableFilterWizard(models.TransientModel):
             timetable_ids.append(timetable.id)
         timetable_ids = list(set(timetable_ids))
 
-        domain = [('id', 'in', timetable_ids)]
+        domain = [
+            ('id', 'in', timetable_ids)
+        ]
 
         if len(title) > 0:
             title = '/'.join(title)
