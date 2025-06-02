@@ -36,7 +36,7 @@
             <xpath expr="//div[hasclass('o_portal_docs')]" position="before">
                 <t t-set="portal_client_category_enable" t-value="True"/>
             </xpath>
-            <div id="portal_client_category" position="inside">
+            <xpath expr="//div[@id='portal_client_category']" position="inside">
                 <t t-call="portal.portal_docs_entry">
                     <t t-set="icon" t-value="'/siantou_ems_portal/static/src/img/timesheet_grid.png'"/>
                     <t t-set="title">Emploi du temps</t>
@@ -44,7 +44,7 @@
                     <t t-set="text">Affichez votre emploi du temps</t>
                     <t t-set="placeholder_count" t-value="'portal_timetable'"/>
                 </t>
-            </div>
+            </xpath>
         </template>
 
         <template id="siantou_ems_portal_my_home_timetable_calendar_views" name="siantou_ems_portal.print_timetable">
@@ -354,7 +354,7 @@
             <xpath expr="//div[hasclass('o_portal_docs')]" position="before">
                 <t t-set="portal_client_category_enable" t-value="True"/>
             </xpath>
-            <div id="portal_client_category" position="inside">
+            <xpath expr="//div[@id='portal_client_category']" position="inside">
                 <t t-call="portal.portal_docs_entry">
                     <t t-set="icon" t-value="'/siantou_ems_portal/static/src/img/fee_grid.png'"/>
                     <t t-set="title">Frais de scolarité</t>
@@ -362,7 +362,7 @@
                     <t t-set="text">Affichez vos frais de scolarité</t>
                     <t t-set="placeholder_count" t-value="'portal_schoolfee'"/>
                 </t>
-            </div>
+            </xpath>
         </template>
 
         <template id="siantou_ems_portal_my_home_schoolfee_views" name="siantou_ems_portal.print_schoolfee">
@@ -450,7 +450,7 @@
             <xpath expr="//div[hasclass('o_portal_docs')]" position="before">
                 <t t-set="portal_client_category_enable" t-value="True"/>
             </xpath>
-            <div id="portal_client_category" position="inside">
+            <xpath expr="//div[@id='portal_client_category']" position="inside">
                 <t t-call="portal.portal_docs_entry">
                     <t t-set="icon" t-value="'/siantou_ems_portal/static/src/img/payment_grid.png'"/>
                     <t t-set="title">Historique des paiements</t>
@@ -458,7 +458,7 @@
                     <t t-set="text">Affichez l'historique de vos paiements</t>
                     <t t-set="placeholder_count" t-value="'portal_paymenthistory'"/>
                 </t>
-            </div>
+            </xpath>
         </template>
 
         <template id="siantou_ems_portal_my_home_paymenthistory_views" name="siantou_ems_portal.print_paymenthistory">
@@ -542,7 +542,7 @@
             <xpath expr="//div[hasclass('o_portal_docs')]" position="before">
                 <t t-set="portal_client_category_enable" t-value="True"/>
             </xpath>
-            <div id="portal_client_category" position="inside">
+            <xpath expr="//div[@id='portal_client_category']" position="inside">
                 <t t-call="portal.portal_docs_entry">
                     <t t-set="icon" t-value="'/siantou_ems_portal/static/src/img/balance_grid.png'"/>
                     <t t-set="title">Cours émargés</t>
@@ -550,7 +550,7 @@
                     <t t-set="text">Affichez vos cours émargés</t>
                     <t t-set="placeholder_count" t-value="'portal_accountbalance'"/>
                 </t>
-            </div>
+            </xpath>
         </template>
 
         <template id="siantou_ems_portal_my_home_accountbalance_views" name="siantou_ems_portal.print_accountbalance">
@@ -638,7 +638,7 @@
             <xpath expr="//div[hasclass('o_portal_docs')]" position="before">
                 <t t-set="portal_client_category_enable" t-value="True"/>
             </xpath>
-            <div id="portal_client_category" position="inside">
+            <xpath expr="//div[@id='portal_client_category']" position="inside">
                 <t t-call="portal.portal_docs_entry">
                     <t t-set="icon" t-value="'/siantou_ems_portal/static/src/img/notification_grid.png'"/>
                     <t t-set="title">Notifications</t>
@@ -646,7 +646,7 @@
                     <t t-set="text">Affichez vos notifications</t>
                     <t t-set="placeholder_count" t-value="'portal_notification'"/>
                 </t>
-            </div>
+            </xpath>
         </template>
 
         <template id="siantou_ems_portal_my_home_notification_views" name="siantou_ems_portal.print_notification">
@@ -710,7 +710,7 @@
             <xpath expr="//div[hasclass('o_portal_docs')]" position="before">
                 <t t-set="portal_client_category_enable" t-value="True"/>
             </xpath>
-            <div id="portal_client_category" position="inside">
+            <xpath expr="//div[@id='portal_client_category']" position="inside">
                 <t t-call="portal.portal_docs_entry">
                     <t t-set="icon" t-value="'/siantou_ems_portal/static/src/img/timesheet_grid.png'"/>
                     <t t-set="title">Données requises</t>
@@ -718,7 +718,7 @@
                     <t t-set="text">Affichez vos requests</t>
                     <t t-set="placeholder_count" t-value="'portal_request'"/>
                 </t>
-            </div>
+            </xpath>
         </template>
 
         <template id="siantou_ems_portal_my_home_request_views" name="siantou_ems_portal.data_request">
