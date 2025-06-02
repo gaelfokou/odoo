@@ -172,12 +172,13 @@ class ApiAccount(http.Controller):
             report_name = 'siantou_ems_core.report_timetable'
             report_action = 'siantou_ems_core.action_report_timetable'
             pdf_report = http.request.env['ir.actions.report'].sudo()._get_report_from_name(report_action)
-            domain = []
+            domain = [
+                ('group_id.is_active', '=', True)
+            ]
             if is_user == 'is_teacher':
                 domain.append(('employee_id', '=', user.id))
             elif is_user == 'is_student':
-                domain.append(('level_id', '=', user.level_id.id))
-                domain.append(('field_of_study_id', '=', user.field_of_study_id.id))
+                domain.append(('class_id', '=', user.class_id.id))
             timetable_ids = http.request.env['siantou.ems.timetable.timetable'].sudo().search(domain, order='date asc')
             timetable_ids = list(timetable_ids)
             if len(timetable_ids) > 0:
