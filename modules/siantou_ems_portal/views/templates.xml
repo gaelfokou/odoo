@@ -527,13 +527,13 @@
             </t>
         </template>
 
-        <!-- Solde du compte -->
+        <!-- Cours émargés -->
 
         <template id="siantou_ems_portal_accountbalance" name="siantou_ems_portal.accountbalance" inherit_id="portal.portal_breadcrumbs" priority="30">
             <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
                 <li t-if="page_name == 'accountbalance'" t-attf-class="breadcrumb-item #{'active ' if accountbalance else ''}">
-                    <a t-if="accountbalance" t-attf-href="/my/accountbalance?{{ keep_query() }}">Solde du compte</a>
-                    <t t-else="">Solde du compte</t>
+                    <a t-if="accountbalance" t-attf-href="/my/accountbalance?{{ keep_query() }}">Cours émargés</a>
+                    <t t-else="">Cours émargés</t>
                 </li>
             </xpath>
         </template>
@@ -545,9 +545,9 @@
             <div id="portal_client_category" position="inside">
                 <t t-call="portal.portal_docs_entry">
                     <t t-set="icon" t-value="'/siantou_ems_portal/static/src/img/balance_grid.png'"/>
-                    <t t-set="title">Solde du compte</t>
+                    <t t-set="title">Cours émargés</t>
                     <t t-set="url" t-value="'/my/accountbalance'"/>
-                    <t t-set="text">Affichez le solde de votre compte</t>
+                    <t t-set="text">Affichez vos cours émargés</t>
                     <t t-set="placeholder_count" t-value="'portal_accountbalance'"/>
                 </t>
             </div>
@@ -557,7 +557,7 @@
             <t t-call="portal.portal_layout">
                 <t t-set="breadcrumbs_searchbar" t-value="True"/>
                 <t t-call="portal.portal_searchbar">
-                    <t t-set="title">Solde du compte</t>
+                    <t t-set="title">Cours émargés</t>
                 </t>
                 <t t-call="portal.portal_table">
                     <thead>
