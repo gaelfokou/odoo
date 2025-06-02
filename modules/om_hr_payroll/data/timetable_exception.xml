@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="utf-8"?>
 <odoo noupdate="1">
 	<record forcecreate="True" id="om_hr_payroll_cron_timetable_exception" model="ir.cron">
 		<field name="name">Timetable exception</field>

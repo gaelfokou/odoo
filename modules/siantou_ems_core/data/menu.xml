@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+   <record id="siantou_ems_core_menu_mail" model="website.menu">
+       <field name="name">Mail</field>
+       <field name="url">https://outlook.office365.com/mail/</field>
+	   <field name="new_window" eval="True"/>
+       <field name="parent_id" ref="website.main_menu"/>
+       <field name="sequence" type="int">20</field>
+   </record>
+</odoo>
