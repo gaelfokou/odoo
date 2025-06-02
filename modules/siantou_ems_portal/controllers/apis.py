@@ -173,21 +173,20 @@ class ApiAccount(http.Controller):
             report_action = 'siantou_ems_core.action_report_timetable'
             pdf_report = http.request.env['ir.actions.report'].sudo()._get_report_from_name(report_action)
             domain = [
-                ('group_id.is_active', '=', True)
+                ('is_active', '=', True)
             ]
-            if is_user == 'is_teacher':
-                domain.append(('employee_id', '=', user.id))
-            elif is_user == 'is_student':
-                domain.append(('class_id', '=', user.class_id.id))
-            timetable_ids = http.request.env['siantou.ems.timetable.timetable'].sudo().search(domain, order='date asc')
-            timetable_ids = list(timetable_ids)
-            if len(timetable_ids) > 0:
-                n = len(timetable_ids)
-                timetable_id = timetable_ids[n - 1]
-                report_data = http.request.env['siantou.ems.timetable.timetable_print_wizard'].sudo().create({
-                    'semester_id': timetable_id.semester_id.id,
-                    'group_id': timetable_id.group_id.id,
+            group_id = http.request.env['siantou.ems.timetable.group'].sudo().search(domain, limit=1)
+            if group_id:
+                report_data = http.request.env['timetable.print.wizard'].sudo().create({
+                    'group_id': group_id.id,
                 })
+                domain = [
+                    ('group_id', '=', group_id.id)
+                ]
+                if is_user == 'is_teacher':
+                    domain.append(('employee_id', '=', user.id))
+                elif is_user == 'is_student':
+                    domain.append(('class_id', '=', user.class_id.id))
                 data = report_data.print_timetable_report_data(domain)
                 pdf, _ = pdf_report.sudo().with_context()._render_qweb_pdf(report_name, data=data)
             else:

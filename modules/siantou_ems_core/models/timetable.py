@@ -664,7 +664,6 @@ class Timetable(models.Model):
         if len(active_ids) == 0:
             raise UserError('Aucune donnée sélectionnée')
         report_data = self.env['timetable.print.wizard'].create({
-            'semester_id': timetables[0].semester_id.id,
             'group_id': timetables[0].group_id.id,
         })
         domain = [
