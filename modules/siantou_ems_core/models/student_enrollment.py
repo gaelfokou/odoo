@@ -112,14 +112,14 @@ class StudentEnrollment(models.Model):
     def _compute_school_domain(self):
         for record in self:
             domain = []
-            if record.school_id.id and record.cycle_id.id:
-                field_of_study_ids = self.env['siantou.ems.core.field_of_study'].search([
-                    ('school_id', '=', record.school_id.id),
-                    ('cycle_id', '=', record.cycle_id.id),
-                ])
-                domain = [
-                    ('field_of_study_id', 'in', field_of_study_ids.ids)
-                ]
+            if record.school_id.id:
+                domain.append(('school_id', '=', record.school_id.id))
+            if record.cycle_id.id:
+                domain.append(('cycle_id', '=', record.cycle_id.id))
+            field_of_study_ids = self.env['siantou.ems.core.field_of_study'].search(domain)
+            domain = [
+                ('field_of_study_id', 'in', field_of_study_ids.ids)
+            ]
             record.specialty_id_domain = domain
 
     @api.onchange('school_id')
