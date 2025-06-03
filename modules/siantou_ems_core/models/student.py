@@ -351,6 +351,7 @@ class Student(models.Model):
             })
             student.student_enroll_ids.create({
                 'year_id': student.year_id.id,
+                'school_id': student.school_id.id,
                 'cycle_id': student.cycle_id.id,
                 'field_of_study_id': student.specialty_id.field_of_study_id.id,
                 'specialty_id': student.specialty_id.id,
