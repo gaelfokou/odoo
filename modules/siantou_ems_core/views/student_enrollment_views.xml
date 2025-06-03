@@ -128,6 +128,7 @@
                                     <field name="year_id" options="{'no_create': True}"/>
                                     <field name="school_id" options="{'no_create': True}"/>
                                     <field name="cycle_id" options="{'no_create': True}"/>
+                                    <field name="batch_id" options="{'no_create': True}"/>
                                     <field name="field_of_study_id" options="{'no_create': True}"/>
                                     <field name="specialty_id_domain" invisible="1"/>
                                     <field name="specialty_id" options="{'no_create': True}" domain="specialty_id_domain"/>

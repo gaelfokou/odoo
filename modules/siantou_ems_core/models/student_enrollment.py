@@ -34,6 +34,10 @@ class StudentEnrollment(models.Model):
         default=lambda self: self.env['siantou.ems.core.year'].search([('is_active', '=', True)], limit=1)
     )
     code_enrol = fields.Char(string="Code de préinscription", default="001485KOPLL")
+    batch_id = fields.Many2one(
+        'siantou.ems.core.student.batch',
+        string='Lot de l\'étudiant',
+    )
     school_id = fields.Many2one(
         'siantou.ems.core.school',
         string='Ecole',
@@ -301,17 +305,20 @@ class StudentEnrollment(models.Model):
     def create(self, vals):
         class_id = self.env['siantou.ems.core.class'].browse(vals['class_id'])
         if not class_id:
+            school_id = None
+            specialty_id = self.env['siantou.ems.core.specialty'].browse(vals['specialty_id'])
+            if specialty_id:
+                school_id = specialty_id.field_of_study_id.school_id.id
             class_id = self.env['siantou.ems.core.class'].search([
+                ('school_id', '=', school_id),
                 ('field_of_study_id', '=', vals['field_of_study_id']),
                 ('specialty_id', '=', vals['specialty_id']),
                 ('option_id', '=', vals['option_id']),
                 ('level_id', '=', vals['level_id']),
+                ('year_id', '=', vals['year_id']),
+                ('type_cour', '=', vals['type_cour']),
             ], limit=1)
             if not class_id:
-                school_id = None
-                specialty_id = self.env['siantou.ems.core.specialty'].search([('id', '=', vals['specialty_id'])], limit=1)
-                if specialty_id:
-                    school_id = specialty_id.field_of_study_id.school_id.id
                 class_id = self.env['siantou.ems.core.class'].create({
                     'school_id': school_id,
                     'field_of_study_id': vals['field_of_study_id'],
@@ -323,9 +330,8 @@ class StudentEnrollment(models.Model):
                 })
         vals['class_id'] = class_id.id
 
-        student_id = self.env['oe.school.student'].browse(vals['student_id'])
-        batch_id = student_id.batch_id
-        if not batch_id.id:
+        batch_id = self.env['siantou.ems.core.student.batch'].browse(vals['batch_id'])
+        if not batch_id:
             batch_id = self.env['siantou.ems.core.student.batch'].assign_batch(
                 class_id.field_of_study_id.school_id.id,
                 class_id.field_of_study_id.id,
@@ -336,13 +342,15 @@ class StudentEnrollment(models.Model):
 
         cycle_id = self.env['oe.school.course'].browse(vals['cycle_id'])
         if not cycle_id:
-            field_of_study_id = self.env['siantou.ems.core.field_of_study'].search([('id', '=', vals['field_of_study_id'])], limit=1)
+            field_of_study_id = self.env['siantou.ems.core.field_of_study'].browse(vals['field_of_study_id'])
             if field_of_study_id:
                 cycle_id = field_of_study_id.cycle_id
                 vals['cycle_id'] = cycle_id.id
 
+        student_id = self.env['oe.school.student'].browse(vals['student_id'])
         student_id.write({
             'year_id': vals['year_id'],
+            'school_id': vals['school_id'],
             'cycle_id': vals['cycle_id'],
             'field_of_study_id': vals['field_of_study_id'],
             'specialty_id': vals['specialty_id'],

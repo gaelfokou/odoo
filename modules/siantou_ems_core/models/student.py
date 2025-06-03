@@ -421,7 +421,7 @@ class Student(models.Model):
             if 'first_name' not in vals or not vals['first_name'] or not vals['first_name'].strip():
                 vals['first_name'] = Student.get_first_name(vals['name'])
 
-        specialty_id = self.env['siantou.ems.core.specialty'].search([('id', '=', vals['specialty_id'])], limit=1)
+        specialty_id = self.env['siantou.ems.core.specialty'].browse(vals['specialty_id'])
         if specialty_id:
             vals['school_id'] = specialty_id.field_of_study_id.school_id.id
 
