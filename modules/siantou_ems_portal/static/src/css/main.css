@@ -1,5 +1,13 @@
 /** @odoo-module */
 
+.o_portal_my_details {
+	display: none !important;
+}
+
 .o_portal_my_details + .btn-link {
+	display: none !important;
+}
+
+.o_portal_my_details + .btn-link + hr {
 	display: none !important;
 }
