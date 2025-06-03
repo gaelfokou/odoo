@@ -1,0 +1,5 @@
+/** @odoo-module */
+
+.o_portal_my_details + .btn-link {
+	display: none !important;
+}

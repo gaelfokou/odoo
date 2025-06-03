@@ -33,6 +33,7 @@ Long description of module's purpose
     'assets': {
         'web.assets_frontend': [
             'siantou_ems_portal/static/src/js/main.js',
+            'siantou_ems_portal/static/src/css/main.css',
         ],
     },
 }
