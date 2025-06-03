@@ -44,7 +44,8 @@ class Student(models.Model):
     field_of_study_id = fields.Many2one(
         'siantou.ems.core.field_of_study',
         string='Filière',
-        required=True
+        related='specialty_id.field_of_study_id',
+        store=True
     )
     specialty_id = fields.Many2one(
         'siantou.ems.core.specialty',
@@ -139,6 +140,8 @@ class Student(models.Model):
         string='Classe',
     )
 
+    specialty_id_domain = fields.Binary(compute='_compute_school_domain', default=[])
+
     @api.depends('last_name', 'first_name')
     def _compute_name(self):
         for record in self:
@@ -167,7 +170,21 @@ class Student(models.Model):
             name = name.strip()
             record.name = name
 
-    @api.onchange('cycle_id')
+    @api.depends('school_id')
+    def _compute_school_domain(self):
+        for record in self:
+            domain = []
+            if record.school_id.id and record.cycle_id.id:
+                field_of_study_ids = self.env['siantou.ems.core.field_of_study'].search([
+                    ('school_id', '=', record.school_id.id),
+                    ('cycle_id', '=', record.cycle_id.id),
+                ])
+                domain = [
+                    ('field_of_study_id', 'in', field_of_study_ids.ids)
+                ]
+            record.specialty_id_domain = domain
+
+    @api.onchange('school_id')
     def _onchange_school(self):
         for record in self:
             record.field_of_study_id = None
@@ -176,9 +193,10 @@ class Student(models.Model):
             record.specialty_id = None
             record.option_id = None
 
-    @api.onchange('field_of_study_id')
-    def _onchange_field_of_study(self):
+    @api.onchange('cycle_id')
+    def _onchange_school(self):
         for record in self:
+            record.field_of_study_id = None
             record.level_id = None
             record.class_id = None
             record.specialty_id = None
@@ -200,13 +218,13 @@ class Student(models.Model):
         for record in self:
             record.class_id = None
 
-    @api.depends('level_id', 'field_of_study_id', 'specialty_id', 'option_id')
+    @api.depends('level_id', 'specialty_id', 'option_id')
     def _compute_timetables(self):
         # Recherche des emplois du temps qui correspondent à la filière et au niveau de l'étudiant
         for record in self:
             timetables = self.env['siantou.ems.timetable.timetable'].search([
                 ('level_id', '=', record.level_id.id),
-                ('field_of_study_id', '=', record.field_of_study_id.id),
+                ('field_of_study_id', '=', record.specialty_id.field_of_study_id.id),
                 ('specialty_id', '=', record.specialty_id.id),
                 ('option_id', '=', record.option_id.id),
             ])
@@ -334,7 +352,7 @@ class Student(models.Model):
             student.student_enroll_ids.create({
                 'year_id': student.year_id.id,
                 'cycle_id': student.cycle_id.id,
-                'field_of_study_id': student.field_of_study_id.id,
+                'field_of_study_id': student.specialty_id.field_of_study_id.id,
                 'specialty_id': student.specialty_id.id,
                 'option_id': student.option_id.id,
                 'class_id': student.class_id.id,
@@ -401,9 +419,9 @@ class Student(models.Model):
             if 'first_name' not in vals or not vals['first_name'] or not vals['first_name'].strip():
                 vals['first_name'] = Student.get_first_name(vals['name'])
 
-        field_of_study_id = self.env['siantou.ems.core.field_of_study'].search([('id', '=', vals['field_of_study_id'])], limit=1)
-        if field_of_study_id:
-            vals['school_id'] = field_of_study_id.school_id.id
+        specialty_id = self.env['siantou.ems.core.specialty'].search([('id', '=', vals['specialty_id'])], limit=1)
+        if specialty_id:
+            vals['school_id'] = specialty_id.field_of_study_id.school_id.id
 
         student = super(Student, self).create(vals)
 

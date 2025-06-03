@@ -34,6 +34,10 @@ class StudentEnrollment(models.Model):
         default=lambda self: self.env['siantou.ems.core.year'].search([('is_active', '=', True)], limit=1)
     )
     code_enrol = fields.Char(string="Code de préinscription", default="001485KOPLL")
+    school_id = fields.Many2one(
+        'siantou.ems.core.school',
+        string='Ecole',
+    )
     cycle_id = fields.Many2one(
         'oe.school.course',
         string='Cursus ou Cycle',
@@ -41,7 +45,8 @@ class StudentEnrollment(models.Model):
     field_of_study_id = fields.Many2one(
         'siantou.ems.core.field_of_study',
         string='Filière',
-        required=True
+        related='specialty_id.field_of_study_id',
+        store=True
     )
     specialty_id = fields.Many2one(
         'siantou.ems.core.specialty',
@@ -96,6 +101,56 @@ class StudentEnrollment(models.Model):
         ondelete='cascade',
         required=True
     )
+
+    specialty_id_domain = fields.Binary(compute='_compute_school_domain', default=[])
+
+    @api.depends('school_id')
+    def _compute_school_domain(self):
+        for record in self:
+            domain = []
+            if record.school_id.id and record.cycle_id.id:
+                field_of_study_ids = self.env['siantou.ems.core.field_of_study'].search([
+                    ('school_id', '=', record.school_id.id),
+                    ('cycle_id', '=', record.cycle_id.id),
+                ])
+                domain = [
+                    ('field_of_study_id', 'in', field_of_study_ids.ids)
+                ]
+            record.specialty_id_domain = domain
+
+    @api.onchange('school_id')
+    def _onchange_school(self):
+        for record in self:
+            record.field_of_study_id = None
+            record.level_id = None
+            record.class_id = None
+            record.specialty_id = None
+            record.option_id = None
+
+    @api.onchange('cycle_id')
+    def _onchange_school(self):
+        for record in self:
+            record.field_of_study_id = None
+            record.level_id = None
+            record.class_id = None
+            record.specialty_id = None
+            record.option_id = None
+
+    @api.onchange('level_id')
+    def _onchange_level(self):
+        for record in self:
+            record.class_id = None
+
+    @api.onchange('specialty_id')
+    def _onchange_specialty(self):
+        for record in self:
+            record.class_id = None
+            record.option_id = None
+
+    @api.onchange('option_id')
+    def _onchange_option(self):
+        for record in self:
+            record.class_id = None
 
     def print_payement_student(self):
         for record in self:
@@ -253,10 +308,10 @@ class StudentEnrollment(models.Model):
                 ('level_id', '=', vals['level_id']),
             ], limit=1)
             if not class_id:
-                field_of_study_id = self.env['siantou.ems.core.field_of_study'].search([('id', '=', vals['field_of_study_id'])], limit=1)
                 school_id = None
-                if field_of_study_id:
-                    school_id = field_of_study_id.school_id.id
+                specialty_id = self.env['siantou.ems.core.specialty'].search([('id', '=', vals['specialty_id'])], limit=1)
+                if specialty_id:
+                    school_id = specialty_id.field_of_study_id.school_id.id
                 class_id = self.env['siantou.ems.core.class'].create({
                     'school_id': school_id,
                     'field_of_study_id': vals['field_of_study_id'],
