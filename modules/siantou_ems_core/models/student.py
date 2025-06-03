@@ -362,6 +362,7 @@ class Student(models.Model):
                 'session_lieu_obt': student.lieu_residence,
                 'dern_etab_freq': student.lieu_residence,
                 'level_id': student.level_id.id,
+                'batch_id': student.batch_id.id,
                 'student_id': student.id,
             })
             user_id = self.env['res.users'].search([
