@@ -623,6 +623,102 @@
             </t>
         </template>
 
+        <!-- Consommation d'heures de cours -->
+
+        <template id="siantou_ems_portal_consumptionhour" name="siantou_ems_portal.consumptionhour" inherit_id="portal.portal_breadcrumbs" priority="30">
+            <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
+                <li t-if="page_name == 'consumptionhour'" t-attf-class="breadcrumb-item #{'active ' if consumptionhour else ''}">
+                    <a t-if="consumptionhour" t-attf-href="/my/consumptionhour?{{ keep_query() }}">Consommation d'heures de cours</a>
+                    <t t-else="">Consommation d'heures de cours</t>
+                </li>
+            </xpath>
+        </template>
+
+        <template id="siantou_ems_portal_my_home_menu_consumptionhour" name="siantou_ems_portal.consumptionhour" inherit_id="portal.portal_my_home" priority="30">
+            <xpath expr="//div[hasclass('o_portal_docs')]" position="before">
+                <t t-set="portal_client_category_enable" t-value="True"/>
+            </xpath>
+            <xpath expr="//div[@id='portal_client_category']" position="inside">
+                <t t-call="portal.portal_docs_entry">
+                    <t t-set="icon" t-value="'/siantou_ems_portal/static/src/img/hour_grid.png'"/>
+                    <t t-set="title">Consommation d'heures de cours</t>
+                    <t t-set="url" t-value="'/my/consumptionhour'"/>
+                    <t t-set="text">Affichez votre consommation d'heures de cours</t>
+                    <t t-set="placeholder_count" t-value="'portal_consumptionhour'"/>
+                </t>
+            </xpath>
+        </template>
+
+        <template id="siantou_ems_portal_my_home_consumptionhour_views" name="siantou_ems_portal.print_consumptionhour">
+            <t t-call="portal.portal_layout">
+                <t t-set="breadcrumbs_searchbar" t-value="True"/>
+                <t t-call="portal.portal_searchbar">
+                    <t t-set="title">Consommation d'heures de cours</t>
+                </t>
+                <t t-call="portal.portal_table">
+                    <thead>
+                        <tr class="active">
+                            <th class="text-left">Semestre</th>
+                            <th class="text-left">Jour</th>
+                            <th class="text-left">Date</th>
+                            <th class="text-left">Heure</th>
+                            <th class="text-left">Cours</th>
+                            <th class="text-left">Classe</th>
+                            <th class="text-left">Taux horaire</th>
+                            <th class="text-left">Nombre d'heure</th>
+                            <th class="text-left">Montant</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-foreach="consumptionhours" t-as="record">
+                            <tr>
+                                <td class='text-left'>
+                                    <span t-esc="record['semester_name']"/>
+                                </td>
+                                <td class='text-left'>
+                                    <span t-esc="record['day_of_week']"/>
+                                </td>
+                                <td class='text-left'>
+                                    <span t-esc="record['date_of_week']"/>
+                                </td>
+                                <td class='text-left'>
+                                    <span t-esc="record['time_of_week']"/>
+                                </td>
+                                <td class='text-left'>
+                                    <span t-esc="record['subject_name']"/>
+                                </td>
+                                <td class='text-left'>
+                                    <span t-esc="record['class_name']"/>
+                                </td>
+                                <td class='text-left'>
+                                    <span t-esc="record['rate']"/>
+                                </td>
+                                <td class='text-left'>
+                                    <span t-esc="record['number_of_hours']"/>
+                                </td>
+                                <td class='text-left'>
+                                    <span t-esc="record['amount']"/>
+                                </td>
+                            </tr>
+                        </t>
+                    </tbody>
+                    <tfooter>
+                        <tr>
+                            <th class="text-left" colspan="9" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
+                        </tr>
+                        <tr>
+                            <th class="text-left" colspan="1">Total nombre d'heure</th>
+                            <th class="text-left" colspan="8"><span t-esc="total_number_of_hours"/></th>
+                        </tr>
+                        <tr>
+                            <th class="text-left" colspan="1">Total montant</th>
+                            <th class="text-left" colspan="8"><span t-esc="total_rate"/></th>
+                        </tr>
+                    </tfooter>
+                </t>
+            </t>
+        </template>
+
         <!-- Notifications -->
 
         <template id="siantou_ems_portal_notification" name="siantou_ems_portal.notification" inherit_id="portal.portal_breadcrumbs" priority="30">

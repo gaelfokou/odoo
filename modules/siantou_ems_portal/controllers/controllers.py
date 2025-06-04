@@ -98,6 +98,8 @@ class PortalAccount(portal.CustomerPortal):
             values['portal_paymenthistory'] = 1 if is_user == 'is_teacher' else 0
         if 'portal_accountbalance' in counters:
             values['portal_accountbalance'] = 1 if is_user == 'is_teacher' else 0
+        if 'portal_consumptionhour' in counters:
+            values['portal_consumptionhour'] = 1
         if 'portal_notification' in counters:
             values['portal_notification'] = 1 if is_user == 'is_teacher' else 0
         if 'portal_request' in counters:
@@ -397,6 +399,88 @@ class PortalAccount(portal.CustomerPortal):
                                 {
                                     'accountbalances': accountbalances,
                                     'page_name': 'accountbalance',
+                                    'total_rate': total_rate,
+                                    'total_number_of_hours': total_number_of_hours,
+                                })
+
+    @http.route(['/my/consumptionhour', '/my/consumptionhour/page/<int:page>'], type='http', auth="user", website=True)
+    def portal_consumptionhour(self, page=1, search='', search_in='all', **kw):
+        # Utilisation de la fonction du helper
+        search_consumptionhours, searchbar_inputs = Helpers.accountbalance(search, search_in)
+        total_rate = 0.0
+        total_number_of_hours = 0.0
+        consumptionhours = []
+        for search_consumptionhour in search_consumptionhours:
+            consumptionhour = {}
+            consumptionhour['id'] = search_consumptionhour.id
+            consumptionhour['date'] = search_consumptionhour.date
+            consumptionhour['date_of_week'] = datetime.strftime(search_consumptionhour.date, DATE_FORMAT_FR)
+            consumptionhour['semester_name'] = search_consumptionhour.semester_id.name
+            consumptionhour['cycle_name'] = search_consumptionhour.cycle_id.name
+            consumptionhour['level_name'] = search_consumptionhour.level_id.name
+            consumptionhour['field_of_study_id'] = search_consumptionhour.field_of_study_id.id
+            consumptionhour['field_of_study_name'] = search_consumptionhour.field_of_study_id.name
+            consumptionhour['specialty_name'] = search_consumptionhour.specialty_id.name
+            consumptionhour['option_name'] = search_consumptionhour.option_id.name
+            consumptionhour['class_name'] = search_consumptionhour.class_id.name
+            consumptionhour['department_id'] = search_consumptionhour.department_id.id
+            consumptionhour['department_name'] = search_consumptionhour.department_id.name
+            consumptionhour['subject_name'] = search_consumptionhour.subject_id.name
+            consumptionhour['subject_code'] = search_consumptionhour.subject_id.code
+            consumptionhour['subject_shared_subject'] = '(TC)' if search_consumptionhour.subject_id.shared_subject else ''
+            consumptionhour['classroom_name'] = search_consumptionhour.classroom_id.name
+            consumptionhour['building_name'] = search_consumptionhour.classroom_id.building_id.name
+            consumptionhour['batch_name'] = search_consumptionhour.batch_id.name
+            consumptionhour['employee_name'] = search_consumptionhour.employee_id.name
+            consumptionhour['day_of_week'] = CURRENT_WEEKDAY[search_consumptionhour.date.weekday()]
+            consumptionhour['start_time'] = search_consumptionhour.start_time
+            consumptionhour['end_time'] = search_consumptionhour.end_time
+            consumptionhour['time_of_week'] = '{}-{}'.format(Helpers.convert_float_to_time(search_consumptionhour.start_time), Helpers.convert_float_to_time(search_consumptionhour.end_time))
+            consumptionhour['status'] = STATUS_TIMETABLE[search_consumptionhour.status]
+
+            end_time = Helpers.convert_float_to_time(search_consumptionhour.end_time, True)
+            start_time = Helpers.convert_float_to_time(search_consumptionhour.start_time, True)
+            datetime_to = datetime.strptime(f'{search_consumptionhour.date} {end_time}', DATETIME_FORMAT)
+            datetime_from = datetime.strptime(f'{search_consumptionhour.date} {start_time}', DATETIME_FORMAT)
+            weekly_hours_credit = datetime_to - datetime_from
+            weekly_hours_credit = weekly_hours_credit - timedelta(hours=search_consumptionhour.not_active_slotitems)
+            weekly_hours_credit = weekly_hours_credit.total_seconds() / 3600.0
+            weekly_hours_credit = round(weekly_hours_credit, 2)
+            consumptionhour['number_of_hours'] = weekly_hours_credit
+
+            domain = [
+                ('school_id', '=', search_consumptionhour.school_id.id),
+                ('cycle_id', '=', search_consumptionhour.cycle_id.id),
+                ('level_id', '=', search_consumptionhour.level_id.id),
+                ('diplome_availability_id.diplome_ids', 'in', search_consumptionhour.employee_id.diplome_ids.ids),
+            ]
+
+            hourly_rate = http.request.env['siantou.ems.core.hourly.rate'].sudo().search(domain, limit=1)
+
+            if hourly_rate:
+                domain = [
+                    ('hourly_rate_id', '=', hourly_rate.id),
+                    ('employee_id', '=', search_consumptionhour.employee_id.id),
+                    ('subject_id', '=', search_consumptionhour.subject_id.id),
+                ]
+
+                teacher_hourly_rate = http.request.env['siantou.ems.core.teacher.hourly.rate'].sudo().search(domain, limit=1)
+                if teacher_hourly_rate:
+                    consumptionhour['rate'] = teacher_hourly_rate.rate
+                else:
+                    consumptionhour['rate'] = hourly_rate.rate
+            else:
+                consumptionhour['rate'] = 0.0
+
+            consumptionhour['amount'] = consumptionhour['rate'] * consumptionhour['number_of_hours']
+
+            consumptionhours.append(consumptionhour)
+            total_rate += consumptionhour['amount']
+            total_number_of_hours += consumptionhour['number_of_hours']
+        return http.request.render('siantou_ems_portal.siantou_ems_portal_my_home_consumptionhour_views',
+                                {
+                                    'consumptionhours': consumptionhours,
+                                    'page_name': 'consumptionhour',
                                     'total_rate': total_rate,
                                     'total_number_of_hours': total_number_of_hours,
                                 })
