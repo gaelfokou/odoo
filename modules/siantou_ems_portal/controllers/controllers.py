@@ -409,8 +409,6 @@ class PortalAccount(portal.CustomerPortal):
     def portal_consumptionhour(self, page=1, search='', search_in='all', **kw):
         # Utilisation de la fonction du helper
         search_consumptionhours, searchbar_inputs = Helpers.consumptionhour(search, search_in)
-        total_rate = 0.0
-        total_number_of_hours = 0.0
         consumptionhours = []
         for search_consumptionhour in search_consumptionhours:
             consumptionhour = {}
@@ -442,13 +440,11 @@ class PortalAccount(portal.CustomerPortal):
             consumptionhour['status'] = search_consumptionhour.status
 
             consumptionhours.append(consumptionhour)
-        search_consumptionhours = Helpers.format_consumptionhour(consumptionhours)
+        consumptionhours = Helpers.format_consumptionhour(consumptionhours)
         return http.request.render('siantou_ems_portal.siantou_ems_portal_my_home_consumptionhour_views',
                                 {
                                     'consumptionhours': consumptionhours,
                                     'page_name': 'consumptionhour',
-                                    'total_rate': total_rate,
-                                    'total_number_of_hours': total_number_of_hours,
                                 })
 
     @http.route(['/my/notification', '/my/notification/page/<int:page>'], type='http', auth="user", website=True)

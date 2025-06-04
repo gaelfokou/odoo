@@ -462,29 +462,38 @@ class Helpers:
             key_subject = '{}'.format(d['subject_id'])
             if not key_class in consumptionhours:
                 consumptionhours[key_class] = {}
-                consumptionhours[key_class][key_subject] = {
+                consumptionhours[key_class]['name'] = d['class_name']
+                consumptionhours[key_class]['data'] = {}
+                consumptionhours[key_class]['data'][key_subject] = {}
+                consumptionhours[key_class]['data'][key_subject]['name'] = d['subject_name']
+                consumptionhours[key_class]['data'][key_subject]['data'] = {
                     'all': [],
                     'done': [],
                 }
-                consumptionhours[key_class][key_subject]['all'].append(d)
+                consumptionhours[key_class]['data'][key_subject]['data']['all'].append(d)
                 if d['status'] != 'pending':
-                    consumptionhours[key_class][key_subject]['done'].append(d)
+                    consumptionhours[key_class]['data'][key_subject]['data']['done'].append(d)
             else:
-                if not key_subject in consumptionhours[key_class]:
-                    consumptionhours[key_class][key_subject] = {
+                if not key_subject in consumptionhours[key_class]['data']:
+                    consumptionhours[key_class]['data'][key_subject] = {}
+                    consumptionhours[key_class]['data'][key_subject]['name'] = d['subject_name']
+                    consumptionhours[key_class]['data'][key_subject]['data'] = {
                         'all': [],
                         'done': [],
                     }
-                    consumptionhours[key_class][key_subject]['all'].append(d)
+                    consumptionhours[key_class]['data'][key_subject]['data']['all'].append(d)
                     if d['status'] != 'pending':
-                        consumptionhours[key_class][key_subject]['done'].append(d)
+                        consumptionhours[key_class]['data'][key_subject]['data']['done'].append(d)
                 else:
-                    continue
+                    consumptionhours[key_class]['data'][key_subject]['data']['all'].append(d)
+                    if d['status'] != 'pending':
+                        consumptionhours[key_class]['data'][key_subject]['data']['done'].append(d)
 
         for key_class in consumptionhours.keys():
-            for key_subject in consumptionhours[key_class].keys():
-                consumptionhours[key_class][key_subject]['all'] = sum([Helpers.convert_number_of_hours(v) for v in consumptionhours[key_class][key_subject]['all']])
-                consumptionhours[key_class][key_subject]['done'] = sum([Helpers.convert_number_of_hours(v) for v in consumptionhours[key_class][key_subject]['done']])
+            for key_subject in consumptionhours[key_class]['data'].keys():
+                consumptionhours[key_class]['data'][key_subject]['data']['all'] = sum([Helpers.convert_number_of_hours(v) for v in consumptionhours[key_class]['data'][key_subject]['data']['all']])
+                consumptionhours[key_class]['data'][key_subject]['data']['done'] = sum([Helpers.convert_number_of_hours(v) for v in consumptionhours[key_class]['data'][key_subject]['data']['done']])
+                consumptionhours[key_class]['data'][key_subject]['data']['awaiting'] = consumptionhours[key_class]['data'][key_subject]['data']['all'] - consumptionhours[key_class]['data'][key_subject]['data']['done']
 
         _logger.info(f'----------- tototototototo consumptionhours {consumptionhours} -----------')
 
