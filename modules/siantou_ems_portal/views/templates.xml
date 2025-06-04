@@ -700,19 +700,19 @@
                         </tr>
                         <tr>
                             <th class="text-left" colspan="1">Total heures</th>
-                            <th class="text-left" colspan="5"><span t-esc="total_number_of_hours"/></th>
+                            <th class="text-left" colspan="5"><span t-esc="total_all"/></th>
                         </tr>
                         <tr>
                             <th class="text-left" colspan="1">Total heures effectuées</th>
-                            <th class="text-left" colspan="5"><span t-esc="total_rate"/></th>
+                            <th class="text-left" colspan="5"><span t-esc="total_done"/></th>
                         </tr>
                         <tr>
                             <th class="text-left" colspan="1">Total heures écoulées</th>
-                            <th class="text-left" colspan="5"><span t-esc="total_rate"/></th>
+                            <th class="text-left" colspan="5"><span t-esc="total_pass"/></th>
                         </tr>
                         <tr>
                             <th class="text-left" colspan="1">Total heures restantes</th>
-                            <th class="text-left" colspan="5"><span t-esc="total_rate"/></th>
+                            <th class="text-left" colspan="5"><span t-esc="total_awaiting"/></th>
                         </tr>
                     </tfooter>
                 </t>
