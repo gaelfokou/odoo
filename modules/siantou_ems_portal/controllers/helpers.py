@@ -453,85 +453,54 @@ class Helpers:
 
     @staticmethod
     def format_consumptionhour(data):
-        n = 0.0
-        current_data = []
-        current_hours = []
         consumptionhours = {}
-        df = {}
 
         sorted_data = copy.deepcopy(data)
 
-        current_hours = list(set(current_hours))
-        current_hours.sort(key=lambda h: float(h.split('-')[0]))
-
         for d in sorted_data:
-            key = '{}-{}'.format(search_timetable.semester_id.id, search_timetable.class_id.id, search_timetable.field_of_study_id.id, search_timetable.specialty_id.id, search_timetable.level_id.id, search_timetable.batch_id.id)
-            if d['date'].weekday() == 0:
-                monday = d['date']
-            else:
-                monday = d['date'] - timedelta(days=d['date'].weekday())
-            monday = datetime.strftime(monday, DATE_FORMAT)
-            if not monday in consumptionhours:
-                consumptionhours[monday] = {
-                    'Heure': [hour for hour in current_hours],
-                    'Lundi': [],
-                    'Mardi': [],
-                    'Mercredi': [],
-                    'Jeudi': [],
-                    'Vendredi': [],
-                    'Samedi': [],
-                    'Dimanche': [],
+            key_class = '{}'.format(d['class_id'])
+            key_subject = '{}'.format(d['subject_id'])
+            if not key_class in consumptionhours:
+                consumptionhours[key_class] = {}
+                consumptionhours[key_class][key_subject] = {
+                    'all': [],
+                    'done': [],
                 }
-
-                for i in range(len(consumptionhours[monday]['Heure'])):
-                    for key in consumptionhours[monday].keys():
-                        if key == 'Heure':
-                            continue
-                        consumptionhours[monday][key].append(np.nan)
-            if not monday in df:
-                df[monday] = pd.DataFrame(consumptionhours[monday], dtype=str)
-            while Helpers.increment_float_time(d['start_time']) < Helpers.increment_float_time(d['end_time']):
-                if Helpers.increment_float_time(d['start_time'], n) < Helpers.increment_float_time(d['end_time']):
-                    h = '{}-{}'.format(Helpers.increment_float_time(d['start_time']), Helpers.increment_float_time(d['start_time'], n))
+                consumptionhours[key_class][key_subject]['all'].append(d)
+                if d['status'] != 'pending':
+                    consumptionhours[key_class][key_subject]['done'].append(d)
+            else:
+                if not key_subject in consumptionhours[key_class]:
+                    consumptionhours[key_class][key_subject] = {
+                        'all': [],
+                        'done': [],
+                    }
+                    consumptionhours[key_class][key_subject]['all'].append(d)
+                    if d['status'] != 'pending':
+                        consumptionhours[key_class][key_subject]['done'].append(d)
                 else:
-                    h = '{}-{}'.format(Helpers.increment_float_time(d['start_time']), Helpers.increment_float_time(d['end_time']))
-                for i, row in df[monday].iterrows():
-                    if h == consumptionhours[monday]['Heure'][i]:
-                        for j, column in enumerate(df[monday].columns):
-                            for k, key in enumerate(consumptionhours[monday].keys()):
-                                if k == d['date'].weekday() + 1:
-                                    if column == key:
-                                        if Helpers.is_float(str(df[monday].loc[i, column])) and np.isnan(float(str(df[monday].loc[i, column]))):
-                                            df[monday].loc[i, column] = str(d['id'])
-                                        else:
-                                            df[monday].loc[i, column] = '{}-{}'.format(df[monday].loc[i, column], str(d['id']))
-                                    break
-                d['start_time'] = Helpers.increment_float_time(d['start_time'], n)
+                    continue
 
-        for monday in df.keys():
-            df[monday].replace(np.nan, '-', inplace=True)
-
-            for key in consumptionhours[monday].keys():
-                consumptionhours[monday][key] = list(df[monday][key])
-                if key != 'Heure':
-                    for i, vals in enumerate(consumptionhours[monday][key]):
-                        consumptionhours[monday][key][i] = []
-                        if vals != '-':
-                            for v in vals.split('-'):
-                                consumptionhours[monday][key][i].append([d for d in data if d['id'] == int(v)][0])
-
-            monday = datetime.strptime(f'{monday}', DATE_FORMAT).date()
-            saturday = monday + timedelta(days=5)
-            monday_fr = datetime.strftime(monday, DATE_FORMAT_FR)
-            saturday_fr = datetime.strftime(saturday, DATE_FORMAT_FR)
-            monday = datetime.strftime(monday, DATE_FORMAT)
-            saturday = '{} - {}'.format(monday_fr, saturday_fr)
-            consumptionhours[saturday] = consumptionhours[monday]
-            del(consumptionhours[monday])
+        for key_class in consumptionhours.keys():
+            for key_subject in consumptionhours[key_class].keys():
+                consumptionhours[key_class][key_subject]['all'] = sum([Helpers.convert_number_of_hours(v) for v in consumptionhours[key_class][key_subject]['all']])
+                consumptionhours[key_class][key_subject]['done'] = sum([Helpers.convert_number_of_hours(v) for v in consumptionhours[key_class][key_subject]['done']])
 
         _logger.info(f'----------- tototototototo consumptionhours {consumptionhours} -----------')
 
         return consumptionhours
+
+    @staticmethod
+    def convert_number_of_hours(tm):
+        end_time = Helpers.convert_float_to_time(tm['end_time'], True)
+        start_time = Helpers.convert_float_to_time(tm['start_time'], True)
+        datetime_to = datetime.strptime(f'{tm['date']} {end_time}', DATETIME_FORMAT)
+        datetime_from = datetime.strptime(f'{tm['date']} {start_time}', DATETIME_FORMAT)
+        weekly_hours_credit = datetime_to - datetime_from
+        weekly_hours_credit = weekly_hours_credit - timedelta(hours=tm['not_active_slotitems'])
+        weekly_hours_credit = weekly_hours_credit.total_seconds() / 3600.0
+        weekly_hours_credit = round(weekly_hours_credit, 2)
+        return weekly_hours_credit
 
     @staticmethod
     def convert_datetime_from_utc(dt):

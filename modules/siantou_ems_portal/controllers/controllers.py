@@ -138,6 +138,7 @@ class PortalAccount(portal.CustomerPortal):
             timetable['day_of_week'] = CURRENT_WEEKDAY[search_timetable.day_of_week]
             timetable['start_time'] = search_timetable.start_time
             timetable['end_time'] = search_timetable.end_time
+            timetable['not_active_slotitems'] = timetable.not_active_slotitems
             timetable['status'] = STATUS_TIMETABLE[search_timetable.status]
             timetables.append(timetable)
         if view_type == 'calendar':
@@ -353,6 +354,7 @@ class PortalAccount(portal.CustomerPortal):
             accountbalance['day_of_week'] = CURRENT_WEEKDAY[search_accountbalance.day_of_week]
             accountbalance['start_time'] = search_accountbalance.start_time
             accountbalance['end_time'] = search_accountbalance.end_time
+            accountbalance['not_active_slotitems'] = search_accountbalance.not_active_slotitems
             accountbalance['time_of_week'] = '{}-{}'.format(Helpers.convert_float_to_time(search_accountbalance.start_time), Helpers.convert_float_to_time(search_accountbalance.end_time))
             accountbalance['status'] = STATUS_TIMETABLE[search_accountbalance.status]
 
@@ -421,9 +423,11 @@ class PortalAccount(portal.CustomerPortal):
             consumptionhour['field_of_study_name'] = search_consumptionhour.field_of_study_id.name
             consumptionhour['specialty_name'] = search_consumptionhour.specialty_id.name
             consumptionhour['option_name'] = search_consumptionhour.option_id.name
+            consumptionhour['class_id'] = search_consumptionhour.class_id.id
             consumptionhour['class_name'] = search_consumptionhour.class_id.name
             consumptionhour['department_id'] = search_consumptionhour.department_id.id
             consumptionhour['department_name'] = search_consumptionhour.department_id.name
+            consumptionhour['subject_id'] = search_consumptionhour.subject_id.id
             consumptionhour['subject_name'] = search_consumptionhour.subject_id.name
             consumptionhour['subject_code'] = search_consumptionhour.subject_id.code
             consumptionhour['subject_shared_subject'] = search_consumptionhour.subject_id.shared_subject
@@ -434,10 +438,11 @@ class PortalAccount(portal.CustomerPortal):
             consumptionhour['day_of_week'] = CURRENT_WEEKDAY[search_consumptionhour.day_of_week]
             consumptionhour['start_time'] = search_consumptionhour.start_time
             consumptionhour['end_time'] = search_consumptionhour.end_time
+            consumptionhour['not_active_slotitems'] = search_consumptionhour.not_active_slotitems
             consumptionhour['status'] = search_consumptionhour.status
 
             consumptionhours.append(consumptionhour)
-        search_consumptionhours = Helpers.format_consumptionhour(search_consumptionhours)
+        search_consumptionhours = Helpers.format_consumptionhour(consumptionhours)
         return http.request.render('siantou_ems_portal.siantou_ems_portal_my_home_consumptionhour_views',
                                 {
                                     'consumptionhours': consumptionhours,
