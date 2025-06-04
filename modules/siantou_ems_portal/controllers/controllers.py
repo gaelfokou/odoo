@@ -138,7 +138,7 @@ class PortalAccount(portal.CustomerPortal):
             timetable['day_of_week'] = CURRENT_WEEKDAY[search_timetable.day_of_week]
             timetable['start_time'] = search_timetable.start_time
             timetable['end_time'] = search_timetable.end_time
-            timetable['not_active_slotitems'] = timetable.not_active_slotitems
+            timetable['not_active_slotitems'] = search_timetable.not_active_slotitems
             timetable['status'] = STATUS_TIMETABLE[search_timetable.status]
             timetables.append(timetable)
         if view_type == 'calendar':
