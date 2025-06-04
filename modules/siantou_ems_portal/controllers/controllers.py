@@ -17,13 +17,13 @@ TIME_FORMAT = '%H:%M:%S'
 TIME_FORMAT_FR = '%H:%M'
 
 CURRENT_WEEKDAY = {
-    0: 'Lundi',
-    1: 'Mardi',
-    2: 'Mercredi',
-    3: 'Jeudi',
-    4: 'Vendredi',
-    5: 'Samedi',
-    6: 'Dimanche',
+    '0': 'Lundi',
+    '1': 'Mardi',
+    '2': 'Mercredi',
+    '3': 'Jeudi',
+    '4': 'Vendredi',
+    '5': 'Samedi',
+    '6': 'Dimanche'
 }
 
 STATUS_TIMETABLE = {
@@ -135,7 +135,7 @@ class PortalAccount(portal.CustomerPortal):
             timetable['building_name'] = search_timetable.classroom_id.building_id.name
             timetable['batch_name'] = search_timetable.batch_id.name
             timetable['employee_name'] = search_timetable.employee_id.name
-            timetable['day_of_week'] = CURRENT_WEEKDAY[search_timetable.date.weekday()]
+            timetable['day_of_week'] = CURRENT_WEEKDAY[search_timetable.day_of_week]
             timetable['start_time'] = search_timetable.start_time
             timetable['end_time'] = search_timetable.end_time
             timetable['status'] = STATUS_TIMETABLE[search_timetable.status]
@@ -350,7 +350,7 @@ class PortalAccount(portal.CustomerPortal):
             accountbalance['building_name'] = search_accountbalance.classroom_id.building_id.name
             accountbalance['batch_name'] = search_accountbalance.batch_id.name
             accountbalance['employee_name'] = search_accountbalance.employee_id.name
-            accountbalance['day_of_week'] = CURRENT_WEEKDAY[search_accountbalance.date.weekday()]
+            accountbalance['day_of_week'] = CURRENT_WEEKDAY[search_accountbalance.day_of_week]
             accountbalance['start_time'] = search_accountbalance.start_time
             accountbalance['end_time'] = search_accountbalance.end_time
             accountbalance['time_of_week'] = '{}-{}'.format(Helpers.convert_float_to_time(search_accountbalance.start_time), Helpers.convert_float_to_time(search_accountbalance.end_time))
@@ -414,7 +414,6 @@ class PortalAccount(portal.CustomerPortal):
             consumptionhour = {}
             consumptionhour['id'] = search_consumptionhour.id
             consumptionhour['date'] = search_consumptionhour.date
-            consumptionhour['date_of_week'] = datetime.strftime(search_consumptionhour.date, DATE_FORMAT_FR)
             consumptionhour['semester_name'] = search_consumptionhour.semester_id.name
             consumptionhour['cycle_name'] = search_consumptionhour.cycle_id.name
             consumptionhour['level_name'] = search_consumptionhour.level_id.name
@@ -427,56 +426,18 @@ class PortalAccount(portal.CustomerPortal):
             consumptionhour['department_name'] = search_consumptionhour.department_id.name
             consumptionhour['subject_name'] = search_consumptionhour.subject_id.name
             consumptionhour['subject_code'] = search_consumptionhour.subject_id.code
-            consumptionhour['subject_shared_subject'] = '(TC)' if search_consumptionhour.subject_id.shared_subject else ''
+            consumptionhour['subject_shared_subject'] = search_consumptionhour.subject_id.shared_subject
             consumptionhour['classroom_name'] = search_consumptionhour.classroom_id.name
             consumptionhour['building_name'] = search_consumptionhour.classroom_id.building_id.name
             consumptionhour['batch_name'] = search_consumptionhour.batch_id.name
             consumptionhour['employee_name'] = search_consumptionhour.employee_id.name
-            consumptionhour['day_of_week'] = CURRENT_WEEKDAY[search_consumptionhour.date.weekday()]
+            consumptionhour['day_of_week'] = CURRENT_WEEKDAY[search_consumptionhour.day_of_week]
             consumptionhour['start_time'] = search_consumptionhour.start_time
             consumptionhour['end_time'] = search_consumptionhour.end_time
-            consumptionhour['time_of_week'] = '{}-{}'.format(Helpers.convert_float_to_time(search_consumptionhour.start_time), Helpers.convert_float_to_time(search_consumptionhour.end_time))
-            consumptionhour['status'] = STATUS_TIMETABLE[search_consumptionhour.status]
-
-            end_time = Helpers.convert_float_to_time(search_consumptionhour.end_time, True)
-            start_time = Helpers.convert_float_to_time(search_consumptionhour.start_time, True)
-            datetime_to = datetime.strptime(f'{search_consumptionhour.date} {end_time}', DATETIME_FORMAT)
-            datetime_from = datetime.strptime(f'{search_consumptionhour.date} {start_time}', DATETIME_FORMAT)
-            weekly_hours_credit = datetime_to - datetime_from
-            weekly_hours_credit = weekly_hours_credit - timedelta(hours=search_consumptionhour.not_active_slotitems)
-            weekly_hours_credit = weekly_hours_credit.total_seconds() / 3600.0
-            weekly_hours_credit = round(weekly_hours_credit, 2)
-            consumptionhour['number_of_hours'] = weekly_hours_credit
-
-            domain = [
-                ('school_id', '=', search_consumptionhour.school_id.id),
-                ('cycle_id', '=', search_consumptionhour.cycle_id.id),
-                ('level_id', '=', search_consumptionhour.level_id.id),
-                ('diplome_availability_id.diplome_ids', 'in', search_consumptionhour.employee_id.diplome_ids.ids),
-            ]
-
-            hourly_rate = http.request.env['siantou.ems.core.hourly.rate'].sudo().search(domain, limit=1)
-
-            if hourly_rate:
-                domain = [
-                    ('hourly_rate_id', '=', hourly_rate.id),
-                    ('employee_id', '=', search_consumptionhour.employee_id.id),
-                    ('subject_id', '=', search_consumptionhour.subject_id.id),
-                ]
-
-                teacher_hourly_rate = http.request.env['siantou.ems.core.teacher.hourly.rate'].sudo().search(domain, limit=1)
-                if teacher_hourly_rate:
-                    consumptionhour['rate'] = teacher_hourly_rate.rate
-                else:
-                    consumptionhour['rate'] = hourly_rate.rate
-            else:
-                consumptionhour['rate'] = 0.0
-
-            consumptionhour['amount'] = consumptionhour['rate'] * consumptionhour['number_of_hours']
+            consumptionhour['status'] = search_consumptionhour.status
 
             consumptionhours.append(consumptionhour)
-            total_rate += consumptionhour['amount']
-            total_number_of_hours += consumptionhour['number_of_hours']
+        search_consumptionhours = Helpers.format_consumptionhour(search_consumptionhours)
         return http.request.render('siantou_ems_portal.siantou_ems_portal_my_home_consumptionhour_views',
                                 {
                                     'consumptionhours': consumptionhours,

@@ -20,13 +20,13 @@ TIME_FORMAT = '%H:%M:%S'
 TIME_FORMAT_FR = '%H:%M'
 
 CURRENT_WEEKDAY = {
-    0: 'Lundi',
-    1: 'Mardi',
-    2: 'Mercredi',
-    3: 'Jeudi',
-    4: 'Vendredi',
-    5: 'Samedi',
-    6: 'Dimanche',
+    '0': 'Lundi',
+    '1': 'Mardi',
+    '2': 'Mercredi',
+    '3': 'Jeudi',
+    '4': 'Vendredi',
+    '5': 'Samedi',
+    '6': 'Dimanche'
 }
 
 STATUS_TIMETABLE = {
@@ -450,6 +450,88 @@ class Helpers:
         _logger.info(f'----------- tototototototo timetables {timetables} -----------')
 
         return timetables
+
+    @staticmethod
+    def format_consumptionhour(data):
+        n = 0.0
+        current_data = []
+        current_hours = []
+        consumptionhours = {}
+        df = {}
+
+        sorted_data = copy.deepcopy(data)
+
+        current_hours = list(set(current_hours))
+        current_hours.sort(key=lambda h: float(h.split('-')[0]))
+
+        for d in sorted_data:
+            key = '{}-{}'.format(search_timetable.semester_id.id, search_timetable.class_id.id, search_timetable.field_of_study_id.id, search_timetable.specialty_id.id, search_timetable.level_id.id, search_timetable.batch_id.id)
+            if d['date'].weekday() == 0:
+                monday = d['date']
+            else:
+                monday = d['date'] - timedelta(days=d['date'].weekday())
+            monday = datetime.strftime(monday, DATE_FORMAT)
+            if not monday in consumptionhours:
+                consumptionhours[monday] = {
+                    'Heure': [hour for hour in current_hours],
+                    'Lundi': [],
+                    'Mardi': [],
+                    'Mercredi': [],
+                    'Jeudi': [],
+                    'Vendredi': [],
+                    'Samedi': [],
+                    'Dimanche': [],
+                }
+
+                for i in range(len(consumptionhours[monday]['Heure'])):
+                    for key in consumptionhours[monday].keys():
+                        if key == 'Heure':
+                            continue
+                        consumptionhours[monday][key].append(np.nan)
+            if not monday in df:
+                df[monday] = pd.DataFrame(consumptionhours[monday], dtype=str)
+            while Helpers.increment_float_time(d['start_time']) < Helpers.increment_float_time(d['end_time']):
+                if Helpers.increment_float_time(d['start_time'], n) < Helpers.increment_float_time(d['end_time']):
+                    h = '{}-{}'.format(Helpers.increment_float_time(d['start_time']), Helpers.increment_float_time(d['start_time'], n))
+                else:
+                    h = '{}-{}'.format(Helpers.increment_float_time(d['start_time']), Helpers.increment_float_time(d['end_time']))
+                for i, row in df[monday].iterrows():
+                    if h == consumptionhours[monday]['Heure'][i]:
+                        for j, column in enumerate(df[monday].columns):
+                            for k, key in enumerate(consumptionhours[monday].keys()):
+                                if k == d['date'].weekday() + 1:
+                                    if column == key:
+                                        if Helpers.is_float(str(df[monday].loc[i, column])) and np.isnan(float(str(df[monday].loc[i, column]))):
+                                            df[monday].loc[i, column] = str(d['id'])
+                                        else:
+                                            df[monday].loc[i, column] = '{}-{}'.format(df[monday].loc[i, column], str(d['id']))
+                                    break
+                d['start_time'] = Helpers.increment_float_time(d['start_time'], n)
+
+        for monday in df.keys():
+            df[monday].replace(np.nan, '-', inplace=True)
+
+            for key in consumptionhours[monday].keys():
+                consumptionhours[monday][key] = list(df[monday][key])
+                if key != 'Heure':
+                    for i, vals in enumerate(consumptionhours[monday][key]):
+                        consumptionhours[monday][key][i] = []
+                        if vals != '-':
+                            for v in vals.split('-'):
+                                consumptionhours[monday][key][i].append([d for d in data if d['id'] == int(v)][0])
+
+            monday = datetime.strptime(f'{monday}', DATE_FORMAT).date()
+            saturday = monday + timedelta(days=5)
+            monday_fr = datetime.strftime(monday, DATE_FORMAT_FR)
+            saturday_fr = datetime.strftime(saturday, DATE_FORMAT_FR)
+            monday = datetime.strftime(monday, DATE_FORMAT)
+            saturday = '{} - {}'.format(monday_fr, saturday_fr)
+            consumptionhours[saturday] = consumptionhours[monday]
+            del(consumptionhours[monday])
+
+        _logger.info(f'----------- tototototototo consumptionhours {consumptionhours} -----------')
+
+        return consumptionhours
 
     @staticmethod
     def convert_datetime_from_utc(dt):

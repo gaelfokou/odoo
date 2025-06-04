@@ -306,7 +306,7 @@ class Timetable(models.Model):
             ('6', 'Dimanche'),
         ],
         'Jour de la semaine',
-        compute='_compute_date',
+        compute='_compute_day_of_week',
         store=True
     )
 
@@ -509,7 +509,7 @@ class Timetable(models.Model):
                 record.day_of_week = None
 
     @api.depends('date')
-    def _compute_date(self):
+    def _compute_day_of_week(self):
         for record in self:
             if record.date:
                 record.day_of_week = str(record.date.weekday())

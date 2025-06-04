@@ -17,13 +17,13 @@ TIME_FORMAT = '%H:%M:%S'
 TIME_FORMAT_FR = '%H:%M'
 
 CURRENT_WEEKDAY = {
-    0: 'Lundi',
-    1: 'Mardi',
-    2: 'Mercredi',
-    3: 'Jeudi',
-    4: 'Vendredi',
-    5: 'Samedi',
-    6: 'Dimanche'
+    '0': 'Lundi',
+    '1': 'Mardi',
+    '2': 'Mercredi',
+    '3': 'Jeudi',
+    '4': 'Vendredi',
+    '5': 'Samedi',
+    '6': 'Dimanche'
 }
 
 _logger = logging.getLogger(__name__)
@@ -322,7 +322,7 @@ class HrPayslip(models.Model):
                         weekly_hours_credit = round(weekly_hours_credit, 2)
                         timetable_message = 'Exception'
                         self.env['hr.payslip.worked_days'].create({
-                            'name': 'Journée du {} {} {}, {}, {}'.format(CURRENT_WEEKDAY[employee_timetable.date.weekday()], datetime.strftime(datetime_from, DATETIME_FORMAT_FR), datetime.strftime(datetime_to, TIME_FORMAT_FR), employee_timetable.subject_id.name, timetable_message),
+                            'name': 'Journée du {} {} {}, {}, {}'.format(CURRENT_WEEKDAY[employee_timetable.day_of_week], datetime.strftime(datetime_from, DATETIME_FORMAT_FR), datetime.strftime(datetime_to, TIME_FORMAT_FR), employee_timetable.subject_id.name, timetable_message),
                             'payslip_id': payslip_id.id,
                             'code': payslip_id.code,
                             'number_of_days': 1,
@@ -340,7 +340,7 @@ class HrPayslip(models.Model):
                             weekly_hours_credit = weekly_hours_credit.total_seconds() / 3600.0
                             weekly_hours_credit = round(weekly_hours_credit, 2)
                             self.env['hr.payslip.worked_days'].create({
-                                'name': 'Journée du {} {} {}, {}'.format(CURRENT_WEEKDAY[employee_timetable.date.weekday()], datetime.strftime(datetime_from, DATETIME_FORMAT_FR), datetime.strftime(datetime_to, TIME_FORMAT_FR), employee_timetable.subject_id.name),
+                                'name': 'Journée du {} {} {}, {}'.format(CURRENT_WEEKDAY[employee_timetable.day_of_week], datetime.strftime(datetime_from, DATETIME_FORMAT_FR), datetime.strftime(datetime_to, TIME_FORMAT_FR), employee_timetable.subject_id.name),
                                 'payslip_id': payslip_id.id,
                                 'code': payslip_id.code,
                                 'number_of_days': 1,
@@ -370,7 +370,7 @@ class HrPayslip(models.Model):
                         worked_hours[punching_day] = worked_hours[punching_day].total_seconds() / 3600.0
                         worked_hours[punching_day] = round(worked_hours[punching_day], 2)
                         self.env['hr.payslip.worked_days'].create({
-                            'name': 'Journée du {} {}'.format(CURRENT_WEEKDAY[punching_time.weekday()], datetime.strftime(HrPayslip.convert_datetime_from_utc(punching_time), DATETIME_FORMAT_FR)),
+                            'name': 'Journée du {} {}'.format(CURRENT_WEEKDAY[str(punching_time.weekday())], datetime.strftime(HrPayslip.convert_datetime_from_utc(punching_time), DATETIME_FORMAT_FR)),
                             'payslip_id': payslip_id.id,
                             'code': payslip_id.code,
                             'number_of_days': 1,

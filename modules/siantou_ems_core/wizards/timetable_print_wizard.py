@@ -19,13 +19,13 @@ TIME_FORMAT = '%H:%M:%S'
 TIME_FORMAT_FR = '%H:%M'
 
 CURRENT_WEEKDAY = {
-    0: 'Lundi',
-    1: 'Mardi',
-    2: 'Mercredi',
-    3: 'Jeudi',
-    4: 'Vendredi',
-    5: 'Samedi',
-    6: 'Dimanche',
+    '0': 'Lundi',
+    '1': 'Mardi',
+    '2': 'Mercredi',
+    '3': 'Jeudi',
+    '4': 'Vendredi',
+    '5': 'Samedi',
+    '6': 'Dimanche'
 }
 
 STATUS_TIMETABLE = {
@@ -181,7 +181,7 @@ class TimetablePrintWizard(models.TransientModel):
             timetable['building_name'] = search_timetable.classroom_id.building_id.name
             timetable['batch_name'] = search_timetable.batch_id.name
             timetable['employee_name'] = search_timetable.employee_id.name
-            timetable['day_of_week'] = CURRENT_WEEKDAY[search_timetable.date.weekday()]
+            timetable['day_of_week'] = CURRENT_WEEKDAY[search_timetable.day_of_week]
             timetable['start_time'] = search_timetable.start_time
             timetable['end_time'] = search_timetable.end_time
             timetable['status'] = STATUS_TIMETABLE[search_timetable.status]
