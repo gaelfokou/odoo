@@ -339,13 +339,13 @@
             </t>
         </template>
 
-        <!-- Frais de scolarité -->
+        <!-- Frais -->
 
         <template id="siantou_ems_portal_schoolfee" name="siantou_ems_portal.schoolfee" inherit_id="portal.portal_breadcrumbs" priority="30">
             <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
                 <li t-if="page_name == 'schoolfee'" t-attf-class="breadcrumb-item #{'active ' if schoolfee else ''}">
-                    <a t-if="schoolfee" t-attf-href="/my/schoolfee?{{ keep_query() }}">Frais de scolarité</a>
-                    <t t-else="">Frais de scolarité</t>
+                    <a t-if="schoolfee" t-attf-href="/my/schoolfee?{{ keep_query() }}">Frais</a>
+                    <t t-else="">Frais</t>
                 </li>
             </xpath>
         </template>
@@ -357,9 +357,9 @@
             <xpath expr="//div[@id='portal_client_category']" position="inside">
                 <t t-call="portal.portal_docs_entry">
                     <t t-set="icon" t-value="'/siantou_ems_portal/static/src/img/fee_grid.png'"/>
-                    <t t-set="title">Frais de scolarité de <t t-esc="request.env.user.name"/></t>
+                    <t t-set="title">Frais de <t t-esc="request.env.user.name"/></t>
                     <t t-set="url" t-value="'/my/schoolfee'"/>
-                    <t t-set="text">Affichez vos frais de scolarité</t>
+                    <t t-set="text">Affichez vos frais</t>
                     <t t-set="placeholder_count" t-value="'portal_schoolfee'"/>
                 </t>
             </xpath>
@@ -369,7 +369,7 @@
             <t t-call="portal.portal_layout">
                 <t t-set="breadcrumbs_searchbar" t-value="True"/>
                 <t t-call="portal.portal_searchbar">
-                    <t t-set="title">Frais de scolarité</t>
+                    <t t-set="title">Frais</t>
                 </t>
                 <t t-call="portal.portal_table">
                     <thead>
@@ -435,13 +435,13 @@
             </t>
         </template>
 
-        <!-- Historique des paiements -->
+        <!-- Paiements -->
 
         <template id="siantou_ems_portal_paymenthistory" name="siantou_ems_portal.paymenthistory" inherit_id="portal.portal_breadcrumbs" priority="30">
             <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
                 <li t-if="page_name == 'paymenthistory'" t-attf-class="breadcrumb-item #{'active ' if paymenthistory else ''}">
-                    <a t-if="paymenthistory" t-attf-href="/my/paymenthistory?{{ keep_query() }}">Historique des paiements</a>
-                    <t t-else="">Historique des paiements</t>
+                    <a t-if="paymenthistory" t-attf-href="/my/paymenthistory?{{ keep_query() }}">Paiements</a>
+                    <t t-else="">Paiements</t>
                 </li>
             </xpath>
         </template>
@@ -453,9 +453,9 @@
             <xpath expr="//div[@id='portal_client_category']" position="inside">
                 <t t-call="portal.portal_docs_entry">
                     <t t-set="icon" t-value="'/siantou_ems_portal/static/src/img/payment_grid.png'"/>
-                    <t t-set="title">Historique des paiements de <t t-esc="request.env.user.name"/></t>
+                    <t t-set="title">Paiements de <t t-esc="request.env.user.name"/></t>
                     <t t-set="url" t-value="'/my/paymenthistory'"/>
-                    <t t-set="text">Affichez l'historique de vos paiements</t>
+                    <t t-set="text">Affichez vos paiements</t>
                     <t t-set="placeholder_count" t-value="'portal_paymenthistory'"/>
                 </t>
             </xpath>
@@ -465,7 +465,7 @@
             <t t-call="portal.portal_layout">
                 <t t-set="breadcrumbs_searchbar" t-value="True"/>
                 <t t-call="portal.portal_searchbar">
-                    <t t-set="title">Historique des paiements</t>
+                    <t t-set="title">Paiements</t>
                 </t>
                 <t t-call="portal.portal_table">
                     <thead>
