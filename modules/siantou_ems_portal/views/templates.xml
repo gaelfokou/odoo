@@ -475,7 +475,7 @@
                             <th class="text-left">Réference</th>
                             <th class="text-left">Règles salariales</th>
                             <th class="text-left">Contrat</th>
-                            <th class="text-left">Nombre d'heures</th>
+                            <th class="text-left">Heures</th>
                             <th class="text-left">Montant payé</th>
                             <th class="text-left">Statut</th>
                         </tr>
@@ -515,7 +515,7 @@
                             <th class="text-left" colspan="8" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
                         </tr>
                         <tr>
-                            <th class="text-left" colspan="1">Total nombre d'heures</th>
+                            <th class="text-left" colspan="1">Total heures</th>
                             <th class="text-left" colspan="7"><span t-esc="total_number_of_hours"/></th>
                         </tr>
                         <tr>
@@ -569,7 +569,7 @@
                             <th class="text-left">Cours</th>
                             <th class="text-left">Classe</th>
                             <th class="text-left">Taux horaire</th>
-                            <th class="text-left">Nombre d'heures</th>
+                            <th class="text-left">Heures</th>
                             <th class="text-left">Montant</th>
                         </tr>
                     </thead>
@@ -611,7 +611,7 @@
                             <th class="text-left" colspan="9" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
                         </tr>
                         <tr>
-                            <th class="text-left" colspan="1">Total nombre d'heures</th>
+                            <th class="text-left" colspan="1">Total heures</th>
                             <th class="text-left" colspan="8"><span t-esc="total_number_of_hours"/></th>
                         </tr>
                         <tr>
@@ -660,9 +660,10 @@
                         <tr class="active">
                             <th class="text-left">Cours</th>
                             <th class="text-left">Classe</th>
-                            <th class="text-left">Nombre d'heures</th>
-                            <th class="text-left">Nombre d'heures consommées</th>
-                            <th class="text-left">Nombre d'heures restantes</th>
+                            <th class="text-left">Heures</th>
+                            <th class="text-left">Heures effectuées</th>
+                            <th class="text-left">Heures écoulées</th>
+                            <th class="text-left">Heures restantes</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -684,6 +685,9 @@
                                         <span t-esc="consumptionhours[classe]['data'][subject]['data']['done']"/>
                                     </td>
                                     <td class='text-left'>
+                                        <span t-esc="consumptionhours[classe]['data'][subject]['data']['pass']"/>
+                                    </td>
+                                    <td class='text-left'>
                                         <span t-esc="consumptionhours[classe]['data'][subject]['data']['awaiting']"/>
                                     </td>
                                 </tr>
@@ -692,19 +696,23 @@
                     </tbody>
                     <tfooter>
                         <tr>
-                            <th class="text-left" colspan="5" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
+                            <th class="text-left" colspan="6" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
                         </tr>
                         <tr>
-                            <th class="text-left" colspan="1">Total nombre d'heures</th>
-                            <th class="text-left" colspan="4"><span t-esc="total_number_of_hours"/></th>
+                            <th class="text-left" colspan="1">Total heures</th>
+                            <th class="text-left" colspan="5"><span t-esc="total_number_of_hours"/></th>
                         </tr>
                         <tr>
-                            <th class="text-left" colspan="1">Total nombre d'heures consommées</th>
-                            <th class="text-left" colspan="4"><span t-esc="total_rate"/></th>
+                            <th class="text-left" colspan="1">Total heures effectuées</th>
+                            <th class="text-left" colspan="5"><span t-esc="total_rate"/></th>
                         </tr>
                         <tr>
-                            <th class="text-left" colspan="1">Total nombre d'heures restantes</th>
-                            <th class="text-left" colspan="4"><span t-esc="total_rate"/></th>
+                            <th class="text-left" colspan="1">Total heures écoulées</th>
+                            <th class="text-left" colspan="5"><span t-esc="total_rate"/></th>
+                        </tr>
+                        <tr>
+                            <th class="text-left" colspan="1">Total heures restantes</th>
+                            <th class="text-left" colspan="5"><span t-esc="total_rate"/></th>
                         </tr>
                     </tfooter>
                 </t>
