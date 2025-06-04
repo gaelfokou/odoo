@@ -273,7 +273,7 @@ class HrPayslip(models.Model):
 
     @api.model
     def cron_download_attendance(self):
-        machines = self.env['biometric.device.details'].search([])
+        machines = self.env['biometric.device.details'].sudo().search([])
         for machine in machines:
             try:
                 machine.action_download_attendance()
@@ -398,7 +398,7 @@ class HrPayslip(models.Model):
         _logger.info(f'----------- tototototototo time_before {time_before} -----------')
 
         # Recherche des emplois du temps de l'enseignant pour une période donnée
-        employee_timetables = self.env['siantou.ems.timetable.timetable'].search([
+        employee_timetables = self.env['siantou.ems.timetable.timetable'].sudo().search([
             ('group_id.is_active', '=', True),
             ('status', 'in', ['pending', 'progress']),
         ], order='date asc').filtered(lambda rec: (rec.date < current_date) or (rec.date == current_date and rec.end_time <= time_before))
@@ -419,7 +419,7 @@ class HrPayslip(models.Model):
                         end_time = datetime.strptime(f'{employee_timetable.date} {HrPayslip.convert_float_to_time(employee_timetable.end_time)}', DATETIME_FORMAT)
                         end_time = datetime.strftime(end_time, TIME_FORMAT_FR)
                         message = 'Absence de {} {}'.format(start_time, end_time)
-                        timetable_notifications = self.env['siantou.ems.timetable.notification'].search([
+                        timetable_notifications = self.env['siantou.ems.timetable.notification'].sudo().search([
                             ('template', '=', template),
                             ('timetable_id', '=', employee_timetable.id),
                             ('employee_id', '=', employee_timetable.employee_id.id),
@@ -479,7 +479,7 @@ class HrPayslip(models.Model):
         datetime_before = HrPayslip.convert_datetime_to_utc(datetime_before)
         datetime_from = HrPayslip.convert_datetime_to_utc(datetime_from)
 
-        daily_attendances = self.env['daily.attendance'].search([
+        daily_attendances = self.env['daily.attendance'].sudo().search([
             ('punch_type', 'in', ['0', '1'])
         ], order='punching_time asc').filtered(lambda rec: UTC_TZ.localize(rec.punching_time) >= datetime_before and UTC_TZ.localize(rec.punching_time) <= datetime_from)
         daily_attendances = list(daily_attendances)
@@ -489,12 +489,12 @@ class HrPayslip(models.Model):
             if daily_attendance.employee_id.id:
                 employee_id = daily_attendance.employee_id
                 if employee_id.is_teacher:
-                    # employee_timetables = self.env['siantou.ems.timetable.timetable'].search([
+                    # employee_timetables = self.env['siantou.ems.timetable.timetable'].sudo().search([
                     #     ('group_id.is_active', '=', True),
                     #     ('employee_id', '=', employee_id.id),
                     #     ('status', '=', 'pending'),
                     # ], order='date asc').filtered(lambda rec: (UTC_TZ.localize(punching_time) >= HrPayslip.convert_datetime_to_utc(datetime.strptime(f'{rec.date} {HrPayslip.convert_float_to_time(rec.start_time)}', DATETIME_FORMAT) - timedelta(minutes=15)) and UTC_TZ.localize(punching_time) <= HrPayslip.convert_datetime_to_utc(datetime.strptime(f'{rec.date} {HrPayslip.convert_float_to_time(rec.start_time)}', DATETIME_FORMAT) + timedelta(minutes=15))) or (UTC_TZ.localize(punching_time) >= HrPayslip.convert_datetime_to_utc(datetime.strptime(f'{rec.date} {HrPayslip.convert_float_to_time(rec.end_time)}', DATETIME_FORMAT)) and UTC_TZ.localize(punching_time) <= HrPayslip.convert_datetime_to_utc(datetime.strptime(f'{rec.date} {HrPayslip.convert_float_to_time(rec.end_time)}', DATETIME_FORMAT) + timedelta(minutes=15))))
-                    employee_timetables = self.env['siantou.ems.timetable.timetable'].search([
+                    employee_timetables = self.env['siantou.ems.timetable.timetable'].sudo().search([
                         ('group_id.is_active', '=', True),
                         ('employee_id', '=', employee_id.id),
                         ('status', '=', 'pending'),
@@ -507,7 +507,7 @@ class HrPayslip(models.Model):
                         template = 'om_hr_payroll.om_hr_payroll_template_timetable_notification_exception'
                         punching_time = datetime.strftime(HrPayslip.convert_datetime_from_utc(punching_time), TIME_FORMAT_FR)
                         message = 'Exception de {}'.format(punching_time)
-                        timetable_notifications = self.env['siantou.ems.timetable.notification'].search([
+                        timetable_notifications = self.env['siantou.ems.timetable.notification'].sudo().search([
                             ('template', '=', template),
                             ('attendance_id', '=', daily_attendance.id),
                             ('employee_id', '=', employee_id.id),
