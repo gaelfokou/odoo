@@ -39,7 +39,7 @@
             <xpath expr="//div[@id='portal_client_category']" position="inside">
                 <t t-call="portal.portal_docs_entry">
                     <t t-set="icon" t-value="'/siantou_ems_portal/static/src/img/timesheet_grid.png'"/>
-                    <t t-set="title">Emploi du temps</t>
+                    <t t-set="title">Emploi du temps de <t t-esc="request.env.user.name"/></t>
                     <t t-set="url" t-value="'/my/timetable'"/>
                     <t t-set="text">Affichez votre emploi du temps</t>
                     <t t-set="placeholder_count" t-value="'portal_timetable'"/>
@@ -357,7 +357,7 @@
             <xpath expr="//div[@id='portal_client_category']" position="inside">
                 <t t-call="portal.portal_docs_entry">
                     <t t-set="icon" t-value="'/siantou_ems_portal/static/src/img/fee_grid.png'"/>
-                    <t t-set="title">Frais de scolarité</t>
+                    <t t-set="title">Frais de scolarité de <t t-esc="request.env.user.name"/></t>
                     <t t-set="url" t-value="'/my/schoolfee'"/>
                     <t t-set="text">Affichez vos frais de scolarité</t>
                     <t t-set="placeholder_count" t-value="'portal_schoolfee'"/>
@@ -453,7 +453,7 @@
             <xpath expr="//div[@id='portal_client_category']" position="inside">
                 <t t-call="portal.portal_docs_entry">
                     <t t-set="icon" t-value="'/siantou_ems_portal/static/src/img/payment_grid.png'"/>
-                    <t t-set="title">Historique des paiements</t>
+                    <t t-set="title">Historique des paiements de <t t-esc="request.env.user.name"/></t>
                     <t t-set="url" t-value="'/my/paymenthistory'"/>
                     <t t-set="text">Affichez l'historique de vos paiements</t>
                     <t t-set="placeholder_count" t-value="'portal_paymenthistory'"/>

@@ -82,20 +82,25 @@ class Home(WebHome):
 class PortalAccount(portal.CustomerPortal):
     def _prepare_home_portal_values(self, counters):
         values = super()._prepare_home_portal_values(counters)
+        is_user = None
+        if http.request.env.user.employee_id.id:
+            if http.request.env.user.employee_id.is_teacher:
+                is_user = 'is_teacher'
+            else:
+                is_user = 'is_employee'
+        elif http.request.env.user.student_id.id:
+            is_user = 'is_student'
         if 'portal_timetable' in counters:
-            is_user = None
-            if http.request.env.user.employee_id.id:
-                if http.request.env.user.employee_id.is_teacher:
-                    is_user = 'is_teacher'
-                else:
-                    is_user = 'is_employee'
-            elif http.request.env.user.student_id.id:
-                is_user = 'is_student'
             values['portal_timetable'] = 1
+        if 'portal_schoolfee' in counters:
             values['portal_schoolfee'] = 1 if is_user == 'is_student' else 0
+        if 'portal_paymenthistory' in counters:
             values['portal_paymenthistory'] = 1 if is_user == 'is_teacher' else 0
+        if 'portal_accountbalance' in counters:
             values['portal_accountbalance'] = 1 if is_user == 'is_teacher' else 0
+        if 'portal_notification' in counters:
             values['portal_notification'] = 1 if is_user == 'is_teacher' else 0
+        if 'portal_request' in counters:
             values['portal_request'] = 0
         return values
 
