@@ -406,7 +406,7 @@ class PortalAccount(portal.CustomerPortal):
     @http.route(['/my/consumptionhour', '/my/consumptionhour/page/<int:page>'], type='http', auth="user", website=True)
     def portal_consumptionhour(self, page=1, search='', search_in='all', **kw):
         # Utilisation de la fonction du helper
-        search_consumptionhours, searchbar_inputs = Helpers.accountbalance(search, search_in)
+        search_consumptionhours, searchbar_inputs = Helpers.consumptionhour(search, search_in)
         total_rate = 0.0
         total_number_of_hours = 0.0
         consumptionhours = []
