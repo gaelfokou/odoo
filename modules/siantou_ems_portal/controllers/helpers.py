@@ -469,13 +469,10 @@ class Helpers:
                 consumptionhours[key_class]['data'][key_subject]['data'] = {
                     'all': [],
                     'done': [],
-                    'pass': [],
                 }
                 consumptionhours[key_class]['data'][key_subject]['data']['all'].append(d)
                 if d['status'] in ['present', 'permission']:
                     consumptionhours[key_class]['data'][key_subject]['data']['done'].append(d)
-                if d['status'] in ['present', 'permission', 'absent']:
-                    consumptionhours[key_class]['data'][key_subject]['data']['pass'].append(d)
             else:
                 if not key_subject in consumptionhours[key_class]['data']:
                     consumptionhours[key_class]['data'][key_subject] = {}
@@ -483,26 +480,20 @@ class Helpers:
                     consumptionhours[key_class]['data'][key_subject]['data'] = {
                         'all': [],
                         'done': [],
-                        'pass': [],
                     }
                     consumptionhours[key_class]['data'][key_subject]['data']['all'].append(d)
                     if d['status'] in ['present', 'permission']:
                         consumptionhours[key_class]['data'][key_subject]['data']['done'].append(d)
-                    if d['status'] in ['present', 'permission', 'absent']:
-                        consumptionhours[key_class]['data'][key_subject]['data']['pass'].append(d)
                 else:
                     consumptionhours[key_class]['data'][key_subject]['data']['all'].append(d)
                     if d['status'] in ['present', 'permission']:
                         consumptionhours[key_class]['data'][key_subject]['data']['done'].append(d)
-                    if d['status'] in ['present', 'permission', 'absent']:
-                        consumptionhours[key_class]['data'][key_subject]['data']['pass'].append(d)
 
         for key_class in consumptionhours.keys():
             for key_subject in consumptionhours[key_class]['data'].keys():
                 consumptionhours[key_class]['data'][key_subject]['data']['all'] = sum([Helpers.convert_number_of_hours(v) for v in consumptionhours[key_class]['data'][key_subject]['data']['all']])
                 consumptionhours[key_class]['data'][key_subject]['data']['done'] = sum([Helpers.convert_number_of_hours(v) for v in consumptionhours[key_class]['data'][key_subject]['data']['done']])
-                consumptionhours[key_class]['data'][key_subject]['data']['pass'] = sum([Helpers.convert_number_of_hours(v) for v in consumptionhours[key_class]['data'][key_subject]['data']['pass']])
-                consumptionhours[key_class]['data'][key_subject]['data']['awaiting'] = consumptionhours[key_class]['data'][key_subject]['data']['all'] - consumptionhours[key_class]['data'][key_subject]['data']['pass']
+                consumptionhours[key_class]['data'][key_subject]['data']['awaiting'] = consumptionhours[key_class]['data'][key_subject]['data']['all'] - consumptionhours[key_class]['data'][key_subject]['data']['done']
 
         _logger.info(f'----------- tototototototo consumptionhours {consumptionhours} -----------')
 

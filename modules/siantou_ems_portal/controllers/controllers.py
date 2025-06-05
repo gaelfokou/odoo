@@ -411,7 +411,6 @@ class PortalAccount(portal.CustomerPortal):
         search_consumptionhours, searchbar_inputs = Helpers.consumptionhour(search, search_in)
         total_all = 0.0
         total_done = 0.0
-        total_pass = 0.0
         total_awaiting = 0.0
         consumptionhours = []
         for search_consumptionhour in search_consumptionhours:
@@ -449,7 +448,6 @@ class PortalAccount(portal.CustomerPortal):
             for key_subject in consumptionhours[key_class]['data'].keys():
                 total_all += consumptionhours[key_class]['data'][key_subject]['data']['all']
                 total_done += consumptionhours[key_class]['data'][key_subject]['data']['done']
-                total_pass += consumptionhours[key_class]['data'][key_subject]['data']['pass']
                 total_awaiting += consumptionhours[key_class]['data'][key_subject]['data']['awaiting']
         return http.request.render('siantou_ems_portal.siantou_ems_portal_my_home_consumptionhour_views',
                                 {
@@ -457,7 +455,6 @@ class PortalAccount(portal.CustomerPortal):
                                     'page_name': 'consumptionhour',
                                     'total_all': total_all,
                                     'total_done': total_done,
-                                    'total_pass': total_pass,
                                     'total_awaiting': total_awaiting,
                                 })
 
