@@ -67,7 +67,7 @@ class TimetableSubjectHour(models.Model):
         'Heure de début',
         required=True,
         default=0.0,
-        ondelete='restrict',
+        ondelete='cascade',
         widget='time'
     )
 
@@ -76,7 +76,7 @@ class TimetableSubjectHour(models.Model):
         'Heure de fin',
         required=True,
         default=0.0,
-        ondelete='restrict',
+        ondelete='cascade',
         widget='time'
     )
 
@@ -89,7 +89,7 @@ class TimetableSubjectHour(models.Model):
 
     timetable_id = fields.Many2one(
         'siantou.ems.timetable.timetable',
-        string='Emplois du temps',
+        string='Emploi du temps',
         ondelete='cascade'
     )
 
@@ -189,7 +189,7 @@ class Timetable(models.Model):
         'siantou.ems.core.school',
         string='Ecole',
         required=True,
-        ondelete='restrict'
+        ondelete='cascade'
     )
 
     # Niveau lié à la programmation de cours
@@ -197,7 +197,7 @@ class Timetable(models.Model):
         'siantou.ems.core.level',
         'Niveau',
         required=True,
-        ondelete='restrict'
+        ondelete='cascade'
     )
 
     # Filière liée à la programmation de cours
@@ -219,20 +219,20 @@ class Timetable(models.Model):
         'siantou.ems.core.specialty',
         string='Spécialité',
         required=True,
-        ondelete='restrict'
+        ondelete='cascade'
     )
 
     option_id = fields.Many2one(
         'siantou.ems.core.option',
         string='Option',
-        ondelete='restrict'
+        ondelete='cascade'
     )
 
     class_id = fields.Many2one(
         'siantou.ems.core.class',
         string='Classe',
         required=True,
-        ondelete='restrict'
+        ondelete='cascade'
     )
 
     type_cour = fields.Selection([
@@ -248,14 +248,14 @@ class Timetable(models.Model):
         'siantou.ems.core.unite.enseignement',
         string='Unité d\'enseignement',
         # required=True,
-        ondelete='restrict'
+        ondelete='cascade'
     )
 
     subject_id = fields.Many2one(
         'siantou.ems.core.subject',
         'Cours',
         required=True,
-        ondelete='restrict'
+        ondelete='cascade'
     )
 
     # Bâtiment auquel appartient la salle de classe
@@ -263,7 +263,7 @@ class Timetable(models.Model):
         'siantou.ems.core.building',
         'Bâtiment',
         required=True,
-        ondelete='restrict'
+        ondelete='cascade'
     )
 
     # Salle liée à la programmation de cours
@@ -271,14 +271,14 @@ class Timetable(models.Model):
         'siantou.ems.core.building.classroom',
         'Salle de classe',
         required=True,
-        ondelete='restrict'
+        ondelete='cascade'
     )
 
     # Enseignant lié à la programmation de cours
     employee_id = fields.Many2one(
         'hr.employee',
         'Enseignant',
-        ondelete='restrict'
+        ondelete='cascade'
     )
 
     def _default_date(self):
@@ -315,7 +315,7 @@ class Timetable(models.Model):
         'Heure de début',
         required=True,
         default=0.0,
-        ondelete='restrict',
+        ondelete='cascade',
         widget='time'
     )
 
@@ -324,7 +324,7 @@ class Timetable(models.Model):
         'Heure de fin',
         required=True,
         default=0.0,
-        ondelete='restrict',
+        ondelete='cascade',
         widget='time'
     )
 
@@ -378,7 +378,7 @@ class Timetable(models.Model):
     class_group_id = fields.Many2one(
         'siantou.ems.core.class.group',
         'Groupe',
-        ondelete='restrict'
+        ondelete='cascade'
     )
 
     subject_day_hour_ids = fields.One2many(
@@ -1063,7 +1063,7 @@ class TimetableSlot(models.Model):
     _description = 'Créneau horaire'
 
     name = fields.Char(
-        string="Nom",
+        string='Nom',
         required=True
     )
 

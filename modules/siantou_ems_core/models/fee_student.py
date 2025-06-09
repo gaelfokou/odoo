@@ -7,7 +7,7 @@ class FeeStruct(models.Model):
     _description = 'Gestion des structuration des frais de scolarité'
 
     code = fields.Char(string="Code", required=True)
-    name = fields.Char(string="Nom", required=True)
+    name = fields.Char(string='Nom', required=True)
     is_active = fields.Boolean(string="Actif", default=True)
     company_id = fields.Many2one('res.company',
         string='Université', index=True,
@@ -55,7 +55,7 @@ class FeeStruct(models.Model):
 #     _description = 'Ligne des frais de scolarité'
 #     _order = 'name'
 
-#     name = fields.Char(string="Nom", required=True)
+#     name = fields.Char(string='Nom', required=True)
 #     montant_paie = fields.Integer(string="Montant")
 #     date_created = fields.Date(string="Date de création", default=datetime.now())
 #     fee_struct_id = fields.Many2one(

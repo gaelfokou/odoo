@@ -30,6 +30,7 @@
         'views/semester_views.xml',
         'views/fieldofstudy_views.xml',
         'views/subject_views.xml',
+        'views/progress_report_views.xml',
         'views/teacher_views.xml',
         'views/building_views.xml',
         'views/campus_views.xml',

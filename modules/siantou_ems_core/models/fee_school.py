@@ -7,7 +7,7 @@ class FeeSchool(models.Model):
     _description = 'Gestion des Frais de scolarité'
 
     code = fields.Char(string="Code", required=True, index=True,)
-    name = fields.Char(string="Nom", required=True, index=True,)
+    name = fields.Char(string='Nom', required=True, index=True,)
     year_id = fields.Many2one(
         'siantou.ems.core.year',
         string="Année académique",
@@ -50,7 +50,7 @@ class FeeSchoolLine(models.Model):
     _description = " Gestion des élements de frais de scolarité des étudiants"
     _order = 'desc name'
 
-    name = fields.Char(string="Nom", required=True)
+    name = fields.Char(string='Nom', required=True)
     fee_school_id = fields.Many2one(
         'siantou.ems.core.fee.school',
         string="Frais de scolarité",

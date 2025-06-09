@@ -65,6 +65,12 @@ student_career_admin,student_career.admin,model_oe_school_student_career,siantou
 subject_user,subject.user,model_siantou_ems_core_subject,siantou_ems_core.group_subject_user,1,0,0,0
 subject_admin,subject.admin,model_siantou_ems_core_subject,siantou_ems_core.group_subject_admin,1,1,1,1
 
+progress_report_user,progress.report.user,model_siantou_ems_core_progress_report,siantou_ems_core.group_subject_user,1,0,0,0
+progress_report_admin,progress.report.admin,model_siantou_ems_core_progress_report,siantou_ems_core.group_subject_admin,1,1,1,1
+
+subject_session_user,subject.session.user,model_siantou_ems_core_subject_session,siantou_ems_core.group_subject_user,1,0,0,0
+subject_session_admin,subject.session.admin,model_siantou_ems_core_subject_session,siantou_ems_core.group_subject_admin,1,1,1,1
+
 subject_priority_user,subject.priority.user,model_siantou_ems_core_teacher_subject_priority,siantou_ems_core.group_subject_user,1,0,0,0
 subject_priority_admin,subject.priority.admin,model_siantou_ems_core_teacher_subject_priority,siantou_ems_core.group_subject_admin,1,1,1,1
 

@@ -50,7 +50,7 @@ class EducationClass(models.Model):
     timetable_ids = fields.One2many(
         'siantou.ems.timetable.timetable',
         'class_id',
-        string='Liste des emplois du temps'
+        string='Emplois du temps'
     )
 
     specialty_id = fields.Many2one('siantou.ems.core.specialty', string='Spécialité',

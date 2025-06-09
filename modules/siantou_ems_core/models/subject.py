@@ -190,3 +190,100 @@ class Subject(models.Model):
         self.update_teacher_priority(subject)
 
         return res
+
+class ProgressReport(models.Model):
+    _name = 'siantou.ems.core.progress.report'
+    _description = 'Fiche de progression'
+
+    name = fields.Char(
+        string='Nom',
+        compute='_compute_name', store=True,
+    )
+
+    class_id = fields.Many2one(
+        'siantou.ems.core.class',
+        string='Classe',
+        required=True,
+        ondelete='cascade'
+    )
+
+    subject_id = fields.Many2one(
+        'siantou.ems.core.subject',
+        'Cours',
+        required=True,
+        ondelete='cascade'
+    )
+
+    session_ids = fields.One2many(
+        'siantou.ems.core.subject.session',
+        'report_id',
+        'Sessions de cours'
+    )
+
+    subject_id_domain = fields.Binary(compute='_compute_class_domain', default=[])
+
+    @api.depends('class_id', 'subject_id')
+    def _compute_name(self):
+        for record in self:
+            class_name = record.class_id.name if record.class_id.id else ''
+            subject_name = record.subject_id.name if record.subject_id.id else ''
+            name = '{} - {}'.format(class_name, subject_name)
+            while True:
+                if name.find('  ') != -1:
+                    name = name.replace('  ', ' ')
+                else:
+                    break
+            name = name.strip()
+            name = name.upper()
+            record.name = name
+
+    @api.onchange('class_id', 'subject_id')
+    def _onchange_name(self):
+        for record in self:
+            class_name = record.class_id.name if record.class_id.id else ''
+            subject_name = record.subject_id.name if record.subject_id.id else ''
+            name = '{} - {}'.format(class_name, subject_name)
+            while True:
+                if name.find('  ') != -1:
+                    name = name.replace('  ', ' ')
+                else:
+                    break
+            name = name.strip()
+            name = name.upper()
+            record.name = name
+
+    @api.depends('class_id')
+    def _compute_class_domain(self):
+        for record in self:
+            domain = []
+            if record.class_id.id:
+                ue_ids = record.class_id.ue_ids
+                domain = [
+                    ('ue_ids', 'in', ue_ids.ids)
+                ]
+            record.subject_id_domain = domain
+
+    @api.onchange('class_id')
+    def _onchange_class(self):
+        for record in self:
+            record.subject_id = None
+
+class SubjectSession(models.Model):
+    _name = 'siantou.ems.core.subject.session'
+    _description = 'Session de cours'
+
+    name = fields.Char(
+        string='Nom',
+        required=True
+    )
+
+    description = fields.Text(
+        'Description',
+    )
+
+    report_id = fields.Many2one(
+        'siantou.ems.core.progress.report',
+        'Fiche de progression',
+        required=True,
+        ondelete='cascade'
+    )
