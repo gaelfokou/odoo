@@ -220,6 +220,10 @@ class ProgressReport(models.Model):
         'Sessions de cours'
     )
 
+    _sql_constraints = [
+        ('unique_subject_class_rel', 'unique(subject_id, class_id)', 'Un cours ne peut être lié à une même classe qu\'une seule fois.')
+    ]
+
     subject_id_domain = fields.Binary(compute='_compute_class_domain', default=[])
 
     @api.depends('class_id', 'subject_id')
