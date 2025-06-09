@@ -284,6 +284,7 @@ class SubjectSession(models.Model):
     timetable_id = fields.Many2one(
         'siantou.ems.timetable.timetable',
         string='Emploi du temps',
+        required=True,
         ondelete='cascade'
     )
 
