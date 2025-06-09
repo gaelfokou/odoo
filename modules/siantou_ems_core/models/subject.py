@@ -281,9 +281,40 @@ class SubjectSession(models.Model):
         'Description',
     )
 
+    timetable_id = fields.Many2one(
+        'siantou.ems.timetable.timetable',
+        string='Emploi du temps',
+        ondelete='cascade'
+    )
+
     report_id = fields.Many2one(
         'siantou.ems.core.progress.report',
         'Fiche de progression',
         required=True,
         ondelete='cascade'
     )
+
+    _sql_constraints = [
+        ('unique_timetable_report_rel', 'unique(timetable_id, report_id)', 'Un emploi du temps ne peut être lié à une même fiche de progression qu\'une seule fois.')
+    ]
+
+    timetable_id_domain = fields.Binary(compute='_compute_class_domain', default=[])
+
+    @api.depends('report_id')
+    def _compute_class_domain(self):
+        for record in self:
+            domain = []
+            if record.report_id.id:
+                timetable_ids = record.report_id.class_id.timetable_ids
+                domain = [
+                    ('id', 'in', timetable_ids.ids),
+                    ('group_id.is_active', '=', True),
+                    ('group_id.is_submit', '=', False),
+                    ('subject_id', '=', record.report_id.subject_id.id)
+                ]
+            record.timetable_id_domain = domain
+
+    @api.onchange('report_id')
+    def _onchange_school(self):
+        for record in self:
+            record.timetable_id = None

@@ -52,7 +52,7 @@
                     </page>
                     <page string="Emplois du temps" name="emplois_du_temps"
                         invisible="is_teacher == False">
-                        <field name="timetable_ids" widget="one2many_list">
+                        <field name="timetable_ids" domain="[('group_id.is_active', '=', True), ('group_id.is_submit', '=', False)]" widget="one2many_list">
                             <tree string="Horaires" delete="false">
                                 <field name="subject_id" string="Cours"/>
                                 <field name="classroom_id" string="Salle de classe"/>

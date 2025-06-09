@@ -46,7 +46,7 @@
                             <field name="is_active" invisible="is_submit == True"/>
                             <field name="user_ids" widget="many2many_tags"/>
                             <field name="create_uid"/>
-                            <field name="timetable_ids" widget="one2many_list">
+                            <field name="timetable_ids" domain="[('group_id.is_active', '=', True), ('group_id.is_submit', '=', False)]" widget="one2many_list">
                                 <tree edit="1" create="1">
                                     <field name="group_id"/>
                                     <field name="semester_id"/>

@@ -98,7 +98,7 @@ class Classroom(models.Model):
 
     # Relation avec les emplois du temps
     timetable_ids = fields.One2many(
-        'siantou.ems.timetable.timetable',  # Nom du modèle cible
+        'siantou.ems.timetable.timetable',
         'classroom_id',                     # Champ de relation dans le modèle Timetable
         string='Emplois du temps',
         help="Liste des emplois du temps associés à cette salle de classe."

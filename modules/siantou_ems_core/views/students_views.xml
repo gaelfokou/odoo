@@ -117,7 +117,7 @@
                         <!-- Informations sur l'emploi du temps en vue page -->
                         <page string="Emplois du temps">
 
-                            <field name="timetable_ids">
+                            <field name="timetable_ids" domain="[('group_id.is_active', '=', True), ('group_id.is_submit', '=', False)]">
                                 <tree string="Emplois du temps">
                                     <field name="subject_id" string="Cours"/>
                                     <field name="classroom_id" string="Salle de classe"/>

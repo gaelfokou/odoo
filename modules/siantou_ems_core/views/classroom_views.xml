@@ -54,7 +54,7 @@
                                 </group>
                             </page>
                             <page string="Horaires associés">
-                                <field name="timetable_ids" widget="one2many_list">
+                                <field name="timetable_ids" domain="[('group_id.is_active', '=', True), ('group_id.is_submit', '=', False)]" widget="one2many_list">
                                     <tree string="Horaires" delete="false">
                                         <field name="subject_id" string="Cours"/>
                                         <field name="employee_id" string="Enseignant"/>

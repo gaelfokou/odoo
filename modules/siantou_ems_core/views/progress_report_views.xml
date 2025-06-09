@@ -36,9 +36,10 @@
                         <notebook>
                             <page name="name" string="Sessions de cours">
                                 <field name="session_ids" widget="one2many_list">
-                                    <tree>
+                                    <tree create="0" editable="bottom">
                                         <field name="name"/>
                                         <field name="description"/>
+                                        <field name="timetable_id"/>
                                     </tree>
                                 </field>
                             </page>
