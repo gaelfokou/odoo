@@ -748,14 +748,27 @@
                         <tr class="active">
                             <th class="text-left">Cours</th>
                             <th class="text-left">Classe</th>
-                            <th class="text-left">Heures</th>
-                            <th class="text-left">Heures effectuées</th>
-                            <th class="text-left">Heures restantes</th>
+                            <th class="text-left">Progression</th>
+                            <th class="text-left">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
                         <t t-set="classes" t-value="progressreports.keys()"/>
                         <t t-foreach="classes" t-as="classe">
+                            <tr>
+                                <th class='text-left'>
+                                    <span t-esc="progressreports[classe]['name']"/>
+                                </th>
+                                <th class='text-left'>
+                                    <span>-----</span>
+                                </th>
+                                <th class='text-left'>
+                                    <span>-----</span>
+                                </th>
+                                <th class='text-left'>
+                                    <span>-----</span>
+                                </th>
+                            </tr>
                             <t t-set="subjects" t-value="progressreports[classe]['data'].keys()"/>
                             <t t-foreach="subjects" t-as="subject">
                                 <tr>
@@ -766,13 +779,10 @@
                                         <span t-esc="progressreports[classe]['name']"/>
                                     </td>
                                     <td class='text-left'>
-                                        <span t-esc="progressreports[classe]['data'][subject]['data']['all']"/>
+                                        <span>-----</span>
                                     </td>
                                     <td class='text-left'>
-                                        <span t-esc="progressreports[classe]['data'][subject]['data']['done']"/>
-                                    </td>
-                                    <td class='text-left'>
-                                        <span t-esc="progressreports[classe]['data'][subject]['data']['awaiting']"/>
+                                        <span>-----</span>
                                     </td>
                                 </tr>
                             </t>
@@ -780,19 +790,7 @@
                     </tbody>
                     <tfooter>
                         <tr>
-                            <th class="text-left" colspan="5" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
-                        </tr>
-                        <tr>
-                            <th class="text-left" colspan="1">Total heures</th>
-                            <th class="text-left" colspan="4"><span t-esc="total_all"/></th>
-                        </tr>
-                        <tr>
-                            <th class="text-left" colspan="1">Total heures effectuées</th>
-                            <th class="text-left" colspan="4"><span t-esc="total_done"/></th>
-                        </tr>
-                        <tr>
-                            <th class="text-left" colspan="1">Total heures restantes</th>
-                            <th class="text-left" colspan="4"><span t-esc="total_awaiting"/></th>
+                            <th class="text-left" colspan="4" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
                         </tr>
                     </tfooter>
                 </t>
