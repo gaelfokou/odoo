@@ -711,6 +711,94 @@
             </t>
         </template>
 
+        <!-- Fiche de progression -->
+
+        <template id="siantou_ems_portal_progressreport" name="siantou_ems_portal.progressreport" inherit_id="portal.portal_breadcrumbs" priority="30">
+            <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
+                <li t-if="page_name == 'progressreport'" t-attf-class="breadcrumb-item #{'active ' if progressreport else ''}">
+                    <a t-if="progressreport" t-attf-href="/my/progressreport?{{ keep_query() }}">Fiche de progression</a>
+                    <t t-else="">Fiche de progression</t>
+                </li>
+            </xpath>
+        </template>
+
+        <template id="siantou_ems_portal_my_home_menu_progressreport" name="siantou_ems_portal.progressreport" inherit_id="portal.portal_my_home" priority="30">
+            <xpath expr="//div[hasclass('o_portal_docs')]" position="before">
+                <t t-set="portal_client_category_enable" t-value="True"/>
+            </xpath>
+            <xpath expr="//div[@id='portal_client_category']" position="inside">
+                <t t-call="portal.portal_docs_entry">
+                    <t t-set="icon" t-value="'/siantou_ems_portal/static/src/img/progress_grid.png'"/>
+                    <t t-set="title">Fiche de progression</t>
+                    <t t-set="url" t-value="'/my/progressreport'"/>
+                    <t t-set="text">Affichez votre fiche de progression</t>
+                    <t t-set="placeholder_count" t-value="'portal_progressreport'"/>
+                </t>
+            </xpath>
+        </template>
+
+        <template id="siantou_ems_portal_my_home_progressreport_views" name="siantou_ems_portal.print_progressreport">
+            <t t-call="portal.portal_layout">
+                <t t-set="breadcrumbs_searchbar" t-value="True"/>
+                <t t-call="portal.portal_searchbar">
+                    <t t-set="title">Fiche de progression</t>
+                </t>
+                <t t-call="portal.portal_table">
+                    <thead>
+                        <tr class="active">
+                            <th class="text-left">Cours</th>
+                            <th class="text-left">Classe</th>
+                            <th class="text-left">Heures</th>
+                            <th class="text-left">Heures effectuées</th>
+                            <th class="text-left">Heures restantes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-set="classes" t-value="progressreports.keys()"/>
+                        <t t-foreach="classes" t-as="classe">
+                            <t t-set="subjects" t-value="progressreports[classe]['data'].keys()"/>
+                            <t t-foreach="subjects" t-as="subject">
+                                <tr>
+                                    <td class='text-left'>
+                                        <span t-esc="progressreports[classe]['data'][subject]['name']"/>
+                                    </td>
+                                    <td class='text-left'>
+                                        <span t-esc="progressreports[classe]['name']"/>
+                                    </td>
+                                    <td class='text-left'>
+                                        <span t-esc="progressreports[classe]['data'][subject]['data']['all']"/>
+                                    </td>
+                                    <td class='text-left'>
+                                        <span t-esc="progressreports[classe]['data'][subject]['data']['done']"/>
+                                    </td>
+                                    <td class='text-left'>
+                                        <span t-esc="progressreports[classe]['data'][subject]['data']['awaiting']"/>
+                                    </td>
+                                </tr>
+                            </t>
+                        </t>
+                    </tbody>
+                    <tfooter>
+                        <tr>
+                            <th class="text-left" colspan="5" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
+                        </tr>
+                        <tr>
+                            <th class="text-left" colspan="1">Total heures</th>
+                            <th class="text-left" colspan="4"><span t-esc="total_all"/></th>
+                        </tr>
+                        <tr>
+                            <th class="text-left" colspan="1">Total heures effectuées</th>
+                            <th class="text-left" colspan="4"><span t-esc="total_done"/></th>
+                        </tr>
+                        <tr>
+                            <th class="text-left" colspan="1">Total heures restantes</th>
+                            <th class="text-left" colspan="4"><span t-esc="total_awaiting"/></th>
+                        </tr>
+                    </tfooter>
+                </t>
+            </t>
+        </template>
+
         <!-- Notifications -->
 
         <template id="siantou_ems_portal_notification" name="siantou_ems_portal.notification" inherit_id="portal.portal_breadcrumbs" priority="30">

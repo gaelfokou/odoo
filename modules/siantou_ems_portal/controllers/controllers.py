@@ -100,6 +100,8 @@ class PortalAccount(portal.CustomerPortal):
             values['portal_accountbalance'] = 1 if is_user == 'is_teacher' else 0
         if 'portal_consumptionhour' in counters:
             values['portal_consumptionhour'] = 1
+        if 'portal_progressreport' in counters:
+            values['portal_progressreport'] = 1
         if 'portal_notification' in counters:
             values['portal_notification'] = 1 if is_user == 'is_teacher' else 0
         if 'portal_request' in counters:
@@ -453,6 +455,59 @@ class PortalAccount(portal.CustomerPortal):
                                 {
                                     'consumptionhours': consumptionhours,
                                     'page_name': 'consumptionhour',
+                                    'total_all': total_all,
+                                    'total_done': total_done,
+                                    'total_awaiting': total_awaiting,
+                                })
+
+    @http.route(['/my/progressreport', '/my/progressreport/page/<int:page>'], type='http', auth="user", website=True)
+    def portal_progressreport(self, page=1, search='', search_in='all', **kw):
+        # Utilisation de la fonction du helper
+        search_progressreports, searchbar_inputs = Helpers.consumptionhour(search, search_in)
+        total_all = 0.0
+        total_done = 0.0
+        total_awaiting = 0.0
+        progressreports = []
+        for search_progressreport in search_progressreports:
+            progressreport = {}
+            progressreport['id'] = search_progressreport.id
+            progressreport['date'] = search_progressreport.date
+            progressreport['semester_name'] = search_progressreport.semester_id.name
+            progressreport['cycle_name'] = search_progressreport.cycle_id.name
+            progressreport['level_name'] = search_progressreport.level_id.name
+            progressreport['field_of_study_id'] = search_progressreport.field_of_study_id.id
+            progressreport['field_of_study_name'] = search_progressreport.field_of_study_id.name
+            progressreport['specialty_name'] = search_progressreport.specialty_id.name
+            progressreport['option_name'] = search_progressreport.option_id.name
+            progressreport['class_id'] = search_progressreport.class_id.id
+            progressreport['class_name'] = search_progressreport.class_id.name
+            progressreport['department_id'] = search_progressreport.department_id.id
+            progressreport['department_name'] = search_progressreport.department_id.name
+            progressreport['subject_id'] = search_progressreport.subject_id.id
+            progressreport['subject_name'] = search_progressreport.subject_id.name
+            progressreport['subject_code'] = search_progressreport.subject_id.code
+            progressreport['subject_shared_subject'] = search_progressreport.subject_id.shared_subject
+            progressreport['classroom_name'] = search_progressreport.classroom_id.name
+            progressreport['building_name'] = search_progressreport.classroom_id.building_id.name
+            progressreport['batch_name'] = search_progressreport.batch_id.name
+            progressreport['employee_name'] = search_progressreport.employee_id.name
+            progressreport['day_of_week'] = CURRENT_WEEKDAY[search_progressreport.day_of_week]
+            progressreport['start_time'] = search_progressreport.start_time
+            progressreport['end_time'] = search_progressreport.end_time
+            progressreport['not_active_slotitems'] = search_progressreport.not_active_slotitems
+            progressreport['status'] = search_progressreport.status
+
+            progressreports.append(progressreport)
+        progressreports = Helpers.format_consumptionhour(progressreports)
+        for key_class in progressreports.keys():
+            for key_subject in progressreports[key_class]['data'].keys():
+                total_all += progressreports[key_class]['data'][key_subject]['data']['all']
+                total_done += progressreports[key_class]['data'][key_subject]['data']['done']
+                total_awaiting += progressreports[key_class]['data'][key_subject]['data']['awaiting']
+        return http.request.render('siantou_ems_portal.siantou_ems_portal_my_home_progressreport_views',
+                                {
+                                    'progressreports': progressreports,
+                                    'page_name': 'progressreport',
                                     'total_all': total_all,
                                     'total_done': total_done,
                                     'total_awaiting': total_awaiting,
