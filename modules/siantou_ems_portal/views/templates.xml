@@ -782,7 +782,9 @@
                                         <span>-----</span>
                                     </td>
                                     <td class='text-left'>
-                                        <span>-----</span>
+                                        <div>
+                                            <a t-attf-href="/my/progressreport/class/{{ progressreports[classe]['data'][subject]['data']['all'][0]['class_id'] }}/subject/{{ progressreports[classe]['data'][subject]['data']['all'][0]['subject_id'] }}" class="btn btn-primary">Voir</a>
+                                        </div>
                                     </td>
                                 </tr>
                             </t>
