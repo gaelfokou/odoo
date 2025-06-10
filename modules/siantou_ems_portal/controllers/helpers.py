@@ -282,6 +282,71 @@ class Helpers:
         return search_consumptionhours, searchbar_inputs
 
     @staticmethod
+    def progressreport(search='', search_in='all', cycle_id=None, level_id=None, field_of_study_id=None, specialty_id=None, option_id=None, class_id=None):
+        searchbar_inputs = {
+            'all': {'label': 'Tout', 'input': 'all', 'domain': []},
+            'cycle': {'label': 'Cycle', 'input': 'cycle', 'domain': [('cycle_id.name', 'like', search)]},
+            'niveau': {'label': 'Niveau', 'input': 'niveau', 'domain': [('level_id.name', 'like', search)]},
+            'filiere': {'label': 'Filière', 'input': 'filiere', 'domain': [('field_of_study_id.name', 'like', search)]},
+            'specialite': {'label': 'Spécialité', 'input': 'specialite', 'domain': [('specialty_id.name', 'like', search)]},
+            'option': {'label': 'Option', 'input': 'option', 'domain': [('option_id.name', 'like', search)]},
+            'classe': {'label': 'Classe', 'input': 'classe', 'domain': [('class_id.name', 'like', search)]},
+            'cours': {'label': 'Cours', 'input': 'cours', 'domain': [('subject_id.name', 'like', search)]},
+            'enseignant': {'label': 'Enseignant', 'input': 'enseignant', 'domain': [('employee_id.name', 'like', search)]},
+        }
+        if search_in not in searchbar_inputs.keys():
+            search_in = 'all'
+        search_domain = searchbar_inputs[search_in]['domain']
+
+        if cycle_id:
+            search_domain.append(('cycle_id', '=', cycle_id.id))
+        if level_id:
+            search_domain.append(('level_id', '=', level_id.id))
+        if field_of_study_id:
+            search_domain.append(('field_of_study_id', '=', field_of_study_id.id))
+        if specialty_id:
+            search_domain.append(('specialty_id', '=', specialty_id.id))
+        if option_id:
+            search_domain.append(('option_id', '=', option_id.id))
+        if class_id:
+            search_domain.append(('class_id', '=', class_id.id))
+
+        search_domain.append(('group_id.is_active', '=', True))
+
+        order = 'date asc'
+
+        search_progressreports = []
+        user = None
+        is_user = None
+        if http.request.env.user.employee_id.id:
+            user = http.request.env.user.employee_id
+            if http.request.env.user.employee_id.is_teacher:
+                is_user = 'is_teacher'
+            else:
+                is_user = 'is_employee'
+        elif http.request.env.user.student_id.id:
+            user = http.request.env.user.student_id
+            is_user = 'is_student'
+        if user:
+            if is_user == 'is_teacher':
+                user = http.request.env.user.employee_id
+                search_domain.append(('employee_id', '=', user.id))
+
+                progressreports = http.request.env['siantou.ems.timetable.timetable'].sudo().search(search_domain, order=order)
+                progressreports = list(progressreports)
+                search_progressreports = progressreports
+            elif is_user == 'is_student':
+                search_domain.append(('class_id', '=', user.class_id.id))
+
+                progressreports = http.request.env['siantou.ems.timetable.timetable'].sudo().search(search_domain, order=order)
+                progressreports = list(progressreports)
+                search_progressreports = progressreports
+
+        _logger.info(f'----------- tototototototo search_progressreports {search_progressreports} -----------')
+
+        return search_progressreports, searchbar_inputs
+
+    @staticmethod
     def notification(search='', search_in='all'):
         searchbar_inputs = {
             'all': {'label': 'Tout', 'input': 'all', 'domain': []},
@@ -498,6 +563,40 @@ class Helpers:
         _logger.info(f'----------- tototototototo consumptionhours {consumptionhours} -----------')
 
         return consumptionhours
+
+    @staticmethod
+    def format_progressreport(data):
+        progressreports = {}
+
+        sorted_data = copy.deepcopy(data)
+
+        for d in sorted_data:
+            key_class = '{}'.format(d['class_id'])
+            key_subject = '{}'.format(d['subject_id'])
+            if not key_class in progressreports:
+                progressreports[key_class] = {}
+                progressreports[key_class]['name'] = d['class_name']
+                progressreports[key_class]['data'] = {}
+                progressreports[key_class]['data'][key_subject] = {}
+                progressreports[key_class]['data'][key_subject]['name'] = d['subject_name']
+                progressreports[key_class]['data'][key_subject]['data'] = {
+                    'all': [],
+                }
+                progressreports[key_class]['data'][key_subject]['data']['all'].append(d)
+            else:
+                if not key_subject in progressreports[key_class]['data']:
+                    progressreports[key_class]['data'][key_subject] = {}
+                    progressreports[key_class]['data'][key_subject]['name'] = d['subject_name']
+                    progressreports[key_class]['data'][key_subject]['data'] = {
+                        'all': [],
+                    }
+                    progressreports[key_class]['data'][key_subject]['data']['all'].append(d)
+                else:
+                    progressreports[key_class]['data'][key_subject]['data']['all'].append(d)
+
+        _logger.info(f'----------- tototototototo progressreports {progressreports} -----------')
+
+        return progressreports
 
     @staticmethod
     def convert_number_of_hours(tm):

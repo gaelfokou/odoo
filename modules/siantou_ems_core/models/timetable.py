@@ -387,6 +387,12 @@ class Timetable(models.Model):
         string='Jours et heures du cours'
     )
 
+    session_ids = fields.One2many(
+        'siantou.ems.core.subject.session',
+        'timetable_id',
+        'Sessions de cours'
+    )
+
     specialty_id_domain = fields.Binary(compute='_compute_school_domain', default=[])
 
     subject_id_domain = fields.Binary(compute='_compute_class_domain', default=[])

@@ -463,10 +463,7 @@ class PortalAccount(portal.CustomerPortal):
     @http.route(['/my/progressreport', '/my/progressreport/page/<int:page>'], type='http', auth="user", website=True)
     def portal_progressreport(self, page=1, search='', search_in='all', **kw):
         # Utilisation de la fonction du helper
-        search_progressreports, searchbar_inputs = Helpers.consumptionhour(search, search_in)
-        total_all = 0.0
-        total_done = 0.0
-        total_awaiting = 0.0
+        search_progressreports, searchbar_inputs = Helpers.progressreport(search, search_in)
         progressreports = []
         for search_progressreport in search_progressreports:
             progressreport = {}
@@ -496,21 +493,25 @@ class PortalAccount(portal.CustomerPortal):
             progressreport['end_time'] = search_progressreport.end_time
             progressreport['not_active_slotitems'] = search_progressreport.not_active_slotitems
             progressreport['status'] = search_progressreport.status
+            session_ids = search_progressreport.session_ids
+            session_ids = list(session_ids)
+            sessions = []
+            for session_id in session_ids:
+                session = {}
+                session['id'] = session_id.id
+                session['name'] = session_id.name
+                session['description'] = session_id.description
+                session['timetable_id'] = session_id.timetable_id.id
+                session['report_id'] = session_id.report_id.id
+                sessions.append(session)
+            progressreport['sessions'] = sessions
 
             progressreports.append(progressreport)
-        progressreports = Helpers.format_consumptionhour(progressreports)
-        for key_class in progressreports.keys():
-            for key_subject in progressreports[key_class]['data'].keys():
-                total_all += progressreports[key_class]['data'][key_subject]['data']['all']
-                total_done += progressreports[key_class]['data'][key_subject]['data']['done']
-                total_awaiting += progressreports[key_class]['data'][key_subject]['data']['awaiting']
+        progressreports = Helpers.format_progressreport(progressreports)
         return http.request.render('siantou_ems_portal.siantou_ems_portal_my_home_progressreport_views',
                                 {
                                     'progressreports': progressreports,
                                     'page_name': 'progressreport',
-                                    'total_all': total_all,
-                                    'total_done': total_done,
-                                    'total_awaiting': total_awaiting,
                                 })
 
     @http.route(['/my/notification', '/my/notification/page/<int:page>'], type='http', auth="user", website=True)
