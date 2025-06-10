@@ -747,7 +747,6 @@
                     <thead>
                         <tr class="active">
                             <th class="text-left">Cours</th>
-                            <th class="text-left">Classe</th>
                             <th class="text-left">Progression</th>
                             <th class="text-left">Actions</th>
                         </tr>
@@ -765,9 +764,6 @@
                                 <th class='text-left'>
                                     <span>-----</span>
                                 </th>
-                                <th class='text-left'>
-                                    <span>-----</span>
-                                </th>
                             </tr>
                             <t t-set="subjects" t-value="progressreports[classe]['data'].keys()"/>
                             <t t-foreach="subjects" t-as="subject">
@@ -776,14 +772,11 @@
                                         <span t-esc="progressreports[classe]['data'][subject]['name']"/>
                                     </td>
                                     <td class='text-left'>
-                                        <span t-esc="progressreports[classe]['name']"/>
-                                    </td>
-                                    <td class='text-left'>
                                         <span>-----</span>
                                     </td>
                                     <td class='text-left'>
                                         <div>
-                                            <a t-attf-href="/my/progressreport/class/{{ progressreports[classe]['data'][subject]['data']['all'][0]['class_id'] }}/subject/{{ progressreports[classe]['data'][subject]['data']['all'][0]['subject_id'] }}" class="btn btn-primary">Voir</a>
+                                            <a t-attf-href="/my/progressreport/class/{{ progressreports[classe]['data'][subject]['data']['all'][0]['class_id'] }}/subject/{{ progressreports[classe]['data'][subject]['data']['all'][0]['subject_id'] }}" class="btn btn-primary">Sessions de cours</a>
                                         </div>
                                     </td>
                                 </tr>
@@ -792,7 +785,7 @@
                     </tbody>
                     <tfooter>
                         <tr>
-                            <th class="text-left" colspan="4" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
+                            <th class="text-left" colspan="3" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
                         </tr>
                     </tfooter>
                 </t>
