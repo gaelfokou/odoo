@@ -585,18 +585,43 @@ class Helpers:
                 progressreports[key_class]['data'][key_subject]['name'] = d['subject_name']
                 progressreports[key_class]['data'][key_subject]['data'] = {
                     'all': [],
+                    'done': [],
+                    'awaiting': [],
                 }
                 progressreports[key_class]['data'][key_subject]['data']['all'].append(d)
+                if d['status'] in ['present', 'absent', 'permission', 'exception']:
+                    progressreports[key_class]['data'][key_subject]['data']['done'].append(d)
+                else:
+                    progressreports[key_class]['data'][key_subject]['data']['awaiting'].append(d)
             else:
                 if not key_subject in progressreports[key_class]['data']:
                     progressreports[key_class]['data'][key_subject] = {}
                     progressreports[key_class]['data'][key_subject]['name'] = d['subject_name']
                     progressreports[key_class]['data'][key_subject]['data'] = {
                         'all': [],
+                        'done': [],
+                        'awaiting': [],
                     }
                     progressreports[key_class]['data'][key_subject]['data']['all'].append(d)
+                    if d['status'] in ['present', 'absent', 'permission', 'exception']:
+                        progressreports[key_class]['data'][key_subject]['data']['done'].append(d)
+                    else:
+                        progressreports[key_class]['data'][key_subject]['data']['awaiting'].append(d)
                 else:
                     progressreports[key_class]['data'][key_subject]['data']['all'].append(d)
+                    if d['status'] in ['present', 'absent', 'permission', 'exception']:
+                        progressreports[key_class]['data'][key_subject]['data']['done'].append(d)
+                    else:
+                        progressreports[key_class]['data'][key_subject]['data']['awaiting'].append(d)
+
+        for key_class in progressreports.keys():
+            for key_subject in progressreports[key_class]['data'].keys():
+                progressreports[key_class]['data'][key_subject]['data']['done'] = sum([len(v['sessions']) for v in progressreports[key_class]['data'][key_subject]['data']['done']])
+                progressreports[key_class]['data'][key_subject]['data']['awaiting'] = sum([len(v['sessions']) for v in progressreports[key_class]['data'][key_subject]['data']['awaiting']])
+                progressreports[key_class]['data'][key_subject]['data']['total'] = progressreports[key_class]['data'][key_subject]['data']['done'] + progressreports[key_class]['data'][key_subject]['data']['awaiting']
+                progressreports[key_class]['data'][key_subject]['data']['done'] = str(progressreports[key_class]['data'][key_subject]['data']['done'])
+                progressreports[key_class]['data'][key_subject]['data']['awaiting'] = str(progressreports[key_class]['data'][key_subject]['data']['awaiting'])
+                progressreports[key_class]['data'][key_subject]['data']['total'] = str(progressreports[key_class]['data'][key_subject]['data']['total'])
 
         _logger.info(f'----------- tototototototo progressreports {progressreports} -----------')
 
