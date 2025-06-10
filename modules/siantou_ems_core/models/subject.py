@@ -220,8 +220,9 @@ class ProgressReport(models.Model):
         'Sessions de cours'
     )
 
+    # Contrainte SQL pour s'assurer de l'unicité du couple (classe, couple) dans la base de donnée
     _sql_constraints = [
-        ('unique_subject_class_rel', 'unique(subject_id, class_id)', 'Un cours ne peut être lié à une même classe qu\'une seule fois.')
+        ('unique_class_subject_rel', 'unique(class_id, subject_id)', 'Un cours ne peut être lié à une même classe qu\'une seule fois.')
     ]
 
     subject_id_domain = fields.Binary(compute='_compute_class_domain', default=[])
@@ -298,10 +299,6 @@ class SubjectSession(models.Model):
         required=True,
         ondelete='cascade'
     )
-
-    _sql_constraints = [
-        ('unique_timetable_report_rel', 'unique(timetable_id, report_id)', 'Un emploi du temps ne peut être lié à une même fiche de progression qu\'une seule fois.')
-    ]
 
     timetable_id_domain = fields.Binary(compute='_compute_class_domain', default=[])
 

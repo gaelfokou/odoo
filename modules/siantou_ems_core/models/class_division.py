@@ -13,12 +13,6 @@ class EducationClass(models.Model):
     _description = "Classe Standard"
     _inherit = ['mail.thread']
 
-    # _sql_constraints = [
-    #     ('unique_class',
-    #      'unique(field_of_study_id,level_id,school_id)',
-    #      'Classe unique par school_id'),
-    # ]
-
     name = fields.Char(string='Nom',
                        compute='_compute_name', store=True,
                        help="Entrer le nom de la Classe")

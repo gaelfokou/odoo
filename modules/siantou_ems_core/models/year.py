@@ -27,11 +27,6 @@ class Year(models.Model):
     # Variable booléenne pour définir une année académique comme étant active (année académique en cours)
     is_active = fields.Boolean(string="Actif", default=False)
 
-    # Contrainte SQL pour empêcher d'avoir le même nom pour différentes années académiques
-    # _sql_constraints = [
-    #     ('unique_name', 'unique(name)', "L'année académique doit être unique")
-    # ]
-
     # Contrainte logique pour empêcher d'avoir des années académiques qui se chevauchent
     @api.constrains('start_time', 'end_time')
     def _check_date_overlap(self):
