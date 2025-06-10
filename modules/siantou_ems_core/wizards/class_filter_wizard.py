@@ -143,6 +143,7 @@ class ClassFilterWizard(models.TransientModel):
         if self.status == 'timetable_available':
             domain = [
                 ('group_id.is_active', '=', True),
+                ('group_id.is_submit', '=', False),
                 ('class_id', 'in', class_ids),
             ]
             timetable_class_ids = []
@@ -155,6 +156,7 @@ class ClassFilterWizard(models.TransientModel):
         elif self.status == 'timetable_not_available':
             domain = [
                 ('group_id.is_active', '=', True),
+                ('group_id.is_submit', '=', False),
                 ('class_id', 'in', class_ids),
             ]
             timetable_class_ids = []

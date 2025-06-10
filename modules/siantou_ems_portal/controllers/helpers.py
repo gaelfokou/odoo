@@ -72,6 +72,7 @@ class Helpers:
             search_domain.append(('class_id', '=', class_id.id))
 
         search_domain.append(('group_id.is_active', '=', True))
+        search_domain.append(('group_id.is_submit', '=', False))
 
         order = 'date asc'
 
@@ -193,6 +194,7 @@ class Helpers:
             search_domain.append(('class_id', '=', class_id.id))
 
         search_domain.append(('group_id.is_active', '=', True))
+        search_domain.append(('group_id.is_submit', '=', False))
         search_domain.append(('status', 'in', ['present', 'permission']))
 
         order = 'date asc'
@@ -247,6 +249,7 @@ class Helpers:
             search_domain.append(('class_id', '=', class_id.id))
 
         search_domain.append(('group_id.is_active', '=', True))
+        search_domain.append(('group_id.is_submit', '=', False))
 
         order = 'date asc'
 
@@ -312,6 +315,7 @@ class Helpers:
             search_domain.append(('class_id', '=', class_id.id))
 
         search_domain.append(('group_id.is_active', '=', True))
+        search_domain.append(('group_id.is_submit', '=', False))
 
         order = 'date asc'
 
