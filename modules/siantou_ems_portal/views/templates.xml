@@ -775,7 +775,7 @@
                                     </td>
                                     <td class="text-left">
                                         <div>
-                                            <a t-attf-href="/my/subjectsession/class/{{ progressreports[classe]['data'][subject]['data']['all'][0]['class_id'] }}/subject/{{ progressreports[classe]['data'][subject]['data']['all'][0]['subject_id'] }}" class="btn btn-primary">Sessions de cours</a>
+                                            <a t-attf-href="/my/subjectsession/{{ progressreports[classe]['data'][subject]['data']['all'][0]['class_id'] }}/{{ progressreports[classe]['data'][subject]['data']['all'][0]['subject_id'] }}/list" class="btn btn-primary">Sessions de cours</a>
                                         </div>
                                     </td>
                                 </tr>
@@ -842,7 +842,7 @@
                                 </th>
                                 <th class="text-left">
                                     <div>
-                                        <a t-attf-href="/my/subjectsession/timetable/{{ subjectsessions[classe]['id'] }}/new" class="btn btn-primary">Créer</a>
+                                        <a t-attf-href="/my/subjectsession/{{ subjectsessions[classe]['id'] }}/new" class="btn btn-primary">Créer</a>
                                     </div>
                                 </th>
                             </tr>
@@ -860,7 +860,8 @@
                                     </td>
                                     <td class="text-left">
                                         <div>
-                                            <a t-attf-href="/my/subjectsession/session/{{ session['id'] }}" class="btn btn-primary">Supprimer</a>
+                                            <a t-attf-href="/my/subjectsession/{{ session['id'] }}/edit" class="btn btn-primary">Modifier</a>
+                                            <a t-attf-href="/my/subjectsession/{{ session['id'] }}/delete" class="btn btn-danger">Supprimer</a>
                                         </div>
                                     </td>
                                 </tr>

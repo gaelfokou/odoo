@@ -520,14 +520,14 @@ class PortalAccount(portal.CustomerPortal):
                                     'page_name': 'progressreport',
                                 })
 
-    @http.route(['/my/subjectsession/class/<int:class_id>/subject/<int:subject_id>'], type='http', auth="user", website=True)
-    def portal_subjectsession(self, class_id=None, subject_id=None, search='', search_in='all', **kw):
+    @http.route(['/my/subjectsession/<int:classe>/<int:subject>/list'], type='http', auth="user", website=True)
+    def portal_subjectsession(self, classe=None, subject=None, search='', search_in='all', **kw):
         # Utilisation de la fonction du helper
-        if class_id:
-            class_id = http.request.env['siantou.ems.core.class'].sudo().search([('id', '=', class_id)], limit=1)
-        if subject_id:
-            subject_id = http.request.env['siantou.ems.core.subject'].sudo().search([('id', '=', subject_id)], limit=1)
-        search_subjectsessions, searchbar_inputs = Helpers.subjectsession(search, search_in, class_id=class_id, subject_id=subject_id)
+        if classe:
+            classe = http.request.env['siantou.ems.core.class'].sudo().search([('id', '=', classe)], limit=1)
+        if subject:
+            subject = http.request.env['siantou.ems.core.subject'].sudo().search([('id', '=', subject)], limit=1)
+        search_subjectsessions, searchbar_inputs = Helpers.subjectsession(search, search_in, class_id=classe, subject_id=subject)
         subjectsessions = []
         for search_subjectsession in search_subjectsessions:
             subjectsession = {}

@@ -57,7 +57,7 @@
                     <button 
                         invisible="status in ['transfer', 'rej']"
                         name="rejected_enrollment" 
-                        class="btn btn-danager" 
+                        class="btn btn-danger" 
                         type="object" 
                         string="Rejeter cette candidature"
                     />
