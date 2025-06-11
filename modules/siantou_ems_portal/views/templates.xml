@@ -822,7 +822,7 @@
                 <t t-call="portal.portal_table">
                     <thead>
                         <tr class="active">
-                            <th class="text-left">
+                            <th class="text-left" colspan="6">
                                 <div>
                                     <a t-attf-href="/my/subjectsession/{{ classe }}/{{ subject }}/new" class="btn btn-primary">Créer</a>
                                 </div>
@@ -832,6 +832,7 @@
                     <thead>
                         <tr class="active">
                             <th class="text-left"></th>
+                            <th class="text-left">Date</th>
                             <th class="text-left">Nom</th>
                             <th class="text-left">Description</th>
                             <th class="text-left">Statut</th>
@@ -839,20 +840,22 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <t t-set="classes" t-value="subjectsessions.keys()"/>
-                        <t t-foreach="classes" t-as="classe">
+                        <t t-set="timetables" t-value="subjectsessions.keys()"/>
+                        <t t-foreach="timetables" t-as="timetable">
                             <tr>
-                                <th class="text-left" colspan="5">
-                                    <span t-esc="subjectsessions[classe]['class_name']"/>
-                                    <span t-esc="subjectsessions[classe]['date']"/>
-                                    <span t-esc="subjectsessions[classe]['start_time'] + '-' + subjectsessions[classe]['end_time']"/>
+                                <th class="text-left" colspan="6">
+                                    <span t-esc="subjectsessions[timetable]['class_name']"/>
                                 </th>
                             </tr>
-                            <t t-set="sessions" t-value="subjectsessions[classe]['data']"/>
+                            <t t-set="sessions" t-value="subjectsessions[timetable]['data']"/>
                             <t t-foreach="sessions" t-as="session">
                                 <tr>
                                     <td class="text-left">
-                                        <span t-esc="subjectsessions[classe]['subject_name']"/>
+                                        <span t-esc="subjectsessions[timetable]['subject_name']"/>
+                                    </td>
+                                    <td class="text-left">
+                                        <span t-esc="subjectsessions[timetable]['date']"/>
+                                        <span t-esc="subjectsessions[timetable]['start_time'] + '-' + subjectsessions[timetable]['end_time']"/>
                                     </td>
                                     <td class="text-left">
                                         <span t-esc="session['name']"/>
@@ -861,7 +864,7 @@
                                         <span t-esc="session['description']"/>
                                     </td>
                                     <td class="text-left">
-                                        <span t-esc="subjectsessions[classe]['status']"/>
+                                        <span t-esc="subjectsessions[timetable]['status']"/>
                                     </td>
                                     <td class="text-left">
                                         <div>
@@ -875,7 +878,7 @@
                     </tbody>
                     <tfooter>
                         <tr>
-                            <th class="text-left" colspan="5" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
+                            <th class="text-left" colspan="6" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
                         </tr>
                     </tfooter>
                 </t>
