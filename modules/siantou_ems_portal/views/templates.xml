@@ -834,6 +834,7 @@
                             <th class="text-left"></th>
                             <th class="text-left">Nom</th>
                             <th class="text-left">Description</th>
+                            <th class="text-left">Statut</th>
                             <th class="text-left">Actions</th>
                         </tr>
                     </thead>
@@ -841,7 +842,7 @@
                         <t t-set="classes" t-value="subjectsessions.keys()"/>
                         <t t-foreach="classes" t-as="classe">
                             <tr>
-                                <th class="text-left" colspan="4">
+                                <th class="text-left" colspan="5">
                                     <span t-esc="subjectsessions[classe]['class_name']"/>
                                     <span t-esc="subjectsessions[classe]['date']"/>
                                 </th>
@@ -859,6 +860,9 @@
                                         <span t-esc="session['description']"/>
                                     </td>
                                     <td class="text-left">
+                                        <span t-esc="subjectsessions[classe]['status']"/>
+                                    </td>
+                                    <td class="text-left">
                                         <div>
                                             <a t-attf-href="/my/subjectsession/{{ session['id'] }}/edit" class="btn btn-primary btn-sm">Modifier</a>
                                             <a t-attf-href="/my/subjectsession/{{ session['id'] }}/delete" class="btn btn-danger btn-sm">Supprimer</a>
@@ -870,7 +874,7 @@
                     </tbody>
                     <tfooter>
                         <tr>
-                            <th class="text-left" colspan="4" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
+                            <th class="text-left" colspan="5" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
                         </tr>
                     </tfooter>
                 </t>
