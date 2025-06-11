@@ -688,6 +688,8 @@ class Helpers:
                 subjectsessions[key_timetable]['class_name'] = d['class_name']
                 subjectsessions[key_timetable]['subject_name'] = d['subject_name']
                 subjectsessions[key_timetable]['date'] = d['date_of_week']
+                subjectsessions[key_timetable]['start_time'] = Helpers.convert_float_to_time(d['start_time'])
+                subjectsessions[key_timetable]['end_time'] = Helpers.convert_float_to_time(d['end_time'])
                 subjectsessions[key_timetable]['data'] = d['sessions']
 
         _logger.info(f'----------- tototototototo subjectsessions {subjectsessions} -----------')

@@ -845,6 +845,7 @@
                                 <th class="text-left" colspan="5">
                                     <span t-esc="subjectsessions[classe]['class_name']"/>
                                     <span t-esc="subjectsessions[classe]['date']"/>
+                                    <span t-esc="subjectsessions[classe]['start_time'] + '-' + subjectsessions[classe]['end_time']"/>
                                 </th>
                             </tr>
                             <t t-set="sessions" t-value="subjectsessions[classe]['data']"/>
