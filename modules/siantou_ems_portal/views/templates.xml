@@ -823,9 +823,11 @@
                     <thead>
                         <tr class="active">
                             <th class="text-left" colspan="6">
-                                <div>
-                                    <a t-attf-href="/my/subjectsession/{{ classe }}/{{ subject }}/new" class="btn btn-primary">Créer</a>
-                                </div>
+                                <t t-if="is_user == 'is_teacher'">
+                                    <div>
+                                        <a t-attf-href="/my/subjectsession/{{ classe }}/{{ subject }}/new" class="btn btn-primary">Créer</a>
+                                    </div>
+                                </t>
                             </th>
                         </tr>
                     </thead>
@@ -867,10 +869,12 @@
                                         <span t-esc="subjectsessions[timetable]['status']"/>
                                     </td>
                                     <td class="text-left">
-                                        <div>
-                                            <a t-attf-href="/my/subjectsession/{{ session['id'] }}/edit" class="btn btn-primary btn-sm">Modifier</a>
-                                            <a t-attf-href="/my/subjectsession/{{ session['id'] }}/delete" class="btn btn-danger btn-sm">Supprimer</a>
-                                        </div>
+                                        <t t-if="is_user == 'is_teacher'">
+                                            <div>
+                                                <a t-attf-href="/my/subjectsession/{{ session['id'] }}/edit" class="btn btn-primary btn-sm">Modifier</a>
+                                                <a t-attf-href="/my/subjectsession/{{ session['id'] }}/delete" class="btn btn-danger btn-sm">Supprimer</a>
+                                            </div>
+                                        </t>
                                     </td>
                                 </tr>
                             </t>

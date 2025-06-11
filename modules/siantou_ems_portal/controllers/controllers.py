@@ -523,6 +523,17 @@ class PortalAccount(portal.CustomerPortal):
     @http.route(['/my/subjectsession/<int:classe>/<int:subject>/list'], type='http', auth="user", website=True)
     def portal_subjectsession(self, classe=None, subject=None, search='', search_in='all', **kw):
         # Utilisation de la fonction du helper
+        user = None
+        is_user = None
+        if http.request.env.user.employee_id.id:
+            user = http.request.env.user.employee_id
+            if http.request.env.user.employee_id.is_teacher:
+                is_user = 'is_teacher'
+            else:
+                is_user = 'is_employee'
+        elif http.request.env.user.student_id.id:
+            user = http.request.env.user.student_id
+            is_user = 'is_student'
         classe = http.request.env['siantou.ems.core.class'].sudo().search([('id', '=', classe)], limit=1)
         subject = http.request.env['siantou.ems.core.subject'].sudo().search([('id', '=', subject)], limit=1)
         search_subjectsessions, searchbar_inputs = Helpers.subjectsession(search, search_in, class_id=classe, subject_id=subject)
@@ -576,6 +587,7 @@ class PortalAccount(portal.CustomerPortal):
                                 {
                                     'subjectsessions': subjectsessions,
                                     'page_name': 'subjectsession',
+                                    'is_user': 'is_teacher' if user and is_user == 'is_teacher' else '',
                                     'classe': classe.id if classe else '',
                                     'subject': subject.id if subject else '',
                                 })
