@@ -775,7 +775,92 @@
                                     </td>
                                     <td class="text-left">
                                         <div>
-                                            <a t-attf-href="/my/progressreport/class/{{ progressreports[classe]['data'][subject]['data']['all'][0]['class_id'] }}/subject/{{ progressreports[classe]['data'][subject]['data']['all'][0]['subject_id'] }}" class="btn btn-primary">Sessions de cours</a>
+                                            <a t-attf-href="/my/subjectsession/class/{{ progressreports[classe]['data'][subject]['data']['all'][0]['class_id'] }}/subject/{{ progressreports[classe]['data'][subject]['data']['all'][0]['subject_id'] }}" class="btn btn-primary">Sessions de cours</a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </t>
+                        </t>
+                    </tbody>
+                    <tfooter>
+                        <tr>
+                            <th class="text-left" colspan="4" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
+                        </tr>
+                    </tfooter>
+                </t>
+            </t>
+        </template>
+
+        <!-- Sessions de cours -->
+
+        <template id="siantou_ems_portal_subjectsession" name="siantou_ems_portal.subjectsession" inherit_id="portal.portal_breadcrumbs" priority="30">
+            <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
+                <li t-if="page_name == 'subjectsession'" t-attf-class="breadcrumb-item #{'active ' if subjectsession else ''}">
+                    <a t-if="subjectsession" t-attf-href="/my/subjectsession?{{ keep_query() }}">Sessions de cours</a>
+                    <t t-else="">Sessions de cours</t>
+                </li>
+            </xpath>
+        </template>
+
+        <template id="siantou_ems_portal_my_home_menu_subjectsession" name="siantou_ems_portal.subjectsession" inherit_id="portal.portal_my_home" priority="30">
+            <xpath expr="//div[hasclass('o_portal_docs')]" position="before">
+                <t t-set="portal_client_category_enable" t-value="True"/>
+            </xpath>
+            <xpath expr="//div[@id='portal_client_category']" position="inside">
+                <t t-call="portal.portal_docs_entry">
+                    <t t-set="icon" t-value="'/siantou_ems_portal/static/src/img/progress_grid.png'"/>
+                    <t t-set="title">Sessions de cours</t>
+                    <t t-set="url" t-value="'/my/subjectsession'"/>
+                    <t t-set="text">Affichez votre fiche de progression</t>
+                    <t t-set="placeholder_count" t-value="'portal_subjectsession'"/>
+                </t>
+            </xpath>
+        </template>
+
+        <template id="siantou_ems_portal_my_home_subjectsession_views" name="siantou_ems_portal.print_subjectsession">
+            <t t-call="portal.portal_layout">
+                <t t-set="breadcrumbs_searchbar" t-value="True"/>
+                <t t-call="portal.portal_searchbar">
+                    <t t-set="title">Sessions de cours</t>
+                </t>
+                <t t-call="portal.portal_table">
+                    <thead>
+                        <tr class="active">
+                            <th class="text-left"></th>
+                            <th class="text-left">Nom</th>
+                            <th class="text-left">Description</th>
+                            <th class="text-left">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-set="classes" t-value="subjectsessions.keys()"/>
+                        <t t-foreach="classes" t-as="classe">
+                            <tr>
+                                <th class="text-left" colspan="3">
+                                    <span t-esc="subjectsessions[classe]['name']"/>
+                                    <span t-esc="subjectsessions[classe]['date']"/>
+                                </th>
+                                <th class="text-left">
+                                    <div>
+                                        <a t-attf-href="/my/subjectsession/timetable/{{ subjectsessions[classe]['id'] }}/new" class="btn btn-primary">Créer</a>
+                                    </div>
+                                </th>
+                            </tr>
+                            <t t-set="sessions" t-value="subjectsessions[classe]['data']"/>
+                            <t t-foreach="sessions" t-as="session">
+                                <tr>
+                                    <td class="text-left">
+                                        <span t-esc="subjectsessions[classe]['subject_name']"/>
+                                    </td>
+                                    <td class="text-left">
+                                        <span t-esc="session['name']"/>
+                                    </td>
+                                    <td class="text-left">
+                                        <span t-esc="session['description']"/>
+                                    </td>
+                                    <td class="text-left">
+                                        <div>
+                                            <a t-attf-href="/my/subjectsession/session/{{ session['id'] }}" class="btn btn-primary">Supprimer</a>
                                         </div>
                                     </td>
                                 </tr>

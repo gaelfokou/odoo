@@ -118,6 +118,7 @@ class PortalAccount(portal.CustomerPortal):
         for search_timetable in search_timetables:
             timetable = {}
             timetable['id'] = search_timetable.id
+            timetable['name'] = search_timetable.name
             timetable['date'] = search_timetable.date
             timetable['date_of_week'] = datetime.strftime(search_timetable.date, DATE_FORMAT_FR)
             timetable['semester_name'] = search_timetable.semester_id.name
@@ -212,8 +213,8 @@ class PortalAccount(portal.CustomerPortal):
                                     'searchbar_inputs': searchbar_inputs,
                                 })
 
-    @http.route(['/my/timetable/download', '/my/timetable/download/page/<int:page>'], type='http', auth="user", website=True)
-    def portal_timetable_download(self, page=1, search='', search_in='all', **kw):
+    @http.route(['/my/timetable/download'], type='http', auth="user", website=True)
+    def portal_timetable_download(self, search='', search_in='all', **kw):
         user = None
         is_user = None
         if http.request.env.user.employee_id.id:
@@ -262,8 +263,8 @@ class PortalAccount(portal.CustomerPortal):
             status=200
         )
 
-    @http.route(['/my/schoolfee', '/my/schoolfee/page/<int:page>'], type='http', auth="user", website=True)
-    def portal_schoolfee(self, page=1, search='', search_in='all', **kw):
+    @http.route(['/my/schoolfee'], type='http', auth="user", website=True)
+    def portal_schoolfee(self, search='', search_in='all', **kw):
         # Utilisation de la fonction du helper
         search_schoolfees, searchbar_inputs = Helpers.schoolfee(search, search_in)
         total_amount = 0.0
@@ -293,8 +294,8 @@ class PortalAccount(portal.CustomerPortal):
                                     'total_rest_amount': total_rest_amount,
                                 })
 
-    @http.route(['/my/paymenthistory', '/my/paymenthistory/page/<int:page>'], type='http', auth="user", website=True)
-    def portal_paymenthistory(self, page=1, search='', search_in='all', **kw):
+    @http.route(['/my/paymenthistory'], type='http', auth="user", website=True)
+    def portal_paymenthistory(self, search='', search_in='all', **kw):
         # Utilisation de la fonction du helper
         search_paymenthistories, searchbar_inputs = Helpers.paymenthistory(search, search_in)
         total_amount = 0.0
@@ -324,8 +325,8 @@ class PortalAccount(portal.CustomerPortal):
                                     'total_number_of_hours': total_number_of_hours,
                                 })
 
-    @http.route(['/my/accountbalance', '/my/accountbalance/page/<int:page>'], type='http', auth="user", website=True)
-    def portal_accountbalance(self, page=1, search='', search_in='all', **kw):
+    @http.route(['/my/accountbalance'], type='http', auth="user", website=True)
+    def portal_accountbalance(self, search='', search_in='all', **kw):
         # Utilisation de la fonction du helper
         search_accountbalances, searchbar_inputs = Helpers.accountbalance(search, search_in)
         total_rate = 0.0
@@ -334,6 +335,7 @@ class PortalAccount(portal.CustomerPortal):
         for search_accountbalance in search_accountbalances:
             accountbalance = {}
             accountbalance['id'] = search_accountbalance.id
+            accountbalance['name'] = search_accountbalance.name
             accountbalance['date'] = search_accountbalance.date
             accountbalance['date_of_week'] = datetime.strftime(search_accountbalance.date, DATE_FORMAT_FR)
             accountbalance['semester_name'] = search_accountbalance.semester_id.name
@@ -407,8 +409,8 @@ class PortalAccount(portal.CustomerPortal):
                                     'total_number_of_hours': total_number_of_hours,
                                 })
 
-    @http.route(['/my/consumptionhour', '/my/consumptionhour/page/<int:page>'], type='http', auth="user", website=True)
-    def portal_consumptionhour(self, page=1, search='', search_in='all', **kw):
+    @http.route(['/my/consumptionhour'], type='http', auth="user", website=True)
+    def portal_consumptionhour(self, search='', search_in='all', **kw):
         # Utilisation de la fonction du helper
         search_consumptionhours, searchbar_inputs = Helpers.consumptionhour(search, search_in)
         total_all = 0.0
@@ -418,7 +420,9 @@ class PortalAccount(portal.CustomerPortal):
         for search_consumptionhour in search_consumptionhours:
             consumptionhour = {}
             consumptionhour['id'] = search_consumptionhour.id
+            consumptionhour['name'] = search_consumptionhour.name
             consumptionhour['date'] = search_consumptionhour.date
+            consumptionhour['date_of_week'] = datetime.strftime(search_consumptionhour.date, DATE_FORMAT_FR)
             consumptionhour['semester_name'] = search_consumptionhour.semester_id.name
             consumptionhour['cycle_name'] = search_consumptionhour.cycle_id.name
             consumptionhour['level_name'] = search_consumptionhour.level_id.name
@@ -460,15 +464,17 @@ class PortalAccount(portal.CustomerPortal):
                                     'total_awaiting': total_awaiting,
                                 })
 
-    @http.route(['/my/progressreport', '/my/progressreport/page/<int:page>'], type='http', auth="user", website=True)
-    def portal_progressreport(self, page=1, search='', search_in='all', **kw):
+    @http.route(['/my/progressreport'], type='http', auth="user", website=True)
+    def portal_progressreport(self, search='', search_in='all', **kw):
         # Utilisation de la fonction du helper
         search_progressreports, searchbar_inputs = Helpers.progressreport(search, search_in)
         progressreports = []
         for search_progressreport in search_progressreports:
             progressreport = {}
             progressreport['id'] = search_progressreport.id
+            progressreport['name'] = search_progressreport.name
             progressreport['date'] = search_progressreport.date
+            progressreport['date_of_week'] = datetime.strftime(search_progressreport.date, DATE_FORMAT_FR)
             progressreport['semester_name'] = search_progressreport.semester_id.name
             progressreport['cycle_name'] = search_progressreport.cycle_id.name
             progressreport['level_name'] = search_progressreport.level_id.name
@@ -514,8 +520,68 @@ class PortalAccount(portal.CustomerPortal):
                                     'page_name': 'progressreport',
                                 })
 
-    @http.route(['/my/notification', '/my/notification/page/<int:page>'], type='http', auth="user", website=True)
-    def portal_notification(self, page=1, search='', search_in='all', **kw):
+    @http.route(['/my/subjectsession/class/<int:class_id>/subject/<int:subject_id>'], type='http', auth="user", website=True)
+    def portal_subjectsession(self, class_id=None, subject_id=None, search='', search_in='all', **kw):
+        # Utilisation de la fonction du helper
+        if class_id:
+            class_id = http.request.env['siantou.ems.core.class'].sudo().search([('id', '=', class_id)], limit=1)
+        if subject_id:
+            subject_id = http.request.env['siantou.ems.core.subject'].sudo().search([('id', '=', subject_id)], limit=1)
+        search_subjectsessions, searchbar_inputs = Helpers.subjectsession(search, search_in, class_id=class_id, subject_id=subject_id)
+        subjectsessions = []
+        for search_subjectsession in search_subjectsessions:
+            subjectsession = {}
+            subjectsession['id'] = search_subjectsession.id
+            subjectsession['name'] = search_subjectsession.name
+            subjectsession['date'] = search_subjectsession.date
+            subjectsession['date_of_week'] = datetime.strftime(search_subjectsession.date, DATE_FORMAT_FR)
+            subjectsession['semester_name'] = search_subjectsession.semester_id.name
+            subjectsession['cycle_name'] = search_subjectsession.cycle_id.name
+            subjectsession['level_name'] = search_subjectsession.level_id.name
+            subjectsession['field_of_study_id'] = search_subjectsession.field_of_study_id.id
+            subjectsession['field_of_study_name'] = search_subjectsession.field_of_study_id.name
+            subjectsession['specialty_name'] = search_subjectsession.specialty_id.name
+            subjectsession['option_name'] = search_subjectsession.option_id.name
+            subjectsession['class_id'] = search_subjectsession.class_id.id
+            subjectsession['class_name'] = search_subjectsession.class_id.name
+            subjectsession['department_id'] = search_subjectsession.department_id.id
+            subjectsession['department_name'] = search_subjectsession.department_id.name
+            subjectsession['subject_id'] = search_subjectsession.subject_id.id
+            subjectsession['subject_name'] = search_subjectsession.subject_id.name
+            subjectsession['subject_code'] = search_subjectsession.subject_id.code
+            subjectsession['subject_shared_subject'] = search_subjectsession.subject_id.shared_subject
+            subjectsession['classroom_name'] = search_subjectsession.classroom_id.name
+            subjectsession['building_name'] = search_subjectsession.classroom_id.building_id.name
+            subjectsession['batch_name'] = search_subjectsession.batch_id.name
+            subjectsession['employee_name'] = search_subjectsession.employee_id.name
+            subjectsession['day_of_week'] = CURRENT_WEEKDAY[search_subjectsession.day_of_week]
+            subjectsession['start_time'] = search_subjectsession.start_time
+            subjectsession['end_time'] = search_subjectsession.end_time
+            subjectsession['not_active_slotitems'] = search_subjectsession.not_active_slotitems
+            subjectsession['status'] = search_subjectsession.status
+            session_ids = search_subjectsession.session_ids
+            session_ids = list(session_ids)
+            sessions = []
+            for session_id in session_ids:
+                session = {}
+                session['id'] = session_id.id
+                session['name'] = session_id.name
+                session['description'] = session_id.description
+                session['timetable_id'] = session_id.timetable_id.id
+                session['report_id'] = session_id.report_id.id
+                sessions.append(session)
+            subjectsession['sessions'] = sessions
+
+            subjectsessions.append(subjectsession)
+        subjectsessions = Helpers.format_subjectsession(subjectsessions)
+        return http.request.render('siantou_ems_portal.siantou_ems_portal_my_home_subjectsession_views',
+                                {
+                                    'subjectsessions': subjectsessions,
+                                    'page_name': 'subjectsession',
+                                })
+
+    @http.route(['/my/notification'], type='http', auth="user", website=True)
+    def portal_notification(self, search='', search_in='all', **kw):
         # Utilisation de la fonction du helper
         search_notifications, searchbar_inputs = Helpers.notification(search, search_in)
         notifications = []
