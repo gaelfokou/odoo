@@ -445,7 +445,7 @@ class TimetablePrintWizard(models.TransientModel):
                             for v in vals.split('-'):
                                 timetables[monday][key][i].append([d for d in data if d['id'] == int(v)][0])
 
-            monday = datetime.strptime(f'{monday}', DATE_FORMAT).date()
+            monday = datetime.strptime(f"{monday}", DATE_FORMAT).date()
             saturday = monday + timedelta(days=5)
             monday_fr = datetime.strftime(monday, DATE_FORMAT_FR)
             saturday_fr = datetime.strftime(saturday, DATE_FORMAT_FR)

@@ -507,7 +507,7 @@ class Helpers:
                             for v in vals.split('-'):
                                 timetables[monday][key][i].append([d for d in data if d['id'] == int(v)][0])
 
-            monday = datetime.strptime(f'{monday}', DATE_FORMAT).date()
+            monday = datetime.strptime(f"{monday}", DATE_FORMAT).date()
             saturday = monday + timedelta(days=5)
             monday_fr = datetime.strftime(monday, DATE_FORMAT_FR)
             saturday_fr = datetime.strftime(saturday, DATE_FORMAT_FR)
@@ -631,8 +631,8 @@ class Helpers:
     def convert_number_of_hours(tm):
         end_time = Helpers.convert_float_to_time(tm['end_time'], True)
         start_time = Helpers.convert_float_to_time(tm['start_time'], True)
-        datetime_to = datetime.strptime(f'{tm['date']} {end_time}', DATETIME_FORMAT)
-        datetime_from = datetime.strptime(f'{tm['date']} {start_time}', DATETIME_FORMAT)
+        datetime_to = datetime.strptime(f"{tm['date']} {end_time}", DATETIME_FORMAT)
+        datetime_from = datetime.strptime(f"{tm['date']} {start_time}", DATETIME_FORMAT)
         weekly_hours_credit = datetime_to - datetime_from
         weekly_hours_credit = weekly_hours_credit - timedelta(hours=tm['not_active_slotitems'])
         weekly_hours_credit = weekly_hours_credit.total_seconds() / 3600.0

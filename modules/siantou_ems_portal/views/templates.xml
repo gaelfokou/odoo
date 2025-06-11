@@ -747,7 +747,7 @@
                     <thead>
                         <tr class="active">
                             <th class="text-left"></th>
-                            <th class="text-left">Classe</th>
+                            <th class="text-left">Cours</th>
                             <th class="text-left">Progression</th>
                             <th class="text-left">Actions</th>
                         </tr>
@@ -764,10 +764,10 @@
                             <t t-foreach="subjects" t-as="subject">
                                 <tr>
                                     <td class="text-left">
-                                        <span t-esc="progressreports[classe]['data'][subject]['name']"/>
+                                        <span t-esc="progressreports[classe]['name']"/>
                                     </td>
                                     <td class="text-left">
-                                        <span t-esc="progressreports[classe]['name']"/>
+                                        <span t-esc="progressreports[classe]['data'][subject]['name']"/>
                                     </td>
                                     <td class="text-left">
                                         <span t-esc="progressreports[classe]['data'][subject]['data']['done']"/>
