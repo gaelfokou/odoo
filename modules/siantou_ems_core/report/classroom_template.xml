@@ -78,16 +78,16 @@
                                 <t t-set="classrooms" t-value="docdata['classroom_data']"/>
                                 <t t-foreach="classrooms" t-as="classroom">
                                     <tr>
-                                        <td class='text-center'>
+                                        <td class="text-center">
                                             <span t-esc="classroom['code']"/>
                                         </td>
-                                        <td class='text-center'>
+                                        <td class="text-center">
                                             <span t-esc="classroom['name']"/>
                                         </td>
-                                        <td class='text-center'>
+                                        <td class="text-center">
                                             <span t-esc="classroom['building_name']"/>
                                         </td>
-                                        <td class='text-center'>
+                                        <td class="text-center">
                                             <span t-esc="classroom['capacity']"/>
                                         </td>
                                     </tr>

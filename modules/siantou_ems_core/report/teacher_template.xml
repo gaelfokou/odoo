@@ -83,31 +83,31 @@
                                 <t t-set="teachers" t-value="docdata['teacher_data']"/>
                                 <t t-foreach="teachers" t-as="teacher">
                                     <tr>
-                                        <td class='text-center'>
+                                        <td class="text-center">
                                             <span t-esc="teacher['name']"/>
                                         </td>
-                                        <td class='text-center'>
+                                        <td class="text-center">
                                             <span t-esc="teacher['last_name']"/>
                                         </td>
-                                        <td class='text-center'>
+                                        <td class="text-center">
                                             <span t-esc="teacher['first_name']"/>
                                         </td>
-                                        <td class='text-center'>
+                                        <td class="text-center">
                                             <span t-esc="teacher['work_email']"/>
                                         </td>
-                                        <td class='text-center'>
+                                        <td class="text-center">
                                             <span t-esc="teacher['birthday']"/>
                                         </td>
-                                        <td class='text-center'>
+                                        <td class="text-center">
                                             <span t-esc="'Oui' if teacher['is_teacher'] else 'Non'"/>
                                         </td>
-                                        <td class='text-center'>
+                                        <td class="text-center">
                                             <span t-esc="'Oui' if teacher['is_permanent'] else 'Non'"/>
                                         </td>
-                                        <td class='text-center'>
+                                        <td class="text-center">
                                             <span t-esc="teacher['identifier']"/>
                                         </td>
-                                        <td class='text-center'>
+                                        <td class="text-center">
                                             <span t-esc="teacher['weekly_hours_limit']"/>
                                         </td>
                                     </tr>

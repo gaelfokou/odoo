@@ -94,10 +94,10 @@
                                     <tbody>
                                         <t t-foreach="current_hours" t-as="hour">
                                             <tr>
-                                                <td class='text-center'>
+                                                <td class="text-center">
                                                     <span t-esc="docdata['timetable_data'][key]['pages'][monday]['Heure'][hour]"/>
                                                 </td>
-                                                <td class='text-center'>
+                                                <td class="text-center">
                                                     <t t-foreach="docdata['timetable_data'][key]['pages'][monday]['Lundi'][hour]" t-as="record">
                                                         <span t-esc="record['subject_name']"/>
                                                         <span t-esc="'(' + record['subject_code'] + ')'"/>
@@ -113,7 +113,7 @@
                                                         <br/>
                                                     </t>
                                                 </td>
-                                                <td class='text-center'>
+                                                <td class="text-center">
                                                     <t t-foreach="docdata['timetable_data'][key]['pages'][monday]['Mardi'][hour]" t-as="record">
                                                         <span t-esc="record['subject_name']"/>
                                                         <span t-esc="' (' + record['subject_code'] + ')'"/>
@@ -129,7 +129,7 @@
                                                         <br/>
                                                     </t>
                                                 </td>
-                                                <td class='text-center'>
+                                                <td class="text-center">
                                                     <t t-foreach="docdata['timetable_data'][key]['pages'][monday]['Mercredi'][hour]" t-as="record">
                                                         <span t-esc="record['subject_name']"/>
                                                         <span t-esc="' (' + record['subject_code'] + ')'"/>
@@ -145,7 +145,7 @@
                                                         <br/>
                                                     </t>
                                                 </td>
-                                                <td class='text-center'>
+                                                <td class="text-center">
                                                     <t t-foreach="docdata['timetable_data'][key]['pages'][monday]['Jeudi'][hour]" t-as="record">
                                                         <span t-esc="record['subject_name']"/>
                                                         <span t-esc="' (' + record['subject_code'] + ')'"/>
@@ -161,7 +161,7 @@
                                                         <br/>
                                                     </t>
                                                 </td>
-                                                <td class='text-center'>
+                                                <td class="text-center">
                                                     <t t-foreach="docdata['timetable_data'][key]['pages'][monday]['Vendredi'][hour]" t-as="record">
                                                         <span t-esc="record['subject_name']"/>
                                                         <span t-esc="' (' + record['subject_code'] + ')'"/>
@@ -177,7 +177,7 @@
                                                         <br/>
                                                     </t>
                                                 </td>
-                                                <td class='text-center'>
+                                                <td class="text-center">
                                                     <t t-foreach="docdata['timetable_data'][key]['pages'][monday]['Samedi'][hour]" t-as="record">
                                                         <span t-esc="record['subject_name']"/>
                                                         <span t-esc="' (' + record['subject_code'] + ')'"/>
@@ -193,7 +193,7 @@
                                                         <br/>
                                                     </t>
                                                 </td>
-                                                <td class='text-center'>
+                                                <td class="text-center">
                                                     <t t-foreach="docdata['timetable_data'][key]['pages'][monday]['Dimanche'][hour]" t-as="record">
                                                         <span t-esc="record['subject_name']"/>
                                                         <span t-esc="' (' + record['subject_code'] + ')'"/>

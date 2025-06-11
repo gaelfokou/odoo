@@ -95,10 +95,10 @@
                         <tbody>
                             <t t-foreach="current_hours" t-as="hour">
                                 <tr>
-                                    <td class='text-center'>
+                                    <td class="text-center">
                                         <span t-esc="timetables[monday]['Heure'][hour]"/>
                                     </td>
-                                    <td class='text-center'>
+                                    <td class="text-center">
                                         <t t-foreach="timetables[monday]['Lundi'][hour]" t-as="record">
                                             <span t-esc="record['subject_name']"/>
                                             <span t-esc="'(' + record['subject_code'] + ')'"/>
@@ -112,7 +112,7 @@
                                             <br/>
                                         </t>
                                     </td>
-                                    <td class='text-center'>
+                                    <td class="text-center">
                                         <t t-foreach="timetables[monday]['Mardi'][hour]" t-as="record">
                                             <span t-esc="record['subject_name']"/>
                                             <span t-esc="' (' + record['subject_code'] + ')'"/>
@@ -126,7 +126,7 @@
                                             <br/>
                                         </t>
                                     </td>
-                                    <td class='text-center'>
+                                    <td class="text-center">
                                         <t t-foreach="timetables[monday]['Mercredi'][hour]" t-as="record">
                                             <span t-esc="record['subject_name']"/>
                                             <span t-esc="' (' + record['subject_code'] + ')'"/>
@@ -140,7 +140,7 @@
                                             <br/>
                                         </t>
                                     </td>
-                                    <td class='text-center'>
+                                    <td class="text-center">
                                         <t t-foreach="timetables[monday]['Jeudi'][hour]" t-as="record">
                                             <span t-esc="record['subject_name']"/>
                                             <span t-esc="' (' + record['subject_code'] + ')'"/>
@@ -154,7 +154,7 @@
                                             <br/>
                                         </t>
                                     </td>
-                                    <td class='text-center'>
+                                    <td class="text-center">
                                         <t t-foreach="timetables[monday]['Vendredi'][hour]" t-as="record">
                                             <span t-esc="record['subject_name']"/>
                                             <span t-esc="' (' + record['subject_code'] + ')'"/>
@@ -168,7 +168,7 @@
                                             <br/>
                                         </t>
                                     </td>
-                                    <td class='text-center'>
+                                    <td class="text-center">
                                         <t t-foreach="timetables[monday]['Samedi'][hour]" t-as="record">
                                             <span t-esc="record['subject_name']"/>
                                             <span t-esc="' (' + record['subject_code'] + ')'"/>
@@ -182,7 +182,7 @@
                                             <br/>
                                         </t>
                                     </td>
-                                    <td class='text-center'>
+                                    <td class="text-center">
                                         <t t-foreach="timetables[monday]['Dimanche'][hour]" t-as="record">
                                             <span t-esc="record['subject_name']"/>
                                             <span t-esc="' (' + record['subject_code'] + ')'"/>
@@ -269,37 +269,37 @@
                     <tbody>
                         <t t-foreach="timetables" t-as="record">
                             <tr>
-                                <td class='text-left'>
+                                <td class="text-left">
                                     <span t-esc="record['date']"/>
                                 </td>
-                                <td class='text-left'>
+                                <td class="text-left">
                                     <span t-esc="record['field_of_study_name']"/>
                                 </td>
-                                <td class='text-left'>
+                                <td class="text-left">
                                     <span t-esc="record['semester_name']"/>
                                 </td>
-                                <td class='text-left'>
+                                <td class="text-left">
                                     <span t-esc="record['level_name']"/>
                                 </td>
-                                <td class='text-left'>
+                                <td class="text-left">
                                     <span t-esc="record['subject_name']"/>
                                 </td>
-                                <td class='text-left'>
+                                <td class="text-left">
                                     <span t-esc="record['classroom_name']"/>
                                 </td>
-                                <td class='text-left'>
+                                <td class="text-left">
                                     <span t-esc="record['employee_name']"/>
                                 </td>
-                                <td class='text-left'>
+                                <td class="text-left">
                                     <span t-esc="record['day_of_week']"/>
                                 </td>
-                                <td class='text-left'>
+                                <td class="text-left">
                                     <span t-esc="record['start_time']"/>
                                 </td>
-                                <td class='text-left'>
+                                <td class="text-left">
                                     <span t-esc="record['end_time']"/>
                                 </td>
-                                <td class='text-left'>
+                                <td class="text-left">
                                     <span t-esc="record['status']"/>
                                 </td>
                             </tr>
@@ -387,28 +387,28 @@
                     <tbody>
                         <t t-foreach="schoolfees" t-as="record">
                             <tr>
-                                <td class='text-left'>
+                                <td class="text-left">
                                     <span t-esc="record['date_payment']"/>
                                 </td>
-                                <td class='text-left'>
+                                <td class="text-left">
                                     <span t-esc="record['name']"/>
                                 </td>
-                                <td class='text-left'>
+                                <td class="text-left">
                                     <span t-esc="record['reference']"/>
                                 </td>
-                                <td class='text-left'>
+                                <td class="text-left">
                                     <span t-esc="record['structure_frais_type_paiement']"/>
                                 </td>
-                                <td class='text-left'>
+                                <td class="text-left">
                                     <span t-esc="record['structure_frais_name']"/>
                                 </td>
-                                <td class='text-left'>
+                                <td class="text-left">
                                     <span t-esc="record['structure_frais_amount_total']"/>
                                 </td>
-                                <td class='text-left'>
+                                <td class="text-left">
                                     <span t-esc="record['amount']"/>
                                 </td>
-                                <td class='text-left'>
+                                <td class="text-left">
                                     <span t-esc="record['state']"/>
                                 </td>
                             </tr>
@@ -483,28 +483,28 @@
                     <tbody>
                         <t t-foreach="paymenthistories" t-as="record">
                             <tr>
-                                <td class='text-left'>
+                                <td class="text-left">
                                     <span t-esc="record['date_from']"/>
                                 </td>
-                                <td class='text-left'>
+                                <td class="text-left">
                                     <span t-esc="record['name']"/>
                                 </td>
-                                <td class='text-left'>
+                                <td class="text-left">
                                     <span t-esc="record['number']"/>
                                 </td>
-                                <td class='text-left'>
+                                <td class="text-left">
                                     <span t-esc="record['code']"/>
                                 </td>
-                                <td class='text-left'>
+                                <td class="text-left">
                                     <span t-esc="record['contract']"/>
                                 </td>
-                                <td class='text-left'>
+                                <td class="text-left">
                                     <span t-esc="record['number_of_hours']"/>
                                 </td>
-                                <td class='text-left'>
+                                <td class="text-left">
                                     <span t-esc="record['amount']"/>
                                 </td>
-                                <td class='text-left'>
+                                <td class="text-left">
                                     <span t-esc="record['state']"/>
                                 </td>
                             </tr>
@@ -576,31 +576,31 @@
                     <tbody>
                         <t t-foreach="accountbalances" t-as="record">
                             <tr>
-                                <td class='text-left'>
+                                <td class="text-left">
                                     <span t-esc="record['semester_name']"/>
                                 </td>
-                                <td class='text-left'>
+                                <td class="text-left">
                                     <span t-esc="record['day_of_week']"/>
                                 </td>
-                                <td class='text-left'>
+                                <td class="text-left">
                                     <span t-esc="record['date_of_week']"/>
                                 </td>
-                                <td class='text-left'>
+                                <td class="text-left">
                                     <span t-esc="record['time_of_week']"/>
                                 </td>
-                                <td class='text-left'>
+                                <td class="text-left">
                                     <span t-esc="record['subject_name']"/>
                                 </td>
-                                <td class='text-left'>
+                                <td class="text-left">
                                     <span t-esc="record['class_name']"/>
                                 </td>
-                                <td class='text-left'>
+                                <td class="text-left">
                                     <span t-esc="record['rate']"/>
                                 </td>
-                                <td class='text-left'>
+                                <td class="text-left">
                                     <span t-esc="record['number_of_hours']"/>
                                 </td>
-                                <td class='text-left'>
+                                <td class="text-left">
                                     <span t-esc="record['amount']"/>
                                 </td>
                             </tr>
@@ -671,19 +671,19 @@
                             <t t-set="subjects" t-value="consumptionhours[classe]['data'].keys()"/>
                             <t t-foreach="subjects" t-as="subject">
                                 <tr>
-                                    <td class='text-left'>
+                                    <td class="text-left">
                                         <span t-esc="consumptionhours[classe]['data'][subject]['name']"/>
                                     </td>
-                                    <td class='text-left'>
+                                    <td class="text-left">
                                         <span t-esc="consumptionhours[classe]['name']"/>
                                     </td>
-                                    <td class='text-left'>
+                                    <td class="text-left">
                                         <span t-esc="consumptionhours[classe]['data'][subject]['data']['all']"/>
                                     </td>
-                                    <td class='text-left'>
+                                    <td class="text-left">
                                         <span t-esc="consumptionhours[classe]['data'][subject]['data']['done']"/>
                                     </td>
-                                    <td class='text-left'>
+                                    <td class="text-left">
                                         <span t-esc="consumptionhours[classe]['data'][subject]['data']['awaiting']"/>
                                     </td>
                                 </tr>
@@ -746,7 +746,8 @@
                 <t t-call="portal.portal_table">
                     <thead>
                         <tr class="active">
-                            <th class="text-left">Cours</th>
+                            <th class="text-left"></th>
+                            <th class="text-left">Classe</th>
                             <th class="text-left">Progression</th>
                             <th class="text-left">Actions</th>
                         </tr>
@@ -755,27 +756,24 @@
                         <t t-set="classes" t-value="progressreports.keys()"/>
                         <t t-foreach="classes" t-as="classe">
                             <tr>
-                                <th class='text-left'>
+                                <th class="text-left" colspan="4">
                                     <span t-esc="progressreports[classe]['name']"/>
-                                </th>
-                                <th class='text-left'>
-                                    <span>-----</span>
-                                </th>
-                                <th class='text-left'>
-                                    <span>-----</span>
                                 </th>
                             </tr>
                             <t t-set="subjects" t-value="progressreports[classe]['data'].keys()"/>
                             <t t-foreach="subjects" t-as="subject">
                                 <tr>
-                                    <td class='text-left'>
+                                    <td class="text-left">
                                         <span t-esc="progressreports[classe]['data'][subject]['name']"/>
                                     </td>
-                                    <td class='text-left'>
+                                    <td class="text-left">
+                                        <span t-esc="progressreports[classe]['name']"/>
+                                    </td>
+                                    <td class="text-left">
                                         <span t-esc="progressreports[classe]['data'][subject]['data']['done']"/>
                                         <span t-esc="'/ ' + progressreports[classe]['data'][subject]['data']['total']"/>
                                     </td>
-                                    <td class='text-left'>
+                                    <td class="text-left">
                                         <div>
                                             <a t-attf-href="/my/progressreport/class/{{ progressreports[classe]['data'][subject]['data']['all'][0]['class_id'] }}/subject/{{ progressreports[classe]['data'][subject]['data']['all'][0]['subject_id'] }}" class="btn btn-primary">Sessions de cours</a>
                                         </div>
@@ -786,7 +784,7 @@
                     </tbody>
                     <tfooter>
                         <tr>
-                            <th class="text-left" colspan="3" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
+                            <th class="text-left" colspan="4" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
                         </tr>
                     </tfooter>
                 </t>
@@ -838,19 +836,19 @@
                     <tbody>
                         <t t-foreach="notifications" t-as="record">
                             <tr>
-                                <td class='text-left'>
+                                <td class="text-left">
                                     <span t-esc="record['date']"/>
                                 </td>
-                                <td class='text-left'>
+                                <td class="text-left">
                                     <span t-esc="record['message']"/>
                                 </td>
-                                <td class='text-left'>
+                                <td class="text-left">
                                     <span t-esc="record['name']"/>
                                 </td>
-                                <td class='text-left'>
+                                <td class="text-left">
                                     <span t-esc="record['subject_name']"/>
                                 </td>
-                                <td class='text-left'>
+                                <td class="text-left">
                                     <span t-esc="record['status']"/>
                                 </td>
                             </tr>

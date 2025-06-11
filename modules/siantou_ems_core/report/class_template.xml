@@ -82,28 +82,28 @@
                                 <t t-set="classes" t-value="docdata['class_data']"/>
                                 <t t-foreach="classes" t-as="classe">
                                     <tr>
-                                        <td class='text-center'>
+                                        <td class="text-center">
                                             <span t-esc="classe['name']"/>
                                         </td>
-                                        <td class='text-center'>
+                                        <td class="text-center">
                                             <span t-esc="classe['year']"/>
                                         </td>
-                                        <td class='text-center'>
+                                        <td class="text-center">
                                             <span t-esc="classe['school']"/>
                                         </td>
-                                        <td class='text-center'>
+                                        <td class="text-center">
                                             <span t-esc="classe['field_of_study']"/>
                                         </td>
-                                        <td class='text-center'>
+                                        <td class="text-center">
                                             <span t-esc="classe['level']"/>
                                         </td>
-                                        <td class='text-center'>
+                                        <td class="text-center">
                                             <span t-esc="classe['specialty']"/>
                                         </td>
-                                        <td class='text-center'>
+                                        <td class="text-center">
                                             <span t-esc="classe['option']"/>
                                         </td>
-                                        <td class='text-center'>
+                                        <td class="text-center">
                                             <span t-esc="classe['type_cour']"/>
                                         </td>
                                     </tr>

@@ -80,22 +80,22 @@
                                 <t t-set="attendances" t-value="docdata['attendance_data']"/>
                                 <t t-foreach="attendances" t-as="attendance">
                                     <tr>
-                                        <td class='text-center'>
+                                        <td class="text-center">
                                             <span t-esc="attendance['employee_name']"/>
                                         </td>
-                                        <td class='text-center'>
+                                        <td class="text-center">
                                             <span t-esc="attendance['address_name']"/>
                                         </td>
-                                        <td class='text-center'>
+                                        <td class="text-center">
                                             <span t-esc="attendance['attendance_type']"/>
                                         </td>
-                                        <td class='text-center'>
+                                        <td class="text-center">
                                             <span t-esc="attendance['punch_type']"/>
                                         </td>
-                                        <td class='text-center'>
+                                        <td class="text-center">
                                             <span t-esc="attendance['punching_day']"/>
                                         </td>
-                                        <td class='text-center'>
+                                        <td class="text-center">
                                             <span t-esc="attendance['punching_time']"/>
                                         </td>
                                     </tr>

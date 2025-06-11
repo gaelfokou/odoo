@@ -80,22 +80,22 @@
                                 <t t-set="students" t-value="docdata['student_data']"/>
                                 <t t-foreach="students" t-as="student">
                                     <tr>
-                                        <td class='text-center'>
+                                        <td class="text-center">
                                             <span t-esc="student['name']"/>
                                         </td>
-                                        <td class='text-center'>
+                                        <td class="text-center">
                                             <span t-esc="student['last_name']"/>
                                         </td>
-                                        <td class='text-center'>
+                                        <td class="text-center">
                                             <span t-esc="student['first_name']"/>
                                         </td>
-                                        <td class='text-center'>
+                                        <td class="text-center">
                                             <span t-esc="student['email']"/>
                                         </td>
-                                        <td class='text-center'>
+                                        <td class="text-center">
                                             <span t-esc="student['date_naissance']"/>
                                         </td>
-                                        <td class='text-center'>
+                                        <td class="text-center">
                                             <span t-esc="student['matricule']"/>
                                         </td>
                                     </tr>
