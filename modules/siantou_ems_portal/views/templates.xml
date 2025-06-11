@@ -755,8 +755,11 @@
                         <t t-set="classes" t-value="progressreports.keys()"/>
                         <t t-foreach="classes" t-as="classe">
                             <tr>
-                                <th class="text-left" colspan="3">
+                                <th class="text-left">
                                     <span t-esc="progressreports[classe]['name']"/>
+                                </th>
+                                <th class="text-left" colspan="2">
+                                    <span t-esc="'Empty'" style="visibility: hidden;"/>
                                 </th>
                             </tr>
                             <t t-set="subjects" t-value="progressreports[classe]['data'].keys()"/>
@@ -845,8 +848,11 @@
                         <t t-set="timetables" t-value="subjectsessions.keys()"/>
                         <t t-foreach="timetables" t-as="timetable">
                             <tr>
-                                <th class="text-left" colspan="6">
-                                    <span t-esc="subjectsessions[timetable]['class_name']"/>
+                                <th class="text-left">
+                                    <span t-esc="subjectsessions[timetable]['class_name'] + ' ' + subjectsessions[timetable]['date'] + ' ' + subjectsessions[timetable]['start_time'] + '-' + subjectsessions[timetable]['end_time']"/>
+                                </th>
+                                <th class="text-left" colspan="5">
+                                    <span t-esc="'Empty'" style="visibility: hidden;"/>
                                 </th>
                             </tr>
                             <t t-set="sessions" t-value="subjectsessions[timetable]['data']"/>
@@ -856,7 +862,7 @@
                                         <span t-esc="subjectsessions[timetable]['subject_name']"/>
                                     </td>
                                     <td class="text-left">
-                                        <span t-esc="subjectsessions[timetable]['date'] + ' ' + subjectsessions[timetable]['start_time'] + '-' + subjectsessions[timetable]['end_time']"/>
+                                        <span t-esc="'Empty'" style="visibility: hidden;"/>
                                     </td>
                                     <td class="text-left">
                                         <span t-esc="session['name']"/>
