@@ -834,7 +834,7 @@
                     <thead>
                         <tr class="active">
                             <th class="text-left"></th>
-                            <th class="text-left">Date</th>
+                            <th class="text-left"></th>
                             <th class="text-left">Nom</th>
                             <th class="text-left">Description</th>
                             <th class="text-left">Statut</th>
@@ -856,8 +856,7 @@
                                         <span t-esc="subjectsessions[timetable]['subject_name']"/>
                                     </td>
                                     <td class="text-left">
-                                        <span t-esc="subjectsessions[timetable]['date']"/>
-                                        <span t-esc="subjectsessions[timetable]['start_time'] + '-' + subjectsessions[timetable]['end_time']"/>
+                                        <span t-esc="subjectsessions[timetable]['date'] + ' ' + subjectsessions[timetable]['start_time'] + '-' + subjectsessions[timetable]['end_time']"/>
                                     </td>
                                     <td class="text-left">
                                         <span t-esc="session['name']"/>
