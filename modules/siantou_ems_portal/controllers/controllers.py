@@ -523,10 +523,8 @@ class PortalAccount(portal.CustomerPortal):
     @http.route(['/my/subjectsession/<int:classe>/<int:subject>/list'], type='http', auth="user", website=True)
     def portal_subjectsession(self, classe=None, subject=None, search='', search_in='all', **kw):
         # Utilisation de la fonction du helper
-        if classe:
-            classe = http.request.env['siantou.ems.core.class'].sudo().search([('id', '=', classe)], limit=1)
-        if subject:
-            subject = http.request.env['siantou.ems.core.subject'].sudo().search([('id', '=', subject)], limit=1)
+        classe = http.request.env['siantou.ems.core.class'].sudo().search([('id', '=', classe)], limit=1)
+        subject = http.request.env['siantou.ems.core.subject'].sudo().search([('id', '=', subject)], limit=1)
         search_subjectsessions, searchbar_inputs = Helpers.subjectsession(search, search_in, class_id=classe, subject_id=subject)
         subjectsessions = []
         for search_subjectsession in search_subjectsessions:
@@ -578,6 +576,8 @@ class PortalAccount(portal.CustomerPortal):
                                 {
                                     'subjectsessions': subjectsessions,
                                     'page_name': 'subjectsession',
+                                    'classe': classe.id if classe else '',
+                                    'subject': subject.id if subject else '',
                                 })
 
     @http.route(['/my/notification'], type='http', auth="user", website=True)
