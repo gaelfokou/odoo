@@ -120,7 +120,6 @@
                                 <tree>
                                     <field name="name"/>
                                     <field name="description"/>
-                                    <field name="report_id"/>
                                 </tree>
                             </field>
                         </group>
