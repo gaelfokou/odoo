@@ -685,7 +685,7 @@ class Helpers:
             if not key_timetable in subjectsessions:
                 subjectsessions[key_timetable] = {}
                 subjectsessions[key_timetable]['id'] = d['id']
-                subjectsessions[key_timetable]['name'] = d['name']
+                subjectsessions[key_timetable]['class_name'] = d['class_name']
                 subjectsessions[key_timetable]['subject_name'] = d['subject_name']
                 subjectsessions[key_timetable]['date'] = d['date_of_week']
                 subjectsessions[key_timetable]['data'] = d['sessions']

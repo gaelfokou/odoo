@@ -747,7 +747,6 @@
                     <thead>
                         <tr class="active">
                             <th class="text-left"></th>
-                            <th class="text-left">Cours</th>
                             <th class="text-left">Progression</th>
                             <th class="text-left">Actions</th>
                         </tr>
@@ -756,16 +755,13 @@
                         <t t-set="classes" t-value="progressreports.keys()"/>
                         <t t-foreach="classes" t-as="classe">
                             <tr>
-                                <th class="text-left" colspan="4">
+                                <th class="text-left" colspan="3">
                                     <span t-esc="progressreports[classe]['name']"/>
                                 </th>
                             </tr>
                             <t t-set="subjects" t-value="progressreports[classe]['data'].keys()"/>
                             <t t-foreach="subjects" t-as="subject">
                                 <tr>
-                                    <td class="text-left">
-                                        <span t-esc="progressreports[classe]['name']"/>
-                                    </td>
                                     <td class="text-left">
                                         <span t-esc="progressreports[classe]['data'][subject]['name']"/>
                                     </td>
@@ -775,7 +771,7 @@
                                     </td>
                                     <td class="text-left">
                                         <div>
-                                            <a t-attf-href="/my/subjectsession/{{ progressreports[classe]['data'][subject]['data']['all'][0]['class_id'] }}/{{ progressreports[classe]['data'][subject]['data']['all'][0]['subject_id'] }}/list" class="btn btn-primary">Sessions de cours</a>
+                                            <a t-attf-href="/my/subjectsession/{{ progressreports[classe]['data'][subject]['data']['all'][0]['class_id'] }}/{{ progressreports[classe]['data'][subject]['data']['all'][0]['subject_id'] }}/list" class="btn btn-primary btn-sm">Sessions de cours</a>
                                         </div>
                                     </td>
                                 </tr>
@@ -784,7 +780,7 @@
                     </tbody>
                     <tfooter>
                         <tr>
-                            <th class="text-left" colspan="4" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
+                            <th class="text-left" colspan="3" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
                         </tr>
                     </tfooter>
                 </t>
@@ -837,12 +833,12 @@
                         <t t-foreach="classes" t-as="classe">
                             <tr>
                                 <th class="text-left" colspan="3">
-                                    <span t-esc="subjectsessions[classe]['name']"/>
+                                    <span t-esc="subjectsessions[classe]['class_name']"/>
                                     <span t-esc="subjectsessions[classe]['date']"/>
                                 </th>
                                 <th class="text-left">
                                     <div>
-                                        <a t-attf-href="/my/subjectsession/{{ subjectsessions[classe]['id'] }}/new" class="btn btn-primary">Créer</a>
+                                        <a t-attf-href="/my/subjectsession/{{ subjectsessions[classe]['id'] }}/new" class="btn btn-primary btn-sm">Créer</a>
                                     </div>
                                 </th>
                             </tr>
@@ -860,8 +856,8 @@
                                     </td>
                                     <td class="text-left">
                                         <div>
-                                            <a t-attf-href="/my/subjectsession/{{ session['id'] }}/edit" class="btn btn-primary">Modifier</a>
-                                            <a t-attf-href="/my/subjectsession/{{ session['id'] }}/delete" class="btn btn-danger">Supprimer</a>
+                                            <a t-attf-href="/my/subjectsession/{{ session['id'] }}/edit" class="btn btn-secondary btn-sm">Modifier</a>
+                                            <a t-attf-href="/my/subjectsession/{{ session['id'] }}/delete" class="btn btn-danger btn-sm">Supprimer</a>
                                         </div>
                                     </td>
                                 </tr>
