@@ -589,7 +589,7 @@ class Helpers:
                     'awaiting': [],
                 }
                 progressreports[key_class]['data'][key_subject]['data']['all'].append(d)
-                if d['status'] in ['present', 'absent', 'permission', 'exception']:
+                if d['status'] in ['present', 'permission']:
                     progressreports[key_class]['data'][key_subject]['data']['done'].append(d)
                 else:
                     progressreports[key_class]['data'][key_subject]['data']['awaiting'].append(d)
@@ -603,13 +603,13 @@ class Helpers:
                         'awaiting': [],
                     }
                     progressreports[key_class]['data'][key_subject]['data']['all'].append(d)
-                    if d['status'] in ['present', 'absent', 'permission', 'exception']:
+                    if d['status'] in ['present', 'permission']:
                         progressreports[key_class]['data'][key_subject]['data']['done'].append(d)
                     else:
                         progressreports[key_class]['data'][key_subject]['data']['awaiting'].append(d)
                 else:
                     progressreports[key_class]['data'][key_subject]['data']['all'].append(d)
-                    if d['status'] in ['present', 'absent', 'permission', 'exception']:
+                    if d['status'] in ['present', 'permission']:
                         progressreports[key_class]['data'][key_subject]['data']['done'].append(d)
                     else:
                         progressreports[key_class]['data'][key_subject]['data']['awaiting'].append(d)
