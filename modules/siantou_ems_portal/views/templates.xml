@@ -23,7 +23,7 @@
 
         <!-- Emploi du temps -->
 
-        <template id="siantou_ems_portal_timetable" name="siantou_ems_portal.timetable" inherit_id="portal.portal_breadcrumbs" priority="30">
+        <template id="siantou_ems_portal_timetable" name="siantou_ems_portal.timetable_breadcrumbs" inherit_id="portal.portal_breadcrumbs" priority="30">
             <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
                 <li t-if="page_name == 'timetable'" t-attf-class="breadcrumb-item #{'active ' if timetable else ''}">
                     <a t-if="timetable" t-attf-href="/my/timetable?{{ keep_query() }}">Emploi du temps</a>
@@ -32,7 +32,7 @@
             </xpath>
         </template>
 
-        <template id="siantou_ems_portal_my_home_menu_timetable" name="siantou_ems_portal.timetable" inherit_id="portal.portal_my_home" priority="30">
+        <template id="siantou_ems_portal_menu_timetable" name="siantou_ems_portal.timetable_my_home" inherit_id="portal.portal_my_home" priority="30">
             <xpath expr="//div[hasclass('o_portal_docs')]" position="before">
                 <t t-set="portal_client_category_enable" t-value="True"/>
             </xpath>
@@ -47,7 +47,7 @@
             </xpath>
         </template>
 
-        <template id="siantou_ems_portal_my_home_timetable_calendar_views" name="siantou_ems_portal.print_timetable">
+        <template id="siantou_ems_portal_timetable_calendar_views" name="siantou_ems_portal.timetable">
             <t t-call="portal.portal_layout">
                 <t t-set="breadcrumbs_searchbar" t-value="True"/>
                 <t t-call="portal.portal_searchbar">
@@ -56,9 +56,9 @@
                 <t t-call="portal.portal_table">
                     <!-- <div id="siantou_ems_portal_print_timetable_container"></div> -->
                     <div>
-                        <a t-attf-href="/my/timetable/download"><button class="btn btn-primary">Impression de l'emploi du temps</button></a>
-                        <a t-attf-href="/my/timetable?view_type=calendar"><button class="btn btn-primary">Calendrier</button></a>
-                        <a t-attf-href="/my/timetable?view_type=list"><button class="btn btn-primary">Liste</button></a><br/><br/>
+                        <a t-attf-href="/my/timetable/download" class="btn btn-primary">Impression de l'emploi du temps</a>
+                        <a t-attf-href="/my/timetable?view_type=calendar" class="btn btn-primary">Calendrier</a>
+                        <a t-attf-href="/my/timetable?view_type=list" class="btn btn-primary">Liste</a><br/><br/>
                     </div>
                     <t t-set="weekdays" t-value="timetables.keys()"/>
                     <t t-set="total_timetables" t-value="[(i+1) for i in range(timetable_pages_total)]"/>
@@ -234,7 +234,7 @@
             </t>
         </template>
 
-        <template id="siantou_ems_portal_my_home_timetable_list_views" name="siantou_ems_portal.print_timetable">
+        <template id="siantou_ems_portal_timetable_list_views" name="siantou_ems_portal.timetable">
             <t t-call="portal.portal_layout">
                 <t t-set="breadcrumbs_searchbar" t-value="True"/>
                 <t t-call="portal.portal_searchbar">
@@ -243,9 +243,9 @@
                 <t t-call="portal.portal_table">
                     <!-- <div id="siantou_ems_portal_print_timetable_container"></div> -->
                     <div>
-                        <a t-attf-href="/my/timetable/download"><button class="btn btn-primary">Impression de l'emploi du temps</button></a>
-                        <a t-attf-href="/my/timetable?view_type=calendar"><button class="btn btn-primary">Calendrier</button></a>
-                        <a t-attf-href="/my/timetable?view_type=list"><button class="btn btn-primary">Liste</button></a><br/><br/>
+                        <a t-attf-href="/my/timetable/download" class="btn btn-primary">Impression de l'emploi du temps</a>
+                        <a t-attf-href="/my/timetable?view_type=calendar" class="btn btn-primary">Calendrier</a>
+                        <a t-attf-href="/my/timetable?view_type=list" class="btn btn-primary">Liste</a><br/><br/>
                     </div>
                     <t t-set="total_timetables" t-value="[(i+1) for i in range(timetable_pages_total)]"/>
                     <t t-set="total_timetables" t-value="[total_timetables[i:i+5] for i in range(0, len(total_timetables), 5)]"/>
@@ -341,7 +341,7 @@
 
         <!-- Frais -->
 
-        <template id="siantou_ems_portal_schoolfee" name="siantou_ems_portal.schoolfee" inherit_id="portal.portal_breadcrumbs" priority="30">
+        <template id="siantou_ems_portal_schoolfee" name="siantou_ems_portal.schoolfee_breadcrumbs" inherit_id="portal.portal_breadcrumbs" priority="30">
             <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
                 <li t-if="page_name == 'schoolfee'" t-attf-class="breadcrumb-item #{'active ' if schoolfee else ''}">
                     <a t-if="schoolfee" t-attf-href="/my/schoolfee?{{ keep_query() }}">Frais</a>
@@ -350,7 +350,7 @@
             </xpath>
         </template>
 
-        <template id="siantou_ems_portal_my_home_menu_schoolfee" name="siantou_ems_portal.schoolfee" inherit_id="portal.portal_my_home" priority="30">
+        <template id="siantou_ems_portal_menu_schoolfee" name="siantou_ems_portal.schoolfee_my_home" inherit_id="portal.portal_my_home" priority="30">
             <xpath expr="//div[hasclass('o_portal_docs')]" position="before">
                 <t t-set="portal_client_category_enable" t-value="True"/>
             </xpath>
@@ -365,7 +365,7 @@
             </xpath>
         </template>
 
-        <template id="siantou_ems_portal_my_home_schoolfee_views" name="siantou_ems_portal.print_schoolfee">
+        <template id="siantou_ems_portal_schoolfee_views" name="siantou_ems_portal.schoolfee">
             <t t-call="portal.portal_layout">
                 <t t-set="breadcrumbs_searchbar" t-value="True"/>
                 <t t-call="portal.portal_searchbar">
@@ -437,7 +437,7 @@
 
         <!-- Paiements -->
 
-        <template id="siantou_ems_portal_paymenthistory" name="siantou_ems_portal.paymenthistory" inherit_id="portal.portal_breadcrumbs" priority="30">
+        <template id="siantou_ems_portal_paymenthistory" name="siantou_ems_portal.paymenthistory_breadcrumbs" inherit_id="portal.portal_breadcrumbs" priority="30">
             <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
                 <li t-if="page_name == 'paymenthistory'" t-attf-class="breadcrumb-item #{'active ' if paymenthistory else ''}">
                     <a t-if="paymenthistory" t-attf-href="/my/paymenthistory?{{ keep_query() }}">Paiements</a>
@@ -446,7 +446,7 @@
             </xpath>
         </template>
 
-        <template id="siantou_ems_portal_my_home_menu_paymenthistory" name="siantou_ems_portal.paymenthistory" inherit_id="portal.portal_my_home" priority="30">
+        <template id="siantou_ems_portal_menu_paymenthistory" name="siantou_ems_portal.paymenthistory_my_home" inherit_id="portal.portal_my_home" priority="30">
             <xpath expr="//div[hasclass('o_portal_docs')]" position="before">
                 <t t-set="portal_client_category_enable" t-value="True"/>
             </xpath>
@@ -461,7 +461,7 @@
             </xpath>
         </template>
 
-        <template id="siantou_ems_portal_my_home_paymenthistory_views" name="siantou_ems_portal.print_paymenthistory">
+        <template id="siantou_ems_portal_paymenthistory_views" name="siantou_ems_portal.paymenthistory">
             <t t-call="portal.portal_layout">
                 <t t-set="breadcrumbs_searchbar" t-value="True"/>
                 <t t-call="portal.portal_searchbar">
@@ -529,7 +529,7 @@
 
         <!-- Cours émargés -->
 
-        <template id="siantou_ems_portal_accountbalance" name="siantou_ems_portal.accountbalance" inherit_id="portal.portal_breadcrumbs" priority="30">
+        <template id="siantou_ems_portal_accountbalance" name="siantou_ems_portal.accountbalance_breadcrumbs" inherit_id="portal.portal_breadcrumbs" priority="30">
             <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
                 <li t-if="page_name == 'accountbalance'" t-attf-class="breadcrumb-item #{'active ' if accountbalance else ''}">
                     <a t-if="accountbalance" t-attf-href="/my/accountbalance?{{ keep_query() }}">Cours émargés</a>
@@ -538,7 +538,7 @@
             </xpath>
         </template>
 
-        <template id="siantou_ems_portal_my_home_menu_accountbalance" name="siantou_ems_portal.accountbalance" inherit_id="portal.portal_my_home" priority="30">
+        <template id="siantou_ems_portal_menu_accountbalance" name="siantou_ems_portal.accountbalance_my_home" inherit_id="portal.portal_my_home" priority="30">
             <xpath expr="//div[hasclass('o_portal_docs')]" position="before">
                 <t t-set="portal_client_category_enable" t-value="True"/>
             </xpath>
@@ -553,7 +553,7 @@
             </xpath>
         </template>
 
-        <template id="siantou_ems_portal_my_home_accountbalance_views" name="siantou_ems_portal.print_accountbalance">
+        <template id="siantou_ems_portal_accountbalance_views" name="siantou_ems_portal.accountbalance">
             <t t-call="portal.portal_layout">
                 <t t-set="breadcrumbs_searchbar" t-value="True"/>
                 <t t-call="portal.portal_searchbar">
@@ -625,7 +625,7 @@
 
         <!-- Consommation d'heures de cours -->
 
-        <template id="siantou_ems_portal_consumptionhour" name="siantou_ems_portal.consumptionhour" inherit_id="portal.portal_breadcrumbs" priority="30">
+        <template id="siantou_ems_portal_consumptionhour" name="siantou_ems_portal.consumptionhour_breadcrumbs" inherit_id="portal.portal_breadcrumbs" priority="30">
             <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
                 <li t-if="page_name == 'consumptionhour'" t-attf-class="breadcrumb-item #{'active ' if consumptionhour else ''}">
                     <a t-if="consumptionhour" t-attf-href="/my/consumptionhour?{{ keep_query() }}">Consommation d'heures de cours</a>
@@ -634,7 +634,7 @@
             </xpath>
         </template>
 
-        <template id="siantou_ems_portal_my_home_menu_consumptionhour" name="siantou_ems_portal.consumptionhour" inherit_id="portal.portal_my_home" priority="30">
+        <template id="siantou_ems_portal_menu_consumptionhour" name="siantou_ems_portal.consumptionhour_my_home" inherit_id="portal.portal_my_home" priority="30">
             <xpath expr="//div[hasclass('o_portal_docs')]" position="before">
                 <t t-set="portal_client_category_enable" t-value="True"/>
             </xpath>
@@ -649,7 +649,7 @@
             </xpath>
         </template>
 
-        <template id="siantou_ems_portal_my_home_consumptionhour_views" name="siantou_ems_portal.print_consumptionhour">
+        <template id="siantou_ems_portal_consumptionhour_views" name="siantou_ems_portal.consumptionhour">
             <t t-call="portal.portal_layout">
                 <t t-set="breadcrumbs_searchbar" t-value="True"/>
                 <t t-call="portal.portal_searchbar">
@@ -711,50 +711,43 @@
             </t>
         </template>
 
-        <!-- Fiche de progression -->
+        <!-- Fiches de progression -->
 
-        <template id="siantou_ems_portal_progressreport" name="siantou_ems_portal.progressreport" inherit_id="portal.portal_breadcrumbs" priority="30">
+        <template id="siantou_ems_portal_progressreport" name="siantou_ems_portal.progressreport_breadcrumbs" inherit_id="portal.portal_breadcrumbs" priority="30">
             <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
                 <li t-if="page_name == 'progressreport'" t-attf-class="breadcrumb-item #{'active ' if progressreport else ''}">
-                    <a t-if="progressreport" t-attf-href="/my/progressreport?{{ keep_query() }}">Fiche de progression</a>
-                    <t t-else="">Fiche de progression</t>
+                    <a t-if="progressreport" t-attf-href="/my/progressreport?{{ keep_query() }}">Fiches de progression</a>
+                    <t t-else="">Fiches de progression</t>
                 </li>
             </xpath>
         </template>
 
-        <template id="siantou_ems_portal_my_home_menu_progressreport" name="siantou_ems_portal.progressreport" inherit_id="portal.portal_my_home" priority="30">
+        <template id="siantou_ems_portal_menu_progressreport" name="siantou_ems_portal.progressreport_my_home" inherit_id="portal.portal_my_home" priority="30">
             <xpath expr="//div[hasclass('o_portal_docs')]" position="before">
                 <t t-set="portal_client_category_enable" t-value="True"/>
             </xpath>
             <xpath expr="//div[@id='portal_client_category']" position="inside">
                 <t t-call="portal.portal_docs_entry">
                     <t t-set="icon" t-value="'/siantou_ems_portal/static/src/img/progress_grid.png'"/>
-                    <t t-set="title">Fiche de progression</t>
+                    <t t-set="title">Fiches de progression</t>
                     <t t-set="url" t-value="'/my/progressreport'"/>
-                    <t t-set="text">Affichez votre fiche de progression</t>
+                    <t t-set="text">Affichez vos fiches de progression</t>
                     <t t-set="placeholder_count" t-value="'portal_progressreport'"/>
                 </t>
             </xpath>
         </template>
 
-        <template id="siantou_ems_portal_my_home_progressreport_views" name="siantou_ems_portal.print_progressreport">
+        <template id="siantou_ems_portal_progressreport_views" name="siantou_ems_portal.progressreport">
             <t t-call="portal.portal_layout">
                 <t t-set="breadcrumbs_searchbar" t-value="True"/>
                 <t t-call="portal.portal_searchbar">
-                    <t t-set="title">Fiche de progression</t>
+                    <t t-set="title">Fiches de progression</t>
                 </t>
                 <t t-call="portal.portal_table">
-                    <thead>
-                        <tr class="active">
-                            <th class="text-left"></th>
-                            <th class="text-left">Progression</th>
-                            <th class="text-left">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <t t-set="classes" t-value="progressreports.keys()"/>
-                        <t t-foreach="classes" t-as="classe">
-                            <tr>
+                    <t t-set="classes" t-value="progressreports.keys()"/>
+                    <t t-foreach="classes" t-as="classe">
+                        <thead>
+                            <tr class="active">
                                 <th class="text-left">
                                     <span t-esc="progressreports[classe]['name']"/>
                                 </th>
@@ -762,6 +755,8 @@
                                     <span t-esc="'Empty'" style="visibility: hidden;"/>
                                 </th>
                             </tr>
+                        </thead>
+                        <tbody>
                             <t t-set="subjects" t-value="progressreports[classe]['data'].keys()"/>
                             <t t-foreach="subjects" t-as="subject">
                                 <tr>
@@ -769,17 +764,17 @@
                                         <span t-esc="progressreports[classe]['data'][subject]['name']"/>
                                     </td>
                                     <td class="text-left">
-                                        <span t-esc="progressreports[classe]['data'][subject]['data']['percentage'] + '%'"/>
+                                        <div>
+                                            <a t-attf-href="/my/subjectsession/{{ progressreports[classe]['data'][subject]['data']['all'][0]['class_id'] }}/{{ progressreports[classe]['data'][subject]['data']['all'][0]['subject_id'] }}/list" class="btn btn-primary btn-sm">Fiche de progression</a>
+                                        </div>
                                     </td>
                                     <td class="text-left">
-                                        <div>
-                                            <a t-attf-href="/my/subjectsession/{{ progressreports[classe]['data'][subject]['data']['all'][0]['class_id'] }}/{{ progressreports[classe]['data'][subject]['data']['all'][0]['subject_id'] }}/list" class="btn btn-primary btn-sm">Sessions de cours</a>
-                                        </div>
+                                        <span t-esc="'Taux de consommation du volume horaire : ' + progressreports[classe]['data'][subject]['data']['percentage'] + '%'"/>
                                     </td>
                                 </tr>
                             </t>
-                        </t>
-                    </tbody>
+                        </tbody>
+                    </t>
                     <tfooter>
                         <tr>
                             <th class="text-left" colspan="3" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
@@ -791,16 +786,16 @@
 
         <!-- Sessions de cours -->
 
-        <template id="siantou_ems_portal_subjectsession" name="siantou_ems_portal.subjectsession" inherit_id="portal.portal_breadcrumbs" priority="30">
+        <template id="siantou_ems_portal_subjectsession_list" name="siantou_ems_portal.subjectsession_list_breadcrumbs" inherit_id="portal.portal_breadcrumbs" priority="30">
             <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
-                <li t-if="page_name == 'subjectsession'" t-attf-class="breadcrumb-item #{'active ' if subjectsession else ''}">
-                    <a t-if="subjectsession" t-attf-href="/my/subjectsession?{{ keep_query() }}">Sessions de cours</a>
-                    <t t-else=""><a t-attf-href="/my/progressreport">Fiche de progression</a> / Sessions de cours</t>
+                <li t-if="page_name == 'subjectsession_list'" t-attf-class="breadcrumb-item #{'active ' if subjectsession_list else ''}">
+                    <a t-if="subjectsession_list" t-attf-href="/my/subjectsession?{{ keep_query() }}">Sessions de cours</a>
+                    <t t-else=""><a t-attf-href="/my/progressreport">Fiches de progression</a> / Sessions de cours</t>
                 </li>
             </xpath>
         </template>
 
-        <template id="siantou_ems_portal_my_home_menu_subjectsession" name="siantou_ems_portal.subjectsession" inherit_id="portal.portal_my_home" priority="30">
+        <template id="siantou_ems_portal_menu_subjectsession_list" name="siantou_ems_portal.subjectsession_list_my_home" inherit_id="portal.portal_my_home" priority="30">
             <xpath expr="//div[hasclass('o_portal_docs')]" position="before">
                 <t t-set="portal_client_category_enable" t-value="True"/>
             </xpath>
@@ -809,51 +804,47 @@
                     <t t-set="icon" t-value="'/siantou_ems_portal/static/src/img/progress_grid.png'"/>
                     <t t-set="title">Sessions de cours</t>
                     <t t-set="url" t-value="'/my/subjectsession'"/>
-                    <t t-set="text">Affichez votre fiche de progression</t>
-                    <t t-set="placeholder_count" t-value="'portal_subjectsession'"/>
+                    <t t-set="text">Affichez vos fiches de progression</t>
+                    <t t-set="placeholder_count" t-value="'portal_subjectsession_list'"/>
                 </t>
             </xpath>
         </template>
 
-        <template id="siantou_ems_portal_my_home_subjectsession_views" name="siantou_ems_portal.print_subjectsession">
+        <template id="siantou_ems_portal_subjectsession_list_views" name="siantou_ems_portal.subjectsession_list">
             <t t-call="portal.portal_layout">
                 <t t-set="breadcrumbs_searchbar" t-value="True"/>
                 <t t-call="portal.portal_searchbar">
                     <t t-set="title">Sessions de cours</t>
                 </t>
                 <t t-call="portal.portal_table">
+                    <t t-if="is_user == 'is_teacher'">
+                        <div>
+                            <a t-attf-href="/my/subjectsession/{{ classe }}/{{ subject }}/new" class="btn btn-primary">Créer</a><br/><br/>
+                        </div>
+                    </t>
                     <thead>
                         <tr class="active">
-                            <th class="text-left" colspan="6">
-                                <t t-if="is_user == 'is_teacher'">
-                                    <div>
-                                        <a t-attf-href="/my/subjectsession/{{ classe }}/{{ subject }}/new" class="btn btn-primary">Créer</a>
-                                    </div>
-                                </t>
-                            </th>
-                        </tr>
-                    </thead>
-                    <thead>
-                        <tr class="active">
-                            <th class="text-left"></th>
-                            <th class="text-left"></th>
-                            <th class="text-left">Nom</th>
+                            <th class="text-left">Date</th>
+                            <th class="text-left">Session</th>
                             <th class="text-left">Description</th>
+                            <th class="text-left">Taux de consommation du volume horaire</th>
                             <th class="text-left">Statut</th>
                             <th class="text-left">Actions</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <t t-set="timetables" t-value="subjectsessions.keys()"/>
-                        <t t-foreach="timetables" t-as="timetable">
+                    <t t-set="timetables" t-value="subjectsessions.keys()"/>
+                    <t t-foreach="timetables" t-as="timetable">
+                        <thead>
                             <tr>
                                 <th class="text-left">
-                                    <span t-esc="subjectsessions[timetable]['class_name'] + ' ' + subjectsessions[timetable]['date'] + ' ' + subjectsessions[timetable]['start_time'] + '-' + subjectsessions[timetable]['end_time']"/>
+                                    <span t-esc="subjectsessions[timetable]['date'] + ' ' + subjectsessions[timetable]['start_time'] + '-' + subjectsessions[timetable]['end_time']"/>
                                 </th>
                                 <th class="text-left" colspan="5">
                                     <span t-esc="'Empty'" style="visibility: hidden;"/>
                                 </th>
                             </tr>
+                        </thead>
+                        <tbody>
                             <t t-set="sessions" t-value="subjectsessions[timetable]['data']"/>
                             <t t-foreach="sessions" t-as="session">
                                 <tr>
@@ -861,13 +852,13 @@
                                         <span t-esc="subjectsessions[timetable]['subject_name']"/>
                                     </td>
                                     <td class="text-left">
-                                        <span t-esc="'Empty'" style="visibility: hidden;"/>
-                                    </td>
-                                    <td class="text-left">
                                         <span t-esc="session['name']"/>
                                     </td>
                                     <td class="text-left">
                                         <span t-esc="session['description']"/>
+                                    </td>
+                                    <td class="text-left">
+                                        <span t-esc="'Empty'" style="visibility: hidden;"/>
                                     </td>
                                     <td class="text-left">
                                         <span t-esc="subjectsessions[timetable]['status']"/>
@@ -882,8 +873,8 @@
                                     </td>
                                 </tr>
                             </t>
-                        </t>
-                    </tbody>
+                        </tbody>
+                    </t>
                     <tfooter>
                         <tr>
                             <th class="text-left" colspan="6" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
@@ -895,7 +886,7 @@
 
         <!-- Notifications -->
 
-        <template id="siantou_ems_portal_notification" name="siantou_ems_portal.notification" inherit_id="portal.portal_breadcrumbs" priority="30">
+        <template id="siantou_ems_portal_notification" name="siantou_ems_portal.notification_breadcrumbs" inherit_id="portal.portal_breadcrumbs" priority="30">
             <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
                 <li t-if="page_name == 'notification'" t-attf-class="breadcrumb-item #{'active ' if notification else ''}">
                     <a t-if="notification" t-attf-href="/my/notification?{{ keep_query() }}">Notifications</a>
@@ -904,7 +895,7 @@
             </xpath>
         </template>
 
-        <template id="siantou_ems_portal_my_home_menu_notification" name="siantou_ems_portal.notification" inherit_id="portal.portal_my_home" priority="30">
+        <template id="siantou_ems_portal_menu_notification" name="siantou_ems_portal.notification_my_home" inherit_id="portal.portal_my_home" priority="30">
             <xpath expr="//div[hasclass('o_portal_docs')]" position="before">
                 <t t-set="portal_client_category_enable" t-value="True"/>
             </xpath>
@@ -919,7 +910,7 @@
             </xpath>
         </template>
 
-        <template id="siantou_ems_portal_my_home_notification_views" name="siantou_ems_portal.print_notification">
+        <template id="siantou_ems_portal_notification_views" name="siantou_ems_portal.notification">
             <t t-call="portal.portal_layout">
                 <t t-set="breadcrumbs_searchbar" t-value="True"/>
                 <t t-call="portal.portal_searchbar">
@@ -967,7 +958,7 @@
 
         <!-- Données requises -->
 
-        <template id="siantou_ems_portal_request" name="siantou_ems_portal.request" inherit_id="portal.portal_breadcrumbs" priority="30">
+        <template id="siantou_ems_portal_request" name="siantou_ems_portal.request_breadcrumbs" inherit_id="portal.portal_breadcrumbs" priority="30">
             <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
                 <li t-if="page_name == 'request'" t-attf-class="breadcrumb-item #{'active ' if request else ''}">
                     <a t-if="request" t-attf-href="/my/request?{{ keep_query() }}">Données requises</a>
@@ -976,7 +967,7 @@
             </xpath>
         </template>
 
-        <template id="siantou_ems_portal_my_home_menu_request" name="siantou_ems_portal.request" inherit_id="portal.portal_my_home" priority="30">
+        <template id="siantou_ems_portal_menu_request" name="siantou_ems_portal.request_my_home" inherit_id="portal.portal_my_home" priority="30">
             <xpath expr="//div[hasclass('o_portal_docs')]" position="before">
                 <t t-set="portal_client_category_enable" t-value="True"/>
             </xpath>
@@ -991,7 +982,7 @@
             </xpath>
         </template>
 
-        <template id="siantou_ems_portal_my_home_request_views" name="siantou_ems_portal.data_request">
+        <template id="siantou_ems_portal_request_views" name="siantou_ems_portal.data_request">
             <t t-call="portal.portal_layout">
                 <t t-set="breadcrumbs_searchbar" t-value="True"/>
                 <t t-call="portal.portal_searchbar">
