@@ -1,5 +1,6 @@
+# -*- coding: utf-8 -*-
+
 import math
-import threading
 from odoo import models, fields, api, tools, _
 from odoo.exceptions import UserError, AccessError, ValidationError
 from datetime import date, datetime, timedelta, time

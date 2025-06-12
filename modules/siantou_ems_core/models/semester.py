@@ -1,5 +1,6 @@
-import math
+# -*- coding: utf-8 -*-
 
+import math
 from odoo import models, fields, api, tools, _
 from datetime import timedelta, datetime, date
 from odoo.exceptions import ValidationError  # Import the ValidationError class

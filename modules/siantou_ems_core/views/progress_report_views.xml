@@ -12,7 +12,7 @@
                 <tree string="Fiches de progression">
                     <field name="class_id"/>
                     <field name="subject_id"/>
-                    <field name="session_ids"/>
+                    <field name="percentage"/>
                 </tree>
             </field>
         </record>
@@ -31,6 +31,7 @@
                                 <field name="class_id"/>
                                 <field name="subject_id_domain" invisible="1"/>
                                 <field name="subject_id" options="{'no_create': True}" domain="subject_id_domain"/>
+                                <field name="percentage"/>
                             </group>
                         </group>
                         <notebook>

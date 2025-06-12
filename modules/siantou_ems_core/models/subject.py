@@ -1,7 +1,33 @@
-import math
-
 from odoo import models, fields, api, tools, _
 from odoo.exceptions import ValidationError
+from datetime import date, datetime, timedelta, time
+import copy
+
+DATE_FORMAT = '%Y-%m-%d'
+DATE_FORMAT_FR = '%d/%m/%Y'
+DATETIME_FORMAT = '%Y-%m-%d %H:%M:%S'
+DATETIME_FORMAT_FR = '%d/%m/%Y %H:%M'
+TIME_FORMAT = '%H:%M:%S'
+TIME_FORMAT_FR = '%H:%M'
+
+CURRENT_WEEKDAY = {
+    '0': 'Lundi',
+    '1': 'Mardi',
+    '2': 'Mercredi',
+    '3': 'Jeudi',
+    '4': 'Vendredi',
+    '5': 'Samedi',
+    '6': 'Dimanche'
+}
+
+STATUS_TIMETABLE = {
+    'pending': 'En attente',
+    'progress': 'En cours',
+    'present': 'Présent',
+    'absent': 'Absent',
+    'permission': 'Permission',
+    'exception': 'Exception',
+}
 
 class Subject(models.Model):
     _name = 'siantou.ems.core.subject'
@@ -220,6 +246,8 @@ class ProgressReport(models.Model):
         'Sessions de cours'
     )
 
+    percentage = fields.Float(compute='_compute_percentage', string='Pourcentage')
+
     # Contrainte SQL pour s'assurer de l'unicité du couple (classe, couple) dans la base de donnée
     _sql_constraints = [
         ('unique_class_subject_rel', 'unique(class_id, subject_id)', 'Un cours ne peut être lié à une même classe qu\'une seule fois.')
@@ -272,6 +300,120 @@ class ProgressReport(models.Model):
     def _onchange_class(self):
         for record in self:
             record.subject_id = None
+
+    @api.depends('class_id', 'subject_id')
+    def _compute_percentage(self):
+        for record in self:
+            search_domain = []
+            search_domain.append(('class_id', '=', record.class_id.id))
+            search_domain.append(('subject_id', '=', record.subject_id.id))
+
+            search_domain.append(('group_id.is_active', '=', True))
+            search_domain.append(('group_id.is_submit', '=', False))
+
+            order = 'date asc'
+
+            search_progressreports = self.env['siantou.ems.timetable.timetable'].search(search_domain, order=order)
+            search_progressreports = list(search_progressreports)
+            data = []
+            for search_progressreport in search_progressreports:
+                progressreport = {}
+                progressreport['id'] = search_progressreport.id
+                progressreport['name'] = search_progressreport.name
+                progressreport['date'] = search_progressreport.date
+                progressreport['date_of_week'] = datetime.strftime(search_progressreport.date, DATE_FORMAT_FR)
+                progressreport['semester_name'] = search_progressreport.semester_id.name
+                progressreport['cycle_name'] = search_progressreport.cycle_id.name
+                progressreport['level_name'] = search_progressreport.level_id.name
+                progressreport['field_of_study_id'] = search_progressreport.field_of_study_id.id
+                progressreport['field_of_study_name'] = search_progressreport.field_of_study_id.name
+                progressreport['specialty_name'] = search_progressreport.specialty_id.name
+                progressreport['option_name'] = search_progressreport.option_id.name
+                progressreport['class_id'] = search_progressreport.class_id.id
+                progressreport['class_name'] = search_progressreport.class_id.name
+                progressreport['department_id'] = search_progressreport.department_id.id
+                progressreport['department_name'] = search_progressreport.department_id.name
+                progressreport['subject_id'] = search_progressreport.subject_id.id
+                progressreport['subject_name'] = search_progressreport.subject_id.name
+                progressreport['subject_code'] = search_progressreport.subject_id.code
+                progressreport['subject_shared_subject'] = search_progressreport.subject_id.shared_subject
+                progressreport['classroom_name'] = search_progressreport.classroom_id.name
+                progressreport['building_name'] = search_progressreport.classroom_id.building_id.name
+                progressreport['batch_name'] = search_progressreport.batch_id.name
+                progressreport['employee_name'] = search_progressreport.employee_id.name
+                progressreport['day_of_week'] = CURRENT_WEEKDAY[search_progressreport.day_of_week]
+                progressreport['start_time'] = search_progressreport.start_time
+                progressreport['end_time'] = search_progressreport.end_time
+                progressreport['not_active_slotitems'] = search_progressreport.not_active_slotitems
+                progressreport['status'] = search_progressreport.status
+                session_ids = search_progressreport.session_ids
+                session_ids = list(session_ids)
+                sessions = []
+                for session_id in session_ids:
+                    session = {}
+                    session['id'] = session_id.id
+                    session['name'] = session_id.name
+                    session['description'] = session_id.description
+                    session['timetable_id'] = session_id.timetable_id.id
+                    session['report_id'] = session_id.report_id.id
+                    sessions.append(session)
+                progressreport['sessions'] = sessions
+
+                data.append(progressreport)
+
+            progressreports = {}
+
+            sorted_data = copy.deepcopy(data)
+
+            for d in sorted_data:
+                key_class = '{}'.format(d['class_id'])
+                key_subject = '{}'.format(d['subject_id'])
+                if not key_class in progressreports:
+                    progressreports[key_class] = {}
+                    progressreports[key_class]['name'] = d['class_name']
+                    progressreports[key_class]['data'] = {}
+                    progressreports[key_class]['data'][key_subject] = {}
+                    progressreports[key_class]['data'][key_subject]['name'] = d['subject_name']
+                    progressreports[key_class]['data'][key_subject]['data'] = {
+                        'all': [],
+                        'done': [],
+                        'awaiting': [],
+                    }
+                    progressreports[key_class]['data'][key_subject]['data']['all'].append(d)
+                    if d['status'] in ['present', 'permission']:
+                        progressreports[key_class]['data'][key_subject]['data']['done'].append(d)
+                    else:
+                        progressreports[key_class]['data'][key_subject]['data']['awaiting'].append(d)
+                else:
+                    if not key_subject in progressreports[key_class]['data']:
+                        progressreports[key_class]['data'][key_subject] = {}
+                        progressreports[key_class]['data'][key_subject]['name'] = d['subject_name']
+                        progressreports[key_class]['data'][key_subject]['data'] = {
+                            'all': [],
+                            'done': [],
+                            'awaiting': [],
+                        }
+                        progressreports[key_class]['data'][key_subject]['data']['all'].append(d)
+                        if d['status'] in ['present', 'permission']:
+                            progressreports[key_class]['data'][key_subject]['data']['done'].append(d)
+                        else:
+                            progressreports[key_class]['data'][key_subject]['data']['awaiting'].append(d)
+                    else:
+                        progressreports[key_class]['data'][key_subject]['data']['all'].append(d)
+                        if d['status'] in ['present', 'permission']:
+                            progressreports[key_class]['data'][key_subject]['data']['done'].append(d)
+                        else:
+                            progressreports[key_class]['data'][key_subject]['data']['awaiting'].append(d)
+
+            for key_class in progressreports.keys():
+                for key_subject in progressreports[key_class]['data'].keys():
+                    progressreports[key_class]['data'][key_subject]['data']['done'] = sum([len(v['sessions']) for v in progressreports[key_class]['data'][key_subject]['data']['done']])
+                    progressreports[key_class]['data'][key_subject]['data']['awaiting'] = sum([len(v['sessions']) for v in progressreports[key_class]['data'][key_subject]['data']['awaiting']])
+                    progressreports[key_class]['data'][key_subject]['data']['percentage'] = progressreports[key_class]['data'][key_subject]['data']['done'] + progressreports[key_class]['data'][key_subject]['data']['awaiting']
+                    if progressreports[key_class]['data'][key_subject]['data']['percentage'] > 0:
+                        progressreports[key_class]['data'][key_subject]['data']['percentage'] = progressreports[key_class]['data'][key_subject]['data']['done'] / progressreports[key_class]['data'][key_subject]['data']['percentage']
+                    progressreports[key_class]['data'][key_subject]['data']['percentage'] = round(progressreports[key_class]['data'][key_subject]['data']['percentage'] * 100, 2)
+                    record.percentage = progressreports[key_class]['data'][key_subject]['data']['percentage']
 
 class SubjectSession(models.Model):
     _name = 'siantou.ems.core.subject.session'
