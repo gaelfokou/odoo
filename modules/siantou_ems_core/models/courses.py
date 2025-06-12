@@ -329,7 +329,7 @@ class SchoolCourseSubject(models.Model):
 
     syllabus_ids = fields.One2many('siantou.ems.core.syllabus', 'ue_id', string='Syllabus')
 
-    total_credit = fields.Integer('Nombre de crédit total',  compute='_compute_total_credit',)
+    total_credit = fields.Integer('Nombre de crédit total', compute='_compute_total_credit', store=True,)
 
     _sql_constraints = [
         ('unique_code', 'unique(code)', "Le code de l'unité d'enseignement doit être unique."),

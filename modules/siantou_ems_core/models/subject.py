@@ -106,8 +106,8 @@ class Subject(models.Model):
 
     total_credit = fields.Integer(
         string='Crédit total',
-        compute='_compute_credit'
-
+        compute='_compute_credit',
+        store=True,
     )
 
     # Contrainte SQL pour empêcher d'avoir le même code pour différentes filières
@@ -158,8 +158,6 @@ class Subject(models.Model):
     #         # Supprimer les enseignants enlevés de teacher_ids
     #         to_remove = set(current_teacher_ids) - set(new_teacher_ids)
     #         record.teacher_priority_ids.filtered(lambda p: p.employee_id.id in to_remove).unlink()
-
-    field_name = fields.Char(compute='_compute_field_name', string='field_name')
 
     @api.depends('syllabus_ids.subject_credit')
     def _compute_credit(self):
@@ -223,7 +221,8 @@ class ProgressReport(models.Model):
 
     name = fields.Char(
         string='Nom',
-        compute='_compute_name', store=True,
+        compute='_compute_name',
+        store=True,
     )
 
     class_id = fields.Many2one(
@@ -246,7 +245,7 @@ class ProgressReport(models.Model):
         'Sessions de cours'
     )
 
-    percentage = fields.Float(compute='_compute_percentage', string='Pourcentage')
+    percentage = fields.Float(compute='_compute_percentage', store=True, string='Pourcentage')
 
     # Contrainte SQL pour s'assurer de l'unicité du couple (classe, couple) dans la base de donnée
     _sql_constraints = [
