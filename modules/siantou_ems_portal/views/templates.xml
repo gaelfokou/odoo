@@ -769,8 +769,7 @@
                                         <span t-esc="progressreports[classe]['data'][subject]['name']"/>
                                     </td>
                                     <td class="text-left">
-                                        <span t-esc="progressreports[classe]['data'][subject]['data']['done']"/>
-                                        <span t-esc="'/ ' + progressreports[classe]['data'][subject]['data']['total']"/>
+                                        <span t-esc="progressreports[classe]['data'][subject]['data']['percentage'] + '%'"/>
                                     </td>
                                     <td class="text-left">
                                         <div>
