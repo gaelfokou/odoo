@@ -795,7 +795,7 @@
             <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
                 <li t-if="page_name == 'subjectsession'" t-attf-class="breadcrumb-item #{'active ' if subjectsession else ''}">
                     <a t-if="subjectsession" t-attf-href="/my/subjectsession?{{ keep_query() }}">Sessions de cours</a>
-                    <t t-else="">Sessions de cours</t>
+                    <t t-else=""><a t-attf-href="/my/progressreport">Fiche de progression</a> / Sessions de cours</t>
                 </li>
             </xpath>
         </template>

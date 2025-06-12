@@ -102,6 +102,8 @@ class PortalAccount(portal.CustomerPortal):
             values['portal_consumptionhour'] = 1
         if 'portal_progressreport' in counters:
             values['portal_progressreport'] = 1
+        if 'portal_subjectsession' in counters:
+            values['portal_subjectsession'] = 0
         if 'portal_notification' in counters:
             values['portal_notification'] = 1 if is_user == 'is_teacher' else 0
         if 'portal_request' in counters:
@@ -208,6 +210,7 @@ class PortalAccount(portal.CustomerPortal):
                                     'timetable_page_number': page,
                                     'timetable_view_type': view_type,
                                     'page_name': 'timetable',
+                                    'timetable': 0,
                                     'search': search,
                                     'search_in': search_in,
                                     'searchbar_inputs': searchbar_inputs,
@@ -289,6 +292,7 @@ class PortalAccount(portal.CustomerPortal):
                                 {
                                     'schoolfees': schoolfees,
                                     'page_name': 'schoolfee',
+                                    'schoolfee': 0,
                                     'total_amount': total_amount,
                                     'total_structure_amount': total_structure_amount,
                                     'total_rest_amount': total_rest_amount,
@@ -321,6 +325,7 @@ class PortalAccount(portal.CustomerPortal):
                                 {
                                     'paymenthistories': paymenthistories,
                                     'page_name': 'paymenthistory',
+                                    'paymenthistory': 0,
                                     'total_amount': total_amount,
                                     'total_number_of_hours': total_number_of_hours,
                                 })
@@ -405,6 +410,7 @@ class PortalAccount(portal.CustomerPortal):
                                 {
                                     'accountbalances': accountbalances,
                                     'page_name': 'accountbalance',
+                                    'accountbalance': 0,
                                     'total_rate': total_rate,
                                     'total_number_of_hours': total_number_of_hours,
                                 })
@@ -459,6 +465,7 @@ class PortalAccount(portal.CustomerPortal):
                                 {
                                     'consumptionhours': consumptionhours,
                                     'page_name': 'consumptionhour',
+                                    'consumptionhour': 0,
                                     'total_all': total_all,
                                     'total_done': total_done,
                                     'total_awaiting': total_awaiting,
@@ -518,6 +525,7 @@ class PortalAccount(portal.CustomerPortal):
                                 {
                                     'progressreports': progressreports,
                                     'page_name': 'progressreport',
+                                    'progressreport': 0,
                                 })
 
     @http.route(['/my/subjectsession/<int:classe>/<int:subject>/list'], type='http', auth="user", website=True)
@@ -587,6 +595,7 @@ class PortalAccount(portal.CustomerPortal):
                                 {
                                     'subjectsessions': subjectsessions,
                                     'page_name': 'subjectsession',
+                                    'subjectsession': 0,
                                     'is_user': 'is_teacher' if user and is_user == 'is_teacher' else '',
                                     'classe': classe.id if classe else '',
                                     'subject': subject.id if subject else '',
@@ -619,6 +628,7 @@ class PortalAccount(portal.CustomerPortal):
                                 {
                                     'notifications': notifications,
                                     'page_name': 'notification',
+                                    'notification': 0,
                                 })
 
     @http.route(['/my/request'], type='http', auth="user", website=True)
@@ -676,6 +686,7 @@ class PortalAccount(portal.CustomerPortal):
                                     'all_quarters': all_quarters,
                                     'quarter': quarter_id,
                                     'page_name': 'request',
+                                    'request': 0,
                                 })
 
     @http.route(['/my/request/submit'], type='http', auth="user", website=True, methods=['POST'])
