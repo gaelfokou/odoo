@@ -666,7 +666,8 @@ class Helpers:
                 progressreports[key_class]['data'][key_subject]['data']['done'] = sum([len(v['sessions']) for v in progressreports[key_class]['data'][key_subject]['data']['done']])
                 progressreports[key_class]['data'][key_subject]['data']['awaiting'] = sum([len(v['sessions']) for v in progressreports[key_class]['data'][key_subject]['data']['awaiting']])
                 progressreports[key_class]['data'][key_subject]['data']['percentage'] = progressreports[key_class]['data'][key_subject]['data']['done'] + progressreports[key_class]['data'][key_subject]['data']['awaiting']
-                progressreports[key_class]['data'][key_subject]['data']['percentage'] = progressreports[key_class]['data'][key_subject]['data']['done'] / progressreports[key_class]['data'][key_subject]['data']['percentage']
+                if progressreports[key_class]['data'][key_subject]['data']['percentage'] > 0:
+                    progressreports[key_class]['data'][key_subject]['data']['percentage'] = progressreports[key_class]['data'][key_subject]['data']['done'] / progressreports[key_class]['data'][key_subject]['data']['percentage']
                 progressreports[key_class]['data'][key_subject]['data']['percentage'] = round(progressreports[key_class]['data'][key_subject]['data']['percentage'] * 100, 2)
                 progressreports[key_class]['data'][key_subject]['data']['done'] = str(progressreports[key_class]['data'][key_subject]['data']['done'])
                 progressreports[key_class]['data'][key_subject]['data']['awaiting'] = str(progressreports[key_class]['data'][key_subject]['data']['awaiting'])
