@@ -819,9 +819,15 @@
                 <t t-call="portal.portal_table">
                     <t t-if="is_user == 'is_teacher'">
                         <div>
-                            <a t-attf-href="/my/subjectsession/{{ params['class_id'] }}/{{ params['subject_id'] }}/new" class="btn btn-primary">Créer</a><br/><br/>
-                            <span t-esc="params['class_name']"/>
-                        </div>
+                            <ul class="d-flex p-0">
+                                <li class="d-flex align-items-center">
+                                    <a t-attf-href="/my/subjectsession/{{ params['class_id'] }}/{{ params['subject_id'] }}/new" class="btn btn-primary">Créer</a>
+                                </li>
+                                <li class="d-flex align-items-center px-2">
+                                    <span t-esc="params['class_name'] + ' - ' + params['subject_name']"/>
+                                </li>
+                            </ul>
+                        </div><br/>
                     </t>
                     <thead>
                         <tr class="active">
