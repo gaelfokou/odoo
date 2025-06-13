@@ -542,9 +542,14 @@ class PortalAccount(portal.CustomerPortal):
         elif http.request.env.user.student_id.id:
             user = http.request.env.user.student_id
             is_user = 'is_student'
-        classe = http.request.env['siantou.ems.core.class'].sudo().search([('id', '=', classe)], limit=1)
-        subject = http.request.env['siantou.ems.core.subject'].sudo().search([('id', '=', subject)], limit=1)
-        search_subjectsessions, searchbar_inputs = Helpers.subjectsession(search, search_in, class_id=classe, subject_id=subject)
+        class_id = http.request.env['siantou.ems.core.class'].sudo().search([('id', '=', classe)], limit=1)
+        subject_id = http.request.env['siantou.ems.core.subject'].sudo().search([('id', '=', subject)], limit=1)
+        params = {}
+        params['class_id'] = class_id.id
+        params['class_name'] = class_id.name
+        params['subject_id'] = subject_id.id
+        params['subject_name'] = subject_id.name
+        search_subjectsessions, searchbar_inputs = Helpers.subjectsession(search, search_in, class_id=class_id, subject_id=subject_id)
         subjectsessions = []
         for search_subjectsession in search_subjectsessions:
             subjectsession = {}
@@ -597,8 +602,7 @@ class PortalAccount(portal.CustomerPortal):
                                     'page_name': 'subjectsession_list',
                                     'subjectsession_list': 0,
                                     'is_user': 'is_teacher' if user and is_user == 'is_teacher' else '',
-                                    'classe': classe.id if classe else '',
-                                    'subject': subject.id if subject else '',
+                                    'params': params,
                                 })
 
     @http.route(['/my/notification'], type='http', auth="user", website=True)

@@ -245,7 +245,7 @@ class ProgressReport(models.Model):
         'Sessions de cours'
     )
 
-    percentage = fields.Float(compute='_compute_percentage', store=True, string='Pourcentage')
+    percentage = fields.Float(compute='_compute_percentage', store=True, string='Taux de consommation du volume horaire')
 
     # Contrainte SQL pour s'assurer de l'unicité du couple (classe, couple) dans la base de donnée
     _sql_constraints = [
@@ -419,7 +419,7 @@ class SubjectSession(models.Model):
     _description = 'Session de cours'
 
     name = fields.Char(
-        string='Nom',
+        string='Session',
         required=True
     )
 
