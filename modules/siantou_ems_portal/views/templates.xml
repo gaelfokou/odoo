@@ -865,7 +865,7 @@
                                         <span t-esc="session['description']"/>
                                     </td>
                                     <td class="text-left">
-                                        <span t-esc="'Empty'" style="visibility: hidden;"/>
+                                        <span t-esc="session['percentage'] + '%'"/>
                                     </td>
                                     <td class="text-left">
                                         <span t-esc="subjectsessions[timetable]['status']"/>

@@ -683,6 +683,12 @@ class Helpers:
 
         sorted_data = copy.deepcopy(data)
 
+        percentage_session = sum([len(d['sessions']) for d in sorted_data])
+        if percentage_session > 0:
+            percentage_session = 1 / percentage_session
+        percentage_session = round(percentage_session * 100, 2)
+
+        total_session = 0.0
         for d in sorted_data:
             key_timetable = '{}'.format(d['id'])
             if not key_timetable in subjectsessions:
@@ -694,6 +700,9 @@ class Helpers:
                 subjectsessions[key_timetable]['date'] = d['date_of_week']
                 subjectsessions[key_timetable]['start_time'] = Helpers.convert_float_to_time(d['start_time'])
                 subjectsessions[key_timetable]['end_time'] = Helpers.convert_float_to_time(d['end_time'])
+                for v in d['sessions']:
+                    total_session += percentage_session
+                    v['percentage'] = str(total_session)
                 subjectsessions[key_timetable]['data'] = d['sessions']
 
         _logger.info(f'----------- tototototototo subjectsessions {subjectsessions} -----------')
