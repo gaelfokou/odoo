@@ -140,6 +140,14 @@ class Student(models.Model):
         string='Classe',
     )
 
+    delegate_class_ids = fields.Many2many(
+        'siantou.ems.core.class',
+        'delegate_class_student_rel',
+        'delegate_student_id',
+        'delegate_class_id',
+        string='Délégués de classe',
+    )
+
     specialty_id_domain = fields.Binary(compute='_compute_school_domain', default=[])
 
     @api.depends('last_name', 'first_name')

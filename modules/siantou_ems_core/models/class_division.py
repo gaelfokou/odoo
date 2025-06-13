@@ -36,6 +36,14 @@ class EducationClass(models.Model):
         string='Liste des étudiants'
     )
 
+    delegate_student_ids = fields.Many2many(
+        'oe.school.student',
+        'delegate_class_student_rel',
+        'delegate_class_id',
+        'delegate_student_id',
+        string='Délégués de classe',
+    )
+
     number_of_student = fields.Integer(
         string='Nombre d\'étudiants',
         compute='_compute_student', store=True,

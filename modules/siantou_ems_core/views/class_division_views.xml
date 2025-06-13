@@ -38,6 +38,7 @@
                     <field name="type_cour"/>
                     <field name="group_ids" widget="many2many_tags"/>
                     <field name="number_of_student"/>
+                    <field name="delegate_student_ids" widget="many2many_tags"/>
 				</tree>
 			</field>
 		</record>
@@ -58,6 +59,7 @@
                                 <field name="school_id"/>
                                 <field name="level_id"/>
                                 <field name="number_of_student"/>
+                                <field name="delegate_student_ids" widget="many2many_tags"/>
                             </group>
                             <group>
                                 <field name="field_of_study_id" options="{'no_create': True}" domain="[('school_id', '=', school_id)]"/>
@@ -66,7 +68,7 @@
                                 <field name="cycle_id"/>
                                 <field name="supervision_id" options="{'no_create': True}" domain="[('cycle_ids', '=', cycle_id)]"/>
                                 <field name="type_cour" widget="radio"/>
-                                <field name="group_ids"/>
+                                <field name="group_ids" widget="many2many_tags"/>
                             </group>
                         </group>
                         <notebook>
