@@ -59,7 +59,7 @@
                                 <field name="school_id"/>
                                 <field name="level_id"/>
                                 <field name="number_of_student"/>
-                                <field name="delegate_student_ids" widget="many2many_tags"/>
+                                <field name="delegate_student_ids" domain="[('class_id', '=', id)]" widget="many2many_tags"/>
                             </group>
                             <group>
                                 <field name="field_of_study_id" options="{'no_create': True}" domain="[('school_id', '=', school_id)]"/>
