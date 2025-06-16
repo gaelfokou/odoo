@@ -927,73 +927,49 @@
                     <t t-if="is_user == 'is_teacher'">
                         <div>
                             <ul class="d-flex p-0">
-                                <li class="d-flex align-items-center">
-                                    <a t-attf-href="/my/subjectsession/{{ params['class_id'] }}/{{ params['subject_id'] }}/new" class="btn btn-primary">Créer</a>
-                                </li>
-                                <li class="d-flex align-items-center px-2">
-                                    <span t-esc="params['class_name'] + ' - ' + params['subject_name']"/>
+                                <li class="d-flex align-items-center px-0">
+                                    <strong t-esc="params['class_name'] + ' - ' + params['subject_name']"/>
                                 </li>
                             </ul>
                         </div><br/>
                     </t>
-                    <thead>
-                        <tr class="active">
-                            <th class="text-left">Date</th>
-                            <th class="text-left">Session</th>
-                            <th class="text-left">Description</th>
-                            <th class="text-left">Taux de consommation du volume horaire</th>
-                            <th class="text-left">Statut</th>
-                            <th class="text-left">Actions</th>
-                        </tr>
-                    </thead>
-                    <t t-set="timetables" t-value="subjectsessions.keys()"/>
-                    <t t-foreach="timetables" t-as="timetable">
-                        <thead>
-                            <tr>
-                                <th class="text-left">
-                                    <span t-esc="subjectsessions[timetable]['date'] + ' ' + subjectsessions[timetable]['start_time'] + '-' + subjectsessions[timetable]['end_time']"/>
-                                </th>
-                                <th class="text-left" colspan="5">
-                                    <span t-esc="'Empty'" style="visibility: hidden;"/>
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <t t-set="sessions" t-value="subjectsessions[timetable]['data']"/>
-                            <t t-foreach="sessions" t-as="session">
-                                <tr>
-                                    <td class="text-left">
-                                        <span t-esc="subjectsessions[timetable]['subject_name']"/>
-                                    </td>
-                                    <td class="text-left">
-                                        <span t-esc="session['name']"/>
-                                    </td>
-                                    <td class="text-left">
-                                        <span t-esc="session['description']"/>
-                                    </td>
-                                    <td class="text-left">
-                                        <span t-esc="session['percentage'] + '%'"/>
-                                    </td>
-                                    <td class="text-left">
-                                        <span t-esc="subjectsessions[timetable]['status']"/>
-                                    </td>
-                                    <td class="text-left">
-                                        <t t-if="is_user == 'is_teacher'">
-                                            <div>
-                                                <a t-attf-href="/my/subjectsession/{{ session['id'] }}/edit" class="btn btn-primary btn-sm">Modifier</a>
-                                                <!-- <a t-attf-href="/my/subjectsession/{{ session['id'] }}/delete" class="btn btn-danger btn-sm">Supprimer</a> -->
-                                            </div>
-                                        </t>
-                                    </td>
-                                </tr>
-                            </t>
-                        </tbody>
-                    </t>
-                    <tfooter>
-                        <tr>
-                            <th class="text-left" colspan="6" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
-                        </tr>
-                    </tfooter>
+                    <div id="wrap_subjectsession_new">
+                        <section>
+                            <div class="container">
+                                <form action="/my/subjectsession/{{ params['class_id'] }}/{{ params['subject_id'] }}/submit" enctype="multipart/form-data" method="post">
+                                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                    <div class="row mb-3" style="width: 100%">
+                                        <div class="col-6">
+                                            <label class="form-label">Session</label>
+                                            <input id="name" type="text" class="form-control" name="name" t-att-value="name" required="1"/>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3" style="width: 100%">
+                                        <div class="col-6">
+                                            <label class="form-label">Description</label>
+                                            <input id="description" type="text" class="form-control" name="description" t-att-value="description" required="1"/>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3" style="width: 100%">
+                                        <div class="col-6">
+                                            <label class="form-label">Date</label>
+                                            <select id="timetable" class="form-control" name="timetable" required="1">
+                                                <option t-att-value="''" t-att-selected="timetable == ''">Sélectionnez une date</option>
+                                                <t t-foreach="all_timetables" t-as="c">
+                                                    <option t-att-value="c['id']" t-att-selected="timetable == c['id']"><t t-esc="c['name']"/></option>
+                                                </t>
+                                            </select>
+                                        </div>
+                                    </div><br/>
+                                    <div class="row mb-3" style="width: 100%">
+                                        <div class="col-6">
+                                            <button type="submit" class="btn btn-primary">Soumettre</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </section>
+                    </div>
                 </t>
             </t>
         </template>
@@ -1103,7 +1079,7 @@
                     <t t-set="title">Données requises</t>
                 </t>
                 <t t-call="portal.portal_table">
-                    <div id="wrap">
+                    <div id="wrap_request">
                         <section>
                             <div class="container">
                                 <form action="/my/request/submit" enctype="multipart/form-data" method="post">
@@ -1136,7 +1112,7 @@
                                         <div class="col-6">
                                             <label class="form-label">Pays d'origine</label>
                                             <select id="country" class="form-control" name="country" required="1">
-                                                <option t-att-value="''" t-att-selected="quarter == ''">Sélectionnez un pays</option>
+                                                <option t-att-value="''" t-att-selected="country == ''">Sélectionnez un pays</option>
                                                 <t t-foreach="all_countries" t-as="c">
                                                     <option t-att-value="c['id']" t-att-selected="country == c['id']"><t t-esc="c['name']"/></option>
                                                 </t>
@@ -1147,7 +1123,7 @@
                                         <div class="col-6">
                                             <label class="form-label">Dernière ville de résidence</label>
                                             <select id="city" class="form-control" name="city" required="1">
-                                                <option t-att-value="''" t-att-selected="quarter == ''">Sélectionnez une ville</option>
+                                                <option t-att-value="''" t-att-selected="city == ''">Sélectionnez une ville</option>
                                                 <t t-foreach="all_cities" t-as="c">
                                                     <option t-att-value="c['id']" t-att-selected="city == c['id']"><t t-esc="c['name']"/></option>
                                                 </t>
@@ -1164,7 +1140,7 @@
                                                 </t>
                                             </select>
                                         </div>
-                                    </div>
+                                    </div><br/>
                                     <div class="row mb-3" style="width: 100%">
                                         <div class="col-6">
                                             <button type="submit" class="btn btn-primary">Soumettre</button>

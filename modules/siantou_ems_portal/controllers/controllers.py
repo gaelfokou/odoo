@@ -675,6 +675,10 @@ class PortalAccount(portal.CustomerPortal):
 
             subjectsessions.append(subjectsession)
         subjectsessions = Helpers.format_subjectsession(subjectsessions)
+        all_timetables = []
+        name = None
+        description = None
+        timetable_id = None
         return http.request.render('siantou_ems_portal.siantou_ems_portal_subjectsession_new_views',
                                 {
                                     'subjectsessions': subjectsessions,
@@ -682,6 +686,10 @@ class PortalAccount(portal.CustomerPortal):
                                     'subjectsession_new': 0,
                                     'is_user': 'is_teacher' if user and is_user == 'is_teacher' else '',
                                     'params': params,
+                                    'name': '',
+                                    'description': '',
+                                    'all_timetables': all_timetables,
+                                    'timetable': timetable_id,
                                 })
 
     @http.route(['/my/notification'], type='http', auth="user", website=True)
