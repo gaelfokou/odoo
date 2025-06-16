@@ -104,6 +104,8 @@ class PortalAccount(portal.CustomerPortal):
             values['portal_progressreport'] = 1
         if 'portal_subjectsession_list' in counters:
             values['portal_subjectsession_list'] = 0
+        if 'portal_subjectsession_new' in counters:
+            values['portal_subjectsession_new'] = 0
         if 'portal_notification' in counters:
             values['portal_notification'] = 1 if is_user == 'is_teacher' else 0
         if 'portal_request' in counters:
@@ -605,6 +607,83 @@ class PortalAccount(portal.CustomerPortal):
                                     'params': params,
                                 })
 
+    @http.route(['/my/subjectsession/<int:classe>/<int:subject>/new'], type='http', auth="user", website=True)
+    def portal_subjectsession_new(self, classe=None, subject=None, search='', search_in='all', **kw):
+        # Utilisation de la fonction du helper
+        user = None
+        is_user = None
+        if http.request.env.user.employee_id.id:
+            user = http.request.env.user.employee_id
+            if http.request.env.user.employee_id.is_teacher:
+                is_user = 'is_teacher'
+            else:
+                is_user = 'is_employee'
+        elif http.request.env.user.student_id.id:
+            user = http.request.env.user.student_id
+            is_user = 'is_student'
+        class_id = http.request.env['siantou.ems.core.class'].sudo().search([('id', '=', classe)], limit=1)
+        subject_id = http.request.env['siantou.ems.core.subject'].sudo().search([('id', '=', subject)], limit=1)
+        params = {}
+        params['class_id'] = class_id.id
+        params['class_name'] = class_id.name
+        params['subject_id'] = subject_id.id
+        params['subject_name'] = subject_id.name
+        search_subjectsessions, searchbar_inputs = Helpers.subjectsession(search, search_in, class_id=class_id, subject_id=subject_id)
+        subjectsessions = []
+        for search_subjectsession in search_subjectsessions:
+            subjectsession = {}
+            subjectsession['id'] = search_subjectsession.id
+            subjectsession['name'] = search_subjectsession.name
+            subjectsession['date'] = search_subjectsession.date
+            subjectsession['date_of_week'] = datetime.strftime(search_subjectsession.date, DATE_FORMAT_FR)
+            subjectsession['semester_name'] = search_subjectsession.semester_id.name
+            subjectsession['cycle_name'] = search_subjectsession.cycle_id.name
+            subjectsession['level_name'] = search_subjectsession.level_id.name
+            subjectsession['field_of_study_id'] = search_subjectsession.field_of_study_id.id
+            subjectsession['field_of_study_name'] = search_subjectsession.field_of_study_id.name
+            subjectsession['specialty_name'] = search_subjectsession.specialty_id.name
+            subjectsession['option_name'] = search_subjectsession.option_id.name
+            subjectsession['class_id'] = search_subjectsession.class_id.id
+            subjectsession['class_name'] = search_subjectsession.class_id.name
+            subjectsession['department_id'] = search_subjectsession.department_id.id
+            subjectsession['department_name'] = search_subjectsession.department_id.name
+            subjectsession['subject_id'] = search_subjectsession.subject_id.id
+            subjectsession['subject_name'] = search_subjectsession.subject_id.name
+            subjectsession['subject_code'] = search_subjectsession.subject_id.code
+            subjectsession['subject_shared_subject'] = search_subjectsession.subject_id.shared_subject
+            subjectsession['classroom_name'] = search_subjectsession.classroom_id.name
+            subjectsession['building_name'] = search_subjectsession.classroom_id.building_id.name
+            subjectsession['batch_name'] = search_subjectsession.batch_id.name
+            subjectsession['employee_name'] = search_subjectsession.employee_id.name
+            subjectsession['day_of_week'] = CURRENT_WEEKDAY[search_subjectsession.day_of_week]
+            subjectsession['start_time'] = search_subjectsession.start_time
+            subjectsession['end_time'] = search_subjectsession.end_time
+            subjectsession['not_active_slotitems'] = search_subjectsession.not_active_slotitems
+            subjectsession['status'] = search_subjectsession.status
+            session_ids = search_subjectsession.session_ids
+            session_ids = list(session_ids)
+            sessions = []
+            for session_id in session_ids:
+                session = {}
+                session['id'] = session_id.id
+                session['name'] = session_id.name
+                session['description'] = session_id.description
+                session['timetable_id'] = session_id.timetable_id.id
+                session['report_id'] = session_id.report_id.id
+                sessions.append(session)
+            subjectsession['sessions'] = sessions
+
+            subjectsessions.append(subjectsession)
+        subjectsessions = Helpers.format_subjectsession(subjectsessions)
+        return http.request.render('siantou_ems_portal.siantou_ems_portal_subjectsession_new_views',
+                                {
+                                    'subjectsessions': subjectsessions,
+                                    'page_name': 'subjectsession_new',
+                                    'subjectsession_new': 0,
+                                    'is_user': 'is_teacher' if user and is_user == 'is_teacher' else '',
+                                    'params': params,
+                                })
+
     @http.route(['/my/notification'], type='http', auth="user", website=True)
     def portal_notification(self, search='', search_in='all', **kw):
         # Utilisation de la fonction du helper
@@ -669,6 +748,7 @@ class PortalAccount(portal.CustomerPortal):
         is_user = None
         if http.request.env.user.employee_id.id:
             user = http.request.env.user.employee_id
+            return http.request.redirect('/my/home')
         elif http.request.env.user.student_id.id:
             user = http.request.env.user.student_id
         if user:
@@ -728,4 +808,4 @@ class PortalAccount(portal.CustomerPortal):
                 if kw.get('quarter') and kw.get('quarter') != '':
                     vals['quarter_id'] = int(kw.get('quarter'))
                 user.sudo().write(vals)
-        return http.request.redirect('/my')
+        return http.request.redirect('/my/home')
