@@ -693,6 +693,7 @@ class Helpers:
             key_timetable = '{}'.format(d['id'])
             if not key_timetable in subjectsessions:
                 subjectsessions[key_timetable] = {}
+                subjectsessions[key_timetable]['id'] = d['id']
                 subjectsessions[key_timetable]['name'] = d['name']
                 subjectsessions[key_timetable]['status'] = 'Effectué' if d['status'] in ['present', 'permission'] else 'En attente'
                 subjectsessions[key_timetable]['class_name'] = d['class_name']

@@ -676,6 +676,10 @@ class PortalAccount(portal.CustomerPortal):
             subjectsessions.append(subjectsession)
         subjectsessions = Helpers.format_subjectsession(subjectsessions)
         all_timetables = []
+        timetables = subjectsessions.keys()
+        for timetable in timetables:
+            if len(subjectsessions[timetable]['data']) == 0:
+                all_timetables.append(subjectsessions[timetable])
         name = None
         description = None
         timetable_id = None

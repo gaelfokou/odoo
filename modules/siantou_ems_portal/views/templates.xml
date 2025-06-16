@@ -947,7 +947,7 @@
                                     <div class="row mb-3" style="width: 100%">
                                         <div class="col-6">
                                             <label class="form-label">Description</label>
-                                            <input id="description" type="text" class="form-control" name="description" t-att-value="description" required="1"/>
+                                            <input id="description" type="text" class="form-control" name="description" t-att-value="description"/>
                                         </div>
                                     </div>
                                     <div class="row mb-3" style="width: 100%">
@@ -956,7 +956,7 @@
                                             <select id="timetable" class="form-control" name="timetable" required="1">
                                                 <option t-att-value="''" t-att-selected="timetable == ''">Sélectionnez une date</option>
                                                 <t t-foreach="all_timetables" t-as="c">
-                                                    <option t-att-value="c['id']" t-att-selected="timetable == c['id']"><t t-esc="c['name']"/></option>
+                                                    <option t-att-value="c['id']" t-att-selected="timetable == c['id']"><t t-esc="c['date'] + ' ' + c['start_time'] + '-' + c['end_time']"/></option>
                                                 </t>
                                             </select>
                                         </div>
