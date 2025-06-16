@@ -789,7 +789,7 @@
         <template id="siantou_ems_portal_subjectsession_list" name="siantou_ems_portal.subjectsession_list_breadcrumbs" inherit_id="portal.portal_breadcrumbs" priority="30">
             <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
                 <li t-if="page_name == 'subjectsession_list'" t-attf-class="breadcrumb-item #{'active ' if subjectsession_list else ''}">
-                    <a t-if="subjectsession_list" t-attf-href="/my/subjectsession?{{ keep_query() }}">Lister les sessions de cours</a>
+                    <a t-if="subjectsession_list" t-attf-href="/my/subjectsession/{{ params['class_id'] }}/{{ params['subject_id'] }}/list?{{ keep_query() }}">Lister les sessions de cours</a>
                     <t t-else=""><a t-attf-href="/my/progressreport">Fiches de progression</a> / Lister les sessions de cours</t>
                 </li>
             </xpath>
@@ -896,8 +896,8 @@
         <template id="siantou_ems_portal_subjectsession_new" name="siantou_ems_portal.subjectsession_new_breadcrumbs" inherit_id="portal.portal_breadcrumbs" priority="30">
             <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
                 <li t-if="page_name == 'subjectsession_new'" t-attf-class="breadcrumb-item #{'active ' if subjectsession_new else ''}">
-                    <a t-if="subjectsession_new" t-attf-href="/my/subjectsession?{{ keep_query() }}">Créer une session de cours</a>
-                    <t t-else=""><a t-attf-href="/my/progressreport">Fiches de progression</a> / <a t-attf-href="/my/subjectsession/{{ params['class_id'] }}/{{ params['subject_id'] }}/list">Lister les sessions de cours</a> / Créer une session de cours</t>
+                    <a t-if="subjectsession_new" t-attf-href="/my/subjectsession/{{ params['class_id'] }}/{{ params['subject_id'] }}/new?{{ keep_query() }}">Créer une session de cours</a>
+                    <t t-else=""><a t-attf-href="/my/subjectsession/{{ params['class_id'] }}/{{ params['subject_id'] }}/list">Lister les sessions de cours</a> / Créer une session de cours</t>
                 </li>
             </xpath>
         </template>
