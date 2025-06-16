@@ -873,7 +873,7 @@
                                     <td class="text-left">
                                         <t t-if="is_user == 'is_teacher'">
                                             <div>
-                                                <a t-attf-href="/my/subjectsession/{{ session['id'] }}/edit" class="btn btn-primary btn-sm">Modifier</a>
+                                                <a t-attf-href="/my/subjectsession/{{ params['class_id'] }}/{{ params['subject_id'] }}/{{ session['id'] }}/edit" class="btn btn-primary btn-sm">Modifier</a>
                                                 <!-- <a t-attf-href="/my/subjectsession/{{ session['id'] }}/delete" class="btn btn-danger btn-sm">Supprimer</a> -->
                                             </div>
                                         </t>
@@ -936,7 +936,7 @@
                     <div id="wrap_subjectsession_new">
                         <section>
                             <div class="container">
-                                <form t-attf-action="/my/subjectsession/submit" enctype="multipart/form-data" method="post">
+                                <form t-attf-action="/my/subjectsession/create" enctype="multipart/form-data" method="post">
                                     <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
                                     <input type="hidden" name="classe" t-att-value="params['class_id']"/>
                                     <input type="hidden" name="subject" t-att-value="params['subject_id']"/>
@@ -961,6 +961,81 @@
                                                     <option t-att-value="c['id']" t-att-selected="timetable == c['id']"><t t-esc="c['date'] + ' ' + c['start_time'] + '-' + c['end_time']"/></option>
                                                 </t>
                                             </select>
+                                        </div>
+                                    </div><br/>
+                                    <div class="row mb-3" style="width: 100%">
+                                        <div class="col-6">
+                                            <button type="submit" class="btn btn-primary">Soumettre</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </section>
+                    </div>
+                </t>
+            </t>
+        </template>
+
+        <!-- Modifier une session de cours -->
+
+        <template id="siantou_ems_portal_subjectsession_edit" name="siantou_ems_portal.subjectsession_edit_breadcrumbs" inherit_id="portal.portal_breadcrumbs" priority="30">
+            <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
+                <li t-if="page_name == 'subjectsession_edit'" t-attf-class="breadcrumb-item #{'active ' if subjectsession_edit else ''}">
+                    <a t-if="subjectsession_edit" t-attf-href="/my/subjectsession/{{ params['class_id'] }}/{{ params['subject_id'] }}/edit?{{ keep_query() }}">Modifier une session de cours</a>
+                    <t t-else=""><a t-attf-href="/my/subjectsession/{{ params['class_id'] }}/{{ params['subject_id'] }}/list">Lister les sessions de cours</a> / Modifier une session de cours</t>
+                </li>
+            </xpath>
+        </template>
+
+        <template id="siantou_ems_portal_menu_subjectsession_edit" name="siantou_ems_portal.subjectsession_edit_my_home" inherit_id="portal.portal_my_home" priority="30">
+            <xpath expr="//div[hasclass('o_portal_docs')]" position="before">
+                <t t-set="portal_client_category_enable" t-value="True"/>
+            </xpath>
+            <xpath expr="//div[@id='portal_client_category']" position="inside">
+                <t t-call="portal.portal_docs_entry">
+                    <t t-set="icon" t-value="'/siantou_ems_portal/static/src/img/progress_grid.png'"/>
+                    <t t-set="title">Modifier une session de cours</t>
+                    <t t-set="url" t-value="'/my/subjectsession'"/>
+                    <t t-set="text">Affichez vos fiches de progression</t>
+                    <t t-set="placeholder_count" t-value="'portal_subjectsession_edit'"/>
+                </t>
+            </xpath>
+        </template>
+
+        <template id="siantou_ems_portal_subjectsession_edit_views" name="siantou_ems_portal.subjectsession_edit">
+            <t t-call="portal.portal_layout">
+                <t t-set="breadcrumbs_searchbar" t-value="True"/>
+                <t t-call="portal.portal_searchbar">
+                    <t t-set="title">Modifier une session de cours</t>
+                </t>
+                <t t-call="portal.portal_table">
+                    <t t-if="is_user == 'is_teacher'">
+                        <div>
+                            <ul class="d-flex p-0">
+                                <li class="d-flex align-items-center px-0">
+                                    <strong t-esc="params['class_name'] + ' - ' + params['subject_name']"/>
+                                </li>
+                            </ul>
+                        </div><br/>
+                    </t>
+                    <div id="wrap_subjectsession_edit">
+                        <section>
+                            <div class="container">
+                                <form t-attf-action="/my/subjectsession/create" enctype="multipart/form-data" method="post">
+                                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                    <input type="hidden" name="classe" t-att-value="params['class_id']"/>
+                                    <input type="hidden" name="subject" t-att-value="params['subject_id']"/>
+                                    <input type="hidden" name="session" t-att-value="params['session_id']"/>
+                                    <div class="row mb-3" style="width: 100%">
+                                        <div class="col-6">
+                                            <label class="form-label">Session</label>
+                                            <input id="name" type="text" class="form-control" name="name" t-att-value="name" required="1"/>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3" style="width: 100%">
+                                        <div class="col-6">
+                                            <label class="form-label">Description</label>
+                                            <input id="description" type="text" class="form-control" name="description" t-att-value="description"/>
                                         </div>
                                     </div><br/>
                                     <div class="row mb-3" style="width: 100%">
@@ -1084,7 +1159,7 @@
                     <div id="wrap_request">
                         <section>
                             <div class="container">
-                                <form t-attf-action="/my/request/submit" enctype="multipart/form-data" method="post">
+                                <form t-attf-action="/my/request/create" enctype="multipart/form-data" method="post">
                                     <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
                                     <!-- <div class="row mb-3" style="width: 100%">
                                         <div class="col-6">
