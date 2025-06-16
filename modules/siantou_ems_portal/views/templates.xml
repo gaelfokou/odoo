@@ -1021,7 +1021,7 @@
                     <div id="wrap_subjectsession_edit">
                         <section>
                             <div class="container">
-                                <form t-attf-action="/my/subjectsession/create" enctype="multipart/form-data" method="post">
+                                <form t-attf-action="/my/subjectsession/update" enctype="multipart/form-data" method="post">
                                     <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
                                     <input type="hidden" name="classe" t-att-value="params['class_id']"/>
                                     <input type="hidden" name="subject" t-att-value="params['subject_id']"/>
