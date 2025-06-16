@@ -936,8 +936,10 @@
                     <div id="wrap_subjectsession_new">
                         <section>
                             <div class="container">
-                                <form action="/my/subjectsession/{{ params['class_id'] }}/{{ params['subject_id'] }}/submit" enctype="multipart/form-data" method="post">
+                                <form t-attf-action="/my/subjectsession/submit" enctype="multipart/form-data" method="post">
                                     <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                    <input type="hidden" name="classe" t-att-value="params['class_id']"/>
+                                    <input type="hidden" name="subject" t-att-value="params['subject_id']"/>
                                     <div class="row mb-3" style="width: 100%">
                                         <div class="col-6">
                                             <label class="form-label">Session</label>
@@ -1082,7 +1084,7 @@
                     <div id="wrap_request">
                         <section>
                             <div class="container">
-                                <form action="/my/request/submit" enctype="multipart/form-data" method="post">
+                                <form t-attf-action="/my/request/submit" enctype="multipart/form-data" method="post">
                                     <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
                                     <!-- <div class="row mb-3" style="width: 100%">
                                         <div class="col-6">

@@ -696,6 +696,47 @@ class PortalAccount(portal.CustomerPortal):
                                     'timetable': timetable_id,
                                 })
 
+    @http.route(['/my/subjectsession/submit'], type='http', auth="user", website=True, methods=['POST'])
+    def portal_subjectsession_submit(self, **kw):
+        classe = int(kw.get('classe')),
+        subject = int(kw.get('subject')),
+        class_id = http.request.env['siantou.ems.core.class'].sudo().search([('id', '=', classe)], limit=1)
+        subject_id = http.request.env['siantou.ems.core.subject'].sudo().search([('id', '=', subject)], limit=1)
+        params = {}
+        params['class_id'] = class_id.id
+        params['class_name'] = class_id.name
+        params['subject_id'] = subject_id.id
+        params['subject_name'] = subject_id.name
+        if not kw.get('name'):
+            return http.request.redirect('/my/subjectsession/{}/{}/submit'.format(params['class_id'], params['subject_id']))
+        if not kw.get('timetable'):
+            return http.request.redirect('/my/subjectsession/{}/{}/submit'.format(params['class_id'], params['subject_id']))
+        vals = {
+            'name': kw.get('name'),
+            'description': kw.get('description'),
+            'timetable_id': int(kw.get('timetable')),
+        }
+        timetable_id = http.request.env['siantou.ems.timetable.timetable'].sudo().search([('id', '=', vals['timetable_id'])], limit=1)
+        report_id = http.request.env['siantou.ems.core.progress.report'].sudo().search([
+            ('class_id', '=', timetable_id.class_id.id),
+            ('subject_id', '=', timetable_id.subject_id.id),
+        ], limit=1)
+        if not report_id:
+            report_id = http.request.env['siantou.ems.core.progress.report'].sudo().create({
+                'class_id': timetable_id.class_id.id,
+                'subject_id': timetable_id.subject_id.id,
+            })
+            vals['report_id'] = report_id.id
+            session_id = http.request.env['siantou.ems.core.subject.session'].sudo().create(vals)
+        else:
+            session_id = http.request.env['siantou.ems.core.subject.session'].sudo().search([
+                ('timetable_id', '=', timetable_id.id),
+                ('report_id', '=', report_id.id),
+            ], limit=1)
+            del(vals['timetable_id'])
+            session_id.sudo().write(vals)
+        return http.request.redirect('/my/subjectsession/{}/{}/list'.format(params['class_id'], params['subject_id']))
+
     @http.route(['/my/notification'], type='http', auth="user", website=True)
     def portal_notification(self, search='', search_in='all', **kw):
         # Utilisation de la fonction du helper
