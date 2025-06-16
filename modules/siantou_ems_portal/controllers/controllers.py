@@ -763,7 +763,6 @@ class PortalAccount(portal.CustomerPortal):
         params['subject_id'] = subject_id.id
         params['subject_name'] = subject_id.name
         params['session_id'] = session_id.id
-        params['session_name'] = session_id.name
         search_subjectsessions, searchbar_inputs = Helpers.subjectsession(search, search_in, class_id=class_id, subject_id=subject_id)
         subjectsessions = []
         for search_subjectsession in search_subjectsessions:
@@ -811,6 +810,9 @@ class PortalAccount(portal.CustomerPortal):
 
             subjectsessions.append(subjectsession)
         subjectsessions = Helpers.format_subjectsession(subjectsessions)
+        session_id = http.request.env['siantou.ems.core.subject.session'].sudo().search([('id', '=', params['session_id'])], limit=1)
+        timetable = subjectsessions[str(session_id.timetable_id.id)]
+        params['session_name'] = timetable['date'] + ' ' + timetable['start_time'] + '-' + timetable['end_time']
         name = session_id.name
         description = session_id.description
         return http.request.render('siantou_ems_portal.siantou_ems_portal_subjectsession_edit_views',

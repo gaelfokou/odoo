@@ -1013,7 +1013,7 @@
                         <div>
                             <ul class="d-flex p-0">
                                 <li class="d-flex align-items-center px-0">
-                                    <strong t-esc="params['class_name'] + ' - ' + params['subject_name']"/>
+                                    <strong t-esc="params['session_name'] + ' - ' + params['subject_name']"/>
                                 </li>
                             </ul>
                         </div><br/>
