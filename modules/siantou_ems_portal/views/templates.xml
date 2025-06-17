@@ -562,11 +562,11 @@
                 <t t-call="portal.portal_table">
                     <thead>
                         <tr class="active">
-                            <th class="text-left">Semestre</th>
+                            <th class="text-left">Cours</th>
                             <th class="text-left">Jour</th>
                             <th class="text-left">Date</th>
                             <th class="text-left">Heure</th>
-                            <th class="text-left">Cours</th>
+                            <th class="text-left">Semestre</th>
                             <th class="text-left">Taux horaire</th>
                             <th class="text-left">Heures</th>
                             <th class="text-left">Montant</th>
@@ -591,7 +591,7 @@
                                     <t t-foreach="accountbalances[classe]['data'][subject]['data']" t-as="record">
                                         <tr>
                                             <td class="text-left">
-                                                <span t-esc="record['semester_name']"/>
+                                                <span t-esc="record['subject_name']"/>
                                             </td>
                                             <td class="text-left">
                                                 <span t-esc="record['day_of_week']"/>
@@ -603,7 +603,7 @@
                                                 <span t-esc="record['time_of_week']"/>
                                             </td>
                                             <td class="text-left">
-                                                <span t-esc="record['subject_name']"/>
+                                                <span t-esc="record['semester_name']"/>
                                             </td>
                                             <td class="text-left">
                                                 <span t-esc="record['rate']"/>
