@@ -567,58 +567,79 @@
                             <th class="text-left">Date</th>
                             <th class="text-left">Heure</th>
                             <th class="text-left">Cours</th>
-                            <th class="text-left">Classe</th>
                             <th class="text-left">Taux horaire</th>
                             <th class="text-left">Heures</th>
                             <th class="text-left">Montant</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <t t-foreach="accountbalances" t-as="record">
-                            <tr>
-                                <td class="text-left">
-                                    <span t-esc="record['semester_name']"/>
-                                </td>
-                                <td class="text-left">
-                                    <span t-esc="record['day_of_week']"/>
-                                </td>
-                                <td class="text-left">
-                                    <span t-esc="record['date_of_week']"/>
-                                </td>
-                                <td class="text-left">
-                                    <span t-esc="record['time_of_week']"/>
-                                </td>
-                                <td class="text-left">
-                                    <span t-esc="record['subject_name']"/>
-                                </td>
-                                <td class="text-left">
-                                    <span t-esc="record['class_name']"/>
-                                </td>
-                                <td class="text-left">
-                                    <span t-esc="record['rate']"/>
-                                </td>
-                                <td class="text-left">
-                                    <span t-esc="record['number_of_hours']"/>
-                                </td>
-                                <td class="text-left">
-                                    <span t-esc="record['amount']"/>
-                                </td>
-                            </tr>
+                    <t t-set="classes" t-value="accountbalances.keys()"/>
+                    <t t-if="len(classes) > 0">
+                        <t t-foreach="classes" t-as="classe">
+                            <thead>
+                                <tr class="active">
+                                    <th class="text-left">
+                                        <span t-esc="accountbalances[classe]['name']"/>
+                                    </th>
+                                    <th class="text-left" colspan="7">
+                                        <span t-esc="'Empty'" style="visibility: hidden;"/>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-set="subjects" t-value="accountbalances[classe]['data'].keys()"/>
+                                <t t-foreach="subjects" t-as="subject">
+                                    <t t-foreach="accountbalances[classe]['data'][subject]['data']" t-as="record">
+                                        <tr>
+                                            <td class="text-left">
+                                                <span t-esc="record['semester_name']"/>
+                                            </td>
+                                            <td class="text-left">
+                                                <span t-esc="record['day_of_week']"/>
+                                            </td>
+                                            <td class="text-left">
+                                                <span t-esc="record['date_of_week']"/>
+                                            </td>
+                                            <td class="text-left">
+                                                <span t-esc="record['time_of_week']"/>
+                                            </td>
+                                            <td class="text-left">
+                                                <span t-esc="record['subject_name']"/>
+                                            </td>
+                                            <td class="text-left">
+                                                <span t-esc="record['rate']"/>
+                                            </td>
+                                            <td class="text-left">
+                                                <span t-esc="record['number_of_hours']"/>
+                                            </td>
+                                            <td class="text-left">
+                                                <span t-esc="record['amount']"/>
+                                            </td>
+                                        </tr>
+                                    </t>
+                                </t>
+                            </tbody>
+                            <tfooter>
+                                <tr>
+                                    <th class="text-left" colspan="1">Total heures</th>
+                                    <th class="text-left" colspan="7"><span t-esc="accountbalances[classe]['total_number_of_hours']"/></th>
+                                </tr>
+                                <tr>
+                                    <th class="text-left" colspan="1">Total montant</th>
+                                    <th class="text-left" colspan="7"><span t-esc="accountbalances[classe]['total_rate']"/></th>
+                                </tr>
+                                <tr>
+                                    <th class="text-left" colspan="8" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
+                                </tr>
+                            </tfooter>
                         </t>
-                    </tbody>
-                    <tfooter>
-                        <tr>
-                            <th class="text-left" colspan="9" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
-                        </tr>
-                        <tr>
-                            <th class="text-left" colspan="1">Total heures</th>
-                            <th class="text-left" colspan="8"><span t-esc="total_number_of_hours"/></th>
-                        </tr>
-                        <tr>
-                            <th class="text-left" colspan="1">Total montant</th>
-                            <th class="text-left" colspan="8"><span t-esc="total_rate"/></th>
-                        </tr>
-                    </tfooter>
+                    </t>
+                    <t t-else="">
+                        <tfooter>
+                            <tr>
+                                <th class="text-left" colspan="8" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
+                            </tr>
+                        </tfooter>
+                    </t>
                 </t>
             </t>
         </template>
@@ -659,54 +680,69 @@
                     <thead>
                         <tr class="active">
                             <th class="text-left">Cours</th>
-                            <th class="text-left">Classe</th>
                             <th class="text-left">Heures</th>
                             <th class="text-left">Heures effectuées</th>
                             <th class="text-left">Heures restantes</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <t t-set="classes" t-value="consumptionhours.keys()"/>
+                    <t t-set="classes" t-value="consumptionhours.keys()"/>
+                    <t t-if="len(classes) > 0">
                         <t t-foreach="classes" t-as="classe">
-                            <t t-set="subjects" t-value="consumptionhours[classe]['data'].keys()"/>
-                            <t t-foreach="subjects" t-as="subject">
-                                <tr>
-                                    <td class="text-left">
-                                        <span t-esc="consumptionhours[classe]['data'][subject]['name']"/>
-                                    </td>
-                                    <td class="text-left">
+                            <thead>
+                                <tr class="active">
+                                    <th class="text-left">
                                         <span t-esc="consumptionhours[classe]['name']"/>
-                                    </td>
-                                    <td class="text-left">
-                                        <span t-esc="consumptionhours[classe]['data'][subject]['data']['all']"/>
-                                    </td>
-                                    <td class="text-left">
-                                        <span t-esc="consumptionhours[classe]['data'][subject]['data']['done']"/>
-                                    </td>
-                                    <td class="text-left">
-                                        <span t-esc="consumptionhours[classe]['data'][subject]['data']['awaiting']"/>
-                                    </td>
+                                    </th>
+                                    <th class="text-left" colspan="3">
+                                        <span t-esc="'Empty'" style="visibility: hidden;"/>
+                                    </th>
                                 </tr>
-                            </t>
+                            </thead>
+                            <tbody>
+                                <t t-set="subjects" t-value="consumptionhours[classe]['data'].keys()"/>
+                                <t t-foreach="subjects" t-as="subject">
+                                    <tr>
+                                        <td class="text-left">
+                                            <span t-esc="consumptionhours[classe]['data'][subject]['name']"/>
+                                        </td>
+                                        <td class="text-left">
+                                            <span t-esc="consumptionhours[classe]['data'][subject]['data']['all']"/>
+                                        </td>
+                                        <td class="text-left">
+                                            <span t-esc="consumptionhours[classe]['data'][subject]['data']['done']"/>
+                                        </td>
+                                        <td class="text-left">
+                                            <span t-esc="consumptionhours[classe]['data'][subject]['data']['awaiting']"/>
+                                        </td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                            <tfooter>
+                                <tr>
+                                    <th class="text-left" colspan="1">Total heures</th>
+                                    <th class="text-left" colspan="3"><span t-esc="consumptionhours[classe]['total_all']"/></th>
+                                </tr>
+                                <tr>
+                                    <th class="text-left" colspan="1">Total heures effectuées</th>
+                                    <th class="text-left" colspan="3"><span t-esc="consumptionhours[classe]['total_done']"/></th>
+                                </tr>
+                                <tr>
+                                    <th class="text-left" colspan="1">Total heures restantes</th>
+                                    <th class="text-left" colspan="3"><span t-esc="consumptionhours[classe]['total_awaiting']"/></th>
+                                </tr>
+                                <tr>
+                                    <th class="text-left" colspan="4" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
+                                </tr>
+                            </tfooter>
                         </t>
-                    </tbody>
-                    <tfooter>
-                        <tr>
-                            <th class="text-left" colspan="5" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
-                        </tr>
-                        <tr>
-                            <th class="text-left" colspan="1">Total heures</th>
-                            <th class="text-left" colspan="4"><span t-esc="total_all"/></th>
-                        </tr>
-                        <tr>
-                            <th class="text-left" colspan="1">Total heures effectuées</th>
-                            <th class="text-left" colspan="4"><span t-esc="total_done"/></th>
-                        </tr>
-                        <tr>
-                            <th class="text-left" colspan="1">Total heures restantes</th>
-                            <th class="text-left" colspan="4"><span t-esc="total_awaiting"/></th>
-                        </tr>
-                    </tfooter>
+                    </t>
+                    <t t-else="">
+                        <tfooter>
+                            <tr>
+                                <th class="text-left" colspan="4" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
+                            </tr>
+                        </tfooter>
+                    </t>
                 </t>
             </t>
         </template>
@@ -745,41 +781,50 @@
                 </t>
                 <t t-call="portal.portal_table">
                     <t t-set="classes" t-value="progressreports.keys()"/>
-                    <t t-foreach="classes" t-as="classe">
-                        <thead>
-                            <tr class="active">
-                                <th class="text-left">
-                                    <span t-esc="progressreports[classe]['name']"/>
-                                </th>
-                                <th class="text-left" colspan="2">
-                                    <span t-esc="'Empty'" style="visibility: hidden;"/>
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <t t-set="subjects" t-value="progressreports[classe]['data'].keys()"/>
-                            <t t-foreach="subjects" t-as="subject">
-                                <tr>
-                                    <td class="text-left">
-                                        <span t-esc="progressreports[classe]['data'][subject]['name']"/>
-                                    </td>
-                                    <td class="text-left">
-                                        <div>
-                                            <a t-attf-href="/my/subjectsession/{{ progressreports[classe]['data'][subject]['data']['all'][0]['class_id'] }}/{{ progressreports[classe]['data'][subject]['data']['all'][0]['subject_id'] }}/list" class="btn btn-primary btn-sm">Fiche de progression</a>
-                                        </div>
-                                    </td>
-                                    <td class="text-left">
-                                        <span t-esc="'Taux de consommation du volume horaire : ' + progressreports[classe]['data'][subject]['data']['percentage'] + '%'"/>
-                                    </td>
+                    <t t-if="len(classes) > 0">
+                        <t t-foreach="classes" t-as="classe">
+                            <thead>
+                                <tr class="active">
+                                    <th class="text-left">
+                                        <span t-esc="progressreports[classe]['name']"/>
+                                    </th>
+                                    <th class="text-left" colspan="2">
+                                        <span t-esc="'Empty'" style="visibility: hidden;"/>
+                                    </th>
                                 </tr>
-                            </t>
-                        </tbody>
+                            </thead>
+                            <tbody>
+                                <t t-set="subjects" t-value="progressreports[classe]['data'].keys()"/>
+                                <t t-foreach="subjects" t-as="subject">
+                                    <tr>
+                                        <td class="text-left">
+                                            <span t-esc="progressreports[classe]['data'][subject]['name']"/>
+                                        </td>
+                                        <td class="text-left">
+                                            <div>
+                                                <a t-attf-href="/my/subjectsession/{{ progressreports[classe]['data'][subject]['data']['all'][0]['class_id'] }}/{{ progressreports[classe]['data'][subject]['data']['all'][0]['subject_id'] }}/list" class="btn btn-primary btn-sm">Fiche de progression</a>
+                                            </div>
+                                        </td>
+                                        <td class="text-left">
+                                            <span t-esc="'Taux de consommation du volume horaire : ' + progressreports[classe]['data'][subject]['data']['percentage'] + '%'"/>
+                                        </td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                            <tfooter>
+                                <tr>
+                                    <th class="text-left" colspan="3" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
+                                </tr>
+                            </tfooter>
+                        </t>
                     </t>
-                    <tfooter>
-                        <tr>
-                            <th class="text-left" colspan="3" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
-                        </tr>
-                    </tfooter>
+                    <t t-else="">
+                        <tfooter>
+                            <tr>
+                                <th class="text-left" colspan="3" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
+                            </tr>
+                        </tfooter>
+                    </t>
                 </t>
             </t>
         </template>

@@ -354,9 +354,11 @@ class PortalAccount(portal.CustomerPortal):
             accountbalance['field_of_study_name'] = search_accountbalance.field_of_study_id.name
             accountbalance['specialty_name'] = search_accountbalance.specialty_id.name
             accountbalance['option_name'] = search_accountbalance.option_id.name
+            accountbalance['class_id'] = search_accountbalance.class_id.id
             accountbalance['class_name'] = search_accountbalance.class_id.name
             accountbalance['department_id'] = search_accountbalance.department_id.id
             accountbalance['department_name'] = search_accountbalance.department_id.name
+            accountbalance['subject_id'] = search_accountbalance.subject_id.id
             accountbalance['subject_name'] = search_accountbalance.subject_id.name
             accountbalance['subject_code'] = search_accountbalance.subject_id.code
             accountbalance['subject_shared_subject'] = '(TC)' if search_accountbalance.subject_id.shared_subject else ''
@@ -410,6 +412,7 @@ class PortalAccount(portal.CustomerPortal):
             accountbalances.append(accountbalance)
             total_rate += accountbalance['amount']
             total_number_of_hours += accountbalance['number_of_hours']
+        accountbalances = Helpers.format_accountbalance(accountbalances)
         return http.request.render('siantou_ems_portal.siantou_ems_portal_accountbalance_views',
                                 {
                                     'accountbalances': accountbalances,

@@ -568,6 +568,45 @@ class Helpers:
         return timetables
 
     @staticmethod
+    def format_accountbalance(data):
+        accountbalances = {}
+
+        sorted_data = copy.deepcopy(data)
+
+        for d in sorted_data:
+            key_class = '{}'.format(d['class_id'])
+            key_subject = '{}'.format(d['subject_id'])
+            if not key_class in accountbalances:
+                accountbalances[key_class] = {}
+                accountbalances[key_class]['name'] = d['class_name']
+                accountbalances[key_class]['data'] = {}
+                accountbalances[key_class]['data'][key_subject] = {}
+                accountbalances[key_class]['data'][key_subject]['name'] = d['subject_name']
+                accountbalances[key_class]['data'][key_subject]['data'] = []
+                accountbalances[key_class]['data'][key_subject]['data'].append(d)
+            else:
+                if not key_subject in accountbalances[key_class]['data']:
+                    accountbalances[key_class]['data'][key_subject] = {}
+                    accountbalances[key_class]['data'][key_subject]['name'] = d['subject_name']
+                    accountbalances[key_class]['data'][key_subject]['data'] = []
+                    accountbalances[key_class]['data'][key_subject]['data'].append(d)
+                else:
+                    accountbalances[key_class]['data'][key_subject]['data'].append(d)
+
+        for key_class in accountbalances.keys():
+            accountbalances[key_class]['total_rate'] = 0
+            accountbalances[key_class]['total_number_of_hours'] = 0
+            for key_subject in accountbalances[key_class]['data'].keys():
+                accountbalances[key_class]['data'][key_subject]['amount'] = sum([v['amount'] for v in accountbalances[key_class]['data'][key_subject]['data']])
+                accountbalances[key_class]['data'][key_subject]['number_of_hours'] = sum([v['number_of_hours'] for v in accountbalances[key_class]['data'][key_subject]['data']])
+                accountbalances[key_class]['total_rate'] += accountbalances[key_class]['data'][key_subject]['amount']
+                accountbalances[key_class]['total_number_of_hours'] += accountbalances[key_class]['data'][key_subject]['number_of_hours']
+
+        _logger.info(f'----------- tototototototo accountbalances {accountbalances} -----------')
+
+        return accountbalances
+
+    @staticmethod
     def format_consumptionhour(data):
         consumptionhours = {}
 
@@ -606,10 +645,16 @@ class Helpers:
                         consumptionhours[key_class]['data'][key_subject]['data']['done'].append(d)
 
         for key_class in consumptionhours.keys():
+            consumptionhours[key_class]['total_all'] = 0
+            consumptionhours[key_class]['total_done'] = 0
+            consumptionhours[key_class]['total_awaiting'] = 0
             for key_subject in consumptionhours[key_class]['data'].keys():
                 consumptionhours[key_class]['data'][key_subject]['data']['all'] = sum([Helpers.convert_number_of_hours(v) for v in consumptionhours[key_class]['data'][key_subject]['data']['all']])
                 consumptionhours[key_class]['data'][key_subject]['data']['done'] = sum([Helpers.convert_number_of_hours(v) for v in consumptionhours[key_class]['data'][key_subject]['data']['done']])
                 consumptionhours[key_class]['data'][key_subject]['data']['awaiting'] = consumptionhours[key_class]['data'][key_subject]['data']['all'] - consumptionhours[key_class]['data'][key_subject]['data']['done']
+                consumptionhours[key_class]['total_all'] += consumptionhours[key_class]['data'][key_subject]['data']['all']
+                consumptionhours[key_class]['total_done'] += consumptionhours[key_class]['data'][key_subject]['data']['done']
+                consumptionhours[key_class]['total_awaiting'] += consumptionhours[key_class]['data'][key_subject]['data']['awaiting']
 
         _logger.info(f'----------- tototototototo consumptionhours {consumptionhours} -----------')
 
