@@ -627,6 +627,9 @@
                                     <th class="text-left" colspan="1">Total montant</th>
                                     <th class="text-left" colspan="7"><span t-esc="accountbalances[classe]['total_rate']"/></th>
                                 </tr>
+                                <tr>
+                                    <th class="text-left" colspan="8" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
+                                </tr>
                             </tfooter>
                         </t>
                     </t>
@@ -726,6 +729,9 @@
                                 <tr>
                                     <th class="text-left" colspan="1">Total heures restantes</th>
                                     <th class="text-left" colspan="3"><span t-esc="consumptionhours[classe]['total_awaiting']"/></th>
+                                </tr>
+                                <tr>
+                                    <th class="text-left" colspan="4" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
                                 </tr>
                             </tfooter>
                         </t>
