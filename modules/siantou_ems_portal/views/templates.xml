@@ -949,7 +949,7 @@
                                     <div class="row mb-3" style="width: 100%">
                                         <div class="col-6">
                                             <label class="form-label">Description</label>
-                                            <input id="description" type="text" class="form-control" name="description" t-att-value="description"/>
+                                            <textarea id="description" class="form-control" name="description" rows="4" t-att-value="description"/>
                                         </div>
                                     </div>
                                     <div class="row mb-3" style="width: 100%">
@@ -1035,7 +1035,7 @@
                                     <div class="row mb-3" style="width: 100%">
                                         <div class="col-6">
                                             <label class="form-label">Description</label>
-                                            <input id="description" type="text" class="form-control" name="description" t-att-value="description"/>
+                                            <textarea id="description" class="form-control" name="description" rows="4" t-att-value="description"/>
                                         </div>
                                     </div><br/>
                                     <div class="row mb-3" style="width: 100%">
