@@ -308,7 +308,7 @@ class HrPayslip(models.Model):
                         weekly_hours_credit = weekly_hours_credit.total_seconds() / 3600.0
                         weekly_hours_credit = round(weekly_hours_credit, 2)
                         self.env['hr.payslip.worked_days'].create({
-                            'name': 'Journée du {} {} {}, {}'.format(CURRENT_WEEKDAY[employee_timetable.day_of_week], datetime.strftime(datetime_from, DATETIME_FORMAT_FR), datetime.strftime(datetime_to, TIME_FORMAT_FR), employee_timetable.subject_id.name),
+                            'name': '{} {} {}, {}'.format(CURRENT_WEEKDAY[employee_timetable.day_of_week], datetime.strftime(datetime_from, DATETIME_FORMAT_FR), datetime.strftime(datetime_to, TIME_FORMAT_FR), employee_timetable.subject_id.name),
                             'payslip_id': payslip_id.id,
                             'code': payslip_id.code,
                             'number_of_days': 1,
@@ -327,7 +327,7 @@ class HrPayslip(models.Model):
                         weekly_hours_credit = round(weekly_hours_credit, 2)
                         timetable_message = 'Exception'
                         self.env['hr.payslip.worked_days'].create({
-                            'name': 'Journée du {} {} {}, {}, {}'.format(CURRENT_WEEKDAY[employee_timetable.day_of_week], datetime.strftime(datetime_from, DATETIME_FORMAT_FR), datetime.strftime(datetime_to, TIME_FORMAT_FR), employee_timetable.subject_id.name, timetable_message),
+                            'name': '{} {} {}, {}, {}'.format(CURRENT_WEEKDAY[employee_timetable.day_of_week], datetime.strftime(datetime_from, DATETIME_FORMAT_FR), datetime.strftime(datetime_to, TIME_FORMAT_FR), employee_timetable.subject_id.name, timetable_message),
                             'payslip_id': payslip_id.id,
                             'code': payslip_id.code,
                             'number_of_days': 1,
@@ -357,7 +357,7 @@ class HrPayslip(models.Model):
                         worked_hours[punching_day] = worked_hours[punching_day].total_seconds() / 3600.0
                         worked_hours[punching_day] = round(worked_hours[punching_day], 2)
                         self.env['hr.payslip.worked_days'].create({
-                            'name': 'Journée du {} {}'.format(CURRENT_WEEKDAY[str(punching_time.weekday())], datetime.strftime(HrPayslip.convert_datetime_from_utc(punching_time), DATETIME_FORMAT_FR)),
+                            'name': '{} {}'.format(CURRENT_WEEKDAY[str(punching_time.weekday())], datetime.strftime(HrPayslip.convert_datetime_from_utc(punching_time), DATETIME_FORMAT_FR)),
                             'payslip_id': payslip_id.id,
                             'code': payslip_id.code,
                             'number_of_days': 1,
@@ -808,54 +808,60 @@ class HrPayslip(models.Model):
         sorted_rule_ids = [id for id, sequence in sorted(rule_ids, key=lambda x:x[1])]
         sorted_rules = self.env['hr.salary.rule'].browse(sorted_rule_ids)
 
-        for contract in contracts:
-            employee = contract.employee_id
-            localdict = dict(baselocaldict, employee=employee, contract=contract)
-            for rule in sorted_rules:
-                key = rule.code + '-' + str(contract.id)
-                localdict['result'] = None
-                localdict['result_qty'] = 1.0
-                localdict['result_rate'] = 100
-                #check if the rule can be applied
-                if rule._satisfy_condition(localdict) and rule.id not in blacklist:
-                    #compute the amount of the rule
-                    amount, qty, rate = rule._compute_rule(localdict)
-                    #check if there is already a rule computed with that code
-                    previous_amount = rule.code in localdict and localdict[rule.code] or 0.0
-                    #set/overwrite the amount computed for this rule in the localdict
-                    tot_rule = contract.company_id.currency_id.round(amount * qty * rate / 100.0)
-                    localdict[rule.code] = tot_rule
-                    rules_dict[rule.code] = rule
-                    #sum the amount for its salary category
-                    localdict = _sum_salary_rule_category(localdict, rule.category_id, tot_rule - previous_amount)
-                    #create/overwrite the rule in the temporary results
-                    result_dict[key] = {
-                        'salary_rule_id': rule.id,
-                        'contract_id': contract.id,
-                        'name': rule.name,
-                        'code': rule.code,
-                        'category_id': rule.category_id.id,
-                        'sequence': rule.sequence,
-                        'appears_on_payslip': rule.appears_on_payslip,
-                        'condition_select': rule.condition_select,
-                        'condition_python': rule.condition_python,
-                        'condition_range': rule.condition_range,
-                        'condition_range_min': rule.condition_range_min,
-                        'condition_range_max': rule.condition_range_max,
-                        'amount_select': rule.amount_select,
-                        'amount_fix': rule.amount_fix,
-                        'amount_python_compute': rule.amount_python_compute,
-                        'amount_percentage': rule.amount_percentage,
-                        'amount_percentage_base': rule.amount_percentage_base,
-                        'register_id': rule.register_id.id,
-                        'amount': amount,
-                        'employee_id': contract.employee_id.id,
-                        'quantity': qty,
-                        'rate': rate,
-                    }
-                else:
-                    #blacklist this rule and its children
-                    blacklist += [id for id, seq in rule._recursive_search_of_rules()]
+        if payslip.employee_id.id:
+            if payslip.employee_id.is_teacher:
+                pass
+                # if payslip.employee_id.is_permanent:
+                #     pass
+            else:
+                for contract in contracts:
+                    employee = contract.employee_id
+                    localdict = dict(baselocaldict, employee=employee, contract=contract)
+                    for rule in sorted_rules:
+                        key = rule.code + '-' + str(contract.id)
+                        localdict['result'] = None
+                        localdict['result_qty'] = 1.0
+                        localdict['result_rate'] = 100
+                        #check if the rule can be applied
+                        if rule._satisfy_condition(localdict) and rule.id not in blacklist:
+                            #compute the amount of the rule
+                            amount, qty, rate = rule._compute_rule(localdict)
+                            #check if there is already a rule computed with that code
+                            previous_amount = rule.code in localdict and localdict[rule.code] or 0.0
+                            #set/overwrite the amount computed for this rule in the localdict
+                            tot_rule = contract.company_id.currency_id.round(amount * qty * rate / 100.0)
+                            localdict[rule.code] = tot_rule
+                            rules_dict[rule.code] = rule
+                            #sum the amount for its salary category
+                            localdict = _sum_salary_rule_category(localdict, rule.category_id, tot_rule - previous_amount)
+                            #create/overwrite the rule in the temporary results
+                            result_dict[key] = {
+                                'salary_rule_id': rule.id,
+                                'contract_id': contract.id,
+                                'name': rule.name,
+                                'code': rule.code,
+                                'category_id': rule.category_id.id,
+                                'sequence': rule.sequence,
+                                'appears_on_payslip': rule.appears_on_payslip,
+                                'condition_select': rule.condition_select,
+                                'condition_python': rule.condition_python,
+                                'condition_range': rule.condition_range,
+                                'condition_range_min': rule.condition_range_min,
+                                'condition_range_max': rule.condition_range_max,
+                                'amount_select': rule.amount_select,
+                                'amount_fix': rule.amount_fix,
+                                'amount_python_compute': rule.amount_python_compute,
+                                'amount_percentage': rule.amount_percentage,
+                                'amount_percentage_base': rule.amount_percentage_base,
+                                'register_id': rule.register_id.id,
+                                'amount': amount,
+                                'employee_id': contract.employee_id.id,
+                                'quantity': qty,
+                                'rate': rate,
+                            }
+                        else:
+                            #blacklist this rule and its children
+                            blacklist += [id for id, seq in rule._recursive_search_of_rules()]
 
         return list(result_dict.values())
 
