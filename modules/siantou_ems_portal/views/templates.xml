@@ -782,7 +782,7 @@
                 <t t-call="portal.portal_table">
                     <thead>
                         <tr class="active">
-                            <th class="text-left"></th>
+                            <th class="text-left">Cours</th>
                             <th class="text-left" colspan="2" style="text-align: right;">Taux de consommation du volume horaire</th>
                         </tr>
                     </thead>
