@@ -314,6 +314,7 @@ class HrPayslip(models.Model):
                             'number_of_days': 1,
                             'number_of_hours': weekly_hours_credit,
                             'contract_id': payslip_id.contract_id.id,
+                            'timetable_id': employee_timetable.id,
                         })
                     else:
                         end_time = HrPayslip.convert_float_to_time(employee_timetable.end_time)
@@ -332,6 +333,7 @@ class HrPayslip(models.Model):
                             'number_of_days': 1,
                             'number_of_hours': weekly_hours_credit,
                             'contract_id': payslip_id.contract_id.id,
+                            'timetable_id': employee_timetable.id,
                         })
                 # if payslip_id.employee_id.is_permanent:
                 #     pass
@@ -473,18 +475,17 @@ class HrPayslip(models.Model):
             punching_time = daily_attendance.punching_time
 
             if daily_attendance.employee_id.id:
-                employee_id = daily_attendance.employee_id
-                if employee_id.is_teacher:
+                if daily_attendance.employee_id.is_teacher:
                     # employee_timetables = self.env['siantou.ems.timetable.timetable'].sudo().search([
                     #     ('group_id.is_active', '=', True),
                     #     ('group_id.is_submit', '=', False),
-                    #     ('employee_id', '=', employee_id.id),
+                    #     ('employee_id', '=', daily_attendance.employee_id.id),
                     #     ('status', '=', 'pending'),
                     # ], order='date asc').filtered(lambda rec: (UTC_TZ.localize(punching_time) >= HrPayslip.convert_datetime_to_utc(datetime.strptime(f"{rec.date} {HrPayslip.convert_float_to_time(rec.start_time)}', DATETIME_FORMAT) - timedelta(minutes=15)) and UTC_TZ.localize(punching_time) <= HrPayslip.convert_datetime_to_utc(datetime.strptime(f'{rec.date} {HrPayslip.convert_float_to_time(rec.start_time)}', DATETIME_FORMAT) + timedelta(minutes=15))) or (UTC_TZ.localize(punching_time) >= HrPayslip.convert_datetime_to_utc(datetime.strptime(f'{rec.date} {HrPayslip.convert_float_to_time(rec.end_time)}', DATETIME_FORMAT)) and UTC_TZ.localize(punching_time) <= HrPayslip.convert_datetime_to_utc(datetime.strptime(f'{rec.date} {HrPayslip.convert_float_to_time(rec.end_time)}", DATETIME_FORMAT) + timedelta(minutes=15))))
                     employee_timetables = self.env['siantou.ems.timetable.timetable'].sudo().search([
                         ('group_id.is_active', '=', True),
                         ('group_id.is_submit', '=', False),
-                        ('employee_id', '=', employee_id.id),
+                        ('employee_id', '=', daily_attendance.employee_id.id),
                         ('status', '=', 'pending'),
                     ], order='date asc').filtered(lambda rec: self.search_filtered_daily_attendance_teacher(rec, punching_time))
                     employee_timetables = list(employee_timetables)
@@ -498,14 +499,14 @@ class HrPayslip(models.Model):
                         timetable_notifications = self.env['siantou.ems.timetable.notification'].sudo().search([
                             ('template', '=', template),
                             ('attendance_id', '=', daily_attendance.id),
-                            ('employee_id', '=', employee_id.id),
+                            ('employee_id', '=', daily_attendance.employee_id.id),
                         ])
                         timetable_notifications = list(timetable_notifications)
                         if len(timetable_notifications) == 0:
                             self.env['siantou.ems.timetable.notification'].sudo().create({
                                 'template': template,
                                 'attendance_id': daily_attendance.id,
-                                'employee_id': employee_id.id,
+                                'employee_id': daily_attendance.employee_id.id,
                                 'date': daily_attendance.punching_time.date(),
                                 'message': message,
                             })
@@ -992,7 +993,13 @@ class HrPayslipLine(models.Model):
     @api.depends('quantity', 'amount', 'rate')
     def _compute_total(self):
         for record in self:
-            record.total = float(record.quantity) * record.amount * record.rate / 100
+            if record.slip_id.employee_id.id:
+                if record.slip_id.employee_id.is_teacher:
+                    record.total = float(record.quantity) * record.amount * record.rate / 100
+                    # if record.slip_id.employee_id.is_permanent:
+                    #     pass
+                else:
+                    record.total = float(record.quantity) * record.amount * record.rate / 100
 
     @api.model_create_multi
     def create(self, vals_list):
@@ -1018,6 +1025,7 @@ class HrPayslipWorkedDays(models.Model):
     number_of_hours = fields.Float(string='Number of Hours')
     contract_id = fields.Many2one('hr.contract', string='Contract', required=True,
         help="The contract for which applied this input")
+    timetable_id = fields.Many2one('siantou.ems.timetable.timetable', string='Emploi du temps')
 
 class HrPayslipInput(models.Model):
     _name = 'hr.payslip.input'
