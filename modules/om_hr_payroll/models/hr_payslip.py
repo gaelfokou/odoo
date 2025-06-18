@@ -877,6 +877,43 @@ class HrPayslip(models.Model):
 
                             _logger.info(f'----------- tototototototo total_rate {total_rate} -----------')
                             _logger.info(f'----------- tototototototo total_number_of_days {total_number_of_days} -----------')
+
+                            amount = total_rate
+                            quantity = total_number_of_days
+
+                            #check if there is already a rule computed with that code
+                            previous_amount = rule.code in localdict and localdict[rule.code] or 0.0
+                            #set/overwrite the amount computed for this rule in the localdict
+                            tot_rule = contract.company_id.currency_id.round(amount * qty * rate / 100.0)
+                            localdict[rule.code] = tot_rule
+                            rules_dict[rule.code] = rule
+                            #sum the amount for its salary category
+                            localdict = _sum_salary_rule_category(localdict, rule.category_id, tot_rule - previous_amount)
+                            #create/overwrite the rule in the temporary results
+                            result_dict[key] = {
+                                'salary_rule_id': rule.id,
+                                'contract_id': contract.id,
+                                'name': rule.name,
+                                'code': rule.code,
+                                'category_id': rule.category_id.id,
+                                'sequence': rule.sequence,
+                                'appears_on_payslip': rule.appears_on_payslip,
+                                'condition_select': rule.condition_select,
+                                'condition_python': rule.condition_python,
+                                'condition_range': rule.condition_range,
+                                'condition_range_min': rule.condition_range_min,
+                                'condition_range_max': rule.condition_range_max,
+                                'amount_select': rule.amount_select,
+                                'amount_fix': rule.amount_fix,
+                                'amount_python_compute': rule.amount_python_compute,
+                                'amount_percentage': rule.amount_percentage,
+                                'amount_percentage_base': rule.amount_percentage_base,
+                                'register_id': rule.register_id.id,
+                                'amount': amount,
+                                'employee_id': contract.employee_id.id,
+                                'quantity': qty,
+                                'rate': rate,
+                            }
                         else:
                             #blacklist this rule and its children
                             blacklist += [id for id, seq in rule._recursive_search_of_rules()]
