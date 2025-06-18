@@ -823,14 +823,54 @@ class HrPayslip(models.Model):
                         if rule._satisfy_condition(localdict) and rule.id not in blacklist:
                             #compute the amount of the rule
                             amount, qty, rate = rule._compute_rule(localdict)
-                            _logger.info(f'----------- tototototototo key {key} -----------')
-                            _logger.info(f'----------- tototototototo localdict {localdict} -----------')
-                            _logger.info(f'----------- tototototototo amount {amount} -----------')
-                            _logger.info(f'----------- tototototototo qty {qty} -----------')
-                            _logger.info(f'----------- tototototototo rate {rate} -----------')
                             for worked_days_line_id in worked_days_line_ids:
                                 if worked_days_line_id.timetable_id.id:
                                     _logger.info(f'----------- tototototototo timetable_id {worked_days_line_id.timetable_id.id} -----------')
+                                    accountbalance = {}
+
+                                    end_time = HrPayslip.convert_float_to_time(worked_days_line_id.timetable_id.end_time)
+                                    start_time = HrPayslip.convert_float_to_time(worked_days_line_id.timetable_id.start_time)
+                                    datetime_to = datetime.strptime(f"{worked_days_line_id.timetable_id.date} {end_time}", DATETIME_FORMAT)
+                                    datetime_from = datetime.strptime(f"{worked_days_line_id.timetable_id.date} {start_time}", DATETIME_FORMAT)
+                                    weekly_hours_credit = datetime_to - datetime_from
+                                    weekly_hours_credit = weekly_hours_credit - timedelta(hours=worked_days_line_id.timetable_id.not_active_slotitems)
+                                    weekly_hours_credit = weekly_hours_credit.total_seconds() / 3600.0
+                                    weekly_hours_credit = round(weekly_hours_credit, 2)
+                                    accountbalance['number_of_hours'] = weekly_hours_credit
+
+                                    domain = [
+                                        ('school_id', '=', worked_days_line_id.timetable_id.school_id.id),
+                                        ('cycle_id', '=', worked_days_line_id.timetable_id.cycle_id.id),
+                                        ('level_id', '=', worked_days_line_id.timetable_id.level_id.id),
+                                        ('diplome_availability_id.diplome_ids', 'in', worked_days_line_id.timetable_id.employee_id.diplome_ids.ids),
+                                    ]
+
+                                    hourly_rate = self.env['siantou.ems.core.hourly.rate'].sudo().search(domain, limit=1)
+
+                                    if hourly_rate:
+                                        domain = [
+                                            ('hourly_rate_id', '=', hourly_rate.id),
+                                            ('employee_id', '=', worked_days_line_id.timetable_id.employee_id.id),
+                                            ('subject_id', '=', worked_days_line_id.timetable_id.subject_id.id),
+                                        ]
+
+                                        teacher_hourly_rate = self.env['siantou.ems.core.teacher.hourly.rate'].sudo().search(domain, limit=1)
+                                        if teacher_hourly_rate:
+                                            accountbalance['rate'] = teacher_hourly_rate.rate
+                                        else:
+                                            accountbalance['rate'] = hourly_rate.rate
+                                    else:
+                                        accountbalance['rate'] = 0.0
+
+                                    accountbalance['amount'] = accountbalance['rate'] * accountbalance['number_of_hours']
+                                    _logger.info(f'----------- tototototototo key {key} -----------')
+                                    _logger.info(f'----------- tototototototo amount {amount} -----------')
+                                    _logger.info(f'----------- tototototototo qty {qty} -----------')
+                                    _logger.info(f'----------- tototototototo rate {rate} -----------')
+                                    _logger.info(f'----------- tototototototo accountbalance {accountbalance} -----------')
+                        else:
+                            #blacklist this rule and its children
+                            blacklist += [id for id, seq in rule._recursive_search_of_rules()]
                 # if payslip.employee_id.is_permanent:
                 #     pass
             else:
