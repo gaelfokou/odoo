@@ -823,6 +823,8 @@ class HrPayslip(models.Model):
                         if rule._satisfy_condition(localdict) and rule.id not in blacklist:
                             #compute the amount of the rule
                             amount, qty, rate = rule._compute_rule(localdict)
+                            total_rate = 0.0
+                            total_number_of_days = 0.0
                             for worked_days_line_id in worked_days_line_ids:
                                 if worked_days_line_id.timetable_id.id:
                                     _logger.info(f'----------- tototototototo timetable_id {worked_days_line_id.timetable_id.id} -----------')
@@ -863,11 +865,18 @@ class HrPayslip(models.Model):
                                         accountbalance['rate'] = 0.0
 
                                     accountbalance['amount'] = accountbalance['rate'] * accountbalance['number_of_hours']
+
                                     _logger.info(f'----------- tototototototo key {key} -----------')
                                     _logger.info(f'----------- tototototototo amount {amount} -----------')
                                     _logger.info(f'----------- tototototototo qty {qty} -----------')
                                     _logger.info(f'----------- tototototototo rate {rate} -----------')
                                     _logger.info(f'----------- tototototototo accountbalance {accountbalance} -----------')
+
+                                    total_rate += accountbalance['amount']
+                                    total_number_of_days += worked_days_line_id.number_of_days
+
+                            _logger.info(f'----------- tototototototo total_rate {total_rate} -----------')
+                            _logger.info(f'----------- tototototototo total_number_of_days {total_number_of_days} -----------')
                         else:
                             #blacklist this rule and its children
                             blacklist += [id for id, seq in rule._recursive_search_of_rules()]
