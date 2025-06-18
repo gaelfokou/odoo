@@ -810,6 +810,7 @@ class HrPayslip(models.Model):
 
         if payslip.employee_id.id:
             if payslip.employee_id.is_teacher:
+                worked_days_line_ids = payslip.worked_days_line_ids
                 for contract in contracts:
                     employee = contract.employee_id
                     localdict = dict(baselocaldict, employee=employee, contract=contract)
@@ -826,6 +827,9 @@ class HrPayslip(models.Model):
                             _logger.info(f'----------- tototototototo amount {amount} -----------')
                             _logger.info(f'----------- tototototototo qty {qty} -----------')
                             _logger.info(f'----------- tototototototo rate {rate} -----------')
+                            for worked_days_line_id in worked_days_line_ids:
+                                if worked_days_line_id.timetable_id.id:
+                                    _logger.info(f'----------- tototototototo timetable_id {worked_days_line_id.timetable_id.id} -----------')
                 # if payslip.employee_id.is_permanent:
                 #     pass
             else:
