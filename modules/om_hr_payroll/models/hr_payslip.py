@@ -824,6 +824,7 @@ class HrPayslip(models.Model):
                             #compute the amount of the rule
                             amount, qty, rate = rule._compute_rule(localdict)
                             _logger.info(f'----------- tototototototo key {key} -----------')
+                            _logger.info(f'----------- tototototototo localdict {localdict} -----------')
                             _logger.info(f'----------- tototototototo amount {amount} -----------')
                             _logger.info(f'----------- tototototototo qty {qty} -----------')
                             _logger.info(f'----------- tototototototo rate {rate} -----------')
