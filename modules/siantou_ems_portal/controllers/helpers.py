@@ -388,10 +388,31 @@ class Helpers:
         order = 'date asc'
 
         search_subjectsessions = []
+        user = None
+        is_user = None
+        if http.request.env.user.employee_id.id:
+            user = http.request.env.user.employee_id
+            if http.request.env.user.employee_id.is_teacher:
+                is_user = 'is_teacher'
+            else:
+                is_user = 'is_employee'
+        elif http.request.env.user.student_id.id:
+            user = http.request.env.user.student_id
+            is_user = 'is_student'
+        if user:
+            if is_user == 'is_teacher':
+                user = http.request.env.user.employee_id
+                search_domain.append(('employee_id', '=', user.id))
 
-        subjectsessions = http.request.env['siantou.ems.timetable.timetable'].sudo().search(search_domain, order=order)
-        subjectsessions = list(subjectsessions)
-        search_subjectsessions = subjectsessions
+                subjectsessions = http.request.env['siantou.ems.timetable.timetable'].sudo().search(search_domain, order=order)
+                subjectsessions = list(subjectsessions)
+                search_subjectsessions = subjectsessions
+            elif is_user == 'is_student':
+                search_domain.append(('class_id', '=', user.class_id.id))
+
+                subjectsessions = http.request.env['siantou.ems.timetable.timetable'].sudo().search(search_domain, order=order)
+                subjectsessions = list(subjectsessions)
+                search_subjectsessions = subjectsessions
 
         _logger.info(f'----------- tototototototo search_subjectsessions {search_subjectsessions} -----------')
 
