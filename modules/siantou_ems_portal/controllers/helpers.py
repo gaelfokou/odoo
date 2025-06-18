@@ -10,7 +10,6 @@ from dateutil.relativedelta import relativedelta
 import pytz
 import logging
 import copy
-import calendar
 
 DATE_FORMAT = '%Y-%m-%d'
 DATE_FORMAT_FR = '%d/%m/%Y'
@@ -206,9 +205,8 @@ class Helpers:
                 search_domain.append(('employee_id', '=', user.id))
 
                 accountbalances = http.request.env['siantou.ems.timetable.timetable'].sudo().search(search_domain, order=order)
-                date_today = date.today()
-                start_date = date_today.replace(day=1)
-                end_date = date_today.replace(day=calendar.monthrange(date_today.year, date_today.month)[1])
+                start_date = date.today().replace(day=1)
+                end_date = (datetime.now() + relativedelta(months=+1, day=1, days=-1)).date()
                 if start_date and end_date:
                     accountbalances = accountbalances.filtered(lambda rec: rec.date >= start_date and rec.date <= end_date)
                 accountbalances = list(accountbalances)
