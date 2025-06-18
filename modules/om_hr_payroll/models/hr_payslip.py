@@ -810,7 +810,22 @@ class HrPayslip(models.Model):
 
         if payslip.employee_id.id:
             if payslip.employee_id.is_teacher:
-                pass
+                for contract in contracts:
+                    employee = contract.employee_id
+                    localdict = dict(baselocaldict, employee=employee, contract=contract)
+                    for rule in sorted_rules:
+                        key = rule.code + '-' + str(contract.id)
+                        localdict['result'] = None
+                        localdict['result_qty'] = 1.0
+                        localdict['result_rate'] = 100
+                        #check if the rule can be applied
+                        if rule._satisfy_condition(localdict) and rule.id not in blacklist:
+                            #compute the amount of the rule
+                            amount, qty, rate = rule._compute_rule(localdict)
+                            _logger.info(f'----------- tototototototo key {key} -----------')
+                            _logger.info(f'----------- tototototototo amount {amount} -----------')
+                            _logger.info(f'----------- tototototototo qty {qty} -----------')
+                            _logger.info(f'----------- tototototototo rate {rate} -----------')
                 # if payslip.employee_id.is_permanent:
                 #     pass
             else:
