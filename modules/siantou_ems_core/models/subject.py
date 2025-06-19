@@ -419,8 +419,9 @@ class SubjectSession(models.Model):
     _description = 'Session de cours'
 
     name = fields.Char(
-        string='Session',
-        required=True
+        string='Séance',
+        compute='_compute_name',
+        store=True,
     )
 
     description = fields.Text(
@@ -442,6 +443,32 @@ class SubjectSession(models.Model):
     )
 
     timetable_id_domain = fields.Binary(compute='_compute_class_domain', default=[])
+
+    @api.depends('timetable_id', 'report_id')
+    def _compute_name(self):
+        for record in self:
+            sessions = self.env['siantou.ems.core.subject.session'].search([
+                ('timetable_id', '=', record.timetable_id.id),
+                ('report_id', '=', record.report_id.id),
+            ])
+            sessions = list(sessions)
+            sessions = len(sessions)
+            sessions += 1
+            name = 'Séance {}'.format(sessions)
+            record.name = name
+
+    @api.onchange('timetable_id', 'report_id')
+    def _onchange_name(self):
+        for record in self:
+            sessions = self.env['siantou.ems.core.subject.session'].search([
+                ('timetable_id', '=', record.timetable_id.id),
+                ('report_id', '=', record.report_id.id),
+            ])
+            sessions = list(sessions)
+            sessions = len(sessions)
+            sessions += 1
+            name = 'Séance {}'.format(sessions)
+            record.name = name
 
     @api.depends('report_id')
     def _compute_class_domain(self):
