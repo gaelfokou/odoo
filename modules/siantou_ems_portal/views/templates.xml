@@ -989,7 +989,7 @@
                                     <div class="row mb-3" style="width: 100%">
                                         <div class="col-6">
                                             <label class="form-label">Séance</label>
-                                            <input id="name" type="text" class="form-control" name="name" t-att-value="name" required="1"/>
+                                            <input id="name" type="text" class="form-control" name="name" t-att-value="name" readonly="1"/>
                                         </div>
                                     </div>
                                     <div class="row mb-3" style="width: 100%">
@@ -1075,7 +1075,7 @@
                                     <div class="row mb-3" style="width: 100%">
                                         <div class="col-6">
                                             <label class="form-label">Séance</label>
-                                            <input id="name" type="text" class="form-control" name="name" t-att-value="name" required="1"/>
+                                            <input id="name" type="text" class="form-control" name="name" t-att-value="name" readonly="1"/>
                                         </div>
                                     </div>
                                     <div class="row mb-3" style="width: 100%">

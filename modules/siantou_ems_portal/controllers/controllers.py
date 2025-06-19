@@ -710,12 +710,12 @@ class PortalAccount(portal.CustomerPortal):
         params = {}
         params['class_id'] = class_id.id
         params['subject_id'] = subject_id.id
-        if not kw.get('name'):
-            return http.request.redirect('/my/subjectsession/{}/{}/new'.format(params['class_id'], params['subject_id']))
+        # if not kw.get('name'):
+        #     return http.request.redirect('/my/subjectsession/{}/{}/new'.format(params['class_id'], params['subject_id']))
         if not kw.get('timetable'):
             return http.request.redirect('/my/subjectsession/{}/{}/new'.format(params['class_id'], params['subject_id']))
         vals = {
-            'name': kw.get('name'),
+            # 'name': kw.get('name'),
             'description': kw.get('description'),
             'timetable_id': int(kw.get('timetable')),
         }
@@ -839,10 +839,10 @@ class PortalAccount(portal.CustomerPortal):
         params['class_id'] = class_id.id
         params['subject_id'] = subject_id.id
         params['session_id'] = session_id.id
-        if not kw.get('name'):
-            return http.request.redirect('/my/subjectsession/{}/{}/{}/edit'.format(params['class_id'], params['subject_id'], params['session_id']))
+        # if not kw.get('name'):
+        #     return http.request.redirect('/my/subjectsession/{}/{}/{}/edit'.format(params['class_id'], params['subject_id'], params['session_id']))
         vals = {
-            'name': kw.get('name'),
+            # 'name': kw.get('name'),
             'description': kw.get('description'),
         }
         session_id.sudo().write(vals)
