@@ -35,7 +35,7 @@
                             </group>
                         </group>
                         <notebook>
-                            <page name="name" string="Sessions de cours">
+                            <page name="name" string="Séances de cours">
                                 <field name="session_ids" widget="one2many_list">
                                     <tree create="0" editable="bottom">
                                         <field name="name"/>

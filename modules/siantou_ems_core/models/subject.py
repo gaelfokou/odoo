@@ -242,7 +242,7 @@ class ProgressReport(models.Model):
     session_ids = fields.One2many(
         'siantou.ems.core.subject.session',
         'report_id',
-        'Sessions de cours'
+        'Séances de cours'
     )
 
     percentage = fields.Float(compute='_compute_percentage', store=True, string='Taux de consommation du volume horaire')
@@ -416,7 +416,7 @@ class ProgressReport(models.Model):
 
 class SubjectSession(models.Model):
     _name = 'siantou.ems.core.subject.session'
-    _description = 'Session de cours'
+    _description = 'Séance de cours'
 
     name = fields.Char(
         string='Séance',

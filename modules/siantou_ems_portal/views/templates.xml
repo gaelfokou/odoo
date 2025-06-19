@@ -878,7 +878,7 @@
                     <thead>
                         <tr class="active">
                             <th class="text-left">Date</th>
-                            <th class="text-left">Session</th>
+                            <th class="text-left">Séance</th>
                             <th class="text-left">Description</th>
                             <th class="text-left">Taux de consommation du volume horaire</th>
                             <th class="text-left">Statut</th>
@@ -988,7 +988,7 @@
                                     <input type="hidden" name="subject" t-att-value="params['subject_id']"/>
                                     <div class="row mb-3" style="width: 100%">
                                         <div class="col-6">
-                                            <label class="form-label">Session</label>
+                                            <label class="form-label">Séance</label>
                                             <input id="name" type="text" class="form-control" name="name" t-att-value="name" required="1"/>
                                         </div>
                                     </div>
@@ -1074,7 +1074,7 @@
                                     <input type="hidden" name="session" t-att-value="params['session_id']"/>
                                     <div class="row mb-3" style="width: 100%">
                                         <div class="col-6">
-                                            <label class="form-label">Session</label>
+                                            <label class="form-label">Séance</label>
                                             <input id="name" type="text" class="form-control" name="name" t-att-value="name" required="1"/>
                                         </div>
                                     </div>

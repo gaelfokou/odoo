@@ -9,7 +9,7 @@
             <field name="name">subject.session.tree.view</field>
             <field name="model">siantou.ems.core.subject.session</field>
             <field name="arch" type="xml">
-                <tree string="Sessions de cours">
+                <tree string="Séances de cours">
                     <field name="name"/>
                     <field name="description"/>
                     <field name="timetable_id"/>
@@ -25,7 +25,7 @@
             <field name="name">subject.session.form.view</field>
             <field name="model">siantou.ems.core.subject.session</field>
             <field name="arch" type="xml">
-                <form string="Sessions de cours">
+                <form string="Séances de cours">
                     <sheet>
                         <group string="Informations sur la session de cours" col="4">
                             <group colspan="2">
@@ -47,7 +47,7 @@
         <record
             id="action_show_subject_session"
             model="ir.actions.act_window">
-            <field name="name">Sessions de cours</field>
+            <field name="name">Séances de cours</field>
             <field name="res_model">siantou.ems.core.subject.session</field>
             <field name="view_mode">tree,form</field>
             <field name="context">{'group_by': 'report_id'}</field>
@@ -61,14 +61,14 @@
         <!-- Menu pour les cours -->
         <menuitem
                 id="menu_siantou_ems_core_program_subject_session"
-                name="Sessions de cours"
+                name="Séances de cours"
                 parent="menu_siantou_ems_core_config_pe"
                 action="action_show_subject_session"
                 groups="siantou_ems_core.group_subject_user,siantou_ems_core.group_subject_admin,base.group_system"
             sequence="3"/>
         <menuitem
                 id="menu_siantou_ems_core_program_subject_session_2"
-                name="Sessions de cours"
+                name="Séances de cours"
                 parent="menu_siantou_ems_core_program"
                 action="action_show_subject_session"
                 groups="siantou_ems_core.group_subject_user,siantou_ems_core.group_subject_admin,base.group_system"
