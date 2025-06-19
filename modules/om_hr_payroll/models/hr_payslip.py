@@ -236,8 +236,6 @@ class HrPayslip(models.Model):
                     weekly_hours_credit = datetime_to - datetime_from
                     weekly_hours_credit = weekly_hours_credit - timedelta(hours=employee_timetable.not_active_slotitems)
                     total_weekly_hours_credit += weekly_hours_credit.total_seconds()
-                # if payslip.employee_id.is_permanent:
-                #     pass
             else:
                 # Vérification du temps de l'employé en biométrie
                 daily_attendances = self.filter_daily_attendance(date_to, date_from, payslip.employee_id)
@@ -335,8 +333,6 @@ class HrPayslip(models.Model):
                             'contract_id': payslip_id.contract_id.id,
                             'timetable_id': employee_timetable.id,
                         })
-                # if payslip_id.employee_id.is_permanent:
-                #     pass
             else:
                 # Vérification du temps de l'employé en biométrie
                 daily_attendances = self.filter_daily_attendance(date_to, date_from, payslip_id.employee_id)
@@ -422,8 +418,6 @@ class HrPayslip(models.Model):
                                 'message': message,
                             })
                         employee_timetable.sudo().write({'status': 'absent'})
-                    # if employee_timetable.employee_id.is_permanent:
-                    #     pass
             else:
                 employee_timetable.sudo().write({'status': 'absent'})
 
@@ -810,115 +804,161 @@ class HrPayslip(models.Model):
 
         if payslip.employee_id.id:
             if payslip.employee_id.is_teacher:
-                worked_days_line_ids = payslip.worked_days_line_ids
-                for contract in contracts:
-                    employee = contract.employee_id
-                    localdict = dict(baselocaldict, employee=employee, contract=contract)
-                    for rule in sorted_rules:
-                        key = rule.code + '-' + str(contract.id)
-                        localdict['result'] = None
-                        localdict['result_qty'] = 1.0
-                        localdict['result_rate'] = 100
-                        #check if the rule can be applied
-                        if rule._satisfy_condition(localdict) and rule.id not in blacklist:
-                            #compute the amount of the rule
-                            amount, qty, rate = rule._compute_rule(localdict)
-                            total_rate = 0.0
-                            total_number_of_days = 0.0
-                            for worked_days_line_id in worked_days_line_ids:
-                                if worked_days_line_id.timetable_id.id:
-                                    _logger.info(f'----------- tototototototo timetable_id {worked_days_line_id.timetable_id.id} -----------')
-                                    accountbalance = {}
+                if payslip.employee_id.is_permanent:
+                    for contract in contracts:
+                        employee = contract.employee_id
+                        localdict = dict(baselocaldict, employee=employee, contract=contract)
+                        for rule in sorted_rules:
+                            key = rule.code + '-' + str(contract.id)
+                            localdict['result'] = None
+                            localdict['result_qty'] = 1.0
+                            localdict['result_rate'] = 100
+                            #check if the rule can be applied
+                            if rule._satisfy_condition(localdict) and rule.id not in blacklist:
+                                #compute the amount of the rule
+                                amount, qty, rate = rule._compute_rule(localdict)
+                                #check if there is already a rule computed with that code
+                                previous_amount = rule.code in localdict and localdict[rule.code] or 0.0
+                                #set/overwrite the amount computed for this rule in the localdict
+                                tot_rule = contract.company_id.currency_id.round(amount * qty * rate / 100.0)
+                                localdict[rule.code] = tot_rule
+                                rules_dict[rule.code] = rule
+                                #sum the amount for its salary category
+                                localdict = _sum_salary_rule_category(localdict, rule.category_id, tot_rule - previous_amount)
+                                #create/overwrite the rule in the temporary results
+                                result_dict[key] = {
+                                    'salary_rule_id': rule.id,
+                                    'contract_id': contract.id,
+                                    'name': rule.name,
+                                    'code': rule.code,
+                                    'category_id': rule.category_id.id,
+                                    'sequence': rule.sequence,
+                                    'appears_on_payslip': rule.appears_on_payslip,
+                                    'condition_select': rule.condition_select,
+                                    'condition_python': rule.condition_python,
+                                    'condition_range': rule.condition_range,
+                                    'condition_range_min': rule.condition_range_min,
+                                    'condition_range_max': rule.condition_range_max,
+                                    'amount_select': rule.amount_select,
+                                    'amount_fix': rule.amount_fix,
+                                    'amount_python_compute': rule.amount_python_compute,
+                                    'amount_percentage': rule.amount_percentage,
+                                    'amount_percentage_base': rule.amount_percentage_base,
+                                    'register_id': rule.register_id.id,
+                                    'amount': amount,
+                                    'employee_id': contract.employee_id.id,
+                                    'quantity': qty,
+                                    'rate': rate,
+                                }
+                            else:
+                                #blacklist this rule and its children
+                                blacklist += [id for id, seq in rule._recursive_search_of_rules()]
+                else:
+                    worked_days_line_ids = payslip.worked_days_line_ids
+                    for contract in contracts:
+                        employee = contract.employee_id
+                        localdict = dict(baselocaldict, employee=employee, contract=contract)
+                        for rule in sorted_rules:
+                            key = rule.code + '-' + str(contract.id)
+                            localdict['result'] = None
+                            localdict['result_qty'] = 1.0
+                            localdict['result_rate'] = 100
+                            #check if the rule can be applied
+                            if rule._satisfy_condition(localdict) and rule.id not in blacklist:
+                                #compute the amount of the rule
+                                amount, qty, rate = rule._compute_rule(localdict)
+                                total_rate = 0.0
+                                total_number_of_days = 0.0
+                                for worked_days_line_id in worked_days_line_ids:
+                                    if worked_days_line_id.timetable_id.id:
+                                        _logger.info(f'----------- tototototototo timetable_id {worked_days_line_id.timetable_id.id} -----------')
+                                        accountbalance = {}
 
-                                    end_time = HrPayslip.convert_float_to_time(worked_days_line_id.timetable_id.end_time)
-                                    start_time = HrPayslip.convert_float_to_time(worked_days_line_id.timetable_id.start_time)
-                                    datetime_to = datetime.strptime(f"{worked_days_line_id.timetable_id.date} {end_time}", DATETIME_FORMAT)
-                                    datetime_from = datetime.strptime(f"{worked_days_line_id.timetable_id.date} {start_time}", DATETIME_FORMAT)
-                                    weekly_hours_credit = datetime_to - datetime_from
-                                    weekly_hours_credit = weekly_hours_credit - timedelta(hours=worked_days_line_id.timetable_id.not_active_slotitems)
-                                    weekly_hours_credit = weekly_hours_credit.total_seconds() / 3600.0
-                                    weekly_hours_credit = round(weekly_hours_credit, 2)
-                                    accountbalance['number_of_hours'] = weekly_hours_credit
+                                        end_time = HrPayslip.convert_float_to_time(worked_days_line_id.timetable_id.end_time)
+                                        start_time = HrPayslip.convert_float_to_time(worked_days_line_id.timetable_id.start_time)
+                                        datetime_to = datetime.strptime(f"{worked_days_line_id.timetable_id.date} {end_time}", DATETIME_FORMAT)
+                                        datetime_from = datetime.strptime(f"{worked_days_line_id.timetable_id.date} {start_time}", DATETIME_FORMAT)
+                                        weekly_hours_credit = datetime_to - datetime_from
+                                        weekly_hours_credit = weekly_hours_credit - timedelta(hours=worked_days_line_id.timetable_id.not_active_slotitems)
+                                        weekly_hours_credit = weekly_hours_credit.total_seconds() / 3600.0
+                                        weekly_hours_credit = round(weekly_hours_credit, 2)
+                                        accountbalance['number_of_hours'] = weekly_hours_credit
 
-                                    domain = [
-                                        ('school_id', '=', worked_days_line_id.timetable_id.school_id.id),
-                                        ('cycle_id', '=', worked_days_line_id.timetable_id.cycle_id.id),
-                                        ('level_id', '=', worked_days_line_id.timetable_id.level_id.id),
-                                        ('diplome_availability_id.diplome_ids', 'in', worked_days_line_id.timetable_id.employee_id.diplome_ids.ids),
-                                    ]
-
-                                    hourly_rate = self.env['siantou.ems.core.hourly.rate'].sudo().search(domain, limit=1)
-
-                                    if hourly_rate:
                                         domain = [
-                                            ('hourly_rate_id', '=', hourly_rate.id),
-                                            ('employee_id', '=', worked_days_line_id.timetable_id.employee_id.id),
-                                            ('subject_id', '=', worked_days_line_id.timetable_id.subject_id.id),
+                                            ('school_id', '=', worked_days_line_id.timetable_id.school_id.id),
+                                            ('cycle_id', '=', worked_days_line_id.timetable_id.cycle_id.id),
+                                            ('level_id', '=', worked_days_line_id.timetable_id.level_id.id),
+                                            ('diplome_availability_id.diplome_ids', 'in', worked_days_line_id.timetable_id.employee_id.diplome_ids.ids),
                                         ]
 
-                                        teacher_hourly_rate = self.env['siantou.ems.core.teacher.hourly.rate'].sudo().search(domain, limit=1)
-                                        if teacher_hourly_rate:
-                                            accountbalance['rate'] = teacher_hourly_rate.rate
+                                        hourly_rate = self.env['siantou.ems.core.hourly.rate'].sudo().search(domain, limit=1)
+
+                                        if hourly_rate:
+                                            domain = [
+                                                ('hourly_rate_id', '=', hourly_rate.id),
+                                                ('employee_id', '=', worked_days_line_id.timetable_id.employee_id.id),
+                                                ('subject_id', '=', worked_days_line_id.timetable_id.subject_id.id),
+                                            ]
+
+                                            teacher_hourly_rate = self.env['siantou.ems.core.teacher.hourly.rate'].sudo().search(domain, limit=1)
+                                            if teacher_hourly_rate:
+                                                accountbalance['rate'] = teacher_hourly_rate.rate
+                                            else:
+                                                accountbalance['rate'] = hourly_rate.rate
                                         else:
-                                            accountbalance['rate'] = hourly_rate.rate
-                                    else:
-                                        accountbalance['rate'] = 0.0
+                                            accountbalance['rate'] = 0.0
 
-                                    accountbalance['amount'] = accountbalance['rate'] * accountbalance['number_of_hours']
+                                        accountbalance['amount'] = accountbalance['rate'] * accountbalance['number_of_hours']
 
-                                    _logger.info(f'----------- tototototototo key {key} -----------')
-                                    _logger.info(f'----------- tototototototo amount {amount} -----------')
-                                    _logger.info(f'----------- tototototototo qty {qty} -----------')
-                                    _logger.info(f'----------- tototototototo rate {rate} -----------')
-                                    _logger.info(f'----------- tototototototo accountbalance {accountbalance} -----------')
+                                        total_rate += accountbalance['amount']
+                                        total_number_of_days += worked_days_line_id.number_of_days
 
-                                    total_rate += accountbalance['amount']
-                                    total_number_of_days += worked_days_line_id.number_of_days
+                                if rule.code == payslip.code:
+                                    amount = total_rate
 
-                            _logger.info(f'----------- tototototototo total_rate {total_rate} -----------')
-                            _logger.info(f'----------- tototototototo total_number_of_days {total_number_of_days} -----------')
+                                _logger.info(f'----------- tototototototo key {key} -----------')
+                                _logger.info(f'----------- tototototototo amount {amount} -----------')
+                                _logger.info(f'----------- tototototototo qty {qty} -----------')
+                                _logger.info(f'----------- tototototototo rate {rate} -----------')
+                                _logger.info(f'----------- tototototototo total_rate {total_rate} -----------')
+                                _logger.info(f'----------- tototototototo total_number_of_days {total_number_of_days} -----------')
 
-                            amount = total_rate
-                            quantity = total_number_of_days
-
-                            #check if there is already a rule computed with that code
-                            previous_amount = rule.code in localdict and localdict[rule.code] or 0.0
-                            #set/overwrite the amount computed for this rule in the localdict
-                            tot_rule = contract.company_id.currency_id.round(amount * qty * rate / 100.0)
-                            localdict[rule.code] = tot_rule
-                            rules_dict[rule.code] = rule
-                            #sum the amount for its salary category
-                            localdict = _sum_salary_rule_category(localdict, rule.category_id, tot_rule - previous_amount)
-                            #create/overwrite the rule in the temporary results
-                            result_dict[key] = {
-                                'salary_rule_id': rule.id,
-                                'contract_id': contract.id,
-                                'name': rule.name,
-                                'code': rule.code,
-                                'category_id': rule.category_id.id,
-                                'sequence': rule.sequence,
-                                'appears_on_payslip': rule.appears_on_payslip,
-                                'condition_select': rule.condition_select,
-                                'condition_python': rule.condition_python,
-                                'condition_range': rule.condition_range,
-                                'condition_range_min': rule.condition_range_min,
-                                'condition_range_max': rule.condition_range_max,
-                                'amount_select': rule.amount_select,
-                                'amount_fix': rule.amount_fix,
-                                'amount_python_compute': rule.amount_python_compute,
-                                'amount_percentage': rule.amount_percentage,
-                                'amount_percentage_base': rule.amount_percentage_base,
-                                'register_id': rule.register_id.id,
-                                'amount': amount,
-                                'employee_id': contract.employee_id.id,
-                                'quantity': qty,
-                                'rate': rate,
-                            }
-                        else:
-                            #blacklist this rule and its children
-                            blacklist += [id for id, seq in rule._recursive_search_of_rules()]
-                # if payslip.employee_id.is_permanent:
-                #     pass
+                                #check if there is already a rule computed with that code
+                                previous_amount = rule.code in localdict and localdict[rule.code] or 0.0
+                                #set/overwrite the amount computed for this rule in the localdict
+                                tot_rule = contract.company_id.currency_id.round(amount * qty * rate / 100.0)
+                                localdict[rule.code] = tot_rule
+                                rules_dict[rule.code] = rule
+                                #sum the amount for its salary category
+                                localdict = _sum_salary_rule_category(localdict, rule.category_id, tot_rule - previous_amount)
+                                #create/overwrite the rule in the temporary results
+                                result_dict[key] = {
+                                    'salary_rule_id': rule.id,
+                                    'contract_id': contract.id,
+                                    'name': rule.name,
+                                    'code': rule.code,
+                                    'category_id': rule.category_id.id,
+                                    'sequence': rule.sequence,
+                                    'appears_on_payslip': rule.appears_on_payslip,
+                                    'condition_select': rule.condition_select,
+                                    'condition_python': rule.condition_python,
+                                    'condition_range': rule.condition_range,
+                                    'condition_range_min': rule.condition_range_min,
+                                    'condition_range_max': rule.condition_range_max,
+                                    'amount_select': rule.amount_select,
+                                    'amount_fix': rule.amount_fix,
+                                    'amount_python_compute': rule.amount_python_compute,
+                                    'amount_percentage': rule.amount_percentage,
+                                    'amount_percentage_base': rule.amount_percentage_base,
+                                    'register_id': rule.register_id.id,
+                                    'amount': amount,
+                                    'employee_id': contract.employee_id.id,
+                                    'quantity': qty,
+                                    'rate': rate,
+                                }
+                            else:
+                                #blacklist this rule and its children
+                                blacklist += [id for id, seq in rule._recursive_search_of_rules()]
             else:
                 for contract in contracts:
                     employee = contract.employee_id
@@ -1107,9 +1147,10 @@ class HrPayslipLine(models.Model):
         for record in self:
             if record.slip_id.employee_id.id:
                 if record.slip_id.employee_id.is_teacher:
-                    record.total = float(record.quantity) * record.amount * record.rate / 100
-                    # if record.slip_id.employee_id.is_permanent:
-                    #     pass
+                    if record.slip_id.employee_id.is_permanent:
+                        record.total = float(record.quantity) * record.amount * record.rate / 100
+                    else:
+                        record.total = float(record.quantity) * record.amount * record.rate / 100
                 else:
                     record.total = float(record.quantity) * record.amount * record.rate / 100
 
