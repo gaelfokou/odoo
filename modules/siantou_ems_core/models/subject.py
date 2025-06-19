@@ -448,7 +448,6 @@ class SubjectSession(models.Model):
     def _compute_name(self):
         for record in self:
             sessions = self.env['siantou.ems.core.subject.session'].search([
-                ('timetable_id', '=', record.timetable_id.id),
                 ('report_id', '=', record.report_id.id),
             ])
             sessions = list(sessions)
@@ -461,7 +460,6 @@ class SubjectSession(models.Model):
     def _onchange_name(self):
         for record in self:
             sessions = self.env['siantou.ems.core.subject.session'].search([
-                ('timetable_id', '=', record.timetable_id.id),
                 ('report_id', '=', record.report_id.id),
             ])
             sessions = list(sessions)
