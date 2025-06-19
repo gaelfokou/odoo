@@ -452,7 +452,6 @@ class SubjectSession(models.Model):
             ])
             sessions = list(sessions)
             sessions = len(sessions)
-            sessions += 1
             name = 'Séance {}'.format(sessions)
             record.name = name
 
@@ -464,7 +463,6 @@ class SubjectSession(models.Model):
             ])
             sessions = list(sessions)
             sessions = len(sessions)
-            sessions += 1
             name = 'Séance {}'.format(sessions)
             record.name = name
 
