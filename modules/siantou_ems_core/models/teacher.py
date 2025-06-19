@@ -220,7 +220,10 @@ class HrEmployee(models.Model):
                         ('id', '!=', employee.id),
                         ('work_email', '=', email),
                     ], limit=1)
-                    if res_user_id or employee_id:
+                    student_id = self.env['oe.school.student'].search([
+                        ('email', '=', email),
+                    ], limit=1)
+                    if res_user_id or employee_id or student_id:
                         i = i + 1
                         email = username + f'{i}' + '@siantou.net'
                     else:

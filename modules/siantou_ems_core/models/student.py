@@ -341,11 +341,14 @@ class Student(models.Model):
                     res_user_id = self.env['res.users'].search([
                         ('login', '=', email),
                     ], limit=1)
+                    employee_id = self.env['hr.employee'].search([
+                        ('work_email', '=', email),
+                    ], limit=1)
                     student_id = self.env['oe.school.student'].search([
                         ('id', '!=', student.id),
                         ('email', '=', email),
                     ], limit=1)
-                    if res_user_id or student_id:
+                    if res_user_id or employee_id or student_id:
                         i = i + 1
                         email = username + f'{i}' + '@siantou.net'
                     else:
