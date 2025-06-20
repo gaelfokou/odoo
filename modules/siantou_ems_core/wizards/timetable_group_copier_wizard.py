@@ -39,8 +39,7 @@ class TimetableGroupCopierWizard(models.TransientModel):
     year_id = fields.Many2one(
         'siantou.ems.core.year',
         'Année académique',
-        related='semester_id.year_id',
-        store=True
+        required=True,
     )
 
     # Version auquel appartient l'emploi du temps
