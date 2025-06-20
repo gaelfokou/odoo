@@ -1012,6 +1012,9 @@ class TimetableGroup(models.Model):
             'tag': 'reload',
         }
 
+    def action_open_copier(self):
+        pass
+
 class TimetableSlotItem(models.Model):
     _name = 'siantou.ems.timetable.slotitem'
     _description = 'Plage horaire'

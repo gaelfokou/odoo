@@ -8,6 +8,13 @@
             <field name="model">siantou.ems.timetable.group</field>
             <field name="arch" type="xml">
                 <tree>
+                    <header>
+                        <button name="action_open_copier" 
+                            type="object" 
+                            string="Copier" 
+                            class="oe_highlight" 
+                            display="always"/>
+                    </header>
                     <field name="name"/>
                     <field name="semester_id"/>
                     <field name="is_submit"/>
