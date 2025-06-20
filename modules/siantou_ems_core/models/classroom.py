@@ -131,6 +131,9 @@ class Classroom(models.Model):
             'views': [(view_id, 'form')],
             'view_id': view_id,
             'target': 'new',
+            'context': {
+                'default_status': None,
+            },
         }
 
     def action_reset_filter(self):

@@ -49,7 +49,7 @@ class ClassroomFilterWizard(models.TransientModel):
         ('available', 'Disponible'),
         ('not_available', 'Pas disponible'),
     ], 'Statut',
-        default='available',
+        # default='available',
     )
 
     # Contrainte logique pour s'assurer que les heures de début et de fin sont définies et que l'heure de fin est supérieure à l'heure de début

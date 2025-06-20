@@ -76,7 +76,7 @@ class ClassFilterWizard(models.TransientModel):
         ('student_more_than_or_equal', 'Étudiants plus de ou égal à'),
         ('student_less_than', 'Étudiants moins de'),
     ], 'Statut',
-        default='timetable_available',
+        # default='timetable_available',
     )
 
     number_of_student = fields.Integer(
