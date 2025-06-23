@@ -102,7 +102,7 @@
         'views/teacher_filter_wizard_views.xml',
         'views/student_filter_wizard_views.xml',
         'views/classroom_filter_wizard_views.xml',
-        'views/class_filter_wizard_views.xml',
+        'views/class_division_filter_wizard_views.xml',
         'views/daily_attendance_filter_wizard_views.xml',
         'views/hourly_rate_views.xml',
         'views/teacher_hourly_rate_views.xml',
