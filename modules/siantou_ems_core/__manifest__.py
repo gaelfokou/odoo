@@ -99,6 +99,7 @@
         'views/student_component_views.xml',
         'views/data_request_wizard_views.xml',
         'views/timetable_filter_wizard_views.xml',
+        'views/timetable_group_copier_wizard_views.xml',
         'views/teacher_filter_wizard_views.xml',
         'views/student_filter_wizard_views.xml',
         'views/classroom_filter_wizard_views.xml',
