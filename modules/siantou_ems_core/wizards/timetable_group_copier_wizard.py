@@ -63,6 +63,8 @@ class TimetableGroupCopierWizard(models.TransientModel):
             new_years = self.year_id.name.split('-')
             new_years = [int(y) for y in new_years]
 
+            level_ids = [(4, level_id.id) for level_id in group_id.semester_id.level_ids]
+
             semester_id = self.env['siantou.ems.core.year.semester'].search([
                 ('name', '=', group_id.semester_id.name),
                 ('year_id', '=', self.year_id.id),
@@ -91,7 +93,6 @@ class TimetableGroupCopierWizard(models.TransientModel):
                     'end_time': end_time,
                     'year_id': self.year_id.id,
                 })
-                level_ids = [(4, level_id.id) for level_id in group_id.semester_id.level_ids]
                 # semester_id.level_ids = level_ids
                 semester_id.write({'level_ids': level_ids })
             unique_string = datetime.now().strftime("%Y%m%d%H%M%S")
