@@ -173,6 +173,7 @@ class EducationClass(models.Model):
             'view_id': view_id,
             'target': 'new',
             'context': {
+                'default_year_id': self.env['siantou.ems.core.year'].search([('is_active', '=', True)], limit=1).id,
                 'default_status': None,
             },
         }
