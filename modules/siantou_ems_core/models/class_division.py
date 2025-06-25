@@ -52,7 +52,9 @@ class EducationClass(models.Model):
     timetable_ids = fields.One2many(
         'siantou.ems.timetable.timetable',
         'class_id',
-        string='Emplois du temps'
+        string="Emplois du temps",
+        compute='_compute_timetables',
+        store=False
     )
 
     specialty_id = fields.Many2one('siantou.ems.core.specialty', string='Spécialité',
@@ -160,6 +162,30 @@ class EducationClass(models.Model):
     def _onchange_specialty(self):
         for record in self:
             record.option_id = None
+
+    @api.depends('school_id', 'field_of_study_id', 'specialty_id', 'option_id', 'level_id', 'year_id', 'type_cour')
+    def _compute_timetables(self):
+        # Recherche des emplois du temps qui correspondent à la filière et au niveau de l'étudiant
+        for record in self:
+            timetables = []
+            class_id = self.env['siantou.ems.core.class'].search([
+                ('school_id', '=', record.school_id.id),
+                ('field_of_study_id', '=', record.field_of_study_id.id),
+                ('specialty_id', '=', record.specialty_id.id),
+                ('option_id', '=', record.option_id.id),
+                ('level_id', '=', record.level_id.id),
+                ('year_id', '=', record.year_id.id),
+                ('type_cour', '=', record.type_cour),
+            ], limit=1)
+            if class_id:
+                timetables = self.env['siantou.ems.timetable.timetable'].search([
+                    ('class_id', '=', class_id.id),
+                    ('group_id.is_active', '=', True),
+                    ('group_id.is_submit', '=', False),
+                ])
+
+            # Affecter les emplois du temps trouvés à l'attribut timetable_ids
+            record.timetable_ids = timetables
 
     def action_open_filter(self):
         view_id = self.env.ref('siantou_ems_core.class_filter_wizard').id

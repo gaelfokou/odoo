@@ -70,7 +70,9 @@ class HrEmployee(models.Model):
         'siantou.ems.timetable.timetable',
         'employee_id',                     # Champ de relation dans le modèle Timetable
         string='Emplois du temps',
-        help="Liste des emplois du temps associés à l'enseignant."
+        help="Liste des emplois du temps associés à l'enseignant.",
+        compute='_compute_timetables',
+        store=False
     )
 
     birthday = fields.Date(
@@ -111,6 +113,19 @@ class HrEmployee(models.Model):
         for record in self:
             if record.is_permanent and record.weekly_hours_limit != 24:
                 raise ValidationError("Vous devez définir le quota horaire hebdommadaire de cours pour un enseignant permanent à 24")
+
+    @api.depends('weekly_hours_limit')
+    def _compute_timetables(self):
+        # Recherche des emplois du temps qui correspondent à la filière et au niveau de l'étudiant
+        for record in self:
+            timetables = self.env['siantou.ems.timetable.timetable'].search([
+                ('employee_id', '=', record.id),
+                ('group_id.is_active', '=', True),
+                ('group_id.is_submit', '=', False),
+            ])
+
+            # Affecter les emplois du temps trouvés à l'attribut timetable_ids
+            record.timetable_ids = timetables
 
     @staticmethod
     def get_last_name(x):

@@ -232,6 +232,8 @@ class Student(models.Model):
         for record in self:
             timetables = self.env['siantou.ems.timetable.timetable'].search([
                 ('class_id', '=', record.class_id.id),
+                ('group_id.is_active', '=', True),
+                ('group_id.is_submit', '=', False),
             ])
 
             # Affecter les emplois du temps trouvés à l'attribut timetable_ids

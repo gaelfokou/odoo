@@ -101,7 +101,9 @@ class Classroom(models.Model):
         'siantou.ems.timetable.timetable',
         'classroom_id',                     # Champ de relation dans le modèle Timetable
         string='Emplois du temps',
-        help="Liste des emplois du temps associés à cette salle de classe."
+        help="Liste des emplois du temps associés à cette salle de classe.",
+        compute='_compute_timetables',
+        store=False
     )
 
     is_cours_active = fields.Boolean(string="Actif pour les cours", default=False)
@@ -119,6 +121,19 @@ class Classroom(models.Model):
         for record in self:
             if record.capacity <= 0:
                 raise ValidationError('La capacité doit être supérieure à 0')
+
+    @api.depends('building_id')
+    def _compute_timetables(self):
+        # Recherche des emplois du temps qui correspondent à la filière et au niveau de l'étudiant
+        for record in self:
+            timetables = self.env['siantou.ems.timetable.timetable'].search([
+                ('classroom_id', '=', record.id),
+                ('group_id.is_active', '=', True),
+                ('group_id.is_submit', '=', False),
+            ])
+
+            # Affecter les emplois du temps trouvés à l'attribut timetable_ids
+            record.timetable_ids = timetables
 
     def action_open_filter(self):
         view_id = self.env.ref('siantou_ems_core.classroom_filter_wizard').id
