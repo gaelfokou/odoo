@@ -93,14 +93,16 @@ class TimetableGroupCopierWizard(models.TransientModel):
                     'end_time': end_time,
                     'year_id': self.year_id.id,
                 })
-                # semester_id.level_ids = level_ids
-                semester_id.write({'level_ids': level_ids })
+            # semester_id.level_ids = level_ids
+            semester_id.write({'level_ids': level_ids })
+
             unique_string = datetime.now().strftime("%Y%m%d%H%M%S")
             name = '{} copie {}'.format(group_id.name, unique_string)
             new_group = self.env['siantou.ems.timetable.group'].create({
                 'name': name,
                 'semester_id': semester_id.id,
             })
+
             for timetable_id in group_id.timetable_ids:
                 year, week, day = timetable_id.date.isocalendar()
                 try:
