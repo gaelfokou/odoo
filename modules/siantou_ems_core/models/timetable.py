@@ -563,6 +563,7 @@ class Timetable(models.Model):
                     times = [subject_day_hour_id.start_date, subject_day_hour_id.end_date]
                 else:
                     timetable_id = self.env['siantou.ems.timetable.timetable'].create({
+                        'department_id': timetable.field_of_study_id.department_id.id,
                         'semester_id': timetable.semester_id.id,
                         'school_id': timetable.school_id.id,
                         'field_of_study_id': timetable.field_of_study_id.id,
@@ -601,6 +602,7 @@ class Timetable(models.Model):
                         if week > 0:
                             target_date = first_timetable.date + timedelta(weeks=week)
                             timetable_id = self.env['siantou.ems.timetable.timetable'].create({
+                                'department_id': first_timetable.field_of_study_id.department_id.id,
                                 'semester_id': first_timetable.semester_id.id,
                                 'school_id': first_timetable.school_id.id,
                                 'field_of_study_id': first_timetable.field_of_study_id.id,

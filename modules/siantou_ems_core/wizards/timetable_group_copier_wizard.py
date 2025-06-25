@@ -50,4 +50,42 @@ class TimetableGroupCopierWizard(models.TransientModel):
     )
 
     def action_copier(self):
-        pass
+        domain = []
+        # if self.year_id.id:
+        #     domain.append(('year_id', '=', self.year_id.id))
+        if self.group_id.id:
+            domain.append(('id', '=', self.group_id.id))
+
+        group_id = self.env['siantou.ems.timetable.group'].search(domain, limit=1)
+        if group_id:
+            unique_string = datetime.now().strftime("%Y%m%d%H%M%S")
+            name = '{} copie {}'.format(group_id.name, unique_string)
+            new_group = self.env['siantou.ems.timetable.group'].create({
+                'name': name,
+                'semester_id': group_id.semester_id.id,
+            })
+            for timetable_id in group_id.timetable_ids:
+                self.env['siantou.ems.timetable.timetable'].create({
+                    'department_id': timetable_id.field_of_study_id.department_id.id,
+                    'semester_id': timetable_id.semester_id.id,
+                    'school_id': timetable_id.school_id.id,
+                    'field_of_study_id': timetable_id.field_of_study_id.id,
+                    'level_id': timetable_id.level_id.id,
+                    'specialty_id': timetable_id.specialty_id.id,
+                    'class_id': timetable_id.class_id.id,
+                    'class_group_id': timetable_id.class_group_id.id,
+                    'ue_id': timetable_id.ue_id.id,
+                    'subject_id': timetable_id.subject_id.id,
+                    'building_id': timetable_id.building_id.id,
+                    'classroom_id': timetable_id.classroom_id.id,
+                    'employee_id': timetable_id.employee_id.id,
+                    'date': timetable_id.date,
+                    'start_time': timetable_id.start_time,
+                    'end_time': timetable_id.end_time,
+                    'group_id': new_group.id,
+                })
+
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'reload',
+        }

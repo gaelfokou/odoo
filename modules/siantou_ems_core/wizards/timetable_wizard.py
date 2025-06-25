@@ -68,7 +68,7 @@ class TimetableWizard(models.TransientModel):
         #     new_group = self.env['siantou.ems.timetable.group'].create({'name': self.group, 'semester_id': self.semester_id.id})
         # else:
         #     # Génération de la chaîne unique
-        #     unique_string = datetime.now().strftime("%Y%m%d%H%M")
+        #     unique_string = datetime.now().strftime("%Y%m%d%H%M%S")
         #     new_group = self.env['siantou.ems.timetable.group'].create({'name': "group-" + unique_string, 'semester_id': self.semester_id.id})
 
         check_classes = None
@@ -93,7 +93,7 @@ class TimetableWizard(models.TransientModel):
         classes = list(classes)
         # Génération de la chaîne unique
         if shared_subject:
-            unique_string = datetime.now().strftime("%Y%m%d%H%M")
+            unique_string = datetime.now().strftime("%Y%m%d%H%M%S")
         for i, classe in enumerate(classes):
             if not classe.field_of_study_id.school_id.id:
                 continue
@@ -238,9 +238,10 @@ class TimetableWizard(models.TransientModel):
                                                         self.env['siantou.ems.timetable.timetable'].create({
                                                             'department_id': classe.field_of_study_id.department_id.id,
                                                             'semester_id': timetable.semester_id.id,
-                                                            'batch_id': batch.id,
+                                                            'school_id': classe.school_id.id,
                                                             'field_of_study_id': classe.field_of_study_id.id,
-                                                            'level_id': timetable.level_id.id,
+                                                            'level_id': classe.level_id.id,
+                                                            'specialty_id': classe.specialty_id.id,
                                                             'class_id': classe.id,
                                                             'ue_id': ue_id.id,
                                                             'subject_id': timetable.subject_id.id,
@@ -252,6 +253,7 @@ class TimetableWizard(models.TransientModel):
                                                             'end_time': timetable.end_time,
                                                             'not_active_slotitems': timetable.not_active_slotitems,
                                                             'group_id': new_group.id,
+                                                            'batch_id': batch.id,
                                                         })
                                                         # self.env.cr.commit()
                                                     break
@@ -282,9 +284,10 @@ class TimetableWizard(models.TransientModel):
                                                     self.env['siantou.ems.timetable.timetable'].create({
                                                         'department_id': classe.field_of_study_id.department_id.id,
                                                         'semester_id': ue_id.semestre_id.id,
-                                                        'batch_id': batch.id,
+                                                        'school_id': classe.school_id.id,
                                                         'field_of_study_id': classe.field_of_study_id.id,
                                                         'level_id': classe.level_id.id,
+                                                        'specialty_id': classe.specialty_id.id,
                                                         'class_id': classe.id,
                                                         'ue_id': ue_id.id,
                                                         'subject_id': subject_id,
@@ -296,6 +299,7 @@ class TimetableWizard(models.TransientModel):
                                                         'end_time': available_slot["end_time"],
                                                         'not_active_slotitems': available_slot['not_active_slotitems'],
                                                         'group_id': new_group.id,
+                                                        'batch_id': batch.id,
                                                     })
                                                     # self.env.cr.commit()
                                                     duration_weekly_hours_credit = available_slot['duration_weekly_hours_credit']
