@@ -237,11 +237,10 @@ class TimetableWizard(models.TransientModel):
                                                             continue
                                                         self.env['siantou.ems.timetable.timetable'].create({
                                                             'department_id': classe.field_of_study_id.department_id.id,
-                                                            'semester_id': timetable.semester_id.id,
                                                             'school_id': classe.school_id.id,
-                                                            'field_of_study_id': classe.field_of_study_id.id,
                                                             'level_id': classe.level_id.id,
                                                             'specialty_id': classe.specialty_id.id,
+                                                            'option_id': classe.option_id.id,
                                                             'class_id': classe.id,
                                                             'ue_id': ue_id.id,
                                                             'subject_id': timetable.subject_id.id,
@@ -283,11 +282,10 @@ class TimetableWizard(models.TransientModel):
                                                         teacher_priority = self.find_available_teacher(teacher_priority, target_date, available_slot["start_time"], available_slot["end_time"])
                                                     self.env['siantou.ems.timetable.timetable'].create({
                                                         'department_id': classe.field_of_study_id.department_id.id,
-                                                        'semester_id': ue_id.semestre_id.id,
                                                         'school_id': classe.school_id.id,
-                                                        'field_of_study_id': classe.field_of_study_id.id,
                                                         'level_id': classe.level_id.id,
                                                         'specialty_id': classe.specialty_id.id,
+                                                        'option_id': classe.option_id.id,
                                                         'class_id': classe.id,
                                                         'ue_id': ue_id.id,
                                                         'subject_id': subject_id,

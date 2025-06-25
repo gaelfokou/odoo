@@ -45,5 +45,11 @@ class Year(models.Model):
     @api.constrains('is_active')
     def _check_unique_active(self):
         for record in self:
-            if self.search([('id', '!=', record.id), ('is_active', '=', True)], limit=1):
-                raise ValidationError("Il ne peut y avoir qu'une seule année académique active à la fois.")
+            if record.is_active:
+                years = self.env['siantou.ems.core.year'].search([
+                    ('id', '!=', record.id),
+                    ('is_active', '=', True),
+                ])
+                years = list(years)
+                if len(years) > 0:
+                    raise ValidationError(f"Académique active déjà définie")

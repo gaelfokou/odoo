@@ -72,9 +72,9 @@ class Semester(models.Model):
     )
 
     # Contrainte SQL pour empêcher d'avoir le même nom pour différents semestres
-    _sql_constraints = [
-        ('unique_name', 'unique(name)', 'Le nom du semestre doit être unique.'),
-    ]
+    # _sql_constraints = [
+    #     ('unique_name', 'unique(name)', 'Le nom du semestre doit être unique.'),
+    # ]
 
     # Contrainte logique pour empêcher d'avoir des semestres qui se chevauchent
     @api.constrains('start_time', 'end_time')

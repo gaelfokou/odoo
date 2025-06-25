@@ -58,21 +58,55 @@ class TimetableGroupCopierWizard(models.TransientModel):
 
         group_id = self.env['siantou.ems.timetable.group'].search(domain, limit=1)
         if group_id:
+            semester_id = self.env['siantou.ems.core.year.semester'].search([
+                ('name', '=', group_id.semester_id.name),
+                ('year_id', '=', self.year_id.id),
+            ], limit=1)
+            if not semester_id:
+                semester_id = self.env['siantou.ems.core.year.semester'].create({
+                    'name': group_id.semester_id.name,
+                    'start_time': group_id.semester_id.start_time,
+                    'end_time': group_id.semester_id.end_time,
+                    'year_id': self.year_id.id,
+                })
+                for level_id in group_id.semester_id.level_ids:
+                    semester_id.level_ids.create({
+                        'level_id': level_id.id,
+                        'semester_id': semester_id.id,
+                    })
             unique_string = datetime.now().strftime("%Y%m%d%H%M%S")
             name = '{} copie {}'.format(group_id.name, unique_string)
             new_group = self.env['siantou.ems.timetable.group'].create({
                 'name': name,
-                'semester_id': group_id.semester_id.id,
+                'semester_id': semester_id.id,
             })
             for timetable_id in group_id.timetable_ids:
+                class_id = self.env['siantou.ems.core.class'].search([
+                    ('school_id', '=', timetable_id.school_id.id),
+                    ('field_of_study_id', '=', timetable_id.field_of_study_id.id),
+                    ('specialty_id', '=', timetable_id.specialty_id.id),
+                    ('option_id', '=', timetable_id.option_id.id),
+                    ('level_id', '=', timetable_id.level_id.id),
+                    ('year_id', '=', self.year_id.id),
+                    ('type_cour', '=', timetable_id.type_cour),
+                ], limit=1)
+                if not class_id:
+                    class_id = self.env['siantou.ems.core.class'].create({
+                        'school_id': timetable_id.school_id.id,
+                        'field_of_study_id': timetable_id.field_of_study_id.id,
+                        'specialty_id': timetable_id.specialty_id.id,
+                        'option_id': timetable_id.option_id.id,
+                        'level_id': timetable_id.level_id.id,
+                        'year_id': self.year_id.id,
+                        'type_cour': timetable_id.type_cour,
+                    })
                 self.env['siantou.ems.timetable.timetable'].create({
                     'department_id': timetable_id.field_of_study_id.department_id.id,
-                    'semester_id': timetable_id.semester_id.id,
                     'school_id': timetable_id.school_id.id,
-                    'field_of_study_id': timetable_id.field_of_study_id.id,
                     'level_id': timetable_id.level_id.id,
                     'specialty_id': timetable_id.specialty_id.id,
-                    'class_id': timetable_id.class_id.id,
+                    'option_id': timetable_id.option_id.id,
+                    'class_id': class_id.id,
                     'class_group_id': timetable_id.class_group_id.id,
                     'ue_id': timetable_id.ue_id.id,
                     'subject_id': timetable_id.subject_id.id,

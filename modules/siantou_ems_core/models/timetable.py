@@ -564,11 +564,10 @@ class Timetable(models.Model):
                 else:
                     timetable_id = self.env['siantou.ems.timetable.timetable'].create({
                         'department_id': timetable.field_of_study_id.department_id.id,
-                        'semester_id': timetable.semester_id.id,
                         'school_id': timetable.school_id.id,
-                        'field_of_study_id': timetable.field_of_study_id.id,
                         'level_id': timetable.level_id.id,
                         'specialty_id': timetable.specialty_id.id,
+                        'option_id': timetable.option_id.id,
                         'class_id': timetable.class_id.id,
                         'class_group_id': timetable.class_group_id.id,
                         'ue_id': timetable.ue_id.id,
@@ -603,11 +602,10 @@ class Timetable(models.Model):
                             target_date = first_timetable.date + timedelta(weeks=week)
                             timetable_id = self.env['siantou.ems.timetable.timetable'].create({
                                 'department_id': first_timetable.field_of_study_id.department_id.id,
-                                'semester_id': first_timetable.semester_id.id,
                                 'school_id': first_timetable.school_id.id,
-                                'field_of_study_id': first_timetable.field_of_study_id.id,
                                 'level_id': first_timetable.level_id.id,
                                 'specialty_id': first_timetable.specialty_id.id,
+                                'option_id': first_timetable.option_id.id,
                                 'class_id': first_timetable.class_id.id,
                                 'class_group_id': first_timetable.class_group_id.id,
                                 'ue_id': first_timetable.ue_id.id,
