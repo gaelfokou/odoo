@@ -7,8 +7,9 @@
             <field name="arch" type="xml">
                 <form string="Copieur des versions d'emploi du temps">
                     <group>
-                        <field name="group_id" options="{'no_create': True}" domain="[('is_submit', '=', True), ('status', '=', 'valid')]"/>
-                        <field name="year_id" options="{'no_create': True}"/>
+                        <field name="source_year_id" options="{'no_create': True}"/>
+                        <field name="group_id" options="{'no_create': True}" domain="[('semester_id.year_id', '=', source_year_id), ('status', '=', 'valid')]"/>
+                        <field name="destination_year_id" options="{'no_create': True}"/>
                     </group>
                     <footer>
                         <button string="Copier" type="object" name="action_copier" class="btn-primary"/>

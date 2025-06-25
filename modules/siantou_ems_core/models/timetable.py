@@ -1025,11 +1025,7 @@ class TimetableGroup(models.Model):
             'view_id': view_id,
             'target': 'new',
             'context': {
-                'default_year_id': self.env['siantou.ems.core.year'].search([('is_active', '=', True)], limit=1).id,
-                'default_group_id': self.env['siantou.ems.timetable.group'].search([
-                    ('is_active', '=', True),
-                    ('is_submit', '=', False),
-                ], limit=1).id,
+                'default_source_year_id': self.env['siantou.ems.core.year'].search([('is_active', '=', True)], limit=1).id,
             },
         }
 

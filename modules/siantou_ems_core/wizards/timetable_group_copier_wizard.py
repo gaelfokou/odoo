@@ -36,9 +36,15 @@ class TimetableGroupCopierWizard(models.TransientModel):
     _name = 'timetable.group.copier.wizard'
     _description = 'Copieur des versions d\'emploi du temps'
 
-    year_id = fields.Many2one(
+    source_year_id = fields.Many2one(
         'siantou.ems.core.year',
-        'Année académique',
+        'Année académique source',
+        required=True,
+    )
+
+    destination_year_id = fields.Many2one(
+        'siantou.ems.core.year',
+        'Année académique destination',
         required=True,
     )
 
@@ -49,10 +55,13 @@ class TimetableGroupCopierWizard(models.TransientModel):
         required=True,
     )
 
+    @api.onchange('source_year_id')
+    def _onchange_group(self):
+        for record in self:
+            record.group_id = None
+
     def action_copier(self):
         domain = []
-        # if self.year_id.id:
-        #     domain.append(('year_id', '=', self.year_id.id))
         if self.group_id.id:
             domain.append(('id', '=', self.group_id.id))
 
@@ -60,14 +69,14 @@ class TimetableGroupCopierWizard(models.TransientModel):
         if group_id:
             years = group_id.semester_id.year_id.name.split('-')
             years = [int(y) for y in years]
-            new_years = self.year_id.name.split('-')
+            new_years = self.destination_year_id.name.split('-')
             new_years = [int(y) for y in new_years]
 
             level_ids = [(4, level_id.id) for level_id in group_id.semester_id.level_ids]
 
             semester_id = self.env['siantou.ems.core.year.semester'].search([
                 ('name', '=', group_id.semester_id.name),
-                ('year_id', '=', self.year_id.id),
+                ('year_id', '=', self.destination_year_id.id),
             ], limit=1)
             if not semester_id:
                 year, week, day = group_id.semester_id.start_time.isocalendar()
@@ -91,7 +100,7 @@ class TimetableGroupCopierWizard(models.TransientModel):
                     'name': group_id.semester_id.name,
                     'start_time': start_time,
                     'end_time': end_time,
-                    'year_id': self.year_id.id,
+                    'year_id': self.destination_year_id.id,
                 })
             # semester_id.level_ids = level_ids
             semester_id.write({'level_ids': level_ids })
@@ -118,7 +127,7 @@ class TimetableGroupCopierWizard(models.TransientModel):
                     ('specialty_id', '=', timetable_id.specialty_id.id),
                     ('option_id', '=', timetable_id.option_id.id),
                     ('level_id', '=', timetable_id.level_id.id),
-                    ('year_id', '=', self.year_id.id),
+                    ('year_id', '=', self.destination_year_id.id),
                     ('type_cour', '=', timetable_id.type_cour),
                 ], limit=1)
                 if not class_id:
@@ -128,7 +137,7 @@ class TimetableGroupCopierWizard(models.TransientModel):
                         'specialty_id': timetable_id.specialty_id.id,
                         'option_id': timetable_id.option_id.id,
                         'level_id': timetable_id.level_id.id,
-                        'year_id': self.year_id.id,
+                        'year_id': self.destination_year_id.id,
                         'type_cour': timetable_id.type_cour,
                     })
                 self.env['siantou.ems.timetable.timetable'].create({
