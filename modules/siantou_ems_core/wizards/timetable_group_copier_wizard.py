@@ -58,16 +58,16 @@ class TimetableGroupCopierWizard(models.TransientModel):
 
         group_id = self.env['siantou.ems.timetable.group'].search(domain, limit=1)
         if group_id:
+            years = group_id.semester_id.year_id.name.split('-')
+            years = [int(y) for y in years]
+            new_years = self.year_id.name.split('-')
+            new_years = [int(y) for y in new_years]
+
             semester_id = self.env['siantou.ems.core.year.semester'].search([
                 ('name', '=', group_id.semester_id.name),
                 ('year_id', '=', self.year_id.id),
             ], limit=1)
             if not semester_id:
-                years = group_id.semester_id.year_id.name.split('-')
-                years = [int(y) for y in years]
-                new_years = self.year_id.name.split('-')
-                new_years = [int(y) for y in new_years]
-
                 year, week, day = group_id.semester_id.start_time.isocalendar()
                 try:
                     index_year = years.index(year)
@@ -101,6 +101,14 @@ class TimetableGroupCopierWizard(models.TransientModel):
                 'semester_id': semester_id.id,
             })
             for timetable_id in group_id.timetable_ids:
+                year, week, day = timetable_id.date.isocalendar()
+                try:
+                    index_year = years.index(year)
+                except ValueError:
+                    index_year = -1
+                if index_year != -1 and len(years) > 1 and len(new_years) > 1:
+                    year = new_years[index_year]
+                start_date = date.fromisocalendar(year, week, day)
                 class_id = self.env['siantou.ems.core.class'].search([
                     ('school_id', '=', timetable_id.school_id.id),
                     ('field_of_study_id', '=', timetable_id.field_of_study_id.id),
@@ -133,7 +141,7 @@ class TimetableGroupCopierWizard(models.TransientModel):
                     'building_id': timetable_id.building_id.id,
                     'classroom_id': timetable_id.classroom_id.id,
                     'employee_id': timetable_id.employee_id.id,
-                    'date': timetable_id.date,
+                    'date': start_date,
                     'start_time': timetable_id.start_time,
                     'end_time': timetable_id.end_time,
                     'group_id': new_group.id,
