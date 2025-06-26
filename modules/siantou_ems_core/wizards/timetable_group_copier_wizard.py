@@ -142,6 +142,7 @@ class TimetableGroupCopierWizard(models.TransientModel):
                     for group_id in timetable_id.class_id.group_ids:
                         class_id.group_ids.create({
                             'name': group_id.name,
+                            'class_id': class_id.id,
                         })
                     ue_ids = [(4, ue_id.id) for ue_id in timetable_id.class_id.ue_ids]
                     # class_id.ue_ids = ue_ids
