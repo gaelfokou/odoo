@@ -50,7 +50,7 @@
 			<field name="name">siantou_ems_core_class.form.view</field>
 			<field name="model">siantou.ems.core.class</field>
 			<field name="arch" type="xml">
-				<form string="Classe Standard">
+				<form string="Classe">
 					<sheet>
                         <group>
                             <group>
@@ -102,7 +102,7 @@
         <record
                 id="action_show_class"
                 model="ir.actions.act_window">
-            <field name="name">Classe Standard</field>
+            <field name="name">Classe</field>
             <field name="res_model">siantou.ems.core.class</field>
             <field name="view_mode">tree,form</field>
             <field name="domain">[('year_id.is_active', '=', True)]</field>

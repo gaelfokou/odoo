@@ -10,7 +10,7 @@ _logger = logging.getLogger(__name__)
 
 class EducationClass(models.Model):
     _name = 'siantou.ems.core.class'
-    _description = "Classe Standard"
+    _description = "Classe"
     _inherit = ['mail.thread']
 
     name = fields.Char(string='Nom',
@@ -88,7 +88,7 @@ class EducationClass(models.Model):
     group_ids = fields.One2many(
         'siantou.ems.core.class.group',
         'class_id',
-        string='Liste des groupes'
+        string='Groupes de classe'
     )
 
     _sql_constraints = [
@@ -231,7 +231,7 @@ class EducationClass(models.Model):
 
 class EducationClassGroup(models.Model):
     _name = 'siantou.ems.core.class.group'
-    _description = "Groupe de classe"
+    _description = 'Groupe de classe'
 
     name = fields.Char(string='Nom', required=True,
                        help="Entrer le nom du groupe")
