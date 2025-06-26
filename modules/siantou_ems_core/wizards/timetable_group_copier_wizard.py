@@ -176,7 +176,7 @@ class TimetableGroupCopierWizard(models.TransientModel):
                                     'tp': syllabus_id.tp,
                                     'td': syllabus_id.td,
                                     'te': syllabus_id.te,
-                                    'pro_pe_id': syllabus_id.pro_pe_id,
+                                    # 'pro_pe_id': syllabus_id.pro_pe_id,
                                 })
                         ue_ids.append(ue)
                     ue_ids = [(4, ue_id.id) for ue_id in ue_ids]
