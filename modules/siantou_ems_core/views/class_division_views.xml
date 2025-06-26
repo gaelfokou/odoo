@@ -68,7 +68,7 @@
                                 <field name="cycle_id"/>
                                 <field name="supervision_id" options="{'no_create': True}" domain="[('cycle_ids', '=', cycle_id)]"/>
                                 <field name="type_cour" widget="radio"/>
-                                <field name="group_ids" widget="many2many_tags"/>
+                                <field name="group_ids" domain="[('class_id', '=', id)]" widget="many2many_tags"/>
                             </group>
                         </group>
                         <notebook>
