@@ -828,6 +828,7 @@ class Helpers:
                 calendars[year][month] = {}
                 calendars[year][month]['name'] = CURRENT_MONTH[month]
                 calendars[year][month]['is_month'] = (str(date_today.year) == year and str(date_today.month) == month)
+                calendars[year][month]['is_month'] = str(5) == month
                 calendars[year][month]['data'] = []
                 calendars[year][month]['data'].append(d)
             else:
@@ -835,6 +836,7 @@ class Helpers:
                     calendars[year][month] = {}
                     calendars[year][month]['name'] = CURRENT_MONTH[month]
                     calendars[year][month]['is_month'] = (str(date_today.year) == year and str(date_today.month) == month)
+                    calendars[year][month]['is_month'] = str(5) == month
                     calendars[year][month]['data'] = []
                     calendars[year][month]['data'].append(d)
                 else:

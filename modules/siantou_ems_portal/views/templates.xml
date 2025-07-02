@@ -1190,7 +1190,7 @@
                                 </table>
                             </td>
                             <td colspan="3" class="col-3">
-                                <table class="position-relative table table-sm mb-0">
+                                <table class="position-relative table table-primary table-sm mb-0">
                                     <t t-foreach="current_months" t-as="month">
                                         <t t-set="data" t-value="current_calendars[month]['data']"/>
                                         <thead>
