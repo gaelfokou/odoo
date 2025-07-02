@@ -1140,7 +1140,7 @@
                         <t t-set="data" t-value="calendars[month]['data']"/>
                         <thead>
                             <tr>
-                                <th class="text-center" colspan="8" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;">
+                                <th class="text-center" colspan="5" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;">
                                     <span t-esc="'Mois :'"/>
                                     <span t-esc="calendars[month]['name'] + ' ' + search_year"/>
                                 </th>
