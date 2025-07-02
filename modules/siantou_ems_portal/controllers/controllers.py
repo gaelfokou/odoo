@@ -868,11 +868,13 @@ class PortalAccount(portal.CustomerPortal):
             calendars.append(calendar)
         calendars = Helpers.format_calendar(calendars)
         search_year = str(search_year)
-        calendars[search_year] = Helpers.paginate_calendar(calendars[search_year], 1, page)
+        if search_year in calendars:
+            calendars = calendars[search_year]
+        calendars = Helpers.paginate_calendar(calendars, 1, page)
         return http.request.render(f'siantou_ems_portal.siantou_ems_portal_calendar_calendar_views',
                                 {
-                                    'calendars': calendars[search_year]['pages'],
-                                    'calendar_pages_total': calendars[search_year]['pages_total'],
+                                    'calendars': calendars['pages'],
+                                    'calendar_pages_total': calendars['pages_total'],
                                     'calendar_page_number': page,
                                     'search_year': search_year,
                                     'page_name': 'calendar',
