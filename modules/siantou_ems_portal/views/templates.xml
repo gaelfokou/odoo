@@ -1163,7 +1163,7 @@
                         <tbody>
                             <t t-foreach="data" t-as="record">
                                 <tr>
-                                    <td class="text-center">
+                                    <td t-attf-class="text-center #{'fw-bold ' if record['is_today'] else ''}">
                                         <span t-esc="record['name']"/>
                                     </td>
                                     <td class="text-center">

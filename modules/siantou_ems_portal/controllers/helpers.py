@@ -819,6 +819,7 @@ class Helpers:
 
         for d in sorted_data:
             year, week, day = d['start'].isocalendar()
+            d['is_today'] = (date.today().isocalendar()[0] == year and date.today().isocalendar()[1] == week and date.today().isocalendar()[2] == day)
             month = d['start'].month
             year = str(year)
             month = str(month)
