@@ -1195,7 +1195,7 @@
                                         <t t-set="data" t-value="current_calendars[month]['data']"/>
                                         <thead>
                                             <tr>
-                                                <th class="text-center" colspan="2" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;">
+                                                <th class="text-center" colspan="1" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;">
                                                     <span t-esc="'Mois en cours :'"/>
                                                     <span t-esc="current_calendars[month]['name'] + ' ' + search_year"/>
                                                 </th>
@@ -1203,13 +1203,12 @@
                                         </thead>
                                         <thead>
                                             <tr>
-                                                <th class="text-left" colspan="2" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
+                                                <th class="text-left" colspan="1" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
                                             </tr>
                                         </thead>
                                         <thead>
                                             <tr class="active">
                                                 <th class="text-center">Sujet</th>
-                                                <th class="text-center">Date de début</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -1217,8 +1216,7 @@
                                                 <tr>
                                                     <td class="text-center">
                                                         <span t-esc="record['name']"/>
-                                                    </td>
-                                                    <td class="text-center">
+                                                        <br/>
                                                         <span t-esc="record['start_date']"/>
                                                     </td>
                                                 </tr>
