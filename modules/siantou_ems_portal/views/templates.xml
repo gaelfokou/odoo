@@ -1132,86 +1132,133 @@
                 <t t-call="portal.portal_table">
                     <!-- <div id="siantou_ems_portal_print_calendar_container"></div> -->
                     <t t-set="months" t-value="calendars.keys()"/>
+                    <t t-set="current_months" t-value="current_calendars.keys()"/>
                     <t t-set="total_calendars" t-value="[(i+1) for i in range(calendar_pages_total)]"/>
                     <t t-set="total_calendars" t-value="[total_calendars[i:i+5] for i in range(0, len(total_calendars), 5)]"/>
                     <t t-set="total_calendars" t-value="[p for p in total_calendars if (calendar_page_number in p or (calendar_page_number - 1) in p or (calendar_page_number + 1) in p)]"/>
                     <t t-set="total_calendars" t-value="[m for p in total_calendars for m in p] if len(total_calendars) > 0 else []"/>
-                    <t t-foreach="months" t-as="month">
-                        <t t-set="data" t-value="calendars[month]['data']"/>
-                        <thead>
-                            <tr>
-                                <th class="text-center" colspan="5" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;">
-                                    <span t-esc="'Mois :'"/>
-                                    <span t-esc="calendars[month]['name'] + ' ' + search_year"/>
-                                </th>
-                            </tr>
-                        </thead>
-                        <thead>
-                            <tr>
-                                <th class="text-left" colspan="5" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
-                            </tr>
-                        </thead>
-                        <thead>
-                            <tr class="active">
-                                <th class="text-center">Sujet</th>
-                                <th class="text-center">Date de début</th>
-                                <th class="text-center">Date de fin</th>
-                                <th class="text-center">Localisation</th>
-                                <th class="text-center">Durée</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <t t-foreach="data" t-as="record">
-                                <tr>
-                                    <td t-attf-class="text-center #{'fw-bold ' if record['is_today'] else ''}">
-                                        <span t-esc="record['name']"/>
-                                    </td>
-                                    <td class="text-center">
-                                        <span t-esc="record['start_date']"/>
-                                    </td>
-                                    <td class="text-center">
-                                        <span t-esc="record['stop_date']"/>
-                                    </td>
-                                    <td class="text-center">
-                                        <span t-esc="record['location']"/>
-                                    </td>
-                                    <td class="text-center">
-                                        <span t-esc="record['duration']"/>
-                                    </td>
-                                </tr>
-                            </t>
-                        </tbody>
-                        <tfooter>
-                            <tr>
-                                <th class="text-left" colspan="5" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
-                            </tr>
-                        </tfooter>
-                        <tbody>
-                            <tr>
-                                <td class="text-left" colspan="5">
-                                    <nav aria-label="Page navigation calendar">
-                                        <ul class="pagination">
-                                            <li class="page-item"><a class="page-link" t-attf-href="/my/calendar/page/1">Précédent</a></li>
-                                            <t t-foreach="total_calendars" t-as="p">
-                                                <t t-if="p == calendar_page_number">
-                                                    <li class="page-item active"><a class="page-link" t-attf-href="/my/calendar/page/{{ p }}" t-esc="p"/></li>
-                                                </t>
-                                                <t t-else="">
-                                                    <li class="page-item"><a class="page-link" t-attf-href="/my/calendar/page/{{ p }}" t-esc="p"/></li>
-                                                </t>
+                    <tbody>
+                        <tr>
+                            <td colspan="9" class="col-9">
+                                <table class="position-relative table table-sm table-striped mb-0">
+                                    <t t-foreach="months" t-as="month">
+                                        <t t-set="data" t-value="calendars[month]['data']"/>
+                                        <thead>
+                                            <tr>
+                                                <th class="text-center" colspan="5" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;">
+                                                    <span t-esc="'Mois :'"/>
+                                                    <span t-esc="calendars[month]['name'] + ' ' + search_year"/>
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <thead>
+                                            <tr>
+                                                <th class="text-left" colspan="5" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
+                                            </tr>
+                                        </thead>
+                                        <thead>
+                                            <tr class="active">
+                                                <th class="text-center">Sujet</th>
+                                                <th class="text-center">Date de début</th>
+                                                <th class="text-center">Date de fin</th>
+                                                <th class="text-center">Localisation</th>
+                                                <th class="text-center">Durée</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <t t-foreach="data" t-as="record">
+                                                <tr>
+                                                    <td t-attf-class="text-center #{'fw-bold ' if calendars[month]['is_month'] else ''}">
+                                                        <span t-esc="record['name']"/>
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <span t-esc="record['start_date']"/>
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <span t-esc="record['stop_date']"/>
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <span t-esc="record['location']"/>
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <span t-esc="record['duration']"/>
+                                                    </td>
+                                                </tr>
                                             </t>
-                                            <li class="page-item"><a class="page-link" t-attf-href="/my/calendar/page/{{ calendar_pages_total }}">Suivant</a></li>
-                                        </ul>
-                                    </nav>
-                                </td>
-                            </tr>
-                        </tbody>
-                        <tfooter>
-                            <tr>
-                                <th class="text-left" colspan="5" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
-                            </tr>
-                        </tfooter>
-                    </t>
+                                        </tbody>
+                                    </t>
+                                </table>
+                            </td>
+                            <td colspan="3" class="col-3">
+                                <table class="position-relative table table-sm mb-0">
+                                    <t t-foreach="current_months" t-as="month">
+                                        <t t-set="data" t-value="current_calendars[month]['data']"/>
+                                        <thead>
+                                            <tr>
+                                                <th class="text-center" colspan="2" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;">
+                                                    <span t-esc="'Mois en cours :'"/>
+                                                    <span t-esc="current_calendars[month]['name'] + ' ' + search_year"/>
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <thead>
+                                            <tr>
+                                                <th class="text-left" colspan="2" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
+                                            </tr>
+                                        </thead>
+                                        <thead>
+                                            <tr class="active">
+                                                <th class="text-center">Sujet</th>
+                                                <th class="text-center">Date de début</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <t t-foreach="data" t-as="record">
+                                                <tr>
+                                                    <td class="text-center">
+                                                        <span t-esc="record['name']"/>
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <span t-esc="record['start_date']"/>
+                                                    </td>
+                                                </tr>
+                                            </t>
+                                        </tbody>
+                                    </t>
+                                </table>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tfooter>
+                        <tr>
+                            <th class="text-left" colspan="12" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
+                        </tr>
+                    </tfooter>
+                    <tbody>
+                        <tr>
+                            <td class="text-left" colspan="12">
+                                <nav aria-label="Page navigation calendar">
+                                    <ul class="pagination">
+                                        <li class="page-item"><a class="page-link" t-attf-href="/my/calendar/page/1">Précédent</a></li>
+                                        <t t-foreach="total_calendars" t-as="p">
+                                            <t t-if="p == calendar_page_number">
+                                                <li class="page-item active"><a class="page-link" t-attf-href="/my/calendar/page/{{ p }}" t-esc="p"/></li>
+                                            </t>
+                                            <t t-else="">
+                                                <li class="page-item"><a class="page-link" t-attf-href="/my/calendar/page/{{ p }}" t-esc="p"/></li>
+                                            </t>
+                                        </t>
+                                        <li class="page-item"><a class="page-link" t-attf-href="/my/calendar/page/{{ calendar_pages_total }}">Suivant</a></li>
+                                    </ul>
+                                </nav>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tfooter>
+                        <tr>
+                            <th class="text-left" colspan="12" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
+                        </tr>
+                    </tfooter>
                 </t>
             </t>
         </template>

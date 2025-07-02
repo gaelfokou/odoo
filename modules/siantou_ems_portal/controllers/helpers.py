@@ -819,20 +819,22 @@ class Helpers:
 
         for d in sorted_data:
             year, week, day = d['start'].isocalendar()
-            d['is_today'] = (date.today().isocalendar()[0] == year and date.today().isocalendar()[1] == week and date.today().isocalendar()[2] == day)
             month = d['start'].month
+            date_today = date.today()
             year = str(year)
             month = str(month)
             if not year in calendars:
                 calendars[year] = {}
                 calendars[year][month] = {}
                 calendars[year][month]['name'] = CURRENT_MONTH[month]
+                calendars[year][month]['is_month'] = (str(date_today.year) == year and str(date_today.month) == month)
                 calendars[year][month]['data'] = []
                 calendars[year][month]['data'].append(d)
             else:
                 if not month in calendars[year]:
                     calendars[year][month] = {}
                     calendars[year][month]['name'] = CURRENT_MONTH[month]
+                    calendars[year][month]['is_month'] = (str(date_today.year) == year and str(date_today.month) == month)
                     calendars[year][month]['data'] = []
                     calendars[year][month]['data'].append(d)
                 else:

@@ -870,12 +870,17 @@ class PortalAccount(portal.CustomerPortal):
         search_year = str(search_year)
         if search_year in calendars:
             calendars = calendars[search_year]
+        current_calendars = {}
+        for month in calendars.keys():
+            if calendars[month]['is_month']:
+                current_calendars[month] = calendars[month]
         calendars = Helpers.paginate_calendar(calendars, 1, page)
         return http.request.render(f'siantou_ems_portal.siantou_ems_portal_calendar_calendar_views',
                                 {
                                     'calendars': calendars['pages'],
                                     'calendar_pages_total': calendars['pages_total'],
                                     'calendar_page_number': page,
+                                    'current_calendars': current_calendars,
                                     'search_year': search_year,
                                     'page_name': 'calendar',
                                     'calendar': 0,
