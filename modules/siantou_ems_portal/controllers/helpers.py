@@ -37,6 +37,21 @@ STATUS_TIMETABLE = {
     'exception': 'Exception',
 }
 
+CURRENT_MONTH = {
+    '1': 'Janvier',
+    '2': 'Février',
+    '3': 'Mars',
+    '4': 'Avril',
+    '5': 'Mai',
+    '6': 'Juin',
+    '7': 'Juillet',
+    '8': 'Août',
+    '9': 'Septembre',
+    '10': 'Octobre',
+    '11': 'Novembre',
+    '12': 'Décembre',
+}
+
 _logger = logging.getLogger(__name__)
 
 class Helpers:
@@ -417,6 +432,27 @@ class Helpers:
         return search_subjectsessions, searchbar_inputs
 
     @staticmethod
+    def calendar(search='', search_in='all'):
+        searchbar_inputs = {
+            'all': {'label': 'Tout', 'input': 'all', 'domain': []},
+        }
+        if search_in not in searchbar_inputs.keys():
+            search_in = 'all'
+        search_domain = searchbar_inputs[search_in]['domain']
+
+        order = 'start_date asc'
+
+        calendars = http.request.env['calendar.event'].sudo().search(search_domain, order=order)
+        search_year = datetime.now().year
+        calendars = calendars.filtered(lambda rec: rec.start.year == search_year)
+        calendars = list(calendars)
+        search_calendars = calendars
+
+        _logger.info(f'----------- tototototototo search_calendars {search_calendars} -----------')
+
+        return search_calendars, searchbar_inputs, search_year
+
+    @staticmethod
     def notification(search='', search_in='all'):
         searchbar_inputs = {
             'all': {'label': 'Tout', 'input': 'all', 'domain': []},
@@ -773,6 +809,37 @@ class Helpers:
         _logger.info(f'----------- tototototototo subjectsessions {subjectsessions} -----------')
 
         return subjectsessions
+
+    @staticmethod
+    def format_calendar(data):
+        calendars = {}
+
+        data.sort(key=lambda d: d['start'])
+        sorted_data = copy.deepcopy(data)
+
+        for d in sorted_data:
+            year, week, day = d['start'].isocalendar()
+            month = d['start'].month
+            year = str(year)
+            month = str(month)
+            if not year in calendars:
+                calendars[year] = {}
+                calendars[year][month] = {}
+                calendars[year][month]['name'] = CURRENT_MONTH[month]
+                calendars[year][month]['data'] = []
+                calendars[year][month]['data'].append(d)
+            else:
+                if not month in calendars[year]:
+                    calendars[year][month] = {}
+                    calendars[year][month]['name'] = CURRENT_MONTH[month]
+                    calendars[year][month]['data'] = []
+                    calendars[year][month]['data'].append(d)
+                else:
+                    calendars[year][month]['data'].append(d)
+
+        _logger.info(f'----------- tototototototo calendars {calendars} -----------')
+
+        return calendars
 
     @staticmethod
     def convert_number_of_hours(tm):

@@ -108,6 +108,8 @@ class PortalAccount(portal.CustomerPortal):
             values['portal_subjectsession_new'] = 0
         if 'portal_subjectsession_edit' in counters:
             values['portal_subjectsession_edit'] = 0
+        if 'portal_calendar' in counters:
+            values['portal_calendar'] = 1
         if 'portal_notification' in counters:
             values['portal_notification'] = 1 if is_user == 'is_teacher' else 0
         if 'portal_request' in counters:
@@ -847,6 +849,38 @@ class PortalAccount(portal.CustomerPortal):
         }
         session_id.sudo().write(vals)
         return http.request.redirect('/my/subjectsession/{}/{}/list'.format(params['class_id'], params['subject_id']))
+
+    @http.route(['/my/calendar', '/my/calendar/page/<int:page>'], type='http', auth="user", website=True)
+    def portal_calendar(self, page=1, search='', search_in='all', **kw):
+        # Utilisation de la fonction du helper
+        search_calendars, searchbar_inputs, search_year = Helpers.calendar(search, search_in)
+        calendars = []
+        for search_calendar in search_calendars:
+            calendar = {}
+            calendar['id'] = search_calendar.id
+            calendar['name'] = search_calendar.name
+            calendar['start'] = search_calendar.start
+            calendar['start_date'] = datetime.strftime(search_calendar.start, DATETIME_FORMAT_FR)
+            calendar['stop'] = search_calendar.stop
+            calendar['stop_date'] = datetime.strftime(search_calendar.stop, DATETIME_FORMAT_FR)
+            calendar['location'] = search_calendar.location
+            calendar['duration'] = search_calendar.duration
+            calendars.append(calendar)
+        calendars = Helpers.format_calendar(calendars)
+        search_year = str(search_year)
+        calendars[search_year] = Helpers.paginate_calendar(calendars[search_year], 1, page)
+        return http.request.render(f'siantou_ems_portal.siantou_ems_portal_calendar_calendar_views',
+                                {
+                                    'calendars': calendars[search_year]['pages'],
+                                    'calendar_pages_total': calendars[search_year]['pages_total'],
+                                    'calendar_page_number': page,
+                                    'search_year': search_year,
+                                    'page_name': 'calendar',
+                                    'calendar': 0,
+                                    'search': search,
+                                    'search_in': search_in,
+                                    'searchbar_inputs': searchbar_inputs,
+                                })
 
     @http.route(['/my/notification'], type='http', auth="user", website=True)
     def portal_notification(self, search='', search_in='all', **kw):
