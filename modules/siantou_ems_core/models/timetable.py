@@ -716,6 +716,19 @@ class Timetable(models.Model):
             'tag': 'reload',
         }
 
+    def action_delay_timetable(self):
+        active_ids = self.env.context.get('active_ids', [])
+        timetable_ids = self.env['siantou.ems.timetable.timetable'].browse(active_ids)
+        for timetable in timetable_ids:
+            timetable.write({
+                'status': 'delay',
+            })
+
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'reload',
+        }
+
     def state_pending_timetable(self):
         self.write({
             'status': 'pending',

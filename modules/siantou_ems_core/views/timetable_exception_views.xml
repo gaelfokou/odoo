@@ -18,6 +18,10 @@
                                 type="object" 
                                 string="Absent" 
                                 class="oe_highlight"/>
+                        <button name="action_delay_timetable" 
+                                type="object" 
+                                string="Retardataire" 
+                                class="oe_highlight"/>
                     </header>
                     <field name="group_id"/>
                     <field name="semester_id"/>
@@ -43,7 +47,7 @@
                         decoration-primary="status == 'progress'"
                         decoration-success="status == 'present'"
                         decoration-danger="status == 'absent'"
-                        decoration-info="status == 'permission'"
+                        decoration-info="status in ['permission', 'delay']"
                         decoration-warning="status == 'exception'"/>
 				</tree>
 			</field>

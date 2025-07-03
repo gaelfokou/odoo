@@ -79,7 +79,7 @@
                                         decoration-primary="status == 'progress'"
                                         decoration-success="status == 'present'"
                                         decoration-danger="status == 'absent'"
-                                        decoration-info="status == 'permission'"
+                                        decoration-info="status in ['permission', 'delay']"
                                         decoration-warning="status == 'exception'"/>
                                 </tree>
                             </field>
