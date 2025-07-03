@@ -33,6 +33,7 @@ STATUS_TIMETABLE = {
     'absent': 'Absent',
     'permission': 'Permission',
     'exception': 'Exception',
+    'delay': 'Retard',
 }
 
 TYPE_PAIEMENT = {

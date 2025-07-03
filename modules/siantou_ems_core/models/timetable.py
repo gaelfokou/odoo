@@ -105,6 +105,7 @@ class TimetableSubjectHour(models.Model):
         ('absent', 'Absent'),
         ('permission', 'Permission'),
         ('exception', 'Exception'),
+        ('delay', 'Retard'),
     ], 'Statut',
         default='pending',
     )
@@ -358,6 +359,7 @@ class Timetable(models.Model):
         ('absent', 'Absent'),
         ('permission', 'Permission'),
         ('exception', 'Exception'),
+        ('delay', 'Retard'),
     ], 'Statut',
         default='pending',
     )
@@ -369,6 +371,7 @@ class Timetable(models.Model):
         ('absent', 'Absent'),
         ('permission', 'Permission'),
         ('exception', 'Exception'),
+        ('delay', 'Retard'),
     ], 'Statut',
         related='status',
         store=True,
@@ -766,6 +769,16 @@ class Timetable(models.Model):
     def state_exception_timetable(self):
         self.write({
             'status': 'exception',
+        })
+
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'reload',
+        }
+
+    def state_delay_timetable(self):
+        self.write({
+            'status': 'delay',
         })
 
         return {

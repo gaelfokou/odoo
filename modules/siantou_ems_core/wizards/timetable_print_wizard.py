@@ -35,6 +35,7 @@ STATUS_TIMETABLE = {
     'absent': 'Absent',
     'permission': 'Permission',
     'exception': 'Exception',
+    'delay': 'Retard',
 }
 
 _logger = logging.getLogger(__name__)

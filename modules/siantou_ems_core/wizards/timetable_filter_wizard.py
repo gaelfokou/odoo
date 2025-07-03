@@ -23,6 +23,7 @@ STATUS_TIMETABLE = {
     'absent': 'Absent',
     'permission': 'Permission',
     'exception': 'Exception',
+    'delay': 'Retard',
 }
 
 TYPE_COUR = {
@@ -156,6 +157,7 @@ class TimetableFilterWizard(models.TransientModel):
         ('absent', 'Absent'),
         ('permission', 'Permission'),
         ('exception', 'Exception'),
+        ('delay', 'Retard'),
     ], 'Statut',
         # default='pending',
     )

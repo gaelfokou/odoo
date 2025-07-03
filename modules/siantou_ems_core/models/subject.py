@@ -27,6 +27,7 @@ STATUS_TIMETABLE = {
     'absent': 'Absent',
     'permission': 'Permission',
     'exception': 'Exception',
+    'delay': 'Retard',
 }
 
 class Subject(models.Model):

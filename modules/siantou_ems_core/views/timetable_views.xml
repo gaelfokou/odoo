@@ -76,7 +76,8 @@
                         <button name="state_absent_timetable" class="oe_highlight" invisible="state in ['absent']" string="Absent" type="object"/>
                         <button name="state_permission_timetable" class="oe_highlight" invisible="state in ['permission']" string="Permissionnaire" type="object"/>
                         <button name="state_exception_timetable" class="oe_highlight" invisible="state in ['exception']" string="Exception" type="object"/>
-                        <field name="state" widget="statusbar" statusbar_visible="pending,progress,present,absent,permission,exception"/>
+                        <button name="state_delay_timetable" class="oe_highlight" invisible="state in ['delay']" string="Retardataire" type="object"/>
+                        <field name="state" widget="statusbar" statusbar_visible="pending,progress,present,absent,permission,exception,delay"/>
                     </header>
 					<sheet>
                         <group>
