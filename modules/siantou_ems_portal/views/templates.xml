@@ -1140,90 +1140,94 @@
                     <tbody>
                         <tr>
                             <td colspan="9" class="col-9">
-                                <table class="position-relative table table-sm table-striped mb-0">
-                                    <t t-foreach="months" t-as="month">
-                                        <t t-set="data" t-value="calendars[month]['data']"/>
-                                        <thead>
-                                            <tr>
-                                                <th class="text-center" colspan="5" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;">
-                                                    <span t-esc="'Mois :'"/>
-                                                    <span t-esc="calendars[month]['name'] + ' ' + search_year"/>
-                                                </th>
-                                            </tr>
-                                        </thead>
-                                        <thead>
-                                            <tr>
-                                                <th class="text-left" colspan="5" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
-                                            </tr>
-                                        </thead>
-                                        <thead>
-                                            <tr class="active">
-                                                <th class="text-center">Sujet</th>
-                                                <th class="text-center">Date de début</th>
-                                                <th class="text-center">Date de fin</th>
-                                                <th class="text-center">Localisation</th>
-                                                <th class="text-center">Durée</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <t t-foreach="data" t-as="record">
+                                <div class="table-responsive border-0 ">
+                                    <table class="position-relative table table-sm table-striped mb-0">
+                                        <t t-foreach="months" t-as="month">
+                                            <t t-set="data" t-value="calendars[month]['data']"/>
+                                            <thead>
                                                 <tr>
-                                                    <td t-attf-class="text-center #{'fw-bold ' if calendars[month]['is_month'] else ''}">
-                                                        <span t-esc="record['name']"/>
-                                                    </td>
-                                                    <td class="text-center">
-                                                        <span t-esc="record['start_date']"/>
-                                                    </td>
-                                                    <td class="text-center">
-                                                        <span t-esc="record['stop_date']"/>
-                                                    </td>
-                                                    <td class="text-center">
-                                                        <span t-esc="record['location']"/>
-                                                    </td>
-                                                    <td class="text-center">
-                                                        <span t-esc="record['duration']"/>
-                                                    </td>
+                                                    <th class="text-center" colspan="5" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;">
+                                                        <span t-esc="'Mois :'"/>
+                                                        <span t-esc="calendars[month]['name'] + ' ' + search_year"/>
+                                                    </th>
                                                 </tr>
-                                            </t>
-                                        </tbody>
-                                    </t>
-                                </table>
+                                            </thead>
+                                            <thead>
+                                                <tr>
+                                                    <th class="text-left" colspan="5" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
+                                                </tr>
+                                            </thead>
+                                            <thead>
+                                                <tr class="active">
+                                                    <th class="text-center">Sujet</th>
+                                                    <th class="text-center">Date de début</th>
+                                                    <th class="text-center">Date de fin</th>
+                                                    <th class="text-center">Localisation</th>
+                                                    <th class="text-center">Durée</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <t t-foreach="data" t-as="record">
+                                                    <tr>
+                                                        <td t-attf-class="text-center #{'fw-bold ' if calendars[month]['is_month'] else ''}">
+                                                            <span t-esc="record['name']"/>
+                                                        </td>
+                                                        <td class="text-center">
+                                                            <span t-esc="record['start_date']"/>
+                                                        </td>
+                                                        <td class="text-center">
+                                                            <span t-esc="record['stop_date']"/>
+                                                        </td>
+                                                        <td class="text-center">
+                                                            <span t-esc="record['location']"/>
+                                                        </td>
+                                                        <td class="text-center">
+                                                            <span t-esc="record['duration']"/>
+                                                        </td>
+                                                    </tr>
+                                                </t>
+                                            </tbody>
+                                        </t>
+                                    </table>
+                                </div>
                             </td>
                             <td colspan="3" class="col-3">
-                                <table class="position-relative table table-primary table-sm mb-0">
-                                    <t t-foreach="current_months" t-as="month">
-                                        <t t-set="data" t-value="current_calendars[month]['data']"/>
-                                        <thead>
-                                            <tr>
-                                                <th class="text-center" colspan="1" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;">
-                                                    <span t-esc="'Mois en cours :'"/>
-                                                    <span t-esc="current_calendars[month]['name'] + ' ' + search_year"/>
-                                                </th>
-                                            </tr>
-                                        </thead>
-                                        <thead>
-                                            <tr>
-                                                <th class="text-left" colspan="1" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
-                                            </tr>
-                                        </thead>
-                                        <thead>
-                                            <tr class="active">
-                                                <th class="text-center">Sujet</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <t t-foreach="data" t-as="record">
+                                <div class="table-responsive border-0 ">
+                                    <table class="position-relative table table-sm table-primary table-sm mb-0">
+                                        <t t-foreach="current_months" t-as="month">
+                                            <t t-set="data" t-value="current_calendars[month]['data']"/>
+                                            <thead>
                                                 <tr>
-                                                    <td class="text-center">
-                                                        <span t-esc="record['name']"/>
-                                                        <br/>
-                                                        <span t-esc="record['start_date']"/>
-                                                    </td>
+                                                    <th class="text-center" colspan="1" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;">
+                                                        <span t-esc="'Mois en cours :'"/>
+                                                        <span t-esc="current_calendars[month]['name'] + ' ' + search_year"/>
+                                                    </th>
                                                 </tr>
-                                            </t>
-                                        </tbody>
-                                    </t>
-                                </table>
+                                            </thead>
+                                            <thead>
+                                                <tr>
+                                                    <th class="text-left" colspan="1" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
+                                                </tr>
+                                            </thead>
+                                            <thead>
+                                                <tr class="active">
+                                                    <th class="text-center">Sujet</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <t t-foreach="data" t-as="record">
+                                                    <tr>
+                                                        <td class="text-center">
+                                                            <span t-esc="record['name']"/>
+                                                            <br/>
+                                                            <span t-esc="record['start_date']"/>
+                                                        </td>
+                                                    </tr>
+                                                </t>
+                                            </tbody>
+                                        </t>
+                                    </table>
+                                </div>
                             </td>
                         </tr>
                     </tbody>
