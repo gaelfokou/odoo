@@ -480,7 +480,7 @@ class HrPayslip(models.Model):
                         ('group_id.is_active', '=', True),
                         ('group_id.is_submit', '=', False),
                         ('employee_id', '=', daily_attendance.employee_id.id),
-                        ('status', '=', 'pending'),
+                        ('status', 'in', ['pending', 'progress']),
                     ], order='date asc').filtered(lambda rec: self.search_filtered_daily_attendance_teacher(rec, punching_time))
                     employee_timetables = list(employee_timetables)
                     if len(employee_timetables) > 0:
