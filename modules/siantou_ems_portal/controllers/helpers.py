@@ -443,9 +443,14 @@ class Helpers:
 
         order = 'start_date asc'
 
+        year_id = http.request.env['siantou.ems.core.year'].sudo().search([('is_active', '=', True)], limit=1)
+        if year_id:
+            search_year = year_id.name.split('-')
+            search_year = [int(y) for y in search_year]
+        else:
+            search_year = []
         calendars = http.request.env['calendar.event'].sudo().search(search_domain, order=order)
-        search_year = datetime.now().year
-        calendars = calendars.filtered(lambda rec: rec.start.year == search_year)
+        calendars = calendars.filtered(lambda rec: rec.start.year in search_year)
         calendars = list(calendars)
         search_calendars = calendars
 
@@ -812,38 +817,49 @@ class Helpers:
         return subjectsessions
 
     @staticmethod
-    def format_calendar(data):
+    def format_calendar(data, search_year):
         calendars = {}
 
         data.sort(key=lambda d: d['start'])
         sorted_data = copy.deepcopy(data)
 
+        search_year = [str(y) for y in search_year]
+        search_year = '-'.join(search_year)
+
         for d in sorted_data:
-            year, week, day = d['start'].isocalendar()
+            _year, week, day = d['start'].isocalendar()
             month = d['start'].month
             date_today = date.today()
-            year = str(year)
             month = str(month)
-            if not year in calendars:
-                calendars[year] = {}
-                calendars[year][month] = {}
-                calendars[year][month]['name'] = CURRENT_MONTH[month]
-                calendars[year][month]['is_month'] = (str(date_today.year) == year and str(date_today.month) == month)
-                calendars[year][month]['data'] = []
-                calendars[year][month]['data'].append(d)
+            if not search_year in calendars:
+                calendars[search_year] = {}
+                calendars[search_year][month] = {}
+                calendars[search_year][month]['name'] = CURRENT_MONTH[month]
+                calendars[search_year][month]['is_current_month'] = (str(date_today.year) in search_year and str(date_today.month) == month)
+                if calendars[search_year][month]['is_current_month']:
+                    calendars[search_year][month]['current_year'] = str(date_today.year)
+                calendars[search_year][month]['data'] = []
+                calendars[search_year][month]['data'].append(d)
             else:
-                if not month in calendars[year]:
-                    calendars[year][month] = {}
-                    calendars[year][month]['name'] = CURRENT_MONTH[month]
-                    calendars[year][month]['is_month'] = (str(date_today.year) == year and str(date_today.month) == month)
-                    calendars[year][month]['data'] = []
-                    calendars[year][month]['data'].append(d)
+                if not month in calendars[search_year]:
+                    calendars[search_year][month] = {}
+                    calendars[search_year][month]['name'] = CURRENT_MONTH[month]
+                    calendars[search_year][month]['is_current_month'] = (str(date_today.year) in search_year and str(date_today.month) == month)
+                    if calendars[search_year][month]['is_current_month']:
+                        calendars[search_year][month]['current_year'] = str(date_today.year)
+                    calendars[search_year][month]['data'] = []
+                    calendars[search_year][month]['data'].append(d)
                 else:
-                    calendars[year][month]['data'].append(d)
+                    calendars[search_year][month]['data'].append(d)
+
+        for year in calendars.keys():
+            for month in calendars[year].keys():
+                if not 'current_year' in calendars[year][month]:
+                    calendars[year][month]['current_year'] = ''
 
         _logger.info(f'----------- tototototototo calendars {calendars} -----------')
 
-        return calendars
+        return calendars, search_year
 
     @staticmethod
     def convert_number_of_hours(tm):

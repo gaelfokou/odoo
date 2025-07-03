@@ -1169,7 +1169,7 @@
                                             <tbody>
                                                 <t t-foreach="data" t-as="record">
                                                     <tr>
-                                                        <td t-attf-class="text-center #{'fw-bold ' if calendars[month]['is_month'] else ''}">
+                                                        <td t-attf-class="text-center #{'fw-bold ' if calendars[month]['is_current_month'] else ''}">
                                                             <span t-esc="record['name']"/>
                                                         </td>
                                                         <td class="text-center">
@@ -1200,7 +1200,7 @@
                                                 <tr>
                                                     <th class="text-center" colspan="1" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;">
                                                         <span t-esc="'Mois en cours :'"/>
-                                                        <span t-esc="current_calendars[month]['name'] + ' ' + search_year"/>
+                                                        <span t-esc="current_calendars[month]['name'] + ' ' + current_calendars[month]['current_year']"/>
                                                     </th>
                                                 </tr>
                                             </thead>
