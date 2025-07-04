@@ -37,6 +37,7 @@
         'views/hr_leave_type_view.xml',
         'data/mail_template.xml',
         'data/timetable_presence.xml',
+        'data/timetable_rappel.xml',
         'data/download_attendance.xml',
         'data/timetable_notification.xml',
         'data/timetable_notification_template.xml',
