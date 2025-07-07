@@ -60,6 +60,35 @@
             </field>
         </record>
         <!-- Template to send demo mail template for the customer -->
+        <record id="om_hr_payroll_template_timetable_notification_retard" model="mail.template">
+            <field name="name">Email Notification Retard</field>
+            <field name="model_id" ref="om_hr_payroll.model_siantou_ems_timetable_notification"/>
+            <field name="email_from">{{ user.email }}</field>
+            <field name="email_to">{{ object.employee_id.work_email }}</field>
+            <!-- <field name="email_to">gaelfokou.9@gmail.com</field> -->
+            <field name="subject">Notification Retard</field>
+            <field name="body_html" type="html">
+                <div style="margin: 0px; padding: 0px;">
+                    <div style="justify-content: center;background-color: #714B67; padding:0.6rem;padding-left: 35px;text-decoration: none; color: #fff; border-radius: 5px; font-size:13px;width:40%">
+                        <h2>
+                            Bonjour / Bonsoir,
+                            <t t-out="object.employee_id.name"/>
+                        </h2>
+                        <div>
+                            <h3>Ceci est un message de notification de retard.</h3>
+                            <h3><t t-out="object.message"/></h3>
+                        </div>
+                    </div>
+                    <br/>
+                    <br/>
+                    Cordialement,
+                    <br/>
+                    <t t-out="user.name"/>
+                    <br/>
+                </div>
+            </field>
+        </record>
+        <!-- Template to send demo mail template for the customer -->
         <record id="om_hr_payroll_template_timetable_notification_exception" model="mail.template">
             <field name="name">Email Notification Exception</field>
             <field name="model_id" ref="om_hr_payroll.model_siantou_ems_timetable_notification"/>

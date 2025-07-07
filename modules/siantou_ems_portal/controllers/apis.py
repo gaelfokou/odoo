@@ -287,12 +287,27 @@ class ApiAccount(http.Controller):
             notification = {}
             notification['date'] = datetime.strftime(search_notification.date, DATE_FORMAT_FR)
             notification['name'] = search_notification.employee_id.name
-            if search_notification.template in ['om_hr_payroll.om_hr_payroll_template_timetable_notification_absence', 'om_hr_payroll.om_hr_payroll_template_timetable_notification_rappel']:
+            if search_notification.template == 'om_hr_payroll.om_hr_payroll_template_timetable_notification_absence':
+                notification['subject_name'] = search_notification.timetable_id.subject_id.name
+                notification['subject_code'] = search_notification.timetable_id.subject_id.code
+                notification['classroom_name'] = search_notification.timetable_id.classroom_id.name
+                notification['building_name'] = search_notification.timetable_id.classroom_id.building_id.name
+            elif search_notification.template == 'om_hr_payroll.om_hr_payroll_template_timetable_notification_rappel':
+                notification['subject_name'] = search_notification.timetable_id.subject_id.name
+                notification['subject_code'] = search_notification.timetable_id.subject_id.code
+                notification['classroom_name'] = search_notification.timetable_id.classroom_id.name
+                notification['building_name'] = search_notification.timetable_id.classroom_id.building_id.name
+            elif search_notification.template == 'om_hr_payroll.om_hr_payroll_template_timetable_notification_retard':
                 notification['subject_name'] = search_notification.timetable_id.subject_id.name
                 notification['subject_code'] = search_notification.timetable_id.subject_id.code
                 notification['classroom_name'] = search_notification.timetable_id.classroom_id.name
                 notification['building_name'] = search_notification.timetable_id.classroom_id.building_id.name
             elif search_notification.template == 'om_hr_payroll.om_hr_payroll_template_timetable_notification_exception':
+                notification['subject_name'] = ''
+                notification['subject_code'] = ''
+                notification['classroom_name'] = ''
+                notification['building_name'] = ''
+            else:
                 notification['subject_name'] = ''
                 notification['subject_code'] = ''
                 notification['classroom_name'] = ''

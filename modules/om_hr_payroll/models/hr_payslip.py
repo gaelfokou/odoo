@@ -425,6 +425,52 @@ class HrPayslip(models.Model):
     def cron_timetable_rappel(self):
         _logger.info(f'+++++++++++ Cron Timetable Rappel Executed +++++++++++')
         datetime_from = datetime.now()
+        datetime_from = datetime_from + timedelta(days=1, hours=1)
+
+        datetime_before = datetime_from - timedelta(minutes=15)
+        current_date = datetime_before.date()
+
+        time_before = datetime.strftime(datetime_before, TIME_FORMAT_FR)
+        time_before = HrPayslip.convert_time_to_float(time_before)
+
+        _logger.info(f'----------- tototototototo current_date {datetime.strftime(current_date, DATE_FORMAT)} -----------')
+        _logger.info(f'----------- tototototototo time_before {time_before} -----------')
+
+        # Recherche des emplois du temps de l'enseignant pour une période donnée
+        employee_timetables = self.env['siantou.ems.timetable.timetable'].sudo().search([
+            ('group_id.is_active', '=', True),
+            ('group_id.is_submit', '=', False),
+            ('status', '=', 'pending'),
+        ], order='date asc').filtered(lambda rec: rec.date == current_date and rec.start_time <= time_before and rec.end_time >= time_before)
+        employee_timetables = list(employee_timetables)
+        for employee_timetable in employee_timetables:
+            if employee_timetable.employee_id.id:
+                if employee_timetable.employee_id.is_teacher:
+                    template = 'om_hr_payroll.om_hr_payroll_template_timetable_notification_rappel'
+                    start_time = datetime.strptime(f"{employee_timetable.date} {HrPayslip.convert_float_to_time(employee_timetable.start_time)}", DATETIME_FORMAT)
+                    start_time = datetime.strftime(start_time, TIME_FORMAT_FR)
+                    end_time = datetime.strptime(f"{employee_timetable.date} {HrPayslip.convert_float_to_time(employee_timetable.end_time)}", DATETIME_FORMAT)
+                    end_time = datetime.strftime(end_time, TIME_FORMAT_FR)
+                    message = 'Rappel de {} {}'.format(start_time, end_time)
+                    timetable_notifications = self.env['siantou.ems.timetable.notification'].sudo().search([
+                        ('template', '=', template),
+                        ('timetable_id', '=', employee_timetable.id),
+                        ('employee_id', '=', employee_timetable.employee_id.id),
+                    ])
+                    timetable_notifications = list(timetable_notifications)
+                    if len(timetable_notifications) == 0:
+                        self.env['siantou.ems.timetable.notification'].sudo().create({
+                            'template': template,
+                            'timetable_id': employee_timetable.id,
+                            'employee_id': employee_timetable.employee_id.id,
+                            'date': employee_timetable.date,
+                            'message': message,
+                        })
+
+    @api.model
+    def cron_timetable_retard(self):
+        _logger.info(f'+++++++++++ Cron Timetable Retard Executed +++++++++++')
+        datetime_from = datetime.now()
         datetime_from = datetime_from + timedelta(hours=1)
 
         datetime_before = datetime_from - timedelta(minutes=15)
@@ -441,7 +487,7 @@ class HrPayslip(models.Model):
             ('group_id.is_active', '=', True),
             ('group_id.is_submit', '=', False),
             ('status', '=', 'pending'),
-        ], order='date asc').filtered(lambda rec: (rec.date < current_date) or (rec.date == current_date and rec.start_time <= time_before and rec.end_time >= time_before))
+        ], order='date asc').filtered(lambda rec: rec.date == current_date and rec.start_time <= time_before and rec.end_time >= time_before)
         employee_timetables = list(employee_timetables)
         for employee_timetable in employee_timetables:
             if employee_timetable.employee_id.id:
@@ -449,12 +495,12 @@ class HrPayslip(models.Model):
                     # Vérification du temps de cours de l'enseignant en biométrie
                     daily_attendances = self.filter_daily_attendance_teacher(employee_timetable.date, employee_timetable.end_time, employee_timetable.start_time, employee_timetable.employee_id)
                     if len(daily_attendances) == 0:
-                        template = 'om_hr_payroll.om_hr_payroll_template_timetable_notification_rappel'
+                        template = 'om_hr_payroll.om_hr_payroll_template_timetable_notification_retard'
                         start_time = datetime.strptime(f"{employee_timetable.date} {HrPayslip.convert_float_to_time(employee_timetable.start_time)}", DATETIME_FORMAT)
                         start_time = datetime.strftime(start_time, TIME_FORMAT_FR)
                         end_time = datetime.strptime(f"{employee_timetable.date} {HrPayslip.convert_float_to_time(employee_timetable.end_time)}", DATETIME_FORMAT)
                         end_time = datetime.strftime(end_time, TIME_FORMAT_FR)
-                        message = 'Rappel de {} {}'.format(start_time, end_time)
+                        message = 'Retard de {} {}'.format(start_time, end_time)
                         timetable_notifications = self.env['siantou.ems.timetable.notification'].sudo().search([
                             ('template', '=', template),
                             ('timetable_id', '=', employee_timetable.id),
