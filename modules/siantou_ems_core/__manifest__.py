@@ -85,6 +85,7 @@
         'report/student_template.xml',
         'report/classroom_template.xml',
         'report/class_template.xml',
+        'report/subject_template.xml',
         'report/daily_attendance_template.xml',
         'report/report_student_core.xml',
 

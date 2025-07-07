@@ -110,6 +110,9 @@ classroom_print_wizard_admin,classroom_print_wizard.admin,model_classroom_print_
 class_print_wizard_user,class_print_wizard.user,model_class_print_wizard,,1,0,0,0
 class_print_wizard_admin,class_print_wizard.admin,model_class_print_wizard,,1,1,1,1
 
+subject_print_wizard_user,subject_print_wizard.user,model_subject_print_wizard,,1,0,0,0
+subject_print_wizard_admin,subject_print_wizard.admin,model_subject_print_wizard,,1,1,1,1
+
 timetable_filter_wizard_user,timetable_filter_wizard.user,model_timetable_filter_wizard,siantou_ems_core.group_timetable_user,1,0,0,0
 timetable_filter_wizard_admin,timetable_filter_wizard.admin,model_timetable_filter_wizard,siantou_ems_core.group_timetable_admin,1,1,1,1
 

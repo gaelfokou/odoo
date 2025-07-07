@@ -34,14 +34,14 @@
             <field name="view_id" ref="subject_filter_wizard"/>
         </record>
 
-        <!-- <record id="action_report_class" model="ir.actions.report">
+        <!-- <record id="action_report_subject" model="ir.actions.report">
             <field name="name">Emploi du temps PDF</field>
             <field name="model">hr.employee</field>
             <field name="report_type">qweb-pdf</field>
-            <field name="report_name">siantou_ems_subject.report_class</field>
-            <field name="report_file">siantou_ems_subject.report_class</field>
+            <field name="report_name">siantou_ems_subject.report_subject</field>
+            <field name="report_file">siantou_ems_subject.report_subject</field>
             <field name="paperformat_id" ref="paperformat_paysage"/>
-            <field name="binding_model_id" ref="model_siantou_ems_subject_class"/>
+            <field name="binding_model_id" ref="model_siantou_ems_subject_subject"/>
             <field name="binding_type">report</field>
         </record> -->
 
