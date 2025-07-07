@@ -190,7 +190,7 @@ class EducationClass(models.Model):
     def action_open_filter(self):
         view_id = self.env.ref('siantou_ems_core.class_filter_wizard').id
         return {
-            'name': 'Filtre des étudiants',
+            'name': 'Filtre des classes',
             'type': 'ir.actions.act_window',
             'view_type': 'form',
             'view_mode': 'form',

@@ -15,3 +15,4 @@ from . import teacher_filter_wizard
 from . import student_filter_wizard
 from . import daily_attendance_filter_wizard
 from . import timetable_group_copier_wizard
+from . import subject_filter_wizard

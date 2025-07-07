@@ -10,6 +10,23 @@
             <field name="model">siantou.ems.core.subject</field>
             <field name="arch" type="xml">
                 <tree string="Cours">
+                    <header>
+                        <button name="action_reset_filter" 
+                            type="object" 
+                            string="Réinitialiser" 
+                            class="oe_highlight" 
+                            display="always"/>
+                        <button name="action_open_filter" 
+                            type="object" 
+                            string="Filtrer" 
+                            class="oe_highlight" 
+                            display="always"/>
+                        <button name="action_print_pdf" 
+                            type="object" 
+                            string="Imprimer PDF" 
+                            class="oe_highlight" 
+                            display="always"/>
+                    </header>
                     <field name="code"/>
                     <field name="shared_subject"/>
                     <field name="subject_parent_ids" widget="many2many_tags"/>

@@ -128,6 +128,9 @@ classroom_filter_wizard_admin,classroom_filter_wizard.admin,model_classroom_filt
 class_filter_wizard_user,class_filter_wizard.user,model_class_filter_wizard,,1,0,0,0
 class_filter_wizard_admin,class_filter_wizard.admin,model_class_filter_wizard,,1,1,1,1
 
+subject_filter_wizard_user,subject_filter_wizard.user,model_subject_filter_wizard,,1,0,0,0
+subject_filter_wizard_admin,subject_filter_wizard.admin,model_subject_filter_wizard,,1,1,1,1
+
 daily_attendance_filter_wizard_user,daily_attendance_filter_wizard.user,model_daily_attendance_filter_wizard,,1,0,0,0
 daily_attendance_filter_wizard_admin,daily_attendance_filter_wizard.admin,model_daily_attendance_filter_wizard,,1,1,1,1
 

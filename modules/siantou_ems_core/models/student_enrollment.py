@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
-import datetime
-import time
+from datetime import date, datetime, timedelta, time
 import logging
 
 from psycopg2 import sql, DatabaseError
@@ -84,7 +83,7 @@ class StudentEnrollment(models.Model):
     session_lieu_obt = fields.Char(string="Session et lieu d'obtention")
     dern_etab_freq = fields.Char(string="Dernier établissement fréquenté")
     level_id = fields.Many2one("siantou.ems.core.level", string="Niveau", required=True)
-    date_preins = fields.Datetime(string="Date de préinscription", default=datetime.datetime.now())
+    date_preins = fields.Datetime(string="Date de préinscription", default=datetime.now())
     status = fields.Selection([
             # ('broui', "En attente de paiement des frais d'inscription"),
             ('inscrip', 'Inscrit'),

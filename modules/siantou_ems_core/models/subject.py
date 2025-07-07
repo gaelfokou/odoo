@@ -1,7 +1,16 @@
+# -*- coding: utf-8 -*-
+
 from odoo import models, fields, api, tools, _
-from odoo.exceptions import ValidationError
+from odoo.tools import DEFAULT_SERVER_DATETIME_FORMAT
+from odoo.exceptions import UserError, ValidationError
+from odoo.addons.base.models.res_partner import WARNING_MESSAGE, WARNING_HELP
 from datetime import date, datetime, timedelta, time
+import re
+import psycopg2
 import copy
+import logging
+
+_logger = logging.getLogger(__name__)
 
 DATE_FORMAT = '%Y-%m-%d'
 DATE_FORMAT_FR = '%d/%m/%Y'
@@ -215,6 +224,47 @@ class Subject(models.Model):
         self.update_teacher_priority(subject)
 
         return res
+
+    def action_open_filter(self):
+        view_id = self.env.ref('siantou_ems_core.subject_filter_wizard').id
+        return {
+            'name': 'Filtre des cours',
+            'type': 'ir.actions.act_window',
+            'view_type': 'form',
+            'view_mode': 'form',
+            'res_model': 'subject.filter.wizard',
+            'views': [(view_id, 'form')],
+            'view_id': view_id,
+            'target': 'new',
+            'context': {
+                'default_year_id': self.env['siantou.ems.core.year'].search([('is_active', '=', True)], limit=1).id,
+            },
+        }
+
+    def action_reset_filter(self):
+        self.env['ir.config_parameter'].sudo().set_param(f'filter.{self.env.user.id}', '')
+        action = self.env.ref('siantou_ems_core.action_show_subject').read()[0]
+        action.update({
+            'target': 'main',
+        })
+        return action
+
+    def action_print_pdf(self):
+        active_ids = self.env.context.get('active_ids', [])
+        subjects = self.env['siantou.ems.core.subject'].browse(active_ids)
+        if len(active_ids) == 0:
+            raise UserError('Aucune donnée sélectionnée')
+        report_data = self.env['subject.print.wizard'].create({})
+        domain = [
+            ('id', 'in', active_ids)
+        ]
+        data = report_data.print_subject_report_data(domain)
+
+        # Appeler le rapport PDF
+        if not data['docdata']['subject_data']:
+            raise UserError('Aucune donnée trouvée')
+        report_action = self.env.ref('siantou_ems_core.action_report_subject')
+        return report_action.report_action(self, data=data)
 
 class ProgressReport(models.Model):
     _name = 'siantou.ems.core.progress.report'

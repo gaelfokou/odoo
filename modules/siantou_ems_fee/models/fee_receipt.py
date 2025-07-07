@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-import datetime
+from datetime import date, datetime, timedelta, time
 from xml.dom import ValidationErr
 from odoo import models, fields, api, _
 from odoo.exceptions import UserError, ValidationError
@@ -60,7 +60,7 @@ class FeeReceipts(models.Model):
             item.invoice_line_ids = lines
             item.partner_id = item.student.student_id.partner_id.id
             item.class_division_id = item.student_id.field_of_study_id
-            date_today = datetime.date.today()
+            date_today = date.today()
             company = self.env.user.company_id
             from_date = item.payed_from_date
             to_date = item.payed_to_date
