@@ -73,6 +73,11 @@ class SubjectFilterWizard(models.TransientModel):
         string='Classe',
     )
 
+    semester_id = fields.Many2one(
+        'siantou.ems.core.year.semester',
+        string='Semestre',
+    )
+
     specialty_id_domain = fields.Binary(compute='_compute_school_domain', default=[])
 
     @api.depends('school_id')
@@ -137,11 +142,18 @@ class SubjectFilterWizard(models.TransientModel):
         if self.class_id.id:
             domain.append(('id', '=', self.class_id.id))
             title.append(self.class_id.name)
+        semester_id = None
+        if self.semester_id.id:
+            semester_id = self.semester_id.id
+            title.append(self.semester_id.name)
 
         ue_ids = []
         classes = self.env['siantou.ems.core.class'].search(domain)
         for classe in classes:
-            for ue_id in classe.ue_ids:
+            classe_ue_ids = classe.ue_ids
+            if semester_id:
+                classe_ue_ids = classe_ue_ids.filtered(lambda rec: rec.semestre_id.id == semester_id)
+            for ue_id in classe_ue_ids:
                 ue_ids.append(ue_id.id)
         ue_ids = list(set(ue_ids))
 
