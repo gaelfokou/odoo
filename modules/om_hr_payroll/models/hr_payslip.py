@@ -415,7 +415,7 @@ class HrPayslip(models.Model):
                                 'template': template,
                                 'timetable_id': employee_timetable.id,
                                 'employee_id': employee_timetable.employee_id.id,
-                                'date': employee_timetable.date,
+                                'date': date.today(),
                                 'message': message,
                             })
                         employee_timetable.sudo().write({'status': 'absent'})
@@ -464,7 +464,7 @@ class HrPayslip(models.Model):
                             'template': template,
                             'timetable_id': employee_timetable.id,
                             'employee_id': employee_timetable.employee_id.id,
-                            'date': employee_timetable.date,
+                            'date': date.today(),
                             'message': message,
                         })
 
@@ -513,7 +513,7 @@ class HrPayslip(models.Model):
                                 'template': template,
                                 'timetable_id': employee_timetable.id,
                                 'employee_id': employee_timetable.employee_id.id,
-                                'date': employee_timetable.date,
+                                'date': date.today(),
                                 'message': message,
                             })
 
@@ -597,7 +597,7 @@ class HrPayslip(models.Model):
                                 'template': template,
                                 'attendance_id': daily_attendance.id,
                                 'employee_id': daily_attendance.employee_id.id,
-                                'date': daily_attendance.punching_time.date(),
+                                'date': date.today(),
                                 'message': message,
                             })
 
