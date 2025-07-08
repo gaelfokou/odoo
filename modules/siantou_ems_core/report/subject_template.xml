@@ -99,8 +99,11 @@
                             </tbody>
                             <tfooter>
                                 <tr>
-                                    <th class="text-center" colspan="3">Total volume horaire</th>
-                                    <th class="text-center" colspan="2"><span t-esc="docdata['total_hours_credit']"/></th>
+                                    <th class="text-center"></th>
+                                    <th class="text-center">Total volume horaire</th>
+                                    <th class="text-center"></th>
+                                    <th class="text-center"><span t-esc="docdata['total_hours_credit']"/></th>
+                                    <th class="text-center"></th>
                                 </tr>
                             </tfooter>
                         </table>
