@@ -352,8 +352,9 @@ class HrPayslip(models.Model):
                         worked_hours[punching_day] = daily_attendance.punching_time - worked_hours[punching_day]
                         worked_hours[punching_day] = worked_hours[punching_day].total_seconds() / 3600.0
                         worked_hours[punching_day] = round(worked_hours[punching_day], 2)
+                        punching_time = HrPayslip.convert_datetime_from_utc(punching_time)
                         self.env['hr.payslip.worked_days'].create({
-                            'name': '{} {}'.format(CURRENT_WEEKDAY[str(punching_time.weekday())], datetime.strftime(HrPayslip.convert_datetime_from_utc(punching_time), DATETIME_FORMAT_FR)),
+                            'name': '{} {}'.format(CURRENT_WEEKDAY[str(punching_time.weekday())], datetime.strftime(punching_time, DATETIME_FORMAT_FR)),
                             'payslip_id': payslip_id.id,
                             'code': payslip_id.code,
                             'number_of_days': 1,
@@ -402,7 +403,7 @@ class HrPayslip(models.Model):
                         start_time = datetime.strftime(start_time, TIME_FORMAT_FR)
                         end_time = datetime.strptime(f"{employee_timetable.date} {HrPayslip.convert_float_to_time(employee_timetable.end_time)}", DATETIME_FORMAT)
                         end_time = datetime.strftime(end_time, TIME_FORMAT_FR)
-                        message = 'Absence de {} {}'.format(start_time, end_time)
+                        message = 'Absence du {}, {} {} {}'.format(CURRENT_WEEKDAY[str(employee_timetable.date.weekday())], datetime.strftime(employee_timetable.date, DATE_FORMAT_FR), start_time, end_time)
                         timetable_notifications = self.env['siantou.ems.timetable.notification'].sudo().search([
                             ('template', '=', template),
                             ('timetable_id', '=', employee_timetable.id),
@@ -451,7 +452,7 @@ class HrPayslip(models.Model):
                     start_time = datetime.strftime(start_time, TIME_FORMAT_FR)
                     end_time = datetime.strptime(f"{employee_timetable.date} {HrPayslip.convert_float_to_time(employee_timetable.end_time)}", DATETIME_FORMAT)
                     end_time = datetime.strftime(end_time, TIME_FORMAT_FR)
-                    message = 'Rappel de {} {}'.format(start_time, end_time)
+                    message = 'Rappel du {}, {} {} {}'.format(CURRENT_WEEKDAY[str(employee_timetable.date.weekday())], datetime.strftime(employee_timetable.date, DATE_FORMAT_FR), start_time, end_time)
                     timetable_notifications = self.env['siantou.ems.timetable.notification'].sudo().search([
                         ('template', '=', template),
                         ('timetable_id', '=', employee_timetable.id),
@@ -500,7 +501,7 @@ class HrPayslip(models.Model):
                         start_time = datetime.strftime(start_time, TIME_FORMAT_FR)
                         end_time = datetime.strptime(f"{employee_timetable.date} {HrPayslip.convert_float_to_time(employee_timetable.end_time)}", DATETIME_FORMAT)
                         end_time = datetime.strftime(end_time, TIME_FORMAT_FR)
-                        message = 'Retard de {} {}'.format(start_time, end_time)
+                        message = 'Retard du {}, {} {} {}'.format(CURRENT_WEEKDAY[str(employee_timetable.date.weekday())], datetime.strftime(employee_timetable.date, DATE_FORMAT_FR), start_time, end_time)
                         timetable_notifications = self.env['siantou.ems.timetable.notification'].sudo().search([
                             ('template', '=', template),
                             ('timetable_id', '=', employee_timetable.id),
@@ -583,8 +584,8 @@ class HrPayslip(models.Model):
                             employee_timetable.sudo().write({'status': 'progress'})
                     else:
                         template = 'om_hr_payroll.om_hr_payroll_template_timetable_notification_exception'
-                        punching_time = datetime.strftime(HrPayslip.convert_datetime_from_utc(punching_time), TIME_FORMAT_FR)
-                        message = 'Exception de {}'.format(punching_time)
+                        punching_time = HrPayslip.convert_datetime_from_utc(punching_time)
+                        message = 'Exception du {}, {}'.format(CURRENT_WEEKDAY[str(punching_time.weekday())], datetime.strftime(punching_time, DATETIME_FORMAT_FR))
                         timetable_notifications = self.env['siantou.ems.timetable.notification'].sudo().search([
                             ('template', '=', template),
                             ('attendance_id', '=', daily_attendance.id),

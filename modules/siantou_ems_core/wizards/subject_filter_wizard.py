@@ -93,11 +93,23 @@ class SubjectFilterWizard(models.TransientModel):
             record.level_id = None
             record.specialty_id = None
             record.option_id = None
+            record.class_id = None
 
     @api.onchange('specialty_id')
     def _onchange_specialty(self):
         for record in self:
             record.option_id = None
+            record.class_id = None
+
+    @api.onchange('option_id')
+    def _onchange_option(self):
+        for record in self:
+            record.class_id = None
+
+    @api.onchange('type_cour')
+    def _onchange_type_cour(self):
+        for record in self:
+            record.class_id = None
 
     def action_filter(self):
         domain = []
