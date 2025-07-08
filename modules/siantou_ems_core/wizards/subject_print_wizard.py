@@ -41,6 +41,7 @@ class SubjectPrintWizard(models.TransientModel):
 
         search_subjects = self.env['siantou.ems.core.subject'].search(domain)
 
+        total_hours_credit = 0.0
         subjects = []
         for search_subject in search_subjects:
             subject = {}
@@ -50,6 +51,7 @@ class SubjectPrintWizard(models.TransientModel):
             subject['hours_credit'] = search_subject.hours_credit
             ue_ids = [ue_id.name for ue_id in search_subject.ue_ids]
             subject['ue_ids'] = ' / '.join(ue_ids)
+            total_hours_credit += subject['hours_credit']
             subjects.append(subject)
 
         title = self.env['ir.config_parameter'].sudo().get_param(f'filter.{self.env.user.id}', '')
@@ -60,5 +62,6 @@ class SubjectPrintWizard(models.TransientModel):
             'docdata': {
                 'filter': title,
                 'subject_data': subjects,
+                'total_hours_credit': total_hours_credit,
             }
         }
