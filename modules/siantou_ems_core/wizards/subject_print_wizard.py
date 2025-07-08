@@ -41,7 +41,7 @@ class SubjectPrintWizard(models.TransientModel):
 
         search_subjects = self.env['siantou.ems.core.subject'].search(domain)
 
-        total_hours_credit = 0
+        total_hours_credit = 0.0
         subjects = []
         for search_subject in search_subjects:
             subject = {}
