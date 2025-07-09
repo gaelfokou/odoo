@@ -587,8 +587,8 @@ class Timetable(models.Model):
                 subject_day_hour_id.unlink()
             if len(timetables) > 0:
                 semester_hours_credit = timetable.subject_id.hours_credit
-                if times[0] == timetable.ue_id.semestre_id.start_time and times[1] == timetable.ue_id.semestre_id.end_time:
-                    number_of_week = timetable.ue_id.semestre_id.number_of_week
+                if times[0] == timetable.semestre_id.start_time and times[1] == timetable.semestre_id.end_time:
+                    number_of_week = timetable.semestre_id.number_of_week
                 else:
                     start_time = times[0]
                     end_time = times[1]

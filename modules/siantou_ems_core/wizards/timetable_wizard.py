@@ -171,7 +171,7 @@ class TimetableWizard(models.TransientModel):
             # Récupérer la spécialité de la classe et les traiter l'une après l'autre
             specialty_id = classe.specialty_id
             # Récupérer la liste des unités d'enseignement de la classe et les traiter l'un après l'autre
-            ue_ids = classe.ue_ids.filtered(lambda u: u.semestre_id.id == self.semester_id.id)
+            ue_ids = classe.ue_ids.filtered(lambda ue: self.semester_id.id in ue.semester_ids.ids)
             ue_ids = list(ue_ids)
             if specialty_id.id:
                 check_specialties = specialty_id
@@ -191,20 +191,20 @@ class TimetableWizard(models.TransientModel):
                             # on verifie si le quota semestriel est atteint
                             if semester_hours_credit > 0:
                                 # On parcours toutes les semaines du semestre
-                                for week in range(0, ue_id.semestre_id.number_of_week):
+                                for week in range(0, self.semester_id.number_of_week):
                                     # on verifie si le quota semestriel est atteint
                                     if semester_hours_credit <= 0:
                                         break
                                     check_semester_hours_credit += semester_hours_credit
                                     # On initialise subject_hours_credit pour gérer le nombre de jours sur lesquels on doit programmer le cours
-                                    subject_hours_credit = math.ceil(subject.hours_credit / ue_id.semestre_id.number_of_week)
+                                    subject_hours_credit = math.ceil(subject.hours_credit / self.semester_id.number_of_week)
                                     # on verifie si le quota hebdomadaire est atteint
                                     if subject_hours_credit > 0:
                                         while True:
                                             if subject_hours_credit <= 0:
                                                 break
                                             check_weekly_hours_credit += subject_hours_credit
-                                            first_time = ue_id.semestre_id.start_time
+                                            first_time = self.semester_id.start_time
                                             start_time = first_time + timedelta(days=0)
                                             if start_time.weekday() != 0:
                                                 start_time = start_time - timedelta(days=start_time.weekday())
@@ -216,7 +216,7 @@ class TimetableWizard(models.TransientModel):
                                                     ('class_id', '!=', classe.id),
                                                     ('level_id', '=', classe.level_id.id),
                                                     ('subject_id', '=', subject.id),
-                                                    ('semester_id', '=', ue_id.semestre_id.id),
+                                                    ('semester_id', '=', self.semester_id.id),
                                                 ]).filtered(lambda rec: rec.date <= end_time and rec.date >= start_time)
                                                 timetables = list(timetables)
                                                 if len(timetables) > 0:
