@@ -327,6 +327,8 @@ class SchoolCourseSubject(models.Model):
 
     semestre_id = fields.Many2one('siantou.ems.core.year.semester', string='Semestre', required=True, tracking=True)
 
+    semester_ids = fields.Many2many('siantou.ems.core.year.semester', 'semester_ue_rel', 'ue_id', 'semester_id', string='Semestres')
+
     syllabus_ids = fields.One2many('siantou.ems.core.syllabus', 'ue_id', string='Syllabus')
 
     total_credit = fields.Integer('Nombre de crédit total', compute='_compute_total_credit', store=True,)

@@ -13,6 +13,7 @@
                     <field name="name"/>
                     <field name="total_credit"/>
                     <field name="semestre_id"/>
+                    <field name="semester_ids" widget="many2many_tags"/>
                     <field name="type_ue"/>
 				</tree>
 			</field>
@@ -36,6 +37,7 @@
                             <group colspan="2">
                                 <field name="class_ids" widget="many2many_tags"/>
                                 <field name="semestre_id"/>
+                                <field name="semester_ids" widget="many2many_tags"/>
                                 <field name="type_ue"/>
                             </group>
                         </group>
