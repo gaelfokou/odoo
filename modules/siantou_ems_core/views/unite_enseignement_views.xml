@@ -9,10 +9,16 @@
 			<field name="model">siantou.ems.core.unite.enseignement</field>
 			<field name="arch" type="xml">
 				<tree string="Unité d'enseignement">
+                    <header>
+                        <button name="action_update_semester" 
+                                type="object" 
+                                string="Mettre à jour les semestres" 
+                                class="oe_highlight" 
+                                display="always"/>
+                    </header>
                     <field name="code"/>
                     <field name="name"/>
                     <field name="total_credit"/>
-                    <field name="semestre_id"/>
                     <field name="semester_ids" widget="many2many_tags"/>
                     <field name="type_ue"/>
 				</tree>
@@ -36,7 +42,6 @@
                             </group>
                             <group colspan="2">
                                 <field name="class_ids" widget="many2many_tags"/>
-                                <field name="semestre_id"/>
                                 <field name="semester_ids" widget="many2many_tags"/>
                                 <field name="type_ue"/>
                             </group>

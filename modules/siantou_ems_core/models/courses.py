@@ -333,9 +333,9 @@ class SchoolCourseSubject(models.Model):
 
     total_credit = fields.Integer('Nombre de crédit total', compute='_compute_total_credit', store=True,)
 
-    _sql_constraints = [
-        ('unique_code_semestre', 'unique(code, semestre_id)', 'Une unité d\'enseignement ne peut être lié à un même semestre qu\'une seule fois.')
-    ]
+    # _sql_constraints = [
+    #     ('unique_code', 'unique(code)', "Le code de l'unité d'enseignement doit être unique.")
+    # ]
 
     @api.depends('subject_ids', 'subject_ids.syllabus_ids.subject_credit')
     def _compute_total_credit(self):
@@ -349,3 +349,14 @@ class SchoolCourseSubject(models.Model):
                 total += sum(syllabus.subject_credit for syllabus in syllabuses)
             record.total_credit = total
 
+    def action_update_semester(self):
+        ue_ids = self.env['siantou.ems.core.unite.enseignement'].search([])
+
+        for ue_id in ue_ids:
+            semester_ids = [(4, ue_id.semestre_id.id)]
+            ue_id.write({'semester_ids': semester_ids })
+
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'reload',
+        }
