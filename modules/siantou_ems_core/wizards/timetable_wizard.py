@@ -171,7 +171,7 @@ class TimetableWizard(models.TransientModel):
             # Récupérer la spécialité de la classe et les traiter l'une après l'autre
             specialty_id = classe.specialty_id
             # Récupérer la liste des unités d'enseignement de la classe et les traiter l'un après l'autre
-            ue_ids = classe.ue_ids.filtered(lambda ue: self.semester_id.id in ue.semester_ids.ids)
+            ue_ids = classe.ue_ids.filtered(lambda rec: self.semester_id.id in rec.semester_ids.ids)
             ue_ids = list(ue_ids)
             if specialty_id.id:
                 check_specialties = specialty_id
