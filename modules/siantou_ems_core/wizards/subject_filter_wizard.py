@@ -152,7 +152,7 @@ class SubjectFilterWizard(models.TransientModel):
         for classe in classes:
             classe_ue_ids = classe.ue_ids
             if semester_id:
-                classe_ue_ids = classe_ue_ids.filtered(lambda rec: rec.semestre_id.id == semester_id)
+                classe_ue_ids = classe_ue_ids.filtered(lambda rec: semester_id in rec.semester_ids.ids)
             for ue_id in classe_ue_ids:
                 ue_ids.append(ue_id.id)
         ue_ids = list(set(ue_ids))

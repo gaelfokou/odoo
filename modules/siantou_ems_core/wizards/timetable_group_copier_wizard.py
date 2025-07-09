@@ -149,17 +149,20 @@ class TimetableGroupCopierWizard(models.TransientModel):
                     for ue_id in timetable_id.class_id.ue_ids:
                         ue = self.env['siantou.ems.core.unite.enseignement'].search([
                             ('code', '=', ue_id.code),
-                            ('semestre_id', '=', semester_id.id),
+                            ('semester_ids', '=', semester_id.id),
                         ], limit=1)
                         if not ue:
                             ue = self.env['siantou.ems.core.unite.enseignement'].create({
                                 'code': ue_id.code,
                                 'name': ue_id.name,
                                 'type_ue': ue_id.type_ue,
-                                'semestre_id': semester_id.id,
                             })
+                            semester_ids = [(4, semester_id.id)]
                             subject_ids = [(4, subject_id.id) for subject_id in ue_id.subject_ids]
-                            ue.write({'subject_ids': subject_ids })
+                            ue.write({
+                                'semester_ids': semester_ids,
+                                'subject_ids': subject_ids,
+                            })
                             for syllabus_id in ue_id.syllabus_ids:
                                 self.env['siantou.ems.core.syllabus'].create({
                                     'name': syllabus_id.name,
