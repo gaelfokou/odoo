@@ -9,13 +9,13 @@
 			<field name="model">siantou.ems.core.unite.enseignement</field>
 			<field name="arch" type="xml">
 				<tree string="Unité d'enseignement">
-                    <header>
+                    <!-- <header>
                         <button name="action_update_semester" 
                                 type="object" 
                                 string="Mettre à jour les semestres" 
                                 class="oe_highlight" 
                                 display="always"/>
-                    </header>
+                    </header> -->
                     <field name="code"/>
                     <field name="name"/>
                     <field name="total_credit"/>

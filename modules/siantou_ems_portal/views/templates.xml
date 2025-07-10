@@ -475,7 +475,7 @@
                             <th class="text-left">Réference</th>
                             <th class="text-left">Règles salariales</th>
                             <th class="text-left">Contrat</th>
-                            <th class="text-left">Heures</th>
+                            <th class="text-left">Nombre d'heures</th>
                             <th class="text-left">Montant payé</th>
                             <th class="text-left">Statut</th>
                         </tr>
@@ -515,7 +515,7 @@
                             <th class="text-left" colspan="8" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
                         </tr>
                         <tr>
-                            <th class="text-left" colspan="1">Total heures</th>
+                            <th class="text-left" colspan="1">Total nombre d'heures</th>
                             <th class="text-left" colspan="7"><span t-esc="total_number_of_hours"/></th>
                         </tr>
                         <tr>
@@ -568,7 +568,7 @@
                             <th class="text-left">Heure</th>
                             <th class="text-left">Semestre</th>
                             <th class="text-left">Taux horaire</th>
-                            <th class="text-left">Heures</th>
+                            <th class="text-left">Nombre d'heures</th>
                             <th class="text-left">Montant</th>
                         </tr>
                     </thead>
@@ -620,7 +620,7 @@
                             </tbody>
                             <tfooter>
                                 <tr>
-                                    <th class="text-left" colspan="1">Total heures</th>
+                                    <th class="text-left" colspan="1">Total nombre d'heures</th>
                                     <th class="text-left" colspan="7"><span t-esc="accountbalances[classe]['total_number_of_hours']"/></th>
                                 </tr>
                                 <tr>
@@ -680,9 +680,9 @@
                     <thead>
                         <tr class="active">
                             <th class="text-left">Cours</th>
-                            <th class="text-left">Heures</th>
-                            <th class="text-left">Heures effectuées</th>
-                            <th class="text-left">Heures restantes</th>
+                            <th class="text-left">Volume horaire</th>
+                            <th class="text-left">Volume horaire effectué</th>
+                            <th class="text-left">Volume horaire restant</th>
                         </tr>
                     </thead>
                     <t t-set="classes" t-value="consumptionhours.keys()"/>
@@ -719,15 +719,15 @@
                             </tbody>
                             <tfooter>
                                 <tr>
-                                    <th class="text-left" colspan="1">Total heures</th>
+                                    <th class="text-left" colspan="1">Total volume horaire</th>
                                     <th class="text-left" colspan="3"><span t-esc="consumptionhours[classe]['total_all']"/></th>
                                 </tr>
                                 <tr>
-                                    <th class="text-left" colspan="1">Total heures effectuées</th>
+                                    <th class="text-left" colspan="1">Total volume horaire effectuées</th>
                                     <th class="text-left" colspan="3"><span t-esc="consumptionhours[classe]['total_done']"/></th>
                                 </tr>
                                 <tr>
-                                    <th class="text-left" colspan="1">Total heures restantes</th>
+                                    <th class="text-left" colspan="1">Total volume horaire restantes</th>
                                     <th class="text-left" colspan="3"><span t-esc="consumptionhours[classe]['total_awaiting']"/></th>
                                 </tr>
                                 <tr>
