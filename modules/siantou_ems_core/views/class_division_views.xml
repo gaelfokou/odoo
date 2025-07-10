@@ -74,11 +74,11 @@
                         <notebook>
                             <page name="unite_enseignement" string="Unité d'enseignements">
                                 <field name="ue_ids">
-                                    <tree editable="bottom">
+                                    <tree>
                                         <field name="code"/>
                                         <field name="name"/>
                                         <field name="type_ue"/>
-                                        <field name="semestre_id"/>
+                                        <field name="semester_ids"/>
                                     </tree>
                                 </field>
                             </page>

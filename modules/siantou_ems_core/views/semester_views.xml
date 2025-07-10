@@ -43,13 +43,11 @@
                         <notebook>
                             <page name="ue" string="Unité d'enseignement">
                                 <field name="ue_ids">
-                                    <tree 
-                                    editable="bottom"
-                                    >
-                                    <field name="code"/>
-                                    <field name="name"/>
-                                    <field name="type_ue"/>
-                                    <field name="class_ids"/>
+                                    <tree>
+                                        <field name="code"/>
+                                        <field name="name"/>
+                                        <field name="type_ue"/>
+                                        <field name="class_ids"/>
                                     </tree>
                                 </field>
                             </page>
