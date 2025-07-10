@@ -1044,7 +1044,7 @@
             <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
                 <li t-if="page_name == 'subjectsession_new'" t-attf-class="breadcrumb-item #{'active ' if subjectsession_new else ''}">
                     <a t-if="subjectsession_new" t-attf-href="/my/subjectsession/{{ params['class_id'] }}/{{ params['subject_id'] }}/new?{{ keep_query() }}">Créer une session de cours</a>
-                    <t t-else=""><a t-attf-href="/my/subjectsession/{{ params['class_id'] }}/{{ params['subject_id'] }}/list">Lister les sessions de cours</a> / Créer une session de cours</t>
+                    <t t-else=""><a t-attf-href="/my/subjectsession/{{ params['class_id'] }}/{{ params['subject_id'] }}/list">Sessions de cours</a> / Créer une session de cours</t>
                 </li>
             </xpath>
         </template>
@@ -1129,7 +1129,7 @@
             <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
                 <li t-if="page_name == 'subjectsession_edit'" t-attf-class="breadcrumb-item #{'active ' if subjectsession_edit else ''}">
                     <a t-if="subjectsession_edit" t-attf-href="/my/subjectsession/{{ params['class_id'] }}/{{ params['subject_id'] }}/edit?{{ keep_query() }}">Modifier une session de cours</a>
-                    <t t-else=""><a t-attf-href="/my/subjectsession/{{ params['class_id'] }}/{{ params['subject_id'] }}/list">Lister les sessions de cours</a> / Modifier une session de cours</t>
+                    <t t-else=""><a t-attf-href="/my/subjectsession/{{ params['class_id'] }}/{{ params['subject_id'] }}/list">Sessions de cours</a> / Modifier une session de cours</t>
                 </li>
             </xpath>
         </template>
