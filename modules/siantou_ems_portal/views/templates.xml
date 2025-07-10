@@ -65,165 +65,181 @@
                     <t t-set="total_timetables" t-value="[total_timetables[i:i+5] for i in range(0, len(total_timetables), 5)]"/>
                     <t t-set="total_timetables" t-value="[p for p in total_timetables if (timetable_page_number in p or (timetable_page_number - 1) in p or (timetable_page_number + 1) in p)]"/>
                     <t t-set="total_timetables" t-value="[m for p in total_timetables for m in p] if len(total_timetables) > 0 else []"/>
-                    <t t-foreach="weekdays" t-as="monday">
-                        <t t-set="current_hours" t-value="[i for i in range(len(timetables[monday]['Heure']))]"/>
-                        <thead>
-                            <tr>
-                                <th class="text-center" colspan="8" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;">
-                                    <span t-esc="'Période :'"/>
-                                    <span t-esc="monday"/>
-                                </th>
-                            </tr>
-                        </thead>
-                        <thead>
-                            <tr>
-                                <th class="text-left" colspan="8" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
-                            </tr>
-                        </thead>
-                        <thead>
-                            <tr class="active">
-                                <th class="text-center">Heure</th>
-                                <th class="text-center">Lundi</th>
-                                <th class="text-center">Mardi</th>
-                                <th class="text-center">Mercredi</th>
-                                <th class="text-center">Jeudi</th>
-                                <th class="text-center">Vendredi</th>
-                                <th class="text-center">Samedi</th>
-                                <th class="text-center">Dimanche</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <t t-foreach="current_hours" t-as="hour">
+                    <t t-if="len(weekdays) > 0">
+                        <t t-foreach="weekdays" t-as="monday">
+                            <t t-set="current_hours" t-value="[i for i in range(len(timetables[monday]['Heure']))]"/>
+                            <thead>
                                 <tr>
-                                    <td class="text-center">
-                                        <span t-esc="timetables[monday]['Heure'][hour]"/>
-                                    </td>
-                                    <td class="text-center">
-                                        <t t-foreach="timetables[monday]['Lundi'][hour]" t-as="record">
-                                            <span t-esc="record['subject_name']"/>
-                                            <span t-esc="'(' + record['subject_code'] + ')'"/>
-                                            <br/>
-                                            <span t-esc="record['classroom_name']"/>
-                                            <span t-esc="'/ ' + record['building_name']"/>
-                                            <br/>
-                                            <span t-esc="record['employee_name']"/>
-                                            <br/>
-                                            <span>-----</span>
-                                            <br/>
-                                        </t>
-                                    </td>
-                                    <td class="text-center">
-                                        <t t-foreach="timetables[monday]['Mardi'][hour]" t-as="record">
-                                            <span t-esc="record['subject_name']"/>
-                                            <span t-esc="' (' + record['subject_code'] + ')'"/>
-                                            <br/>
-                                            <span t-esc="record['classroom_name']"/>
-                                            <span t-esc="'/ ' + record['building_name']"/>
-                                            <br/>
-                                            <span t-esc="record['employee_name']"/>
-                                            <br/>
-                                            <span>-----</span>
-                                            <br/>
-                                        </t>
-                                    </td>
-                                    <td class="text-center">
-                                        <t t-foreach="timetables[monday]['Mercredi'][hour]" t-as="record">
-                                            <span t-esc="record['subject_name']"/>
-                                            <span t-esc="' (' + record['subject_code'] + ')'"/>
-                                            <br/>
-                                            <span t-esc="record['classroom_name']"/>
-                                            <span t-esc="'/ ' + record['building_name']"/>
-                                            <br/>
-                                            <span t-esc="record['employee_name']"/>
-                                            <br/>
-                                            <span>-----</span>
-                                            <br/>
-                                        </t>
-                                    </td>
-                                    <td class="text-center">
-                                        <t t-foreach="timetables[monday]['Jeudi'][hour]" t-as="record">
-                                            <span t-esc="record['subject_name']"/>
-                                            <span t-esc="' (' + record['subject_code'] + ')'"/>
-                                            <br/>
-                                            <span t-esc="record['classroom_name']"/>
-                                            <span t-esc="'/ ' + record['building_name']"/>
-                                            <br/>
-                                            <span t-esc="record['employee_name']"/>
-                                            <br/>
-                                            <span>-----</span>
-                                            <br/>
-                                        </t>
-                                    </td>
-                                    <td class="text-center">
-                                        <t t-foreach="timetables[monday]['Vendredi'][hour]" t-as="record">
-                                            <span t-esc="record['subject_name']"/>
-                                            <span t-esc="' (' + record['subject_code'] + ')'"/>
-                                            <br/>
-                                            <span t-esc="record['classroom_name']"/>
-                                            <span t-esc="'/ ' + record['building_name']"/>
-                                            <br/>
-                                            <span t-esc="record['employee_name']"/>
-                                            <br/>
-                                            <span>-----</span>
-                                            <br/>
-                                        </t>
-                                    </td>
-                                    <td class="text-center">
-                                        <t t-foreach="timetables[monday]['Samedi'][hour]" t-as="record">
-                                            <span t-esc="record['subject_name']"/>
-                                            <span t-esc="' (' + record['subject_code'] + ')'"/>
-                                            <br/>
-                                            <span t-esc="record['classroom_name']"/>
-                                            <span t-esc="'/ ' + record['building_name']"/>
-                                            <br/>
-                                            <span t-esc="record['employee_name']"/>
-                                            <br/>
-                                            <span>-----</span>
-                                            <br/>
-                                        </t>
-                                    </td>
-                                    <td class="text-center">
-                                        <t t-foreach="timetables[monday]['Dimanche'][hour]" t-as="record">
-                                            <span t-esc="record['subject_name']"/>
-                                            <span t-esc="' (' + record['subject_code'] + ')'"/>
-                                            <br/>
-                                            <span t-esc="record['classroom_name']"/>
-                                            <span t-esc="'/ ' + record['building_name']"/>
-                                            <br/>
-                                            <span t-esc="record['employee_name']"/>
-                                            <br/>
-                                            <span>-----</span>
-                                            <br/>
-                                        </t>
+                                    <th class="text-center" colspan="8" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;">
+                                        <span t-esc="'Période :'"/>
+                                        <span t-esc="monday"/>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <thead>
+                                <tr>
+                                    <th class="text-left" colspan="8" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
+                                </tr>
+                            </thead>
+                            <thead>
+                                <tr class="active">
+                                    <th class="text-center">Heure</th>
+                                    <th class="text-center">Lundi</th>
+                                    <th class="text-center">Mardi</th>
+                                    <th class="text-center">Mercredi</th>
+                                    <th class="text-center">Jeudi</th>
+                                    <th class="text-center">Vendredi</th>
+                                    <th class="text-center">Samedi</th>
+                                    <th class="text-center">Dimanche</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="current_hours" t-as="hour">
+                                    <tr>
+                                        <td class="text-center">
+                                            <span t-esc="timetables[monday]['Heure'][hour]"/>
+                                        </td>
+                                        <td class="text-center">
+                                            <t t-foreach="timetables[monday]['Lundi'][hour]" t-as="record">
+                                                <span t-esc="record['subject_name']"/>
+                                                <span t-esc="'(' + record['subject_code'] + ')'"/>
+                                                <br/>
+                                                <span t-esc="record['classroom_name']"/>
+                                                <span t-esc="'/ ' + record['building_name']"/>
+                                                <br/>
+                                                <span t-esc="record['employee_name']"/>
+                                                <br/>
+                                                <span>-----</span>
+                                                <br/>
+                                            </t>
+                                        </td>
+                                        <td class="text-center">
+                                            <t t-foreach="timetables[monday]['Mardi'][hour]" t-as="record">
+                                                <span t-esc="record['subject_name']"/>
+                                                <span t-esc="' (' + record['subject_code'] + ')'"/>
+                                                <br/>
+                                                <span t-esc="record['classroom_name']"/>
+                                                <span t-esc="'/ ' + record['building_name']"/>
+                                                <br/>
+                                                <span t-esc="record['employee_name']"/>
+                                                <br/>
+                                                <span>-----</span>
+                                                <br/>
+                                            </t>
+                                        </td>
+                                        <td class="text-center">
+                                            <t t-foreach="timetables[monday]['Mercredi'][hour]" t-as="record">
+                                                <span t-esc="record['subject_name']"/>
+                                                <span t-esc="' (' + record['subject_code'] + ')'"/>
+                                                <br/>
+                                                <span t-esc="record['classroom_name']"/>
+                                                <span t-esc="'/ ' + record['building_name']"/>
+                                                <br/>
+                                                <span t-esc="record['employee_name']"/>
+                                                <br/>
+                                                <span>-----</span>
+                                                <br/>
+                                            </t>
+                                        </td>
+                                        <td class="text-center">
+                                            <t t-foreach="timetables[monday]['Jeudi'][hour]" t-as="record">
+                                                <span t-esc="record['subject_name']"/>
+                                                <span t-esc="' (' + record['subject_code'] + ')'"/>
+                                                <br/>
+                                                <span t-esc="record['classroom_name']"/>
+                                                <span t-esc="'/ ' + record['building_name']"/>
+                                                <br/>
+                                                <span t-esc="record['employee_name']"/>
+                                                <br/>
+                                                <span>-----</span>
+                                                <br/>
+                                            </t>
+                                        </td>
+                                        <td class="text-center">
+                                            <t t-foreach="timetables[monday]['Vendredi'][hour]" t-as="record">
+                                                <span t-esc="record['subject_name']"/>
+                                                <span t-esc="' (' + record['subject_code'] + ')'"/>
+                                                <br/>
+                                                <span t-esc="record['classroom_name']"/>
+                                                <span t-esc="'/ ' + record['building_name']"/>
+                                                <br/>
+                                                <span t-esc="record['employee_name']"/>
+                                                <br/>
+                                                <span>-----</span>
+                                                <br/>
+                                            </t>
+                                        </td>
+                                        <td class="text-center">
+                                            <t t-foreach="timetables[monday]['Samedi'][hour]" t-as="record">
+                                                <span t-esc="record['subject_name']"/>
+                                                <span t-esc="' (' + record['subject_code'] + ')'"/>
+                                                <br/>
+                                                <span t-esc="record['classroom_name']"/>
+                                                <span t-esc="'/ ' + record['building_name']"/>
+                                                <br/>
+                                                <span t-esc="record['employee_name']"/>
+                                                <br/>
+                                                <span>-----</span>
+                                                <br/>
+                                            </t>
+                                        </td>
+                                        <td class="text-center">
+                                            <t t-foreach="timetables[monday]['Dimanche'][hour]" t-as="record">
+                                                <span t-esc="record['subject_name']"/>
+                                                <span t-esc="' (' + record['subject_code'] + ')'"/>
+                                                <br/>
+                                                <span t-esc="record['classroom_name']"/>
+                                                <span t-esc="'/ ' + record['building_name']"/>
+                                                <br/>
+                                                <span t-esc="record['employee_name']"/>
+                                                <br/>
+                                                <span>-----</span>
+                                                <br/>
+                                            </t>
+                                        </td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                            <tfooter>
+                                <tr>
+                                    <th class="text-left" colspan="8" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
+                                </tr>
+                            </tfooter>
+                            <tbody>
+                                <tr>
+                                    <td class="text-left" colspan="8">
+                                        <nav aria-label="Page navigation timetable">
+                                            <ul class="pagination">
+                                                <li class="page-item"><a class="page-link" t-attf-href="/my/timetable/page/1?view_type={{ timetable_view_type }}">Précédent</a></li>
+                                                <t t-foreach="total_timetables" t-as="p">
+                                                    <t t-if="p == timetable_page_number">
+                                                        <li class="page-item active"><a class="page-link" t-attf-href="/my/timetable/page/{{ p }}?view_type={{ timetable_view_type }}" t-esc="p"/></li>
+                                                    </t>
+                                                    <t t-else="">
+                                                        <li class="page-item"><a class="page-link" t-attf-href="/my/timetable/page/{{ p }}?view_type={{ timetable_view_type }}" t-esc="p"/></li>
+                                                    </t>
+                                                </t>
+                                                <li class="page-item"><a class="page-link" t-attf-href="/my/timetable/page/{{ timetable_pages_total }}?view_type={{ timetable_view_type }}">Suivant</a></li>
+                                            </ul>
+                                        </nav>
                                     </td>
                                 </tr>
-                            </t>
-                        </tbody>
+                            </tbody>
+                            <tfooter>
+                                <tr>
+                                    <th class="text-left" colspan="8" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
+                                </tr>
+                            </tfooter>
+                        </t>
+                    </t>
+                    <t t-else="">
                         <tfooter>
                             <tr>
-                                <th class="text-left" colspan="8" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
+                                <th class="text-center" colspan="8" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;">
+                                    <span t-esc="'Aucune donnée disponible'"/>
+                                </th>
                             </tr>
                         </tfooter>
-                        <tbody>
-                            <tr>
-                                <td class="text-left" colspan="8">
-                                    <nav aria-label="Page navigation timetable">
-                                        <ul class="pagination">
-                                            <li class="page-item"><a class="page-link" t-attf-href="/my/timetable/page/1?view_type={{ timetable_view_type }}">Précédent</a></li>
-                                            <t t-foreach="total_timetables" t-as="p">
-                                                <t t-if="p == timetable_page_number">
-                                                    <li class="page-item active"><a class="page-link" t-attf-href="/my/timetable/page/{{ p }}?view_type={{ timetable_view_type }}" t-esc="p"/></li>
-                                                </t>
-                                                <t t-else="">
-                                                    <li class="page-item"><a class="page-link" t-attf-href="/my/timetable/page/{{ p }}?view_type={{ timetable_view_type }}" t-esc="p"/></li>
-                                                </t>
-                                            </t>
-                                            <li class="page-item"><a class="page-link" t-attf-href="/my/timetable/page/{{ timetable_pages_total }}?view_type={{ timetable_view_type }}">Suivant</a></li>
-                                        </ul>
-                                    </nav>
-                                </td>
-                            </tr>
-                        </tbody>
                         <tfooter>
                             <tr>
                                 <th class="text-left" colspan="8" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
@@ -251,90 +267,106 @@
                     <t t-set="total_timetables" t-value="[total_timetables[i:i+5] for i in range(0, len(total_timetables), 5)]"/>
                     <t t-set="total_timetables" t-value="[p for p in total_timetables if (timetable_page_number in p or (timetable_page_number - 1) in p or (timetable_page_number + 1) in p)]"/>
                     <t t-set="total_timetables" t-value="[m for p in total_timetables for m in p] if len(total_timetables) > 0 else []"/>
-                    <thead>
-                        <tr class="active">
-                            <th class="text-left">Date</th>
-                            <th class="text-left">Filière</th>
-                            <th class="text-left">Semestre</th>
-                            <th class="text-left">Niveau</th>
-                            <th class="text-left">Cours</th>
-                            <th class="text-left">Salle de classe</th>
-                            <th class="text-left">Enseignant</th>
-                            <th class="text-left">Jour de la semaine</th>
-                            <th class="text-left">Heure de début</th>
-                            <th class="text-left">Heure de fin</th>
-                            <th class="text-left">Statut</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <t t-foreach="timetables" t-as="record">
+                    <t t-if="len(timetables) > 0">
+                        <thead>
+                            <tr class="active">
+                                <th class="text-left">Date</th>
+                                <th class="text-left">Filière</th>
+                                <th class="text-left">Semestre</th>
+                                <th class="text-left">Niveau</th>
+                                <th class="text-left">Cours</th>
+                                <th class="text-left">Salle de classe</th>
+                                <th class="text-left">Enseignant</th>
+                                <th class="text-left">Jour de la semaine</th>
+                                <th class="text-left">Heure de début</th>
+                                <th class="text-left">Heure de fin</th>
+                                <th class="text-left">Statut</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="timetables" t-as="record">
+                                <tr>
+                                    <td class="text-left">
+                                        <span t-esc="record['date']"/>
+                                    </td>
+                                    <td class="text-left">
+                                        <span t-esc="record['field_of_study_name']"/>
+                                    </td>
+                                    <td class="text-left">
+                                        <span t-esc="record['semester_name']"/>
+                                    </td>
+                                    <td class="text-left">
+                                        <span t-esc="record['level_name']"/>
+                                    </td>
+                                    <td class="text-left">
+                                        <span t-esc="record['subject_name']"/>
+                                    </td>
+                                    <td class="text-left">
+                                        <span t-esc="record['classroom_name']"/>
+                                    </td>
+                                    <td class="text-left">
+                                        <span t-esc="record['employee_name']"/>
+                                    </td>
+                                    <td class="text-left">
+                                        <span t-esc="record['day_of_week']"/>
+                                    </td>
+                                    <td class="text-left">
+                                        <span t-esc="record['start_time']"/>
+                                    </td>
+                                    <td class="text-left">
+                                        <span t-esc="record['end_time']"/>
+                                    </td>
+                                    <td class="text-left">
+                                        <span t-esc="record['status']"/>
+                                    </td>
+                                </tr>
+                            </t>
+                        </tbody>
+                        <tfooter>
                             <tr>
-                                <td class="text-left">
-                                    <span t-esc="record['date']"/>
-                                </td>
-                                <td class="text-left">
-                                    <span t-esc="record['field_of_study_name']"/>
-                                </td>
-                                <td class="text-left">
-                                    <span t-esc="record['semester_name']"/>
-                                </td>
-                                <td class="text-left">
-                                    <span t-esc="record['level_name']"/>
-                                </td>
-                                <td class="text-left">
-                                    <span t-esc="record['subject_name']"/>
-                                </td>
-                                <td class="text-left">
-                                    <span t-esc="record['classroom_name']"/>
-                                </td>
-                                <td class="text-left">
-                                    <span t-esc="record['employee_name']"/>
-                                </td>
-                                <td class="text-left">
-                                    <span t-esc="record['day_of_week']"/>
-                                </td>
-                                <td class="text-left">
-                                    <span t-esc="record['start_time']"/>
-                                </td>
-                                <td class="text-left">
-                                    <span t-esc="record['end_time']"/>
-                                </td>
-                                <td class="text-left">
-                                    <span t-esc="record['status']"/>
+                                <th class="text-left" colspan="11" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
+                            </tr>
+                        </tfooter>
+                        <tbody>
+                            <tr>
+                                <td class="text-left" colspan="11">
+                                    <nav aria-label="Page navigation timetable">
+                                        <ul class="pagination">
+                                            <li class="page-item"><a class="page-link" t-attf-href="/my/timetable/page/1?view_type={{ timetable_view_type }}">Précédent</a></li>
+                                            <t t-foreach="total_timetables" t-as="p">
+                                                <t t-if="p == timetable_page_number">
+                                                    <li class="page-item active"><a class="page-link" t-attf-href="/my/timetable/page/{{ p }}?view_type={{ timetable_view_type }}" t-esc="p"/></li>
+                                                </t>
+                                                <t t-else="">
+                                                    <li class="page-item"><a class="page-link" t-attf-href="/my/timetable/page/{{ p }}?view_type={{ timetable_view_type }}" t-esc="p"/></li>
+                                                </t>
+                                            </t>
+                                            <li class="page-item"><a class="page-link" t-attf-href="/my/timetable/page/{{ timetable_pages_total }}?view_type={{ timetable_view_type }}">Suivant</a></li>
+                                        </ul>
+                                    </nav>
                                 </td>
                             </tr>
-                        </t>
-                    </tbody>
-                    <tfooter>
-                        <tr>
-                            <th class="text-left" colspan="11" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
-                        </tr>
-                    </tfooter>
-                    <tbody>
-                        <tr>
-                            <td class="text-left" colspan="11">
-                                <nav aria-label="Page navigation timetable">
-                                    <ul class="pagination">
-                                        <li class="page-item"><a class="page-link" t-attf-href="/my/timetable/page/1?view_type={{ timetable_view_type }}">Précédent</a></li>
-                                        <t t-foreach="total_timetables" t-as="p">
-                                            <t t-if="p == timetable_page_number">
-                                                <li class="page-item active"><a class="page-link" t-attf-href="/my/timetable/page/{{ p }}?view_type={{ timetable_view_type }}" t-esc="p"/></li>
-                                            </t>
-                                            <t t-else="">
-                                                <li class="page-item"><a class="page-link" t-attf-href="/my/timetable/page/{{ p }}?view_type={{ timetable_view_type }}" t-esc="p"/></li>
-                                            </t>
-                                        </t>
-                                        <li class="page-item"><a class="page-link" t-attf-href="/my/timetable/page/{{ timetable_pages_total }}?view_type={{ timetable_view_type }}">Suivant</a></li>
-                                    </ul>
-                                </nav>
-                            </td>
-                        </tr>
-                    </tbody>
-                    <tfooter>
-                        <tr>
-                            <th class="text-left" colspan="11" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
-                        </tr>
-                    </tfooter>
+                        </tbody>
+                        <tfooter>
+                            <tr>
+                                <th class="text-left" colspan="11" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
+                            </tr>
+                        </tfooter>
+                    </t>
+                    <t t-else="">
+                        <tfooter>
+                            <tr>
+                                <th class="text-center" colspan="11" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;">
+                                    <span t-esc="'Aucune donnée disponible'"/>
+                                </th>
+                            </tr>
+                        </tfooter>
+                        <tfooter>
+                            <tr>
+                                <th class="text-left" colspan="11" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
+                            </tr>
+                        </tfooter>
+                    </t>
                 </t>
             </t>
         </template>
@@ -372,65 +404,81 @@
                     <t t-set="title">Frais</t>
                 </t>
                 <t t-call="portal.portal_table">
-                    <thead>
-                        <tr class="active">
-                            <th class="text-left">Date</th>
-                            <th class="text-left">Réference</th>
-                            <th class="text-left">Réference du reçu</th>
-                            <th class="text-left">Type de paiement</th>
-                            <th class="text-left">Description</th>
-                            <th class="text-left">Net à payer</th>
-                            <th class="text-left">Montant payé</th>
-                            <th class="text-left">Statut</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <t t-foreach="schoolfees" t-as="record">
-                            <tr>
-                                <td class="text-left">
-                                    <span t-esc="record['date_payment']"/>
-                                </td>
-                                <td class="text-left">
-                                    <span t-esc="record['name']"/>
-                                </td>
-                                <td class="text-left">
-                                    <span t-esc="record['reference']"/>
-                                </td>
-                                <td class="text-left">
-                                    <span t-esc="record['structure_frais_type_paiement']"/>
-                                </td>
-                                <td class="text-left">
-                                    <span t-esc="record['structure_frais_name']"/>
-                                </td>
-                                <td class="text-left">
-                                    <span t-esc="record['structure_frais_amount_total']"/>
-                                </td>
-                                <td class="text-left">
-                                    <span t-esc="record['amount']"/>
-                                </td>
-                                <td class="text-left">
-                                    <span t-esc="record['state']"/>
-                                </td>
+                    <t t-if="len(schoolfees) > 0">
+                        <thead>
+                            <tr class="active">
+                                <th class="text-left">Date</th>
+                                <th class="text-left">Réference</th>
+                                <th class="text-left">Réference du reçu</th>
+                                <th class="text-left">Type de paiement</th>
+                                <th class="text-left">Description</th>
+                                <th class="text-left">Net à payer</th>
+                                <th class="text-left">Montant payé</th>
+                                <th class="text-left">Statut</th>
                             </tr>
-                        </t>
-                    </tbody>
-                    <tfooter>
-                        <tr>
-                            <th class="text-left" colspan="8" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
-                        </tr>
-                        <tr>
-                            <th class="text-left" colspan="1">Total net à payer</th>
-                            <th class="text-left" colspan="7"><span t-esc="total_structure_amount"/></th>
-                        </tr>
-                        <tr>
-                            <th class="text-left" colspan="1">Total montant payé</th>
-                            <th class="text-left" colspan="7"><span t-esc="total_amount"/></th>
-                        </tr>
-                        <tr>
-                            <th class="text-left" colspan="1">Total restant à payer</th>
-                            <th class="text-left" colspan="7"><span t-esc="total_rest_amount"/></th>
-                        </tr>
-                    </tfooter>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="schoolfees" t-as="record">
+                                <tr>
+                                    <td class="text-left">
+                                        <span t-esc="record['date_payment']"/>
+                                    </td>
+                                    <td class="text-left">
+                                        <span t-esc="record['name']"/>
+                                    </td>
+                                    <td class="text-left">
+                                        <span t-esc="record['reference']"/>
+                                    </td>
+                                    <td class="text-left">
+                                        <span t-esc="record['structure_frais_type_paiement']"/>
+                                    </td>
+                                    <td class="text-left">
+                                        <span t-esc="record['structure_frais_name']"/>
+                                    </td>
+                                    <td class="text-left">
+                                        <span t-esc="record['structure_frais_amount_total']"/>
+                                    </td>
+                                    <td class="text-left">
+                                        <span t-esc="record['amount']"/>
+                                    </td>
+                                    <td class="text-left">
+                                        <span t-esc="record['state']"/>
+                                    </td>
+                                </tr>
+                            </t>
+                        </tbody>
+                        <tfooter>
+                            <tr>
+                                <th class="text-left" colspan="8" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
+                            </tr>
+                            <tr>
+                                <th class="text-left" colspan="1">Total net à payer</th>
+                                <th class="text-left" colspan="7"><span t-esc="total_structure_amount"/></th>
+                            </tr>
+                            <tr>
+                                <th class="text-left" colspan="1">Total montant payé</th>
+                                <th class="text-left" colspan="7"><span t-esc="total_amount"/></th>
+                            </tr>
+                            <tr>
+                                <th class="text-left" colspan="1">Total restant à payer</th>
+                                <th class="text-left" colspan="7"><span t-esc="total_rest_amount"/></th>
+                            </tr>
+                        </tfooter>
+                    </t>
+                    <t t-else="">
+                        <tfooter>
+                            <tr>
+                                <th class="text-center" colspan="8" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;">
+                                    <span t-esc="'Aucune donnée disponible'"/>
+                                </th>
+                            </tr>
+                        </tfooter>
+                        <tfooter>
+                            <tr>
+                                <th class="text-left" colspan="8" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
+                            </tr>
+                        </tfooter>
+                    </t>
                 </t>
             </t>
         </template>
@@ -468,61 +516,77 @@
                     <t t-set="title">Paiements</t>
                 </t>
                 <t t-call="portal.portal_table">
-                    <thead>
-                        <tr class="active">
-                            <th class="text-left">Date</th>
-                            <th class="text-left">Description</th>
-                            <th class="text-left">Réference</th>
-                            <th class="text-left">Règles salariales</th>
-                            <th class="text-left">Contrat</th>
-                            <th class="text-left">Nombre d'heures</th>
-                            <th class="text-left">Montant payé</th>
-                            <th class="text-left">Statut</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <t t-foreach="paymenthistories" t-as="record">
-                            <tr>
-                                <td class="text-left">
-                                    <span t-esc="record['date_from']"/>
-                                </td>
-                                <td class="text-left">
-                                    <span t-esc="record['name']"/>
-                                </td>
-                                <td class="text-left">
-                                    <span t-esc="record['number']"/>
-                                </td>
-                                <td class="text-left">
-                                    <span t-esc="record['code']"/>
-                                </td>
-                                <td class="text-left">
-                                    <span t-esc="record['contract']"/>
-                                </td>
-                                <td class="text-left">
-                                    <span t-esc="record['number_of_hours']"/>
-                                </td>
-                                <td class="text-left">
-                                    <span t-esc="record['amount']"/>
-                                </td>
-                                <td class="text-left">
-                                    <span t-esc="record['state']"/>
-                                </td>
+                    <t t-if="len(paymenthistories) > 0">
+                        <thead>
+                            <tr class="active">
+                                <th class="text-left">Date</th>
+                                <th class="text-left">Description</th>
+                                <th class="text-left">Réference</th>
+                                <th class="text-left">Règles salariales</th>
+                                <th class="text-left">Contrat</th>
+                                <th class="text-left">Nombre d'heures</th>
+                                <th class="text-left">Montant payé</th>
+                                <th class="text-left">Statut</th>
                             </tr>
-                        </t>
-                    </tbody>
-                    <tfooter>
-                        <tr>
-                            <th class="text-left" colspan="8" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
-                        </tr>
-                        <tr>
-                            <th class="text-left" colspan="1">Total nombre d'heures</th>
-                            <th class="text-left" colspan="7"><span t-esc="total_number_of_hours"/></th>
-                        </tr>
-                        <tr>
-                            <th class="text-left" colspan="1">Total montant payé</th>
-                            <th class="text-left" colspan="7"><span t-esc="total_amount"/></th>
-                        </tr>
-                    </tfooter>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="paymenthistories" t-as="record">
+                                <tr>
+                                    <td class="text-left">
+                                        <span t-esc="record['date_from']"/>
+                                    </td>
+                                    <td class="text-left">
+                                        <span t-esc="record['name']"/>
+                                    </td>
+                                    <td class="text-left">
+                                        <span t-esc="record['number']"/>
+                                    </td>
+                                    <td class="text-left">
+                                        <span t-esc="record['code']"/>
+                                    </td>
+                                    <td class="text-left">
+                                        <span t-esc="record['contract']"/>
+                                    </td>
+                                    <td class="text-left">
+                                        <span t-esc="record['number_of_hours']"/>
+                                    </td>
+                                    <td class="text-left">
+                                        <span t-esc="record['amount']"/>
+                                    </td>
+                                    <td class="text-left">
+                                        <span t-esc="record['state']"/>
+                                    </td>
+                                </tr>
+                            </t>
+                        </tbody>
+                        <tfooter>
+                            <tr>
+                                <th class="text-left" colspan="8" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
+                            </tr>
+                            <tr>
+                                <th class="text-left" colspan="1">Total nombre d'heures</th>
+                                <th class="text-left" colspan="7"><span t-esc="total_number_of_hours"/></th>
+                            </tr>
+                            <tr>
+                                <th class="text-left" colspan="1">Total montant payé</th>
+                                <th class="text-left" colspan="7"><span t-esc="total_amount"/></th>
+                            </tr>
+                        </tfooter>
+                    </t>
+                    <t t-else="">
+                        <tfooter>
+                            <tr>
+                                <th class="text-center" colspan="8" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;">
+                                    <span t-esc="'Aucune donnée disponible'"/>
+                                </th>
+                            </tr>
+                        </tfooter>
+                        <tfooter>
+                            <tr>
+                                <th class="text-left" colspan="8" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
+                            </tr>
+                        </tfooter>
+                    </t>
                 </t>
             </t>
         </template>
@@ -560,20 +624,20 @@
                     <t t-set="title">Cours émargés</t>
                 </t>
                 <t t-call="portal.portal_table">
-                    <thead>
-                        <tr class="active">
-                            <th class="text-left">Cours</th>
-                            <th class="text-left">Jour</th>
-                            <th class="text-left">Date</th>
-                            <th class="text-left">Heure</th>
-                            <th class="text-left">Semestre</th>
-                            <th class="text-left">Taux horaire</th>
-                            <th class="text-left">Nombre d'heures</th>
-                            <th class="text-left">Montant</th>
-                        </tr>
-                    </thead>
                     <t t-set="classes" t-value="accountbalances.keys()"/>
                     <t t-if="len(classes) > 0">
+                        <thead>
+                            <tr class="active">
+                                <th class="text-left">Cours</th>
+                                <th class="text-left">Jour</th>
+                                <th class="text-left">Date</th>
+                                <th class="text-left">Heure</th>
+                                <th class="text-left">Semestre</th>
+                                <th class="text-left">Taux horaire</th>
+                                <th class="text-left">Nombre d'heures</th>
+                                <th class="text-left">Montant</th>
+                            </tr>
+                        </thead>
                         <t t-foreach="classes" t-as="classe">
                             <thead>
                                 <tr class="active">
@@ -636,6 +700,13 @@
                     <t t-else="">
                         <tfooter>
                             <tr>
+                                <th class="text-center" colspan="8" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;">
+                                    <span t-esc="'Aucune donnée disponible'"/>
+                                </th>
+                            </tr>
+                        </tfooter>
+                        <tfooter>
+                            <tr>
                                 <th class="text-left" colspan="8" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
                             </tr>
                         </tfooter>
@@ -677,16 +748,16 @@
                     <t t-set="title">Consommation d'heures de cours</t>
                 </t>
                 <t t-call="portal.portal_table">
-                    <thead>
-                        <tr class="active">
-                            <th class="text-left">Cours</th>
-                            <th class="text-left">Nombre d'heures</th>
-                            <th class="text-left">Nombre d'heures effectuées</th>
-                            <th class="text-left">Nombre d'heures restantes</th>
-                        </tr>
-                    </thead>
                     <t t-set="classes" t-value="consumptionhours.keys()"/>
                     <t t-if="len(classes) > 0">
+                        <thead>
+                            <tr class="active">
+                                <th class="text-left">Cours</th>
+                                <th class="text-left">Nombre d'heures</th>
+                                <th class="text-left">Nombre d'heures effectuées</th>
+                                <th class="text-left">Nombre d'heures restantes</th>
+                            </tr>
+                        </thead>
                         <t t-foreach="classes" t-as="classe">
                             <thead>
                                 <tr class="active">
@@ -739,6 +810,13 @@
                     <t t-else="">
                         <tfooter>
                             <tr>
+                                <th class="text-center" colspan="4" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;">
+                                    <span t-esc="'Aucune donnée disponible'"/>
+                                </th>
+                            </tr>
+                        </tfooter>
+                        <tfooter>
+                            <tr>
                                 <th class="text-left" colspan="4" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
                             </tr>
                         </tfooter>
@@ -780,14 +858,14 @@
                     <t t-set="title">Fiches de progression</t>
                 </t>
                 <t t-call="portal.portal_table">
-                    <thead>
-                        <tr class="active">
-                            <th class="text-left">Cours</th>
-                            <th class="text-left" colspan="2" style="text-align: right;">Taux de consommation du volume horaire</th>
-                        </tr>
-                    </thead>
                     <t t-set="classes" t-value="progressreports.keys()"/>
                     <t t-if="len(classes) > 0">
+                        <thead>
+                            <tr class="active">
+                                <th class="text-left">Cours</th>
+                                <th class="text-left" colspan="2" style="text-align: right;">Taux de consommation du volume horaire</th>
+                            </tr>
+                        </thead>
                         <t t-foreach="classes" t-as="classe">
                             <thead>
                                 <tr class="active">
@@ -822,6 +900,13 @@
                     <t t-else="">
                         <tfooter>
                             <tr>
+                                <th class="text-center" colspan="3" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;">
+                                    <span t-esc="'Aucune donnée disponible'"/>
+                                </th>
+                            </tr>
+                        </tfooter>
+                        <tfooter>
+                            <tr>
                                 <th class="text-left" colspan="3" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
                             </tr>
                         </tfooter>
@@ -830,13 +915,13 @@
             </t>
         </template>
 
-        <!-- Lister les sessions de cours -->
+        <!-- Sessions de cours -->
 
         <template id="siantou_ems_portal_subjectsession_list" name="siantou_ems_portal.subjectsession_list_breadcrumbs" inherit_id="portal.portal_breadcrumbs" priority="30">
             <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
                 <li t-if="page_name == 'subjectsession_list'" t-attf-class="breadcrumb-item #{'active ' if subjectsession_list else ''}">
-                    <a t-if="subjectsession_list" t-attf-href="/my/subjectsession/{{ params['class_id'] }}/{{ params['subject_id'] }}/list?{{ keep_query() }}">Lister les sessions de cours</a>
-                    <t t-else=""><a t-attf-href="/my/progressreport">Fiches de progression</a> / Lister les sessions de cours</t>
+                    <a t-if="subjectsession_list" t-attf-href="/my/subjectsession/{{ params['class_id'] }}/{{ params['subject_id'] }}/list?{{ keep_query() }}">Sessions de cours</a>
+                    <t t-else=""><a t-attf-href="/my/progressreport">Fiches de progression</a> / Sessions de cours</t>
                 </li>
             </xpath>
         </template>
@@ -848,7 +933,7 @@
             <xpath expr="//div[@id='portal_client_category']" position="inside">
                 <t t-call="portal.portal_docs_entry">
                     <t t-set="icon" t-value="'/siantou_ems_portal/static/src/img/progress_grid.png'"/>
-                    <t t-set="title">Lister les sessions de cours</t>
+                    <t t-set="title">Sessions de cours</t>
                     <t t-set="url" t-value="'/my/subjectsession'"/>
                     <t t-set="text">Affichez vos fiches de progression</t>
                     <t t-set="placeholder_count" t-value="'portal_subjectsession_list'"/>
@@ -860,79 +945,95 @@
             <t t-call="portal.portal_layout">
                 <t t-set="breadcrumbs_searchbar" t-value="True"/>
                 <t t-call="portal.portal_searchbar">
-                    <t t-set="title">Lister les sessions de cours</t>
+                    <t t-set="title">Sessions de cours</t>
                 </t>
                 <t t-call="portal.portal_table">
-                    <t t-if="is_user == 'is_teacher'">
-                        <div>
-                            <ul class="d-flex p-0">
-                                <li class="d-flex align-items-center">
-                                    <a t-attf-href="/my/subjectsession/{{ params['class_id'] }}/{{ params['subject_id'] }}/new" class="btn btn-primary">Créer</a>
-                                </li>
-                                <li class="d-flex align-items-center px-2">
-                                    <span t-esc="params['class_name'] + ' - ' + params['subject_name']"/>
-                                </li>
-                            </ul>
-                        </div><br/>
-                    </t>
-                    <thead>
-                        <tr class="active">
-                            <th class="text-left">Date</th>
-                            <th class="text-left">Séance</th>
-                            <th class="text-left">Description</th>
-                            <th class="text-left">Taux de consommation du volume horaire</th>
-                            <th class="text-left">Statut</th>
-                            <th class="text-left">Actions</th>
-                        </tr>
-                    </thead>
                     <t t-set="timetables" t-value="subjectsessions.keys()"/>
-                    <t t-foreach="timetables" t-as="timetable">
+                    <t t-if="len(timetables) > 0">
+                        <t t-if="is_user == 'is_teacher'">
+                            <div>
+                                <ul class="d-flex p-0">
+                                    <li class="d-flex align-items-center">
+                                        <a t-attf-href="/my/subjectsession/{{ params['class_id'] }}/{{ params['subject_id'] }}/new" class="btn btn-primary">Créer</a>
+                                    </li>
+                                    <li class="d-flex align-items-center px-2">
+                                        <span t-esc="params['class_name'] + ' - ' + params['subject_name']"/>
+                                    </li>
+                                </ul>
+                            </div><br/>
+                        </t>
                         <thead>
-                            <tr>
-                                <th class="text-left">
-                                    <span t-esc="subjectsessions[timetable]['date'] + ' ' + subjectsessions[timetable]['start_time'] + '-' + subjectsessions[timetable]['end_time']"/>
-                                </th>
-                                <th class="text-left" colspan="5">
-                                    <span t-esc="'Empty'" style="visibility: hidden;"/>
-                                </th>
+                            <tr class="active">
+                                <th class="text-left">Date</th>
+                                <th class="text-left">Séance</th>
+                                <th class="text-left">Description</th>
+                                <th class="text-left">Taux de consommation du volume horaire</th>
+                                <th class="text-left">Statut</th>
+                                <th class="text-left">Actions</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <t t-set="sessions" t-value="subjectsessions[timetable]['data']"/>
-                            <t t-foreach="sessions" t-as="session">
+                        <t t-foreach="timetables" t-as="timetable">
+                            <thead>
                                 <tr>
-                                    <td class="text-left">
-                                        <span t-esc="subjectsessions[timetable]['subject_name']"/>
-                                    </td>
-                                    <td class="text-left">
-                                        <span t-esc="session['name']"/>
-                                    </td>
-                                    <td class="text-left">
-                                        <span t-esc="session['description']"/>
-                                    </td>
-                                    <td class="text-left">
-                                        <span t-esc="session['percentage'] + '%'"/>
-                                    </td>
-                                    <td class="text-left">
-                                        <span t-esc="subjectsessions[timetable]['status']"/>
-                                    </td>
-                                    <td class="text-left">
-                                        <t t-if="is_user == 'is_teacher'">
-                                            <div>
-                                                <a t-attf-href="/my/subjectsession/{{ params['class_id'] }}/{{ params['subject_id'] }}/{{ session['id'] }}/edit" class="btn btn-primary btn-sm">Modifier</a>
-                                                <!-- <a t-attf-href="/my/subjectsession/{{ session['id'] }}/delete" class="btn btn-danger btn-sm">Supprimer</a> -->
-                                            </div>
-                                        </t>
-                                    </td>
+                                    <th class="text-left">
+                                        <span t-esc="subjectsessions[timetable]['date'] + ' ' + subjectsessions[timetable]['start_time'] + '-' + subjectsessions[timetable]['end_time']"/>
+                                    </th>
+                                    <th class="text-left" colspan="5">
+                                        <span t-esc="'Empty'" style="visibility: hidden;"/>
+                                    </th>
                                 </tr>
-                            </t>
-                        </tbody>
+                            </thead>
+                            <tbody>
+                                <t t-set="sessions" t-value="subjectsessions[timetable]['data']"/>
+                                <t t-foreach="sessions" t-as="session">
+                                    <tr>
+                                        <td class="text-left">
+                                            <span t-esc="subjectsessions[timetable]['subject_name']"/>
+                                        </td>
+                                        <td class="text-left">
+                                            <span t-esc="session['name']"/>
+                                        </td>
+                                        <td class="text-left">
+                                            <span t-esc="session['description']"/>
+                                        </td>
+                                        <td class="text-left">
+                                            <span t-esc="session['percentage'] + '%'"/>
+                                        </td>
+                                        <td class="text-left">
+                                            <span t-esc="subjectsessions[timetable]['status']"/>
+                                        </td>
+                                        <td class="text-left">
+                                            <t t-if="is_user == 'is_teacher'">
+                                                <div>
+                                                    <a t-attf-href="/my/subjectsession/{{ params['class_id'] }}/{{ params['subject_id'] }}/{{ session['id'] }}/edit" class="btn btn-primary btn-sm">Modifier</a>
+                                                    <!-- <a t-attf-href="/my/subjectsession/{{ session['id'] }}/delete" class="btn btn-danger btn-sm">Supprimer</a> -->
+                                                </div>
+                                            </t>
+                                        </td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </t>
+                        <tfooter>
+                            <tr>
+                                <th class="text-left" colspan="6" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
+                            </tr>
+                        </tfooter>
                     </t>
-                    <tfooter>
-                        <tr>
-                            <th class="text-left" colspan="6" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
-                        </tr>
-                    </tfooter>
+                    <t t-else="">
+                        <tfooter>
+                            <tr>
+                                <th class="text-center" colspan="6" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;">
+                                    <span t-esc="'Aucune donnée disponible'"/>
+                                </th>
+                            </tr>
+                        </tfooter>
+                        <tfooter>
+                            <tr>
+                                <th class="text-left" colspan="6" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
+                            </tr>
+                        </tfooter>
+                    </t>
                 </t>
             </t>
         </template>
@@ -1137,130 +1238,146 @@
                     <t t-set="total_calendars" t-value="[total_calendars[i:i+5] for i in range(0, len(total_calendars), 5)]"/>
                     <t t-set="total_calendars" t-value="[p for p in total_calendars if (calendar_page_number in p or (calendar_page_number - 1) in p or (calendar_page_number + 1) in p)]"/>
                     <t t-set="total_calendars" t-value="[m for p in total_calendars for m in p] if len(total_calendars) > 0 else []"/>
-                    <tbody>
-                        <tr>
-                            <td colspan="9" class="col-9">
-                                <div class="table-responsive border-0 ">
-                                    <table class="position-relative table table-sm table-striped mb-0">
-                                        <t t-foreach="months" t-as="month">
-                                            <t t-set="data" t-value="calendars[month]['data']"/>
-                                            <thead>
-                                                <tr>
-                                                    <th class="text-center" colspan="5" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;">
-                                                        <span t-esc="'Mois :'"/>
-                                                        <span t-esc="calendars[month]['name'] + ' ' + search_year"/>
-                                                    </th>
-                                                </tr>
-                                            </thead>
-                                            <thead>
-                                                <tr>
-                                                    <th class="text-left" colspan="5" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
-                                                </tr>
-                                            </thead>
-                                            <thead>
-                                                <tr class="active">
-                                                    <th class="text-center">Sujet</th>
-                                                    <th class="text-center">Date de début</th>
-                                                    <th class="text-center">Date de fin</th>
-                                                    <th class="text-center">Localisation</th>
-                                                    <th class="text-center">Durée</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <t t-foreach="data" t-as="record">
+                    <t t-if="len(months) > 0">
+                        <tbody>
+                            <tr>
+                                <td colspan="9" class="col-9">
+                                    <div class="table-responsive border-0 ">
+                                        <table class="position-relative table table-sm table-striped mb-0">
+                                            <t t-foreach="months" t-as="month">
+                                                <t t-set="data" t-value="calendars[month]['data']"/>
+                                                <thead>
                                                     <tr>
-                                                        <td t-attf-class="text-center #{'fw-bold ' if calendars[month]['is_current_month'] else ''}">
-                                                            <span t-esc="record['name']"/>
-                                                        </td>
-                                                        <td class="text-center">
-                                                            <span t-esc="record['start_date']"/>
-                                                        </td>
-                                                        <td class="text-center">
-                                                            <span t-esc="record['stop_date']"/>
-                                                        </td>
-                                                        <td class="text-center">
-                                                            <span t-esc="record['location']"/>
-                                                        </td>
-                                                        <td class="text-center">
-                                                            <span t-esc="record['duration']"/>
-                                                        </td>
+                                                        <th class="text-center" colspan="5" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;">
+                                                            <span t-esc="'Mois :'"/>
+                                                            <span t-esc="calendars[month]['name'] + ' ' + search_year"/>
+                                                        </th>
                                                     </tr>
-                                                </t>
-                                            </tbody>
-                                        </t>
-                                    </table>
-                                </div>
-                            </td>
-                            <td colspan="3" class="col-3">
-                                <div class="table-responsive border-0 ">
-                                    <table class="position-relative table table-sm table-primary table-sm mb-0">
-                                        <t t-foreach="current_months" t-as="month">
-                                            <t t-set="data" t-value="current_calendars[month]['data']"/>
-                                            <thead>
-                                                <tr>
-                                                    <th class="text-center" colspan="1" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;">
-                                                        <span t-esc="'Mois en cours :'"/>
-                                                        <span t-esc="current_calendars[month]['name'] + ' ' + current_calendars[month]['current_year']"/>
-                                                    </th>
-                                                </tr>
-                                            </thead>
-                                            <thead>
-                                                <tr>
-                                                    <th class="text-left" colspan="1" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
-                                                </tr>
-                                            </thead>
-                                            <thead>
-                                                <tr class="active">
-                                                    <th class="text-center">Sujet</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <t t-foreach="data" t-as="record">
+                                                </thead>
+                                                <thead>
                                                     <tr>
-                                                        <td class="text-center">
-                                                            <span t-esc="record['name']"/>
-                                                            <br/>
-                                                            <span t-esc="record['start_date']"/>
-                                                        </td>
+                                                        <th class="text-left" colspan="5" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
                                                     </tr>
+                                                </thead>
+                                                <thead>
+                                                    <tr class="active">
+                                                        <th class="text-center">Sujet</th>
+                                                        <th class="text-center">Date de début</th>
+                                                        <th class="text-center">Date de fin</th>
+                                                        <th class="text-center">Localisation</th>
+                                                        <th class="text-center">Durée</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <t t-foreach="data" t-as="record">
+                                                        <tr>
+                                                            <td t-attf-class="text-center #{'fw-bold ' if calendars[month]['is_current_month'] else ''}">
+                                                                <span t-esc="record['name']"/>
+                                                            </td>
+                                                            <td class="text-center">
+                                                                <span t-esc="record['start_date']"/>
+                                                            </td>
+                                                            <td class="text-center">
+                                                                <span t-esc="record['stop_date']"/>
+                                                            </td>
+                                                            <td class="text-center">
+                                                                <span t-esc="record['location']"/>
+                                                            </td>
+                                                            <td class="text-center">
+                                                                <span t-esc="record['duration']"/>
+                                                            </td>
+                                                        </tr>
+                                                    </t>
+                                                </tbody>
+                                            </t>
+                                        </table>
+                                    </div>
+                                </td>
+                                <td colspan="3" class="col-3">
+                                    <div class="table-responsive border-0 ">
+                                        <table class="position-relative table table-sm table-primary table-sm mb-0">
+                                            <t t-foreach="current_months" t-as="month">
+                                                <t t-set="data" t-value="current_calendars[month]['data']"/>
+                                                <thead>
+                                                    <tr>
+                                                        <th class="text-center" colspan="1" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;">
+                                                            <span t-esc="'Mois en cours :'"/>
+                                                            <span t-esc="current_calendars[month]['name'] + ' ' + current_calendars[month]['current_year']"/>
+                                                        </th>
+                                                    </tr>
+                                                </thead>
+                                                <thead>
+                                                    <tr>
+                                                        <th class="text-left" colspan="1" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
+                                                    </tr>
+                                                </thead>
+                                                <thead>
+                                                    <tr class="active">
+                                                        <th class="text-center">Sujet</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <t t-foreach="data" t-as="record">
+                                                        <tr>
+                                                            <td class="text-center">
+                                                                <span t-esc="record['name']"/>
+                                                                <br/>
+                                                                <span t-esc="record['start_date']"/>
+                                                            </td>
+                                                        </tr>
+                                                    </t>
+                                                </tbody>
+                                            </t>
+                                        </table>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tfooter>
+                            <tr>
+                                <th class="text-left" colspan="12" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
+                            </tr>
+                        </tfooter>
+                        <tbody>
+                            <tr>
+                                <td class="text-left" colspan="12">
+                                    <nav aria-label="Page navigation calendar">
+                                        <ul class="pagination">
+                                            <li class="page-item"><a class="page-link" t-attf-href="/my/calendar/page/1">Précédent</a></li>
+                                            <t t-foreach="total_calendars" t-as="p">
+                                                <t t-if="p == calendar_page_number">
+                                                    <li class="page-item active"><a class="page-link" t-attf-href="/my/calendar/page/{{ p }}" t-esc="p"/></li>
                                                 </t>
-                                            </tbody>
-                                        </t>
-                                    </table>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                    <tfooter>
-                        <tr>
-                            <th class="text-left" colspan="12" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
-                        </tr>
-                    </tfooter>
-                    <tbody>
-                        <tr>
-                            <td class="text-left" colspan="12">
-                                <nav aria-label="Page navigation calendar">
-                                    <ul class="pagination">
-                                        <li class="page-item"><a class="page-link" t-attf-href="/my/calendar/page/1">Précédent</a></li>
-                                        <t t-foreach="total_calendars" t-as="p">
-                                            <t t-if="p == calendar_page_number">
-                                                <li class="page-item active"><a class="page-link" t-attf-href="/my/calendar/page/{{ p }}" t-esc="p"/></li>
+                                                <t t-else="">
+                                                    <li class="page-item"><a class="page-link" t-attf-href="/my/calendar/page/{{ p }}" t-esc="p"/></li>
+                                                </t>
                                             </t>
-                                            <t t-else="">
-                                                <li class="page-item"><a class="page-link" t-attf-href="/my/calendar/page/{{ p }}" t-esc="p"/></li>
-                                            </t>
-                                        </t>
-                                        <li class="page-item"><a class="page-link" t-attf-href="/my/calendar/page/{{ calendar_pages_total }}">Suivant</a></li>
-                                    </ul>
-                                </nav>
-                            </td>
-                        </tr>
-                    </tbody>
-                    <tfooter>
-                        <tr>
-                            <th class="text-left" colspan="12" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
-                        </tr>
-                    </tfooter>
+                                            <li class="page-item"><a class="page-link" t-attf-href="/my/calendar/page/{{ calendar_pages_total }}">Suivant</a></li>
+                                        </ul>
+                                    </nav>
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tfooter>
+                            <tr>
+                                <th class="text-left" colspan="12" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
+                            </tr>
+                        </tfooter>
+                    </t>
+                    <t t-else="">
+                        <tfooter>
+                            <tr>
+                                <th class="text-center" colspan="12" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;">
+                                    <span t-esc="'Aucune donnée disponible'"/>
+                                </th>
+                            </tr>
+                        </tfooter>
+                        <tfooter>
+                            <tr>
+                                <th class="text-left" colspan="12" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
+                            </tr>
+                        </tfooter>
+                    </t>
                 </t>
             </t>
         </template>
@@ -1298,41 +1415,57 @@
                     <t t-set="title">Notifications</t>
                 </t>
                 <t t-call="portal.portal_table">
-                    <thead>
-                        <tr class="active">
-                            <th class="text-left">Date</th>
-                            <th class="text-left">Message</th>
-                            <th class="text-left">Enseignant</th>
-                            <th class="text-left">Cours</th>
-                            <th class="text-left">Statut</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <t t-foreach="notifications" t-as="record">
-                            <tr>
-                                <td class="text-left">
-                                    <span t-esc="record['date']"/>
-                                </td>
-                                <td class="text-left">
-                                    <span t-esc="record['message']"/>
-                                </td>
-                                <td class="text-left">
-                                    <span t-esc="record['name']"/>
-                                </td>
-                                <td class="text-left">
-                                    <span t-esc="record['subject_name']"/>
-                                </td>
-                                <td class="text-left">
-                                    <span t-esc="record['status']"/>
-                                </td>
+                    <t t-if="len(notifications) > 0">
+                        <thead>
+                            <tr class="active">
+                                <th class="text-left">Date</th>
+                                <th class="text-left">Message</th>
+                                <th class="text-left">Enseignant</th>
+                                <th class="text-left">Cours</th>
+                                <th class="text-left">Statut</th>
                             </tr>
-                        </t>
-                    </tbody>
-                    <tfooter>
-                        <tr>
-                            <th class="text-left" colspan="5" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
-                        </tr>
-                    </tfooter>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="notifications" t-as="record">
+                                <tr>
+                                    <td class="text-left">
+                                        <span t-esc="record['date']"/>
+                                    </td>
+                                    <td class="text-left">
+                                        <span t-esc="record['message']"/>
+                                    </td>
+                                    <td class="text-left">
+                                        <span t-esc="record['name']"/>
+                                    </td>
+                                    <td class="text-left">
+                                        <span t-esc="record['subject_name']"/>
+                                    </td>
+                                    <td class="text-left">
+                                        <span t-esc="record['status']"/>
+                                    </td>
+                                </tr>
+                            </t>
+                        </tbody>
+                        <tfooter>
+                            <tr>
+                                <th class="text-left" colspan="5" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
+                            </tr>
+                        </tfooter>
+                    </t>
+                    <t t-else="">
+                        <tfooter>
+                            <tr>
+                                <th class="text-center" colspan="5" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;">
+                                    <span t-esc="'Aucune donnée disponible'"/>
+                                </th>
+                            </tr>
+                        </tfooter>
+                        <tfooter>
+                            <tr>
+                                <th class="text-left" colspan="5" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
+                            </tr>
+                        </tfooter>
+                    </t>
                 </t>
             </t>
         </template>
