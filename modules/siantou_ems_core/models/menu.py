@@ -28,10 +28,11 @@ class Menu(models.Model):
             if self.env.user.employee_id.is_teacher and self.env.user.employee_id.is_portal:
                 is_user = 'is_portal'
         if is_user:
-            group_user_id = self.env.ref('base.group_user')
-            group_portal_id = self.env.ref('base.group_portal')
-            group_user_id.sudo().write({'users': [(3, user.id)]})
-            group_portal_id.sudo().write({'users': [(4, user.id)]})
+            group_user = self.env.ref('base.group_user')
+            group_public = self.env.ref('base.group_public')
+            group_portal = self.env.ref('base.group_portal')
+            group_user.sudo().write({'users': [(3, user.id)]})
+            group_portal.sudo().write({'users': [(4, user.id)]})
 
         return {
             'type': 'ir.actions.act_url',
