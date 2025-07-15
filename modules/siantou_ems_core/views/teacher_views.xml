@@ -23,6 +23,7 @@
                         <field name="is_permanent"/>
                         <field name="identifier"/>
                         <field name="weekly_hours_limit"/>
+                        <field name="is_portal" invisible="is_teacher == False"/>
                     </group>
                 </xpath>
                 <xpath expr="//notebook[1]" position="inside">

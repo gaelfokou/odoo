@@ -55,6 +55,12 @@
             sequence = "100"/>
 
     <menuitem
+            id="menu_siantou_ems_core_accessibility"
+            name="Accessibilité"
+			parent="menu_siantou_ems_core"
+            sequence = "110"/>
+
+    <menuitem
             id="menu_siantou_ems_core_config_pe" 
             name="Gestion des programmes d'enseignements" 
             parent="menu_siantou_ems_core_configuration" 

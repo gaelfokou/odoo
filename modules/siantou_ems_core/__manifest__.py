@@ -27,6 +27,7 @@
 
         # Fichier des vues
         'views/year_views.xml',
+        'views/portal_views.xml',
         'views/semester_views.xml',
         'views/fieldofstudy_views.xml',
         'views/subject_views.xml',

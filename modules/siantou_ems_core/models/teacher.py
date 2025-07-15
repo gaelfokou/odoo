@@ -28,6 +28,12 @@ class HrEmployee(models.Model):
         default=False,
     )
 
+    # Variable booléenne pour identifier un portail
+    is_portal = fields.Boolean(
+        'Accéder au portail enseignant',
+        default=False,
+    )
+
     # Matricule de l'enseignant
     identifier = fields.Char(
         'Matricule',
