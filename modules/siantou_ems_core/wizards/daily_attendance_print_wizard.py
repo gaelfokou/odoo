@@ -65,7 +65,7 @@ class TeacherPrintWizard(models.TransientModel):
             attendance['punching_time'] = search_attendance.punching_time
             attendances.append(attendance)
 
-        title = self.env['ir.config_parameter'].sudo().get_param(f'filter.{self.env.user.id}', '')
+        title = self.env['ir.config_parameter'].sudo().get_param(f'siantou.filter_user_{self.env.user.id}', '')
 
         _logger.info(f'----------- tototototototo attendances {attendances} -----------')
 

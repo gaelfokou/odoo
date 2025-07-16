@@ -236,7 +236,7 @@ class TeacherFilterWizard(models.TransientModel):
         else:
             title = 'Non spécifié'
 
-        self.env['ir.config_parameter'].sudo().set_param(f'filter.{self.env.user.id}', title)
+        self.env['ir.config_parameter'].sudo().set_param(f'siantou.filter_user_{self.env.user.id}', title)
 
         view_id = self.env.ref('hr.view_employee_tree').id
         return {

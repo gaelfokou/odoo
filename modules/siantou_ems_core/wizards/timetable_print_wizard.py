@@ -152,7 +152,7 @@ class TimetablePrintWizard(models.TransientModel):
                 info_timetables[key] = {}
                 info_timetables[key]['semester'] = semester
                 info_timetables[key]['study'] = study
-                info_timetables[key]['filter'] = self.env['ir.config_parameter'].sudo().get_param(f'filter.{self.env.user.id}', '')
+                info_timetables[key]['filter'] = self.env['ir.config_parameter'].sudo().get_param(f'siantou.filter_user_{self.env.user.id}', '')
             timetable = {}
             timetable['id'] = search_timetable.id
             timetable['date'] = search_timetable.date

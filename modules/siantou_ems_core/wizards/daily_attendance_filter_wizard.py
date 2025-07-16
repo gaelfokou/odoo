@@ -140,7 +140,7 @@ class DailyAttendanceFilterWizard(models.TransientModel):
         else:
             title = 'Non spécifié'
 
-        self.env['ir.config_parameter'].sudo().set_param(f'filter.{self.env.user.id}', title)
+        self.env['ir.config_parameter'].sudo().set_param(f'siantou.filter_user_{self.env.user.id}', title)
 
         view_id = self.env.ref('hr_zk_attendance.daily_attendance_view_tree').id
         return {

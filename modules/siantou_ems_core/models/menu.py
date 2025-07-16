@@ -12,6 +12,10 @@ class Menu(models.Model):
     @tools.ormcache('frozenset(self.env.user.groups_id.ids)', 'debug')
     def _visible_menu_ids(self, debug=False):
         menus = super(Menu, self)._visible_menu_ids(debug)
+        if not self.env['ir.config_parameter'].sudo().get_param(f'siantou.url_portal'):
+            self.env['ir.config_parameter'].sudo().set_param(f'siantou.url_portal', 'http://127.0.0.1:8069/my')
+        if not self.env['ir.config_parameter'].sudo().get_param(f'siantou.url_user'):
+            self.env['ir.config_parameter'].sudo().set_param(f'siantou.url_user', 'http://127.0.0.1:8069/web')
         is_user = None
         if self.env.user.employee_id.id:
             user = self.env.user.employee_id
@@ -34,8 +38,11 @@ class Menu(models.Model):
             group_user.sudo().write({'users': [(3, user.id)]})
             group_portal.sudo().write({'users': [(4, user.id)]})
 
+        url_portal = self.env['ir.config_parameter'].sudo().get_param(f'siantou.url_portal', 'http://127.0.0.1:8069/my')
+        url_user = self.env['ir.config_parameter'].sudo().get_param(f'siantou.url_user', 'http://127.0.0.1:8069/web')
+
         return {
             'type': 'ir.actions.act_url',
-            'url': 'http://127.0.0.1:8069/my',
+            'url': url_portal,
             'target': 'self',
         }

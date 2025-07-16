@@ -54,7 +54,7 @@ class SubjectPrintWizard(models.TransientModel):
             total_hours_credit += subject['hours_credit']
             subjects.append(subject)
 
-        title = self.env['ir.config_parameter'].sudo().get_param(f'filter.{self.env.user.id}', '')
+        title = self.env['ir.config_parameter'].sudo().get_param(f'siantou.filter_user_{self.env.user.id}', '')
 
         _logger.info(f'----------- tototototototo subjects {subjects} -----------')
 
