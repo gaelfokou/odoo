@@ -22,8 +22,8 @@ class Menu(models.Model):
             if self.env.user.employee_id.is_teacher and self.env.user.employee_id.is_portal:
                 is_user = 'is_portal'
         if not is_user:
-            menu_item_id = self.env.ref('siantou_ems_core.menu_siantou_ems_core_portal').id
-            menus.discard(menu_item_id)
+            menu_accessibility_id = self.env.ref('siantou_ems_core.menu_siantou_ems_core_accessibility').id
+            menus.discard(menu_accessibility_id)
         return menus
 
     def switch_to_portal(self):
