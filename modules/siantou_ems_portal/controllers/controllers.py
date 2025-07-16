@@ -1029,3 +1029,24 @@ class PortalAccount(portal.CustomerPortal):
                     vals['quarter_id'] = int(kw.get('quarter'))
                 user.sudo().write(vals)
         return http.request.redirect('/my/home')
+
+    @http.route(['/my/portal/switch'], type='http', auth="user", website=True)
+    def portal_switch(self, search='', search_in='all', **kw):
+        is_user = None
+        if http.request.env.user.employee_id.id:
+            user = http.request.env.user
+            if http.request.env.user.employee_id.is_teacher and http.request.env.user.employee_id.is_portal:
+                is_user = 'is_portal'
+        if is_user:
+            group_portal = http.request.env.ref('base.group_portal')
+            group_public = http.request.env.ref('base.group_public')
+            group_user = http.request.env.ref('base.group_user')
+            group_portal.sudo().write({'users': [(3, user.id)]})
+            group_user.sudo().write({'users': [(4, user.id)]})
+
+            url_base = http.request.env['ir.config_parameter'].sudo().get_param(f'siantou.url_base', 'http://127.0.0.1:8069')
+            url_portal = http.request.env['ir.config_parameter'].sudo().get_param(f'siantou.url_portal', '/my/home')
+            url_user = http.request.env['ir.config_parameter'].sudo().get_param(f'siantou.url_user', '/web')
+
+            return http.request.redirect(url_user)
+        return http.request.redirect('/my/home')

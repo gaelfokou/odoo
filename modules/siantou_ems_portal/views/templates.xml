@@ -1577,5 +1577,11 @@
                 </t>
             </t>
         </template>
+
+        <template id="siantou_ems_portal_menu_switch" name="siantou_ems_portal.switch_my_home" inherit_id="portal.portal_my_home" priority="30">
+            <xpath expr="//div[@id='portal_client_category']" position="inside">
+                <a t-if="request.env.user.employee_id.id and request.env.user.employee_id.is_teacher and request.env.user.employee_id.is_portal" t-attf-href="/my/portal/switch" class="btn btn-primary">Accéder à la page administration</a>
+            </xpath>
+        </template>
     </data>
 </odoo>
