@@ -45,12 +45,14 @@ class DiplomePersonnel(models.Model):
     annee_obtention = fields.Date(String="Date d'obtention")
 
     employee_id = fields.Many2one(
-        comodel_name="hr.employee",
-        string="Personnel",
-        ondelete="cascade",
+        'hr.employee',
+        'Personnel',
+        ondelete='cascade'
     )
 
-    ecole = fields.Char(string='Ecole',required=True,tracking=True)
+    ecole = fields.Char(string='Ecole', tracking=True)
+
+    domaine = fields.Char(string='Domaine', tracking=True)
 
     document = fields.Binary(string="Fichier joint", tracking=True)
 

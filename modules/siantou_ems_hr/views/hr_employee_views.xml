@@ -107,6 +107,7 @@
                             <field name="diplome_availability_id" />
                             <field name="equivalence_id" />
                             <field name="ecole" />
+                            <field name="domaine" />
                             <field name="annee_obtention" />
                         </tree>
                     </field>
