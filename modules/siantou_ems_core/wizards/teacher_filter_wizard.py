@@ -77,7 +77,7 @@ class TeacherFilterWizard(models.TransientModel):
 
     diplome_availability_id = fields.Many2one(
         'hr.education.diplome.availability',
-        string='Diplôme',
+        string='Diplôme disponible',
     )
 
     specialty_id_domain = fields.Binary(compute='_compute_school_domain', default=[])
