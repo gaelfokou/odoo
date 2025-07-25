@@ -36,6 +36,7 @@ class DiplomePersonnel(models.Model):
     diplome_availability_id = fields.Many2one(
         'hr.education.diplome.availability',
         'Diplôme disponible',
+        required=True,
         ondelete='cascade'
     )
 
