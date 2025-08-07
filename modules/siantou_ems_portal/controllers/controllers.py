@@ -48,6 +48,40 @@ STATUS_NOTIFICATION = {
 
 _logger = logging.getLogger(__name__)
 
+class Extension(portal.CustomerPortal):
+    def check_completed_request(self):
+        user = None
+        is_user = None
+        if http.request.env.user.employee_id.id:
+            user = http.request.env.user.employee_id
+            if http.request.env.user.employee_id.is_teacher:
+                is_user = 'is_teacher'
+            else:
+                is_user = 'is_employee'
+        elif http.request.env.user.student_id.id:
+            user = http.request.env.user.student_id
+            is_user = 'is_student'
+        if user:
+            if is_user == 'is_student':
+                if not user.private_phone:
+                    return False
+                if not user.private_email:
+                    return False
+                if not user.date_naissance:
+                    return False
+                if not user.nationalite.id:
+                    return False
+                if not user.city_id.id:
+                    return False
+        return True
+
+    @http.route(['/my', '/my/home'], type='http', auth="user", website=True)
+    def home(self, **kw):
+        completed_request = self.check_completed_request()
+        if not completed_request:
+            return http.request.redirect('/my/request')
+        return super(Extension, self).home(**kw)
+
 class Home(WebHome):
     def _login_redirect(self, uid, redirect=None):
         if not redirect and not is_user_internal(uid):
