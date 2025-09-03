@@ -6,7 +6,7 @@ from odoo import http
 import json
 import base64
 import logging
-from odoo.exceptions import ValidationError  # Import the ValidationError class
+from odoo.exceptions import UserError, ValidationError
 import requests
 
 _logger = logging.getLogger(__name__)

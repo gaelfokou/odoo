@@ -1,6 +1,6 @@
 from odoo import models, fields, api, tools, _
 from datetime import timedelta
-from odoo.exceptions import ValidationError  # Import the ValidationError class
+from odoo.exceptions import UserError, ValidationError
 
 class Year(models.Model):
     _name = 'siantou.ems.core.year'

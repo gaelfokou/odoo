@@ -30,7 +30,7 @@
 					<sheet>
                         <group col="4" string="Informations sur le semestre">
                             <group col="2" >
-                                <field name="name"/>
+                                <field name="semester_name"/>
                                 <field name="start_time"/>
                                 <field name="year_id"/>
                             </group>

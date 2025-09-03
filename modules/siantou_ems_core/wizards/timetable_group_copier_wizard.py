@@ -74,7 +74,7 @@ class TimetableGroupCopierWizard(models.TransientModel):
             new_years = [int(y) for y in new_years]
 
             semester_id = self.env['siantou.ems.core.year.semester'].search([
-                ('name', '=', group_id.semester_id.name),
+                ('semester_name', '=', group_id.semester_id.semester_name),
                 ('year_id', '=', self.destination_year_id.id),
             ], limit=1)
             if not semester_id:

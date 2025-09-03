@@ -3,17 +3,21 @@
 import math
 from odoo import models, fields, api, tools, _
 from datetime import timedelta, datetime, date
-from odoo.exceptions import ValidationError  # Import the ValidationError class
+from odoo.exceptions import UserError, ValidationError
+import re
 
 class Semester(models.Model):
     _name = 'siantou.ems.core.year.semester'
     _description = 'Gestion des Semestres'
 
     # Nom du semestre
-    name = fields.Char(
+    semester_name = fields.Char(
         'Nom',
         required=True
     )
+
+    name = fields.Char(string='Nom',
+                       compute='_compute_name', store=True)
 
     # Date de début de l'année académique
     start_time = fields.Date(
@@ -71,6 +75,36 @@ class Semester(models.Model):
     # _sql_constraints = [
     #     ('unique_name', 'unique(name)', 'Le nom du semestre doit être unique.'),
     # ]
+
+    @api.depends('semester_name', 'year_id')
+    def _compute_name(self):
+        for record in self:
+            semester_name = record.semester_name
+            year_name = record.year_id.name
+            name = '{} ({})'.format(semester_name, year_name)
+            while True:
+                if name.find('  ') != -1:
+                    name = name.replace('  ', ' ')
+                else:
+                    break
+            name = name.strip()
+            name = name.upper()
+            record.name = name
+
+    @api.onchange('semester_name', 'year_id')
+    def _onchange_name(self):
+        for record in self:
+            semester_name = record.semester_name
+            year_name = record.year_id.name
+            name = '{} ({})'.format(semester_name, year_name)
+            while True:
+                if name.find('  ') != -1:
+                    name = name.replace('  ', ' ')
+                else:
+                    break
+            name = name.strip()
+            name = name.upper()
+            record.name = name
 
     # Contrainte logique pour empêcher d'avoir des semestres qui se chevauchent
     @api.constrains('start_time', 'end_time')
