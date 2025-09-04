@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <templates xml:space="preserve">
-    <t t-name="owl.OwlSalesDashboard" owl="1">
+    <t t-name="owl.EmsCoreDashboard" owl="1">
         <div class="vh-100 overflow-auto bg-muted">
             <div class="row m-3">
                 <div class="col-lg-12">

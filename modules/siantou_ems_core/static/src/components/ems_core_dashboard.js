@@ -123,7 +123,7 @@ export class OwlSalesDashboard extends Component {
 
 }
 
-OwlSalesDashboard.template = "owl.OwlSalesDashboard"
+OwlSalesDashboard.template = "owl.EmsCoreDashboard"
 OwlSalesDashboard.components = { KpiCard, ChartRenderer, DoughnutRenderer }
 
 registry.category("actions").add("owl.ems_core_dashboard", OwlSalesDashboard)
