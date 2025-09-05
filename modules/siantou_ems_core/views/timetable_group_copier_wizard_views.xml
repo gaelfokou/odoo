@@ -9,7 +9,7 @@
                     <group>
                         <field name="is_submit" readonly="1"/>
                         <field name="source_year_id" options="{'no_create': True}"/>
-                        <field name="group_id" options="{'no_create': True}" domain="[('semester_id.year_id', '=', source_year_id), ('is_submit', '=', is_submit)]"/>
+                        <field name="group_id" options="{'no_create': True}" domain="['|', '&amp;', '&amp;', ('semester_id.year_id', '=', source_year_id), ('is_submit', '=', is_submit), ('create_uid', '=', uid), '&amp;', '&amp;', ('semester_id.year_id', '=', source_year_id), ('is_submit', '=', is_submit), ('user_ids', '=', uid)]"/>
                         <field name="destination_year_id" options="{'no_create': True}"/>
                     </group>
                     <footer>
