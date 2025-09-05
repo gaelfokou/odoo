@@ -37,20 +37,24 @@ class TimetableFilterWizard(models.TransientModel):
     _name = 'timetable.filter.wizard'
     _description = 'Filtre des emplois du temps'
 
+    year_id = fields.Many2one(
+        'siantou.ems.core.year',
+        'Année académique',
+        required=True
+    )
+
     # Semestre liée à la programmation de cours
     semester_id = fields.Many2one(
         'siantou.ems.core.year.semester',
         string='Semestre',
-        # default=_default_semester,
-        related='group_id.semester_id',
-        store=True
+        required=True
     )
 
-    year_id = fields.Many2one(
-        'siantou.ems.core.year',
-        'Année académique',
-        related='semester_id.year_id',
-        store=True
+    # Version auquel appartient l'emploi du temps
+    group_id = fields.Many2one(
+        'siantou.ems.timetable.group',
+        'Version',
+        required=True
     )
 
     # Ajouter un champ de relation vers hr.department pour lier la filière au département
@@ -119,13 +123,6 @@ class TimetableFilterWizard(models.TransientModel):
     employee_id = fields.Many2one(
         'hr.employee',
         'Enseignant',
-    )
-
-    # Version auquel appartient l'emploi du temps
-    group_id = fields.Many2one(
-        'siantou.ems.timetable.group',
-        'Version',
-        required=True,
     )
 
     start_date = fields.Date(
@@ -208,10 +205,34 @@ class TimetableFilterWizard(models.TransientModel):
             if record.end_time < record.start_time:
                 raise ValidationError("L'heure de fin du cours doit être supérieure à l'heure de début du cours")
 
+    @api.onchange('year_id')
+    def _onchange_year(self):
+        for record in self:
+            record.semester_id = None
+            record.group_id = None
+            record.school_id = None
+            record.field_of_study_id = None
+            record.level_id = None
+            record.class_id = None
+            record.specialty_id = None
+            record.option_id = None
+            record.subject_id = None
+
+    @api.onchange('semester_id')
+    def _onchange_semester(self):
+        for record in self:
+            record.group_id = None
+            record.school_id = None
+            record.field_of_study_id = None
+            record.level_id = None
+            record.class_id = None
+            record.specialty_id = None
+            record.option_id = None
+            record.subject_id = None
+
     @api.onchange('group_id')
     def _onchange_group(self):
         for record in self:
-            record.semester_id = record.group_id.semester_id.id
             record.school_id = None
             record.field_of_study_id = None
             record.level_id = None
