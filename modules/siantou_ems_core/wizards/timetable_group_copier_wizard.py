@@ -56,6 +56,8 @@ class TimetableGroupCopierWizard(models.TransientModel):
         required=True,
     )
 
+    is_submit = fields.Boolean(string="Soumis", default=True)
+
     @api.onchange('source_year_id')
     def _onchange_group(self):
         for record in self:
@@ -110,6 +112,8 @@ class TimetableGroupCopierWizard(models.TransientModel):
             new_group = self.env['siantou.ems.timetable.group'].create({
                 'name': name,
                 'semester_id': semester_id.id,
+                'is_submit': group_id.is_submit,
+                'status': group_id.status,
             })
 
             for timetable_id in group_id.timetable_ids:

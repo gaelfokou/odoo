@@ -1052,6 +1052,23 @@ class TimetableGroup(models.Model):
             'target': 'new',
             'context': {
                 'default_source_year_id': self.env['siantou.ems.core.year'].search([('is_active', '=', True)], limit=1).id,
+                'default_is_submit': False,
+            },
+        }
+
+    def action_open_copier_submit(self):
+        view_id = self.env.ref('siantou_ems_core.timetable_group_copier_wizard').id
+        return {
+            'name': 'Copieur des versions d\'emploi du temps',
+            'type': 'ir.actions.act_window',
+            'view_type': 'form',
+            'view_mode': 'form',
+            'res_model': 'timetable.group.copier.wizard',
+            'views': [(view_id, 'form')],
+            'view_id': view_id,
+            'target': 'new',
+            'context': {
+                'default_source_year_id': self.env['siantou.ems.core.year'].search([('is_active', '=', True)], limit=1).id,
             },
         }
 
