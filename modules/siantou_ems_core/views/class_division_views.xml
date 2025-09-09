@@ -8,7 +8,7 @@
             <field name="name">siantou_ems_core_class.tree.view</field>
 			<field name="model">siantou.ems.core.class</field>
 			<field name="arch" type="xml">
-				<tree string="Classe standard">
+				<tree string="Classes">
                     <header>
                         <button name="action_reset_filter" 
                             type="object" 
