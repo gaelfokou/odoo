@@ -6,7 +6,7 @@
 			<field name="name">school.subject.group.tree.view</field>
 			<field name="model">oe.school.subject.group</field>
 			<field name="arch" type="xml">
-				<tree string="Filière" editable="bottom">
+				<tree string="Filières" editable="bottom">
 					<field name="name"/>
 				</tree>
 			</field>

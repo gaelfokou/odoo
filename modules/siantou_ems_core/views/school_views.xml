@@ -4,7 +4,7 @@
         <field name="name">school.view.form</field>
         <field name="model">siantou.ems.core.school</field>
         <field name="arch" type="xml">
-            <form string="École">
+            <form string="Écoles">
                 <sheet>
                     <group>
                         <group>

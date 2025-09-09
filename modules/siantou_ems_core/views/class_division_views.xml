@@ -50,7 +50,7 @@
 			<field name="name">siantou_ems_core_class.form.view</field>
 			<field name="model">siantou.ems.core.class</field>
 			<field name="arch" type="xml">
-				<form string="Classe">
+				<form string="Classes">
 					<sheet>
                         <group>
                             <group>
