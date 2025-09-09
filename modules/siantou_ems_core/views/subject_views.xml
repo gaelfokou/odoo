@@ -25,7 +25,8 @@
                             type="object" 
                             string="Imprimer PDF" 
                             class="oe_highlight" 
-                            display="always"/>
+                            display="always"
+                            groups="siantou_ems_core.group_subject_print_pdf"/>
                     </header>
                     <field name="code"/>
                     <field name="shared_subject"/>

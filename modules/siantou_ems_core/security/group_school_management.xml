@@ -423,5 +423,12 @@
             <field name="category_id" ref="base.module_category_administration"/>
             <field name="implied_ids" eval="[(4, ref('base.group_system'))]"/>
         </record>
+
+        <!-- production pe -->
+        <record id="group_subject_print_pdf" model="res.groups">
+            <field name="name">Imprimer PDF - Cours</field>
+            <field name="category_id" ref="siantou_ems_core.module_category_school_management"/>
+            <field name="implied_ids" eval="[(4, ref('base.group_system'))]"/>
+        </record>
     </data>
 </odoo>
