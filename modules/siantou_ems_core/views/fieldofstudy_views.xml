@@ -58,7 +58,7 @@
         <record
                 id="action_show_field_of_study"
                 model="ir.actions.act_window">
-            <field name="name">Filière</field>
+            <field name="name">Filières</field>
             <field name="res_model">siantou.ems.core.field_of_study</field>
             <field name="view_mode">tree,form</field>
             <field name="help" type="html">

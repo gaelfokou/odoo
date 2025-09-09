@@ -77,7 +77,7 @@
 
         <!-- Action pour afficher la liste et le formulaire -->
         <record id="action_show_classroom" model="ir.actions.act_window">
-            <field name="name">Salle de classe</field>
+            <field name="name">Salles de classe</field>
             <field name="res_model">siantou.ems.core.building.classroom</field>
             <field name="view_mode">tree,form</field>
             <field name="view_id" ref="classroom_tree_view"/>

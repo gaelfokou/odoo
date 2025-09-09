@@ -102,7 +102,7 @@
         <record
                 id="action_show_class"
                 model="ir.actions.act_window">
-            <field name="name">Classe</field>
+            <field name="name">Classes</field>
             <field name="res_model">siantou.ems.core.class</field>
             <field name="view_mode">tree,form</field>
             <field name="domain">[('year_id.is_active', '=', True)]</field>
