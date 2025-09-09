@@ -39,7 +39,8 @@
                             type="object" 
                             string="Imprimer PDF" 
                             class="oe_highlight" 
-                            display="always"/>
+                            display="always"
+                            groups="siantou_ems_core.group_daily_attendance_print_pdf"/>
                     </header>
                 </xpath>
             </field>

@@ -29,7 +29,8 @@
                             type="object" 
                             string="Imprimer PDF" 
                             class="oe_highlight" 
-                            display="always"/>
+                            display="always"
+                            groups="siantou_ems_core.group_timetable_print_pdf"/>
                     </header>
                     <field name="group_id"/>
                     <field name="semester_id"/>

@@ -24,7 +24,8 @@
                             type="object" 
                             string="Imprimer PDF" 
                             class="oe_highlight" 
-                            display="always"/>
+                            display="always"
+                            groups="siantou_ems_core.group_class_print_pdf"/>
                     </header>
 					<field name="name"/>
                     <field name="year_id"/>
