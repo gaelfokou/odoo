@@ -136,6 +136,21 @@
             </field>
         </record>
 
+        <record id="action_oe_school_course_supervision_2" model="ir.actions.act_window">
+            <field name="name">Tutelles académiques</field>
+            <field name="res_model">oe.school.course.supervision</field>
+            <field name="view_mode">tree</field>
+            <field name="context">{'create': False, 'edit': False}</field>
+            <field name="search_view_id" ref="view_course_supervision_filter"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Créer une nouvelle filière
+                </p><p>
+                    Les cours sont utilisés pour inscrire les étudiants.
+                </p>
+            </field>
+        </record>
+
         <!-- <menuitem name="Tutelles académiques" id="menu_school_course_supervisions_course_supervisions"
                     parent="menu_school_course_supervisions" action="action_oe_school_course_supervision"
                      sequence="1"/> -->
@@ -151,7 +166,7 @@
             id="menu_siantou_ems_core_supervision_2"
             name="Tutelles académiques"
             parent="menu_siantou_ems_core_program"
-            action="action_oe_school_course_supervision"
+            action="action_oe_school_course_supervision_2"
             groups="siantou_ems_core.group_courses_user,siantou_ems_core.group_courses_admin,base.group_system"
             sequence="7"/>
     </data>

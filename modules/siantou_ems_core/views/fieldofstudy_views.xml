@@ -68,6 +68,20 @@
             </field>
         </record>
 
+        <record
+                id="action_show_field_of_study_2"
+                model="ir.actions.act_window">
+            <field name="name">Filières</field>
+            <field name="res_model">siantou.ems.core.field_of_study</field>
+            <field name="view_mode">tree</field>
+            <field name="context">{'create': False, 'edit': False}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Créer une nouvelle filière.
+                </p>
+            </field>
+        </record>
+
         <!-- Menu pour la gestion des filières -->
         <menuitem
                 id="menu_siantou_ems_core_program_field_of_study"
@@ -80,7 +94,7 @@
                 id="menu_siantou_ems_core_program_field_of_study_2"
                 name="Filières"
                 parent="menu_siantou_ems_core_program"
-                action="action_show_field_of_study"
+                action="action_show_field_of_study_2"
                 groups="siantou_ems_core.group_field_of_study_user,siantou_ems_core.group_field_of_study_admin,base.group_system"
             sequence="1"/>
 	</data>

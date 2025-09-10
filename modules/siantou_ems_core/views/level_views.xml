@@ -58,6 +58,20 @@
             </field>
         </record>
 
+        <record
+                id="action_show_level_2"
+                model="ir.actions.act_window">
+            <field name="name">Niveau</field>
+            <field name="res_model">siantou.ems.core.level</field>
+            <field name="view_mode">tree</field>
+            <field name="context">{'create': False, 'edit': False}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Créer un nouveau niveau.
+                </p>
+            </field>
+        </record>
+
         <!-- Menu pour la gestion des filières -->
         <menuitem
                 id="menu_siantou_ems_core_program_level"
@@ -70,7 +84,7 @@
                 id="menu_siantou_ems_core_program_level_2"
                 name="Niveaux"
                 parent="menu_siantou_ems_core_program"
-                action="action_show_level"
+                action="action_show_level_2"
                 groups="siantou_ems_core.group_level_user,siantou_ems_core.group_level_admin,base.group_system"
             sequence="2"/>
 	</data>

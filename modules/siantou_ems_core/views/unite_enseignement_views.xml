@@ -90,6 +90,19 @@
             </field>
         </record>
 
+        <record id="action_show_unite_enseignement_2" model="ir.actions.act_window">
+            <field name="name">Unités d'enseignement</field>
+            <field name="res_model">siantou.ems.core.unite.enseignement</field>
+            <field name="search_view_id" ref="unite_enseignement_search_view"/>
+            <field name="view_mode">tree</field>
+            <field name="context">{'create': False, 'edit': False}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Créer une unité d'enseignement.
+                </p>
+            </field>
+        </record>
+
         <!-- Menu pour les syllabus -->
         <menuitem
                 id="menu_siantou_ems_core_unite_enseignement"
@@ -101,7 +114,7 @@
                 id="menu_siantou_ems_core_unite_enseignement_2"
                 name="Unité d'enseignement"
                 parent="menu_siantou_ems_core_program"
-                action="action_show_unite_enseignement"
+                action="action_show_unite_enseignement_2"
             sequence="2"/>
 	</data>
 </odoo>

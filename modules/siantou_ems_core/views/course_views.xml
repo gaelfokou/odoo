@@ -148,6 +148,21 @@
             </field>
         </record>
 
+        <record id="action_oe_school_course_2" model="ir.actions.act_window">
+            <field name="name">Cursus ou Cycles</field>
+            <field name="res_model">oe.school.course</field>
+            <field name="view_mode">tree</field>
+            <field name="context">{'create': False, 'edit': False}</field>
+            <field name="search_view_id" ref="view_course_filter"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Créer une nouvelle filière
+                </p><p>
+                    Les cours sont utilisés pour inscrire les étudiants.
+                </p>
+            </field>
+        </record>
+
         <!-- <menuitem name="Cursus ou Cycles" id="menu_school_courses_courses"
                     parent="menu_school_courses" action="action_oe_school_course"
                      sequence="1"/> -->
@@ -163,7 +178,7 @@
             id="menu_siantou_ems_core_cycle_2"
             name="Cursus ou Cycles"
             parent="menu_siantou_ems_core_program"
-            action="action_oe_school_course"
+            action="action_oe_school_course_2"
             groups="siantou_ems_core.group_courses_user,siantou_ems_core.group_courses_admin,base.group_system"
             sequence="7"/>
     </data>

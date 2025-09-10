@@ -58,6 +58,20 @@
             </field>
         </record>
 
+        <record
+            id="action_show_subject_session_2"
+            model="ir.actions.act_window">
+            <field name="name">Séances de cours</field>
+            <field name="res_model">siantou.ems.core.subject.session</field>
+            <field name="view_mode">tree</field>
+            <field name="context">{'group_by': 'report_id', 'create': False, 'edit': False}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Créer une nouvelle session de cours.
+                </p>
+            </field>
+        </record>
+
         <!-- Menu pour les cours -->
         <menuitem
                 id="menu_siantou_ems_core_program_subject_session"
@@ -70,7 +84,7 @@
                 id="menu_siantou_ems_core_program_subject_session_2"
                 name="Séances de cours"
                 parent="menu_siantou_ems_core_program"
-                action="action_show_subject_session"
+                action="action_show_subject_session_2"
                 groups="siantou_ems_core.group_subject_user,siantou_ems_core.group_subject_admin,base.group_system"
             sequence="3"/>
     </data>
