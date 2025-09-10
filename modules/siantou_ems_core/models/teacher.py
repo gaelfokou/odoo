@@ -400,6 +400,12 @@ class HrEmployee(models.Model):
         report_action = self.env.ref('siantou_ems_core.action_report_teacher')
         return report_action.report_action(self, data=data)
 
+    @api.model
+    def get_data_group(self):
+        data_group = {}
+        data_group['has_group_dashboard'] = self.env.user.has_group('siantou_ems_core.group_dashboard')
+        return data_group
+
 class TeacherAvailability(models.Model):
     _name = 'siantou.ems.core.teacher.availability'
     _description = 'Disponibilité des enseignants'

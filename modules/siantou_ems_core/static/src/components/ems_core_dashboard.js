@@ -37,13 +37,23 @@ export class OwlSalesDashboard extends Component {
         this.orm = useService("orm")
 
         onWillStart(async ()=>{
-            await this.getDatasCount()
-            await this.getBarChartDatas()
-            await this.getTearcherDatas()
-            await this.getFiliereDatas()
-            await this.getEcoleDatas()
+            await this.checkGroup();
         })
     }
+
+    async checkGroup() {
+		let self = this;
+		this.orm.call('hr.employee', 'get_data_group').then(async function(data) {
+			console.log('----------- tototototototo call data', data)
+            if (data.has_group_dashboard) {
+                await self.getDatasCount()
+                await self.getBarChartDatas()
+                await self.getTearcherDatas()
+                await self.getFiliereDatas()
+                await self.getEcoleDatas()
+            }
+    	});
+	}
 
     async getDatasCount() {
         this.state.cycles.value = await this.orm.searchCount("oe.school.course", [])
