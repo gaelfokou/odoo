@@ -8,7 +8,17 @@
                         <div class="col m-0 p-0">
                             <div class="shadow-sm border m-2 p-4 bg-white">
                                 <div class="d-flex align-items-center justify-content-between">
-                                    <h1 class="text-primary fw-bold">Tableau de bord</h1>
+                                    <div class="col-10">
+                                        <h1 class="text-primary fw-bold">Tableau de bord</h1>
+                                    </div>
+                                    <div class="col-2">
+                                        <select id="year" class="form-control" name="year" t-model="state.year.value" t-on-change="onChangeYear">
+                                            <option t-att-value="0" t-att-selected="state.year.value == 0">Année académique</option>
+                                            <t t-foreach="state.years" t-as="year" t-key="year.id">
+                                                <option t-att-value="year.id" t-att-selected="state.year.value == year.id"><t t-esc="year.name"/></option>
+                                            </t>
+                                        </select>
+                                    </div>
                                 </div>
                             </div>
                         </div>

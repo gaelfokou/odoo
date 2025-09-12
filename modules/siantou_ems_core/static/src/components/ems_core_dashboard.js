@@ -11,32 +11,44 @@ const { Component, onWillStart, useRef, onMounted, useState } = owl
 export class OwlSalesDashboard extends Component {
     setup() {
         this.state = useState({
-            cycles:{
-                value:0
+            year: {
+                value: 0
             },
-            students:{
-                value:0
+            cycles: {
+                value: 0
             },
-            ecoles:{
-                value:0
+            students: {
+                value: 0
             },
-            campus:{
-                value:0
+            ecoles: {
+                value: 0
             },
-            teachers:{
-                value:0
+            campus: {
+                value: 0
             },
-            filieres:{
-                value:0
+            teachers: {
+                value: 0
             },
-            datas:[],
-            doughTearchers:[],
-            doughFilieres:[],
-            doughEcoles:[],
+            filieres: {
+                value: 0
+            },
+            years: [],
+            datas: [],
+            doughTearchers: [],
+            doughFilieres: [],
+            doughEcoles: [],
         })
         this.orm = useService("orm")
 
         onWillStart(async ()=>{
+            let self = this;
+            const years = await this.orm.searchRead("siantou.ems.core.year", []);
+            this.state.years = years
+            years.forEach( async (year) => {
+                if (year.is_active) {
+                    self.state.year.value = year.id;
+                }
+            });
             await this.checkGroup();
         })
     }
@@ -55,13 +67,19 @@ export class OwlSalesDashboard extends Component {
     	});
 	}
 
+    async onChangeYear(){
+        await this.checkGroup();
+    }
+
     async getDatasCount() {
-        this.state.cycles.value = await this.orm.searchCount("oe.school.course", [])
-        this.state.students.value = await this.orm.searchCount("oe.school.student", [])
-        this.state.ecoles.value = await this.orm.searchCount("siantou.ems.core.school", [])
-        this.state.campus.value = await this.orm.searchCount("siantou.ems.core.campus", [])
-        this.state.teachers.value = await this.orm.searchCount("hr.employee", [["is_teacher", "=", true]])
-        this.state.filieres.value = await this.orm.searchCount("siantou.ems.core.field_of_study", [])
+        this.state.cycles.value = await this.orm.searchCount("oe.school.course", []);
+        this.state.students.value = await this.orm.searchCount("oe.school.student", [["class_id.year_id", "=", parseInt(this.state.year.value)]]);
+        this.state.ecoles.value = await this.orm.searchCount("siantou.ems.core.school", []);
+        this.state.campus.value = await this.orm.searchCount("siantou.ems.core.campus", []);
+        this.state.teachers.value = await this.orm.searchCount("hr.employee", [["is_teacher", "=", true]]);
+        this.state.filieres.value = await this.orm.searchCount("siantou.ems.core.field_of_study", []);
+        console.log('----------- tototototototo years', this.state.years);
+        console.log('----------- tototototototo year', this.state.year);
         console.log('----------- tototototototo cycles', this.state.cycles);
         console.log('----------- tototototototo students', this.state.students);
         console.log('----------- tototototototo ecoles', this.state.ecoles);
