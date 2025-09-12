@@ -1102,7 +1102,7 @@
                                     <div class="row mb-3" style="width: 100%">
                                         <div class="col-6">
                                             <label class="form-label">Date</label>
-                                            <select id="timetable" class="form-control" name="timetable" required="1">
+                                            <select id="timetable" class="form-select" name="timetable" required="1">
                                                 <option t-att-value="''" t-att-selected="timetable == ''">Sélectionnez une date</option>
                                                 <t t-foreach="all_timetables" t-as="c">
                                                     <option t-att-value="c['id']" t-att-selected="timetable == c['id']"><t t-esc="c['date'] + ' ' + c['start_time'] + '-' + c['end_time']"/></option>
@@ -1535,7 +1535,7 @@
                                     <div class="row mb-3" style="width: 100%">
                                         <div class="col-6">
                                             <label class="form-label">Pays d'origine</label>
-                                            <select id="country" class="form-control" name="country" required="1">
+                                            <select id="country" class="form-select" name="country" required="1">
                                                 <option t-att-value="''" t-att-selected="country == ''">Sélectionnez un pays</option>
                                                 <t t-foreach="all_countries" t-as="c">
                                                     <option t-att-value="c['id']" t-att-selected="country == c['id']"><t t-esc="c['name']"/></option>
@@ -1546,7 +1546,7 @@
                                     <div class="row mb-3" style="width: 100%">
                                         <div class="col-6">
                                             <label class="form-label">Dernière ville de résidence</label>
-                                            <select id="city" class="form-control" name="city" required="1">
+                                            <select id="city" class="form-select" name="city" required="1">
                                                 <option t-att-value="''" t-att-selected="city == ''">Sélectionnez une ville</option>
                                                 <t t-foreach="all_cities" t-as="c">
                                                     <option t-att-value="c['id']" t-att-selected="city == c['id']"><t t-esc="c['name']"/></option>
@@ -1557,7 +1557,7 @@
                                     <div class="row mb-3" style="width: 100%">
                                         <div class="col-6">
                                             <label class="form-label">Si Yaoundé, Quartier</label>
-                                            <select id="quarter" class="form-control" name="quarter">
+                                            <select id="quarter" class="form-select" name="quarter">
                                                 <option t-att-value="''" t-att-selected="quarter == ''">Sélectionnez un quartier</option>
                                                 <t t-foreach="all_quarters" t-as="c">
                                                     <option t-att-value="c['id']" t-att-selected="quarter == c['id']"><t t-esc="c['name']"/></option>
