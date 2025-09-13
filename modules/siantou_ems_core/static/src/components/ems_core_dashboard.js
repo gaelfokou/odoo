@@ -49,7 +49,9 @@ export class OwlSalesDashboard extends Component {
                     self.state.year.value = year.id;
                 }
             });
-            await this.checkGroup();
+            setTimeout(async function() {
+                await self.checkGroup();
+            }, 4000);
         })
     }
 
