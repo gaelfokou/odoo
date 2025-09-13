@@ -51,7 +51,7 @@ export class OwlSalesDashboard extends Component {
             });
             setTimeout(async function() {
                 await self.checkGroup();
-            }, 4000);
+            }, 2500);
         })
     }
 
