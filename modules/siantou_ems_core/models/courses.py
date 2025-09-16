@@ -260,7 +260,7 @@ class SchoolSyllabus(models.Model):
 
     @api.depends('cm','td','tp')
     def _compute_vhp(self):
-        for record in self: 
+        for record in self:
             record.vhp = record.cm + record.td + record.tp
 
     @api.depends('vhp','te')

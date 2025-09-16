@@ -215,7 +215,7 @@ class FeeEnrollmentWizard(models.TransientModel):
             # }
 
     #============ Part 1: prepare vals des transactions
-    def _prepare_transaction_vals(self):  
+    def _prepare_transaction_vals(self):
         self.ensure_one()  
         journal = self.cash_register_id  
         payment_method_line = self.cash_register_id.inbound_payment_method_line_ids[0].payment_method_id
@@ -225,9 +225,9 @@ class FeeEnrollmentWizard(models.TransientModel):
             ('state', '=', 'open'),
             ('journal_id', '=', journal.id)  
         ], limit=1)  
-        if not statement:  
+        if not statement:
             raise ValidationError(_("Vous devez ouvrir une caisse ou un brouillard de banque à la date du %s pour enregistrer le décaissement", self.date_payment))  
-        if not payment_method_line:  
+        if not payment_method_line:
             raise ValidationError(_("Vous avez manqué d'ajouter une méthode de paiement manuel au niveau du journal (%s)", journal.name))  
 
         return {  
@@ -250,7 +250,7 @@ class FeeEnrollmentWizard(models.TransientModel):
         }
 
     #======================= Part 2: Comptabilisation des pièces comptables des transactions
-    def _do_create_and_post_moves(self):  
+    def _do_create_and_post_moves(self):
         self = self.with_context(clean_context(self.env.context))  # remove default_*  
         # skip_context = {  
         #     'skip_invoice_sync': True,
@@ -262,9 +262,9 @@ class FeeEnrollmentWizard(models.TransientModel):
         transaction = self.env['account.bank.statement.line'].create(self._prepare_transaction_vals())
         # Set the main attachment on the moves directly to avoid recomputing the  
         # `register_as_main_attachment` on the moves which triggers the OCR again    
-        # for move in moves:  
+        # for move in moves:
         #     move.message_main_attachment_id = move.attachment_ids[0] if move.attachment_ids else None  
-        # for expense in company_account_sheets.expense_line_ids: 
+        # for expense in company_account_sheets.expense_line_ids:
         #     transaction = self.env['account.bank.statement.line'].create(expense._prepare_transaction_vals())  
         #     debit_move_line = transaction.move_id.line_ids[1]
         #     debit_move_line.write({'account_id': expense.account_id.id, 'name': expense.name})  

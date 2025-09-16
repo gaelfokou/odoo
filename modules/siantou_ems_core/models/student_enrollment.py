@@ -85,13 +85,12 @@ class StudentEnrollment(models.Model):
     level_id = fields.Many2one("siantou.ems.core.level", string="Niveau", required=True)
     date_preins = fields.Datetime(string="Date de préinscription", default=datetime.now())
     status = fields.Selection([
-            # ('broui', "En attente de paiement des frais d'inscription"),
             ('inscrip', 'Inscrit'),
             ('rej', 'Candidature rejeté'),
             ('transfer', 'Candidature accepté'),
         ],
-        string="Status",
-        default="inscrip",
+        string='Statut',
+        default='inscrip',
     )
     observations = fields.Html(string="Observations")
     file_ids = fields.Many2many(
@@ -207,34 +206,50 @@ class StudentEnrollment(models.Model):
             'name': f"Terminer l'inscription de {self.name}",
             'res_model': 'siantou.ems.core.student.enrollment.admission.wizard',
             'type': 'ir.actions.act_window',
+            'context': {
+                'student_enroll_id': self.id,
+            },
         })
         return action
 
-    def accepted_enrollment(self, student_enrol_id):
-        if not student_enrol_id.status == "transfer":
+    def accepted_enrollment(self, student_enroll_id):
+        if not student_enroll_id.status == "transfer":
             wizard = self.env['siantou.ems.core.student.enrollment.admission.wizard'].create({
-                'student_enrollement_id': student_enrol_id.id,  # Pass the current student to the wizard
+                'student_enroll_id': student_enroll_id.id,  # Pass the current student to the wizard
                 'observations': 'Données de la candidature ok',  # Set the new state
             })
-            wizard.create_creance(student_enrol_id)
-            student_enrol_id.write({
+            wizard.create_creance(student_enroll_id)
+            student_enroll_id.student_id.write({
+                'year_id': student_enroll_id.year_id.id,
+                'school_id': student_enroll_id.school_id.id,
+                'cycle_id': student_enroll_id.cycle_id.id,
+                'field_of_study_id': student_enroll_id.field_of_study_id.id,
+                'specialty_id': student_enroll_id.specialty_id.id,
+                'option_id': student_enroll_id.option_id.id,
+                'class_id': student_enroll_id.class_id.id,
+                'type_cour': student_enroll_id.type_cour,
+                'status_univ': student_enroll_id.status_univ,
+                'level_id': student_enroll_id.level_id.id,
+                'batch_id': student_enroll_id.batch_id.id,
+            })
+            student_enroll_id.write({
                 'status': 'transfer',
                 'observations': 'Données de la candidature validées',
             })
 
-    def rejected_enrollment(self, student_enrol_id):
-        if not student_enrol_id.status == "rej":
-            student_enrol_id.write({
+    def rejected_enrollment(self, student_enroll_id):
+        if not student_enroll_id.status == "rej":
+            student_enroll_id.write({
                 'status': 'rej',
                 'observations': 'Données de la candidature rejetées',
             })
             account_move_id = self.env['account.move'].search([
-                    ('partner_id','=',student_enrol_id.student_id.partner_id.id),
+                    ('partner_id','=',student_enroll_id.student_id.partner_id.id),
                     ('type_inclusion_fee','=','fee_inscrip'),
-                    ('year_id','=',student_enrol_id.class_id.year_id.id),
-                    ('level_id','=',student_enrol_id.class_id.level_id.id),
-                    ('field_of_study_id','=',student_enrol_id.class_id.field_of_study_id.id),
-                    ('cycle_id','=',student_enrol_id.class_id.field_of_study_id.cycle_id.id),
+                    ('year_id','=',student_enroll_id.class_id.year_id.id),
+                    ('level_id','=',student_enroll_id.class_id.level_id.id),
+                    ('field_of_study_id','=',student_enroll_id.class_id.field_of_study_id.id),
+                    ('cycle_id','=',student_enroll_id.class_id.field_of_study_id.cycle_id.id),
                 ],
                 limit=1
             )
@@ -242,12 +257,12 @@ class StudentEnrollment(models.Model):
             account_move_id.unlink()
 
             account_move_ids = self.env['account.move'].search([
-                    ('partner_id','=',student_enrol_id.student_id.partner_id.id),
+                    ('partner_id','=',student_enroll_id.student_id.partner_id.id),
                     ('type_inclusion_fee','=','fee_scol'),
-                    ('year_id','=',student_enrol_id.class_id.year_id.id),
-                    ('level_id','=',student_enrol_id.class_id.level_id.id),
-                    ('field_of_study_id','=',student_enrol_id.class_id.field_of_study_id.id),
-                    ('cycle_id','=',student_enrol_id.class_id.field_of_study_id.cycle_id.id),
+                    ('year_id','=',student_enroll_id.class_id.year_id.id),
+                    ('level_id','=',student_enroll_id.class_id.level_id.id),
+                    ('field_of_study_id','=',student_enroll_id.class_id.field_of_study_id.id),
+                    ('cycle_id','=',student_enroll_id.class_id.field_of_study_id.cycle_id.id),
                 ]
             )
             for move_id in account_move_ids:
@@ -255,11 +270,11 @@ class StudentEnrollment(models.Model):
                 move_id.unlink()
 
     def action_accepted_enrollment(self):
-        student_enrol_id = self.env['oe.school.student.enrollment'].search([
+        student_enroll_id = self.env['oe.school.student.enrollment'].search([
             ('id', '=', self.id),
         ], limit=1)
-        if student_enrol_id:
-            self.accepted_enrollment(student_enrol_id)
+        if student_enroll_id:
+            self.accepted_enrollment(student_enroll_id)
 
         return {
             'type': 'ir.actions.client',
@@ -267,11 +282,11 @@ class StudentEnrollment(models.Model):
         }
 
     def action_rejected_enrollment(self):
-        student_enrol_id = self.env['oe.school.student.enrollment'].search([
+        student_enroll_id = self.env['oe.school.student.enrollment'].search([
             ('id', '=', self.id),
         ], limit=1)
-        if student_enrol_id:
-            self.rejected_enrollment(student_enrol_id)
+        if student_enroll_id:
+            self.rejected_enrollment(student_enroll_id)
 
         return {
             'type': 'ir.actions.client',
@@ -280,9 +295,9 @@ class StudentEnrollment(models.Model):
 
     def action_all_accepted_enrollment(self):
         active_ids = self.env.context.get('active_ids', [])
-        student_enrol_ids = self.env['oe.school.student.enrollment'].browse(active_ids)
-        for student_enrol_id in student_enrol_ids:
-            self.accepted_enrollment(student_enrol_id)
+        student_enroll_ids = self.env['oe.school.student.enrollment'].browse(active_ids)
+        for student_enroll_id in student_enroll_ids:
+            self.accepted_enrollment(student_enroll_id)
 
         return {
             'type': 'ir.actions.client',
@@ -291,9 +306,9 @@ class StudentEnrollment(models.Model):
 
     def action_all_rejected_enrollment(self):
         active_ids = self.env.context.get('active_ids', [])
-        student_enrol_ids = self.env['oe.school.student.enrollment'].browse(active_ids)
-        for student_enrol_id in student_enrol_ids:
-            self.rejected_enrollment(student_enrol_id)
+        student_enroll_ids = self.env['oe.school.student.enrollment'].browse(active_ids)
+        for student_enroll_id in student_enroll_ids:
+            self.rejected_enrollment(student_enroll_id)
 
         return {
             'type': 'ir.actions.client',
@@ -345,21 +360,6 @@ class StudentEnrollment(models.Model):
             if field_of_study_id:
                 cycle_id = field_of_study_id.cycle_id
                 vals['cycle_id'] = cycle_id.id
-
-        student_id = self.env['oe.school.student'].browse(vals['student_id'])
-        student_id.write({
-            'year_id': vals['year_id'],
-            'school_id': vals['school_id'],
-            'cycle_id': vals['cycle_id'],
-            'field_of_study_id': vals['field_of_study_id'],
-            'specialty_id': vals['specialty_id'],
-            'option_id': vals['option_id'],
-            'class_id': vals['class_id'],
-            'type_cour': vals['type_cour'],
-            'status_univ': vals['status_univ'],
-            'level_id': vals['level_id'],
-            'batch_id': vals['batch_id'],
-        })
 
         diplo_requis = self.env['oe.school.course.degree'].search([('cycle_ids', '=', vals['cycle_id'])])
         diplo_requis_ids = diplo_requis.ids
