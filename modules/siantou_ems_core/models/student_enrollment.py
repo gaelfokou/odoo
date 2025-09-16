@@ -420,8 +420,12 @@ class StudentEnrollment(models.Model):
             _logger.info(f'----------- tototototototo Exception {error} -----------')
 
     def action_add_all_student_class(self):
-        active_ids = self.env.context.get('active_ids', [])
-        student_enroll_ids = self.env['oe.school.student.enrollment'].browse(active_ids)
+        # active_ids = self.env.context.get('active_ids', [])
+        # student_enroll_ids = self.env['oe.school.student.enrollment'].browse(active_ids)
+        domain = [
+            ('year_id', '=', self.env['siantou.ems.core.year'].search([('is_active', '=', True)], limit=1).id)
+        ]
+        student_enroll_ids = self.env['oe.school.student.enrollment'].search(domain)
         for student_enroll in student_enroll_ids:
             self.add_student_class(student_enroll)
 

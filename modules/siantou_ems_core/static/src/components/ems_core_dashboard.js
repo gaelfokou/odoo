@@ -75,7 +75,9 @@ export class OwlSalesDashboard extends Component {
 
     async getDatasCount() {
         this.state.cycles.value = await this.orm.searchCount("oe.school.course", []);
-        this.state.students.value = await this.orm.searchCount("oe.school.student", [["class_id.year_id", "=", parseInt(this.state.year.value)]]);
+        this.state.students.value = await this.orm.searchCount("oe.school.student", [
+            ["class_id.year_id", "=", parseInt(this.state.year.value)]
+        ]);
         this.state.ecoles.value = await this.orm.searchCount("siantou.ems.core.school", []);
         this.state.campus.value = await this.orm.searchCount("siantou.ems.core.campus", []);
         this.state.teachers.value = await this.orm.searchCount("hr.employee", [["is_teacher", "=", true]]);
