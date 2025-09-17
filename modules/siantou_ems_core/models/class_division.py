@@ -91,9 +91,24 @@ class EducationClass(models.Model):
         string='Groupes de classe'
     )
 
-    _sql_constraints = [
-        ('unique_year_specialty_option_level_type_cour', 'unique(year_id,specialty_id,option_id,level_id,type_cour)', 'L\'année académique, la spécialité, l\'option, le niveau, et le type de cours doivent être uniques.'),
-    ]
+    # _sql_constraints = [
+    #     ('unique_year_specialty_option_level_type_cour', 'unique(year_id,specialty_id,option_id,level_id,type_cour)', 'L\'année académique, la spécialité, l\'option, le niveau, et le type de cours doivent être uniques.'),
+    # ]
+
+    @api.constrains('year_id', 'specialty_id', 'option_id', 'level_id', 'type_cour')
+    def _check_unique_year_specialty_option_level_type_cour(self):
+        for record in self:
+            classes = self.search([
+                ('id', '!=', record.id),
+                ('year_id', '=', record.year_id.id),
+                ('specialty_id', '=', record.specialty_id.id),
+                ('option_id', '=', record.option_id.id),
+                ('level_id', '=', record.level_id.id),
+                ('type_cour', '=', record.type_cour),
+            ])
+            classes = list(classes)
+            if len(classes) > 0:
+                raise ValidationError(f"Deux classes de même année académique, spécialité, option, niveau, et type de cours ne peuvent être crées")
 
     @api.depends('specialty_id', 'option_id', 'level_id', 'type_cour')
     def _compute_name(self):
