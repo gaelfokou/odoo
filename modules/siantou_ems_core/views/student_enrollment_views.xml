@@ -6,11 +6,11 @@
         <field name="arch" type="xml">
             <tree string="Étudiants" default_order="id desc" default_group_by="year_id" expand="context.get('expand', False)">
                 <header>
-                    <!-- <button name="action_add_all_student_class" 
+                    <button name="action_add_all_student_class" 
                             type="object" 
                             string="Ajouter les classes aux étudiants" 
                             class="oe_highlight"
-                            display="always"/> -->
+                            display="always"/>
                 </header>
                 <field name="date_preins" widget="datetime"/>
                 <field name="code_enrol"/>
