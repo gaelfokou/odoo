@@ -44,7 +44,7 @@ export class OwlSalesDashboard extends Component {
             let self = this;
             const years = await this.orm.searchRead("siantou.ems.core.year", []);
             this.state.years = years
-            years.forEach( async (year) => {
+            await years.forEach(async (year) => {
                 if (year.is_active) {
                     self.state.year.value = year.id;
                 }
@@ -75,8 +75,16 @@ export class OwlSalesDashboard extends Component {
 
     async getDatasCount() {
         this.state.cycles.value = await this.orm.searchCount("oe.school.course", []);
+        const student_enrolls = await this.orm.searchRead("oe.school.student.enrollment", [
+            ["status", "=", "transfer"],
+            ["year_id", "=", parseInt(this.state.year.value)]
+        ]);
+        const students = []
+        await student_enrolls.forEach(async (student_enroll) => {
+            students.push(student_enroll.student_id[0])
+        });
         this.state.students.value = await this.orm.searchCount("oe.school.student", [
-            ["class_id.year_id", "=", parseInt(this.state.year.value)]
+            ["id", "in", students]
         ]);
         this.state.ecoles.value = await this.orm.searchCount("siantou.ems.core.school", []);
         this.state.campus.value = await this.orm.searchCount("siantou.ems.core.campus", []);
@@ -94,7 +102,7 @@ export class OwlSalesDashboard extends Component {
 
     async getBarChartDatas() {
         const cycles = await this.orm.searchRead("oe.school.course",[]);
-        cycles.forEach( async (cycle) => {
+        await cycles.forEach(async (cycle) => {
             let studentCount = await this.orm.searchCount("oe.school.student", [["cycle_id", "=", cycle.id]])
             this.state.datas.push({
                 name:cycle.name,
@@ -120,7 +128,7 @@ export class OwlSalesDashboard extends Component {
 
     async getFiliereDatas() {
         const filieres = await this.orm.searchRead("siantou.ems.core.field_of_study",[]);
-        filieres.forEach(async (filiere) => {
+        await filieres.forEach(async (filiere) => {
             const classes = await this.orm.searchRead("siantou.ems.core.class",[["field_of_study_id", "=", filiere.id]]);
             let nbre = 0;
             await classes.forEach(async (classe) => {
@@ -136,7 +144,7 @@ export class OwlSalesDashboard extends Component {
 
     async getEcoleDatas() {
         const ecoles = await this.orm.searchRead("siantou.ems.core.school",[]);
-        ecoles.forEach(async (ecole) => {
+        await ecoles.forEach(async (ecole) => {
             let nbre = 0
             const filieres = await this.orm.searchRead("siantou.ems.core.field_of_study",[["school_id", "=", ecole.id]]);
             await filieres.forEach(async (filiere) => {

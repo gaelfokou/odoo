@@ -27,9 +27,14 @@
                         display="always"
                         groups="siantou_ems_core.group_student_print_pdf"/>
                     <!-- <button name="open_data_request_wizard_form" 
-                            type="object" 
-                            string="Données requises" 
-                            class="oe_highlight"/> -->
+                        type="object" 
+                        string="Données requises" 
+                        class="oe_highlight"/> -->
+                    <button name="action_add_all_student_class" 
+                        type="object" 
+                        string="Ajouter les classes aux étudiants" 
+                        class="oe_highlight"
+                        display="always"/>
                 </header>
                 <field name="matricule"/>
                 <field name="name"/>

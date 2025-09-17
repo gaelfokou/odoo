@@ -30,10 +30,20 @@ class EducationClass(models.Model):
     supervision_id = fields.Many2one('oe.school.course.supervision', string='Tutelle académique',
                                  help="Tutelle académique")
 
-    student_ids = fields.One2many(
-        'oe.school.student',
+    student_enroll_ids = fields.One2many(
+        'oe.school.student.enrollment',
         'class_id',
-        string='Liste des étudiants'
+        string='Liste des étudiants inscrits',
+    )
+
+    student_ids = fields.Many2many(
+        'oe.school.student',
+        'class_student_rel',
+        'class_id',
+        'student_id',
+        string='Liste des étudiants',
+        compute='_compute_students',
+        store=False
     )
 
     delegate_student_ids = fields.Many2many(
@@ -46,7 +56,7 @@ class EducationClass(models.Model):
 
     number_of_student = fields.Integer(
         string='Nombre d\'étudiants',
-        compute='_compute_student', store=True,
+        compute='_compute_number_of_student', store=True,
     )
 
     timetable_ids = fields.One2many(
@@ -150,15 +160,61 @@ class EducationClass(models.Model):
             name = name.upper()
             record.name = name
 
-    @api.depends('student_ids')
-    def _compute_student(self):
+    @api.depends('student_enroll_ids')
+    def _compute_students(self):
         for record in self:
-            record.number_of_student = len(record.student_ids.ids)
+            students = []
+            for student_enroll_id in record.student_enroll_ids:
+                if student_enroll_id.status == "transfer":
+                    students.append(student_enroll_id.student_id.id)
 
-    @api.depends('student_ids')
+            student_ids = self.env['oe.school.student'].search([
+                ('id', 'in', students),
+            ])
+
+            record.student_ids = [(6, 0, student_ids.ids)]
+
+    @api.onchange('student_enroll_ids')
+    def _onchange_students(self):
+        for record in self:
+            students = []
+            for student_enroll_id in record.student_enroll_ids:
+                if student_enroll_id.status == "transfer":
+                    students.append(student_enroll_id.student_id.id)
+
+            student_ids = self.env['oe.school.student'].search([
+                ('id', 'in', students),
+            ])
+
+            record.student_ids = [(6, 0, student_ids.ids)]
+
+    @api.depends('student_enroll_ids')
+    def _compute_number_of_student(self):
+        for record in self:
+            students = []
+            for student_enroll_id in record.student_enroll_ids:
+                if student_enroll_id.status == "transfer":
+                    students.append(student_enroll_id.student_id.id)
+
+            student_ids = self.env['oe.school.student'].search([
+                ('id', 'in', students),
+            ])
+
+            record.number_of_student = len(student_ids.ids)
+
+    @api.onchange('student_enroll_ids')
     def _onchange_student(self):
         for record in self:
-            record.number_of_student = len(record.student_ids.ids)
+            students = []
+            for student_enroll_id in record.student_enroll_ids:
+                if student_enroll_id.status == "transfer":
+                    students.append(student_enroll_id.student_id.id)
+
+            student_ids = self.env['oe.school.student'].search([
+                ('id', 'in', students),
+            ])
+
+            record.number_of_student = len(student_ids.ids)
 
     @api.onchange('school_id')
     def _onchange_school(self):

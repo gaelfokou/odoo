@@ -139,6 +139,14 @@ class Student(models.Model):
         string='Classe',
     )
 
+    class_ids = fields.Many2many(
+        'siantou.ems.core.class',
+        'class_student_rel',
+        'student_id',
+        'class_id',
+        string='Liste des classes',
+    )
+
     delegate_class_ids = fields.Many2many(
         'siantou.ems.core.class',
         'delegate_class_student_rel',
@@ -519,6 +527,61 @@ class Student(models.Model):
             raise UserError('Aucune donnée trouvée')
         report_action = self.env.ref('siantou_ems_core.action_report_student')
         return report_action.report_action(self, data=data)
+
+    def add_student_class(self, student_enroll):
+        try:
+            if not student_enroll.student_id.class_id.id:
+                student_enroll.student_id.write({
+                    'year_id': student_enroll.year_id.id,
+                    'school_id': student_enroll.school_id.id,
+                    'cycle_id': student_enroll.cycle_id.id,
+                    'field_of_study_id': student_enroll.field_of_study_id.id,
+                    'specialty_id': student_enroll.specialty_id.id,
+                    'option_id': student_enroll.option_id.id,
+                    'class_id': student_enroll.class_id.id,
+                    'type_cour': student_enroll.type_cour,
+                    'status_univ': student_enroll.status_univ,
+                    'level_id': student_enroll.level_id.id,
+                    'batch_id': student_enroll.batch_id.id,
+                })
+            # self.env.cr.commit()
+        except psycopg2.errors.NotNullViolation as error:
+            _logger.info(f'----------- tototototototo Exception {error} -----------')
+        except psycopg2.Error as error:
+            _logger.info(f'----------- tototototototo Exception {error} -----------')
+        except Exception as error:
+            _logger.info(f'----------- tototototototo Exception {error} -----------')
+
+    def add_number_of_student_class(self, classe):
+        try:
+            classe.write({
+                'number_of_student': len(classe.student_ids.ids),
+            })
+            # self.env.cr.commit()
+        except psycopg2.errors.NotNullViolation as error:
+            _logger.info(f'----------- tototototototo Exception {error} -----------')
+        except psycopg2.Error as error:
+            _logger.info(f'----------- tototototototo Exception {error} -----------')
+        except Exception as error:
+            _logger.info(f'----------- tototototototo Exception {error} -----------')
+
+    def action_add_all_student_class(self):
+        domain = [
+            ('year_id', '=', self.env['siantou.ems.core.year'].search([('is_active', '=', True)], limit=1).id)
+        ]
+        student_enroll_ids = self.env['oe.school.student.enrollment'].search(domain)
+        for student_enroll in student_enroll_ids:
+            if student_enroll.status == "transfer":
+                self.add_student_class(student_enroll)
+
+        class_ids = self.env['siantou.ems.core.class'].search(domain)
+        for classe in class_ids:
+            self.add_number_of_student_class(classe)
+
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'reload',
+        }
 
 class StudentCareer(models.Model):
     _name = 'oe.school.student.career'
