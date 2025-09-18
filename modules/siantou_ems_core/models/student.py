@@ -565,6 +565,53 @@ class Student(models.Model):
         except Exception as error:
             _logger.info(f'----------- tototototototo Exception {error} -----------')
 
+    def sort_ue_class(self, classe):
+        n = len(classe.ue_ids.ids)
+        return n
+
+    def sort_student_class(self, classe):
+        n = len(classe.student_ids.ids)
+        return n
+
+    def remove_duplicate_student_class(self, classes):
+        try:
+            exist_classes = {}
+            for classe in classes:
+                if classe.name not in exist_classes:
+                    exist_classes[classe.name] = []
+                    exist_classes[classe.name].append(classe)
+                else:
+                    exist_classes[classe.name].append(classe)
+
+            for k in exist_classes.keys():
+                ue_classes = [classe for classe in exist_classes[k] if len(classe.ue_ids.ids) > 0]
+                ue_classes = sorted(ue_classes, key=self.sort_ue_class, reverse=True)
+                student_classes = [classe for classe in exist_classes[k] if len(classe.ue_ids.ids) == 0]
+                student_classes = sorted(student_classes, key=self.sort_student_class, reverse=True)
+                exist_classes[k] = ue_classes + student_classes
+                if len(exist_classes[k]) > 0:
+                    exist_classe = None
+                    for i, classe in enumerate(exist_classes[k]):
+                        if i == 0:
+                            exist_classe = classe
+                        else:
+                            for student_id in classe.student_ids:
+                                student_id.write({
+                                    'class_id': exist_classe.id,
+                                })
+                            for student_enroll_id in classe.student_enroll_ids:
+                                student_enroll_id.write({
+                                    'class_id': exist_classe.id,
+                                })
+                            classe.unlink()
+            # self.env.cr.commit()
+        except psycopg2.errors.NotNullViolation as error:
+            _logger.info(f'----------- tototototototo Exception {error} -----------')
+        except psycopg2.Error as error:
+            _logger.info(f'----------- tototototototo Exception {error} -----------')
+        except Exception as error:
+            _logger.info(f'----------- tototototototo Exception {error} -----------')
+
     def action_add_all_student_class(self):
         domain = [
             ('year_id', '=', self.env['siantou.ems.core.year'].search([('is_active', '=', True)], limit=1).id)
@@ -577,6 +624,9 @@ class Student(models.Model):
         class_ids = self.env['siantou.ems.core.class'].search(domain)
         for classe in class_ids:
             self.add_number_of_student_class(classe)
+
+        classes = list(class_ids)
+        self.remove_duplicate_student_class(classes)
 
         return {
             'type': 'ir.actions.client',
