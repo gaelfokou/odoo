@@ -319,13 +319,7 @@ class StudentEnrollment(models.Model):
     def create(self, vals):
         class_id = self.env['siantou.ems.core.class'].browse(vals['class_id'])
         if not class_id:
-            school_id = None
-            specialty_id = self.env['siantou.ems.core.specialty'].browse(vals['specialty_id'])
-            if specialty_id:
-                school_id = specialty_id.field_of_study_id.school_id.id
             class_id = self.env['siantou.ems.core.class'].search([
-                ('school_id', '=', school_id),
-                ('field_of_study_id', '=', vals['field_of_study_id']),
                 ('specialty_id', '=', vals['specialty_id']),
                 ('option_id', '=', vals['option_id']),
                 ('level_id', '=', vals['level_id']),
@@ -333,6 +327,10 @@ class StudentEnrollment(models.Model):
                 ('type_cour', '=', vals['type_cour']),
             ], limit=1)
             if not class_id:
+                school_id = None
+                specialty_id = self.env['siantou.ems.core.specialty'].browse(vals['specialty_id'])
+                if specialty_id:
+                    school_id = specialty_id.field_of_study_id.school_id.id
                 class_id = self.env['siantou.ems.core.class'].create({
                     'school_id': school_id,
                     'field_of_study_id': vals['field_of_study_id'],
@@ -346,11 +344,7 @@ class StudentEnrollment(models.Model):
 
         if 'batch_id' not in vals or not vals['batch_id']:
             batch_id = self.env['siantou.ems.core.student.batch'].assign_batch(
-                class_id.field_of_study_id.school_id.id,
-                class_id.field_of_study_id.id,
-                class_id.specialty_id.id,
-                class_id.option_id.id,
-                class_id.level_id.id
+                class_id.id
             )
             vals['batch_id'] = batch_id.id
 

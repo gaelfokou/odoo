@@ -11,19 +11,16 @@ class StudentBatch(models.Model):
     school_id = fields.Many2one(
         'siantou.ems.core.school',
         string='Ecole',
-        required=True
     )
 
     field_of_study_id = fields.Many2one(
         'siantou.ems.core.field_of_study',
         string='Filière',
-        required=True
     )
 
     specialty_id = fields.Many2one(
         'siantou.ems.core.specialty',
         string='Spécialité',
-        required=True
     )
 
     option_id = fields.Many2one(
@@ -34,7 +31,12 @@ class StudentBatch(models.Model):
     level_id = fields.Many2one(
         'siantou.ems.core.level',
         string='Niveau',
-        required=True
+    )
+
+    class_id = fields.Many2one(
+        'siantou.ems.core.class',
+        string='Classe',
+        required=True,
     )
 
     student_ids = fields.One2many(
@@ -54,38 +56,25 @@ class StudentBatch(models.Model):
         for record in self:
             record.current_size = len(record.student_ids)
 
-    def create_new_batch(self, school_id, field_of_study_id, specialty_id, option_id, level_id):
+    def create_new_batch(self, class_id):
         count_existing_batches = self.search_count([
-            ('school_id', '=', school_id),
-            ('field_of_study_id', '=', field_of_study_id),
-            ('specialty_id', '=', specialty_id),
-            ('option_id', '=', option_id),
-            ('level_id', '=', level_id),
+            ('class_id', '=', class_id),
         ])
         new_batch_name = f"Lot {chr(65 + count_existing_batches)}"
         return self.create({
             'name': new_batch_name,
-            'school_id': school_id,
-            'field_of_study_id': field_of_study_id,
-            'specialty_id': specialty_id,
-            'option_id': option_id,
-            'level_id': level_id
+            'class_id': class_id,
         })
 
     @api.model
-    def assign_batch(self, school_id, field_of_study_id, specialty_id, option_id, level_id):
-
+    def assign_batch(self, class_id):
         max_students_per_batch = self.env['siantou.ems.core.school'].browse(school_id).max_students_per_batch
         batch = self.search([
-            ('school_id', '=', school_id),
-            ('field_of_study_id', '=', field_of_study_id),
-            ('specialty_id', '=', specialty_id),
-            ('option_id', '=', option_id),
-            ('level_id', '=', level_id),
+            ('class_id', '=', class_id),
             ('current_size', '<', max_students_per_batch)
         ], limit=1)
 
         if batch:
             return batch
         else:
-            return self.create_new_batch(school_id, field_of_study_id, specialty_id, option_id, level_id)
+            return self.create_new_batch(class_id)
