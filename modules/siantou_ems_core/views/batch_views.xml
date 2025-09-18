@@ -11,6 +11,7 @@
                         <field name="school_id"/>
                         <field name="field_of_study_id"/>
                         <field name="level_id"/>
+                        <field name="class_id"/>
                     </group>
                     <notebook>
                         <page name="student_ids" string="Étudiants">
@@ -31,6 +32,7 @@
                 <field name="school_id"/>
                 <field name="field_of_study_id"/>
                 <field name="level_id"/>
+                <field name="class_id"/>
                 <field name="current_size"/>
             </tree>
         </field>
