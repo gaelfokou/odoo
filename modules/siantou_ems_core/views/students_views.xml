@@ -32,7 +32,7 @@
                         class="oe_highlight"/> -->
                     <button name="action_add_all_student_class" 
                         type="object" 
-                        string="Ajouter les classes aux étudiants" 
+                        string="Mettre à jour étudiants et classes" 
                         class="oe_highlight"
                         display="always"/>
                 </header>
