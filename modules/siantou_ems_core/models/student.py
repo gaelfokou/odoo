@@ -29,6 +29,15 @@ class Student(models.Model):
         'siantou.ems.core.student.batch',
         string='Lot de l\'étudiant',
     )
+    batch_ids = fields.Many2many(
+        'siantou.ems.core.student.batch',
+        'batch_student_rel',
+        'student_id',
+        'batch_id',
+        string='Lots d\'étudiants',
+        compute='_compute_batchs',
+        store=False
+    )
     school_id = fields.Many2one(
         'siantou.ems.core.school',
         string='Ecole',
@@ -145,6 +154,8 @@ class Student(models.Model):
         'student_id',
         'class_id',
         string='Liste des classes',
+        compute='_compute_classes',
+        store=False
     )
 
     delegate_class_ids = fields.Many2many(
@@ -235,7 +246,7 @@ class Student(models.Model):
 
     @api.depends('class_id')
     def _compute_timetables(self):
-        # Recherche des emplois du temps qui correspondent à la filière et au niveau de l'étudiant
+        # Recherche des emplois du temps qui correspondent à la classe
         for record in self:
             timetables = self.env['siantou.ems.timetable.timetable'].search([
                 ('class_id', '=', record.class_id.id),
@@ -245,6 +256,34 @@ class Student(models.Model):
 
             # Affecter les emplois du temps trouvés à l'attribut timetable_ids
             record.timetable_ids = timetables
+
+    @api.depends('student_enroll_ids')
+    def _compute_classes(self):
+        for record in self:
+            classes = []
+            for student_enroll_id in record.student_enroll_ids:
+                if student_enroll_id.status == "transfer":
+                    classes.append(student_enroll_id.class_id.id)
+
+            class_ids = self.env['siantou.ems.core.class'].search([
+                ('id', 'in', classes),
+            ])
+
+            record.class_ids = [(6, 0, class_ids.ids)]
+
+    @api.depends('student_enroll_ids')
+    def _compute_batchs(self):
+        for record in self:
+            batchs = []
+            for student_enroll_id in record.student_enroll_ids:
+                if student_enroll_id.status == "transfer":
+                    batchs.append(student_enroll_id.batch_id.id)
+
+            batch_ids = self.env['siantou.ems.core.student.batch'].search([
+                ('id', 'in', batchs),
+            ])
+
+            record.batch_ids = [(6, 0, batch_ids.ids)]
 
     @staticmethod
     def get_last_name(x):

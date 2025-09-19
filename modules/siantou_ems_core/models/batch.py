@@ -39,11 +39,20 @@ class StudentBatch(models.Model):
         required=True,
     )
 
-    student_ids = fields.One2many(
+    student_ids = fields.Many2many(
         'oe.school.student',
+        'batch_student_rel',
         'batch_id',
-        string='Étudiants du lot'
+        'student_id',
+        string='Liste des étudiants',
+        compute='_compute_students',
+        store=False
     )
+
+    @api.depends('class_id')
+    def _compute_students(self):
+        for record in self:
+            record.student_ids = record.class_id.student_ids
 
     current_size = fields.Integer(
         string="Capacité actuelle",
@@ -51,10 +60,10 @@ class StudentBatch(models.Model):
         store=True
     )
 
-    @api.depends('student_ids')
+    @api.depends('class_id')
     def _compute_current_size(self):
         for record in self:
-            record.current_size = len(record.student_ids)
+            record.current_size = len(record.class_id.student_ids.ids)
 
     def create_new_batch(self, class_id):
         count_existing_batches = self.search_count([

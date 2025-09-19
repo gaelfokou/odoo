@@ -122,7 +122,7 @@ class HrEmployee(models.Model):
 
     @api.depends('weekly_hours_limit')
     def _compute_timetables(self):
-        # Recherche des emplois du temps qui correspondent à la filière et au niveau de l'étudiant
+        # Recherche des emplois du temps qui correspondent à l'enseignant
         for record in self:
             timetables = self.env['siantou.ems.timetable.timetable'].search([
                 ('employee_id', '=', record.id),

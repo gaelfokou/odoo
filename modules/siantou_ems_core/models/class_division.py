@@ -234,18 +234,16 @@ class EducationClass(models.Model):
         for record in self:
             record.option_id = None
 
-    @api.depends('school_id', 'field_of_study_id', 'specialty_id', 'option_id', 'level_id', 'year_id', 'type_cour')
+    @api.depends('year_id', 'specialty_id', 'option_id', 'level_id', 'type_cour')
     def _compute_timetables(self):
-        # Recherche des emplois du temps qui correspondent à la filière et au niveau de l'étudiant
+        # Recherche des emplois du temps qui correspondent à la spécialité et au niveau
         for record in self:
             timetables = []
             class_id = self.env['siantou.ems.core.class'].search([
-                ('school_id', '=', record.school_id.id),
-                ('field_of_study_id', '=', record.field_of_study_id.id),
+                ('year_id', '=', record.year_id.id),
                 ('specialty_id', '=', record.specialty_id.id),
                 ('option_id', '=', record.option_id.id),
                 ('level_id', '=', record.level_id.id),
-                ('year_id', '=', record.year_id.id),
                 ('type_cour', '=', record.type_cour),
             ], limit=1)
             if class_id:

@@ -124,7 +124,7 @@ class Classroom(models.Model):
 
     @api.depends('building_id')
     def _compute_timetables(self):
-        # Recherche des emplois du temps qui correspondent à la filière et au niveau de l'étudiant
+        # Recherche des emplois du temps qui correspondent à la salle de classe
         for record in self:
             timetables = self.env['siantou.ems.timetable.timetable'].search([
                 ('classroom_id', '=', record.id),
