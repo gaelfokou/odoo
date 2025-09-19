@@ -68,7 +68,7 @@ class StudentBatch(models.Model):
 
     @api.model
     def assign_batch(self, class_id):
-        max_students_per_batch = self.env['siantou.ems.core.school'].browse(school_id).max_students_per_batch
+        max_students_per_batch = self.env['siantou.ems.core.class'].browse(class_id).school_id.max_students_per_batch
         batch = self.search([
             ('class_id', '=', class_id),
             ('current_size', '<', max_students_per_batch)
