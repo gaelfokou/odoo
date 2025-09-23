@@ -16,7 +16,7 @@
         <record id="group_batch_admin" model="res.groups">
             <field name="name">Lots étudiants - admin</field>
             <field name="category_id" ref="base.module_category_administration"/>
-            <field name="implied_ids" eval="[(4, ref('base.group_system'))]"/>
+            <field name="implied_ids" eval="[(4, ref('siantou_ems_core.group_batch_user'))]"/>
         </record>
 
         <!-- classroom -->
@@ -28,7 +28,7 @@
         <record id="group_classroom_admin" model="res.groups">
             <field name="name">Salles de classe - admin</field>
             <field name="category_id" ref="base.module_category_administration"/>
-            <field name="implied_ids" eval="[(4, ref('base.group_system'))]"/>
+            <field name="implied_ids" eval="[(4, ref('siantou_ems_core.group_classroom_user'))]"/>
         </record>
 
         <!-- Bâtiments -->
@@ -40,7 +40,7 @@
         <record id="group_building_admin" model="res.groups">
             <field name="name">Bâtiments - admin</field>
             <field name="category_id" ref="base.module_category_administration"/>
-            <field name="implied_ids" eval="[(4, ref('base.group_system'))]"/>
+            <field name="implied_ids" eval="[(4, ref('siantou_ems_core.group_building_user'))]"/>
         </record>
 
         <!-- Campus -->
@@ -52,7 +52,7 @@
         <record id="group_campus_admin" model="res.groups">
             <field name="name">Campus - admin</field>
             <field name="category_id" ref="base.module_category_administration"/>
-            <field name="implied_ids" eval="[(4, ref('base.group_system'))]"/>
+            <field name="implied_ids" eval="[(4, ref('siantou_ems_core.group_campus_user'))]"/>
         </record>
 
         <!-- Country -->
@@ -64,7 +64,7 @@
         <record id="group_country_admin" model="res.groups">
             <field name="name">Gestion des pays - admin</field>
             <field name="category_id" ref="base.module_category_administration"/>
-            <field name="implied_ids" eval="[(4, ref('base.group_system'))]"/>
+            <field name="implied_ids" eval="[(4, ref('siantou_ems_core.group_country_user'))]"/>
         </record>
 
         <!-- Region -->
@@ -76,7 +76,7 @@
         <record id="group_region_admin" model="res.groups">
             <field name="name">Gestion des régions - admin</field>
             <field name="category_id" ref="base.module_category_administration"/>
-            <field name="implied_ids" eval="[(4, ref('base.group_system'))]"/>
+            <field name="implied_ids" eval="[(4, ref('siantou_ems_core.group_region_user'))]"/>
         </record>
 
         <!-- City -->
@@ -88,7 +88,7 @@
         <record id="group_city_admin" model="res.groups">
             <field name="name">Gestion des villes - admin</field>
             <field name="category_id" ref="base.module_category_administration"/>
-            <field name="implied_ids" eval="[(4, ref('base.group_system'))]"/>
+            <field name="implied_ids" eval="[(4, ref('siantou_ems_core.group_city_user'))]"/>
         </record>
 
         <!-- Quarter -->
@@ -100,7 +100,7 @@
         <record id="group_quarter_admin" model="res.groups">
             <field name="name">Gestion des quartiers - admin</field>
             <field name="category_id" ref="base.module_category_administration"/>
-            <field name="implied_ids" eval="[(4, ref('base.group_system'))]"/>
+            <field name="implied_ids" eval="[(4, ref('siantou_ems_core.group_quarter_user'))]"/>
         </record>
 
         <!-- Courses -->
@@ -112,7 +112,7 @@
         <record id="group_courses_admin" model="res.groups">
             <field name="name">Gestion des Cycles - admin</field>
             <field name="category_id" ref="base.module_category_administration"/>
-            <field name="implied_ids" eval="[(4, ref('base.group_system'))]"/>
+            <field name="implied_ids" eval="[(4, ref('siantou_ems_core.group_courses_user'))]"/>
         </record>
 
         <!-- Degree required -->
@@ -124,7 +124,7 @@
         <record id="group_degree_required_admin" model="res.groups">
             <field name="name">Gestion des diplôme requis lors de la préinscription - admin</field>
             <field name="category_id" ref="base.module_category_administration"/>
-            <field name="implied_ids" eval="[(4, ref('base.group_system'))]"/>
+            <field name="implied_ids" eval="[(4, ref('siantou_ems_core.group_degree_required_user'))]"/>
         </record>
 
         <!-- field_of_study -->
@@ -136,7 +136,7 @@
         <record id="group_field_of_study_admin" model="res.groups">
             <field name="name">Gestion des filières - admin</field>
             <field name="category_id" ref="base.module_category_administration"/>
-            <field name="implied_ids" eval="[(4, ref('base.group_system'))]"/>
+            <field name="implied_ids" eval="[(4, ref('siantou_ems_core.group_field_of_study_user'))]"/>
         </record>
 
         <!-- field_of_study -->
@@ -148,7 +148,7 @@
         <record id="group_siantou_ems_core_class_admin" model="res.groups">
             <field name="name">Gestion des classes standard - admin</field>
             <field name="category_id" ref="base.module_category_administration"/>
-            <field name="implied_ids" eval="[(4, ref('base.group_system'))]"/>
+            <field name="implied_ids" eval="[(4, ref('siantou_ems_core.group_siantou_ems_core_class_user'))]"/>
         </record>
 
         <!-- level -->
@@ -160,7 +160,7 @@
         <record id="group_level_admin" model="res.groups">
             <field name="name">Gestion des niveaux - admin</field>
             <field name="category_id" ref="base.module_category_administration"/>
-            <field name="implied_ids" eval="[(4, ref('base.group_system'))]"/>
+            <field name="implied_ids" eval="[(4, ref('siantou_ems_core.group_level_user'))]"/>
         </record>
 
         <!-- school -->
@@ -172,7 +172,7 @@
         <record id="group_school_admin" model="res.groups">
             <field name="name">Gestion des écoles - admin</field>
             <field name="category_id" ref="base.module_category_administration"/>
-            <field name="implied_ids" eval="[(4, ref('base.group_system'))]"/>
+            <field name="implied_ids" eval="[(4, ref('siantou_ems_core.group_school_user'))]"/>
         </record>
 
         <!-- semester -->
@@ -184,7 +184,7 @@
         <record id="group_semester_admin" model="res.groups">
             <field name="name">Gestion des semestres - admin</field>
             <field name="category_id" ref="base.module_category_administration"/>
-            <field name="implied_ids" eval="[(4, ref('base.group_system'))]"/>
+            <field name="implied_ids" eval="[(4, ref('siantou_ems_core.group_semester_user'))]"/>
         </record>
 
         <!-- student enrollment -->
@@ -196,7 +196,7 @@
         <record id="group_student_enrollment_admin" model="res.groups">
             <field name="name">Gestion des enrollements étudiant(e)s - admin</field>
             <field name="category_id" ref="base.module_category_administration"/>
-            <field name="implied_ids" eval="[(4, ref('base.group_system'))]"/>
+            <field name="implied_ids" eval="[(4, ref('siantou_ems_core.group_student_enrollment_user'))]"/>
         </record>
 
         <!-- student -->
@@ -208,7 +208,7 @@
         <record id="group_student_admin" model="res.groups">
             <field name="name">Gestion des étudiants - admin</field>
             <field name="category_id" ref="base.module_category_administration"/>
-            <field name="implied_ids" eval="[(4, ref('base.group_system'))]"/>
+            <field name="implied_ids" eval="[(4, ref('siantou_ems_core.group_student_user'))]"/>
         </record>
 
         <!-- student career -->
@@ -220,7 +220,7 @@
         <record id="group_student_career_admin" model="res.groups">
             <field name="name">Gestion du parcours des étudiants - admin</field>
             <field name="category_id" ref="base.module_category_administration"/>
-            <field name="implied_ids" eval="[(4, ref('base.group_system'))]"/>
+            <field name="implied_ids" eval="[(4, ref('siantou_ems_core.group_student_career_user'))]"/>
         </record>
 
         <!-- subject -->
@@ -232,7 +232,7 @@
         <record id="group_subject_admin" model="res.groups">
             <field name="name">Gestion des cours - admin</field>
             <field name="category_id" ref="base.module_category_administration"/>
-            <field name="implied_ids" eval="[(4, ref('base.group_system'))]"/>
+            <field name="implied_ids" eval="[(4, ref('siantou_ems_core.group_subject_user'))]"/>
         </record>
 
         <!-- teacher -->
@@ -244,7 +244,7 @@
         <record id="group_teacher_admin" model="res.groups">
             <field name="name">Gestion des enseignants - admin</field>
             <field name="category_id" ref="base.module_category_administration"/>
-            <field name="implied_ids" eval="[(4, ref('base.group_system'))]"/>
+            <field name="implied_ids" eval="[(4, ref('siantou_ems_core.group_teacher_user'))]"/>
         </record>
 
         <!-- timetable -->
@@ -256,7 +256,7 @@
         <record id="group_timetable_admin" model="res.groups">
             <field name="name">Gestion des emplois du temps - admin</field>
             <field name="category_id" ref="base.module_category_administration"/>
-            <field name="implied_ids" eval="[(4, ref('base.group_system'))]"/>
+            <field name="implied_ids" eval="[(4, ref('siantou_ems_core.group_timetable_user'))]"/>
         </record>
 
         <!-- university -->
@@ -268,7 +268,7 @@
         <record id="group_university_admin" model="res.groups">
             <field name="name">Gestion des universités - admin</field>
             <field name="category_id" ref="base.module_category_administration"/>
-            <field name="implied_ids" eval="[(4, ref('base.group_system'))]"/>
+            <field name="implied_ids" eval="[(4, ref('siantou_ems_core.group_university_user'))]"/>
         </record>
 
         <!-- year -->
@@ -280,7 +280,7 @@
         <record id="group_year_admin" model="res.groups">
             <field name="name">Gestion des années académique - admin</field>
             <field name="category_id" ref="base.module_category_administration"/>
-            <field name="implied_ids" eval="[(4, ref('base.group_system'))]"/>
+            <field name="implied_ids" eval="[(4, ref('siantou_ems_core.group_year_user'))]"/>
         </record>
 
         <!-- Tableau de bord -->
@@ -299,7 +299,7 @@
         <record id="group_candidature_admin" model="res.groups">
             <field name="name">Gestion des candidatures - admin</field>
             <field name="category_id" ref="base.module_category_administration"/>
-            <field name="implied_ids" eval="[(4, ref('base.group_system'))]"/>
+            <field name="implied_ids" eval="[(4, ref('siantou_ems_core.group_candidature_user'))]"/>
         </record>
 
         <!-- Candidatures files -->
@@ -311,7 +311,7 @@
         <record id="group_candidature_file_admin" model="res.groups">
             <field name="name">Gestion des fichiers des candidatures - admin</field>
             <field name="category_id" ref="base.module_category_administration"/>
-            <field name="implied_ids" eval="[(4, ref('base.group_system'))]"/>
+            <field name="implied_ids" eval="[(4, ref('siantou_ems_core.group_candidature_file_user'))]"/>
         </record>
 
         <!-- INSCRIPTION MODALE -->
@@ -337,7 +337,7 @@
         <record id="group_session_admin" model="res.groups">
             <field name="name">Gestion des sessions d'admission - admin</field>
             <field name="category_id" ref="base.module_category_administration"/>
-            <field name="implied_ids" eval="[(4, ref('base.group_system'))]"/>
+            <field name="implied_ids" eval="[(4, ref('siantou_ems_core.group_session_user'))]"/>
         </record>
 
         <!-- Registre d'admission -->
@@ -349,7 +349,7 @@
         <record id="group_session_registre_admin" model="res.groups">
             <field name="name">Gestion des registre d'admission - admin</field>
             <field name="category_id" ref="base.module_category_administration"/>
-            <field name="implied_ids" eval="[(4, ref('base.group_system'))]"/>
+            <field name="implied_ids" eval="[(4, ref('siantou_ems_core.group_session_registre_user'))]"/>
         </record>
 
         <!-- syllabus -->
@@ -361,7 +361,7 @@
         <record id="group_syllabus_admin" model="res.groups">
             <field name="name">Gestion des syllabus - admin</field>
             <field name="category_id" ref="base.module_category_administration"/>
-            <field name="implied_ids" eval="[(4, ref('base.group_system'))]"/>
+            <field name="implied_ids" eval="[(4, ref('siantou_ems_core.group_syllabus_user'))]"/>
         </record>
 
         <!-- syllabus subject -->
@@ -373,7 +373,7 @@
         <record id="group_siantou_ems_core_unite_enseignement_admin" model="res.groups">
             <field name="name">Gestion des unités d'enseignements - admin</field>
             <field name="category_id" ref="base.module_category_administration"/>
-            <field name="implied_ids" eval="[(4, ref('base.group_system'))]"/>
+            <field name="implied_ids" eval="[(4, ref('siantou_ems_core.group_siantou_ems_core_unite_enseignement_user'))]"/>
         </record> -->
 
         <!-- syllabus subject line -->
@@ -385,7 +385,7 @@
         <record id="group_syllabus_subject_line_admin" model="res.groups">
             <field name="name">Gestion des matières des unités d'enseignements - admin</field>
             <field name="category_id" ref="base.module_category_administration"/>
-            <field name="implied_ids" eval="[(4, ref('base.group_system'))]"/>
+            <field name="implied_ids" eval="[(4, ref('siantou_ems_core.group_syllabus_subject_line_user'))]"/>
         </record> -->
 
         <!-- spécialité -->
@@ -397,7 +397,7 @@
         <record id="group_specialty_admin" model="res.groups">
             <field name="name">Gestion des spécialités - admin</field>
             <field name="category_id" ref="base.module_category_administration"/>
-            <field name="implied_ids" eval="[(4, ref('base.group_system'))]"/>
+            <field name="implied_ids" eval="[(4, ref('siantou_ems_core.group_specialty_user'))]"/>
         </record>
 
         <!-- partenaire -->
@@ -409,7 +409,7 @@
         <record id="group_university_partner_admin" model="res.groups">
             <field name="name">Gestion des partenaires - admin</field>
             <field name="category_id" ref="base.module_category_administration"/>
-            <field name="implied_ids" eval="[(4, ref('base.group_system'))]"/>
+            <field name="implied_ids" eval="[(4, ref('siantou_ems_core.group_university_partner_user'))]"/>
         </record>
 
         <!-- production pe -->
@@ -421,7 +421,7 @@
         <record id="group_production_pe_admin" model="res.groups">
             <field name="name">Gestion des programmes d'enseignements - admin</field>
             <field name="category_id" ref="base.module_category_administration"/>
-            <field name="implied_ids" eval="[(4, ref('base.group_system'))]"/>
+            <field name="implied_ids" eval="[(4, ref('siantou_ems_core.group_production_pe_user'))]"/>
         </record>
 
         <!-- print pdf -->

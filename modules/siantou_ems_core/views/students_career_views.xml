@@ -71,7 +71,7 @@
                 name="Parcours académique"
                 parent="menu_siantou_ems_core_students"
                 action="action_show_student_career"
-                groups="siantou_ems_core.group_student_career_user,siantou_ems_core.group_student_career_admin,base.group_system"
+                groups="siantou_ems_core.group_student_career_admin,base.group_system"
             sequence="4"/>
 	</data>
 </odoo>

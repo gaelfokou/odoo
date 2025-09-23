@@ -35,14 +35,14 @@
                 name="Diplômes requis"
                 parent="menu_siantou_ems_core_configuration"
                 action="action_show_course_degree"
-                groups="siantou_ems_core.group_degree_required_user,siantou_ems_core.group_degree_required_admin,base.group_system"
+                groups="siantou_ems_core.group_degree_required_admin,base.group_system"
             sequence="7"/>
         <menuitem
                 id="menu_siantou_ems_core_config_course_degree_availability"
                 name="Diplômes disponibles"
                 parent="menu_siantou_ems_core_configuration"
                 action="action_show_course_degree_availability"
-                groups="siantou_ems_core.group_degree_required_user,siantou_ems_core.group_degree_required_admin,base.group_system"
+                groups="siantou_ems_core.group_degree_required_admin,base.group_system"
             sequence="7"/>
 	</data>
 </odoo>

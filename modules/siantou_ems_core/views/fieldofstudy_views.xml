@@ -88,14 +88,14 @@
                 name="Filières"
                 parent="menu_siantou_ems_core_config_fa"
                 action="action_show_field_of_study"
-                groups="siantou_ems_core.group_field_of_study_user,siantou_ems_core.group_field_of_study_admin,base.group_system"
+                groups="siantou_ems_core.group_field_of_study_admin,base.group_system"
             sequence="1"/>
         <menuitem
                 id="menu_siantou_ems_core_program_field_of_study_2"
                 name="Filières"
                 parent="menu_siantou_ems_core_program"
                 action="action_show_field_of_study_2"
-                groups="siantou_ems_core.group_field_of_study_user,siantou_ems_core.group_field_of_study_admin,base.group_system"
+                groups="siantou_ems_core.group_field_of_study_admin,base.group_system"
             sequence="1"/>
 	</data>
 </odoo>

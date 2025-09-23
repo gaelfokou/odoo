@@ -172,14 +172,14 @@
             name="Cursus ou Cycles"
             parent="menu_siantou_ems_core_config_fa"
             action="action_oe_school_course"
-            groups="siantou_ems_core.group_courses_user,siantou_ems_core.group_courses_admin,base.group_system"
+            groups="siantou_ems_core.group_courses_admin,base.group_system"
             sequence="7"/>
         <menuitem
             id="menu_siantou_ems_core_cycle_2"
             name="Cursus ou Cycles"
             parent="menu_siantou_ems_core_program"
             action="action_oe_school_course_2"
-            groups="siantou_ems_core.group_courses_user,siantou_ems_core.group_courses_admin,base.group_system"
+            groups="siantou_ems_core.group_courses_admin,base.group_system"
             sequence="7"/>
     </data>
 </odoo>

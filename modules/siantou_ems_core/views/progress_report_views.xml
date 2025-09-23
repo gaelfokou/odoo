@@ -85,14 +85,14 @@
                 name="Fiches de progression"
                 parent="menu_siantou_ems_core_config_pe"
                 action="action_show_progress_report"
-                groups="siantou_ems_core.group_subject_user,siantou_ems_core.group_subject_admin,base.group_system"
+                groups="siantou_ems_core.group_subject_admin,base.group_system"
             sequence="3"/>
         <menuitem
                 id="menu_siantou_ems_core_program_progress_report_2"
                 name="Fiches de progression"
                 parent="menu_siantou_ems_core_program"
                 action="action_show_progress_report_2"
-                groups="siantou_ems_core.group_subject_user,siantou_ems_core.group_subject_admin,base.group_system"
+                groups="siantou_ems_core.group_subject_admin,base.group_system"
             sequence="3"/>
     </data>
 </odoo>

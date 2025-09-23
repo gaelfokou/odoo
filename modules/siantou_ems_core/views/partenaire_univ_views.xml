@@ -82,7 +82,7 @@
             name="Partenaires"
             parent="menu_siantou_ems_core_configuration"
             action="action_show_partenaire"
-            groups="siantou_ems_core.group_university_partner_user,siantou_ems_core.group_university_partner_admin,base.group_system"
+            groups="siantou_ems_core.group_university_partner_admin,base.group_system"
             sequence="11"
         />
 	</data>

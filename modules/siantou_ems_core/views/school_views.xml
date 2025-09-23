@@ -64,6 +64,6 @@
             name="Écoles"
             parent="menu_siantou_ems_core_configuration"
             action="action_show_school"
-            groups="siantou_ems_core.group_school_user,siantou_ems_core.group_school_admin,base.group_system"
+            groups="siantou_ems_core.group_school_admin,base.group_system"
             sequence="2"/>
 </odoo>

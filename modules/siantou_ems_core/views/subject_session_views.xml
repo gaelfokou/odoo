@@ -78,14 +78,14 @@
                 name="Séances de cours"
                 parent="menu_siantou_ems_core_config_pe"
                 action="action_show_subject_session"
-                groups="siantou_ems_core.group_subject_user,siantou_ems_core.group_subject_admin,base.group_system"
+                groups="siantou_ems_core.group_subject_admin,base.group_system"
             sequence="3"/>
         <menuitem
                 id="menu_siantou_ems_core_program_subject_session_2"
                 name="Séances de cours"
                 parent="menu_siantou_ems_core_program"
                 action="action_show_subject_session_2"
-                groups="siantou_ems_core.group_subject_user,siantou_ems_core.group_subject_admin,base.group_system"
+                groups="siantou_ems_core.group_subject_admin,base.group_system"
             sequence="3"/>
     </data>
 </odoo>

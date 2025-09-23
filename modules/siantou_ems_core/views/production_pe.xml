@@ -78,7 +78,7 @@
                 name="Editer un programme d'enseignement"
                 parent="menu_siantou_ems_core_program"
                 action="action_production_pe"
-                groups="siantou_ems_core.group_production_pe_user,siantou_ems_core.group_production_pe_admin,base.group_system"
+                groups="siantou_ems_core.group_production_pe_admin,base.group_system"
             sequence="5"/>
 
 </odoo>

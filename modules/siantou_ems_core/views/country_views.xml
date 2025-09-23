@@ -68,7 +68,7 @@
                 name="Pays"
                 parent="menu_siantou_ems_core_configuration"
                 action="action_show_country"
-                groups="siantou_ems_core.group_country_user,siantou_ems_core.group_country_admin,base.group_system"
+                groups="siantou_ems_core.group_country_admin,base.group_system"
             sequence="9"/>
 	</data>
 </odoo>

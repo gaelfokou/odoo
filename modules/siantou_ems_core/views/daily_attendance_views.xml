@@ -62,7 +62,7 @@
                 name="Présences"
                 parent="menu_siantou_ems_timetable_planning"
                 action="action_show_daily_attendance"
-                groups="siantou_ems_core.group_teacher_user,siantou_ems_core.group_teacher_admin,base.group_system"
+                groups="siantou_ems_core.group_teacher_admin,base.group_system"
             sequence="10"
             />
     </data>
