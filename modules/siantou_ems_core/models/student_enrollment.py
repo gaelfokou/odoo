@@ -40,10 +40,12 @@ class StudentEnrollment(models.Model):
     school_id = fields.Many2one(
         'siantou.ems.core.school',
         string='Ecole',
+        required=True
     )
     cycle_id = fields.Many2one(
         'oe.school.course',
         string='Cursus ou Cycle',
+        required=True
     )
     field_of_study_id = fields.Many2one(
         'siantou.ems.core.field_of_study',
@@ -120,9 +122,20 @@ class StudentEnrollment(models.Model):
             ]
             record.specialty_id_domain = domain
 
+    level_id_domain = fields.Binary(compute='_compute_level_domain', default=[])
+
+    @api.depends('cycle_id')
+    def _compute_level_domain(self):
+        for record in self:
+            domain = []
+            if record.cycle_id.id:
+                domain.append(('id', 'in', record.cycle_id.level_ids.ids))
+            record.level_id_domain = domain
+
     @api.onchange('school_id')
     def _onchange_school(self):
         for record in self:
+            record.cycle_id = None
             record.field_of_study_id = None
             record.level_id = None
             record.class_id = None
@@ -130,7 +143,7 @@ class StudentEnrollment(models.Model):
             record.option_id = None
 
     @api.onchange('cycle_id')
-    def _onchange_school(self):
+    def _onchange_cycle(self):
         for record in self:
             record.field_of_study_id = None
             record.level_id = None
@@ -372,14 +385,80 @@ class StudentEnrollment(models.Model):
 
         return student_enroll
 
-    # def write(self, vals):
-    #     registre_id = self.env['siantou.session.registre'].search([('cycle_id', '=', vals['cycle_id'])], limit=1)
-    #     if registre_id:
-    #         vals['registre_id'] = registre_id.id
+    def write(self, vals):
+        student_enroll = self.env['oe.school.student.enrollment'].search([('id', '=', self.id)], limit=1)
 
-    #     student_enroll = super(StudentEnrollment, self).write(vals)
+        if 'class_id' not in vals or not vals['class_id']:
+            vals['class_id'] = False
+        if 'field_of_study_id' not in vals or not vals['field_of_study_id']:
+            vals['field_of_study_id'] = student_enroll.field_of_study_id.id
+        if 'specialty_id' not in vals or not vals['specialty_id']:
+            vals['specialty_id'] = student_enroll.specialty_id.id
+        if 'option_id' not in vals or not vals['option_id']:
+            vals['option_id'] = False
+        if 'level_id' not in vals or not vals['level_id']:
+            vals['level_id'] = student_enroll.level_id.id
+        if 'year_id' not in vals or not vals['year_id']:
+            vals['year_id'] = student_enroll.year_id.id
+        if 'type_cour' not in vals or not vals['type_cour']:
+            vals['type_cour'] = student_enroll.type_cour
+        if 'cycle_id' not in vals or not vals['cycle_id']:
+            vals['cycle_id'] = student_enroll.cycle_id.id
 
-    #     return student_enroll
+        class_id = self.env['siantou.ems.core.class'].browse(vals['class_id'])
+        if not class_id:
+            class_id = self.env['siantou.ems.core.class'].search([
+                ('specialty_id', '=', vals['specialty_id']),
+                ('option_id', '=', vals['option_id']),
+                ('level_id', '=', vals['level_id']),
+                ('year_id', '=', vals['year_id']),
+                ('type_cour', '=', vals['type_cour']),
+            ], limit=1)
+            if not class_id:
+                school_id = None
+                specialty_id = self.env['siantou.ems.core.specialty'].browse(vals['specialty_id'])
+                if specialty_id:
+                    school_id = specialty_id.field_of_study_id.school_id.id
+                class_id = self.env['siantou.ems.core.class'].create({
+                    'school_id': school_id,
+                    'field_of_study_id': vals['field_of_study_id'],
+                    'specialty_id': vals['specialty_id'],
+                    'option_id': vals['option_id'],
+                    'level_id': vals['level_id'],
+                    'year_id': vals['year_id'],
+                    'type_cour': vals['type_cour'],
+                })
+        vals['class_id'] = class_id.id
+
+        if 'batch_id' not in vals or not vals['batch_id']:
+            batch_id = self.env['siantou.ems.core.student.batch'].assign_batch(
+                class_id.id
+            )
+            vals['batch_id'] = batch_id.id
+
+        cycle_id = self.env['oe.school.course'].browse(vals['cycle_id'])
+        if not cycle_id:
+            field_of_study_id = self.env['siantou.ems.core.field_of_study'].browse(vals['field_of_study_id'])
+            if field_of_study_id:
+                cycle_id = field_of_study_id.cycle_id
+                vals['cycle_id'] = cycle_id.id
+
+        diplo_requis = self.env['oe.school.course.degree'].search([('cycle_ids', '=', vals['cycle_id'])])
+        diplo_requis_ids = diplo_requis.ids
+        if len(diplo_requis_ids) == 0:
+            diplo_requis = cycle_id.diplo_requis_ids.create({
+                'name': cycle_id.name,
+            })
+            diplo_requis_ids.append(diplo_requis.id)
+        vals['diplo_requis_ids'] = diplo_requis_ids
+
+        registre_id = self.env['siantou.session.registre'].search([('cycle_id', '=', vals['cycle_id'])], limit=1)
+        if registre_id:
+            vals['registre_id'] = registre_id.id
+
+        student_enroll = super(StudentEnrollment, self).write(vals)
+
+        return student_enroll
 
     def unlink(self):
         if self.status == "transfer":

@@ -41,10 +41,12 @@ class Student(models.Model):
     school_id = fields.Many2one(
         'siantou.ems.core.school',
         string='Ecole',
+        required=True
     )
     cycle_id = fields.Many2one(
         'oe.school.course',
         string='Cursus ou Cycle',
+        required=True
     )
     region_id = fields.Many2one("siantou.ems.core.region", string="Région")
     city_id = fields.Many2one('siantou.ems.core.city', string="Ville")
@@ -210,9 +212,20 @@ class Student(models.Model):
             ]
             record.specialty_id_domain = domain
 
+    level_id_domain = fields.Binary(compute='_compute_level_domain', default=[])
+
+    @api.depends('cycle_id')
+    def _compute_level_domain(self):
+        for record in self:
+            domain = []
+            if record.cycle_id.id:
+                domain.append(('id', 'in', record.cycle_id.level_ids.ids))
+            record.level_id_domain = domain
+
     @api.onchange('school_id')
     def _onchange_school(self):
         for record in self:
+            record.cycle_id = None
             record.field_of_study_id = None
             record.level_id = None
             record.class_id = None
@@ -220,7 +233,7 @@ class Student(models.Model):
             record.option_id = None
 
     @api.onchange('cycle_id')
-    def _onchange_school(self):
+    def _onchange_cycle(self):
         for record in self:
             record.field_of_study_id = None
             record.level_id = None
