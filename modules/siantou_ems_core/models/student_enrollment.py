@@ -331,6 +331,9 @@ class StudentEnrollment(models.Model):
     @api.model
     def create(self, vals):
         class_id = self.env['siantou.ems.core.class'].browse(vals['class_id'])
+        specialty_id = self.env['siantou.ems.core.specialty'].browse(vals['specialty_id'])
+        vals['school_id'] = specialty_id.field_of_study_id.school_id.id
+        vals['field_of_study_id'] = specialty_id.field_of_study_id.id
         if not class_id:
             class_id = self.env['siantou.ems.core.class'].search([
                 ('specialty_id', '=', vals['specialty_id']),
@@ -340,12 +343,8 @@ class StudentEnrollment(models.Model):
                 ('type_cour', '=', vals['type_cour']),
             ], limit=1)
             if not class_id:
-                school_id = None
-                specialty_id = self.env['siantou.ems.core.specialty'].browse(vals['specialty_id'])
-                if specialty_id:
-                    school_id = specialty_id.field_of_study_id.school_id.id
                 class_id = self.env['siantou.ems.core.class'].create({
-                    'school_id': school_id,
+                    'school_id': vals['school_id'],
                     'field_of_study_id': vals['field_of_study_id'],
                     'specialty_id': vals['specialty_id'],
                     'option_id': vals['option_id'],
@@ -390,6 +389,8 @@ class StudentEnrollment(models.Model):
 
         if 'class_id' not in vals:
             vals['class_id'] = student_enroll.class_id.id
+        if 'school_id' not in vals:
+            vals['school_id'] = student_enroll.school_id.id
         if 'field_of_study_id' not in vals:
             vals['field_of_study_id'] = student_enroll.field_of_study_id.id
         if 'specialty_id' not in vals:
@@ -415,12 +416,8 @@ class StudentEnrollment(models.Model):
                 ('type_cour', '=', vals['type_cour']),
             ], limit=1)
             if not class_id:
-                school_id = None
-                specialty_id = self.env['siantou.ems.core.specialty'].browse(vals['specialty_id'])
-                if specialty_id:
-                    school_id = specialty_id.field_of_study_id.school_id.id
                 class_id = self.env['siantou.ems.core.class'].create({
-                    'school_id': school_id,
+                    'school_id': vals['school_id'],
                     'field_of_study_id': vals['field_of_study_id'],
                     'specialty_id': vals['specialty_id'],
                     'option_id': vals['option_id'],

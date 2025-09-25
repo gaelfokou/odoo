@@ -491,8 +491,8 @@ class Student(models.Model):
                 vals['first_name'] = Student.get_first_name(vals['name'])
 
         specialty_id = self.env['siantou.ems.core.specialty'].browse(vals['specialty_id'])
-        if specialty_id:
-            vals['school_id'] = specialty_id.field_of_study_id.school_id.id
+        vals['school_id'] = specialty_id.field_of_study_id.school_id.id
+        vals['field_of_study_id'] = specialty_id.field_of_study_id.id
 
         student = super(Student, self).create(vals)
 
