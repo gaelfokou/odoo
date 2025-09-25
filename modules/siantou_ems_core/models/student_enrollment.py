@@ -355,7 +355,7 @@ class StudentEnrollment(models.Model):
                 })
         vals['class_id'] = class_id.id
 
-        if 'batch_id' not in vals or not vals['batch_id']:
+        if 'batch_id' not in vals:
             batch_id = self.env['siantou.ems.core.student.batch'].assign_batch(
                 class_id.id
             )
@@ -388,21 +388,21 @@ class StudentEnrollment(models.Model):
     def write(self, vals):
         student_enroll = self.env['oe.school.student.enrollment'].search([('id', '=', self.id)], limit=1)
 
-        if 'class_id' not in vals or not vals['class_id']:
-            vals['class_id'] = False
-        if 'field_of_study_id' not in vals or not vals['field_of_study_id']:
+        if 'class_id' not in vals:
+            vals['class_id'] = student_enroll.class_id.id
+        if 'field_of_study_id' not in vals:
             vals['field_of_study_id'] = student_enroll.field_of_study_id.id
-        if 'specialty_id' not in vals or not vals['specialty_id']:
+        if 'specialty_id' not in vals:
             vals['specialty_id'] = student_enroll.specialty_id.id
-        if 'option_id' not in vals or not vals['option_id']:
-            vals['option_id'] = False
-        if 'level_id' not in vals or not vals['level_id']:
+        if 'option_id' not in vals:
+            vals['option_id'] = student_enroll.option_id.id
+        if 'level_id' not in vals:
             vals['level_id'] = student_enroll.level_id.id
-        if 'year_id' not in vals or not vals['year_id']:
+        if 'year_id' not in vals:
             vals['year_id'] = student_enroll.year_id.id
-        if 'type_cour' not in vals or not vals['type_cour']:
+        if 'type_cour' not in vals:
             vals['type_cour'] = student_enroll.type_cour
-        if 'cycle_id' not in vals or not vals['cycle_id']:
+        if 'cycle_id' not in vals:
             vals['cycle_id'] = student_enroll.cycle_id.id
 
         class_id = self.env['siantou.ems.core.class'].browse(vals['class_id'])
@@ -430,7 +430,7 @@ class StudentEnrollment(models.Model):
                 })
         vals['class_id'] = class_id.id
 
-        if 'batch_id' not in vals or not vals['batch_id']:
+        if 'batch_id' not in vals:
             batch_id = self.env['siantou.ems.core.student.batch'].assign_batch(
                 class_id.id
             )
