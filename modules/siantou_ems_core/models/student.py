@@ -198,7 +198,7 @@ class Student(models.Model):
             name = name.strip()
             record.name = name
 
-    @api.depends('school_id')
+    @api.depends('school_id', 'cycle_id')
     def _compute_school_domain(self):
         for record in self:
             domain = []

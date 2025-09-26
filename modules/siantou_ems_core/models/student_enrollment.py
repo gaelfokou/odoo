@@ -108,7 +108,7 @@ class StudentEnrollment(models.Model):
 
     specialty_id_domain = fields.Binary(compute='_compute_school_domain', default=[])
 
-    @api.depends('school_id')
+    @api.depends('school_id', 'cycle_id')
     def _compute_school_domain(self):
         for record in self:
             domain = []
