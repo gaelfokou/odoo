@@ -409,7 +409,7 @@ class StudentEnrollment(models.Model):
         if 'year_id' not in vals:
             vals['year_id'] = student_enroll.year_id.id
         if 'type_cour' not in vals:
-            vals['type_cour'] = student_enroll.type_cour
+            vals['type_cour'] = student_enroll.type_cour if student_enroll.type_cour else 'cj'
         if 'cycle_id' not in vals:
             vals['cycle_id'] = student_enroll.cycle_id.id
 
