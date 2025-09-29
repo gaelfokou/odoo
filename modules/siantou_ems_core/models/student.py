@@ -24,6 +24,15 @@ class Student(models.Model):
         'oe.school.student.enrollment',
         'student_id',
         string='Candidatures',
+        compute='_compute_student_enroll',
+        store=False
+    )
+    other_student_enroll_ids = fields.One2many(
+        'oe.school.student.enrollment',
+        'student_id',
+        string='Autres candidatures',
+        compute='_compute_other_student_enroll',
+        store=False
     )
     batch_id = fields.Many2one(
         'siantou.ems.core.student.batch',
@@ -270,6 +279,28 @@ class Student(models.Model):
             # Affecter les emplois du temps trouvés à l'attribut timetable_ids
             record.timetable_ids = timetables
 
+    @api.depends('year_id')
+    def _compute_student_enroll(self):
+        for record in self:
+            student_enrolls = self.env['oe.school.student.enrollment'].search([
+                ('student_id', '=', record.id),
+                ('year_id', '=', record.year_id.id),
+                ('priority', '=', 'first'),
+            ])
+
+            record.student_enroll_ids = student_enrolls
+
+    @api.depends('year_id')
+    def _compute_other_student_enroll(self):
+        for record in self:
+            student_enrolls = self.env['oe.school.student.enrollment'].search([
+                ('student_id', '=', record.id),
+                ('year_id', '=', record.year_id.id),
+                ('priority', '=', 'second'),
+            ])
+
+            record.other_student_enroll_ids = student_enrolls
+
     @api.depends('student_enroll_ids')
     def _compute_classes(self):
         for record in self:
@@ -500,6 +531,79 @@ class Student(models.Model):
 
         return student
 
+    def write(self, vals):
+        student = self.env['oe.school.student'].search([('id', '=', self.id)], limit=1)
+
+        if 'class_id' not in vals:
+            vals['class_id'] = student.class_id.id
+        if 'school_id' not in vals:
+            vals['school_id'] = student.school_id.id
+        if 'field_of_study_id' not in vals:
+            vals['field_of_study_id'] = student.field_of_study_id.id
+        if 'specialty_id' not in vals:
+            vals['specialty_id'] = student.specialty_id.id
+        if 'option_id' not in vals:
+            vals['option_id'] = student.option_id.id
+        if 'level_id' not in vals:
+            vals['level_id'] = student.level_id.id
+        if 'year_id' not in vals:
+            vals['year_id'] = student.year_id.id
+        if 'type_cour' not in vals:
+            vals['type_cour'] = student.type_cour
+        if 'cycle_id' not in vals:
+            vals['cycle_id'] = student.cycle_id.id
+
+        class_id = self.env['siantou.ems.core.class'].browse(vals['class_id'])
+        if not class_id:
+            class_id = self.env['siantou.ems.core.class'].search([
+                ('specialty_id', '=', vals['specialty_id']),
+                ('option_id', '=', vals['option_id']),
+                ('level_id', '=', vals['level_id']),
+                ('year_id', '=', vals['year_id']),
+                ('type_cour', '=', vals['type_cour']),
+            ], limit=1)
+            if not class_id:
+                class_id = self.env['siantou.ems.core.class'].create({
+                    'school_id': vals['school_id'],
+                    'field_of_study_id': vals['field_of_study_id'],
+                    'specialty_id': vals['specialty_id'],
+                    'option_id': vals['option_id'],
+                    'level_id': vals['level_id'],
+                    'year_id': vals['year_id'],
+                    'type_cour': vals['type_cour'],
+                })
+        vals['class_id'] = class_id.id
+
+        if 'batch_id' not in vals:
+            batch_id = self.env['siantou.ems.core.student.batch'].assign_batch(
+                class_id.id
+            )
+            vals['batch_id'] = batch_id.id
+
+        cycle_id = self.env['oe.school.course'].browse(vals['cycle_id'])
+        if not cycle_id:
+            field_of_study_id = self.env['siantou.ems.core.field_of_study'].browse(vals['field_of_study_id'])
+            if field_of_study_id:
+                cycle_id = field_of_study_id.cycle_id
+                vals['cycle_id'] = cycle_id.id
+
+        diplo_requis = self.env['oe.school.course.degree'].search([('cycle_ids', '=', vals['cycle_id'])])
+        diplo_requis_ids = diplo_requis.ids
+        if len(diplo_requis_ids) == 0:
+            diplo_requis = cycle_id.diplo_requis_ids.create({
+                'name': cycle_id.name,
+            })
+            diplo_requis_ids.append(diplo_requis.id)
+        vals['diplo_requis_ids'] = diplo_requis_ids
+
+        registre_id = self.env['siantou.session.registre'].search([('cycle_id', '=', vals['cycle_id'])], limit=1)
+        if registre_id:
+            vals['registre_id'] = registre_id.id
+
+        student = super(Student, self).write(vals)
+
+        return student
+
     def open_student_form(self):
         # return {
         #     'type': 'ir.actions.act_url',
@@ -584,17 +688,31 @@ class Student(models.Model):
         try:
             if not student_enroll.student_id.class_id.id:
                 student_enroll.student_id.write({
-                    'year_id': student_enroll.year_id.id,
-                    'school_id': student_enroll.school_id.id,
-                    'cycle_id': student_enroll.cycle_id.id,
-                    'field_of_study_id': student_enroll.field_of_study_id.id,
-                    'specialty_id': student_enroll.specialty_id.id,
-                    'option_id': student_enroll.option_id.id,
-                    'class_id': student_enroll.class_id.id,
-                    'type_cour': student_enroll.type_cour,
-                    'status_univ': student_enroll.status_univ,
-                    'level_id': student_enroll.level_id.id,
-                    'batch_id': student_enroll.batch_id.id,
+                    'year_id': student_enroll.year_id.id if student_enroll.year_id.id else student_enroll.student_id.year_id.id,
+                    'school_id': student_enroll.school_id.id if student_enroll.school_id.id else student_enroll.student_id.school_id.id,
+                    'cycle_id': student_enroll.cycle_id.id if student_enroll.cycle_id.id else student_enroll.student_id.cycle_id.id,
+                    'field_of_study_id': student_enroll.field_of_study_id.id if student_enroll.field_of_study_id.id else student_enroll.student_id.field_of_study_id.id,
+                    'specialty_id': student_enroll.specialty_id.id if student_enroll.specialty_id.id else student_enroll.student_id.specialty_id.id,
+                    'option_id': student_enroll.option_id.id if student_enroll.option_id.id else student_enroll.student_id.option_id.id,
+                    # 'class_id': student_enroll.class_id.id if student_enroll.class_id.id else student_enroll.student_id.class_id.id,
+                    'type_cour': student_enroll.type_cour if student_enroll.type_cour else student_enroll.student_id.type_cour,
+                    'status_univ': student_enroll.status_univ if student_enroll.status_univ else student_enroll.student_id.status_univ,
+                    'level_id': student_enroll.level_id.id if student_enroll.level_id.id else student_enroll.student_id.level_id.id,
+                    'batch_id': student_enroll.batch_id.id if student_enroll.batch_id.id else student_enroll.student_id.batch_id.id,
+                })
+            if not student_enroll.class_id.id:
+                student_enroll.write({
+                    'year_id': student_enroll.student_id.year_id.id if student_enroll.student_id.year_id.id else student_enroll.year_id.id,
+                    'school_id': student_enroll.student_id.school_id.id if student_enroll.student_id.school_id.id else student_enroll.school_id.id,
+                    'cycle_id': student_enroll.student_id.cycle_id.id if student_enroll.student_id.cycle_id.id else student_enroll.cycle_id.id,
+                    'field_of_study_id': student_enroll.student_id.field_of_study_id.id if student_enroll.student_id.field_of_study_id.id else student_enroll.field_of_study_id.id,
+                    'specialty_id': student_enroll.student_id.specialty_id.id if student_enroll.student_id.specialty_id.id else student_enroll.specialty_id.id,
+                    'option_id': student_enroll.student_id.option_id.id if student_enroll.student_id.option_id.id else student_enroll.option_id.id,
+                    # 'class_id': student_enroll.student_id.class_id.id if student_enroll.student_id.class_id.id else student_enroll.class_id.id,
+                    'type_cour': student_enroll.student_id.type_cour if student_enroll.student_id.type_cour else student_enroll.type_cour,
+                    'status_univ': student_enroll.student_id.status_univ if student_enroll.student_id.status_univ else student_enroll.status_univ,
+                    'level_id': student_enroll.student_id.level_id.id if student_enroll.student_id.level_id.id else student_enroll.level_id.id,
+                    'batch_id': student_enroll.student_id.batch_id.id if student_enroll.student_id.batch_id.id else student_enroll.batch_id.id,
                 })
             # self.env.cr.commit()
         except psycopg2.errors.NotNullViolation as error:
@@ -650,10 +768,18 @@ class Student(models.Model):
                             for student_id in classe.student_ids:
                                 student_id.write({
                                     'class_id': exist_classe.id,
+                                    'specialty_id': exist_classe.specialty_id.id,
+                                    'field_of_study_id': exist_classe.specialty_id.field_of_study_id.id,
+                                    'cycle_id': exist_classe.specialty_id.field_of_study_id.cycle_id.id,
+                                    'school_id': exist_classe.specialty_id.field_of_study_id.school_id.id,
                                 })
                             for student_enroll_id in classe.student_enroll_ids:
                                 student_enroll_id.write({
                                     'class_id': exist_classe.id,
+                                    'specialty_id': exist_classe.specialty_id.id,
+                                    'field_of_study_id': exist_classe.specialty_id.field_of_study_id.id,
+                                    'cycle_id': exist_classe.specialty_id.field_of_study_id.cycle_id.id,
+                                    'school_id': exist_classe.specialty_id.field_of_study_id.school_id.id,
                                 })
                             classe.unlink()
             # self.env.cr.commit()

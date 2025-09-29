@@ -102,6 +102,7 @@
                                 <group colspan="2">
                                     <field name="matricule"/>
                                     <field name="student_enroll_ids"/>
+                                    <field name="other_student_enroll_ids"/>
                                     <field name="status_univ"/>
                                     <field name="year_id" options="{'no_create': True}"/>
                                     <field name="school_id" options="{'no_create': True}"/>

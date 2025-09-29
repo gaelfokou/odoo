@@ -105,6 +105,13 @@ class StudentEnrollment(models.Model):
         ondelete='cascade',
         required=True
     )
+    priority = fields.Selection([
+            ('first', 'Choix 1'),
+            ('second', 'Choix 2'),
+        ], 
+        string="Priorité",
+        default="first",
+    )
 
     specialty_id_domain = fields.Binary(compute='_compute_school_domain', default=[])
 
