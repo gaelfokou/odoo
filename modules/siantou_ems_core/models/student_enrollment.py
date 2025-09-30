@@ -106,11 +106,11 @@ class StudentEnrollment(models.Model):
         required=True
     )
     priority = fields.Selection([
-            ('first', 'Choix 1'),
-            ('second', 'Choix 2'),
+            ('1', 'Priorité 1'),
+            ('2', 'Priorité 2'),
         ], 
         string="Priorité",
-        default="first",
+        default="1",
     )
 
     specialty_id_domain = fields.Binary(compute='_compute_school_domain', default=[])
