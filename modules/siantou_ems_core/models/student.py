@@ -285,7 +285,7 @@ class Student(models.Model):
             student_enrolls = self.env['oe.school.student.enrollment'].search([
                 ('student_id', '=', record.id),
                 ('year_id', '=', record.year_id.id),
-                ('priority', '=', 'first'),
+                ('priority', '=', '1'),
             ])
 
             record.student_enroll_ids = student_enrolls
@@ -296,7 +296,7 @@ class Student(models.Model):
             student_enrolls = self.env['oe.school.student.enrollment'].search([
                 ('student_id', '=', record.id),
                 ('year_id', '=', record.year_id.id),
-                ('priority', '=', 'second'),
+                ('priority', '=', '2'),
             ])
 
             record.other_student_enroll_ids = student_enrolls
@@ -554,6 +554,7 @@ class Student(models.Model):
             vals['cycle_id'] = student.cycle_id.id
 
         class_id = self.env['siantou.ems.core.class'].browse(vals['class_id'])
+
         if not class_id:
             class_id = self.env['siantou.ems.core.class'].search([
                 ('specialty_id', '=', vals['specialty_id']),

@@ -336,10 +336,15 @@ class StudentEnrollment(models.Model):
 
     @api.model
     def create(self, vals):
-        class_id = self.env['siantou.ems.core.class'].browse(vals['class_id'])
+        if 'class_id' not in vals:
+            class_id = None
+        else:
+            class_id = self.env['siantou.ems.core.class'].browse(vals['class_id'])
+
         specialty_id = self.env['siantou.ems.core.specialty'].browse(vals['specialty_id'])
         vals['school_id'] = specialty_id.field_of_study_id.school_id.id
         vals['field_of_study_id'] = specialty_id.field_of_study_id.id
+
         if not class_id:
             class_id = self.env['siantou.ems.core.class'].search([
                 ('specialty_id', '=', vals['specialty_id']),
@@ -413,6 +418,7 @@ class StudentEnrollment(models.Model):
             vals['cycle_id'] = student_enroll.cycle_id.id
 
         class_id = self.env['siantou.ems.core.class'].browse(vals['class_id'])
+
         if not class_id:
             class_id = self.env['siantou.ems.core.class'].search([
                 ('specialty_id', '=', vals['specialty_id']),
