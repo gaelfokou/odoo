@@ -117,7 +117,7 @@ class DeSchool(http.Controller):
                         'diplo_requis': [{'id': diplo.id, 'name': diplo.name} for diplo in diplo_requis]
                     })
 
-        _logger.info(data) 
+        _logger.info(f"=========== data :: {data}") 
 
         return http.Response(
             json.dumps(data)
@@ -271,10 +271,24 @@ class DeSchool(http.Controller):
     @http.route('/api/v1/save', type="http", methods=['POST'], cors="*", auth="none", csrf=False)
     def admission_form_submit(self,**kwargs):
         data = json.loads(request.httprequest.data)
-        _logger.info(data)
+        _logger.info(f"=========== data :: {data}")
         is_existing = True
 
         try:
+            data['cycle_id'] = data['specialites'][0]['cycle_id']
+            data['specialty_id'] = data['specialites'][0]['specialty_id']
+            data['option_id'] = data['specialites'][0]['option_id']
+            data['level_id'] = data['specialites'][0]['niveau_id']
+            data['type_cour'] = data['specialites'][0]['type_cour']
+
+            if len(data['specialites']) > 1:
+                specialites = data['specialites'][1:]
+            else:
+                specialites = []
+
+            del(data['specialites'])
+
+            _logger.info(f"=========== specialites :: {specialites}")
 
             first_name = data.pop('first_name')
             last_name = data.pop('last_name')
@@ -309,7 +323,7 @@ class DeSchool(http.Controller):
                 [
                     ('state', '=', 'admission'),
                     ('year_id', '=', year_id.id),
-                    ('cycle_ids', 'in', int(data['cycle_id'])),
+                    ('cycle_ids', 'in', data['cycle_id']),
                 ],
                 limit=1
             )
@@ -317,7 +331,7 @@ class DeSchool(http.Controller):
             _logger.info(session_id)
             # _logger.info(session_id.cycle_ids)
             # on Vérifie si le cycle choisi par l'étudion est dans la session d'admission active
-            is_present = session_id.cycle_ids.filtered(lambda cycle: cycle.id == int(data['cycle_id']))
+            is_present = session_id.cycle_ids.filtered(lambda cycle: cycle.id == data['cycle_id'])
             if session_id and bool(is_present):
                 _logger.info(is_present)
                 _logger.info(session_id.cycle_ids)
@@ -325,7 +339,7 @@ class DeSchool(http.Controller):
                 registre_id = http.request.env['siantou.session.registre'].sudo().search(
                     [
                         ('session_id', '=', session_id.id),
-                        ('cycle_id', '=', int(data['cycle_id']))
+                        ('cycle_id', '=', data['cycle_id'])
                     ],
                     limit=1
                 )
@@ -333,7 +347,7 @@ class DeSchool(http.Controller):
                 if registre_id:
 
                     #=== Insertion de l'utilisateur dans le registre correspondant à son cycle
-                    data['registre_id']=registre_id.id
+                    data['registre_id'] = registre_id.id
                     # documents = []
                     _logger.info("========= etudiant pas encore crée")
 

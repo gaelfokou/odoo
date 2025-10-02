@@ -206,7 +206,6 @@ class StudentEnrollment(models.Model):
                 },
             }
 
-            _logger.info(data)
             #=====>>>>> Appeler le rapport PDF
             report_action = self.env.ref('siantou_ems_core.action_report_student_core_pdf')
             return report_action.report_action(self,data=data)

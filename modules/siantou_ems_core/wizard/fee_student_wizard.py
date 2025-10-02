@@ -106,7 +106,7 @@ class FeeEnrollmentWizard(models.TransientModel):
                 limit=1
             )
             student_id = self.env['oe.school.student.enrollment'].search(
-                [('id', '=',int(res['student_id'])),],
+                [('id', '=', int(res['student_id'])),],
                 limit=1
             )
             try:
