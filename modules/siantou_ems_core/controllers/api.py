@@ -280,6 +280,7 @@ class DeSchool(http.Controller):
             data['option_id'] = data['specialites'][0]['option_id']
             data['level_id'] = data['specialites'][0]['niveau_id']
             data['type_cour'] = data['specialites'][0]['type_cour']
+            data['annee_acad'] = data['specialites'][0]['annee_acad_id']
 
             if len(data['specialites']) > 1:
                 specialites = data['specialites'][1:]
@@ -358,10 +359,24 @@ class DeSchool(http.Controller):
                     else:
                         data['is_autre_pays'] = False
                     etudiant = http.request.env['oe.school.student.enrollment'].sudo().create(data)
-                    # _logger.info(files)
-
                     if etudiant:
-                        _logger.info(etudiant)
+                        for specialite in specialites:
+                            etudiant.student_enroll_ids.create({
+                                'code_enrol': etudiant.code_enrol,
+                                'year_id': year_id.id,
+                                'school_id': etudiant.school_id.id,
+                                'cycle_id': specialite['cycle_id'],
+                                'specialty_id': specialite['specialty_id'],
+                                'option_id': specialite['option_id'],
+                                'type_cour': specialite['type_cour'],
+                                'status_univ': etudiant.status_univ,
+                                'session_lieu_obt': etudiant.session_lieu_obt,
+                                'dern_etab_freq': etudiant.dern_etab_freq,
+                                'level_id': specialite['niveau_id'],
+                                'diplo_requis_ids': etudiant.diplo_requis_ids.ids,
+                                'student_id': etudiant.id,
+                                'priority': '2',
+                            })
                         return http.Response(
                             json.dumps({
                                 'status': 'success',

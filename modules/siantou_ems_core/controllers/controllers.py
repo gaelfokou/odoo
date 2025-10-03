@@ -181,7 +181,6 @@ class DeSchool(http.Controller):
             etudiant = http.request.env['oe.school.student.enrollment'].sudo().create(data)
 
             if etudiant:
-                _logger.info(etudiant)
                 return http.Response(
                     json.dumps({
                         'status': 'success',
