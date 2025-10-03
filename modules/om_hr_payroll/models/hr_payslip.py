@@ -413,7 +413,12 @@ class HrPayslip(models.Model):
                         start_time = HrPayslip.convert_time_to_float(start_time)
                         end_time = datetime.strftime(end_time, TIME_FORMAT_FR)
                         end_time = HrPayslip.convert_time_to_float(end_time)
-                        employee_timetable.sudo().write({'status': 'present'})
+                        employee_timetable.sudo().write({
+                            'worked_start_time': start_time,
+                            'worked_end_time': end_time,
+                            'consumed_time': worked_hours,
+                            'status': 'present',
+                        })
                     else:
                         template = 'om_hr_payroll.om_hr_payroll_template_timetable_notification_absence'
                         start_time = datetime.strptime(f"{employee_timetable.date} {HrPayslip.convert_float_to_time(employee_timetable.start_time)}", DATETIME_FORMAT)
