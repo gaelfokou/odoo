@@ -396,6 +396,23 @@ class HrPayslip(models.Model):
                     if len(daily_attendances) == 1:
                         employee_timetable.sudo().write({'status': 'exception'})
                     elif len(daily_attendances) > 1:
+                        start_punching_time = daily_attendance[0].punching_time
+                        start_punching_time = HrPayslip.convert_datetime_from_utc(start_punching_time)
+                        end_punching_time = daily_attendance[1].punching_time
+                        end_punching_time = HrPayslip.convert_datetime_from_utc(end_punching_time)
+                        start_time = datetime.strptime(f"{employee_timetable.date} {HrPayslip.convert_float_to_time(employee_timetable.start_time)}", DATETIME_FORMAT)
+                        end_time = datetime.strptime(f"{employee_timetable.date} {HrPayslip.convert_float_to_time(employee_timetable.end_time)}", DATETIME_FORMAT)
+                        if start_punching_time > start_time:
+                            start_time = start_punching_time
+                        if end_punching_time < end_time:
+                            end_time = end_punching_time
+                        worked_hours = end_time - start_time
+                        worked_hours = worked_hours.total_seconds() / 3600.0
+                        worked_hours = round(worked_hours, 2)
+                        start_time = datetime.strftime(start_time, TIME_FORMAT_FR)
+                        start_time = HrPayslip.convert_time_to_float(start_time)
+                        end_time = datetime.strftime(end_time, TIME_FORMAT_FR)
+                        end_time = HrPayslip.convert_time_to_float(end_time)
                         employee_timetable.sudo().write({'status': 'present'})
                     else:
                         template = 'om_hr_payroll.om_hr_payroll_template_timetable_notification_absence'
