@@ -269,7 +269,7 @@ class DeSchool(http.Controller):
             )
 
     @http.route('/api/v1/save', type="http", methods=['POST'], cors="*", auth="none", csrf=False)
-    def admission_form_submit(self,**kwargs):
+    def admission_form_submit(self, **kwargs):
         data = json.loads(request.httprequest.data)
         _logger.info(f"=========== data :: {data}")
         is_existing = True
