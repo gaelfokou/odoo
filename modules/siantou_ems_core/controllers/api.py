@@ -282,6 +282,9 @@ class DeSchool(http.Controller):
             data['type_cour'] = data['specialites'][0]['type_cour']
             data['annee_acad'] = data['specialites'][0]['annee_acad_id']
 
+            if not data['option_id']:
+                data['option_id'] = False
+
             if len(data['specialites']) > 1:
                 specialites = data['specialites'][1:]
             else:
@@ -361,6 +364,8 @@ class DeSchool(http.Controller):
                     etudiant = http.request.env['oe.school.student.enrollment'].sudo().create(data)
                     if etudiant:
                         for specialite in specialites:
+                            if not specialite['option_id']:
+                                specialite['option_id'] = False
                             etudiant.student_enroll_ids.create({
                                 'code_enrol': etudiant.code_enrol,
                                 'year_id': year_id.id,

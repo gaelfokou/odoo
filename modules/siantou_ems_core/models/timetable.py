@@ -329,6 +329,26 @@ class Timetable(models.Model):
         widget='time'
     )
 
+    # Heure de début du cours
+    worked_start_time = fields.Float(
+        'Heure de début effectuée',
+        default=0.0,
+        widget='time'
+    )
+
+    # Heure de fin du cours
+    worked_end_time = fields.Float(
+        'Heure de fin effectuée',
+        default=0.0,
+        widget='time'
+    )
+
+    # Heure de fin du cours
+    consumed_time = fields.Float(
+        'Quotas effectués',
+        default=0.0,
+    )
+
     def _default_group(self):
         return self.env['siantou.ems.timetable.group'].search([('is_active', '=', True)], limit=1)
 
