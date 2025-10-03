@@ -167,7 +167,7 @@ class HrPayslip(models.Model):
         datetime_from = datetime.strptime(f"{current_date} {start_time}", DATETIME_FORMAT)
 
         datetime_before = datetime_from - timedelta(minutes=15)
-        datetime_from = datetime_from + timedelta(minutes=15)
+        # datetime_from = datetime_from + timedelta(minutes=15)
 
         datetime_after = datetime_to + timedelta(minutes=15)
         # datetime_to = datetime_to - timedelta(minutes=15)
@@ -185,7 +185,7 @@ class HrPayslip(models.Model):
         if employee:
             domain.append(('employee_id', '=', employee.id))
 
-        daily_in_attendances = self.env['daily.attendance'].search(domain, order='punching_time asc').filtered(lambda rec: UTC_TZ.localize(rec.punching_time) >= datetime_before and UTC_TZ.localize(rec.punching_time) <= datetime_from).sorted('punching_time')
+        daily_in_attendances = self.env['daily.attendance'].search(domain, order='punching_time asc').filtered(lambda rec: UTC_TZ.localize(rec.punching_time) >= datetime_before and UTC_TZ.localize(rec.punching_time) <= datetime_to).sorted('punching_time')
         daily_in_attendances = list(daily_in_attendances)
         if len(daily_in_attendances) > 0:
             daily_attendances.append(daily_in_attendances[0])
@@ -196,7 +196,7 @@ class HrPayslip(models.Model):
         if employee:
             domain.append(('employee_id', '=', employee.id))
 
-        daily_out_attendances = self.env['daily.attendance'].search(domain, order='punching_time asc').filtered(lambda rec: UTC_TZ.localize(rec.punching_time) >= datetime_to and UTC_TZ.localize(rec.punching_time) <= datetime_after).sorted('punching_time')
+        daily_out_attendances = self.env['daily.attendance'].search(domain, order='punching_time asc').filtered(lambda rec: UTC_TZ.localize(rec.punching_time) >= datetime_from and UTC_TZ.localize(rec.punching_time) <= datetime_after).sorted('punching_time')
         daily_out_attendances = list(daily_out_attendances)
         if len(daily_out_attendances) > 0:
             daily_attendances.append(daily_out_attendances[-1])
@@ -528,7 +528,7 @@ class HrPayslip(models.Model):
         datetime_from = datetime.strptime(f"{current_date} {start_time}", DATETIME_FORMAT)
 
         datetime_before = datetime_from - timedelta(minutes=15)
-        datetime_from = datetime_from + timedelta(minutes=15)
+        # datetime_from = datetime_from + timedelta(minutes=15)
 
         datetime_after = datetime_to + timedelta(minutes=15)
         # datetime_to = datetime_to - timedelta(minutes=15)
@@ -538,7 +538,6 @@ class HrPayslip(models.Model):
         datetime_after = HrPayslip.convert_datetime_to_utc(datetime_after)
         datetime_to = HrPayslip.convert_datetime_to_utc(datetime_to)
 
-        # result = (UTC_TZ.localize(punching_time) >= datetime_before and UTC_TZ.localize(punching_time) <= datetime_from) or (UTC_TZ.localize(punching_time) >= datetime_to and UTC_TZ.localize(punching_time) <= datetime_after)
         result = (UTC_TZ.localize(punching_time) >= datetime_before and UTC_TZ.localize(punching_time) <= datetime_after)
         return result
 
