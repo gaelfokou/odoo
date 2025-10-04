@@ -396,9 +396,9 @@ class HrPayslip(models.Model):
                     if len(daily_attendances) == 1:
                         employee_timetable.sudo().write({'status': 'exception'})
                     elif len(daily_attendances) > 1:
-                        start_punching_time = daily_attendance[0].punching_time
+                        start_punching_time = daily_attendances[0].punching_time
                         start_punching_time = HrPayslip.convert_datetime_from_utc(start_punching_time)
-                        end_punching_time = daily_attendance[1].punching_time
+                        end_punching_time = daily_attendances[1].punching_time
                         end_punching_time = HrPayslip.convert_datetime_from_utc(end_punching_time)
                         start_time = datetime.strptime(f"{employee_timetable.date} {HrPayslip.convert_float_to_time(employee_timetable.start_time)}", DATETIME_FORMAT)
                         end_time = datetime.strptime(f"{employee_timetable.date} {HrPayslip.convert_float_to_time(employee_timetable.end_time)}", DATETIME_FORMAT)
