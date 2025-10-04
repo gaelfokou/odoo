@@ -7,7 +7,17 @@ from odoo.exceptions import UserError, ValidationError
 import psycopg2
 from datetime import date, datetime, timedelta, time
 from dateutil.relativedelta import relativedelta
+import pytz
 import logging
+
+UTC_TZ = pytz.utc
+
+DATE_FORMAT = '%Y-%m-%d'
+DATE_FORMAT_FR = '%d/%m/%Y'
+DATETIME_FORMAT = '%Y-%m-%d %H:%M:%S'
+DATETIME_FORMAT_FR = '%d/%m/%Y %H:%M'
+TIME_FORMAT = '%H:%M:%S'
+TIME_FORMAT_FR = '%H:%M'
 
 _logger = logging.getLogger(__name__)
 
@@ -343,10 +353,27 @@ class Timetable(models.Model):
         widget='time'
     )
 
+    @api.depends('date', 'worked_start_time', 'worked_end_time')
+    def _compute_worked_time(self):
+        for record in self:
+            if record.date and record.worked_start_time and record.worked_end_time:
+                end_time = Timetable.convert_float_to_time(record.worked_end_time)
+                start_time = Timetable.convert_float_to_time(record.worked_start_time)
+                datetime_to = datetime.strptime(f"{record.date} {end_time}", DATETIME_FORMAT)
+                datetime_from = datetime.strptime(f"{record.date} {start_time}", DATETIME_FORMAT)
+                worked_hours = datetime_to - datetime_from
+                worked_hours = worked_hours.total_seconds() / 3600.0
+                worked_hours = round(worked_hours, 2)
+                record.worked_time = worked_hours
+            else:
+                record.worked_time = 0.0
+
     # Heure de fin du cours
-    consumed_time = fields.Float(
-        'Quotas effectués',
+    worked_time = fields.Float(
+        'Heure effectuée',
         default=0.0,
+        # compute='_compute_worked_time',
+        # store=True
     )
 
     def _default_group(self):
@@ -419,6 +446,29 @@ class Timetable(models.Model):
     specialty_id_domain = fields.Binary(compute='_compute_school_domain', default=[])
 
     subject_id_domain = fields.Binary(compute='_compute_class_domain', default=[])
+
+    @staticmethod
+    def convert_float_to_time(tm):
+        tm = str(tm)
+        tm = tm.split('.')
+        if len(tm[0]) == 1:
+            tm[0] = '0{}'.format(tm[0])
+        if len(tm[1]) == 1:
+            tm[1] = '{}0'.format(tm[1])
+        tm = ':'.join(tm)
+        tm = '{}:00'.format(tm)
+        return tm
+
+    @staticmethod
+    def convert_time_to_float(tm):
+        tm = str(tm)
+        tm = tm.split(':')
+        tm = tm[0:2]
+        tm = '.'.join(tm)
+        tm = eval(tm)
+        tm = float(tm)
+        tm = round(tm, 2)
+        return tm
 
     @api.depends('class_id', 'subject_id')
     def _compute_name(self):
@@ -618,9 +668,9 @@ class Timetable(models.Model):
                     if semester_hours_credit <= 0:
                         break
                     for first_timetable in timetables:
-                        weekly_hours_credit = first_timetable.end_time - first_timetable.start_time
-                        weekly_hours_credit = weekly_hours_credit - first_timetable.not_active_slotitems
-                        semester_hours_credit -= weekly_hours_credit
+                        weekly_hours = first_timetable.end_time - first_timetable.start_time
+                        weekly_hours = weekly_hours - first_timetable.not_active_slotitems
+                        semester_hours_credit -= weekly_hours
                         if week > 0:
                             target_date = first_timetable.date + timedelta(weeks=week)
                             timetable_id = self.env['siantou.ems.timetable.timetable'].create({

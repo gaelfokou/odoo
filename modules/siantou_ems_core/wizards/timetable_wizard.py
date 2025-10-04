@@ -209,8 +209,8 @@ class TimetableWizard(models.TransientModel):
                                             if start_time.weekday() != 0:
                                                 start_time = start_time - timedelta(days=start_time.weekday())
                                             end_time = start_time + timedelta(days=5)
-                                            weekly_hours_credit = min(4, subject_hours_credit)
-                                            subject_hours_credit = subject_hours_credit - weekly_hours_credit
+                                            weekly_hours = min(4, subject_hours_credit)
+                                            subject_hours_credit = subject_hours_credit - weekly_hours
                                             if subject.shared_subject:
                                                 timetables = self.env['siantou.ems.timetable.timetable'].search([
                                                     ('class_id', '!=', classe.id),
@@ -262,7 +262,7 @@ class TimetableWizard(models.TransientModel):
                                                     if day < first_time.weekday():
                                                         continue
                                                 # on verifie si le quota hebdomadaire est atteint
-                                                if weekly_hours_credit <= 0:
+                                                if weekly_hours <= 0:
                                                     break
                                                 if subject.shared_subject:
                                                     if day not in [0, 1, 4]:
@@ -272,7 +272,7 @@ class TimetableWizard(models.TransientModel):
                                                 if self.start_date and self.end_date:
                                                     if self.start_date > target_date or self.end_date < target_date:
                                                         continue
-                                                available_slot = self.env['siantou.ems.timetable.check_available_slot'].find_available_slot(target_date, classe, batch.id, weekly_hours_credit, active_slotitems, not_active_slotitems)
+                                                available_slot = self.env['siantou.ems.timetable.check_available_slot'].find_available_slot(target_date, classe, batch.id, weekly_hours, active_slotitems, not_active_slotitems)
                                                 # On trouve une salle de classe et un créneau horaire disponiblent pour le cours
                                                 if available_slot:
                                                     check_classroom_slot = available_slot
@@ -302,7 +302,7 @@ class TimetableWizard(models.TransientModel):
                                                     # self.env.cr.commit()
                                                     duration_weekly_hours_credit = available_slot['duration_weekly_hours_credit']
                                                     semester_hours_credit -= duration_weekly_hours_credit
-                                                    weekly_hours_credit -= duration_weekly_hours_credit
+                                                    weekly_hours -= duration_weekly_hours_credit
                                     else:
                                         break
                             else:

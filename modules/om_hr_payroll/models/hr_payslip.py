@@ -214,7 +214,7 @@ class HrPayslip(models.Model):
             date_from = date_to
 
         # Calcul de la duréee d'un cours
-        total_weekly_hours_credit = 0.0
+        total_weekly_hours = 0.0
 
         if payslip.employee_id.id:
             if payslip.employee_id.is_teacher:
@@ -233,9 +233,9 @@ class HrPayslip(models.Model):
                     start_time = HrPayslip.convert_float_to_time(employee_timetable.start_time)
                     datetime_to = datetime.strptime(f"{employee_timetable.date} {end_time}", DATETIME_FORMAT)
                     datetime_from = datetime.strptime(f"{employee_timetable.date} {start_time}", DATETIME_FORMAT)
-                    weekly_hours_credit = datetime_to - datetime_from
-                    weekly_hours_credit = weekly_hours_credit - timedelta(hours=employee_timetable.not_active_slotitems)
-                    total_weekly_hours_credit += weekly_hours_credit.total_seconds()
+                    weekly_hours = datetime_to - datetime_from
+                    weekly_hours = weekly_hours - timedelta(hours=employee_timetable.not_active_slotitems)
+                    total_weekly_hours += weekly_hours.total_seconds()
             else:
                 # Vérification du temps de l'employé en biométrie
                 daily_attendances = self.filter_daily_attendance(date_to, date_from, payslip.employee_id)
@@ -251,11 +251,11 @@ class HrPayslip(models.Model):
                     else:
                         worked_hours[punching_day] = daily_attendance.punching_time - worked_hours[punching_day]
                         worked_hours[punching_day] = timedelta(hours=worked_hours[punching_day].hour, minutes=worked_hours[punching_day].minute)
-                        total_weekly_hours_credit += worked_hours[punching_day].total_seconds()
+                        total_weekly_hours += worked_hours[punching_day].total_seconds()
                         worked_hours[punching_day] = None
-        total_weekly_hours_credit = total_weekly_hours_credit / 3600.0
-        total_weekly_hours_credit = round(total_weekly_hours_credit, 2)
-        payslip.total_hours = total_weekly_hours_credit
+        total_weekly_hours = total_weekly_hours / 3600.0
+        total_weekly_hours = round(total_weekly_hours, 2)
+        payslip.total_hours = total_weekly_hours
 
     @api.model
     def cron_download_attendance(self):
@@ -301,16 +301,16 @@ class HrPayslip(models.Model):
                         start_time = HrPayslip.convert_float_to_time(employee_timetable.start_time)
                         datetime_to = datetime.strptime(f"{employee_timetable.date} {end_time}", DATETIME_FORMAT)
                         datetime_from = datetime.strptime(f"{employee_timetable.date} {start_time}", DATETIME_FORMAT)
-                        weekly_hours_credit = datetime_to - datetime_from
-                        weekly_hours_credit = weekly_hours_credit - timedelta(hours=employee_timetable.not_active_slotitems)
-                        weekly_hours_credit = weekly_hours_credit.total_seconds() / 3600.0
-                        weekly_hours_credit = round(weekly_hours_credit, 2)
+                        weekly_hours = datetime_to - datetime_from
+                        weekly_hours = weekly_hours - timedelta(hours=employee_timetable.not_active_slotitems)
+                        weekly_hours = weekly_hours.total_seconds() / 3600.0
+                        weekly_hours = round(weekly_hours, 2)
                         self.env['hr.payslip.worked_days'].create({
                             'name': '{} {} {}, {}'.format(CURRENT_WEEKDAY[employee_timetable.day_of_week], datetime.strftime(datetime_from, DATETIME_FORMAT_FR), datetime.strftime(datetime_to, TIME_FORMAT_FR), employee_timetable.subject_id.name),
                             'payslip_id': payslip_id.id,
                             'code': payslip_id.code,
                             'number_of_days': 1,
-                            'number_of_hours': weekly_hours_credit,
+                            'number_of_hours': weekly_hours,
                             'contract_id': payslip_id.contract_id.id,
                             'timetable_id': employee_timetable.id,
                         })
@@ -319,17 +319,17 @@ class HrPayslip(models.Model):
                         start_time = HrPayslip.convert_float_to_time(employee_timetable.start_time)
                         datetime_to = datetime.strptime(f"{employee_timetable.date} {end_time}", DATETIME_FORMAT)
                         datetime_from = datetime.strptime(f"{employee_timetable.date} {start_time}", DATETIME_FORMAT)
-                        weekly_hours_credit = datetime_to - datetime_from
-                        weekly_hours_credit = weekly_hours_credit - timedelta(hours=employee_timetable.not_active_slotitems)
-                        weekly_hours_credit = weekly_hours_credit.total_seconds() / 3600.0
-                        weekly_hours_credit = round(weekly_hours_credit, 2)
+                        weekly_hours = datetime_to - datetime_from
+                        weekly_hours = weekly_hours - timedelta(hours=employee_timetable.not_active_slotitems)
+                        weekly_hours = weekly_hours.total_seconds() / 3600.0
+                        weekly_hours = round(weekly_hours, 2)
                         timetable_message = 'Exception'
                         self.env['hr.payslip.worked_days'].create({
                             'name': '{} {} {}, {}, {}'.format(CURRENT_WEEKDAY[employee_timetable.day_of_week], datetime.strftime(datetime_from, DATETIME_FORMAT_FR), datetime.strftime(datetime_to, TIME_FORMAT_FR), employee_timetable.subject_id.name, timetable_message),
                             'payslip_id': payslip_id.id,
                             'code': payslip_id.code,
                             'number_of_days': 1,
-                            'number_of_hours': weekly_hours_credit,
+                            'number_of_hours': weekly_hours,
                             'contract_id': payslip_id.contract_id.id,
                             'timetable_id': employee_timetable.id,
                         })
@@ -416,7 +416,7 @@ class HrPayslip(models.Model):
                         employee_timetable.sudo().write({
                             'worked_start_time': start_time,
                             'worked_end_time': end_time,
-                            'consumed_time': worked_hours,
+                            'worked_time': worked_hours,
                             'status': 'present',
                         })
                     else:
@@ -995,11 +995,11 @@ class HrPayslip(models.Model):
                                         start_time = HrPayslip.convert_float_to_time(worked_days_line_id.timetable_id.start_time)
                                         datetime_to = datetime.strptime(f"{worked_days_line_id.timetable_id.date} {end_time}", DATETIME_FORMAT)
                                         datetime_from = datetime.strptime(f"{worked_days_line_id.timetable_id.date} {start_time}", DATETIME_FORMAT)
-                                        weekly_hours_credit = datetime_to - datetime_from
-                                        weekly_hours_credit = weekly_hours_credit - timedelta(hours=worked_days_line_id.timetable_id.not_active_slotitems)
-                                        weekly_hours_credit = weekly_hours_credit.total_seconds() / 3600.0
-                                        weekly_hours_credit = round(weekly_hours_credit, 2)
-                                        accountbalance['number_of_hours'] = weekly_hours_credit
+                                        weekly_hours = datetime_to - datetime_from
+                                        weekly_hours = weekly_hours - timedelta(hours=worked_days_line_id.timetable_id.not_active_slotitems)
+                                        weekly_hours = weekly_hours.total_seconds() / 3600.0
+                                        weekly_hours = round(weekly_hours, 2)
+                                        accountbalance['number_of_hours'] = weekly_hours
 
                                         domain = [
                                             ('school_id', '=', worked_days_line_id.timetable_id.school_id.id),
