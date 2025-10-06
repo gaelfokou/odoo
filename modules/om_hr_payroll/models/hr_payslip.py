@@ -229,13 +229,22 @@ class HrPayslip(models.Model):
                 ], order='date asc')
                 employee_timetables = list(employee_timetables)
                 for employee_timetable in employee_timetables:
-                    end_time = HrPayslip.convert_float_to_time(employee_timetable.end_time)
-                    start_time = HrPayslip.convert_float_to_time(employee_timetable.start_time)
-                    datetime_to = datetime.strptime(f"{employee_timetable.date} {end_time}", DATETIME_FORMAT)
-                    datetime_from = datetime.strptime(f"{employee_timetable.date} {start_time}", DATETIME_FORMAT)
-                    weekly_hours = datetime_to - datetime_from
-                    weekly_hours = weekly_hours - timedelta(hours=employee_timetable.not_active_slotitems)
-                    total_weekly_hours += weekly_hours.total_seconds()
+                    if employee_timetable.status == 'present':
+                        end_time = HrPayslip.convert_float_to_time(employee_timetable.worked_end_time)
+                        start_time = HrPayslip.convert_float_to_time(employee_timetable.worked_start_time)
+                        datetime_to = datetime.strptime(f"{employee_timetable.date} {end_time}", DATETIME_FORMAT)
+                        datetime_from = datetime.strptime(f"{employee_timetable.date} {start_time}", DATETIME_FORMAT)
+                        weekly_hours = datetime_to - datetime_from
+                        weekly_hours = weekly_hours - timedelta(hours=employee_timetable.not_active_slotitems)
+                        total_weekly_hours += weekly_hours.total_seconds()
+                    else:
+                        end_time = HrPayslip.convert_float_to_time(employee_timetable.end_time)
+                        start_time = HrPayslip.convert_float_to_time(employee_timetable.start_time)
+                        datetime_to = datetime.strptime(f"{employee_timetable.date} {end_time}", DATETIME_FORMAT)
+                        datetime_from = datetime.strptime(f"{employee_timetable.date} {start_time}", DATETIME_FORMAT)
+                        weekly_hours = datetime_to - datetime_from
+                        weekly_hours = weekly_hours - timedelta(hours=employee_timetable.not_active_slotitems)
+                        total_weekly_hours += weekly_hours.total_seconds()
             else:
                 # Vérification du temps de l'employé en biométrie
                 daily_attendances = self.filter_daily_attendance(date_to, date_from, payslip.employee_id)
@@ -244,15 +253,18 @@ class HrPayslip(models.Model):
                     punching_day = datetime.strftime(daily_attendance.punching_time, DATE_FORMAT)
 
                     if punching_day not in worked_hours.keys():
-                        worked_hours[punching_day] = None
+                        worked_hours[punching_day] = {}
 
-                    if not worked_hours[punching_day]:
-                        worked_hours[punching_day] = daily_attendance.punching_time
+                    if daily_attendance.punch_type == '0':
+                        if '0' not in worked_hours[punching_day].keys():
+                            worked_hours[punching_day]['0'] = daily_attendance.punching_time
                     else:
-                        worked_hours[punching_day] = daily_attendance.punching_time - worked_hours[punching_day]
+                        worked_hours[punching_day]['1'] = daily_attendance.punching_time
+
+                    if '0' in worked_hours[punching_day].keys() and '1' in worked_hours[punching_day].keys():
+                        worked_hours[punching_day] = worked_hours[punching_day]['1'] - worked_hours[punching_day]['0']
                         worked_hours[punching_day] = timedelta(hours=worked_hours[punching_day].hour, minutes=worked_hours[punching_day].minute)
                         total_weekly_hours += worked_hours[punching_day].total_seconds()
-                        worked_hours[punching_day] = None
         total_weekly_hours = total_weekly_hours / 3600.0
         total_weekly_hours = round(total_weekly_hours, 2)
         payslip.total_hours = total_weekly_hours
@@ -301,16 +313,12 @@ class HrPayslip(models.Model):
                         start_time = HrPayslip.convert_float_to_time(employee_timetable.start_time)
                         datetime_to = datetime.strptime(f"{employee_timetable.date} {end_time}", DATETIME_FORMAT)
                         datetime_from = datetime.strptime(f"{employee_timetable.date} {start_time}", DATETIME_FORMAT)
-                        weekly_hours = datetime_to - datetime_from
-                        weekly_hours = weekly_hours - timedelta(hours=employee_timetable.not_active_slotitems)
-                        weekly_hours = weekly_hours.total_seconds() / 3600.0
-                        weekly_hours = round(weekly_hours, 2)
                         self.env['hr.payslip.worked_days'].create({
                             'name': '{} {} {}, {}'.format(CURRENT_WEEKDAY[employee_timetable.day_of_week], datetime.strftime(datetime_from, DATETIME_FORMAT_FR), datetime.strftime(datetime_to, TIME_FORMAT_FR), employee_timetable.subject_id.name),
                             'payslip_id': payslip_id.id,
                             'code': payslip_id.code,
                             'number_of_days': 1,
-                            'number_of_hours': weekly_hours,
+                            'number_of_hours': employee_timetable.worked_time,
                             'contract_id': payslip_id.contract_id.id,
                             'timetable_id': employee_timetable.id,
                         })
@@ -319,17 +327,13 @@ class HrPayslip(models.Model):
                         start_time = HrPayslip.convert_float_to_time(employee_timetable.start_time)
                         datetime_to = datetime.strptime(f"{employee_timetable.date} {end_time}", DATETIME_FORMAT)
                         datetime_from = datetime.strptime(f"{employee_timetable.date} {start_time}", DATETIME_FORMAT)
-                        weekly_hours = datetime_to - datetime_from
-                        weekly_hours = weekly_hours - timedelta(hours=employee_timetable.not_active_slotitems)
-                        weekly_hours = weekly_hours.total_seconds() / 3600.0
-                        weekly_hours = round(weekly_hours, 2)
-                        timetable_message = 'Exception'
+                        timetable_message = 'Permission'
                         self.env['hr.payslip.worked_days'].create({
                             'name': '{} {} {}, {}, {}'.format(CURRENT_WEEKDAY[employee_timetable.day_of_week], datetime.strftime(datetime_from, DATETIME_FORMAT_FR), datetime.strftime(datetime_to, TIME_FORMAT_FR), employee_timetable.subject_id.name, timetable_message),
                             'payslip_id': payslip_id.id,
                             'code': payslip_id.code,
                             'number_of_days': 1,
-                            'number_of_hours': weekly_hours,
+                            'number_of_hours': employee_timetable.worked_time,
                             'contract_id': payslip_id.contract_id.id,
                             'timetable_id': employee_timetable.id,
                         })
@@ -337,32 +341,36 @@ class HrPayslip(models.Model):
                 # Vérification du temps de l'employé en biométrie
                 daily_attendances = self.filter_daily_attendance(date_to, date_from, payslip_id.employee_id)
                 worked_hours = {}
-                punching_time = None
+                punching_time = {}
                 for daily_attendance in daily_attendances:
                     punching_day = datetime.strftime(daily_attendance.punching_time, DATE_FORMAT)
 
                     if punching_day not in worked_hours.keys():
-                        worked_hours[punching_day] = None
-                        punching_time = None
+                        worked_hours[punching_day] = {}
 
-                    if not worked_hours[punching_day]:
-                        worked_hours[punching_day] = daily_attendance.punching_time
-                        punching_time = daily_attendance.punching_time
+                    if daily_attendance.punch_type == '0':
+                        if '0' not in worked_hours[punching_day].keys():
+                            worked_hours[punching_day]['0'] = daily_attendance.punching_time
+                            punching_time['0'] = daily_attendance.punching_time
                     else:
-                        worked_hours[punching_day] = daily_attendance.punching_time - worked_hours[punching_day]
+                        worked_hours[punching_day]['1'] = daily_attendance.punching_time
+                        punching_time['1'] = daily_attendance.punching_time
+
+                    if '0' in worked_hours[punching_day].keys() and '1' in worked_hours[punching_day].keys():
+                        worked_hours[punching_day] = worked_hours[punching_day]['1'] - worked_hours[punching_day]['0']
+                        worked_hours[punching_day] = timedelta(hours=worked_hours[punching_day].hour, minutes=worked_hours[punching_day].minute)
                         worked_hours[punching_day] = worked_hours[punching_day].total_seconds() / 3600.0
                         worked_hours[punching_day] = round(worked_hours[punching_day], 2)
-                        punching_time = HrPayslip.convert_datetime_from_utc(punching_time)
+                        punching_time['0'] = HrPayslip.convert_datetime_from_utc(punching_time['0'])
+                        punching_time['1'] = HrPayslip.convert_datetime_from_utc(punching_time['1'])
                         self.env['hr.payslip.worked_days'].create({
-                            'name': '{} {}'.format(CURRENT_WEEKDAY[str(punching_time.weekday())], datetime.strftime(punching_time, DATETIME_FORMAT_FR)),
+                            'name': '{} {}'.format(CURRENT_WEEKDAY[str(punching_time['0'].weekday())], datetime.strftime(punching_time['0'], DATETIME_FORMAT_FR)),
                             'payslip_id': payslip_id.id,
                             'code': payslip_id.code,
                             'number_of_days': 1,
                             'number_of_hours': worked_hours[punching_day],
                             'contract_id': payslip_id.contract_id.id,
                         })
-                        worked_hours[punching_day] = None
-                        punching_time = None
 
         return payslip_id
 
@@ -396,18 +404,18 @@ class HrPayslip(models.Model):
                     if len(daily_attendances) == 1:
                         employee_timetable.sudo().write({'status': 'exception'})
                     elif len(daily_attendances) > 1:
-                        start_punching_time = daily_attendances[0].punching_time
-                        start_punching_time = UTC_TZ.localize(start_punching_time)
                         end_punching_time = daily_attendances[1].punching_time
+                        start_punching_time = daily_attendances[0].punching_time
                         end_punching_time = UTC_TZ.localize(end_punching_time)
-                        start_time = datetime.strptime(f"{employee_timetable.date} {HrPayslip.convert_float_to_time(employee_timetable.start_time)}", DATETIME_FORMAT)
-                        start_time = HrPayslip.convert_datetime_to_utc(start_time)
+                        start_punching_time = UTC_TZ.localize(start_punching_time)
                         end_time = datetime.strptime(f"{employee_timetable.date} {HrPayslip.convert_float_to_time(employee_timetable.end_time)}", DATETIME_FORMAT)
+                        start_time = datetime.strptime(f"{employee_timetable.date} {HrPayslip.convert_float_to_time(employee_timetable.start_time)}", DATETIME_FORMAT)
                         end_time = HrPayslip.convert_datetime_to_utc(end_time)
-                        if start_punching_time > start_time:
-                            start_time = start_punching_time
+                        start_time = HrPayslip.convert_datetime_to_utc(start_time)
                         if end_punching_time < end_time:
                             end_time = end_punching_time
+                        if start_punching_time > start_time:
+                            start_time = start_punching_time
                         worked_hours = end_time - start_time
                         worked_hours = worked_hours.total_seconds() / 3600.0
                         worked_hours = round(worked_hours, 2)
