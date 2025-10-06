@@ -166,7 +166,7 @@ class HrPayslip(models.Model):
         datetime_to = datetime.strptime(f"{current_date} {end_time}", DATETIME_FORMAT)
         datetime_from = datetime.strptime(f"{current_date} {start_time}", DATETIME_FORMAT)
 
-        datetime_before = datetime_from - timedelta(minutes=15)
+        datetime_before = datetime_from - timedelta(minutes=30)
         # datetime_from = datetime_from + timedelta(minutes=15)
 
         datetime_after = datetime_to + timedelta(minutes=15)
@@ -551,7 +551,7 @@ class HrPayslip(models.Model):
         datetime_to = datetime.strptime(f"{current_date} {end_time}", DATETIME_FORMAT)
         datetime_from = datetime.strptime(f"{current_date} {start_time}", DATETIME_FORMAT)
 
-        datetime_before = datetime_from - timedelta(minutes=15)
+        datetime_before = datetime_from - timedelta(minutes=30)
         # datetime_from = datetime_from + timedelta(minutes=15)
 
         datetime_after = datetime_to + timedelta(minutes=15)
