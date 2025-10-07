@@ -378,7 +378,19 @@ class PortalAccount(portal.CustomerPortal):
         total_rate = 0.0
         total_number_of_hours = 0.0
         accountbalances = []
+        shared_subjects = {}
         for search_accountbalance in search_accountbalances:
+            timetable_day = datetime.strftime(search_accountbalance.date, DATE_FORMAT)
+
+            if timetable_day not in shared_subjects.keys():
+                shared_subjects[timetable_day] = []
+
+            if search_accountbalance.subject_id.shared_subject:
+                if search_accountbalance.subject_id.id not in shared_subjects[timetable_day]:
+                    shared_subjects[timetable_day].append(search_accountbalance.subject_id.id)
+                else:
+                    continue
+
             accountbalance = {}
             accountbalance['id'] = search_accountbalance.id
             accountbalance['name'] = search_accountbalance.name

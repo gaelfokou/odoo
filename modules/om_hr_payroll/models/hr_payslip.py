@@ -228,7 +228,19 @@ class HrPayslip(models.Model):
                     ('status', 'in', ['present', 'permission']),
                 ], order='date asc')
                 employee_timetables = list(employee_timetables)
+                shared_subjects = {}
                 for employee_timetable in employee_timetables:
+                    timetable_day = datetime.strftime(employee_timetable.date, DATE_FORMAT)
+
+                    if timetable_day not in shared_subjects.keys():
+                        shared_subjects[timetable_day] = []
+
+                    if employee_timetable.subject_id.shared_subject:
+                        if employee_timetable.subject_id.id not in shared_subjects[timetable_day]:
+                            shared_subjects[timetable_day].append(employee_timetable.subject_id.id)
+                        else:
+                            continue
+
                     if employee_timetable.status == 'present':
                         end_time = HrPayslip.convert_float_to_time(employee_timetable.worked_end_time)
                         start_time = HrPayslip.convert_float_to_time(employee_timetable.worked_start_time)
@@ -310,7 +322,19 @@ class HrPayslip(models.Model):
                     ('status', 'in', ['present', 'permission']),
                 ], order='date asc')
                 employee_timetables = list(employee_timetables)
+                shared_subjects = {}
                 for employee_timetable in employee_timetables:
+                    timetable_day = datetime.strftime(employee_timetable.date, DATE_FORMAT)
+
+                    if timetable_day not in shared_subjects.keys():
+                        shared_subjects[timetable_day] = []
+
+                    if employee_timetable.subject_id.shared_subject:
+                        if employee_timetable.subject_id.id not in shared_subjects[timetable_day]:
+                            shared_subjects[timetable_day].append(employee_timetable.subject_id.id)
+                        else:
+                            continue
+
                     if employee_timetable.status == 'present':
                         end_time = HrPayslip.convert_float_to_time(employee_timetable.worked_end_time)
                         start_time = HrPayslip.convert_float_to_time(employee_timetable.worked_start_time)
@@ -1010,9 +1034,20 @@ class HrPayslip(models.Model):
                                 amount, qty, rate = rule._compute_rule(localdict)
                                 total_rate = 0.0
                                 total_number_of_days = 0.0
+                                shared_subjects = {}
                                 for worked_days_line_id in worked_days_line_ids:
                                     if worked_days_line_id.timetable_id.id:
-                                        _logger.info(f'----------- tototototototo timetable_id {worked_days_line_id.timetable_id.id} -----------')
+                                        timetable_day = datetime.strftime(worked_days_line_id.timetable_id.date, DATE_FORMAT)
+
+                                        if timetable_day not in shared_subjects.keys():
+                                            shared_subjects[timetable_day] = []
+
+                                        if worked_days_line_id.timetable_id.subject_id.shared_subject:
+                                            if worked_days_line_id.timetable_id.subject_id.id not in shared_subjects[timetable_day]:
+                                                shared_subjects[timetable_day].append(worked_days_line_id.timetable_id.subject_id.id)
+                                            else:
+                                                continue
+
                                         accountbalance = {}
 
                                         if worked_days_line_id.timetable_id.status == 'present':
