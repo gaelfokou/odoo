@@ -1015,15 +1015,26 @@ class HrPayslip(models.Model):
                                         _logger.info(f'----------- tototototototo timetable_id {worked_days_line_id.timetable_id.id} -----------')
                                         accountbalance = {}
 
-                                        end_time = HrPayslip.convert_float_to_time(worked_days_line_id.timetable_id.end_time)
-                                        start_time = HrPayslip.convert_float_to_time(worked_days_line_id.timetable_id.start_time)
-                                        datetime_to = datetime.strptime(f"{worked_days_line_id.timetable_id.date} {end_time}", DATETIME_FORMAT)
-                                        datetime_from = datetime.strptime(f"{worked_days_line_id.timetable_id.date} {start_time}", DATETIME_FORMAT)
-                                        weekly_hours = datetime_to - datetime_from
-                                        weekly_hours = weekly_hours - timedelta(hours=worked_days_line_id.timetable_id.not_active_slotitems)
-                                        weekly_hours = weekly_hours.total_seconds() / 3600.0
-                                        weekly_hours = round(weekly_hours, 2)
-                                        accountbalance['number_of_hours'] = weekly_hours
+                                        if worked_days_line_id.timetable_id.status == 'present':
+                                            end_time = HrPayslip.convert_float_to_time(worked_days_line_id.timetable_id.worked_end_time)
+                                            start_time = HrPayslip.convert_float_to_time(worked_days_line_id.timetable_id.worked_start_time)
+                                            datetime_to = datetime.strptime(f"{worked_days_line_id.timetable_id.date} {end_time}", DATETIME_FORMAT)
+                                            datetime_from = datetime.strptime(f"{worked_days_line_id.timetable_id.date} {start_time}", DATETIME_FORMAT)
+                                            weekly_hours = datetime_to - datetime_from
+                                            weekly_hours = weekly_hours - timedelta(hours=worked_days_line_id.timetable_id.not_active_slotitems)
+                                            weekly_hours = weekly_hours.total_seconds() / 3600.0
+                                            weekly_hours = round(weekly_hours, 2)
+                                            accountbalance['number_of_hours'] = weekly_hours
+                                        else:
+                                            end_time = HrPayslip.convert_float_to_time(worked_days_line_id.timetable_id.end_time)
+                                            start_time = HrPayslip.convert_float_to_time(worked_days_line_id.timetable_id.start_time)
+                                            datetime_to = datetime.strptime(f"{worked_days_line_id.timetable_id.date} {end_time}", DATETIME_FORMAT)
+                                            datetime_from = datetime.strptime(f"{worked_days_line_id.timetable_id.date} {start_time}", DATETIME_FORMAT)
+                                            weekly_hours = datetime_to - datetime_from
+                                            weekly_hours = weekly_hours - timedelta(hours=worked_days_line_id.timetable_id.not_active_slotitems)
+                                            weekly_hours = weekly_hours.total_seconds() / 3600.0
+                                            weekly_hours = round(weekly_hours, 2)
+                                            accountbalance['number_of_hours'] = weekly_hours
 
                                         domain = [
                                             ('school_id', '=', worked_days_line_id.timetable_id.school_id.id),
