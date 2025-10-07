@@ -261,6 +261,9 @@ class HrPayslip(models.Model):
                     else:
                         worked_hours[punching_day]['1'] = daily_attendance.punching_time
 
+                for daily_attendance in daily_attendances:
+                    punching_day = datetime.strftime(daily_attendance.punching_time, DATE_FORMAT)
+
                     if '0' in worked_hours[punching_day].keys() and '1' in worked_hours[punching_day].keys():
                         worked_hours[punching_day] = worked_hours[punching_day]['1'] - worked_hours[punching_day]['0']
                         worked_hours[punching_day] = timedelta(hours=worked_hours[punching_day].hour, minutes=worked_hours[punching_day].minute)
@@ -356,6 +359,9 @@ class HrPayslip(models.Model):
                         worked_hours[punching_day]['1'] = daily_attendance.punching_time
                         punching_time['1'] = daily_attendance.punching_time
 
+                for daily_attendance in daily_attendances:
+                    punching_day = datetime.strftime(daily_attendance.punching_time, DATE_FORMAT)
+
                     if '0' in worked_hours[punching_day].keys() and '1' in worked_hours[punching_day].keys():
                         worked_hours[punching_day] = worked_hours[punching_day]['1'] - worked_hours[punching_day]['0']
                         worked_hours[punching_day] = timedelta(hours=worked_hours[punching_day].hour, minutes=worked_hours[punching_day].minute)
@@ -364,7 +370,7 @@ class HrPayslip(models.Model):
                         punching_time['0'] = HrPayslip.convert_datetime_from_utc(punching_time['0'])
                         punching_time['1'] = HrPayslip.convert_datetime_from_utc(punching_time['1'])
                         self.env['hr.payslip.worked_days'].create({
-                            'name': '{} {}'.format(CURRENT_WEEKDAY[str(punching_time['0'].weekday())], datetime.strftime(punching_time['0'], DATETIME_FORMAT_FR)),
+                            'name': '{} {} {}'.format(CURRENT_WEEKDAY[str(punching_time['0'].weekday())], datetime.strftime(punching_time['0'], DATETIME_FORMAT_FR), datetime.strftime(punching_time['1'], DATETIME_FORMAT_FR)),
                             'payslip_id': payslip_id.id,
                             'code': payslip_id.code,
                             'number_of_days': 1,
