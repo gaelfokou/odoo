@@ -271,9 +271,8 @@
                         <thead>
                             <tr class="active">
                                 <th class="text-left">Date</th>
-                                <th class="text-left">Filière</th>
                                 <th class="text-left">Semestre</th>
-                                <th class="text-left">Niveau</th>
+                                <th class="text-left">Classe</th>
                                 <th class="text-left">Cours</th>
                                 <th class="text-left">Salle de classe</th>
                                 <th class="text-left">Enseignant</th>
@@ -290,13 +289,10 @@
                                         <span t-esc="record['date']"/>
                                     </td>
                                     <td class="text-left">
-                                        <span t-esc="record['field_of_study_name']"/>
-                                    </td>
-                                    <td class="text-left">
                                         <span t-esc="record['semester_name']"/>
                                     </td>
                                     <td class="text-left">
-                                        <span t-esc="record['level_name']"/>
+                                        <span t-esc="record['class_name']"/>
                                     </td>
                                     <td class="text-left">
                                         <span t-esc="record['subject_name']"/>
