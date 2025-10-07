@@ -115,6 +115,8 @@
                                         </td>
                                         <td class="text-center">
                                             <t t-foreach="timetables[monday]['Mardi'][hour]" t-as="record">
+                                                <span t-esc="record['class_name']"/>
+                                                <br/>
                                                 <span t-esc="record['subject_name']"/>
                                                 <span t-esc="' (' + record['subject_code'] + ')'"/>
                                                 <br/>
@@ -129,6 +131,8 @@
                                         </td>
                                         <td class="text-center">
                                             <t t-foreach="timetables[monday]['Mercredi'][hour]" t-as="record">
+                                                <span t-esc="record['class_name']"/>
+                                                <br/>
                                                 <span t-esc="record['subject_name']"/>
                                                 <span t-esc="' (' + record['subject_code'] + ')'"/>
                                                 <br/>
@@ -143,6 +147,8 @@
                                         </td>
                                         <td class="text-center">
                                             <t t-foreach="timetables[monday]['Jeudi'][hour]" t-as="record">
+                                                <span t-esc="record['class_name']"/>
+                                                <br/>
                                                 <span t-esc="record['subject_name']"/>
                                                 <span t-esc="' (' + record['subject_code'] + ')'"/>
                                                 <br/>
@@ -157,6 +163,8 @@
                                         </td>
                                         <td class="text-center">
                                             <t t-foreach="timetables[monday]['Vendredi'][hour]" t-as="record">
+                                                <span t-esc="record['class_name']"/>
+                                                <br/>
                                                 <span t-esc="record['subject_name']"/>
                                                 <span t-esc="' (' + record['subject_code'] + ')'"/>
                                                 <br/>
@@ -171,6 +179,8 @@
                                         </td>
                                         <td class="text-center">
                                             <t t-foreach="timetables[monday]['Samedi'][hour]" t-as="record">
+                                                <span t-esc="record['class_name']"/>
+                                                <br/>
                                                 <span t-esc="record['subject_name']"/>
                                                 <span t-esc="' (' + record['subject_code'] + ')'"/>
                                                 <br/>
@@ -185,6 +195,8 @@
                                         </td>
                                         <td class="text-center">
                                             <t t-foreach="timetables[monday]['Dimanche'][hour]" t-as="record">
+                                                <span t-esc="record['class_name']"/>
+                                                <br/>
                                                 <span t-esc="record['subject_name']"/>
                                                 <span t-esc="' (' + record['subject_code'] + ')'"/>
                                                 <br/>
@@ -299,6 +311,7 @@
                                     </td>
                                     <td class="text-left">
                                         <span t-esc="record['classroom_name']"/>
+                                        <span t-esc="'/ ' + record['building_name']"/>
                                     </td>
                                     <td class="text-left">
                                         <span t-esc="record['employee_name']"/>
