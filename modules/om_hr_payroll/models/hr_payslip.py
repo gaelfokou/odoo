@@ -312,16 +312,20 @@ class HrPayslip(models.Model):
                 employee_timetables = list(employee_timetables)
                 for employee_timetable in employee_timetables:
                     if employee_timetable.status == 'present':
-                        end_time = HrPayslip.convert_float_to_time(employee_timetable.end_time)
-                        start_time = HrPayslip.convert_float_to_time(employee_timetable.start_time)
+                        end_time = HrPayslip.convert_float_to_time(employee_timetable.worked_end_time)
+                        start_time = HrPayslip.convert_float_to_time(employee_timetable.worked_start_time)
                         datetime_to = datetime.strptime(f"{employee_timetable.date} {end_time}", DATETIME_FORMAT)
                         datetime_from = datetime.strptime(f"{employee_timetable.date} {start_time}", DATETIME_FORMAT)
+                        weekly_hours = datetime_to - datetime_from
+                        weekly_hours = weekly_hours - timedelta(hours=employee_timetable.not_active_slotitems)
+                        weekly_hours = weekly_hours.total_seconds() / 3600.0
+                        weekly_hours = round(weekly_hours, 2)
                         self.env['hr.payslip.worked_days'].create({
                             'name': '{} {} {}, {}'.format(CURRENT_WEEKDAY[employee_timetable.day_of_week], datetime.strftime(datetime_from, DATETIME_FORMAT_FR), datetime.strftime(datetime_to, TIME_FORMAT_FR), employee_timetable.subject_id.name),
                             'payslip_id': payslip_id.id,
                             'code': payslip_id.code,
                             'number_of_days': 1,
-                            'number_of_hours': employee_timetable.worked_time,
+                            'number_of_hours': weekly_hours,
                             'contract_id': payslip_id.contract_id.id,
                             'timetable_id': employee_timetable.id,
                         })
@@ -330,13 +334,17 @@ class HrPayslip(models.Model):
                         start_time = HrPayslip.convert_float_to_time(employee_timetable.start_time)
                         datetime_to = datetime.strptime(f"{employee_timetable.date} {end_time}", DATETIME_FORMAT)
                         datetime_from = datetime.strptime(f"{employee_timetable.date} {start_time}", DATETIME_FORMAT)
+                        weekly_hours = datetime_to - datetime_from
+                        weekly_hours = weekly_hours - timedelta(hours=employee_timetable.not_active_slotitems)
+                        weekly_hours = weekly_hours.total_seconds() / 3600.0
+                        weekly_hours = round(weekly_hours, 2)
                         timetable_message = 'Permission'
                         self.env['hr.payslip.worked_days'].create({
                             'name': '{} {} {}, {}, {}'.format(CURRENT_WEEKDAY[employee_timetable.day_of_week], datetime.strftime(datetime_from, DATETIME_FORMAT_FR), datetime.strftime(datetime_to, TIME_FORMAT_FR), employee_timetable.subject_id.name, timetable_message),
                             'payslip_id': payslip_id.id,
                             'code': payslip_id.code,
                             'number_of_days': 1,
-                            'number_of_hours': employee_timetable.worked_time,
+                            'number_of_hours': weekly_hours,
                             'contract_id': payslip_id.contract_id.id,
                             'timetable_id': employee_timetable.id,
                         })
