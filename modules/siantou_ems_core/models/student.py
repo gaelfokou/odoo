@@ -729,12 +729,12 @@ class Student(models.Model):
         domain = [
             ('student_id', 'in', active_ids),
             ('year_id', '=', self.env['siantou.ems.core.year'].search([('is_active', '=', True)], limit=1).id),
+            ('status', '=', 'transfer'),
         ]
 
         student_enroll_ids = self.env['oe.school.student.enrollment'].search(domain)
         for student_enroll in student_enroll_ids:
-            if student_enroll.status == "transfer":
-                self.update_student_enrollment(student_enroll)
+            self.update_student_enrollment(student_enroll)
 
         return {
             'type': 'ir.actions.client',

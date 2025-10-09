@@ -869,6 +869,39 @@ class Timetable(models.Model):
             'tag': 'reload',
         }
 
+    def update_timetable(self, timetable):
+        try:
+            if timetable.worked_start_time == 0.0 and timetable.worked_end_time == 0.0:
+                timetable.write({
+                    'worked_start_time': timetable.start_time,
+                    'worked_end_time': timetable.end_time,
+                })
+            # self.env.cr.commit()
+        except psycopg2.errors.NotNullViolation as error:
+            _logger.info(f'----------- tototototototo Exception {error} -----------')
+        except psycopg2.Error as error:
+            _logger.info(f'----------- tototototototo Exception {error} -----------')
+        except Exception as error:
+            _logger.info(f'----------- tototototototo Exception {error} -----------')
+
+    def action_update_all_timetable(self):
+        active_ids = self.env.context.get('active_ids', [])
+
+        domain = [
+            ('id', 'in', active_ids),
+            ('year_id', '=', self.env['siantou.ems.core.year'].search([('is_active', '=', True)], limit=1).id),
+            ('status', 'in', ['present', 'permission']),
+        ]
+
+        timetable_ids = self.env['siantou.ems.timetable.timetable'].search(domain)
+        for timetable in timetable_ids:
+            self.update_timetable(timetable)
+
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'reload',
+        }
+
 class TimetableGroup(models.Model):
     _name = 'siantou.ems.timetable.group'
     _description = 'Version d\'emploi du temps'
