@@ -266,6 +266,50 @@ class Student(models.Model):
         for record in self:
             record.class_id = None
 
+    @api.depends('year_id')
+    def _compute_student_enroll(self):
+        for record in self:
+            student_enrolls = self.env['oe.school.student.enrollment'].search([
+                ('student_id', '=', record.id),
+                # ('year_id', '=', record.year_id.id),
+                ('priority', '=', '1'),
+            ])
+
+            record.student_enroll_ids = student_enrolls
+
+    @api.onchange('year_id')
+    def _onchange_student_enroll(self):
+        for record in self:
+            student_enrolls = self.env['oe.school.student.enrollment'].search([
+                ('student_id', '=', record.id),
+                # ('year_id', '=', record.year_id.id),
+                ('priority', '=', '1'),
+            ])
+
+            record.student_enroll_ids = student_enrolls
+
+    @api.depends('year_id')
+    def _compute_other_student_enroll(self):
+        for record in self:
+            student_enrolls = self.env['oe.school.student.enrollment'].search([
+                ('student_id', '=', record.id),
+                # ('year_id', '=', record.year_id.id),
+                ('priority', '=', '2'),
+            ])
+
+            record.other_student_enroll_ids = student_enrolls
+
+    @api.onchange('year_id')
+    def _onchange_other_student_enroll(self):
+        for record in self:
+            student_enrolls = self.env['oe.school.student.enrollment'].search([
+                ('student_id', '=', record.id),
+                # ('year_id', '=', record.year_id.id),
+                ('priority', '=', '2'),
+            ])
+
+            record.other_student_enroll_ids = student_enrolls
+
     @api.depends('class_id')
     def _compute_timetables(self):
         # Recherche des emplois du temps qui correspondent à la classe
@@ -279,27 +323,18 @@ class Student(models.Model):
             # Affecter les emplois du temps trouvés à l'attribut timetable_ids
             record.timetable_ids = timetables
 
-    @api.depends('year_id')
-    def _compute_student_enroll(self):
+    @api.onchange('class_id')
+    def _onchange_timetables(self):
+        # Recherche des emplois du temps qui correspondent à la classe
         for record in self:
-            student_enrolls = self.env['oe.school.student.enrollment'].search([
-                ('student_id', '=', record.id),
-                ('year_id', '=', record.year_id.id),
-                ('priority', '=', '1'),
+            timetables = self.env['siantou.ems.timetable.timetable'].search([
+                ('class_id', '=', record.class_id.id),
+                ('group_id.is_active', '=', True),
+                ('group_id.is_submit', '=', False),
             ])
 
-            record.student_enroll_ids = student_enrolls
-
-    @api.depends('year_id')
-    def _compute_other_student_enroll(self):
-        for record in self:
-            student_enrolls = self.env['oe.school.student.enrollment'].search([
-                ('student_id', '=', record.id),
-                ('year_id', '=', record.year_id.id),
-                ('priority', '=', '2'),
-            ])
-
-            record.other_student_enroll_ids = student_enrolls
+            # Affecter les emplois du temps trouvés à l'attribut timetable_ids
+            record.timetable_ids = timetables
 
     @api.depends('student_enroll_ids')
     def _compute_classes(self):
@@ -315,8 +350,36 @@ class Student(models.Model):
 
             record.class_ids = [(6, 0, class_ids.ids)]
 
+    @api.onchange('student_enroll_ids')
+    def _onchange_classes(self):
+        for record in self:
+            classes = []
+            for student_enroll_id in record.student_enroll_ids:
+                if student_enroll_id.status == "transfer":
+                    classes.append(student_enroll_id.class_id.id)
+
+            class_ids = self.env['siantou.ems.core.class'].search([
+                ('id', 'in', classes),
+            ])
+
+            record.class_ids = [(6, 0, class_ids.ids)]
+
     @api.depends('student_enroll_ids')
     def _compute_batchs(self):
+        for record in self:
+            batchs = []
+            for student_enroll_id in record.student_enroll_ids:
+                if student_enroll_id.status == "transfer":
+                    batchs.append(student_enroll_id.batch_id.id)
+
+            batch_ids = self.env['siantou.ems.core.student.batch'].search([
+                ('id', 'in', batchs),
+            ])
+
+            record.batch_ids = [(6, 0, batch_ids.ids)]
+
+    @api.onchange('student_enroll_ids')
+    def _onchange_batchs(self):
         for record in self:
             batchs = []
             for student_enroll_id in record.student_enroll_ids:
