@@ -26,6 +26,11 @@
                             class="oe_highlight" 
                             display="always"
                             groups="siantou_ems_core.group_class_print_pdf"/>
+                        <button name="action_update_all_student_class" 
+                            type="object" 
+                            string="Mettre à jour étudiants et classes" 
+                            class="oe_highlight"
+                            display="always"/>
                     </header>
 					<field name="name"/>
                     <field name="year_id"/>

@@ -30,9 +30,9 @@
                         type="object" 
                         string="Données requises" 
                         class="oe_highlight"/> -->
-                    <button name="action_add_all_student_class" 
+                    <button name="action_update_all_student_enrollment" 
                         type="object" 
-                        string="Mettre à jour étudiants et classes" 
+                        string="Mettre à jour étudiants et candidatures" 
                         class="oe_highlight"
                         display="always"/>
                 </header>
