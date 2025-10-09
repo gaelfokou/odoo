@@ -685,7 +685,7 @@ class Student(models.Model):
         report_action = self.env.ref('siantou_ems_core.action_report_student')
         return report_action.report_action(self, data=data)
 
-    def add_student_class(self, student_enroll):
+    def update_student_enrollment(self, student_enroll):
         try:
             if not student_enroll.student_id.class_id.id:
                 student_enroll.student_id.write({
@@ -734,7 +734,7 @@ class Student(models.Model):
         student_enroll_ids = self.env['oe.school.student.enrollment'].search(domain)
         for student_enroll in student_enroll_ids:
             if student_enroll.status == "transfer":
-                self.add_student_class(student_enroll)
+                self.update_student_enrollment(student_enroll)
 
         return {
             'type': 'ir.actions.client',
