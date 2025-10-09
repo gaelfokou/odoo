@@ -56,9 +56,9 @@
                             </group>
                             <group colspan="2">
                                 <field name="name"/>
-                                <field name="shared_subject" invisible="eps_subject == True"/>
-                                <field name="subject_parent_ids" invisible="shared_subject == True" widget="many2many_tags"/>
-                                <field name="subject_child_ids" invisible="shared_subject == False" widget="many2many_tags"/>
+                                <field name="shared_subject"/>
+                                <field name="subject_parent_ids" invisible="shared_subject == False" widget="many2many_tags"/>
+                                <field name="subject_child_ids" invisible="shared_subject == True" widget="many2many_tags"/>
                                 <field name="eps_subject" invisible="shared_subject == True"/>
                             </group>
                         </group>

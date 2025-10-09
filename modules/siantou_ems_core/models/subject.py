@@ -61,7 +61,7 @@ class Subject(models.Model):
         'subject_child_id',
         'subject_parent_id',
         string='Cours parent',
-        domain="[('shared_subject', '=', True)]",
+        domain="[('shared_subject', '=', False)]",
     )
 
     subject_child_ids = fields.Many2many(
@@ -70,12 +70,13 @@ class Subject(models.Model):
         'subject_parent_id',
         'subject_child_id',
         string='Cours enfant',
-        domain="[('shared_subject', '=', False)]",
+        domain="[('shared_subject', '=', True)]",
     )
 
     # Variable booléenne pour savoir si c'est une matière fait partie de l'EPS ou pas
     eps_subject = fields.Boolean(
-        'Mathière de l\'EPS'
+        'Mathière de l\'EPS',
+        default=False
     )
 
     # Nom du cours
