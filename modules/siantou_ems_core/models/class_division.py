@@ -63,6 +63,7 @@ class EducationClass(models.Model):
         'siantou.ems.timetable.timetable',
         'class_id',
         string="Emplois du temps",
+        domain="[('class_id', '=', id), ('group_id.is_active', '=', True), ('group_id.is_submit', '=', False)]",
         compute='_compute_timetables',
         store=False
     )

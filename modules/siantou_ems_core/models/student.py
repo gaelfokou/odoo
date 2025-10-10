@@ -24,6 +24,7 @@ class Student(models.Model):
         'oe.school.student.enrollment',
         'student_id',
         string='Candidatures',
+        domain="[('student_id', '=', id), ('priority', '=', '1')]",
         compute='_compute_student_enroll',
         store=False
     )
@@ -31,6 +32,7 @@ class Student(models.Model):
         'oe.school.student.enrollment',
         'student_id',
         string='Autres candidatures',
+        domain="[('student_id', '=', id), ('priority', '=', '2')]",
         compute='_compute_other_student_enroll',
         store=False
     )
@@ -150,6 +152,7 @@ class Student(models.Model):
     timetable_ids = fields.One2many(
         'siantou.ems.timetable.timetable',
         string="Emplois du temps",
+        domain="[('class_id', '=', class_id), ('group_id.is_active', '=', True), ('group_id.is_submit', '=', False)]",
         compute='_compute_timetables',
         store=False
     )
@@ -157,16 +160,6 @@ class Student(models.Model):
     class_id = fields.Many2one(
         'siantou.ems.core.class',
         string='Classe',
-    )
-
-    class_ids = fields.Many2many(
-        'siantou.ems.core.class',
-        'class_student_rel',
-        'student_id',
-        'class_id',
-        string='Liste des classes',
-        compute='_compute_classes',
-        store=False
     )
 
     delegate_class_ids = fields.Many2many(
@@ -335,34 +328,6 @@ class Student(models.Model):
 
             # Affecter les emplois du temps trouvés à l'attribut timetable_ids
             record.timetable_ids = timetables
-
-    @api.depends('student_enroll_ids')
-    def _compute_classes(self):
-        for record in self:
-            classes = []
-            for student_enroll_id in record.student_enroll_ids:
-                if student_enroll_id.status == "transfer":
-                    classes.append(student_enroll_id.class_id.id)
-
-            class_ids = self.env['siantou.ems.core.class'].search([
-                ('id', 'in', classes),
-            ])
-
-            record.class_ids = [(6, 0, class_ids.ids)]
-
-    @api.onchange('student_enroll_ids')
-    def _onchange_classes(self):
-        for record in self:
-            classes = []
-            for student_enroll_id in record.student_enroll_ids:
-                if student_enroll_id.status == "transfer":
-                    classes.append(student_enroll_id.class_id.id)
-
-            class_ids = self.env['siantou.ems.core.class'].search([
-                ('id', 'in', classes),
-            ])
-
-            record.class_ids = [(6, 0, class_ids.ids)]
 
     @api.depends('student_enroll_ids')
     def _compute_batchs(self):

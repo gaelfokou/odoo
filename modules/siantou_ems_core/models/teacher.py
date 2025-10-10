@@ -76,7 +76,7 @@ class HrEmployee(models.Model):
         'siantou.ems.timetable.timetable',
         'employee_id',                     # Champ de relation dans le modèle Timetable
         string='Emplois du temps',
-        help="Liste des emplois du temps associés à l'enseignant.",
+        domain="[('employee_id', '=', id), ('group_id.is_active', '=', True), ('group_id.is_submit', '=', False)]",
         compute='_compute_timetables',
         store=False
     )
@@ -122,6 +122,19 @@ class HrEmployee(models.Model):
 
     @api.depends('weekly_hours_limit')
     def _compute_timetables(self):
+        # Recherche des emplois du temps qui correspondent à l'enseignant
+        for record in self:
+            timetables = self.env['siantou.ems.timetable.timetable'].search([
+                ('employee_id', '=', record.id),
+                ('group_id.is_active', '=', True),
+                ('group_id.is_submit', '=', False),
+            ])
+
+            # Affecter les emplois du temps trouvés à l'attribut timetable_ids
+            record.timetable_ids = timetables
+
+    @api.onchange('weekly_hours_limit')
+    def _onchange_timetables(self):
         # Recherche des emplois du temps qui correspondent à l'enseignant
         for record in self:
             timetables = self.env['siantou.ems.timetable.timetable'].search([

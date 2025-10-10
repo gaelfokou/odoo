@@ -101,8 +101,8 @@
                             <group col="4" name="academique" string="Informations académiques">
                                 <group colspan="2">
                                     <field name="matricule"/>
-                                    <field name="student_enroll_ids" domain="[('student_id', '=', id), ('priority', '=', '1')]"/>
-                                    <field name="other_student_enroll_ids" domain="[('student_id', '=', id), ('priority', '=', '2')]"/>
+                                    <field name="student_enroll_ids"/>
+                                    <field name="other_student_enroll_ids"/>
                                     <field name="status_univ"/>
                                     <field name="year_id" options="{'no_create': True}"/>
                                     <field name="school_id" options="{'no_create': True}"/>
@@ -125,7 +125,7 @@
                         <!-- Informations sur l'emploi du temps en vue page -->
                         <page string="Emplois du temps">
 
-                            <field name="timetable_ids" domain="[('class_id', '=', class_id), ('group_id.is_active', '=', True), ('group_id.is_submit', '=', False)]">
+                            <field name="timetable_ids">
                                 <tree string="Emplois du temps">
                                     <field name="subject_id" string="Cours"/>
                                     <field name="classroom_id" string="Salle de classe"/>
