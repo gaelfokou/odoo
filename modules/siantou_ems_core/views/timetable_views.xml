@@ -34,8 +34,7 @@
                         <button name="action_update_all_timetable" 
                             type="object" 
                             string="Mettre à jour emplois du temps et présences" 
-                            class="oe_highlight"
-                            display="always"/>
+                            class="oe_highlight"/>
                     </header>
                     <field name="group_id"/>
                     <field name="semester_id"/>

@@ -33,8 +33,7 @@
                     <button name="action_update_all_student_enrollment" 
                         type="object" 
                         string="Mettre à jour étudiants et candidatures" 
-                        class="oe_highlight"
-                        display="always"/>
+                        class="oe_highlight"/>
                 </header>
                 <field name="matricule"/>
                 <field name="name"/>
