@@ -477,6 +477,48 @@ class StudentEnrollment(models.Model):
 
         return student_enrol
 
+    def update_enrollment(self, student_enroll):
+        try:
+            if not student_enroll.class_id.id or not student_enroll.school_id.id or not student_enroll.cycle_id.id:
+                student_enroll.write({
+                    'year_id': student_enroll.student_id.year_id.id if student_enroll.student_id.year_id.id else student_enroll.year_id.id,
+                    'school_id': student_enroll.student_id.school_id.id if student_enroll.student_id.school_id.id else student_enroll.school_id.id,
+                    'cycle_id': student_enroll.student_id.cycle_id.id if student_enroll.student_id.cycle_id.id else student_enroll.cycle_id.id,
+                    'field_of_study_id': student_enroll.student_id.field_of_study_id.id if student_enroll.student_id.field_of_study_id.id else student_enroll.field_of_study_id.id,
+                    'specialty_id': student_enroll.student_id.specialty_id.id if student_enroll.student_id.specialty_id.id else student_enroll.specialty_id.id,
+                    'option_id': student_enroll.student_id.option_id.id if student_enroll.student_id.option_id.id else student_enroll.option_id.id,
+                    # 'class_id': student_enroll.student_id.class_id.id if student_enroll.student_id.class_id.id else student_enroll.class_id.id,
+                    'type_cour': student_enroll.student_id.type_cour if student_enroll.student_id.type_cour else student_enroll.type_cour,
+                    'status_univ': student_enroll.student_id.status_univ if student_enroll.student_id.status_univ else student_enroll.status_univ,
+                    'level_id': student_enroll.student_id.level_id.id if student_enroll.student_id.level_id.id else student_enroll.level_id.id,
+                    'batch_id': student_enroll.student_id.batch_id.id if student_enroll.student_id.batch_id.id else student_enroll.batch_id.id,
+                })
+            # self.env.cr.commit()
+        except psycopg2.errors.NotNullViolation as error:
+            _logger.info(f'----------- tototototototo Exception {error} -----------')
+        except psycopg2.Error as error:
+            _logger.info(f'----------- tototototototo Exception {error} -----------')
+        except Exception as error:
+            _logger.info(f'----------- tototototototo Exception {error} -----------')
+
+    def action_update_all_enrollment(self):
+        active_ids = self.env.context.get('active_ids', [])
+
+        domain = [
+            ('id', 'in', active_ids),
+            ('year_id', '=', self.env['siantou.ems.core.year'].search([('is_active', '=', True)], limit=1).id),
+            ('status', '=', 'transfer'),
+        ]
+
+        student_enroll_ids = self.env['oe.school.student.enrollment'].search(domain)
+        for student_enroll in student_enroll_ids:
+            self.update_enrollment(student_enroll)
+
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'reload',
+        }
+
 # class StudentEnrollmentFileAdmission(models.Model):
 #     _name = 'oe.school.student.enrollment.file'
 #     _description = "Gestion des fichiers d'enrollement des étudiants"
