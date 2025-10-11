@@ -74,19 +74,15 @@ export class OwlSalesDashboard extends Component {
     }
 
     async getDatasCount() {
-        this.state.cycles.value = await this.orm.searchCount("oe.school.course", []);
-        const student_enrolls = await this.orm.searchRead("oe.school.student.enrollment", [
-            ["year_id", "=", parseInt(this.state.year.value)],
-            ["is_active_candidature", "=", true],
-            ["status", "=", "transfer"]
+        const classes = await this.orm.searchRead("siantou.ems.core.class", [
+            ["year_id", "=", parseInt(this.state.year.value)]
         ]);
-        const students = []
-        await student_enrolls.forEach(async (student_enroll) => {
-            students.push(student_enroll.student_id[0])
+        let studentCount = 0
+        await classes.forEach(async (classe) => {
+            studentCount += classe.number_of_student
         });
-        this.state.students.value = await this.orm.searchCount("oe.school.student", [
-            ["id", "in", students]
-        ]);
+        this.state.students.value = studentCount;
+        this.state.cycles.value = await this.orm.searchCount("oe.school.course", []);
         this.state.ecoles.value = await this.orm.searchCount("siantou.ems.core.school", []);
         this.state.campus.value = await this.orm.searchCount("siantou.ems.core.campus", []);
         this.state.teachers.value = await this.orm.searchCount("hr.employee", [["is_teacher", "=", true]]);

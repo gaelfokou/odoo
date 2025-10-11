@@ -334,7 +334,7 @@ class Student(models.Model):
         for record in self:
             batchs = []
             for student_enroll_id in record.student_enroll_ids:
-                if student_enroll_id.status == "transfer":
+                if student_enroll_id.is_active_candidature == True and student_enroll_id.status == "transfer":
                     batchs.append(student_enroll_id.batch_id.id)
 
             batch_ids = self.env['siantou.ems.core.student.batch'].search([
@@ -348,7 +348,7 @@ class Student(models.Model):
         for record in self:
             batchs = []
             for student_enroll_id in record.student_enroll_ids:
-                if student_enroll_id.status == "transfer":
+                if student_enroll_id.is_active_candidature == True and student_enroll_id.status == "transfer":
                     batchs.append(student_enroll_id.batch_id.id)
 
             batch_ids = self.env['siantou.ems.core.student.batch'].search([

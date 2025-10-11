@@ -166,7 +166,7 @@ class EducationClass(models.Model):
         for record in self:
             students = []
             for student_enroll_id in record.student_enroll_ids:
-                if student_enroll_id.status == "transfer":
+                if student_enroll_id.is_active_candidature == True and student_enroll_id.status == "transfer":
                     students.append(student_enroll_id.student_id.id)
 
             student_ids = self.env['oe.school.student'].search([
@@ -180,7 +180,7 @@ class EducationClass(models.Model):
         for record in self:
             students = []
             for student_enroll_id in record.student_enroll_ids:
-                if student_enroll_id.status == "transfer":
+                if student_enroll_id.is_active_candidature == True and student_enroll_id.status == "transfer":
                     students.append(student_enroll_id.student_id.id)
 
             student_ids = self.env['oe.school.student'].search([
@@ -194,7 +194,7 @@ class EducationClass(models.Model):
         for record in self:
             students = []
             for student_enroll_id in record.student_enroll_ids:
-                if student_enroll_id.status == "transfer":
+                if student_enroll_id.is_active_candidature == True and student_enroll_id.status == "transfer":
                     students.append(student_enroll_id.student_id.id)
 
             student_ids = self.env['oe.school.student'].search([
@@ -208,7 +208,7 @@ class EducationClass(models.Model):
         for record in self:
             students = []
             for student_enroll_id in record.student_enroll_ids:
-                if student_enroll_id.status == "transfer":
+                if student_enroll_id.is_active_candidature == True and student_enroll_id.status == "transfer":
                     students.append(student_enroll_id.student_id.id)
 
             student_ids = self.env['oe.school.student'].search([
