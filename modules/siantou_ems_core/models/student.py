@@ -743,6 +743,7 @@ class Student(models.Model):
         domain = [
             ('student_id', 'in', active_ids),
             ('year_id', '=', self.env['siantou.ems.core.year'].search([('is_active', '=', True)], limit=1).id),
+            ('is_active_candidature', '=', True),
             ('status', '=', 'transfer'),
         ]
 

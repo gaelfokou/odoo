@@ -111,6 +111,7 @@ class StudentEnrollment(models.Model):
         string="Priorité",
         default="1",
     )
+    is_active_candidature = fields.Boolean(default=False, string="Activé")
 
     specialty_id_domain = fields.Binary(compute='_compute_school_domain', default=[])
 
@@ -506,6 +507,7 @@ class StudentEnrollment(models.Model):
         domain = [
             ('id', 'in', active_ids),
             ('year_id', '=', self.env['siantou.ems.core.year'].search([('is_active', '=', True)], limit=1).id),
+            ('is_active_candidature', '=', True),
             ('status', '=', 'transfer'),
         ]
 
