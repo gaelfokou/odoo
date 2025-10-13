@@ -409,6 +409,22 @@ class EducationClass(models.Model):
             'tag': 'reload',
         }
 
+    def action_open_copier(self):
+        view_id = self.env.ref('siantou_ems_core.class_ue_copier_wizard').id
+        return {
+            'name': 'Copieur des unités d\'enseignement',
+            'type': 'ir.actions.act_window',
+            'view_type': 'form',
+            'view_mode': 'form',
+            'res_model': 'class.ue.copier.wizard',
+            'views': [(view_id, 'form')],
+            'view_id': view_id,
+            'target': 'new',
+            'context': {
+                'default_source_year_id': self.env['siantou.ems.core.year'].search([('is_active', '=', True)], limit=1).id,
+            },
+        }
+
 class EducationClassGroup(models.Model):
     _name = 'siantou.ems.core.class.group'
     _description = 'Groupe de classe'
