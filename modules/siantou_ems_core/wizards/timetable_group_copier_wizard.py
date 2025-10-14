@@ -97,6 +97,7 @@ class TimetableGroupCopierWizard(models.TransientModel):
                 if index_year != -1 and len(years) > 1 and len(new_years) > 1:
                     year = new_years[index_year]
                 end_time = date.fromisocalendar(year, week, day)
+
                 semester_id = self.env['siantou.ems.core.year.semester'].create({
                     'name': group_id.semester_id.name,
                     'start_time': start_time,
