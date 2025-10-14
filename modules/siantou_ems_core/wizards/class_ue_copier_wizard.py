@@ -269,7 +269,7 @@ class ClassUeCopierWizard(models.TransientModel):
             for ue_id in source_class_id.ue_ids:
                 ue = self.env['siantou.ems.core.unite.enseignement'].search([
                     ('code', '=', ue_id.code),
-                    ('semester_ids', '=', destination_semester_id.id),
+                    ('semester_ids', 'in', ue_id.semester_ids.ids),
                 ], limit=1)
                 if not ue:
                     ue = self.env['siantou.ems.core.unite.enseignement'].create({
@@ -277,7 +277,7 @@ class ClassUeCopierWizard(models.TransientModel):
                         'name': ue_id.name,
                         'type_ue': ue_id.type_ue,
                     })
-                    semester_ids = [(4, destination_semester_id.id)]
+                    semester_ids = [(4, semester_id.id) for semester_id in ue_id.semester_ids]
                     subject_ids = [(4, subject_id.id) for subject_id in ue_id.subject_ids]
                     ue.write({
                         'semester_ids': semester_ids,
