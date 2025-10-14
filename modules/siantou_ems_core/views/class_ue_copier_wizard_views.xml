@@ -16,7 +16,10 @@
                         <field name="type_cour" widget="radio"/>
                         <field name="source_year_id" options="{'no_create': True}"/>
                         <field name="source_class_id" options="{'no_create': True}" domain="[('field_of_study_id', '=', field_of_study_id), ('specialty_id', '=', specialty_id), ('option_id', '=', option_id), ('level_id', '=', level_id), ('type_cour', '=', type_cour), ('year_id', '=', source_year_id)]"/>
+                        <field name="source_ue_ids"/>
                         <field name="destination_year_id" options="{'no_create': True}"/>
+                        <field name="destination_class_id" options="{'no_create': True}" domain="[('field_of_study_id', '=', field_of_study_id), ('specialty_id', '=', specialty_id), ('option_id', '=', option_id), ('level_id', '=', level_id), ('type_cour', '=', type_cour), ('year_id', '=', destination_year_id)]"/>
+                        <field name="destination_ue_ids"/>
                     </group>
                     <footer>
                         <button string="Copier" type="object" name="action_copier" class="btn-primary"/>

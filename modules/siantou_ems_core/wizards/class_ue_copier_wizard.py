@@ -89,7 +89,38 @@ class ClassUeCopierWizard(models.TransientModel):
         required=True,
     )
 
+    destination_class_id = fields.Many2one(
+        'siantou.ems.core.class',
+        string='Classe destination',
+    )
+
+    source_ue_ids = fields.One2many(
+        'siantou.ems.core.unite.enseignement',
+        string='Unités d\'enseignement source',
+        compute='_compute_source_ues',
+        store=False
+    )
+
+    destination_ue_ids = fields.One2many(
+        'siantou.ems.core.unite.enseignement',
+        string='Unités d\'enseignement destination',
+        compute='_compute_destination_ues',
+        store=False
+    )
+
     specialty_id_domain = fields.Binary(compute='_compute_school_domain', default=[])
+
+    @api.depends('source_class_id')
+    def _compute_source_ues(self):
+        # Recherche des emplois du temps qui correspondent à la classe
+        for record in self:
+            record.source_ue_ids = record.source_class_id.ue_ids
+
+    @api.depends('destination_class_id')
+    def _compute_destination_ues(self):
+        # Recherche des emplois du temps qui correspondent à la classe
+        for record in self:
+            record.destination_ue_ids = record.destination_class_id.ue_ids
 
     @api.depends('school_id')
     def _compute_school_domain(self):
@@ -108,39 +139,56 @@ class ClassUeCopierWizard(models.TransientModel):
             record.field_of_study_id = None
             record.level_id = None
             record.source_class_id = None
+            record.destination_class_id = None
             record.specialty_id = None
             record.option_id = None
+            record.source_ue_ids = []
+            record.destination_ue_ids = []
 
     @api.onchange('level_id')
     def _onchange_level(self):
         for record in self:
             record.source_class_id = None
+            record.destination_class_id = None
+            record.source_ue_ids = []
+            record.destination_ue_ids = []
 
     @api.onchange('specialty_id')
     def _onchange_specialty(self):
         for record in self:
             record.source_class_id = None
+            record.destination_class_id = None
             record.option_id = None
+            record.source_ue_ids = []
+            record.destination_ue_ids = []
 
     @api.onchange('option_id')
     def _onchange_option(self):
         for record in self:
             record.source_class_id = None
+            record.destination_class_id = None
+            record.source_ue_ids = []
+            record.destination_ue_ids = []
 
     @api.onchange('type_cour')
     def _onchange_type_cour(self):
         for record in self:
             record.source_class_id = None
+            record.destination_class_id = None
+            record.source_ue_ids = []
+            record.destination_ue_ids = []
 
     @api.onchange('source_year_id')
-    def _onchange_group(self):
+    def _onchange_source_year(self):
         for record in self:
             record.source_class_id = None
+            record.source_ue_ids = []
 
-    @api.onchange('source_year_id')
-    def _onchange_group(self):
+    @api.onchange('destination_year_id')
+    def _onchange_destination_year(self):
         for record in self:
-            record.source_class_id = None
+            record.destination_class_id = None
+            record.destination_ue_ids = []
 
     def action_copier(self):
         domain = []
