@@ -145,11 +145,13 @@ class TimetableGroupCopierWizard(models.TransientModel):
                         'year_id': self.destination_year_id.id,
                         'type_cour': timetable_id.type_cour,
                     })
+
                     for group_id in timetable_id.class_id.group_ids:
                         class_id.group_ids.create({
                             'name': group_id.name,
                             'class_id': class_id.id,
                         })
+
                     ue_ids = []
                     for ue_id in timetable_id.class_id.ue_ids:
                         ue = self.env['siantou.ems.core.unite.enseignement'].search([

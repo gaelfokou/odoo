@@ -258,51 +258,53 @@ class ClassUeCopierWizard(models.TransientModel):
                     'year_id': self.destination_year_id.id,
                     'type_cour': self.type_cour,
                 })
-                for group_id in source_class_id.group_ids:
-                    destination_class_id.group_ids.create({
-                        'name': group_id.name,
-                        'class_id': destination_class_id.id,
+
+            for group_id in source_class_id.group_ids:
+                destination_class_id.group_ids.create({
+                    'name': group_id.name,
+                    'class_id': destination_class_id.id,
+                })
+
+            ue_ids = []
+            for ue_id in source_class_id.ue_ids:
+                ue = self.env['siantou.ems.core.unite.enseignement'].search([
+                    ('code', '=', ue_id.code),
+                    ('semester_ids', '=', destination_semester_id.id),
+                ], limit=1)
+                if not ue:
+                    ue = self.env['siantou.ems.core.unite.enseignement'].create({
+                        'code': ue_id.code,
+                        'name': ue_id.name,
+                        'type_ue': ue_id.type_ue,
                     })
-                ue_ids = []
-                for ue_id in source_class_id.ue_ids:
-                    ue = self.env['siantou.ems.core.unite.enseignement'].search([
-                        ('code', '=', ue_id.code),
-                        ('semester_ids', '=', destination_semester_id.id),
-                    ], limit=1)
-                    if not ue:
-                        ue = self.env['siantou.ems.core.unite.enseignement'].create({
-                            'code': ue_id.code,
-                            'name': ue_id.name,
-                            'type_ue': ue_id.type_ue,
+                    semester_ids = [(4, destination_semester_id.id)]
+                    subject_ids = [(4, subject_id.id) for subject_id in ue_id.subject_ids]
+                    ue.write({
+                        'semester_ids': semester_ids,
+                        'subject_ids': subject_ids,
+                    })
+                    for syllabus_id in ue_id.syllabus_ids:
+                        self.env['siantou.ems.core.syllabus'].create({
+                            'name': syllabus_id.name,
+                            'ue_id': ue.id,
+                            'subject_id': syllabus_id.subject_id.id,
+                            'class_id': destination_class_id.id,
+                            'description': syllabus_id.description,
+                            'pourcentage_cc': syllabus_id.pourcentage_cc,
+                            'pourcentage_exam': syllabus_id.pourcentage_exam,
+                            'pourcentage_presence': syllabus_id.pourcentage_presence,
+                            'note_sn': syllabus_id.note_sn,
+                            'coefficient': syllabus_id.coefficient,
+                            'note_sn': syllabus_id.note_sn,
+                            'cm': syllabus_id.cm,
+                            'tp': syllabus_id.tp,
+                            'td': syllabus_id.td,
+                            'te': syllabus_id.te,
+                            # 'pro_pe_id': syllabus_id.pro_pe_id,
                         })
-                        semester_ids = [(4, destination_semester_id.id)]
-                        subject_ids = [(4, subject_id.id) for subject_id in ue_id.subject_ids]
-                        ue.write({
-                            'semester_ids': semester_ids,
-                            'subject_ids': subject_ids,
-                        })
-                        for syllabus_id in ue_id.syllabus_ids:
-                            self.env['siantou.ems.core.syllabus'].create({
-                                'name': syllabus_id.name,
-                                'ue_id': ue.id,
-                                'subject_id': syllabus_id.subject_id.id,
-                                'class_id': destination_class_id.id,
-                                'description': syllabus_id.description,
-                                'pourcentage_cc': syllabus_id.pourcentage_cc,
-                                'pourcentage_exam': syllabus_id.pourcentage_exam,
-                                'pourcentage_presence': syllabus_id.pourcentage_presence,
-                                'note_sn': syllabus_id.note_sn,
-                                'coefficient': syllabus_id.coefficient,
-                                'note_sn': syllabus_id.note_sn,
-                                'cm': syllabus_id.cm,
-                                'tp': syllabus_id.tp,
-                                'td': syllabus_id.td,
-                                'te': syllabus_id.te,
-                                # 'pro_pe_id': syllabus_id.pro_pe_id,
-                            })
-                    ue_ids.append(ue)
-                ue_ids = [(4, ue_id.id) for ue_id in ue_ids]
-                destination_class_id.write({'ue_ids': ue_ids })
+                ue_ids.append(ue)
+            ue_ids = [(4, ue_id.id) for ue_id in ue_ids]
+            destination_class_id.write({'ue_ids': ue_ids })
 
         return {
             'type': 'ir.actions.client',
