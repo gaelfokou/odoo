@@ -197,48 +197,6 @@ class ClassUeCopierWizard(models.TransientModel):
 
         source_class_id = self.env['siantou.ems.core.class'].search(domain, limit=1)
         if source_class_id:
-            source_semester_ids = self.env['siantou.ems.core.year.semester'].search([
-                ('year_id', '=', self.source_year_id.id),
-            ])
-            for source_semester_id in source_semester_ids:
-                years = source_semester_id.year_id.name.split('-')
-                years = [int(y) for y in years]
-                new_years = self.destination_year_id.name.split('-')
-                new_years = [int(y) for y in new_years]
-
-                destination_semester_id = self.env['siantou.ems.core.year.semester'].search([
-                    ('semester_name', '=', source_semester_id.semester_name),
-                    ('year_id', '=', self.destination_year_id.id),
-                ], limit=1)
-                if not destination_semester_id:
-                    year, week, day = source_semester_id.start_time.isocalendar()
-                    try:
-                        index_year = years.index(year)
-                    except ValueError:
-                        index_year = -1
-                    if index_year != -1 and len(years) > 1 and len(new_years) > 1:
-                        year = new_years[index_year]
-                    start_time = date.fromisocalendar(year, week, day)
-
-                    year, week, day = source_semester_id.end_time.isocalendar()
-                    try:
-                        index_year = years.index(year)
-                    except ValueError:
-                        index_year = -1
-                    if index_year != -1 and len(years) > 1 and len(new_years) > 1:
-                        year = new_years[index_year]
-                    end_time = date.fromisocalendar(year, week, day)
-
-                    destination_semester_id = self.env['siantou.ems.core.year.semester'].create({
-                        'name': source_semester_id.name,
-                        'start_time': start_time,
-                        'end_time': end_time,
-                        'year_id': self.destination_year_id.id,
-                    })
-                    level_ids = [(4, level_id.id) for level_id in source_semester_id.level_ids]
-                    # destination_semester_id.level_ids = level_ids
-                    destination_semester_id.write({'level_ids': level_ids })
-
             destination_class_id = self.env['siantou.ems.core.class'].search([
                 ('school_id', '=', self.school_id.id),
                 ('field_of_study_id', '=', self.field_of_study_id.id),
@@ -267,9 +225,51 @@ class ClassUeCopierWizard(models.TransientModel):
 
             ue_ids = []
             for ue_id in source_class_id.ue_ids:
+                destination_semester_ids = []
+                for source_semester_id in ue_id.semester_ids:
+                    years = source_semester_id.year_id.name.split('-')
+                    years = [int(y) for y in years]
+                    new_years = self.destination_year_id.name.split('-')
+                    new_years = [int(y) for y in new_years]
+
+                    destination_semester_id = self.env['siantou.ems.core.year.semester'].search([
+                        ('semester_name', '=', source_semester_id.semester_name),
+                        ('year_id', '=', self.destination_year_id.id),
+                    ], limit=1)
+                    if not destination_semester_id:
+                        year, week, day = source_semester_id.start_time.isocalendar()
+                        try:
+                            index_year = years.index(year)
+                        except ValueError:
+                            index_year = -1
+                        if index_year != -1 and len(years) > 1 and len(new_years) > 1:
+                            year = new_years[index_year]
+                        start_time = date.fromisocalendar(year, week, day)
+
+                        year, week, day = source_semester_id.end_time.isocalendar()
+                        try:
+                            index_year = years.index(year)
+                        except ValueError:
+                            index_year = -1
+                        if index_year != -1 and len(years) > 1 and len(new_years) > 1:
+                            year = new_years[index_year]
+                        end_time = date.fromisocalendar(year, week, day)
+
+                        destination_semester_id = self.env['siantou.ems.core.year.semester'].create({
+                            'name': source_semester_id.name,
+                            'start_time': start_time,
+                            'end_time': end_time,
+                            'year_id': self.destination_year_id.id,
+                        })
+                        level_ids = [(4, level_id.id) for level_id in source_semester_id.level_ids]
+                        # destination_semester_id.level_ids = level_ids
+                        destination_semester_id.write({'level_ids': level_ids })
+
+                    destination_semester_ids.append(destination_semester_id)
+
                 ue = self.env['siantou.ems.core.unite.enseignement'].search([
                     ('code', '=', ue_id.code),
-                    ('semester_ids', 'in', ue_id.semester_ids.ids),
+                    ('semester_ids', 'in', [semester_id.id for semester_id in destination_semester_ids]),
                 ], limit=1)
                 if not ue:
                     ue = self.env['siantou.ems.core.unite.enseignement'].create({
@@ -277,7 +277,7 @@ class ClassUeCopierWizard(models.TransientModel):
                         'name': ue_id.name,
                         'type_ue': ue_id.type_ue,
                     })
-                    semester_ids = [(4, semester_id.id) for semester_id in ue_id.semester_ids]
+                    semester_ids = [(4, semester_id.id) for semester_id in destination_semester_ids]
                     subject_ids = [(4, subject_id.id) for subject_id in ue_id.subject_ids]
                     ue.write({
                         'semester_ids': semester_ids,
