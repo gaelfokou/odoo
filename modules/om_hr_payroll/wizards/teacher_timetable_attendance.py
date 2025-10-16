@@ -37,6 +37,11 @@ class TeacherTimetableAttendance(models.TransientModel):
     _name = 'teacher.timetable.attendance'
     _description = 'Émargement d\'enseignant'
 
+    name = fields.Char(
+        string='Nom',
+        compute='_compute_name', store=True,
+    )
+
     timetable_id = fields.Many2one(
         'siantou.ems.timetable.timetable',
         string='Emploi du temps',
@@ -124,6 +129,16 @@ class TeacherTimetableAttendance(models.TransientModel):
     )
 
     amount = fields.Float()
+
+    @api.depends('timetable_id')
+    def _compute_name(self):
+        for record in self:
+            record.name = record.timetable_id.name
+
+    @api.onchange('timetable_id')
+    def _onchange_name(self):
+        for record in self:
+            record.name = record.timetable_id.name
 
     # Contrainte logique pour s'assurer que les heures de début et de fin sont définies et que l'heure de fin est supérieure à l'heure de début
     @api.constrains('start_time', 'end_time')
