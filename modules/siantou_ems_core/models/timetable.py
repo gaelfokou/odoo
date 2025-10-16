@@ -376,6 +376,14 @@ class Timetable(models.Model):
         # store=True
     )
 
+    # Taux de l\'enseignant
+    rate = fields.Float(
+        'Taux horaire',
+        default=0.0,
+    )
+
+    amount = fields.Float()
+
     def _default_group(self):
         return self.env['siantou.ems.timetable.group'].search([('is_active', '=', True)], limit=1)
 
