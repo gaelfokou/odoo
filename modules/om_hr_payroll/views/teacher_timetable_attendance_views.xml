@@ -7,6 +7,11 @@
             <field name="arch" type="xml">
                 <tree string="Émargements d'enseignant">
                     <header>
+                        <button name="action_reset_filter" 
+                            type="object" 
+                            string="Réinitialiser" 
+                            class="oe_highlight" 
+                            display="always"/>
                         <button name="action_open_filter" 
                             type="object" 
                             string="Filtrer" 

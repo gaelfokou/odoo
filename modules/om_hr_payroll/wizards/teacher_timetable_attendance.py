@@ -36,6 +36,8 @@ _logger = logging.getLogger(__name__)
 class TeacherTimetableAttendance(models.TransientModel):
     _name = 'teacher.timetable.attendance'
     _description = 'Émargement d\'enseignant'
+    _transient_max_count = 0
+    _transient_max_hours = 0.2
 
     name = fields.Char(
         string='Nom',
@@ -162,6 +164,14 @@ class TeacherTimetableAttendance(models.TransientModel):
                 'default_status': 'present',
             },
         }
+
+    def action_reset_filter(self):
+        self.env['ir.config_parameter'].sudo().set_param(f'siantou.filter_user_{self.env.user.id}', '')
+        action = self.env.ref('om_hr_payroll.action_show_teacher_timetable_attendance').read()[0]
+        action.update({
+            'target': 'main',
+        })
+        return action
 
     @staticmethod
     def convert_float_to_time(tm, has_second=False):

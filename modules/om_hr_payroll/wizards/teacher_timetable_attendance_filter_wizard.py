@@ -105,6 +105,9 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
 
         self.env['ir.config_parameter'].sudo().set_param(f'siantou.filter_user_{self.env.user.id}', title)
 
+        self.env['teacher.timetable.attendance']._transient_vacuum()
+        self.env['teacher.timetable.attendance'].search([]).unlink()
+
         view_id = self.env.ref('siantou_ems_core.timetable_tree_view').id
         return {
             'name': title,
@@ -114,7 +117,7 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
             'res_model': 'teacher.timetable.attendance',
             'views': [(view_id, 'tree'), (False, 'form')],
             'view_id': view_id,
-            'domain' : domain,
+            # 'domain' : domain,
             'target': 'main',
         }
 
