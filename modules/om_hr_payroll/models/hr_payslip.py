@@ -454,9 +454,6 @@ class HrPayslip(models.Model):
                             end_time = end_punching_time
                         if start_punching_time > start_time:
                             start_time = start_punching_time
-                        worked_hours = end_time - start_time
-                        worked_hours = worked_hours.total_seconds() / 3600.0
-                        worked_hours = round(worked_hours, 2)
                         start_time = datetime.strftime(start_time, TIME_FORMAT_FR)
                         start_time = HrPayslip.convert_time_to_float(start_time)
                         end_time = datetime.strftime(end_time, TIME_FORMAT_FR)
@@ -464,7 +461,6 @@ class HrPayslip(models.Model):
                         employee_timetable.sudo().write({
                             'worked_start_time': start_time,
                             'worked_end_time': end_time,
-                            'worked_time': worked_hours,
                             'status': 'present',
                         })
                     else:

@@ -41,7 +41,6 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
     employee_id = fields.Many2one(
         'hr.employee',
         'Enseignant',
-        required=True,
     )
 
     start_date = fields.Date(
@@ -74,6 +73,9 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
                 raise ValidationError("La date de fin doit être supérieure à la date de début")
 
     def action_filter(self):
+        self.env['teacher.timetable.attendance']._transient_vacuum()
+        self.env['teacher.timetable.attendance'].search([]).unlink()
+
         domain = []
         title = []
         if self.employee_id.id:
@@ -83,20 +85,56 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
             domain.append(('status', '=', self.status))
             title.append(STATUS_TIMETABLE[self.status])
 
-        timetable_ids = []
         timetables = self.env['siantou.ems.timetable.timetable'].search(domain)
         if self.start_date and self.end_date:
             start_date = datetime.strftime(self.start_date, DATE_FORMAT_FR)
             end_date = datetime.strftime(self.end_date, DATE_FORMAT_FR)
             title.append('{} - {}'.format(start_date, end_date))
             timetables = timetables.filtered(lambda rec: rec.date >= self.start_date and rec.date <= self.end_date)
-        for timetable in timetables:
-            timetable_ids.append(timetable.id)
-        timetable_ids = list(set(timetable_ids))
 
-        domain = [
-            ('id', 'in', timetable_ids)
-        ]
+        for timetable in timetables:
+            if timetable.status == 'present':
+                end_time = datetime.strptime(f"{timetable.date} {TeacherTimetableAttendanceFilterWizard.convert_float_to_time(timetable.worked_end_time, True)}", DATETIME_FORMAT)
+                start_time = datetime.strptime(f"{timetable.date} {TeacherTimetableAttendanceFilterWizard.convert_float_to_time(timetable.worked_start_time, True)}", DATETIME_FORMAT)
+            else:
+                end_time = datetime.strptime(f"{timetable.date} {TeacherTimetableAttendanceFilterWizard.convert_float_to_time(timetable.end_time, True)}", DATETIME_FORMAT)
+                start_time = datetime.strptime(f"{timetable.date} {TeacherTimetableAttendanceFilterWizard.convert_float_to_time(timetable.start_time, True)}", DATETIME_FORMAT)
+            worked_hours = end_time - start_time
+            worked_hours = worked_hours.total_seconds() / 3600.0
+            worked_hours = round(worked_hours, 2)
+
+            domain = [
+                ('school_id', '=', timetable.school_id.id),
+                ('cycle_id', '=', timetable.cycle_id.id),
+                ('level_id', '=', timetable.level_id.id),
+                ('diplome_availability_id.diplome_ids', 'in', timetable.employee_id.diplome_ids.ids),
+            ]
+
+            hourly_rate = self.env['siantou.ems.core.hourly.rate'].search(domain, limit=1)
+
+            if hourly_rate:
+                domain = [
+                    ('hourly_rate_id', '=', hourly_rate.id),
+                    ('employee_id', '=', timetable.employee_id.id),
+                    ('subject_id', '=', timetable.subject_id.id),
+                ]
+
+                teacher_hourly_rate = self.env['siantou.ems.core.teacher.hourly.rate'].search(domain, limit=1)
+                if teacher_hourly_rate:
+                    rate = teacher_hourly_rate.rate
+                else:
+                    rate = hourly_rate.rate
+            else:
+                rate = 0.0
+
+            amount = rate * worked_hours
+
+            teacher_timetable_attendance = self.env['teacher.timetable.attendance'].create({
+                'timetable_id': timetable.id,
+                'worked_time': worked_hours,
+                'rate': rate,
+                'amount': amount,
+            })
 
         if len(title) > 0:
             title = '/'.join(title)
@@ -104,9 +142,6 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
             title = 'Non spécifié'
 
         self.env['ir.config_parameter'].sudo().set_param(f'siantou.filter_user_{self.env.user.id}', title)
-
-        self.env['teacher.timetable.attendance']._transient_vacuum()
-        self.env['teacher.timetable.attendance'].search([]).unlink()
 
         view_id = self.env.ref('siantou_ems_core.timetable_tree_view').id
         return {
@@ -117,7 +152,6 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
             'res_model': 'teacher.timetable.attendance',
             'views': [(view_id, 'tree'), (False, 'form')],
             'view_id': view_id,
-            # 'domain' : domain,
             'target': 'main',
         }
 

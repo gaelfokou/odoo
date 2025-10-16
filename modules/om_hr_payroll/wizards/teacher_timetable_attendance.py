@@ -95,15 +95,15 @@ class TeacherTimetableAttendance(models.TransientModel):
     # Heure de début du cours
     worked_start_time = fields.Float(
         'Heure de début effectuée',
-        default=0.0,
-        widget='time'
+        related='timetable_id.worked_start_time',
+        store=True
     )
 
     # Heure de fin du cours
     worked_end_time = fields.Float(
         'Heure de fin effectuée',
-        default=0.0,
-        widget='time'
+        related='timetable_id.worked_end_time',
+        store=True
     )
 
     # Heure de fin du cours
@@ -121,7 +121,8 @@ class TeacherTimetableAttendance(models.TransientModel):
         ('exception', 'Exception'),
         ('delay', 'Retard'),
     ], 'Statut',
-        default='present',
+        related='timetable_id.status',
+        store=True
     )
 
     # Taux de l\'enseignant
