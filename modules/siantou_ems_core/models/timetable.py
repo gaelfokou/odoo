@@ -801,6 +801,8 @@ class Timetable(models.Model):
 
     def state_pending_timetable(self):
         self.write({
+            'worked_start_time': 0.0,
+            'worked_end_time': 0.0,
             'status': 'pending',
         })
 
@@ -811,6 +813,8 @@ class Timetable(models.Model):
 
     def state_progress_timetable(self):
         self.write({
+            'worked_start_time': 0.0,
+            'worked_end_time': 0.0,
             'status': 'progress',
         })
 
@@ -821,6 +825,8 @@ class Timetable(models.Model):
 
     def state_present_timetable(self):
         self.write({
+            'worked_start_time': self.start_time,
+            'worked_end_time': self.end_time,
             'status': 'present',
         })
 
@@ -831,6 +837,8 @@ class Timetable(models.Model):
 
     def state_absent_timetable(self):
         self.write({
+            'worked_start_time': 0.0,
+            'worked_end_time': 0.0,
             'status': 'absent',
         })
 
@@ -841,6 +849,8 @@ class Timetable(models.Model):
 
     def state_permission_timetable(self):
         self.write({
+            'worked_start_time': 0.0,
+            'worked_end_time': 0.0,
             'status': 'permission',
         })
 
@@ -851,6 +861,8 @@ class Timetable(models.Model):
 
     def state_exception_timetable(self):
         self.write({
+            'worked_start_time': 0.0,
+            'worked_end_time': 0.0,
             'status': 'exception',
         })
 
@@ -861,6 +873,8 @@ class Timetable(models.Model):
 
     def state_delay_timetable(self):
         self.write({
+            'worked_start_time': 0.0,
+            'worked_end_time': 0.0,
             'status': 'delay',
         })
 
