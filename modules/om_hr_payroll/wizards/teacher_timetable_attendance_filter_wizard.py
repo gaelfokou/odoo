@@ -35,7 +35,7 @@ _logger = logging.getLogger(__name__)
 
 class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
     _name = 'teacher.timetable.attendance.filter.wizard'
-    _description = 'Filtre des émargements d\'enseignant'
+    _description = 'Filtre des émargements des enseignants'
 
     # Enseignant lié à la programmation de cours
     employee_id = fields.Many2one(

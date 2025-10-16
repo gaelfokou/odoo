@@ -132,6 +132,22 @@ class TeacherTimetableAttendance(models.TransientModel):
             if record.end_time < record.start_time:
                 raise ValidationError("L'heure de fin du cours doit être supérieure à l'heure de début du cours")
 
+    def action_open_filter(self):
+        view_id = self.env.ref('om_hr_payroll.teacher_timetable_attendance_filter_wizard').id
+        return {
+            'name': 'Filtre des émargements des enseignants',
+            'type': 'ir.actions.act_window',
+            'view_type': 'form',
+            'view_mode': 'form',
+            'res_model': 'teacher.timetable.attendance.filter.wizard',
+            'views': [(view_id, 'form')],
+            'view_id': view_id,
+            'target': 'new',
+            'context': {
+                'default_status': 'present',
+            },
+        }
+
     @staticmethod
     def convert_float_to_time(tm, has_second=False):
         tm = str(tm)

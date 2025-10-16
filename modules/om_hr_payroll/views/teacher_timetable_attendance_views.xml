@@ -6,12 +6,26 @@
             <field name="model">teacher.timetable.attendance</field>
             <field name="arch" type="xml">
                 <tree string="Émargements d'enseignant">
-                    <group>
-                        <field name="employee_id" options="{'no_create': True}"/>
-                        <field name="start_date"/>
-                        <field name="end_date"/>
-                        <field name="status"/>
-                    </group>
+                    <header>
+                        <button name="action_open_filter" 
+                            type="object" 
+                            string="Filtrer" 
+                            class="oe_highlight" 
+                            display="always"/>
+                    </header>
+                    <field name="timetable_id"/>
+                    <field name="class_id"/>
+                    <field name="subject_id"/>
+                    <field name="employee_id"/>
+                    <field name="date"/>
+                    <field name="start_time"/>
+                    <field name="end_time"/>
+                    <field name="worked_start_time"/>
+                    <field name="worked_end_time"/>
+                    <field name="worked_time"/>
+                    <field name="rate"/>
+                    <field name="amount"/>
+                    <field name="status"/>
                 </tree>
             </field>
         </record>
@@ -20,7 +34,7 @@
         <record id="action_show_teacher_timetable_attendance" model="ir.actions.act_window">
             <field name="name">Émargements d'enseignant</field>
             <field name="res_model">teacher.timetable.attendance</field>
-            <field name="view_mode">tree</field>
+            <field name="view_mode">tree,form</field>
             <field name="target">current</field>
             <field name="view_id" ref="teacher_timetable_attendance"/>
         </record>
@@ -28,8 +42,8 @@
         <menuitem
             id="menu_teacher_timetable_attendance"
             name="Émargements d'enseignant"
-            parent="menu_hr_payroll_root"
             action="action_show_teacher_timetable_attendance"
-            sequence="1"/>
+            parent="menu_payroll_employee"
+            sequence="21"/>
     </data>
 </odoo>
