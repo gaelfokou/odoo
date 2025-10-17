@@ -179,13 +179,11 @@ class TeacherTimetableAttendance(models.TransientModel):
         teacher_timetable_attendances = self.env['teacher.timetable.attendance'].browse(active_ids)
         if len(active_ids) == 0:
             raise UserError('Aucune donnée sélectionnée')
-        report_data = self.env['teacher.timetable.attendance.print.wizard'].create({
-            'group_id': teacher_timetable_attendances[0].group_id.id,
-        })
+        report_data = self.env['teacher.timetable.attendance.print.wizard'].create({})
         domain = [
             ('id', 'in', active_ids)
         ]
-        data = report_data.print_timetable_report_data(domain)
+        data = report_data.print_teacher_timetable_attendance_report_data(domain)
 
         # Appeler le rapport PDF
         if not data['docdata']['timetable_data']:

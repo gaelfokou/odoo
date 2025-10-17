@@ -43,14 +43,25 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
         'Enseignant',
     )
 
+    def _default_start_date(self):
+        start_date = date.today().replace(day=1)
+        end_date = (datetime.now() + relativedelta(months=+1, day=1, days=-1)).date()
+        return start_date
+
     start_date = fields.Date(
         'Date de début',
-        required=True,
+        # required=True,
+        default=_default_start_date,
     )
+
+    def _default_end_date(self):
+        end_date = (datetime.now() + relativedelta(months=+1, day=1, days=-1)).date()
+        return end_date
 
     end_date = fields.Date(
         'Date de fin',
-        required=True,
+        # required=True,
+        default=_default_end_date,
     )
 
     status = fields.Selection([
