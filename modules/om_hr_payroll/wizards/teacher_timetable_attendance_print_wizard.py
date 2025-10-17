@@ -40,9 +40,9 @@ STATUS_TIMETABLE = {
 
 _logger = logging.getLogger(__name__)
 
-class TimetablePrintWizard(models.TransientModel):
-    _name = 'timetable.print.wizard'
-    _description = 'Assistant d\'impression des emplois du temps'
+class TeacherTimetableAttendancePrintWizard(models.TransientModel):
+    _name = 'teacher.timetable.attendance.print.wizard'
+    _description = 'Assistant d\'impression des émargements des enseignants'
 
     # Enseignant lié à la programmation de cours
     employee_id = fields.Many2one(
@@ -95,7 +95,7 @@ class TimetablePrintWizard(models.TransientModel):
         teacher_timetable_attendances = {}
         info_teacher_timetable_attendances = {}
         for search_teacher_timetable_attendance in search_teacher_timetable_attendances:
-            key = '{}-{}-{}-{}'.format(search_teacher_timetable_attendance.semester_id.id, search_teacher_timetable_attendance.class_id.id, search_teacher_timetable_attendance.field_of_study_id.id, search_teacher_timetable_attendance.specialty_id.id, search_teacher_timetable_attendance.level_id.id, search_teacher_timetable_attendance.batch_id.id)
+            key = '{}-{}'.format(search_teacher_timetable_attendance.semester_id.id, search_teacher_timetable_attendance.class_id.id)
             semester = '{}'.format(search_teacher_timetable_attendance.semester_id.name)
             study = '{} - {} - {} - {}'.format(search_teacher_timetable_attendance.class_id.name, search_teacher_timetable_attendance.field_of_study_id.name, search_teacher_timetable_attendance.specialty_id.name if search_teacher_timetable_attendance.specialty_id.id else '', search_teacher_timetable_attendance.level_id.name, search_teacher_timetable_attendance.batch_id.name)
             if not key in teacher_timetable_attendances:
@@ -140,67 +140,11 @@ class TimetablePrintWizard(models.TransientModel):
             teacher_timetable_attendance['status'] = STATUS_TIMETABLE[search_teacher_timetable_attendance.status]
             teacher_timetable_attendances[key].append(teacher_timetable_attendance)
 
-        for key in teacher_timetable_attendances.keys():
-            if len(teacher_timetable_attendances[key]) > 0:
-                field_of_study_id = teacher_timetable_attendances[key][0]['field_of_study_id']
-
-                slots = self.env['siantou.ems.timetable.slot'].search([
-                    ('is_active', '=', False),
-                ])
-                slots = list(slots)
-
-                available_slotitem = None
-                for slot in slots:
-                    field_of_study_ids = list(slot.field_of_study_ids)
-                    for field_of_study in field_of_study_ids:
-                        if field_of_study.id == field_of_study_id:
-                            available_slotitem = slot
-                            break
-                    if available_slotitem:
-                        break
-
-                if available_slotitem:
-                    slots = self.env['siantou.ems.timetable.slot'].search([
-                        ('id', '=', available_slotitem.id),
-                    ])
-                else:
-                    slots = self.env['siantou.ems.timetable.slot'].search([
-                        ('is_active', '=', True),
-                    ])
-
-                slots = list(slots)
-
-                not_active_slotitems = []
-                for slot in slots:
-                    not_active_slotitem_day_ids = slot.slotitem_day_ids.filtered(lambda s: not s.is_active)
-                    not_active_slotitem_day_ids = list(not_active_slotitem_day_ids)
-                    for not_active_slotitem_day_id in not_active_slotitem_day_ids:
-                        not_active_slotitems.append([round(not_active_slotitem_day_id.start_time, 2), round(not_active_slotitem_day_id.end_time, 2)])
-                    not_active_slotitem_night_ids = slot.slotitem_night_ids.filtered(lambda s: not s.is_active)
-                    not_active_slotitem_night_ids = list(not_active_slotitem_night_ids)
-                    for not_active_slotitem_night_id in not_active_slotitem_night_ids:
-                        not_active_slotitems.append([round(not_active_slotitem_night_id.start_time, 2), round(not_active_slotitem_night_id.end_time, 2)])
-
-                teacher_timetable_attendances[key] = TimetablePrintWizard.format_timetable(teacher_timetable_attendances[key], not_active_slotitems)
-            else:
-                teacher_timetable_attendances[key] = TimetablePrintWizard.format_timetable(teacher_timetable_attendances[key])
-            for monday in teacher_timetable_attendances[key].keys():
-                for i, timetable in enumerate(teacher_timetable_attendances[key][monday]['Heure']):
-                    tm = timetable.split('-')
-                    tm[0] = TimetablePrintWizard.convert_float_to_time(tm[0])
-                    tm[1] = TimetablePrintWizard.convert_float_to_time(tm[1])
-                    teacher_timetable_attendances[key][monday]['Heure'][i] = '{}-{}'.format(tm[0], tm[1])
-            teacher_timetable_attendances[key] = TimetablePrintWizard.paginate_calendar(teacher_timetable_attendances[key], len(teacher_timetable_attendances[key].keys()))
-            teacher_timetable_attendances[key]['semester'] = info_teacher_timetable_attendances[key]['semester']
-            teacher_timetable_attendances[key]['study'] = info_teacher_timetable_attendances[key]['study']
-            teacher_timetable_attendances[key]['filter'] = info_teacher_timetable_attendances[key]['filter']
-
         _logger.info(f'----------- tototototototo teacher_timetable_attendances {teacher_timetable_attendances} -----------')
 
         return {
             'docdata': {
-                'timetable_data': teacher_timetable_attendances,
-                'semester': self.semester_id.name,
+                'teacher_timetable_attendance_data': teacher_timetable_attendances,
             }
         }
 

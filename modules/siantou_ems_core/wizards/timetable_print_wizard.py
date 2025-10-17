@@ -144,7 +144,7 @@ class TimetablePrintWizard(models.TransientModel):
         timetables = {}
         info_timetables = {}
         for search_timetable in search_timetables:
-            key = '{}-{}-{}-{}'.format(search_timetable.semester_id.id, search_timetable.class_id.id, search_timetable.field_of_study_id.id, search_timetable.specialty_id.id, search_timetable.level_id.id, search_timetable.batch_id.id)
+            key = '{}-{}'.format(search_timetable.semester_id.id, search_timetable.class_id.id)
             semester = '{}'.format(search_timetable.semester_id.name)
             study = '{} - {} - {} - {}'.format(search_timetable.class_id.name, search_timetable.field_of_study_id.name, search_timetable.specialty_id.name if search_timetable.specialty_id.id else '', search_timetable.level_id.name, search_timetable.batch_id.name)
             if not key in timetables:

@@ -103,16 +103,34 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
             title.append('{} - {}'.format(start_date, end_date))
             timetables = timetables.filtered(lambda rec: rec.date >= self.start_date and rec.date <= self.end_date)
 
+        key_timetables = {}
         for timetable in timetables:
             if timetable.status == 'present':
                 end_time = datetime.strptime(f"{timetable.date} {TeacherTimetableAttendanceFilterWizard.convert_float_to_time(timetable.worked_end_time, True)}", DATETIME_FORMAT)
                 start_time = datetime.strptime(f"{timetable.date} {TeacherTimetableAttendanceFilterWizard.convert_float_to_time(timetable.worked_start_time, True)}", DATETIME_FORMAT)
+
+                key = '{}-{}-{}-{}'.format(timetable.employee_id.id, timetable.date, start_time, end_time)
+                if not key in key_timetables:
+                    key_timetables[key] = timetable
+                else:
+                    continue
+
+                worked_hours = end_time - start_time
+                worked_hours = worked_hours.total_seconds() / 3600.0
+                worked_hours = round(worked_hours, 2)
             else:
                 end_time = datetime.strptime(f"{timetable.date} {TeacherTimetableAttendanceFilterWizard.convert_float_to_time(timetable.end_time, True)}", DATETIME_FORMAT)
                 start_time = datetime.strptime(f"{timetable.date} {TeacherTimetableAttendanceFilterWizard.convert_float_to_time(timetable.start_time, True)}", DATETIME_FORMAT)
-            worked_hours = end_time - start_time
-            worked_hours = worked_hours.total_seconds() / 3600.0
-            worked_hours = round(worked_hours, 2)
+
+                key = '{}-{}-{}-{}'.format(timetable.employee_id.id, timetable.date, start_time, end_time)
+                if not key in key_timetables:
+                    key_timetables[key] = timetable
+                else:
+                    continue
+
+                worked_hours = end_time - start_time
+                worked_hours = worked_hours.total_seconds() / 3600.0
+                worked_hours = round(worked_hours, 2)
 
             domain = [
                 ('school_id', '=', timetable.school_id.id),
