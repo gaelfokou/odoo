@@ -68,49 +68,57 @@
                             </thead>
                             <thead>
                                 <tr class="active">
-                                    <th class="text-center">Nom(s) et prénom(s)</th>
-                                    <th class="text-center">Nom(s)</th>
-                                    <th class="text-center">Prénom(s)</th>
-                                    <th class="text-center">E-mail</th>
-                                    <th class="text-center">Date de naissance</th>
-                                    <th class="text-center">Est un enseignant</th>
-                                    <th class="text-center">Est un permanent</th>
-                                    <th class="text-center">Matricule</th>
-                                    <th class="text-center">Quota horaire hebdommadaire</th>
+                                    <th class="text-center">Enseignant</th>
+                                    <th class="text-center">Classe</th>
+                                    <th class="text-center">Cours</th>
+                                    <th class="text-center">Date</th>
+                                    <th class="text-center">Heure de début</th>
+                                    <th class="text-center">Heure de fin</th>
+                                    <th class="text-center">Heure de début effectuée</th>
+                                    <th class="text-center">Heure de fin effectuée</th>
+                                    <th class="text-center">Heure effectuée</th>
+                                    <th class="text-center">Taux horaire</th>
+                                    <th class="text-center">Montant</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <t t-set="keys" t-value="docdata['teacher_timetable_attendance_data'].keys()"/>
                                 <t t-foreach="keys" t-as="key">
-                                    <t t-set="teachers" t-value="docdata['teacher_timetable_attendance_data'][key]"/>
-                                    <t t-foreach="teachers" t-as="teacher">
+                                    <t t-set="timetables" t-value="docdata['teacher_timetable_attendance_data'][key]"/>
+                                    <t t-foreach="timetables" t-as="timetable">
                                         <tr>
                                             <td class="text-center">
-                                                <span t-esc="teacher['employee_name']"/>
+                                                <span t-esc="timetable['employee_name']"/>
                                             </td>
                                             <td class="text-center">
-                                                <span t-esc="teacher['class_name']"/>
+                                                <span t-esc="timetable['class_name']"/>
                                             </td>
                                             <td class="text-center">
-                                                <span t-esc="teacher['subject_name']"/>
+                                                <span t-esc="timetable['subject_name']"/>
                                             </td>
                                             <td class="text-center">
-                                                <span t-esc="teacher['date_of_week']"/>
+                                                <span t-esc="timetable['date_of_week']"/>
                                             </td>
                                             <td class="text-center">
-                                                <span t-esc="teacher['start_time']"/>
+                                                <span t-esc="timetable['start_time']"/>
                                             </td>
                                             <td class="text-center">
-                                                <span t-esc="teacher['end_time']"/>
+                                                <span t-esc="timetable['end_time']"/>
                                             </td>
                                             <td class="text-center">
-                                                <span t-esc="'Oui' if teacher['is_teacher'] else 'Non'"/>
+                                                <span t-esc="timetable['worked_start_time']"/>
                                             </td>
                                             <td class="text-center">
-                                                <span t-esc="'Oui' if teacher['is_permanent'] else 'Non'"/>
+                                                <span t-esc="timetable['worked_end_time']"/>
                                             </td>
                                             <td class="text-center">
-                                                <span t-esc="teacher['weekly_hours_limit']"/>
+                                                <span t-esc="timetable['worked_time']"/>
+                                            </td>
+                                            <td class="text-center">
+                                                <span t-esc="timetable['rate']"/>
+                                            </td>
+                                            <td class="text-center">
+                                                <span t-esc="timetable['amount']"/>
                                             </td>
                                         </tr>
                                     </t>

@@ -79,10 +79,10 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
             teacher_timetable_attendance['subject_code'] = search_teacher_timetable_attendance.subject_id.code
             teacher_timetable_attendance['subject_shared_subject'] = '(TC)' if search_teacher_timetable_attendance.subject_id.shared_subject else ''
             teacher_timetable_attendance['employee_name'] = search_teacher_timetable_attendance.employee_id.name
-            teacher_timetable_attendance['start_time'] = search_teacher_timetable_attendance.start_time
-            teacher_timetable_attendance['end_time'] = search_teacher_timetable_attendance.end_time
-            teacher_timetable_attendance['worked_start_time'] = search_teacher_timetable_attendance.worked_start_time
-            teacher_timetable_attendance['worked_end_time'] = search_teacher_timetable_attendance.worked_end_time
+            teacher_timetable_attendance['start_time'] = TeacherTimetableAttendancePrintWizard.convert_float_to_time(search_teacher_timetable_attendance.start_time)
+            teacher_timetable_attendance['end_time'] = TeacherTimetableAttendancePrintWizard.convert_float_to_time(search_teacher_timetable_attendance.end_time)
+            teacher_timetable_attendance['worked_start_time'] = TeacherTimetableAttendancePrintWizard.convert_float_to_time(search_teacher_timetable_attendance.worked_start_time)
+            teacher_timetable_attendance['worked_end_time'] = TeacherTimetableAttendancePrintWizard.convert_float_to_time(search_teacher_timetable_attendance.worked_end_time)
             teacher_timetable_attendance['worked_time'] = search_teacher_timetable_attendance.worked_time
             teacher_timetable_attendance['rate'] = search_teacher_timetable_attendance.rate
             teacher_timetable_attendance['amount'] = search_teacher_timetable_attendance.amount
