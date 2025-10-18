@@ -27,7 +27,7 @@ class TeacherPrintWizard(models.TransientModel):
         default=False,
     )
 
-    def print_teacher(self):
+    def action_print_pdf(self):
         data = self.print_teacher_report_data()
 
         # Appeler le rapport PDF

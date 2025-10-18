@@ -22,7 +22,7 @@ class SubjectPrintWizard(models.TransientModel):
     _name = 'subject.print.wizard'
     _description = 'Assistant d\'impression des subjects'
 
-    def print_subject(self):
+    def action_print_pdf(self):
         data = self.print_subject_report_data()
 
         # Appeler le rapport PDF

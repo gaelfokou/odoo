@@ -44,39 +44,6 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
     _name = 'teacher.timetable.attendance.print.wizard'
     _description = 'Assistant d\'impression des émargements des enseignants'
 
-    # Enseignant lié à la programmation de cours
-    employee_id = fields.Many2one(
-        'hr.employee',
-        'Enseignant',
-    )
-
-    start_date = fields.Date(
-        'Date de début',
-    )
-
-    end_date = fields.Date(
-        'Date de fin',
-    )
-
-    status = fields.Selection([
-        ('pending', 'En attente'),
-        ('progress', 'En cours'),
-        ('present', 'Présent'),
-        ('absent', 'Absent'),
-        ('permission', 'Permission'),
-        ('exception', 'Exception'),
-        ('delay', 'Retard'),
-    ], 'Statut',
-        default='present',
-    )
-
-    # Contrainte logique pour s'assurer que les dates de début et de fin sont définies et que la date de fin est supérieure à la date de début
-    @api.constrains('start_date', 'end_date')
-    def _constrains_date(self):
-        for record in self:
-            if record.end_date < record.start_date:
-                raise ValidationError("La date de fin doit être supérieure à la date de début")
-
     def action_print_pdf(self):
         data = self.print_teacher_timetable_attendance_report_data()
 
@@ -86,9 +53,13 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
         report_action = self.env.ref('siantou_ems_core.action_report_timetable')
         return report_action.report_action(self, data=data)
 
-    def print_teacher_timetable_attendance_report_data(self):
+    def print_teacher_timetable_attendance_report_data(self, domains=None):
         # Récupérer les emplois du temps pour le semestre sélectionné
         domain = []
+
+        if domains:
+            for d in domains:
+                domain.append(d)
 
         search_teacher_timetable_attendances = self.env['teacher.timetable.attendance'].search(domain)
 

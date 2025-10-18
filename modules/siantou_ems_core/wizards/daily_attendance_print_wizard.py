@@ -35,7 +35,7 @@ class TeacherPrintWizard(models.TransientModel):
     _name = 'daily.attendance.print.wizard'
     _description = 'Assistant d\'impression des présences'
 
-    def print_daily_attendance(self):
+    def action_print_pdf(self):
         data = self.print_daily_attendance_report_data()
 
         # Appeler le rapport PDF

@@ -22,7 +22,7 @@ class ClassPrintWizard(models.TransientModel):
     _name = 'class.print.wizard'
     _description = 'Assistant d\'impression des classes'
 
-    def print_class(self):
+    def action_print_pdf(self):
         data = self.print_class_report_data()
 
         # Appeler le rapport PDF

@@ -17,7 +17,7 @@ class StudentPrintWizard(models.TransientModel):
     _name = 'student.print.wizard'
     _description = 'Assistant d\'impression des étudiants'
 
-    def print_student(self):
+    def action_print_pdf(self):
         data = self.print_student_report_data()
 
         # Appeler le rapport PDF
