@@ -46,6 +46,7 @@
         'data/timetable_exception.xml',
         'views/teacher_timetable_attendance_filter_wizard_views.xml',
         'views/teacher_timetable_attendance_views.xml',
+        'report/teacher_timetable_attendance_template.xml',
     ],
     'images': ['static/description/banner.png'],
     'application': True,

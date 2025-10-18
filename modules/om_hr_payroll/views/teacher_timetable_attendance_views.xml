@@ -5,7 +5,7 @@
             <field name="name">teacher.timetable.attendance.tree</field>
             <field name="model">teacher.timetable.attendance</field>
             <field name="arch" type="xml">
-                <tree string="Émargements d'enseignant">
+                <tree string="Émargements des enseignants">
                     <header>
                         <button name="action_reset_filter" 
                             type="object" 
@@ -42,7 +42,7 @@
 
         <!-- Define an action to open the tree view -->
         <record id="action_show_teacher_timetable_attendance" model="ir.actions.act_window">
-            <field name="name">Émargements d'enseignant</field>
+            <field name="name">Émargements des enseignants</field>
             <field name="res_model">teacher.timetable.attendance</field>
             <field name="view_mode">tree</field>
             <field name="target">current</field>
@@ -51,7 +51,7 @@
 
         <menuitem
             id="menu_teacher_timetable_attendance"
-            name="Émargements d'enseignant"
+            name="Émargements des enseignants"
             action="action_show_teacher_timetable_attendance"
             parent="menu_payroll_employee"
             sequence="21"/>

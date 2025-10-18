@@ -50,7 +50,7 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
         # Appeler le rapport PDF
         if not data['docdata']['teacher_timetable_attendance_data']:
             raise UserError("Aucune donnée trouvée")
-        report_action = self.env.ref('siantou_ems_core.action_report_timetable')
+        report_action = self.env.ref('om_hr_payroll.action_report_teacher_timetable_attendance')
         return report_action.report_action(self, data=data)
 
     def print_teacher_timetable_attendance_report_data(self, domains=None):
@@ -64,13 +64,10 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
         search_teacher_timetable_attendances = self.env['teacher.timetable.attendance'].search(domain)
 
         key_teacher_timetable_attendances = {}
-        info_teacher_timetable_attendances = {}
         for search_teacher_timetable_attendance in search_teacher_timetable_attendances:
             key = '{}'.format(search_teacher_timetable_attendance.employee_id.id)
             if not key in key_teacher_timetable_attendances:
                 key_teacher_timetable_attendances[key] = []
-                info_teacher_timetable_attendances[key] = {}
-                info_teacher_timetable_attendances[key]['filter'] = self.env['ir.config_parameter'].sudo().get_param(f'siantou.filter_user_{self.env.user.id}', '')
             teacher_timetable_attendance = {}
             teacher_timetable_attendance['id'] = search_teacher_timetable_attendance.id
             teacher_timetable_attendance['date'] = search_teacher_timetable_attendance.date
@@ -92,10 +89,13 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
             teacher_timetable_attendance['status'] = STATUS_TIMETABLE[search_teacher_timetable_attendance.status]
             key_teacher_timetable_attendances[key].append(teacher_timetable_attendance)
 
+        title = self.env['ir.config_parameter'].sudo().get_param(f'siantou.filter_user_{self.env.user.id}', '')
+
         _logger.info(f'----------- tototototototo key_teacher_timetable_attendances {key_teacher_timetable_attendances} -----------')
 
         return {
             'docdata': {
+                'filter': title,
                 'teacher_timetable_attendance_data': key_teacher_timetable_attendances,
             }
         }

@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="paperformat_teacher" model="report.paperformat">
+        <field name="name">Format du diplome</field>
+        <field name="default" eval="True"/>
+        <field name="format">A2</field>
+        <field name="orientation">Landscape</field>
+        <field name="margin_top">5</field>
+        <field name="margin_bottom">15</field>
+        <field name="margin_left">7</field>
+        <field name="margin_right">7</field>
+        <field name="header_line" eval="True"/>
+        <field name="header_spacing">5</field>
+        <field name="dpi">90</field>
+    </record>
+    <record id="action_report_teacher_timetable_attendance" model="ir.actions.report">
+        <field name="name">Émargement d'enseignant PDF</field>
+        <field name="model">teacher.timetable.attendance</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">om_hr_payroll.report_teacher_timetable_attendance</field>
+        <field name="report_file">om_hr_payroll.report_teacher_timetable_attendance</field>
+        <field name="print_report_name">'Fiche de - %s' % (docdata.semester)</field>
+        <field name="binding_model_id" eval="False"/>
+        <field name="paperformat_id" ref="paperformat_teacher"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <!-- Template du rapport -->
+    <template id="report_teacher_timetable_attendance">
+        <t t-call="web.html_container">
+            <t t-if="docdata and docdata['teacher_timetable_attendance_data']">
+                <t t-call="web.external_layout">
+                    <style>
+                        .table {
+                            border-collapse: collapse;
+                            width: 100%;
+                        }
+                        .table .thead th, .table td {
+                            border: 1px solid black;
+                            padding: 8px;
+                            text-align: center;
+                        }
+                        .table .thead th {
+                            background-color: #f2f2f2;
+                        }
+                    </style>
+                    <div class="page">
+                        <table class="table table-bordered table-sm text-center">
+                            <thead>
+                                <tr>
+                                    <th class="text-center" colspan="9" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;">
+                                        <h3>INSTITUT UNIVERSITAIRE SIANTOU</h3>
+                                        <h4>
+                                            <span t-esc="'Liste des émargements des enseignants'"/>
+                                        </h4>
+                                        <h5 class="text-left">
+                                            <span t-esc="'Filtre :'"/>
+                                            <span t-esc="docdata['filter'] or 'Non spécifié'"/>
+                                        </h5>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <thead>
+                                <tr>
+                                    <th class="text-left" colspan="9" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
+                                </tr>
+                            </thead>
+                            <thead>
+                                <tr class="active">
+                                    <th class="text-center">Nom(s) et prénom(s)</th>
+                                    <th class="text-center">Nom(s)</th>
+                                    <th class="text-center">Prénom(s)</th>
+                                    <th class="text-center">E-mail</th>
+                                    <th class="text-center">Date de naissance</th>
+                                    <th class="text-center">Est un enseignant</th>
+                                    <th class="text-center">Est un permanent</th>
+                                    <th class="text-center">Matricule</th>
+                                    <th class="text-center">Quota horaire hebdommadaire</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-set="teachers" t-value="docdata['teacher_timetable_attendance_data']"/>
+                                <t t-foreach="teachers" t-as="teacher">
+                                    <tr>
+                                        <td class="text-center">
+                                            <span t-esc="teacher['name']"/>
+                                        </td>
+                                        <td class="text-center">
+                                            <span t-esc="teacher['last_name']"/>
+                                        </td>
+                                        <td class="text-center">
+                                            <span t-esc="teacher['first_name']"/>
+                                        </td>
+                                        <td class="text-center">
+                                            <span t-esc="teacher['work_email']"/>
+                                        </td>
+                                        <td class="text-center">
+                                            <span t-esc="teacher['birthday']"/>
+                                        </td>
+                                        <td class="text-center">
+                                            <span t-esc="'Oui' if teacher['is_teacher'] else 'Non'"/>
+                                        </td>
+                                        <td class="text-center">
+                                            <span t-esc="'Oui' if teacher['is_permanent'] else 'Non'"/>
+                                        </td>
+                                        <td class="text-center">
+                                            <span t-esc="teacher['identifier']"/>
+                                        </td>
+                                        <td class="text-center">
+                                            <span t-esc="teacher['weekly_hours_limit']"/>
+                                        </td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+                    </div>
+                </t>
+            </t>
+            <t t-else="">
+                <div>Aucune donnée d'emploi du temps disponible. Veuillez vérifier vos filtres.</div>
+            </t>
+        </t>
+    </template>
+</odoo>

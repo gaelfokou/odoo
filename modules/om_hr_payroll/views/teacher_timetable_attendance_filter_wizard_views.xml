@@ -5,7 +5,7 @@
             <field name="name">teacher.timetable.attendance.filter.wizard.form</field>
             <field name="model">teacher.timetable.attendance.filter.wizard</field>
             <field name="arch" type="xml">
-                <form string="Filtre des émargements d'enseignant">
+                <form string="Filtre des émargements des enseignants">
                     <group>
                         <field name="employee_id" options="{'no_create': True}"/>
                         <field name="start_date"/>
@@ -22,7 +22,7 @@
 
         <!-- Define an action to open the form view -->
         <record id="action_filter_teacher_timetable_attendance_wizard" model="ir.actions.act_window">
-            <field name="name">Filtre des émargements d'enseignant</field>
+            <field name="name">Filtre des émargements des enseignants</field>
             <field name="res_model">teacher.timetable.attendance.filter.wizard</field>
             <field name="view_mode">form</field>
             <field name="target">new</field>
