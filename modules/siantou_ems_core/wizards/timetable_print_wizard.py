@@ -141,14 +141,14 @@ class TimetablePrintWizard(models.TransientModel):
 
         search_timetables = self.env['siantou.ems.timetable.timetable'].search(domain)
 
-        timetables = {}
+        key_timetables = {}
         info_timetables = {}
         for search_timetable in search_timetables:
             key = '{}-{}'.format(search_timetable.semester_id.id, search_timetable.class_id.id)
             semester = '{}'.format(search_timetable.semester_id.name)
             study = '{} - {} - {} - {}'.format(search_timetable.class_id.name, search_timetable.field_of_study_id.name, search_timetable.specialty_id.name if search_timetable.specialty_id.id else '', search_timetable.level_id.name, search_timetable.batch_id.name)
-            if not key in timetables:
-                timetables[key] = []
+            if not key in key_timetables:
+                key_timetables[key] = []
                 info_timetables[key] = {}
                 info_timetables[key]['semester'] = semester
                 info_timetables[key]['study'] = study
@@ -187,11 +187,11 @@ class TimetablePrintWizard(models.TransientModel):
             timetable['end_time'] = search_timetable.end_time
             timetable['not_active_slotitems'] = search_timetable.not_active_slotitems
             timetable['status'] = STATUS_TIMETABLE[search_timetable.status]
-            timetables[key].append(timetable)
+            key_timetables[key].append(timetable)
 
-        for key in timetables.keys():
-            if len(timetables[key]) > 0:
-                field_of_study_id = timetables[key][0]['field_of_study_id']
+        for key in key_timetables.keys():
+            if len(key_timetables[key]) > 0:
+                field_of_study_id = key_timetables[key][0]['field_of_study_id']
 
                 slots = self.env['siantou.ems.timetable.slot'].search([
                     ('is_active', '=', False),
@@ -230,25 +230,25 @@ class TimetablePrintWizard(models.TransientModel):
                     for not_active_slotitem_night_id in not_active_slotitem_night_ids:
                         not_active_slotitems.append([round(not_active_slotitem_night_id.start_time, 2), round(not_active_slotitem_night_id.end_time, 2)])
 
-                timetables[key] = TimetablePrintWizard.format_timetable(timetables[key], not_active_slotitems)
+                key_timetables[key] = TimetablePrintWizard.format_timetable(key_timetables[key], not_active_slotitems)
             else:
-                timetables[key] = TimetablePrintWizard.format_timetable(timetables[key])
-            for monday in timetables[key].keys():
-                for i, timetable in enumerate(timetables[key][monday]['Heure']):
+                key_timetables[key] = TimetablePrintWizard.format_timetable(key_timetables[key])
+            for monday in key_timetables[key].keys():
+                for i, timetable in enumerate(key_timetables[key][monday]['Heure']):
                     tm = timetable.split('-')
                     tm[0] = TimetablePrintWizard.convert_float_to_time(tm[0])
                     tm[1] = TimetablePrintWizard.convert_float_to_time(tm[1])
-                    timetables[key][monday]['Heure'][i] = '{}-{}'.format(tm[0], tm[1])
-            timetables[key] = TimetablePrintWizard.paginate_calendar(timetables[key], len(timetables[key].keys()))
-            timetables[key]['semester'] = info_timetables[key]['semester']
-            timetables[key]['study'] = info_timetables[key]['study']
-            timetables[key]['filter'] = info_timetables[key]['filter']
+                    key_timetables[key][monday]['Heure'][i] = '{}-{}'.format(tm[0], tm[1])
+            key_timetables[key] = TimetablePrintWizard.paginate_calendar(key_timetables[key], len(key_timetables[key].keys()))
+            key_timetables[key]['semester'] = info_timetables[key]['semester']
+            key_timetables[key]['study'] = info_timetables[key]['study']
+            key_timetables[key]['filter'] = info_timetables[key]['filter']
 
-        _logger.info(f'----------- tototototototo timetables {timetables} -----------')
+        _logger.info(f'----------- tototototototo key_timetables {key_timetables} -----------')
 
         return {
             'docdata': {
-                'timetable_data': timetables,
+                'timetable_data': key_timetables,
                 'semester': self.semester_id.name,
             }
         }
@@ -327,7 +327,7 @@ class TimetablePrintWizard(models.TransientModel):
         n = 0.0
         current_data = []
         current_hours = []
-        timetables = {}
+        key_timetables = {}
         df = {}
 
         for i in range(len(data)):
@@ -397,8 +397,8 @@ class TimetablePrintWizard(models.TransientModel):
             else:
                 monday = d['date'] - timedelta(days=d['date'].weekday())
             monday = datetime.strftime(monday, DATE_FORMAT)
-            if not monday in timetables:
-                timetables[monday] = {
+            if not monday in key_timetables:
+                key_timetables[monday] = {
                     'Heure': [hour for hour in current_hours],
                     'Lundi': [],
                     'Mardi': [],
@@ -409,22 +409,22 @@ class TimetablePrintWizard(models.TransientModel):
                     'Dimanche': [],
                 }
 
-                for i in range(len(timetables[monday]['Heure'])):
-                    for key in timetables[monday].keys():
+                for i in range(len(key_timetables[monday]['Heure'])):
+                    for key in key_timetables[monday].keys():
                         if key == 'Heure':
                             continue
-                        timetables[monday][key].append(np.nan)
+                        key_timetables[monday][key].append(np.nan)
             if not monday in df:
-                df[monday] = pd.DataFrame(timetables[monday], dtype=str)
+                df[monday] = pd.DataFrame(key_timetables[monday], dtype=str)
             while TimetablePrintWizard.increment_float_time(d['start_time']) < TimetablePrintWizard.increment_float_time(d['end_time']):
                 if TimetablePrintWizard.increment_float_time(d['start_time'], n) < TimetablePrintWizard.increment_float_time(d['end_time']):
                     h = '{}-{}'.format(TimetablePrintWizard.increment_float_time(d['start_time']), TimetablePrintWizard.increment_float_time(d['start_time'], n))
                 else:
                     h = '{}-{}'.format(TimetablePrintWizard.increment_float_time(d['start_time']), TimetablePrintWizard.increment_float_time(d['end_time']))
                 for i, row in df[monday].iterrows():
-                    if h == timetables[monday]['Heure'][i]:
+                    if h == key_timetables[monday]['Heure'][i]:
                         for j, column in enumerate(df[monday].columns):
-                            for k, key in enumerate(timetables[monday].keys()):
+                            for k, key in enumerate(key_timetables[monday].keys()):
                                 if k == d['date'].weekday() + 1:
                                     if column == key:
                                         if TimetablePrintWizard.is_float(str(df[monday].loc[i, column])) and np.isnan(float(str(df[monday].loc[i, column]))):
@@ -437,14 +437,14 @@ class TimetablePrintWizard(models.TransientModel):
         for monday in df.keys():
             df[monday].replace(np.nan, '-', inplace=True)
 
-            for key in timetables[monday].keys():
-                timetables[monday][key] = list(df[monday][key])
+            for key in key_timetables[monday].keys():
+                key_timetables[monday][key] = list(df[monday][key])
                 if key != 'Heure':
-                    for i, vals in enumerate(timetables[monday][key]):
-                        timetables[monday][key][i] = []
+                    for i, vals in enumerate(key_timetables[monday][key]):
+                        key_timetables[monday][key][i] = []
                         if vals != '-':
                             for v in vals.split('-'):
-                                timetables[monday][key][i].append([d for d in data if d['id'] == int(v)][0])
+                                key_timetables[monday][key][i].append([d for d in data if d['id'] == int(v)][0])
 
             monday = datetime.strptime(f"{monday}", DATE_FORMAT).date()
             saturday = monday + timedelta(days=5)
@@ -452,12 +452,12 @@ class TimetablePrintWizard(models.TransientModel):
             saturday_fr = datetime.strftime(saturday, DATE_FORMAT_FR)
             monday = datetime.strftime(monday, DATE_FORMAT)
             saturday = '{} - {}'.format(monday_fr, saturday_fr)
-            timetables[saturday] = timetables[monday]
-            del(timetables[monday])
+            key_timetables[saturday] = key_timetables[monday]
+            del(key_timetables[monday])
 
-        _logger.info(f'----------- tototototototo timetables {timetables} -----------')
+        _logger.info(f'----------- tototototototo key_timetables {key_timetables} -----------')
 
-        return timetables
+        return key_timetables
 
     def convert_number_to_weekday(self, number):
         if number == '0':

@@ -92,14 +92,14 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
 
         search_teacher_timetable_attendances = self.env['teacher.timetable.attendance'].search(domain)
 
-        teacher_timetable_attendances = {}
+        key_teacher_timetable_attendances = {}
         info_teacher_timetable_attendances = {}
         for search_teacher_timetable_attendance in search_teacher_timetable_attendances:
             key = '{}-{}'.format(search_teacher_timetable_attendance.semester_id.id, search_teacher_timetable_attendance.class_id.id)
             semester = '{}'.format(search_teacher_timetable_attendance.semester_id.name)
             study = '{} - {} - {} - {}'.format(search_teacher_timetable_attendance.class_id.name, search_teacher_timetable_attendance.field_of_study_id.name, search_teacher_timetable_attendance.specialty_id.name if search_teacher_timetable_attendance.specialty_id.id else '', search_teacher_timetable_attendance.level_id.name, search_teacher_timetable_attendance.batch_id.name)
-            if not key in teacher_timetable_attendances:
-                teacher_timetable_attendances[key] = []
+            if not key in key_teacher_timetable_attendances:
+                key_teacher_timetable_attendances[key] = []
                 info_teacher_timetable_attendances[key] = {}
                 info_teacher_timetable_attendances[key]['semester'] = semester
                 info_teacher_timetable_attendances[key]['study'] = study
@@ -138,13 +138,13 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
             teacher_timetable_attendance['end_time'] = search_teacher_timetable_attendance.end_time
             teacher_timetable_attendance['not_active_slotitems'] = search_teacher_timetable_attendance.not_active_slotitems
             teacher_timetable_attendance['status'] = STATUS_TIMETABLE[search_teacher_timetable_attendance.status]
-            teacher_timetable_attendances[key].append(teacher_timetable_attendance)
+            key_teacher_timetable_attendances[key].append(teacher_timetable_attendance)
 
-        _logger.info(f'----------- tototototototo teacher_timetable_attendances {teacher_timetable_attendances} -----------')
+        _logger.info(f'----------- tototototototo key_teacher_timetable_attendances {key_teacher_timetable_attendances} -----------')
 
         return {
             'docdata': {
-                'teacher_timetable_attendance_data': teacher_timetable_attendances,
+                'teacher_timetable_attendance_data': key_teacher_timetable_attendances,
             }
         }
 
