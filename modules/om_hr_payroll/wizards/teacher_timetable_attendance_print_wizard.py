@@ -67,13 +67,9 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
         info_teacher_timetable_attendances = {}
         for search_teacher_timetable_attendance in search_teacher_timetable_attendances:
             key = '{}-{}'.format(search_teacher_timetable_attendance.semester_id.id, search_teacher_timetable_attendance.class_id.id)
-            semester = '{}'.format(search_teacher_timetable_attendance.semester_id.name)
-            study = '{} - {} - {} - {}'.format(search_teacher_timetable_attendance.class_id.name, search_teacher_timetable_attendance.field_of_study_id.name, search_teacher_timetable_attendance.specialty_id.name if search_teacher_timetable_attendance.specialty_id.id else '', search_teacher_timetable_attendance.level_id.name, search_teacher_timetable_attendance.batch_id.name)
             if not key in key_teacher_timetable_attendances:
                 key_teacher_timetable_attendances[key] = []
                 info_teacher_timetable_attendances[key] = {}
-                info_teacher_timetable_attendances[key]['semester'] = semester
-                info_teacher_timetable_attendances[key]['study'] = study
                 info_teacher_timetable_attendances[key]['filter'] = self.env['ir.config_parameter'].sudo().get_param(f'siantou.filter_user_{self.env.user.id}', '')
             teacher_timetable_attendance = {}
             teacher_timetable_attendance['id'] = search_teacher_timetable_attendance.id
