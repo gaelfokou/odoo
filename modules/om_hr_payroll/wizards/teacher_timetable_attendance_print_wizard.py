@@ -66,7 +66,7 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
         key_teacher_timetable_attendances = {}
         info_teacher_timetable_attendances = {}
         for search_teacher_timetable_attendance in search_teacher_timetable_attendances:
-            key = '{}-{}'.format(search_teacher_timetable_attendance.semester_id.id, search_teacher_timetable_attendance.class_id.id)
+            key = '{}'.format(search_teacher_timetable_attendance.employee_id.id)
             if not key in key_teacher_timetable_attendances:
                 key_teacher_timetable_attendances[key] = []
                 info_teacher_timetable_attendances[key] = {}
@@ -75,35 +75,20 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
             teacher_timetable_attendance['id'] = search_teacher_timetable_attendance.id
             teacher_timetable_attendance['date'] = search_teacher_timetable_attendance.date
             teacher_timetable_attendance['date_of_week'] = datetime.strftime(search_teacher_timetable_attendance.date, DATE_FORMAT_FR)
-            teacher_timetable_attendance['semester_name'] = search_teacher_timetable_attendance.semester_id.name
-            teacher_timetable_attendance['cycle_id'] = search_teacher_timetable_attendance.cycle_id.id
-            teacher_timetable_attendance['cycle_name'] = search_teacher_timetable_attendance.cycle_id.name
-            teacher_timetable_attendance['level_id'] = search_teacher_timetable_attendance.level_id.id
-            teacher_timetable_attendance['level_name'] = search_teacher_timetable_attendance.level_id.name
-            teacher_timetable_attendance['field_of_study_id'] = search_teacher_timetable_attendance.field_of_study_id.id
-            teacher_timetable_attendance['field_of_study_name'] = search_teacher_timetable_attendance.field_of_study_id.name
-            teacher_timetable_attendance['specialty_id'] = search_teacher_timetable_attendance.specialty_id.id
-            teacher_timetable_attendance['specialty_name'] = search_teacher_timetable_attendance.specialty_id.name
-            teacher_timetable_attendance['option_id'] = search_teacher_timetable_attendance.option_id.id
-            teacher_timetable_attendance['option_name'] = search_teacher_timetable_attendance.option_id.name
             teacher_timetable_attendance['class_id'] = search_teacher_timetable_attendance.class_id.id
             teacher_timetable_attendance['class_name'] = search_teacher_timetable_attendance.class_id.name
-            teacher_timetable_attendance['department_id'] = search_teacher_timetable_attendance.department_id.id
-            teacher_timetable_attendance['department_name'] = search_teacher_timetable_attendance.department_id.name
-            teacher_timetable_attendance['school_id'] = search_teacher_timetable_attendance.school_id.id
-            teacher_timetable_attendance['school_name'] = search_teacher_timetable_attendance.school_id.name
             teacher_timetable_attendance['subject_id'] = search_teacher_timetable_attendance.subject_id.id
             teacher_timetable_attendance['subject_name'] = search_teacher_timetable_attendance.subject_id.name
             teacher_timetable_attendance['subject_code'] = search_teacher_timetable_attendance.subject_id.code
             teacher_timetable_attendance['subject_shared_subject'] = '(TC)' if search_teacher_timetable_attendance.subject_id.shared_subject else ''
-            teacher_timetable_attendance['classroom_name'] = search_teacher_timetable_attendance.classroom_id.name
-            teacher_timetable_attendance['building_name'] = search_teacher_timetable_attendance.classroom_id.building_id.name
-            teacher_timetable_attendance['batch_name'] = search_teacher_timetable_attendance.batch_id.name
             teacher_timetable_attendance['employee_name'] = search_teacher_timetable_attendance.employee_id.name
-            teacher_timetable_attendance['day_of_week'] = CURRENT_WEEKDAY[search_teacher_timetable_attendance.day_of_week]
             teacher_timetable_attendance['start_time'] = search_teacher_timetable_attendance.start_time
             teacher_timetable_attendance['end_time'] = search_teacher_timetable_attendance.end_time
-            teacher_timetable_attendance['not_active_slotitems'] = search_teacher_timetable_attendance.not_active_slotitems
+            teacher_timetable_attendance['worked_start_time'] = search_teacher_timetable_attendance.worked_start_time
+            teacher_timetable_attendance['worked_end_time'] = search_teacher_timetable_attendance.worked_end_time
+            teacher_timetable_attendance['worked_time'] = search_teacher_timetable_attendance.worked_time
+            teacher_timetable_attendance['rate'] = search_teacher_timetable_attendance.rate
+            teacher_timetable_attendance['amount'] = search_teacher_timetable_attendance.amount
             teacher_timetable_attendance['status'] = STATUS_TIMETABLE[search_teacher_timetable_attendance.status]
             key_teacher_timetable_attendances[key].append(teacher_timetable_attendance)
 
