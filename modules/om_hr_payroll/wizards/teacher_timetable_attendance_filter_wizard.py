@@ -101,7 +101,7 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
             start_date = datetime.strftime(self.start_date, DATE_FORMAT_FR)
             end_date = datetime.strftime(self.end_date, DATE_FORMAT_FR)
             title.append('{} - {}'.format(start_date, end_date))
-            timetables = timetables.filtered(lambda rec: rec.date >= self.start_date and rec.date <= self.end_date)
+            timetables = timetables.filtered(lambda rec: rec.date and rec.date >= self.start_date and rec.date <= self.end_date)
 
         key_timetables = {}
         for timetable in timetables:
