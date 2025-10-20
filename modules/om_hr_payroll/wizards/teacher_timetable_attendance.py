@@ -131,7 +131,10 @@ class TeacherTimetableAttendance(models.TransientModel):
         default=0.0,
     )
 
-    amount = fields.Float(string='Montant')
+    amount = fields.Float(
+        'Montant',
+        default=0.0,
+    )
 
     @api.depends('timetable_id')
     def _compute_name(self):

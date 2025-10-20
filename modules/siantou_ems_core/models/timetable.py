@@ -382,7 +382,10 @@ class Timetable(models.Model):
         default=0.0,
     )
 
-    amount = fields.Float()
+    amount = fields.Float(
+        'Montant',
+        default=0.0,
+    )
 
     def _default_group(self):
         return self.env['siantou.ems.timetable.group'].search([('is_active', '=', True)], limit=1)
@@ -811,6 +814,9 @@ class Timetable(models.Model):
         self.write({
             'worked_start_time': 0.0,
             'worked_end_time': 0.0,
+            'worked_time': 0.0,
+            'rate': 0.0,
+            'amount': 0.0,
             'status': 'pending',
         })
 
@@ -823,6 +829,9 @@ class Timetable(models.Model):
         self.write({
             'worked_start_time': 0.0,
             'worked_end_time': 0.0,
+            'worked_time': 0.0,
+            'rate': 0.0,
+            'amount': 0.0,
             'status': 'progress',
         })
 
@@ -835,6 +844,9 @@ class Timetable(models.Model):
         self.write({
             'worked_start_time': self.start_time,
             'worked_end_time': self.end_time,
+            'worked_time': 0.0,
+            'rate': 0.0,
+            'amount': 0.0,
             'status': 'present',
         })
 
@@ -847,6 +859,9 @@ class Timetable(models.Model):
         self.write({
             'worked_start_time': 0.0,
             'worked_end_time': 0.0,
+            'worked_time': 0.0,
+            'rate': 0.0,
+            'amount': 0.0,
             'status': 'absent',
         })
 
@@ -859,6 +874,9 @@ class Timetable(models.Model):
         self.write({
             'worked_start_time': 0.0,
             'worked_end_time': 0.0,
+            'worked_time': 0.0,
+            'rate': 0.0,
+            'amount': 0.0,
             'status': 'permission',
         })
 
@@ -871,6 +889,9 @@ class Timetable(models.Model):
         self.write({
             'worked_start_time': 0.0,
             'worked_end_time': 0.0,
+            'worked_time': 0.0,
+            'rate': 0.0,
+            'amount': 0.0,
             'status': 'exception',
         })
 
@@ -883,6 +904,9 @@ class Timetable(models.Model):
         self.write({
             'worked_start_time': 0.0,
             'worked_end_time': 0.0,
+            'worked_time': 0.0,
+            'rate': 0.0,
+            'amount': 0.0,
             'status': 'delay',
         })
 

@@ -1141,6 +1141,12 @@ class HrPayslip(models.Model):
                                         total_rate += accountbalance['amount']
                                         total_number_of_days += worked_days_line_id.number_of_days
 
+                                        worked_days_line_id.timetable_id.write({
+                                            'worked_time': accountbalance['number_of_hours'],
+                                            'rate': accountbalance['rate'],
+                                            'amount': accountbalance['amount'],
+                                        })
+
                                 if rule.code == payslip.code:
                                     amount = total_rate
 
