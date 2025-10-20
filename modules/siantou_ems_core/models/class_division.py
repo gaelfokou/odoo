@@ -391,17 +391,14 @@ class EducationClass(models.Model):
 
     def action_update_all_student_class(self):
         active_ids = self.env.context.get('active_ids', [])
+        classes = self.env['siantou.ems.core.class'].browse(active_ids)
+        if len(active_ids) == 0:
+            raise UserError('Aucune donnée sélectionnée')
 
-        domain = [
-            ('id', 'in', active_ids),
-            ('year_id', '=', self.env['siantou.ems.core.year'].search([('is_active', '=', True)], limit=1).id),
-        ]
-
-        class_ids = self.env['siantou.ems.core.class'].search(domain)
-        for classe in class_ids:
+        for classe in classes:
             self.add_number_of_student_class(classe)
 
-        classes = list(class_ids)
+        classes = list(classes)
         self.remove_duplicate_student_class(classes)
 
         return {

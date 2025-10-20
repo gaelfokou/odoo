@@ -503,16 +503,11 @@ class StudentEnrollment(models.Model):
 
     def action_update_all_enrollment(self):
         active_ids = self.env.context.get('active_ids', [])
+        student_enrolls = self.env['oe.school.student.enrollment'].browse(active_ids)
+        if len(active_ids) == 0:
+            raise UserError('Aucune donnée sélectionnée')
 
-        domain = [
-            ('id', 'in', active_ids),
-            ('year_id', '=', self.env['siantou.ems.core.year'].search([('is_active', '=', True)], limit=1).id),
-            ('is_active_candidature', '=', True),
-            ('status', '=', 'transfer'),
-        ]
-
-        student_enroll_ids = self.env['oe.school.student.enrollment'].search(domain)
-        for student_enroll in student_enroll_ids:
+        for student_enroll in student_enrolls:
             self.update_enrollment(student_enroll)
 
         return {
