@@ -466,6 +466,10 @@ class Timetable(models.Model):
             tm[0] = '0{}'.format(tm[0])
         if len(tm[1]) == 1:
             tm[1] = '{}0'.format(tm[1])
+        if len(tm[0]) > 2:
+            tm[0] = '0{}'.format(tm[0][0:2])
+        if len(tm[1]) > 2:
+            tm[1] = '{}0'.format(tm[1][0:2])
         tm = ':'.join(tm)
         tm = '{}:00'.format(tm)
         return tm
