@@ -131,10 +131,10 @@
                                         <td class="text-center"></td>
                                         <td class="text-center"></td>
                                         <td class="text-center"></td>
-                                        <td class="text-center"></td>
                                         <td class="text-center">
-                                            <span t-esc="docdata['teacher_timetable_attendance_data'][key]['rate']"/>
+                                            <span t-esc="docdata['teacher_timetable_attendance_data'][key]['worked_time']"/>
                                         </td>
+                                        <td class="text-center"></td>
                                         <td class="text-center">
                                             <span t-esc="docdata['teacher_timetable_attendance_data'][key]['amount']"/>
                                         </td>
