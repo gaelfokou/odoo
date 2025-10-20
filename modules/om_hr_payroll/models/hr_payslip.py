@@ -1124,24 +1124,28 @@ class HrPayslip(models.Model):
                                             ('school_id', '=', worked_days_line_id.timetable_id.school_id.id),
                                             ('cycle_id', '=', worked_days_line_id.timetable_id.cycle_id.id),
                                             ('level_id', '=', worked_days_line_id.timetable_id.level_id.id),
-                                            ('diplome_availability_id.diplome_ids', 'in', worked_days_line_id.timetable_id.employee_id.diplome_ids.ids),
+                                            # ('diplome_availability_id.diplome_ids', 'in', worked_days_line_id.timetable_id.employee_id.diplome_ids.ids),
                                         ]
 
-                                        hourly_rate = self.env['siantou.ems.core.hourly.rate'].sudo().search(domain, limit=1)
+                                        hourly_rates = self.env['siantou.ems.core.hourly.rate'].sudo().search(domain)
+                                        hourly_rates = list(hourly_rates)
 
-                                        if hourly_rate:
-                                            domain = [
-                                                ('hourly_rate_id', '=', hourly_rate.id),
-                                                ('employee_id', '=', worked_days_line_id.timetable_id.employee_id.id),
-                                                ('subject_id', '=', worked_days_line_id.timetable_id.subject_id.id),
-                                            ]
+                                        if len(hourly_rates) > 0:
+                                            for hourly_rate in hourly_rates:
+                                                domain = [
+                                                    ('hourly_rate_id', '=', hourly_rate.id),
+                                                    ('employee_id', '=', worked_days_line_id.timetable_id.employee_id.id),
+                                                    ('subject_id', '=', worked_days_line_id.timetable_id.subject_id.id),
+                                                ]
 
-                                            teacher_hourly_rate = self.env['siantou.ems.core.teacher.hourly.rate'].sudo().search(domain, limit=1)
-                                            if teacher_hourly_rate:
-                                                accountbalance['rate'] = teacher_hourly_rate.rate
-                                            else:
-                                                accountbalance['rate'] = hourly_rate.rate
-                                        else:
+                                                teacher_hourly_rate = self.env['siantou.ems.core.teacher.hourly.rate'].sudo().search(domain, limit=1)
+                                                if teacher_hourly_rate:
+                                                    accountbalance['rate'] = teacher_hourly_rate.rate
+                                                    break
+                                            if 'rate' not in accountbalance:
+                                                accountbalance['rate'] = hourly_rates[0].rate
+
+                                        if 'rate' not in accountbalance:
                                             accountbalance['rate'] = 0.0
 
                                         accountbalance['amount'] = accountbalance['rate'] * accountbalance['number_of_hours']

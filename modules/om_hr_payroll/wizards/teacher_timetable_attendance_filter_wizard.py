@@ -136,24 +136,29 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
                 ('school_id', '=', timetable.school_id.id),
                 ('cycle_id', '=', timetable.cycle_id.id),
                 ('level_id', '=', timetable.level_id.id),
-                ('diplome_availability_id.diplome_ids', 'in', timetable.employee_id.diplome_ids.ids),
+                # ('diplome_availability_id.diplome_ids', 'in', timetable.employee_id.diplome_ids.ids),
             ]
 
-            hourly_rate = self.env['siantou.ems.core.hourly.rate'].search(domain, limit=1)
+            hourly_rates = self.env['siantou.ems.core.hourly.rate'].search(domain)
+            hourly_rates = list(hourly_rates)
 
-            if hourly_rate:
-                domain = [
-                    ('hourly_rate_id', '=', hourly_rate.id),
-                    ('employee_id', '=', timetable.employee_id.id),
-                    ('subject_id', '=', timetable.subject_id.id),
-                ]
+            rate = None
+            if len(hourly_rates) > 0:
+                for hourly_rate in hourly_rates:
+                    domain = [
+                        ('hourly_rate_id', '=', hourly_rate.id),
+                        ('employee_id', '=', timetable.employee_id.id),
+                        ('subject_id', '=', timetable.subject_id.id),
+                    ]
 
-                teacher_hourly_rate = self.env['siantou.ems.core.teacher.hourly.rate'].search(domain, limit=1)
-                if teacher_hourly_rate:
-                    rate = teacher_hourly_rate.rate
-                else:
-                    rate = hourly_rate.rate
-            else:
+                    teacher_hourly_rate = self.env['siantou.ems.core.teacher.hourly.rate'].search(domain, limit=1)
+                    if teacher_hourly_rate:
+                        rate = teacher_hourly_rate.rate
+                        break
+                if not rate:
+                    rate = hourly_rates[0].rate
+
+            if not rate:
                 rate = 0.0
 
             amount = rate * worked_hours
