@@ -67,7 +67,11 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
         for search_teacher_timetable_attendance in search_teacher_timetable_attendances:
             key = '{}'.format(search_teacher_timetable_attendance.employee_id.id)
             if not key in key_teacher_timetable_attendances:
-                key_teacher_timetable_attendances[key] = []
+                key_teacher_timetable_attendances[key] = {}
+                key_teacher_timetable_attendances[key]['name'] = search_teacher_timetable_attendance.employee_id.name
+                key_teacher_timetable_attendances[key]['data'] = []
+                key_teacher_timetable_attendances[key]['rate'] = 0.0
+                key_teacher_timetable_attendances[key]['amount'] = 0.0
             teacher_timetable_attendance = {}
             teacher_timetable_attendance['id'] = search_teacher_timetable_attendance.id
             teacher_timetable_attendance['date'] = search_teacher_timetable_attendance.date
@@ -87,7 +91,9 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
             teacher_timetable_attendance['rate'] = search_teacher_timetable_attendance.rate
             teacher_timetable_attendance['amount'] = search_teacher_timetable_attendance.amount
             teacher_timetable_attendance['status'] = STATUS_TIMETABLE[search_teacher_timetable_attendance.status]
-            key_teacher_timetable_attendances[key].append(teacher_timetable_attendance)
+            key_teacher_timetable_attendances[key]['rate'] += teacher_timetable_attendance['rate']
+            key_teacher_timetable_attendances[key]['amount'] += teacher_timetable_attendance['amount']
+            key_teacher_timetable_attendances[key]['data'].append(teacher_timetable_attendance)
 
         title = self.env['ir.config_parameter'].sudo().get_param(f'siantou.filter_user_{self.env.user.id}', '')
 

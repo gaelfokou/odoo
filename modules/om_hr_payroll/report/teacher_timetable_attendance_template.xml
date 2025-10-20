@@ -84,7 +84,7 @@
                             <tbody>
                                 <t t-set="keys" t-value="docdata['teacher_timetable_attendance_data'].keys()"/>
                                 <t t-foreach="keys" t-as="key">
-                                    <t t-set="timetables" t-value="docdata['teacher_timetable_attendance_data'][key]"/>
+                                    <t t-set="timetables" t-value="docdata['teacher_timetable_attendance_data'][key]['data']"/>
                                     <t t-foreach="timetables" t-as="timetable">
                                         <tr>
                                             <td class="text-center">
@@ -122,6 +122,23 @@
                                             </td>
                                         </tr>
                                     </t>
+                                    <tr>
+                                        <td class="text-center"></td>
+                                        <td class="text-center"></td>
+                                        <td class="text-center"></td>
+                                        <td class="text-center"></td>
+                                        <td class="text-center"></td>
+                                        <td class="text-center"></td>
+                                        <td class="text-center"></td>
+                                        <td class="text-center"></td>
+                                        <td class="text-center"></td>
+                                        <td class="text-center">
+                                            <span t-esc="docdata['teacher_timetable_attendance_data'][key]['rate']"/>
+                                        </td>
+                                        <td class="text-center">
+                                            <span t-esc="docdata['teacher_timetable_attendance_data'][key]['amount']"/>
+                                        </td>
+                                    </tr>
                                 </t>
                             </tbody>
                         </table>
