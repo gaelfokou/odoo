@@ -472,7 +472,7 @@ class PortalAccount(portal.CustomerPortal):
                 accountbalance['rate'] = 0.0
 
             accountbalance['amount'] = accountbalance['rate'] * accountbalance['number_of_hours']
-                                        accountbalance['amount'] = round(accountbalance['amount'], 2)
+            accountbalance['amount'] = round(accountbalance['amount'], 2)
 
             accountbalances.append(accountbalance)
             total_rate += accountbalance['amount']
