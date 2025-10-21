@@ -193,6 +193,10 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
             amount = rate * worked_hours
             amount = round(amount, 2)
 
+            if timetable.employee_id.is_permanent:
+                rate = 0.0
+                amount = 0.0
+
             teacher_timetable_attendance = self.env['teacher.timetable.attendance'].create({
                 'timetable_id': timetable.id,
                 'worked_time': worked_hours,

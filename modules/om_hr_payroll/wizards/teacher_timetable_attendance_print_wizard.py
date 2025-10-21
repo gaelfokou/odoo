@@ -88,12 +88,8 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
             teacher_timetable_attendance['worked_start_time'] = TeacherTimetableAttendancePrintWizard.convert_float_to_time(search_teacher_timetable_attendance.worked_start_time)
             teacher_timetable_attendance['worked_end_time'] = TeacherTimetableAttendancePrintWizard.convert_float_to_time(search_teacher_timetable_attendance.worked_end_time)
             teacher_timetable_attendance['worked_time'] = search_teacher_timetable_attendance.worked_time
-            if search_teacher_timetable_attendance.employee_id.is_permanent:
-                teacher_timetable_attendance['rate'] = 0.0
-                teacher_timetable_attendance['amount'] = 0.0
-            else:
-                teacher_timetable_attendance['rate'] = search_teacher_timetable_attendance.rate
-                teacher_timetable_attendance['amount'] = search_teacher_timetable_attendance.amount
+            teacher_timetable_attendance['rate'] = search_teacher_timetable_attendance.rate
+            teacher_timetable_attendance['amount'] = search_teacher_timetable_attendance.amount
             teacher_timetable_attendance['status'] = STATUS_TIMETABLE[search_teacher_timetable_attendance.status]
             key_teacher_timetable_attendances[key]['worked_time'] += teacher_timetable_attendance['worked_time']
             key_teacher_timetable_attendances[key]['amount'] += teacher_timetable_attendance['amount']
