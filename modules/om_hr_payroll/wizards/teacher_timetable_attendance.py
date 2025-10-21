@@ -72,6 +72,18 @@ class TeacherTimetableAttendance(models.TransientModel):
         store=True
     )
 
+    is_teacher = fields.Boolean(
+        'Est un enseignant',
+        related='employee_id.is_teacher',
+        store=True
+    )
+
+    is_permanent = fields.Boolean(
+        'Est un permanent',
+        related='employee_id.is_permanent',
+        store=True
+    )
+
     date = fields.Date(
         'Date',
         related='timetable_id.date',

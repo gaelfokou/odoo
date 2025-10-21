@@ -43,6 +43,16 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
         'Enseignant',
     )
 
+    is_teacher = fields.Boolean(
+        'Est un enseignant',
+        default=True,
+    )
+
+    is_permanent = fields.Boolean(
+        'Est un permanent',
+        default=False,
+    )
+
     def _default_start_date(self):
         start_date = date.today().replace(day=1)
         end_date = (datetime.now() + relativedelta(months=+1, day=1, days=-1)).date()
@@ -95,6 +105,12 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
         if self.status:
             domain.append(('status', '=', self.status))
             title.append(STATUS_TIMETABLE[self.status])
+        if self.is_permanent:
+            title.append('Est un permanent')
+
+        domain.append(('group_id.is_active', '=', True))
+        domain.append(('group_id.is_submit', '=', False))
+        domain.append(('employee_id.is_permanent', '=', self.is_permanent))
 
         timetables = self.env['siantou.ems.timetable.timetable'].search(domain)
         if self.start_date and self.end_date:
