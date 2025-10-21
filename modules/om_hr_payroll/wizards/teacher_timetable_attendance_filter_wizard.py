@@ -118,9 +118,22 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
                 worked_hours = end_time - start_time
                 worked_hours = worked_hours.total_seconds() / 3600.0
                 worked_hours = round(worked_hours, 2)
-            else:
+            elif timetable.status == 'permission':
                 end_time = datetime.strptime(f"{timetable.date} {TeacherTimetableAttendanceFilterWizard.convert_float_to_time(timetable.end_time, True)}", DATETIME_FORMAT)
                 start_time = datetime.strptime(f"{timetable.date} {TeacherTimetableAttendanceFilterWizard.convert_float_to_time(timetable.start_time, True)}", DATETIME_FORMAT)
+
+                key = '{}-{}-{}-{}'.format(timetable.employee_id.id, timetable.date, start_time, end_time)
+                if not key in key_timetables:
+                    key_timetables[key] = timetable
+                else:
+                    continue
+
+                worked_hours = end_time - start_time
+                worked_hours = worked_hours.total_seconds() / 3600.0
+                worked_hours = round(worked_hours, 2)
+            else:
+                end_time = datetime.strptime(f"{timetable.date} {TeacherTimetableAttendanceFilterWizard.convert_float_to_time(0.0, True)}", DATETIME_FORMAT)
+                start_time = datetime.strptime(f"{timetable.date} {TeacherTimetableAttendanceFilterWizard.convert_float_to_time(0.0, True)}", DATETIME_FORMAT)
 
                 key = '{}-{}-{}-{}'.format(timetable.employee_id.id, timetable.date, start_time, end_time)
                 if not key in key_timetables:
@@ -193,6 +206,8 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
     def convert_float_to_time(tm, has_second=False):
         tm = str(tm)
         tm = tm.split('.')
+        if len(tm) == 1:
+            tm.append('0')
         if len(tm[0]) == 1:
             tm[0] = '0{}'.format(tm[0])
         elif len(tm[0]) > 2:

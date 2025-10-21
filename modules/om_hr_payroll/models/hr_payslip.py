@@ -104,6 +104,8 @@ class HrPayslip(models.Model):
     def convert_float_to_time(tm):
         tm = str(tm)
         tm = tm.split('.')
+        if len(tm) == 1:
+            tm.append('0')
         if len(tm[0]) == 1:
             tm[0] = '0{}'.format(tm[0])
         elif len(tm[0]) > 2:

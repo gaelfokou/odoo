@@ -893,6 +893,8 @@ class Helpers:
     def convert_float_to_time(tm, has_second=False):
         tm = str(tm)
         tm = tm.split('.')
+        if len(tm) == 1:
+            tm.append('0')
         if len(tm[0]) == 1:
             tm[0] = '0{}'.format(tm[0])
         elif len(tm[0]) > 2:
@@ -925,6 +927,8 @@ class Helpers:
     def increment_float_time(tm, n=0.0):
         tm = str(tm)
         tm = tm.split('.')
+        if len(tm) == 1:
+            tm.append('0')
         if len(tm[1]) == 1:
             tm[1] = '{}0'.format(tm[1])
         tm = time(int(tm[0]), int(tm[1]))
