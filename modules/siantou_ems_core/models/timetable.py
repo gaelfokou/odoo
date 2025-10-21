@@ -927,11 +927,10 @@ class Timetable(models.Model):
 
     def update_timetable(self, timetable):
         try:
-            if timetable.worked_start_time == 0.0 and timetable.worked_end_time == 0.0:
-                timetable.write({
-                    'worked_start_time': timetable.start_time,
-                    'worked_end_time': timetable.end_time,
-                })
+            timetable.write({
+                'worked_start_time': timetable.start_time,
+                'worked_end_time': timetable.end_time,
+            })
             # self.env.cr.commit()
         except psycopg2.errors.NotNullViolation as error:
             _logger.info(f'----------- tototototototo Exception {error} -----------')
