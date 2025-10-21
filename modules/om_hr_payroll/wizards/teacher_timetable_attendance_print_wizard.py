@@ -93,6 +93,8 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
             teacher_timetable_attendance['status'] = STATUS_TIMETABLE[search_teacher_timetable_attendance.status]
             key_teacher_timetable_attendances[key]['worked_time'] += teacher_timetable_attendance['worked_time']
             key_teacher_timetable_attendances[key]['amount'] += teacher_timetable_attendance['amount']
+            key_teacher_timetable_attendances[key]['worked_time'] = round(key_teacher_timetable_attendances[key]['worked_time'], 2)
+            key_teacher_timetable_attendances[key]['amount'] = round(key_teacher_timetable_attendances[key]['amount'], 2)
             key_teacher_timetable_attendances[key]['data'].append(teacher_timetable_attendance)
 
         title = self.env['ir.config_parameter'].sudo().get_param(f'siantou.filter_user_{self.env.user.id}', '')
