@@ -182,6 +182,8 @@ class TeacherTimetableAttendance(models.TransientModel):
         }
 
     def action_reset_filter(self):
+        self.env['teacher.timetable.attendance']._transient_vacuum()
+        self.env['teacher.timetable.attendance'].search([]).unlink()
         self.env['ir.config_parameter'].sudo().set_param(f'siantou.filter_user_{self.env.user.id}', '')
         action = self.env.ref('om_hr_payroll.action_show_teacher_timetable_attendance').read()[0]
         action.update({
