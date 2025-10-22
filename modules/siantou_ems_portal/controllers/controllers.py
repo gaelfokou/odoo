@@ -474,6 +474,10 @@ class PortalAccount(portal.CustomerPortal):
             accountbalance['amount'] = accountbalance['rate'] * accountbalance['number_of_hours']
             accountbalance['amount'] = round(accountbalance['amount'], 2)
 
+            if search_accountbalance.employee_id.is_permanent:
+                accountbalance['rate'] = 0.0
+                accountbalance['amount'] = 0.0
+
             accountbalances.append(accountbalance)
             total_rate += accountbalance['amount']
             total_number_of_hours += accountbalance['number_of_hours']
