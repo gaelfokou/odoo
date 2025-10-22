@@ -63,6 +63,7 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
 
         search_teacher_timetable_attendances = self.env['teacher.timetable.attendance'].search(domain)
 
+        is_permanent = False
         key_teacher_timetable_attendances = {}
         for search_teacher_timetable_attendance in search_teacher_timetable_attendances:
             key = '{}'.format(search_teacher_timetable_attendance.employee_id.id)
@@ -72,6 +73,7 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
                 key_teacher_timetable_attendances[key]['data'] = []
                 key_teacher_timetable_attendances[key]['worked_time'] = 0.0
                 key_teacher_timetable_attendances[key]['amount'] = 0.0
+            is_permanent = search_teacher_timetable_attendance.employee_id.is_permanent
             teacher_timetable_attendance = {}
             teacher_timetable_attendance['id'] = search_teacher_timetable_attendance.id
             teacher_timetable_attendance['date'] = search_teacher_timetable_attendance.date
@@ -105,6 +107,7 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
             'docdata': {
                 'filter': title,
                 'teacher_timetable_attendance_data': key_teacher_timetable_attendances,
+                'is_permanent': is_permanent,
             }
         }
 
