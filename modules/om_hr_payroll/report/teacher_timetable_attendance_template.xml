@@ -79,6 +79,9 @@
                                     <th class="text-center">Heure effectuée</th>
                                     <th class="text-center" t-if="docdata['is_permanent'] == False">Taux horaire</th>
                                     <th class="text-center" t-if="docdata['is_permanent'] == False">Montant</th>
+                                    <th class="text-center">Volume horaire</th>
+                                    <th class="text-center">Volume horaire effectué</th>
+                                    <th class="text-center">Volume horaire restant</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -120,6 +123,15 @@
                                             <td class="text-center" t-if="docdata['is_permanent'] == False">
                                                 <span t-esc="timetable['amount']"/>
                                             </td>
+                                            <td class="text-center">
+                                                <span t-esc="timetable['total_all']"/>
+                                            </td>
+                                            <td class="text-center">
+                                                <span t-esc="timetable['total_done']"/>
+                                            </td>
+                                            <td class="text-center">
+                                                <span t-esc="timetable['total_awaiting']"/>
+                                            </td>
                                         </tr>
                                     </t>
                                     <tr>
@@ -138,6 +150,9 @@
                                         <td class="text-center" t-if="docdata['is_permanent'] == False">
                                             <span t-esc="docdata['teacher_timetable_attendance_data'][key]['amount']"/>
                                         </td>
+                                        <td class="text-center"></td>
+                                        <td class="text-center"></td>
+                                        <td class="text-center"></td>
                                     </tr>
                                 </t>
                             </tbody>

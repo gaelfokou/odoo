@@ -124,6 +124,24 @@ class TeacherTimetableAttendance(models.TransientModel):
         default=0.0,
     )
 
+    # Volume horaire du cours
+    total_all = fields.Float(
+        'Volume horaire',
+        default=0.0,
+    )
+
+    # Volume horaire effectué du cours
+    total_done = fields.Float(
+        'Volume horaire effectué',
+        default=0.0,
+    )
+
+    # Volume horaire restant du cours
+    total_awaiting = fields.Float(
+        'Volume horaire restant',
+        default=0.0,
+    )
+
     status = fields.Selection([
         ('pending', 'En attente'),
         ('progress', 'En cours'),

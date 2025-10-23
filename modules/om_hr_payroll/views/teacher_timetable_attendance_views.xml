@@ -35,6 +35,9 @@
                     <field name="worked_time"/>
                     <field name="rate"/>
                     <field name="amount"/>
+                    <field name="total_all"/>
+                    <field name="total_done"/>
+                    <field name="total_awaiting"/>
                     <field name="status"/>
                 </tree>
             </field>

@@ -16,6 +16,16 @@ DATETIME_FORMAT_FR = '%d/%m/%Y %H:%M'
 TIME_FORMAT = '%H:%M:%S'
 TIME_FORMAT_FR = '%H:%M'
 
+CURRENT_WEEKDAY = {
+    '0': 'Lundi',
+    '1': 'Mardi',
+    '2': 'Mercredi',
+    '3': 'Jeudi',
+    '4': 'Vendredi',
+    '5': 'Samedi',
+    '6': 'Dimanche'
+}
+
 STATUS_TIMETABLE = {
     'pending': 'En attente',
     'progress': 'En cours',
@@ -102,17 +112,60 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
         if self.employee_id.id:
             domain.append(('employee_id', '=', self.employee_id.id))
             title.append(self.employee_id.name)
+
+        domain.append(('group_id.is_active', '=', True))
+        domain.append(('group_id.is_submit', '=', False))
+
+        order = 'date asc'
+
+        search_consumptionhours = self.env['siantou.ems.timetable.timetable'].search(domain, order=order)
+        consumptionhours = []
+        for search_consumptionhour in search_consumptionhours:
+            if not search_consumptionhour.date:
+                continue
+            consumptionhour = {}
+            consumptionhour['id'] = search_consumptionhour.id
+            consumptionhour['name'] = search_consumptionhour.name
+            consumptionhour['date'] = search_consumptionhour.date
+            consumptionhour['date_of_week'] = datetime.strftime(search_consumptionhour.date, DATE_FORMAT_FR)
+            consumptionhour['semester_name'] = search_consumptionhour.semester_id.name
+            consumptionhour['cycle_name'] = search_consumptionhour.cycle_id.name
+            consumptionhour['level_name'] = search_consumptionhour.level_id.name
+            consumptionhour['field_of_study_id'] = search_consumptionhour.field_of_study_id.id
+            consumptionhour['field_of_study_name'] = search_consumptionhour.field_of_study_id.name
+            consumptionhour['specialty_name'] = search_consumptionhour.specialty_id.name
+            consumptionhour['option_name'] = search_consumptionhour.option_id.name
+            consumptionhour['class_id'] = search_consumptionhour.class_id.id
+            consumptionhour['class_name'] = search_consumptionhour.class_id.name
+            consumptionhour['department_id'] = search_consumptionhour.department_id.id
+            consumptionhour['department_name'] = search_consumptionhour.department_id.name
+            consumptionhour['subject_id'] = search_consumptionhour.subject_id.id
+            consumptionhour['subject_name'] = search_consumptionhour.subject_id.name
+            consumptionhour['subject_code'] = search_consumptionhour.subject_id.code
+            consumptionhour['subject_shared_subject'] = search_consumptionhour.subject_id.shared_subject
+            consumptionhour['classroom_name'] = search_consumptionhour.classroom_id.name
+            consumptionhour['building_name'] = search_consumptionhour.classroom_id.building_id.name
+            consumptionhour['batch_name'] = search_consumptionhour.batch_id.name
+            consumptionhour['employee_name'] = search_consumptionhour.employee_id.name
+            consumptionhour['day_of_week'] = CURRENT_WEEKDAY[search_consumptionhour.day_of_week]
+            consumptionhour['start_time'] = search_consumptionhour.start_time
+            consumptionhour['end_time'] = search_consumptionhour.end_time
+            consumptionhour['worked_start_time'] = search_consumptionhour.worked_start_time
+            consumptionhour['worked_end_time'] = search_consumptionhour.worked_end_time
+            consumptionhour['not_active_slotitems'] = search_consumptionhour.not_active_slotitems
+            consumptionhour['status'] = search_consumptionhour.status
+            consumptionhours.append(consumptionhour)
+        consumptionhours = TeacherTimetableAttendanceFilterWizard.format_consumptionhour(consumptionhours)
+
         if self.status:
             domain.append(('status', '=', self.status))
             title.append(STATUS_TIMETABLE[self.status])
         if self.is_permanent:
             title.append('Est un permanent')
 
-        domain.append(('group_id.is_active', '=', True))
-        domain.append(('group_id.is_submit', '=', False))
         domain.append(('employee_id.is_permanent', '=', self.is_permanent))
 
-        timetables = self.env['siantou.ems.timetable.timetable'].search(domain)
+        timetables = self.env['siantou.ems.timetable.timetable'].search(domain, order=order)
         if self.start_date and self.end_date:
             start_date = datetime.strftime(self.start_date, DATE_FORMAT_FR)
             end_date = datetime.strftime(self.end_date, DATE_FORMAT_FR)
@@ -197,11 +250,25 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
                 rate = 0.0
                 amount = 0.0
 
+            total_all = 0.0
+            total_done = 0.0
+            total_awaiting = 0.0
+            key_class = '{}'.format(timetable.class_id.id)
+            key_subject = '{}'.format(timetable.subject_id.id)
+            if key_class in consumptionhours:
+                if key_subject in consumptionhours[key_class]['data']:
+                    total_all = consumptionhours[key_class]['data'][key_subject]['data']['all']
+                    total_done = consumptionhours[key_class]['data'][key_subject]['data']['done']
+                    total_awaiting = consumptionhours[key_class]['data'][key_subject]['data']['awaiting']
+
             teacher_timetable_attendance = self.env['teacher.timetable.attendance'].create({
                 'timetable_id': timetable.id,
                 'worked_time': worked_hours,
                 'rate': rate,
                 'amount': amount,
+                'total_all': total_all,
+                'total_done': total_done,
+                'total_awaiting': total_awaiting,
             })
 
         if len(title) > 0:
@@ -245,3 +312,69 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
         if has_second:
             tm = '{}:00'.format(tm)
         return tm
+
+    @staticmethod
+    def format_consumptionhour(data):
+        consumptionhours = {}
+
+        sorted_data = copy.deepcopy(data)
+
+        for d in sorted_data:
+            key_class = '{}'.format(d['class_id'])
+            key_subject = '{}'.format(d['subject_id'])
+            if not key_class in consumptionhours:
+                consumptionhours[key_class] = {}
+                consumptionhours[key_class]['name'] = d['class_name']
+                consumptionhours[key_class]['data'] = {}
+                consumptionhours[key_class]['data'][key_subject] = {}
+                consumptionhours[key_class]['data'][key_subject]['name'] = d['subject_name']
+                consumptionhours[key_class]['data'][key_subject]['data'] = {
+                    'all': [],
+                    'done': [],
+                }
+                consumptionhours[key_class]['data'][key_subject]['data']['all'].append(d)
+                if d['status'] in ['present', 'permission']:
+                    consumptionhours[key_class]['data'][key_subject]['data']['done'].append(d)
+            else:
+                if not key_subject in consumptionhours[key_class]['data']:
+                    consumptionhours[key_class]['data'][key_subject] = {}
+                    consumptionhours[key_class]['data'][key_subject]['name'] = d['subject_name']
+                    consumptionhours[key_class]['data'][key_subject]['data'] = {
+                        'all': [],
+                        'done': [],
+                    }
+                    consumptionhours[key_class]['data'][key_subject]['data']['all'].append(d)
+                    if d['status'] in ['present', 'permission']:
+                        consumptionhours[key_class]['data'][key_subject]['data']['done'].append(d)
+                else:
+                    consumptionhours[key_class]['data'][key_subject]['data']['all'].append(d)
+                    if d['status'] in ['present', 'permission']:
+                        consumptionhours[key_class]['data'][key_subject]['data']['done'].append(d)
+
+        for key_class in consumptionhours.keys():
+            consumptionhours[key_class]['total_all'] = 0
+            consumptionhours[key_class]['total_done'] = 0
+            consumptionhours[key_class]['total_awaiting'] = 0
+            for key_subject in consumptionhours[key_class]['data'].keys():
+                consumptionhours[key_class]['data'][key_subject]['data']['all'] = sum([TeacherTimetableAttendanceFilterWizard.convert_number_of_hours(v) for v in consumptionhours[key_class]['data'][key_subject]['data']['all']])
+                consumptionhours[key_class]['data'][key_subject]['data']['done'] = sum([TeacherTimetableAttendanceFilterWizard.convert_number_of_hours(v) for v in consumptionhours[key_class]['data'][key_subject]['data']['done']])
+                consumptionhours[key_class]['data'][key_subject]['data']['awaiting'] = consumptionhours[key_class]['data'][key_subject]['data']['all'] - consumptionhours[key_class]['data'][key_subject]['data']['done']
+                consumptionhours[key_class]['total_all'] += consumptionhours[key_class]['data'][key_subject]['data']['all']
+                consumptionhours[key_class]['total_done'] += consumptionhours[key_class]['data'][key_subject]['data']['done']
+                consumptionhours[key_class]['total_awaiting'] += consumptionhours[key_class]['data'][key_subject]['data']['awaiting']
+
+        _logger.info(f'----------- tototototototo consumptionhours {consumptionhours} -----------')
+
+        return consumptionhours
+
+    @staticmethod
+    def convert_number_of_hours(tm):
+        end_time = TeacherTimetableAttendanceFilterWizard.convert_float_to_time(tm['end_time'], True)
+        start_time = TeacherTimetableAttendanceFilterWizard.convert_float_to_time(tm['start_time'], True)
+        datetime_to = datetime.strptime(f"{tm['date']} {end_time}", DATETIME_FORMAT)
+        datetime_from = datetime.strptime(f"{tm['date']} {start_time}", DATETIME_FORMAT)
+        weekly_hours_credit = datetime_to - datetime_from
+        weekly_hours_credit = weekly_hours_credit - timedelta(hours=tm['not_active_slotitems'])
+        weekly_hours_credit = weekly_hours_credit.total_seconds() / 3600.0
+        weekly_hours_credit = round(weekly_hours_credit, 2)
+        return weekly_hours_credit

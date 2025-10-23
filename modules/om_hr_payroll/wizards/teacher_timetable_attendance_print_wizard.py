@@ -66,6 +66,8 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
         is_permanent = False
         key_teacher_timetable_attendances = {}
         for search_teacher_timetable_attendance in search_teacher_timetable_attendances:
+            if not search_teacher_timetable_attendance.date:
+                continue
             key = '{}'.format(search_teacher_timetable_attendance.employee_id.id)
             if not key in key_teacher_timetable_attendances:
                 key_teacher_timetable_attendances[key] = {}
@@ -92,6 +94,9 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
             teacher_timetable_attendance['worked_time'] = search_teacher_timetable_attendance.worked_time
             teacher_timetable_attendance['rate'] = search_teacher_timetable_attendance.rate
             teacher_timetable_attendance['amount'] = search_teacher_timetable_attendance.amount
+            teacher_timetable_attendance['total_all'] = search_teacher_timetable_attendance.total_all
+            teacher_timetable_attendance['total_done'] = search_teacher_timetable_attendance.total_done
+            teacher_timetable_attendance['total_awaiting'] = search_teacher_timetable_attendance.total_awaiting
             teacher_timetable_attendance['status'] = STATUS_TIMETABLE[search_teacher_timetable_attendance.status]
             key_teacher_timetable_attendances[key]['worked_time'] += teacher_timetable_attendance['worked_time']
             key_teacher_timetable_attendances[key]['amount'] += teacher_timetable_attendance['amount']
