@@ -88,6 +88,16 @@ class EducationClass(models.Model):
 
     ue_ids = fields.Many2many('siantou.ems.core.unite.enseignement', 'class_ue_rel', 'class_id', 'ue_id', string='Unités d\'enseignement')
 
+    subject_ids = fields.Many2many(
+        'siantou.ems.core.subject',
+        'class_subject_rel',
+        'class_id',
+        'subject_id',
+        string='Cours',
+        compute='_compute_subjects',
+        store=False
+    )
+
     type_cour = fields.Selection([
             ('cj', 'Cours du jour'),
             ('cs', 'Cours du soir'),
@@ -216,6 +226,24 @@ class EducationClass(models.Model):
             ])
 
             record.number_of_student = len(student_ids.ids)
+
+    @api.depends('ue_ids')
+    def _compute_subjects(self):
+        for record in self:
+            subject_ids = self.env['siantou.ems.core.subject'].search([
+                ('ue_ids', 'in', record.ue_ids.ids)
+            ])
+
+            record.subject_ids = [(6, 0, subject_ids.ids)]
+
+    @api.onchange('ue_ids')
+    def _onchange_subjects(self):
+        for record in self:
+            subject_ids = self.env['siantou.ems.core.subject'].search([
+                ('ue_ids', 'in', record.ue_ids.ids)
+            ])
+
+            record.subject_ids = [(6, 0, subject_ids.ids)]
 
     @api.onchange('school_id')
     def _onchange_school(self):

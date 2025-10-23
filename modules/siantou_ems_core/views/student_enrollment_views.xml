@@ -6,10 +6,10 @@
         <field name="arch" type="xml">
             <tree string="Étudiants" default_order="id desc" default_group_by="year_id" expand="context.get('expand', False)">
                 <header>
-                    <button name="action_update_all_enrollment" 
+                    <!-- <button name="action_update_all_enrollment" 
                         type="object" 
                         string="Mettre à jour candidatures et étudiants" 
-                        class="oe_highlight"/>
+                        class="oe_highlight"/> -->
                 </header>
                 <field name="date_preins" widget="datetime"/>
                 <field name="code_enrol"/>
