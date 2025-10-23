@@ -184,6 +184,8 @@ class PortalAccount(portal.CustomerPortal):
             timetable['day_of_week'] = CURRENT_WEEKDAY[search_timetable.day_of_week]
             timetable['start_time'] = search_timetable.start_time
             timetable['end_time'] = search_timetable.end_time
+            timetable['worked_start_time'] = search_timetable.worked_start_time
+            timetable['worked_end_time'] = search_timetable.worked_end_time
             timetable['not_active_slotitems'] = search_timetable.not_active_slotitems
             timetable['status'] = STATUS_TIMETABLE[search_timetable.status]
             timetables.append(timetable)
@@ -418,6 +420,8 @@ class PortalAccount(portal.CustomerPortal):
             accountbalance['day_of_week'] = CURRENT_WEEKDAY[search_accountbalance.day_of_week]
             accountbalance['start_time'] = search_accountbalance.start_time
             accountbalance['end_time'] = search_accountbalance.end_time
+            accountbalance['worked_start_time'] = search_accountbalance.worked_start_time
+            accountbalance['worked_end_time'] = search_accountbalance.worked_end_time
             accountbalance['not_active_slotitems'] = search_accountbalance.not_active_slotitems
             accountbalance['time_of_week'] = '{}-{}'.format(Helpers.convert_float_to_time(search_accountbalance.start_time), Helpers.convert_float_to_time(search_accountbalance.end_time))
             accountbalance['status'] = STATUS_TIMETABLE[search_accountbalance.status]
@@ -527,6 +531,8 @@ class PortalAccount(portal.CustomerPortal):
             consumptionhour['day_of_week'] = CURRENT_WEEKDAY[search_consumptionhour.day_of_week]
             consumptionhour['start_time'] = search_consumptionhour.start_time
             consumptionhour['end_time'] = search_consumptionhour.end_time
+            consumptionhour['worked_start_time'] = search_consumptionhour.worked_start_time
+            consumptionhour['worked_end_time'] = search_consumptionhour.worked_end_time
             consumptionhour['not_active_slotitems'] = search_consumptionhour.not_active_slotitems
             consumptionhour['status'] = search_consumptionhour.status
 
@@ -580,6 +586,8 @@ class PortalAccount(portal.CustomerPortal):
             progressreport['day_of_week'] = CURRENT_WEEKDAY[search_progressreport.day_of_week]
             progressreport['start_time'] = search_progressreport.start_time
             progressreport['end_time'] = search_progressreport.end_time
+            progressreport['worked_start_time'] = search_progressreport.worked_start_time
+            progressreport['worked_end_time'] = search_progressreport.worked_end_time
             progressreport['not_active_slotitems'] = search_progressreport.not_active_slotitems
             progressreport['status'] = search_progressreport.status
             session_ids = search_progressreport.session_ids
@@ -655,6 +663,8 @@ class PortalAccount(portal.CustomerPortal):
             subjectsession['day_of_week'] = CURRENT_WEEKDAY[search_subjectsession.day_of_week]
             subjectsession['start_time'] = search_subjectsession.start_time
             subjectsession['end_time'] = search_subjectsession.end_time
+            subjectsession['worked_start_time'] = search_subjectsession.worked_start_time
+            subjectsession['worked_end_time'] = search_subjectsession.worked_end_time
             subjectsession['not_active_slotitems'] = search_subjectsession.not_active_slotitems
             subjectsession['status'] = search_subjectsession.status
             session_ids = search_subjectsession.session_ids
@@ -732,6 +742,8 @@ class PortalAccount(portal.CustomerPortal):
             subjectsession['day_of_week'] = CURRENT_WEEKDAY[search_subjectsession.day_of_week]
             subjectsession['start_time'] = search_subjectsession.start_time
             subjectsession['end_time'] = search_subjectsession.end_time
+            subjectsession['worked_start_time'] = search_subjectsession.worked_start_time
+            subjectsession['worked_end_time'] = search_subjectsession.worked_end_time
             subjectsession['not_active_slotitems'] = search_subjectsession.not_active_slotitems
             subjectsession['status'] = search_subjectsession.status
             session_ids = search_subjectsession.session_ids
@@ -863,6 +875,8 @@ class PortalAccount(portal.CustomerPortal):
             subjectsession['day_of_week'] = CURRENT_WEEKDAY[search_subjectsession.day_of_week]
             subjectsession['start_time'] = search_subjectsession.start_time
             subjectsession['end_time'] = search_subjectsession.end_time
+            subjectsession['worked_start_time'] = search_subjectsession.worked_start_time
+            subjectsession['worked_end_time'] = search_subjectsession.worked_end_time
             subjectsession['not_active_slotitems'] = search_subjectsession.not_active_slotitems
             subjectsession['status'] = search_subjectsession.status
             session_ids = search_subjectsession.session_ids
