@@ -535,7 +535,6 @@ class PortalAccount(portal.CustomerPortal):
             consumptionhour['worked_end_time'] = search_consumptionhour.worked_end_time
             consumptionhour['not_active_slotitems'] = search_consumptionhour.not_active_slotitems
             consumptionhour['status'] = search_consumptionhour.status
-
             consumptionhours.append(consumptionhour)
         consumptionhours = Helpers.format_consumptionhour(consumptionhours)
         for key_class in consumptionhours.keys():
@@ -602,7 +601,6 @@ class PortalAccount(portal.CustomerPortal):
                 session['report_id'] = session_id.report_id.id
                 sessions.append(session)
             progressreport['sessions'] = sessions
-
             progressreports.append(progressreport)
         progressreports = Helpers.format_progressreport(progressreports)
         return http.request.render('siantou_ems_portal.siantou_ems_portal_progressreport_views',
@@ -679,7 +677,6 @@ class PortalAccount(portal.CustomerPortal):
                 session['report_id'] = session_id.report_id.id
                 sessions.append(session)
             subjectsession['sessions'] = sessions
-
             subjectsessions.append(subjectsession)
         subjectsessions = Helpers.format_subjectsession(subjectsessions)
         return http.request.render('siantou_ems_portal.siantou_ems_portal_subjectsession_list_views',
@@ -758,7 +755,6 @@ class PortalAccount(portal.CustomerPortal):
                 session['report_id'] = session_id.report_id.id
                 sessions.append(session)
             subjectsession['sessions'] = sessions
-
             subjectsessions.append(subjectsession)
         subjectsessions = Helpers.format_subjectsession(subjectsessions)
         all_timetables = []
@@ -891,7 +887,6 @@ class PortalAccount(portal.CustomerPortal):
                 session['report_id'] = session_id.report_id.id
                 sessions.append(session)
             subjectsession['sessions'] = sessions
-
             subjectsessions.append(subjectsession)
         subjectsessions = Helpers.format_subjectsession(subjectsessions)
         session_id = http.request.env['siantou.ems.core.subject.session'].sudo().search([('id', '=', params['session_id'])], limit=1)
