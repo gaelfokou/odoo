@@ -94,6 +94,7 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
             teacher_timetable_attendance['worked_time'] = search_teacher_timetable_attendance.worked_time
             teacher_timetable_attendance['rate'] = search_teacher_timetable_attendance.rate
             teacher_timetable_attendance['amount'] = search_teacher_timetable_attendance.amount
+            teacher_timetable_attendance['hours_credit'] = search_teacher_timetable_attendance.hours_credit
             teacher_timetable_attendance['total_all'] = search_teacher_timetable_attendance.total_all
             teacher_timetable_attendance['total_done'] = search_teacher_timetable_attendance.total_done
             teacher_timetable_attendance['total_awaiting'] = search_teacher_timetable_attendance.total_awaiting

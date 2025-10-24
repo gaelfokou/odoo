@@ -35,6 +35,7 @@
                     <field name="worked_time"/>
                     <field name="rate"/>
                     <field name="amount"/>
+                    <field name="hours_credit"/>
                     <field name="total_all"/>
                     <field name="total_done"/>
                     <field name="total_awaiting"/>

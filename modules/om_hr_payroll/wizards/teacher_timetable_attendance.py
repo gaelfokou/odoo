@@ -125,8 +125,14 @@ class TeacherTimetableAttendance(models.TransientModel):
     )
 
     # Volume horaire du cours
+    hours_credit = fields.Float(
+        'Volume horaire du cours',
+        default=0.0,
+    )
+
+    # Volume horaire du cours
     total_all = fields.Float(
-        'Volume horaire',
+        'Volume horaire programmé',
         default=0.0,
     )
 

@@ -687,6 +687,7 @@ class Helpers:
                     'done': [],
                 }
                 consumptionhours[key_class]['data'][key_subject]['data']['all'].append(d)
+                consumptionhours[key_class]['data'][key_subject]['data']['credit'] = d['subject_hours_credit']
                 if d['status'] in ['present', 'permission']:
                     consumptionhours[key_class]['data'][key_subject]['data']['done'].append(d)
             else:
@@ -698,6 +699,7 @@ class Helpers:
                         'done': [],
                     }
                     consumptionhours[key_class]['data'][key_subject]['data']['all'].append(d)
+                    consumptionhours[key_class]['data'][key_subject]['data']['credit'] = d['subject_hours_credit']
                     if d['status'] in ['present', 'permission']:
                         consumptionhours[key_class]['data'][key_subject]['data']['done'].append(d)
                 else:

@@ -251,6 +251,7 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
                 rate = 0.0
                 amount = 0.0
 
+            hours_credit = 0.0
             total_all = 0.0
             total_done = 0.0
             total_awaiting = 0.0
@@ -258,15 +259,19 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
             key_subject = '{}'.format(timetable.subject_id.id)
             if key_class in consumptionhours:
                 if key_subject in consumptionhours[key_class]['data']:
+                    hours_credit = consumptionhours[key_class]['data'][key_subject]['data']['credit']
                     total_all = consumptionhours[key_class]['data'][key_subject]['data']['all']
                     total_done = consumptionhours[key_class]['data'][key_subject]['data']['done']
-                    total_awaiting = consumptionhours[key_class]['data'][key_subject]['data']['awaiting']
+                    # total_awaiting = consumptionhours[key_class]['data'][key_subject]['data']['awaiting']
+                    total_awaiting = consumptionhours[key_class]['data'][key_subject]['data']['credit'] - consumptionhours[key_class]['data'][key_subject]['data']['done']
+                    total_awaiting = round(total_awaiting, 2)
 
             teacher_timetable_attendance = self.env['teacher.timetable.attendance'].create({
                 'timetable_id': timetable.id,
                 'worked_time': worked_hours,
                 'rate': rate,
                 'amount': amount,
+                'hours_credit': hours_credit,
                 'total_all': total_all,
                 'total_done': total_done,
                 'total_awaiting': total_awaiting,
@@ -334,6 +339,7 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
                     'done': [],
                 }
                 consumptionhours[key_class]['data'][key_subject]['data']['all'].append(d)
+                consumptionhours[key_class]['data'][key_subject]['data']['credit'] = d['subject_hours_credit']
                 if d['status'] in ['present', 'permission']:
                     consumptionhours[key_class]['data'][key_subject]['data']['done'].append(d)
             else:
@@ -345,6 +351,7 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
                         'done': [],
                     }
                     consumptionhours[key_class]['data'][key_subject]['data']['all'].append(d)
+                    consumptionhours[key_class]['data'][key_subject]['data']['credit'] = d['subject_hours_credit']
                     if d['status'] in ['present', 'permission']:
                         consumptionhours[key_class]['data'][key_subject]['data']['done'].append(d)
                 else:

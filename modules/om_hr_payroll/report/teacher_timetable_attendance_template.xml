@@ -124,7 +124,7 @@
                                                 <span t-esc="timetable['amount']"/>
                                             </td>
                                             <td class="text-center">
-                                                <span t-esc="timetable['total_all']"/>
+                                                <span t-esc="timetable['hours_credit']"/>
                                             </td>
                                             <td class="text-center">
                                                 <span t-esc="timetable['total_done']"/>
