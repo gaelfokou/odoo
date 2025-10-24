@@ -36,8 +36,7 @@
                     <field name="rate"/>
                     <field name="amount"/>
                     <field name="hours_credit"/>
-                    <field name="total_all"/>
-                    <field name="total_done"/>
+                    <field name="total_done" decoration-danger="total_done &gt; hours_credit"/>
                     <field name="total_awaiting"/>
                     <field name="status"/>
                 </tree>

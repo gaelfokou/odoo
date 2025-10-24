@@ -262,9 +262,7 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
                     hours_credit = consumptionhours[key_class]['data'][key_subject]['data']['credit']
                     total_all = consumptionhours[key_class]['data'][key_subject]['data']['all']
                     total_done = consumptionhours[key_class]['data'][key_subject]['data']['done']
-                    # total_awaiting = consumptionhours[key_class]['data'][key_subject]['data']['awaiting']
-                    total_awaiting = consumptionhours[key_class]['data'][key_subject]['data']['credit'] - consumptionhours[key_class]['data'][key_subject]['data']['done']
-                    total_awaiting = round(total_awaiting, 2)
+                    total_awaiting = consumptionhours[key_class]['data'][key_subject]['data']['awaiting']
 
             teacher_timetable_attendance = self.env['teacher.timetable.attendance'].create({
                 'timetable_id': timetable.id,
@@ -366,7 +364,8 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
             for key_subject in consumptionhours[key_class]['data'].keys():
                 consumptionhours[key_class]['data'][key_subject]['data']['all'] = sum([TeacherTimetableAttendanceFilterWizard.convert_number_of_hours(v) for v in consumptionhours[key_class]['data'][key_subject]['data']['all']])
                 consumptionhours[key_class]['data'][key_subject]['data']['done'] = sum([TeacherTimetableAttendanceFilterWizard.convert_number_of_hours(v) for v in consumptionhours[key_class]['data'][key_subject]['data']['done']])
-                consumptionhours[key_class]['data'][key_subject]['data']['awaiting'] = consumptionhours[key_class]['data'][key_subject]['data']['all'] - consumptionhours[key_class]['data'][key_subject]['data']['done']
+                # consumptionhours[key_class]['data'][key_subject]['data']['awaiting'] = consumptionhours[key_class]['data'][key_subject]['data']['all'] - consumptionhours[key_class]['data'][key_subject]['data']['done']
+                consumptionhours[key_class]['data'][key_subject]['data']['awaiting'] = consumptionhours[key_class]['data'][key_subject]['data']['credit'] - consumptionhours[key_class]['data'][key_subject]['data']['done']
                 consumptionhours[key_class]['total_all'] += consumptionhours[key_class]['data'][key_subject]['data']['all']
                 consumptionhours[key_class]['total_done'] += consumptionhours[key_class]['data'][key_subject]['data']['done']
                 consumptionhours[key_class]['total_awaiting'] += consumptionhours[key_class]['data'][key_subject]['data']['awaiting']

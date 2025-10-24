@@ -505,6 +505,7 @@ class PortalAccount(portal.CustomerPortal):
     def portal_consumptionhour(self, search='', search_in='all', **kw):
         # Utilisation de la fonction du helper
         search_consumptionhours, searchbar_inputs = Helpers.consumptionhour(search, search_in)
+        hours_credit = 0.0
         total_all = 0.0
         total_done = 0.0
         total_awaiting = 0.0
@@ -548,6 +549,7 @@ class PortalAccount(portal.CustomerPortal):
         consumptionhours = Helpers.format_consumptionhour(consumptionhours)
         for key_class in consumptionhours.keys():
             for key_subject in consumptionhours[key_class]['data'].keys():
+                hours_credit += consumptionhours[key_class]['data'][key_subject]['data']['credit']
                 total_all += consumptionhours[key_class]['data'][key_subject]['data']['all']
                 total_done += consumptionhours[key_class]['data'][key_subject]['data']['done']
                 total_awaiting += consumptionhours[key_class]['data'][key_subject]['data']['awaiting']
@@ -556,6 +558,7 @@ class PortalAccount(portal.CustomerPortal):
                                     'consumptionhours': consumptionhours,
                                     'page_name': 'consumptionhour',
                                     'consumptionhour': 0,
+                                    'hours_credit': hours_credit,
                                     'total_all': total_all,
                                     'total_done': total_done,
                                     'total_awaiting': total_awaiting,

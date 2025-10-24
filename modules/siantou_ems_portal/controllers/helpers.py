@@ -714,7 +714,8 @@ class Helpers:
             for key_subject in consumptionhours[key_class]['data'].keys():
                 consumptionhours[key_class]['data'][key_subject]['data']['all'] = sum([Helpers.convert_number_of_hours(v) for v in consumptionhours[key_class]['data'][key_subject]['data']['all']])
                 consumptionhours[key_class]['data'][key_subject]['data']['done'] = sum([Helpers.convert_number_of_hours(v) for v in consumptionhours[key_class]['data'][key_subject]['data']['done']])
-                consumptionhours[key_class]['data'][key_subject]['data']['awaiting'] = consumptionhours[key_class]['data'][key_subject]['data']['all'] - consumptionhours[key_class]['data'][key_subject]['data']['done']
+                # consumptionhours[key_class]['data'][key_subject]['data']['awaiting'] = consumptionhours[key_class]['data'][key_subject]['data']['all'] - consumptionhours[key_class]['data'][key_subject]['data']['done']
+                consumptionhours[key_class]['data'][key_subject]['data']['awaiting'] = consumptionhours[key_class]['data'][key_subject]['data']['credit'] - consumptionhours[key_class]['data'][key_subject]['data']['done']
                 consumptionhours[key_class]['total_all'] += consumptionhours[key_class]['data'][key_subject]['data']['all']
                 consumptionhours[key_class]['total_done'] += consumptionhours[key_class]['data'][key_subject]['data']['done']
                 consumptionhours[key_class]['total_awaiting'] += consumptionhours[key_class]['data'][key_subject]['data']['awaiting']

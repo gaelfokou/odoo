@@ -786,7 +786,7 @@
                                             <span t-esc="consumptionhours[classe]['data'][subject]['name']"/>
                                         </td>
                                         <td class="text-left">
-                                            <span t-esc="consumptionhours[classe]['data'][subject]['data']['all']"/>
+                                            <span t-esc="consumptionhours[classe]['data'][subject]['data']['credit']"/>
                                         </td>
                                         <td class="text-left">
                                             <span t-esc="consumptionhours[classe]['data'][subject]['data']['done']"/>
@@ -800,7 +800,7 @@
                             <tfooter>
                                 <tr>
                                     <th class="text-left" colspan="1">Total nombre d'heures</th>
-                                    <th class="text-left" colspan="3"><span t-esc="consumptionhours[classe]['total_all']"/></th>
+                                    <th class="text-left" colspan="3"><span t-esc="consumptionhours[classe]['hours_credit']"/></th>
                                 </tr>
                                 <tr>
                                     <th class="text-left" colspan="1">Total nombre d'heures effectuées</th>
