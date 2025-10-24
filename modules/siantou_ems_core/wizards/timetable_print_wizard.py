@@ -179,6 +179,7 @@ class TimetablePrintWizard(models.TransientModel):
             timetable['subject_id'] = search_timetable.subject_id.id
             timetable['subject_name'] = search_timetable.subject_id.name
             timetable['subject_code'] = search_timetable.subject_id.code
+            timetable['subject_hours_credit'] = search_timetable.subject_id.hours_credit
             timetable['subject_shared_subject'] = '(TC)' if search_timetable.subject_id.shared_subject else ''
             timetable['classroom_name'] = search_timetable.classroom_id.name
             timetable['building_name'] = search_timetable.classroom_id.building_id.name
@@ -187,6 +188,8 @@ class TimetablePrintWizard(models.TransientModel):
             timetable['day_of_week'] = CURRENT_WEEKDAY[search_timetable.day_of_week]
             timetable['start_time'] = search_timetable.start_time
             timetable['end_time'] = search_timetable.end_time
+            timetable['worked_start_time'] = search_timetable.worked_start_time
+            timetable['worked_end_time'] = search_timetable.worked_end_time
             timetable['not_active_slotitems'] = search_timetable.not_active_slotitems
             timetable['status'] = STATUS_TIMETABLE[search_timetable.status]
             key_timetables[key].append(timetable)

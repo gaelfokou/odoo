@@ -389,6 +389,7 @@ class ProgressReport(models.Model):
                 progressreport['subject_id'] = search_progressreport.subject_id.id
                 progressreport['subject_name'] = search_progressreport.subject_id.name
                 progressreport['subject_code'] = search_progressreport.subject_id.code
+                progressreport['subject_hours_credit'] = search_progressreport.subject_id.hours_credit
                 progressreport['subject_shared_subject'] = search_progressreport.subject_id.shared_subject
                 progressreport['classroom_name'] = search_progressreport.classroom_id.name
                 progressreport['building_name'] = search_progressreport.classroom_id.building_id.name
@@ -397,6 +398,8 @@ class ProgressReport(models.Model):
                 progressreport['day_of_week'] = CURRENT_WEEKDAY[search_progressreport.day_of_week]
                 progressreport['start_time'] = search_progressreport.start_time
                 progressreport['end_time'] = search_progressreport.end_time
+                progressreport['worked_start_time'] = search_progressreport.worked_start_time
+                progressreport['worked_end_time'] = search_progressreport.worked_end_time
                 progressreport['not_active_slotitems'] = search_progressreport.not_active_slotitems
                 progressreport['status'] = search_progressreport.status
                 session_ids = search_progressreport.session_ids

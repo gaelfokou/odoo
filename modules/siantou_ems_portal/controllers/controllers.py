@@ -178,6 +178,7 @@ class PortalAccount(portal.CustomerPortal):
             timetable['department_name'] = search_timetable.department_id.name
             timetable['subject_name'] = search_timetable.subject_id.name
             timetable['subject_code'] = search_timetable.subject_id.code
+            timetable['subject_hours_credit'] = search_timetable.subject_id.hours_credit
             timetable['subject_shared_subject'] = '(TC)' if search_timetable.subject_id.shared_subject else ''
             timetable['classroom_name'] = search_timetable.classroom_id.name
             timetable['building_name'] = search_timetable.classroom_id.building_id.name
@@ -416,6 +417,7 @@ class PortalAccount(portal.CustomerPortal):
             accountbalance['subject_id'] = search_accountbalance.subject_id.id
             accountbalance['subject_name'] = search_accountbalance.subject_id.name
             accountbalance['subject_code'] = search_accountbalance.subject_id.code
+            accountbalance['subject_hours_credit'] = search_accountbalance.subject_id.hours_credit
             accountbalance['subject_shared_subject'] = '(TC)' if search_accountbalance.subject_id.shared_subject else ''
             accountbalance['classroom_name'] = search_accountbalance.classroom_id.name
             accountbalance['building_name'] = search_accountbalance.classroom_id.building_id.name
@@ -529,6 +531,7 @@ class PortalAccount(portal.CustomerPortal):
             consumptionhour['subject_id'] = search_consumptionhour.subject_id.id
             consumptionhour['subject_name'] = search_consumptionhour.subject_id.name
             consumptionhour['subject_code'] = search_consumptionhour.subject_id.code
+            consumptionhour['subject_hours_credit'] = search_consumptionhour.subject_id.hours_credit
             consumptionhour['subject_shared_subject'] = search_consumptionhour.subject_id.shared_subject
             consumptionhour['classroom_name'] = search_consumptionhour.classroom_id.name
             consumptionhour['building_name'] = search_consumptionhour.classroom_id.building_id.name
@@ -585,6 +588,7 @@ class PortalAccount(portal.CustomerPortal):
             progressreport['subject_id'] = search_progressreport.subject_id.id
             progressreport['subject_name'] = search_progressreport.subject_id.name
             progressreport['subject_code'] = search_progressreport.subject_id.code
+            progressreport['subject_hours_credit'] = search_progressreport.subject_id.hours_credit
             progressreport['subject_shared_subject'] = search_progressreport.subject_id.shared_subject
             progressreport['classroom_name'] = search_progressreport.classroom_id.name
             progressreport['building_name'] = search_progressreport.classroom_id.building_id.name
@@ -663,6 +667,7 @@ class PortalAccount(portal.CustomerPortal):
             subjectsession['subject_id'] = search_subjectsession.subject_id.id
             subjectsession['subject_name'] = search_subjectsession.subject_id.name
             subjectsession['subject_code'] = search_subjectsession.subject_id.code
+            subjectsession['subject_hours_credit'] = search_subjectsession.subject_id.hours_credit
             subjectsession['subject_shared_subject'] = search_subjectsession.subject_id.shared_subject
             subjectsession['classroom_name'] = search_subjectsession.classroom_id.name
             subjectsession['building_name'] = search_subjectsession.classroom_id.building_id.name
@@ -743,6 +748,7 @@ class PortalAccount(portal.CustomerPortal):
             subjectsession['subject_id'] = search_subjectsession.subject_id.id
             subjectsession['subject_name'] = search_subjectsession.subject_id.name
             subjectsession['subject_code'] = search_subjectsession.subject_id.code
+            subjectsession['subject_hours_credit'] = search_subjectsession.subject_id.hours_credit
             subjectsession['subject_shared_subject'] = search_subjectsession.subject_id.shared_subject
             subjectsession['classroom_name'] = search_subjectsession.classroom_id.name
             subjectsession['building_name'] = search_subjectsession.classroom_id.building_id.name
@@ -877,6 +883,7 @@ class PortalAccount(portal.CustomerPortal):
             subjectsession['subject_id'] = search_subjectsession.subject_id.id
             subjectsession['subject_name'] = search_subjectsession.subject_id.name
             subjectsession['subject_code'] = search_subjectsession.subject_id.code
+            subjectsession['subject_hours_credit'] = search_subjectsession.subject_id.hours_credit
             subjectsession['subject_shared_subject'] = search_subjectsession.subject_id.shared_subject
             subjectsession['classroom_name'] = search_subjectsession.classroom_id.name
             subjectsession['building_name'] = search_subjectsession.classroom_id.building_id.name

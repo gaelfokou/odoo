@@ -142,6 +142,7 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
             consumptionhour['subject_id'] = search_consumptionhour.subject_id.id
             consumptionhour['subject_name'] = search_consumptionhour.subject_id.name
             consumptionhour['subject_code'] = search_consumptionhour.subject_id.code
+            consumptionhour['subject_hours_credit'] = search_consumptionhour.subject_id.hours_credit
             consumptionhour['subject_shared_subject'] = search_consumptionhour.subject_id.shared_subject
             consumptionhour['classroom_name'] = search_consumptionhour.classroom_id.name
             consumptionhour['building_name'] = search_consumptionhour.classroom_id.building_id.name
