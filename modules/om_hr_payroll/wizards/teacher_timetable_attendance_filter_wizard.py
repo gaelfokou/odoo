@@ -287,7 +287,7 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
             'name': title,
             'type': 'ir.actions.act_window',
             'view_type': 'form',
-            'view_mode': 'tree',
+            'view_mode': 'tree,form',
             'res_model': 'teacher.timetable.attendance',
             'views': [(view_id, 'tree'), (False, 'form')],
             'view_id': view_id,

@@ -385,15 +385,16 @@ class TimetableFilterWizard(models.TransientModel):
 
         self.env['ir.config_parameter'].sudo().set_param(f'siantou.filter_user_{self.env.user.id}', title)
 
-        view_id = self.env.ref('siantou_ems_core.timetable_tree_view').id
+        tree_view = self.env.ref('siantou_ems_core.timetable_tree_view').id
+        calendar_view = self.env.ref('siantou_ems_core.timetable_calendar_view').id
         return {
             'name': title,
             'type': 'ir.actions.act_window',
             'view_type': 'form',
-            'view_mode': 'tree',
+            'view_mode': 'tree,form,calendar',
             'res_model': 'siantou.ems.timetable.timetable',
-            'views': [(view_id, 'tree'), (False, 'form')],
-            'view_id': view_id,
+            'views': [(tree_view, 'tree'), (False, 'form'), (calendar_view, 'calendar')],
+            'view_id': tree_view,
             'domain' : domain,
             'target': 'main',
         }

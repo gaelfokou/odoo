@@ -353,8 +353,77 @@ class Timetable(models.Model):
         widget='time'
     )
 
+    @api.depends('date', 'start_time')
+    def _compute_start_datetime(self):
+        for record in self:
+            if record.date and record.start_time:
+                start_time = Timetable.convert_float_to_time(record.start_time)
+                datetime_from = datetime.strptime(f"{record.date} {start_time}", DATETIME_FORMAT)
+                record.start_datetime = datetime_from
+            else:
+                record.start_datetime = None
+
+    @api.onchange('date', 'start_time')
+    def _onchange_start_datetime(self):
+        for record in self:
+            if record.date and record.start_time:
+                start_time = Timetable.convert_float_to_time(record.start_time)
+                datetime_from = datetime.strptime(f"{record.date} {start_time}", DATETIME_FORMAT)
+                record.start_datetime = datetime_from
+            else:
+                record.start_datetime = None
+
+    @api.depends('date', 'end_time')
+    def _compute_end_datetime(self):
+        for record in self:
+            if record.date and record.end_time:
+                end_time = Timetable.convert_float_to_time(record.end_time)
+                datetime_to = datetime.strptime(f"{record.date} {end_time}", DATETIME_FORMAT)
+                record.end_datetime = datetime_to
+            else:
+                record.end_datetime = None
+
+    @api.onchange('date', 'end_time')
+    def _onchange_end_datetime(self):
+        for record in self:
+            if record.date and record.end_time:
+                end_time = Timetable.convert_float_to_time(record.end_time)
+                datetime_to = datetime.strptime(f"{record.date} {end_time}", DATETIME_FORMAT)
+                record.end_datetime = datetime_to
+            else:
+                record.end_datetime = None
+
+    # Date et heure de début du cours
+    start_datetime = fields.Datetime(
+        'Date et heure de début',
+        compute='_compute_start_datetime',
+        store=False
+    )
+
+    # Date et heure de fin du cours
+    end_datetime = fields.Datetime(
+        'Date et heure de fin',
+        compute='_compute_end_datetime',
+        store=False
+    )
+
     @api.depends('date', 'worked_start_time', 'worked_end_time')
     def _compute_worked_time(self):
+        for record in self:
+            if record.date and record.worked_start_time and record.worked_end_time:
+                end_time = Timetable.convert_float_to_time(record.worked_end_time)
+                start_time = Timetable.convert_float_to_time(record.worked_start_time)
+                datetime_to = datetime.strptime(f"{record.date} {end_time}", DATETIME_FORMAT)
+                datetime_from = datetime.strptime(f"{record.date} {start_time}", DATETIME_FORMAT)
+                worked_hours = datetime_to - datetime_from
+                worked_hours = worked_hours.total_seconds() / 3600.0
+                worked_hours = round(worked_hours, 2)
+                record.worked_time = worked_hours
+            else:
+                record.worked_time = 0.0
+
+    @api.onchange('date', 'worked_start_time', 'worked_end_time')
+    def _onchange_worked_time(self):
         for record in self:
             if record.date and record.worked_start_time and record.worked_end_time:
                 end_time = Timetable.convert_float_to_time(record.worked_end_time)
@@ -373,7 +442,7 @@ class Timetable(models.Model):
         'Heure effectuée',
         default=0.0,
         # compute='_compute_worked_time',
-        # store=True
+        # store=False
     )
 
     # Taux de l\'enseignant
