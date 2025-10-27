@@ -109,12 +109,20 @@ class Helpers:
                 search_domain.append(('employee_id', '=', user.id))
 
                 timetables = http.request.env['siantou.ems.timetable.timetable'].sudo().search(search_domain, order=order)
+                start_date = date.today().replace(day=1)
+                end_date = (datetime.now() + relativedelta(months=+1, day=1, days=-1)).date()
+                if start_date and end_date:
+                    timetables = timetables.filtered(lambda rec: rec.date >= start_date and rec.date <= end_date)
                 timetables = list(timetables)
                 search_timetables = timetables
             elif is_user == 'is_student':
                 search_domain.append(('class_id', '=', user.class_id.id))
 
                 timetables = http.request.env['siantou.ems.timetable.timetable'].sudo().search(search_domain, order=order)
+                start_date = date.today().replace(day=1)
+                end_date = (datetime.now() + relativedelta(months=+1, day=1, days=-1)).date()
+                if start_date and end_date:
+                    timetables = timetables.filtered(lambda rec: rec.date >= start_date and rec.date <= end_date)
                 timetables = list(timetables)
                 search_timetables = timetables
 
