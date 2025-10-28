@@ -468,7 +468,7 @@ class PortalAccount(portal.CustomerPortal):
                     domain = [
                         ('hourly_rate_id', '=', hourly_rate.id),
                         ('employee_id', '=', search_accountbalance.employee_id.id),
-                        ('subject_id', '=', search_accountbalance.subject_id.id),
+                        # ('subject_id', '=', search_accountbalance.subject_id.id),
                     ]
 
                     teacher_hourly_rate = http.request.env['siantou.ems.core.teacher.hourly.rate'].sudo().search(domain, limit=1)
@@ -476,7 +476,8 @@ class PortalAccount(portal.CustomerPortal):
                         accountbalance['rate'] = teacher_hourly_rate.rate
                         break
                 if 'rate' not in accountbalance:
-                    accountbalance['rate'] = hourly_rates[0].rate
+                    # accountbalance['rate'] = hourly_rates[0].rate
+                    accountbalance['rate'] = 0.0
 
             if 'rate' not in accountbalance:
                 accountbalance['rate'] = 0.0

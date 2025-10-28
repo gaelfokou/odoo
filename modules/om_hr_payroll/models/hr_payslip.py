@@ -1137,7 +1137,7 @@ class HrPayslip(models.Model):
                                                 domain = [
                                                     ('hourly_rate_id', '=', hourly_rate.id),
                                                     ('employee_id', '=', worked_days_line_id.timetable_id.employee_id.id),
-                                                    ('subject_id', '=', worked_days_line_id.timetable_id.subject_id.id),
+                                                    # ('subject_id', '=', worked_days_line_id.timetable_id.subject_id.id),
                                                 ]
 
                                                 teacher_hourly_rate = self.env['siantou.ems.core.teacher.hourly.rate'].sudo().search(domain, limit=1)
@@ -1145,7 +1145,8 @@ class HrPayslip(models.Model):
                                                     accountbalance['rate'] = teacher_hourly_rate.rate
                                                     break
                                             if 'rate' not in accountbalance:
-                                                accountbalance['rate'] = hourly_rates[0].rate
+                                                # accountbalance['rate'] = hourly_rates[0].rate
+                                                accountbalance['rate'] = 0.0
 
                                         if 'rate' not in accountbalance:
                                             accountbalance['rate'] = 0.0
