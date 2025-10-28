@@ -92,6 +92,11 @@ class TimetableFilterWizard(models.TransientModel):
         string='Option',
     )
 
+    class_group_id = fields.Many2one(
+        'siantou.ems.core.class.group',
+        string='Groupe de classe',
+    )
+
     type_cour = fields.Selection([
         ('cj', 'Cours du jour'),
         ('cs', 'Cours du soir'),
@@ -168,6 +173,52 @@ class TimetableFilterWizard(models.TransientModel):
     ], 'Statut',
         # default='pending',
     )
+
+    has_option = fields.Boolean(
+        'Spécialité avec options',
+        compute='_compute_has_option', store=True,
+    )
+
+    has_group = fields.Boolean(
+        'Classe avec groupes',
+        compute='_compute_has_group', store=True,
+    )
+
+    @api.depends('specialty_id')
+    def _compute_has_option(self):
+        for record in self:
+            option_ids = self.env['siantou.ems.core.option'].search([
+                ('specialty_id', '=', record.specialty_id.id),
+            ])
+
+            record.has_option = len(option_ids.ids) > 0
+
+    @api.onchange('specialty_id')
+    def _onchange_has_option(self):
+        for record in self:
+            option_ids = self.env['siantou.ems.core.option'].search([
+                ('specialty_id', '=', record.specialty_id.id),
+            ])
+
+            record.has_option = len(option_ids.ids) > 0
+
+    @api.depends('class_id')
+    def _compute_has_group(self):
+        for record in self:
+            group_ids = self.env['siantou.ems.core.class.group'].search([
+                ('class_id', '=', record.class_id.id),
+            ])
+
+            record.has_group = len(group_ids.ids) > 0
+
+    @api.onchange('class_id')
+    def _onchange_has_group(self):
+        for record in self:
+            group_ids = self.env['siantou.ems.core.class.group'].search([
+                ('class_id', '=', record.class_id.id),
+            ])
+
+            record.has_group = len(group_ids.ids) > 0
 
     specialty_id_domain = fields.Binary(compute='_compute_school_domain', default=[])
 

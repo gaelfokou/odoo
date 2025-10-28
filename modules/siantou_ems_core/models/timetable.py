@@ -507,7 +507,7 @@ class Timetable(models.Model):
 
     class_group_id = fields.Many2one(
         'siantou.ems.core.class.group',
-        'Groupe',
+        'Groupe de classe',
         ondelete='cascade'
     )
 
