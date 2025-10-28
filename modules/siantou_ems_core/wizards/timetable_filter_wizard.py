@@ -125,12 +125,22 @@ class TimetableFilterWizard(models.TransientModel):
         'Enseignant',
     )
 
+    def _default_start_date(self):
+        start_date = date.today().replace(day=1)
+        return start_date
+
     start_date = fields.Date(
         'Date de début',
+        default=_default_start_date,
     )
+
+    def _default_end_date(self):
+        end_date = (datetime.now() + relativedelta(months=+1, day=1, days=-1)).date()
+        return end_date
 
     end_date = fields.Date(
         'Date de fin',
+        default=_default_end_date,
     )
 
     # Heure de début du cours
