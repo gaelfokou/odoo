@@ -314,7 +314,7 @@ class TimetableFilterWizard(models.TransientModel):
             record.subject_id = None
 
     def search_filtered(self, rec):
-        result = not (rec.start_time >= self.end_time or rec.end_time <= self.start_time)
+        result = (rec.start_time >= self.start_time and rec.end_time <= self.end_time)
         return result
 
     def action_filter(self):
@@ -378,7 +378,7 @@ class TimetableFilterWizard(models.TransientModel):
             start_time = TimetableFilterWizard.convert_float_to_time(self.start_time)
             end_time = TimetableFilterWizard.convert_float_to_time(self.end_time)
             title.append('{} - {}'.format(start_time, end_time))
-            timetables = timetables.filtered(lambda rec: not (rec.start_time >= self.end_time or rec.end_time <= self.start_time))
+            timetables = timetables.filtered(lambda rec: (rec.start_time >= self.start_time and rec.end_time <= self.end_time))
             # timetables = timetables.filtered(lambda rec: self.search_filtered(rec))
         for timetable in timetables:
             timetable_ids.append(timetable.id)
