@@ -399,6 +399,9 @@ class TimetableFilterWizard(models.TransientModel):
         if self.class_id.id:
             domain.append(('class_id', '=', self.class_id.id))
             title.append(self.class_id.name)
+        if self.class_group_id.id:
+            domain.append(('class_group_id', '=', self.class_group_id.id))
+            title.append(self.class_group_id.name)
         if self.subject_id.id:
             domain.append(('subject_id', '=', self.subject_id.id))
             title.append(self.subject_id.name)
