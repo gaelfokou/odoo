@@ -112,7 +112,7 @@ class Helpers:
                 start_date = date.today().replace(day=1)
                 end_date = (datetime.now() + relativedelta(months=+1, day=1, days=-1)).date()
                 if start_date and end_date:
-                    timetables = timetables.filtered(lambda rec: rec.date >= start_date and rec.date <= end_date)
+                    timetables = timetables.filtered(lambda rec: rec.date and rec.date >= start_date and rec.date <= end_date)
                 timetables = list(timetables)
                 search_timetables = timetables
             elif is_user == 'is_student':
@@ -122,7 +122,7 @@ class Helpers:
                 start_date = date.today().replace(day=1)
                 end_date = (datetime.now() + relativedelta(months=+1, day=1, days=-1)).date()
                 if start_date and end_date:
-                    timetables = timetables.filtered(lambda rec: rec.date >= start_date and rec.date <= end_date)
+                    timetables = timetables.filtered(lambda rec: rec.date and rec.date >= start_date and rec.date <= end_date)
                 timetables = list(timetables)
                 search_timetables = timetables
 
@@ -232,7 +232,7 @@ class Helpers:
                 start_date = date.today().replace(day=1)
                 end_date = (datetime.now() + relativedelta(months=+1, day=1, days=-1)).date()
                 if start_date and end_date:
-                    accountbalances = accountbalances.filtered(lambda rec: rec.date >= start_date and rec.date <= end_date)
+                    accountbalances = accountbalances.filtered(lambda rec: rec.date and rec.date >= start_date and rec.date <= end_date)
                 accountbalances = list(accountbalances)
                 search_accountbalances = accountbalances
 

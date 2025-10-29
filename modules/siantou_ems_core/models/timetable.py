@@ -302,7 +302,7 @@ class Timetable(models.Model):
     # Date du jour où le cours sera programmé
     date = fields.Date(
         'Date du jour',
-        # required=True,
+        required=True,
         default=_default_date,
     )
 
