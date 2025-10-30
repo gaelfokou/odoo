@@ -646,7 +646,7 @@ class Student(models.Model):
             'view_type': 'form',
             'res_model': 'oe.school.student',
             'target': 'new',
-            'view_id': self.env.ref('siantou_ems_core.student_form_view').id,
+            'view_id': self.env.ref('student_form_view').id,
             # 'context': {'active_id': self.id},
         }
 

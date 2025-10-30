@@ -34,8 +34,11 @@
             <field name="name">Retenues sur les salaires</field>
             <field name="res_model">employee.salary.deduction</field>
             <field name="view_mode">tree,form</field>
-            <field name="target">current</field>
-            <field name="view_id" ref="employee_salary_deduction_tree_view"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Créer une nouvelle retenue sur le salaire.
+                </p>
+            </field>
         </record>
 
         <menuitem

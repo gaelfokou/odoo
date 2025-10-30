@@ -179,7 +179,7 @@ class StudentFilterWizard(models.TransientModel):
 
         self.env['ir.config_parameter'].sudo().set_param(f'siantou.filter_user_{self.env.user.id}', title)
 
-        view_id = self.env.ref('siantou_ems_core.student_tree_view').id
+        view_id = self.env.ref('student_tree_view').id
         return {
             'name': title,
             'type': 'ir.actions.act_window',

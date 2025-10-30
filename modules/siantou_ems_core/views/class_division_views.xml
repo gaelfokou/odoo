@@ -55,7 +55,7 @@
 
         <!-- Affichage en vue formulaire -->
 		<record
-                id="siantou_ems_core_class_form_view"
+                id="class_form_view"
                 model="ir.ui.view">
 			<field name="name">siantou_ems_core_class.form.view</field>
 			<field name="model">siantou.ems.core.class</field>
