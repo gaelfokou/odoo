@@ -85,6 +85,21 @@ class HrEmployee(models.Model):
         'Date de naissance',
     )
 
+    has_ir = fields.Boolean(
+        'A un IR',
+        default=False,
+    )
+
+    has_apecus = fields.Boolean(
+        'A un APECUS',
+        default=False,
+    )
+
+    has_cnps = fields.Boolean(
+        'A une CNPS',
+        default=False,
+    )
+
     @api.depends('last_name', 'first_name')
     def _compute_name(self):
         for record in self:

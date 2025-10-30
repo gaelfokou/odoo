@@ -21,6 +21,9 @@
                     <group string="Informations académiques pour les enseignants">
                         <field name="is_teacher"/>
                         <field name="is_permanent"/>
+                        <field name="has_ir"/>
+                        <field name="has_apecus"/>
+                        <field name="has_cnps"/>
                         <field name="identifier"/>
                         <field name="weekly_hours_limit"/>
                         <field name="is_portal" invisible="is_teacher == False"/>

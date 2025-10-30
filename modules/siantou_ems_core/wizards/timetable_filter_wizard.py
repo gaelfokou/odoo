@@ -175,12 +175,12 @@ class TimetableFilterWizard(models.TransientModel):
     )
 
     has_option = fields.Boolean(
-        'Spécialité avec options',
+        'Spécialité avec option',
         compute='_compute_has_option', store=True,
     )
 
     has_group = fields.Boolean(
-        'Classe avec groupes',
+        'Classe avec groupe',
         compute='_compute_has_group', store=True,
     )
 
