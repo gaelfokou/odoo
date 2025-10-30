@@ -368,7 +368,7 @@ class ProgressReport(models.Model):
             search_progressreports = list(search_progressreports)
             data = []
             for search_progressreport in search_progressreports:
-                if not search_progressreport.date:
+                if not search_progressreport.date or not search_progressreport.day_of_week:
                     continue
                 progressreport = {}
                 progressreport['id'] = search_progressreport.id

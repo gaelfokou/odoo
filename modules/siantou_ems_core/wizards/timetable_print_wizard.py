@@ -144,7 +144,7 @@ class TimetablePrintWizard(models.TransientModel):
         key_timetables = {}
         info_timetables = {}
         for search_timetable in search_timetables:
-            if not search_timetable.date:
+            if not search_timetable.date or not search_timetable.day_of_week:
                 continue
             key = '{}-{}'.format(search_timetable.semester_id.id, search_timetable.class_id.id)
             semester = '{}'.format(search_timetable.semester_id.name)

@@ -118,7 +118,7 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
         search_consumptionhours = self.env['siantou.ems.timetable.timetable'].search(domain, order=order)
         consumptionhours = []
         for search_consumptionhour in search_consumptionhours:
-            if not search_consumptionhour.date:
+            if not search_consumptionhour.date or not search_consumptionhour.day_of_week:
                 continue
             consumptionhour = {}
             consumptionhour['id'] = search_consumptionhour.id
@@ -173,40 +173,49 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
         key_timetables = {}
         for timetable in timetables:
             if timetable.status == 'present':
-                end_time = datetime.strptime(f"{timetable.date} {TeacherTimetableAttendanceFilterWizard.convert_float_to_time(timetable.worked_end_time, True)}", DATETIME_FORMAT)
-                start_time = datetime.strptime(f"{timetable.date} {TeacherTimetableAttendanceFilterWizard.convert_float_to_time(timetable.worked_start_time, True)}", DATETIME_FORMAT)
+                end_time = TeacherTimetableAttendanceFilterWizard.convert_float_to_time(timetable.worked_end_time, True)
+                start_time = TeacherTimetableAttendanceFilterWizard.convert_float_to_time(timetable.worked_start_time, True)
 
                 key = '{}-{}-{}-{}'.format(timetable.employee_id.id, timetable.date, start_time, end_time)
                 if not key in key_timetables:
                     key_timetables[key] = timetable
                 else:
                     continue
+
+                end_time = datetime.strptime(f"{timetable.date} {end_time}", DATETIME_FORMAT)
+                start_time = datetime.strptime(f"{timetable.date} {start_time}", DATETIME_FORMAT)
 
                 worked_hours = end_time - start_time
                 worked_hours = worked_hours.total_seconds() / 3600.0
                 worked_hours = round(worked_hours, 2)
             elif timetable.status == 'permission':
-                end_time = datetime.strptime(f"{timetable.date} {TeacherTimetableAttendanceFilterWizard.convert_float_to_time(timetable.end_time, True)}", DATETIME_FORMAT)
-                start_time = datetime.strptime(f"{timetable.date} {TeacherTimetableAttendanceFilterWizard.convert_float_to_time(timetable.start_time, True)}", DATETIME_FORMAT)
+                end_time = TeacherTimetableAttendanceFilterWizard.convert_float_to_time(timetable.end_time, True)
+                start_time = TeacherTimetableAttendanceFilterWizard.convert_float_to_time(timetable.start_time, True)
 
                 key = '{}-{}-{}-{}'.format(timetable.employee_id.id, timetable.date, start_time, end_time)
                 if not key in key_timetables:
                     key_timetables[key] = timetable
                 else:
                     continue
+
+                end_time = datetime.strptime(f"{timetable.date} {end_time}", DATETIME_FORMAT)
+                start_time = datetime.strptime(f"{timetable.date} {start_time}", DATETIME_FORMAT)
 
                 worked_hours = end_time - start_time
                 worked_hours = worked_hours.total_seconds() / 3600.0
                 worked_hours = round(worked_hours, 2)
             else:
-                end_time = datetime.strptime(f"{timetable.date} {TeacherTimetableAttendanceFilterWizard.convert_float_to_time(0.0, True)}", DATETIME_FORMAT)
-                start_time = datetime.strptime(f"{timetable.date} {TeacherTimetableAttendanceFilterWizard.convert_float_to_time(0.0, True)}", DATETIME_FORMAT)
+                end_time = TeacherTimetableAttendanceFilterWizard.convert_float_to_time(0.0, True)
+                start_time = TeacherTimetableAttendanceFilterWizard.convert_float_to_time(0.0, True)
 
                 key = '{}-{}-{}-{}'.format(timetable.employee_id.id, timetable.date, start_time, end_time)
                 if not key in key_timetables:
                     key_timetables[key] = timetable
                 else:
                     continue
+
+                end_time = datetime.strptime(f"{timetable.date} {end_time}", DATETIME_FORMAT)
+                start_time = datetime.strptime(f"{timetable.date} {start_time}", DATETIME_FORMAT)
 
                 worked_hours = end_time - start_time
                 worked_hours = worked_hours.total_seconds() / 3600.0

@@ -127,17 +127,16 @@ class TimetableSubjectHour(models.Model):
             if record.start_date > record.end_date:
                 raise ValidationError('La date de fin doit être supérieure ou égale à la date de début')
 
-    # Méthode pour remplir automatiquement le jour de la semaine
-    @api.onchange('start_date')
-    def _onchange_start_date(self):
+    @api.depends('start_date')
+    def _compute_day_of_week(self):
         for record in self:
             if record.start_date:
                 record.day_of_week = str(record.start_date.weekday())
             else:
                 record.day_of_week = None
 
-    @api.depends('start_date')
-    def _compute_day_of_week(self):
+    @api.onchange('start_date')
+    def _onchange_day_of_week(self):
         for record in self:
             if record.start_date:
                 record.day_of_week = str(record.start_date.weekday())
@@ -668,17 +667,16 @@ class Timetable(models.Model):
             record.ue_id = None
             record.subject_id = None
 
-    # Méthode pour remplir automatiquement le jour de la semaine
-    @api.onchange('date')
-    def _onchange_date(self):
+    @api.depends('date')
+    def _compute_day_of_week(self):
         for record in self:
             if record.date:
                 record.day_of_week = str(record.date.weekday())
             else:
                 record.day_of_week = None
 
-    @api.depends('date')
-    def _compute_day_of_week(self):
+    @api.onchange('date')
+    def _onchange_day_of_week(self):
         for record in self:
             if record.date:
                 record.day_of_week = str(record.date.weekday())

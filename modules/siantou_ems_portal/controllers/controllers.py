@@ -159,7 +159,7 @@ class PortalAccount(portal.CustomerPortal):
         search_timetables, searchbar_inputs = Helpers.timetable(search, search_in)
         timetables = []
         for search_timetable in search_timetables:
-            if not search_timetable.date:
+            if not search_timetable.date or not search_timetable.day_of_week:
                 continue
             timetable = {}
             timetable['id'] = search_timetable.id
@@ -385,7 +385,7 @@ class PortalAccount(portal.CustomerPortal):
         accountbalances = []
         shared_subjects = {}
         for search_accountbalance in search_accountbalances:
-            if not search_accountbalance.date:
+            if not search_accountbalance.date or not search_accountbalance.day_of_week:
                 continue
             timetable_day = datetime.strftime(search_accountbalance.date, DATE_FORMAT)
 
@@ -508,7 +508,7 @@ class PortalAccount(portal.CustomerPortal):
         search_consumptionhours, searchbar_inputs = Helpers.consumptionhour(search, search_in)
         consumptionhours = []
         for search_consumptionhour in search_consumptionhours:
-            if not search_consumptionhour.date:
+            if not search_consumptionhour.date or not search_consumptionhour.day_of_week:
                 continue
             consumptionhour = {}
             consumptionhour['id'] = search_consumptionhour.id
@@ -557,7 +557,7 @@ class PortalAccount(portal.CustomerPortal):
         search_progressreports, searchbar_inputs = Helpers.progressreport(search, search_in)
         progressreports = []
         for search_progressreport in search_progressreports:
-            if not search_progressreport.date:
+            if not search_progressreport.date or not search_progressreport.day_of_week:
                 continue
             progressreport = {}
             progressreport['id'] = search_progressreport.id
@@ -636,7 +636,7 @@ class PortalAccount(portal.CustomerPortal):
         search_subjectsessions, searchbar_inputs = Helpers.subjectsession(search, search_in, class_id=class_id, subject_id=subject_id)
         subjectsessions = []
         for search_subjectsession in search_subjectsessions:
-            if not search_subjectsession.date:
+            if not search_subjectsession.date or not search_subjectsession.day_of_week:
                 continue
             subjectsession = {}
             subjectsession['id'] = search_subjectsession.id
@@ -717,7 +717,7 @@ class PortalAccount(portal.CustomerPortal):
         search_subjectsessions, searchbar_inputs = Helpers.subjectsession(search, search_in, class_id=class_id, subject_id=subject_id)
         subjectsessions = []
         for search_subjectsession in search_subjectsessions:
-            if not search_subjectsession.date:
+            if not search_subjectsession.date or not search_subjectsession.day_of_week:
                 continue
             subjectsession = {}
             subjectsession['id'] = search_subjectsession.id
@@ -852,7 +852,7 @@ class PortalAccount(portal.CustomerPortal):
         search_subjectsessions, searchbar_inputs = Helpers.subjectsession(search, search_in, class_id=class_id, subject_id=subject_id)
         subjectsessions = []
         for search_subjectsession in search_subjectsessions:
-            if not search_subjectsession.date:
+            if not search_subjectsession.date or not search_subjectsession.day_of_week:
                 continue
             subjectsession = {}
             subjectsession['id'] = search_subjectsession.id

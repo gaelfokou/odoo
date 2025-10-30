@@ -56,7 +56,7 @@ class ApiAccount(http.Controller):
         search_timetables, searchbar_inputs = Helpers.timetable(search, search_in)
         timetables = []
         for search_timetable in search_timetables:
-            if not search_timetable.date:
+            if not search_timetable.date or not search_timetable.day_of_week:
                 continue
             timetable = {}
             timetable['id'] = search_timetable.id
