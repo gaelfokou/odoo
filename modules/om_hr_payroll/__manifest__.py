@@ -47,6 +47,7 @@
         'views/teacher_timetable_attendance_filter_wizard_views.xml',
         'views/teacher_timetable_attendance_views.xml',
         'report/teacher_timetable_attendance_template.xml',
+        'views/employee_salary_deduction_views.xml',
     ],
     'images': ['static/description/banner.png'],
     'application': True,

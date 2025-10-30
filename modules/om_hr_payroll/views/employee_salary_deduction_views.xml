@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="employee_salary_deduction_tree_view" model="ir.ui.view">
+            <field name="name">employee.salary.deduction.tree.view</field>
+            <field name="model">employee.salary.deduction</field>
+            <field name="arch" type="xml">
+                <tree string="Retenues sur les salaires">
+                    <field name="name"/>
+                    <field name="code"/>
+                    <field name="category_id"/>
+                    <field name="deduction_type"/>
+                    <field name="amount"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="employee_salary_deduction_form_view" model="ir.ui.view">
+            <field name="name">employee.salary.deduction.form.view</field>
+            <field name="model">employee.salary.deduction</field>
+            <field name="arch" type="xml">
+                <form string="Retenues sur les salaires">
+                    <field name="name"/>
+                    <field name="code"/>
+                    <field name="category_id"/>
+                    <field name="deduction_type"/>
+                    <field name="amount"/>
+                </form>
+            </field>
+        </record>
+
+        <!-- Define an action to open the tree view -->
+        <record id="action_show_employee_salary_deduction" model="ir.actions.act_window">
+            <field name="name">Retenues sur les salaires</field>
+            <field name="res_model">employee.salary.deduction</field>
+            <field name="view_mode">tree,form</field>
+            <field name="target">current</field>
+            <field name="view_id" ref="employee_salary_deduction_tree_view"/>
+        </record>
+
+        <menuitem
+            id="menu_employee_salary_deduction"
+            name="Retenues sur les salaires"
+            action="action_show_employee_salary_deduction"
+            parent="menu_payroll_employee"
+            sequence="21"/>
+    </data>
+</odoo>

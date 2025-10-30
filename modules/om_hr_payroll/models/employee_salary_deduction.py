@@ -13,7 +13,7 @@ class EmployeeSalaryDeductionCategory(models.Model):
     deduction_ids = fields.One2many(
         'employee.salary.deduction',
         'category_id',
-        string='Retenues sur salaire',
+        string='Retenues sur les salaires',
     )
 
     _sql_constraints = [
@@ -22,7 +22,7 @@ class EmployeeSalaryDeductionCategory(models.Model):
 
 class EmployeeSalaryDeduction(models.Model):
     _name = 'employee.salary.deduction'
-    _description = 'Retenue sur salaire'
+    _description = 'Retenue sur le salaire'
 
     name = fields.Char(required=True)
     code = fields.Char(required=True)
@@ -31,7 +31,7 @@ class EmployeeSalaryDeduction(models.Model):
         ('ir', 'IR (%)'),
         ('cnps', 'CNPS (%)'),
         ('apecus', 'APECUS'),
-    ], string='Retenue sur salaire Type', default='ir')
+    ], string='Retenue sur le salaire Type', default='ir')
     amount = fields.Float(string='Amount')
 
     _sql_constraints = [
