@@ -172,7 +172,7 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
             teacher_timetable_attendance['end_time'] = ''
             teacher_timetable_attendance['worked_start_time'] = ''
             teacher_timetable_attendance['worked_end_time'] = ''
-            teacher_timetable_attendance['worked_time'] = key_teacher_timetable_attendances[key]['worked_time']
+            teacher_timetable_attendance['worked_time'] = ''
             teacher_timetable_attendance['rate'] = ''
             teacher_timetable_attendance['amount'] = key_teacher_timetable_attendances[key]['amount']
             teacher_timetable_attendance['hours_credit'] = ''
@@ -194,13 +194,13 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
                     teacher_timetable_attendance['worked_start_time'] = ''
                     teacher_timetable_attendance['worked_end_time'] = ''
                     teacher_timetable_attendance['worked_time'] = ''
-                    teacher_timetable_attendance['rate'] = ''
-                    teacher_timetable_attendance['amount'] = employee_salary_deduction.amount
+                    teacher_timetable_attendance['rate'] = employee_salary_deduction.amount
+                    teacher_timetable_attendance['amount'] = round(((key_teacher_timetable_attendances[key]['total_amount'] * teacher_timetable_attendance['rate']) / 100), 2)
                     teacher_timetable_attendance['hours_credit'] = ''
                     teacher_timetable_attendance['total_all'] = ''
                     teacher_timetable_attendance['total_done'] = ''
                     teacher_timetable_attendance['total_awaiting'] = ''
-                    key_teacher_timetable_attendances[key]['amount'] -= round(((key_teacher_timetable_attendances[key]['total_amount'] * teacher_timetable_attendance['amount']) / 100), 2)
+                    key_teacher_timetable_attendances[key]['amount'] -= teacher_timetable_attendance['amount']
                     key_teacher_timetable_attendances[key]['data'].append(teacher_timetable_attendance)
             if key_teacher_timetable_attendances[key]['has_apecus']:
                 employee_salary_deduction = self.env['employee.salary.deduction'].sudo().search([('deduction_type', '=', 'apecus')], limit=1)
@@ -236,13 +236,13 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
                     teacher_timetable_attendance['worked_start_time'] = ''
                     teacher_timetable_attendance['worked_end_time'] = ''
                     teacher_timetable_attendance['worked_time'] = ''
-                    teacher_timetable_attendance['rate'] = ''
-                    teacher_timetable_attendance['amount'] = employee_salary_deduction.amount
+                    teacher_timetable_attendance['rate'] = employee_salary_deduction.amount
+                    teacher_timetable_attendance['amount'] = round(((key_teacher_timetable_attendances[key]['total_amount'] * teacher_timetable_attendance['rate']) / 100), 2)
                     teacher_timetable_attendance['hours_credit'] = ''
                     teacher_timetable_attendance['total_all'] = ''
                     teacher_timetable_attendance['total_done'] = ''
                     teacher_timetable_attendance['total_awaiting'] = ''
-                    key_teacher_timetable_attendances[key]['amount'] -= round(((key_teacher_timetable_attendances[key]['total_amount'] * teacher_timetable_attendance['amount']) / 100), 2)
+                    key_teacher_timetable_attendances[key]['amount'] -= teacher_timetable_attendance['amount']
                     key_teacher_timetable_attendances[key]['data'].append(teacher_timetable_attendance)
 
         title = self.env['ir.config_parameter'].sudo().get_param(f'siantou.filter_user_{self.env.user.id}', '')
