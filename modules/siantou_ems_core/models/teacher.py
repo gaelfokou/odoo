@@ -86,17 +86,27 @@ class HrEmployee(models.Model):
     )
 
     has_ir = fields.Boolean(
-        'A un IR',
-        default=False,
+        'Droit IR',
+        default=True,
     )
 
     has_apecus = fields.Boolean(
-        'A un APECUS',
-        default=False,
+        'Droit APECUS',
+        default=True,
     )
 
     has_cnps = fields.Boolean(
-        'A une CNPS',
+        'Droit CNPS',
+        default=False,
+    )
+
+    has_allowance_cd = fields.Boolean(
+        'Droit prime chef de département',
+        default=False,
+    )
+
+    has_allowance_co = fields.Boolean(
+        'Droit prime coordonnateur',
         default=False,
     )
 

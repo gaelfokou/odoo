@@ -8,7 +8,6 @@
                 <tree string="Retenues sur les salaires">
                     <field name="name"/>
                     <field name="code"/>
-                    <field name="category_id"/>
                     <field name="deduction_type"/>
                     <field name="amount"/>
                 </tree>
@@ -22,7 +21,6 @@
                 <form string="Retenues sur les salaires">
                     <field name="name"/>
                     <field name="code"/>
-                    <field name="category_id"/>
                     <field name="deduction_type"/>
                     <field name="amount"/>
                 </form>
@@ -46,6 +44,6 @@
             name="Retenues sur les salaires"
             action="action_show_employee_salary_deduction"
             parent="menu_payroll_employee"
-            sequence="21"/>
+            sequence="22"/>
     </data>
 </odoo>
