@@ -19,10 +19,14 @@
             <field name="model">employee.salary.deduction</field>
             <field name="arch" type="xml">
                 <form string="Retenues sur les salaires">
-                    <field name="name"/>
-                    <field name="code"/>
-                    <field name="deduction_type"/>
-                    <field name="amount"/>
+					<sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="code"/>
+                            <field name="deduction_type"/>
+                            <field name="amount"/>
+                        </group>
+					</sheet>
                 </form>
             </field>
         </record>

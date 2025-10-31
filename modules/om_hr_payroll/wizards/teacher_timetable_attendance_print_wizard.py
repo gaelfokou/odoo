@@ -66,7 +66,7 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
         is_permanent = False
         key_teacher_timetable_attendances = {}
         for search_teacher_timetable_attendance in search_teacher_timetable_attendances:
-            if not search_teacher_timetable_attendance.date or not search_teacher_timetable_attendance.day_of_week:
+            if not search_teacher_timetable_attendance.date:
                 continue
             key = '{}'.format(search_teacher_timetable_attendance.employee_id.id)
             if not key in key_teacher_timetable_attendances:
@@ -75,6 +75,11 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
                 key_teacher_timetable_attendances[key]['data'] = []
                 key_teacher_timetable_attendances[key]['worked_time'] = 0.0
                 key_teacher_timetable_attendances[key]['amount'] = 0.0
+                key_teacher_timetable_attendances[key]['has_ir'] = None
+                key_teacher_timetable_attendances[key]['has_apecus'] = None
+                key_teacher_timetable_attendances[key]['has_cnps'] = None
+                key_teacher_timetable_attendances[key]['has_allowance_cd'] = None
+                key_teacher_timetable_attendances[key]['has_allowance_co'] = None
             is_permanent = search_teacher_timetable_attendance.employee_id.is_permanent
             teacher_timetable_attendance = {}
             teacher_timetable_attendance['id'] = search_teacher_timetable_attendance.id
@@ -99,11 +104,82 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
             teacher_timetable_attendance['total_done'] = search_teacher_timetable_attendance.total_done
             teacher_timetable_attendance['total_awaiting'] = search_teacher_timetable_attendance.total_awaiting
             teacher_timetable_attendance['status'] = STATUS_TIMETABLE[search_teacher_timetable_attendance.status]
+            key_teacher_timetable_attendances[key]['has_ir'] = search_teacher_timetable_attendance.employee_id.has_ir
+            key_teacher_timetable_attendances[key]['has_apecus'] = search_teacher_timetable_attendance.employee_id.has_apecus
+            key_teacher_timetable_attendances[key]['has_cnps'] = search_teacher_timetable_attendance.employee_id.has_cnps
+            key_teacher_timetable_attendances[key]['has_allowance_cd'] = search_teacher_timetable_attendance.employee_id.has_allowance_cd
+            key_teacher_timetable_attendances[key]['has_allowance_co'] = search_teacher_timetable_attendance.employee_id.has_allowance_co
             key_teacher_timetable_attendances[key]['worked_time'] += teacher_timetable_attendance['worked_time']
             key_teacher_timetable_attendances[key]['amount'] += teacher_timetable_attendance['amount']
             key_teacher_timetable_attendances[key]['worked_time'] = round(key_teacher_timetable_attendances[key]['worked_time'], 2)
             key_teacher_timetable_attendances[key]['amount'] = round(key_teacher_timetable_attendances[key]['amount'], 2)
             key_teacher_timetable_attendances[key]['data'].append(teacher_timetable_attendance)
+
+        for key in key_teacher_timetable_attendances.keys():
+            if key_teacher_timetable_attendances[key]['has_allowance_cd']:
+                employee_salary_allowance = self.env['employee.salary.allowance'].sudo().search([('allowance_type', '=', 'cd')], limit=1)
+                if employee_salary_allowance:
+                    teacher_timetable_attendance = {}
+                    teacher_timetable_attendance['date_of_week'] = ''
+                    teacher_timetable_attendance['class_name'] = ''
+                    teacher_timetable_attendance['subject_name'] = employee_salary_allowance.name
+                    teacher_timetable_attendance['employee_name'] = ''
+                    teacher_timetable_attendance['start_time'] = ''
+                    teacher_timetable_attendance['end_time'] = ''
+                    teacher_timetable_attendance['worked_start_time'] = ''
+                    teacher_timetable_attendance['worked_end_time'] = ''
+                    teacher_timetable_attendance['worked_time'] = ''
+                    teacher_timetable_attendance['rate'] = ''
+                    teacher_timetable_attendance['amount'] = employee_salary_allowance.amount
+                    teacher_timetable_attendance['hours_credit'] = ''
+                    teacher_timetable_attendance['total_all'] = ''
+                    teacher_timetable_attendance['total_done'] = ''
+                    teacher_timetable_attendance['total_awaiting'] = ''
+                    key_teacher_timetable_attendances[key]['amount'] += teacher_timetable_attendance['amount']
+                    key_teacher_timetable_attendances[key]['data'].append(teacher_timetable_attendance)
+            if key_teacher_timetable_attendances[key]['has_allowance_co']:
+                employee_salary_allowance = self.env['employee.salary.allowance'].sudo().search([('allowance_type', '=', 'co')], limit=1)
+                if employee_salary_allowance:
+                    teacher_timetable_attendance = {}
+                    teacher_timetable_attendance['date_of_week'] = ''
+                    teacher_timetable_attendance['class_name'] = ''
+                    teacher_timetable_attendance['subject_name'] = employee_salary_allowance.name
+                    teacher_timetable_attendance['employee_name'] = ''
+                    teacher_timetable_attendance['start_time'] = ''
+                    teacher_timetable_attendance['end_time'] = ''
+                    teacher_timetable_attendance['worked_start_time'] = ''
+                    teacher_timetable_attendance['worked_end_time'] = ''
+                    teacher_timetable_attendance['worked_time'] = ''
+                    teacher_timetable_attendance['rate'] = ''
+                    teacher_timetable_attendance['amount'] = employee_salary_allowance.amount
+                    teacher_timetable_attendance['hours_credit'] = ''
+                    teacher_timetable_attendance['total_all'] = ''
+                    teacher_timetable_attendance['total_done'] = ''
+                    teacher_timetable_attendance['total_awaiting'] = ''
+                    key_teacher_timetable_attendances[key]['amount'] += teacher_timetable_attendance['amount']
+                    key_teacher_timetable_attendances[key]['data'].append(teacher_timetable_attendance)
+
+            if key_teacher_timetable_attendances[key]['has_ir']:
+                employee_salary_deduction = self.env['employee.salary.deduction'].sudo().search([('deduction_type', '=', 'ir')], limit=1)
+                if employee_salary_deduction:
+                    teacher_timetable_attendance = {}
+                    teacher_timetable_attendance['date_of_week'] = ''
+                    teacher_timetable_attendance['class_name'] = ''
+                    teacher_timetable_attendance['subject_name'] = employee_salary_deduction.name
+                    teacher_timetable_attendance['employee_name'] = ''
+                    teacher_timetable_attendance['start_time'] = ''
+                    teacher_timetable_attendance['end_time'] = ''
+                    teacher_timetable_attendance['worked_start_time'] = ''
+                    teacher_timetable_attendance['worked_end_time'] = ''
+                    teacher_timetable_attendance['worked_time'] = ''
+                    teacher_timetable_attendance['rate'] = ''
+                    teacher_timetable_attendance['amount'] = employee_salary_deduction.amount
+                    teacher_timetable_attendance['hours_credit'] = ''
+                    teacher_timetable_attendance['total_all'] = ''
+                    teacher_timetable_attendance['total_done'] = ''
+                    teacher_timetable_attendance['total_awaiting'] = ''
+                    key_teacher_timetable_attendances[key]['amount'] += teacher_timetable_attendance['amount']
+                    key_teacher_timetable_attendances[key]['data'].append(teacher_timetable_attendance)
 
         title = self.env['ir.config_parameter'].sudo().get_param(f'siantou.filter_user_{self.env.user.id}', '')
 
