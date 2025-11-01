@@ -22,6 +22,11 @@
                             string="Imprimer PDF" 
                             class="oe_highlight" 
                             display="always"/>
+                        <button name="action_print_resume_pdf" 
+                            type="object" 
+                            string="Imprimer condensé PDF" 
+                            class="oe_highlight" 
+                            display="always"/>
                     </header>
                     <field name="timetable_id"/>
                     <field name="level_id"/>

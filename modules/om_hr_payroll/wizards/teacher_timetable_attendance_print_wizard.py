@@ -53,7 +53,16 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
         report_action = self.env.ref('om_hr_payroll.action_report_teacher_timetable_attendance')
         return report_action.report_action(self, data=data)
 
-    def print_teacher_timetable_attendance_report_data(self, domains=None):
+    def action_print_resume_pdf(self):
+        data = self.print_teacher_timetable_attendance_report_data(True)
+
+        # Appeler le rapport PDF
+        if not data['docdata']['teacher_timetable_attendance_data']:
+            raise UserError("Aucune donnée trouvée")
+        report_action = self.env.ref('om_hr_payroll.action_report_teacher_timetable_attendance')
+        return report_action.report_action(self, data=data)
+
+    def print_teacher_timetable_attendance_report_data(self, resume=False, domains=None):
         # Récupérer les emplois du temps pour le semestre sélectionné
         domain = []
 
