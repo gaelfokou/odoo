@@ -261,6 +261,10 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
                     key_teacher_timetable_attendances[key]['amount'] = round(key_teacher_timetable_attendances[key]['amount'], 2)
                     key_teacher_timetable_attendances[key]['data'].append(teacher_timetable_attendance)
 
+        for key in key_teacher_timetable_attendances.keys():
+            if key_teacher_timetable_attendances[key]['amount'] < 0.0:
+                key_teacher_timetable_attendances[key]['amount'] = 0.0
+
         title = self.env['ir.config_parameter'].sudo().get_param(f'siantou.filter_user_{self.env.user.id}', '')
 
         _logger.info(f'----------- tototototototo key_teacher_timetable_attendances {key_teacher_timetable_attendances} -----------')

@@ -49,7 +49,7 @@
                         <table class="table table-bordered table-sm text-center">
                             <thead>
                                 <tr>
-                                    <th class="text-center" colspan="9" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;">
+                                    <th class="text-center" t-attf-colspan="#{'12' if docdata['is_permanent'] == False else '10'}" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;">
                                         <h3>INSTITUT UNIVERSITAIRE SIANTOU</h3>
                                         <h4>
                                             <span t-esc="'Liste des émargements des enseignants'"/>
@@ -63,7 +63,7 @@
                             </thead>
                             <thead>
                                 <tr>
-                                    <th class="text-left" colspan="9" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
+                                    <th class="text-left" t-attf-colspan="#{'12' if docdata['is_permanent'] == False else '10'}" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
                                 </tr>
                             </thead>
                             <thead>
