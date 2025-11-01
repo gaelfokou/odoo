@@ -427,10 +427,10 @@ class HrEmployee(models.Model):
         report_data = self.env['teacher.print.wizard'].create({
             'is_teacher': True,
         })
-        domain = [
+        domains = [
             ('id', 'in', active_ids)
         ]
-        data = report_data.print_teacher_report_data(domain)
+        data = report_data.print_teacher_report_data(domains=domains)
 
         # Appeler le rapport PDF
         if not data['docdata']['teacher_data']:

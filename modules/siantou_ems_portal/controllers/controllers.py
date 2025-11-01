@@ -287,14 +287,14 @@ class PortalAccount(portal.CustomerPortal):
                 report_data = http.request.env['timetable.print.wizard'].sudo().create({
                     'group_id': group_id.id,
                 })
-                domain = [
+                domains = [
                     ('group_id', '=', group_id.id)
                 ]
                 if is_user == 'is_teacher':
-                    domain.append(('employee_id', '=', user.id))
+                    domains.append(('employee_id', '=', user.id))
                 elif is_user == 'is_student':
-                    domain.append(('class_id', '=', user.class_id.id))
-                data = report_data.print_timetable_report_data(domain)
+                    domains.append(('class_id', '=', user.class_id.id))
+                data = report_data.print_timetable_report_data(domains=domains)
                 pdf, _ = pdf_report.sudo().with_context()._render_qweb_pdf(report_name, data=data)
             else:
                 pdf = None

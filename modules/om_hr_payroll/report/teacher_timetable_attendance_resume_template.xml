@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-    <record id="paperformat_teacher_timetable_attendance" model="report.paperformat">
+    <record id="paperformat_teacher_timetable_attendance_resume" model="report.paperformat">
         <field name="name">Format du diplome</field>
         <field name="default" eval="True"/>
         <field name="format">A2</field>
@@ -14,20 +14,20 @@
         <field name="header_spacing">5</field>
         <field name="dpi">90</field>
     </record>
-    <record id="action_report_teacher_timetable_attendance" model="ir.actions.report">
-        <field name="name">Émargement d'enseignant PDF</field>
+    <record id="action_report_teacher_timetable_attendance_resume" model="ir.actions.report">
+        <field name="name">Condensé émargement d'enseignant PDF</field>
         <field name="model">teacher.timetable.attendance</field>
         <field name="report_type">qweb-pdf</field>
-        <field name="report_name">om_hr_payroll.report_teacher_timetable_attendance</field>
-        <field name="report_file">om_hr_payroll.report_teacher_timetable_attendance</field>
+        <field name="report_name">om_hr_payroll.report_teacher_timetable_attendance_resume</field>
+        <field name="report_file">om_hr_payroll.report_teacher_timetable_attendance_resume</field>
         <field name="print_report_name">'Fiche de - %s' % (docdata.semester)</field>
         <field name="binding_model_id" eval="False"/>
-        <field name="paperformat_id" ref="paperformat_teacher_timetable_attendance"/>
+        <field name="paperformat_id" ref="paperformat_teacher_timetable_attendance_resume"/>
         <field name="binding_type">report</field>
     </record>
 
     <!-- Template du rapport -->
-    <template id="report_teacher_timetable_attendance">
+    <template id="report_teacher_timetable_attendance_resume">
         <t t-call="web.html_container">
             <t t-if="docdata and docdata['teacher_timetable_attendance_data']">
                 <t t-call="web.external_layout">
@@ -52,7 +52,7 @@
                                     <th class="text-center" colspan="9" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;">
                                         <h3>INSTITUT UNIVERSITAIRE SIANTOU</h3>
                                         <h4>
-                                            <span t-esc="'Liste des émargements des enseignants'"/>
+                                            <span t-esc="'Liste condensée des émargements des enseignants'"/>
                                         </h4>
                                         <h5 class="text-left">
                                             <span t-esc="'Filtre :'"/>

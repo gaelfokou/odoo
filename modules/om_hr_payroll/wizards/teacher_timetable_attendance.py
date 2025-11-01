@@ -234,10 +234,10 @@ class TeacherTimetableAttendance(models.TransientModel):
         if len(active_ids) == 0:
             raise UserError('Aucune donnée sélectionnée')
         report_data = self.env['teacher.timetable.attendance.print.wizard'].create({})
-        domain = [
+        domains = [
             ('id', 'in', active_ids)
         ]
-        data = report_data.print_teacher_timetable_attendance_report_data(domain)
+        data = report_data.print_teacher_timetable_attendance_report_data(domains=domains)
 
         # Appeler le rapport PDF
         if not data['docdata']['teacher_timetable_attendance_data']:
@@ -251,15 +251,16 @@ class TeacherTimetableAttendance(models.TransientModel):
         if len(active_ids) == 0:
             raise UserError('Aucune donnée sélectionnée')
         report_data = self.env['teacher.timetable.attendance.print.wizard'].create({})
-        domain = [
+        domains = [
             ('id', 'in', active_ids)
         ]
-        data = report_data.print_teacher_timetable_attendance_report_data(True, domain)
+        resume = True
+        data = report_data.print_teacher_timetable_attendance_report_data(resume=resume, domains=domains)
 
         # Appeler le rapport PDF
         if not data['docdata']['teacher_timetable_attendance_data']:
             raise UserError('Aucune donnée trouvée')
-        report_action = self.env.ref('om_hr_payroll.action_report_teacher_timetable_attendance')
+        report_action = self.env.ref('om_hr_payroll.action_report_teacher_timetable_attendance_resume')
         return report_action.report_action(self, data=data)
 
     @staticmethod

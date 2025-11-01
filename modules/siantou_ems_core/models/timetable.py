@@ -837,10 +837,10 @@ class Timetable(models.Model):
         report_data = self.env['timetable.print.wizard'].create({
             'group_id': timetables[0].group_id.id,
         })
-        domain = [
+        domains = [
             ('id', 'in', active_ids)
         ]
-        data = report_data.print_timetable_report_data(domain)
+        data = report_data.print_timetable_report_data(domains=domains)
 
         # Appeler le rapport PDF
         if not data['docdata']['timetable_data']:
