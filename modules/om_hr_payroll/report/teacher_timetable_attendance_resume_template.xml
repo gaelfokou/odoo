@@ -72,6 +72,8 @@
                                     <th class="text-center">Enseignant</th>
                                     <th class="text-center">Heure effectuée</th>
                                     <th class="text-center" t-if="docdata['is_permanent'] == False">Montant</th>
+                                    <th class="text-center" t-if="docdata['is_permanent'] == False">Prêt</th>
+                                    <th class="text-center" t-if="docdata['is_permanent'] == False">Net</th>
                                     <th class="text-center">Émargement</th>
                                 </tr>
                             </thead>
@@ -88,6 +90,10 @@
                                         <td class="text-center">
                                             <span t-esc="docdata['teacher_timetable_attendance_data'][key]['worked_time']"/>
                                         </td>
+                                        <td class="text-center" t-if="docdata['is_permanent'] == False">
+                                            <span t-esc="docdata['teacher_timetable_attendance_data'][key]['amount']"/>
+                                        </td>
+                                        <td class="text-center" t-if="docdata['is_permanent'] == False"></td>
                                         <td class="text-center" t-if="docdata['is_permanent'] == False">
                                             <span t-esc="docdata['teacher_timetable_attendance_data'][key]['amount']"/>
                                         </td>
