@@ -147,6 +147,7 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
                     teacher_timetable_attendance['total_done'] = ''
                     teacher_timetable_attendance['total_awaiting'] = ''
                     key_teacher_timetable_attendances[key]['amount'] += teacher_timetable_attendance['amount']
+                    key_teacher_timetable_attendances[key]['amount'] = round(key_teacher_timetable_attendances[key]['amount'], 2)
                     key_teacher_timetable_attendances[key]['total_amount'] = key_teacher_timetable_attendances[key]['amount']
                     key_teacher_timetable_attendances[key]['data'].append(teacher_timetable_attendance)
             if key_teacher_timetable_attendances[key]['has_allowance_co']:
@@ -169,6 +170,7 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
                     teacher_timetable_attendance['total_done'] = ''
                     teacher_timetable_attendance['total_awaiting'] = ''
                     key_teacher_timetable_attendances[key]['amount'] += teacher_timetable_attendance['amount']
+                    key_teacher_timetable_attendances[key]['amount'] = round(key_teacher_timetable_attendances[key]['amount'], 2)
                     key_teacher_timetable_attendances[key]['total_amount'] = key_teacher_timetable_attendances[key]['amount']
                     key_teacher_timetable_attendances[key]['data'].append(teacher_timetable_attendance)
 
@@ -210,6 +212,7 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
                     teacher_timetable_attendance['total_done'] = ''
                     teacher_timetable_attendance['total_awaiting'] = ''
                     key_teacher_timetable_attendances[key]['amount'] -= teacher_timetable_attendance['amount']
+                    key_teacher_timetable_attendances[key]['amount'] = round(key_teacher_timetable_attendances[key]['amount'], 2)
                     key_teacher_timetable_attendances[key]['data'].append(teacher_timetable_attendance)
             if key_teacher_timetable_attendances[key]['has_apecus']:
                 employee_salary_deduction = self.env['employee.salary.deduction'].sudo().search([('deduction_type', '=', 'apecus')], limit=1)
@@ -231,6 +234,7 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
                     teacher_timetable_attendance['total_done'] = ''
                     teacher_timetable_attendance['total_awaiting'] = ''
                     key_teacher_timetable_attendances[key]['amount'] -= teacher_timetable_attendance['amount']
+                    key_teacher_timetable_attendances[key]['amount'] = round(key_teacher_timetable_attendances[key]['amount'], 2)
                     key_teacher_timetable_attendances[key]['data'].append(teacher_timetable_attendance)
             if key_teacher_timetable_attendances[key]['has_cnps']:
                 employee_salary_deduction = self.env['employee.salary.deduction'].sudo().search([('deduction_type', '=', 'cnps')], limit=1)
@@ -252,6 +256,7 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
                     teacher_timetable_attendance['total_done'] = ''
                     teacher_timetable_attendance['total_awaiting'] = ''
                     key_teacher_timetable_attendances[key]['amount'] -= teacher_timetable_attendance['amount']
+                    key_teacher_timetable_attendances[key]['amount'] = round(key_teacher_timetable_attendances[key]['amount'], 2)
                     key_teacher_timetable_attendances[key]['data'].append(teacher_timetable_attendance)
 
         title = self.env['ir.config_parameter'].sudo().get_param(f'siantou.filter_user_{self.env.user.id}', '')
