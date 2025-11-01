@@ -87,55 +87,10 @@
                             <tbody>
                                 <t t-set="keys" t-value="docdata['teacher_timetable_attendance_data'].keys()"/>
                                 <t t-foreach="keys" t-as="key">
-                                    <t t-set="timetables" t-value="docdata['teacher_timetable_attendance_data'][key]['data']"/>
-                                    <t t-foreach="timetables" t-as="timetable">
-                                        <tr>
-                                            <td class="text-center">
-                                                <span t-esc="timetable['employee_name']"/>
-                                            </td>
-                                            <td class="text-center">
-                                                <span t-esc="timetable['class_name']"/>
-                                            </td>
-                                            <td class="text-center">
-                                                <span t-esc="timetable['subject_name']"/>
-                                            </td>
-                                            <td class="text-center">
-                                                <span t-esc="timetable['date_of_week']"/>
-                                            </td>
-                                            <!-- <td class="text-center">
-                                                <span t-esc="timetable['start_time']"/>
-                                            </td>
-                                            <td class="text-center">
-                                                <span t-esc="timetable['end_time']"/>
-                                            </td> -->
-                                            <td class="text-center">
-                                                <span t-esc="timetable['worked_start_time']"/>
-                                            </td>
-                                            <td class="text-center">
-                                                <span t-esc="timetable['worked_end_time']"/>
-                                            </td>
-                                            <td class="text-center">
-                                                <span t-esc="timetable['worked_time']"/>
-                                            </td>
-                                            <td class="text-center" t-if="docdata['is_permanent'] == False">
-                                                <span t-esc="timetable['rate']"/>
-                                            </td>
-                                            <td class="text-center" t-if="docdata['is_permanent'] == False">
-                                                <span t-esc="timetable['amount']"/>
-                                            </td>
-                                            <td class="text-center">
-                                                <span t-esc="timetable['hours_credit']"/>
-                                            </td>
-                                            <td class="text-center">
-                                                <span t-esc="timetable['total_done']"/>
-                                            </td>
-                                            <td class="text-center">
-                                                <span t-esc="timetable['total_awaiting']"/>
-                                            </td>
-                                        </tr>
-                                    </t>
                                     <tr>
-                                        <td class="text-center">TOTAL</td>
+                                        <td class="text-center">
+                                            <span t-esc="docdata['teacher_timetable_attendance_data'][key]['name']"/>
+                                        </td>
                                         <td class="text-center"></td>
                                         <td class="text-center"></td>
                                         <td class="text-center"></td>
