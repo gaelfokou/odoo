@@ -81,18 +81,6 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
         default=_default_end_date,
     )
 
-    status = fields.Selection([
-        ('pending', 'En attente'),
-        ('progress', 'En cours'),
-        ('present', 'Présent'),
-        ('absent', 'Absent'),
-        ('permission', 'Permission'),
-        ('exception', 'Exception'),
-        ('delay', 'Retard'),
-    ], 'Statut',
-        default='present',
-    )
-
     # Contrainte logique pour s'assurer que les dates de début et de fin sont définies et que la date de fin est supérieure à la date de début
     @api.constrains('start_date', 'end_date')
     def _constrains_date(self):
@@ -155,9 +143,8 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
             consumptionhours.append(consumptionhour)
         consumptionhours = TeacherTimetableAttendanceFilterWizard.format_consumptionhour(consumptionhours)
 
-        if self.status:
-            domain.append(('status', '=', self.status))
-            title.append(STATUS_TIMETABLE[self.status])
+        domain.append(('status', 'in', ['present', 'permission']))
+
         if self.is_permanent:
             title.append('Est un permanent')
 

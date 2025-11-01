@@ -24,12 +24,14 @@
                             display="always"/>
                     </header>
                     <field name="timetable_id"/>
+                    <field name="level_id"/>
                     <field name="class_id"/>
                     <field name="subject_id"/>
+                    <field name="identifier"/>
                     <field name="employee_id"/>
                     <field name="date"/>
-                    <field name="start_time"/>
-                    <field name="end_time"/>
+                    <!-- <field name="start_time"/>
+                    <field name="end_time"/> -->
                     <field name="worked_start_time"/>
                     <field name="worked_end_time"/>
                     <field name="worked_time"/>
@@ -38,7 +40,6 @@
                     <field name="hours_credit"/>
                     <field name="total_done" decoration-danger="total_done &gt; hours_credit"/>
                     <field name="total_awaiting"/>
-                    <field name="status"/>
                 </tree>
             </field>
         </record>
