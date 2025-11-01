@@ -68,20 +68,11 @@
                             </thead>
                             <thead>
                                 <tr class="active">
+                                    <th class="text-center">Matricule</th>
                                     <th class="text-center">Enseignant</th>
-                                    <th class="text-center">Classe</th>
-                                    <th class="text-center">Cours</th>
-                                    <th class="text-center">Date</th>
-                                    <!-- <th class="text-center">Heure de début</th>
-                                    <th class="text-center">Heure de fin</th> -->
-                                    <th class="text-center">Heure de début effectuée</th>
-                                    <th class="text-center">Heure de fin effectuée</th>
                                     <th class="text-center">Heure effectuée</th>
-                                    <th class="text-center" t-if="docdata['is_permanent'] == False">Taux horaire</th>
                                     <th class="text-center" t-if="docdata['is_permanent'] == False">Montant</th>
-                                    <th class="text-center">Volume horaire</th>
-                                    <th class="text-center">Volume horaire effectué</th>
-                                    <th class="text-center">Volume horaire restant</th>
+                                    <th class="text-center">Émargement</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -89,24 +80,17 @@
                                 <t t-foreach="keys" t-as="key">
                                     <tr>
                                         <td class="text-center">
+                                            <span t-esc="docdata['teacher_timetable_attendance_data'][key]['identifier']"/>
+                                        </td>
+                                        <td class="text-center">
                                             <span t-esc="docdata['teacher_timetable_attendance_data'][key]['name']"/>
                                         </td>
-                                        <td class="text-center"></td>
-                                        <td class="text-center"></td>
-                                        <td class="text-center"></td>
-                                        <!-- <td class="text-center"></td>
-                                        <td class="text-center"></td> -->
-                                        <td class="text-center"></td>
-                                        <td class="text-center"></td>
                                         <td class="text-center">
                                             <span t-esc="docdata['teacher_timetable_attendance_data'][key]['worked_time']"/>
                                         </td>
-                                        <td class="text-center" t-if="docdata['is_permanent'] == False"></td>
                                         <td class="text-center" t-if="docdata['is_permanent'] == False">
                                             <span t-esc="docdata['teacher_timetable_attendance_data'][key]['amount']"/>
                                         </td>
-                                        <td class="text-center"></td>
-                                        <td class="text-center"></td>
                                         <td class="text-center"></td>
                                     </tr>
                                 </t>

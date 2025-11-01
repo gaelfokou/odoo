@@ -82,6 +82,7 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
             if not key in key_teacher_timetable_attendances:
                 key_teacher_timetable_attendances[key] = {}
                 key_teacher_timetable_attendances[key]['name'] = search_teacher_timetable_attendance.employee_id.name
+                key_teacher_timetable_attendances[key]['identifier'] = search_teacher_timetable_attendance.employee_id.identifier
                 key_teacher_timetable_attendances[key]['data'] = []
                 key_teacher_timetable_attendances[key]['worked_time'] = 0.0
                 key_teacher_timetable_attendances[key]['amount'] = 0.0
