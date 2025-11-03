@@ -156,6 +156,26 @@
                                         <td class="text-center"></td>
                                     </tr>
                                 </t>
+                                <tr>
+                                    <td class="text-center">TOTAL GLOBAL</td>
+                                    <td class="text-center"></td>
+                                    <td class="text-center"></td>
+                                    <td class="text-center"></td>
+                                    <!-- <td class="text-center"></td>
+                                    <td class="text-center"></td> -->
+                                    <td class="text-center"></td>
+                                    <td class="text-center"></td>
+                                    <td class="text-center">
+                                        <span t-esc="docdata['total_worked_time']"/>
+                                    </td>
+                                    <td class="text-center" t-if="docdata['is_permanent'] == False"></td>
+                                    <td class="text-center" t-if="docdata['is_permanent'] == False">
+                                        <span t-esc="docdata['total_amount']"/>
+                                    </td>
+                                    <td class="text-center"></td>
+                                    <td class="text-center"></td>
+                                    <td class="text-center"></td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>

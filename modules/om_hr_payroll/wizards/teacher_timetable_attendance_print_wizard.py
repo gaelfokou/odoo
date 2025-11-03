@@ -91,6 +91,7 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
                 key_teacher_timetable_attendances[key]['worked_time'] = 0.0
                 key_teacher_timetable_attendances[key]['amount'] = 0.0
                 key_teacher_timetable_attendances[key]['total_amount'] = 0.0
+                key_teacher_timetable_attendances[key]['reduce_amount'] = 0.0
                 key_teacher_timetable_attendances[key]['has_allowance_cd'] = None
                 key_teacher_timetable_attendances[key]['has_allowance_co'] = None
                 key_teacher_timetable_attendances[key]['has_ir'] = None
@@ -184,7 +185,7 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
             teacher_timetable_attendance['date_of_week'] = ''
             teacher_timetable_attendance['class_name'] = ''
             teacher_timetable_attendance['subject_name'] = ''
-            teacher_timetable_attendance['employee_name'] = 'TOTAL'
+            teacher_timetable_attendance['employee_name'] = 'REVENU'
             teacher_timetable_attendance['start_time'] = ''
             teacher_timetable_attendance['end_time'] = ''
             teacher_timetable_attendance['worked_start_time'] = ''
@@ -217,6 +218,8 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
                     teacher_timetable_attendance['total_all'] = ''
                     teacher_timetable_attendance['total_done'] = ''
                     teacher_timetable_attendance['total_awaiting'] = ''
+                    key_teacher_timetable_attendances[key]['reduce_amount'] += teacher_timetable_attendance['amount']
+                    key_teacher_timetable_attendances[key]['reduce_amount'] = round(key_teacher_timetable_attendances[key]['reduce_amount'], 2)
                     key_teacher_timetable_attendances[key]['amount'] -= teacher_timetable_attendance['amount']
                     key_teacher_timetable_attendances[key]['amount'] = round(key_teacher_timetable_attendances[key]['amount'], 2)
                     key_teacher_timetable_attendances[key]['data'].append(teacher_timetable_attendance)
@@ -239,6 +242,8 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
                     teacher_timetable_attendance['total_all'] = ''
                     teacher_timetable_attendance['total_done'] = ''
                     teacher_timetable_attendance['total_awaiting'] = ''
+                    key_teacher_timetable_attendances[key]['reduce_amount'] += teacher_timetable_attendance['amount']
+                    key_teacher_timetable_attendances[key]['reduce_amount'] = round(key_teacher_timetable_attendances[key]['reduce_amount'], 2)
                     key_teacher_timetable_attendances[key]['amount'] -= teacher_timetable_attendance['amount']
                     key_teacher_timetable_attendances[key]['amount'] = round(key_teacher_timetable_attendances[key]['amount'], 2)
                     key_teacher_timetable_attendances[key]['data'].append(teacher_timetable_attendance)
@@ -261,13 +266,39 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
                     teacher_timetable_attendance['total_all'] = ''
                     teacher_timetable_attendance['total_done'] = ''
                     teacher_timetable_attendance['total_awaiting'] = ''
+                    key_teacher_timetable_attendances[key]['reduce_amount'] += teacher_timetable_attendance['amount']
+                    key_teacher_timetable_attendances[key]['reduce_amount'] = round(key_teacher_timetable_attendances[key]['reduce_amount'], 2)
                     key_teacher_timetable_attendances[key]['amount'] -= teacher_timetable_attendance['amount']
                     key_teacher_timetable_attendances[key]['amount'] = round(key_teacher_timetable_attendances[key]['amount'], 2)
                     key_teacher_timetable_attendances[key]['data'].append(teacher_timetable_attendance)
 
+            teacher_timetable_attendance = {}
+            teacher_timetable_attendance['date_of_week'] = ''
+            teacher_timetable_attendance['class_name'] = ''
+            teacher_timetable_attendance['subject_name'] = ''
+            teacher_timetable_attendance['employee_name'] = 'RETENUE'
+            teacher_timetable_attendance['start_time'] = ''
+            teacher_timetable_attendance['end_time'] = ''
+            teacher_timetable_attendance['worked_start_time'] = ''
+            teacher_timetable_attendance['worked_end_time'] = ''
+            teacher_timetable_attendance['worked_time'] = ''
+            teacher_timetable_attendance['rate'] = ''
+            teacher_timetable_attendance['amount'] = key_teacher_timetable_attendances[key]['reduce_amount']
+            teacher_timetable_attendance['hours_credit'] = ''
+            teacher_timetable_attendance['total_all'] = ''
+            teacher_timetable_attendance['total_done'] = ''
+            teacher_timetable_attendance['total_awaiting'] = ''
+            key_teacher_timetable_attendances[key]['data'].append(teacher_timetable_attendance)
+
+        total_worked_time = 0.0
+        total_amount = 0.0
         for key in key_teacher_timetable_attendances.keys():
             if key_teacher_timetable_attendances[key]['amount'] < 0.0:
                 key_teacher_timetable_attendances[key]['amount'] = 0.0
+            total_worked_time += key_teacher_timetable_attendances[key]['worked_time']
+            total_amount += key_teacher_timetable_attendances[key]['amount']
+            total_worked_time = round(total_worked_time, 2)
+            total_amount = round(total_amount, 2)
 
         key_teacher_timetable_attendances = sorted(key_teacher_timetable_attendances.items(), key=self.sort_teacher_timetable_attendance)
         key_teacher_timetable_attendances = dict(key_teacher_timetable_attendances)
@@ -281,6 +312,8 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
                 'filter': title,
                 'teacher_timetable_attendance_data': key_teacher_timetable_attendances,
                 'is_permanent': is_permanent,
+                'total_worked_time': total_worked_time,
+                'total_amount': total_amount,
             }
         }
 

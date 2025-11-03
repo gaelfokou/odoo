@@ -414,7 +414,7 @@ class Student(models.Model):
                         matricule = matricule.replace('2024', '')
                     else:
                         break
-                matricule = '{}2024'.format(matricule)
+                matricule = '{}'.format(matricule)
             password = matricule
             if student.email and student.email.strip():
                 email = student.email

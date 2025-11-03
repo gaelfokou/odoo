@@ -228,7 +228,7 @@ class HrEmployee(models.Model):
                         identifier = identifier.replace('2024', '')
                     else:
                         break
-                identifier = '{}2024'.format(identifier)
+                identifier = '{}'.format(identifier)
             password = identifier
             if employee.work_email and employee.work_email.strip():
                 email = employee.work_email
