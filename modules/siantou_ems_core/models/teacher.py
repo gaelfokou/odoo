@@ -318,6 +318,31 @@ class HrEmployee(models.Model):
         except Exception as error:
             _logger.info(f'----------- tototototototo Exception {error} -----------')
 
+    def update_employee_identifier(self, employee):
+        try:
+            ecole = 'IUS'
+            ecole = ecole[:4]
+            ecole = ecole.upper()
+            m = re.search(f'{ecole}(\\w+)2024', employee.identifier)
+            if m:
+                found = m.group(1)
+                identifier = ecole + found
+                employee.write({
+                    'identifier': identifier,
+                })
+                if employee.user_id.id:
+                    password = identifier
+                    employee.user_id.write({
+                        'password' : password,
+                    })
+            # self.env.cr.commit()
+        except psycopg2.errors.NotNullViolation as error:
+            _logger.info(f'----------- tototototototo Exception {error} -----------')
+        except psycopg2.Error as error:
+            _logger.info(f'----------- tototototototo Exception {error} -----------')
+        except Exception as error:
+            _logger.info(f'----------- tototototototo Exception {error} -----------')
+
     def update_subject_priority(self, employee):
         try:
             subject_ids = employee.subject_ids.ids
@@ -389,6 +414,17 @@ class HrEmployee(models.Model):
         employee_ids = self.env['hr.employee'].browse(active_ids)
         for employee in employee_ids:
             self.create_employee_user(employee)
+
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'reload',
+        }
+
+    def action_update_all_employee_identifier(self):
+        active_ids = self.env.context.get('active_ids', [])
+        employee_ids = self.env['hr.employee'].browse(active_ids)
+        for employee in employee_ids:
+            self.update_employee_identifier(employee)
 
         return {
             'type': 'ir.actions.client',
