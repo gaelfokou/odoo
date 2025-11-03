@@ -78,24 +78,25 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <t t-set="keys" t-value="docdata['teacher_timetable_attendance_data'].keys()"/>
+                                <t t-set="teacher_timetable_attendance_data" t-value="dict(sorted(docdata['teacher_timetable_attendance_data'].items(), key=lambda item: item[1]['name']))"/>
+                                <t t-set="keys" t-value="teacher_timetable_attendance_data.keys()"/>
                                 <t t-foreach="keys" t-as="key">
                                     <tr>
                                         <td class="text-center">
-                                            <span t-esc="docdata['teacher_timetable_attendance_data'][key]['identifier']"/>
+                                            <span t-esc="teacher_timetable_attendance_data[key]['identifier']"/>
                                         </td>
                                         <td class="text-center">
-                                            <span t-esc="docdata['teacher_timetable_attendance_data'][key]['name']"/>
+                                            <span t-esc="teacher_timetable_attendance_data[key]['name']"/>
                                         </td>
                                         <td class="text-center" t-if="docdata['is_permanent'] == True">
-                                            <span t-esc="docdata['teacher_timetable_attendance_data'][key]['worked_time']"/>
+                                            <span t-esc="teacher_timetable_attendance_data[key]['worked_time']"/>
                                         </td>
                                         <td class="text-center" t-if="docdata['is_permanent'] == False">
-                                            <span t-esc="docdata['teacher_timetable_attendance_data'][key]['amount']"/>
+                                            <span t-esc="teacher_timetable_attendance_data[key]['amount']"/>
                                         </td>
                                         <td class="text-center" t-if="docdata['is_permanent'] == False"></td>
                                         <td class="text-center" t-if="docdata['is_permanent'] == False">
-                                            <span t-esc="docdata['teacher_timetable_attendance_data'][key]['amount']"/>
+                                            <span t-esc="teacher_timetable_attendance_data[key]['amount']"/>
                                         </td>
                                         <td class="text-center"></td>
                                     </tr>

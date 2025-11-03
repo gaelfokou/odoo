@@ -63,6 +63,10 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
         report_action = self.env.ref('om_hr_payroll.action_report_teacher_timetable_attendance_resume')
         return report_action.report_action(self, data=data)
 
+    def sort_teacher_timetable_attendance(self, teacher_timetable_attendance):
+        name = teacher_timetable_attendance[1]['name']
+        return name
+
     def print_teacher_timetable_attendance_report_data(self, resume=False, domains=None):
         # Récupérer les emplois du temps pour le semestre sélectionné
         domain = []
@@ -264,6 +268,9 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
         for key in key_teacher_timetable_attendances.keys():
             if key_teacher_timetable_attendances[key]['amount'] < 0.0:
                 key_teacher_timetable_attendances[key]['amount'] = 0.0
+
+        key_teacher_timetable_attendances = sorted(key_teacher_timetable_attendances.items(), key=self.sort_teacher_timetable_attendance)
+        key_teacher_timetable_attendances = dict(key_teacher_timetable_attendances)
 
         title = self.env['ir.config_parameter'].sudo().get_param(f'siantou.filter_user_{self.env.user.id}', '')
 
