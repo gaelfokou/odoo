@@ -377,9 +377,11 @@ class PortalAccount(portal.CustomerPortal):
                                 })
 
     @http.route(['/my/accountbalance'], type='http', auth="user", website=True)
-    def portal_accountbalance(self, search='', search_in='all', **kw):
+    def portal_accountbalance(self, search='', search_in='all', selected_month='0', **kw):
+        if selected_month not in ['0', '1', '2', '3', '4']:
+            selected_month = '0'
         # Utilisation de la fonction du helper
-        search_accountbalances, searchbar_inputs = Helpers.accountbalance(search, search_in)
+        search_accountbalances, searchbar_inputs = Helpers.accountbalance(search, search_in, selected_month)
         total_rate = 0.0
         total_number_of_hours = 0.0
         accountbalances = []
@@ -500,6 +502,7 @@ class PortalAccount(portal.CustomerPortal):
                                     'accountbalance': 0,
                                     'total_rate': total_rate,
                                     'total_number_of_hours': total_number_of_hours,
+                                    'accountbalance_selected_month': int(selected_month) + 1,
                                 })
 
     @http.route(['/my/consumptionhour'], type='http', auth="user", website=True)

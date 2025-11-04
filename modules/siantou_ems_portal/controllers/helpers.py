@@ -109,8 +109,9 @@ class Helpers:
                 search_domain.append(('employee_id', '=', user.id))
 
                 timetables = http.request.env['siantou.ems.timetable.timetable'].sudo().search(search_domain, order=order)
-                start_date = date.today().replace(day=1)
-                end_date = (datetime.now() + relativedelta(months=+1, day=1, days=-1)).date()
+                current_date = date.today()
+                start_date = current_date - relativedelta(day=1)
+                end_date = current_date + relativedelta(day=1, months=1, days=-1)
                 if start_date and end_date:
                     timetables = timetables.filtered(lambda rec: rec.date and rec.date >= start_date and rec.date <= end_date)
                 timetables = list(timetables)
@@ -119,8 +120,9 @@ class Helpers:
                 search_domain.append(('class_id', '=', user.class_id.id))
 
                 timetables = http.request.env['siantou.ems.timetable.timetable'].sudo().search(search_domain, order=order)
-                start_date = date.today().replace(day=1)
-                end_date = (datetime.now() + relativedelta(months=+1, day=1, days=-1)).date()
+                current_date = date.today()
+                start_date = current_date - relativedelta(day=1)
+                end_date = current_date + relativedelta(day=1, months=1, days=-1)
                 if start_date and end_date:
                     timetables = timetables.filtered(lambda rec: rec.date and rec.date >= start_date and rec.date <= end_date)
                 timetables = list(timetables)
@@ -187,7 +189,7 @@ class Helpers:
         return search_paymenthistories, searchbar_inputs
 
     @staticmethod
-    def accountbalance(search='', search_in='all', cycle_id=None, level_id=None, field_of_study_id=None, specialty_id=None, option_id=None, class_id=None, end_date=None, start_date=None):
+    def accountbalance(search='', search_in='all', selected_month='0', cycle_id=None, level_id=None, field_of_study_id=None, specialty_id=None, option_id=None, class_id=None, end_date=None, start_date=None):
         searchbar_inputs = {
             'all': {'label': 'Tout', 'input': 'all', 'domain': []},
             'cycle': {'label': 'Cycle', 'input': 'cycle', 'domain': [('cycle_id.name', 'like', search)]},
@@ -229,8 +231,16 @@ class Helpers:
                 search_domain.append(('employee_id', '=', user.id))
 
                 accountbalances = http.request.env['siantou.ems.timetable.timetable'].sudo().search(search_domain, order=order)
-                start_date = date.today().replace(day=1)
-                end_date = (datetime.now() + relativedelta(months=+1, day=1, days=-1)).date()
+                if selected_month == '0':
+                    current_date = date.today()
+                    start_date = current_date - relativedelta(day=1)
+                    end_date = current_date + relativedelta(day=1, months=1, days=-1)
+                else:
+                    current_date = date.today()
+                    start_date = current_date - relativedelta(day=1, months=1)
+                    end_date = current_date - relativedelta(day=1, days=1)
+                _logger.info(f'----------- tatatatatatata start_date {start_date} -----------')
+                _logger.info(f'----------- tatatatatatata end_date {end_date} -----------')
                 if start_date and end_date:
                     accountbalances = accountbalances.filtered(lambda rec: rec.date and rec.date >= start_date and rec.date <= end_date)
                 accountbalances = list(accountbalances)

@@ -633,6 +633,10 @@
                     <t t-set="title">Cours émargés</t>
                 </t>
                 <t t-call="portal.portal_table">
+                    <div>
+                        <a t-attf-href="/my/accountbalance?selected_month={{ accountbalance_selected_month }}" class="btn btn-primary">Mois précédent</a>
+                        <a t-attf-href="/my/accountbalance?selected_month=0" class="btn btn-primary">Mois encours</a><br/><br/>
+                    </div>
                     <t t-set="classes" t-value="accountbalances.keys()"/>
                     <t t-if="len(classes) > 0">
                         <thead>
