@@ -128,8 +128,6 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
             key_teacher_timetable_attendances[key]['has_allowance_co'] = search_teacher_timetable_attendance.employee_id.has_allowance_co
             key_teacher_timetable_attendances[key]['worked_time'] += teacher_timetable_attendance['worked_time']
             key_teacher_timetable_attendances[key]['amount'] += teacher_timetable_attendance['amount']
-            key_teacher_timetable_attendances[key]['worked_time'] = round(key_teacher_timetable_attendances[key]['worked_time'], 2)
-            key_teacher_timetable_attendances[key]['amount'] = round(key_teacher_timetable_attendances[key]['amount'], 2)
             key_teacher_timetable_attendances[key]['total_amount'] = key_teacher_timetable_attendances[key]['amount']
             key_teacher_timetable_attendances[key]['data'].append(teacher_timetable_attendance)
 
@@ -154,7 +152,6 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
                     teacher_timetable_attendance['total_done'] = ''
                     teacher_timetable_attendance['total_awaiting'] = ''
                     key_teacher_timetable_attendances[key]['amount'] += teacher_timetable_attendance['amount']
-                    key_teacher_timetable_attendances[key]['amount'] = round(key_teacher_timetable_attendances[key]['amount'], 2)
                     key_teacher_timetable_attendances[key]['total_amount'] = key_teacher_timetable_attendances[key]['amount']
                     key_teacher_timetable_attendances[key]['data'].append(teacher_timetable_attendance)
             if key_teacher_timetable_attendances[key]['has_allowance_co']:
@@ -177,7 +174,6 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
                     teacher_timetable_attendance['total_done'] = ''
                     teacher_timetable_attendance['total_awaiting'] = ''
                     key_teacher_timetable_attendances[key]['amount'] += teacher_timetable_attendance['amount']
-                    key_teacher_timetable_attendances[key]['amount'] = round(key_teacher_timetable_attendances[key]['amount'], 2)
                     key_teacher_timetable_attendances[key]['total_amount'] = key_teacher_timetable_attendances[key]['amount']
                     key_teacher_timetable_attendances[key]['data'].append(teacher_timetable_attendance)
 
@@ -192,7 +188,7 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
             teacher_timetable_attendance['worked_end_time'] = ''
             teacher_timetable_attendance['worked_time'] = ''
             teacher_timetable_attendance['rate'] = ''
-            teacher_timetable_attendance['amount'] = key_teacher_timetable_attendances[key]['amount']
+            teacher_timetable_attendance['amount'] = round(key_teacher_timetable_attendances[key]['amount'], 2)
             teacher_timetable_attendance['hours_credit'] = ''
             teacher_timetable_attendance['total_all'] = ''
             teacher_timetable_attendance['total_done'] = ''
@@ -219,9 +215,7 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
                     teacher_timetable_attendance['total_done'] = ''
                     teacher_timetable_attendance['total_awaiting'] = ''
                     key_teacher_timetable_attendances[key]['reduce_amount'] += teacher_timetable_attendance['amount']
-                    key_teacher_timetable_attendances[key]['reduce_amount'] = round(key_teacher_timetable_attendances[key]['reduce_amount'], 2)
                     key_teacher_timetable_attendances[key]['amount'] -= teacher_timetable_attendance['amount']
-                    key_teacher_timetable_attendances[key]['amount'] = round(key_teacher_timetable_attendances[key]['amount'], 2)
                     key_teacher_timetable_attendances[key]['data'].append(teacher_timetable_attendance)
             if key_teacher_timetable_attendances[key]['has_apecus']:
                 employee_salary_deduction = self.env['employee.salary.deduction'].sudo().search([('deduction_type', '=', 'apecus')], limit=1)
@@ -243,9 +237,7 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
                     teacher_timetable_attendance['total_done'] = ''
                     teacher_timetable_attendance['total_awaiting'] = ''
                     key_teacher_timetable_attendances[key]['reduce_amount'] += teacher_timetable_attendance['amount']
-                    key_teacher_timetable_attendances[key]['reduce_amount'] = round(key_teacher_timetable_attendances[key]['reduce_amount'], 2)
                     key_teacher_timetable_attendances[key]['amount'] -= teacher_timetable_attendance['amount']
-                    key_teacher_timetable_attendances[key]['amount'] = round(key_teacher_timetable_attendances[key]['amount'], 2)
                     key_teacher_timetable_attendances[key]['data'].append(teacher_timetable_attendance)
             if key_teacher_timetable_attendances[key]['has_cnps']:
                 employee_salary_deduction = self.env['employee.salary.deduction'].sudo().search([('deduction_type', '=', 'cnps')], limit=1)
@@ -267,9 +259,7 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
                     teacher_timetable_attendance['total_done'] = ''
                     teacher_timetable_attendance['total_awaiting'] = ''
                     key_teacher_timetable_attendances[key]['reduce_amount'] += teacher_timetable_attendance['amount']
-                    key_teacher_timetable_attendances[key]['reduce_amount'] = round(key_teacher_timetable_attendances[key]['reduce_amount'], 2)
                     key_teacher_timetable_attendances[key]['amount'] -= teacher_timetable_attendance['amount']
-                    key_teacher_timetable_attendances[key]['amount'] = round(key_teacher_timetable_attendances[key]['amount'], 2)
                     key_teacher_timetable_attendances[key]['data'].append(teacher_timetable_attendance)
 
             teacher_timetable_attendance = {}
@@ -283,7 +273,7 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
             teacher_timetable_attendance['worked_end_time'] = ''
             teacher_timetable_attendance['worked_time'] = ''
             teacher_timetable_attendance['rate'] = ''
-            teacher_timetable_attendance['amount'] = key_teacher_timetable_attendances[key]['reduce_amount']
+            teacher_timetable_attendance['amount'] = round(key_teacher_timetable_attendances[key]['reduce_amount'], 2)
             teacher_timetable_attendance['hours_credit'] = ''
             teacher_timetable_attendance['total_all'] = ''
             teacher_timetable_attendance['total_done'] = ''
@@ -293,12 +283,16 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
         total_worked_time = 0.0
         total_amount = 0.0
         for key in key_teacher_timetable_attendances.keys():
+            key_teacher_timetable_attendances[key]['worked_time'] = round(key_teacher_timetable_attendances[key]['worked_time'], 2)
+            key_teacher_timetable_attendances[key]['amount'] = round(key_teacher_timetable_attendances[key]['amount'], 2)
+            key_teacher_timetable_attendances[key]['total_amount'] = round(key_teacher_timetable_attendances[key]['total_amount'], 2)
+            key_teacher_timetable_attendances[key]['reduce_amount'] = round(key_teacher_timetable_attendances[key]['reduce_amount'], 2)
             if key_teacher_timetable_attendances[key]['amount'] < 0.0:
                 key_teacher_timetable_attendances[key]['amount'] = 0.0
             total_worked_time += key_teacher_timetable_attendances[key]['worked_time']
             total_amount += key_teacher_timetable_attendances[key]['amount']
-            total_worked_time = round(total_worked_time, 2)
-            total_amount = round(total_amount, 2)
+        total_worked_time = round(total_worked_time, 2)
+        total_amount = round(total_amount, 2)
 
         key_teacher_timetable_attendances = sorted(key_teacher_timetable_attendances.items(), key=self.sort_teacher_timetable_attendance)
         key_teacher_timetable_attendances = dict(key_teacher_timetable_attendances)
