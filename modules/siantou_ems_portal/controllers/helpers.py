@@ -238,7 +238,19 @@ class Helpers:
                 if start_date and end_date:
                     accountbalances = accountbalances.filtered(lambda rec: rec.date and rec.date >= start_date and rec.date <= end_date)
                 accountbalances = list(accountbalances)
-                search_accountbalances = accountbalances
+                key_accountbalances = {}
+                for accountbalance in accountbalances:
+                    if not accountbalance.date or not accountbalance.day_of_week:
+                        continue
+                    end_time = Helpers.convert_float_to_time(accountbalance.worked_end_time, True)
+                    start_time = Helpers.convert_float_to_time(accountbalance.worked_start_time, True)
+
+                    key = '{}-{}-{}-{}'.format(accountbalance.employee_id.id, accountbalance.date, start_time, end_time)
+                    if not key in key_accountbalances:
+                        key_accountbalances[key] = accountbalance
+                    else:
+                        continue
+                    search_accountbalances.append(accountbalance)
 
         _logger.info(f'----------- tototototototo search_accountbalances {search_accountbalances} -----------')
 
