@@ -159,16 +159,20 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
 
         key_timetables = {}
         for timetable in timetables:
+            if not timetable.date or not timetable.day_of_week:
+                continue
+
+            end_time = TeacherTimetableAttendanceFilterWizard.convert_float_to_time(timetable.end_time, True)
+            start_time = TeacherTimetableAttendanceFilterWizard.convert_float_to_time(timetable.start_time, True)
+            key = '{}-{}-{}-{}'.format(timetable.employee_id.id, timetable.date, start_time, end_time)
+            if not key in key_timetables:
+                key_timetables[key] = timetable
+            else:
+                continue
+
             if timetable.status == 'present':
                 end_time = TeacherTimetableAttendanceFilterWizard.convert_float_to_time(timetable.worked_end_time, True)
                 start_time = TeacherTimetableAttendanceFilterWizard.convert_float_to_time(timetable.worked_start_time, True)
-
-                key = '{}-{}-{}-{}'.format(timetable.employee_id.id, timetable.date, start_time, end_time)
-                if not key in key_timetables:
-                    key_timetables[key] = timetable
-                else:
-                    continue
-
                 end_time = datetime.strptime(f"{timetable.date} {end_time}", DATETIME_FORMAT)
                 start_time = datetime.strptime(f"{timetable.date} {start_time}", DATETIME_FORMAT)
 
@@ -178,13 +182,6 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
             elif timetable.status == 'permission':
                 end_time = TeacherTimetableAttendanceFilterWizard.convert_float_to_time(timetable.end_time, True)
                 start_time = TeacherTimetableAttendanceFilterWizard.convert_float_to_time(timetable.start_time, True)
-
-                key = '{}-{}-{}-{}'.format(timetable.employee_id.id, timetable.date, start_time, end_time)
-                if not key in key_timetables:
-                    key_timetables[key] = timetable
-                else:
-                    continue
-
                 end_time = datetime.strptime(f"{timetable.date} {end_time}", DATETIME_FORMAT)
                 start_time = datetime.strptime(f"{timetable.date} {start_time}", DATETIME_FORMAT)
 
@@ -194,13 +191,6 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
             else:
                 end_time = TeacherTimetableAttendanceFilterWizard.convert_float_to_time(0.0, True)
                 start_time = TeacherTimetableAttendanceFilterWizard.convert_float_to_time(0.0, True)
-
-                key = '{}-{}-{}-{}'.format(timetable.employee_id.id, timetable.date, start_time, end_time)
-                if not key in key_timetables:
-                    key_timetables[key] = timetable
-                else:
-                    continue
-
                 end_time = datetime.strptime(f"{timetable.date} {end_time}", DATETIME_FORMAT)
                 start_time = datetime.strptime(f"{timetable.date} {start_time}", DATETIME_FORMAT)
 

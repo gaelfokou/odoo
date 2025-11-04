@@ -242,14 +242,15 @@ class Helpers:
                 for accountbalance in accountbalances:
                     if not accountbalance.date or not accountbalance.day_of_week:
                         continue
-                    end_time = Helpers.convert_float_to_time(accountbalance.worked_end_time, True)
-                    start_time = Helpers.convert_float_to_time(accountbalance.worked_start_time, True)
 
+                    end_time = Helpers.convert_float_to_time(accountbalance.end_time, True)
+                    start_time = Helpers.convert_float_to_time(accountbalance.start_time, True)
                     key = '{}-{}-{}-{}'.format(accountbalance.employee_id.id, accountbalance.date, start_time, end_time)
                     if not key in key_accountbalances:
                         key_accountbalances[key] = accountbalance
                     else:
                         continue
+
                     search_accountbalances.append(accountbalance)
 
         _logger.info(f'----------- tototototototo search_accountbalances {search_accountbalances} -----------')

@@ -252,16 +252,17 @@ class HrPayslip(models.Model):
                         else:
                             continue
 
+                    end_time = HrPayslip.convert_float_to_time(employee_timetable.end_time)
+                    start_time = HrPayslip.convert_float_to_time(employee_timetable.start_time)
+                    key = '{}-{}-{}-{}'.format(employee_timetable.employee_id.id, employee_timetable.date, start_time, end_time)
+                    if not key in key_timetables:
+                        key_timetables[key] = employee_timetable
+                    else:
+                        continue
+
                     if employee_timetable.status == 'present':
                         end_time = HrPayslip.convert_float_to_time(employee_timetable.worked_end_time)
                         start_time = HrPayslip.convert_float_to_time(employee_timetable.worked_start_time)
-
-                        key = '{}-{}-{}-{}'.format(employee_timetable.employee_id.id, employee_timetable.date, start_time, end_time)
-                        if not key in key_timetables:
-                            key_timetables[key] = employee_timetable
-                        else:
-                            continue
-
                         datetime_to = datetime.strptime(f"{employee_timetable.date} {end_time}", DATETIME_FORMAT)
                         datetime_from = datetime.strptime(f"{employee_timetable.date} {start_time}", DATETIME_FORMAT)
                         weekly_hours = datetime_to - datetime_from
@@ -270,13 +271,6 @@ class HrPayslip(models.Model):
                     else:
                         end_time = HrPayslip.convert_float_to_time(employee_timetable.end_time)
                         start_time = HrPayslip.convert_float_to_time(employee_timetable.start_time)
-
-                        key = '{}-{}-{}-{}'.format(employee_timetable.employee_id.id, employee_timetable.date, start_time, end_time)
-                        if not key in key_timetables:
-                            key_timetables[key] = employee_timetable
-                        else:
-                            continue
-
                         datetime_to = datetime.strptime(f"{employee_timetable.date} {end_time}", DATETIME_FORMAT)
                         datetime_from = datetime.strptime(f"{employee_timetable.date} {start_time}", DATETIME_FORMAT)
                         weekly_hours = datetime_to - datetime_from
@@ -361,16 +355,17 @@ class HrPayslip(models.Model):
                         else:
                             continue
 
+                    end_time = HrPayslip.convert_float_to_time(employee_timetable.end_time)
+                    start_time = HrPayslip.convert_float_to_time(employee_timetable.start_time)
+                    key = '{}-{}-{}-{}'.format(employee_timetable.employee_id.id, employee_timetable.date, start_time, end_time)
+                    if not key in key_timetables:
+                        key_timetables[key] = employee_timetable
+                    else:
+                        continue
+
                     if employee_timetable.status == 'present':
                         end_time = HrPayslip.convert_float_to_time(employee_timetable.worked_end_time)
                         start_time = HrPayslip.convert_float_to_time(employee_timetable.worked_start_time)
-
-                        key = '{}-{}-{}-{}'.format(employee_timetable.employee_id.id, employee_timetable.date, start_time, end_time)
-                        if not key in key_timetables:
-                            key_timetables[key] = employee_timetable
-                        else:
-                            continue
-
                         datetime_to = datetime.strptime(f"{employee_timetable.date} {end_time}", DATETIME_FORMAT)
                         datetime_from = datetime.strptime(f"{employee_timetable.date} {start_time}", DATETIME_FORMAT)
                         weekly_hours = datetime_to - datetime_from
@@ -389,13 +384,6 @@ class HrPayslip(models.Model):
                     else:
                         end_time = HrPayslip.convert_float_to_time(employee_timetable.end_time)
                         start_time = HrPayslip.convert_float_to_time(employee_timetable.start_time)
-
-                        key = '{}-{}-{}-{}'.format(employee_timetable.employee_id.id, employee_timetable.date, start_time, end_time)
-                        if not key in key_timetables:
-                            key_timetables[key] = employee_timetable
-                        else:
-                            continue
-
                         datetime_to = datetime.strptime(f"{employee_timetable.date} {end_time}", DATETIME_FORMAT)
                         datetime_from = datetime.strptime(f"{employee_timetable.date} {start_time}", DATETIME_FORMAT)
                         weekly_hours = datetime_to - datetime_from
@@ -1085,18 +1073,19 @@ class HrPayslip(models.Model):
                                             else:
                                                 continue
 
+                                        end_time = HrPayslip.convert_float_to_time(worked_days_line_id.timetable_id.end_time)
+                                        start_time = HrPayslip.convert_float_to_time(worked_days_line_id.timetable_id.start_time)
+                                        key = '{}-{}-{}-{}'.format(worked_days_line_id.timetable_id.employee_id.id, worked_days_line_id.timetable_id.date, start_time, end_time)
+                                        if not key in key_timetables:
+                                            key_timetables[key] = worked_days_line_id.timetable_id
+                                        else:
+                                            continue
+
                                         accountbalance = {}
 
                                         if worked_days_line_id.timetable_id.status == 'present':
                                             end_time = HrPayslip.convert_float_to_time(worked_days_line_id.timetable_id.worked_end_time)
                                             start_time = HrPayslip.convert_float_to_time(worked_days_line_id.timetable_id.worked_start_time)
-
-                                            key = '{}-{}-{}-{}'.format(worked_days_line_id.timetable_id.employee_id.id, worked_days_line_id.timetable_id.date, start_time, end_time)
-                                            if not key in key_timetables:
-                                                key_timetables[key] = worked_days_line_id.timetable_id
-                                            else:
-                                                continue
-
                                             datetime_to = datetime.strptime(f"{worked_days_line_id.timetable_id.date} {end_time}", DATETIME_FORMAT)
                                             datetime_from = datetime.strptime(f"{worked_days_line_id.timetable_id.date} {start_time}", DATETIME_FORMAT)
                                             weekly_hours = datetime_to - datetime_from
@@ -1107,13 +1096,6 @@ class HrPayslip(models.Model):
                                         else:
                                             end_time = HrPayslip.convert_float_to_time(worked_days_line_id.timetable_id.end_time)
                                             start_time = HrPayslip.convert_float_to_time(worked_days_line_id.timetable_id.start_time)
-
-                                            key = '{}-{}-{}-{}'.format(worked_days_line_id.timetable_id.employee_id.id, worked_days_line_id.timetable_id.date, start_time, end_time)
-                                            if not key in key_timetables:
-                                                key_timetables[key] = worked_days_line_id.timetable_id
-                                            else:
-                                                continue
-
                                             datetime_to = datetime.strptime(f"{worked_days_line_id.timetable_id.date} {end_time}", DATETIME_FORMAT)
                                             datetime_from = datetime.strptime(f"{worked_days_line_id.timetable_id.date} {start_time}", DATETIME_FORMAT)
                                             weekly_hours = datetime_to - datetime_from
