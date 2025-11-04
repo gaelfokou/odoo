@@ -115,7 +115,20 @@ class Helpers:
                 if start_date and end_date:
                     timetables = timetables.filtered(lambda rec: rec.date and rec.day_of_week and rec.date >= start_date and rec.date <= end_date)
                 timetables = list(timetables)
-                search_timetables = timetables
+                key_timetables = {}
+                for timetable in timetables:
+                    if not timetable.date or not timetable.day_of_week:
+                        continue
+
+                    end_time = Helpers.convert_float_to_time(timetable.end_time, True)
+                    start_time = Helpers.convert_float_to_time(timetable.start_time, True)
+                    key = '{}-{}-{}-{}'.format(timetable.employee_id.id, timetable.date, start_time, end_time)
+                    if not key in key_timetables:
+                        key_timetables[key] = timetable
+                    else:
+                        continue
+
+                    search_timetables.append(timetable)
             elif is_user == 'is_student':
                 search_domain.append(('class_id', '=', user.class_id.id))
 
@@ -126,7 +139,20 @@ class Helpers:
                 if start_date and end_date:
                     timetables = timetables.filtered(lambda rec: rec.date and rec.day_of_week and rec.date >= start_date and rec.date <= end_date)
                 timetables = list(timetables)
-                search_timetables = timetables
+                key_timetables = {}
+                for timetable in timetables:
+                    if not timetable.date or not timetable.day_of_week:
+                        continue
+
+                    end_time = Helpers.convert_float_to_time(timetable.end_time, True)
+                    start_time = Helpers.convert_float_to_time(timetable.start_time, True)
+                    key = '{}-{}-{}-{}'.format(timetable.employee_id.id, timetable.date, start_time, end_time)
+                    if not key in key_timetables:
+                        key_timetables[key] = timetable
+                    else:
+                        continue
+
+                    search_timetables.append(timetable)
 
         _logger.info(f'----------- tototototototo search_timetables {search_timetables} -----------')
 
@@ -311,13 +337,39 @@ class Helpers:
 
                 consumptionhours = http.request.env['siantou.ems.timetable.timetable'].sudo().search(search_domain, order=order)
                 consumptionhours = list(consumptionhours)
-                search_consumptionhours = consumptionhours
+                key_consumptionhours = {}
+                for consumptionhour in consumptionhours:
+                    if not consumptionhour.date or not consumptionhour.day_of_week:
+                        continue
+
+                    end_time = Helpers.convert_float_to_time(consumptionhour.end_time, True)
+                    start_time = Helpers.convert_float_to_time(consumptionhour.start_time, True)
+                    key = '{}-{}-{}-{}'.format(consumptionhour.employee_id.id, consumptionhour.date, start_time, end_time)
+                    if not key in key_consumptionhours:
+                        key_consumptionhours[key] = consumptionhour
+                    else:
+                        continue
+
+                    search_consumptionhours.append(consumptionhour)
             elif is_user == 'is_student':
                 search_domain.append(('class_id', '=', user.class_id.id))
 
                 consumptionhours = http.request.env['siantou.ems.timetable.timetable'].sudo().search(search_domain, order=order)
                 consumptionhours = list(consumptionhours)
-                search_consumptionhours = consumptionhours
+                key_consumptionhours = {}
+                for consumptionhour in consumptionhours:
+                    if not consumptionhour.date or not consumptionhour.day_of_week:
+                        continue
+
+                    end_time = Helpers.convert_float_to_time(consumptionhour.end_time, True)
+                    start_time = Helpers.convert_float_to_time(consumptionhour.start_time, True)
+                    key = '{}-{}-{}-{}'.format(consumptionhour.employee_id.id, consumptionhour.date, start_time, end_time)
+                    if not key in key_consumptionhours:
+                        key_consumptionhours[key] = consumptionhour
+                    else:
+                        continue
+
+                    search_consumptionhours.append(consumptionhour)
 
         _logger.info(f'----------- tototototototo search_consumptionhours {search_consumptionhours} -----------')
 
@@ -377,13 +429,39 @@ class Helpers:
 
                 progressreports = http.request.env['siantou.ems.timetable.timetable'].sudo().search(search_domain, order=order)
                 progressreports = list(progressreports)
-                search_progressreports = progressreports
+                key_progressreports = {}
+                for progressreport in progressreports:
+                    if not progressreport.date or not progressreport.day_of_week:
+                        continue
+
+                    end_time = Helpers.convert_float_to_time(progressreport.end_time, True)
+                    start_time = Helpers.convert_float_to_time(progressreport.start_time, True)
+                    key = '{}-{}-{}-{}'.format(progressreport.employee_id.id, progressreport.date, start_time, end_time)
+                    if not key in key_progressreports:
+                        key_progressreports[key] = progressreport
+                    else:
+                        continue
+
+                    search_progressreports.append(progressreport)
             elif is_user == 'is_student':
                 search_domain.append(('class_id', '=', user.class_id.id))
 
                 progressreports = http.request.env['siantou.ems.timetable.timetable'].sudo().search(search_domain, order=order)
                 progressreports = list(progressreports)
-                search_progressreports = progressreports
+                key_progressreports = {}
+                for progressreport in progressreports:
+                    if not progressreport.date or not progressreport.day_of_week:
+                        continue
+
+                    end_time = Helpers.convert_float_to_time(progressreport.end_time, True)
+                    start_time = Helpers.convert_float_to_time(progressreport.start_time, True)
+                    key = '{}-{}-{}-{}'.format(progressreport.employee_id.id, progressreport.date, start_time, end_time)
+                    if not key in key_progressreports:
+                        key_progressreports[key] = progressreport
+                    else:
+                        continue
+
+                    search_progressreports.append(progressreport)
 
         _logger.info(f'----------- tototototototo search_progressreports {search_progressreports} -----------')
 
@@ -445,13 +523,39 @@ class Helpers:
 
                 subjectsessions = http.request.env['siantou.ems.timetable.timetable'].sudo().search(search_domain, order=order)
                 subjectsessions = list(subjectsessions)
-                search_subjectsessions = subjectsessions
+                key_subjectsessions = {}
+                for subjectsession in subjectsessions:
+                    if not subjectsession.date or not subjectsession.day_of_week:
+                        continue
+
+                    end_time = Helpers.convert_float_to_time(subjectsession.end_time, True)
+                    start_time = Helpers.convert_float_to_time(subjectsession.start_time, True)
+                    key = '{}-{}-{}-{}'.format(subjectsession.employee_id.id, subjectsession.date, start_time, end_time)
+                    if not key in key_subjectsessions:
+                        key_subjectsessions[key] = subjectsession
+                    else:
+                        continue
+
+                    search_subjectsessions.append(subjectsession)
             elif is_user == 'is_student':
                 search_domain.append(('class_id', '=', user.class_id.id))
 
                 subjectsessions = http.request.env['siantou.ems.timetable.timetable'].sudo().search(search_domain, order=order)
                 subjectsessions = list(subjectsessions)
-                search_subjectsessions = subjectsessions
+                key_subjectsessions = {}
+                for subjectsession in subjectsessions:
+                    if not subjectsession.date or not subjectsession.day_of_week:
+                        continue
+
+                    end_time = Helpers.convert_float_to_time(subjectsession.end_time, True)
+                    start_time = Helpers.convert_float_to_time(subjectsession.start_time, True)
+                    key = '{}-{}-{}-{}'.format(subjectsession.employee_id.id, subjectsession.date, start_time, end_time)
+                    if not key in key_subjectsessions:
+                        key_subjectsessions[key] = subjectsession
+                    else:
+                        continue
+
+                    search_subjectsessions.append(subjectsession)
 
         _logger.info(f'----------- tototototototo search_subjectsessions {search_subjectsessions} -----------')
 
