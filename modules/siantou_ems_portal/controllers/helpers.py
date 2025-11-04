@@ -735,10 +735,12 @@ class Helpers:
                 consumptionhours[key_class]['total_all'] += consumptionhours[key_class]['data'][key_subject]['data']['all']
                 consumptionhours[key_class]['total_done'] += consumptionhours[key_class]['data'][key_subject]['data']['done']
                 consumptionhours[key_class]['total_awaiting'] += consumptionhours[key_class]['data'][key_subject]['data']['awaiting']
-                consumptionhours[key_class]['hours_credit'] = round(consumptionhours[key_class]['hours_credit'], 2)
-                consumptionhours[key_class]['total_all'] = round(consumptionhours[key_class]['total_all'], 2)
-                consumptionhours[key_class]['total_done'] = round(consumptionhours[key_class]['total_done'], 2)
-                consumptionhours[key_class]['total_awaiting'] = round(consumptionhours[key_class]['total_awaiting'], 2)
+
+        for key_class in consumptionhours.keys():
+            consumptionhours[key_class]['hours_credit'] = round(consumptionhours[key_class]['hours_credit'], 2)
+            consumptionhours[key_class]['total_all'] = round(consumptionhours[key_class]['total_all'], 2)
+            consumptionhours[key_class]['total_done'] = round(consumptionhours[key_class]['total_done'], 2)
+            consumptionhours[key_class]['total_awaiting'] = round(consumptionhours[key_class]['total_awaiting'], 2)
 
         _logger.info(f'----------- tototototototo consumptionhours {consumptionhours} -----------')
 
