@@ -427,7 +427,7 @@ class TimetableFilterWizard(models.TransientModel):
             start_date = datetime.strftime(self.start_date, DATE_FORMAT_FR)
             end_date = datetime.strftime(self.end_date, DATE_FORMAT_FR)
             title.append('{} - {}'.format(start_date, end_date))
-            timetables = timetables.filtered(lambda rec: rec.date and rec.date >= self.start_date and rec.date <= self.end_date)
+            timetables = timetables.filtered(lambda rec: rec.date and rec.day_of_week and rec.date >= self.start_date and rec.date <= self.end_date)
         if self.start_time and self.end_time:
             start_time = TimetableFilterWizard.convert_float_to_time(self.start_time)
             end_time = TimetableFilterWizard.convert_float_to_time(self.end_time)
