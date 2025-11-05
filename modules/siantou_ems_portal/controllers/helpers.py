@@ -146,7 +146,7 @@ class Helpers:
 
                     end_time = Helpers.convert_float_to_time(timetable.end_time, True)
                     start_time = Helpers.convert_float_to_time(timetable.start_time, True)
-                    key = '{}-{}-{}-{}'.format(timetable.employee_id.id, timetable.date, start_time, end_time)
+                    key = '{}-{}-{}-{}'.format(timetable.class_id.id, timetable.date, start_time, end_time)
                     if not key in key_timetables:
                         key_timetables[key] = timetable
                     else:
@@ -363,7 +363,7 @@ class Helpers:
 
                     end_time = Helpers.convert_float_to_time(consumptionhour.end_time, True)
                     start_time = Helpers.convert_float_to_time(consumptionhour.start_time, True)
-                    key = '{}-{}-{}-{}'.format(consumptionhour.employee_id.id, consumptionhour.date, start_time, end_time)
+                    key = '{}-{}-{}-{}'.format(consumptionhour.class_id.id, consumptionhour.date, start_time, end_time)
                     if not key in key_consumptionhours:
                         key_consumptionhours[key] = consumptionhour
                     else:
@@ -455,7 +455,7 @@ class Helpers:
 
                     end_time = Helpers.convert_float_to_time(progressreport.end_time, True)
                     start_time = Helpers.convert_float_to_time(progressreport.start_time, True)
-                    key = '{}-{}-{}-{}'.format(progressreport.employee_id.id, progressreport.date, start_time, end_time)
+                    key = '{}-{}-{}-{}'.format(progressreport.class_id.id, progressreport.date, start_time, end_time)
                     if not key in key_progressreports:
                         key_progressreports[key] = progressreport
                     else:
@@ -549,7 +549,7 @@ class Helpers:
 
                     end_time = Helpers.convert_float_to_time(subjectsession.end_time, True)
                     start_time = Helpers.convert_float_to_time(subjectsession.start_time, True)
-                    key = '{}-{}-{}-{}'.format(subjectsession.employee_id.id, subjectsession.date, start_time, end_time)
+                    key = '{}-{}-{}-{}'.format(subjectsession.class_id.id, subjectsession.date, start_time, end_time)
                     if not key in key_subjectsessions:
                         key_subjectsessions[key] = subjectsession
                     else:
