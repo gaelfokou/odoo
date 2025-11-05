@@ -279,9 +279,13 @@ class Helpers:
 
                     search_accountbalances.append(accountbalance)
 
+                start_date = datetime.strftime(start_date, DATE_FORMAT_FR)
+                end_date = datetime.strftime(end_date, DATE_FORMAT_FR)
+                search_month = '{} - {}'.format(start_date, end_date)
+
         _logger.info(f'----------- tototototototo search_accountbalances {search_accountbalances} -----------')
 
-        return search_accountbalances, searchbar_inputs
+        return search_accountbalances, searchbar_inputs, search_month
 
     @staticmethod
     def consumptionhour(search='', search_in='all', cycle_id=None, level_id=None, field_of_study_id=None, specialty_id=None, option_id=None, class_id=None):

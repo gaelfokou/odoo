@@ -637,6 +637,19 @@
                         <a t-attf-href="/my/accountbalance?selected_month={{ accountbalance_selected_month }}" class="btn btn-primary">Mois précédent</a>
                         <a t-attf-href="/my/accountbalance?selected_month=0" class="btn btn-primary">Mois encours</a><br/><br/>
                     </div>
+                    <thead>
+                        <tr>
+                            <th class="text-center" colspan="8" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;">
+                                <span t-esc="'Période :'"/>
+                                <span t-esc="search_month"/>
+                            </th>
+                        </tr>
+                    </thead>
+                    <thead>
+                        <tr>
+                            <th class="text-left" colspan="8" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
+                        </tr>
+                    </thead>
                     <t t-set="classes" t-value="accountbalances.keys()"/>
                     <t t-if="len(classes) > 0">
                         <thead>
