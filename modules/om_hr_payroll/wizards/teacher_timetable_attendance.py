@@ -175,7 +175,7 @@ class TeacherTimetableAttendance(models.TransientModel):
     )
 
     is_paid = fields.Boolean(
-        'Payé ?',
+        'Est payé',
         default=False,
     )
 
