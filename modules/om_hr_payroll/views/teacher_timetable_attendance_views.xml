@@ -50,6 +50,7 @@
                     <field name="hours_credit"/>
                     <field name="total_done" decoration-danger="total_done &gt; hours_credit"/>
                     <field name="total_awaiting"/>
+                    <field name="is_paid"/>
                 </tree>
             </field>
         </record>

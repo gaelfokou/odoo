@@ -174,6 +174,11 @@ class TeacherTimetableAttendance(models.TransientModel):
         store=True
     )
 
+    is_paid = fields.Boolean(
+        'Payé ?',
+        default=False,
+    )
+
     # Taux de l\'enseignant
     rate = fields.Float(
         'Taux horaire',
