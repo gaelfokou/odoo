@@ -123,7 +123,7 @@ class Helpers:
                     end_time = Helpers.convert_float_to_time(timetable.end_time, True)
                     start_time = Helpers.convert_float_to_time(timetable.start_time, True)
                     key = '{}-{}-{}-{}'.format(timetable.employee_id.id, timetable.date, start_time, end_time)
-                    if not key in key_timetables:
+                    if key not in key_timetables:
                         key_timetables[key] = timetable
                     else:
                         continue
@@ -147,7 +147,7 @@ class Helpers:
                     end_time = Helpers.convert_float_to_time(timetable.end_time, True)
                     start_time = Helpers.convert_float_to_time(timetable.start_time, True)
                     key = '{}-{}-{}-{}'.format(timetable.class_id.id, timetable.date, start_time, end_time)
-                    if not key in key_timetables:
+                    if key not in key_timetables:
                         key_timetables[key] = timetable
                     else:
                         continue
@@ -272,7 +272,7 @@ class Helpers:
                     end_time = Helpers.convert_float_to_time(accountbalance.end_time, True)
                     start_time = Helpers.convert_float_to_time(accountbalance.start_time, True)
                     key = '{}-{}-{}-{}'.format(accountbalance.employee_id.id, accountbalance.date, start_time, end_time)
-                    if not key in key_accountbalances:
+                    if key not in key_accountbalances:
                         key_accountbalances[key] = accountbalance
                     else:
                         continue
@@ -349,7 +349,7 @@ class Helpers:
                     end_time = Helpers.convert_float_to_time(consumptionhour.end_time, True)
                     start_time = Helpers.convert_float_to_time(consumptionhour.start_time, True)
                     key = '{}-{}-{}-{}'.format(consumptionhour.employee_id.id, consumptionhour.date, start_time, end_time)
-                    if not key in key_consumptionhours:
+                    if key not in key_consumptionhours:
                         key_consumptionhours[key] = consumptionhour
                     else:
                         continue
@@ -368,7 +368,7 @@ class Helpers:
                     end_time = Helpers.convert_float_to_time(consumptionhour.end_time, True)
                     start_time = Helpers.convert_float_to_time(consumptionhour.start_time, True)
                     key = '{}-{}-{}-{}'.format(consumptionhour.class_id.id, consumptionhour.date, start_time, end_time)
-                    if not key in key_consumptionhours:
+                    if key not in key_consumptionhours:
                         key_consumptionhours[key] = consumptionhour
                     else:
                         continue
@@ -441,7 +441,7 @@ class Helpers:
                     end_time = Helpers.convert_float_to_time(progressreport.end_time, True)
                     start_time = Helpers.convert_float_to_time(progressreport.start_time, True)
                     key = '{}-{}-{}-{}'.format(progressreport.employee_id.id, progressreport.date, start_time, end_time)
-                    if not key in key_progressreports:
+                    if key not in key_progressreports:
                         key_progressreports[key] = progressreport
                     else:
                         continue
@@ -460,7 +460,7 @@ class Helpers:
                     end_time = Helpers.convert_float_to_time(progressreport.end_time, True)
                     start_time = Helpers.convert_float_to_time(progressreport.start_time, True)
                     key = '{}-{}-{}-{}'.format(progressreport.class_id.id, progressreport.date, start_time, end_time)
-                    if not key in key_progressreports:
+                    if key not in key_progressreports:
                         key_progressreports[key] = progressreport
                     else:
                         continue
@@ -535,7 +535,7 @@ class Helpers:
                     end_time = Helpers.convert_float_to_time(subjectsession.end_time, True)
                     start_time = Helpers.convert_float_to_time(subjectsession.start_time, True)
                     key = '{}-{}-{}-{}'.format(subjectsession.employee_id.id, subjectsession.date, start_time, end_time)
-                    if not key in key_subjectsessions:
+                    if key not in key_subjectsessions:
                         key_subjectsessions[key] = subjectsession
                     else:
                         continue
@@ -554,7 +554,7 @@ class Helpers:
                     end_time = Helpers.convert_float_to_time(subjectsession.end_time, True)
                     start_time = Helpers.convert_float_to_time(subjectsession.start_time, True)
                     key = '{}-{}-{}-{}'.format(subjectsession.class_id.id, subjectsession.date, start_time, end_time)
-                    if not key in key_subjectsessions:
+                    if key not in key_subjectsessions:
                         key_subjectsessions[key] = subjectsession
                     else:
                         continue
@@ -699,7 +699,7 @@ class Helpers:
             else:
                 monday = d['date'] - timedelta(days=d['date'].weekday())
             monday = datetime.strftime(monday, DATE_FORMAT)
-            if not monday in timetables:
+            if monday not in timetables:
                 timetables[monday] = {
                     'Heure': [hour for hour in current_hours],
                     'Lundi': [],
@@ -716,7 +716,7 @@ class Helpers:
                         if key == 'Heure':
                             continue
                         timetables[monday][key].append(np.nan)
-            if not monday in df:
+            if monday not in df:
                 df[monday] = pd.DataFrame(timetables[monday], dtype=str)
             while Helpers.increment_float_time(d['start_time']) < Helpers.increment_float_time(d['end_time']):
                 if Helpers.increment_float_time(d['start_time'], n) < Helpers.increment_float_time(d['end_time']):
@@ -770,7 +770,7 @@ class Helpers:
         for d in sorted_data:
             key_class = '{}'.format(d['class_id'])
             key_subject = '{}'.format(d['subject_id'])
-            if not key_class in accountbalances:
+            if key_class not in accountbalances:
                 accountbalances[key_class] = {}
                 accountbalances[key_class]['name'] = d['class_name']
                 accountbalances[key_class]['data'] = {}
@@ -779,7 +779,7 @@ class Helpers:
                 accountbalances[key_class]['data'][key_subject]['data'] = []
                 accountbalances[key_class]['data'][key_subject]['data'].append(d)
             else:
-                if not key_subject in accountbalances[key_class]['data']:
+                if key_subject not in accountbalances[key_class]['data']:
                     accountbalances[key_class]['data'][key_subject] = {}
                     accountbalances[key_class]['data'][key_subject]['name'] = d['subject_name']
                     accountbalances[key_class]['data'][key_subject]['data'] = []
@@ -809,7 +809,7 @@ class Helpers:
         for d in sorted_data:
             key_class = '{}'.format(d['class_id'])
             key_subject = '{}'.format(d['subject_id'])
-            if not key_class in consumptionhours:
+            if key_class not in consumptionhours:
                 consumptionhours[key_class] = {}
                 consumptionhours[key_class]['name'] = d['class_name']
                 consumptionhours[key_class]['data'] = {}
@@ -825,7 +825,7 @@ class Helpers:
                 if d['status'] in ['present', 'permission']:
                     consumptionhours[key_class]['data'][key_subject]['data']['done'].append(d)
             else:
-                if not key_subject in consumptionhours[key_class]['data']:
+                if key_subject not in consumptionhours[key_class]['data']:
                     consumptionhours[key_class]['data'][key_subject] = {}
                     consumptionhours[key_class]['data'][key_subject]['name'] = d['subject_name']
                     consumptionhours[key_class]['data'][key_subject]['data'] = {
@@ -880,7 +880,7 @@ class Helpers:
         for d in sorted_data:
             key_class = '{}'.format(d['class_id'])
             key_subject = '{}'.format(d['subject_id'])
-            if not key_class in progressreports:
+            if key_class not in progressreports:
                 progressreports[key_class] = {}
                 progressreports[key_class]['name'] = d['class_name']
                 progressreports[key_class]['data'] = {}
@@ -897,7 +897,7 @@ class Helpers:
                 else:
                     progressreports[key_class]['data'][key_subject]['data']['awaiting'].append(d)
             else:
-                if not key_subject in progressreports[key_class]['data']:
+                if key_subject not in progressreports[key_class]['data']:
                     progressreports[key_class]['data'][key_subject] = {}
                     progressreports[key_class]['data'][key_subject]['name'] = d['subject_name']
                     progressreports[key_class]['data'][key_subject]['data'] = {
@@ -947,7 +947,7 @@ class Helpers:
         total_session = 0.0
         for d in sorted_data:
             key_timetable = '{}'.format(d['id'])
-            if not key_timetable in subjectsessions:
+            if key_timetable not in subjectsessions:
                 subjectsessions[key_timetable] = {}
                 subjectsessions[key_timetable]['id'] = d['id']
                 subjectsessions[key_timetable]['name'] = d['name']
@@ -981,7 +981,7 @@ class Helpers:
             month = d['start'].month
             date_today = date.today()
             month = str(month)
-            if not search_year in calendars:
+            if search_year not in calendars:
                 calendars[search_year] = {}
                 calendars[search_year][month] = {}
                 calendars[search_year][month]['name'] = CURRENT_MONTH[month]
@@ -991,7 +991,7 @@ class Helpers:
                 calendars[search_year][month]['data'] = []
                 calendars[search_year][month]['data'].append(d)
             else:
-                if not month in calendars[search_year]:
+                if month not in calendars[search_year]:
                     calendars[search_year][month] = {}
                     calendars[search_year][month]['name'] = CURRENT_MONTH[month]
                     calendars[search_year][month]['is_current_month'] = (str(date_today.year) in search_year and str(date_today.month) == month)

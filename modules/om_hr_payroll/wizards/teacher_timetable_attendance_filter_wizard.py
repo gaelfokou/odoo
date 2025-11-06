@@ -157,6 +157,20 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
             title.append('{} - {}'.format(start_date, end_date))
             timetables = timetables.filtered(lambda rec: rec.date and rec.day_of_week and rec.date >= self.start_date and rec.date <= self.end_date)
 
+        order = 'date_from asc'
+        timetable_ids = []
+        exist_employee_ids = []
+        for timetable in timetables:
+            if timetable.employee_id.id not in exist_employee_ids:
+                paymenthistories = self.env['hr.payslip'].search([('employee_id', '=', timetable.employee_id.id)], order=order)
+                paymenthistories = list(paymenthistories)
+                for paymenthistory in paymenthistories:
+                    for worked_days_line_id in paymenthistory.worked_days_line_ids:
+                        timetable_ids.append(worked_days_line_id.timetable_id.id)
+                exist_employee_ids.append(timetable.employee_id.id)
+
+        timetables = timetables.filtered(lambda rec: rec.id not in timetable_ids)
+
         key_timetables = {}
         for timetable in timetables:
             if not timetable.date or not timetable.day_of_week:
@@ -165,7 +179,7 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
             end_time = TeacherTimetableAttendanceFilterWizard.convert_float_to_time(timetable.end_time, True)
             start_time = TeacherTimetableAttendanceFilterWizard.convert_float_to_time(timetable.start_time, True)
             key = '{}-{}-{}-{}'.format(timetable.employee_id.id, timetable.date, start_time, end_time)
-            if not key in key_timetables:
+            if key not in key_timetables:
                 key_timetables[key] = timetable
             else:
                 continue
@@ -310,7 +324,7 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
         for d in sorted_data:
             key_class = '{}'.format(d['class_id'])
             key_subject = '{}'.format(d['subject_id'])
-            if not key_class in consumptionhours:
+            if key_class not in consumptionhours:
                 consumptionhours[key_class] = {}
                 consumptionhours[key_class]['name'] = d['class_name']
                 consumptionhours[key_class]['data'] = {}
@@ -326,7 +340,7 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
                 if d['status'] in ['present', 'permission']:
                     consumptionhours[key_class]['data'][key_subject]['data']['done'].append(d)
             else:
-                if not key_subject in consumptionhours[key_class]['data']:
+                if key_subject not in consumptionhours[key_class]['data']:
                     consumptionhours[key_class]['data'][key_subject] = {}
                     consumptionhours[key_class]['data'][key_subject]['name'] = d['subject_name']
                     consumptionhours[key_class]['data'][key_subject]['data'] = {

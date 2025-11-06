@@ -255,7 +255,7 @@ class HrPayslip(models.Model):
                     end_time = HrPayslip.convert_float_to_time(employee_timetable.end_time)
                     start_time = HrPayslip.convert_float_to_time(employee_timetable.start_time)
                     key = '{}-{}-{}-{}'.format(employee_timetable.employee_id.id, employee_timetable.date, start_time, end_time)
-                    if not key in key_timetables:
+                    if key not in key_timetables:
                         key_timetables[key] = employee_timetable
                     else:
                         continue
@@ -358,7 +358,7 @@ class HrPayslip(models.Model):
                     end_time = HrPayslip.convert_float_to_time(employee_timetable.end_time)
                     start_time = HrPayslip.convert_float_to_time(employee_timetable.start_time)
                     key = '{}-{}-{}-{}'.format(employee_timetable.employee_id.id, employee_timetable.date, start_time, end_time)
-                    if not key in key_timetables:
+                    if key not in key_timetables:
                         key_timetables[key] = employee_timetable
                     else:
                         continue
@@ -1076,7 +1076,7 @@ class HrPayslip(models.Model):
                                         end_time = HrPayslip.convert_float_to_time(worked_days_line_id.timetable_id.end_time)
                                         start_time = HrPayslip.convert_float_to_time(worked_days_line_id.timetable_id.start_time)
                                         key = '{}-{}-{}-{}'.format(worked_days_line_id.timetable_id.employee_id.id, worked_days_line_id.timetable_id.date, start_time, end_time)
-                                        if not key in key_timetables:
+                                        if key not in key_timetables:
                                             key_timetables[key] = worked_days_line_id.timetable_id
                                         else:
                                             continue

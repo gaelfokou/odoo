@@ -424,7 +424,7 @@ class ProgressReport(models.Model):
             for d in sorted_data:
                 key_class = '{}'.format(d['class_id'])
                 key_subject = '{}'.format(d['subject_id'])
-                if not key_class in progressreports:
+                if key_class not in progressreports:
                     progressreports[key_class] = {}
                     progressreports[key_class]['name'] = d['class_name']
                     progressreports[key_class]['data'] = {}
@@ -441,7 +441,7 @@ class ProgressReport(models.Model):
                     else:
                         progressreports[key_class]['data'][key_subject]['data']['awaiting'].append(d)
                 else:
-                    if not key_subject in progressreports[key_class]['data']:
+                    if key_subject not in progressreports[key_class]['data']:
                         progressreports[key_class]['data'][key_subject] = {}
                         progressreports[key_class]['data'][key_subject]['name'] = d['subject_name']
                         progressreports[key_class]['data'][key_subject]['data'] = {

@@ -137,7 +137,7 @@ class FieldOfStudy(models.Model):
                 ])
                 subjects = list(subjects)
                 for subject in subjects:
-                    if not subject.id in subject_ids_by_level[level.id]:
+                    if subject.id not in subject_ids_by_level[level.id]:
                         subject_ids_by_level[level.id].append(subject.id)
             if len(subject_ids_by_level[level.id]) == 0:
                 del(subject_ids_by_level[level.id])

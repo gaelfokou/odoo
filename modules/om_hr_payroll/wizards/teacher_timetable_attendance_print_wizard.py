@@ -83,7 +83,7 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
             if not search_teacher_timetable_attendance.date:
                 continue
             key = '{}'.format(search_teacher_timetable_attendance.employee_id.id)
-            if not key in key_teacher_timetable_attendances:
+            if key not in key_teacher_timetable_attendances:
                 key_teacher_timetable_attendances[key] = {}
                 key_teacher_timetable_attendances[key]['name'] = search_teacher_timetable_attendance.employee_id.name
                 key_teacher_timetable_attendances[key]['identifier'] = search_teacher_timetable_attendance.employee_id.identifier
@@ -469,7 +469,7 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
             else:
                 monday = d['date'] - timedelta(days=d['date'].weekday())
             monday = datetime.strftime(monday, DATE_FORMAT)
-            if not monday in timetables:
+            if monday not in timetables:
                 timetables[monday] = {
                     'Heure': [hour for hour in current_hours],
                     'Lundi': [],
@@ -486,7 +486,7 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
                         if key == 'Heure':
                             continue
                         timetables[monday][key].append(np.nan)
-            if not monday in df:
+            if monday not in df:
                 df[monday] = pd.DataFrame(timetables[monday], dtype=str)
             while TimetablePrintWizard.increment_float_time(d['start_time']) < TimetablePrintWizard.increment_float_time(d['end_time']):
                 if TimetablePrintWizard.increment_float_time(d['start_time'], n) < TimetablePrintWizard.increment_float_time(d['end_time']):
