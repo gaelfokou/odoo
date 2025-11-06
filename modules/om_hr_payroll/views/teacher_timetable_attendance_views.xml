@@ -27,6 +27,11 @@
                             string="Imprimer condensé PDF" 
                             class="oe_highlight" 
                             display="always"/>
+                        <button name="action_pay_done" 
+                            type="object" 
+                            string="Payer" 
+                            class="oe_highlight" 
+                            display="always"/>
                     </header>
                     <field name="timetable_id"/>
                     <field name="level_id"/>

@@ -100,6 +100,7 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
             is_permanent = search_teacher_timetable_attendance.employee_id.is_permanent
             teacher_timetable_attendance = {}
             teacher_timetable_attendance['id'] = search_teacher_timetable_attendance.id
+            teacher_timetable_attendance['timetable_id'] = search_teacher_timetable_attendance.timetable_id.id
             teacher_timetable_attendance['date'] = search_teacher_timetable_attendance.date
             teacher_timetable_attendance['date_of_week'] = datetime.strftime(search_teacher_timetable_attendance.date, DATE_FORMAT_FR)
             teacher_timetable_attendance['class_id'] = search_teacher_timetable_attendance.class_id.id
@@ -108,6 +109,7 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
             teacher_timetable_attendance['subject_name'] = search_teacher_timetable_attendance.subject_id.name
             teacher_timetable_attendance['subject_code'] = search_teacher_timetable_attendance.subject_id.code
             teacher_timetable_attendance['subject_shared_subject'] = '(TC)' if search_teacher_timetable_attendance.subject_id.shared_subject else ''
+            teacher_timetable_attendance['employee_id'] = search_teacher_timetable_attendance.employee_id.id
             teacher_timetable_attendance['employee_name'] = search_teacher_timetable_attendance.employee_id.name
             teacher_timetable_attendance['start_time'] = TeacherTimetableAttendancePrintWizard.convert_float_to_time(search_teacher_timetable_attendance.start_time)
             teacher_timetable_attendance['end_time'] = TeacherTimetableAttendancePrintWizard.convert_float_to_time(search_teacher_timetable_attendance.end_time)

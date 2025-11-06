@@ -263,6 +263,28 @@ class TeacherTimetableAttendance(models.TransientModel):
         report_action = self.env.ref('om_hr_payroll.action_report_teacher_timetable_attendance_resume')
         return report_action.report_action(self, data=data)
 
+    def action_pay_done(self):
+        active_ids = self.env.context.get('active_ids', [])
+        teacher_timetable_attendances = self.env['teacher.timetable.attendance'].browse(active_ids)
+        if len(active_ids) == 0:
+            raise UserError('Aucune donnée sélectionnée')
+        report_data = self.env['teacher.timetable.attendance.print.wizard'].create({})
+        domains = [
+            ('id', 'in', active_ids)
+        ]
+        resume = True
+        data = report_data.print_teacher_timetable_attendance_report_data(resume=resume, domains=domains)
+
+        # Appeler le rapport PDF
+        if not data['docdata']['teacher_timetable_attendance_data']:
+            raise UserError('Aucune donnée trouvée')
+        teacher_timetable_attendance_data = dict(sorted(data['docdata']['teacher_timetable_attendance_data'].items(), key=lambda item: item[1]['name']))
+        for key in teacher_timetable_attendance_data.keys():
+            timetables = teacher_timetable_attendance_data[key]['data']
+            for timetable in timetables:
+                if 'id' in timetable:
+                    _logger.info(f'----------- tototototototo timetable {timetable} -----------')
+
     @staticmethod
     def convert_float_to_time(tm, has_second=False):
         tm = str(tm)
