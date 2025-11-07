@@ -190,6 +190,24 @@ class TeacherTimetableAttendance(models.TransientModel):
         default=0.0,
     )
 
+    def _default_start_date(self):
+        start_date = date.today().replace(day=1)
+        return start_date
+
+    start_date = fields.Date(
+        'Date de début',
+        default=_default_start_date,
+    )
+
+    def _default_end_date(self):
+        end_date = (datetime.now() + relativedelta(months=+1, day=1, days=-1)).date()
+        return end_date
+
+    end_date = fields.Date(
+        'Date de fin',
+        default=_default_end_date,
+    )
+
     @api.depends('timetable_id')
     def _compute_name(self):
         for record in self:
@@ -283,12 +301,64 @@ class TeacherTimetableAttendance(models.TransientModel):
         # Appeler le rapport PDF
         if not data['docdata']['teacher_timetable_attendance_data']:
             raise UserError('Aucune donnée trouvée')
+        from_date = None
+        to_date = None
+        timetable_ids = []
+        employee_ids = []
         teacher_timetable_attendance_data = dict(sorted(data['docdata']['teacher_timetable_attendance_data'].items(), key=lambda item: item[1]['name']))
         for key in teacher_timetable_attendance_data.keys():
             timetables = teacher_timetable_attendance_data[key]['data']
             for timetable in timetables:
-                if 'id' in timetable:
-                    _logger.info(f'----------- tototototototo timetable {timetable} -----------')
+                if 'start_date' in timetable:
+                    from_date = timetable['start_date']
+                if 'end_date' in timetable:
+                    to_date = timetable['end_date']
+                if 'timetable_id' in timetable:
+                    timetable_ids.append(timetable['timetable_id'])
+                if 'employee_id' in timetable:
+                    if timetable['employee_id'] not in employee_ids:
+                        employee_ids.append(timetable['employee_id'])
+
+        _logger.info(f'----------- tatatatatatata timetable_ids {timetable_ids} -----------')
+        _logger.info(f'----------- tatatatatatata employee_ids {employee_ids} -----------')
+
+        if len(timetable_ids) == 0:
+            raise UserError(_("You must select timetable(s) to generate payslip(s)."))
+        if len(employee_ids) == 0:
+            raise UserError(_("You must select employee(s) to generate payslip(s)."))
+
+        exist_timetable_ids = []
+        employees = self.env['hr.employee'].search([('id', 'in', employee_ids)])
+        for employee in employees:
+            order = 'date_from asc'
+            paymenthistories = self.env['hr.payslip'].search([('employee_id', '=', employee.id)], order=order)
+            paymenthistories = list(paymenthistories)
+            for paymenthistory in paymenthistories:
+                for worked_days_line_id in paymenthistory.worked_days_line_ids:
+                    exist_timetable_ids.append(worked_days_line_id.timetable_id.id)
+
+        _logger.info(f'----------- tatatatatatata exist_timetable_ids {exist_timetable_ids} -----------')
+
+        order = 'date asc'
+        timetables = self.env['siantou.ems.timetable.timetable'].search([('id', 'in', timetable_ids)], order=order)
+        timetables = timetables.filtered(lambda rec: rec.id not in exist_timetable_ids)
+
+        payslips = self.env['hr.payslip']
+        for employee in employees:
+            slip_data = self.env['hr.payslip'].onchange_employee_id(from_date, to_date, employee.id, contract_id=False)
+            res = {
+                'employee_id': employee.id,
+                'name': slip_data['value'].get('name'),
+                'struct_id': slip_data['value'].get('struct_id'),
+                'contract_id': slip_data['value'].get('contract_id'),
+                'input_line_ids': [(0, 0, x) for x in slip_data['value'].get('input_line_ids')],
+                'worked_days_line_ids': [(0, 0, x) for x in slip_data['value'].get('worked_days_line_ids')],
+                'date_from': from_date,
+                'date_to': to_date,
+                'company_id': employee.company_id.id,
+            }
+            payslips += self.env['hr.payslip'].create(res)
+        payslips.compute_sheet()
 
     @staticmethod
     def convert_float_to_time(tm, has_second=False):

@@ -123,6 +123,8 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
             teacher_timetable_attendance['total_done'] = search_teacher_timetable_attendance.total_done
             teacher_timetable_attendance['total_awaiting'] = search_teacher_timetable_attendance.total_awaiting
             teacher_timetable_attendance['status'] = STATUS_TIMETABLE[search_teacher_timetable_attendance.status]
+            teacher_timetable_attendance['start_date'] = search_teacher_timetable_attendance.start_date
+            teacher_timetable_attendance['end_date'] = search_teacher_timetable_attendance.end_date
             key_teacher_timetable_attendances[key]['has_ir'] = search_teacher_timetable_attendance.employee_id.has_ir
             key_teacher_timetable_attendances[key]['has_apecus'] = search_teacher_timetable_attendance.employee_id.has_apecus
             key_teacher_timetable_attendances[key]['has_cnps'] = search_teacher_timetable_attendance.employee_id.has_cnps

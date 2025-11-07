@@ -173,15 +173,15 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
 
         order = 'date_from asc'
         timetable_ids = []
-        exist_employee_ids = []
+        employee_ids = []
         for timetable in timetables:
-            if timetable.employee_id.id not in exist_employee_ids:
+            if timetable.employee_id.id not in employee_ids:
                 paymenthistories = self.env['hr.payslip'].search([('employee_id', '=', timetable.employee_id.id)], order=order)
                 paymenthistories = list(paymenthistories)
                 for paymenthistory in paymenthistories:
                     for worked_days_line_id in paymenthistory.worked_days_line_ids:
                         timetable_ids.append(worked_days_line_id.timetable_id.id)
-                exist_employee_ids.append(timetable.employee_id.id)
+                employee_ids.append(timetable.employee_id.id)
 
         if self.status:
             title.append(STATUS_ATTENDANCE[self.status])
@@ -291,6 +291,8 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
                 'total_done': total_done,
                 'total_awaiting': total_awaiting,
                 'status': timetable.status,
+                'start_date': self.start_date,
+                'end_date': self.end_date,
             })
 
         if len(title) > 0:
