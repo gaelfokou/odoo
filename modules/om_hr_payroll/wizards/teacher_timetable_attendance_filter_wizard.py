@@ -41,6 +41,12 @@ TYPE_COUR = {
     'cs': 'Cours du soir',
 }
 
+STATUS_ATTENDANCE = {
+    'all': 'Tout',
+    'paid': 'Payé',
+    'unpaid': 'Non payé',
+}
+
 _logger = logging.getLogger(__name__)
 
 class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
@@ -79,6 +85,14 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
     end_date = fields.Date(
         'Date de fin',
         default=_default_end_date,
+    )
+
+    status = fields.Selection([
+        ('all', 'Tout'),
+        ('paid', 'Payé'),
+        ('unpaid', 'Non payé'),
+    ], 'Statut',
+        default='all',
     )
 
     # Contrainte logique pour s'assurer que les dates de début et de fin sont définies et que la date de fin est supérieure à la date de début
@@ -169,7 +183,12 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
                         timetable_ids.append(worked_days_line_id.timetable_id.id)
                 exist_employee_ids.append(timetable.employee_id.id)
 
-        timetables = timetables.filtered(lambda rec: rec.id not in timetable_ids)
+        if self.status:
+            title.append(STATUS_ATTENDANCE[self.status])
+            if self.status == 'paid':
+                timetables = timetables.filtered(lambda rec: rec.id in timetable_ids)
+            elif self.status == 'unpaid':
+                timetables = timetables.filtered(lambda rec: rec.id not in timetable_ids)
 
         key_timetables = {}
         for timetable in timetables:
