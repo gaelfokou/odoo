@@ -338,12 +338,18 @@ class TeacherTimetableAttendance(models.TransientModel):
         timetables = self.env['siantou.ems.timetable.timetable'].search([('id', 'in', timetable_ids)], order=order)
         timetables = timetables.filtered(lambda rec: rec.id not in exist_timetable_ids)
 
-        structure = self.env['ir.config_parameter'].sudo().get_param(f'siantou.code_structure', 'BASE')
+        structure = self.env['ir.config_parameter'].sudo().get_param(f'siantou.code_structure'):
+        if not structure:
+            structure = 'BASE'
+            self.env['ir.config_parameter'].sudo().set_param(f'siantou.code_structure', structure)
         struct_id = self.env['hr.payroll.structure'].search([('code', '=', structure)], limit=1)
         if not struct_id:
             raise UserError(_("You must select structure(s) to generate payslip(s)."))
 
-        journal = self.env['ir.config_parameter'].sudo().get_param(f'siantou.code_journal', 'CSH1')
+        journal = self.env['ir.config_parameter'].sudo().get_param(f'siantou.code_journal'):
+        if not journal:
+            journal = 'CSH1'
+            self.env['ir.config_parameter'].sudo().set_param(f'siantou.code_journal', journal)
         journal_id = self.env['account.journal'].search([('code', '=', journal)], limit=1)
         if not journal_id:
             raise UserError(_("You must select journal(s) to generate payslip(s)."))
@@ -352,16 +358,15 @@ class TeacherTimetableAttendance(models.TransientModel):
         for employee in employees:
             slip_data = self.env['hr.payslip'].onchange_employee_id(from_date, to_date, employee.id, contract_id=False)
 
-            _logger.info(f'----------- tatatatatatata slip_data {slip_data} -----------')
-
-            contract = 'Contrat {}'.format(employee.name)
+            contract = '{}'.format(employee.name)
             contract_id = self.env['hr.contract'].search([('name', '=', contract)], limit=1)
             if not contract_id:
                 contract_id = self.env['hr.contract'].create({
+                    'employee_id': employee.id,
                     'name': contract,
                     'date_start': from_date,
                     'struct_id': slip_data['value'].get('struct_id') or struct_id.id,
-                    'wage': 1.0,
+                    'wage': 0.0,
                     'company_id': slip_data['value'].get('company_id'),
                 })
 

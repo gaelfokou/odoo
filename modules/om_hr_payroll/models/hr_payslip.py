@@ -1158,6 +1158,7 @@ class HrPayslip(models.Model):
                                 _logger.info(f'----------- tototototototo rate {rate} -----------')
                                 _logger.info(f'----------- tototototototo total_rate {total_rate} -----------')
                                 _logger.info(f'----------- tototototototo total_number_of_days {total_number_of_days} -----------')
+                                _logger.info(f'----------- tototototototo contract {contract} -----------')
 
                                 #check if there is already a rule computed with that code
                                 previous_amount = rule.code in localdict and localdict[rule.code] or 0.0
