@@ -319,9 +319,6 @@ class TeacherTimetableAttendance(models.TransientModel):
                     if timetable['employee_id'] not in employee_ids:
                         employee_ids.append(timetable['employee_id'])
 
-        _logger.info(f'----------- tatatatatatata timetable_ids {timetable_ids} -----------')
-        _logger.info(f'----------- tatatatatatata employee_ids {employee_ids} -----------')
-
         if len(timetable_ids) == 0:
             raise UserError(_("You must select timetable(s) to generate payslip(s)."))
         if len(employee_ids) == 0:
