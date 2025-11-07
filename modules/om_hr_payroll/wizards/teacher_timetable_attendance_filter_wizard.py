@@ -290,6 +290,7 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
                 'total_all': total_all,
                 'total_done': total_done,
                 'total_awaiting': total_awaiting,
+                'status': timetable.status,
             })
 
         if len(title) > 0:
