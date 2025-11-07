@@ -343,6 +343,11 @@ class TeacherTimetableAttendance(models.TransientModel):
         timetables = self.env['siantou.ems.timetable.timetable'].search([('id', 'in', timetable_ids)], order=order)
         timetables = timetables.filtered(lambda rec: rec.id not in exist_timetable_ids)
 
+        account_journal = self.env['ir.config_parameter'].sudo().get_param(f'siantou.account_journal', 'Caisse salaires IUS')
+        account_journal_id = self.env['account.journal'].search([('name', '=', account_journal)], limit=1)
+        if not account_journal_id:
+            raise UserError(_("You must select employee(s) to generate payslip(s)."))
+
         payslips = self.env['hr.payslip']
         for employee in employees:
             slip_data = self.env['hr.payslip'].onchange_employee_id(from_date, to_date, employee.id, contract_id=False)
@@ -356,6 +361,7 @@ class TeacherTimetableAttendance(models.TransientModel):
                 'date_from': from_date,
                 'date_to': to_date,
                 'company_id': employee.company_id.id,
+                'journal_id': account_journal_id.id,
             }
             payslips += self.env['hr.payslip'].create(res)
         payslips.compute_sheet()
