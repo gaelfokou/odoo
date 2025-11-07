@@ -338,7 +338,7 @@ class TeacherTimetableAttendance(models.TransientModel):
         timetables = self.env['siantou.ems.timetable.timetable'].search([('id', 'in', timetable_ids)], order=order)
         timetables = timetables.filtered(lambda rec: rec.id not in exist_timetable_ids)
 
-        structure = self.env['ir.config_parameter'].sudo().get_param(f'siantou.code_structure'):
+        structure = self.env['ir.config_parameter'].sudo().get_param(f'siantou.code_structure')
         if not structure:
             structure = 'BASE'
             self.env['ir.config_parameter'].sudo().set_param(f'siantou.code_structure', structure)
@@ -346,7 +346,7 @@ class TeacherTimetableAttendance(models.TransientModel):
         if not struct_id:
             raise UserError(_("You must select structure(s) to generate payslip(s)."))
 
-        journal = self.env['ir.config_parameter'].sudo().get_param(f'siantou.code_journal'):
+        journal = self.env['ir.config_parameter'].sudo().get_param(f'siantou.code_journal')
         if not journal:
             journal = 'CSH1'
             self.env['ir.config_parameter'].sudo().set_param(f'siantou.code_journal', journal)
