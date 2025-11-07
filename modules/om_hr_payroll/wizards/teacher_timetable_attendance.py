@@ -334,31 +334,49 @@ class TeacherTimetableAttendance(models.TransientModel):
                 for worked_days_line_id in paymenthistory.worked_days_line_ids:
                     exist_timetable_ids.append(worked_days_line_id.timetable_id.id)
 
-        _logger.info(f'----------- tatatatatatata exist_timetable_ids {exist_timetable_ids} -----------')
-
         order = 'date asc'
         timetables = self.env['siantou.ems.timetable.timetable'].search([('id', 'in', timetable_ids)], order=order)
         timetables = timetables.filtered(lambda rec: rec.id not in exist_timetable_ids)
 
-        account_journal = self.env['ir.config_parameter'].sudo().get_param(f'siantou.account_journal', 'Caisse salaires IUS')
-        account_journal_id = self.env['account.journal'].search([('name', '=', account_journal)], limit=1)
-        if not account_journal_id:
-            raise UserError(_("You must select employee(s) to generate payslip(s)."))
+        structure = self.env['ir.config_parameter'].sudo().get_param(f'siantou.code_structure', 'BASE')
+        struct_id = self.env['hr.payroll.structure'].search([('code', '=', structure)], limit=1)
+        if not struct_id:
+            raise UserError(_("You must select structure(s) to generate payslip(s)."))
+
+        journal = self.env['ir.config_parameter'].sudo().get_param(f'siantou.code_journal', 'CSH1')
+        journal_id = self.env['account.journal'].search([('code', '=', journal)], limit=1)
+        if not journal_id:
+            raise UserError(_("You must select journal(s) to generate payslip(s)."))
 
         payslips = self.env['hr.payslip']
         for employee in employees:
             slip_data = self.env['hr.payslip'].onchange_employee_id(from_date, to_date, employee.id, contract_id=False)
+
+            _logger.info(f'----------- tatatatatatata slip_data {slip_data} -----------')
+
+            contract = 'Contrat {}'.format(employee.name)
+            contract_id = self.env['hr.contract'].search([('name', '=', contract)], limit=1)
+            if not contract_id:
+                contract_id = self.env['hr.contract'].create({
+                    'name': contract,
+                    'date_start': from_date,
+                    'struct_id': slip_data['value'].get('struct_id') or struct_id.id,
+                    'wage': 1.0,
+                    'company_id': slip_data['value'].get('company_id'),
+                })
+
             res = {
                 'employee_id': employee.id,
                 'name': slip_data['value'].get('name'),
-                'struct_id': slip_data['value'].get('struct_id'),
-                'contract_id': slip_data['value'].get('contract_id'),
+                'struct_id': slip_data['value'].get('struct_id') or struct_id.id,
+                'contract_id': slip_data['value'].get('contract_id') or contract_id.id,
                 'input_line_ids': [(0, 0, x) for x in slip_data['value'].get('input_line_ids')],
                 'worked_days_line_ids': [(0, 0, x) for x in slip_data['value'].get('worked_days_line_ids')],
                 'date_from': from_date,
                 'date_to': to_date,
                 'company_id': employee.company_id.id,
-                'journal_id': account_journal_id.id,
+                'journal_id': journal_id.id,
+                'code': 'BASIC',
             }
             payslips += self.env['hr.payslip'].create(res)
         payslips.compute_sheet()
