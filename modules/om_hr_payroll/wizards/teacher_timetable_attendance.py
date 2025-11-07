@@ -219,7 +219,7 @@ class TeacherTimetableAttendance(models.TransientModel):
             'view_id': view_id,
             'target': 'new',
             'context': {
-                'default_status': 'present',
+                'default_status': 'all',
             },
         }
 
