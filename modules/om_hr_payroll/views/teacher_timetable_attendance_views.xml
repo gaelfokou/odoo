@@ -31,7 +31,8 @@
                             type="object" 
                             string="Payer" 
                             class="oe_highlight" 
-                            display="always"/>
+                            display="always"
+                            confirm="Êtes-vous sûr de vouloir confirmer les paiements ?"/>
                     </header>
                     <field name="timetable_id"/>
                     <field name="level_id"/>
