@@ -47,7 +47,7 @@ class DailyAttendance(models.Model):
         data = report_data.print_daily_attendance_report_data(domains=domains)
 
         # Appeler le rapport PDF
-        if not data['docdata']['attendance_data']:
+        if len(data['docdata']['attendance_data']) == 0:
             raise UserError('Aucune donnée trouvée')
         report_action = self.env.ref('siantou_ems_core.action_report_daily_attendance')
         return report_action.report_action(self, data=data)

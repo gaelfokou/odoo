@@ -263,7 +263,7 @@ class TeacherTimetableAttendance(models.TransientModel):
         data = report_data.print_teacher_timetable_attendance_report_data(domains=domains)
 
         # Appeler le rapport PDF
-        if not data['docdata']['teacher_timetable_attendance_data']:
+        if len(data['docdata']['teacher_timetable_attendance_data']) == 0:
             raise UserError('Aucune donnée trouvée')
         report_action = self.env.ref('om_hr_payroll.action_report_teacher_timetable_attendance')
         return report_action.report_action(self, data=data)
@@ -281,7 +281,7 @@ class TeacherTimetableAttendance(models.TransientModel):
         data = report_data.print_teacher_timetable_attendance_report_data(resume=resume, domains=domains)
 
         # Appeler le rapport PDF
-        if not data['docdata']['teacher_timetable_attendance_data']:
+        if len(data['docdata']['teacher_timetable_attendance_data']) == 0:
             raise UserError('Aucune donnée trouvée')
         report_action = self.env.ref('om_hr_payroll.action_report_teacher_timetable_attendance_resume')
         return report_action.report_action(self, data=data)
@@ -299,11 +299,10 @@ class TeacherTimetableAttendance(models.TransientModel):
         data = report_data.print_teacher_timetable_attendance_report_data(resume=resume, domains=domains)
 
         # Appeler le rapport PDF
-        if not data['docdata']['teacher_timetable_attendance_data']:
+        if len(data['docdata']['teacher_timetable_attendance_data'].keys()) == 0:
             raise UserError('Aucune donnée trouvée')
         from_date = None
         to_date = None
-        timetable_ids = []
         employee_ids = []
         teacher_timetable_attendance_data = dict(sorted(data['docdata']['teacher_timetable_attendance_data'].items(), key=lambda item: item[1]['name']))
         for key in teacher_timetable_attendance_data.keys():
@@ -313,18 +312,11 @@ class TeacherTimetableAttendance(models.TransientModel):
                     from_date = timetable['start_date']
                 if 'end_date' in timetable:
                     to_date = timetable['end_date']
-                if 'timetable_id' in timetable:
-                    timetable_ids.append(timetable['timetable_id'])
                 if 'employee_id' in timetable:
                     if timetable['employee_id'] not in employee_ids:
                         employee_ids.append(timetable['employee_id'])
 
-        if len(timetable_ids) == 0:
-            raise UserError(_("You must select timetable(s) to generate payslip(s)."))
-        if len(employee_ids) == 0:
-            raise UserError(_("You must select employee(s) to generate payslip(s)."))
-
-        exist_timetable_ids = []
+        timetable_ids = []
         employees = self.env['hr.employee'].search([('id', 'in', employee_ids)])
         for employee in employees:
             order = 'date_from asc'
@@ -332,13 +324,18 @@ class TeacherTimetableAttendance(models.TransientModel):
             paymenthistories = list(paymenthistories)
             for paymenthistory in paymenthistories:
                 for worked_days_line_id in paymenthistory.worked_days_line_ids:
-                    exist_timetable_ids.append(worked_days_line_id.timetable_id.id)
+                    timetable_ids.append(worked_days_line_id.timetable_id.id)
 
-        order = 'date asc'
-        timetables = self.env['siantou.ems.timetable.timetable'].search([('id', 'in', timetable_ids)], order=order)
-        timetables = timetables.filtered(lambda rec: rec.id not in exist_timetable_ids)
+        teacher_timetable_attendance_ids = []
+        teacher_timetable_attendance_data = dict(sorted(data['docdata']['teacher_timetable_attendance_data'].items(), key=lambda item: item[1]['name']))
+        for key in teacher_timetable_attendance_data.keys():
+            timetables = teacher_timetable_attendance_data[key]['data']
+            for timetable in timetables:
+                if 'timetable_id' in timetable and timetable['timetable_id'] not in timetable_ids:
+                    teacher_timetable_attendance_ids.append(timetable)
 
         payslips = self.env['hr.payslip']
+        payslips._teacher_timetable_attendances = teacher_timetable_attendance_ids
         for employee in employees:
             if employee.has_allowance_cd:
                 structure = self.env['ir.config_parameter'].sudo().get_param(f'siantou.code_structure_cd')

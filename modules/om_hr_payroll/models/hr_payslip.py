@@ -84,6 +84,8 @@ class HrPayslip(models.Model):
     total_hours = fields.Float(compute='_compute_total_hours', string='Total hours')
     code = fields.Char(help="The code that can be used in the salary rules")
 
+    _teacher_timetable_attendances = []
+
     @staticmethod
     def convert_datetime_from_utc(dt):
         new_tz = pytz.timezone('Africa/Douala')
@@ -229,53 +231,13 @@ class HrPayslip(models.Model):
         if payslip.employee_id.id:
             if payslip.employee_id.is_teacher:
                 # Recherche des emplois du temps de l'enseignant pour une période donnée
-                employee_timetables = self.env['siantou.ems.timetable.timetable'].search([
-                    ('group_id.is_active', '=', True),
-                    ('group_id.is_submit', '=', False),
-                    ('employee_id', '=', payslip.employee_id.id),
-                    ('date', '<=', date_to),
-                    ('date', '>=', date_from),
-                    ('status', 'in', ['present', 'permission']),
-                ], order='date asc')
-                employee_timetables = list(employee_timetables)
-                key_timetables = {}
-                shared_subjects = {}
-                for employee_timetable in employee_timetables:
-                    timetable_day = datetime.strftime(employee_timetable.date, DATE_FORMAT)
-
-                    if timetable_day not in shared_subjects.keys():
-                        shared_subjects[timetable_day] = []
-
-                    if employee_timetable.subject_id.shared_subject:
-                        if employee_timetable.subject_id.id not in shared_subjects[timetable_day]:
-                            shared_subjects[timetable_day].append(employee_timetable.subject_id.id)
-                        else:
-                            continue
-
-                    end_time = HrPayslip.convert_float_to_time(employee_timetable.end_time)
-                    start_time = HrPayslip.convert_float_to_time(employee_timetable.start_time)
-                    key = '{}-{}-{}-{}'.format(employee_timetable.employee_id.id, employee_timetable.date, start_time, end_time)
-                    if key not in key_timetables:
-                        key_timetables[key] = employee_timetable
-                    else:
-                        continue
-
-                    if employee_timetable.status == 'present':
-                        end_time = HrPayslip.convert_float_to_time(employee_timetable.worked_end_time)
-                        start_time = HrPayslip.convert_float_to_time(employee_timetable.worked_start_time)
-                        datetime_to = datetime.strptime(f"{employee_timetable.date} {end_time}", DATETIME_FORMAT)
-                        datetime_from = datetime.strptime(f"{employee_timetable.date} {start_time}", DATETIME_FORMAT)
-                        weekly_hours = datetime_to - datetime_from
-                        weekly_hours = weekly_hours - timedelta(hours=employee_timetable.not_active_slotitems)
-                        total_weekly_hours += weekly_hours.total_seconds()
-                    else:
-                        end_time = HrPayslip.convert_float_to_time(employee_timetable.end_time)
-                        start_time = HrPayslip.convert_float_to_time(employee_timetable.start_time)
-                        datetime_to = datetime.strptime(f"{employee_timetable.date} {end_time}", DATETIME_FORMAT)
-                        datetime_from = datetime.strptime(f"{employee_timetable.date} {start_time}", DATETIME_FORMAT)
-                        weekly_hours = datetime_to - datetime_from
-                        weekly_hours = weekly_hours - timedelta(hours=employee_timetable.not_active_slotitems)
-                        total_weekly_hours += weekly_hours.total_seconds()
+                for teacher_timetable_attendance in self._teacher_timetable_attendances:
+                    end_time = teacher_timetable_attendance['worked_end_time']
+                    start_time = teacher_timetable_attendance['worked_start_time']
+                    datetime_to = datetime.strptime(f"{teacher_timetable_attendance['date']} {end_time}", DATETIME_FORMAT)
+                    datetime_from = datetime.strptime(f"{teacher_timetable_attendance['date']} {start_time}", DATETIME_FORMAT)
+                    weekly_hours = datetime_to - datetime_from
+                    total_weekly_hours += weekly_hours.total_seconds()
             else:
                 # Vérification du temps de l'employé en biométrie
                 daily_attendances = self.filter_daily_attendance(date_to, date_from, payslip.employee_id)
@@ -332,74 +294,20 @@ class HrPayslip(models.Model):
         if payslip_id.employee_id.id:
             if payslip_id.employee_id.is_teacher:
                 # Recherche des emplois du temps de l'enseignant pour une période donnée
-                employee_timetables = self.env['siantou.ems.timetable.timetable'].search([
-                    ('group_id.is_active', '=', True),
-                    ('group_id.is_submit', '=', False),
-                    ('employee_id', '=', payslip_id.employee_id.id),
-                    ('date', '<=', date_to),
-                    ('date', '>=', date_from),
-                    ('status', 'in', ['present', 'permission']),
-                ], order='date asc')
-                employee_timetables = list(employee_timetables)
-                key_timetables = {}
-                shared_subjects = {}
-                for employee_timetable in employee_timetables:
-                    timetable_day = datetime.strftime(employee_timetable.date, DATE_FORMAT)
-
-                    if timetable_day not in shared_subjects.keys():
-                        shared_subjects[timetable_day] = []
-
-                    if employee_timetable.subject_id.shared_subject:
-                        if employee_timetable.subject_id.id not in shared_subjects[timetable_day]:
-                            shared_subjects[timetable_day].append(employee_timetable.subject_id.id)
-                        else:
-                            continue
-
-                    end_time = HrPayslip.convert_float_to_time(employee_timetable.end_time)
-                    start_time = HrPayslip.convert_float_to_time(employee_timetable.start_time)
-                    key = '{}-{}-{}-{}'.format(employee_timetable.employee_id.id, employee_timetable.date, start_time, end_time)
-                    if key not in key_timetables:
-                        key_timetables[key] = employee_timetable
-                    else:
-                        continue
-
-                    if employee_timetable.status == 'present':
-                        end_time = HrPayslip.convert_float_to_time(employee_timetable.worked_end_time)
-                        start_time = HrPayslip.convert_float_to_time(employee_timetable.worked_start_time)
-                        datetime_to = datetime.strptime(f"{employee_timetable.date} {end_time}", DATETIME_FORMAT)
-                        datetime_from = datetime.strptime(f"{employee_timetable.date} {start_time}", DATETIME_FORMAT)
-                        weekly_hours = datetime_to - datetime_from
-                        weekly_hours = weekly_hours - timedelta(hours=employee_timetable.not_active_slotitems)
-                        weekly_hours = weekly_hours.total_seconds() / 3600.0
-                        weekly_hours = round(weekly_hours, 2)
-                        self.env['hr.payslip.worked_days'].create({
-                            'name': '{} {} {}, {}'.format(CURRENT_WEEKDAY[employee_timetable.day_of_week], datetime.strftime(datetime_from, DATETIME_FORMAT_FR), datetime.strftime(datetime_to, TIME_FORMAT_FR), employee_timetable.subject_id.name),
-                            'payslip_id': payslip_id.id,
-                            'code': payslip_id.code,
-                            'number_of_days': 1,
-                            'number_of_hours': weekly_hours,
-                            'contract_id': payslip_id.contract_id.id,
-                            'timetable_id': employee_timetable.id,
-                        })
-                    else:
-                        end_time = HrPayslip.convert_float_to_time(employee_timetable.end_time)
-                        start_time = HrPayslip.convert_float_to_time(employee_timetable.start_time)
-                        datetime_to = datetime.strptime(f"{employee_timetable.date} {end_time}", DATETIME_FORMAT)
-                        datetime_from = datetime.strptime(f"{employee_timetable.date} {start_time}", DATETIME_FORMAT)
-                        weekly_hours = datetime_to - datetime_from
-                        weekly_hours = weekly_hours - timedelta(hours=employee_timetable.not_active_slotitems)
-                        weekly_hours = weekly_hours.total_seconds() / 3600.0
-                        weekly_hours = round(weekly_hours, 2)
-                        timetable_message = 'Permission'
-                        self.env['hr.payslip.worked_days'].create({
-                            'name': '{} {} {}, {}, {}'.format(CURRENT_WEEKDAY[employee_timetable.day_of_week], datetime.strftime(datetime_from, DATETIME_FORMAT_FR), datetime.strftime(datetime_to, TIME_FORMAT_FR), employee_timetable.subject_id.name, timetable_message),
-                            'payslip_id': payslip_id.id,
-                            'code': payslip_id.code,
-                            'number_of_days': 1,
-                            'number_of_hours': weekly_hours,
-                            'contract_id': payslip_id.contract_id.id,
-                            'timetable_id': employee_timetable.id,
-                        })
+                for teacher_timetable_attendance in self._teacher_timetable_attendances:
+                    end_time = teacher_timetable_attendance['worked_end_time']
+                    start_time = teacher_timetable_attendance['worked_start_time']
+                    datetime_to = datetime.strptime(f"{teacher_timetable_attendance['date']} {end_time}", DATETIME_FORMAT)
+                    datetime_from = datetime.strptime(f"{teacher_timetable_attendance['date']} {start_time}", DATETIME_FORMAT)
+                    self.env['hr.payslip.worked_days'].create({
+                        'name': '{} {} {}, {}'.format(CURRENT_WEEKDAY[teacher_timetable_attendance['day_of_week']], datetime.strftime(datetime_from, DATETIME_FORMAT_FR), datetime.strftime(datetime_to, TIME_FORMAT_FR), teacher_timetable_attendance['subject_id'].name),
+                        'payslip_id': payslip_id.id,
+                        'code': payslip_id.code,
+                        'number_of_days': 1,
+                        'number_of_hours': teacher_timetable_attendance['worked_time'],
+                        'contract_id': payslip_id.contract_id.id,
+                        'timetable_id': teacher_timetable_attendance['timetable_id'],
+                    })
             else:
                 # Vérification du temps de l'employé en biométrie
                 daily_attendances = self.filter_daily_attendance(date_to, date_from, payslip_id.employee_id)

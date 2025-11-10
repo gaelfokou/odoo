@@ -101,7 +101,7 @@ class TimetablePrintWizard(models.TransientModel):
         data = self.print_timetable_report_data()
 
         # Appeler le rapport PDF
-        if not data['docdata']['timetable_data']:
+        if len(data['docdata']['timetable_data']) == 0:
             raise UserError("Aucune donnée trouvée")
         report_action = self.env.ref('siantou_ems_core.action_report_timetable')
         return report_action.report_action(self, data=data)

@@ -26,7 +26,7 @@ class SubjectPrintWizard(models.TransientModel):
         data = self.print_subject_report_data()
 
         # Appeler le rapport PDF
-        if not data['docdata']['subject_data']:
+        if len(data['docdata']['subject_data']) == 0:
             raise UserError("Aucune donnée trouvée")
         report_action = self.env.ref('siantou_ems_core.action_report_subject')
         return report_action.report_action(self, data=data)
