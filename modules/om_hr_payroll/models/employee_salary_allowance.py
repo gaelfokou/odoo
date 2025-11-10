@@ -13,7 +13,7 @@ class EmployeeSalaryAllowance(models.Model):
     allowance_type = fields.Selection([
         ('cd', 'Prime chef de département'),
         ('co', 'Prime coordonnateur'),
-    ], string='Prime sur le salaire Type', default='cd')
+    ], string='Type prime', default='cd')
     amount = fields.Float(string='Amount')
 
     _sql_constraints = [

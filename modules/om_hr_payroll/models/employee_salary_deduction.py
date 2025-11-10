@@ -14,7 +14,7 @@ class EmployeeSalaryDeduction(models.Model):
         ('ir', 'IR (%)'),
         ('cnps', 'CNPS (%)'),
         ('apecus', 'APECUS'),
-    ], string='Retenue sur le salaire Type', default='ir')
+    ], string='Type retenue', default='ir')
     amount = fields.Float(string='Amount')
 
     _sql_constraints = [
