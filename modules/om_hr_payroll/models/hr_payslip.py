@@ -979,94 +979,19 @@ class HrPayslip(models.Model):
                                 shared_subjects = {}
                                 for worked_days_line_id in worked_days_line_ids:
                                     if worked_days_line_id.timetable_id.id:
-                                        timetable_day = datetime.strftime(worked_days_line_id.timetable_id.date, DATE_FORMAT)
+                                        teacher_timetable_attendance_id = self.env['teacher.timetable.attendance'].search([('timetable_id', '=', worked_days_line_id.timetable_id.id)], limit=1)
+                                        if teacher_timetable_attendance_id:
+                                            total_rate += teacher_timetable_attendance_id.amount
+                                            total_number_of_days += worked_days_line_id.number_of_days
 
-                                        if timetable_day not in shared_subjects.keys():
-                                            shared_subjects[timetable_day] = []
-
-                                        if worked_days_line_id.timetable_id.subject_id.shared_subject:
-                                            if worked_days_line_id.timetable_id.subject_id.id not in shared_subjects[timetable_day]:
-                                                shared_subjects[timetable_day].append(worked_days_line_id.timetable_id.subject_id.id)
-                                            else:
-                                                continue
-
-                                        end_time = HrPayslip.convert_float_to_time(worked_days_line_id.timetable_id.end_time)
-                                        start_time = HrPayslip.convert_float_to_time(worked_days_line_id.timetable_id.start_time)
-                                        key = '{}-{}-{}-{}'.format(worked_days_line_id.timetable_id.employee_id.id, worked_days_line_id.timetable_id.date, start_time, end_time)
-                                        if key not in key_timetables:
-                                            key_timetables[key] = worked_days_line_id.timetable_id
-                                        else:
-                                            continue
-
-                                        accountbalance = {}
-
-                                        if worked_days_line_id.timetable_id.status == 'present':
-                                            end_time = HrPayslip.convert_float_to_time(worked_days_line_id.timetable_id.worked_end_time)
-                                            start_time = HrPayslip.convert_float_to_time(worked_days_line_id.timetable_id.worked_start_time)
-                                            datetime_to = datetime.strptime(f"{worked_days_line_id.timetable_id.date} {end_time}", DATETIME_FORMAT)
-                                            datetime_from = datetime.strptime(f"{worked_days_line_id.timetable_id.date} {start_time}", DATETIME_FORMAT)
-                                            weekly_hours = datetime_to - datetime_from
-                                            weekly_hours = weekly_hours - timedelta(hours=worked_days_line_id.timetable_id.not_active_slotitems)
-                                            weekly_hours = weekly_hours.total_seconds() / 3600.0
-                                            weekly_hours = round(weekly_hours, 2)
-                                            accountbalance['number_of_hours'] = weekly_hours
-                                        else:
-                                            end_time = HrPayslip.convert_float_to_time(worked_days_line_id.timetable_id.end_time)
-                                            start_time = HrPayslip.convert_float_to_time(worked_days_line_id.timetable_id.start_time)
-                                            datetime_to = datetime.strptime(f"{worked_days_line_id.timetable_id.date} {end_time}", DATETIME_FORMAT)
-                                            datetime_from = datetime.strptime(f"{worked_days_line_id.timetable_id.date} {start_time}", DATETIME_FORMAT)
-                                            weekly_hours = datetime_to - datetime_from
-                                            weekly_hours = weekly_hours - timedelta(hours=worked_days_line_id.timetable_id.not_active_slotitems)
-                                            weekly_hours = weekly_hours.total_seconds() / 3600.0
-                                            weekly_hours = round(weekly_hours, 2)
-                                            accountbalance['number_of_hours'] = weekly_hours
-
-                                        domain = [
-                                            ('school_id', '=', worked_days_line_id.timetable_id.school_id.id),
-                                            ('cycle_id', '=', worked_days_line_id.timetable_id.cycle_id.id),
-                                            ('level_id', '=', worked_days_line_id.timetable_id.level_id.id),
-                                            # ('diplome_availability_id.diplome_ids', 'in', worked_days_line_id.timetable_id.employee_id.diplome_ids.ids),
-                                        ]
-
-                                        hourly_rates = self.env['siantou.ems.core.hourly.rate'].sudo().search(domain)
-                                        hourly_rates = list(hourly_rates)
-
-                                        if len(hourly_rates) > 0:
-                                            for hourly_rate in hourly_rates:
-                                                domain = [
-                                                    ('hourly_rate_id', '=', hourly_rate.id),
-                                                    ('employee_id', '=', worked_days_line_id.timetable_id.employee_id.id),
-                                                    # ('subject_id', '=', worked_days_line_id.timetable_id.subject_id.id),
-                                                ]
-
-                                                teacher_hourly_rate = self.env['siantou.ems.core.teacher.hourly.rate'].sudo().search(domain, limit=1)
-                                                if teacher_hourly_rate:
-                                                    accountbalance['rate'] = teacher_hourly_rate.rate
-                                                    break
-                                            if 'rate' not in accountbalance:
-                                                # accountbalance['rate'] = hourly_rates[0].rate
-                                                accountbalance['rate'] = 0.0
-
-                                        if 'rate' not in accountbalance:
-                                            accountbalance['rate'] = 0.0
-
-                                        accountbalance['amount'] = accountbalance['rate'] * accountbalance['number_of_hours']
-                                        accountbalance['amount'] = round(accountbalance['amount'], 2)
-
-                                        if worked_days_line_id.timetable_id.employee_id.is_permanent:
-                                            accountbalance['rate'] = 0.0
-                                            accountbalance['amount'] = 0.0
-
-                                        total_rate += accountbalance['amount']
-                                        total_number_of_days += worked_days_line_id.number_of_days
-
-                                        worked_days_line_id.timetable_id.write({
-                                            'worked_time': accountbalance['number_of_hours'],
-                                            'rate': accountbalance['rate'],
-                                            'amount': accountbalance['amount'],
-                                        })
+                                            worked_days_line_id.timetable_id.write({
+                                                'worked_time': teacher_timetable_attendance_id.worked_time,
+                                                'rate': teacher_timetable_attendance_id.rate,
+                                                'amount': teacher_timetable_attendance_id.amount,
+                                            })
 
                                 if rule.code == payslip.code:
+                                    total_rate = round(total_rate, 2)
                                     amount = total_rate
 
                                 _logger.info(f'----------- tototototototo key {key} -----------')
