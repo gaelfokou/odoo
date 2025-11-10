@@ -208,6 +208,36 @@ class TeacherTimetableAttendance(models.TransientModel):
         default=_default_end_date,
     )
 
+    day_of_week = fields.Selection([
+            ('0', 'Lundi'),
+            ('1', 'Mardi'),
+            ('2', 'Mercredi'),
+            ('3', 'Jeudi'),
+            ('4', 'Vendredi'),
+            ('5', 'Samedi'),
+            ('6', 'Dimanche'),
+        ],
+        'Jour de la semaine',
+        compute='_compute_day_of_week',
+        store=True
+    )
+
+    @api.depends('date')
+    def _compute_day_of_week(self):
+        for record in self:
+            if record.date:
+                record.day_of_week = str(record.date.weekday())
+            else:
+                record.day_of_week = None
+
+    @api.onchange('date')
+    def _onchange_day_of_week(self):
+        for record in self:
+            if record.date:
+                record.day_of_week = str(record.date.weekday())
+            else:
+                record.day_of_week = None
+
     @api.depends('timetable_id')
     def _compute_name(self):
         for record in self:
