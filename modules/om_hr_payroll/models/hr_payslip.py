@@ -87,6 +87,10 @@ class HrPayslip(models.Model):
     _teacher_timetable_attendances = []
 
     @staticmethod
+    def _save_teacher_timetable_attendances(data):
+        HrPayslip._teacher_timetable_attendances = data
+
+    @staticmethod
     def convert_datetime_from_utc(dt):
         new_tz = pytz.timezone('Africa/Douala')
         old_tz = pytz.utc
@@ -234,8 +238,8 @@ class HrPayslip(models.Model):
                 for teacher_timetable_attendance in self._teacher_timetable_attendances:
                     end_time = teacher_timetable_attendance['worked_end_time']
                     start_time = teacher_timetable_attendance['worked_start_time']
-                    datetime_to = datetime.strptime(f"{teacher_timetable_attendance['date']} {end_time}", DATETIME_FORMAT)
-                    datetime_from = datetime.strptime(f"{teacher_timetable_attendance['date']} {start_time}", DATETIME_FORMAT)
+                    datetime_to = datetime.strptime(f"{teacher_timetable_attendance['date']} {end_time}:00", DATETIME_FORMAT)
+                    datetime_from = datetime.strptime(f"{teacher_timetable_attendance['date']} {start_time}:00", DATETIME_FORMAT)
                     weekly_hours = datetime_to - datetime_from
                     total_weekly_hours += weekly_hours.total_seconds()
             else:
@@ -297,8 +301,8 @@ class HrPayslip(models.Model):
                 for teacher_timetable_attendance in self._teacher_timetable_attendances:
                     end_time = teacher_timetable_attendance['worked_end_time']
                     start_time = teacher_timetable_attendance['worked_start_time']
-                    datetime_to = datetime.strptime(f"{teacher_timetable_attendance['date']} {end_time}", DATETIME_FORMAT)
-                    datetime_from = datetime.strptime(f"{teacher_timetable_attendance['date']} {start_time}", DATETIME_FORMAT)
+                    datetime_to = datetime.strptime(f"{teacher_timetable_attendance['date']} {end_time}:00", DATETIME_FORMAT)
+                    datetime_from = datetime.strptime(f"{teacher_timetable_attendance['date']} {start_time}:00", DATETIME_FORMAT)
                     self.env['hr.payslip.worked_days'].create({
                         'name': '{} {} {}, {}'.format(CURRENT_WEEKDAY[teacher_timetable_attendance['day_of_week']], datetime.strftime(datetime_from, DATETIME_FORMAT_FR), datetime.strftime(datetime_to, TIME_FORMAT_FR), teacher_timetable_attendance['subject_id'].name),
                         'payslip_id': payslip_id.id,

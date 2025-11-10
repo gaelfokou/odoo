@@ -335,7 +335,7 @@ class TeacherTimetableAttendance(models.TransientModel):
                     teacher_timetable_attendance_ids.append(timetable)
 
         payslips = self.env['hr.payslip']
-        payslips._teacher_timetable_attendances = teacher_timetable_attendance_ids
+        payslips._save_teacher_timetable_attendances(teacher_timetable_attendance_ids)
         for employee in employees:
             if employee.has_allowance_cd:
                 structure = self.env['ir.config_parameter'].sudo().get_param(f'siantou.code_structure_cd')
