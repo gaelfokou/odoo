@@ -312,6 +312,11 @@ class HrPayslip(models.Model):
                         'contract_id': payslip_id.contract_id.id,
                         'timetable_id': teacher_timetable_attendance['timetable_id'],
                     })
+                    teacher_timetable_attendance_id = self.env['teacher.timetable.attendance'].search([('id', '=', teacher_timetable_attendance['id'])], limit=1)
+                    if teacher_timetable_attendance_id:
+                        teacher_timetable_attendance_id.write({
+                            'is_paid': True,
+                        })
             else:
                 # Vérification du temps de l'employé en biométrie
                 daily_attendances = self.filter_daily_attendance(date_to, date_from, payslip_id.employee_id)
