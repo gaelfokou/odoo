@@ -293,6 +293,7 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
                 'status': timetable.status,
                 'start_date': self.start_date,
                 'end_date': self.end_date,
+                'is_paid': True if timetable.id in timetable_ids else False,
             })
 
         if len(title) > 0:
