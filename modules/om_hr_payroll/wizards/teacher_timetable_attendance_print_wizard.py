@@ -140,6 +140,7 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
                 employee_salary_allowance = self.env['employee.salary.allowance'].sudo().search([('allowance_type', '=', 'cd')], limit=1)
                 if employee_salary_allowance:
                     teacher_timetable_attendance = {}
+                    teacher_timetable_attendance['allowance_cd'] = key_teacher_timetable_attendances[key]['has_allowance_cd']
                     teacher_timetable_attendance['date_of_week'] = ''
                     teacher_timetable_attendance['class_name'] = ''
                     teacher_timetable_attendance['subject_name'] = ''
@@ -162,6 +163,7 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
                 employee_salary_allowance = self.env['employee.salary.allowance'].sudo().search([('allowance_type', '=', 'co')], limit=1)
                 if employee_salary_allowance:
                     teacher_timetable_attendance = {}
+                    teacher_timetable_attendance['allowance_co'] = key_teacher_timetable_attendances[key]['has_allowance_co']
                     teacher_timetable_attendance['date_of_week'] = ''
                     teacher_timetable_attendance['class_name'] = ''
                     teacher_timetable_attendance['subject_name'] = ''
@@ -203,6 +205,7 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
                 employee_salary_deduction = self.env['employee.salary.deduction'].sudo().search([('deduction_type', '=', 'ir')], limit=1)
                 if employee_salary_deduction:
                     teacher_timetable_attendance = {}
+                    teacher_timetable_attendance['ir'] = key_teacher_timetable_attendances[key]['has_ir']
                     teacher_timetable_attendance['date_of_week'] = ''
                     teacher_timetable_attendance['class_name'] = ''
                     teacher_timetable_attendance['subject_name'] = ''
@@ -225,6 +228,7 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
                 employee_salary_deduction = self.env['employee.salary.deduction'].sudo().search([('deduction_type', '=', 'apecus')], limit=1)
                 if employee_salary_deduction:
                     teacher_timetable_attendance = {}
+                    teacher_timetable_attendance['apecus'] = key_teacher_timetable_attendances[key]['has_apecus']
                     teacher_timetable_attendance['date_of_week'] = ''
                     teacher_timetable_attendance['class_name'] = ''
                     teacher_timetable_attendance['subject_name'] = ''
@@ -247,6 +251,7 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
                 employee_salary_deduction = self.env['employee.salary.deduction'].sudo().search([('deduction_type', '=', 'cnps')], limit=1)
                 if employee_salary_deduction:
                     teacher_timetable_attendance = {}
+                    teacher_timetable_attendance['cnps'] = key_teacher_timetable_attendances[key]['has_cnps']
                     teacher_timetable_attendance['date_of_week'] = ''
                     teacher_timetable_attendance['class_name'] = ''
                     teacher_timetable_attendance['subject_name'] = ''
