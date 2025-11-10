@@ -364,6 +364,9 @@ class TeacherTimetableAttendance(models.TransientModel):
                 if 'timetable_id' in timetable and timetable['timetable_id'] not in timetable_ids:
                     teacher_timetable_attendance_ids.append(timetable)
 
+        if len(teacher_timetable_attendance_ids) == 0:
+            raise UserError('Aucune donnée trouvée')
+
         payslips = self.env['hr.payslip']
         payslips._save_teacher_timetable_attendances(teacher_timetable_attendance_ids)
         for employee in employees:
