@@ -338,27 +338,43 @@ class TeacherTimetableAttendance(models.TransientModel):
         timetables = self.env['siantou.ems.timetable.timetable'].search([('id', 'in', timetable_ids)], order=order)
         timetables = timetables.filtered(lambda rec: rec.id not in exist_timetable_ids)
 
-        structure = self.env['ir.config_parameter'].sudo().get_param(f'siantou.code_structure')
-        if not structure:
-            structure = 'BASE'
-            self.env['ir.config_parameter'].sudo().set_param(f'siantou.code_structure', structure)
-        struct_id = self.env['hr.payroll.structure'].search([('code', '=', structure)], limit=1)
-        if not struct_id:
-            raise UserError(_("You must select structure(s) to generate payslip(s)."))
-
-        journal = self.env['ir.config_parameter'].sudo().get_param(f'siantou.code_journal')
-        if not journal:
-            journal = 'CSH1'
-            self.env['ir.config_parameter'].sudo().set_param(f'siantou.code_journal', journal)
-        journal_id = self.env['account.journal'].search([('code', '=', journal)], limit=1)
-        if not journal_id:
-            raise UserError(_("You must select journal(s) to generate payslip(s)."))
-
         payslips = self.env['hr.payslip']
         for employee in employees:
+            if employee.has_allowance_cd:
+                structure = self.env['ir.config_parameter'].sudo().get_param(f'siantou.code_structure_cd')
+                if not structure:
+                    structure = 'BASECD'
+                    self.env['ir.config_parameter'].sudo().set_param(f'siantou.code_structure_cd', structure)
+            elif employee.has_allowance_co:
+                structure = self.env['ir.config_parameter'].sudo().get_param(f'siantou.code_structure_co')
+                if not structure:
+                    structure = 'BASECO'
+                    self.env['ir.config_parameter'].sudo().set_param(f'siantou.code_structure_co', structure)
+            else:
+                structure = self.env['ir.config_parameter'].sudo().get_param(f'siantou.code_structure')
+                if not structure:
+                    structure = 'BASE'
+                    self.env['ir.config_parameter'].sudo().set_param(f'siantou.code_structure', structure)
+            struct_id = self.env['hr.payroll.structure'].search([('code', '=', structure)], limit=1)
+            if not struct_id:
+                raise UserError(_("You must select structure(s) to generate payslip(s)."))
+
+            journal = self.env['ir.config_parameter'].sudo().get_param(f'siantou.code_journal')
+            if not journal:
+                journal = 'CSH1'
+                self.env['ir.config_parameter'].sudo().set_param(f'siantou.code_journal', journal)
+            journal_id = self.env['account.journal'].search([('code', '=', journal)], limit=1)
+            if not journal_id:
+                raise UserError(_("You must select journal(s) to generate payslip(s)."))
+
             slip_data = self.env['hr.payslip'].onchange_employee_id(from_date, to_date, employee.id, contract_id=False)
 
-            contract = '{}'.format(employee.name)
+            if employee.has_allowance_cd:
+                contract = '{} (CD)'.format(employee.name)
+            elif employee.has_allowance_co:
+                contract = '{} (CO)'.format(employee.name)
+            else:
+                contract = '{}'.format(employee.name)
             contract_id = self.env['hr.contract'].search([('name', '=', contract)], limit=1)
             if not contract_id:
                 contract_id = self.env['hr.contract'].create({
