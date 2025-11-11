@@ -236,12 +236,8 @@ class HrPayslip(models.Model):
             if payslip.employee_id.is_teacher:
                 # Recherche des emplois du temps de l'enseignant pour une période donnée
                 for teacher_timetable_attendance in HrPayslip._teacher_timetable_attendances:
-                    end_time = teacher_timetable_attendance['worked_end_time']
-                    start_time = teacher_timetable_attendance['worked_start_time']
-                    datetime_to = datetime.strptime(f"{teacher_timetable_attendance['date']} {end_time}:00", DATETIME_FORMAT)
-                    datetime_from = datetime.strptime(f"{teacher_timetable_attendance['date']} {start_time}:00", DATETIME_FORMAT)
-                    weekly_hours = datetime_to - datetime_from
-                    total_weekly_hours += weekly_hours.total_seconds()
+                    if payslip.employee_id.id == teacher_timetable_attendance['employee_id']:
+                        total_weekly_hours += teacher_timetable_attendance['worked_time']
             else:
                 # Vérification du temps de l'employé en biométrie
                 daily_attendances = self.filter_daily_attendance(date_to, date_from, payslip.employee_id)
@@ -265,7 +261,7 @@ class HrPayslip(models.Model):
                         worked_hours[punching_day] = worked_hours[punching_day]['1'] - worked_hours[punching_day]['0']
                         worked_hours[punching_day] = timedelta(hours=worked_hours[punching_day].hour, minutes=worked_hours[punching_day].minute)
                         total_weekly_hours += worked_hours[punching_day].total_seconds()
-        total_weekly_hours = total_weekly_hours / 3600.0
+                total_weekly_hours = total_weekly_hours / 3600.0
         total_weekly_hours = round(total_weekly_hours, 2)
         payslip.total_hours = total_weekly_hours
 
@@ -299,24 +295,25 @@ class HrPayslip(models.Model):
             if payslip_id.employee_id.is_teacher:
                 # Recherche des emplois du temps de l'enseignant pour une période donnée
                 for teacher_timetable_attendance in HrPayslip._teacher_timetable_attendances:
-                    end_time = teacher_timetable_attendance['worked_end_time']
-                    start_time = teacher_timetable_attendance['worked_start_time']
-                    datetime_to = datetime.strptime(f"{teacher_timetable_attendance['date']} {end_time}:00", DATETIME_FORMAT)
-                    datetime_from = datetime.strptime(f"{teacher_timetable_attendance['date']} {start_time}:00", DATETIME_FORMAT)
-                    self.env['hr.payslip.worked_days'].create({
-                        'name': '{} {} {}, {}'.format(teacher_timetable_attendance['day_of_week'], datetime.strftime(datetime_from, DATETIME_FORMAT_FR), datetime.strftime(datetime_to, TIME_FORMAT_FR), teacher_timetable_attendance['subject_name']),
-                        'payslip_id': payslip_id.id,
-                        'code': payslip_id.code,
-                        'number_of_days': 1,
-                        'number_of_hours': teacher_timetable_attendance['worked_time'],
-                        'contract_id': payslip_id.contract_id.id,
-                        'timetable_id': teacher_timetable_attendance['timetable_id'],
-                    })
-                    teacher_timetable_attendance_id = self.env['teacher.timetable.attendance'].search([('id', '=', teacher_timetable_attendance['id'])], limit=1)
-                    if teacher_timetable_attendance_id:
-                        teacher_timetable_attendance_id.write({
-                            'is_paid': True,
+                    if payslip_id.employee_id.id == teacher_timetable_attendance['employee_id']:
+                        end_time = teacher_timetable_attendance['worked_end_time']
+                        start_time = teacher_timetable_attendance['worked_start_time']
+                        datetime_to = datetime.strptime(f"{teacher_timetable_attendance['date']} {end_time}:00", DATETIME_FORMAT)
+                        datetime_from = datetime.strptime(f"{teacher_timetable_attendance['date']} {start_time}:00", DATETIME_FORMAT)
+                        self.env['hr.payslip.worked_days'].create({
+                            'name': '{} {} {}, {}'.format(teacher_timetable_attendance['day_of_week'], datetime.strftime(datetime_from, DATETIME_FORMAT_FR), datetime.strftime(datetime_to, TIME_FORMAT_FR), teacher_timetable_attendance['subject_name']),
+                            'payslip_id': payslip_id.id,
+                            'code': payslip_id.code,
+                            'number_of_days': 1,
+                            'number_of_hours': teacher_timetable_attendance['worked_time'],
+                            'contract_id': payslip_id.contract_id.id,
+                            'timetable_id': teacher_timetable_attendance['timetable_id'],
                         })
+                        teacher_timetable_attendance_id = self.env['teacher.timetable.attendance'].search([('id', '=', teacher_timetable_attendance['id'])], limit=1)
+                        if teacher_timetable_attendance_id:
+                            teacher_timetable_attendance_id.write({
+                                'is_paid': True,
+                            })
             else:
                 # Vérification du temps de l'employé en biométrie
                 daily_attendances = self.filter_daily_attendance(date_to, date_from, payslip_id.employee_id)
