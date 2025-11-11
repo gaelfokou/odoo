@@ -235,29 +235,10 @@ class HrPayslip(models.Model):
         if payslip.employee_id.id:
             if payslip.employee_id.is_teacher:
                 if payslip.employee_id.is_permanent:
-                    # Vérification du temps de l'employé en biométrie
-                    daily_attendances = self.filter_daily_attendance(date_to, date_from, payslip.employee_id)
-                    worked_hours = {}
-                    for daily_attendance in daily_attendances:
-                        punching_day = datetime.strftime(daily_attendance.punching_time, DATE_FORMAT)
-
-                        if punching_day not in worked_hours.keys():
-                            worked_hours[punching_day] = {}
-
-                        if daily_attendance.punch_type == '0':
-                            if '0' not in worked_hours[punching_day].keys():
-                                worked_hours[punching_day]['0'] = daily_attendance.punching_time
-                        else:
-                            worked_hours[punching_day]['1'] = daily_attendance.punching_time
-
-                    for daily_attendance in daily_attendances:
-                        punching_day = datetime.strftime(daily_attendance.punching_time, DATE_FORMAT)
-
-                        if '0' in worked_hours[punching_day].keys() and '1' in worked_hours[punching_day].keys():
-                            worked_hours[punching_day] = worked_hours[punching_day]['1'] - worked_hours[punching_day]['0']
-                            worked_hours[punching_day] = timedelta(hours=worked_hours[punching_day].hour, minutes=worked_hours[punching_day].minute)
-                            total_weekly_hours += worked_hours[punching_day].total_seconds()
-                    total_weekly_hours = total_weekly_hours / 3600.0
+                    # Recherche des emplois du temps de l'enseignant pour une période donnée
+                    for teacher_timetable_attendance in HrPayslip._teacher_timetable_attendances:
+                        if payslip.employee_id.id == teacher_timetable_attendance['employee_id']:
+                            total_weekly_hours += teacher_timetable_attendance['worked_time']
                 else:
                     # Recherche des emplois du temps de l'enseignant pour une période donnée
                     for teacher_timetable_attendance in HrPayslip._teacher_timetable_attendances:
@@ -319,42 +300,27 @@ class HrPayslip(models.Model):
         if payslip_id.employee_id.id:
             if payslip_id.employee_id.is_teacher:
                 if payslip_id.employee_id.is_permanent:
-                    # Vérification du temps de l'employé en biométrie
-                    daily_attendances = self.filter_daily_attendance(date_to, date_from, payslip_id.employee_id)
-                    worked_hours = {}
-                    punching_time = {}
-                    for daily_attendance in daily_attendances:
-                        punching_day = datetime.strftime(daily_attendance.punching_time, DATE_FORMAT)
-
-                        if punching_day not in worked_hours.keys():
-                            worked_hours[punching_day] = {}
-
-                        if daily_attendance.punch_type == '0':
-                            if '0' not in worked_hours[punching_day].keys():
-                                worked_hours[punching_day]['0'] = daily_attendance.punching_time
-                                punching_time['0'] = daily_attendance.punching_time
-                        else:
-                            worked_hours[punching_day]['1'] = daily_attendance.punching_time
-                            punching_time['1'] = daily_attendance.punching_time
-
-                    for daily_attendance in daily_attendances:
-                        punching_day = datetime.strftime(daily_attendance.punching_time, DATE_FORMAT)
-
-                        if '0' in worked_hours[punching_day].keys() and '1' in worked_hours[punching_day].keys():
-                            worked_hours[punching_day] = worked_hours[punching_day]['1'] - worked_hours[punching_day]['0']
-                            worked_hours[punching_day] = timedelta(hours=worked_hours[punching_day].hour, minutes=worked_hours[punching_day].minute)
-                            worked_hours[punching_day] = worked_hours[punching_day].total_seconds() / 3600.0
-                            worked_hours[punching_day] = round(worked_hours[punching_day], 2)
-                            punching_time['0'] = HrPayslip.convert_datetime_from_utc(punching_time['0'])
-                            punching_time['1'] = HrPayslip.convert_datetime_from_utc(punching_time['1'])
+                    # Recherche des emplois du temps de l'enseignant pour une période donnée
+                    for teacher_timetable_attendance in HrPayslip._teacher_timetable_attendances:
+                        if payslip_id.employee_id.id == teacher_timetable_attendance['employee_id']:
+                            end_time = teacher_timetable_attendance['worked_end_time']
+                            start_time = teacher_timetable_attendance['worked_start_time']
+                            datetime_to = datetime.strptime(f"{teacher_timetable_attendance['date']} {end_time}:00", DATETIME_FORMAT)
+                            datetime_from = datetime.strptime(f"{teacher_timetable_attendance['date']} {start_time}:00", DATETIME_FORMAT)
                             self.env['hr.payslip.worked_days'].create({
-                                'name': '{} {} {}'.format(CURRENT_WEEKDAY[str(punching_time['0'].weekday())], datetime.strftime(punching_time['0'], DATETIME_FORMAT_FR), datetime.strftime(punching_time['1'], DATETIME_FORMAT_FR)),
+                                'name': '{} {} {}, {}'.format(teacher_timetable_attendance['day_of_week'], datetime.strftime(datetime_from, DATETIME_FORMAT_FR), datetime.strftime(datetime_to, TIME_FORMAT_FR), teacher_timetable_attendance['subject_name']),
                                 'payslip_id': payslip_id.id,
                                 'code': payslip_id.code,
                                 'number_of_days': 1,
-                                'number_of_hours': worked_hours[punching_day],
+                                'number_of_hours': teacher_timetable_attendance['worked_time'],
                                 'contract_id': payslip_id.contract_id.id,
+                                'timetable_id': teacher_timetable_attendance['timetable_id'],
                             })
+                            teacher_timetable_attendance_id = self.env['teacher.timetable.attendance'].search([('id', '=', teacher_timetable_attendance['id'])], limit=1)
+                            if teacher_timetable_attendance_id:
+                                teacher_timetable_attendance_id.write({
+                                    'is_paid': True,
+                                })
                 else:
                     # Recherche des emplois du temps de l'enseignant pour une période donnée
                     for teacher_timetable_attendance in HrPayslip._teacher_timetable_attendances:
@@ -971,6 +937,7 @@ class HrPayslip(models.Model):
         if payslip.employee_id.id:
             if payslip.employee_id.is_teacher:
                 if payslip.employee_id.is_permanent:
+                    worked_days_line_ids = payslip.worked_days_line_ids
                     for contract in contracts:
                         employee = contract.employee_id
                         localdict = dict(baselocaldict, employee=employee, contract=contract)
@@ -983,6 +950,35 @@ class HrPayslip(models.Model):
                             if rule._satisfy_condition(localdict) and rule.id not in blacklist:
                                 #compute the amount of the rule
                                 amount, qty, rate = rule._compute_rule(localdict)
+                                total_rate = 0.0
+                                total_number_of_days = 0.0
+                                key_timetables = {}
+                                shared_subjects = {}
+                                for worked_days_line_id in worked_days_line_ids:
+                                    if worked_days_line_id.timetable_id.id:
+                                        teacher_timetable_attendance_id = self.env['teacher.timetable.attendance'].search([('timetable_id', '=', worked_days_line_id.timetable_id.id)], limit=1)
+                                        if teacher_timetable_attendance_id:
+                                            total_rate += teacher_timetable_attendance_id.amount
+                                            total_number_of_days += worked_days_line_id.number_of_days
+
+                                            worked_days_line_id.timetable_id.write({
+                                                'worked_time': teacher_timetable_attendance_id.worked_time,
+                                                'rate': teacher_timetable_attendance_id.rate,
+                                                'amount': teacher_timetable_attendance_id.amount,
+                                            })
+
+                                if rule.code == payslip.code:
+                                    total_rate = round(total_rate, 2)
+                                    amount = total_rate
+
+                                _logger.info(f'----------- tototototototo key {key} -----------')
+                                _logger.info(f'----------- tototototototo amount {amount} -----------')
+                                _logger.info(f'----------- tototototototo qty {qty} -----------')
+                                _logger.info(f'----------- tototototototo rate {rate} -----------')
+                                _logger.info(f'----------- tototototototo total_rate {total_rate} -----------')
+                                _logger.info(f'----------- tototototototo total_number_of_days {total_number_of_days} -----------')
+                                _logger.info(f'----------- tototototototo contract {contract} -----------')
+
                                 #check if there is already a rule computed with that code
                                 previous_amount = rule.code in localdict and localdict[rule.code] or 0.0
                                 #set/overwrite the amount computed for this rule in the localdict

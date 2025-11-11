@@ -349,6 +349,10 @@ class TeacherTimetableAttendance(models.TransientModel):
         timetable_ids = []
         employees = self.env['hr.employee'].search([('id', 'in', employee_ids)])
         for employee in employees:
+            if not employee.is_teacher:
+                employee.write({
+                    'is_teacher': True,
+                })
             order = 'date_from asc'
             paymenthistories = self.env['hr.payslip'].search([('employee_id', '=', employee.id)], order=order)
             paymenthistories = list(paymenthistories)
