@@ -175,7 +175,7 @@ class TeacherTimetableAttendance(models.TransientModel):
     )
 
     is_paid = fields.Boolean(
-        'Est payé',
+        'Payé',
         default=False,
     )
 
@@ -370,16 +370,31 @@ class TeacherTimetableAttendance(models.TransientModel):
         payslips = self.env['hr.payslip']
         payslips._save_teacher_timetable_attendances(teacher_timetable_attendance_ids)
         for employee in employees:
-            if employee.has_allowance_cd:
+            if employee.has_allowance_cd and employee.has_cnps:
+                structure = self.env['ir.config_parameter'].sudo().get_param(f'siantou.code_structure_cd_cnps')
+                if not structure:
+                    structure = 'BASECDCNPS'
+                    self.env['ir.config_parameter'].sudo().set_param(f'siantou.code_structure_cd_cnps', structure)
+            elif employee.has_allowance_cd:
                 structure = self.env['ir.config_parameter'].sudo().get_param(f'siantou.code_structure_cd')
                 if not structure:
                     structure = 'BASECD'
                     self.env['ir.config_parameter'].sudo().set_param(f'siantou.code_structure_cd', structure)
+            elif employee.has_allowance_co and employee.has_cnps:
+                structure = self.env['ir.config_parameter'].sudo().get_param(f'siantou.code_structure_co_cnps')
+                if not structure:
+                    structure = 'BASECOCNPS'
+                    self.env['ir.config_parameter'].sudo().set_param(f'siantou.code_structure_co_cnps', structure)
             elif employee.has_allowance_co:
                 structure = self.env['ir.config_parameter'].sudo().get_param(f'siantou.code_structure_co')
                 if not structure:
                     structure = 'BASECO'
                     self.env['ir.config_parameter'].sudo().set_param(f'siantou.code_structure_co', structure)
+            elif employee.has_cnps:
+                structure = self.env['ir.config_parameter'].sudo().get_param(f'siantou.code_structure_cnps')
+                if not structure:
+                    structure = 'BASECNPS'
+                    self.env['ir.config_parameter'].sudo().set_param(f'siantou.code_structure_cnps', structure)
             else:
                 structure = self.env['ir.config_parameter'].sudo().get_param(f'siantou.code_structure')
                 if not structure:
@@ -399,10 +414,16 @@ class TeacherTimetableAttendance(models.TransientModel):
 
             slip_data = self.env['hr.payslip'].onchange_employee_id(from_date, to_date, employee.id, contract_id=False)
 
-            if employee.has_allowance_cd:
+            if employee.has_allowance_cd and employee.has_cnps:
+                contract = '{} (CDCNPS)'.format(employee.name)
+            elif employee.has_allowance_cd:
                 contract = '{} (CD)'.format(employee.name)
+            elif employee.has_allowance_co and employee.has_cnps:
+                contract = '{} (COCNPS)'.format(employee.name)
             elif employee.has_allowance_co:
                 contract = '{} (CO)'.format(employee.name)
+            elif employee.has_cnps:
+                contract = '{} (CNPS)'.format(employee.name)
             else:
                 contract = '{}'.format(employee.name)
             contract_id = self.env['hr.contract'].search([('name', '=', contract)], limit=1)
