@@ -474,8 +474,7 @@ class PortalAccount(portal.CustomerPortal):
                         accountbalance['rate'] = teacher_hourly_rate.rate
                         break
                 if 'rate' not in accountbalance:
-                    # accountbalance['rate'] = hourly_rates[0].rate
-                    accountbalance['rate'] = 0.0
+                    accountbalance['rate'] = hourly_rates[0].rate
 
             if 'rate' not in accountbalance:
                 accountbalance['rate'] = 0.0

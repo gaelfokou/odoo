@@ -255,8 +255,7 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
                         rate = teacher_hourly_rate.rate
                         break
                 if not rate:
-                    # rate = hourly_rates[0].rate
-                    rate = 0.0
+                    rate = hourly_rates[0].rate
 
             if not rate:
                 rate = 0.0

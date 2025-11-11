@@ -961,11 +961,11 @@ class HrPayslip(models.Model):
                                             total_rate += teacher_timetable_attendance_id.amount
                                             total_number_of_days += worked_days_line_id.number_of_days
 
-                                            worked_days_line_id.timetable_id.write({
-                                                'worked_time': teacher_timetable_attendance_id.worked_time,
-                                                'rate': teacher_timetable_attendance_id.rate,
-                                                'amount': teacher_timetable_attendance_id.amount,
-                                            })
+                                            # worked_days_line_id.timetable_id.write({
+                                            #     'worked_time': teacher_timetable_attendance_id.worked_time,
+                                            #     'rate': teacher_timetable_attendance_id.rate,
+                                            #     'amount': teacher_timetable_attendance_id.amount,
+                                            # })
 
                                 if rule.code == payslip.code:
                                     total_rate = round(total_rate, 2)
@@ -1040,11 +1040,11 @@ class HrPayslip(models.Model):
                                             total_rate += teacher_timetable_attendance_id.amount
                                             total_number_of_days += worked_days_line_id.number_of_days
 
-                                            worked_days_line_id.timetable_id.write({
-                                                'worked_time': teacher_timetable_attendance_id.worked_time,
-                                                'rate': teacher_timetable_attendance_id.rate,
-                                                'amount': teacher_timetable_attendance_id.amount,
-                                            })
+                                            # worked_days_line_id.timetable_id.write({
+                                            #     'worked_time': teacher_timetable_attendance_id.worked_time,
+                                            #     'rate': teacher_timetable_attendance_id.rate,
+                                            #     'amount': teacher_timetable_attendance_id.amount,
+                                            # })
 
                                 if rule.code == payslip.code:
                                     total_rate = round(total_rate, 2)
