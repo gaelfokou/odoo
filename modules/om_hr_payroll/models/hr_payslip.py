@@ -235,7 +235,7 @@ class HrPayslip(models.Model):
         if payslip.employee_id.id:
             if payslip.employee_id.is_teacher:
                 # Recherche des emplois du temps de l'enseignant pour une période donnée
-                for teacher_timetable_attendance in self._teacher_timetable_attendances:
+                for teacher_timetable_attendance in HrPayslip._teacher_timetable_attendances:
                     end_time = teacher_timetable_attendance['worked_end_time']
                     start_time = teacher_timetable_attendance['worked_start_time']
                     datetime_to = datetime.strptime(f"{teacher_timetable_attendance['date']} {end_time}:00", DATETIME_FORMAT)
@@ -298,7 +298,7 @@ class HrPayslip(models.Model):
         if payslip_id.employee_id.id:
             if payslip_id.employee_id.is_teacher:
                 # Recherche des emplois du temps de l'enseignant pour une période donnée
-                for teacher_timetable_attendance in self._teacher_timetable_attendances:
+                for teacher_timetable_attendance in HrPayslip._teacher_timetable_attendances:
                     end_time = teacher_timetable_attendance['worked_end_time']
                     start_time = teacher_timetable_attendance['worked_start_time']
                     datetime_to = datetime.strptime(f"{teacher_timetable_attendance['date']} {end_time}:00", DATETIME_FORMAT)
