@@ -795,6 +795,8 @@ class Helpers:
                 accountbalances[key_class]['data'][key_subject]['number_of_hours'] = sum([v['number_of_hours'] for v in accountbalances[key_class]['data'][key_subject]['data']])
                 accountbalances[key_class]['total_rate'] += accountbalances[key_class]['data'][key_subject]['amount']
                 accountbalances[key_class]['total_number_of_hours'] += accountbalances[key_class]['data'][key_subject]['number_of_hours']
+
+        for key_class in accountbalances.keys():
             accountbalances[key_class]['total_rate'] = round(accountbalances[key_class]['total_rate'], 2)
             accountbalances[key_class]['total_number_of_hours'] = round(accountbalances[key_class]['total_number_of_hours'], 2)
 
