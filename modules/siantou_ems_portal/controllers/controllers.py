@@ -489,6 +489,8 @@ class PortalAccount(portal.CustomerPortal):
             accountbalances.append(accountbalance)
             total_rate += accountbalance['amount']
             total_number_of_hours += accountbalance['number_of_hours']
+        total_rate = round(total_rate, 2)
+        total_number_of_hours = round(total_number_of_hours, 2)
         accountbalances = Helpers.format_accountbalance(accountbalances)
         return http.request.render('siantou_ems_portal.siantou_ems_portal_accountbalance_views',
                                 {
