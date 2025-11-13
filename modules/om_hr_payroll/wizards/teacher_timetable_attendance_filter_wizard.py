@@ -104,7 +104,7 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
 
     def action_filter(self):
         self.env['teacher.timetable.attendance']._transient_vacuum()
-        self.env['teacher.timetable.attendance'].search([]).unlink()
+        self.env['teacher.timetable.attendance'].search([('create_uid', '=', self.env.user.id)]).unlink()
 
         domain = []
         title = []

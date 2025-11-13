@@ -61,6 +61,7 @@
             <field name="name">Émargements des enseignants</field>
             <field name="res_model">teacher.timetable.attendance</field>
             <field name="view_mode">tree</field>
+            <field name="domain">[('create_uid', '=', uid)]</field>
             <field name="target">current</field>
             <field name="view_id" ref="teacher_timetable_attendance_tree_view"/>
         </record>
