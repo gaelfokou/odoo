@@ -693,19 +693,6 @@ class Timetable(models.Model):
                 raise ValidationError("L'heure de fin du cours doit être supérieure à l'heure de début du cours")
 
     # Contrainte logique pour se rassurer que deux cours ne sont pas programmés dans la même salle de classe sur des horaires qui se chevauchent le même jour
-    @api.constrains('employee_id', 'date', 'start_time', 'end_time')
-    def _constrains_employee(self):
-        for record in self:
-            timetables = self.search([
-                ('id', '!=', record.id),
-                ('employee_id', '=', record.employee_id.id),
-                ('date', '=', record.date),
-            ]).filtered(lambda rec: not (rec.start_time >= record.end_time or rec.end_time <= record.start_time))
-            timetables = list(timetables)
-            if len(timetables) > 0:
-                raise ValidationError("Deux cours ne doivent pas être programmés pour le même enseignant sur des horaires qui se chevauchent le même jour")
-
-    # Contrainte logique pour se rassurer que deux cours ne sont pas programmés dans la même salle de classe sur des horaires qui se chevauchent le même jour
     @api.constrains('class_id', 'date', 'start_time', 'end_time')
     def _constrains_class(self):
         for record in self:
