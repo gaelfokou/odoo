@@ -231,17 +231,25 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
                 worked_hours = worked_hours.total_seconds() / 3600.0
                 worked_hours = round(worked_hours, 2)
 
-            domain = [
-                ('school_id', '=', timetable.school_id.id),
-                ('cycle_id', '=', timetable.cycle_id.id),
-                ('level_id', '=', timetable.level_id.id),
-                # ('diplome_availability_id.diplome_ids', 'in', timetable.employee_id.diplome_ids.ids),
-            ]
+            if len(timetable.employee_id.diplome_ids.ids) > 0:
+                domain = [
+                    ('school_id', '=', timetable.school_id.id),
+                    ('cycle_id', '=', timetable.cycle_id.id),
+                    ('level_id', '=', timetable.level_id.id),
+                    ('diplome_availability_id.diplome_ids', 'in', timetable.employee_id.diplome_ids.ids),
+                ]
+            else:
+                domain = [
+                    ('school_id', '=', timetable.school_id.id),
+                    ('cycle_id', '=', timetable.cycle_id.id),
+                    ('level_id', '=', timetable.level_id.id),
+                ]
 
             hourly_rates = self.env['siantou.ems.core.hourly.rate'].search(domain)
             hourly_rates = list(hourly_rates)
 
-            rate = None
+            min_hourly_rate = None
+            min_teacher_hourly_rate = None
             if len(hourly_rates) > 0:
                 for hourly_rate in hourly_rates:
                     domain = [
@@ -250,14 +258,26 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
                         # ('subject_id', '=', timetable.subject_id.id),
                     ]
 
-                    teacher_hourly_rate = self.env['siantou.ems.core.teacher.hourly.rate'].search(domain, limit=1)
-                    if teacher_hourly_rate:
-                        rate = teacher_hourly_rate.rate
-                        break
-                if not rate:
-                    rate = hourly_rates[0].rate
+                    teacher_hourly_rates = self.env['siantou.ems.core.teacher.hourly.rate'].search(domain, limit=1)
+                    teacher_hourly_rates = list(teacher_hourly_rates)
+                    if len(teacher_hourly_rates) > 0:
+                        for teacher_hourly_rate in teacher_hourly_rates:
+                            if not min_teacher_hourly_rate:
+                                min_teacher_hourly_rate = teacher_hourly_rate.rate
+                            else:
+                                if teacher_hourly_rate.rate < min_teacher_hourly_rate:
+                                    min_teacher_hourly_rate = teacher_hourly_rate.rate
+                    if not min_hourly_rate:
+                        min_hourly_rate = hourly_rate.rate
+                    else:
+                        if hourly_rate.rate < min_hourly_rate:
+                            min_hourly_rate = hourly_rate.rate
 
-            if not rate:
+            if min_teacher_hourly_rate:
+                rate = min_teacher_hourly_rate
+            elif min_hourly_rate:
+                rate = min_hourly_rate
+            else:
                 rate = 0.0
 
             amount = rate * worked_hours

@@ -458,16 +458,25 @@ class PortalAccount(portal.CustomerPortal):
                 weekly_hours_credit = round(weekly_hours_credit, 2)
                 accountbalance['number_of_hours'] = weekly_hours_credit
 
-            domain = [
-                ('school_id', '=', search_accountbalance.school_id.id),
-                ('cycle_id', '=', search_accountbalance.cycle_id.id),
-                ('level_id', '=', search_accountbalance.level_id.id),
-                # ('diplome_availability_id.diplome_ids', 'in', search_accountbalance.employee_id.diplome_ids.ids),
-            ]
+            if len(search_accountbalance.employee_id.diplome_ids.ids) > 0:
+                domain = [
+                    ('school_id', '=', search_accountbalance.school_id.id),
+                    ('cycle_id', '=', search_accountbalance.cycle_id.id),
+                    ('level_id', '=', search_accountbalance.level_id.id),
+                    ('diplome_availability_id.diplome_ids', 'in', search_accountbalance.employee_id.diplome_ids.ids),
+                ]
+            else:
+                domain = [
+                    ('school_id', '=', search_accountbalance.school_id.id),
+                    ('cycle_id', '=', search_accountbalance.cycle_id.id),
+                    ('level_id', '=', search_accountbalance.level_id.id),
+                ]
 
             hourly_rates = http.request.env['siantou.ems.core.hourly.rate'].sudo().search(domain)
             hourly_rates = list(hourly_rates)
 
+            min_hourly_rate = None
+            min_teacher_hourly_rate = None
             if len(hourly_rates) > 0:
                 for hourly_rate in hourly_rates:
                     domain = [
@@ -476,14 +485,26 @@ class PortalAccount(portal.CustomerPortal):
                         # ('subject_id', '=', search_accountbalance.subject_id.id),
                     ]
 
-                    teacher_hourly_rate = http.request.env['siantou.ems.core.teacher.hourly.rate'].sudo().search(domain, limit=1)
-                    if teacher_hourly_rate:
-                        accountbalance['rate'] = teacher_hourly_rate.rate
-                        break
-                if 'rate' not in accountbalance:
-                    accountbalance['rate'] = hourly_rates[0].rate
+                    teacher_hourly_rates = http.request.env['siantou.ems.core.teacher.hourly.rate'].sudo().search(domain, limit=1)
+                    teacher_hourly_rates = list(teacher_hourly_rates)
+                    if len(teacher_hourly_rates) > 0:
+                        for teacher_hourly_rate in teacher_hourly_rates:
+                            if not min_teacher_hourly_rate:
+                                min_teacher_hourly_rate = teacher_hourly_rate.rate
+                            else:
+                                if teacher_hourly_rate.rate < min_teacher_hourly_rate:
+                                    min_teacher_hourly_rate = teacher_hourly_rate.rate
+                    if not min_hourly_rate:
+                        min_hourly_rate = hourly_rate.rate
+                    else:
+                        if hourly_rate.rate < min_hourly_rate:
+                            min_hourly_rate = hourly_rate.rate
 
-            if 'rate' not in accountbalance:
+            if min_teacher_hourly_rate:
+                accountbalance['rate'] = min_teacher_hourly_rate
+            elif min_hourly_rate:
+                accountbalance['rate'] = min_hourly_rate
+            else:
                 accountbalance['rate'] = 0.0
 
             accountbalance['amount'] = accountbalance['rate'] * accountbalance['number_of_hours']
