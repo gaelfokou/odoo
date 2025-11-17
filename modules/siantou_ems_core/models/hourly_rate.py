@@ -141,6 +141,15 @@ class TeacherHourlyRate(models.Model):
         ondelete='cascade'
     )
 
+    type_cour = fields.Selection([
+            ('cj', 'Cours du jour'),
+            ('cs', 'Cours du soir'),
+        ],
+        string='Type de cours',
+        related='hourly_rate_id.type_cour',
+        store=True,
+    )
+
     # Taux de l\'enseignant
     rate = fields.Float(
         'Taux',
