@@ -373,8 +373,10 @@ class TimetableFilterWizard(models.TransientModel):
         title = []
         if self.year_id.id:
             domain.append(('year_id', '=', self.year_id.id))
+            title.append(self.year_id.name)
         if self.semester_id.id:
             domain.append(('semester_id', '=', self.semester_id.id))
+            title.append(self.semester_id.name)
         if self.department_id.id:
             domain.append(('department_id', '=', self.department_id.id))
             title.append(self.department_id.name)

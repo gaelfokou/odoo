@@ -11,6 +11,7 @@
                     <field name="cycle_id"/>
                     <field name="diplome_availability_id"/>
                     <field name="level_id"/>
+                    <field name="type_cour"/>
                     <field name="rate"/>
                 </tree>
             </field>
@@ -28,6 +29,7 @@
                             <field name="cycle_id"/>
                             <field name="diplome_availability_id"/>
                             <field name="level_id"/>
+                            <field name="type_cour" widget="radio"/>
                             <field name="rate"/>
                         </group>
                     </sheet>

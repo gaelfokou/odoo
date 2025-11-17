@@ -182,6 +182,7 @@ class TeacherFilterWizard(models.TransientModel):
         title = []
         if self.year_id.id:
             domain.append(('year_id', '=', self.year_id.id))
+            title.append(self.year_id.name)
         if self.school_id.id:
             domain.append(('school_id', '=', self.school_id.id))
             title.append(self.school_id.name)

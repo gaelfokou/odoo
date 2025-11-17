@@ -168,6 +168,7 @@
         <field name="name">Étudiants</field>
         <field name="res_model">oe.school.student</field>
         <field name="view_mode">tree,form</field>
+        <field name="domain">[('year_id.is_active', '=', True)]</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
                 Créer un nouveau étudiant.
