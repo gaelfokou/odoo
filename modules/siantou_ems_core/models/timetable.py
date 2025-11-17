@@ -698,6 +698,8 @@ class Timetable(models.Model):
         for record in self:
             timetables = self.search([
                 ('id', '!=', record.id),
+                ('group_id.is_active', '=', True),
+                ('group_id.is_submit', '=', False),
                 ('class_id', '=', record.class_id.id),
                 ('date', '=', record.date),
             ]).filtered(lambda rec: not (rec.start_time >= record.end_time or rec.end_time <= record.start_time))
@@ -1339,6 +1341,8 @@ class TimetableSlotItem(models.Model):
             else:
                 slotitems = self.env['siantou.ems.timetable.slotitem'].search([
                     ('id', '!=', record.id),
+                    ('group_id.is_active', '=', True),
+                    ('group_id.is_submit', '=', False),
                     ('slot_id', '=', record.slot_id.id),
                 ]).filtered(lambda rec: not (rec.start_time >= record.end_time or rec.end_time <= record.start_time))
                 slotitems = list(slotitems)
