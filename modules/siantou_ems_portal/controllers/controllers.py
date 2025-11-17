@@ -463,6 +463,7 @@ class PortalAccount(portal.CustomerPortal):
                     ('school_id', '=', search_accountbalance.school_id.id),
                     ('cycle_id', '=', search_accountbalance.cycle_id.id),
                     ('level_id', '=', search_accountbalance.level_id.id),
+                    ('type_cour', '=', search_accountbalance.type_cour),
                     ('diplome_availability_id.diplome_ids', 'in', search_accountbalance.employee_id.diplome_ids.ids),
                 ]
             else:
@@ -470,6 +471,7 @@ class PortalAccount(portal.CustomerPortal):
                     ('school_id', '=', search_accountbalance.school_id.id),
                     ('cycle_id', '=', search_accountbalance.cycle_id.id),
                     ('level_id', '=', search_accountbalance.level_id.id),
+                    ('type_cour', '=', search_accountbalance.type_cour),
                 ]
 
             hourly_rates = http.request.env['siantou.ems.core.hourly.rate'].sudo().search(domain)

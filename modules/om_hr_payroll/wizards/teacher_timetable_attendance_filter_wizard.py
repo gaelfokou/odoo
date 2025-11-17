@@ -236,6 +236,7 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
                     ('school_id', '=', timetable.school_id.id),
                     ('cycle_id', '=', timetable.cycle_id.id),
                     ('level_id', '=', timetable.level_id.id),
+                    ('type_cour', '=', timetable.type_cour),
                     ('diplome_availability_id.diplome_ids', 'in', timetable.employee_id.diplome_ids.ids),
                 ]
             else:
@@ -243,6 +244,7 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
                     ('school_id', '=', timetable.school_id.id),
                     ('cycle_id', '=', timetable.cycle_id.id),
                     ('level_id', '=', timetable.level_id.id),
+                    ('type_cour', '=', timetable.type_cour),
                 ]
 
             hourly_rates = self.env['siantou.ems.core.hourly.rate'].search(domain)
