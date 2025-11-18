@@ -120,9 +120,9 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
             domain.append(('employee_id', '=', self.employee_id.id))
             title.append(self.employee_id.name)
 
-        order = 'date asc'
+        order = 'id asc, date asc'
 
-        search_consumptionhours = self.env['siantou.ems.timetable.timetable'].search(domain, order=order)
+        search_consumptionhours = self.env['siantou.ems.timetable.timetable'].search(domain, order=order).sorted(lambda rec: (rec.id, rec.date))
         consumptionhours = []
         for search_consumptionhour in search_consumptionhours:
             if not search_consumptionhour.date or not search_consumptionhour.day_of_week:
@@ -162,7 +162,7 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
             consumptionhours.append(consumptionhour)
         consumptionhours = TeacherTimetableAttendanceFilterWizard.format_consumptionhour(consumptionhours)
 
-        timetables = self.env['siantou.ems.timetable.timetable'].search(domain, order=order)
+        timetables = self.env['siantou.ems.timetable.timetable'].search(domain, order=order).sorted(lambda rec: (rec.id, rec.date))
         if self.start_date and self.end_date:
             start_date = datetime.strftime(self.start_date, DATE_FORMAT_FR)
             end_date = datetime.strftime(self.end_date, DATE_FORMAT_FR)

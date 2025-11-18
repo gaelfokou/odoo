@@ -89,7 +89,7 @@ class Helpers:
         search_domain.append(('group_id.is_active', '=', True))
         search_domain.append(('group_id.is_submit', '=', False))
 
-        order = 'date asc'
+        order = 'id asc, date asc'
 
         search_timetables = []
         user = None
@@ -108,7 +108,7 @@ class Helpers:
                 user = http.request.env.user.employee_id
                 search_domain.append(('employee_id', '=', user.id))
 
-                timetables = http.request.env['siantou.ems.timetable.timetable'].sudo().search(search_domain, order=order)
+                timetables = http.request.env['siantou.ems.timetable.timetable'].sudo().search(search_domain, order=order).sorted(lambda rec: (rec.id, rec.date))
                 current_date = date.today()
                 start_date = current_date + relativedelta(day=1)
                 end_date = current_date + relativedelta(day=1, months=1, days=-1)
@@ -132,7 +132,7 @@ class Helpers:
             elif is_user == 'is_student':
                 search_domain.append(('class_id', '=', user.class_id.id))
 
-                timetables = http.request.env['siantou.ems.timetable.timetable'].sudo().search(search_domain, order=order)
+                timetables = http.request.env['siantou.ems.timetable.timetable'].sudo().search(search_domain, order=order).sorted(lambda rec: (rec.id, rec.date))
                 current_date = date.today()
                 start_date = current_date + relativedelta(day=1)
                 end_date = current_date + relativedelta(day=1, months=1, days=-1)
@@ -174,14 +174,14 @@ class Helpers:
             user = http.request.env.user.student_id
             search_domain.append(('student_id', '=', user.id))
 
-            schoolfees = http.request.env['education.fee.payment'].sudo().search(search_domain, order=order)
+            schoolfees = http.request.env['education.fee.payment'].sudo().search(search_domain, order=order).sorted(lambda rec: (rec.id, rec.date))
             schoolfees = list(schoolfees)
             search_schoolfees = schoolfees
 
             search_domain = []
             search_domain.append(('student_id', '=', user.id))
 
-            schoolfees = http.request.env['education.fee.payment.enrollment'].sudo().search(search_domain, order=order)
+            schoolfees = http.request.env['education.fee.payment.enrollment'].sudo().search(search_domain, order=order).sorted(lambda rec: (rec.id, rec.date))
             schoolfees = list(schoolfees)
             search_schoolfees += schoolfees
 
@@ -206,7 +206,7 @@ class Helpers:
                 user = http.request.env.user.employee_id
                 search_domain.append(('employee_id', '=', user.id))
 
-                paymenthistories = http.request.env['hr.payslip'].sudo().search(search_domain, order=order)
+                paymenthistories = http.request.env['hr.payslip'].sudo().search(search_domain, order=order).sorted(lambda rec: (rec.id, rec.date))
                 paymenthistories = list(paymenthistories)
                 search_paymenthistories = paymenthistories
 
@@ -248,7 +248,7 @@ class Helpers:
         search_domain.append(('group_id.is_submit', '=', False))
         search_domain.append(('status', 'in', ['present', 'permission']))
 
-        order = 'date asc'
+        order = 'id asc, date asc'
 
         search_accountbalances = []
         if http.request.env.user.employee_id.id:
@@ -256,7 +256,7 @@ class Helpers:
                 user = http.request.env.user.employee_id
                 search_domain.append(('employee_id', '=', user.id))
 
-                accountbalances = http.request.env['siantou.ems.timetable.timetable'].sudo().search(search_domain, order=order)
+                accountbalances = http.request.env['siantou.ems.timetable.timetable'].sudo().search(search_domain, order=order).sorted(lambda rec: (rec.id, rec.date))
                 current_date = date.today()
                 current_date = current_date - relativedelta(day=1, months=int(selected_month))
                 start_date = current_date + relativedelta(day=1)
@@ -321,7 +321,7 @@ class Helpers:
         search_domain.append(('group_id.is_submit', '=', False))
         search_domain.append(('status', 'in', ['present', 'permission']))
 
-        order = 'date asc'
+        order = 'id asc, date asc'
 
         search_consumptionhours = []
         user = None
@@ -340,7 +340,7 @@ class Helpers:
                 user = http.request.env.user.employee_id
                 search_domain.append(('employee_id', '=', user.id))
 
-                consumptionhours = http.request.env['siantou.ems.timetable.timetable'].sudo().search(search_domain, order=order)
+                consumptionhours = http.request.env['siantou.ems.timetable.timetable'].sudo().search(search_domain, order=order).sorted(lambda rec: (rec.id, rec.date))
                 consumptionhours = list(consumptionhours)
                 key_consumptionhours = {}
                 for consumptionhour in consumptionhours:
@@ -359,7 +359,7 @@ class Helpers:
             elif is_user == 'is_student':
                 search_domain.append(('class_id', '=', user.class_id.id))
 
-                consumptionhours = http.request.env['siantou.ems.timetable.timetable'].sudo().search(search_domain, order=order)
+                consumptionhours = http.request.env['siantou.ems.timetable.timetable'].sudo().search(search_domain, order=order).sorted(lambda rec: (rec.id, rec.date))
                 consumptionhours = list(consumptionhours)
                 key_consumptionhours = {}
                 for consumptionhour in consumptionhours:
@@ -413,7 +413,7 @@ class Helpers:
         search_domain.append(('group_id.is_active', '=', True))
         search_domain.append(('group_id.is_submit', '=', False))
 
-        order = 'date asc'
+        order = 'id asc, date asc'
 
         search_progressreports = []
         user = None
@@ -432,7 +432,7 @@ class Helpers:
                 user = http.request.env.user.employee_id
                 search_domain.append(('employee_id', '=', user.id))
 
-                progressreports = http.request.env['siantou.ems.timetable.timetable'].sudo().search(search_domain, order=order)
+                progressreports = http.request.env['siantou.ems.timetable.timetable'].sudo().search(search_domain, order=order).sorted(lambda rec: (rec.id, rec.date))
                 progressreports = list(progressreports)
                 key_progressreports = {}
                 for progressreport in progressreports:
@@ -451,7 +451,7 @@ class Helpers:
             elif is_user == 'is_student':
                 search_domain.append(('class_id', '=', user.class_id.id))
 
-                progressreports = http.request.env['siantou.ems.timetable.timetable'].sudo().search(search_domain, order=order)
+                progressreports = http.request.env['siantou.ems.timetable.timetable'].sudo().search(search_domain, order=order).sorted(lambda rec: (rec.id, rec.date))
                 progressreports = list(progressreports)
                 key_progressreports = {}
                 for progressreport in progressreports:
@@ -507,7 +507,7 @@ class Helpers:
         search_domain.append(('group_id.is_active', '=', True))
         search_domain.append(('group_id.is_submit', '=', False))
 
-        order = 'date asc'
+        order = 'id asc, date asc'
 
         search_subjectsessions = []
         user = None
@@ -526,7 +526,7 @@ class Helpers:
                 user = http.request.env.user.employee_id
                 search_domain.append(('employee_id', '=', user.id))
 
-                subjectsessions = http.request.env['siantou.ems.timetable.timetable'].sudo().search(search_domain, order=order)
+                subjectsessions = http.request.env['siantou.ems.timetable.timetable'].sudo().search(search_domain, order=order).sorted(lambda rec: (rec.id, rec.date))
                 subjectsessions = list(subjectsessions)
                 key_subjectsessions = {}
                 for subjectsession in subjectsessions:
@@ -545,7 +545,7 @@ class Helpers:
             elif is_user == 'is_student':
                 search_domain.append(('class_id', '=', user.class_id.id))
 
-                subjectsessions = http.request.env['siantou.ems.timetable.timetable'].sudo().search(search_domain, order=order)
+                subjectsessions = http.request.env['siantou.ems.timetable.timetable'].sudo().search(search_domain, order=order).sorted(lambda rec: (rec.id, rec.date))
                 subjectsessions = list(subjectsessions)
                 key_subjectsessions = {}
                 for subjectsession in subjectsessions:
@@ -583,7 +583,7 @@ class Helpers:
             search_year = [int(y) for y in search_year]
         else:
             search_year = []
-        calendars = http.request.env['calendar.event'].sudo().search(search_domain, order=order)
+        calendars = http.request.env['calendar.event'].sudo().search(search_domain, order=order).sorted(lambda rec: (rec.id, rec.date))
         calendars = calendars.filtered(lambda rec: rec.start.year in search_year)
         calendars = list(calendars)
         search_calendars = calendars
@@ -601,7 +601,7 @@ class Helpers:
             search_in = 'all'
         search_domain = searchbar_inputs[search_in]['domain']
 
-        order = 'date asc'
+        order = 'id asc, date asc'
 
         search_notifications = []
         if http.request.env.user.employee_id.id:
@@ -609,7 +609,7 @@ class Helpers:
                 user = http.request.env.user.employee_id
                 search_domain.append(('employee_id', '=', user.id))
 
-                notifications = http.request.env['siantou.ems.timetable.notification'].sudo().search(search_domain, order=order)
+                notifications = http.request.env['siantou.ems.timetable.notification'].sudo().search(search_domain, order=order).sorted(lambda rec: (rec.id, rec.date))
                 notifications = list(notifications)
                 search_notifications = notifications
 

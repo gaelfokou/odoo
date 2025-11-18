@@ -167,7 +167,7 @@ class HrPayslip(models.Model):
         if employee:
             domain.append(('employee_id', '=', employee.id))
 
-        daily_attendances = self.env['daily.attendance'].search(domain, order='punching_time asc').filtered(lambda rec: UTC_TZ.localize(rec.punching_time) >= datetime_before and UTC_TZ.localize(rec.punching_time) <= datetime_after).sorted('punching_time')
+        daily_attendances = self.env['daily.attendance'].search(domain, order='punching_time asc').filtered(lambda rec: UTC_TZ.localize(rec.punching_time) >= datetime_before and UTC_TZ.localize(rec.punching_time) <= datetime_after).sorted(lambda rec: UTC_TZ.localize(rec.punching_time))
         daily_attendances = list(daily_attendances)
 
         return daily_attendances
@@ -201,7 +201,7 @@ class HrPayslip(models.Model):
         if employee:
             domain.append(('employee_id', '=', employee.id))
 
-        daily_in_attendances = self.env['daily.attendance'].search(domain, order='punching_time asc').filtered(lambda rec: UTC_TZ.localize(rec.punching_time) >= datetime_before and UTC_TZ.localize(rec.punching_time) <= datetime_to).sorted('punching_time')
+        daily_in_attendances = self.env['daily.attendance'].search(domain, order='punching_time asc').filtered(lambda rec: UTC_TZ.localize(rec.punching_time) >= datetime_before and UTC_TZ.localize(rec.punching_time) <= datetime_to).sorted(lambda rec: UTC_TZ.localize(rec.punching_time))
         daily_in_attendances = list(daily_in_attendances)
         if len(daily_in_attendances) > 0:
             daily_attendances.append(daily_in_attendances[0])
@@ -212,7 +212,7 @@ class HrPayslip(models.Model):
         if employee:
             domain.append(('employee_id', '=', employee.id))
 
-        daily_out_attendances = self.env['daily.attendance'].search(domain, order='punching_time asc').filtered(lambda rec: UTC_TZ.localize(rec.punching_time) >= datetime_from and UTC_TZ.localize(rec.punching_time) <= datetime_after).sorted('punching_time')
+        daily_out_attendances = self.env['daily.attendance'].search(domain, order='punching_time asc').filtered(lambda rec: UTC_TZ.localize(rec.punching_time) >= datetime_from and UTC_TZ.localize(rec.punching_time) <= datetime_after).sorted(lambda rec: UTC_TZ.localize(rec.punching_time))
         daily_out_attendances = list(daily_out_attendances)
         if len(daily_out_attendances) > 0:
             daily_attendances.append(daily_out_attendances[-1])
