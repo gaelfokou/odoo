@@ -80,7 +80,7 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
         is_permanent = False
         key_teacher_timetable_attendances = {}
         for search_teacher_timetable_attendance in search_teacher_timetable_attendances:
-            if not search_teacher_timetable_attendance.date:
+            if not search_teacher_timetable_attendance.date or not search_teacher_timetable_attendance.day_of_week:
                 continue
             key = '{}'.format(search_teacher_timetable_attendance.employee_id.id)
             if key not in key_teacher_timetable_attendances:
