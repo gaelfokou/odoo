@@ -174,7 +174,7 @@ class ApiAccount(http.Controller):
         elif http.request.env.user.student_id.id:
             user = http.request.env.user.student_id
             is_user = 'is_student'
-        if user:
+        if is_user:
             report_name = 'siantou_ems_core.report_timetable'
             report_action = 'siantou_ems_core.action_report_timetable'
             pdf_report = http.request.env['ir.actions.report'].sudo()._get_report_from_name(report_action)
@@ -346,7 +346,7 @@ class ApiAccount(http.Controller):
             user = http.request.env.user.student_id
             is_user = 'is_student'
         data = {}
-        if user:
+        if is_user:
             data['id'] = user.id
             data['name'] = user.name
             data['is_user'] = is_user
@@ -390,7 +390,7 @@ class ApiAccount(http.Controller):
                             user = http.request.env['oe.school.student'].sudo().search([('user_id', '=', user.id)], limit=1)
                             if user:
                                 is_user = 'is_student'
-                        if user:
+                        if is_user:
                             data['is_user'] = is_user
                             if is_user == 'is_teacher':
                                 data['code'] = user.identifier[:5]

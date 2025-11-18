@@ -68,7 +68,7 @@ class Extension(portal.CustomerPortal):
         elif http.request.env.user.student_id.id:
             user = http.request.env.user.student_id
             is_user = 'is_student'
-        if user:
+        if is_user:
             if is_user == 'is_student':
                 if not user.private_phone:
                     return False
@@ -105,9 +105,8 @@ class Home(WebHome):
                     is_user = 'is_employee'
             else:
                 user = http.request.env['oe.school.student'].sudo().search([('user_id', '=', res_user_id.id)], limit=1)
-                if user:
-                    is_user = 'is_student'
-            if user:
+                is_user = 'is_student'
+            if is_user:
                 if is_user == 'is_student':
                     if not user.private_phone:
                         redirect = '/my/request'
@@ -280,7 +279,7 @@ class PortalAccount(portal.CustomerPortal):
         elif http.request.env.user.student_id.id:
             user = http.request.env.user.student_id
             is_user = 'is_student'
-        if user:
+        if is_user:
             report_name = 'siantou_ems_core.report_timetable'
             report_action = 'siantou_ems_core.action_report_timetable'
             pdf_report = http.request.env['ir.actions.report'].sudo()._get_report_from_name(report_action)
@@ -1074,11 +1073,11 @@ class PortalAccount(portal.CustomerPortal):
         user = None
         is_user = None
         if http.request.env.user.employee_id.id:
-            user = http.request.env.user.employee_id
             return http.request.redirect('/my/home')
         elif http.request.env.user.student_id.id:
             user = http.request.env.user.student_id
-        if user:
+            is_user = 'is_student'
+        if is_user:
             private_phone = user.private_phone
             private_email = user.private_email
             date_naissance = user.date_naissance
@@ -1113,7 +1112,7 @@ class PortalAccount(portal.CustomerPortal):
         elif http.request.env.user.student_id.id:
             user = http.request.env.user.student_id
             is_user = 'is_student'
-        if user:
+        if is_user:
             if is_user == 'is_student':
                 if not kw.get('phone'):
                     return http.request.redirect('/my/request')

@@ -103,7 +103,7 @@ class Helpers:
         elif http.request.env.user.student_id.id:
             user = http.request.env.user.student_id
             is_user = 'is_student'
-        if user:
+        if is_user:
             if is_user == 'is_teacher':
                 user = http.request.env.user.employee_id
                 search_domain.append(('employee_id', '=', user.id))
@@ -335,7 +335,7 @@ class Helpers:
         elif http.request.env.user.student_id.id:
             user = http.request.env.user.student_id
             is_user = 'is_student'
-        if user:
+        if is_user:
             if is_user == 'is_teacher':
                 user = http.request.env.user.employee_id
                 search_domain.append(('employee_id', '=', user.id))
@@ -427,7 +427,7 @@ class Helpers:
         elif http.request.env.user.student_id.id:
             user = http.request.env.user.student_id
             is_user = 'is_student'
-        if user:
+        if is_user:
             if is_user == 'is_teacher':
                 user = http.request.env.user.employee_id
                 search_domain.append(('employee_id', '=', user.id))
@@ -521,7 +521,7 @@ class Helpers:
         elif http.request.env.user.student_id.id:
             user = http.request.env.user.student_id
             is_user = 'is_student'
-        if user:
+        if is_user:
             if is_user == 'is_teacher':
                 user = http.request.env.user.employee_id
                 search_domain.append(('employee_id', '=', user.id))
