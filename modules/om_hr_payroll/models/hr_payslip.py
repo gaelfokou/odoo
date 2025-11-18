@@ -302,14 +302,6 @@ class HrPayslip(models.Model):
 
         return res
 
-    def unlink(self):
-        if not self.env.user.has_group('om_hr_payroll.group_hr_payroll_perm_unlink'):
-            raise ValidationError(_("Vous n'êtes pas autorisé à supprimer les enregistrements 'Bulletin de paie (hr.payslip)'."))
-
-        res = super(HrPayslip, self).unlink()
-
-        return res
-
     @api.model
     def create(self, vals):
         payslip_id = super(HrPayslip, self).create(vals)
@@ -752,9 +744,15 @@ class HrPayslip(models.Model):
         return True
 
     def unlink(self):
+        if not self.env.user.has_group('om_hr_payroll.group_hr_payroll_perm_unlink'):
+            raise ValidationError(_("Vous n'êtes pas autorisé à supprimer les enregistrements 'Bulletin de paie (hr.payslip)'."))
+
         if any(self.filtered(lambda payslip: payslip.state not in ('draft', 'cancel'))):
             raise UserError(_('You cannot delete a payslip which is not draft or cancelled!'))
-        return super(HrPayslip, self).unlink()
+
+        res = super(HrPayslip, self).unlink()
+
+        return res
 
     # TODO move this function into hr_contract module, on hr.employee object
     @api.model
