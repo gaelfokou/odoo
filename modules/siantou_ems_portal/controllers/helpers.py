@@ -319,6 +319,7 @@ class Helpers:
 
         search_domain.append(('group_id.is_active', '=', True))
         search_domain.append(('group_id.is_submit', '=', False))
+        search_domain.append(('status', 'in', ['present', 'permission']))
 
         order = 'date asc'
 
@@ -821,30 +822,22 @@ class Helpers:
                 consumptionhours[key_class]['data'][key_subject]['name'] = d['subject_name']
                 consumptionhours[key_class]['data'][key_subject]['data'] = {
                     'credit': 0,
-                    'all': [],
                     'done': [],
                 }
                 consumptionhours[key_class]['data'][key_subject]['data']['credit'] = d['subject_hours_credit']
-                consumptionhours[key_class]['data'][key_subject]['data']['all'].append(d)
-                if d['status'] in ['present', 'permission']:
-                    consumptionhours[key_class]['data'][key_subject]['data']['done'].append(d)
+                consumptionhours[key_class]['data'][key_subject]['data']['done'].append(d)
             else:
                 if key_subject not in consumptionhours[key_class]['data']:
                     consumptionhours[key_class]['data'][key_subject] = {}
                     consumptionhours[key_class]['data'][key_subject]['name'] = d['subject_name']
                     consumptionhours[key_class]['data'][key_subject]['data'] = {
                         'credit': 0,
-                        'all': [],
                         'done': [],
                     }
                     consumptionhours[key_class]['data'][key_subject]['data']['credit'] = d['subject_hours_credit']
-                    consumptionhours[key_class]['data'][key_subject]['data']['all'].append(d)
-                    if d['status'] in ['present', 'permission']:
-                        consumptionhours[key_class]['data'][key_subject]['data']['done'].append(d)
+                    consumptionhours[key_class]['data'][key_subject]['data']['done'].append(d)
                 else:
-                    consumptionhours[key_class]['data'][key_subject]['data']['all'].append(d)
-                    if d['status'] in ['present', 'permission']:
-                        consumptionhours[key_class]['data'][key_subject]['data']['done'].append(d)
+                    consumptionhours[key_class]['data'][key_subject]['data']['done'].append(d)
 
         for key_class in consumptionhours.keys():
             consumptionhours[key_class]['hours_credit'] = 0.0
@@ -852,16 +845,14 @@ class Helpers:
             consumptionhours[key_class]['total_done'] = 0.0
             consumptionhours[key_class]['total_awaiting'] = 0.0
             for key_subject in consumptionhours[key_class]['data'].keys():
-                consumptionhours[key_class]['data'][key_subject]['data']['all'] = sum([Helpers.convert_number_of_hours(v) for v in consumptionhours[key_class]['data'][key_subject]['data']['all']])
                 consumptionhours[key_class]['data'][key_subject]['data']['done'] = sum([Helpers.convert_number_of_hours(v) for v in consumptionhours[key_class]['data'][key_subject]['data']['done']])
-                # consumptionhours[key_class]['data'][key_subject]['data']['awaiting'] = consumptionhours[key_class]['data'][key_subject]['data']['all'] - consumptionhours[key_class]['data'][key_subject]['data']['done']
                 consumptionhours[key_class]['data'][key_subject]['data']['awaiting'] = consumptionhours[key_class]['data'][key_subject]['data']['credit'] - consumptionhours[key_class]['data'][key_subject]['data']['done']
-                consumptionhours[key_class]['data'][key_subject]['data']['all'] = round(consumptionhours[key_class]['data'][key_subject]['data']['all'], 2)
+                consumptionhours[key_class]['data'][key_subject]['data']['done'] = round(consumptionhours[key_class]['data'][key_subject]['data']['done'], 2)
                 consumptionhours[key_class]['data'][key_subject]['data']['done'] = round(consumptionhours[key_class]['data'][key_subject]['data']['done'], 2)
                 consumptionhours[key_class]['data'][key_subject]['data']['awaiting'] = round(consumptionhours[key_class]['data'][key_subject]['data']['awaiting'], 2)
 
                 consumptionhours[key_class]['hours_credit'] += consumptionhours[key_class]['data'][key_subject]['data']['credit']
-                consumptionhours[key_class]['total_all'] += consumptionhours[key_class]['data'][key_subject]['data']['all']
+                consumptionhours[key_class]['total_all'] += consumptionhours[key_class]['data'][key_subject]['data']['done']
                 consumptionhours[key_class]['total_done'] += consumptionhours[key_class]['data'][key_subject]['data']['done']
                 consumptionhours[key_class]['total_awaiting'] += consumptionhours[key_class]['data'][key_subject]['data']['awaiting']
 

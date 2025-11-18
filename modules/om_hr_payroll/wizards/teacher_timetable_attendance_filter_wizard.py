@@ -106,12 +106,19 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
 
         domain = []
         title = []
-        if self.employee_id.id:
-            domain.append(('employee_id', '=', self.employee_id.id))
-            title.append(self.employee_id.name)
 
         domain.append(('group_id.is_active', '=', True))
         domain.append(('group_id.is_submit', '=', False))
+        domain.append(('status', 'in', ['present', 'permission']))
+
+        if self.is_permanent:
+            title.append('Est un permanent')
+
+        domain.append(('employee_id.is_permanent', '=', self.is_permanent))
+
+        if self.employee_id.id:
+            domain.append(('employee_id', '=', self.employee_id.id))
+            title.append(self.employee_id.name)
 
         order = 'date asc'
 
@@ -154,13 +161,6 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
             consumptionhour['status'] = search_consumptionhour.status
             consumptionhours.append(consumptionhour)
         consumptionhours = TeacherTimetableAttendanceFilterWizard.format_consumptionhour(consumptionhours)
-
-        domain.append(('status', 'in', ['present', 'permission']))
-
-        if self.is_permanent:
-            title.append('Est un permanent')
-
-        domain.append(('employee_id.is_permanent', '=', self.is_permanent))
 
         timetables = self.env['siantou.ems.timetable.timetable'].search(domain, order=order)
         if self.start_date and self.end_date:
@@ -296,7 +296,7 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
             if key_class in consumptionhours:
                 if key_subject in consumptionhours[key_class]['data']:
                     hours_credit = consumptionhours[key_class]['data'][key_subject]['data']['credit']
-                    total_all = consumptionhours[key_class]['data'][key_subject]['data']['all']
+                    total_all = consumptionhours[key_class]['data'][key_subject]['data']['done']
                     total_done = consumptionhours[key_class]['data'][key_subject]['data']['done']
                     total_awaiting = consumptionhours[key_class]['data'][key_subject]['data']['awaiting']
 
@@ -374,30 +374,22 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
                 consumptionhours[key_class]['data'][key_subject]['name'] = d['subject_name']
                 consumptionhours[key_class]['data'][key_subject]['data'] = {
                     'credit': 0,
-                    'all': [],
                     'done': [],
                 }
                 consumptionhours[key_class]['data'][key_subject]['data']['credit'] = d['subject_hours_credit']
-                consumptionhours[key_class]['data'][key_subject]['data']['all'].append(d)
-                if d['status'] in ['present', 'permission']:
-                    consumptionhours[key_class]['data'][key_subject]['data']['done'].append(d)
+                consumptionhours[key_class]['data'][key_subject]['data']['done'].append(d)
             else:
                 if key_subject not in consumptionhours[key_class]['data']:
                     consumptionhours[key_class]['data'][key_subject] = {}
                     consumptionhours[key_class]['data'][key_subject]['name'] = d['subject_name']
                     consumptionhours[key_class]['data'][key_subject]['data'] = {
                         'credit': 0,
-                        'all': [],
                         'done': [],
                     }
                     consumptionhours[key_class]['data'][key_subject]['data']['credit'] = d['subject_hours_credit']
-                    consumptionhours[key_class]['data'][key_subject]['data']['all'].append(d)
-                    if d['status'] in ['present', 'permission']:
-                        consumptionhours[key_class]['data'][key_subject]['data']['done'].append(d)
+                    consumptionhours[key_class]['data'][key_subject]['data']['done'].append(d)
                 else:
-                    consumptionhours[key_class]['data'][key_subject]['data']['all'].append(d)
-                    if d['status'] in ['present', 'permission']:
-                        consumptionhours[key_class]['data'][key_subject]['data']['done'].append(d)
+                    consumptionhours[key_class]['data'][key_subject]['data']['done'].append(d)
 
         for key_class in consumptionhours.keys():
             consumptionhours[key_class]['hours_credit'] = 0.0
@@ -405,16 +397,14 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
             consumptionhours[key_class]['total_done'] = 0.0
             consumptionhours[key_class]['total_awaiting'] = 0.0
             for key_subject in consumptionhours[key_class]['data'].keys():
-                consumptionhours[key_class]['data'][key_subject]['data']['all'] = sum([TeacherTimetableAttendanceFilterWizard.convert_number_of_hours(v) for v in consumptionhours[key_class]['data'][key_subject]['data']['all']])
                 consumptionhours[key_class]['data'][key_subject]['data']['done'] = sum([TeacherTimetableAttendanceFilterWizard.convert_number_of_hours(v) for v in consumptionhours[key_class]['data'][key_subject]['data']['done']])
-                # consumptionhours[key_class]['data'][key_subject]['data']['awaiting'] = consumptionhours[key_class]['data'][key_subject]['data']['all'] - consumptionhours[key_class]['data'][key_subject]['data']['done']
                 consumptionhours[key_class]['data'][key_subject]['data']['awaiting'] = consumptionhours[key_class]['data'][key_subject]['data']['credit'] - consumptionhours[key_class]['data'][key_subject]['data']['done']
-                consumptionhours[key_class]['data'][key_subject]['data']['all'] = round(consumptionhours[key_class]['data'][key_subject]['data']['all'], 2)
+                consumptionhours[key_class]['data'][key_subject]['data']['done'] = round(consumptionhours[key_class]['data'][key_subject]['data']['done'], 2)
                 consumptionhours[key_class]['data'][key_subject]['data']['done'] = round(consumptionhours[key_class]['data'][key_subject]['data']['done'], 2)
                 consumptionhours[key_class]['data'][key_subject]['data']['awaiting'] = round(consumptionhours[key_class]['data'][key_subject]['data']['awaiting'], 2)
 
                 consumptionhours[key_class]['hours_credit'] += consumptionhours[key_class]['data'][key_subject]['data']['credit']
-                consumptionhours[key_class]['total_all'] += consumptionhours[key_class]['data'][key_subject]['data']['all']
+                consumptionhours[key_class]['total_all'] += consumptionhours[key_class]['data'][key_subject]['data']['done']
                 consumptionhours[key_class]['total_done'] += consumptionhours[key_class]['data'][key_subject]['data']['done']
                 consumptionhours[key_class]['total_awaiting'] += consumptionhours[key_class]['data'][key_subject]['data']['awaiting']
 
