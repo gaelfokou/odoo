@@ -183,10 +183,6 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
 
         if self.status:
             title.append(STATUS_ATTENDANCE[self.status])
-            if self.status == 'paid':
-                timetables = timetables.filtered(lambda rec: rec.id in timetable_ids)
-            elif self.status == 'unpaid':
-                timetables = timetables.filtered(lambda rec: rec.id not in timetable_ids)
 
         key_timetables = {}
         for timetable in timetables:
@@ -200,6 +196,13 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
                 key_timetables[key] = timetable
             else:
                 continue
+
+            if self.status == 'paid':
+                if timetable.id not in timetable_ids:
+                    continue
+            elif self.status == 'unpaid':
+                if timetable.id in timetable_ids:
+                    continue
 
             if timetable.status == 'present':
                 end_time = TeacherTimetableAttendanceFilterWizard.convert_float_to_time(timetable.worked_end_time, True)
