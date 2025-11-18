@@ -42,7 +42,6 @@ TYPE_COUR = {
 }
 
 STATUS_ATTENDANCE = {
-    'all': 'Tout',
     'paid': 'Payé',
     'unpaid': 'Non payé',
 }
@@ -88,11 +87,10 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
     )
 
     status = fields.Selection([
-        ('all', 'Tout'),
         ('paid', 'Payé'),
         ('unpaid', 'Non payé'),
     ], 'Statut',
-        default='all',
+        # default='unpaid',
     )
 
     # Contrainte logique pour s'assurer que les dates de début et de fin sont définies et que la date de fin est supérieure à la date de début
