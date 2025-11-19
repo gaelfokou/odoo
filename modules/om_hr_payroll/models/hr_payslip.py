@@ -140,6 +140,16 @@ class HrPayslip(models.Model):
         return tm
 
     def filter_daily_attendance(self, end_date, start_date, employee=None):
+        min_start_time = self.env['ir.config_parameter'].sudo().get_param(f'siantou.min_start_time')
+        if not min_start_time:
+            min_start_time = '30'
+            self.env['ir.config_parameter'].sudo().set_param(f'siantou.min_start_time', min_start_time)
+        max_end_time = self.env['ir.config_parameter'].sudo().get_param(f'siantou.max_end_time')
+        if not max_end_time:
+            max_end_time = '15'
+            self.env['ir.config_parameter'].sudo().set_param(f'siantou.max_end_time', max_end_time)
+        min_start_time = int(min_start_time)
+        max_end_time = int(max_end_time)
         # Filtre des données biométriques de l'enseignant pour une période donnée
         end_date = datetime.strftime(end_date, DATE_FORMAT)
         start_date = datetime.strftime(start_date, DATE_FORMAT)
@@ -150,11 +160,11 @@ class HrPayslip(models.Model):
         datetime_to = datetime.strptime(f"{end_date} {end_time}", DATETIME_FORMAT)
         datetime_from = datetime.strptime(f"{start_date} {start_time}", DATETIME_FORMAT)
 
-        datetime_before = datetime_from - timedelta(minutes=15)
-        # datetime_from = datetime_from + timedelta(minutes=15)
+        datetime_before = datetime_from - timedelta(minutes=max_end_time)
+        # datetime_from = datetime_from + timedelta(minutes=max_end_time)
 
-        datetime_after = datetime_to + timedelta(minutes=15)
-        # datetime_to = datetime_to - timedelta(minutes=15)
+        datetime_after = datetime_to + timedelta(minutes=max_end_time)
+        # datetime_to = datetime_to - timedelta(minutes=max_end_time)
 
         datetime_before = HrPayslip.convert_datetime_to_utc(datetime_before)
         # datetime_from = HrPayslip.convert_datetime_to_utc(datetime_from)
@@ -173,6 +183,16 @@ class HrPayslip(models.Model):
         return daily_attendances
 
     def filter_daily_attendance_teacher(self, current_date, end_time, start_time, employee=None):
+        min_start_time = self.env['ir.config_parameter'].sudo().get_param(f'siantou.min_start_time')
+        if not min_start_time:
+            min_start_time = '30'
+            self.env['ir.config_parameter'].sudo().set_param(f'siantou.min_start_time', min_start_time)
+        max_end_time = self.env['ir.config_parameter'].sudo().get_param(f'siantou.max_end_time')
+        if not max_end_time:
+            max_end_time = '15'
+            self.env['ir.config_parameter'].sudo().set_param(f'siantou.max_end_time', max_end_time)
+        min_start_time = int(min_start_time)
+        max_end_time = int(max_end_time)
         # Filtre des données biométriques de l'enseignant pour une période donnée
         current_date = datetime.strftime(current_date, DATE_FORMAT)
 
@@ -182,11 +202,11 @@ class HrPayslip(models.Model):
         datetime_to = datetime.strptime(f"{current_date} {end_time}", DATETIME_FORMAT)
         datetime_from = datetime.strptime(f"{current_date} {start_time}", DATETIME_FORMAT)
 
-        datetime_before = datetime_from - timedelta(minutes=30)
-        # datetime_from = datetime_from + timedelta(minutes=15)
+        datetime_before = datetime_from - timedelta(minutes=min_start_time)
+        # datetime_from = datetime_from + timedelta(minutes=max_end_time)
 
-        datetime_after = datetime_to + timedelta(minutes=15)
-        # datetime_to = datetime_to - timedelta(minutes=15)
+        datetime_after = datetime_to + timedelta(minutes=max_end_time)
+        # datetime_to = datetime_to - timedelta(minutes=max_end_time)
 
         datetime_before = HrPayslip.convert_datetime_to_utc(datetime_before)
         datetime_from = HrPayslip.convert_datetime_to_utc(datetime_from)
@@ -404,10 +424,17 @@ class HrPayslip(models.Model):
     @api.model
     def cron_timetable_presence(self):
         _logger.info(f'+++++++++++ Cron Timetable Presence Executed +++++++++++')
+
+        max_cron_time = self.env['ir.config_parameter'].sudo().get_param(f'siantou.max_cron_time')
+        if not max_cron_time:
+            max_cron_time = '15'
+            self.env['ir.config_parameter'].sudo().set_param(f'siantou.max_cron_time', max_cron_time)
+        max_cron_time = int(max_cron_time)
+
         datetime_from = datetime.now()
         datetime_from = datetime_from + timedelta(hours=1)
 
-        datetime_before = datetime_from - timedelta(minutes=15)
+        datetime_before = datetime_from - timedelta(minutes=max_cron_time)
         current_date = datetime_before.date()
 
         time_before = datetime.strftime(datetime_before, TIME_FORMAT_FR)
@@ -480,10 +507,17 @@ class HrPayslip(models.Model):
     @api.model
     def cron_timetable_rappel(self):
         _logger.info(f'+++++++++++ Cron Timetable Rappel Executed +++++++++++')
+
+        max_cron_time = self.env['ir.config_parameter'].sudo().get_param(f'siantou.max_cron_time')
+        if not max_cron_time:
+            max_cron_time = '15'
+            self.env['ir.config_parameter'].sudo().set_param(f'siantou.max_cron_time', max_cron_time)
+        max_cron_time = int(max_cron_time)
+
         datetime_from = datetime.now()
         datetime_from = datetime_from + timedelta(days=1, hours=1)
 
-        datetime_before = datetime_from - timedelta(minutes=15)
+        datetime_before = datetime_from - timedelta(minutes=max_cron_time)
         current_date = datetime_before.date()
 
         time_before = datetime.strftime(datetime_before, TIME_FORMAT_FR)
@@ -526,10 +560,17 @@ class HrPayslip(models.Model):
     @api.model
     def cron_timetable_retard(self):
         _logger.info(f'+++++++++++ Cron Timetable Retard Executed +++++++++++')
+
+        max_cron_time = self.env['ir.config_parameter'].sudo().get_param(f'siantou.max_cron_time')
+        if not max_cron_time:
+            max_cron_time = '15'
+            self.env['ir.config_parameter'].sudo().set_param(f'siantou.max_cron_time', max_cron_time)
+        max_cron_time = int(max_cron_time)
+
         datetime_from = datetime.now()
         datetime_from = datetime_from + timedelta(hours=1)
 
-        datetime_before = datetime_from - timedelta(minutes=15)
+        datetime_before = datetime_from - timedelta(minutes=max_cron_time)
         current_date = datetime_before.date()
 
         time_before = datetime.strftime(datetime_before, TIME_FORMAT_FR)
@@ -573,6 +614,16 @@ class HrPayslip(models.Model):
                             })
 
     def search_filtered_daily_attendance_teacher(self, rec, punching_time):
+        min_start_time = self.env['ir.config_parameter'].sudo().get_param(f'siantou.min_start_time')
+        if not min_start_time:
+            min_start_time = '30'
+            self.env['ir.config_parameter'].sudo().set_param(f'siantou.min_start_time', min_start_time)
+        max_end_time = self.env['ir.config_parameter'].sudo().get_param(f'siantou.max_end_time')
+        if not max_end_time:
+            max_end_time = '15'
+            self.env['ir.config_parameter'].sudo().set_param(f'siantou.max_end_time', max_end_time)
+        min_start_time = int(min_start_time)
+        max_end_time = int(max_end_time)
         # Filtre des données biométriques de l'enseignant pour une période donnée
         current_date = datetime.strftime(rec.date, DATE_FORMAT)
 
@@ -582,11 +633,11 @@ class HrPayslip(models.Model):
         datetime_to = datetime.strptime(f"{current_date} {end_time}", DATETIME_FORMAT)
         datetime_from = datetime.strptime(f"{current_date} {start_time}", DATETIME_FORMAT)
 
-        datetime_before = datetime_from - timedelta(minutes=30)
-        # datetime_from = datetime_from + timedelta(minutes=15)
+        datetime_before = datetime_from - timedelta(minutes=min_start_time)
+        # datetime_from = datetime_from + timedelta(minutes=max_end_time)
 
-        datetime_after = datetime_to + timedelta(minutes=15)
-        # datetime_to = datetime_to - timedelta(minutes=15)
+        datetime_after = datetime_to + timedelta(minutes=max_end_time)
+        # datetime_to = datetime_to - timedelta(minutes=max_end_time)
 
         datetime_before = HrPayslip.convert_datetime_to_utc(datetime_before)
         datetime_from = HrPayslip.convert_datetime_to_utc(datetime_from)
@@ -599,11 +650,18 @@ class HrPayslip(models.Model):
     @api.model
     def cron_timetable_exception(self):
         _logger.info(f'+++++++++++ Cron Timetable Exception Executed +++++++++++')
+
+        max_cron_time = self.env['ir.config_parameter'].sudo().get_param(f'siantou.max_cron_time')
+        if not max_cron_time:
+            max_cron_time = '15'
+            self.env['ir.config_parameter'].sudo().set_param(f'siantou.max_cron_time', max_cron_time)
+        max_cron_time = int(max_cron_time)
+
         datetime_from = datetime.now()
         datetime_from = datetime_from + timedelta(hours=1)
         current_date = datetime_from.date()
 
-        datetime_before = datetime_from - timedelta(minutes=15)
+        datetime_before = datetime_from - timedelta(minutes=max_cron_time)
 
         _logger.info(f'----------- tototototototo datetime_from {datetime.strftime(datetime_from, DATETIME_FORMAT)} -----------')
         _logger.info(f'----------- tototototototo datetime_before {datetime.strftime(datetime_before, DATETIME_FORMAT)} -----------')
