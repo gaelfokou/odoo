@@ -343,7 +343,7 @@ class TeacherTimetableAttendance(models.TransientModel):
                     if timetable['employee_id'] not in employee_ids:
                         employee_ids.append(timetable['employee_id'])
 
-        timetable_ids = []
+        key_payslips = {}
         employees = self.env['hr.employee'].search([('id', 'in', employee_ids)])
         for employee in employees:
             if not employee.is_teacher:
@@ -355,7 +355,13 @@ class TeacherTimetableAttendance(models.TransientModel):
             paymenthistories = list(paymenthistories)
             for paymenthistory in paymenthistories:
                 for worked_days_line_id in paymenthistory.worked_days_line_ids:
-                    timetable_ids.append(worked_days_line_id.timetable_id.id)
+                    end_time = TeacherTimetableAttendance.convert_float_to_time(worked_days_line_id.timetable_id.end_time, True)
+                    start_time = TeacherTimetableAttendance.convert_float_to_time(worked_days_line_id.timetable_id.start_time, True)
+                    key = '{}-{}-{}-{}'.format(worked_days_line_id.timetable_id.employee_id.id, worked_days_line_id.timetable_id.date, start_time, end_time)
+                    if key not in key_payslips:
+                        key_payslips[key] = worked_days_line_id.timetable_id.id
+
+        timetable_ids = key_payslips.values()
 
         teacher_timetable_attendance_ids = []
         teacher_timetable_attendance_data = dict(sorted(data['docdata']['teacher_timetable_attendance_data'].items(), key=lambda item: item[1]['name']))

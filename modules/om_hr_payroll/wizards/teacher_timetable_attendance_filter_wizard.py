@@ -120,9 +120,9 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
             domain.append(('employee_id', '=', self.employee_id.id))
             title.append(self.employee_id.name)
 
-        order = 'id asc, date asc'
+        order = 'date asc, id asc'
 
-        search_consumptionhours = self.env['siantou.ems.timetable.timetable'].search(domain, order=order).sorted(lambda rec: (rec.id, rec.date))
+        search_consumptionhours = self.env['siantou.ems.timetable.timetable'].search(domain, order=order).sorted(lambda rec: (rec.date, rec.id))
         consumptionhours = []
         for search_consumptionhour in search_consumptionhours:
             if not search_consumptionhour.date or not search_consumptionhour.day_of_week:
@@ -162,7 +162,7 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
             consumptionhours.append(consumptionhour)
         consumptionhours = TeacherTimetableAttendanceFilterWizard.format_consumptionhour(consumptionhours)
 
-        timetables = self.env['siantou.ems.timetable.timetable'].search(domain, order=order).sorted(lambda rec: (rec.id, rec.date))
+        timetables = self.env['siantou.ems.timetable.timetable'].search(domain, order=order).sorted(lambda rec: (rec.date, rec.id))
         if self.start_date and self.end_date:
             start_date = datetime.strftime(self.start_date, DATE_FORMAT_FR)
             end_date = datetime.strftime(self.end_date, DATE_FORMAT_FR)
@@ -170,7 +170,7 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
             timetables = timetables.filtered(lambda rec: rec.date and rec.day_of_week and rec.date >= self.start_date and rec.date <= self.end_date)
 
         order = 'date_from asc'
-        timetable_ids = []
+        key_payslips = {}
         employee_ids = []
         for timetable in timetables:
             if timetable.employee_id.id not in employee_ids:
@@ -178,11 +178,21 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
                 paymenthistories = list(paymenthistories)
                 for paymenthistory in paymenthistories:
                     for worked_days_line_id in paymenthistory.worked_days_line_ids:
-                        timetable_ids.append(worked_days_line_id.timetable_id.id)
+                        end_time = TeacherTimetableAttendanceFilterWizard.convert_float_to_time(worked_days_line_id.timetable_id.end_time, True)
+                        start_time = TeacherTimetableAttendanceFilterWizard.convert_float_to_time(worked_days_line_id.timetable_id.start_time, True)
+                        key = '{}-{}-{}-{}'.format(worked_days_line_id.timetable_id.employee_id.id, worked_days_line_id.timetable_id.date, start_time, end_time)
+                        if key not in key_payslips:
+                            key_payslips[key] = worked_days_line_id.timetable_id.id
                 employee_ids.append(timetable.employee_id.id)
+
+        timetable_ids = key_payslips.values()
 
         if self.status:
             title.append(STATUS_ATTENDANCE[self.status])
+            if self.status == 'paid':
+                timetables = timetables.filtered(lambda rec: rec.id in timetable_ids)
+            elif self.status == 'unpaid':
+                timetables = timetables.filtered(lambda rec: rec.id not in timetable_ids)
 
         key_timetables = {}
         for timetable in timetables:
@@ -192,17 +202,12 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
             end_time = TeacherTimetableAttendanceFilterWizard.convert_float_to_time(timetable.end_time, True)
             start_time = TeacherTimetableAttendanceFilterWizard.convert_float_to_time(timetable.start_time, True)
             key = '{}-{}-{}-{}'.format(timetable.employee_id.id, timetable.date, start_time, end_time)
+            if key in key_payslips and key_payslips[key] != timetable.id:
+                continue
             if key not in key_timetables:
                 key_timetables[key] = timetable
             else:
                 continue
-
-            if self.status == 'paid':
-                if timetable.id not in timetable_ids:
-                    continue
-            elif self.status == 'unpaid':
-                if timetable.id in timetable_ids:
-                    continue
 
             if timetable.status == 'present':
                 end_time = TeacherTimetableAttendanceFilterWizard.convert_float_to_time(timetable.worked_end_time, True)

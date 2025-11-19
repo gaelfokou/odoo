@@ -362,9 +362,9 @@ class ProgressReport(models.Model):
             search_domain.append(('group_id.is_active', '=', True))
             search_domain.append(('group_id.is_submit', '=', False))
 
-            order = 'id asc, date asc'
+            order = 'date asc, id asc'
 
-            search_progressreports = self.env['siantou.ems.timetable.timetable'].search(search_domain, order=order).sorted(lambda rec: (rec.id, rec.date))
+            search_progressreports = self.env['siantou.ems.timetable.timetable'].search(search_domain, order=order).sorted(lambda rec: (rec.date, rec.id))
             search_progressreports = list(search_progressreports)
             data = []
             for search_progressreport in search_progressreports:

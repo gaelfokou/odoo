@@ -613,7 +613,7 @@ class HrPayslip(models.Model):
 
         daily_attendances = self.env['daily.attendance'].sudo().search([
             ('punch_type', 'in', ['0', '1'])
-        ], order='punching_time asc').filtered(lambda rec: UTC_TZ.localize(rec.punching_time) >= datetime_before and UTC_TZ.localize(rec.punching_time) <= datetime_from)
+        ], order='punching_time asc').filtered(lambda rec: UTC_TZ.localize(rec.punching_time) >= datetime_before and UTC_TZ.localize(rec.punching_time) <= datetime_from).sorted(lambda rec: UTC_TZ.localize(rec.punching_time))
         daily_attendances = list(daily_attendances)
         for daily_attendance in daily_attendances:
             punching_time = daily_attendance.punching_time
