@@ -465,5 +465,54 @@
             <field name="category_id" ref="siantou_ems_core.module_category_school_management"/>
             <field name="implied_ids" eval="[(4, ref('base.group_system'))]"/>
         </record>
+
+        <!-- action emploi du temps -->
+        <record id="group_timetable_present_perm_write" model="res.groups">
+            <field name="name">Modifier (status in [present, permission]) - Emplois du temps</field>
+            <field name="category_id" ref="siantou_ems_core.module_category_school_management"/>
+            <field name="implied_ids" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+        </record>
+        <record id="group_timetable_present_perm_copy" model="res.groups">
+            <field name="name">Dupliquer (status in [present, permission]) - Emplois du temps</field>
+            <field name="category_id" ref="siantou_ems_core.module_category_school_management"/>
+            <field name="implied_ids" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+        </record>
+        <record id="group_timetable_present_perm_unlink" model="res.groups">
+            <field name="name">Supprimer (status in [present, permission]) - Emplois du temps</field>
+            <field name="category_id" ref="siantou_ems_core.module_category_school_management"/>
+            <field name="implied_ids" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+        </record>
+
+        <record id="group_timetable_exception_perm_write" model="res.groups">
+            <field name="name">Modifier (status = exception) - Emplois du temps</field>
+            <field name="category_id" ref="siantou_ems_core.module_category_school_management"/>
+            <field name="implied_ids" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+        </record>
+        <record id="group_timetable_exception_perm_copy" model="res.groups">
+            <field name="name">Dupliquer (status = exception) - Emplois du temps</field>
+            <field name="category_id" ref="siantou_ems_core.module_category_school_management"/>
+            <field name="implied_ids" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+        </record>
+        <record id="group_timetable_exception_perm_unlink" model="res.groups">
+            <field name="name">Supprimer (status = exception) - Emplois du temps</field>
+            <field name="category_id" ref="siantou_ems_core.module_category_school_management"/>
+            <field name="implied_ids" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+        </record>
+
+        <record id="group_timetable_perm_write" model="res.groups">
+            <field name="name">Modifier - Emplois du temps</field>
+            <field name="category_id" ref="siantou_ems_core.module_category_school_management"/>
+            <field name="implied_ids" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+        </record>
+        <record id="group_timetable_perm_copy" model="res.groups">
+            <field name="name">Dupliquer - Emplois du temps</field>
+            <field name="category_id" ref="siantou_ems_core.module_category_school_management"/>
+            <field name="implied_ids" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+        </record>
+        <record id="group_timetable_perm_unlink" model="res.groups">
+            <field name="name">Supprimer - Emplois du temps</field>
+            <field name="category_id" ref="siantou_ems_core.module_category_school_management"/>
+            <field name="implied_ids" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+        </record>
     </data>
 </odoo>
