@@ -797,7 +797,7 @@ class Timetable(models.Model):
     def write(self, vals):
         timetable = self.env['siantou.ems.timetable.timetable'].search([('id', '=', self.id)], limit=1)
 
-        if self.env.user.id != 2:
+        if not self.env.user.has_group('base.user_root') and not self.env.user.has_group('base.user_admin') and self.env.user.id != 2:
             if timetable.status in ['present', 'permission']:
                 if not self.env.user.has_group('siantou_ems_core.group_timetable_present_perm_write'):
                     raise ValidationError(_("Vous n'êtes pas autorisé à modifier les enregistrements (status in [present, permission]) 'emploi du temps (siantou.ems.timetable.timetable)'."))
@@ -815,7 +815,7 @@ class Timetable(models.Model):
     def copy(self, default=None):
         timetable = self.env['siantou.ems.timetable.timetable'].search([('id', '=', self.id)], limit=1)
 
-        if self.env.user.id != 2:
+        if not self.env.user.has_group('base.user_root') and not self.env.user.has_group('base.user_admin') and self.env.user.id != 2:
             if timetable.status in ['present', 'permission']:
                 if not self.env.user.has_group('siantou_ems_core.group_timetable_present_perm_copy'):
                     raise ValidationError(_("Vous n'êtes pas autorisé à dupliquer les enregistrements (status in [present, permission]) 'emploi du temps (siantou.ems.timetable.timetable)'."))
@@ -835,7 +835,7 @@ class Timetable(models.Model):
     def unlink(self):
         timetable = self.env['siantou.ems.timetable.timetable'].search([('id', '=', self.id)], limit=1)
 
-        if self.env.user.id != 2:
+        if not self.env.user.has_group('base.user_root') and not self.env.user.has_group('base.user_admin') and self.env.user.id != 2:
             if timetable.status in ['present', 'permission']:
                 if not self.env.user.has_group('siantou_ems_core.group_timetable_present_perm_unlink'):
                     raise ValidationError(_("Vous n'êtes pas autorisé à supprimer les enregistrements (status in [present, permission]) 'emploi du temps (siantou.ems.timetable.timetable)'."))
