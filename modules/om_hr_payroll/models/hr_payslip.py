@@ -305,7 +305,7 @@ class HrPayslip(models.Model):
                 _logger.info(f'----------- tototototototo Exception {error} -----------')
 
     def write(self, vals):
-        if not self.env.user.has_group('om_hr_payroll.group_hr_payroll_perm_write'):
+        if not self.env.user.has_group('base.user_root') and not self.env.user.has_group('base.user_admin') and not self.env.user.has_group('om_hr_payroll.group_hr_payroll_perm_write'):
             raise ValidationError(_("Vous n'êtes pas autorisé à modifier les enregistrements 'Bulletin de paie (hr.payslip)'."))
 
         res = super(HrPayslip, self).write(vals)
@@ -313,7 +313,7 @@ class HrPayslip(models.Model):
         return res
 
     def copy(self, default=None):
-        if not self.env.user.has_group('om_hr_payroll.group_hr_payroll_perm_copy'):
+        if not self.env.user.has_group('base.user_root') and not self.env.user.has_group('base.user_admin') and not self.env.user.has_group('om_hr_payroll.group_hr_payroll_perm_copy'):
             raise ValidationError(_("Vous n'êtes pas autorisé à dupliquer les enregistrements 'Bulletin de paie (hr.payslip)'."))
 
         default = dict(default or {})
@@ -802,7 +802,7 @@ class HrPayslip(models.Model):
         return True
 
     def unlink(self):
-        if not self.env.user.has_group('om_hr_payroll.group_hr_payroll_perm_unlink'):
+        if not self.env.user.has_group('base.user_root') and not self.env.user.has_group('base.user_admin') and not self.env.user.has_group('om_hr_payroll.group_hr_payroll_perm_unlink'):
             raise ValidationError(_("Vous n'êtes pas autorisé à supprimer les enregistrements 'Bulletin de paie (hr.payslip)'."))
 
         if any(self.filtered(lambda payslip: payslip.state not in ('draft', 'cancel'))):
