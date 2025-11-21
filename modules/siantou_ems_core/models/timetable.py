@@ -788,6 +788,11 @@ class Timetable(models.Model):
 
     @api.model
     def create(self, vals):
+        if not self.env.user.has_group('base.user_root') and not self.env.user.has_group('base.user_admin') and self.env.user.id != 2:
+            if 'status' in vals and vals['status'] in ['present', 'permission']:
+                if not self.env.user.has_group('siantou_ems_core.group_timetable_present_perm_create_present'):
+                    raise ValidationError(_("Vous n'êtes pas autorisé à créer les enregistrements pour (status in [present, permission]) 'emploi du temps (siantou.ems.timetable.timetable)'."))
+
         timetable = super(Timetable, self).create(vals)
 
         self.create_timetable(timetable)
@@ -805,8 +810,12 @@ class Timetable(models.Model):
                 if not self.env.user.has_group('siantou_ems_core.group_timetable_exception_perm_write'):
                     raise ValidationError(_("Vous n'êtes pas autorisé à modifier les enregistrements (status = exception) 'emploi du temps (siantou.ems.timetable.timetable)'."))
             else:
-                if not self.env.user.has_group('siantou_ems_core.group_timetable_perm_write'):
-                    raise ValidationError(_("Vous n'êtes pas autorisé à modifier les enregistrements 'emploi du temps (siantou.ems.timetable.timetable)'."))
+                if 'status' in vals and vals['status'] in ['present', 'permission']:
+                    if not self.env.user.has_group('siantou_ems_core.group_timetable_present_perm_write_present'):
+                        raise ValidationError(_("Vous n'êtes pas autorisé à modifier les enregistrements pour (status in [present, permission]) 'emploi du temps (siantou.ems.timetable.timetable)'."))
+                else:
+                    if not self.env.user.has_group('siantou_ems_core.group_timetable_perm_write'):
+                        raise ValidationError(_("Vous n'êtes pas autorisé à modifier les enregistrements 'emploi du temps (siantou.ems.timetable.timetable)'."))
 
         res = super(Timetable, self).write(vals)
 
