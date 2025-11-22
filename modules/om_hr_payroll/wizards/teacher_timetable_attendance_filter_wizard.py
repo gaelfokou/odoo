@@ -93,6 +93,11 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
         # default='unpaid',
     )
 
+    has_rate = fields.Boolean(
+        'Taux horaire défini',
+        default=False,
+    )
+
     # Contrainte logique pour s'assurer que les dates de début et de fin sont définies et que la date de fin est supérieure à la date de début
     @api.constrains('start_date', 'end_date')
     def _constrains_date(self):
@@ -308,6 +313,10 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
                     total_all = consumptionhours[key_class]['data'][key_subject]['data']['done']
                     total_done = consumptionhours[key_class]['data'][key_subject]['data']['done']
                     total_awaiting = consumptionhours[key_class]['data'][key_subject]['data']['awaiting']
+
+            if self.has_rate:
+                if rate == 0.0:
+                    continue
 
             teacher_timetable_attendance = self.env['teacher.timetable.attendance'].create({
                 'timetable_id': timetable.id,

@@ -266,6 +266,9 @@ class TeacherTimetableAttendance(models.TransientModel):
             'views': [(view_id, 'form')],
             'view_id': view_id,
             'target': 'new',
+            'context': {
+                'default_has_rate': False,
+            },
         }
 
     def action_reset_filter(self):
