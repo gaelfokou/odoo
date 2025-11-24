@@ -262,9 +262,9 @@ class TeacherTimetableAttendance(models.TransientModel):
     def _constrains_worked_time(self):
         for record in self:
             if record.worked_start_time < 0.0 or record.worked_end_time < 0.0 or record.worked_start_time > 23.59 or record.worked_end_time > 23.59:
-                raise ValidationError("Vous devez définir des heures de début et de fin corrects")
+                raise ValidationError("Vous devez définir des heures de début effectuée et de fin effectuée corrects")
             elif record.worked_start_time > record.worked_end_time:
-                raise ValidationError("L'heure de fin du cours doit être supérieure à l'heure de début du cours")
+                raise ValidationError("L'heure de fin effectuée du cours doit être supérieure à l'heure de début effectuée du cours")
 
     def action_open_filter(self):
         view_id = self.env.ref('om_hr_payroll.teacher_timetable_attendance_filter_wizard').id
