@@ -459,7 +459,14 @@ class HrPayslip(models.Model):
                     # Vérification du temps de cours de l'enseignant en biométrie
                     daily_attendances = self.filter_daily_attendance_teacher(employee_timetable.date, employee_timetable.end_time, employee_timetable.start_time, employee_timetable.employee_id)
                     if len(daily_attendances) == 1:
-                        employee_timetable.sudo().write({'status': 'exception'})
+                        employee_timetable.sudo().write({
+                            'worked_start_time': 0.0,
+                            'worked_end_time': 0.0,
+                            'worked_time': 0.0,
+                            'rate': 0.0,
+                            'amount': 0.0,
+                            'status': 'exception',
+                        })
                     elif len(daily_attendances) > 1:
                         end_punching_time = daily_attendances[1].punching_time
                         start_punching_time = daily_attendances[0].punching_time
@@ -474,7 +481,14 @@ class HrPayslip(models.Model):
                         if start_punching_time > start_time:
                             start_time = start_punching_time
                         if start_time > end_time:
-                            employee_timetable.sudo().write({'status': 'exception'})
+                            employee_timetable.sudo().write({
+                                'worked_start_time': 0.0,
+                                'worked_end_time': 0.0,
+                                'worked_time': 0.0,
+                                'rate': 0.0,
+                                'amount': 0.0,
+                                'status': 'exception',
+                            })
                         else:
                             start_time = datetime.strftime(start_time, TIME_FORMAT_FR)
                             start_time = HrPayslip.convert_time_to_float(start_time)
@@ -483,6 +497,9 @@ class HrPayslip(models.Model):
                             employee_timetable.sudo().write({
                                 'worked_start_time': start_time,
                                 'worked_end_time': end_time,
+                                'worked_time': 0.0,
+                                'rate': 0.0,
+                                'amount': 0.0,
                                 'status': 'present',
                             })
                     else:
@@ -506,9 +523,23 @@ class HrPayslip(models.Model):
                                 'date': date.today(),
                                 'message': message,
                             })
-                        employee_timetable.sudo().write({'status': 'absent'})
+                        employee_timetable.sudo().write({
+                            'worked_start_time': 0.0,
+                            'worked_end_time': 0.0,
+                            'worked_time': 0.0,
+                            'rate': 0.0,
+                            'amount': 0.0,
+                            'status': 'absent',
+                        })
             else:
-                employee_timetable.sudo().write({'status': 'absent'})
+                employee_timetable.sudo().write({
+                    'worked_start_time': 0.0,
+                    'worked_end_time': 0.0,
+                    'worked_time': 0.0,
+                    'rate': 0.0,
+                    'amount': 0.0,
+                    'status': 'absent',
+                })
 
     @api.model
     def cron_timetable_rappel(self):

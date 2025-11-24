@@ -926,6 +926,11 @@ class Timetable(models.Model):
         timetable_ids = self.env['siantou.ems.timetable.timetable'].browse(active_ids)
         for timetable in timetable_ids:
             timetable.write({
+                'worked_start_time': timetable.start_time,
+                'worked_end_time': timetable.end_time,
+                'worked_time': 0.0,
+                'rate': 0.0,
+                'amount': 0.0,
                 'status': 'present',
             })
 
