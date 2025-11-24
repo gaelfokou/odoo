@@ -102,7 +102,7 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
     @api.constrains('start_date', 'end_date')
     def _constrains_date(self):
         for record in self:
-            if record.end_date < record.start_date:
+            if record.start_date > record.end_date:
                 raise ValidationError("La date de fin doit être supérieure à la date de début")
 
     def action_filter(self):

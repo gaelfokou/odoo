@@ -256,14 +256,16 @@ class TimetableFilterWizard(models.TransientModel):
     @api.constrains('start_date', 'end_date')
     def _constrains_date(self):
         for record in self:
-            if record.end_date < record.start_date:
+            if record.start_date > record.end_date:
                 raise ValidationError("La date de fin doit être supérieure à la date de début")
 
     # Contrainte logique pour s'assurer que les heures de début et de fin sont définies et que l'heure de fin est supérieure à l'heure de début
     @api.constrains('start_time', 'end_time')
     def _constrains_time(self):
         for record in self:
-            if record.end_time < record.start_time:
+            if record.start_time < 0.0 or record.end_time < 0.0 or record.start_time > 23.59 or record.end_time > 23.59:
+                raise ValidationError("Vous devez définir des heures de début et de fin corrects")
+            elif record.start_time > record.end_time:
                 raise ValidationError("L'heure de fin du cours doit être supérieure à l'heure de début du cours")
 
     @api.onchange('year_id')

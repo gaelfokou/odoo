@@ -1408,8 +1408,10 @@ class TimetableSlotItem(models.Model):
     @api.constrains('start_time', 'end_time')
     def _constrains_time(self):
         for record in self:
-            if record.start_time > record.end_time:
-                raise ValidationError(f"L'heure de début ne doit pas être supérieure à l'heure de fin")
+            if record.start_time < 0.0 or record.end_time < 0.0 or record.start_time > 23.59 or record.end_time > 23.59:
+                raise ValidationError("Vous devez définir des heures de début et de fin corrects")
+            elif record.start_time > record.end_time:
+                raise ValidationError("L'heure de fin du cours doit être supérieure à l'heure de début du cours")
             elif not TimetableSlotItem.are_almost_equal(round((record.end_time - record.start_time), 2), round(1.00, 2)):
                 raise ValidationError(f"La plage horaire entre l'heure de début et l'heure de fin ne doit pas être supérieure ou inférieure 1")
             else:
