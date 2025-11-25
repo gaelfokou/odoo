@@ -63,8 +63,17 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
         report_action = self.env.ref('om_hr_payroll.action_report_teacher_timetable_attendance_resume')
         return report_action.report_action(self, data=data)
 
+    def sort_teacher_timetable_attendance_level(self, teacher_timetable_attendance):
+        if 'level_id' in teacher_timetable_attendance:
+            level = teacher_timetable_attendance['level_id']
+        else:
+            level = 10
+        return level
+
     def sort_teacher_timetable_attendance(self, teacher_timetable_attendance):
         name = teacher_timetable_attendance[1]['name']
+        name = name.strip()
+        name = name.lower()
         return name
 
     def print_teacher_timetable_attendance_report_data(self, resume=False, domains=None):
@@ -105,6 +114,8 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
             teacher_timetable_attendance['date_of_week'] = datetime.strftime(search_teacher_timetable_attendance.date, DATE_FORMAT_FR)
             teacher_timetable_attendance['class_id'] = search_teacher_timetable_attendance.class_id.id
             teacher_timetable_attendance['class_name'] = search_teacher_timetable_attendance.class_id.name
+            teacher_timetable_attendance['level_id'] = search_teacher_timetable_attendance.level_id.id
+            teacher_timetable_attendance['level_name'] = search_teacher_timetable_attendance.level_id.name
             teacher_timetable_attendance['subject_id'] = search_teacher_timetable_attendance.subject_id.id
             teacher_timetable_attendance['subject_name'] = search_teacher_timetable_attendance.subject_id.name
             teacher_timetable_attendance['subject_code'] = search_teacher_timetable_attendance.subject_id.code
@@ -293,6 +304,7 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
         total_worked_time = 0.0
         total_amount = 0.0
         for key in key_teacher_timetable_attendances.keys():
+            key_teacher_timetable_attendances[key]['data'] = sorted(key_teacher_timetable_attendances[key]['data'], key=self.sort_teacher_timetable_attendance_level)
             key_teacher_timetable_attendances[key]['worked_time'] = round(key_teacher_timetable_attendances[key]['worked_time'], 2)
             key_teacher_timetable_attendances[key]['amount'] = round(key_teacher_timetable_attendances[key]['amount'], 2)
             key_teacher_timetable_attendances[key]['total_amount'] = round(key_teacher_timetable_attendances[key]['total_amount'], 2)
