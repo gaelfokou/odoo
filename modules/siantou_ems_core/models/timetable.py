@@ -406,35 +406,35 @@ class Timetable(models.Model):
         store=False
     )
 
-    @api.depends('date', 'worked_start_time', 'worked_end_time')
-    def _compute_worked_time(self):
-        for record in self:
-            if record.date and record.worked_start_time and record.worked_end_time:
-                end_time = Timetable.convert_float_to_time(record.worked_end_time)
-                start_time = Timetable.convert_float_to_time(record.worked_start_time)
-                datetime_to = datetime.strptime(f"{record.date} {end_time}", DATETIME_FORMAT)
-                datetime_from = datetime.strptime(f"{record.date} {start_time}", DATETIME_FORMAT)
-                worked_hours = datetime_to - datetime_from
-                worked_hours = worked_hours.total_seconds() / 3600.0
-                worked_hours = round(worked_hours, 2)
-                record.worked_time = worked_hours
-            else:
-                record.worked_time = 0.0
+    # @api.depends('date', 'worked_start_time', 'worked_end_time')
+    # def _compute_worked_time(self):
+    #     for record in self:
+    #         if record.date and record.worked_start_time and record.worked_end_time:
+    #             end_time = Timetable.convert_float_to_time(record.worked_end_time)
+    #             start_time = Timetable.convert_float_to_time(record.worked_start_time)
+    #             datetime_to = datetime.strptime(f"{record.date} {end_time}", DATETIME_FORMAT)
+    #             datetime_from = datetime.strptime(f"{record.date} {start_time}", DATETIME_FORMAT)
+    #             worked_hours = datetime_to - datetime_from
+    #             worked_hours = worked_hours.total_seconds() / 3600.0
+    #             worked_hours = round(worked_hours, 2)
+    #             record.worked_time = worked_hours
+    #         else:
+    #             record.worked_time = 0.0
 
-    @api.onchange('date', 'worked_start_time', 'worked_end_time')
-    def _onchange_worked_time(self):
-        for record in self:
-            if record.date and record.worked_start_time and record.worked_end_time:
-                end_time = Timetable.convert_float_to_time(record.worked_end_time)
-                start_time = Timetable.convert_float_to_time(record.worked_start_time)
-                datetime_to = datetime.strptime(f"{record.date} {end_time}", DATETIME_FORMAT)
-                datetime_from = datetime.strptime(f"{record.date} {start_time}", DATETIME_FORMAT)
-                worked_hours = datetime_to - datetime_from
-                worked_hours = worked_hours.total_seconds() / 3600.0
-                worked_hours = round(worked_hours, 2)
-                record.worked_time = worked_hours
-            else:
-                record.worked_time = 0.0
+    # @api.onchange('date', 'worked_start_time', 'worked_end_time')
+    # def _onchange_worked_time(self):
+    #     for record in self:
+    #         if record.date and record.worked_start_time and record.worked_end_time:
+    #             end_time = Timetable.convert_float_to_time(record.worked_end_time)
+    #             start_time = Timetable.convert_float_to_time(record.worked_start_time)
+    #             datetime_to = datetime.strptime(f"{record.date} {end_time}", DATETIME_FORMAT)
+    #             datetime_from = datetime.strptime(f"{record.date} {start_time}", DATETIME_FORMAT)
+    #             worked_hours = datetime_to - datetime_from
+    #             worked_hours = worked_hours.total_seconds() / 3600.0
+    #             worked_hours = round(worked_hours, 2)
+    #             record.worked_time = worked_hours
+    #         else:
+    #             record.worked_time = 0.0
 
     # Heure de fin du cours
     worked_time = fields.Float(

@@ -243,6 +243,9 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
                 worked_hours = worked_hours.total_seconds() / 3600.0
                 worked_hours = round(worked_hours, 2)
 
+            if worked_hours < 0.0:
+                continue
+
             if len(timetable.employee_id.diplome_ids.ids) > 0:
                 domain = [
                     ('school_id', '=', timetable.school_id.id),
