@@ -448,7 +448,7 @@
                                         <span t-esc="record['structure_frais_amount_total']"/>
                                     </td>
                                     <td class="text-left">
-                                        <span t-esc="record['amount']"/>
+                                        <span t-esc="'{:,.2f}'.format(record['amount'])"/>
                                     </td>
                                     <td class="text-left">
                                         <span t-esc="record['state']"/>
@@ -560,7 +560,7 @@
                                         <span t-esc="record['number_of_hours']"/>
                                     </td>
                                     <td class="text-left">
-                                        <span t-esc="record['amount']"/>
+                                        <span t-esc="'{:,.2f}'.format(record['amount'])"/>
                                     </td>
                                     <td class="text-left">
                                         <span t-esc="record['state']"/>
@@ -702,7 +702,7 @@
                                                 <span t-esc="record['number_of_hours']"/>
                                             </td>
                                             <td class="text-left">
-                                                <span t-esc="record['amount']"/>
+                                                <span t-esc="'{:,.2f}'.format(record['amount'])"/>
                                             </td>
                                         </tr>
                                     </t>

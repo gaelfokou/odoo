@@ -129,7 +129,7 @@
                                                 <span t-esc="timetable['rate']"/>
                                             </td>
                                             <td class="text-center" t-if="docdata['is_permanent'] == False">
-                                                <span t-esc="timetable['amount']"/>
+                                                <span t-esc="'{:,.2f}'.format(timetable['amount'])"/>
                                             </td>
                                             <td class="text-center">
                                                 <span t-esc="timetable['hours_credit']"/>
@@ -156,7 +156,7 @@
                                         </td>
                                         <td class="text-center" t-if="docdata['is_permanent'] == False"></td>
                                         <td class="text-center" t-if="docdata['is_permanent'] == False">
-                                            <span t-esc="teacher_timetable_attendance_data[key]['amount']"/>
+                                            <span t-esc="'{:,.2f}'.format(teacher_timetable_attendance_data[key]['amount'])"/>
                                         </td>
                                         <td class="text-center"></td>
                                         <td class="text-center"></td>
@@ -177,7 +177,7 @@
                                     </td>
                                     <td class="text-center" t-if="docdata['is_permanent'] == False"></td>
                                     <td class="text-center" t-if="docdata['is_permanent'] == False">
-                                        <span t-esc="docdata['total_amount']"/>
+                                        <span t-esc="'{:,.2f}'.format(docdata['total_amount'])"/>
                                     </td>
                                     <td class="text-center"></td>
                                     <td class="text-center"></td>
