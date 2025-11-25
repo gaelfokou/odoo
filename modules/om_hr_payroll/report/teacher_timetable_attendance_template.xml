@@ -91,9 +91,16 @@
                                     <t t-set="timetables" t-value="teacher_timetable_attendance_data[key]['data']"/>
                                     <t t-foreach="timetables" t-as="timetable">
                                         <tr>
-                                            <td class="text-center">
-                                                <span t-esc="timetable['employee_name']"/>
-                                            </td>
+                                            <t t-if="timetable['class_name']">
+                                                <td class="text-left">
+                                                    <span t-esc="timetable['employee_name']"/>
+                                                </td>
+                                            </t>
+                                            <t t-else="">
+                                                <td class="text-center">
+                                                    <span t-esc="timetable['employee_name']"/>
+                                                </td>
+                                            </t>
                                             <td class="text-center">
                                                 <span t-esc="timetable['class_name']"/>
                                             </td>

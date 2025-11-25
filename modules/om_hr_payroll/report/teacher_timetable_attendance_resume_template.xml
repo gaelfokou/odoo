@@ -85,7 +85,7 @@
                                         <td class="text-center">
                                             <span t-esc="teacher_timetable_attendance_data[key]['identifier']"/>
                                         </td>
-                                        <td class="text-center">
+                                        <td class="text-left">
                                             <span t-esc="teacher_timetable_attendance_data[key]['name']"/>
                                         </td>
                                         <td class="text-center" t-if="docdata['is_permanent'] == True">
