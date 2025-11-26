@@ -356,6 +356,8 @@ class HrPayslip(models.Model):
                                 'number_of_hours': teacher_timetable_attendance['worked_time'],
                                 'contract_id': payslip_id.contract_id.id,
                                 'timetable_id': teacher_timetable_attendance['timetable_id'],
+                                'rate': teacher_timetable_attendance['rate'],
+                                'amount': teacher_timetable_attendance['amount'],
                             })
                             teacher_timetable_attendance_id = self.env['teacher.timetable.attendance'].search([('id', '=', teacher_timetable_attendance['id'])], limit=1)
                             if teacher_timetable_attendance_id:
@@ -378,6 +380,8 @@ class HrPayslip(models.Model):
                                 'number_of_hours': teacher_timetable_attendance['worked_time'],
                                 'contract_id': payslip_id.contract_id.id,
                                 'timetable_id': teacher_timetable_attendance['timetable_id'],
+                                'rate': teacher_timetable_attendance['rate'],
+                                'amount': teacher_timetable_attendance['amount'],
                             })
                             teacher_timetable_attendance_id = self.env['teacher.timetable.attendance'].search([('id', '=', teacher_timetable_attendance['id'])], limit=1)
                             if teacher_timetable_attendance_id:
@@ -1434,6 +1438,14 @@ class HrPayslipWorkedDays(models.Model):
     contract_id = fields.Many2one('hr.contract', string='Contract', required=True,
         help="The contract for which applied this input")
     timetable_id = fields.Many2one('siantou.ems.timetable.timetable', string='Emploi du temps')
+    rate = fields.Float(
+        'Taux horaire',
+        default=0.0,
+    )
+    amount = fields.Float(
+        'Montant',
+        default=0.0,
+    )
 
 class HrPayslipInput(models.Model):
     _name = 'hr.payslip.input'
