@@ -79,6 +79,8 @@ class HourlyRate(models.Model):
                     name = re.sub('^ - ', ' ', name)
                 elif name.endswith(' - '):
                     name = re.sub(' - $', ' ', name)
+                elif name.find(' -  - ') != -1:
+                    name = name.replace(' -  - ', ' - ')
                 elif name.find('  ') != -1:
                     name = name.replace('  ', ' ')
                 else:
@@ -102,6 +104,8 @@ class HourlyRate(models.Model):
                     name = re.sub('^ - ', ' ', name)
                 elif name.endswith(' - '):
                     name = re.sub(' - $', ' ', name)
+                elif name.find(' -  - ') != -1:
+                    name = name.replace(' -  - ', ' - ')
                 elif name.find('  ') != -1:
                     name = name.replace('  ', ' ')
                 else:
@@ -188,7 +192,13 @@ class TeacherHourlyRate(models.Model):
             hourly_rate_name = record.hourly_rate_id.name if record.hourly_rate_id.id else ''
             name = '{} - {} - {}'.format(employee_name, subject_name, hourly_rate_name)
             while True:
-                if name.find('  ') != -1:
+                if name.startswith(' - '):
+                    name = re.sub('^ - ', ' ', name)
+                elif name.endswith(' - '):
+                    name = re.sub(' - $', ' ', name)
+                elif name.find(' -  - ') != -1:
+                    name = name.replace(' -  - ', ' - ')
+                elif name.find('  ') != -1:
                     name = name.replace('  ', ' ')
                 else:
                     break
@@ -204,7 +214,13 @@ class TeacherHourlyRate(models.Model):
             hourly_rate_name = record.hourly_rate_id.name if record.hourly_rate_id.id else ''
             name = '{} - {} - {}'.format(employee_name, subject_name, hourly_rate_name)
             while True:
-                if name.find('  ') != -1:
+                if name.startswith(' - '):
+                    name = re.sub('^ - ', ' ', name)
+                elif name.endswith(' - '):
+                    name = re.sub(' - $', ' ', name)
+                elif name.find(' -  - ') != -1:
+                    name = name.replace(' -  - ', ' - ')
+                elif name.find('  ') != -1:
                     name = name.replace('  ', ' ')
                 else:
                     break
