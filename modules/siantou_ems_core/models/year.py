@@ -5,6 +5,7 @@ from odoo.exceptions import UserError, ValidationError
 class Year(models.Model):
     _name = 'siantou.ems.core.year'
     _description = 'Années académiques'
+    _inherit=['mail.thread', 'mail.activity.mixin',]
 
     # Nom de l'année académique
     name = fields.Char(

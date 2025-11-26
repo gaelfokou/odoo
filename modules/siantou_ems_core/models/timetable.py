@@ -155,6 +155,7 @@ class TimetableSubjectHour(models.Model):
 class Timetable(models.Model):
     _name = 'siantou.ems.timetable.timetable'
     _description = 'Emplois du temps'
+    _inherit=['mail.thread', 'mail.activity.mixin',]
 
     name = fields.Char(
         string='Nom',

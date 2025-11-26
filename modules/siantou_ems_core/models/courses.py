@@ -30,6 +30,7 @@ class OeSchoolCourse(models.Model):
     _name = 'oe.school.course'
     _description = 'Gestion des Cycles'
     _order = 'name'
+    _inherit=['mail.thread', 'mail.activity.mixin',]
 
     def _default_color(self):
         return randint(1, 11)
@@ -310,6 +311,7 @@ class SchoolSyllabus(models.Model):
 class SchoolCourseSubject(models.Model):
     _name = 'siantou.ems.core.unite.enseignement'
     _description = 'Unité d\'enseignement'
+    _inherit=['mail.thread', 'mail.activity.mixin',]
 
     type_ue = fields.Selection([
             ('uf', 'UE Fondamentales'),

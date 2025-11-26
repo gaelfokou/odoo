@@ -13,8 +13,8 @@ _logger = logging.getLogger(__name__)
 
 class StudentEnrollment(models.Model):
     _name = 'oe.school.student.enrollment'
-    _inherit=['mail.thread', 'mail.activity.mixin']
     _description = 'Gestion des inscriptions des étudiants'
+    _inherit=['mail.thread', 'mail.activity.mixin',]
 
     name = fields.Char(
         string="Nom(s) et prénom(s)", 

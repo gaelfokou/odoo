@@ -13,8 +13,8 @@ _logger = logging.getLogger(__name__)
 
 class Student(models.Model):
     _name = 'oe.school.student'
-    _inherit=['mail.thread', 'mail.activity.mixin',]
     _description = 'Gestion des étudiants'
+    _inherit=['mail.thread', 'mail.activity.mixin',]
 
     name = fields.Char(string="Nom(s) et prénom(s)", compute='_compute_name', store=True)
     last_name = fields.Char(string="Nom(s)", required=True)
