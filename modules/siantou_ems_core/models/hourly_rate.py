@@ -12,6 +12,7 @@ _logger = logging.getLogger(__name__)
 class HourlyRate(models.Model):
     _name = 'siantou.ems.core.hourly.rate'
     _description = 'Taux horaire'
+    _inherit=['mail.thread', 'mail.activity.mixin',]
 
     name = fields.Char(string='Nom',
                        compute='_compute_name', store=True)
@@ -117,6 +118,7 @@ class HourlyRate(models.Model):
 class TeacherHourlyRate(models.Model):
     _name = 'siantou.ems.core.teacher.hourly.rate'
     _description = 'Taux horaire de l\'enseignant'
+    _inherit=['mail.thread', 'mail.activity.mixin',]
 
     name = fields.Char(string='Nom',
                        compute='_compute_name', store=True)

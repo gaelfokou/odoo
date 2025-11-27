@@ -8,6 +8,7 @@ import psycopg2
 from datetime import date, datetime, timedelta, time
 from dateutil.relativedelta import relativedelta
 import pytz
+import re
 import logging
 
 UTC_TZ = pytz.utc
@@ -565,11 +566,13 @@ class Timetable(models.Model):
         for record in self:
             class_name = record.class_id.name if record.class_id.id else ''
             subject_name = record.subject_id.name if record.subject_id.id else ''
-            if subject_name != '':
-                subject_name = f'- {subject_name}'
-            name = '{} {}'.format(class_name, subject_name)
+            name = '{} - {}'.format(class_name, subject_name)
             while True:
-                if name.find('  ') != -1:
+                if name.startswith(' - '):
+                    name = re.sub('^ - ', ' ', name)
+                elif name.endswith(' - '):
+                    name = re.sub(' - $', ' ', name)
+                elif name.find('  ') != -1:
                     name = name.replace('  ', ' ')
                 else:
                     break
@@ -582,11 +585,13 @@ class Timetable(models.Model):
         for record in self:
             class_name = record.class_id.name if record.class_id.id else ''
             subject_name = record.subject_id.name if record.subject_id.id else ''
-            if subject_name != '':
-                subject_name = f'- {subject_name}'
-            name = '{} {}'.format(class_name, subject_name)
+            name = '{} - {}'.format(class_name, subject_name)
             while True:
-                if name.find('  ') != -1:
+                if name.startswith(' - '):
+                    name = re.sub('^ - ', ' ', name)
+                elif name.endswith(' - '):
+                    name = re.sub(' - $', ' ', name)
+                elif name.find('  ') != -1:
                     name = name.replace('  ', ' ')
                 else:
                     break
