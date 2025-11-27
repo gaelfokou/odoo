@@ -368,9 +368,19 @@ class ProgressReport(models.Model):
             search_progressreports = self.env['siantou.ems.timetable.timetable'].search(search_domain, order=order).sorted(lambda rec: (rec.date, rec.id))
             search_progressreports = list(search_progressreports)
             data = []
+            key_progressreports = {}
             for search_progressreport in search_progressreports:
                 if not search_progressreport.date or not search_progressreport.day_of_week:
                     continue
+
+                end_time = ProgressReport.convert_float_to_time(search_progressreport.end_time)
+                start_time = ProgressReport.convert_float_to_time(search_progressreport.start_time)
+                key = '{}-{}-{}-{}'.format(search_progressreport.class_id.id, search_progressreport.date, start_time, end_time)
+                if key not in key_progressreports:
+                    key_progressreports[key] = search_progressreport
+                else:
+                    continue
+
                 progressreport = {}
                 progressreport['id'] = search_progressreport.id
                 progressreport['name'] = search_progressreport.name
@@ -464,13 +474,38 @@ class ProgressReport(models.Model):
 
             for key_class in progressreports.keys():
                 for key_subject in progressreports[key_class]['data'].keys():
+                    all_data = sum([len(v['sessions']) for v in progressreports[key_class]['data'][key_subject]['data']['all']])
                     progressreports[key_class]['data'][key_subject]['data']['done'] = sum([len(v['sessions']) for v in progressreports[key_class]['data'][key_subject]['data']['done']])
                     progressreports[key_class]['data'][key_subject]['data']['awaiting'] = sum([len(v['sessions']) for v in progressreports[key_class]['data'][key_subject]['data']['awaiting']])
-                    progressreports[key_class]['data'][key_subject]['data']['percentage'] = progressreports[key_class]['data'][key_subject]['data']['done'] + progressreports[key_class]['data'][key_subject]['data']['awaiting']
-                    if progressreports[key_class]['data'][key_subject]['data']['percentage'] > 0:
-                        progressreports[key_class]['data'][key_subject]['data']['percentage'] = progressreports[key_class]['data'][key_subject]['data']['done'] / progressreports[key_class]['data'][key_subject]['data']['percentage']
-                    progressreports[key_class]['data'][key_subject]['data']['percentage'] = round(progressreports[key_class]['data'][key_subject]['data']['percentage'] * 100, 2)
+                    if all_data > 0:
+                        progressreports[key_class]['data'][key_subject]['data']['percentage'] = (progressreports[key_class]['data'][key_subject]['data']['done'] / all_data) * 100
+                    else:
+                        progressreports[key_class]['data'][key_subject]['data']['percentage'] = 0.0
+                    progressreports[key_class]['data'][key_subject]['data']['percentage'] = round(progressreports[key_class]['data'][key_subject]['data']['percentage'], 2)
                     record.percentage = progressreports[key_class]['data'][key_subject]['data']['percentage']
+
+    @staticmethod
+    def convert_float_to_time(tm, has_second=False):
+        tm = str(tm)
+        tm = tm.split('.')
+        if len(tm) == 1:
+            tm.append('0')
+        if len(tm[0]) == 1:
+            tm[0] = '0{}'.format(tm[0])
+        elif len(tm[0]) > 2:
+            tm[0] = '{}'.format(tm[0][0:2])
+        if int(tm[0]) > 23:
+            tm[0] = '00'
+        if len(tm[1]) == 1:
+            tm[1] = '{}0'.format(tm[1])
+        elif len(tm[1]) > 2:
+            tm[1] = '{}'.format(tm[1][0:2])
+        if int(tm[1]) > 59:
+            tm[1] = '00'
+        tm = ':'.join(tm)
+        if has_second:
+            tm = '{}:00'.format(tm)
+        return tm
 
 class SubjectSession(models.Model):
     _name = 'siantou.ems.core.subject.session'

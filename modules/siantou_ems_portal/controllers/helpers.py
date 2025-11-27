@@ -926,12 +926,14 @@ class Helpers:
 
         for key_class in progressreports.keys():
             for key_subject in progressreports[key_class]['data'].keys():
+                all_data = sum([len(v['sessions']) for v in progressreports[key_class]['data'][key_subject]['data']['all']])
                 progressreports[key_class]['data'][key_subject]['data']['done'] = sum([len(v['sessions']) for v in progressreports[key_class]['data'][key_subject]['data']['done']])
                 progressreports[key_class]['data'][key_subject]['data']['awaiting'] = sum([len(v['sessions']) for v in progressreports[key_class]['data'][key_subject]['data']['awaiting']])
-                progressreports[key_class]['data'][key_subject]['data']['percentage'] = progressreports[key_class]['data'][key_subject]['data']['done'] + progressreports[key_class]['data'][key_subject]['data']['awaiting']
-                if progressreports[key_class]['data'][key_subject]['data']['percentage'] > 0:
-                    progressreports[key_class]['data'][key_subject]['data']['percentage'] = progressreports[key_class]['data'][key_subject]['data']['done'] / progressreports[key_class]['data'][key_subject]['data']['percentage']
-                progressreports[key_class]['data'][key_subject]['data']['percentage'] = round(progressreports[key_class]['data'][key_subject]['data']['percentage'] * 100, 2)
+                if all_data > 0:
+                    progressreports[key_class]['data'][key_subject]['data']['percentage'] = (progressreports[key_class]['data'][key_subject]['data']['done'] / all_data) * 100
+                else:
+                    progressreports[key_class]['data'][key_subject]['data']['percentage'] = 0.0
+                progressreports[key_class]['data'][key_subject]['data']['percentage'] = round(progressreports[key_class]['data'][key_subject]['data']['percentage'], 2)
                 progressreports[key_class]['data'][key_subject]['data']['done'] = str(progressreports[key_class]['data'][key_subject]['data']['done'])
                 progressreports[key_class]['data'][key_subject]['data']['awaiting'] = str(progressreports[key_class]['data'][key_subject]['data']['awaiting'])
                 progressreports[key_class]['data'][key_subject]['data']['percentage'] = str(progressreports[key_class]['data'][key_subject]['data']['percentage'])
@@ -948,8 +950,10 @@ class Helpers:
 
         percentage_session = sum([len(d['sessions']) for d in sorted_data])
         if percentage_session > 0:
-            percentage_session = 1 / percentage_session
-        percentage_session = round(percentage_session * 100, 2)
+            percentage_session = (1 / percentage_session) * 100
+        else:
+            percentage_session = 0.0
+        percentage_session = round(percentage_session, 2)
 
         total_session = 0.0
         for d in sorted_data:
@@ -966,6 +970,7 @@ class Helpers:
                 subjectsessions[key_timetable]['end_time'] = Helpers.convert_float_to_time(d['end_time'])
                 for v in d['sessions']:
                     total_session += percentage_session
+                    total_session = round(total_session, 2)
                     v['percentage'] = str(total_session)
                 subjectsessions[key_timetable]['data'] = d['sessions']
 

@@ -358,7 +358,7 @@ class Timetable(models.Model):
     def _compute_start_datetime(self):
         for record in self:
             if record.date and record.start_time:
-                start_time = Timetable.convert_float_to_time(record.start_time)
+                start_time = Timetable.convert_float_to_time(record.start_time, True)
                 datetime_from = datetime.strptime(f"{record.date} {start_time}", DATETIME_FORMAT)
                 record.start_datetime = datetime_from
             else:
@@ -368,7 +368,7 @@ class Timetable(models.Model):
     def _onchange_start_datetime(self):
         for record in self:
             if record.date and record.start_time:
-                start_time = Timetable.convert_float_to_time(record.start_time)
+                start_time = Timetable.convert_float_to_time(record.start_time, True)
                 datetime_from = datetime.strptime(f"{record.date} {start_time}", DATETIME_FORMAT)
                 record.start_datetime = datetime_from
             else:
@@ -378,7 +378,7 @@ class Timetable(models.Model):
     def _compute_end_datetime(self):
         for record in self:
             if record.date and record.end_time:
-                end_time = Timetable.convert_float_to_time(record.end_time)
+                end_time = Timetable.convert_float_to_time(record.end_time, True)
                 datetime_to = datetime.strptime(f"{record.date} {end_time}", DATETIME_FORMAT)
                 record.end_datetime = datetime_to
             else:
@@ -388,7 +388,7 @@ class Timetable(models.Model):
     def _onchange_end_datetime(self):
         for record in self:
             if record.date and record.end_time:
-                end_time = Timetable.convert_float_to_time(record.end_time)
+                end_time = Timetable.convert_float_to_time(record.end_time, True)
                 datetime_to = datetime.strptime(f"{record.date} {end_time}", DATETIME_FORMAT)
                 record.end_datetime = datetime_to
             else:
@@ -412,8 +412,8 @@ class Timetable(models.Model):
     # def _compute_worked_time(self):
     #     for record in self:
     #         if record.date and record.worked_start_time and record.worked_end_time:
-    #             end_time = Timetable.convert_float_to_time(record.worked_end_time)
-    #             start_time = Timetable.convert_float_to_time(record.worked_start_time)
+    #             end_time = Timetable.convert_float_to_time(record.worked_end_time, True)
+    #             start_time = Timetable.convert_float_to_time(record.worked_start_time, True)
     #             datetime_to = datetime.strptime(f"{record.date} {end_time}", DATETIME_FORMAT)
     #             datetime_from = datetime.strptime(f"{record.date} {start_time}", DATETIME_FORMAT)
     #             worked_hours = datetime_to - datetime_from
@@ -427,8 +427,8 @@ class Timetable(models.Model):
     # def _onchange_worked_time(self):
     #     for record in self:
     #         if record.date and record.worked_start_time and record.worked_end_time:
-    #             end_time = Timetable.convert_float_to_time(record.worked_end_time)
-    #             start_time = Timetable.convert_float_to_time(record.worked_start_time)
+    #             end_time = Timetable.convert_float_to_time(record.worked_end_time, True)
+    #             start_time = Timetable.convert_float_to_time(record.worked_start_time, True)
     #             datetime_to = datetime.strptime(f"{record.date} {end_time}", DATETIME_FORMAT)
     #             datetime_from = datetime.strptime(f"{record.date} {start_time}", DATETIME_FORMAT)
     #             worked_hours = datetime_to - datetime_from
@@ -529,7 +529,7 @@ class Timetable(models.Model):
     subject_id_domain = fields.Binary(compute='_compute_class_domain', default=[])
 
     @staticmethod
-    def convert_float_to_time(tm):
+    def convert_float_to_time(tm, has_second=False):
         tm = str(tm)
         tm = tm.split('.')
         if len(tm) == 1:
@@ -547,7 +547,8 @@ class Timetable(models.Model):
         if int(tm[1]) > 59:
             tm[1] = '00'
         tm = ':'.join(tm)
-        tm = '{}:00'.format(tm)
+        if has_second:
+            tm = '{}:00'.format(tm)
         return tm
 
     @staticmethod
