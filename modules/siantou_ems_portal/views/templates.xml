@@ -459,7 +459,7 @@
                                         <span t-esc="'{:,.2f}'.format(record['amount'])"/>
                                     </td>
                                     <td class="text-left">
-                                        <span t-esc="record['state']"/>
+                                        <span t-esc="'{:,.2f}'.format(record['state'])"/>
                                     </td>
                                 </tr>
                             </t>
@@ -474,11 +474,11 @@
                             </tr>
                             <tr>
                                 <th class="text-left" colspan="1">Total montant payé</th>
-                                <th class="text-left" colspan="7"><span t-esc="total_amount"/></th>
+                                <th class="text-left" colspan="7"><span t-esc="'{:,.2f}'.format(total_amount)"/></th>
                             </tr>
                             <tr>
                                 <th class="text-left" colspan="1">Total restant à payer</th>
-                                <th class="text-left" colspan="7"><span t-esc="total_rest_amount"/></th>
+                                <th class="text-left" colspan="7"><span t-esc="'{:,.2f}'.format(total_rest_amount)"/></th>
                             </tr>
                         </tfooter>
                     </t>
@@ -571,7 +571,7 @@
                                         <span t-esc="'{:,.2f}'.format(record['amount'])"/>
                                     </td>
                                     <td class="text-left">
-                                        <span t-esc="record['state']"/>
+                                        <span t-esc="'{:,.2f}'.format(record['state'])"/>
                                     </td>
                                 </tr>
                             </t>
@@ -586,7 +586,7 @@
                             </tr>
                             <tr>
                                 <th class="text-left" colspan="1">Total montant payé</th>
-                                <th class="text-left" colspan="7"><span t-esc="total_amount"/></th>
+                                <th class="text-left" colspan="7"><span t-esc="'{:,.2f}'.format(total_amount)"/></th>
                             </tr>
                         </tfooter>
                     </t>
@@ -704,7 +704,7 @@
                                                 <span t-esc="record['semester_name']"/>
                                             </td>
                                             <td class="text-left">
-                                                <span t-esc="record['rate']"/>
+                                                <span t-esc="'{:,.2f}'.format(record['rate'])"/>
                                             </td>
                                             <td class="text-left">
                                                 <span t-esc="record['number_of_hours']"/>
@@ -723,7 +723,7 @@
                                 </tr>
                                 <tr>
                                     <th class="text-left" colspan="1">Total montant</th>
-                                    <th class="text-left" colspan="7"><span t-esc="accountbalances[classe]['total_rate']"/></th>
+                                    <th class="text-left" colspan="7"><span t-esc="'{:,.2f}'.format(accountbalances[classe]['total_rate'])"/></th>
                                 </tr>
                                 <tr>
                                     <th class="text-left" colspan="8" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
