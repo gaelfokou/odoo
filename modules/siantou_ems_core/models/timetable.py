@@ -717,6 +717,17 @@ class Timetable(models.Model):
             if len(timetables) > 0:
                 raise ValidationError("Deux cours ne doivent pas être programmés dans la même classe sur des horaires qui se chevauchent le même jour")
 
+            timetables = self.search([
+                ('id', '!=', record.id),
+                ('group_id.is_active', '=', True),
+                ('group_id.is_submit', '=', False),
+                ('employee_id', '=', record.employee_id.id),
+                ('date', '=', record.date),
+            ]).filtered(lambda rec: not (rec.start_time >= record.end_time or rec.end_time <= record.start_time or (rec.start_time == record.start_time and rec.end_time == record.end_time)))
+            timetables = list(timetables)
+            if len(timetables) > 0:
+                raise ValidationError("Deux cours ne doivent pas être programmés pour le même enseignant sur des horaires qui se chevauchent le même jour")
+
     def create_timetable(self, timetable):
         try:
             timetables = []
