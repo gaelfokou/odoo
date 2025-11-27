@@ -57,7 +57,7 @@ _logger = logging.getLogger(__name__)
 
 class Helpers:
     @staticmethod
-    def timetable(search='', search_in='all', cycle_id=None, level_id=None, field_of_study_id=None, specialty_id=None, option_id=None, class_id=None):
+    def timetable(search='', search_in='all', selected_month='0', cycle_id=None, level_id=None, field_of_study_id=None, specialty_id=None, option_id=None, class_id=None):
         searchbar_inputs = {
             'all': {'label': 'Tout', 'input': 'all', 'domain': []},
             'cycle': {'label': 'Cycle', 'input': 'cycle', 'domain': [('cycle_id.name', 'like', search)]},
@@ -91,6 +91,7 @@ class Helpers:
 
         order = 'date asc, id asc'
 
+        search_month = ''
         search_timetables = []
         user = None
         is_user = None
@@ -110,6 +111,7 @@ class Helpers:
 
                 timetables = http.request.env['siantou.ems.timetable.timetable'].sudo().search(search_domain, order=order).sorted(lambda rec: (rec.date, rec.id))
                 current_date = date.today()
+                current_date = current_date - relativedelta(day=1, months=int(selected_month))
                 start_date = current_date + relativedelta(day=1)
                 end_date = current_date + relativedelta(day=1, months=1, days=-1)
                 if start_date and end_date:
@@ -129,11 +131,16 @@ class Helpers:
                         continue
 
                     search_timetables.append(timetable)
+
+                start_date = datetime.strftime(start_date, DATE_FORMAT_FR)
+                end_date = datetime.strftime(end_date, DATE_FORMAT_FR)
+                search_month = '{} - {}'.format(start_date, end_date)
             elif is_user == 'is_student':
                 search_domain.append(('class_id', '=', user.class_id.id))
 
                 timetables = http.request.env['siantou.ems.timetable.timetable'].sudo().search(search_domain, order=order).sorted(lambda rec: (rec.date, rec.id))
                 current_date = date.today()
+                current_date = current_date - relativedelta(day=1, months=int(selected_month))
                 start_date = current_date + relativedelta(day=1)
                 end_date = current_date + relativedelta(day=1, months=1, days=-1)
                 if start_date and end_date:
@@ -154,9 +161,13 @@ class Helpers:
 
                     search_timetables.append(timetable)
 
+                start_date = datetime.strftime(start_date, DATE_FORMAT_FR)
+                end_date = datetime.strftime(end_date, DATE_FORMAT_FR)
+                search_month = '{} - {}'.format(start_date, end_date)
+
         _logger.info(f'----------- tototototototo search_timetables {search_timetables} -----------')
 
-        return search_timetables, searchbar_inputs
+        return search_timetables, searchbar_inputs, search_month
 
     @staticmethod
     def schoolfee(search='', search_in='all'):
@@ -250,6 +261,7 @@ class Helpers:
 
         order = 'date asc, id asc'
 
+        search_month = ''
         search_accountbalances = []
         if http.request.env.user.employee_id.id:
             if http.request.env.user.employee_id.is_teacher:

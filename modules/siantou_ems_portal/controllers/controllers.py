@@ -158,11 +158,18 @@ class PortalAccount(portal.CustomerPortal):
         return values
 
     @http.route(['/my/timetable', '/my/timetable/page/<int:page>'], type='http', auth="user", website=True)
-    def portal_timetable(self, page=1, search='', search_in='all', view_type='calendar', **kw):
+    def portal_timetable(self, page=1, search='', search_in='all', view_type='calendar', selected_month='0', **kw):
         if view_type not in ['calendar', 'list']:
             view_type = 'calendar'
+        selected_month_total = [str(i) for i in range(6)]
+        if selected_month not in selected_month_total:
+            selected_month = '0'
+        if selected_month == selected_month_total[-1]:
+            timetable_selected_month = 0
+        else:
+            timetable_selected_month = int(selected_month) + 1
         # Utilisation de la fonction du helper
-        search_timetables, searchbar_inputs = Helpers.timetable(search, search_in)
+        search_timetables, searchbar_inputs, search_month = Helpers.timetable(search, search_in, selected_month)
         timetables = []
         for search_timetable in search_timetables:
             timetable = {}
@@ -264,6 +271,7 @@ class PortalAccount(portal.CustomerPortal):
                                     'search': search,
                                     'search_in': search_in,
                                     'searchbar_inputs': searchbar_inputs,
+                                    'timetable_selected_month': timetable_selected_month,
                                 })
 
     @http.route(['/my/timetable/download'], type='http', auth="user", website=True)
@@ -382,7 +390,7 @@ class PortalAccount(portal.CustomerPortal):
 
     @http.route(['/my/accountbalance'], type='http', auth="user", website=True)
     def portal_accountbalance(self, search='', search_in='all', selected_month='0', **kw):
-        selected_month_total = [str(i) for i in range(5)]
+        selected_month_total = [str(i) for i in range(6)]
         if selected_month not in selected_month_total:
             selected_month = '0'
         if selected_month == selected_month_total[-1]:
