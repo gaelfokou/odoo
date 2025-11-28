@@ -1027,7 +1027,7 @@
                                         <td class="text-left">
                                             <span t-esc="session['name']"/>
                                         </td>
-                                        <td class="text-left">
+                                        <td class="text-left" style="white-space: normal !important;">
                                             <span t-esc="session['description']"/>
                                         </td>
                                         <td class="text-left">
