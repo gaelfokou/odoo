@@ -893,50 +893,20 @@ class Helpers:
                 progressreports[key_class]['data'] = {}
                 progressreports[key_class]['data'][key_subject] = {}
                 progressreports[key_class]['data'][key_subject]['name'] = d['subject_name']
-                progressreports[key_class]['data'][key_subject]['data'] = {
-                    'all': [],
-                    'done': [],
-                    'awaiting': [],
-                }
-                progressreports[key_class]['data'][key_subject]['data']['all'].append(d)
-                if d['status'] in ['present', 'permission']:
-                    progressreports[key_class]['data'][key_subject]['data']['done'].append(d)
-                else:
-                    progressreports[key_class]['data'][key_subject]['data']['awaiting'].append(d)
+                progressreports[key_class]['data'][key_subject]['data'] = []
+                progressreports[key_class]['data'][key_subject]['data'].append(d)
             else:
                 if key_subject not in progressreports[key_class]['data']:
                     progressreports[key_class]['data'][key_subject] = {}
                     progressreports[key_class]['data'][key_subject]['name'] = d['subject_name']
-                    progressreports[key_class]['data'][key_subject]['data'] = {
-                        'all': [],
-                        'done': [],
-                        'awaiting': [],
-                    }
-                    progressreports[key_class]['data'][key_subject]['data']['all'].append(d)
-                    if d['status'] in ['present', 'permission']:
-                        progressreports[key_class]['data'][key_subject]['data']['done'].append(d)
-                    else:
-                        progressreports[key_class]['data'][key_subject]['data']['awaiting'].append(d)
+                    progressreports[key_class]['data'][key_subject]['data'] = []
+                    progressreports[key_class]['data'][key_subject]['data'].append(d)
                 else:
-                    progressreports[key_class]['data'][key_subject]['data']['all'].append(d)
-                    if d['status'] in ['present', 'permission']:
-                        progressreports[key_class]['data'][key_subject]['data']['done'].append(d)
-                    else:
-                        progressreports[key_class]['data'][key_subject]['data']['awaiting'].append(d)
+                    progressreports[key_class]['data'][key_subject]['data'].append(d)
 
         for key_class in progressreports.keys():
             for key_subject in progressreports[key_class]['data'].keys():
-                all_data = sum([len(v['sessions']) for v in progressreports[key_class]['data'][key_subject]['data']['all']])
-                progressreports[key_class]['data'][key_subject]['data']['done'] = sum([len(v['sessions']) for v in progressreports[key_class]['data'][key_subject]['data']['done']])
-                progressreports[key_class]['data'][key_subject]['data']['awaiting'] = sum([len(v['sessions']) for v in progressreports[key_class]['data'][key_subject]['data']['awaiting']])
-                if all_data > 0:
-                    progressreports[key_class]['data'][key_subject]['data']['percentage'] = (progressreports[key_class]['data'][key_subject]['data']['done'] / all_data) * 100
-                else:
-                    progressreports[key_class]['data'][key_subject]['data']['percentage'] = 0.0
-                progressreports[key_class]['data'][key_subject]['data']['percentage'] = round(progressreports[key_class]['data'][key_subject]['data']['percentage'], 2)
-                progressreports[key_class]['data'][key_subject]['data']['done'] = str(progressreports[key_class]['data'][key_subject]['data']['done'])
-                progressreports[key_class]['data'][key_subject]['data']['awaiting'] = str(progressreports[key_class]['data'][key_subject]['data']['awaiting'])
-                progressreports[key_class]['data'][key_subject]['data']['percentage'] = str(progressreports[key_class]['data'][key_subject]['data']['percentage'])
+                progressreports[key_class]['data'][key_subject]['data'] = Helpers.format_subjectsession(progressreports[key_class]['data'][key_subject]['data'])
 
         _logger.info(f'----------- tototototototo progressreports {progressreports} -----------')
 

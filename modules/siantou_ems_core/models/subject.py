@@ -441,48 +441,56 @@ class ProgressReport(models.Model):
                     progressreports[key_class]['data'] = {}
                     progressreports[key_class]['data'][key_subject] = {}
                     progressreports[key_class]['data'][key_subject]['name'] = d['subject_name']
-                    progressreports[key_class]['data'][key_subject]['data'] = {
-                        'all': [],
-                        'done': [],
-                        'awaiting': [],
-                    }
-                    progressreports[key_class]['data'][key_subject]['data']['all'].append(d)
-                    if d['status'] in ['present', 'permission']:
-                        progressreports[key_class]['data'][key_subject]['data']['done'].append(d)
-                    else:
-                        progressreports[key_class]['data'][key_subject]['data']['awaiting'].append(d)
+                    progressreports[key_class]['data'][key_subject]['data'] = []
+                    progressreports[key_class]['data'][key_subject]['data'].append(d)
                 else:
                     if key_subject not in progressreports[key_class]['data']:
                         progressreports[key_class]['data'][key_subject] = {}
                         progressreports[key_class]['data'][key_subject]['name'] = d['subject_name']
-                        progressreports[key_class]['data'][key_subject]['data'] = {
-                            'all': [],
-                            'done': [],
-                            'awaiting': [],
-                        }
-                        progressreports[key_class]['data'][key_subject]['data']['all'].append(d)
-                        if d['status'] in ['present', 'permission']:
-                            progressreports[key_class]['data'][key_subject]['data']['done'].append(d)
-                        else:
-                            progressreports[key_class]['data'][key_subject]['data']['awaiting'].append(d)
+                        progressreports[key_class]['data'][key_subject]['data'] = []
+                        progressreports[key_class]['data'][key_subject]['data'].append(d)
                     else:
-                        progressreports[key_class]['data'][key_subject]['data']['all'].append(d)
-                        if d['status'] in ['present', 'permission']:
-                            progressreports[key_class]['data'][key_subject]['data']['done'].append(d)
-                        else:
-                            progressreports[key_class]['data'][key_subject]['data']['awaiting'].append(d)
+                        progressreports[key_class]['data'][key_subject]['data'].append(d)
 
             for key_class in progressreports.keys():
                 for key_subject in progressreports[key_class]['data'].keys():
-                    all_data = sum([len(v['sessions']) for v in progressreports[key_class]['data'][key_subject]['data']['all']])
-                    progressreports[key_class]['data'][key_subject]['data']['done'] = sum([len(v['sessions']) for v in progressreports[key_class]['data'][key_subject]['data']['done']])
-                    progressreports[key_class]['data'][key_subject]['data']['awaiting'] = sum([len(v['sessions']) for v in progressreports[key_class]['data'][key_subject]['data']['awaiting']])
-                    if all_data > 0:
-                        progressreports[key_class]['data'][key_subject]['data']['percentage'] = (progressreports[key_class]['data'][key_subject]['data']['done'] / all_data) * 100
-                    else:
-                        progressreports[key_class]['data'][key_subject]['data']['percentage'] = 0.0
-                    progressreports[key_class]['data'][key_subject]['data']['percentage'] = round(progressreports[key_class]['data'][key_subject]['data']['percentage'], 2)
-                    record.percentage = progressreports[key_class]['data'][key_subject]['data']['percentage']
+                    progressreports[key_class]['data'][key_subject]['data'] = ProgressReport.format_subjectsession(progressreports[key_class]['data'][key_subject]['data'])
+
+    @staticmethod
+    def format_subjectsession(data):
+        subjectsessions = {}
+
+        sorted_data = copy.deepcopy(data)
+
+        percentage_session = sum([len(d['sessions']) for d in sorted_data])
+        if percentage_session > 0:
+            percentage_session = (1 / percentage_session) * 100
+        else:
+            percentage_session = 0.0
+        percentage_session = round(percentage_session, 2)
+
+        total_session = 0.0
+        for d in sorted_data:
+            key_timetable = '{}'.format(d['id'])
+            if key_timetable not in subjectsessions:
+                subjectsessions[key_timetable] = {}
+                subjectsessions[key_timetable]['id'] = d['id']
+                subjectsessions[key_timetable]['name'] = d['name']
+                subjectsessions[key_timetable]['status'] = 'Effectué' if d['status'] in ['present', 'permission'] else 'En attente'
+                subjectsessions[key_timetable]['class_name'] = d['class_name']
+                subjectsessions[key_timetable]['subject_name'] = d['subject_name']
+                subjectsessions[key_timetable]['date'] = d['date_of_week']
+                subjectsessions[key_timetable]['start_time'] = Helpers.convert_float_to_time(d['start_time'])
+                subjectsessions[key_timetable]['end_time'] = Helpers.convert_float_to_time(d['end_time'])
+                for v in d['sessions']:
+                    total_session += percentage_session
+                    total_session = round(total_session, 2)
+                    v['percentage'] = str(total_session)
+                subjectsessions[key_timetable]['data'] = d['sessions']
+
+        _logger.info(f'----------- tototototototo subjectsessions {subjectsessions} -----------')
+
+        return subjectsessions
 
     @staticmethod
     def convert_float_to_time(tm, has_second=False):
