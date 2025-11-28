@@ -906,7 +906,21 @@ class Helpers:
 
         for key_class in progressreports.keys():
             for key_subject in progressreports[key_class]['data'].keys():
-                progressreports[key_class]['data'][key_subject]['data'] = Helpers.format_subjectsession(progressreports[key_class]['data'][key_subject]['data'])
+                subjectsessions = Helpers.format_subjectsession(progressreports[key_class]['data'][key_subject]['data'])
+                percentage_session = None
+                for key_timetable in subjectsessions.keys():
+                    if subjectsessions[key_timetable]['status'] == 'Effectué':
+                        for d in subjectsessions[key_timetable]['data']:
+                            if not percentage_session:
+                                percentage_session = d['percentage']
+                            else:
+                                if d['percentage'] > percentage_session:
+                                    percentage_session = d['percentage']
+
+                if percentage_session:
+                    progressreports[key_class]['data'][key_subject]['percentage'] = percentage_session
+                else:
+                    progressreports[key_class]['data'][key_subject]['percentage'] = 0.0
 
         _logger.info(f'----------- tototototototo progressreports {progressreports} -----------')
 
@@ -933,7 +947,9 @@ class Helpers:
                 subjectsessions[key_timetable]['id'] = d['id']
                 subjectsessions[key_timetable]['name'] = d['name']
                 subjectsessions[key_timetable]['status'] = 'Effectué' if d['status'] in ['present', 'permission'] else 'En attente'
+                subjectsessions[key_timetable]['class_id'] = d['class_id']
                 subjectsessions[key_timetable]['class_name'] = d['class_name']
+                subjectsessions[key_timetable]['subject_id'] = d['subject_id']
                 subjectsessions[key_timetable]['subject_name'] = d['subject_name']
                 subjectsessions[key_timetable]['date'] = d['date_of_week']
                 subjectsessions[key_timetable]['start_time'] = Helpers.convert_float_to_time(d['start_time'])
@@ -941,7 +957,7 @@ class Helpers:
                 for v in d['sessions']:
                     total_session += percentage_session
                     total_session = round(total_session, 2)
-                    v['percentage'] = str(total_session)
+                    v['percentage'] = total_session
                 subjectsessions[key_timetable]['data'] = d['sessions']
 
         _logger.info(f'----------- tototototototo subjectsessions {subjectsessions} -----------')

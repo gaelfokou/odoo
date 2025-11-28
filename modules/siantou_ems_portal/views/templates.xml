@@ -920,11 +920,11 @@
                                         </td>
                                         <td class="text-left">
                                             <div>
-                                                <a t-attf-href="/my/subjectsession/{{ progressreports[classe]['data'][subject]['data']['all'][0]['class_id'] }}/{{ progressreports[classe]['data'][subject]['data']['all'][0]['subject_id'] }}/list" class="btn btn-primary btn-sm">Fiche de progression</a>
+                                                <a t-attf-href="/my/subjectsession/{{ classe }}/{{ subject }}/list" class="btn btn-primary btn-sm">Fiche de progression</a>
                                             </div>
                                         </td>
                                         <td class="text-left">
-                                            <span t-esc="progressreports[classe]['data'][subject]['data']['percentage'] + '%'"/>
+                                            <span t-esc="str(progressreports[classe]['data'][subject]['percentage']) + '%'"/>
                                         </td>
                                     </tr>
                                 </t>
@@ -1031,7 +1031,7 @@
                                             <span t-esc="session['description']"/>
                                         </td>
                                         <td class="text-left">
-                                            <span t-esc="session['percentage'] + '%'"/>
+                                            <span t-esc="str(session['percentage']) + '%'"/>
                                         </td>
                                         <td class="text-left">
                                             <span t-esc="subjectsessions[timetable]['status']"/>

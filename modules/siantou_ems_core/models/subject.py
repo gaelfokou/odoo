@@ -477,7 +477,9 @@ class ProgressReport(models.Model):
                 subjectsessions[key_timetable]['id'] = d['id']
                 subjectsessions[key_timetable]['name'] = d['name']
                 subjectsessions[key_timetable]['status'] = 'Effectué' if d['status'] in ['present', 'permission'] else 'En attente'
+                subjectsessions[key_timetable]['class_id'] = d['class_id']
                 subjectsessions[key_timetable]['class_name'] = d['class_name']
+                subjectsessions[key_timetable]['subject_id'] = d['subject_id']
                 subjectsessions[key_timetable]['subject_name'] = d['subject_name']
                 subjectsessions[key_timetable]['date'] = d['date_of_week']
                 subjectsessions[key_timetable]['start_time'] = Helpers.convert_float_to_time(d['start_time'])
@@ -485,7 +487,7 @@ class ProgressReport(models.Model):
                 for v in d['sessions']:
                     total_session += percentage_session
                     total_session = round(total_session, 2)
-                    v['percentage'] = str(total_session)
+                    v['percentage'] = total_session
                 subjectsessions[key_timetable]['data'] = d['sessions']
 
         _logger.info(f'----------- tototototototo subjectsessions {subjectsessions} -----------')
