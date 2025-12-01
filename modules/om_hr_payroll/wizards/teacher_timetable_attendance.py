@@ -373,7 +373,10 @@ class TeacherTimetableAttendance(models.TransientModel):
                     start_time = TeacherTimetableAttendance.convert_float_to_time(worked_days_line_id.timetable_id.start_time, True)
                     key = '{}-{}-{}-{}'.format(worked_days_line_id.timetable_id.employee_id.id, worked_days_line_id.timetable_id.date, start_time, end_time)
                     if key not in key_payslips:
-                        key_payslips[key] = worked_days_line_id.timetable_id.id
+                        key_payslips[key] = {}
+                        key_payslips[key]['timetable_id'] = worked_days_line_id.timetable_id.id
+                        key_payslips[key]['rate'] = worked_days_line_id.rate
+                        key_payslips[key]['amount'] = worked_days_line_id.amount
 
         timetable_ids = key_payslips.values()
 

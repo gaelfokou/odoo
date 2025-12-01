@@ -188,7 +188,10 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
                         start_time = TeacherTimetableAttendanceFilterWizard.convert_float_to_time(worked_days_line_id.timetable_id.start_time, True)
                         key = '{}-{}-{}-{}'.format(worked_days_line_id.timetable_id.employee_id.id, worked_days_line_id.timetable_id.date, start_time, end_time)
                         if key not in key_payslips:
-                            key_payslips[key] = worked_days_line_id.timetable_id.id
+                            key_payslips[key] = {}
+                            key_payslips[key]['timetable_id'] = worked_days_line_id.timetable_id.id
+                            key_payslips[key]['rate'] = worked_days_line_id.rate
+                            key_payslips[key]['amount'] = worked_days_line_id.amount
                 employee_ids.append(timetable.employee_id.id)
 
         timetable_ids = key_payslips.values()
@@ -208,7 +211,7 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
             end_time = TeacherTimetableAttendanceFilterWizard.convert_float_to_time(timetable.end_time, True)
             start_time = TeacherTimetableAttendanceFilterWizard.convert_float_to_time(timetable.start_time, True)
             key = '{}-{}-{}-{}'.format(timetable.employee_id.id, timetable.date, start_time, end_time)
-            if key in key_payslips and key_payslips[key] != timetable.id:
+            if key in key_payslips and key_payslips[key]['timetable_id'] != timetable.id:
                 continue
             if key not in key_timetables:
                 key_timetables[key] = timetable
@@ -320,6 +323,10 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
             if self.has_rate:
                 if rate == 0.0:
                     continue
+
+            if key in key_payslips:
+                rate = key_payslips[key]['rate']
+                amount = key_payslips[key]['amount']
 
             teacher_timetable_attendance = self.env['teacher.timetable.attendance'].create({
                 'timetable_id': timetable.id,
