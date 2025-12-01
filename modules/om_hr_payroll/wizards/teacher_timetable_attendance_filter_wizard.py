@@ -307,6 +307,14 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
                 rate = 0.0
                 amount = 0.0
 
+            if key in key_payslips:
+                rate = key_payslips[key]['rate']
+                amount = key_payslips[key]['amount']
+
+            if self.has_rate:
+                if rate == 0.0:
+                    continue
+
             hours_credit = 0.0
             total_all = 0.0
             total_done = 0.0
@@ -319,14 +327,6 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
                     total_all = consumptionhours[key_class]['data'][key_subject]['data']['done']
                     total_done = consumptionhours[key_class]['data'][key_subject]['data']['done']
                     total_awaiting = consumptionhours[key_class]['data'][key_subject]['data']['awaiting']
-
-            if self.has_rate:
-                if rate == 0.0:
-                    continue
-
-            if key in key_payslips:
-                rate = key_payslips[key]['rate']
-                amount = key_payslips[key]['amount']
 
             teacher_timetable_attendance = self.env['teacher.timetable.attendance'].create({
                 'timetable_id': timetable.id,

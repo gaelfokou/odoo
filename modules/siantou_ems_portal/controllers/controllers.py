@@ -398,6 +398,37 @@ class PortalAccount(portal.CustomerPortal):
             accountbalance_selected_month = 0
         else:
             accountbalance_selected_month = int(selected_month) + 1
+
+        key_payslips = {}
+        user = None
+        is_user = None
+        if http.request.env.user.employee_id.id:
+            user = http.request.env.user.employee_id
+            if http.request.env.user.employee_id.is_teacher:
+                is_user = 'is_teacher'
+            else:
+                is_user = 'is_employee'
+        elif http.request.env.user.student_id.id:
+            user = http.request.env.user.student_id
+            is_user = 'is_student'
+        if is_user:
+            if is_user == 'is_teacher':
+                order = 'date_from asc'
+                paymenthistories = http.request.env['hr.payslip'].sudo().search([('employee_id', '=', user.id)], order=order)
+                paymenthistories = list(paymenthistories)
+                for paymenthistory in paymenthistories:
+                    for worked_days_line_id in paymenthistory.worked_days_line_ids:
+                        end_time = Helpers.convert_float_to_time(worked_days_line_id.timetable_id.end_time, True)
+                        start_time = Helpers.convert_float_to_time(worked_days_line_id.timetable_id.start_time, True)
+                        key = '{}-{}-{}-{}'.format(worked_days_line_id.timetable_id.employee_id.id, worked_days_line_id.timetable_id.date, start_time, end_time)
+                        if key not in key_payslips:
+                            key_payslips[key] = {}
+                            key_payslips[key]['timetable_id'] = worked_days_line_id.timetable_id.id
+                            key_payslips[key]['rate'] = worked_days_line_id.rate
+                            key_payslips[key]['amount'] = worked_days_line_id.amount
+
+        timetable_ids = [payslip['timetable_id'] for payslip in key_payslips.values()]
+
         # Utilisation de la fonction du helper
         search_accountbalances, searchbar_inputs, search_month = Helpers.accountbalance(search, search_in, selected_month)
         total_rate = 0.0
@@ -405,6 +436,12 @@ class PortalAccount(portal.CustomerPortal):
         accountbalances = []
         shared_subjects = {}
         for search_accountbalance in search_accountbalances:
+            end_time = Helpers.convert_float_to_time(search_accountbalance.end_time, True)
+            start_time = Helpers.convert_float_to_time(search_accountbalance.start_time, True)
+            key = '{}-{}-{}-{}'.format(search_accountbalance.employee_id.id, search_accountbalance.date, start_time, end_time)
+            if key in key_payslips and key_payslips[key]['timetable_id'] != search_accountbalance.id:
+                continue
+
             timetable_day = datetime.strftime(search_accountbalance.date, DATE_FORMAT)
 
             if timetable_day not in shared_subjects.keys():
@@ -528,6 +565,13 @@ class PortalAccount(portal.CustomerPortal):
             if search_accountbalance.employee_id.is_permanent:
                 accountbalance['rate'] = 0.0
                 accountbalance['amount'] = 0.0
+
+            end_time = Helpers.convert_float_to_time(search_accountbalance.end_time, True)
+            start_time = Helpers.convert_float_to_time(search_accountbalance.start_time, True)
+            key = '{}-{}-{}-{}'.format(search_accountbalance.employee_id.id, search_accountbalance.date, start_time, end_time)
+            if key in key_payslips:
+                accountbalance['rate'] = key_payslips[key]['rate']
+                accountbalance['amount'] = key_payslips[key]['amount']
 
             accountbalances.append(accountbalance)
             total_rate += accountbalance['amount']
@@ -727,7 +771,7 @@ class PortalAccount(portal.CustomerPortal):
                                     'subjectsessions': subjectsessions,
                                     'page_name': 'subjectsession_list',
                                     'subjectsession_list': 0,
-                                    'is_user': 'is_teacher' if user and is_user == 'is_teacher' else '',
+                                    'is_user': 'is_teacher' if is_user and is_user == 'is_teacher' else '',
                                     'params': params,
                                 })
 
@@ -814,7 +858,7 @@ class PortalAccount(portal.CustomerPortal):
                                     'subjectsessions': subjectsessions,
                                     'page_name': 'subjectsession_new',
                                     'subjectsession_new': 0,
-                                    'is_user': 'is_teacher' if user and is_user == 'is_teacher' else '',
+                                    'is_user': 'is_teacher' if is_user and is_user == 'is_teacher' else '',
                                     'params': params,
                                     'name': '',
                                     'description': '',
@@ -944,7 +988,7 @@ class PortalAccount(portal.CustomerPortal):
                                     'subjectsessions': subjectsessions,
                                     'page_name': 'subjectsession_edit',
                                     'subjectsession_edit': 0,
-                                    'is_user': 'is_teacher' if user and is_user == 'is_teacher' else '',
+                                    'is_user': 'is_teacher' if is_user and is_user == 'is_teacher' else '',
                                     'params': params,
                                     'name': name,
                                     'description': description,
