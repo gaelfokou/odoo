@@ -378,7 +378,7 @@ class TeacherTimetableAttendance(models.TransientModel):
                         key_payslips[key]['rate'] = worked_days_line_id.rate
                         key_payslips[key]['amount'] = worked_days_line_id.amount
 
-        timetable_ids = key_payslips.values()
+        timetable_ids = [payslip['timetable_id'] for payslip in key_payslips.values()]
 
         teacher_timetable_attendance_ids = []
         teacher_timetable_attendance_data = dict(sorted(data['docdata']['teacher_timetable_attendance_data'].items(), key=lambda item: item[1]['name']))
