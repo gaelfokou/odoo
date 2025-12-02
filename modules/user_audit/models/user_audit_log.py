@@ -87,6 +87,8 @@ class UserAuditLogs(models.Model):
                             continue
                         elif key.startswith('image_'):
                             continue
+                        elif key.endswith('_id_domain'):
+                            continue
                         elif key.endswith('_ids'):
                             continue
                         elif key.endswith('_id'):
@@ -115,6 +117,8 @@ class UserAuditLogs(models.Model):
                         if key.startswith('avatar_'):
                             continue
                         elif key.startswith('image_'):
+                            continue
+                        elif key.endswith('_id_domain'):
                             continue
                         elif key.endswith('_ids'):
                             continue
