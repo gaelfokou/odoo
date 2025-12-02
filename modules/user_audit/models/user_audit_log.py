@@ -83,7 +83,9 @@ class UserAuditLogs(models.Model):
                     data = json.loads(json_string)[0]
                     json_data = {}
                     for key in data.keys():
-                        if key.startswith('image_'):
+                        if key.startswith('avatar_'):
+                            continue
+                        elif key.startswith('image_'):
                             continue
                         elif key.endswith('_ids'):
                             continue
@@ -110,7 +112,9 @@ class UserAuditLogs(models.Model):
                     data = json.loads(json_string)[0]
                     json_data = {}
                     for key in data.keys():
-                        if key.startswith('image_'):
+                        if key.startswith('avatar_'):
+                            continue
+                        elif key.startswith('image_'):
                             continue
                         elif key.endswith('_ids'):
                             continue
