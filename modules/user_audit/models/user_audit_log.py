@@ -80,7 +80,7 @@ class UserAuditLogs(models.Model):
                 raw_data = record_id.read()
                 try:
                     json_string = json.dumps(raw_data, default=date_utils.json_default)
-                    data = json.loads(json_string[0])
+                    data = json.loads(json_string)[0]
                     json_data = {}
                     for key in data.keys():
                         if key.startswith('image_'):
@@ -107,7 +107,7 @@ class UserAuditLogs(models.Model):
                 raw_data = record_id.read()
                 try:
                     json_string = json.dumps(raw_data, default=date_utils.json_default)
-                    data = json.loads(json_string[0])
+                    data = json.loads(json_string)[0]
                     json_data = {}
                     for key in data.keys():
                         if key.startswith('image_'):
