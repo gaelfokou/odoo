@@ -78,8 +78,24 @@ class UserAuditLogs(models.Model):
             audit = self.env['user.audit'].sudo().search([('model_ids', '=', model.id)], limit=1)
             if audit and record_id:
                 raw_data = record_id.read()
-                json_data = json.dumps(raw_data, default=date_utils.json_default)
-                record.record_description = json_data
+                try:
+                    json_string = json.dumps(raw_data, default=date_utils.json_default)
+                    data = json.loads(json_string[0])
+                    json_data = {}
+                    for key in data.keys():
+                        if key.startswith('image_'):
+                            continue
+                        elif key.endswith('_ids'):
+                            continue
+                        elif key.endswith('_id'):
+                            continue
+                        json_data[key] = data[key]
+                    json_string = json.dumps(json_data, default=date_utils.json_default)
+                except json.JSONDecodeError as error:
+                    json_string = ''
+                except ValueError as error:
+                    json_string = ''
+                record.record_description = json_string
 
     @api.onchange('model_id', 'record')
     def _onchange_description(self):
@@ -89,8 +105,24 @@ class UserAuditLogs(models.Model):
             audit = self.env['user.audit'].sudo().search([('model_ids', '=', model.id)], limit=1)
             if audit and record_id:
                 raw_data = record_id.read()
-                json_data = json.dumps(raw_data, default=date_utils.json_default)
-                record.record_description = json_data
+                try:
+                    json_string = json.dumps(raw_data, default=date_utils.json_default)
+                    data = json.loads(json_string[0])
+                    json_data = {}
+                    for key in data.keys():
+                        if key.startswith('image_'):
+                            continue
+                        elif key.endswith('_ids'):
+                            continue
+                        elif key.endswith('_id'):
+                            continue
+                        json_data[key] = data[key]
+                    json_string = json.dumps(json_data, default=date_utils.json_default)
+                except json.JSONDecodeError as error:
+                    json_string = ''
+                except ValueError as error:
+                    json_string = ''
+                record.record_description = json_string
 
     @api.model_create_multi
     def create(self, values):
