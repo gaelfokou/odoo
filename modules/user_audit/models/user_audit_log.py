@@ -101,3 +101,36 @@ class UserAuditLogs(models.Model):
                 'user.audit.log')
         res = super(UserAuditLogs, self).create(vals)
         return res
+
+    def action_open_filter(self):
+        view_id = self.env.ref('user_audit.user_audit_filter_wizard').id
+        return {
+            'name': 'User Audit Filter',
+            'type': 'ir.actions.act_window',
+            'view_type': 'form',
+            'view_mode': 'form',
+            'res_model': 'user.audit.filter.wizard',
+            'views': [(view_id, 'form')],
+            'view_id': view_id,
+            'target': 'new',
+        }
+
+    def action_reset_filter(self):
+        self.env['ir.config_parameter'].sudo().set_param(f'siantou.filter_user_{self.env.user.id}', '')
+        # action = self.env.ref('user_audit.user_audit_log_view_tree').read()[0]
+        # action.update({
+        #     'target': 'main',
+        # })
+        # return action
+        tree_view = self.env.ref('user_audit.user_audit_log_view_tree').id
+        return {
+            'name': 'User Audit Logs',
+            'type': 'ir.actions.act_window',
+            'view_type': 'form',
+            'view_mode': 'tree,form,kanban',
+            'res_model': 'user.audit.log',
+            'views': [(tree_view, 'tree'), (False, 'form'), (False, 'kanban')],
+            'view_id': tree_view,
+            'domain' : [],
+            'target': 'main',
+        }

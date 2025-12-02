@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="user_audit_filter_wizard" model="ir.ui.view">
+            <field name="name">user.audit.filter.wizard.form</field>
+            <field name="model">user.audit.filter.wizard</field>
+            <field name="arch" type="xml">
+                <form string="User Audit Filter">
+                    <group>
+                        <field name="user_id_domain" invisible="1"/>
+                        <field name="user_id" options="{'no_create': True}" domain="user_id_domain"/>
+                        <field name="model_id_domain" invisible="1"/>
+                        <field name="model_id" options="{'no_create': True}" domain="model_id_domain"/>
+                        <field name="record"/>
+                        <field name="start_date"/>
+                        <field name="end_date"/>
+                        <field name="operation_type"/>
+                    </group>
+                    <footer>
+                        <button string="Filtrer" type="object" name="action_filter" class="btn-primary"/>
+                        <button string="Annuler" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <!-- Define an action to open the form view -->
+        <record id="action_filter_user_audit_wizard" model="ir.actions.act_window">
+            <field name="name">User Audit Filter</field>
+            <field name="res_model">user.audit.filter.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="view_id" ref="user_audit_filter_wizard"/>
+        </record>
+    </data>
+</odoo>

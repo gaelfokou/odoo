@@ -31,6 +31,18 @@
         <field name="model">user.audit.log</field>
         <field name="arch" type="xml">
             <tree>
+                <header>
+                    <button name="action_reset_filter" 
+                        type="object" 
+                        string="Réinitialiser" 
+                        class="oe_highlight" 
+                        display="always"/>
+                    <button name="action_open_filter" 
+                        type="object" 
+                        string="Filtrer" 
+                        class="oe_highlight" 
+                        display="always"/>
+                </header>
                 <field name="name"/>
                 <field name="user_id"/>
                 <field name="record"/>

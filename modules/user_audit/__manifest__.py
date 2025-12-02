@@ -40,7 +40,8 @@
         'views/user_audit_log_views.xml',
         'views/user_audit_views.xml',
         'wizard/clear_user_log_views.xml',
-        'views/user_audit_menus.xml'
+        'views/user_audit_menus.xml',
+        'views/user_audit_filter_wizard_views.xml'
     ],
     'assets':
         {
