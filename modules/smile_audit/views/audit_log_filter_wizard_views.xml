@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="audit_log_filter_wizard" model="ir.ui.view">
+            <field name="name">audit.log.filter.wizard.form</field>
+            <field name="model">audit.log.filter.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Audit Log Filter">
+                    <group>
+                        <field name="user_id" options="{'no_create': True}"/>
+                        <field name="model_id_domain" invisible="1"/>
+                        <field name="model_id" options="{'no_create': True}" domain="model_id_domain"/>
+                        <field name="res_id"/>
+                        <field name="start_date"/>
+                        <field name="end_date"/>
+                        <field name="method"/>
+                    </group>
+                    <footer>
+                        <button string="Filtrer" type="object" name="action_filter" class="btn-primary"/>
+                        <button string="Annuler" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <!-- Define an action to open the form view -->
+        <record id="action_filter_audit_log_wizard" model="ir.actions.act_window">
+            <field name="name">Audit Log Filter</field>
+            <field name="res_model">audit.log.filter.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="view_id" ref="audit_log_filter_wizard"/>
+        </record>
+    </data>
+</odoo>
