@@ -269,7 +269,7 @@ class AuditLog(models.Model):
         #     'target': 'main',
         # })
         # return action
-        tree_view = self.env.ref('user_audit.user_audit_log_view_tree').id
+        tree_view = self.env.ref('smile_audit.view_audit_log_tree').id
         return {
             'name': 'Logs',
             'type': 'ir.actions.act_window',
