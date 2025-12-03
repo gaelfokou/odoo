@@ -145,7 +145,7 @@ class UserAuditLogs(models.Model):
     def action_open_filter(self):
         view_id = self.env.ref('user_audit.user_audit_filter_wizard').id
         return {
-            'name': 'User Audit Filter',
+            'name': 'Filtrer les logs des utilisateurs',
             'type': 'ir.actions.act_window',
             'view_type': 'form',
             'view_mode': 'form',

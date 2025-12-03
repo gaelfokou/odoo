@@ -252,7 +252,7 @@ class AuditLog(models.Model):
     def action_open_filter(self):
         view_id = self.env.ref('smile_audit.audit_log_filter_wizard').id
         return {
-            'name': 'Audit Log Filter',
+            'name': 'Filtrer les logs des utilisateurs',
             'type': 'ir.actions.act_window',
             'view_type': 'form',
             'view_mode': 'form',

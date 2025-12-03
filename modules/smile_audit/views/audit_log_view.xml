@@ -37,7 +37,7 @@
             <field name="model">audit.log</field>
             <field name="type">tree</field>
             <field name="arch" type="xml">
-                <tree string="Audit Logs" create="false">
+                <tree string="Logs des utilisateurs" create="false">
                     <header>
                         <button name="action_reset_filter" 
                             type="object" 
@@ -65,7 +65,7 @@
             <field name="model">audit.log</field>
             <field name="type">search</field>
             <field name="arch" type="xml">
-                <search string="Audit Logs">
+                <search string="Logs des utilisateurs">
                     <filter name="log_create" string="Creation" icon="terp-tools" domain="[('method','=','create')]"/>
                     <filter name="log_write" string="Update" icon="terp-tools" domain="[('method','=','write')]"/>
                     <filter name="log_unlink" string="Deletion" icon="terp-tools" domain="[('method','=','unlink')]"/>
@@ -92,12 +92,12 @@
 
         <menuitem id="menu_action_audit_log_tree" action="action_audit_log_tree" parent="menu_audit"/>
 
-        <!-- Menus for Audit Logs -->
-        <menuitem id="smile_audit_log_menu_root" name="Audit Logs"
+        <!-- Menus for Logs des utilisateurs -->
+        <menuitem id="smile_audit_log_menu_root" name="Logs des utilisateurs"
                 sequence="10" web_icon="smile_audit,static/description/icon.png"
                 action="action_audit_log_tree">
         </menuitem>
-        <menuitem id="smile_audit_log_menu" name="Audit Logs"
+        <menuitem id="smile_audit_log_menu" name="Logs des utilisateurs"
                 sequence="10"
                 parent="smile_audit_log_menu_root"
                 action="action_audit_log_tree">

@@ -5,7 +5,7 @@
             <field name="name">audit.log.filter.wizard.form</field>
             <field name="model">audit.log.filter.wizard</field>
             <field name="arch" type="xml">
-                <form string="Audit Log Filter">
+                <form string="Filtrer les logs des utilisateurs">
                     <group>
                         <field name="user_id" options="{'no_create': True}"/>
                         <field name="model_id_domain" invisible="1"/>
@@ -25,7 +25,7 @@
 
         <!-- Define an action to open the form view -->
         <record id="action_filter_audit_log_wizard" model="ir.actions.act_window">
-            <field name="name">Audit Log Filter</field>
+            <field name="name">Filtrer les logs des utilisateurs</field>
             <field name="res_model">audit.log.filter.wizard</field>
             <field name="view_mode">form</field>
             <field name="target">new</field>

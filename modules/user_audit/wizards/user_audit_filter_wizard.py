@@ -27,7 +27,7 @@ _logger = logging.getLogger(__name__)
 
 class UserAuditFilterWizard(models.TransientModel):
     _name = 'user.audit.filter.wizard'
-    _description = 'User Audit Filter'
+    _description = 'Filtrer les logs des utilisateurs'
 
     user_id = fields.Many2one('res.users', string="User",
                                 help="Manage users")
