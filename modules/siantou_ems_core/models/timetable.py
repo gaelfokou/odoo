@@ -1227,15 +1227,17 @@ class TimetableGroup(models.Model):
             if record.name:
                 name = record.name
                 name = name.lower()
-                if name.find('(soumis)') != -1:
-                    name = name.replace('(soumis)', '')
-                if name.find('(actif)') != -1:
-                    name = name.replace('(actif)', '')
+                while True:
+                    if name.find('(soumis)') != -1:
+                        name = name.replace('(soumis)', '')
+                    elif name.find('(actif)') != -1:
+                        name = name.replace('(actif)', '')
+                    else:
+                        break
                 if record.is_submit:
                     name = '{} (soumis)'.format(name)
-                else:
-                    if record.is_active:
-                        name = '{} (actif)'.format(name)
+                elif record.is_active:
+                    name = '{} (actif)'.format(name)
                 while True:
                     if name.find('  ') != -1:
                         name = name.replace('  ', ' ')
@@ -1251,15 +1253,17 @@ class TimetableGroup(models.Model):
             if record.name:
                 name = record.name
                 name = name.lower()
-                if name.find('(soumis)') != -1:
-                    name = name.replace('(soumis)', '')
-                if name.find('(actif)') != -1:
-                    name = name.replace('(actif)', '')
+                while True:
+                    if name.find('(soumis)') != -1:
+                        name = name.replace('(soumis)', '')
+                    elif name.find('(actif)') != -1:
+                        name = name.replace('(actif)', '')
+                    else:
+                        break
                 if record.is_submit:
                     name = '{} (soumis)'.format(name)
-                else:
-                    if record.is_active:
-                        name = '{} (actif)'.format(name)
+                elif record.is_active:
+                    name = '{} (actif)'.format(name)
                 while True:
                     if name.find('  ') != -1:
                         name = name.replace('  ', ' ')
