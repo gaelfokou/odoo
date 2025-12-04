@@ -573,6 +573,8 @@ class Timetable(models.Model):
                     name = re.sub('^ - ', ' ', name)
                 elif name.endswith(' - '):
                     name = re.sub(' - $', ' ', name)
+                elif name.find(' -  - ') != -1:
+                    name = name.replace(' -  - ', ' - ')
                 elif name.find('  ') != -1:
                     name = name.replace('  ', ' ')
                 else:
@@ -592,6 +594,8 @@ class Timetable(models.Model):
                     name = re.sub('^ - ', ' ', name)
                 elif name.endswith(' - '):
                     name = re.sub(' - $', ' ', name)
+                elif name.find(' -  - ') != -1:
+                    name = name.replace(' -  - ', ' - ')
                 elif name.find('  ') != -1:
                     name = name.replace('  ', ' ')
                 else:
@@ -1223,17 +1227,15 @@ class TimetableGroup(models.Model):
             if record.name:
                 name = record.name
                 name = name.lower()
-                while True:
-                    if name.find('(soumis)') != -1:
-                        name = name.replace('(soumis)', '')
-                    elif name.find('(actif)') != -1:
-                        name = name.replace('(actif)', '')
-                    else:
-                        break
+                if name.find('(soumis)') != -1:
+                    name = name.replace('(soumis)', '')
+                if name.find('(actif)') != -1:
+                    name = name.replace('(actif)', '')
                 if record.is_submit:
                     name = '{} (soumis)'.format(name)
-                elif record.is_active:
-                    name = '{} (actif)'.format(name)
+                else:
+                    if record.is_active:
+                        name = '{} (actif)'.format(name)
                 while True:
                     if name.find('  ') != -1:
                         name = name.replace('  ', ' ')
@@ -1249,17 +1251,15 @@ class TimetableGroup(models.Model):
             if record.name:
                 name = record.name
                 name = name.lower()
-                while True:
-                    if name.find('(soumis)') != -1:
-                        name = name.replace('(soumis)', '')
-                    elif name.find('(actif)') != -1:
-                        name = name.replace('(actif)', '')
-                    else:
-                        break
+                if name.find('(soumis)') != -1:
+                    name = name.replace('(soumis)', '')
+                if name.find('(actif)') != -1:
+                    name = name.replace('(actif)', '')
                 if record.is_submit:
                     name = '{} (soumis)'.format(name)
-                elif record.is_active:
-                    name = '{} (actif)'.format(name)
+                else:
+                    if record.is_active:
+                        name = '{} (actif)'.format(name)
                 while True:
                     if name.find('  ') != -1:
                         name = name.replace('  ', ' ')
@@ -1269,17 +1269,21 @@ class TimetableGroup(models.Model):
                 name = name.upper()
                 record.name = name
 
-    @api.constrains('is_active')
+    @api.constrains('is_submit', 'is_active')
     def _constrains_default(self):
         for record in self:
-            if record.is_active:
-                groups = self.env['siantou.ems.timetable.group'].search([
-                    ('id', '!=', record.id),
-                    ('is_active', '=', True),
-                ])
-                groups = list(groups)
-                if len(groups) > 0:
-                    raise ValidationError(f"Version active déjà définie")
+            if record.is_submit:
+                if record.is_active:
+                    raise ValidationError(f"Version d'emploi du temps soumise ne peut être active")
+            else:
+                if record.is_active:
+                    groups = self.env['siantou.ems.timetable.group'].search([
+                        ('id', '!=', record.id),
+                        ('is_active', '=', True),
+                    ])
+                    groups = list(groups)
+                    if len(groups) > 0:
+                        raise ValidationError(f"Version d'emploi du temps active déjà définie")
 
     def update_timetable_group(self, group):
         try:
