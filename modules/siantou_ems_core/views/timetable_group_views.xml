@@ -73,9 +73,8 @@
                             <field name="description"/>
                             <field name="semester_id"/>
                             <field name="is_submit" invisible="1"/>
-                            <!-- <field name="group_parent_ids" invisible="is_submit == False" widget="many2many_tags"/> -->
-                            <field name="group_parent_ids" invisible="1" widget="many2many_tags"/>
-                            <field name="group_child_ids" invisible="is_submit == True" widget="many2many_tags"/>
+                            <field name="group_parent_id" invisible="is_submit == False"/>
+                            <field name="group_child_ids" invisible="is_submit == True" widget="one2many_list"/>
                             <field name="is_active" invisible="is_submit == True"/>
                             <field name="user_ids" widget="many2many_tags"/>
                             <field name="create_uid"/>
@@ -136,9 +135,8 @@
                             <field name="description"/>
                             <field name="semester_id"/>
                             <field name="is_submit" invisible="1"/>
-                            <!-- <field name="group_parent_ids" invisible="is_submit == False" widget="many2many_tags"/> -->
-                            <field name="group_parent_ids" invisible="1" widget="many2many_tags"/>
-                            <field name="group_child_ids" invisible="is_submit == True" widget="many2many_tags"/>
+                            <field name="group_parent_id" invisible="is_submit == False"/>
+                            <field name="group_child_ids" invisible="is_submit == True" widget="one2many_list"/>
                             <field name="is_active" invisible="is_submit == True"/>
                             <field name="user_ids" widget="many2many_tags"/>
                             <field name="create_uid"/>

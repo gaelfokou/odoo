@@ -712,9 +712,16 @@ class Timetable(models.Model):
     @api.constrains('class_id', 'date', 'start_time', 'end_time')
     def _constrains_class(self):
         for record in self:
+            group_ids = []
+            if record.group_id.group_parent_id.id:
+                for group_child_id in record.group_id.group_parent_id.group_child_ids:
+                    group_ids.append(group_child_id.id)
+            else:
+                group_ids.append(record.group_id.id)
+
             timetables = self.search([
                 ('id', '!=', record.id),
-                ('group_id', '=', record.group_id.id),
+                ('group_id', 'in', group_ids),
                 ('class_id', '=', record.class_id.id),
                 ('date', '=', record.date),
             ]).filtered(lambda rec: not (rec.start_time >= record.end_time or rec.end_time <= record.start_time))
@@ -724,7 +731,7 @@ class Timetable(models.Model):
 
             timetables = self.search([
                 ('id', '!=', record.id),
-                ('group_id', '=', record.group_id.id),
+                ('group_id', 'in', group_ids),
                 ('employee_id', '=', record.employee_id.id),
                 ('date', '=', record.date),
             ]).filtered(lambda rec: not (rec.start_time >= record.end_time or rec.end_time <= record.start_time or (rec.start_time == record.start_time and rec.end_time == record.end_time)))
@@ -1156,23 +1163,35 @@ class TimetableGroup(models.Model):
         string='Utilisateurs associés',
     )
 
-    group_parent_ids = fields.Many2many(
+    group_parent_id = fields.Many2one(
         'siantou.ems.timetable.group',
-        'group_parent_child_rel',
-        'group_child_id',
-        'group_parent_id',
-        string='Versions d\'emploi du temps publiées',
-        domain="[('is_submit', '=', False), ('semester_id', '=', semester_id)]",
+        'Version d\'emploi du temps parent',
+        ondelete='cascade'
     )
 
-    group_child_ids = fields.Many2many(
+    group_child_ids = fields.One2many(
         'siantou.ems.timetable.group',
-        'group_parent_child_rel',
         'group_parent_id',
-        'group_child_id',
-        string='Versions d\'emploi du temps soumises',
-        domain="[('is_submit', '=', True), ('semester_id', '=', semester_id), ('status', '=', 'valid')]",
+        string='Versions d\'emploi du temps enfants'
     )
+
+    # group_parent_ids = fields.Many2many(
+    #     'siantou.ems.timetable.group',
+    #     'group_parent_child_rel',
+    #     'group_child_id',
+    #     'group_parent_id',
+    #     string='Versions d\'emploi du temps publiées',
+    #     domain="[('is_submit', '=', False), ('semester_id', '=', semester_id)]",
+    # )
+
+    # group_child_ids = fields.Many2many(
+    #     'siantou.ems.timetable.group',
+    #     'group_parent_child_rel',
+    #     'group_parent_id',
+    #     'group_child_id',
+    #     string='Versions d\'emploi du temps soumises',
+    #     domain="[('is_submit', '=', True), ('semester_id', '=', semester_id), ('status', '=', 'valid')]",
+    # )
 
     status = fields.Selection([
         ('pending', 'En attente'),
