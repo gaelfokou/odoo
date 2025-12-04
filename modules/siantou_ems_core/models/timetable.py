@@ -93,7 +93,7 @@ class TimetableSubjectHour(models.Model):
 
     group_id = fields.Many2one(
         'siantou.ems.timetable.group',
-        'Version',
+        'Version d\'emploi du temps',
         required=True,
         ondelete='cascade'
     )
@@ -463,10 +463,17 @@ class Timetable(models.Model):
     # Version auquel appartient l'emploi du temps
     group_id = fields.Many2one(
         'siantou.ems.timetable.group',
-        'Version',
+        'Version d\'emploi du temps',
         required=True,
         # default=_default_group,
         ondelete='cascade'
+    )
+
+    group_parent_id = fields.Many2one(
+        'siantou.ems.timetable.group',
+        'Version d\'emploi du temps parent',
+        related='group_id.group_parent_id',
+        store=True
     )
 
     group_child_id = fields.Many2one(
@@ -722,6 +729,8 @@ class Timetable(models.Model):
                     group_ids.append(group_child_id.id)
             else:
                 group_ids.append(record.group_id.id)
+                for group_child_id in record.group_id.group_child_ids:
+                    group_ids.append(group_child_id.id)
 
             timetables = self.search([
                 ('id', '!=', record.id),

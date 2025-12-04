@@ -52,7 +52,7 @@ class TimetableGroupCopierWizard(models.TransientModel):
     # Version auquel appartient l'emploi du temps
     group_id = fields.Many2one(
         'siantou.ems.timetable.group',
-        'Version',
+        'Version d\'emploi du temps',
         required=True,
     )
 
