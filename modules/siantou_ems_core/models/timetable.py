@@ -1327,8 +1327,8 @@ class TimetableGroup(models.Model):
     def create(self, vals):
         group = super(TimetableGroup, self).create(vals)
 
-        if not group.is_submit:
-            self.update_timetable_group(group)
+        # if not group.is_submit:
+        #     self.update_timetable_group(group)
 
         return group
 
@@ -1337,8 +1337,8 @@ class TimetableGroup(models.Model):
 
         res = super(TimetableGroup, self).write(vals)
 
-        if not group.is_submit:
-            self.update_timetable_group(group)
+        # if not group.is_submit:
+        #     self.update_timetable_group(group)
 
         return res
 
