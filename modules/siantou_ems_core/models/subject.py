@@ -360,8 +360,13 @@ class ProgressReport(models.Model):
             search_domain.append(('class_id', '=', record.class_id.id))
             search_domain.append(('subject_id', '=', record.subject_id.id))
 
+            search_domain.append('!')
+            search_domain.append('&')
             search_domain.append(('group_id.is_active', '=', True))
             search_domain.append(('group_id.is_submit', '=', False))
+            search_domain.append('&')
+            search_domain.append(('group_parent_id.is_active', '=', True))
+            search_domain.append(('group_parent_id.is_submit', '=', False))
 
             order = 'date asc, id asc'
 
@@ -479,8 +484,13 @@ class ProgressReport(models.Model):
             search_domain.append(('class_id', '=', record.class_id.id))
             search_domain.append(('subject_id', '=', record.subject_id.id))
 
+            search_domain.append('!')
+            search_domain.append('&')
             search_domain.append(('group_id.is_active', '=', True))
             search_domain.append(('group_id.is_submit', '=', False))
+            search_domain.append('&')
+            search_domain.append(('group_parent_id.is_active', '=', True))
+            search_domain.append(('group_parent_id.is_submit', '=', False))
 
             order = 'date asc, id asc'
 
