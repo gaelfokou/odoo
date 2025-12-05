@@ -112,8 +112,13 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
         domain = []
         title = []
 
+        domain.append('!')
+        domain.append('&')
         domain.append(('group_id.is_active', '=', True))
         domain.append(('group_id.is_submit', '=', False))
+        domain.append('&')
+        domain.append(('group_parent_id.is_active', '=', True))
+        domain.append(('group_parent_id.is_submit', '=', False))
         domain.append(('status', 'in', ['present', 'permission']))
 
         if self.is_permanent:
