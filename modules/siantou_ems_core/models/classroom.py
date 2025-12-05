@@ -101,7 +101,7 @@ class Classroom(models.Model):
         'siantou.ems.timetable.timetable',
         'classroom_id',                     # Champ de relation dans le modèle Timetable
         string='Emplois du temps',
-        domain="[('classroom_id', '=', id), ('group_id.is_active', '=', True), ('group_id.is_submit', '=', False)]",
+        domain="['!', '&', '&', ('classroom_id', '=', id), ('group_id.is_active', '=', True), ('group_id.is_submit', '=', False), '&', '&', ('classroom_id', '=', id), ('group_parent_id.is_active', '=', True), ('group_parent_id.is_submit', '=', False)]",
         compute='_compute_timetables',
         store=False
     )
