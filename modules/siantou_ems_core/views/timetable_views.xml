@@ -55,6 +55,7 @@
 					<field name="day_of_week"/>
 					<field name="start_time"/>
 					<field name="end_time"/>
+					<field name="reason"/>
 					<field name="status" widget="badge"
                         decoration-muted="status == 'pending'"
                         decoration-primary="status == 'progress'"

@@ -476,6 +476,7 @@ class HrPayslip(models.Model):
                             'rate': 0.0,
                             'amount': 0.0,
                             'status': 'exception',
+                            'reason': 'Poinçonnement de début ou de fin absent ou non correct',
                         })
                     elif len(daily_attendances) > 1:
                         end_punching_time = daily_attendances[1].punching_time
@@ -498,6 +499,7 @@ class HrPayslip(models.Model):
                                 'rate': 0.0,
                                 'amount': 0.0,
                                 'status': 'exception',
+                                'reason': 'Poinçonnement de début et de fin inversé',
                             })
                         else:
                             # end_time = HrPayslip.convert_datetime_from_utc(end_time)

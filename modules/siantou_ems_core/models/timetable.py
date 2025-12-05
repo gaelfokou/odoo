@@ -531,6 +531,10 @@ class Timetable(models.Model):
         'Séances de cours'
     )
 
+    reason = fields.Char(
+        string='Motif',
+    )
+
     specialty_id_domain = fields.Binary(compute='_compute_school_domain', default=[])
 
     subject_id_domain = fields.Binary(compute='_compute_class_domain', default=[])
