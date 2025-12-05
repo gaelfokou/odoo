@@ -1178,14 +1178,16 @@ class TimetableGroup(models.Model):
 
     group_parent_id = fields.Many2one(
         'siantou.ems.timetable.group',
-        'Version d\'emploi du temps parent',
+        string='Version d\'emploi du temps parent',
+        domain="[('is_submit', '=', False), ('semester_id', '=', semester_id)]",
         ondelete='cascade'
     )
 
     group_child_ids = fields.One2many(
         'siantou.ems.timetable.group',
         'group_parent_id',
-        string='Versions d\'emploi du temps enfants'
+        string='Versions d\'emploi du temps enfants',
+        domain="[('is_submit', '=', True), ('semester_id', '=', semester_id), ('status', '=', 'valid')]",
     )
 
     # group_parent_ids = fields.Many2many(
