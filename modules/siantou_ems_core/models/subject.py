@@ -360,7 +360,7 @@ class ProgressReport(models.Model):
             search_domain.append(('class_id', '=', record.class_id.id))
             search_domain.append(('subject_id', '=', record.subject_id.id))
 
-            search_domain.append('!')
+            search_domain.append('|')
             search_domain.append('&')
             search_domain.append(('group_id.is_active', '=', True))
             search_domain.append(('group_id.is_submit', '=', False))
@@ -484,7 +484,7 @@ class ProgressReport(models.Model):
             search_domain.append(('class_id', '=', record.class_id.id))
             search_domain.append(('subject_id', '=', record.subject_id.id))
 
-            search_domain.append('!')
+            search_domain.append('|')
             search_domain.append('&')
             search_domain.append(('group_id.is_active', '=', True))
             search_domain.append(('group_id.is_submit', '=', False))
@@ -722,8 +722,13 @@ class SubjectSession(models.Model):
                 timetable_ids = record.report_id.class_id.timetable_ids
                 domain = [
                     ('id', 'in', timetable_ids.ids),
+                    '|',
+                    '&',
                     ('group_id.is_active', '=', True),
                     ('group_id.is_submit', '=', False),
+                    '&',
+                    ('group_parent_id.is_active', '=', True),
+                    ('group_parent_id.is_submit', '=', False),
                     ('subject_id', '=', record.report_id.subject_id.id)
                 ]
             record.timetable_id_domain = domain

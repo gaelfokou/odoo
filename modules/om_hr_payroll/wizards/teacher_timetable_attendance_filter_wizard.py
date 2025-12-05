@@ -112,7 +112,7 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
         domain = []
         title = []
 
-        domain.append('!')
+        domain.append('|')
         domain.append('&')
         domain.append(('group_id.is_active', '=', True))
         domain.append(('group_id.is_submit', '=', False))

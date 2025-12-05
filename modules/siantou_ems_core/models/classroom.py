@@ -101,7 +101,7 @@ class Classroom(models.Model):
         'siantou.ems.timetable.timetable',
         'classroom_id',                     # Champ de relation dans le modèle Timetable
         string='Emplois du temps',
-        domain="['!', '&', '&', ('classroom_id', '=', id), ('group_id.is_active', '=', True), ('group_id.is_submit', '=', False), '&', '&', ('classroom_id', '=', id), ('group_parent_id.is_active', '=', True), ('group_parent_id.is_submit', '=', False)]",
+        domain="['|', '&', ('group_id.is_active', '=', True), ('group_id.is_submit', '=', False), '&', ('group_parent_id.is_active', '=', True), ('group_parent_id.is_submit', '=', False), ('classroom_id', '=', id)]",
         compute='_compute_timetables',
         store=False
     )
@@ -128,8 +128,13 @@ class Classroom(models.Model):
         for record in self:
             timetables = self.env['siantou.ems.timetable.timetable'].search([
                 ('classroom_id', '=', record.id),
+                '|',
+                '&',
                 ('group_id.is_active', '=', True),
                 ('group_id.is_submit', '=', False),
+                '&',
+                ('group_parent_id.is_active', '=', True),
+                ('group_parent_id.is_submit', '=', False),
             ])
 
             # Affecter les emplois du temps trouvés à l'attribut timetable_ids
@@ -141,8 +146,13 @@ class Classroom(models.Model):
         for record in self:
             timetables = self.env['siantou.ems.timetable.timetable'].search([
                 ('classroom_id', '=', record.id),
+                '|',
+                '&',
                 ('group_id.is_active', '=', True),
                 ('group_id.is_submit', '=', False),
+                '&',
+                ('group_parent_id.is_active', '=', True),
+                ('group_parent_id.is_submit', '=', False),
             ])
 
             # Affecter les emplois du temps trouvés à l'attribut timetable_ids

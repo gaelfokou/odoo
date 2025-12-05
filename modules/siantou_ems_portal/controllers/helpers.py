@@ -86,7 +86,7 @@ class Helpers:
         if class_id:
             search_domain.append(('class_id', '=', class_id.id))
 
-        search_domain.append('!')
+        search_domain.append('|')
         search_domain.append('&')
         search_domain.append(('group_id.is_active', '=', True))
         search_domain.append(('group_id.is_submit', '=', False))
@@ -260,7 +260,7 @@ class Helpers:
         if class_id:
             search_domain.append(('class_id', '=', class_id.id))
 
-        search_domain.append('!')
+        search_domain.append('|')
         search_domain.append('&')
         search_domain.append(('group_id.is_active', '=', True))
         search_domain.append(('group_id.is_submit', '=', False))
@@ -339,7 +339,7 @@ class Helpers:
         if class_id:
             search_domain.append(('class_id', '=', class_id.id))
 
-        search_domain.append('!')
+        search_domain.append('|')
         search_domain.append('&')
         search_domain.append(('group_id.is_active', '=', True))
         search_domain.append(('group_id.is_submit', '=', False))
@@ -437,7 +437,7 @@ class Helpers:
         if class_id:
             search_domain.append(('class_id', '=', class_id.id))
 
-        search_domain.append('!')
+        search_domain.append('|')
         search_domain.append('&')
         search_domain.append(('group_id.is_active', '=', True))
         search_domain.append(('group_id.is_submit', '=', False))
@@ -536,7 +536,7 @@ class Helpers:
         if subject_id:
             search_domain.append(('subject_id', '=', subject_id.id))
 
-        search_domain.append('!')
+        search_domain.append('|')
         search_domain.append('&')
         search_domain.append(('group_id.is_active', '=', True))
         search_domain.append(('group_id.is_submit', '=', False))

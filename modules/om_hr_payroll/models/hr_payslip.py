@@ -453,7 +453,7 @@ class HrPayslip(models.Model):
 
         # Recherche des emplois du temps de l'enseignant pour une période donnée
         employee_timetables = self.env['siantou.ems.timetable.timetable'].sudo().search([
-            '!',
+            '|',
             '&',
             ('group_id.is_active', '=', True),
             ('group_id.is_submit', '=', False),
@@ -577,7 +577,7 @@ class HrPayslip(models.Model):
 
         # Recherche des emplois du temps de l'enseignant pour une période donnée
         employee_timetables = self.env['siantou.ems.timetable.timetable'].sudo().search([
-            '!',
+            '|',
             '&',
             ('group_id.is_active', '=', True),
             ('group_id.is_submit', '=', False),
@@ -635,7 +635,7 @@ class HrPayslip(models.Model):
 
         # Recherche des emplois du temps de l'enseignant pour une période donnée
         employee_timetables = self.env['siantou.ems.timetable.timetable'].sudo().search([
-            '!',
+            '|',
             '&',
             ('group_id.is_active', '=', True),
             ('group_id.is_submit', '=', False),
@@ -738,7 +738,7 @@ class HrPayslip(models.Model):
             if daily_attendance.employee_id.id:
                 if daily_attendance.employee_id.is_teacher:
                     # employee_timetables = self.env['siantou.ems.timetable.timetable'].sudo().search([
-                    #     '!',
+                    #     '|',
                     #     '&',
                     #     ('group_id.is_active', '=', True),
                     #     ('group_id.is_submit', '=', False),
@@ -749,7 +749,7 @@ class HrPayslip(models.Model):
                     #     ('status', '=', 'pending'),
                     # ], order='date asc').filtered(lambda rec: (UTC_TZ.localize(punching_time) >= HrPayslip.convert_datetime_to_utc(datetime.strptime(f"{rec.date} {HrPayslip.convert_float_to_time(rec.start_time)}', DATETIME_FORMAT) - timedelta(minutes=15)) and UTC_TZ.localize(punching_time) <= HrPayslip.convert_datetime_to_utc(datetime.strptime(f'{rec.date} {HrPayslip.convert_float_to_time(rec.start_time)}', DATETIME_FORMAT) + timedelta(minutes=15))) or (UTC_TZ.localize(punching_time) >= HrPayslip.convert_datetime_to_utc(datetime.strptime(f'{rec.date} {HrPayslip.convert_float_to_time(rec.end_time)}', DATETIME_FORMAT)) and UTC_TZ.localize(punching_time) <= HrPayslip.convert_datetime_to_utc(datetime.strptime(f'{rec.date} {HrPayslip.convert_float_to_time(rec.end_time)}", DATETIME_FORMAT) + timedelta(minutes=15))), True)
                     employee_timetables = self.env['siantou.ems.timetable.timetable'].sudo().search([
-                        '!',
+                        '|',
                         '&',
                         ('group_id.is_active', '=', True),
                         ('group_id.is_submit', '=', False),
