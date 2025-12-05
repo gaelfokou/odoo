@@ -314,7 +314,13 @@ class ProgressReport(models.Model):
             subject_name = record.subject_id.name if record.subject_id.id else ''
             name = '{} - {}'.format(class_name, subject_name)
             while True:
-                if name.find('  ') != -1:
+                if name.startswith(' - '):
+                    name = re.sub('^ - ', ' ', name)
+                elif name.endswith(' - '):
+                    name = re.sub(' - $', ' ', name)
+                elif name.find(' -  - ') != -1:
+                    name = name.replace(' -  - ', ' - ')
+                elif name.find('  ') != -1:
                     name = name.replace('  ', ' ')
                 else:
                     break
@@ -329,7 +335,13 @@ class ProgressReport(models.Model):
             subject_name = record.subject_id.name if record.subject_id.id else ''
             name = '{} - {}'.format(class_name, subject_name)
             while True:
-                if name.find('  ') != -1:
+                if name.startswith(' - '):
+                    name = re.sub('^ - ', ' ', name)
+                elif name.endswith(' - '):
+                    name = re.sub(' - $', ' ', name)
+                elif name.find(' -  - ') != -1:
+                    name = name.replace(' -  - ', ' - ')
+                elif name.find('  ') != -1:
                     name = name.replace('  ', ' ')
                 else:
                     break
