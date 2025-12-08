@@ -1022,6 +1022,7 @@ class Timetable(models.Model):
             'rate': 0.0,
             'amount': 0.0,
             'status': 'pending',
+            'reason': '',
         })
 
         return {
@@ -1037,6 +1038,7 @@ class Timetable(models.Model):
             'rate': 0.0,
             'amount': 0.0,
             'status': 'progress',
+            'reason': '',
         })
 
         return {
@@ -1052,6 +1054,7 @@ class Timetable(models.Model):
             'rate': 0.0,
             'amount': 0.0,
             'status': 'present',
+            'reason': '',
         })
 
         return {
@@ -1067,6 +1070,7 @@ class Timetable(models.Model):
             'rate': 0.0,
             'amount': 0.0,
             'status': 'absent',
+            'reason': '',
         })
 
         return {
@@ -1082,6 +1086,7 @@ class Timetable(models.Model):
             'rate': 0.0,
             'amount': 0.0,
             'status': 'permission',
+            'reason': '',
         })
 
         return {
@@ -1097,6 +1102,7 @@ class Timetable(models.Model):
             'rate': 0.0,
             'amount': 0.0,
             'status': 'exception',
+            'reason': '',
         })
 
         return {
@@ -1112,6 +1118,7 @@ class Timetable(models.Model):
             'rate': 0.0,
             'amount': 0.0,
             'status': 'delay',
+            'reason': '',
         })
 
         return {
