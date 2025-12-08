@@ -13,7 +13,7 @@ _logger = logging.getLogger(__name__)
 
 class DeSchool(http.Controller):
 
-    @http.route(['/api/v1/niveaux'], type="http", methods=['GET'], cors="*", auth="none")
+    @http.route(['/api/v1/niveaux'], type="http", methods=['GET'], cors="*", website=True, auth="public")
     def list_niveaux(self, **kw):
         data = []
         niveaux = http.request.env['siantou.ems.core.level'].sudo().search([])
@@ -27,7 +27,7 @@ class DeSchool(http.Controller):
             json.dumps(data)
         )
 
-    @http.route('/api/v1/pays', type="http", methods=['GET'], cors="*", auth="none")
+    @http.route('/api/v1/pays', type="http", methods=['GET'], cors="*", website=True, auth="public")
     def list_country(self, **kwargs):
         datas = []
         pays = http.request.env['siantou.ems.core.country'].sudo().search([])
@@ -42,7 +42,7 @@ class DeSchool(http.Controller):
             json.dumps(datas)
         )
 
-    @http.route('/api/v1/pays/<int:id_country>/regions', type="http", methods=['GET'], cors="*", auth="none")
+    @http.route('/api/v1/pays/<int:id_country>/regions', type="http", methods=['GET'], cors="*", website=True, auth="public")
     def list_region_of_country(self, id_country):
         datas = []
         p = http.request.env['siantou.ems.core.country'].sudo().search([('id', '=', id_country)], limit=1)
@@ -54,7 +54,7 @@ class DeSchool(http.Controller):
             json.dumps(datas)
         )
 
-    @http.route('/api/v1/regions/<int:id_region>/cities', type="http", methods=['GET'], cors="*", auth="none")
+    @http.route('/api/v1/regions/<int:id_region>/cities', type="http", methods=['GET'], cors="*", website=True, auth="public")
     def list_cities_of_region(self, id_region):
         datas = []
         region_id = http.request.env['siantou.ems.core.region'].sudo().search([('id','=',id_region)], limit=1)
@@ -66,7 +66,7 @@ class DeSchool(http.Controller):
             json.dumps(datas)
         )
 
-    @http.route('/api/v1/cities/<int:id_city>/quarters', type="http", methods=['GET'], cors="*", auth="none")
+    @http.route('/api/v1/cities/<int:id_city>/quarters', type="http", methods=['GET'], cors="*", website=True, auth="public")
     def list_quarters_of_city(self, id_city):
         datas = []
         city = http.request.env['siantou.ems.core.city'].sudo().search([('id', '=', id_city)], limit=1)
@@ -78,7 +78,7 @@ class DeSchool(http.Controller):
             json.dumps(datas)
         )
 
-    @http.route('/api/v1/cycles', type="http", methods=['GET'], cors="*", auth="none")
+    @http.route('/api/v1/cycles', type="http", methods=['GET'], cors="*", website=True, auth="public")
     def list_courses(self, **kw):
         data = []
         cycles = []
@@ -123,7 +123,7 @@ class DeSchool(http.Controller):
             json.dumps(data)
         )
 
-    @http.route('/api/v1/filieres/<int:id>/specialites', type="http", methods=['GET'], cors="*", auth="none")
+    @http.route('/api/v1/filieres/<int:id>/specialites', type="http", methods=['GET'], cors="*", website=True, auth="public")
     def list_specialites_of_filiere(self, id):
         datas = []
         field_of_study_id = http.request.env['siantou.ems.core.field_of_study'].sudo().search([('id', '=', id)], limit=1)
@@ -135,7 +135,7 @@ class DeSchool(http.Controller):
             json.dumps(datas)
         )
 
-    @http.route('/api/v1/<int:id>/etudiants', type="http", methods=['GET'], cors="*", auth="none")
+    @http.route('/api/v1/<int:id>/etudiants', type="http", methods=['GET'], cors="*", website=True, auth="public")
     def get_etudiant_by_id(self, id,**kw):
         try:
             etudiant = http.request.env['oe.school.student.enrollment'].sudo().search([('id', '=', id)], limit=1)
@@ -214,7 +214,7 @@ class DeSchool(http.Controller):
         else:
             return 0
 
-    @http.route('/api/v1/etudiants/<int:id>/upload/docs', type="http", methods=['post'], cors="*", auth="none", csrf=False)
+    @http.route('/api/v1/etudiants/<int:id>/upload/docs', type="http", methods=['post'], cors="*", website=True, auth="public", csrf=False)
     def upload_doc_etudiant_by_id(self, id,**kw):
         documents = []
         try:
@@ -268,7 +268,7 @@ class DeSchool(http.Controller):
                 })
             )
 
-    @http.route('/api/v1/save', type="http", methods=['POST'], cors="*", auth="none", csrf=False)
+    @http.route('/api/v1/save', type="http", methods=['POST'], cors="*", website=True, auth="public", csrf=False)
     def admission_form_submit(self, **kwargs):
         data = json.loads(request.httprequest.data)
         _logger.info(f"=========== data :: {data}")
