@@ -729,6 +729,7 @@ class Timetable(models.Model):
         for record in self:
             group_ids = []
             if record.group_id.group_parent_id.id:
+                group_ids.append(record.group_id.group_parent_id.id)
                 for group_child_id in record.group_id.group_parent_id.group_child_ids:
                     group_ids.append(group_child_id.id)
             else:
