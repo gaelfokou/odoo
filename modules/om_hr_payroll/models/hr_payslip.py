@@ -140,6 +140,46 @@ class HrPayslip(models.Model):
         tm = round(tm, 2)
         return tm
 
+    @staticmethod
+    def increment_float_time(tm, n=0.0):
+        tm = str(tm)
+        tm = tm.split('.')
+        if len(tm) == 1:
+            tm.append('0')
+        if len(tm[0]) == 1:
+            tm[0] = '0{}'.format(tm[0])
+        elif len(tm[0]) > 2:
+            tm[0] = '{}'.format(tm[0][0:2])
+        if int(tm[0]) > 23:
+            tm[0] = '00'
+        if len(tm[1]) == 1:
+            tm[1] = '{}0'.format(tm[1])
+        elif len(tm[1]) > 2:
+            tm[1] = '{}'.format(tm[1][0:2])
+        if int(tm[1]) > 59:
+            tm[1] = '00'
+        tm = time(int(tm[0]), int(tm[1]))
+        n = str(n)
+        n = n.split('.')
+        if len(n) == 1:
+            n.append('0')
+        if len(n[0]) == 1:
+            n[0] = '0{}'.format(n[0])
+        elif len(n[0]) > 2:
+            n[0] = '{}'.format(n[0][0:2])
+        if int(n[0]) > 23:
+            n[0] = '00'
+        if len(n[1]) == 1:
+            n[1] = '{}0'.format(n[1])
+        elif len(n[1]) > 2:
+            n[1] = '{}'.format(n[1][0:2])
+        if int(n[1]) > 59:
+            n[1] = '00'
+        tm = datetime.combine(date.min, tm) + timedelta(hours=int(n[0]), minutes=int(n[1]))
+        tm = datetime.strftime(tm, TIME_FORMAT_FR)
+        tm = HrPayslip.convert_time_to_float(tm)
+        return tm
+
     def filter_daily_attendance(self, end_date, start_date, employee=None):
         min_start_time = self.env['ir.config_parameter'].sudo().get_param(f'siantou.min_start_time')
         if not min_start_time:
@@ -508,6 +548,8 @@ class HrPayslip(models.Model):
                             start_time = datetime.strftime(start_time, TIME_FORMAT_FR)
                             end_time = HrPayslip.convert_time_to_float(end_time)
                             start_time = HrPayslip.convert_time_to_float(start_time)
+                            end_time = HrPayslip.increment_float_time(end_time, 1.0)
+                            start_time = HrPayslip.increment_float_time(start_time, 1.0)
                             employee_timetable.sudo().write({
                                 'worked_start_time': start_time,
                                 'worked_end_time': end_time,

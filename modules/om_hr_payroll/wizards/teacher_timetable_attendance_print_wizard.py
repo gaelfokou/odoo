@@ -373,16 +373,38 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
         tm = tm.split('.')
         if len(tm) == 1:
             tm.append('0')
+        if len(tm[0]) == 1:
+            tm[0] = '0{}'.format(tm[0])
+        elif len(tm[0]) > 2:
+            tm[0] = '{}'.format(tm[0][0:2])
+        if int(tm[0]) > 23:
+            tm[0] = '00'
         if len(tm[1]) == 1:
             tm[1] = '{}0'.format(tm[1])
+        elif len(tm[1]) > 2:
+            tm[1] = '{}'.format(tm[1][0:2])
+        if int(tm[1]) > 59:
+            tm[1] = '00'
         tm = time(int(tm[0]), int(tm[1]))
         n = str(n)
         n = n.split('.')
+        if len(n) == 1:
+            n.append('0')
+        if len(n[0]) == 1:
+            n[0] = '0{}'.format(n[0])
+        elif len(n[0]) > 2:
+            n[0] = '{}'.format(n[0][0:2])
+        if int(n[0]) > 23:
+            n[0] = '00'
         if len(n[1]) == 1:
             n[1] = '{}0'.format(n[1])
+        elif len(n[1]) > 2:
+            n[1] = '{}'.format(n[1][0:2])
+        if int(n[1]) > 59:
+            n[1] = '00'
         tm = datetime.combine(date.min, tm) + timedelta(hours=int(n[0]), minutes=int(n[1]))
         tm = datetime.strftime(tm, TIME_FORMAT_FR)
-        tm = TimetablePrintWizard.convert_time_to_float(tm)
+        tm = TeacherTimetableAttendancePrintWizard.convert_time_to_float(tm)
         return tm
 
     @staticmethod
@@ -429,18 +451,18 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
         if len(hours) > 0:
             for i in range(len(data)):
                 for hour in hours:
-                    if not (TimetablePrintWizard.increment_float_time(data[i]['start_time']) <= TimetablePrintWizard.increment_float_time(hour[0]) and TimetablePrintWizard.increment_float_time(data[i]['end_time']) > TimetablePrintWizard.increment_float_time(hour[0])) or not (TimetablePrintWizard.increment_float_time(data[i]['start_time']) < TimetablePrintWizard.increment_float_time(hour[1]) and TimetablePrintWizard.increment_float_time(data[i]['end_time']) >= TimetablePrintWizard.increment_float_time(hour[1])):
+                    if not (TeacherTimetableAttendancePrintWizard.increment_float_time(data[i]['start_time']) <= TeacherTimetableAttendancePrintWizard.increment_float_time(hour[0]) and TeacherTimetableAttendancePrintWizard.increment_float_time(data[i]['end_time']) > TeacherTimetableAttendancePrintWizard.increment_float_time(hour[0])) or not (TeacherTimetableAttendancePrintWizard.increment_float_time(data[i]['start_time']) < TeacherTimetableAttendancePrintWizard.increment_float_time(hour[1]) and TeacherTimetableAttendancePrintWizard.increment_float_time(data[i]['end_time']) >= TeacherTimetableAttendancePrintWizard.increment_float_time(hour[1])):
                         current_data.append(data[i])
                         break
                     else:
-                        if not (TimetablePrintWizard.increment_float_time(data[i]['start_time']) == TimetablePrintWizard.increment_float_time(hour[0]) and TimetablePrintWizard.increment_float_time(data[i]['end_time']) == TimetablePrintWizard.increment_float_time(hour[1])):
-                            if not (TimetablePrintWizard.increment_float_time(data[i]['start_time']) < TimetablePrintWizard.increment_float_time(hour[0]) and TimetablePrintWizard.increment_float_time(data[i]['end_time']) > TimetablePrintWizard.increment_float_time(hour[1])):
-                                if TimetablePrintWizard.increment_float_time(data[i]['start_time']) == TimetablePrintWizard.increment_float_time(hour[0]):
+                        if not (TeacherTimetableAttendancePrintWizard.increment_float_time(data[i]['start_time']) == TeacherTimetableAttendancePrintWizard.increment_float_time(hour[0]) and TeacherTimetableAttendancePrintWizard.increment_float_time(data[i]['end_time']) == TeacherTimetableAttendancePrintWizard.increment_float_time(hour[1])):
+                            if not (TeacherTimetableAttendancePrintWizard.increment_float_time(data[i]['start_time']) < TeacherTimetableAttendancePrintWizard.increment_float_time(hour[0]) and TeacherTimetableAttendancePrintWizard.increment_float_time(data[i]['end_time']) > TeacherTimetableAttendancePrintWizard.increment_float_time(hour[1])):
+                                if TeacherTimetableAttendancePrintWizard.increment_float_time(data[i]['start_time']) == TeacherTimetableAttendancePrintWizard.increment_float_time(hour[0]):
                                     data[i]['start_time'] = hour[1]
                                     current_data.append(data[i])
                                     break
                                 else:
-                                    if TimetablePrintWizard.increment_float_time(data[i]['end_time']) == TimetablePrintWizard.increment_float_time(hour[1]):
+                                    if TeacherTimetableAttendancePrintWizard.increment_float_time(data[i]['end_time']) == TeacherTimetableAttendancePrintWizard.increment_float_time(hour[1]):
                                         data[i]['end_time'] = hour[0]
                                         current_data.append(data[i])
                                         break
@@ -472,13 +494,13 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
         hours.sort(key=lambda h: h[0])
 
         for i in range(len(hours)):
-            while TimetablePrintWizard.increment_float_time(hours[i][0]) < TimetablePrintWizard.increment_float_time(hours[i][1]):
-                if TimetablePrintWizard.increment_float_time(hours[i][0], n) < TimetablePrintWizard.increment_float_time(hours[i][1]):
-                    h = '{}-{}'.format(TimetablePrintWizard.increment_float_time(hours[i][0]), TimetablePrintWizard.increment_float_time(hours[i][0], n))
+            while TeacherTimetableAttendancePrintWizard.increment_float_time(hours[i][0]) < TeacherTimetableAttendancePrintWizard.increment_float_time(hours[i][1]):
+                if TeacherTimetableAttendancePrintWizard.increment_float_time(hours[i][0], n) < TeacherTimetableAttendancePrintWizard.increment_float_time(hours[i][1]):
+                    h = '{}-{}'.format(TeacherTimetableAttendancePrintWizard.increment_float_time(hours[i][0]), TeacherTimetableAttendancePrintWizard.increment_float_time(hours[i][0], n))
                 else:
-                    h = '{}-{}'.format(TimetablePrintWizard.increment_float_time(hours[i][0]), TimetablePrintWizard.increment_float_time(hours[i][1]))
+                    h = '{}-{}'.format(TeacherTimetableAttendancePrintWizard.increment_float_time(hours[i][0]), TeacherTimetableAttendancePrintWizard.increment_float_time(hours[i][1]))
                 current_hours.append(h)
-                hours[i][0] = TimetablePrintWizard.increment_float_time(hours[i][0], n)
+                hours[i][0] = TeacherTimetableAttendancePrintWizard.increment_float_time(hours[i][0], n)
 
         current_hours = list(set(current_hours))
         current_hours.sort(key=lambda h: float(h.split('-')[0]))
@@ -508,23 +530,23 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
                         timetables[monday][key].append(np.nan)
             if monday not in df:
                 df[monday] = pd.DataFrame(timetables[monday], dtype=str)
-            while TimetablePrintWizard.increment_float_time(d['start_time']) < TimetablePrintWizard.increment_float_time(d['end_time']):
-                if TimetablePrintWizard.increment_float_time(d['start_time'], n) < TimetablePrintWizard.increment_float_time(d['end_time']):
-                    h = '{}-{}'.format(TimetablePrintWizard.increment_float_time(d['start_time']), TimetablePrintWizard.increment_float_time(d['start_time'], n))
+            while TeacherTimetableAttendancePrintWizard.increment_float_time(d['start_time']) < TeacherTimetableAttendancePrintWizard.increment_float_time(d['end_time']):
+                if TeacherTimetableAttendancePrintWizard.increment_float_time(d['start_time'], n) < TeacherTimetableAttendancePrintWizard.increment_float_time(d['end_time']):
+                    h = '{}-{}'.format(TeacherTimetableAttendancePrintWizard.increment_float_time(d['start_time']), TeacherTimetableAttendancePrintWizard.increment_float_time(d['start_time'], n))
                 else:
-                    h = '{}-{}'.format(TimetablePrintWizard.increment_float_time(d['start_time']), TimetablePrintWizard.increment_float_time(d['end_time']))
+                    h = '{}-{}'.format(TeacherTimetableAttendancePrintWizard.increment_float_time(d['start_time']), TeacherTimetableAttendancePrintWizard.increment_float_time(d['end_time']))
                 for i, row in df[monday].iterrows():
                     if h == timetables[monday]['Heure'][i]:
                         for j, column in enumerate(df[monday].columns):
                             for k, key in enumerate(timetables[monday].keys()):
                                 if k == d['date'].weekday() + 1:
                                     if column == key:
-                                        if TimetablePrintWizard.is_float(str(df[monday].loc[i, column])) and np.isnan(float(str(df[monday].loc[i, column]))):
+                                        if TeacherTimetableAttendancePrintWizard.is_float(str(df[monday].loc[i, column])) and np.isnan(float(str(df[monday].loc[i, column]))):
                                             df[monday].loc[i, column] = str(d['id'])
                                         else:
                                             df[monday].loc[i, column] = '{}-{}'.format(df[monday].loc[i, column], str(d['id']))
                                     break
-                d['start_time'] = TimetablePrintWizard.increment_float_time(d['start_time'], n)
+                d['start_time'] = TeacherTimetableAttendancePrintWizard.increment_float_time(d['start_time'], n)
 
         for monday in df.keys():
             df[monday].replace(np.nan, '-', inplace=True)

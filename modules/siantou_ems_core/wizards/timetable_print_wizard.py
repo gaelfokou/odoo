@@ -298,13 +298,35 @@ class TimetablePrintWizard(models.TransientModel):
         tm = tm.split('.')
         if len(tm) == 1:
             tm.append('0')
+        if len(tm[0]) == 1:
+            tm[0] = '0{}'.format(tm[0])
+        elif len(tm[0]) > 2:
+            tm[0] = '{}'.format(tm[0][0:2])
+        if int(tm[0]) > 23:
+            tm[0] = '00'
         if len(tm[1]) == 1:
             tm[1] = '{}0'.format(tm[1])
+        elif len(tm[1]) > 2:
+            tm[1] = '{}'.format(tm[1][0:2])
+        if int(tm[1]) > 59:
+            tm[1] = '00'
         tm = time(int(tm[0]), int(tm[1]))
         n = str(n)
         n = n.split('.')
+        if len(n) == 1:
+            n.append('0')
+        if len(n[0]) == 1:
+            n[0] = '0{}'.format(n[0])
+        elif len(n[0]) > 2:
+            n[0] = '{}'.format(n[0][0:2])
+        if int(n[0]) > 23:
+            n[0] = '00'
         if len(n[1]) == 1:
             n[1] = '{}0'.format(n[1])
+        elif len(n[1]) > 2:
+            n[1] = '{}'.format(n[1][0:2])
+        if int(n[1]) > 59:
+            n[1] = '00'
         tm = datetime.combine(date.min, tm) + timedelta(hours=int(n[0]), minutes=int(n[1]))
         tm = datetime.strftime(tm, TIME_FORMAT_FR)
         tm = TimetablePrintWizard.convert_time_to_float(tm)
