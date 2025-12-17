@@ -174,6 +174,11 @@ class TimetableFilterWizard(models.TransientModel):
         # default='pending',
     )
 
+    number_of_minute = fields.Float(
+        string='Nombre de minutes',
+        default=0.0,
+    )
+
     has_option = fields.Boolean(
         'Spécialité avec option',
         compute='_compute_has_option', store=True,
@@ -421,12 +426,21 @@ class TimetableFilterWizard(models.TransientModel):
         if self.group_id.id:
             domain.append(('group_id', '=', self.group_id.id))
             title.append(self.group_id.name)
-        if self.status:
-            domain.append(('status', '=', self.status))
-            title.append(STATUS_TIMETABLE[self.status])
 
         timetable_ids = []
-        timetables = self.env['siantou.ems.timetable.timetable'].search(domain)
+        if self.status:
+            if self.status == 'delay':
+                domain.append(('status', '=', 'present'))
+                title.append(STATUS_TIMETABLE[self.status])
+                title.append('{} minute(s)'.format(self.number_of_minute))
+                timetables = self.env['siantou.ems.timetable.timetable'].search(domain)
+                timetables = timetables.filtered(lambda rec: rec.date and rec.day_of_week and TimetableFilterWizard.compare_float_time(rec.date, rec.worked_start_time, rec.start_time) >= self.number_of_minute)
+            else:
+                domain.append(('status', '=', self.status))
+                title.append(STATUS_TIMETABLE[self.status])
+                timetables = self.env['siantou.ems.timetable.timetable'].search(domain)
+        else:
+            timetables = self.env['siantou.ems.timetable.timetable'].search(domain)
         if self.start_date and self.end_date:
             start_date = datetime.strftime(self.start_date, DATE_FORMAT_FR)
             end_date = datetime.strftime(self.end_date, DATE_FORMAT_FR)
@@ -489,3 +503,12 @@ class TimetableFilterWizard(models.TransientModel):
         if has_second:
             tm = '{}:00'.format(tm)
         return tm
+
+    @staticmethod
+    def compare_float_time(date_time, first_time, second_time):
+        first_time = datetime.strptime(f"{date_time} {TimetableFilterWizard.convert_float_to_time(first_time, True)}", DATETIME_FORMAT)
+        second_time = datetime.strptime(f"{date_time} {TimetableFilterWizard.convert_float_to_time(second_time, True)}", DATETIME_FORMAT)
+        delay_time = first_time - second_time
+        delay_time = delay_time.total_seconds() / 60.0
+        delay_time = round(delay_time, 2)
+        return delay_time

@@ -87,16 +87,17 @@ class ClassroomFilterWizard(models.TransientModel):
             classroom_ids.append(timetable.classroom_id.id)
         classroom_ids = list(set(classroom_ids))
 
-        if self.status == 'available':
-            domain = [
-                ('id', 'not in', classroom_ids),
-            ]
-            title.append(STATUS_CLASSROOM[self.status])
-        elif self.status == 'not_available':
-            domain = [
-                ('id', 'in', classroom_ids),
-            ]
-            title.append(STATUS_CLASSROOM[self.status])
+        if self.status:
+            if self.status == 'available':
+                domain = [
+                    ('id', 'not in', classroom_ids),
+                ]
+                title.append(STATUS_CLASSROOM[self.status])
+            elif self.status == 'not_available':
+                domain = [
+                    ('id', 'in', classroom_ids),
+                ]
+                title.append(STATUS_CLASSROOM[self.status])
 
         if len(title) > 0:
             title = '/'.join(title)

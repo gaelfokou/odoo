@@ -141,90 +141,93 @@ class ClassFilterWizard(models.TransientModel):
             class_ids.append(classe.id)
         class_ids = list(set(class_ids))
 
-        if self.status == 'timetable_available':
-            domain = [
-                '|',
-                '&',
-                ('group_id.is_active', '=', True),
-                ('group_id.is_submit', '=', False),
-                '&',
-                ('group_parent_id.is_active', '=', True),
-                ('group_parent_id.is_submit', '=', False),
-                ('class_id', 'in', class_ids),
-            ]
-            timetable_class_ids = []
-            timetables = self.env['siantou.ems.timetable.timetable'].search(domain)
-            for timetable in timetables:
-                timetable_class_ids.append(timetable.class_id.id)
-            timetable_class_ids = list(set(timetable_class_ids))
-            class_ids = list(filter(lambda i: i in timetable_class_ids, class_ids))
-            title.append(STATUS_CLASS[self.status])
-        elif self.status == 'timetable_not_available':
-            domain = [
-                '|',
-                '&',
-                ('group_id.is_active', '=', True),
-                ('group_id.is_submit', '=', False),
-                '&',
-                ('group_parent_id.is_active', '=', True),
-                ('group_parent_id.is_submit', '=', False),
-                ('class_id', 'in', class_ids),
-            ]
-            timetable_class_ids = []
-            timetables = self.env['siantou.ems.timetable.timetable'].search(domain)
-            for timetable in timetables:
-                timetable_class_ids.append(timetable.class_id.id)
-            timetable_class_ids = list(set(timetable_class_ids))
-            class_ids = list(filter(lambda i: i not in timetable_class_ids, class_ids))
-            title.append(STATUS_CLASS[self.status])
-        elif self.status == 'student_available':
-            domain = [
-                ('id', 'in', class_ids),
-            ]
-            student_class_ids = []
-            classes = self.env['siantou.ems.core.class'].search(domain)
-            for classe in classes:
-                if len(classe.student_ids.ids) > 0:
-                    student_class_ids.append(classe.id)
-            student_class_ids = list(set(student_class_ids))
-            class_ids = list(filter(lambda i: i in student_class_ids, class_ids))
-            title.append(STATUS_CLASS[self.status])
-        elif self.status == 'student_not_available':
-            domain = [
-                ('id', 'in', class_ids),
-            ]
-            student_class_ids = []
-            classes = self.env['siantou.ems.core.class'].search(domain)
-            for classe in classes:
-                if len(classe.student_ids.ids) > 0:
-                    student_class_ids.append(classe.id)
-            student_class_ids = list(set(student_class_ids))
-            class_ids = list(filter(lambda i: i not in student_class_ids, class_ids))
-            title.append(STATUS_CLASS[self.status])
-        elif self.status == 'student_more_than_or_equal':
-            domain = [
-                ('id', 'in', class_ids),
-            ]
-            student_class_ids = []
-            classes = self.env['siantou.ems.core.class'].search(domain)
-            for classe in classes:
-                if len(classe.student_ids.ids) >= self.number_of_student:
-                    student_class_ids.append(classe.id)
-            student_class_ids = list(set(student_class_ids))
-            class_ids = list(filter(lambda i: i in student_class_ids, class_ids))
-            title.append(STATUS_CLASS[self.status])
-        elif self.status == 'student_less_than':
-            domain = [
-                ('id', 'in', class_ids),
-            ]
-            student_class_ids = []
-            classes = self.env['siantou.ems.core.class'].search(domain)
-            for classe in classes:
-                if len(classe.student_ids.ids) < self.number_of_student:
-                    student_class_ids.append(classe.id)
-            student_class_ids = list(set(student_class_ids))
-            class_ids = list(filter(lambda i: i in student_class_ids, class_ids))
-            title.append(STATUS_CLASS[self.status])
+        if self.status:
+            if self.status == 'timetable_available':
+                domain = [
+                    '|',
+                    '&',
+                    ('group_id.is_active', '=', True),
+                    ('group_id.is_submit', '=', False),
+                    '&',
+                    ('group_parent_id.is_active', '=', True),
+                    ('group_parent_id.is_submit', '=', False),
+                    ('class_id', 'in', class_ids),
+                ]
+                timetable_class_ids = []
+                timetables = self.env['siantou.ems.timetable.timetable'].search(domain)
+                for timetable in timetables:
+                    timetable_class_ids.append(timetable.class_id.id)
+                timetable_class_ids = list(set(timetable_class_ids))
+                class_ids = list(filter(lambda i: i in timetable_class_ids, class_ids))
+                title.append(STATUS_CLASS[self.status])
+            elif self.status == 'timetable_not_available':
+                domain = [
+                    '|',
+                    '&',
+                    ('group_id.is_active', '=', True),
+                    ('group_id.is_submit', '=', False),
+                    '&',
+                    ('group_parent_id.is_active', '=', True),
+                    ('group_parent_id.is_submit', '=', False),
+                    ('class_id', 'in', class_ids),
+                ]
+                timetable_class_ids = []
+                timetables = self.env['siantou.ems.timetable.timetable'].search(domain)
+                for timetable in timetables:
+                    timetable_class_ids.append(timetable.class_id.id)
+                timetable_class_ids = list(set(timetable_class_ids))
+                class_ids = list(filter(lambda i: i not in timetable_class_ids, class_ids))
+                title.append(STATUS_CLASS[self.status])
+            elif self.status == 'student_available':
+                domain = [
+                    ('id', 'in', class_ids),
+                ]
+                student_class_ids = []
+                classes = self.env['siantou.ems.core.class'].search(domain)
+                for classe in classes:
+                    if len(classe.student_ids.ids) > 0:
+                        student_class_ids.append(classe.id)
+                student_class_ids = list(set(student_class_ids))
+                class_ids = list(filter(lambda i: i in student_class_ids, class_ids))
+                title.append(STATUS_CLASS[self.status])
+            elif self.status == 'student_not_available':
+                domain = [
+                    ('id', 'in', class_ids),
+                ]
+                student_class_ids = []
+                classes = self.env['siantou.ems.core.class'].search(domain)
+                for classe in classes:
+                    if len(classe.student_ids.ids) > 0:
+                        student_class_ids.append(classe.id)
+                student_class_ids = list(set(student_class_ids))
+                class_ids = list(filter(lambda i: i not in student_class_ids, class_ids))
+                title.append(STATUS_CLASS[self.status])
+            elif self.status == 'student_more_than_or_equal':
+                domain = [
+                    ('id', 'in', class_ids),
+                ]
+                student_class_ids = []
+                classes = self.env['siantou.ems.core.class'].search(domain)
+                for classe in classes:
+                    if len(classe.student_ids.ids) >= self.number_of_student:
+                        student_class_ids.append(classe.id)
+                student_class_ids = list(set(student_class_ids))
+                class_ids = list(filter(lambda i: i in student_class_ids, class_ids))
+                title.append(STATUS_CLASS[self.status])
+                title.append('{} étudiant(s)'.format(self.number_of_student))
+            elif self.status == 'student_less_than':
+                domain = [
+                    ('id', 'in', class_ids),
+                ]
+                student_class_ids = []
+                classes = self.env['siantou.ems.core.class'].search(domain)
+                for classe in classes:
+                    if len(classe.student_ids.ids) < self.number_of_student:
+                        student_class_ids.append(classe.id)
+                student_class_ids = list(set(student_class_ids))
+                class_ids = list(filter(lambda i: i in student_class_ids, class_ids))
+                title.append(STATUS_CLASS[self.status])
+                title.append('{} étudiant(s)'.format(self.number_of_student))
         domain = [
             ('id', 'in', class_ids),
         ]
