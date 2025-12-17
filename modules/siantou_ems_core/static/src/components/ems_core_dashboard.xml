@@ -56,8 +56,8 @@
                                         <span class="fa fa-arrow-right text-white"/>
                                     </div>
                                 </div>
-                                <t t-if="state.doughÉcoles.length>0">
-                                    <DoughnutRenderer type="'doughnut'" title="'Écoles'" datas="state.doughÉcoles"/>
+                                <t t-if="state.doughEcoles.length>0">
+                                    <DoughnutRenderer type="'doughnut'" title="'Écoles'" datas="state.doughEcoles"/>
                                 </t>
                             </div>
                         </div>
