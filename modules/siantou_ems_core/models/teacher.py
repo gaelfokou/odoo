@@ -47,8 +47,6 @@ class HrEmployee(models.Model):
         'employee_id',
         'subject_id',
         string='Cours dispensés',
-        # compute='_compute_subject_ids',
-        # inverse='_set_subject_ids'
     )
 
     # Les priorités de chaque cours sur cet enseignant
