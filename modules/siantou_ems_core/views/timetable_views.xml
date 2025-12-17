@@ -63,6 +63,8 @@
                         decoration-danger="status == 'absent'"
                         decoration-info="status in ['permission', 'delay']"
                         decoration-warning="status == 'exception'"/>
+					<field name="worked_start_time" invisible="status not in ['present', 'permission']" optional="hide"/>
+					<field name="worked_end_time" invisible="status not in ['present', 'permission']" optional="hide"/>
 				</tree>
 			</field>
 		</record>
