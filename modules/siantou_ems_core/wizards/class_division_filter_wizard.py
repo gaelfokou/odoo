@@ -36,7 +36,7 @@ class ClassFilterWizard(models.TransientModel):
 
     school_id = fields.Many2one(
         'siantou.ems.core.school',
-        string='Ecole',
+        string='École',
     )
 
     # Niveau lié à la programmation de cours

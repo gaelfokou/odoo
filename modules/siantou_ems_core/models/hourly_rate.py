@@ -19,7 +19,7 @@ class HourlyRate(models.Model):
 
     school_id = fields.Many2one(
         'siantou.ems.core.school',
-        string='Ecole',
+        string='École',
         required=True,
         ondelete='cascade'
     )

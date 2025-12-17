@@ -47,3 +47,5 @@ class School(models.Model):
     )
 
     building_ids = fields.Many2many('siantou.ems.core.building', 'school_building_rel', 'school_id', 'building_id', string="Bâtiments")
+
+    group_ids = fields.Many2many('siantou.ems.timetable.group', 'school_group_rel', 'school_id', 'group_id', string="Versions d'emploi du temps")

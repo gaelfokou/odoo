@@ -77,7 +77,7 @@ class EducationClass(models.Model):
     level_id = fields.Many2one('siantou.ems.core.level', string='Niveau',
                                  required=True, help="Niveau")
 
-    school_id = fields.Many2one('siantou.ems.core.school', string='Ecole', required=True)
+    school_id = fields.Many2one('siantou.ems.core.school', string='École', required=True)
 
     year_id = fields.Many2one(
         'siantou.ems.core.year',

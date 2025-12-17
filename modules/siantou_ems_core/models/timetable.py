@@ -199,7 +199,7 @@ class Timetable(models.Model):
 
     school_id = fields.Many2one(
         'siantou.ems.core.school',
-        string='Ecole',
+        string='École',
         required=True,
         ondelete='cascade'
     )
@@ -539,6 +539,8 @@ class Timetable(models.Model):
 
     subject_id_domain = fields.Binary(compute='_compute_class_domain', default=[])
 
+    school_id_domain = fields.Binary(compute='_compute_group_domain', default=[])
+
     @staticmethod
     def convert_float_to_time(tm, has_second=False):
         tm = str(tm)
@@ -625,6 +627,29 @@ class Timetable(models.Model):
                     ('field_of_study_id', 'in', field_of_study_ids.ids)
                 ]
             record.specialty_id_domain = domain
+
+    @api.depends('group_id')
+    def _compute_group_domain(self):
+        for record in self:
+            domain = []
+            if record.group_id.id:
+                domain = [
+                    ('id', 'in', record.group_id.school_ids.ids)
+                ]
+            record.school_id_domain = domain
+
+    @api.onchange('group_id')
+    def _onchange_group(self):
+        for record in self:
+            record.school_id = None
+            record.field_of_study_id = None
+            record.level_id = None
+            record.class_id = None
+            record.class_group_id = None
+            record.specialty_id = None
+            record.option_id = None
+            record.ue_id = None
+            record.subject_id = None
 
     @api.onchange('school_id')
     def _onchange_school(self):
@@ -1219,6 +1244,8 @@ class TimetableGroup(models.Model):
     #     string='Versions d\'emploi du temps soumises',
     #     domain="[('is_submit', '=', True), ('semester_id', '=', semester_id), ('status', '=', 'valid')]",
     # )
+
+    school_ids = fields.Many2many('siantou.ems.core.school', 'school_group_rel', 'group_id', 'school_id', string='Écoles')
 
     status = fields.Selection([
         ('pending', 'En attente'),

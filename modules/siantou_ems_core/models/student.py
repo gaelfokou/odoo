@@ -51,7 +51,7 @@ class Student(models.Model):
     )
     school_id = fields.Many2one(
         'siantou.ems.core.school',
-        string='Ecole',
+        string='École',
         required=True
     )
     cycle_id = fields.Many2one(

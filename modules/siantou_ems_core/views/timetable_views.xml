@@ -94,7 +94,8 @@
                             <field name="date" invisible="1"/>
                             <field name="semester_id" readonly="1" options="{'no_create': True}"/>
                             <field name="year_id" readonly="1" options="{'no_create': True}"/>
-                            <field name="school_id" options="{'no_create': True}"/>
+                            <field name="school_id_domain" invisible="1"/>
+                            <field name="school_id" options="{'no_create': True}" domain="school_id_domain"/>
                             <field name="field_of_study_id" options="{'no_create': True}" domain="[('school_id', '=', school_id)]"/>
                             <field name="specialty_id_domain" invisible="1"/>
                             <field name="specialty_id" options="{'no_create': True}" domain="specialty_id_domain"/>

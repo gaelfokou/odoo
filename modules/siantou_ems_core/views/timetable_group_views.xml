@@ -77,6 +77,7 @@
                             <field name="group_child_ids" invisible="is_submit == True" widget="many2many_tags"/>
                             <field name="is_active" invisible="is_submit == True"/>
                             <field name="user_ids" widget="many2many_tags"/>
+                            <field name="school_ids" widget="many2many_tags"/>
                             <field name="create_uid"/>
                             <field name="timetable_ids" domain="['|', '&amp;', ('group_id.is_active', '=', True), ('group_id.is_submit', '=', False), '&amp;', ('group_parent_id.is_active', '=', True), ('group_parent_id.is_submit', '=', False)]" widget="one2many_list">
                                 <tree edit="1" create="1">
@@ -139,6 +140,7 @@
                             <field name="group_child_ids" invisible="is_submit == True" widget="many2many_tags"/>
                             <field name="is_active" invisible="is_submit == True"/>
                             <field name="user_ids" widget="many2many_tags"/>
+                            <field name="school_ids" widget="many2many_tags"/>
                             <field name="create_uid"/>
                             <field name="timetable_ids" domain="['|', '&amp;', ('group_id.is_active', '=', True), ('group_id.is_submit', '=', False), '&amp;', ('group_parent_id.is_active', '=', True), ('group_parent_id.is_submit', '=', False)]" widget="one2many_list">
                                 <tree edit="1" create="1">

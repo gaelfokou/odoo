@@ -54,7 +54,7 @@
     </record>
 
     <record id="action_show_school" model="ir.actions.act_window">
-        <field name="name">Ecoles</field>
+        <field name="name">Écoles</field>
         <field name="res_model">siantou.ems.core.school</field>
         <field name="view_mode">tree,form</field>
     </record>

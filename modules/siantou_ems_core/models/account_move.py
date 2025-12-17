@@ -15,7 +15,7 @@ class AccountMove(models.Model):
     # )
     # school_id = fields.Many2one(
     #     'siantou.ems.core.school',
-    #     string='Ecole',
+    #     string='École',
     #     related='field_of_study_id.school_id'
     # )
     # field_of_study_id = fields.Many2one(

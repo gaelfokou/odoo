@@ -28,7 +28,7 @@
                         <KpiCard name="'Enseignants'" value="state.teachers.value" icon="'group'"/>
                         <KpiCard name="'Filières'" value="state.filieres.value" icon="'level-up'"/>
                         <KpiCard name="'Cycles'" value="state.cycles.value" icon="'repeat'"/>
-                        <KpiCard name="'Ecoles'" value="state.ecoles.value" icon="'cogs'"/>
+                        <KpiCard name="'Écoles'" value="state.ecoles.value" icon="'cogs'"/>
                         <KpiCard name="'Campus'" value="state.campus.value" icon="'building'"/>
                     </div>
                 </div>
@@ -56,8 +56,8 @@
                                         <span class="fa fa-arrow-right text-white"/>
                                     </div>
                                 </div>
-                                <t t-if="state.doughEcoles.length>0">
-                                    <DoughnutRenderer type="'doughnut'" title="'Ecoles'" datas="state.doughEcoles"/>
+                                <t t-if="state.doughÉcoles.length>0">
+                                    <DoughnutRenderer type="'doughnut'" title="'Écoles'" datas="state.doughÉcoles"/>
                                 </t>
                             </div>
                         </div>
