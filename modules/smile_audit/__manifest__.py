@@ -16,6 +16,7 @@ all the objects of the system
         'base',
     ],
     "data": [
+        'security/group_log_management.xml',
         'security/ir.model.access.csv',
         'views/audit_rule_view.xml',
         'views/audit_log_view.xml',

@@ -380,6 +380,8 @@ class PortalAccount(portal.CustomerPortal):
             paymenthistories.append(paymenthistory)
             total_amount += paymenthistory['amount']
             total_number_of_hours += paymenthistory['number_of_hours']
+        total_amount = round(total_amount, 2)
+        total_number_of_hours = round(total_number_of_hours, 2)
         return http.request.render('siantou_ems_portal.siantou_ems_portal_paymenthistory_views',
                                 {
                                     'paymenthistories': paymenthistories,

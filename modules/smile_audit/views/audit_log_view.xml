@@ -95,7 +95,7 @@
         <!-- Menus for Logs des utilisateurs -->
         <menuitem id="smile_audit_log_menu_root" name="Logs des utilisateurs"
                 sequence="10" web_icon="smile_audit,static/description/icon.png"
-                action="action_audit_log_tree">
+                action="action_audit_log_tree" groups="smile_audit.group_user_log">
         </menuitem>
         <menuitem id="smile_audit_log_menu" name="Logs des utilisateurs"
                 sequence="10"
