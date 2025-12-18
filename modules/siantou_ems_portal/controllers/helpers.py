@@ -473,7 +473,7 @@ class Helpers:
 
                     end_time = Helpers.convert_float_to_time(progressreport.end_time, True)
                     start_time = Helpers.convert_float_to_time(progressreport.start_time, True)
-                    key = '{}-{}-{}-{}'.format(progressreport.employee_id.id, progressreport.date, start_time, end_time)
+                    key = '{}-{}-{}-{}-{}'.format(progressreport.employee_id.id, progressreport.class_id.id, progressreport.date, start_time, end_time)
                     if key not in key_progressreports:
                         key_progressreports[key] = progressreport
                     else:
