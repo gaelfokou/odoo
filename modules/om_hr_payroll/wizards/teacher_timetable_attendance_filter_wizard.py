@@ -134,10 +134,20 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
         order = 'date asc, id asc'
 
         search_consumptionhours = self.env['siantou.ems.timetable.timetable'].search(domain, order=order).sorted(lambda rec: (rec.date, rec.id))
+        key_consumptionhours = {}
         consumptionhours = []
         for search_consumptionhour in search_consumptionhours:
             if not search_consumptionhour.date or not search_consumptionhour.day_of_week:
                 continue
+
+            end_time = TeacherTimetableAttendanceFilterWizard.convert_float_to_time(search_consumptionhour.end_time, True)
+            start_time = TeacherTimetableAttendanceFilterWizard.convert_float_to_time(search_consumptionhour.start_time, True)
+            key = '{}-{}-{}-{}'.format(search_consumptionhour.class_id.id, search_consumptionhour.date, start_time, end_time)
+            if key not in key_consumptionhours:
+                key_consumptionhours[key] = search_consumptionhour
+            else:
+                continue
+
             consumptionhour = {}
             consumptionhour['id'] = search_consumptionhour.id
             consumptionhour['name'] = search_consumptionhour.name
