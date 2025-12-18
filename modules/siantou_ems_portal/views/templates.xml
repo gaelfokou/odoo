@@ -500,6 +500,96 @@
             </t>
         </template>
 
+        <!-- Notes d'examen -->
+
+        <template id="siantou_ems_portal_examscore" name="siantou_ems_portal.examscore_breadcrumbs" inherit_id="portal.portal_breadcrumbs" priority="30">
+            <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
+                <li t-if="page_name == 'examscore'" t-attf-class="breadcrumb-item #{'active ' if examscore else ''}">
+                    <a t-if="examscore" t-attf-href="/my/examscore?{{ keep_query() }}">Notes d'examen</a>
+                    <t t-else="">Notes d'examen</t>
+                </li>
+            </xpath>
+        </template>
+
+        <template id="siantou_ems_portal_menu_examscore" name="siantou_ems_portal.examscore_my_home" inherit_id="portal.portal_my_home" priority="30">
+            <xpath expr="//div[hasclass('o_portal_docs')]" position="before">
+                <t t-set="portal_client_category_enable" t-value="True"/>
+            </xpath>
+            <xpath expr="//div[@id='portal_client_category']" position="inside">
+                <t t-call="portal.portal_docs_entry">
+                    <t t-set="icon" t-value="'/siantou_ems_portal/static/src/img/exam_grid.png'"/>
+                    <t t-set="title">Notes d'examen</t>
+                    <t t-set="url" t-value="'/my/examscore'"/>
+                    <t t-set="text">Affichez vos notes d'examen</t>
+                    <t t-set="placeholder_count" t-value="'portal_examscore'"/>
+                </t>
+            </xpath>
+        </template>
+
+        <template id="siantou_ems_portal_examscore_views" name="siantou_ems_portal.examscore">
+            <t t-call="portal.portal_layout">
+                <t t-set="breadcrumbs_searchbar" t-value="True"/>
+                <t t-call="portal.portal_searchbar">
+                    <t t-set="title">Notes d'examen</t>
+                </t>
+                <t t-call="portal.portal_table">
+                    <t t-set="classes" t-value="examscores.keys()"/>
+                    <t t-if="len(classes) > 0">
+                        <thead>
+                            <tr class="active">
+                                <th class="text-left">Cours</th>
+                                <th class="text-left" colspan="2" style="text-align: right;">Taux de consommation du volume horaire</th>
+                            </tr>
+                        </thead>
+                        <t t-foreach="classes" t-as="classe">
+                            <thead>
+                                <tr class="active">
+                                    <th class="text-left">
+                                        <span t-esc="examscores[classe]['name']"/>
+                                    </th>
+                                    <th class="text-left" colspan="2">
+                                        <span t-esc="'Empty'" style="visibility: hidden;"/>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-set="subjects" t-value="examscores[classe]['data'].keys()"/>
+                                <t t-foreach="subjects" t-as="subject">
+                                    <tr>
+                                        <td class="text-left">
+                                            <span t-esc="examscores[classe]['data'][subject]['name']"/>
+                                        </td>
+                                        <td class="text-left">
+                                            <div>
+                                                <a t-attf-href="/my/subjectsession/{{ classe }}/{{ subject }}/list" class="btn btn-primary btn-sm">Fiche de progression</a>
+                                            </div>
+                                        </td>
+                                        <td class="text-left">
+                                            <span t-esc="str(examscores[classe]['data'][subject]['percentage']) + '%'"/>
+                                        </td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </t>
+                    </t>
+                    <t t-else="">
+                        <tfooter>
+                            <tr>
+                                <th class="text-center" colspan="3" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;">
+                                    <span t-esc="'Aucune donnée disponible'"/>
+                                </th>
+                            </tr>
+                        </tfooter>
+                        <tfooter>
+                            <tr>
+                                <th class="text-left" colspan="3" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
+                            </tr>
+                        </tfooter>
+                    </t>
+                </t>
+            </t>
+        </template>
+
         <!-- Paiements -->
 
         <template id="siantou_ems_portal_paymenthistory" name="siantou_ems_portal.paymenthistory_breadcrumbs" inherit_id="portal.portal_breadcrumbs" priority="30">

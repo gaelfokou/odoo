@@ -155,6 +155,10 @@ class PortalAccount(portal.CustomerPortal):
             values['portal_notification'] = 1 if is_user == 'is_teacher' else 0
         if 'portal_request' in counters:
             values['portal_request'] = 0
+        if 'portal_examscore' in counters:
+            values['portal_examscore'] = 1 if is_user == 'is_student' else 0
+        if 'portal_subjectscore_list' in counters:
+            values['portal_subjectscore_list'] = 1 if is_user == 'is_student' else 0
         return values
 
     @http.route(['/my/timetable', '/my/timetable/page/<int:page>'], type='http', auth="user", website=True)
@@ -356,6 +360,11 @@ class PortalAccount(portal.CustomerPortal):
                                     'total_structure_amount': total_structure_amount,
                                     'total_rest_amount': total_rest_amount,
                                 })
+
+    @http.route(['/my/examscore'], type='http', auth="user", website=True)
+    def portal_examscore(self, search='', search_in='all', **kw):
+        return http.request.render('siantou_ems_portal.siantou_ems_portal_examscore_views',
+                                {})
 
     @http.route(['/my/paymenthistory'], type='http', auth="user", website=True)
     def portal_paymenthistory(self, search='', search_in='all', **kw):
