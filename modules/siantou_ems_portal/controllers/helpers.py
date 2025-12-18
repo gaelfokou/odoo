@@ -129,7 +129,7 @@ class Helpers:
 
                     end_time = Helpers.convert_float_to_time(timetable.end_time, True)
                     start_time = Helpers.convert_float_to_time(timetable.start_time, True)
-                    key = '{}-{}-{}-{}'.format(timetable.employee_id.id, timetable.date, start_time, end_time)
+                    key = '{}-{}-{}-{}-{}'.format(timetable.employee_id.id, timetable.class_id.id, timetable.date, start_time, end_time)
                     if key not in key_timetables:
                         key_timetables[key] = timetable
                     else:
