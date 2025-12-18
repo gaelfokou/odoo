@@ -376,7 +376,7 @@ class Helpers:
 
                     end_time = Helpers.convert_float_to_time(consumptionhour.end_time, True)
                     start_time = Helpers.convert_float_to_time(consumptionhour.start_time, True)
-                    key = '{}-{}-{}-{}'.format(consumptionhour.employee_id.id, consumptionhour.date, start_time, end_time)
+                    key = '{}-{}-{}-{}-{}'.format(consumptionhour.employee_id.id, consumptionhour.class_id.id, consumptionhour.date, start_time, end_time)
                     if key not in key_consumptionhours:
                         key_consumptionhours[key] = consumptionhour
                     else:
