@@ -572,7 +572,7 @@ class Helpers:
 
                     end_time = Helpers.convert_float_to_time(subjectsession.end_time, True)
                     start_time = Helpers.convert_float_to_time(subjectsession.start_time, True)
-                    key = '{}-{}-{}-{}'.format(subjectsession.employee_id.id, subjectsession.date, start_time, end_time)
+                    key = '{}-{}-{}-{}-{}'.format(subjectsession.employee_id.id, subjectsession.class_id.id, subjectsession.date, start_time, end_time)
                     if key not in key_subjectsessions:
                         key_subjectsessions[key] = subjectsession
                     else:
