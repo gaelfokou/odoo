@@ -464,7 +464,19 @@ class TimetableFilterWizard(models.TransientModel):
             title.append('{} - {}'.format(start_time, end_time))
             timetables = timetables.filtered(lambda rec: not (rec.start_time >= self.end_time or rec.end_time <= self.start_time))
             # timetables = timetables.filtered(lambda rec: self.search_filtered(rec))
+        key_timetables = {}
         for timetable in timetables:
+            if not timetable.date or not timetable.day_of_week:
+                continue
+
+            end_time = TimetableFilterWizard.convert_float_to_time(timetable.end_time, True)
+            start_time = TimetableFilterWizard.convert_float_to_time(timetable.start_time, True)
+            key = '{}-{}-{}-{}'.format(timetable.class_id.id, timetable.date, start_time, end_time)
+            if key not in key_timetables:
+                key_timetables[key] = timetable
+            else:
+                continue
+
             timetable_ids.append(timetable.id)
         timetable_ids = list(set(timetable_ids))
 
