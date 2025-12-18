@@ -26,7 +26,7 @@ class Year(models.Model):
     )
 
     # Variable booléenne pour définir une année académique comme étant active (année académique en cours)
-    is_active = fields.Boolean(string="Actif", default=False)
+    is_active = fields.Boolean(string='Actif', default=False)
 
     # Contrainte logique pour empêcher d'avoir des années académiques qui se chevauchent
     @api.constrains('start_time', 'end_time')

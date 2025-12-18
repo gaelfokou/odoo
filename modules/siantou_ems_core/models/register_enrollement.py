@@ -62,7 +62,7 @@ class SessionEnrollment(models.Model):
         required=True,
         default=lambda self: self._get_default_acadmic_year()
     )
-    is_active = fields.Boolean(string="Actif", default=False)
+    is_active = fields.Boolean(string='Actif', default=False)
     state = fields.Selection([
             ('draft', 'Brouillon'),
             ('cancel', 'Cancelled'),

@@ -680,8 +680,8 @@ class SubjectSession(models.Model):
 
     name = fields.Char(
         string='Séance',
-        compute='_compute_name',
-        store=True,
+        # compute='_compute_name',
+        # store=True,
     )
 
     description = fields.Text(
@@ -701,6 +701,8 @@ class SubjectSession(models.Model):
         required=True,
         ondelete='cascade'
     )
+
+    is_update = fields.Boolean('Mise à jour', default=False)
 
     timetable_id_domain = fields.Binary(compute='_compute_class_domain', default=[])
 
@@ -749,3 +751,42 @@ class SubjectSession(models.Model):
     def _onchange_school(self):
         for record in self:
             record.timetable_id = None
+
+    def update_session_name(self, report):
+        try:
+            session_ids = report.session_ids
+            session_ids = list(session_ids)
+            session_ids = sorted(session_ids, key=lambda item: (item.timetable_id.date, item.timetable_id.id))
+            for i, session_id in enumerate(session_ids):
+                name = 'Séance {}'.format(i + 1)
+                session_id.write({
+                    'name': name,
+                    'is_update': True,
+                })
+            # self.env.cr.commit()
+        except psycopg2.errors.NotNullViolation as error:
+            _logger.info(f'----------- tototototototo Exception {error} -----------')
+        except psycopg2.Error as error:
+            _logger.info(f'----------- tototototototo Exception {error} -----------')
+        except Exception as error:
+            _logger.info(f'----------- tototototototo Exception {error} -----------')
+
+    @api.model
+    def create(self, vals):
+        session = super(SubjectSession, self).create(vals)
+
+        report = session.report_id
+        self.update_session_name(report)
+
+        return session
+
+    def write(self, vals):
+        session = self.env['siantou.ems.core.subject.session'].search([('id', '=', self.id)], limit=1)
+
+        res = super(SubjectSession, self).write(vals)
+
+        if 'is_update' not in vals or not vals['is_update']:
+            report = session.report_id
+            self.update_session_name(report)
+
+        return res

@@ -1201,7 +1201,7 @@ class TimetableGroup(models.Model):
         required=True
     )
 
-    is_active = fields.Boolean(string="Actif", default=False)
+    is_active = fields.Boolean(string='Actif', default=False)
 
     is_submit = fields.Boolean(string="Soumis", default=True)
 
@@ -1506,7 +1506,7 @@ class TimetableSlotItem(models.Model):
         widget='radio'
     )
 
-    is_active = fields.Boolean(string="Actif", default=True)
+    is_active = fields.Boolean(string='Actif', default=True)
 
     @staticmethod
     def are_almost_equal(a, b, tolerance=1e-9):
@@ -1564,7 +1564,7 @@ class TimetableSlot(models.Model):
         string='Filières'
     )
 
-    is_active = fields.Boolean(string="Actif", default=False)
+    is_active = fields.Boolean(string='Actif', default=False)
 
     @api.constrains('is_active')
     def _constrains_default(self):

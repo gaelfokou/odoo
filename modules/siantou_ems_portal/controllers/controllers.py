@@ -892,13 +892,29 @@ class PortalAccount(portal.CustomerPortal):
             'description': kw.get('description'),
             'timetable_id': int(kw.get('timetable')),
         }
-        timetable_id = http.request.env['siantou.ems.timetable.timetable'].sudo().search([('id', '=', vals['timetable_id'])], limit=1)
+        timetable = http.request.env['siantou.ems.timetable.timetable'].sudo().search([
+            '|',
+            '&',
+            ('group_id.is_active', '=', True),
+            ('group_id.is_submit', '=', False),
+            '&',
+            ('group_parent_id.is_active', '=', True),
+            ('group_parent_id.is_submit', '=', False),
+            ('id', '=', vals['timetable_id'])
+        ], limit=1)
         timetable_ids = http.request.env['siantou.ems.timetable.timetable'].sudo().search([
-            ('employee_id', '=', timetable_id.employee_id.id),
-            ('subject_id', '=', timetable_id.subject_id.id),
-            ('date', '=', timetable_id.date),
-            ('start_time', '=', timetable_id.start_time),
-            ('end_time', '=', timetable_id.end_time),
+            '|',
+            '&',
+            ('group_id.is_active', '=', True),
+            ('group_id.is_submit', '=', False),
+            '&',
+            ('group_parent_id.is_active', '=', True),
+            ('group_parent_id.is_submit', '=', False),
+            ('employee_id', '=', timetable.employee_id.id),
+            ('subject_id', '=', timetable.subject_id.id),
+            ('date', '=', timetable.date),
+            ('start_time', '=', timetable.start_time),
+            ('end_time', '=', timetable.end_time),
         ])
         for timetable_id in timetable_ids:
             vals['timetable_id'] = timetable_id.id
@@ -1026,13 +1042,20 @@ class PortalAccount(portal.CustomerPortal):
         vals = {
             'description': kw.get('description'),
         }
-        timetable_id = session_id.timetable_id
+        timetable = session_id.timetable_id
         timetable_ids = http.request.env['siantou.ems.timetable.timetable'].sudo().search([
-            ('employee_id', '=', timetable_id.employee_id.id),
-            ('subject_id', '=', timetable_id.subject_id.id),
-            ('date', '=', timetable_id.date),
-            ('start_time', '=', timetable_id.start_time),
-            ('end_time', '=', timetable_id.end_time),
+            '|',
+            '&',
+            ('group_id.is_active', '=', True),
+            ('group_id.is_submit', '=', False),
+            '&',
+            ('group_parent_id.is_active', '=', True),
+            ('group_parent_id.is_submit', '=', False),
+            ('employee_id', '=', timetable.employee_id.id),
+            ('subject_id', '=', timetable.subject_id.id),
+            ('date', '=', timetable.date),
+            ('start_time', '=', timetable.start_time),
+            ('end_time', '=', timetable.end_time),
         ])
         for timetable_id in timetable_ids:
             session_id = http.request.env['siantou.ems.core.subject.session'].sudo().search([('timetable_id', '=', timetable_id.id)], limit=1)

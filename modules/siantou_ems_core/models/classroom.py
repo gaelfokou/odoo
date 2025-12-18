@@ -54,10 +54,7 @@ class Building(models.Model):
 
     school_ids = fields.Many2many('siantou.ems.core.school', 'school_building_rel', 'building_id', 'school_id', string='Écoles')
 
-    # Variable booléenne pour préciser si le bâtiment est opérationnel
-    is_active = fields.Boolean(
-        default=True
-    )
+    is_active = fields.Boolean('Actif', default=True)
 
 class Classroom(models.Model):
     _name = 'siantou.ems.core.building.classroom'
