@@ -982,7 +982,7 @@ class Helpers:
                 for v in d['sessions']:
                     total_session += percentage_session
                     total_session = round(total_session, 2)
-                    v['percentage'] = total_session
+                    v['percentage'] = total_session if total_session <= 100.0 else 100.0
                 subjectsessions[key_timetable]['data'] = d['sessions']
 
         _logger.info(f'----------- tototototototo subjectsessions {subjectsessions} -----------')
