@@ -877,35 +877,41 @@ class PortalAccount(portal.CustomerPortal):
         params = {}
         params['class_id'] = class_id.id
         params['subject_id'] = subject_id.id
-        # if not kw.get('name'):
-        #     return http.request.redirect('/my/subjectsession/{}/{}/new'.format(params['class_id'], params['subject_id']))
         if not kw.get('timetable'):
             return http.request.redirect('/my/subjectsession/{}/{}/new'.format(params['class_id'], params['subject_id']))
         vals = {
-            # 'name': kw.get('name'),
             'description': kw.get('description'),
             'timetable_id': int(kw.get('timetable')),
         }
         timetable_id = http.request.env['siantou.ems.timetable.timetable'].sudo().search([('id', '=', vals['timetable_id'])], limit=1)
-        report_id = http.request.env['siantou.ems.core.progress.report'].sudo().search([
-            ('class_id', '=', timetable_id.class_id.id),
+        timetable_ids = http.request.env['siantou.ems.timetable.timetable'].sudo().search([
+            ('employee_id', '=', timetable_id.employee_id.id),
             ('subject_id', '=', timetable_id.subject_id.id),
-        ], limit=1)
-        if not report_id:
-            report_id = http.request.env['siantou.ems.core.progress.report'].sudo().create({
-                'class_id': timetable_id.class_id.id,
-                'subject_id': timetable_id.subject_id.id,
-            })
-        session_id = http.request.env['siantou.ems.core.subject.session'].sudo().search([
-            ('timetable_id', '=', timetable_id.id),
-            ('report_id', '=', report_id.id),
-        ], limit=1)
-        if not session_id:
-            vals['report_id'] = report_id.id
-            session_id = http.request.env['siantou.ems.core.subject.session'].sudo().create(vals)
-        else:
-            del(vals['timetable_id'])
-            session_id.sudo().write(vals)
+            ('date', '=', timetable_id.date),
+            ('start_time', '=', timetable_id.start_time),
+            ('end_time', '=', timetable_id.end_time),
+        ])
+        for timetable_id in timetable_ids:
+            vals['timetable_id'] = timetable_id.id
+            report_id = http.request.env['siantou.ems.core.progress.report'].sudo().search([
+                ('class_id', '=', timetable_id.class_id.id),
+                ('subject_id', '=', timetable_id.subject_id.id),
+            ], limit=1)
+            if not report_id:
+                report_id = http.request.env['siantou.ems.core.progress.report'].sudo().create({
+                    'class_id': timetable_id.class_id.id,
+                    'subject_id': timetable_id.subject_id.id,
+                })
+            session_id = http.request.env['siantou.ems.core.subject.session'].sudo().search([
+                ('timetable_id', '=', timetable_id.id),
+                ('report_id', '=', report_id.id),
+            ], limit=1)
+            if not session_id:
+                vals['report_id'] = report_id.id
+                session_id = http.request.env['siantou.ems.core.subject.session'].sudo().create(vals)
+            else:
+                del(vals['timetable_id'])
+                session_id.sudo().write(vals)
         return http.request.redirect('/my/subjectsession/{}/{}/list'.format(params['class_id'], params['subject_id']))
 
     @http.route(['/my/subjectsession/<int:classe>/<int:subject>/<int:session>/edit'], type='http', auth="user", website=True)
@@ -1008,13 +1014,42 @@ class PortalAccount(portal.CustomerPortal):
         params['class_id'] = class_id.id
         params['subject_id'] = subject_id.id
         params['session_id'] = session_id.id
-        # if not kw.get('name'):
-        #     return http.request.redirect('/my/subjectsession/{}/{}/{}/edit'.format(params['class_id'], params['subject_id'], params['session_id']))
         vals = {
-            # 'name': kw.get('name'),
             'description': kw.get('description'),
         }
-        session_id.sudo().write(vals)
+        timetable_id = session_id.timetable_id
+        timetable_ids = http.request.env['siantou.ems.timetable.timetable'].sudo().search([
+            ('employee_id', '=', timetable_id.employee_id.id),
+            ('subject_id', '=', timetable_id.subject_id.id),
+            ('date', '=', timetable_id.date),
+            ('start_time', '=', timetable_id.start_time),
+            ('end_time', '=', timetable_id.end_time),
+        ])
+        for timetable_id in timetable_ids:
+            session_id = http.request.env['siantou.ems.core.subject.session'].sudo().search([('timetable_id', '=', timetable_id.id)], limit=1)
+            if not session_id:
+                vals['timetable_id'] = timetable_id.id
+                report_id = http.request.env['siantou.ems.core.progress.report'].sudo().search([
+                    ('class_id', '=', timetable_id.class_id.id),
+                    ('subject_id', '=', timetable_id.subject_id.id),
+                ], limit=1)
+                if not report_id:
+                    report_id = http.request.env['siantou.ems.core.progress.report'].sudo().create({
+                        'class_id': timetable_id.class_id.id,
+                        'subject_id': timetable_id.subject_id.id,
+                    })
+                session_id = http.request.env['siantou.ems.core.subject.session'].sudo().search([
+                    ('timetable_id', '=', timetable_id.id),
+                    ('report_id', '=', report_id.id),
+                ], limit=1)
+                if not session_id:
+                    vals['report_id'] = report_id.id
+                    session_id = http.request.env['siantou.ems.core.subject.session'].sudo().create(vals)
+                else:
+                    del(vals['timetable_id'])
+                    session_id.sudo().write(vals)
+            else:
+                session_id.sudo().write(vals)
         return http.request.redirect('/my/subjectsession/{}/{}/list'.format(params['class_id'], params['subject_id']))
 
     @http.route(['/my/calendar', '/my/calendar/page/<int:page>'], type='http', auth="user", website=True)
