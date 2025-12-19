@@ -486,7 +486,8 @@ class Timetable(models.Model):
     def _constrains_date(self):
         for record in self:
             if record.date < record.group_id.semester_id.start_time:
-                raise ValidationError(f"L'emploi du temps ne peut avoir une date inférieure à la date de début du semestre")
+                start_time = datetime.strftime(record.group_id.semester_id.start_time, DATE_FORMAT_FR)
+                raise ValidationError(f"L'emploi du temps ne peut avoir une date inférieure à la date de début du semestre ({start_time})")
 
     not_active_slotitems = fields.Integer(
         string='Créneau horaire inactif',
@@ -755,7 +756,7 @@ class Timetable(models.Model):
                 raise ValidationError("L'heure de fin effectuée du cours doit être supérieure à l'heure de début effectuée du cours")
 
     # Contrainte logique pour se rassurer que deux cours ne sont pas programmés dans la même salle de classe sur des horaires qui se chevauchent le même jour
-    @api.constrains('class_id', 'date', 'start_time', 'end_time')
+    @api.constrains('class_id', 'employee_id', 'date', 'start_time', 'end_time')
     def _constrains_class(self):
         for record in self:
             group_ids = []
@@ -776,7 +777,20 @@ class Timetable(models.Model):
             ]).filtered(lambda rec: not (rec.start_time >= record.end_time or rec.end_time <= record.start_time))
             timetables = list(timetables)
             if len(timetables) > 0:
-                raise ValidationError("Deux cours ne doivent pas être programmés dans la même classe sur des horaires qui se chevauchent le même jour")
+                validation_error_message = """
+                    Deux cours ne doivent pas être programmés dans la même classe sur des horaires qui se chevauchent le même jour
+                    -----
+                """
+                for timetable in timetables:
+                    timetable_date = datetime.strftime(timetable.date, DATE_FORMAT_FR)
+                    validation_error_message += f"""
+                        Enseignant: {timetable.employee_id.name}
+                        Date: {timetable_date}
+                        Heure de début: {timetable.start_time}
+                        Heure de fin: {timetable.end_time}
+                        -----
+                    """
+                raise ValidationError(validation_error_message)
 
             timetables = self.env['siantou.ems.timetable.timetable'].search([
                 ('id', '!=', record.id),
@@ -786,7 +800,20 @@ class Timetable(models.Model):
             ]).filtered(lambda rec: not (rec.start_time >= record.end_time or rec.end_time <= record.start_time or (rec.start_time == record.start_time and rec.end_time == record.end_time)))
             timetables = list(timetables)
             if len(timetables) > 0:
-                raise ValidationError("Deux cours ne doivent pas être programmés pour le même enseignant sur des horaires qui se chevauchent le même jour")
+                validation_error_message = """
+                    Deux cours ne doivent pas être programmés pour le même enseignant sur des horaires qui se chevauchent le même jour
+                    -----
+                """
+                for timetable in timetables:
+                    timetable_date = datetime.strftime(timetable.date, DATE_FORMAT_FR)
+                    validation_error_message += f"""
+                        Classe: {timetable.class_id.name}
+                        Date: {timetable_date}
+                        Heure de début: {timetable.start_time}
+                        Heure de fin: {timetable.end_time}
+                        -----
+                    """
+                raise ValidationError(validation_error_message)
 
     def create_timetable(self, timetable):
         try:
