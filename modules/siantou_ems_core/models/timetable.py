@@ -482,6 +482,12 @@ class Timetable(models.Model):
         domain="[('is_submit', '=', True), ('semester_id', '=', semester_id), ('status', '=', 'valid')]",
     )
 
+    @api.constrains('date', 'group_id')
+    def _constrains_date(self):
+        for record in self:
+            if record.date < record.group_id.semester_id.start_time:
+                raise ValidationError(f"L'emploi du temps ne peut avoir une date inférieure à la date de début du semestre")
+
     not_active_slotitems = fields.Integer(
         string='Créneau horaire inactif',
         default=0,
