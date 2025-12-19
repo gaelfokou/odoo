@@ -762,7 +762,7 @@ class Timetable(models.Model):
                 for group_child_id in record.group_id.group_child_ids:
                     group_ids.append(group_child_id.id)
 
-            timetables = self.search([
+            timetables = self.env['siantou.ems.timetable.timetable'].search([
                 ('id', '!=', record.id),
                 ('group_id', 'in', group_ids),
                 ('class_id', '=', record.class_id.id),
@@ -772,7 +772,7 @@ class Timetable(models.Model):
             if len(timetables) > 0:
                 raise ValidationError("Deux cours ne doivent pas être programmés dans la même classe sur des horaires qui se chevauchent le même jour")
 
-            timetables = self.search([
+            timetables = self.env['siantou.ems.timetable.timetable'].search([
                 ('id', '!=', record.id),
                 ('group_id', 'in', group_ids),
                 ('employee_id', '=', record.employee_id.id),
