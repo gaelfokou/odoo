@@ -1361,7 +1361,7 @@ class TimetableGroup(models.Model):
         for record in self:
             if record.is_submit:
                 if record.is_active:
-                    raise ValidationError(f"Version d'emploi du temps soumise ne peut être active")
+                    raise ValidationError(f"Une version d'emploi du temps soumise ne peut être active")
             else:
                 if record.is_active:
                     groups = self.env['siantou.ems.timetable.group'].search([
@@ -1370,7 +1370,7 @@ class TimetableGroup(models.Model):
                     ])
                     groups = list(groups)
                     if len(groups) > 1:
-                        raise ValidationError(f"Version d'emploi du temps active déjà définie")
+                        raise ValidationError(f"Une ou deux version(s) d'emploi du temps est(sont) déjà active(s)")
 
     def update_timetable_group(self, group):
         try:

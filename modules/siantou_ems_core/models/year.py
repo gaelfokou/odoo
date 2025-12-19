@@ -55,4 +55,4 @@ class Year(models.Model):
                 ])
                 years = list(years)
                 if len(years) > 0:
-                    raise ValidationError(f"Année académique active déjà définie")
+                    raise ValidationError(f"Une année académique est déjà active")
