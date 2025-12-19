@@ -1370,7 +1370,7 @@ class TimetableGroup(models.Model):
                     ])
                     groups = list(groups)
                     if len(groups) > 1:
-                        raise ValidationError(f"Une ou deux version(s) d'emploi du temps est(sont) déjà active(s)")
+                        raise ValidationError(f"Deux versions d'emploi du temps sont déjà actives")
 
     def update_timetable_group(self, group):
         try:
