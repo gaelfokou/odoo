@@ -111,7 +111,7 @@ class Semester(models.Model):
     # @api.constrains('start_time', 'end_time')
     # def _check_date_overlap(self):
     #     for record in self:
-    #         semesters = self.env['siantou.ems.core.year.semester'].search([('id', '!=', record.id)]).filtered(lambda rec: not (rec.start_time >= record.end_time or rec.end_time <= record.start_time)):
+    #         semesters = self.env['siantou.ems.core.year.semester'].search([('id', '!=', record.id)]).filtered(lambda rec: not (rec.start_time >= record.end_time or rec.end_time <= record.start_time))
     #         semesters = list(semesters)
     #         if len(semesters) > 0:
     #             raise ValidationError('Les semestres ne peuvent se supperposer')
