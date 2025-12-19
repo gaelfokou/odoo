@@ -1336,7 +1336,7 @@ class TimetableGroup(models.Model):
                         ('is_active', '=', True),
                     ])
                     groups = list(groups)
-                    if len(groups) > 0:
+                    if len(groups) > 1:
                         raise ValidationError(f"Version d'emploi du temps active déjà définie")
 
     def update_timetable_group(self, group):

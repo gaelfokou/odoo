@@ -119,7 +119,7 @@ class EducationClass(models.Model):
     @api.constrains('year_id', 'specialty_id', 'option_id', 'level_id', 'type_cour')
     def _check_unique_year_specialty_option_level_type_cour(self):
         for record in self:
-            classes = self.search([
+            classes = self.env['siantou.ems.core.class'].search([
                 ('id', '!=', record.id),
                 ('year_id', '=', record.year_id.id),
                 ('specialty_id', '=', record.specialty_id.id),
