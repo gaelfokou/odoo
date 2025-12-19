@@ -363,8 +363,13 @@ class PortalAccount(portal.CustomerPortal):
 
     @http.route(['/my/examscore'], type='http', auth="user", website=True)
     def portal_examscore(self, search='', search_in='all', **kw):
+        examscores = {}
         return http.request.render('siantou_ems_portal.siantou_ems_portal_examscore_views',
-                                {})
+                                {
+                                    'examscores': examscores,
+                                    'page_name': 'examscore',
+                                    'examscore': 0,
+                                })
 
     @http.route(['/my/paymenthistory'], type='http', auth="user", website=True)
     def portal_paymenthistory(self, search='', search_in='all', **kw):
