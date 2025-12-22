@@ -28,4 +28,5 @@ from . import res_user
 from . import menu
 from . import hourly_rate
 from . import daily_attendance
+from . import exam_score
 # from . import account_move
