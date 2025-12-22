@@ -32,6 +32,7 @@
                             string="Payer" 
                             class="oe_highlight" 
                             display="always"
+                            groups="om_hr_payroll.group_hr_payroll_perm_pay"
                             confirm="Êtes-vous sûr de vouloir confirmer les paiements ?"/>
                     </header>
                     <field name="timetable_id"/>
