@@ -247,7 +247,6 @@ class PortalAccount(portal.CustomerPortal):
                     not_active_slotitem_night_ids = list(not_active_slotitem_night_ids)
                     for not_active_slotitem_night_id in not_active_slotitem_night_ids:
                         not_active_slotitems.append([round(not_active_slotitem_night_id.start_time, 2), round(not_active_slotitem_night_id.end_time, 2)])
-
                 timetables = Helpers.format_timetable(timetables, not_active_slotitems)
             else:
                 timetables = Helpers.format_timetable(timetables)
