@@ -155,67 +155,6 @@ class ExamScore(models.Model):
         for record in self:
             record.subject_id = None
 
-    @staticmethod
-    def format_subjectsession(data):
-        subjectsessions = {}
-
-        sorted_data = copy.deepcopy(data)
-
-        percentage_session = sum([len(d['sessions']) for d in sorted_data])
-        if percentage_session > 0:
-            percentage_session = (1 / percentage_session) * 100
-        else:
-            percentage_session = 0.0
-        percentage_session = round(percentage_session, 2)
-
-        total_session = 0.0
-        for d in sorted_data:
-            key_timetable = '{}'.format(d['id'])
-            if key_timetable not in subjectsessions:
-                subjectsessions[key_timetable] = {}
-                subjectsessions[key_timetable]['id'] = d['id']
-                subjectsessions[key_timetable]['name'] = d['name']
-                subjectsessions[key_timetable]['status'] = 'Effectué' if d['status'] in ['present', 'permission'] else 'En attente'
-                subjectsessions[key_timetable]['class_id'] = d['class_id']
-                subjectsessions[key_timetable]['class_name'] = d['class_name']
-                subjectsessions[key_timetable]['subject_id'] = d['subject_id']
-                subjectsessions[key_timetable]['subject_name'] = d['subject_name']
-                subjectsessions[key_timetable]['date'] = d['date_of_week']
-                subjectsessions[key_timetable]['start_time'] = ProgressReport.convert_float_to_time(d['start_time'])
-                subjectsessions[key_timetable]['end_time'] = ProgressReport.convert_float_to_time(d['end_time'])
-                for v in d['sessions']:
-                    total_session += percentage_session
-                    total_session = round(total_session, 2)
-                    v['percentage'] = total_session if total_session <= 100.0 else 100.0
-                subjectsessions[key_timetable]['data'] = d['sessions']
-
-        _logger.info(f'----------- tototototototo subjectsessions {subjectsessions} -----------')
-
-        return subjectsessions
-
-    @staticmethod
-    def convert_float_to_time(tm, has_second=False):
-        tm = str(tm)
-        tm = tm.split('.')
-        if len(tm) == 1:
-            tm.append('0')
-        if len(tm[0]) == 1:
-            tm[0] = '0{}'.format(tm[0])
-        elif len(tm[0]) > 2:
-            tm[0] = '{}'.format(tm[0][0:2])
-        if int(tm[0]) > 23:
-            tm[0] = '00'
-        if len(tm[1]) == 1:
-            tm[1] = '{}0'.format(tm[1])
-        elif len(tm[1]) > 2:
-            tm[1] = '{}'.format(tm[1][0:2])
-        if int(tm[1]) > 59:
-            tm[1] = '00'
-        tm = ':'.join(tm)
-        if has_second:
-            tm = '{}:00'.format(tm)
-        return tm
-
 class SubjectScore(models.Model):
     _name = 'siantou.ems.core.subject.score'
     _description = 'Note d\'examen'
