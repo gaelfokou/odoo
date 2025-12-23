@@ -96,6 +96,7 @@
         #=========== Fichier de sequence
         'data/employee_sequence.xml',
         'data/student_sequence.xml',
+        'data/exam_score_sequence.xml',
         'data/menu.xml',
         'data/action_server_student.xml',
         'views/student_component_views.xml',

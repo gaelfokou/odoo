@@ -188,6 +188,8 @@ class SubjectScore(models.Model):
         default=0.0,
     )
 
+    anonymous = fields.Char(string="Anonymat")
+
     student_id_domain = fields.Binary(compute='_compute_class_domain', default=[])
 
     @api.depends('student_id', 'exam_id')
@@ -242,3 +244,41 @@ class SubjectScore(models.Model):
                     ('id', 'in', student_ids.ids),
                 ]
             record.student_id_domain = domain
+
+    def create_score(self, score):
+        try:
+            exam_type = re.sub('[^A-Za-z]+', '', score.exam_id.exam_type)
+            exam_type = exam_type[:4]
+            exam_type = exam_type.upper()
+            if not score.anonymous or not score.anonymous.strip():
+                anonymous = exam_type + self.env['ir.sequence'].next_by_code('siantou.ems.core.subject.score')
+                while True:
+                    score_id = self.env['siantou.ems.core.subject.score'].search([
+                        ('id', '!=', score.id),
+                        ('anonymous', '=', anonymous),
+                    ], limit=1)
+                    if score_id:
+                        anonymous = exam_type + self.env['ir.sequence'].next_by_code('siantou.ems.core.subject.score')
+                    else:
+                        break
+            else:
+                anonymous = score.anonymous
+                anonymous = '{}'.format(anonymous)
+            score.write({
+                'anonymous': anonymous,
+            })
+            # self.env.cr.commit()
+        except psycopg2.errors.NotNullViolation as error:
+            _logger.info(f'----------- tototototototo Exception {error} -----------')
+        except psycopg2.Error as error:
+            _logger.info(f'----------- tototototototo Exception {error} -----------')
+        except Exception as error:
+            _logger.info(f'----------- tototototototo Exception {error} -----------')
+
+    @api.model
+    def create(self, vals):
+        score = super(SubjectScore, self).create(vals)
+
+        self.create_score(score)
+
+        return score
