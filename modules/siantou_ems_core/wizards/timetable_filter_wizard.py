@@ -25,6 +25,7 @@ STATUS_TIMETABLE = {
     'exception': 'Exception',
     'exception_start_time_invalid': 'Exception poinçonnement de début absent ou invalid',
     'exception_end_time_invalid': 'Exception poinçonnement de fin absent ou invalid',
+    'exception_unknown': 'Exception poinçonnement inconnu',
     'exception_reverse': 'Exception poinçonnement de début et de fin inversé',
     'exception_other': 'Exception autre',
     'delay': 'Retard',
@@ -177,6 +178,7 @@ class TimetableFilterWizard(models.TransientModel):
         ('exception', 'Exception'),
         ('exception_start_time_invalid', 'Exception poinçonnement de début absent ou invalid'),
         ('exception_end_time_invalid', 'Exception poinçonnement de fin absent ou invalid'),
+        ('exception_unknown', 'Exception poinçonnement inconnu'),
         ('exception_reverse', 'Exception poinçonnement de début et de fin inversé'),
         ('exception_other', 'Exception autre'),
         ('delay', 'Retard'),
@@ -480,6 +482,11 @@ class TimetableFilterWizard(models.TransientModel):
                 title.append(STATUS_TIMETABLE[self.status])
                 timetables = self.env['siantou.ems.timetable.timetable'].search(domain)
                 timetables = timetables.filtered(lambda rec: rec.reason and rec.reason == 'Poinçonnement de fin absent ou invalid')
+            elif self.status == 'exception_unknown':
+                domain.append(('status', '=', 'exception'))
+                title.append(STATUS_TIMETABLE[self.status])
+                timetables = self.env['siantou.ems.timetable.timetable'].search(domain)
+                timetables = timetables.filtered(lambda rec: rec.reason and rec.reason == 'Poinçonnement inconnu')
             elif self.status == 'exception_reverse':
                 domain.append(('status', '=', 'exception'))
                 title.append(STATUS_TIMETABLE[self.status])
@@ -489,7 +496,7 @@ class TimetableFilterWizard(models.TransientModel):
                 domain.append(('status', '=', 'exception'))
                 title.append(STATUS_TIMETABLE[self.status])
                 timetables = self.env['siantou.ems.timetable.timetable'].search(domain)
-                timetables = timetables.filtered(lambda rec: rec.reason and rec.reason not in ['Poinçonnement de début absent ou invalid', 'Poinçonnement de fin absent ou invalid', 'Poinçonnement de début et de fin inversé'])
+                timetables = timetables.filtered(lambda rec: rec.reason and rec.reason not in ['Poinçonnement de début absent ou invalid', 'Poinçonnement de fin absent ou invalid', 'Poinçonnement inconnu', 'Poinçonnement de début et de fin inversé'])
             else:
                 domain.append(('status', '=', self.status))
                 title.append(STATUS_TIMETABLE[self.status])

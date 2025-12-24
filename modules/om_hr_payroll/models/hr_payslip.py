@@ -537,7 +537,7 @@ class HrPayslip(models.Model):
                                 'rate': 0.0,
                                 'amount': 0.0,
                                 'status': 'exception',
-                                'reason': '',
+                                'reason': 'Poinçonnement inconnu',
                             })
                     elif len(daily_attendances) > 1:
                         end_punching_time = daily_attendances[1].punching_time
