@@ -23,7 +23,12 @@ STATUS_TIMETABLE = {
     'absent': 'Absent',
     'permission': 'Permission',
     'exception': 'Exception',
+    'exception_invalid': 'Exception poinçonnement de début ou de fin absent ou invalid',
+    'exception_reverse': 'Exception poinçonnement de début et de fin inversé',
+    'exception_other': 'Exception autre',
     'delay': 'Retard',
+    'delay_more_than_or_equal': 'Retard plus de ou égal à',
+    'delay_less_than': 'Retard moins de',
 }
 
 TYPE_COUR = {
@@ -169,7 +174,12 @@ class TimetableFilterWizard(models.TransientModel):
         ('absent', 'Absent'),
         ('permission', 'Permission'),
         ('exception', 'Exception'),
+        ('exception_invalid', 'Exception poinçonnement de début ou de fin absent ou invalid'),
+        ('exception_reverse', 'Exception poinçonnement de début et de fin inversé'),
+        ('exception_other', 'Exception autre'),
         ('delay', 'Retard'),
+        ('delay_more_than_or_equal', 'Retard plus de ou égal à'),
+        ('delay_less_than', 'Retard moins de'),
     ], 'Statut',
         # default='pending',
     )
@@ -444,9 +454,35 @@ class TimetableFilterWizard(models.TransientModel):
             if self.status == 'delay':
                 domain.append(('status', '=', 'present'))
                 title.append(STATUS_TIMETABLE[self.status])
+                timetables = self.env['siantou.ems.timetable.timetable'].search(domain)
+                timetables = timetables.filtered(lambda rec: rec.date and rec.day_of_week and TimetableFilterWizard.compare_float_time(rec.date, rec.worked_start_time, rec.start_time) > 0.0)
+            elif self.status == 'delay_more_than_or_equal':
+                domain.append(('status', '=', 'present'))
+                title.append(STATUS_TIMETABLE[self.status])
                 title.append('{} minute(s)'.format(self.number_of_minute))
                 timetables = self.env['siantou.ems.timetable.timetable'].search(domain)
                 timetables = timetables.filtered(lambda rec: rec.date and rec.day_of_week and TimetableFilterWizard.compare_float_time(rec.date, rec.worked_start_time, rec.start_time) >= self.number_of_minute)
+            elif self.status == 'delay_less_than':
+                domain.append(('status', '=', 'present'))
+                title.append(STATUS_TIMETABLE[self.status])
+                title.append('{} minute(s)'.format(self.number_of_minute))
+                timetables = self.env['siantou.ems.timetable.timetable'].search(domain)
+                timetables = timetables.filtered(lambda rec: rec.date and rec.day_of_week and TimetableFilterWizard.compare_float_time(rec.date, rec.worked_start_time, rec.start_time) > 0.0 and TimetableFilterWizard.compare_float_time(rec.date, rec.worked_start_time, rec.start_time) < self.number_of_minute)
+            elif self.status == 'exception_invalid':
+                domain.append(('status', '=', 'exception'))
+                title.append(STATUS_TIMETABLE[self.status])
+                timetables = self.env['siantou.ems.timetable.timetable'].search(domain)
+                timetables = timetables.filtered(lambda rec: rec.reason and rec.reason == 'Poinçonnement de début ou de fin absent ou invalid')
+            elif self.status == 'exception_reverse':
+                domain.append(('status', '=', 'exception'))
+                title.append(STATUS_TIMETABLE[self.status])
+                timetables = self.env['siantou.ems.timetable.timetable'].search(domain)
+                timetables = timetables.filtered(lambda rec: rec.reason and rec.reason == 'Poinçonnement de début et de fin inversé')
+            elif self.status == 'exception_other':
+                domain.append(('status', '=', 'exception'))
+                title.append(STATUS_TIMETABLE[self.status])
+                timetables = self.env['siantou.ems.timetable.timetable'].search(domain)
+                timetables = timetables.filtered(lambda rec: rec.reason and rec.reason not in ['Poinçonnement de début ou de fin absent ou invalid', 'Poinçonnement de début et de fin inversé'])
             else:
                 domain.append(('status', '=', self.status))
                 title.append(STATUS_TIMETABLE[self.status])
