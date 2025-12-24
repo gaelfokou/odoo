@@ -318,7 +318,7 @@ class HrPayslip(models.Model):
                     if daily_attendance.punch_type == '0':
                         if '0' not in worked_hours[punching_day].keys():
                             worked_hours[punching_day]['0'] = daily_attendance.punching_time
-                    else:
+                    elif daily_attendance.punch_type == '1':
                         worked_hours[punching_day]['1'] = daily_attendance.punching_time
 
                 for daily_attendance in daily_attendances:
@@ -444,7 +444,7 @@ class HrPayslip(models.Model):
                         if '0' not in worked_hours[punching_day].keys():
                             worked_hours[punching_day]['0'] = daily_attendance.punching_time
                             punching_time['0'] = daily_attendance.punching_time
-                    else:
+                    elif daily_attendance.punch_type == '1':
                         worked_hours[punching_day]['1'] = daily_attendance.punching_time
                         punching_time['1'] = daily_attendance.punching_time
 
@@ -509,15 +509,36 @@ class HrPayslip(models.Model):
                     # Vérification du temps de cours de l'enseignant en biométrie
                     daily_attendances = self.filter_daily_attendance_teacher(employee_timetable.date, employee_timetable.end_time, employee_timetable.start_time, employee_timetable.employee_id)
                     if len(daily_attendances) == 1:
-                        employee_timetable.sudo().write({
-                            'worked_start_time': 0.0,
-                            'worked_end_time': 0.0,
-                            'worked_time': 0.0,
-                            'rate': 0.0,
-                            'amount': 0.0,
-                            'status': 'exception',
-                            'reason': 'Poinçonnement de début ou de fin absent ou invalid',
-                        })
+                        if daily_attendances[0].punch_type == '0':
+                            employee_timetable.sudo().write({
+                                'worked_start_time': 0.0,
+                                'worked_end_time': 0.0,
+                                'worked_time': 0.0,
+                                'rate': 0.0,
+                                'amount': 0.0,
+                                'status': 'exception',
+                                'reason': 'Poinçonnement de début absent ou invalid',
+                            })
+                        elif daily_attendances[0].punch_type == '1':
+                            employee_timetable.sudo().write({
+                                'worked_start_time': 0.0,
+                                'worked_end_time': 0.0,
+                                'worked_time': 0.0,
+                                'rate': 0.0,
+                                'amount': 0.0,
+                                'status': 'exception',
+                                'reason': 'Poinçonnement de fin absent ou invalid',
+                            })
+                        else:
+                            employee_timetable.sudo().write({
+                                'worked_start_time': 0.0,
+                                'worked_end_time': 0.0,
+                                'worked_time': 0.0,
+                                'rate': 0.0,
+                                'amount': 0.0,
+                                'status': 'exception',
+                                'reason': '',
+                            })
                     elif len(daily_attendances) > 1:
                         end_punching_time = daily_attendances[1].punching_time
                         start_punching_time = daily_attendances[0].punching_time

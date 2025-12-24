@@ -23,7 +23,8 @@ STATUS_TIMETABLE = {
     'absent': 'Absent',
     'permission': 'Permission',
     'exception': 'Exception',
-    'exception_invalid': 'Exception poinçonnement de début ou de fin absent ou invalid',
+    'exception_start_time_invalid': 'Exception poinçonnement de début absent ou invalid',
+    'exception_end_time_invalid': 'Exception poinçonnement de fin absent ou invalid',
     'exception_reverse': 'Exception poinçonnement de début et de fin inversé',
     'exception_other': 'Exception autre',
     'delay': 'Retard',
@@ -174,7 +175,8 @@ class TimetableFilterWizard(models.TransientModel):
         ('absent', 'Absent'),
         ('permission', 'Permission'),
         ('exception', 'Exception'),
-        ('exception_invalid', 'Exception poinçonnement de début ou de fin absent ou invalid'),
+        ('exception_start_time_invalid', 'Exception poinçonnement de début absent ou invalid'),
+        ('exception_end_time_invalid', 'Exception poinçonnement de fin absent ou invalid'),
         ('exception_reverse', 'Exception poinçonnement de début et de fin inversé'),
         ('exception_other', 'Exception autre'),
         ('delay', 'Retard'),
@@ -468,11 +470,16 @@ class TimetableFilterWizard(models.TransientModel):
                 title.append('{} minute(s)'.format(self.number_of_minute))
                 timetables = self.env['siantou.ems.timetable.timetable'].search(domain)
                 timetables = timetables.filtered(lambda rec: rec.date and rec.day_of_week and TimetableFilterWizard.compare_float_time(rec.date, rec.worked_start_time, rec.start_time) > 0.0 and TimetableFilterWizard.compare_float_time(rec.date, rec.worked_start_time, rec.start_time) < self.number_of_minute)
-            elif self.status == 'exception_invalid':
+            elif self.status == 'exception_start_time_invalid':
                 domain.append(('status', '=', 'exception'))
                 title.append(STATUS_TIMETABLE[self.status])
                 timetables = self.env['siantou.ems.timetable.timetable'].search(domain)
-                timetables = timetables.filtered(lambda rec: rec.reason and rec.reason == 'Poinçonnement de début ou de fin absent ou invalid')
+                timetables = timetables.filtered(lambda rec: rec.reason and rec.reason == 'Poinçonnement de début absent ou invalid')
+            elif self.status == 'exception_end_time_invalid':
+                domain.append(('status', '=', 'exception'))
+                title.append(STATUS_TIMETABLE[self.status])
+                timetables = self.env['siantou.ems.timetable.timetable'].search(domain)
+                timetables = timetables.filtered(lambda rec: rec.reason and rec.reason == 'Poinçonnement de fin absent ou invalid')
             elif self.status == 'exception_reverse':
                 domain.append(('status', '=', 'exception'))
                 title.append(STATUS_TIMETABLE[self.status])
@@ -482,7 +489,7 @@ class TimetableFilterWizard(models.TransientModel):
                 domain.append(('status', '=', 'exception'))
                 title.append(STATUS_TIMETABLE[self.status])
                 timetables = self.env['siantou.ems.timetable.timetable'].search(domain)
-                timetables = timetables.filtered(lambda rec: rec.reason and rec.reason not in ['Poinçonnement de début ou de fin absent ou invalid', 'Poinçonnement de début et de fin inversé'])
+                timetables = timetables.filtered(lambda rec: rec.reason and rec.reason not in ['Poinçonnement de début absent ou invalid', 'Poinçonnement de fin absent ou invalid', 'Poinçonnement de début et de fin inversé'])
             else:
                 domain.append(('status', '=', self.status))
                 title.append(STATUS_TIMETABLE[self.status])
