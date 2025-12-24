@@ -213,7 +213,7 @@ class HrPayslip(models.Model):
         # datetime_to = HrPayslip.convert_datetime_to_utc(datetime_to)
 
         domain = [
-            ('punch_type', 'in', ['0', '1'])
+            ('punch_type', 'in', ['0', '1', '255'])
         ]
         if employee:
             domain.append(('employee_id', '=', employee.id))
@@ -257,7 +257,7 @@ class HrPayslip(models.Model):
         daily_attendances = []
 
         domain = [
-            ('punch_type', '=', '0')
+            ('punch_type', 'in', ['0', '255'])
         ]
         if employee:
             domain.append(('employee_id', '=', employee.id))
@@ -268,7 +268,7 @@ class HrPayslip(models.Model):
             daily_attendances.append(daily_in_attendances[0])
 
         domain = [
-            ('punch_type', '=', '1')
+            ('punch_type', 'in', ['1', '255'])
         ]
         if employee:
             domain.append(('employee_id', '=', employee.id))
@@ -797,7 +797,7 @@ class HrPayslip(models.Model):
         datetime_from = HrPayslip.convert_datetime_to_utc(datetime_from)
 
         daily_attendances = self.env['daily.attendance'].sudo().search([
-            ('punch_type', 'in', ['0', '1'])
+            ('punch_type', 'in', ['0', '1', '255'])
         ], order='punching_time asc').filtered(lambda rec: UTC_TZ.localize(rec.punching_time) >= datetime_before and UTC_TZ.localize(rec.punching_time) <= datetime_from).sorted(lambda rec: UTC_TZ.localize(rec.punching_time))
         daily_attendances = list(daily_attendances)
         for daily_attendance in daily_attendances:
