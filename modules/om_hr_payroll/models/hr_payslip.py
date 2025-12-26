@@ -517,7 +517,7 @@ class HrPayslip(models.Model):
                                 'rate': 0.0,
                                 'amount': 0.0,
                                 'status': 'exception',
-                                'reason': 'Poinçonnement de début absent ou invalid',
+                                'reason': 'Poinçonnement de fin absent ou invalide',
                             })
                         elif daily_attendances[0].punch_type == '1':
                             employee_timetable.sudo().write({
@@ -527,7 +527,7 @@ class HrPayslip(models.Model):
                                 'rate': 0.0,
                                 'amount': 0.0,
                                 'status': 'exception',
-                                'reason': 'Poinçonnement de fin absent ou invalid',
+                                'reason': 'Poinçonnement de début absent ou invalide',
                             })
                         else:
                             employee_timetable.sudo().write({
@@ -537,7 +537,7 @@ class HrPayslip(models.Model):
                                 'rate': 0.0,
                                 'amount': 0.0,
                                 'status': 'exception',
-                                'reason': 'Poinçonnement inconnu',
+                                'reason': 'Poinçonnement absent ou invalide',
                             })
                     elif len(daily_attendances) > 1:
                         end_punching_time = daily_attendances[1].punching_time
@@ -578,7 +578,7 @@ class HrPayslip(models.Model):
                                 'rate': 0.0,
                                 'amount': 0.0,
                                 'status': 'present',
-                                'reason': '',
+                                'reason': None,
                             })
                     else:
                         template = 'om_hr_payroll.om_hr_payroll_template_timetable_notification_absence'
@@ -608,7 +608,7 @@ class HrPayslip(models.Model):
                             'rate': 0.0,
                             'amount': 0.0,
                             'status': 'absent',
-                            'reason': '',
+                            'reason': None,
                         })
             else:
                 employee_timetable.sudo().write({
@@ -618,7 +618,7 @@ class HrPayslip(models.Model):
                     'rate': 0.0,
                     'amount': 0.0,
                     'status': 'absent',
-                    'reason': '',
+                    'reason': None,
                 })
 
     @api.model
@@ -830,7 +830,7 @@ class HrPayslip(models.Model):
                     employee_timetables = list(employee_timetables)
                     if len(employee_timetables) > 0:
                         for employee_timetable in employee_timetables:
-                            employee_timetable.sudo().write({'status': 'progress', 'reason': ''})
+                            employee_timetable.sudo().write({'status': 'progress', 'reason': None})
                     else:
                         template = 'om_hr_payroll.om_hr_payroll_template_timetable_notification_exception'
                         punching_time = HrPayslip.convert_datetime_from_utc(punching_time)
