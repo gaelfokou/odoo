@@ -86,6 +86,12 @@ hourly_rate_admin,hourly.rate.admin,model_siantou_ems_core_hourly_rate,,1,1,1,1
 teacher_hourly_rate_user,teacher.hourly.rate.user,model_siantou_ems_core_teacher_hourly_rate,,1,0,0,0
 teacher_hourly_rate_admin,teacher.hourly.rate.admin,model_siantou_ems_core_teacher_hourly_rate,,1,1,1,1
 
+exam_score_user,hourly.rate.user,model_siantou_ems_core_exam_score,,1,0,0,0
+exam_score_admin,hourly.rate.admin,model_siantou_ems_core_exam_score,,1,1,1,1
+
+subject_score_user,teacher.hourly.rate.user,model_siantou_ems_core_subject_score,,1,0,0,0
+subject_score_admin,teacher.hourly.rate.admin,model_siantou_ems_core_subject_score,,1,1,1,1
+
 timetable_user,timetable.user,model_siantou_ems_timetable_timetable,siantou_ems_core.group_timetable_user,1,0,0,0
 timetable_admin,timetable.admin,model_siantou_ems_timetable_timetable,siantou_ems_core.group_timetable_admin,1,1,1,1
 

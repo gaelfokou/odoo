@@ -165,8 +165,21 @@ class SubjectScore(models.Model):
         store=True,
     )
 
-    description = fields.Text(
-        'Description',
+    exam_id = fields.Many2one(
+        'siantou.ems.core.exam.score',
+        'Fiche d\'examen',
+        required=True,
+        ondelete='cascade'
+    )
+
+    exam_type = fields.Selection([
+        ('cc', 'Contrôle continu'),
+        ('sn', 'Session normale'),
+        ('rcc', 'Rattrapage contrôle continu'),
+        ('rsn', 'Rattrapage session normale'),
+    ], 'Statut',
+        related='exam_id.exam_type',
+        store=True
     )
 
     student_id = fields.Many2one(
@@ -176,19 +189,16 @@ class SubjectScore(models.Model):
         ondelete='cascade'
     )
 
-    exam_id = fields.Many2one(
-        'siantou.ems.core.exam.score',
-        'Fiche d\'examen',
-        required=True,
-        ondelete='cascade'
-    )
+    anonymous = fields.Char(string="Anonymat")
 
     score = fields.Float(
         'Note',
         default=0.0,
     )
 
-    anonymous = fields.Char(string="Anonymat")
+    note = fields.Text(
+        'Remarque',
+    )
 
     student_id_domain = fields.Binary(compute='_compute_class_domain', default=[])
 
@@ -245,28 +255,29 @@ class SubjectScore(models.Model):
                 ]
             record.student_id_domain = domain
 
-    def create_score(self, score):
+    def create_student_anonymous(self, score):
         try:
-            exam_type = re.sub('[^A-Za-z]+', '', score.exam_id.exam_type)
-            exam_type = exam_type[:4]
-            exam_type = exam_type.upper()
-            if not score.anonymous or not score.anonymous.strip():
-                anonymous = exam_type + self.env['ir.sequence'].next_by_code('siantou.ems.core.subject.score')
-                while True:
-                    score_id = self.env['siantou.ems.core.subject.score'].search([
-                        ('id', '!=', score.id),
-                        ('anonymous', '=', anonymous),
-                    ], limit=1)
-                    if score_id:
-                        anonymous = exam_type + self.env['ir.sequence'].next_by_code('siantou.ems.core.subject.score')
-                    else:
-                        break
-            else:
-                anonymous = score.anonymous
-                anonymous = '{}'.format(anonymous)
-            score.write({
-                'anonymous': anonymous,
-            })
+            if score.exam_type in ['sn' , 'rsn']:
+                exam_type = re.sub('[^A-Za-z]+', '', score.exam_type)
+                exam_type = exam_type[:4]
+                exam_type = exam_type.upper()
+                if not score.anonymous or not score.anonymous.strip():
+                    anonymous = exam_type + self.env['ir.sequence'].next_by_code('siantou.ems.core.subject.score')
+                    while True:
+                        score_id = self.env['siantou.ems.core.subject.score'].search([
+                            ('id', '!=', score.id),
+                            ('anonymous', '=', anonymous),
+                        ], limit=1)
+                        if score_id:
+                            anonymous = exam_type + self.env['ir.sequence'].next_by_code('siantou.ems.core.subject.score')
+                        else:
+                            break
+                else:
+                    anonymous = score.anonymous
+                    anonymous = '{}'.format(anonymous)
+                score.write({
+                    'anonymous': anonymous,
+                })
             # self.env.cr.commit()
         except psycopg2.errors.NotNullViolation as error:
             _logger.info(f'----------- tototototototo Exception {error} -----------')
@@ -279,6 +290,6 @@ class SubjectScore(models.Model):
     def create(self, vals):
         score = super(SubjectScore, self).create(vals)
 
-        self.create_score(score)
+        self.create_student_anonymous(score)
 
         return score

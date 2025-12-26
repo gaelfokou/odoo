@@ -2,7 +2,7 @@
 <odoo>
     <data>
         <record id="view_hourly_rate_tree" model="ir.ui.view">
-            <field name="name">teacher.hourly.rate.tree</field>
+            <field name="name">hourly.rate.tree</field>
             <field name="model">siantou.ems.core.hourly.rate</field>
             <field name="arch" type="xml">
                 <tree string="Taux horaires standards">
@@ -18,7 +18,7 @@
         </record>
 
         <record id="view_hourly_rate_form" model="ir.ui.view">
-            <field name="name">teacher.hourly.rate.form</field>
+            <field name="name">hourly.rate.form</field>
             <field name="model">siantou.ems.core.hourly.rate</field>
             <field name="arch" type="xml">
                 <form string="Taux horaire">

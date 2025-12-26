@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_exam_score_tree" model="ir.ui.view">
+            <field name="name">exam.score.tree</field>
+            <field name="model">siantou.ems.core.exam.score</field>
+            <field name="arch" type="xml">
+                <tree string="Fiches d'examen">
+                    <!-- <field name="name"/> -->
+                    <field name="year_id"/>
+                    <field name="semester_id"/>
+                    <field name="class_id"/>
+                    <field name="subject_id"/>
+                    <field name="exam_type"/>
+                    <field name="score_ids"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_exam_score_form" model="ir.ui.view">
+            <field name="name">exam.score.form</field>
+            <field name="model">siantou.ems.core.exam.score</field>
+            <field name="arch" type="xml">
+                <form string="Taux horaire">
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="year_id" options="{'no_create': True}"/>
+                            <field name="semester_id" options="{'no_create': True}" domain="[('year_id', '=', year_id)]"/>
+                            <field name="class_id" options="{'no_create': True}" domain="[('year_id', '=', year_id)]"/>
+                            <field name="subject_id_domain" invisible="1"/>
+                            <field name="subject_id" options="{'no_create': True}" domain="subject_id_domain"/>
+                            <field name="exam_type" widget="radio"/>
+                            <field name="score_ids" widget="one2many_list">
+                                <tree create="0" editable="bottom">
+                                    <field name="student_id"/>
+                                    <field name="anonymous" invisible="exam_type not in ['sn' , 'rsn']"/>
+                                    <field name="score"/>
+                                    <field name="note"/>
+                                </tree>
+                            </field>
+                        </group>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" groups="base.group_user"/>
+                        <field name="activity_ids"/>
+                        <field name="message_ids"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_exam_score" model="ir.actions.act_window">
+            <field name="name">Fiches d'examen</field>
+            <field name="res_model">siantou.ems.core.exam.score</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem id="siantou_menu_exam_score"
+                name="Fiches d'examen"
+                parent="menu_siantou_ems_core_employee"
+                action="action_exam_score"
+            sequence="20"/>
+    </data>
+</odoo>
