@@ -504,6 +504,8 @@ class HrPayslip(models.Model):
         ], order='date asc').filtered(lambda rec: (rec.date < current_date) or (rec.date == current_date and rec.end_time <= time_before))
         employee_timetables = list(employee_timetables)
         for employee_timetable in employee_timetables:
+            if employee_timetable.status == 'exception' and employee_timetable.reason not in ['Poinçonnement de début absent ou invalide', 'Poinçonnement de fin absent ou invalide', 'Poinçonnement absent ou invalide', 'Poinçonnement de début et de fin inversé']:
+                continue
             if employee_timetable.employee_id.id:
                 if employee_timetable.employee_id.is_teacher:
                     # Vérification du temps de cours de l'enseignant en biométrie
