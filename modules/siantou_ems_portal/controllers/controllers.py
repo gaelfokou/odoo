@@ -204,6 +204,7 @@ class PortalAccount(portal.CustomerPortal):
             timetable['end_time'] = search_timetable.end_time
             timetable['worked_start_time'] = search_timetable.worked_start_time
             timetable['worked_end_time'] = search_timetable.worked_end_time
+            timetable['reason'] = search_timetable.reason
             timetable['not_active_slotitems'] = search_timetable.not_active_slotitems
             timetable['status'] = STATUS_TIMETABLE[search_timetable.status]
             timetables.append(timetable)
@@ -262,6 +263,8 @@ class PortalAccount(portal.CustomerPortal):
                 timetable['date'] = date.strftime(timetable['date'], DATE_FORMAT_FR)
                 timetable['start_time'] = Helpers.convert_float_to_time(timetable['start_time'])
                 timetable['end_time'] = Helpers.convert_float_to_time(timetable['end_time'])
+                timetable['worked_start_time'] = Helpers.convert_float_to_time(timetable['worked_start_time'])
+                timetable['worked_end_time'] = Helpers.convert_float_to_time(timetable['worked_end_time'])
             timetables = Helpers.paginate_list(timetables, 10, page)
         return http.request.render(f'siantou_ems_portal.siantou_ems_portal_timetable_{view_type}_views',
                                 {

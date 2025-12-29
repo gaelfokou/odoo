@@ -85,6 +85,8 @@ class ApiAccount(http.Controller):
             timetable['end_time'] = search_timetable.end_time
             timetable['worked_start_time'] = search_timetable.worked_start_time
             timetable['worked_end_time'] = search_timetable.worked_end_time
+            timetable['reason'] = search_timetable.reason
+            timetable['not_active_slotitems'] = search_timetable.not_active_slotitems
             timetable['status'] = STATUS_TIMETABLE[search_timetable.status]
             timetables.append(timetable)
         if view_type == 'calendar':
