@@ -119,7 +119,7 @@
                                     <tr>
                                         <td class="text-center">POURCENTAGE GLOBAL</td>
                                         <td class="text-center">
-                                            <span t-esc="docdata['total_percentage']"/>
+                                            <span t-esc="str(docdata['total_percentage']) + '%'"/>
                                         </td>
                                         <td class="text-center"></td>
                                         <td class="text-center"></td>
