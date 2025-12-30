@@ -512,8 +512,14 @@ class HrPayslip(models.Model):
                     daily_attendances = self.filter_daily_attendance_teacher(employee_timetable.date, employee_timetable.end_time, employee_timetable.start_time, employee_timetable.employee_id)
                     if len(daily_attendances) == 1:
                         if daily_attendances[0].punch_type == '0':
+                            start_punching_time = daily_attendances[0].punching_time
+                            start_punching_time = UTC_TZ.localize(start_punching_time)
+                            start_time = datetime.strptime(f"{employee_timetable.date} {HrPayslip.convert_float_to_time(employee_timetable.start_time, True)}", DATETIME_FORMAT)
+                            start_time = HrPayslip.convert_datetime_to_utc(start_time)
+                            if start_punching_time > start_time:
+                                start_time = start_punching_time
                             employee_timetable.sudo().write({
-                                'worked_start_time': 0.0,
+                                'worked_start_time': start_time,
                                 'worked_end_time': 0.0,
                                 'worked_time': 0.0,
                                 'rate': 0.0,
@@ -522,9 +528,15 @@ class HrPayslip(models.Model):
                                 'reason': 'Poinçonnement de fin absent ou invalide',
                             })
                         elif daily_attendances[0].punch_type == '1':
+                            end_punching_time = daily_attendances[0].punching_time
+                            end_punching_time = UTC_TZ.localize(end_punching_time)
+                            end_time = datetime.strptime(f"{employee_timetable.date} {HrPayslip.convert_float_to_time(employee_timetable.end_time, True)}", DATETIME_FORMAT)
+                            end_time = HrPayslip.convert_datetime_to_utc(end_time)
+                            if end_punching_time < end_time:
+                                end_time = end_punching_time
                             employee_timetable.sudo().write({
                                 'worked_start_time': 0.0,
-                                'worked_end_time': 0.0,
+                                'worked_end_time': end_time,
                                 'worked_time': 0.0,
                                 'rate': 0.0,
                                 'amount': 0.0,
@@ -556,8 +568,8 @@ class HrPayslip(models.Model):
                             start_time = start_punching_time
                         if start_time > end_time:
                             employee_timetable.sudo().write({
-                                'worked_start_time': 0.0,
-                                'worked_end_time': 0.0,
+                                'worked_start_time': start_time,
+                                'worked_end_time': end_time,
                                 'worked_time': 0.0,
                                 'rate': 0.0,
                                 'amount': 0.0,

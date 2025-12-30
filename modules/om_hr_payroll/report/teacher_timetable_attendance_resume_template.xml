@@ -1,129 +1,130 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-
-    <record id="paperformat_teacher_timetable_attendance_resume" model="report.paperformat">
-        <field name="name">Format du diplome</field>
-        <field name="default" eval="True"/>
-        <field name="format">A2</field>
-        <field name="orientation">Landscape</field>
-        <field name="margin_top">5</field>
-        <field name="margin_bottom">15</field>
-        <field name="margin_left">7</field>
-        <field name="margin_right">7</field>
-        <field name="header_line" eval="True"/>
-        <field name="header_spacing">5</field>
-        <field name="dpi">90</field>
-    </record>
-    <record id="action_report_teacher_timetable_attendance_resume" model="ir.actions.report">
-        <field name="name">Condensé émargement d'enseignant PDF</field>
-        <field name="model">teacher.timetable.attendance</field>
-        <field name="report_type">qweb-pdf</field>
-        <field name="report_name">om_hr_payroll.report_teacher_timetable_attendance_resume</field>
-        <field name="report_file">om_hr_payroll.report_teacher_timetable_attendance_resume</field>
-        <field name="print_report_name">'Fiche de - %s' % (docdata.semester)</field>
-        <field name="binding_model_id" eval="False"/>
-        <field name="paperformat_id" ref="paperformat_teacher_timetable_attendance_resume"/>
-        <field name="binding_type">report</field>
-    </record>
-
-    <!-- Template du rapport -->
-    <template id="report_teacher_timetable_attendance_resume">
-        <t t-call="web.html_container">
-            <t t-if="docdata and docdata['teacher_timetable_attendance_data']">
-                <t t-call="web.external_layout">
-                    <style>
-                        .table {
-                            border-collapse: collapse;
-                            width: 100%;
-                        }
-                        .table .thead th, .table td {
-                            border: 1px solid black;
-                            padding: 8px;
-                            text-align: center;
-                        }
-                        .table .thead th {
-                            background-color: #f2f2f2;
-                        }
-                    </style>
-                    <div class="page">
-                        <table class="table table-bordered table-sm text-center">
-                            <thead>
-                                <tr>
-                                    <th class="text-center" t-attf-colspan="#{'6' if docdata['is_permanent'] == False else '4'}" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;">
-                                        <h3>INSTITUT UNIVERSITAIRE SIANTOU</h3>
-                                        <h4>
-                                            <span t-esc="'Liste condensée des émargements des enseignants'"/>
-                                        </h4>
-                                        <h5 class="text-left">
-                                            <span t-esc="'Filtre :'"/>
-                                            <span t-esc="docdata['filter'] or 'Non spécifié'"/>
-                                        </h5>
-                                    </th>
-                                </tr>
-                            </thead>
-                            <thead>
-                                <tr>
-                                    <th class="text-left" t-attf-colspan="#{'6' if docdata['is_permanent'] == False else '4'}" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
-                                </tr>
-                            </thead>
-                            <thead>
-                                <tr class="active">
-                                    <th class="text-center">Matricule</th>
-                                    <th class="text-center">Enseignant</th>
-                                    <th class="text-center" t-if="docdata['is_permanent'] == True">Heure effectuée</th>
-                                    <th class="text-center" t-if="docdata['is_permanent'] == False">Montant</th>
-                                    <th class="text-center" t-if="docdata['is_permanent'] == False">Prêt</th>
-                                    <th class="text-center" t-if="docdata['is_permanent'] == False">Net</th>
-                                    <th class="text-center">Émargement</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <t t-set="teacher_timetable_attendance_data" t-value="dict(sorted(docdata['teacher_timetable_attendance_data'].items(), key=lambda item: item[1]['name']))"/>
-                                <t t-set="keys" t-value="teacher_timetable_attendance_data.keys()"/>
-                                <t t-foreach="keys" t-as="key">
+    <data>
+        <!-- Template du rapport PDF -->
+        <template id="template_report_teacher_timetable_attendance_resume">
+            <t t-call="web.html_container">
+                <t t-if="docdata and docdata['teacher_timetable_attendance_data']">
+                    <t t-call="web.external_layout">
+                        <style>
+                            .table {
+                                border-collapse: collapse;
+                                width: 100%;
+                            }
+                            .table .thead th, .table td {
+                                border: 1px solid black;
+                                padding: 8px;
+                                text-align: center;
+                            }
+                            .table .thead th {
+                                background-color: #f2f2f2;
+                            }
+                        </style>
+                        <div class="page">
+                            <table class="table table-bordered table-sm text-center">
+                                <thead>
                                     <tr>
-                                        <td class="text-center">
-                                            <span t-esc="teacher_timetable_attendance_data[key]['identifier']"/>
-                                        </td>
-                                        <td class="text-left">
-                                            <span t-esc="teacher_timetable_attendance_data[key]['name']"/>
-                                        </td>
+                                        <th class="text-center" t-attf-colspan="#{'6' if docdata['is_permanent'] == False else '4'}" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;">
+                                            <h3>INSTITUT UNIVERSITAIRE SIANTOU</h3>
+                                            <h4>
+                                                <span t-esc="'Liste condensée des émargements des enseignants'"/>
+                                            </h4>
+                                            <h5 class="text-left">
+                                                <span t-esc="'Filtre :'"/>
+                                                <span t-esc="docdata['filter'] or 'Non spécifié'"/>
+                                            </h5>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <thead>
+                                    <tr>
+                                        <th class="text-left" t-attf-colspan="#{'6' if docdata['is_permanent'] == False else '4'}" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
+                                    </tr>
+                                </thead>
+                                <thead>
+                                    <tr class="active">
+                                        <th class="text-center">Matricule</th>
+                                        <th class="text-center">Enseignant</th>
+                                        <th class="text-center" t-if="docdata['is_permanent'] == True">Heure effectuée</th>
+                                        <th class="text-center" t-if="docdata['is_permanent'] == False">Montant</th>
+                                        <th class="text-center" t-if="docdata['is_permanent'] == False">Prêt</th>
+                                        <th class="text-center" t-if="docdata['is_permanent'] == False">Net</th>
+                                        <th class="text-center">Émargement</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-set="teacher_timetable_attendance_data" t-value="dict(sorted(docdata['teacher_timetable_attendance_data'].items(), key=lambda item: item[1]['name']))"/>
+                                    <t t-set="keys" t-value="teacher_timetable_attendance_data.keys()"/>
+                                    <t t-foreach="keys" t-as="key">
+                                        <tr>
+                                            <td class="text-center">
+                                                <span t-esc="teacher_timetable_attendance_data[key]['identifier']"/>
+                                            </td>
+                                            <td class="text-left">
+                                                <span t-esc="teacher_timetable_attendance_data[key]['name']"/>
+                                            </td>
+                                            <td class="text-center" t-if="docdata['is_permanent'] == True">
+                                                <span t-esc="teacher_timetable_attendance_data[key]['worked_time']"/>
+                                            </td>
+                                            <td class="text-center" t-if="docdata['is_permanent'] == False">
+                                                <span t-esc="'{:,.2f}'.format(teacher_timetable_attendance_data[key]['amount'])"/>
+                                            </td>
+                                            <td class="text-center" t-if="docdata['is_permanent'] == False"></td>
+                                            <td class="text-center" t-if="docdata['is_permanent'] == False">
+                                                <span t-esc="'{:,.2f}'.format(teacher_timetable_attendance_data[key]['amount'])"/>
+                                            </td>
+                                            <td class="text-center"></td>
+                                        </tr>
+                                    </t>
+                                    <tr>
+                                        <td class="text-center">TOTAL GLOBAL</td>
+                                        <td class="text-center"></td>
                                         <td class="text-center" t-if="docdata['is_permanent'] == True">
-                                            <span t-esc="teacher_timetable_attendance_data[key]['worked_time']"/>
+                                            <span t-esc="docdata['total_worked_time']"/>
                                         </td>
                                         <td class="text-center" t-if="docdata['is_permanent'] == False">
-                                            <span t-esc="'{:,.2f}'.format(teacher_timetable_attendance_data[key]['amount'])"/>
+                                            <span t-esc="'{:,.2f}'.format(docdata['total_amount'])"/>
                                         </td>
                                         <td class="text-center" t-if="docdata['is_permanent'] == False"></td>
                                         <td class="text-center" t-if="docdata['is_permanent'] == False">
-                                            <span t-esc="'{:,.2f}'.format(teacher_timetable_attendance_data[key]['amount'])"/>
+                                            <span t-esc="'{:,.2f}'.format(docdata['total_amount'])"/>
                                         </td>
                                         <td class="text-center"></td>
                                     </tr>
-                                </t>
-                                <tr>
-                                    <td class="text-center">TOTAL GLOBAL</td>
-                                    <td class="text-center"></td>
-                                    <td class="text-center" t-if="docdata['is_permanent'] == True">
-                                        <span t-esc="docdata['total_worked_time']"/>
-                                    </td>
-                                    <td class="text-center" t-if="docdata['is_permanent'] == False">
-                                        <span t-esc="'{:,.2f}'.format(docdata['total_amount'])"/>
-                                    </td>
-                                    <td class="text-center" t-if="docdata['is_permanent'] == False"></td>
-                                    <td class="text-center" t-if="docdata['is_permanent'] == False">
-                                        <span t-esc="'{:,.2f}'.format(docdata['total_amount'])"/>
-                                    </td>
-                                    <td class="text-center"></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
+                                </tbody>
+                            </table>
+                        </div>
+                    </t>
+                </t>
+                <t t-else="">
+                    <div>Aucune donnée d'emploi du temps disponible. Veuillez vérifier vos filtres.</div>
                 </t>
             </t>
-            <t t-else="">
-                <div>Aucune donnée d'emploi du temps disponible. Veuillez vérifier vos filtres.</div>
-            </t>
-        </t>
-    </template>
+        </template>
+
+        <record id="paperformat_teacher_timetable_attendance_resume" model="report.paperformat">
+            <field name="name">Format du diplome</field>
+            <field name="default" eval="True"/>
+            <field name="format">A2</field>
+            <field name="orientation">Landscape</field>
+            <field name="margin_top">5</field>
+            <field name="margin_bottom">15</field>
+            <field name="margin_left">7</field>
+            <field name="margin_right">7</field>
+            <field name="header_line" eval="True"/>
+            <field name="header_spacing">5</field>
+            <field name="dpi">90</field>
+        </record>
+        <record id="action_report_teacher_timetable_attendance_resume" model="ir.actions.report">
+            <field name="name">Condensé émargement d'enseignant PDF</field>
+            <field name="model">teacher.timetable.attendance</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">om_hr_payroll.template_report_teacher_timetable_attendance_resume</field>
+            <field name="report_file">om_hr_payroll.template_report_teacher_timetable_attendance_resume</field>
+            <field name="print_report_name">'Fiche de - %s' % (docdata.semester)</field>
+            <field name="binding_model_id" eval="False"/>
+            <field name="paperformat_id" ref="paperformat_teacher_timetable_attendance_resume"/>
+            <field name="binding_type">report</field>
+        </record>
+    </data>
 </odoo>

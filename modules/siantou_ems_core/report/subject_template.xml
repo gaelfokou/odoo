@@ -1,118 +1,119 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-
-    <record id="paperformat_subject" model="report.paperformat">
-        <field name="name">Format du diplome</field>
-        <field name="default" eval="True"/>
-        <field name="format">A2</field>
-        <field name="orientation">Landscape</field>
-        <field name="margin_top">5</field>
-        <field name="margin_bottom">15</field>
-        <field name="margin_left">7</field>
-        <field name="margin_right">7</field>
-        <field name="header_line" eval="True"/>
-        <field name="header_spacing">5</field>
-        <field name="dpi">90</field>
-    </record>
-    <record id="action_report_subject" model="ir.actions.report">
-        <field name="name">Cours PDF</field>
-        <field name="model">siantou.ems.core.subject</field>
-        <field name="report_type">qweb-pdf</field>
-        <field name="report_name">siantou_ems_core.report_subject</field>
-        <field name="report_file">siantou_ems_core.report_subject</field>
-        <field name="print_report_name">'Fiche de - %s' % (docdata.semester)</field>
-        <field name="binding_model_id" eval="False"/>
-        <field name="paperformat_id" ref="paperformat_subject"/>
-        <field name="binding_type">report</field>
-    </record>
-
-    <!-- Template du rapport -->
-    <template id="report_subject">
-        <t t-call="web.html_container">
-            <t t-if="docdata and docdata['subject_data']">
-                <t t-call="web.external_layout">
-                    <style>
-                        .table {
-                            border-collapse: collapse;
-                            width: 100%;
-                        }
-                        .table .thead th, .table td {
-                            border: 1px solid black;
-                            padding: 8px;
-                            text-align: center;
-                        }
-                        .table .thead th {
-                            background-color: #f2f2f2;
-                        }
-                    </style>
-                    <div subject="page">
-                        <table subject="table table-bordered table-sm text-center">
-                            <thead>
-                                <tr>
-                                    <th subject="text-center" colspan="5" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;">
-                                        <h3>INSTITUT UNIVERSITAIRE SIANTOU</h3>
-                                        <h4>
-                                            <span t-esc="'Liste des cours'"/>
-                                        </h4>
-                                        <h5 subject="text-left">
-                                            <span t-esc="'Filtre :'"/>
-                                            <span t-esc="docdata['filter'] or 'Non spécifié'"/>
-                                        </h5>
-                                    </th>
-                                </tr>
-                            </thead>
-                            <thead>
-                                <tr>
-                                    <th subject="text-left" colspan="5" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
-                                </tr>
-                            </thead>
-                            <thead>
-                                <tr subject="active">
-                                    <th subject="text-center">Code</th>
-                                    <th subject="text-center">Nom du cours</th>
-                                    <th subject="text-center">Tronc commun</th>
-                                    <th subject="text-center">Volume horaire</th>
-                                    <th subject="text-center">Unités d'enseignement</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <t t-set="subjects" t-value="docdata['subject_data']"/>
-                                <t t-foreach="subjects" t-as="subject">
+    <data>
+        <!-- Template du rapport PDF -->
+        <template id="template_report_subject">
+            <t t-call="web.html_container">
+                <t t-if="docdata and docdata['subject_data']">
+                    <t t-call="web.external_layout">
+                        <style>
+                            .table {
+                                border-collapse: collapse;
+                                width: 100%;
+                            }
+                            .table .thead th, .table td {
+                                border: 1px solid black;
+                                padding: 8px;
+                                text-align: center;
+                            }
+                            .table .thead th {
+                                background-color: #f2f2f2;
+                            }
+                        </style>
+                        <div subject="page">
+                            <table subject="table table-bordered table-sm text-center">
+                                <thead>
                                     <tr>
-                                        <td subject="text-center">
-                                            <span t-esc="subject['code']"/>
-                                        </td>
-                                        <td subject="text-center">
-                                            <span t-esc="subject['name']"/>
-                                        </td>
-                                        <td subject="text-center">
-                                            <span t-esc="subject['shared_subject']"/>
-                                        </td>
-                                        <td subject="text-center">
-                                            <span t-esc="subject['hours_credit']"/>
-                                        </td>
-                                        <td subject="text-center">
-                                            <span t-esc="subject['ue_ids']"/>
-                                        </td>
+                                        <th subject="text-center" colspan="5" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;">
+                                            <h3>INSTITUT UNIVERSITAIRE SIANTOU</h3>
+                                            <h4>
+                                                <span t-esc="'Liste des cours'"/>
+                                            </h4>
+                                            <h5 subject="text-left">
+                                                <span t-esc="'Filtre :'"/>
+                                                <span t-esc="docdata['filter'] or 'Non spécifié'"/>
+                                            </h5>
+                                        </th>
                                     </tr>
-                                </t>
-                            </tbody>
-                            <tfooter>
-                                <tr>
-                                    <th class="text-center"></th>
-                                    <th class="text-center">Total volume horaire</th>
-                                    <th class="text-center"></th>
-                                    <th class="text-center"><span t-esc="docdata['total_hours_credit']"/></th>
-                                    <th class="text-center"></th>
-                                </tr>
-                            </tfooter>
-                        </table>
-                    </div>
+                                </thead>
+                                <thead>
+                                    <tr>
+                                        <th subject="text-left" colspan="5" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
+                                    </tr>
+                                </thead>
+                                <thead>
+                                    <tr subject="active">
+                                        <th subject="text-center">Code</th>
+                                        <th subject="text-center">Nom du cours</th>
+                                        <th subject="text-center">Tronc commun</th>
+                                        <th subject="text-center">Volume horaire</th>
+                                        <th subject="text-center">Unités d'enseignement</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-set="subjects" t-value="docdata['subject_data']"/>
+                                    <t t-foreach="subjects" t-as="subject">
+                                        <tr>
+                                            <td subject="text-center">
+                                                <span t-esc="subject['code']"/>
+                                            </td>
+                                            <td subject="text-center">
+                                                <span t-esc="subject['name']"/>
+                                            </td>
+                                            <td subject="text-center">
+                                                <span t-esc="subject['shared_subject']"/>
+                                            </td>
+                                            <td subject="text-center">
+                                                <span t-esc="subject['hours_credit']"/>
+                                            </td>
+                                            <td subject="text-center">
+                                                <span t-esc="subject['ue_ids']"/>
+                                            </td>
+                                        </tr>
+                                    </t>
+                                </tbody>
+                                <tfooter>
+                                    <tr>
+                                        <th class="text-center"></th>
+                                        <th class="text-center">Total volume horaire</th>
+                                        <th class="text-center"></th>
+                                        <th class="text-center"><span t-esc="docdata['total_hours_credit']"/></th>
+                                        <th class="text-center"></th>
+                                    </tr>
+                                </tfooter>
+                            </table>
+                        </div>
+                    </t>
+                </t>
+                <t t-else="">
+                    <div>Aucune donnée d'emploi du temps disponible. Veuillez vérifier vos filtres.</div>
                 </t>
             </t>
-            <t t-else="">
-                <div>Aucune donnée d'emploi du temps disponible. Veuillez vérifier vos filtres.</div>
-            </t>
-        </t>
-    </template>
+        </template>
+
+        <record id="paperformat_subject" model="report.paperformat">
+            <field name="name">Format du diplome</field>
+            <field name="default" eval="True"/>
+            <field name="format">A2</field>
+            <field name="orientation">Landscape</field>
+            <field name="margin_top">5</field>
+            <field name="margin_bottom">15</field>
+            <field name="margin_left">7</field>
+            <field name="margin_right">7</field>
+            <field name="header_line" eval="True"/>
+            <field name="header_spacing">5</field>
+            <field name="dpi">90</field>
+        </record>
+        <record id="action_report_subject" model="ir.actions.report">
+            <field name="name">Cours PDF</field>
+            <field name="model">siantou.ems.core.subject</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">siantou_ems_core.template_report_subject</field>
+            <field name="report_file">siantou_ems_core.template_report_subject</field>
+            <field name="print_report_name">'Fiche de - %s' % (docdata.semester)</field>
+            <field name="binding_model_id" eval="False"/>
+            <field name="paperformat_id" ref="paperformat_subject"/>
+            <field name="binding_type">report</field>
+        </record>
+    </data>
 </odoo>

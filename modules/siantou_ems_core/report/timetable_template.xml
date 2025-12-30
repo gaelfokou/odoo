@@ -1,228 +1,229 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-
-    <record id="paperformat_timetable" model="report.paperformat">
-        <field name="name">Format du diplome</field>
-        <field name="default" eval="True"/>
-        <field name="format">A2</field>
-        <field name="orientation">Landscape</field>
-        <field name="margin_top">5</field>
-        <field name="margin_bottom">15</field>
-        <field name="margin_left">7</field>
-        <field name="margin_right">7</field>
-        <field name="header_line" eval="True"/>
-        <field name="header_spacing">5</field>
-        <field name="dpi">90</field>
-    </record>
-    <record id="action_report_timetable" model="ir.actions.report">
-        <field name="name">Emploi du temps PDF</field>
-        <field name="model">siantou.ems.timetable.timetable</field>
-        <field name="report_type">qweb-pdf</field>
-        <field name="report_name">siantou_ems_core.report_timetable</field>
-        <field name="report_file">siantou_ems_core.report_timetable</field>
-        <field name="print_report_name">'Fiche de - %s' % (docdata.semester)</field>
-        <field name="binding_model_id" eval="False"/>
-        <field name="paperformat_id" ref="paperformat_timetable"/>
-        <field name="binding_type">report</field>
-    </record>
-
-    <!-- Template du rapport -->
-    <template id="report_timetable">
-        <t t-call="web.html_container">
-            <t t-if="docdata and docdata['timetable_data']">
-                <t t-set="keys" t-value="docdata['timetable_data'].keys()"/>
-                <t t-foreach="keys" t-as="key">
-                    <t t-set="weekdays" t-value="docdata['timetable_data'][key]['pages'].keys()"/>
-                    <t t-call="web.external_layout">
-                        <style>
-                            .table {
-                                border-collapse: collapse;
-                                width: 100%;
-                            }
-                            .table .thead th, .table td {
-                                border: 1px solid black;
-                                padding: 8px;
-                                text-align: center;
-                            }
-                            .table .thead th {
-                                background-color: #f2f2f2;
-                            }
-                        </style>
-                        <t t-foreach="weekdays" t-as="monday">
-                            <div class="page">
-                                <table class="table table-bordered table-sm text-center">
-                                    <t t-set="current_hours" t-value="[i for i in range(len(docdata['timetable_data'][key]['pages'][monday]['Heure']))]"/>
-                                    <thead>
-                                        <tr>
-                                            <th class="text-center" colspan="8" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;">
-                                                <h3>INSTITUT UNIVERSITAIRE SIANTOU</h3>
-                                                <h4>
-                                                    <span t-esc="'Emploi du temps'"/>
-                                                    <span t-esc="docdata['timetable_data'][key]['semester']"/>
-                                                </h4>
-                                                <h5 class="text-left">
-                                                    <span t-esc="docdata['timetable_data'][key]['study']"/>
-                                                </h5>
-                                                <h5 class="text-left">
-                                                    <span t-esc="'Filtre :'"/>
-                                                    <span t-esc="docdata['timetable_data'][key]['filter'] or 'Non spécifié'"/>
-                                                </h5>
-                                                <h5 class="text-left">
-                                                    <span t-esc="'Période :'"/>
-                                                    <span t-esc="monday"/>
-                                                </h5>
-                                            </th>
-                                        </tr>
-                                    </thead>
-                                    <thead>
-                                        <tr>
-                                            <th class="text-left" colspan="8" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
-                                        </tr>
-                                    </thead>
-                                    <thead>
-                                        <tr class="active">
-                                            <th class="text-center">Heure</th>
-                                            <th class="text-center">Lundi</th>
-                                            <th class="text-center">Mardi</th>
-                                            <th class="text-center">Mercredi</th>
-                                            <th class="text-center">Jeudi</th>
-                                            <th class="text-center">Vendredi</th>
-                                            <th class="text-center">Samedi</th>
-                                            <th class="text-center">Dimanche</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <t t-foreach="current_hours" t-as="hour">
+    <data>
+        <!-- Template du rapport PDF -->
+        <template id="template_report_timetable">
+            <t t-call="web.html_container">
+                <t t-if="docdata and docdata['timetable_data']">
+                    <t t-set="keys" t-value="docdata['timetable_data'].keys()"/>
+                    <t t-foreach="keys" t-as="key">
+                        <t t-set="weekdays" t-value="docdata['timetable_data'][key]['pages'].keys()"/>
+                        <t t-call="web.external_layout">
+                            <style>
+                                .table {
+                                    border-collapse: collapse;
+                                    width: 100%;
+                                }
+                                .table .thead th, .table td {
+                                    border: 1px solid black;
+                                    padding: 8px;
+                                    text-align: center;
+                                }
+                                .table .thead th {
+                                    background-color: #f2f2f2;
+                                }
+                            </style>
+                            <t t-foreach="weekdays" t-as="monday">
+                                <div class="page">
+                                    <table class="table table-bordered table-sm text-center">
+                                        <t t-set="current_hours" t-value="[i for i in range(len(docdata['timetable_data'][key]['pages'][monday]['Heure']))]"/>
+                                        <thead>
                                             <tr>
-                                                <td class="text-center">
-                                                    <span t-esc="docdata['timetable_data'][key]['pages'][monday]['Heure'][hour]"/>
-                                                </td>
-                                                <td class="text-center">
-                                                    <t t-foreach="docdata['timetable_data'][key]['pages'][monday]['Lundi'][hour]" t-as="record">
-                                                        <span t-esc="record['subject_name']"/>
-                                                        <span t-esc="'(' + record['subject_code'] + ')'"/>
-                                                        <br/>
-                                                        <span t-esc="record['classroom_name']"/>
-                                                        <span t-esc="'/ ' + record['building_name']"/>
-                                                        <br/>
-                                                        <span t-esc="record['subject_shared_subject']"/>
-                                                        <br/>
-                                                        <span t-esc="record['employee_name']"/>
-                                                        <br/>
-                                                        <span>-----</span>
-                                                        <br/>
-                                                    </t>
-                                                </td>
-                                                <td class="text-center">
-                                                    <t t-foreach="docdata['timetable_data'][key]['pages'][monday]['Mardi'][hour]" t-as="record">
-                                                        <span t-esc="record['subject_name']"/>
-                                                        <span t-esc="' (' + record['subject_code'] + ')'"/>
-                                                        <br/>
-                                                        <span t-esc="record['classroom_name']"/>
-                                                        <span t-esc="'/ ' + record['building_name']"/>
-                                                        <br/>
-                                                        <span t-esc="record['subject_shared_subject']"/>
-                                                        <br/>
-                                                        <span t-esc="record['employee_name']"/>
-                                                        <br/>
-                                                        <span>-----</span>
-                                                        <br/>
-                                                    </t>
-                                                </td>
-                                                <td class="text-center">
-                                                    <t t-foreach="docdata['timetable_data'][key]['pages'][monday]['Mercredi'][hour]" t-as="record">
-                                                        <span t-esc="record['subject_name']"/>
-                                                        <span t-esc="' (' + record['subject_code'] + ')'"/>
-                                                        <br/>
-                                                        <span t-esc="record['classroom_name']"/>
-                                                        <span t-esc="'/ ' + record['building_name']"/>
-                                                        <br/>
-                                                        <span t-esc="record['subject_shared_subject']"/>
-                                                        <br/>
-                                                        <span t-esc="record['employee_name']"/>
-                                                        <br/>
-                                                        <span>-----</span>
-                                                        <br/>
-                                                    </t>
-                                                </td>
-                                                <td class="text-center">
-                                                    <t t-foreach="docdata['timetable_data'][key]['pages'][monday]['Jeudi'][hour]" t-as="record">
-                                                        <span t-esc="record['subject_name']"/>
-                                                        <span t-esc="' (' + record['subject_code'] + ')'"/>
-                                                        <br/>
-                                                        <span t-esc="record['classroom_name']"/>
-                                                        <span t-esc="'/ ' + record['building_name']"/>
-                                                        <br/>
-                                                        <span t-esc="record['subject_shared_subject']"/>
-                                                        <br/>
-                                                        <span t-esc="record['employee_name']"/>
-                                                        <br/>
-                                                        <span>-----</span>
-                                                        <br/>
-                                                    </t>
-                                                </td>
-                                                <td class="text-center">
-                                                    <t t-foreach="docdata['timetable_data'][key]['pages'][monday]['Vendredi'][hour]" t-as="record">
-                                                        <span t-esc="record['subject_name']"/>
-                                                        <span t-esc="' (' + record['subject_code'] + ')'"/>
-                                                        <br/>
-                                                        <span t-esc="record['classroom_name']"/>
-                                                        <span t-esc="'/ ' + record['building_name']"/>
-                                                        <br/>
-                                                        <span t-esc="record['subject_shared_subject']"/>
-                                                        <br/>
-                                                        <span t-esc="record['employee_name']"/>
-                                                        <br/>
-                                                        <span>-----</span>
-                                                        <br/>
-                                                    </t>
-                                                </td>
-                                                <td class="text-center">
-                                                    <t t-foreach="docdata['timetable_data'][key]['pages'][monday]['Samedi'][hour]" t-as="record">
-                                                        <span t-esc="record['subject_name']"/>
-                                                        <span t-esc="' (' + record['subject_code'] + ')'"/>
-                                                        <br/>
-                                                        <span t-esc="record['classroom_name']"/>
-                                                        <span t-esc="'/ ' + record['building_name']"/>
-                                                        <br/>
-                                                        <span t-esc="record['subject_shared_subject']"/>
-                                                        <br/>
-                                                        <span t-esc="record['employee_name']"/>
-                                                        <br/>
-                                                        <span>-----</span>
-                                                        <br/>
-                                                    </t>
-                                                </td>
-                                                <td class="text-center">
-                                                    <t t-foreach="docdata['timetable_data'][key]['pages'][monday]['Dimanche'][hour]" t-as="record">
-                                                        <span t-esc="record['subject_name']"/>
-                                                        <span t-esc="' (' + record['subject_code'] + ')'"/>
-                                                        <br/>
-                                                        <span t-esc="record['classroom_name']"/>
-                                                        <span t-esc="'/ ' + record['building_name']"/>
-                                                        <br/>
-                                                        <span t-esc="record['subject_shared_subject']"/>
-                                                        <br/>
-                                                        <span t-esc="record['employee_name']"/>
-                                                        <br/>
-                                                        <span>-----</span>
-                                                        <br/>
-                                                    </t>
-                                                </td>
+                                                <th class="text-center" colspan="8" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;">
+                                                    <h3>INSTITUT UNIVERSITAIRE SIANTOU</h3>
+                                                    <h4>
+                                                        <span t-esc="'Emploi du temps'"/>
+                                                        <span t-esc="docdata['timetable_data'][key]['semester']"/>
+                                                    </h4>
+                                                    <h5 class="text-left">
+                                                        <span t-esc="docdata['timetable_data'][key]['study']"/>
+                                                    </h5>
+                                                    <h5 class="text-left">
+                                                        <span t-esc="'Filtre :'"/>
+                                                        <span t-esc="docdata['timetable_data'][key]['filter'] or 'Non spécifié'"/>
+                                                    </h5>
+                                                    <h5 class="text-left">
+                                                        <span t-esc="'Période :'"/>
+                                                        <span t-esc="monday"/>
+                                                    </h5>
+                                                </th>
                                             </tr>
-                                        </t>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <p style="page-break-after:always;"></p>
-                            <br/><br/><br/>
+                                        </thead>
+                                        <thead>
+                                            <tr>
+                                                <th class="text-left" colspan="8" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
+                                            </tr>
+                                        </thead>
+                                        <thead>
+                                            <tr class="active">
+                                                <th class="text-center">Heure</th>
+                                                <th class="text-center">Lundi</th>
+                                                <th class="text-center">Mardi</th>
+                                                <th class="text-center">Mercredi</th>
+                                                <th class="text-center">Jeudi</th>
+                                                <th class="text-center">Vendredi</th>
+                                                <th class="text-center">Samedi</th>
+                                                <th class="text-center">Dimanche</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <t t-foreach="current_hours" t-as="hour">
+                                                <tr>
+                                                    <td class="text-center">
+                                                        <span t-esc="docdata['timetable_data'][key]['pages'][monday]['Heure'][hour]"/>
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <t t-foreach="docdata['timetable_data'][key]['pages'][monday]['Lundi'][hour]" t-as="record">
+                                                            <span t-esc="record['subject_name']"/>
+                                                            <span t-esc="'(' + record['subject_code'] + ')'"/>
+                                                            <br/>
+                                                            <span t-esc="record['classroom_name']"/>
+                                                            <span t-esc="'/ ' + record['building_name']"/>
+                                                            <br/>
+                                                            <span t-esc="record['subject_shared_subject']"/>
+                                                            <br/>
+                                                            <span t-esc="record['employee_name']"/>
+                                                            <br/>
+                                                            <span>-----</span>
+                                                            <br/>
+                                                        </t>
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <t t-foreach="docdata['timetable_data'][key]['pages'][monday]['Mardi'][hour]" t-as="record">
+                                                            <span t-esc="record['subject_name']"/>
+                                                            <span t-esc="' (' + record['subject_code'] + ')'"/>
+                                                            <br/>
+                                                            <span t-esc="record['classroom_name']"/>
+                                                            <span t-esc="'/ ' + record['building_name']"/>
+                                                            <br/>
+                                                            <span t-esc="record['subject_shared_subject']"/>
+                                                            <br/>
+                                                            <span t-esc="record['employee_name']"/>
+                                                            <br/>
+                                                            <span>-----</span>
+                                                            <br/>
+                                                        </t>
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <t t-foreach="docdata['timetable_data'][key]['pages'][monday]['Mercredi'][hour]" t-as="record">
+                                                            <span t-esc="record['subject_name']"/>
+                                                            <span t-esc="' (' + record['subject_code'] + ')'"/>
+                                                            <br/>
+                                                            <span t-esc="record['classroom_name']"/>
+                                                            <span t-esc="'/ ' + record['building_name']"/>
+                                                            <br/>
+                                                            <span t-esc="record['subject_shared_subject']"/>
+                                                            <br/>
+                                                            <span t-esc="record['employee_name']"/>
+                                                            <br/>
+                                                            <span>-----</span>
+                                                            <br/>
+                                                        </t>
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <t t-foreach="docdata['timetable_data'][key]['pages'][monday]['Jeudi'][hour]" t-as="record">
+                                                            <span t-esc="record['subject_name']"/>
+                                                            <span t-esc="' (' + record['subject_code'] + ')'"/>
+                                                            <br/>
+                                                            <span t-esc="record['classroom_name']"/>
+                                                            <span t-esc="'/ ' + record['building_name']"/>
+                                                            <br/>
+                                                            <span t-esc="record['subject_shared_subject']"/>
+                                                            <br/>
+                                                            <span t-esc="record['employee_name']"/>
+                                                            <br/>
+                                                            <span>-----</span>
+                                                            <br/>
+                                                        </t>
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <t t-foreach="docdata['timetable_data'][key]['pages'][monday]['Vendredi'][hour]" t-as="record">
+                                                            <span t-esc="record['subject_name']"/>
+                                                            <span t-esc="' (' + record['subject_code'] + ')'"/>
+                                                            <br/>
+                                                            <span t-esc="record['classroom_name']"/>
+                                                            <span t-esc="'/ ' + record['building_name']"/>
+                                                            <br/>
+                                                            <span t-esc="record['subject_shared_subject']"/>
+                                                            <br/>
+                                                            <span t-esc="record['employee_name']"/>
+                                                            <br/>
+                                                            <span>-----</span>
+                                                            <br/>
+                                                        </t>
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <t t-foreach="docdata['timetable_data'][key]['pages'][monday]['Samedi'][hour]" t-as="record">
+                                                            <span t-esc="record['subject_name']"/>
+                                                            <span t-esc="' (' + record['subject_code'] + ')'"/>
+                                                            <br/>
+                                                            <span t-esc="record['classroom_name']"/>
+                                                            <span t-esc="'/ ' + record['building_name']"/>
+                                                            <br/>
+                                                            <span t-esc="record['subject_shared_subject']"/>
+                                                            <br/>
+                                                            <span t-esc="record['employee_name']"/>
+                                                            <br/>
+                                                            <span>-----</span>
+                                                            <br/>
+                                                        </t>
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <t t-foreach="docdata['timetable_data'][key]['pages'][monday]['Dimanche'][hour]" t-as="record">
+                                                            <span t-esc="record['subject_name']"/>
+                                                            <span t-esc="' (' + record['subject_code'] + ')'"/>
+                                                            <br/>
+                                                            <span t-esc="record['classroom_name']"/>
+                                                            <span t-esc="'/ ' + record['building_name']"/>
+                                                            <br/>
+                                                            <span t-esc="record['subject_shared_subject']"/>
+                                                            <br/>
+                                                            <span t-esc="record['employee_name']"/>
+                                                            <br/>
+                                                            <span>-----</span>
+                                                            <br/>
+                                                        </t>
+                                                    </td>
+                                                </tr>
+                                            </t>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <p style="page-break-after:always;"></p>
+                                <br/><br/><br/>
+                            </t>
                         </t>
                     </t>
                 </t>
+                <t t-else="">
+                    <div>Aucune donnée d'emploi du temps disponible. Veuillez vérifier vos filtres.</div>
+                </t>
             </t>
-            <t t-else="">
-                <div>Aucune donnée d'emploi du temps disponible. Veuillez vérifier vos filtres.</div>
-            </t>
-        </t>
-    </template>
+        </template>
+
+        <record id="paperformat_timetable" model="report.paperformat">
+            <field name="name">Format du diplome</field>
+            <field name="default" eval="True"/>
+            <field name="format">A2</field>
+            <field name="orientation">Landscape</field>
+            <field name="margin_top">5</field>
+            <field name="margin_bottom">15</field>
+            <field name="margin_left">7</field>
+            <field name="margin_right">7</field>
+            <field name="header_line" eval="True"/>
+            <field name="header_spacing">5</field>
+            <field name="dpi">90</field>
+        </record>
+        <record id="action_report_timetable" model="ir.actions.report">
+            <field name="name">Emploi du temps PDF</field>
+            <field name="model">siantou.ems.timetable.timetable</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">siantou_ems_core.template_report_timetable</field>
+            <field name="report_file">siantou_ems_core.template_report_timetable</field>
+            <field name="print_report_name">'Fiche de - %s' % (docdata.semester)</field>
+            <field name="binding_model_id" eval="False"/>
+            <field name="paperformat_id" ref="paperformat_timetable"/>
+            <field name="binding_type">report</field>
+        </record>
+    </data>
 </odoo>

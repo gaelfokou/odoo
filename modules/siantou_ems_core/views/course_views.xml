@@ -1,37 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 	<data>
-        <!-- <menuitem name="Filières" id="menu_school_config_course"
-                    parent="menu_school_config" 
-                     /> -->
-
-        <!-- Grading Type -->
-        <!-- <record id="school_course_grading_type_tree_view" model="ir.ui.view">
-			<field name="name">school.course.grading.type.tree.view</field>
-			<field name="model">oe.school.course.grading.type</field>
-			<field name="arch" type="xml">
-				<tree string="Filières" editable="bottom">
-					<field name="name"/>
-				</tree>
-			</field>
-		</record>
-
-        <record id="action_school_course_grading_type" model="ir.actions.act_window">
-            <field name="name">Type de notation</field>
-            <field name="res_model">oe.school.course.grading.type</field>
-            <field name="view_mode">tree,form</field>
-            <field name="help" type="html">
-                <p class="o_view_nocontent_smiling_face">
-                    Créer un type de notation
-                </p>
-            </field>
-        </record> -->
-
-        <!--
-        <menuitem name="Grading Type" id="menu_school_config_course_grading_type"
-                    parent="menu_school_config_course" action="action_school_course_grading_type"
-                     />
-        -->
         <!-- Course -->
         <record id="school_course_tree_view" model="ir.ui.view">
 			<field name="name">school.course.tree.view</field>

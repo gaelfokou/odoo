@@ -258,12 +258,12 @@ class TeacherTimetableAttendance(models.TransientModel):
                 raise ValidationError("L'heure de fin du cours doit être supérieure à l'heure de début du cours")
 
     # Contrainte logique pour s'assurer que les heures de début et de fin sont définies et que l'heure de fin est supérieure à l'heure de début
-    @api.constrains('worked_start_time', 'worked_end_time')
+    @api.constrains('status', 'worked_start_time', 'worked_end_time')
     def _constrains_worked_time(self):
         for record in self:
             if record.worked_start_time < 0.0 or record.worked_end_time < 0.0 or record.worked_start_time > 23.59 or record.worked_end_time > 23.59:
                 raise ValidationError("Vous devez définir des heures de début effectuée et de fin effectuée corrects")
-            elif record.worked_start_time > record.worked_end_time:
+            elif record.status in ['present', 'permission'] and record.worked_start_time > record.worked_end_time:
                 raise ValidationError("L'heure de fin effectuée du cours doit être supérieure à l'heure de début effectuée du cours")
 
     def action_open_filter(self):

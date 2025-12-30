@@ -1,113 +1,114 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-
-    <record id="paperformat_daily_attendance" model="report.paperformat">
-        <field name="name">Format du diplome</field>
-        <field name="default" eval="True"/>
-        <field name="format">A2</field>
-        <field name="orientation">Landscape</field>
-        <field name="margin_top">5</field>
-        <field name="margin_bottom">15</field>
-        <field name="margin_left">7</field>
-        <field name="margin_right">7</field>
-        <field name="header_line" eval="True"/>
-        <field name="header_spacing">5</field>
-        <field name="dpi">90</field>
-    </record>
-    <record id="action_report_daily_attendance" model="ir.actions.report">
-        <field name="name">Présence PDF</field>
-        <field name="model">daily.attendance</field>
-        <field name="report_type">qweb-pdf</field>
-        <field name="report_name">siantou_ems_core.report_daily_attendance</field>
-        <field name="report_file">siantou_ems_core.report_daily_attendance</field>
-        <field name="print_report_name">'Fiche de - %s' % (docdata.semester)</field>
-        <field name="binding_model_id" eval="False"/>
-        <field name="paperformat_id" ref="paperformat_daily_attendance"/>
-        <field name="binding_type">report</field>
-    </record>
-
-    <!-- Template du rapport -->
-    <template id="report_daily_attendance">
-        <t t-call="web.html_container">
-            <t t-if="docdata and docdata['daily_attendance_data']">
-                <t t-call="web.external_layout">
-                    <style>
-                        .table {
-                            border-collapse: collapse;
-                            width: 100%;
-                        }
-                        .table .thead th, .table td {
-                            border: 1px solid black;
-                            padding: 8px;
-                            text-align: center;
-                        }
-                        .table .thead th {
-                            background-color: #f2f2f2;
-                        }
-                    </style>
-                    <div class="page">
-                        <table class="table table-bordered table-sm text-center">
-                            <thead>
-                                <tr>
-                                    <th class="text-center" colspan="6" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;">
-                                        <h3>INSTITUT UNIVERSITAIRE SIANTOU</h3>
-                                        <h4>
-                                            <span t-esc="'Liste des présences'"/>
-                                        </h4>
-                                        <h5 class="text-left">
-                                            <span t-esc="'Filtre :'"/>
-                                            <span t-esc="docdata['filter'] or 'Non spécifié'"/>
-                                        </h5>
-                                    </th>
-                                </tr>
-                            </thead>
-                            <thead>
-                                <tr>
-                                    <th class="text-left" colspan="6" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
-                                </tr>
-                            </thead>
-                            <thead>
-                                <tr class="active">
-                                    <th class="text-center">Employee</th>
-                                    <th class="text-center">Working Address</th>
-                                    <th class="text-center">Category</th>
-                                    <th class="text-center">Punching Type</th>
-                                    <th class="text-center">Date</th>
-                                    <th class="text-center">Punching Time</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <t t-set="attendances" t-value="docdata['attendance_data']"/>
-                                <t t-foreach="attendances" t-as="attendance">
+    <data>
+        <!-- Template du rapport PDF -->
+        <template id="template_report_daily_attendance">
+            <t t-call="web.html_container">
+                <t t-if="docdata and docdata['daily_attendance_data']">
+                    <t t-call="web.external_layout">
+                        <style>
+                            .table {
+                                border-collapse: collapse;
+                                width: 100%;
+                            }
+                            .table .thead th, .table td {
+                                border: 1px solid black;
+                                padding: 8px;
+                                text-align: center;
+                            }
+                            .table .thead th {
+                                background-color: #f2f2f2;
+                            }
+                        </style>
+                        <div class="page">
+                            <table class="table table-bordered table-sm text-center">
+                                <thead>
                                     <tr>
-                                        <td class="text-center">
-                                            <span t-esc="attendance['employee_name']"/>
-                                        </td>
-                                        <td class="text-center">
-                                            <span t-esc="attendance['address_name']"/>
-                                        </td>
-                                        <td class="text-center">
-                                            <span t-esc="attendance['attendance_type']"/>
-                                        </td>
-                                        <td class="text-center">
-                                            <span t-esc="attendance['punch_type']"/>
-                                        </td>
-                                        <td class="text-center">
-                                            <span t-esc="attendance['punching_day']"/>
-                                        </td>
-                                        <td class="text-center">
-                                            <span t-esc="attendance['punching_time']"/>
-                                        </td>
+                                        <th class="text-center" colspan="6" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;">
+                                            <h3>INSTITUT UNIVERSITAIRE SIANTOU</h3>
+                                            <h4>
+                                                <span t-esc="'Liste des présences'"/>
+                                            </h4>
+                                            <h5 class="text-left">
+                                                <span t-esc="'Filtre :'"/>
+                                                <span t-esc="docdata['filter'] or 'Non spécifié'"/>
+                                            </h5>
+                                        </th>
                                     </tr>
-                                </t>
-                            </tbody>
-                        </table>
-                    </div>
+                                </thead>
+                                <thead>
+                                    <tr>
+                                        <th class="text-left" colspan="6" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
+                                    </tr>
+                                </thead>
+                                <thead>
+                                    <tr class="active">
+                                        <th class="text-center">Employee</th>
+                                        <th class="text-center">Working Address</th>
+                                        <th class="text-center">Category</th>
+                                        <th class="text-center">Punching Type</th>
+                                        <th class="text-center">Date</th>
+                                        <th class="text-center">Punching Time</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-set="attendances" t-value="docdata['attendance_data']"/>
+                                    <t t-foreach="attendances" t-as="attendance">
+                                        <tr>
+                                            <td class="text-center">
+                                                <span t-esc="attendance['employee_name']"/>
+                                            </td>
+                                            <td class="text-center">
+                                                <span t-esc="attendance['address_name']"/>
+                                            </td>
+                                            <td class="text-center">
+                                                <span t-esc="attendance['attendance_type']"/>
+                                            </td>
+                                            <td class="text-center">
+                                                <span t-esc="attendance['punch_type']"/>
+                                            </td>
+                                            <td class="text-center">
+                                                <span t-esc="attendance['punching_day']"/>
+                                            </td>
+                                            <td class="text-center">
+                                                <span t-esc="attendance['punching_time']"/>
+                                            </td>
+                                        </tr>
+                                    </t>
+                                </tbody>
+                            </table>
+                        </div>
+                    </t>
+                </t>
+                <t t-else="">
+                    <div>Aucune donnée d'emploi du temps disponible. Veuillez vérifier vos filtres.</div>
                 </t>
             </t>
-            <t t-else="">
-                <div>Aucune donnée d'emploi du temps disponible. Veuillez vérifier vos filtres.</div>
-            </t>
-        </t>
-    </template>
+        </template>
+
+        <record id="paperformat_daily_attendance" model="report.paperformat">
+            <field name="name">Format du diplome</field>
+            <field name="default" eval="True"/>
+            <field name="format">A2</field>
+            <field name="orientation">Landscape</field>
+            <field name="margin_top">5</field>
+            <field name="margin_bottom">15</field>
+            <field name="margin_left">7</field>
+            <field name="margin_right">7</field>
+            <field name="header_line" eval="True"/>
+            <field name="header_spacing">5</field>
+            <field name="dpi">90</field>
+        </record>
+        <record id="action_report_daily_attendance" model="ir.actions.report">
+            <field name="name">Présence PDF</field>
+            <field name="model">daily.attendance</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">siantou_ems_core.template_report_daily_attendance</field>
+            <field name="report_file">siantou_ems_core.template_report_daily_attendance</field>
+            <field name="print_report_name">'Fiche de - %s' % (docdata.semester)</field>
+            <field name="binding_model_id" eval="False"/>
+            <field name="paperformat_id" ref="paperformat_daily_attendance"/>
+            <field name="binding_type">report</field>
+        </record>
+    </data>
 </odoo>

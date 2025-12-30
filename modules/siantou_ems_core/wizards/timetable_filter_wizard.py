@@ -555,6 +555,161 @@ class TimetableFilterWizard(models.TransientModel):
             'target': 'main',
         }
 
+    def action_print(self):
+        domain = []
+        title = []
+        if self.year_id.id:
+            domain.append(('year_id', '=', self.year_id.id))
+            title.append(self.year_id.name)
+        if self.semester_id.id:
+            domain.append(('semester_id', '=', self.semester_id.id))
+            title.append(self.semester_id.name)
+        if self.department_id.id:
+            domain.append(('department_id', '=', self.department_id.id))
+            title.append(self.department_id.name)
+        if self.school_id.id:
+            domain.append(('school_id', '=', self.school_id.id))
+            title.append(self.school_id.name)
+        if self.level_id.id:
+            domain.append(('level_id', '=', self.level_id.id))
+            title.append(self.level_id.name)
+        if self.field_of_study_id.id:
+            domain.append(('field_of_study_id', '=', self.field_of_study_id.id))
+            title.append(self.field_of_study_id.name)
+        if self.specialty_id.id:
+            domain.append(('specialty_id', '=', self.specialty_id.id))
+            title.append(self.specialty_id.name)
+        if self.option_id.id:
+            domain.append(('option_id', '=', self.option_id.id))
+            title.append(self.option_id.name)
+        if self.type_cour:
+            domain.append(('class_id.type_cour', '=', self.type_cour))
+            title.append(TYPE_COUR[self.type_cour])
+        if self.class_id.id:
+            domain.append(('class_id', '=', self.class_id.id))
+            title.append(self.class_id.name)
+        if self.class_group_id.id:
+            domain.append(('class_group_id', '=', self.class_group_id.id))
+            title.append(self.class_group_id.name)
+        if self.subject_id.id:
+            domain.append(('subject_id', '=', self.subject_id.id))
+            title.append(self.subject_id.name)
+        if self.building_id.id:
+            domain.append(('building_id', '=', self.building_id.id))
+            title.append(self.building_id.name)
+        if self.classroom_id.id:
+            domain.append(('classroom_id', '=', self.classroom_id.id))
+            title.append(self.classroom_id.name)
+        if self.employee_id.id:
+            domain.append(('employee_id', '=', self.employee_id.id))
+            title.append(self.employee_id.name)
+        if self.group_id.id:
+            domain.append(('group_id', '=', self.group_id.id))
+            title.append(self.group_id.name)
+
+        timetable_ids = []
+        if self.status:
+            if self.status == 'delay':
+                domain.append(('status', '=', 'present'))
+                title.append(STATUS_TIMETABLE[self.status])
+                timetables = self.env['siantou.ems.timetable.timetable'].search(domain)
+                timetables = timetables.filtered(lambda rec: rec.date and rec.day_of_week and TimetableFilterWizard.compare_float_time(rec.date, rec.worked_start_time, rec.start_time) > 0.0)
+            elif self.status == 'delay_more_than_or_equal':
+                domain.append(('status', '=', 'present'))
+                title.append(STATUS_TIMETABLE[self.status])
+                title.append('{} minute(s)'.format(self.number_of_minute))
+                timetables = self.env['siantou.ems.timetable.timetable'].search(domain)
+                timetables = timetables.filtered(lambda rec: rec.date and rec.day_of_week and TimetableFilterWizard.compare_float_time(rec.date, rec.worked_start_time, rec.start_time) >= self.number_of_minute)
+            elif self.status == 'delay_less_than':
+                domain.append(('status', '=', 'present'))
+                title.append(STATUS_TIMETABLE[self.status])
+                title.append('{} minute(s)'.format(self.number_of_minute))
+                timetables = self.env['siantou.ems.timetable.timetable'].search(domain)
+                timetables = timetables.filtered(lambda rec: rec.date and rec.day_of_week and TimetableFilterWizard.compare_float_time(rec.date, rec.worked_start_time, rec.start_time) > 0.0 and TimetableFilterWizard.compare_float_time(rec.date, rec.worked_start_time, rec.start_time) < self.number_of_minute)
+            elif self.status == 'exception_start_time_invalid':
+                domain.append(('status', '=', 'exception'))
+                title.append(STATUS_TIMETABLE[self.status])
+                timetables = self.env['siantou.ems.timetable.timetable'].search(domain)
+                timetables = timetables.filtered(lambda rec: rec.reason and rec.reason == 'Poinçonnement de début absent ou invalide')
+            elif self.status == 'exception_end_time_invalid':
+                domain.append(('status', '=', 'exception'))
+                title.append(STATUS_TIMETABLE[self.status])
+                timetables = self.env['siantou.ems.timetable.timetable'].search(domain)
+                timetables = timetables.filtered(lambda rec: rec.reason and rec.reason == 'Poinçonnement de fin absent ou invalide')
+            elif self.status == 'exception_time_invalid':
+                domain.append(('status', '=', 'exception'))
+                title.append(STATUS_TIMETABLE[self.status])
+                timetables = self.env['siantou.ems.timetable.timetable'].search(domain)
+                timetables = timetables.filtered(lambda rec: rec.reason and rec.reason == 'Poinçonnement absent ou invalide')
+            elif self.status == 'exception_reverse':
+                domain.append(('status', '=', 'exception'))
+                title.append(STATUS_TIMETABLE[self.status])
+                timetables = self.env['siantou.ems.timetable.timetable'].search(domain)
+                timetables = timetables.filtered(lambda rec: rec.reason and rec.reason == 'Poinçonnement de début et de fin inversé')
+            elif self.status == 'exception_other':
+                domain.append(('status', '=', 'exception'))
+                title.append(STATUS_TIMETABLE[self.status])
+                timetables = self.env['siantou.ems.timetable.timetable'].search(domain)
+                timetables = timetables.filtered(lambda rec: rec.reason and rec.reason not in ['Poinçonnement de début absent ou invalide', 'Poinçonnement de fin absent ou invalide', 'Poinçonnement absent ou invalide', 'Poinçonnement de début et de fin inversé'])
+            else:
+                domain.append(('status', '=', self.status))
+                title.append(STATUS_TIMETABLE[self.status])
+                timetables = self.env['siantou.ems.timetable.timetable'].search(domain)
+        else:
+            timetables = self.env['siantou.ems.timetable.timetable'].search(domain)
+        if self.start_date and self.end_date:
+            start_date = datetime.strftime(self.start_date, DATE_FORMAT_FR)
+            end_date = datetime.strftime(self.end_date, DATE_FORMAT_FR)
+            title.append('{} - {}'.format(start_date, end_date))
+            timetables = timetables.filtered(lambda rec: rec.date and rec.day_of_week and rec.date >= self.start_date and rec.date <= self.end_date)
+        if self.start_time and self.end_time:
+            start_time = TimetableFilterWizard.convert_float_to_time(self.start_time)
+            end_time = TimetableFilterWizard.convert_float_to_time(self.end_time)
+            title.append('{} - {}'.format(start_time, end_time))
+            timetables = timetables.filtered(lambda rec: not (rec.start_time >= self.end_time or rec.end_time <= self.start_time))
+            # timetables = timetables.filtered(lambda rec: self.search_filtered(rec))
+        key_timetables = {}
+        for timetable in timetables:
+            if not timetable.date or not timetable.day_of_week:
+                continue
+
+            end_time = TimetableFilterWizard.convert_float_to_time(timetable.end_time, True)
+            start_time = TimetableFilterWizard.convert_float_to_time(timetable.start_time, True)
+            key = '{}-{}-{}-{}'.format(timetable.class_id.id, timetable.date, start_time, end_time)
+            if key not in key_timetables:
+                key_timetables[key] = timetable
+            else:
+                continue
+
+            timetable_ids.append(timetable.id)
+        timetable_ids = list(set(timetable_ids))
+
+        domain = [
+            ('id', 'in', timetable_ids)
+        ]
+
+        if len(title) > 0:
+            title = '/'.join(title)
+        else:
+            title = 'Non spécifié'
+
+        self.env['ir.config_parameter'].sudo().set_param(f'siantou.filter_user_{self.env.user.id}', title)
+
+        timetables = list(timetables)
+
+        if len(timetable_ids) == 0:
+            raise UserError('Aucune donnée sélectionnée')
+        report_data = self.env['timetable.print.wizard'].create({
+            'group_id': timetables[0].group_id.id,
+        })
+        data = report_data.print_timetable_report_data(domains=domain)
+
+        # Appeler le rapport PDF
+        if len(data['docdata']['timetable_data']) == 0:
+            raise UserError('Aucune donnée trouvée')
+        report_action = self.env.ref('siantou_ems_core.action_report_timetable_percentage')
+        return report_action.report_action(self, data=data)
+
     @staticmethod
     def convert_float_to_time(tm, has_second=False):
         tm = str(tm)

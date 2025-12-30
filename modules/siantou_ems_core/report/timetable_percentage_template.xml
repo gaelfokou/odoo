@@ -2,7 +2,7 @@
 <odoo>
     <data>
         <!-- Template du rapport PDF -->
-        <template id="template_report_teacher_timetable_attendance">
+        <template id="template_report_timetable_percentage">
             <t t-call="web.html_container">
                 <t t-if="docdata and docdata['teacher_timetable_attendance_data']">
                     <t t-call="web.external_layout">
@@ -169,7 +169,7 @@
             </t>
         </template>
 
-        <record id="paperformat_teacher_timetable_attendance" model="report.paperformat">
+        <record id="paperformat_timetable_percentage" model="report.paperformat">
             <field name="name">Format du diplome</field>
             <field name="default" eval="True"/>
             <field name="format">A2</field>
@@ -182,15 +182,15 @@
             <field name="header_spacing">5</field>
             <field name="dpi">90</field>
         </record>
-        <record id="action_report_teacher_timetable_attendance" model="ir.actions.report">
-            <field name="name">Émargement d'enseignant PDF</field>
+        <record id="action_report_timetable_percentage" model="ir.actions.report">
+            <field name="name">Emploi du temps PDF</field>
             <field name="model">teacher.timetable.attendance</field>
             <field name="report_type">qweb-pdf</field>
-            <field name="report_name">om_hr_payroll.template_report_teacher_timetable_attendance</field>
-            <field name="report_file">om_hr_payroll.template_report_teacher_timetable_attendance</field>
+            <field name="report_name">om_hr_payroll.template_report_timetable_percentage</field>
+            <field name="report_file">om_hr_payroll.template_report_timetable_percentage</field>
             <field name="print_report_name">'Fiche de - %s' % (docdata.semester)</field>
             <field name="binding_model_id" eval="False"/>
-            <field name="paperformat_id" ref="paperformat_teacher_timetable_attendance"/>
+            <field name="paperformat_id" ref="paperformat_timetable_percentage"/>
             <field name="binding_type">report</field>
         </record>
     </data>

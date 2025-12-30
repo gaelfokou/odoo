@@ -364,30 +364,6 @@
             <field name="implied_ids" eval="[(4, ref('siantou_ems_core.group_syllabus_user'))]"/>
         </record>
 
-        <!-- syllabus subject -->
-        <!-- <record id="group_siantou_ems_core_unite_enseignement_user" model="res.groups">
-            <field name="name">Gestion des unités d'enseignements - user</field>
-            <field name="category_id" ref="base.module_category_administration"/>
-            <field name="implied_ids" eval="[(4, ref('base.group_system'))]"/>
-        </record>
-        <record id="group_siantou_ems_core_unite_enseignement_admin" model="res.groups">
-            <field name="name">Gestion des unités d'enseignements - admin</field>
-            <field name="category_id" ref="base.module_category_administration"/>
-            <field name="implied_ids" eval="[(4, ref('siantou_ems_core.group_siantou_ems_core_unite_enseignement_user'))]"/>
-        </record> -->
-
-        <!-- syllabus subject line -->
-        <!-- <record id="group_syllabus_subject_line_user" model="res.groups">
-            <field name="name">Gestion des matières des unités d'enseignements - user</field>
-            <field name="category_id" ref="base.module_category_administration"/>
-            <field name="implied_ids" eval="[(4, ref('base.group_system'))]"/>
-        </record>
-        <record id="group_syllabus_subject_line_admin" model="res.groups">
-            <field name="name">Gestion des matières des unités d'enseignements - admin</field>
-            <field name="category_id" ref="base.module_category_administration"/>
-            <field name="implied_ids" eval="[(4, ref('siantou_ems_core.group_syllabus_subject_line_user'))]"/>
-        </record> -->
-
         <!-- spécialité -->
         <record id="group_specialty_user" model="res.groups">
             <field name="name">Gestion des spécialités - user</field>
