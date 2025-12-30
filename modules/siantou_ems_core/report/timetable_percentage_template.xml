@@ -27,7 +27,7 @@
                                         <th class="text-center" colspan="10" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;">
                                             <h3>INSTITUT UNIVERSITAIRE SIANTOU</h3>
                                             <h4>
-                                                <span t-esc="'Liste des émargements des enseignants'"/>
+                                                <span t-esc="'Liste des emplois du temps'"/>
                                             </h4>
                                             <h5 class="text-left">
                                                 <span t-esc="'Filtre :'"/>
@@ -51,6 +51,7 @@
                                         <th class="text-center">Heure de fin</th>
                                         <th class="text-center">Heure de début effectuée</th>
                                         <th class="text-center">Heure de fin effectuée</th>
+                                        <th class="text-center">Motif</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -91,6 +92,9 @@
                                                 <td class="text-center">
                                                     <span t-esc="timetable['worked_end_time']"/>
                                                 </td>
+                                                <td class="text-center">
+                                                    <span t-esc="timetable['reason']"/>
+                                                </td>
                                             </tr>
                                         </t>
                                         <tr>
@@ -102,10 +106,12 @@
                                             <td class="text-center"></td>
                                             <td class="text-center"></td>
                                             <td class="text-center"></td>
+                                            <td class="text-center"></td>
                                         </tr>
                                     </t>
                                     <tr>
                                         <td class="text-center">POURCENTAGE TOTAL</td>
+                                        <td class="text-center"></td>
                                         <td class="text-center"></td>
                                         <td class="text-center"></td>
                                         <td class="text-center"></td>
