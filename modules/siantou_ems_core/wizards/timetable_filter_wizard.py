@@ -697,8 +697,8 @@ class TimetableFilterWizard(models.TransientModel):
             ('id', 'in', timetable_ids)
         ]
 
-        timetable_ids = []
-        key_timetables = {}
+        all_timetable_ids = []
+        key_all_timetables = {}
         for timetable in all_timetables:
             if not timetable.date or not timetable.day_of_week:
                 continue
@@ -706,16 +706,16 @@ class TimetableFilterWizard(models.TransientModel):
             end_time = TimetableFilterWizard.convert_float_to_time(timetable.end_time, True)
             start_time = TimetableFilterWizard.convert_float_to_time(timetable.start_time, True)
             key = '{}-{}-{}-{}'.format(timetable.class_id.id, timetable.date, start_time, end_time)
-            if key not in key_timetables:
-                key_timetables[key] = timetable
+            if key not in key_all_timetables:
+                key_all_timetables[key] = timetable
             else:
                 continue
 
-            timetable_ids.append(timetable.id)
-        timetable_ids = list(set(timetable_ids))
+            all_timetable_ids.append(timetable.id)
+        all_timetable_ids = list(set(all_timetable_ids))
 
         all_domain = [
-            ('id', 'in', timetable_ids)
+            ('id', 'in', all_timetable_ids)
         ]
 
         if len(title) > 0:
