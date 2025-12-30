@@ -453,7 +453,6 @@ class TimetableFilterWizard(models.TransientModel):
             domain.append(('group_id', '=', self.group_id.id))
             title.append(self.group_id.name)
 
-        timetable_ids = []
         if self.status:
             if self.status == 'delay':
                 domain.append(('status', '=', 'present'))
@@ -514,6 +513,8 @@ class TimetableFilterWizard(models.TransientModel):
             title.append('{} - {}'.format(start_time, end_time))
             timetables = timetables.filtered(lambda rec: not (rec.start_time >= self.end_time or rec.end_time <= self.start_time))
             # timetables = timetables.filtered(lambda rec: self.search_filtered(rec))
+
+        timetable_ids = []
         key_timetables = {}
         for timetable in timetables:
             if not timetable.date or not timetable.day_of_week:
@@ -607,7 +608,11 @@ class TimetableFilterWizard(models.TransientModel):
             domain.append(('group_id', '=', self.group_id.id))
             title.append(self.group_id.name)
 
-        timetable_ids = []
+        all_domain = []
+        all_domain += domain
+        all_domain.append(('status', '!=', 'pending'))
+        all_timetables = self.env['siantou.ems.timetable.timetable'].search(all_domain)
+
         if self.status:
             if self.status == 'delay':
                 domain.append(('status', '=', 'present'))
@@ -662,12 +667,16 @@ class TimetableFilterWizard(models.TransientModel):
             end_date = datetime.strftime(self.end_date, DATE_FORMAT_FR)
             title.append('{} - {}'.format(start_date, end_date))
             timetables = timetables.filtered(lambda rec: rec.date and rec.day_of_week and rec.date >= self.start_date and rec.date <= self.end_date)
+            all_timetables = all_timetables.filtered(lambda rec: rec.date and rec.day_of_week and rec.date >= self.start_date and rec.date <= self.end_date)
         if self.start_time and self.end_time:
             start_time = TimetableFilterWizard.convert_float_to_time(self.start_time)
             end_time = TimetableFilterWizard.convert_float_to_time(self.end_time)
             title.append('{} - {}'.format(start_time, end_time))
             timetables = timetables.filtered(lambda rec: not (rec.start_time >= self.end_time or rec.end_time <= self.start_time))
+            all_timetables = all_timetables.filtered(lambda rec: not (rec.start_time >= self.end_time or rec.end_time <= self.start_time))
             # timetables = timetables.filtered(lambda rec: self.search_filtered(rec))
+
+        timetable_ids = []
         key_timetables = {}
         for timetable in timetables:
             if not timetable.date or not timetable.day_of_week:
@@ -688,6 +697,27 @@ class TimetableFilterWizard(models.TransientModel):
             ('id', 'in', timetable_ids)
         ]
 
+        timetable_ids = []
+        key_timetables = {}
+        for timetable in all_timetables:
+            if not timetable.date or not timetable.day_of_week:
+                continue
+
+            end_time = TimetableFilterWizard.convert_float_to_time(timetable.end_time, True)
+            start_time = TimetableFilterWizard.convert_float_to_time(timetable.start_time, True)
+            key = '{}-{}-{}-{}'.format(timetable.class_id.id, timetable.date, start_time, end_time)
+            if key not in key_timetables:
+                key_timetables[key] = timetable
+            else:
+                continue
+
+            timetable_ids.append(timetable.id)
+        timetable_ids = list(set(timetable_ids))
+
+        all_domain = [
+            ('id', 'in', timetable_ids)
+        ]
+
         if len(title) > 0:
             title = '/'.join(title)
         else:
@@ -702,7 +732,7 @@ class TimetableFilterWizard(models.TransientModel):
         report_data = self.env['timetable.print.wizard'].create({
             'group_id': timetables[0].group_id.id,
         })
-        data = report_data.print_timetable_percentage_report_data(domains=domain)
+        data = report_data.print_timetable_percentage_report_data(domains=domain, all_domains=all_domain)
 
         # Appeler le rapport PDF
         if len(data['docdata']['timetable_percentage_data'].keys()) == 0:

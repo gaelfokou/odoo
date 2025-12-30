@@ -265,7 +265,7 @@ class TimetablePrintWizard(models.TransientModel):
         name = name.lower()
         return name
 
-    def print_timetable_percentage_report_data(self, domains=None):
+    def print_timetable_percentage_report_data(self, domains=None, all_domains=None):
         # Récupérer les emplois du temps pour le semestre sélectionné
         domain = []
 
@@ -300,6 +300,14 @@ class TimetablePrintWizard(models.TransientModel):
 
         search_timetable_percentages = self.env['siantou.ems.timetable.timetable'].search(domain)
 
+        all_domain = []
+
+        if all_domains:
+            for d in all_domains:
+                all_domain.append(d)
+
+        all_timetable_percentage_count = self.env['siantou.ems.timetable.timetable'].search_count(all_domain)
+
         key_timetable_percentages = {}
         info_timetable_percentages = {}
         for search_timetable_percentage in search_timetable_percentages:
@@ -311,6 +319,7 @@ class TimetablePrintWizard(models.TransientModel):
                 key_timetable_percentages[key]['name'] = search_timetable_percentage.employee_id.name
                 key_timetable_percentages[key]['identifier'] = search_timetable_percentage.employee_id.identifier
                 key_timetable_percentages[key]['data'] = []
+                key_timetable_percentages[key]['percentage'] = 0.0
             timetable_percentage = {}
             timetable_percentage['id'] = search_timetable_percentage.id
             timetable_percentage['date'] = search_timetable_percentage.date
@@ -351,6 +360,22 @@ class TimetablePrintWizard(models.TransientModel):
             timetable_percentage['status'] = STATUS_TIMETABLE[search_timetable_percentage.status]
             key_timetable_percentages[key]['data'].append(timetable_percentage)
 
+        total_timetable_percentage_count = 0.0
+        for key in key_timetable_percentages.keys():
+            timetable_percentage_count = len(key_timetable_percentages[key]['data'])
+            total_timetable_percentage_count += timetable_percentage_count
+            if all_timetable_percentage_count > 0:
+                key_timetable_percentages[key]['percentage'] = (timetable_percentage_count / all_timetable_percentage_count) * 100
+                key_timetable_percentages[key]['percentage'] = round(key_timetable_percentages[key]['percentage'], 2)
+            else:
+                key_timetable_percentages[key]['percentage'] = 0.0
+
+        if all_timetable_percentage_count > 0:
+            total_percentage = (total_timetable_percentage_count / all_timetable_percentage_count) * 100
+            total_percentage = round(total_percentage, 2)
+        else:
+            total_percentage = 0.0
+
         key_timetable_percentages = sorted(key_timetable_percentages.items(), key=self.sort_timetable_percentage)
         key_timetable_percentages = dict(key_timetable_percentages)
 
@@ -362,7 +387,7 @@ class TimetablePrintWizard(models.TransientModel):
             'docdata': {
                 'filter': title,
                 'timetable_percentage_data': key_timetable_percentages,
-                'semester': self.semester_id.name,
+                'total_percentage': total_percentage,
             }
         }
 

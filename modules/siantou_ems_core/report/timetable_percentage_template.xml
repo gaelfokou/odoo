@@ -103,7 +103,9 @@
                                         </t>
                                         <tr>
                                             <td class="text-center">POURCENTAGE</td>
-                                            <td class="text-center"></td>
+                                            <td class="text-center">
+                                                <span t-esc="str(timetable_percentage_data[key]['percentage']) + '%'"/>
+                                            </td>
                                             <td class="text-center"></td>
                                             <td class="text-center"></td>
                                             <td class="text-center"></td>
@@ -115,8 +117,10 @@
                                         </tr>
                                     </t>
                                     <tr>
-                                        <td class="text-center">POURCENTAGE TOTAL</td>
-                                        <td class="text-center"></td>
+                                        <td class="text-center">POURCENTAGE GLOBAL</td>
+                                        <td class="text-center">
+                                            <span t-esc="docdata['total_percentage']"/>
+                                        </td>
                                         <td class="text-center"></td>
                                         <td class="text-center"></td>
                                         <td class="text-center"></td>
