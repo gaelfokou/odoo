@@ -4,7 +4,7 @@
         <!-- Template du rapport PDF -->
         <template id="template_report_timetable_percentage">
             <t t-call="web.html_container">
-                <t t-if="docdata and docdata['teacher_timetable_attendance_data']">
+                <t t-if="docdata and docdata['timetable_percentage_data']">
                     <t t-call="web.external_layout">
                         <style>
                             .table {
@@ -24,7 +24,7 @@
                             <table class="table table-bordered table-sm text-center">
                                 <thead>
                                     <tr>
-                                        <th class="text-center" t-attf-colspan="#{'12' if docdata['is_permanent'] == False else '10'}" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;">
+                                        <th class="text-center" colspan="10" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;">
                                             <h3>INSTITUT UNIVERSITAIRE SIANTOU</h3>
                                             <h4>
                                                 <span t-esc="'Liste des émargements des enseignants'"/>
@@ -38,7 +38,7 @@
                                 </thead>
                                 <thead>
                                     <tr>
-                                        <th class="text-left" t-attf-colspan="#{'12' if docdata['is_permanent'] == False else '10'}" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
+                                        <th class="text-left" colspan="10" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
                                     </tr>
                                 </thead>
                                 <thead>
@@ -52,18 +52,16 @@
                                         <th class="text-center">Heure de début effectuée</th>
                                         <th class="text-center">Heure de fin effectuée</th>
                                         <th class="text-center">Heure effectuée</th>
-                                        <th class="text-center" t-if="docdata['is_permanent'] == False">Taux horaire</th>
-                                        <th class="text-center" t-if="docdata['is_permanent'] == False">Montant</th>
                                         <th class="text-center">Volume horaire</th>
                                         <th class="text-center">Volume horaire effectué</th>
                                         <th class="text-center">Volume horaire restant</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <t t-set="teacher_timetable_attendance_data" t-value="dict(sorted(docdata['teacher_timetable_attendance_data'].items(), key=lambda item: item[1]['name']))"/>
-                                    <t t-set="keys" t-value="teacher_timetable_attendance_data.keys()"/>
+                                    <t t-set="timetable_percentage_data" t-value="dict(sorted(docdata['timetable_percentage_data'].items(), key=lambda item: item[1]['name']))"/>
+                                    <t t-set="keys" t-value="timetable_percentage_data.keys()"/>
                                     <t t-foreach="keys" t-as="key">
-                                        <t t-set="timetables" t-value="teacher_timetable_attendance_data[key]['data']"/>
+                                        <t t-set="timetables" t-value="timetable_percentage_data[key]['data']"/>
                                         <t t-foreach="timetables" t-as="timetable">
                                             <tr>
                                                 <t t-if="timetable['class_name']">
@@ -100,12 +98,6 @@
                                                 <td class="text-center">
                                                     <span t-esc="timetable['worked_time']"/>
                                                 </td>
-                                                <td class="text-center" t-if="docdata['is_permanent'] == False">
-                                                    <span t-esc="timetable['rate']"/>
-                                                </td>
-                                                <td class="text-center" t-if="docdata['is_permanent'] == False">
-                                                    <span t-esc="'{:,.2f}'.format(timetable['amount'])"/>
-                                                </td>
                                                 <td class="text-center">
                                                     <span t-esc="timetable['hours_credit']"/>
                                                 </td>
@@ -126,13 +118,7 @@
                                             <td class="text-center"></td> -->
                                             <td class="text-center"></td>
                                             <td class="text-center"></td>
-                                            <td class="text-center">
-                                                <span t-esc="teacher_timetable_attendance_data[key]['worked_time']"/>
-                                            </td>
-                                            <td class="text-center" t-if="docdata['is_permanent'] == False"></td>
-                                            <td class="text-center" t-if="docdata['is_permanent'] == False">
-                                                <span t-esc="'{:,.2f}'.format(teacher_timetable_attendance_data[key]['amount'])"/>
-                                            </td>
+                                            <td class="text-center"></td>
                                             <td class="text-center"></td>
                                             <td class="text-center"></td>
                                             <td class="text-center"></td>
@@ -147,13 +133,7 @@
                                         <td class="text-center"></td> -->
                                         <td class="text-center"></td>
                                         <td class="text-center"></td>
-                                        <td class="text-center">
-                                            <span t-esc="docdata['total_worked_time']"/>
-                                        </td>
-                                        <td class="text-center" t-if="docdata['is_permanent'] == False"></td>
-                                        <td class="text-center" t-if="docdata['is_permanent'] == False">
-                                            <span t-esc="'{:,.2f}'.format(docdata['total_amount'])"/>
-                                        </td>
+                                        <td class="text-center"></td>
                                         <td class="text-center"></td>
                                         <td class="text-center"></td>
                                         <td class="text-center"></td>

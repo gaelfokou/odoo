@@ -259,6 +259,112 @@ class TimetablePrintWizard(models.TransientModel):
             }
         }
 
+    def sort_timetable_percentage(self, timetable_percentage):
+        name = timetable_percentage[1]['name']
+        name = name.strip()
+        name = name.lower()
+        return name
+
+    def print_timetable_percentage_report_data(self, domains=None):
+        # Récupérer les emplois du temps pour le semestre sélectionné
+        domain = []
+
+        # Ajouter le critère Semestre seulement s'il est sélectionné
+        if self.semester_id.id:
+            domain.append(('semester_id', '=', self.semester_id.id))
+
+        # Ajouter le critère Version seulement s'il est sélectionné
+        if self.group_id.id:
+            domain.append(('group_id', '=', self.group_id.id))
+
+        # Ajouter le critère Filière seulement s'il est sélectionné
+        if self.department_id.id:
+            domain.append(('department_id', '=', self.department_id.id))
+
+        # Ajouter le critère Filière seulement s'il est sélectionné
+        if self.field_of_study_id.id:
+            domain.append(('field_of_study_id', '=', self.field_of_study_id.id))
+
+        # Ajouter le critère Niveau seulement s'il est sélectionné
+        if self.level_id.id:
+            domain.append(('level_id', '=', self.level_id.id))
+
+        # Ajouter le critère de période seulement si la date de début et la date de fin sont sélectionnées
+        if self.start_date and self.end_date:
+            domain.append(('date', '>=', self.start_date))
+            domain.append(('date', '<=', self.end_date))
+
+        if domains:
+            for d in domains:
+                domain.append(d)
+
+        search_timetable_percentages = self.env['siantou.ems.timetable.timetable'].search(domain)
+
+        key_timetable_percentages = {}
+        info_timetable_percentages = {}
+        for search_timetable_percentage in search_timetable_percentages:
+            if not search_timetable_percentage.date or not search_timetable_percentage.day_of_week:
+                continue
+            key = '{}'.format(search_timetable_percentage.employee_id.id)
+            if key not in key_timetable_percentages:
+                key_timetable_percentages[key] = {}
+                key_timetable_percentages[key]['name'] = search_timetable_percentage.employee_id.name
+                key_timetable_percentages[key]['identifier'] = search_timetable_percentage.employee_id.identifier
+                key_timetable_percentages[key]['data'] = []
+            timetable_percentage = {}
+            timetable_percentage['id'] = search_timetable_percentage.id
+            timetable_percentage['date'] = search_timetable_percentage.date
+            timetable_percentage['date_of_week'] = datetime.strftime(search_timetable_percentage.date, DATE_FORMAT_FR)
+            timetable_percentage['semester_name'] = search_timetable_percentage.semester_id.name
+            timetable_percentage['cycle_id'] = search_timetable_percentage.cycle_id.id
+            timetable_percentage['cycle_name'] = search_timetable_percentage.cycle_id.name
+            timetable_percentage['level_id'] = search_timetable_percentage.level_id.id
+            timetable_percentage['level_name'] = search_timetable_percentage.level_id.name
+            timetable_percentage['field_of_study_id'] = search_timetable_percentage.field_of_study_id.id
+            timetable_percentage['field_of_study_name'] = search_timetable_percentage.field_of_study_id.name
+            timetable_percentage['specialty_id'] = search_timetable_percentage.specialty_id.id
+            timetable_percentage['specialty_name'] = search_timetable_percentage.specialty_id.name
+            timetable_percentage['option_id'] = search_timetable_percentage.option_id.id
+            timetable_percentage['option_name'] = search_timetable_percentage.option_id.name
+            timetable_percentage['class_id'] = search_timetable_percentage.class_id.id
+            timetable_percentage['class_name'] = search_timetable_percentage.class_id.name
+            timetable_percentage['department_id'] = search_timetable_percentage.department_id.id
+            timetable_percentage['department_name'] = search_timetable_percentage.department_id.name
+            timetable_percentage['school_id'] = search_timetable_percentage.school_id.id
+            timetable_percentage['school_name'] = search_timetable_percentage.school_id.name
+            timetable_percentage['subject_id'] = search_timetable_percentage.subject_id.id
+            timetable_percentage['subject_name'] = search_timetable_percentage.subject_id.name
+            timetable_percentage['subject_code'] = search_timetable_percentage.subject_id.code
+            timetable_percentage['subject_hours_credit'] = search_timetable_percentage.subject_id.hours_credit
+            timetable_percentage['subject_shared_subject'] = '(TC)' if search_timetable_percentage.subject_id.shared_subject else ''
+            timetable_percentage['classroom_name'] = search_timetable_percentage.classroom_id.name
+            timetable_percentage['building_name'] = search_timetable_percentage.classroom_id.building_id.name
+            timetable_percentage['batch_name'] = search_timetable_percentage.batch_id.name
+            timetable_percentage['employee_name'] = search_timetable_percentage.employee_id.name
+            timetable_percentage['day_of_week'] = CURRENT_WEEKDAY[search_timetable_percentage.day_of_week]
+            timetable_percentage['start_time'] = search_timetable_percentage.start_time
+            timetable_percentage['end_time'] = search_timetable_percentage.end_time
+            timetable_percentage['worked_start_time'] = search_timetable_percentage.worked_start_time
+            timetable_percentage['worked_end_time'] = search_timetable_percentage.worked_end_time
+            timetable_percentage['reason'] = search_timetable_percentage.reason
+            timetable_percentage['not_active_slotitems'] = search_timetable_percentage.not_active_slotitems
+            timetable_percentage['status'] = STATUS_TIMETABLE[search_timetable_percentage.status]
+            key_timetable_percentages[key]['data'].append(timetable_percentage)
+
+        key_timetable_percentages = sorted(key_timetable_percentages.items(), key=self.sort_timetable_percentage)
+
+        _logger.info(f'----------- tototototototo key_timetable_percentages {key_timetable_percentages} -----------')
+
+        title = self.env['ir.config_parameter'].sudo().get_param(f'siantou.filter_user_{self.env.user.id}', '')
+
+        return {
+            'docdata': {
+                'filter': title,
+                'timetable_percentage_data': key_timetable_percentages,
+                'semester': self.semester_id.name,
+            }
+        }
+
     @staticmethod
     def convert_float_to_time(tm, has_second=False):
         tm = str(tm)

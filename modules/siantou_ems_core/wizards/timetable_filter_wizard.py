@@ -702,10 +702,10 @@ class TimetableFilterWizard(models.TransientModel):
         report_data = self.env['timetable.print.wizard'].create({
             'group_id': timetables[0].group_id.id,
         })
-        data = report_data.print_timetable_report_data(domains=domain)
+        data = report_data.print_timetable_percentage_report_data(domains=domain)
 
         # Appeler le rapport PDF
-        if len(data['docdata']['timetable_data']) == 0:
+        if len(data['docdata']['timetable_percentage_data'].keys()) == 0:
             raise UserError('Aucune donnée trouvée')
         report_action = self.env.ref('siantou_ems_core.action_report_timetable_percentage')
         return report_action.report_action(self, data=data)
