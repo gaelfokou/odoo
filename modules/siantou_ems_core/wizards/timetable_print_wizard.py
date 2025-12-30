@@ -342,16 +342,17 @@ class TimetablePrintWizard(models.TransientModel):
             timetable_percentage['batch_name'] = search_timetable_percentage.batch_id.name
             timetable_percentage['employee_name'] = search_timetable_percentage.employee_id.name
             timetable_percentage['day_of_week'] = CURRENT_WEEKDAY[search_timetable_percentage.day_of_week]
-            timetable_percentage['start_time'] = search_timetable_percentage.start_time
-            timetable_percentage['end_time'] = search_timetable_percentage.end_time
-            timetable_percentage['worked_start_time'] = search_timetable_percentage.worked_start_time
-            timetable_percentage['worked_end_time'] = search_timetable_percentage.worked_end_time
+            timetable_percentage['start_time'] = TimetablePrintWizard.convert_float_to_time(search_timetable_percentage.start_time)
+            timetable_percentage['end_time'] = TimetablePrintWizard.convert_float_to_time(search_timetable_percentage.end_time)
+            timetable_percentage['worked_start_time'] = TimetablePrintWizard.convert_float_to_time(search_timetable_percentage.worked_start_time)
+            timetable_percentage['worked_end_time'] = TimetablePrintWizard.convert_float_to_time(search_timetable_percentage.worked_end_time)
             timetable_percentage['reason'] = search_timetable_percentage.reason
             timetable_percentage['not_active_slotitems'] = search_timetable_percentage.not_active_slotitems
             timetable_percentage['status'] = STATUS_TIMETABLE[search_timetable_percentage.status]
             key_timetable_percentages[key]['data'].append(timetable_percentage)
 
         key_timetable_percentages = sorted(key_timetable_percentages.items(), key=self.sort_timetable_percentage)
+        key_timetable_percentages = dict(key_timetable_percentages)
 
         _logger.info(f'----------- tototototototo key_timetable_percentages {key_timetable_percentages} -----------')
 
