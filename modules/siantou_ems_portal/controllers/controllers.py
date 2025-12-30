@@ -382,7 +382,7 @@ class PortalAccount(portal.CustomerPortal):
         paymenthistories = []
         for search_paymenthistory in search_paymenthistories:
             paymenthistory = {}
-            paymenthistory['date_from'] = datetime.strftime(search_paymenthistory.date_from, DATE_FORMAT_FR)
+            paymenthistory['date'] = '{} - {}'.format(datetime.strftime(search_paymenthistory.date_from, DATE_FORMAT_FR), datetime.strftime(search_paymenthistory.date_to, DATE_FORMAT_FR))
             paymenthistory['name'] = search_paymenthistory.name
             paymenthistory['number'] = search_paymenthistory.number
             paymenthistory['code'] = search_paymenthistory.code

@@ -652,7 +652,7 @@
                             <t t-foreach="paymenthistories" t-as="record">
                                 <tr>
                                     <td class="text-left">
-                                        <span t-esc="record['date_from']"/>
+                                        <span t-esc="record['date']"/>
                                     </td>
                                     <td class="text-left">
                                         <span t-esc="record['name']"/>
