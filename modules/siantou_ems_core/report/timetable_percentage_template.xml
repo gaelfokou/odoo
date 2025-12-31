@@ -24,7 +24,7 @@
                             <table class="table table-bordered table-sm text-center">
                                 <thead>
                                     <tr>
-                                        <th class="text-center" colspan="10" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;">
+                                        <th class="text-center" colspan="11" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;">
                                             <h3>INSTITUT UNIVERSITAIRE SIANTOU</h3>
                                             <h4>
                                                 <span t-esc="'Liste des emplois du temps'"/>
@@ -38,11 +38,12 @@
                                 </thead>
                                 <thead>
                                     <tr>
-                                        <th class="text-left" colspan="10" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
+                                        <th class="text-left" colspan="11" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
                                     </tr>
                                 </thead>
                                 <thead class="thead">
                                     <tr class="active">
+                                        <th class="text-center">Matricule</th>
                                         <th class="text-center">Enseignant</th>
                                         <th class="text-center">Classe</th>
                                         <th class="text-center">Cours</th>
@@ -62,16 +63,12 @@
                                         <t t-set="timetables" t-value="timetable_percentage_data[key]['data']"/>
                                         <t t-foreach="timetables" t-as="timetable">
                                             <tr>
-                                                <t t-if="timetable['class_name']">
-                                                    <td class="text-left">
-                                                        <span t-esc="timetable['employee_name']"/>
-                                                    </td>
-                                                </t>
-                                                <t t-else="">
-                                                    <td class="text-center">
-                                                        <span t-esc="timetable['employee_name']"/>
-                                                    </td>
-                                                </t>
+                                                <td class="text-center">
+                                                    <span t-esc="timetable['identifier']"/>
+                                                </td>
+                                                <td class="text-left">
+                                                    <span t-esc="timetable['employee_name']"/>
+                                                </td>
                                                 <td class="text-center">
                                                     <span t-esc="timetable['class_name']"/>
                                                 </td>

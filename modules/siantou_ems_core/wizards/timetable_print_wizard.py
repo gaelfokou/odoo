@@ -361,6 +361,8 @@ class TimetablePrintWizard(models.TransientModel):
             timetable_percentage['classroom_name'] = search_timetable_percentage.classroom_id.name
             timetable_percentage['building_name'] = search_timetable_percentage.classroom_id.building_id.name
             timetable_percentage['batch_name'] = search_timetable_percentage.batch_id.name
+            timetable_percentage['employee_id'] = search_timetable_percentage.employee_id.id
+            timetable_percentage['identifier'] = search_timetable_percentage.employee_id.identifier
             timetable_percentage['employee_name'] = search_timetable_percentage.employee_id.name
             timetable_percentage['day_of_week'] = CURRENT_WEEKDAY[search_timetable_percentage.day_of_week]
             timetable_percentage['start_time'] = TimetablePrintWizard.convert_float_to_time(search_timetable_percentage.start_time)
