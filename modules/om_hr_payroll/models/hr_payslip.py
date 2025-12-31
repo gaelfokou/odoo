@@ -573,6 +573,12 @@ class HrPayslip(models.Model):
                         if start_punching_time > start_time:
                             start_time = start_punching_time
                         if start_time > end_time:
+                            end_time = datetime.strftime(end_time, TIME_FORMAT_FR)
+                            start_time = datetime.strftime(start_time, TIME_FORMAT_FR)
+                            end_time = HrPayslip.convert_time_to_float(end_time)
+                            start_time = HrPayslip.convert_time_to_float(start_time)
+                            end_time = HrPayslip.increment_float_time(end_time, 1.0)
+                            start_time = HrPayslip.increment_float_time(start_time, 1.0)
                             employee_timetable.sudo().write({
                                 'worked_start_time': start_time,
                                 'worked_end_time': end_time,
