@@ -41,7 +41,7 @@
                                         <th class="text-left" colspan="6" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
                                     </tr>
                                 </thead>
-                                <thead>
+                                <thead class="thead">
                                     <tr class="active">
                                         <th class="text-center">Employee</th>
                                         <th class="text-center">Working Address</th>

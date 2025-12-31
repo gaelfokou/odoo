@@ -59,9 +59,8 @@
                                     <h3 style="text-decoration:underline;text-transform:uppercase;font-size: 15px;">I. Identification de l'étudiant</h3>
                                     <table classe="table table-striped"
                                                     style="width: 100%;">
-                                        <thead>
-                                            <tr
-                                                style="border: 1px solid black;text-align: left;font-size: 12px;">
+                                        <thead class="thead">
+                                            <tr class="active" style="border: 1px solid black;text-align: left;font-size: 12px;">
                                                 <th style="border: 1px solid black;text-align: left;padding: 4px; width: 25%;text-transform:uppercase;">
                                                     Nom(s) et prénom(s)
                                                 </th>
