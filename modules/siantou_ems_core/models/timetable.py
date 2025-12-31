@@ -582,12 +582,13 @@ class Timetable(models.Model):
         tm = round(tm, 2)
         return tm
 
-    @api.depends('class_id', 'subject_id')
+    @api.depends('class_id', 'class_group_id', 'subject_id')
     def _compute_name(self):
         for record in self:
             class_name = record.class_id.name if record.class_id.id else ''
             subject_name = record.subject_id.name if record.subject_id.id else ''
-            name = '{} - {}'.format(class_name, subject_name)
+            class_group_name = record.class_group_id.name if record.class_group_id.id else ''
+            name = '{} - {} - {}'.format(class_name, subject_name, class_group_name)
             while True:
                 if name.startswith(' - '):
                     name = re.sub('^ - ', ' ', name)
@@ -603,12 +604,13 @@ class Timetable(models.Model):
             name = name.upper()
             record.name = name
 
-    @api.onchange('class_id', 'subject_id')
+    @api.onchange('class_id', 'class_group_id', 'subject_id')
     def _onchange_name(self):
         for record in self:
             class_name = record.class_id.name if record.class_id.id else ''
             subject_name = record.subject_id.name if record.subject_id.id else ''
-            name = '{} - {}'.format(class_name, subject_name)
+            class_group_name = record.class_group_id.name if record.class_group_id.id else ''
+            name = '{} - {} - {}'.format(class_name, subject_name, class_group_name)
             while True:
                 if name.startswith(' - '):
                     name = re.sub('^ - ', ' ', name)
@@ -756,7 +758,7 @@ class Timetable(models.Model):
                 raise ValidationError("L'heure de fin effectuée du cours doit être supérieure à l'heure de début effectuée du cours")
 
     # Contrainte logique pour se rassurer que deux cours ne sont pas programmés dans la même salle de classe sur des horaires qui se chevauchent le même jour
-    @api.constrains('class_id', 'employee_id', 'date', 'start_time', 'end_time')
+    @api.constrains('class_id', 'class_group_id', 'employee_id', 'date', 'start_time', 'end_time')
     def _constrains_class(self):
         for record in self:
             group_ids = []
@@ -769,12 +771,21 @@ class Timetable(models.Model):
                 for group_child_id in record.group_id.group_child_ids:
                     group_ids.append(group_child_id.id)
 
-            timetables = self.env['siantou.ems.timetable.timetable'].search([
-                ('id', '!=', record.id),
-                ('group_id', 'in', group_ids),
-                ('class_id', '=', record.class_id.id),
-                ('date', '=', record.date),
-            ]).filtered(lambda rec: not (rec.start_time >= record.end_time or rec.end_time <= record.start_time))
+            if record.class_group_id.id:
+                timetables = self.env['siantou.ems.timetable.timetable'].search([
+                    ('id', '!=', record.id),
+                    ('group_id', 'in', group_ids),
+                    ('class_id', '=', record.class_id.id),
+                    ('class_group_id', '=', record.class_group_id.id),
+                    ('date', '=', record.date),
+                ]).filtered(lambda rec: not (rec.start_time >= record.end_time or rec.end_time <= record.start_time))
+            else:
+                timetables = self.env['siantou.ems.timetable.timetable'].search([
+                    ('id', '!=', record.id),
+                    ('group_id', 'in', group_ids),
+                    ('class_id', '=', record.class_id.id),
+                    ('date', '=', record.date),
+                ]).filtered(lambda rec: not (rec.start_time >= record.end_time or rec.end_time <= record.start_time))
             timetables = list(timetables)
             if len(timetables) > 0:
                 validation_error_message = """
