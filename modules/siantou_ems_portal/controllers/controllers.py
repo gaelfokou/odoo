@@ -281,42 +281,153 @@ class PortalAccount(portal.CustomerPortal):
                                     'selected_month': selected_month,
                                 })
 
-    @http.route(['/my/timetable/download'], type='http', auth="user", website=True)
-    def portal_timetable_download(self, search='', search_in='all', **kw):
-        user = None
-        is_user = None
-        if http.request.env.user.employee_id.id:
-            user = http.request.env.user.employee_id
-            if http.request.env.user.employee_id.is_teacher:
-                is_user = 'is_teacher'
+    @http.route(['/my/timetable/download', '/my/timetable/download/page/<int:page>'], type='http', auth="user", website=True)
+    def portal_timetable_download(self, page=1, search='', search_in='all', view_type='calendar', selected_month='0', **kw):
+        if view_type not in ['calendar', 'list']:
+            view_type = 'calendar'
+        selected_month_total = [str(i) for i in range(6)]
+        if selected_month not in selected_month_total:
+            selected_month = '0'
+        if selected_month == selected_month_total[-1]:
+            timetable_selected_month = 0
+        else:
+            timetable_selected_month = int(selected_month) + 1
+        # Utilisation de la fonction du helper
+        search_timetables, searchbar_inputs, search_month = Helpers.timetable(search, search_in, selected_month)
+        timetables = []
+        for search_timetable in search_timetables:
+            timetable = {}
+            timetable['id'] = search_timetable.id
+            timetable['name'] = search_timetable.name
+            timetable['date'] = search_timetable.date
+            timetable['date_of_week'] = datetime.strftime(search_timetable.date, DATE_FORMAT_FR)
+            timetable['semester_name'] = search_timetable.semester_id.name
+            timetable['cycle_name'] = search_timetable.cycle_id.name
+            timetable['level_name'] = search_timetable.level_id.name
+            timetable['field_of_study_id'] = search_timetable.field_of_study_id.id
+            timetable['field_of_study_name'] = search_timetable.field_of_study_id.name
+            timetable['specialty_name'] = search_timetable.specialty_id.name
+            timetable['option_name'] = search_timetable.option_id.name
+            timetable['class_name'] = search_timetable.class_id.name
+            timetable['department_id'] = search_timetable.department_id.id
+            timetable['department_name'] = search_timetable.department_id.name
+            timetable['subject_name'] = search_timetable.subject_id.name
+            timetable['subject_code'] = search_timetable.subject_id.code
+            timetable['subject_hours_credit'] = search_timetable.subject_id.hours_credit
+            timetable['subject_shared_subject'] = '(TC)' if search_timetable.subject_id.shared_subject else ''
+            timetable['classroom_name'] = search_timetable.classroom_id.name
+            timetable['building_name'] = search_timetable.classroom_id.building_id.name
+            timetable['batch_name'] = search_timetable.batch_id.name
+            timetable['employee_name'] = search_timetable.employee_id.name
+            timetable['day_of_week'] = CURRENT_WEEKDAY[search_timetable.day_of_week]
+            timetable['start_time'] = search_timetable.start_time
+            timetable['end_time'] = search_timetable.end_time
+            timetable['worked_start_time'] = search_timetable.worked_start_time
+            timetable['worked_end_time'] = search_timetable.worked_end_time
+            timetable['reason'] = search_timetable.reason
+            timetable['not_active_slotitems'] = search_timetable.not_active_slotitems
+            timetable['status'] = STATUS_TIMETABLE[search_timetable.status]
+            timetables.append(timetable)
+        timetable_ids = []
+        if view_type == 'calendar':
+            if len(timetables) > 0:
+                field_of_study_id = timetables[0]['field_of_study_id']
+
+                slots = http.request.env['siantou.ems.timetable.slot'].sudo().search([
+                    ('is_active', '=', False),
+                ])
+                slots = list(slots)
+
+                available_slotitem = None
+                for slot in slots:
+                    field_of_study_ids = list(slot.field_of_study_ids)
+                    for field_of_study in field_of_study_ids:
+                        if field_of_study.id == field_of_study_id:
+                            available_slotitem = slot
+                            break
+                    if available_slotitem:
+                        break
+
+                if available_slotitem:
+                    slots = http.request.env['siantou.ems.timetable.slot'].sudo().search([
+                        ('id', '=', available_slotitem.id),
+                    ])
+                else:
+                    slots = http.request.env['siantou.ems.timetable.slot'].sudo().search([
+                        ('is_active', '=', True),
+                    ])
+
+                slots = list(slots)
+
+                not_active_slotitems = []
+                for slot in slots:
+                    not_active_slotitem_day_ids = slot.slotitem_day_ids.filtered(lambda s: not s.is_active)
+                    not_active_slotitem_day_ids = list(not_active_slotitem_day_ids)
+                    for not_active_slotitem_day_id in not_active_slotitem_day_ids:
+                        not_active_slotitems.append([round(not_active_slotitem_day_id.start_time, 2), round(not_active_slotitem_day_id.end_time, 2)])
+                    not_active_slotitem_night_ids = slot.slotitem_night_ids.filtered(lambda s: not s.is_active)
+                    not_active_slotitem_night_ids = list(not_active_slotitem_night_ids)
+                    for not_active_slotitem_night_id in not_active_slotitem_night_ids:
+                        not_active_slotitems.append([round(not_active_slotitem_night_id.start_time, 2), round(not_active_slotitem_night_id.end_time, 2)])
+                timetables = Helpers.format_timetable(timetables, not_active_slotitems)
             else:
-                is_user = 'is_employee'
-        elif http.request.env.user.student_id.id:
-            user = http.request.env.user.student_id
-            is_user = 'is_student'
-        if is_user:
+                timetables = Helpers.format_timetable(timetables)
+            for monday in timetables.keys():
+                for i, timetable in enumerate(timetables[monday]['Heure']):
+                    tm = timetable.split('-')
+                    tm[0] = Helpers.convert_float_to_time(tm[0])
+                    tm[1] = Helpers.convert_float_to_time(tm[1])
+                    timetables[monday]['Heure'][i] = '{}-{}'.format(tm[0], tm[1])
+            timetables = Helpers.paginate_calendar(timetables, 1, page)
+            for monday in timetables['pages'].keys():
+                for hour in range(len(timetables['pages'][monday]['Heure'])):
+                    for timetable in timetables['pages'][monday]['Lundi'][hour]:
+                        timetable_ids.append(timetable['id'])
+                    for timetable in timetables['pages'][monday]['Mardi'][hour]:
+                        timetable_ids.append(timetable['id'])
+                    for timetable in timetables['pages'][monday]['Mercredi'][hour]:
+                        timetable_ids.append(timetable['id'])
+                    for timetable in timetables['pages'][monday]['Jeudi'][hour]:
+                        timetable_ids.append(timetable['id'])
+                    for timetable in timetables['pages'][monday]['Vendredi'][hour]:
+                        timetable_ids.append(timetable['id'])
+                    for timetable in timetables['pages'][monday]['Samedi'][hour]:
+                        timetable_ids.append(timetable['id'])
+                    for timetable in timetables['pages'][monday]['Dimanche'][hour]:
+                        timetable_ids.append(timetable['id'])
+        else:
+            for timetable in timetables:
+                timetable['date'] = date.strftime(timetable['date'], DATE_FORMAT_FR)
+                timetable['start_time'] = Helpers.convert_float_to_time(timetable['start_time'])
+                timetable['end_time'] = Helpers.convert_float_to_time(timetable['end_time'])
+                timetable['worked_start_time'] = Helpers.convert_float_to_time(timetable['worked_start_time'])
+                timetable['worked_end_time'] = Helpers.convert_float_to_time(timetable['worked_end_time'])
+            timetables = Helpers.paginate_list(timetables, 10, page)
+            for timetable in timetables['pages']:
+                timetable_ids.append(timetable['id'])
+        timetable_ids = list(set(timetable_ids))
+        domain = [
+            '|',
+            '&',
+            ('is_active', '=', True),
+            ('is_submit', '=', False),
+            '&',
+            ('group_parent_id.is_active', '=', True),
+            ('group_parent_id.is_submit', '=', False),
+        ]
+        group_id = http.request.env['siantou.ems.timetable.group'].sudo().search(domain, limit=1)
+        if group_id:
             report_name = 'siantou_ems_core.template_report_timetable'
             report_action = 'siantou_ems_core.action_report_timetable'
             pdf_report = http.request.env['ir.actions.report'].sudo()._get_report_from_name(report_action)
+            report_data = http.request.env['timetable.print.wizard'].sudo().create({
+                'group_id': group_id.id,
+            })
             domain = [
-                ('is_active', '=', True)
+                ('id', 'in', timetable_ids)
             ]
-            group_id = http.request.env['siantou.ems.timetable.group'].sudo().search(domain, limit=1)
-            if group_id:
-                report_data = http.request.env['timetable.print.wizard'].sudo().create({
-                    'group_id': group_id.id,
-                })
-                domains = [
-                    ('group_id', '=', group_id.id)
-                ]
-                if is_user == 'is_teacher':
-                    domains.append(('employee_id', '=', user.id))
-                elif is_user == 'is_student':
-                    domains.append(('class_id', '=', user.class_id.id))
-                data = report_data.print_timetable_report_data(domains=domains)
-                pdf, _ = pdf_report.sudo().with_context()._render_qweb_pdf(report_name, data=data)
-            else:
-                pdf = None
+            data = report_data.print_timetable_report_data(domains=domain)
+            pdf, _ = pdf_report.sudo().with_context()._render_qweb_pdf(report_name, data=data)
         else:
             pdf = None
         filename = 'Emploi du temps PDF.pdf'
