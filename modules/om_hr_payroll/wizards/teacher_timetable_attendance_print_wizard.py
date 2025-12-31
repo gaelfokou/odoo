@@ -121,6 +121,7 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
             teacher_timetable_attendance['subject_code'] = search_teacher_timetable_attendance.subject_id.code
             teacher_timetable_attendance['subject_shared_subject'] = '(TC)' if search_teacher_timetable_attendance.subject_id.shared_subject else ''
             teacher_timetable_attendance['employee_id'] = search_teacher_timetable_attendance.employee_id.id
+            teacher_timetable_attendance['identifier'] = search_teacher_timetable_attendance.employee_id.identifier
             teacher_timetable_attendance['employee_name'] = search_teacher_timetable_attendance.employee_id.name
             teacher_timetable_attendance['start_time'] = TeacherTimetableAttendancePrintWizard.convert_float_to_time(search_teacher_timetable_attendance.start_time)
             teacher_timetable_attendance['end_time'] = TeacherTimetableAttendancePrintWizard.convert_float_to_time(search_teacher_timetable_attendance.end_time)
@@ -156,6 +157,7 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
                     teacher_timetable_attendance['date_of_week'] = ''
                     teacher_timetable_attendance['class_name'] = ''
                     teacher_timetable_attendance['subject_name'] = ''
+                    teacher_timetable_attendance['identifier'] = ''
                     teacher_timetable_attendance['employee_name'] = employee_salary_allowance.name
                     teacher_timetable_attendance['start_time'] = ''
                     teacher_timetable_attendance['end_time'] = ''
@@ -179,6 +181,7 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
                     teacher_timetable_attendance['date_of_week'] = ''
                     teacher_timetable_attendance['class_name'] = ''
                     teacher_timetable_attendance['subject_name'] = ''
+                    teacher_timetable_attendance['identifier'] = ''
                     teacher_timetable_attendance['employee_name'] = employee_salary_allowance.name
                     teacher_timetable_attendance['start_time'] = ''
                     teacher_timetable_attendance['end_time'] = ''
@@ -199,6 +202,7 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
             teacher_timetable_attendance['date_of_week'] = ''
             teacher_timetable_attendance['class_name'] = ''
             teacher_timetable_attendance['subject_name'] = ''
+            teacher_timetable_attendance['identifier'] = ''
             teacher_timetable_attendance['employee_name'] = 'REVENU'
             teacher_timetable_attendance['start_time'] = ''
             teacher_timetable_attendance['end_time'] = ''
@@ -221,6 +225,7 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
                     teacher_timetable_attendance['date_of_week'] = ''
                     teacher_timetable_attendance['class_name'] = ''
                     teacher_timetable_attendance['subject_name'] = ''
+                    teacher_timetable_attendance['identifier'] = ''
                     teacher_timetable_attendance['employee_name'] = employee_salary_deduction.name
                     teacher_timetable_attendance['start_time'] = ''
                     teacher_timetable_attendance['end_time'] = ''
@@ -244,6 +249,7 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
                     teacher_timetable_attendance['date_of_week'] = ''
                     teacher_timetable_attendance['class_name'] = ''
                     teacher_timetable_attendance['subject_name'] = ''
+                    teacher_timetable_attendance['identifier'] = ''
                     teacher_timetable_attendance['employee_name'] = employee_salary_deduction.name
                     teacher_timetable_attendance['start_time'] = ''
                     teacher_timetable_attendance['end_time'] = ''
@@ -267,6 +273,7 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
                     teacher_timetable_attendance['date_of_week'] = ''
                     teacher_timetable_attendance['class_name'] = ''
                     teacher_timetable_attendance['subject_name'] = ''
+                    teacher_timetable_attendance['identifier'] = ''
                     teacher_timetable_attendance['employee_name'] = employee_salary_deduction.name
                     teacher_timetable_attendance['start_time'] = ''
                     teacher_timetable_attendance['end_time'] = ''
@@ -287,6 +294,7 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
             teacher_timetable_attendance['date_of_week'] = ''
             teacher_timetable_attendance['class_name'] = ''
             teacher_timetable_attendance['subject_name'] = ''
+            teacher_timetable_attendance['identifier'] = ''
             teacher_timetable_attendance['employee_name'] = 'RETENUE'
             teacher_timetable_attendance['start_time'] = ''
             teacher_timetable_attendance['end_time'] = ''

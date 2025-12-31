@@ -68,7 +68,7 @@
                                         <t t-foreach="timetables" t-as="timetable">
                                             <tr>
                                                 <t t-if="timetable['class_name']">
-                                                    <td class="text-left">
+                                                    <td class="text-center">
                                                         <span t-esc="timetable['identifier']"/>
                                                     </td>
                                                     <td class="text-left">
@@ -76,10 +76,10 @@
                                                     </td>
                                                 </t>
                                                 <t t-else="">
-                                                    <td class="text-center"></td>
                                                     <td class="text-center">
                                                         <span t-esc="timetable['employee_name']"/>
                                                     </td>
+                                                    <td class="text-center"></td>
                                                 </t>
                                                 <td class="text-center">
                                                     <span t-esc="timetable['class_name']"/>
