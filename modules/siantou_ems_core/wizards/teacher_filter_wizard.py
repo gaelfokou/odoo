@@ -238,7 +238,7 @@ class TeacherFilterWizard(models.TransientModel):
             title.append(self.diplome_availability_id.name)
 
         if len(title) > 0:
-            title = '/'.join(title)
+            title = ' / '.join(title)
         else:
             title = 'Non spécifié'
 

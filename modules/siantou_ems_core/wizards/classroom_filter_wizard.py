@@ -100,7 +100,7 @@ class ClassroomFilterWizard(models.TransientModel):
                 title.append(STATUS_CLASSROOM[self.status])
 
         if len(title) > 0:
-            title = '/'.join(title)
+            title = ' / '.join(title)
         else:
             title = 'Non spécifié'
 

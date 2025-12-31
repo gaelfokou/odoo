@@ -359,7 +359,7 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
             })
 
         if len(title) > 0:
-            title = '/'.join(title)
+            title = ' / '.join(title)
         else:
             title = 'Non spécifié'
 
