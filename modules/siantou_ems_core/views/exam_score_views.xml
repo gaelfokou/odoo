@@ -33,8 +33,7 @@
                             <field name="exam_type" widget="radio"/>
                             <field name="score_ids" widget="one2many_list">
                                 <tree create="0" editable="bottom">
-                                    <field name="student_id"/>
-                                    <field name="anonymous" invisible="exam_type not in ['sn', 'rsn']"/>
+                                    <field name="name"/>
                                     <field name="score"/>
                                     <field name="note"/>
                                 </tree>

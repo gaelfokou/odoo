@@ -6,11 +6,9 @@
             <field name="model">siantou.ems.core.subject.score</field>
             <field name="arch" type="xml">
                 <tree string="Notes d'examen">
-                    <!-- <field name="name"/> -->
+                    <field name="name"/>
                     <field name="exam_id"/>
-                    <field name="student_id"/>
                     <field name="exam_type"/>
-                    <field name="anonymous" invisible="exam_type not in ['sn', 'rsn']"/>
                     <field name="score"/>
                     <field name="note"/>
                 </tree>

@@ -187,6 +187,15 @@ class ExamScore(models.Model):
 
         return exam
 
+    def write(self, vals):
+        exam = self.env['siantou.ems.core.exam.score'].search([('id', '=', self.id)], limit=1)
+
+        res = super(ExamScore, self).write(vals)
+
+        self.update_student_anonymous(exam)
+
+        return res
+
 class SubjectScore(models.Model):
     _name = 'siantou.ems.core.subject.score'
     _description = 'Note d\'examen'
@@ -254,8 +263,7 @@ class SubjectScore(models.Model):
                     student_name = record.student_id.name if record.student_id.id else ''
                 else:
                     student_name = record.anonymous if record.anonymous else ''
-            exam_name = record.exam_id.name if record.exam_id.id else ''
-            name = '{} - {}'.format(student_name, exam_name)
+            name = '{}'.format(student_name)
             while True:
                 if name.startswith(' - '):
                     name = re.sub('^ - ', ' ', name)
@@ -271,12 +279,17 @@ class SubjectScore(models.Model):
             name = name.upper()
             record.name = name
 
-    @api.onchange('student_id', 'exam_id')
+    @api.onchange('student_id', 'anonymous', 'exam_id')
     def _onchange_name(self):
         for record in self:
-            student_name = record.student_id.name if record.student_id.id else ''
-            exam_name = record.exam_id.name if record.exam_id.id else ''
-            name = '{} - {}'.format(student_name, exam_name)
+            if record.exam_id.exam_type in ['cc', 'rcc']:
+                student_name = record.student_id.name if record.student_id.id else ''
+            elif record.exam_id.exam_type in ['sn', 'rsn']:
+                if record.exam_id.status in ['start', 'end']:
+                    student_name = record.student_id.name if record.student_id.id else ''
+                else:
+                    student_name = record.anonymous if record.anonymous else ''
+            name = '{}'.format(student_name)
             while True:
                 if name.startswith(' - '):
                     name = re.sub('^ - ', ' ', name)
