@@ -1082,7 +1082,7 @@
             <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
                 <li t-if="page_name == 'subjectsession_list'" t-attf-class="breadcrumb-item #{'active ' if subjectsession_list else ''}">
                     <a t-if="subjectsession_list" t-attf-href="/my/subjectsession/{{ params['class_id'] }}/{{ params['subject_id'] }}/list?{{ keep_query() }}">Sessions de cours</a>
-                    <t t-else=""><a t-attf-href="/my/progressreport">Fiches de progression</a> / Sessions de cours</t>
+                    <t t-else=""><a t-attf-href="/my/progressreport">Fiches de progression</a> / <t t-esc="params['class_name'] + ' - ' + params['subject_name']"/></t>
                 </li>
             </xpath>
         </template>
@@ -1117,9 +1117,6 @@
                                     <li class="d-flex align-items-center">
                                         <a t-attf-href="/my/subjectsession/{{ params['class_id'] }}/{{ params['subject_id'] }}/new" class="btn btn-primary">Créer</a>
                                     </li>
-                                    <li class="d-flex align-items-center px-2">
-                                        <span t-esc="params['class_name'] + ' - ' + params['subject_name']"/>
-                                    </li>
                                 </ul>
                             </div><br/>
                         </t>
@@ -1134,22 +1131,12 @@
                             </tr>
                         </thead>
                         <t t-foreach="timetables" t-as="timetable">
-                            <thead>
-                                <tr>
-                                    <th class="text-left">
-                                        <span t-esc="subjectsessions[timetable]['date'] + ' ' + subjectsessions[timetable]['start_time'] + '-' + subjectsessions[timetable]['end_time']"/>
-                                    </th>
-                                    <th class="text-left" colspan="5">
-                                        <span t-esc="'Empty'" style="visibility: hidden;"/>
-                                    </th>
-                                </tr>
-                            </thead>
                             <tbody>
                                 <t t-set="sessions" t-value="subjectsessions[timetable]['data']"/>
                                 <t t-foreach="sessions" t-as="session">
                                     <tr>
                                         <td class="text-left">
-                                            <span t-esc="subjectsessions[timetable]['subject_name']"/>
+                                            <span t-esc="subjectsessions[timetable]['date'] + ' ' + subjectsessions[timetable]['start_time'] + '-' + subjectsessions[timetable]['end_time']"/>
                                         </td>
                                         <td class="text-left">
                                             <span t-esc="session['name']"/>
@@ -1205,7 +1192,7 @@
             <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
                 <li t-if="page_name == 'subjectsession_new'" t-attf-class="breadcrumb-item #{'active ' if subjectsession_new else ''}">
                     <a t-if="subjectsession_new" t-attf-href="/my/subjectsession/{{ params['class_id'] }}/{{ params['subject_id'] }}/new?{{ keep_query() }}">Créer une session de cours</a>
-                    <t t-else=""><a t-attf-href="/my/subjectsession/{{ params['class_id'] }}/{{ params['subject_id'] }}/list">Sessions de cours</a> / Créer une session de cours</t>
+                    <t t-else=""><a t-attf-href="/my/subjectsession/{{ params['class_id'] }}/{{ params['subject_id'] }}/list"><t t-esc="params['class_name'] + ' - ' + params['subject_name']"/></a> / Créer une session de cours</t>
                 </li>
             </xpath>
         </template>
@@ -1232,15 +1219,6 @@
                     <t t-set="title">Créer une session de cours</t>
                 </t>
                 <t t-call="portal.portal_table">
-                    <t t-if="is_user == 'is_teacher'">
-                        <div>
-                            <ul class="d-flex p-0">
-                                <li class="d-flex align-items-center px-0">
-                                    <strong t-esc="params['class_name'] + ' - ' + params['subject_name']"/>
-                                </li>
-                            </ul>
-                        </div><br/>
-                    </t>
                     <div id="wrap_subjectsession_new">
                         <section>
                             <div class="container">
@@ -1290,7 +1268,7 @@
             <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
                 <li t-if="page_name == 'subjectsession_edit'" t-attf-class="breadcrumb-item #{'active ' if subjectsession_edit else ''}">
                     <a t-if="subjectsession_edit" t-attf-href="/my/subjectsession/{{ params['class_id'] }}/{{ params['subject_id'] }}/edit?{{ keep_query() }}">Modifier une session de cours</a>
-                    <t t-else=""><a t-attf-href="/my/subjectsession/{{ params['class_id'] }}/{{ params['subject_id'] }}/list">Sessions de cours</a> / Modifier une session de cours</t>
+                    <t t-else=""><a t-attf-href="/my/subjectsession/{{ params['class_id'] }}/{{ params['subject_id'] }}/list"><t t-esc="params['class_name'] + ' - ' + params['subject_name']"/></a> / Modifier une session de cours</t>
                 </li>
             </xpath>
         </template>
@@ -1317,15 +1295,6 @@
                     <t t-set="title">Modifier une session de cours</t>
                 </t>
                 <t t-call="portal.portal_table">
-                    <t t-if="is_user == 'is_teacher'">
-                        <div>
-                            <ul class="d-flex p-0">
-                                <li class="d-flex align-items-center px-0">
-                                    <strong t-esc="params['session_name'] + ' - ' + params['subject_name']"/>
-                                </li>
-                            </ul>
-                        </div><br/>
-                    </t>
                     <div id="wrap_subjectsession_edit">
                         <section>
                             <div class="container">
@@ -1633,16 +1602,16 @@
 
         <!-- Données requises -->
 
-        <template id="siantou_ems_portal_request" name="siantou_ems_portal.request_breadcrumbs" inherit_id="portal.portal_breadcrumbs" priority="30">
+        <template id="siantou_ems_portal_requireddata" name="siantou_ems_portal.requireddata_breadcrumbs" inherit_id="portal.portal_breadcrumbs" priority="30">
             <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
-                <li t-if="page_name == 'request'" t-attf-class="breadcrumb-item #{'active ' if request else ''}">
-                    <a t-if="request" t-attf-href="/my/request?{{ keep_query() }}">Données requises</a>
+                <li t-if="page_name == 'requireddata'" t-attf-class="breadcrumb-item #{'active ' if requireddata else ''}">
+                    <a t-if="requireddata" t-attf-href="/my/requireddata?{{ keep_query() }}">Données requises</a>
                     <t t-else="">Données requises</t>
                 </li>
             </xpath>
         </template>
 
-        <template id="siantou_ems_portal_menu_request" name="siantou_ems_portal.request_my_home" inherit_id="portal.portal_my_home" priority="30">
+        <template id="siantou_ems_portal_menu_requireddata" name="siantou_ems_portal.requireddata_my_home" inherit_id="portal.portal_my_home" priority="30">
             <xpath expr="//div[hasclass('o_portal_docs')]" position="before">
                 <t t-set="portal_client_category_enable" t-value="True"/>
             </xpath>
@@ -1650,24 +1619,24 @@
                 <t t-call="portal.portal_docs_entry">
                     <t t-set="icon" t-value="'/siantou_ems_portal/static/src/img/timesheet_grid.png'"/>
                     <t t-set="title">Données requises</t>
-                    <t t-set="url" t-value="'/my/request'"/>
-                    <t t-set="text">Affichez vos requests</t>
-                    <t t-set="placeholder_count" t-value="'portal_request'"/>
+                    <t t-set="url" t-value="'/my/requireddata'"/>
+                    <t t-set="text">Affichez vos données requises</t>
+                    <t t-set="placeholder_count" t-value="'portal_requireddata'"/>
                 </t>
             </xpath>
         </template>
 
-        <template id="siantou_ems_portal_request_views" name="siantou_ems_portal.data_request">
+        <template id="siantou_ems_portal_requireddata_views" name="siantou_ems_portal.data_requireddata">
             <t t-call="portal.portal_layout">
                 <t t-set="breadcrumbs_searchbar" t-value="True"/>
                 <t t-call="portal.portal_searchbar">
                     <t t-set="title">Données requises</t>
                 </t>
                 <t t-call="portal.portal_table">
-                    <div id="wrap_request">
+                    <div id="wrap_requireddata">
                         <section>
                             <div class="container">
-                                <form t-attf-action="/my/request/create" enctype="multipart/form-data" method="post">
+                                <form t-attf-action="/my/requireddata/create" enctype="multipart/form-data" method="post">
                                     <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
                                     <!-- <div class="row mb-3" style="width: 100%">
                                         <div class="col-6">

@@ -100,7 +100,7 @@ class Extension(portal.CustomerPortal):
     def home(self, **kw):
         completed_request = self.check_completed_request()
         if not completed_request:
-            return http.request.redirect('/my/request')
+            return http.request.redirect('/my/requireddata')
         return super(Extension, self).home(**kw)
 
 class Home(WebHome):
@@ -123,15 +123,15 @@ class Home(WebHome):
             if is_user:
                 if is_user == 'is_student':
                     if not user.private_phone:
-                        redirect = '/my/request'
+                        redirect = '/my/requireddata'
                     if not user.private_email:
-                        redirect = '/my/request'
+                        redirect = '/my/requireddata'
                     if not user.date_naissance:
-                        redirect = '/my/request'
+                        redirect = '/my/requireddata'
                     if not user.nationalite.id:
-                        redirect = '/my/request'
+                        redirect = '/my/requireddata'
                     if not user.city_id.id:
-                        redirect = '/my/request'
+                        redirect = '/my/requireddata'
         return super()._login_redirect(uid, redirect=redirect)
 
 class PortalAccount(portal.CustomerPortal):
@@ -167,8 +167,8 @@ class PortalAccount(portal.CustomerPortal):
             values['portal_calendar'] = 1
         if 'portal_notification' in counters:
             values['portal_notification'] = 1 if is_user == 'is_teacher' else 0
-        if 'portal_request' in counters:
-            values['portal_request'] = 0
+        if 'portal_requireddata' in counters:
+            values['portal_requireddata'] = 0
         if 'portal_examscore' in counters:
             values['portal_examscore'] = 1 if is_user == 'is_student' else 0
         if 'portal_subjectscore_list' in counters:
@@ -1441,8 +1441,8 @@ class PortalAccount(portal.CustomerPortal):
                                     'notification': 0,
                                 })
 
-    @http.route(['/my/request'], type='http', auth="user", website=True)
-    def portal_request(self, **kw):
+    @http.route(['/my/requireddata'], type='http', auth="user", website=True)
+    def portal_requireddata(self, **kw):
         all_countries = []
         countries = http.request.env['siantou.ems.core.country'].sudo().search([])
         for country in countries:
@@ -1485,7 +1485,7 @@ class PortalAccount(portal.CustomerPortal):
             nationalite = user.nationalite.id
             city_id = user.city_id.id
             quarter_id = user.quarter_id.id
-        return http.request.render('siantou_ems_portal.siantou_ems_portal_request_views',
+        return http.request.render('siantou_ems_portal.siantou_ems_portal_requireddata_views',
                                 {
                                     'phone': private_phone,
                                     'email': private_email,
@@ -1496,12 +1496,12 @@ class PortalAccount(portal.CustomerPortal):
                                     'city': city_id,
                                     'all_quarters': all_quarters,
                                     'quarter': quarter_id,
-                                    'page_name': 'request',
-                                    'request': 0,
+                                    'page_name': 'requireddata',
+                                    'requireddata': 0,
                                 })
 
-    @http.route(['/my/request/create'], type='http', auth="user", website=True, methods=['POST'])
-    def portal_request_create(self, **kw):
+    @http.route(['/my/requireddata/create'], type='http', auth="user", website=True, methods=['POST'])
+    def portal_requireddata_create(self, **kw):
         user = None
         is_user = None
         if http.request.env.user.employee_id.id:
@@ -1516,15 +1516,15 @@ class PortalAccount(portal.CustomerPortal):
         if is_user:
             if is_user == 'is_student':
                 if not kw.get('phone'):
-                    return http.request.redirect('/my/request')
+                    return http.request.redirect('/my/requireddata')
                 if not kw.get('email'):
-                    return http.request.redirect('/my/request')
+                    return http.request.redirect('/my/requireddata')
                 if not kw.get('birthday'):
-                    return http.request.redirect('/my/request')
+                    return http.request.redirect('/my/requireddata')
                 if not kw.get('country'):
-                    return http.request.redirect('/my/request')
+                    return http.request.redirect('/my/requireddata')
                 if not kw.get('city'):
-                    return http.request.redirect('/my/request')
+                    return http.request.redirect('/my/requireddata')
                 vals = {
                     'private_phone': kw.get('phone'),
                     'private_email': kw.get('email'),
