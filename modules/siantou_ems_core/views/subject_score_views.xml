@@ -10,7 +10,7 @@
                     <field name="exam_id"/>
                     <field name="student_id"/>
                     <field name="exam_type"/>
-                    <field name="anonymous" invisible="exam_type not in ['sn' , 'rsn']"/>
+                    <field name="anonymous" invisible="exam_type not in ['sn', 'rsn']"/>
                     <field name="score"/>
                     <field name="note"/>
                 </tree>
@@ -29,7 +29,7 @@
                             <field name="student_id_domain" invisible="1"/>
                             <field name="student_id" options="{'no_create': True}" domain="student_id_domain"/>
                             <field name="exam_type"/>
-                            <field name="anonymous" invisible="exam_type not in ['sn' , 'rsn']"/>
+                            <field name="anonymous" invisible="exam_type not in ['sn', 'rsn']"/>
                             <field name="score" widget="radio"/>
                             <field name="note"/>
                         </group>

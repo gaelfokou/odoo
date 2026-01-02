@@ -90,6 +90,15 @@ class ExamScore(models.Model):
         default='cc',
     )
 
+    status = fields.Selection([
+        ('start', 'Début'),
+        ('start_write', 'Début saisie'),
+        ('end_write', 'Fin saisie'),
+        ('end', 'Fin'),
+    ], 'Statut',
+        default='start',
+    )
+
     # Contrainte SQL pour s'assurer de l'unicité du couple (classe, couple) dans la base de donnée
     _sql_constraints = [
         ('unique_class_subject_rel', 'unique(class_id, subject_id)', 'Un cours ne peut être lié à une même classe qu\'une seule fois.')
@@ -155,6 +164,29 @@ class ExamScore(models.Model):
         for record in self:
             record.subject_id = None
 
+    def update_student_anonymous(self, exam):
+        try:
+            if exam.exam_type in ['sn', 'rsn']:
+                for score_id in exam.score_ids:
+                    score_id.write({
+                        'student_id': score_id.student_id.id,
+                    })
+            # self.env.cr.commit()
+        except psycopg2.errors.NotNullViolation as error:
+            _logger.info(f'----------- tototototototo Exception {error} -----------')
+        except psycopg2.Error as error:
+            _logger.info(f'----------- tototototototo Exception {error} -----------')
+        except Exception as error:
+            _logger.info(f'----------- tototototototo Exception {error} -----------')
+
+    @api.model
+    def create(self, vals):
+        exam = super(ExamScore, self).create(vals)
+
+        self.update_student_anonymous(exam)
+
+        return exam
+
 class SubjectScore(models.Model):
     _name = 'siantou.ems.core.subject.score'
     _description = 'Note d\'examen'
@@ -182,6 +214,16 @@ class SubjectScore(models.Model):
         store=True
     )
 
+    status = fields.Selection([
+        ('start', 'Début'),
+        ('start_write', 'Début saisie'),
+        ('end_write', 'Fin saisie'),
+        ('end', 'Fin'),
+    ], 'Statut',
+        related='exam_id.status',
+        store=True
+    )
+
     student_id = fields.Many2one(
         'oe.school.student',
         string='Étudiant',
@@ -202,10 +244,16 @@ class SubjectScore(models.Model):
 
     student_id_domain = fields.Binary(compute='_compute_class_domain', default=[])
 
-    @api.depends('student_id', 'exam_id')
+    @api.depends('student_id', 'anonymous', 'exam_id')
     def _compute_name(self):
         for record in self:
-            student_name = record.student_id.name if record.student_id.id else ''
+            if record.exam_id.exam_type in ['cc', 'rcc']:
+                student_name = record.student_id.name if record.student_id.id else ''
+            elif record.exam_id.exam_type in ['sn', 'rsn']:
+                if record.exam_id.status in ['start', 'end']:
+                    student_name = record.student_id.name if record.student_id.id else ''
+                else:
+                    student_name = record.anonymous if record.anonymous else ''
             exam_name = record.exam_id.name if record.exam_id.id else ''
             name = '{} - {}'.format(student_name, exam_name)
             while True:
@@ -257,7 +305,7 @@ class SubjectScore(models.Model):
 
     def create_student_anonymous(self, score):
         try:
-            if score.exam_type in ['sn' , 'rsn']:
+            if score.exam_type in ['sn', 'rsn']:
                 exam_type = re.sub('[^A-Za-z]+', '', score.exam_type)
                 exam_type = exam_type[:4]
                 exam_type = exam_type.upper()

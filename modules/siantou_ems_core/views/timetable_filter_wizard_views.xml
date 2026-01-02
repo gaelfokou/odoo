@@ -33,7 +33,7 @@
                         <field name="start_time"/>
                         <field name="end_time"/>
                         <field name="status"/>
-                        <field name="number_of_minute" invisible="status not in ['delay_more_than_or_equal' , 'delay_less_than']"/>
+                        <field name="number_of_minute" invisible="status not in ['delay_more_than_or_equal', 'delay_less_than']"/>
                     </group>
                     <footer>
                         <button string="Filtrer" type="object" name="action_filter" class="btn-primary"/>
