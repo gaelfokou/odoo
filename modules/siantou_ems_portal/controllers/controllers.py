@@ -53,6 +53,20 @@ STATUS_PAYMENT = {
     'cancel': 'Rejected',
 }
 
+TYPE_EXAMSCORE = {
+    'cc': 'Contrôle continu'
+    'sn': 'Session normale'
+    'rcc': 'Rattrapage contrôle continu'
+    'rsn': 'Rattrapage session normale'
+}
+
+STATUS_EXAMSCORE = {
+    'start': 'Début',
+    'start_write': 'Début saisie',
+    'end_write': 'Fin saisie',
+    'end': 'Fin',
+}
+
 _logger = logging.getLogger(__name__)
 
 class Extension(portal.CustomerPortal):
@@ -476,10 +490,152 @@ class PortalAccount(portal.CustomerPortal):
 
     @http.route(['/my/examscore'], type='http', auth="user", website=True)
     def portal_examscore(self, search='', search_in='all', **kw):
-        examscores = {}
+        # Utilisation de la fonction du helper
+        search_examscores, searchbar_inputs = Helpers.examscore(search, search_in)
+        examscores = []
+        if http.request.env.user.student_id.id:
+            user = http.request.env.user.student_id
+            for search_examscore in search_examscores:
+                examscore = {}
+                examscore['id'] = search_examscore.id
+                examscore['name'] = search_examscore.name
+                examscore['semester_id'] = search_examscore.semester_id.id
+                examscore['semester_name'] = search_examscore.semester_id.name
+                examscore['class_id'] = search_examscore.class_id.id
+                examscore['class_name'] = search_examscore.class_id.name
+                examscore['subject_id'] = search_examscore.subject_id.id
+                examscore['subject_name'] = search_examscore.subject_id.name
+                examscore['subject_code'] = search_examscore.subject_id.code
+                examscore['exam_type'] = TYPE_EXAMSCORE[search_examscore.exam_type]
+                examscore['status'] = STATUS_EXAMSCORE[search_examscore.status]
+                score_ids = search_examscore.score_ids
+                score_ids = list(score_ids)
+                students = []
+                for score_id in score_ids:
+                    student = {}
+                    student['id'] = score_id.student_id.id
+                    student['name'] = score_id.student_id.name
+                    if score_id.exam_type = 'cc':
+                        student['cc_note'] = score_id.note
+                        student['sn_note'] = 0.0
+                        student['rcc_note'] = 0.0
+                        student['rsn_note'] = 0.0
+                    elif score_id.exam_type = 'sn':
+                        student['cc_note'] = 0.0
+                        student['sn_note'] = score_id.note
+                        student['rcc_note'] = 0.0
+                        student['rsn_note'] = 0.0
+                    elif score_id.exam_type = 'rcc':
+                        student['cc_note'] = 0.0
+                        student['sn_note'] = 0.0
+                        student['rcc_note'] = score_id.note
+                        student['rsn_note'] = 0.0
+                    elif score_id.exam_type = 'rsn':
+                        student['cc_note'] = 0.0
+                        student['sn_note'] = 0.0
+                        student['rcc_note'] = 0.0
+                        student['rsn_note'] = score_id.note
+                    students.append(student)
+                examscore['students'] = students
+                examscores.append(examscore)
+        examscores = []
+        for examscore in examscores:
+            examscore = {}
+            for student in examscore['students']:
+                if student['id'] == user.id:
+                    examscore['id'] = examscore['id']
+                    examscore['name'] = examscore['name']
+                    examscore['semester_id'] = examscore['semester_id']
+                    examscore['semester_name'] = examscore['semester_name']
+                    examscore['class_id'] = examscore['class_id']
+                    examscore['class_name'] = examscore['class_name']
+                    examscore['subject_id'] = examscore['subject_id']
+                    examscore['subject_name'] = examscore['subject_name']
+                    examscore['subject_code'] = examscore['subject_code']
+                    examscore['exam_type'] = examscore['exam_type']
+                    examscore['student_id'] = student['id']
+                    examscore['student_name'] = student['name']
+                    examscore['cc_note'] = student['cc_note']
+                    examscore['sn_note'] = student['sn_note']
+                    examscore['rcc_note'] = student['rcc_note']
+                    examscore['rsn_note'] = student['rsn_note']
+                    examscores.append(examscore)
+        examscores = Helpers.format_examscore(examscores)
+        all_examscores = {}
+        for key_class in examscores.keys():
+            for key_semester in examscores[key_class]['data'].keys():
+                for key_student in examscores[key_class]['data'][key_semester]['data'].keys():
+                    for key_subject in examscores[key_class]['data'][key_semester]['data'][key_student]['data'].keys():
+                        for d in examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['data']:
+                            if key_class not in all_examscores:
+                                all_examscores[key_class] = {}
+                                all_examscores[key_class]['name'] = d['class_name']
+                                all_examscores[key_class]['data'] = {}
+                                all_examscores[key_class]['data'][key_semester] = {}
+                                all_examscores[key_class]['data'][key_semester]['name'] = d['semester_name']
+                                all_examscores[key_class]['data'][key_semester]['data'] = {}
+                                all_examscores[key_class]['data'][key_semester]['data'][key_student] = {}
+                                all_examscores[key_class]['data'][key_semester]['data'][key_student]['name'] = d['student_name']
+                                all_examscores[key_class]['data'][key_semester]['data'][key_student]['data'] = {}
+                                all_examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject] = {}
+                                all_examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['name'] = d['subject_name']
+                                all_examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['data'] = d
+                            else:
+                                if key_semester not in all_examscores[key_class]['data']:
+                                    all_examscores[key_class]['data'][key_semester] = {}
+                                    all_examscores[key_class]['data'][key_semester]['name'] = d['semester_name']
+                                    all_examscores[key_class]['data'][key_semester]['data'] = {}
+                                    all_examscores[key_class]['data'][key_semester]['data'][key_student] = {}
+                                    all_examscores[key_class]['data'][key_semester]['data'][key_student]['name'] = d['student_name']
+                                    all_examscores[key_class]['data'][key_semester]['data'][key_student]['data'] = {}
+                                    all_examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject] = {}
+                                    all_examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['name'] = d['subject_name']
+                                    all_examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['data'] = d
+                                else:
+                                    if key_student not in all_examscores[key_class]['data'][key_semester]['data']:
+                                        all_examscores[key_class]['data'][key_semester]['data'][key_student] = {}
+                                        all_examscores[key_class]['data'][key_semester]['data'][key_student]['name'] = d['student_name']
+                                        all_examscores[key_class]['data'][key_semester]['data'][key_student]['data'] = {}
+                                        all_examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject] = {}
+                                        all_examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['name'] = d['subject_name']
+                                        all_examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['data'] = d
+                                    else:
+                                        if key_subject not in all_examscores[key_class]['data'][key_semester]['data'][key_student]['data']:
+                                            all_examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject] = {}
+                                            all_examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['name'] = d['subject_name']
+                                            all_examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['data'] = d
+                                        else:
+                                            if all_examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['data']['exam_type'] == 'cc':
+                                                if d['exam_type'] == 'sn':
+                                                    all_examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['data']['sn_note'] = d['sn_note']
+                                                elif d['exam_type'] == 'rcc':
+                                                    all_examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['data']['rcc_note'] = d['rcc_note']
+                                                elif d['exam_type'] == 'rsn':
+                                                    all_examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['data']['rsn_note'] = d['rsn_note']
+                                            elif all_examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['data']['exam_type'] == 'sn':
+                                                if d['exam_type'] == 'cc':
+                                                    all_examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['data']['cc_note'] = d['cc_note']
+                                                elif d['exam_type'] == 'rcc':
+                                                    all_examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['data']['rcc_note'] = d['rcc_note']
+                                                elif d['exam_type'] == 'rsn':
+                                                    all_examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['data']['rsn_note'] = d['rsn_note']
+                                            elif all_examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['data']['exam_type'] == 'rcc':
+                                                if d['exam_type'] == 'cc':
+                                                    all_examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['data']['cc_note'] = d['cc_note']
+                                                elif d['exam_type'] == 'sn':
+                                                    all_examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['data']['sn_note'] = d['sn_note']
+                                                elif d['exam_type'] == 'rsn':
+                                                    all_examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['data']['rsn_note'] = d['rsn_note']
+                                            elif all_examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['data']['exam_type'] == 'rsn':
+                                                if d['exam_type'] == 'cc':
+                                                    all_examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['data']['cc_note'] = d['cc_note']
+                                                elif d['exam_type'] == 'sn':
+                                                    all_examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['data']['sn_note'] = d['sn_note']
+                                                elif d['exam_type'] == 'rcc':
+                                                    all_examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['data']['rcc_note'] = d['rcc_note']
         return http.request.render('siantou_ems_portal.siantou_ems_portal_examscore_views',
                                 {
-                                    'examscores': examscores,
+                                    'examscores': all_examscores,
                                     'page_name': 'examscore',
                                     'examscore': 0,
                                 })

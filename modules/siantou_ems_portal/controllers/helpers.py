@@ -206,6 +206,34 @@ class Helpers:
         return search_schoolfees, searchbar_inputs
 
     @staticmethod
+    def examscore(search='', search_in='all'):
+        searchbar_inputs = {
+            'all': {'label': 'Tout', 'input': 'all', 'domain': []},
+        }
+        if search_in not in searchbar_inputs.keys():
+            search_in = 'all'
+
+        search_domain = searchbar_inputs[search_in]['domain']
+
+        # search_domain.append(('status', '=', 'end'))
+
+        order = 'id asc'
+
+        search_examscores = []
+        if http.request.env.user.student_id.id:
+            user = http.request.env.user.student_id
+            search_domain.append(('class_id', '=', user.class_id.id))
+
+            examscores = http.request.env['siantou.ems.core.exam.score'].sudo().search(search_domain, order=order)
+            examscores = list(examscores)
+            for examscore in examscores:
+                search_examscores.append(examscore)
+
+        _logger.info(f'----------- tototototototo search_examscores {search_examscores} -----------')
+
+        return search_examscores, searchbar_inputs
+
+    @staticmethod
     def paymenthistory(search='', search_in='all'):
         searchbar_inputs = {
             'all': {'label': 'Tout', 'input': 'all', 'domain': []},
@@ -950,6 +978,65 @@ class Helpers:
         _logger.info(f'----------- tototototototo progressreports {progressreports} -----------')
 
         return progressreports
+
+    @staticmethod
+    def format_examscore(data):
+        examscores = {}
+
+        sorted_data = copy.deepcopy(data)
+
+        for d in sorted_data:
+            key_class = '{}'.format(d['class_id'])
+            key_semester = '{}'.format(d['semester_id'])
+            key_student = '{}'.format(d['student_id'])
+            key_subject = '{}'.format(d['subject_id'])
+            if key_class not in examscores:
+                examscores[key_class] = {}
+                examscores[key_class]['name'] = d['class_name']
+                examscores[key_class]['data'] = {}
+                examscores[key_class]['data'][key_semester] = {}
+                examscores[key_class]['data'][key_semester]['name'] = d['semester_name']
+                examscores[key_class]['data'][key_semester]['data'] = {}
+                examscores[key_class]['data'][key_semester]['data'][key_student] = {}
+                examscores[key_class]['data'][key_semester]['data'][key_student]['name'] = d['student_name']
+                examscores[key_class]['data'][key_semester]['data'][key_student]['data'] = {}
+                examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject] = {}
+                examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['name'] = d['subject_name']
+                examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['data'] = []
+                examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['data'].append(d)
+            else:
+                if key_semester not in examscores[key_class]['data']:
+                    examscores[key_class]['data'][key_semester] = {}
+                    examscores[key_class]['data'][key_semester]['name'] = d['semester_name']
+                    examscores[key_class]['data'][key_semester]['data'] = {}
+                    examscores[key_class]['data'][key_semester]['data'][key_student] = {}
+                    examscores[key_class]['data'][key_semester]['data'][key_student]['name'] = d['student_name']
+                    examscores[key_class]['data'][key_semester]['data'][key_student]['data'] = {}
+                    examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject] = {}
+                    examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['name'] = d['subject_name']
+                    examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['data'] = []
+                    examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['data'].append(d)
+                else:
+                    if key_student not in examscores[key_class]['data'][key_semester]['data']:
+                        examscores[key_class]['data'][key_semester]['data'][key_student] = {}
+                        examscores[key_class]['data'][key_semester]['data'][key_student]['name'] = d['student_name']
+                        examscores[key_class]['data'][key_semester]['data'][key_student]['data'] = {}
+                        examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject] = {}
+                        examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['name'] = d['subject_name']
+                        examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['data'] = []
+                        examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['data'].append(d)
+                    else:
+                        if key_subject not in examscores[key_class]['data'][key_semester]['data'][key_student]['data']:
+                            examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject] = {}
+                            examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['name'] = d['subject_name']
+                            examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['data'] = []
+                            examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['data'].append(d)
+                        else:
+                            examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['data'].append(d)
+
+        _logger.info(f'----------- tototototototo examscores {examscores} -----------')
+
+        return examscores
 
     @staticmethod
     def format_subjectsession(data):

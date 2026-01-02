@@ -549,8 +549,12 @@
                     <t t-if="len(classes) > 0">
                         <thead>
                             <tr class="active">
+                                <th class="text-left">Étudiant</th>
                                 <th class="text-left">Cours</th>
-                                <th class="text-left" colspan="2" style="text-align: right;">Taux de consommation du volume horaire</th>
+                                <th class="text-left">Note CC</th>
+                                <th class="text-left">Note SN</th>
+                                <th class="text-left">Note rattrapage CC</th>
+                                <th class="text-left">Note rattrapage SN</th>
                             </tr>
                         </thead>
                         <t t-foreach="classes" t-as="classe">
@@ -559,42 +563,63 @@
                                     <th class="text-left">
                                         <span t-esc="examscores[classe]['name']"/>
                                     </th>
-                                    <th class="text-left" colspan="2">
+                                    <th class="text-left" colspan="5">
                                         <span t-esc="'Empty'" style="visibility: hidden;"/>
                                     </th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <t t-set="subjects" t-value="examscores[classe]['data'].keys()"/>
-                                <t t-foreach="subjects" t-as="subject">
+                            <t t-set="semesters" t-value="examscores[classe]['data'].keys()"/>
+                            <t t-foreach="semesters" t-as="semester">
+                                <tbody>
                                     <tr>
                                         <td class="text-left">
-                                            <span t-esc="examscores[classe]['data'][subject]['name']"/>
+                                            <span t-esc="examscores[classe]['data'][semester]['name']"/>
                                         </td>
-                                        <td class="text-left">
-                                            <div>
-                                                <a t-attf-href="/my/subjectsession/{{ classe }}/{{ subject }}/list" class="btn btn-primary btn-sm">Fiche de progression</a>
-                                            </div>
-                                        </td>
-                                        <td class="text-left">
-                                            <span t-esc="str(examscores[classe]['data'][subject]['percentage']) + '%'"/>
+                                        <td class="text-left" colspan="5">
+                                            <span t-esc="'Empty'" style="visibility: hidden;"/>
                                         </td>
                                     </tr>
-                                </t>
-                            </tbody>
+                                    <t t-set="students" t-value="examscores[classe]['data'][semester]['data'].keys()"/>
+                                    <t t-foreach="students" t-as="student">
+                                        <t t-set="subjects" t-value="examscores[classe]['data'][semester]['data'][student]['data'].keys()"/>
+                                        <t t-foreach="subjects" t-as="subject">
+                                            <tr>
+                                                <td class="text-left">
+                                                    <span t-esc="examscores[classe]['data'][semester]['data'][student]['data'][subject]['data']['student_name']"/>
+                                                </td>
+                                                <td class="text-left">
+                                                    <span t-esc="examscores[classe]['data'][semester]['data'][student]['data'][subject]['data']['subject_name']"/>
+                                                </td>
+                                                <td class="text-center">
+                                                    <span t-esc="examscores[classe]['data'][semester]['data'][student]['data'][subject]['data']['cc_note']"/>
+                                                </td>
+                                                <td class="text-center">
+                                                    <span t-esc="examscores[classe]['data'][semester]['data'][student]['data'][subject]['data']['sn_note']"/>
+                                                </td>
+                                                <td class="text-center">
+                                                    <span t-esc="examscores[classe]['data'][semester]['data'][student]['data'][subject]['data']['rcc_note']"/>
+                                                </td>
+                                                <td class="text-center">
+                                                    <span t-esc="examscores[classe]['data'][semester]['data'][student]['data'][subject]['data']['rsn_note']"/>
+                                                </td>
+                                            </tr>
+                                        </t>
+                                    </t>
+                                </tbody>
+                            </t>
                         </t>
                     </t>
                     <t t-else="">
                         <tfooter>
                             <tr>
-                                <th class="text-center" colspan="3" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;">
+                                <th class="text-center" colspan="6" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;">
                                     <span t-esc="'Aucune donnée disponible'"/>
                                 </th>
                             </tr>
                         </tfooter>
                         <tfooter>
                             <tr>
-                                <th class="text-left" colspan="3" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
+                                <th class="text-left" colspan="6" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
                             </tr>
                         </tfooter>
                     </t>
