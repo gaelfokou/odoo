@@ -515,22 +515,22 @@ class PortalAccount(portal.CustomerPortal):
                     student = {}
                     student['id'] = score_id.student_id.id
                     student['name'] = score_id.student_id.name
-                    if score_id.exam_type = 'cc':
+                    if score_id.exam_type == 'cc':
                         student['cc_note'] = score_id.note
                         student['sn_note'] = 0.0
                         student['rcc_note'] = 0.0
                         student['rsn_note'] = 0.0
-                    elif score_id.exam_type = 'sn':
+                    elif score_id.exam_type == 'sn':
                         student['cc_note'] = 0.0
                         student['sn_note'] = score_id.note
                         student['rcc_note'] = 0.0
                         student['rsn_note'] = 0.0
-                    elif score_id.exam_type = 'rcc':
+                    elif score_id.exam_type == 'rcc':
                         student['cc_note'] = 0.0
                         student['sn_note'] = 0.0
                         student['rcc_note'] = score_id.note
                         student['rsn_note'] = 0.0
-                    elif score_id.exam_type = 'rsn':
+                    elif score_id.exam_type == 'rsn':
                         student['cc_note'] = 0.0
                         student['sn_note'] = 0.0
                         student['rcc_note'] = 0.0
