@@ -42,6 +42,7 @@ STATUS_TIMETABLE = {
 class ExamScore(models.Model):
     _name = 'siantou.ems.core.exam.score'
     _description = 'Fiche d\'examen'
+    _inherit=['mail.thread', 'mail.activity.mixin',]
 
     name = fields.Char(
         string='Nom',
@@ -213,6 +214,7 @@ class ExamScore(models.Model):
 class SubjectScore(models.Model):
     _name = 'siantou.ems.core.subject.score'
     _description = 'Note d\'examen'
+    _inherit=['mail.thread', 'mail.activity.mixin',]
 
     name = fields.Char(
         string='Nom',
