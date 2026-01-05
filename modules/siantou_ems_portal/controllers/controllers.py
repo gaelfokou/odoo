@@ -54,10 +54,10 @@ STATUS_PAYMENT = {
 }
 
 TYPE_EXAMSCORE = {
-    'cc': 'Contrôle continu'
-    'sn': 'Session normale'
-    'rcc': 'Rattrapage contrôle continu'
-    'rsn': 'Rattrapage session normale'
+    'cc': 'Contrôle continu',
+    'sn': 'Session normale',
+    'rcc': 'Rattrapage contrôle continu',
+    'rsn': 'Rattrapage session normale',
 }
 
 STATUS_EXAMSCORE = {
