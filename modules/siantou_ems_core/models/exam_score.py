@@ -167,6 +167,20 @@ class ExamScore(models.Model):
     def update_student_anonymous(self, exam):
         try:
             if exam.exam_type in ['sn', 'rsn']:
+                student_ids = exam.class_id.student_ids.ids
+                exist_student_ids = []
+                for score_id in exam.score_ids:
+                    if score_id.student_id.id not in student_ids:
+                        score_id.unlink()
+                    else:
+                        exist_student_ids.append(score_id.student_id.id)
+                exist_student_ids = list(set(exist_student_ids))
+                for student_id in exam.class_id.student_ids:
+                    if student_id.id not in exist_student_ids:
+                        exam.score_ids.create({
+                            'exam_id': exam.id,
+                            'student_id': student_id.id,
+                        })
                 for score_id in exam.score_ids:
                     score_id.write({
                         'student_id': score_id.student_id.id,
@@ -256,14 +270,17 @@ class SubjectScore(models.Model):
     @api.depends('student_id', 'anonymous', 'exam_id')
     def _compute_name(self):
         for record in self:
-            if record.exam_id.exam_type in ['cc', 'rcc']:
-                student_name = record.student_id.name if record.student_id.id else ''
-            elif record.exam_id.exam_type in ['sn', 'rsn']:
-                if record.exam_id.status in ['start', 'end']:
-                    student_name = record.student_id.name if record.student_id.id else ''
+            if record.exam_id.exam_type in ['sn', 'rsn']:
+                if record.exam_id.status in ['start_write', 'end_write']:
+                    anonymous = record.anonymous if record.anonymous else ''
+                    name = '{}'.format(anonymous)
                 else:
-                    student_name = record.anonymous if record.anonymous else ''
-            name = '{}'.format(student_name)
+                    anonymous = record.anonymous if record.anonymous else ''
+                    student_name = record.student_id.name if record.student_id.id else ''
+                    name = '{} - {}'.format(anonymous, student_name)
+            else:
+                student_name = record.student_id.name if record.student_id.id else ''
+                name = '{}'.format(student_name)
             while True:
                 if name.startswith(' - '):
                     name = re.sub('^ - ', ' ', name)
@@ -282,14 +299,17 @@ class SubjectScore(models.Model):
     @api.onchange('student_id', 'anonymous', 'exam_id')
     def _onchange_name(self):
         for record in self:
-            if record.exam_id.exam_type in ['cc', 'rcc']:
-                student_name = record.student_id.name if record.student_id.id else ''
-            elif record.exam_id.exam_type in ['sn', 'rsn']:
-                if record.exam_id.status in ['start', 'end']:
-                    student_name = record.student_id.name if record.student_id.id else ''
+            if record.exam_id.exam_type in ['sn', 'rsn']:
+                if record.exam_id.status in ['start_write', 'end_write']:
+                    anonymous = record.anonymous if record.anonymous else ''
+                    name = '{}'.format(anonymous)
                 else:
-                    student_name = record.anonymous if record.anonymous else ''
-            name = '{}'.format(student_name)
+                    anonymous = record.anonymous if record.anonymous else ''
+                    student_name = record.student_id.name if record.student_id.id else ''
+                    name = '{} - {}'.format(anonymous, student_name)
+            else:
+                student_name = record.student_id.name if record.student_id.id else ''
+                name = '{}'.format(student_name)
             while True:
                 if name.startswith(' - '):
                     name = re.sub('^ - ', ' ', name)
