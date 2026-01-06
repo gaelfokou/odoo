@@ -20,43 +20,43 @@
                                 background-color: #f2f2f2;
                             }
                         </style>
-                        <div class="page">
-                            <table class="table table-bordered table-sm text-center">
-                                <thead>
-                                    <tr>
-                                        <th class="text-center" colspan="5" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;">
-                                            <h3>INSTITUT UNIVERSITAIRE SIANTOU</h3>
-                                            <h4>
-                                                <span t-esc="'Liste des fiches de progression'"/>
-                                            </h4>
-                                            <h5 class="text-left">
-                                                <span t-esc="'Filtre :'"/>
-                                                <span t-esc="docdata['filter'] or 'Non spécifié'"/>
-                                            </h5>
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <thead>
-                                    <tr>
-                                        <th class="text-left" colspan="5" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
-                                    </tr>
-                                </thead>
-                                <thead class="thead">
-                                    <tr class="active">
-                                        <th class="text-center">Séance</th>
-                                        <th class="text-center">Description</th>
-                                        <th class="text-center">Date</th>
-                                        <th class="text-center">Heure de début</th>
-                                        <th class="text-center">Heure de fin</th>
-                                    </tr>
-                                </thead>
-                                <t t-set="reports" t-value="docdata['report_data']"/>
-                                <t t-foreach="reports" t-as="report">
+                        <t t-set="reports" t-value="docdata['report_data']"/>
+                        <t t-foreach="reports" t-as="report">
+                            <div class="page">
+                                <table class="table table-bordered table-sm text-center">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center" colspan="5" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;">
+                                                <h3>INSTITUT UNIVERSITAIRE SIANTOU</h3>
+                                                <h4>
+                                                    <span t-esc="'Liste des fiches de progression'"/>
+                                                </h4>
+                                                <h5 class="text-left">
+                                                    <span t-esc="'Filtre :'"/>
+                                                    <span t-esc="docdata['filter'] or 'Non spécifié'"/>
+                                                </h5>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <thead>
+                                        <tr>
+                                            <th class="text-left" colspan="5" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
+                                        </tr>
+                                    </thead>
                                     <thead>
                                         <tr>
                                             <th class="text-left">
                                                 <span t-esc="report['name']"/>
                                             </th>
+                                        </tr>
+                                    </thead>
+                                    <thead class="thead">
+                                        <tr class="active">
+                                            <th class="text-center">Séance</th>
+                                            <th class="text-center">Description</th>
+                                            <th class="text-center">Date</th>
+                                            <th class="text-center">Heure de début</th>
+                                            <th class="text-center">Heure de fin</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -81,9 +81,11 @@
                                             </tr>
                                         </t>
                                     </tbody>
-                                </t>
-                            </table>
-                        </div>
+                                </table>
+                            </div>
+                            <p style="page-break-after:always;"></p>
+                            <br/><br/><br/>
+                        </t>
                     </t>
                 </t>
                 <t t-else="">
