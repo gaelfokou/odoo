@@ -21,7 +21,14 @@
             <field name="name">exam.score.form</field>
             <field name="model">siantou.ems.core.exam.score</field>
             <field name="arch" type="xml">
-                <form string="Taux horaire">
+                <form string="Fiche d'examen">
+                    <header>
+                        <button name="state_start_exam" class="oe_highlight" invisible="state in ['start']" string="Début" type="object"/>
+                        <button name="state_start_write_exam" class="oe_highlight" invisible="state in ['start_write']" string="Début saisie" type="object"/>
+                        <button name="state_end_write_exam" class="oe_highlight" invisible="state in ['end_write']" string="Fin saisie" type="object"/>
+                        <button name="state_end_exam" class="oe_highlight" invisible="state in ['end']" string="Fin" type="object"/>
+                        <field name="state" widget="statusbar" statusbar_visible="start,start_write,end_write,end"/>
+                    </header>
                     <sheet>
                         <group>
                             <field name="name"/>

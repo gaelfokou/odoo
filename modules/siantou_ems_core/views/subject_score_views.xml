@@ -19,7 +19,7 @@
             <field name="name">subject.score.form</field>
             <field name="model">siantou.ems.core.subject.score</field>
             <field name="arch" type="xml">
-                <form string="Taux horaire">
+                <form string="Note d'examen">
                     <sheet>
                         <group>
                             <field name="name"/>

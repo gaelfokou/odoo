@@ -100,6 +100,17 @@ class ExamScore(models.Model):
         default='start',
     )
 
+    state = fields.Selection([
+        ('start', 'Début'),
+        ('start_write', 'Début saisie'),
+        ('end_write', 'Fin saisie'),
+        ('end', 'Fin'),
+    ], 'Statut',
+        related='status',
+        store=True,
+        tracking=True
+    )
+
     # Contrainte SQL pour s'assurer de l'unicité du couple (classe, couple) dans la base de donnée
     _sql_constraints = [
         ('unique_class_subject_rel', 'unique(class_id, subject_id)', 'Un cours ne peut être lié à une même classe qu\'une seule fois.')
@@ -165,7 +176,47 @@ class ExamScore(models.Model):
         for record in self:
             record.subject_id = None
 
-    def update_student_anonymous(self, exam):
+    def state_start_exam(self):
+        self.write({
+            'status': 'start',
+        })
+
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'reload',
+        }
+
+    def state_start_write_exam(self):
+        self.write({
+            'status': 'start_write',
+        })
+
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'reload',
+        }
+
+    def state_end_write_exam(self):
+        self.write({
+            'status': 'end_write',
+        })
+
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'reload',
+        }
+
+    def state_end_exam(self):
+        self.write({
+            'status': 'end',
+        })
+
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'reload',
+        }
+
+    def create_student_score(self, exam):
         try:
             if exam.exam_type in ['sn', 'rsn']:
                 student_ids = exam.class_id.student_ids.ids
@@ -182,6 +233,17 @@ class ExamScore(models.Model):
                             'exam_id': exam.id,
                             'student_id': student_id.id,
                         })
+            # self.env.cr.commit()
+        except psycopg2.errors.NotNullViolation as error:
+            _logger.info(f'----------- tototototototo Exception {error} -----------')
+        except psycopg2.Error as error:
+            _logger.info(f'----------- tototototototo Exception {error} -----------')
+        except Exception as error:
+            _logger.info(f'----------- tototototototo Exception {error} -----------')
+
+    def update_student_score(self, exam):
+        try:
+            if exam.exam_type in ['sn', 'rsn']:
                 for score_id in exam.score_ids:
                     score_id.write({
                         'student_id': score_id.student_id.id,
@@ -198,7 +260,7 @@ class ExamScore(models.Model):
     def create(self, vals):
         exam = super(ExamScore, self).create(vals)
 
-        self.update_student_anonymous(exam)
+        self.create_student_score(exam)
 
         return exam
 
@@ -207,7 +269,7 @@ class ExamScore(models.Model):
 
         res = super(ExamScore, self).write(vals)
 
-        self.update_student_anonymous(exam)
+        self.update_student_score(exam)
 
         return res
 
