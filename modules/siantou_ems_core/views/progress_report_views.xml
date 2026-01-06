@@ -10,6 +10,24 @@
             <field name="model">siantou.ems.core.progress.report</field>
             <field name="arch" type="xml">
                 <tree string="Fiches de progression">
+                    <header>
+                        <button name="action_reset_filter" 
+                            type="object" 
+                            string="Réinitialiser" 
+                            class="oe_highlight" 
+                            display="always"/>
+                        <button name="action_open_filter" 
+                            type="object" 
+                            string="Filtrer" 
+                            class="oe_highlight" 
+                            display="always"/>
+                        <button name="action_print_pdf" 
+                            type="object" 
+                            string="Imprimer PDF" 
+                            class="oe_highlight" 
+                            display="always"
+                            groups="siantou_ems_core.group_timetable_print_pdf"/>
+                    </header>
                     <field name="class_id"/>
                     <field name="subject_id"/>
                     <field name="percentage"/>

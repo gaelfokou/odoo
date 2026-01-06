@@ -287,7 +287,7 @@ class ProgressReport(models.Model):
 
     subject_id = fields.Many2one(
         'siantou.ems.core.subject',
-        'Cours',
+        string='Cours',
         required=True,
         ondelete='cascade'
     )
@@ -612,6 +612,47 @@ class ProgressReport(models.Model):
                         progressreports[key_class]['data'][key_subject]['percentage'] = 0.0
 
                     record.percentage = progressreports[key_class]['data'][key_subject]['percentage']
+
+    def action_open_filter(self):
+        view_id = self.env.ref('siantou_ems_core.class_filter_wizard').id
+        return {
+            'name': 'Filtre des fiches de progression',
+            'type': 'ir.actions.act_window',
+            'view_type': 'form',
+            'view_mode': 'form',
+            'res_model': 'progress.report.filter.wizard',
+            'views': [(view_id, 'form')],
+            'view_id': view_id,
+            'target': 'new',
+            'context': {
+                'default_year_id': self.env['siantou.ems.core.year'].search([('is_active', '=', True)], limit=1).id,
+            },
+        }
+
+    def action_reset_filter(self):
+        self.env['ir.config_parameter'].sudo().set_param(f'siantou.filter_user_{self.env.user.id}', '')
+        action = self.env.ref('siantou_ems_core.action_show_class').read()[0]
+        action.update({
+            'target': 'main',
+        })
+        return action
+
+    def action_print_pdf(self):
+        active_ids = self.env.context.get('active_ids', [])
+        reports = self.env['siantou.ems.core.progress.report'].browse(active_ids)
+        if len(active_ids) == 0:
+            raise UserError('Aucune donnée sélectionnée')
+        report_data = self.env['class.print.wizard'].create({})
+        domains = [
+            ('id', 'in', active_ids)
+        ]
+        data = report_data.print_class_report_data(domains=domains)
+
+        # Appeler le rapport PDF
+        if len(data['docdata']['class_data']) == 0:
+            raise UserError('Aucune donnée trouvée')
+        report_action = self.env.ref('siantou_ems_core.action_report_class')
+        return report_action.report_action(self, data=data)
 
     @staticmethod
     def format_subjectsession(data):

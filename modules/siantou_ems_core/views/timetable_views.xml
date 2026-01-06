@@ -31,10 +31,10 @@
                             class="oe_highlight" 
                             display="always"
                             groups="siantou_ems_core.group_timetable_print_pdf"/>
-                        <button name="action_update_all_timetable" 
+                        <!-- <button name="action_update_all_timetable" 
                             type="object" 
                             string="Mettre à jour emplois du temps et présences" 
-                            class="oe_highlight"/>
+                            class="oe_highlight"/> -->
                     </header>
                     <field name="group_id"/>
                     <field name="semester_id"/>

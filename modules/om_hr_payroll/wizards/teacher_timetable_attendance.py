@@ -66,7 +66,7 @@ class TeacherTimetableAttendance(models.TransientModel):
 
     subject_id = fields.Many2one(
         'siantou.ems.core.subject',
-        'Cours',
+        string='Cours',
         related='timetable_id.subject_id',
         store=True
     )

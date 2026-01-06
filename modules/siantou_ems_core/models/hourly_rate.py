@@ -135,7 +135,7 @@ class TeacherHourlyRate(models.Model):
     # Cours pour lequel on souhaite définir la priorité de l'enseignant
     subject_id = fields.Many2one(
         'siantou.ems.core.subject',
-        'Cours',
+        string='Cours',
         required=True,
         ondelete='cascade'
     )

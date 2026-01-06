@@ -265,7 +265,7 @@ class Timetable(models.Model):
 
     subject_id = fields.Many2one(
         'siantou.ems.core.subject',
-        'Cours',
+        string='Cours',
         required=True,
         ondelete='cascade'
     )

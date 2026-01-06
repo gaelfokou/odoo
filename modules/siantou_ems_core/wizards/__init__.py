@@ -5,6 +5,7 @@ from . import daily_attendance_print_wizard
 from . import classroom_print_wizard
 from . import class_division_print_wizard
 from . import subject_print_wizard
+from . import progress_report_print_wizard
 from . import timetable_wizard
 from . import check_priority
 from . import check_avaible_slot
@@ -17,4 +18,5 @@ from . import student_filter_wizard
 from . import daily_attendance_filter_wizard
 from . import timetable_group_copier_wizard
 from . import subject_filter_wizard
+from . import progress_report_filter_wizard
 from . import class_ue_copier_wizard
