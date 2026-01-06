@@ -631,7 +631,7 @@ class ProgressReport(models.Model):
 
     def action_reset_filter(self):
         self.env['ir.config_parameter'].sudo().set_param(f'siantou.filter_user_{self.env.user.id}', '')
-        action = self.env.ref('siantou_ems_core.action_show_class').read()[0]
+        action = self.env.ref('siantou_ems_core.action_show_progress_report').read()[0]
         action.update({
             'target': 'main',
         })
@@ -642,16 +642,16 @@ class ProgressReport(models.Model):
         reports = self.env['siantou.ems.core.progress.report'].browse(active_ids)
         if len(active_ids) == 0:
             raise UserError('Aucune donnée sélectionnée')
-        report_data = self.env['class.print.wizard'].create({})
+        report_data = self.env['progress.report.print.wizard'].create({})
         domains = [
             ('id', 'in', active_ids)
         ]
-        data = report_data.print_class_report_data(domains=domains)
+        data = report_data.print_report_report_data(domains=domains)
 
         # Appeler le rapport PDF
-        if len(data['docdata']['class_data']) == 0:
+        if len(data['docdata']['report_data']) == 0:
             raise UserError('Aucune donnée trouvée')
-        report_action = self.env.ref('siantou_ems_core.action_report_class')
+        report_action = self.env.ref('siantou_ems_core.action_report_progress_report')
         return report_action.report_action(self, data=data)
 
     @staticmethod

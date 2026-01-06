@@ -11,6 +11,23 @@ from dateutil.relativedelta import relativedelta
 import copy
 import logging
 
+DATE_FORMAT = '%Y-%m-%d'
+DATE_FORMAT_FR = '%d/%m/%Y'
+DATETIME_FORMAT = '%Y-%m-%d %H:%M:%S'
+DATETIME_FORMAT_FR = '%d/%m/%Y %H:%M'
+TIME_FORMAT = '%H:%M:%S'
+TIME_FORMAT_FR = '%H:%M'
+
+CURRENT_WEEKDAY = {
+    '0': 'Lundi',
+    '1': 'Mardi',
+    '2': 'Mercredi',
+    '3': 'Jeudi',
+    '4': 'Vendredi',
+    '5': 'Samedi',
+    '6': 'Dimanche'
+}
+
 TYPE_COUR = {
     'cj': 'Cours du jour',
     'cs': 'Cours du soir',
@@ -19,19 +36,19 @@ TYPE_COUR = {
 _logger = logging.getLogger(__name__)
 
 class ProgressReportPrintWizard(models.TransientModel):
-    _name = 'class.print.wizard'
+    _name = 'progress.report.print.wizard'
     _description = 'Assistant d\'impression des fiches de progression'
 
     def action_print_pdf(self):
-        data = self.print_class_report_data()
+        data = self.print_report_report_data()
 
         # Appeler le rapport PDF
-        if len(data['docdata']['class_data']) == 0:
+        if len(data['docdata']['report_data']) == 0:
             raise UserError("Aucune donnée trouvée")
         report_action = self.env.ref('siantou_ems_core.action_report_class')
         return report_action.report_action(self, data=data)
 
-    def print_class_report_data(self, domains=None):
+    def print_report_report_data(self, domains=None):
         # Récupérer les emplois du temps pour le semestre sélectionné
         domain = []
 
@@ -39,28 +56,60 @@ class ProgressReportPrintWizard(models.TransientModel):
             for d in domains:
                 domain.append(d)
 
-        search_classes = self.env['siantou.ems.core.class'].search(domain)
+        search_reports = self.env['siantou.ems.core.progress.report'].search(domain)
 
-        classes = []
-        for search_classe in search_classes:
-            classe = {}
-            classe['name'] = search_classe.name
-            classe['year'] = search_classe.year_id.name
-            classe['school'] = search_classe.school_id.name
-            classe['field_of_study'] = search_classe.field_of_study_id.name
-            classe['level'] = search_classe.level_id.name
-            classe['specialty'] = search_classe.specialty_id.name
-            classe['option'] = search_classe.option_id.name
-            classe['type_cour'] = TYPE_COUR[search_classe.type_cour]
-            classes.append(classe)
+        reports = []
+        for search_report in search_reports:
+            report = {}
+            report['name'] = search_report.name
+            report['classe'] = search_report.class_id.name
+            report['subject'] = search_report.subject_id.name
+            session_ids = search_report.session_ids
+            session_ids = list(session_ids)
+            sessions = []
+            for session_id in session_ids:
+                session = {}
+                session['name'] = session_id.name
+                session['description'] = session_id.description
+                session['date'] = session_id.timetable_id.date
+                session['date_of_week'] = datetime.strftime(session_id.timetable_id.date, DATE_FORMAT_FR)
+                session['day_of_week'] = CURRENT_WEEKDAY[session_id.timetable_id.day_of_week]
+                session['start_time'] = ProgressReportPrintWizard.convert_float_to_time(session_id.timetable_id.start_time)
+                session['end_time'] = ProgressReportPrintWizard.convert_float_to_time(session_id.timetable_id.end_time)
+                sessions.append(session)
+            report['sessions'] = sessions
+            reports.append(report)
 
         title = self.env['ir.config_parameter'].sudo().get_param(f'siantou.filter_user_{self.env.user.id}', '')
 
-        _logger.info(f'----------- tototototototo classes {classes} -----------')
+        _logger.info(f'----------- tototototototo reports {reports} -----------')
 
         return {
             'docdata': {
                 'filter': title,
-                'class_data': classes,
+                'report_data': reports,
             }
         }
+
+    @staticmethod
+    def convert_float_to_time(tm, has_second=False):
+        tm = str(tm)
+        tm = tm.split('.')
+        if len(tm) == 1:
+            tm.append('0')
+        if len(tm[0]) == 1:
+            tm[0] = '0{}'.format(tm[0])
+        elif len(tm[0]) > 2:
+            tm[0] = '{}'.format(tm[0][0:2])
+        if int(tm[0]) > 23:
+            tm[0] = '00'
+        if len(tm[1]) == 1:
+            tm[1] = '{}0'.format(tm[1])
+        elif len(tm[1]) > 2:
+            tm[1] = '{}'.format(tm[1][0:2])
+        if int(tm[1]) > 59:
+            tm[1] = '00'
+        tm = ':'.join(tm)
+        if has_second:
+            tm = '{}:00'.format(tm)
+        return tm
