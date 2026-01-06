@@ -82,6 +82,19 @@ class ProgressReportFilterWizard(models.TransientModel):
 
     class_id_domain = fields.Binary(compute='_compute_all_domain', default=[])
 
+    specialty_id_domain = fields.Binary(compute='_compute_school_domain', default=[])
+
+    @api.depends('school_id')
+    def _compute_school_domain(self):
+        for record in self:
+            domain = []
+            if record.school_id.id:
+                field_of_study_ids = self.env['siantou.ems.core.field_of_study'].search([('school_id', '=', record.school_id.id)])
+                domain = [
+                    ('field_of_study_id', 'in', field_of_study_ids.ids)
+                ]
+            record.specialty_id_domain = domain
+
     @api.depends('class_id')
     def _compute_class_domain(self):
         for record in self:
