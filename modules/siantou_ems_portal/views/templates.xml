@@ -1123,8 +1123,7 @@
                         <thead>
                             <tr class="active">
                                 <th class="text-left">Date</th>
-                                <th class="text-left">Heure de début</th>
-                                <th class="text-left">Heure de fin</th>
+                                <th class="text-left">Heure</th>
                                 <th class="text-left">Séance</th>
                                 <th class="text-left">Description</th>
                                 <th class="text-left">Taux de consommation du volume horaire</th>
@@ -1141,10 +1140,7 @@
                                             <span t-esc="subjectsessions[timetable]['date']"/>
                                         </td>
                                         <td class="text-left">
-                                            <span t-esc="subjectsessions[timetable]['start_time']"/>
-                                        </td>
-                                        <td class="text-left">
-                                            <span t-esc="subjectsessions[timetable]['end_time']"/>
+                                            <span t-esc="subjectsessions[timetable]['start_time'] + '-' + subjectsessions[timetable]['end_time']"/>
                                         </td>
                                         <td class="text-left">
                                             <span t-esc="session['name']"/>
@@ -1172,21 +1168,21 @@
                         </t>
                         <tfooter>
                             <tr>
-                                <th class="text-left" colspan="8" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
+                                <th class="text-left" colspan="7" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
                             </tr>
                         </tfooter>
                     </t>
                     <t t-else="">
                         <tfooter>
                             <tr>
-                                <th class="text-center" colspan="8" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;">
+                                <th class="text-center" colspan="7" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;">
                                     <span t-esc="'Aucune donnée disponible'"/>
                                 </th>
                             </tr>
                         </tfooter>
                         <tfooter>
                             <tr>
-                                <th class="text-left" colspan="8" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
+                                <th class="text-left" colspan="7" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
                             </tr>
                         </tfooter>
                     </t>

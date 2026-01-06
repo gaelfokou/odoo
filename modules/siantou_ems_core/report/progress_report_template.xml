@@ -26,7 +26,7 @@
                                 <table class="table table-bordered table-sm text-center">
                                     <thead>
                                         <tr>
-                                            <th class="text-center" colspan="5" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;">
+                                            <th class="text-center" colspan="4" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;">
                                                 <h3>INSTITUT UNIVERSITAIRE SIANTOU</h3>
                                                 <h4>
                                                     <span t-esc="'Liste des fiches de progression'"/>
@@ -40,12 +40,12 @@
                                     </thead>
                                     <thead>
                                         <tr>
-                                            <th class="text-left" colspan="5" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
+                                            <th class="text-left" colspan="4" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
                                         </tr>
                                     </thead>
                                     <thead>
                                         <tr>
-                                            <th class="text-left" colspan="5" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;">
+                                            <th class="text-left" colspan="4" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;">
                                                 <span t-esc="report['name']"/>
                                             </th>
                                         </tr>
@@ -55,8 +55,7 @@
                                             <th class="text-center">Séance</th>
                                             <th class="text-center">Description</th>
                                             <th class="text-center">Date</th>
-                                            <th class="text-center">Heure de début</th>
-                                            <th class="text-center">Heure de fin</th>
+                                            <th class="text-center">Heure</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -70,13 +69,10 @@
                                                     <span t-esc="session['description']"/>
                                                 </td>
                                                 <td class="text-center">
-                                                    <span t-esc="session['date_of_week']"/>
+                                                    <span t-esc="session['date']"/>
                                                 </td>
                                                 <td class="text-center">
-                                                    <span t-esc="session['start_time']"/>
-                                                </td>
-                                                <td class="text-center">
-                                                    <span t-esc="session['end_time']"/>
+                                                    <span t-esc="session['start_time'] + '-' + session['end_time']"/>
                                                 </td>
                                             </tr>
                                         </t>

@@ -71,9 +71,7 @@ class ProgressReportPrintWizard(models.TransientModel):
                 session = {}
                 session['name'] = session_id.name
                 session['description'] = session_id.description
-                session['date'] = session_id.timetable_id.date
-                session['date_of_week'] = datetime.strftime(session_id.timetable_id.date, DATE_FORMAT_FR)
-                session['day_of_week'] = CURRENT_WEEKDAY[session_id.timetable_id.day_of_week]
+                session['date'] = datetime.strftime(session_id.timetable_id.date, DATE_FORMAT_FR)
                 session['start_time'] = ProgressReportPrintWizard.convert_float_to_time(session_id.timetable_id.start_time)
                 session['end_time'] = ProgressReportPrintWizard.convert_float_to_time(session_id.timetable_id.end_time)
                 sessions.append(session)
