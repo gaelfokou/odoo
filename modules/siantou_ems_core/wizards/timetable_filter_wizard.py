@@ -517,7 +517,7 @@ class TimetableFilterWizard(models.TransientModel):
         timetable_ids = []
         key_timetables = {}
         for timetable in timetables:
-            if not timetable.date or not timetable.day_of_week:
+            if not timetable.date or not timetable.day_of_week or not timetable.employee_id.id:
                 continue
 
             end_time = TimetableFilterWizard.convert_float_to_time(timetable.end_time, True)
@@ -679,7 +679,7 @@ class TimetableFilterWizard(models.TransientModel):
         timetable_ids = []
         key_timetables = {}
         for timetable in timetables:
-            if not timetable.date or not timetable.day_of_week:
+            if not timetable.date or not timetable.day_of_week or not timetable.employee_id.id:
                 continue
 
             end_time = TimetableFilterWizard.convert_float_to_time(timetable.end_time, True)
@@ -700,7 +700,7 @@ class TimetableFilterWizard(models.TransientModel):
         all_timetable_ids = []
         key_all_timetables = {}
         for timetable in all_timetables:
-            if not timetable.date or not timetable.day_of_week:
+            if not timetable.date or not timetable.day_of_week or not timetable.employee_id.id:
                 continue
 
             end_time = TimetableFilterWizard.convert_float_to_time(timetable.end_time, True)

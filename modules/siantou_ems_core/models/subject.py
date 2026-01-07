@@ -387,7 +387,7 @@ class ProgressReport(models.Model):
             data = []
             key_progressreports = {}
             for search_progressreport in search_progressreports:
-                if not search_progressreport.date or not search_progressreport.day_of_week:
+                if not search_progressreport.date or not search_progressreport.day_of_week or not search_progressreport.employee_id.id:
                     continue
 
                 end_time = ProgressReport.convert_float_to_time(search_progressreport.end_time)
@@ -511,7 +511,7 @@ class ProgressReport(models.Model):
             data = []
             key_progressreports = {}
             for search_progressreport in search_progressreports:
-                if not search_progressreport.date or not search_progressreport.day_of_week:
+                if not search_progressreport.date or not search_progressreport.day_of_week or not search_progressreport.employee_id.id:
                     continue
 
                 end_time = ProgressReport.convert_float_to_time(search_progressreport.end_time)

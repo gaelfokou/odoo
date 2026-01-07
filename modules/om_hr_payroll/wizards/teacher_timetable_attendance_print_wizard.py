@@ -71,7 +71,7 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
         return level
 
     def sort_teacher_timetable_attendance(self, teacher_timetable_attendance):
-        name = teacher_timetable_attendance[1]['name']
+        name = teacher_timetable_attendance[1]['name'] if teacher_timetable_attendance[1]['name'] else ''
         name = name.strip()
         name = name.lower()
         return name
@@ -89,7 +89,7 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
         is_permanent = False
         key_teacher_timetable_attendances = {}
         for search_teacher_timetable_attendance in search_teacher_timetable_attendances:
-            if not search_teacher_timetable_attendance.date or not search_teacher_timetable_attendance.day_of_week:
+            if not search_teacher_timetable_attendance.date or not search_teacher_timetable_attendance.day_of_week or not search_teacher_timetable_attendance.employee_id.id:
                 continue
             key = '{}'.format(search_teacher_timetable_attendance.employee_id.id)
             if key not in key_teacher_timetable_attendances:

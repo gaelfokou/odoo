@@ -144,7 +144,7 @@ class TimetablePrintWizard(models.TransientModel):
         key_timetables = {}
         info_timetables = {}
         for search_timetable in search_timetables:
-            if not search_timetable.date or not search_timetable.day_of_week:
+            if not search_timetable.date or not search_timetable.day_of_week or not search_timetable.employee_id.id:
                 continue
             key = '{}-{}'.format(search_timetable.semester_id.id, search_timetable.class_id.id)
             semester = '{}'.format(search_timetable.semester_id.name)
@@ -260,7 +260,7 @@ class TimetablePrintWizard(models.TransientModel):
         }
 
     def sort_timetable_percentage(self, timetable_percentage):
-        name = timetable_percentage[1]['name']
+        name = timetable_percentage[1]['name'] if timetable_percentage[1]['name'] else ''
         name = name.strip()
         name = name.lower()
         return name
@@ -311,7 +311,7 @@ class TimetablePrintWizard(models.TransientModel):
         total_all_timetable_percentage_count = 0
         total_timetable_percentage_count = {}
         for search_all_timetable_percentage in search_all_timetable_percentages:
-            if not search_all_timetable_percentage.date or not search_all_timetable_percentage.day_of_week:
+            if not search_all_timetable_percentage.date or not search_all_timetable_percentage.day_of_week or not search_all_timetable_percentage.employee_id.id:
                 continue
             key = '{}'.format(search_all_timetable_percentage.employee_id.id)
             if key not in total_timetable_percentage_count:
@@ -323,7 +323,7 @@ class TimetablePrintWizard(models.TransientModel):
         key_timetable_percentages = {}
         info_timetable_percentages = {}
         for search_timetable_percentage in search_timetable_percentages:
-            if not search_timetable_percentage.date or not search_timetable_percentage.day_of_week:
+            if not search_timetable_percentage.date or not search_timetable_percentage.day_of_week or not search_timetable_percentage.employee_id.id:
                 continue
             key = '{}'.format(search_timetable_percentage.employee_id.id)
             if key not in key_timetable_percentages:
@@ -376,11 +376,12 @@ class TimetablePrintWizard(models.TransientModel):
 
         all_timetable_percentage_count = 0
         for key in key_timetable_percentages.keys():
-            timetable_percentage_count = len(key_timetable_percentages[key]['data'])
-            if total_timetable_percentage_count[key] > 0:
-                key_timetable_percentages[key]['percentage'] = (timetable_percentage_count / total_timetable_percentage_count[key]) * 100
-                key_timetable_percentages[key]['percentage'] = round(key_timetable_percentages[key]['percentage'], 2)
-            all_timetable_percentage_count += timetable_percentage_count
+            if key in total_timetable_percentage_count:
+                timetable_percentage_count = len(key_timetable_percentages[key]['data'])
+                if total_timetable_percentage_count[key] > 0:
+                    key_timetable_percentages[key]['percentage'] = (timetable_percentage_count / total_timetable_percentage_count[key]) * 100
+                    key_timetable_percentages[key]['percentage'] = round(key_timetable_percentages[key]['percentage'], 2)
+                all_timetable_percentage_count += timetable_percentage_count
 
         total_percentage = 0.0
         if total_all_timetable_percentage_count > 0:

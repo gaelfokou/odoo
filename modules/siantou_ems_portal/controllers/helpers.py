@@ -124,7 +124,7 @@ class Helpers:
                 timetables = list(timetables)
                 key_timetables = {}
                 for timetable in timetables:
-                    if not timetable.date or not timetable.day_of_week:
+                    if not timetable.date or not timetable.day_of_week or not timetable.employee_id.id:
                         continue
 
                     end_time = Helpers.convert_float_to_time(timetable.end_time, True)
@@ -153,7 +153,7 @@ class Helpers:
                 timetables = list(timetables)
                 key_timetables = {}
                 for timetable in timetables:
-                    if not timetable.date or not timetable.day_of_week:
+                    if not timetable.date or not timetable.day_of_week or not timetable.employee_id.id:
                         continue
 
                     end_time = Helpers.convert_float_to_time(timetable.end_time, True)
@@ -316,7 +316,7 @@ class Helpers:
                 accountbalances = list(accountbalances)
                 key_accountbalances = {}
                 for accountbalance in accountbalances:
-                    if not accountbalance.date or not accountbalance.day_of_week:
+                    if not accountbalance.date or not accountbalance.day_of_week or not accountbalance.employee_id.id:
                         continue
 
                     end_time = Helpers.convert_float_to_time(accountbalance.end_time, True)
@@ -399,7 +399,7 @@ class Helpers:
                 consumptionhours = list(consumptionhours)
                 key_consumptionhours = {}
                 for consumptionhour in consumptionhours:
-                    if not consumptionhour.date or not consumptionhour.day_of_week:
+                    if not consumptionhour.date or not consumptionhour.day_of_week or not consumptionhour.employee_id.id:
                         continue
 
                     end_time = Helpers.convert_float_to_time(consumptionhour.end_time, True)
@@ -418,7 +418,7 @@ class Helpers:
                 consumptionhours = list(consumptionhours)
                 key_consumptionhours = {}
                 for consumptionhour in consumptionhours:
-                    if not consumptionhour.date or not consumptionhour.day_of_week:
+                    if not consumptionhour.date or not consumptionhour.day_of_week or not consumptionhour.employee_id.id:
                         continue
 
                     end_time = Helpers.convert_float_to_time(consumptionhour.end_time, True)
@@ -496,7 +496,7 @@ class Helpers:
                 progressreports = list(progressreports)
                 key_progressreports = {}
                 for progressreport in progressreports:
-                    if not progressreport.date or not progressreport.day_of_week:
+                    if not progressreport.date or not progressreport.day_of_week or not progressreport.employee_id.id:
                         continue
 
                     end_time = Helpers.convert_float_to_time(progressreport.end_time, True)
@@ -515,7 +515,7 @@ class Helpers:
                 progressreports = list(progressreports)
                 key_progressreports = {}
                 for progressreport in progressreports:
-                    if not progressreport.date or not progressreport.day_of_week:
+                    if not progressreport.date or not progressreport.day_of_week or not progressreport.employee_id.id:
                         continue
 
                     end_time = Helpers.convert_float_to_time(progressreport.end_time, True)
@@ -595,7 +595,7 @@ class Helpers:
                 subjectsessions = list(subjectsessions)
                 key_subjectsessions = {}
                 for subjectsession in subjectsessions:
-                    if not subjectsession.date or not subjectsession.day_of_week:
+                    if not subjectsession.date or not subjectsession.day_of_week or not subjectsession.employee_id.id:
                         continue
 
                     end_time = Helpers.convert_float_to_time(subjectsession.end_time, True)
@@ -614,7 +614,7 @@ class Helpers:
                 subjectsessions = list(subjectsessions)
                 key_subjectsessions = {}
                 for subjectsession in subjectsessions:
-                    if not subjectsession.date or not subjectsession.day_of_week:
+                    if not subjectsession.date or not subjectsession.day_of_week or not subjectsession.employee_id.id:
                         continue
 
                     end_time = Helpers.convert_float_to_time(subjectsession.end_time, True)

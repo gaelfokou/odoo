@@ -57,7 +57,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <t t-set="timetable_percentage_data" t-value="dict(sorted(docdata['timetable_percentage_data'].items(), key=lambda item: item[1]['name']))"/>
+                                    <t t-set="timetable_percentage_data" t-value="dict(sorted(docdata['timetable_percentage_data'].items(), key=lambda item: item[1]['name'] if item[1]['name'] else ''))"/>
                                     <t t-set="keys" t-value="timetable_percentage_data.keys()"/>
                                     <t t-foreach="keys" t-as="key">
                                         <t t-set="timetables" t-value="timetable_percentage_data[key]['data']"/>

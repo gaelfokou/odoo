@@ -345,7 +345,7 @@ class TeacherTimetableAttendance(models.TransientModel):
         from_date = None
         to_date = None
         employee_ids = []
-        teacher_timetable_attendance_data = dict(sorted(data['docdata']['teacher_timetable_attendance_data'].items(), key=lambda item: item[1]['name']))
+        teacher_timetable_attendance_data = dict(sorted(data['docdata']['teacher_timetable_attendance_data'].items(), key=lambda item: item[1]['name'] if item[1]['name'] else ''))
         for key in teacher_timetable_attendance_data.keys():
             timetables = teacher_timetable_attendance_data[key]['data']
             for timetable in timetables:
@@ -381,7 +381,7 @@ class TeacherTimetableAttendance(models.TransientModel):
         timetable_ids = [payslip['timetable_id'] for payslip in key_payslips.values()]
 
         teacher_timetable_attendance_ids = []
-        teacher_timetable_attendance_data = dict(sorted(data['docdata']['teacher_timetable_attendance_data'].items(), key=lambda item: item[1]['name']))
+        teacher_timetable_attendance_data = dict(sorted(data['docdata']['teacher_timetable_attendance_data'].items(), key=lambda item: item[1]['name'] if item[1]['name'] else ''))
         for key in teacher_timetable_attendance_data.keys():
             timetables = teacher_timetable_attendance_data[key]['data']
             for timetable in timetables:

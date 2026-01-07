@@ -137,7 +137,7 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
         key_consumptionhours = {}
         consumptionhours = []
         for search_consumptionhour in search_consumptionhours:
-            if not search_consumptionhour.date or not search_consumptionhour.day_of_week:
+            if not search_consumptionhour.date or not search_consumptionhour.day_of_week or not search_consumptionhour.employee_id.id:
                 continue
 
             end_time = TeacherTimetableAttendanceFilterWizard.convert_float_to_time(search_consumptionhour.end_time, True)
@@ -220,7 +220,7 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
 
         key_timetables = {}
         for timetable in timetables:
-            if not timetable.date or not timetable.day_of_week:
+            if not timetable.date or not timetable.day_of_week or not timetable.employee_id.id:
                 continue
 
             end_time = TeacherTimetableAttendanceFilterWizard.convert_float_to_time(timetable.end_time, True)
