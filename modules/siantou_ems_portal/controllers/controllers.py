@@ -517,23 +517,23 @@ class PortalAccount(portal.CustomerPortal):
                     student['name'] = score_id.student_id.name
                     if score_id.exam_type == 'cc':
                         student['cc_note'] = score_id.note
-                        student['sn_note'] = 0.0
-                        student['rcc_note'] = 0.0
-                        student['rsn_note'] = 0.0
+                        student['sn_note'] = None
+                        student['rcc_note'] = None
+                        student['rsn_note'] = None
                     elif score_id.exam_type == 'sn':
-                        student['cc_note'] = 0.0
+                        student['cc_note'] = None
                         student['sn_note'] = score_id.note
-                        student['rcc_note'] = 0.0
-                        student['rsn_note'] = 0.0
+                        student['rcc_note'] = None
+                        student['rsn_note'] = None
                     elif score_id.exam_type == 'rcc':
-                        student['cc_note'] = 0.0
-                        student['sn_note'] = 0.0
+                        student['cc_note'] = None
+                        student['sn_note'] = None
                         student['rcc_note'] = score_id.note
-                        student['rsn_note'] = 0.0
+                        student['rsn_note'] = None
                     elif score_id.exam_type == 'rsn':
-                        student['cc_note'] = 0.0
-                        student['sn_note'] = 0.0
-                        student['rcc_note'] = 0.0
+                        student['cc_note'] = None
+                        student['sn_note'] = None
+                        student['rcc_note'] = None
                         student['rsn_note'] = score_id.note
                     students.append(student)
                 examscore['students'] = students
