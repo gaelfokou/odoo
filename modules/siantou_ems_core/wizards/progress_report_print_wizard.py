@@ -61,6 +61,7 @@ class ProgressReportPrintWizard(models.TransientModel):
         reports = []
         for search_report in search_reports:
             report = {}
+            report['id'] = search_report.id
             report['name'] = search_report.name
             report['classe'] = search_report.class_id.name
             report['subject'] = search_report.subject_id.name

@@ -982,6 +982,58 @@ class PortalAccount(portal.CustomerPortal):
                                     'progressreport': 0,
                                 })
 
+    @http.route(['/my/progressreport/<int:classe>/<int:subject>/download'], type='http', auth="user", website=True)
+    def portal_progressreport_download(self, classe=None, subject=None, search='', search_in='all', **kw):
+        # Utilisation de la fonction du helper
+        user = None
+        is_user = None
+        if http.request.env.user.employee_id.id:
+            user = http.request.env.user.employee_id
+            if http.request.env.user.employee_id.is_teacher:
+                is_user = 'is_teacher'
+            else:
+                is_user = 'is_employee'
+        elif http.request.env.user.student_id.id:
+            user = http.request.env.user.student_id
+            is_user = 'is_student'
+        class_id = http.request.env['siantou.ems.core.class'].sudo().search([('id', '=', classe)], limit=1)
+        subject_id = http.request.env['siantou.ems.core.subject'].sudo().search([('id', '=', subject)], limit=1)
+        params = {}
+        params['class_id'] = class_id.id
+        params['class_name'] = class_id.name
+        params['subject_id'] = subject_id.id
+        params['subject_name'] = subject_id.name
+        search_progressreports, searchbar_inputs = Helpers.progressreport(search, search_in, class_id, subject_id)
+        progressreports = []
+        for search_progressreport in search_progressreports:
+            progressreport = {}
+            progressreport['id'] = search_progressreport.id
+            progressreports.append(progressreport)
+        progressreport_ids = []
+        for progressreport in progressreports:
+            progressreport_ids.append(progressreport['id'])
+        progressreport_ids = list(set(progressreport_ids))
+        report_name = 'siantou_ems_core.template_report_progress_report'
+        report_action = 'siantou_ems_core.action_report_progress_report'
+        pdf_report = http.request.env['ir.actions.report'].sudo()._get_report_from_name(report_action)
+        report_data = http.request.env['progress.report.print.wizard'].create({})
+        domain = [
+            ('id', 'in', progressreport_ids)
+        ]
+        data = report_data.print_report_report_data(domains=domain)
+        pdf, _ = pdf_report.sudo().with_context()._render_qweb_pdf(report_name, data=data)
+        filename = 'Fiche de progression PDF.pdf'
+        headers = [
+            ('Content-Type', 'application/pdf'),
+            ('Content-Length', len(pdf)),
+            ('Content-Disposition', http.content_disposition(filename)),
+        ]
+        return http.request.make_response(
+            pdf,
+            headers=headers,
+            status=200
+        )
+
     @http.route(['/my/subjectsession/<int:classe>/<int:subject>/list'], type='http', auth="user", website=True)
     def portal_subjectsession_list(self, classe=None, subject=None, search='', search_in='all', **kw):
         # Utilisation de la fonction du helper

@@ -1109,6 +1109,9 @@
                     <t t-set="title">Sessions de cours</t>
                 </t>
                 <t t-call="portal.portal_table">
+                    <div>
+                        <a t-attf-href="/my/progressreport/{{ params['class_id'] }}/{{ params['subject_id'] }}/download" class="btn btn-primary">Impression de la fiche de progression</a>
+                    </div>
                     <t t-set="timetables" t-value="subjectsessions.keys()"/>
                     <t t-if="len(timetables) > 0">
                         <t t-if="is_user == 'is_teacher'">

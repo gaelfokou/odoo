@@ -436,34 +436,20 @@ class Helpers:
         return search_consumptionhours, searchbar_inputs
 
     @staticmethod
-    def progressreport(search='', search_in='all', cycle_id=None, level_id=None, field_of_study_id=None, specialty_id=None, option_id=None, class_id=None):
+    def progressreport(search='', search_in='all', class_id=None, subject_id=None):
         searchbar_inputs = {
             'all': {'label': 'Tout', 'input': 'all', 'domain': []},
-            'cycle': {'label': 'Cycle', 'input': 'cycle', 'domain': [('cycle_id.name', 'like', search)]},
-            'niveau': {'label': 'Niveau', 'input': 'niveau', 'domain': [('level_id.name', 'like', search)]},
-            'filiere': {'label': 'Filière', 'input': 'filiere', 'domain': [('field_of_study_id.name', 'like', search)]},
-            'specialite': {'label': 'Spécialité', 'input': 'specialite', 'domain': [('specialty_id.name', 'like', search)]},
-            'option': {'label': 'Option', 'input': 'option', 'domain': [('option_id.name', 'like', search)]},
             'classe': {'label': 'Classe', 'input': 'classe', 'domain': [('class_id.name', 'like', search)]},
             'cours': {'label': 'Cours', 'input': 'cours', 'domain': [('subject_id.name', 'like', search)]},
-            'enseignant': {'label': 'Enseignant', 'input': 'enseignant', 'domain': [('employee_id.name', 'like', search)]},
         }
         if search_in not in searchbar_inputs.keys():
             search_in = 'all'
         search_domain = searchbar_inputs[search_in]['domain']
 
-        if cycle_id:
-            search_domain.append(('cycle_id', '=', cycle_id.id))
-        if level_id:
-            search_domain.append(('level_id', '=', level_id.id))
-        if field_of_study_id:
-            search_domain.append(('field_of_study_id', '=', field_of_study_id.id))
-        if specialty_id:
-            search_domain.append(('specialty_id', '=', specialty_id.id))
-        if option_id:
-            search_domain.append(('option_id', '=', option_id.id))
         if class_id:
             search_domain.append(('class_id', '=', class_id.id))
+        if subject_id:
+            search_domain.append(('subject_id', '=', subject_id.id))
 
         search_domain.append('|')
         search_domain.append('&')
