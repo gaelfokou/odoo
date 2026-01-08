@@ -26,7 +26,7 @@
                             string="Imprimer PDF" 
                             class="oe_highlight" 
                             display="always"
-                            groups="siantou_ems_core.group_timetable_print_pdf"/>
+                            groups="siantou_ems_core.group_progress_report_print_pdf"/>
                     </header>
                     <field name="class_id"/>
                     <field name="subject_id"/>

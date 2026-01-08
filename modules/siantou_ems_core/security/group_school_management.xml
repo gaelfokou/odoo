@@ -443,6 +443,18 @@
             <field name="implied_ids" eval="[(4, ref('base.group_system'))]"/>
             <field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
         </record>
+        <record id="group_timetable_percentage_print_pdf" model="res.groups">
+            <field name="name">Imprimer pourcentage PDF - Emplois du temps</field>
+            <field name="category_id" ref="siantou_ems_core.module_category_school_management"/>
+            <field name="implied_ids" eval="[(4, ref('base.group_system'))]"/>
+            <field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+        </record>
+        <record id="group_progress_report_print_pdf" model="res.groups">
+            <field name="name">Imprimer PDF - Fiches de progression</field>
+            <field name="category_id" ref="siantou_ems_core.module_category_school_management"/>
+            <field name="implied_ids" eval="[(4, ref('base.group_system'))]"/>
+            <field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+        </record>
         <record id="group_dashboard" model="res.groups">
             <field name="name">Tableau de bord</field>
             <field name="category_id" ref="siantou_ems_core.module_category_school_management"/>

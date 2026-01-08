@@ -37,7 +37,7 @@
                     </group>
                     <footer>
                         <button string="Filtrer" type="object" name="action_filter" class="btn-primary"/>
-                        <button string="Imprimer pourcentage" type="object" name="action_print" class="btn-primary"/>
+                        <button string="Imprimer pourcentage" type="object" name="action_print" class="btn-primary" groups="siantou_ems_core.group_timetable_percentage_print_pdf"/>
                         <button string="Annuler" class="btn-secondary" special="cancel"/>
                     </footer>
                 </form>

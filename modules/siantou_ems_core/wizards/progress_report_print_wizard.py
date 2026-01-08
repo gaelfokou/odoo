@@ -69,12 +69,14 @@ class ProgressReportPrintWizard(models.TransientModel):
             sessions = []
             for session_id in session_ids:
                 session = {}
+                session['id'] = session_id.id
                 session['name'] = session_id.name
                 session['description'] = session_id.description
                 session['date'] = datetime.strftime(session_id.timetable_id.date, DATE_FORMAT_FR)
                 session['start_time'] = ProgressReportPrintWizard.convert_float_to_time(session_id.timetable_id.start_time)
                 session['end_time'] = ProgressReportPrintWizard.convert_float_to_time(session_id.timetable_id.end_time)
                 sessions.append(session)
+            sessions = sorted(sessions, key=lambda item: int(item['name'].replace('Séance ', '')))
             report['sessions'] = sessions
             reports.append(report)
 

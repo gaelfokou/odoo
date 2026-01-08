@@ -59,7 +59,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <t t-set="sessions" t-value="report['sessions']"/>
+                                        <t t-set="sessions" t-value="sorted(report['sessions'], key=lambda item: int(item['name'].replace('Séance ', '')))"/>
                                         <t t-foreach="sessions" t-as="session">
                                             <tr>
                                                 <td class="text-center">

@@ -1133,7 +1133,7 @@
                         </thead>
                         <t t-foreach="timetables" t-as="timetable">
                             <tbody>
-                                <t t-set="sessions" t-value="subjectsessions[timetable]['data']"/>
+                                <t t-set="sessions" t-value="sorted(subjectsessions[timetable]['data'], key=lambda item: int(item['name'].replace('Séance ', '')))"/>
                                 <t t-foreach="sessions" t-as="session">
                                     <tr>
                                         <td class="text-left">

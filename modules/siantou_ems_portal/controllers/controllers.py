@@ -971,6 +971,7 @@ class PortalAccount(portal.CustomerPortal):
                 session['timetable_id'] = session_id.timetable_id.id
                 session['report_id'] = session_id.report_id.id
                 sessions.append(session)
+            sessions = sorted(sessions, key=lambda item: int(item['name'].replace('Séance ', '')))
             progressreport['sessions'] = sessions
             progressreports.append(progressreport)
         progressreports = Helpers.format_progressreport(progressreports)
@@ -1048,6 +1049,7 @@ class PortalAccount(portal.CustomerPortal):
                 session['timetable_id'] = session_id.timetable_id.id
                 session['report_id'] = session_id.report_id.id
                 sessions.append(session)
+            sessions = sorted(sessions, key=lambda item: int(item['name'].replace('Séance ', '')))
             subjectsession['sessions'] = sessions
             subjectsessions.append(subjectsession)
         subjectsessions = Helpers.format_subjectsession(subjectsessions)
@@ -1127,6 +1129,7 @@ class PortalAccount(portal.CustomerPortal):
                 session['timetable_id'] = session_id.timetable_id.id
                 session['report_id'] = session_id.report_id.id
                 sessions.append(session)
+            sessions = sorted(sessions, key=lambda item: int(item['name'].replace('Séance ', '')))
             subjectsession['sessions'] = sessions
             subjectsessions.append(subjectsession)
         subjectsessions = Helpers.format_subjectsession(subjectsessions)
@@ -1282,6 +1285,7 @@ class PortalAccount(portal.CustomerPortal):
                 session['timetable_id'] = session_id.timetable_id.id
                 session['report_id'] = session_id.report_id.id
                 sessions.append(session)
+            sessions = sorted(sessions, key=lambda item: int(item['name'].replace('Séance ', '')))
             subjectsession['sessions'] = sessions
             subjectsessions.append(subjectsession)
         subjectsessions = Helpers.format_subjectsession(subjectsessions)
