@@ -110,6 +110,10 @@ class ClassUeCopierWizard(models.TransientModel):
 
     specialty_id_domain = fields.Binary(compute='_compute_school_domain', default=[])
 
+    source_class_id_domain = fields.Binary(compute='_compute_all_source_domain', default=[])
+
+    destination_class_id_domain = fields.Binary(compute='_compute_all_destination_domain', default=[])
+
     @api.depends('source_class_id')
     def _compute_source_ues(self):
         # Recherche des emplois du temps qui correspondent à la classe
@@ -132,6 +136,58 @@ class ClassUeCopierWizard(models.TransientModel):
                     ('field_of_study_id', 'in', field_of_study_ids.ids)
                 ]
             record.specialty_id_domain = domain
+
+    @api.depends('source_year_id', 'level_id', 'field_of_study_id', 'specialty_id', 'option_id', 'type_cour')
+    def _compute_all_source_domain(self):
+        for record in self:
+            domain = []
+            if record.source_year_id.id:
+                domain.append(('year_id', '=', record.source_year_id.id))
+            if record.level_id.id:
+                domain.append(('level_id', '=', record.level_id.id))
+            if record.field_of_study_id.id:
+                domain.append(('field_of_study_id', '=', record.field_of_study_id.id))
+            if record.specialty_id.id:
+                domain.append(('specialty_id', '=', record.specialty_id.id))
+            if record.option_id.id:
+                domain.append(('option_id', '=', record.option_id.id))
+            if record.type_cour:
+                domain.append(('type_cour', '=', record.type_cour))
+            class_ids = []
+            classes = self.env['siantou.ems.core.class'].search(domain)
+            for classe in classes:
+                class_ids.append(classe.id)
+            class_ids = list(set(class_ids))
+            domain = [
+                ('id', 'in', class_ids),
+            ]
+            record.source_class_id_domain = domain
+
+    @api.depends('destination_year_id', 'level_id', 'field_of_study_id', 'specialty_id', 'option_id', 'type_cour')
+    def _compute_all_destination_domain(self):
+        for record in self:
+            domain = []
+            if record.destination_year_id.id:
+                domain.append(('year_id', '=', record.destination_year_id.id))
+            if record.level_id.id:
+                domain.append(('level_id', '=', record.level_id.id))
+            if record.field_of_study_id.id:
+                domain.append(('field_of_study_id', '=', record.field_of_study_id.id))
+            if record.specialty_id.id:
+                domain.append(('specialty_id', '=', record.specialty_id.id))
+            if record.option_id.id:
+                domain.append(('option_id', '=', record.option_id.id))
+            if record.type_cour:
+                domain.append(('type_cour', '=', record.type_cour))
+            class_ids = []
+            classes = self.env['siantou.ems.core.class'].search(domain)
+            for classe in classes:
+                class_ids.append(classe.id)
+            class_ids = list(set(class_ids))
+            domain = [
+                ('id', 'in', class_ids),
+            ]
+            record.destination_class_id_domain = domain
 
     @api.onchange('school_id')
     def _onchange_school(self):

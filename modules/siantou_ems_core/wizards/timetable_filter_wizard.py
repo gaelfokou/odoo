@@ -247,7 +247,7 @@ class TimetableFilterWizard(models.TransientModel):
 
     school_id_domain = fields.Binary(compute='_compute_group_domain', default=[])
 
-    @api.depends('level_id', 'field_of_study_id', 'specialty_id', 'option_id', 'type_cour')
+    @api.depends('year_id', 'level_id', 'field_of_study_id', 'specialty_id', 'option_id', 'type_cour')
     def _compute_all_domain(self):
         for record in self:
             domain = []

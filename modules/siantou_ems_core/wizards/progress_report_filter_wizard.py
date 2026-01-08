@@ -106,7 +106,7 @@ class ProgressReportFilterWizard(models.TransientModel):
                 ]
             record.subject_id_domain = domain
 
-    @api.depends('level_id', 'field_of_study_id', 'specialty_id', 'option_id', 'type_cour')
+    @api.depends('year_id', 'level_id', 'field_of_study_id', 'specialty_id', 'option_id', 'type_cour')
     def _compute_all_domain(self):
         for record in self:
             domain = []
