@@ -1078,11 +1078,6 @@ class PortalAccount(portal.CustomerPortal):
             is_user = 'is_student'
         class_id = http.request.env['siantou.ems.core.class'].sudo().search([('id', '=', classe)], limit=1)
         subject_id = http.request.env['siantou.ems.core.subject'].sudo().search([('id', '=', subject)], limit=1)
-        params = {}
-        params['class_id'] = class_id.id
-        params['class_name'] = class_id.name
-        params['subject_id'] = subject_id.id
-        params['subject_name'] = subject_id.name
         search_reports, searchbar_inputs = Helpers.report(search, search_in, class_id, subject_id)
         report_ids = []
         for search_report in search_reports:
