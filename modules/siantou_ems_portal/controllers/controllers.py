@@ -1065,17 +1065,6 @@ class PortalAccount(portal.CustomerPortal):
     @http.route(['/my/subjectsession/<int:classe>/<int:subject>/download'], type='http', auth="user", website=True)
     def portal_subjectsession_download(self, classe=None, subject=None, search='', search_in='all', **kw):
         # Utilisation de la fonction du helper
-        user = None
-        is_user = None
-        if http.request.env.user.employee_id.id:
-            user = http.request.env.user.employee_id
-            if http.request.env.user.employee_id.is_teacher:
-                is_user = 'is_teacher'
-            else:
-                is_user = 'is_employee'
-        elif http.request.env.user.student_id.id:
-            user = http.request.env.user.student_id
-            is_user = 'is_student'
         class_id = http.request.env['siantou.ems.core.class'].sudo().search([('id', '=', classe)], limit=1)
         subject_id = http.request.env['siantou.ems.core.subject'].sudo().search([('id', '=', subject)], limit=1)
         search_reports, searchbar_inputs = Helpers.report(search, search_in, class_id, subject_id)
