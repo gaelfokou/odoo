@@ -53,7 +53,7 @@ class ApiAccount(http.Controller):
         if view_type not in ['calendar', 'list']:
             view_type = 'calendar'
         # Utilisation de la fonction du helper
-        search_timetables, searchbar_inputs = Helpers.timetable(search, search_in)
+        search_timetables, searchbar_inputs = Helpers.timetable(search=search, search_in=search_in)
         timetables = []
         for search_timetable in search_timetables:
             if not search_timetable.date or not search_timetable.day_of_week or not search_timetable.employee_id.id:
@@ -215,7 +215,7 @@ class ApiAccount(http.Controller):
     @http.route(['/api/schoolfee', '/api/schoolfee/page/<int:page>'], type='json', auth='user')
     def api_schoolfee(self, page=1, search='', search_in='all', **kw):
         # Utilisation de la fonction du helper
-        search_schoolfees, searchbar_inputs = Helpers.schoolfee(search, search_in)
+        search_schoolfees, searchbar_inputs = Helpers.schoolfee(search=search, search_in=search_in)
         total_amount = 0.0
         total_structure_amount = 0.0
         total_rest_amount = 0.0
@@ -251,7 +251,7 @@ class ApiAccount(http.Controller):
     @http.route(['/api/paymenthistory', '/api/paymenthistory/page/<int:page>'], type='json', auth='user')
     def api_paymenthistory(self, page=1, search='', search_in='all', **kw):
         # Utilisation de la fonction du helper
-        search_paymenthistories, searchbar_inputs = Helpers.paymenthistory(search, search_in)
+        search_paymenthistories, searchbar_inputs = Helpers.paymenthistory(search=search, search_in=search_in)
         total_amount = 0.0
         total_number_of_hours = 0.0
         paymenthistories = []
@@ -287,7 +287,7 @@ class ApiAccount(http.Controller):
     @http.route(['/api/notification', '/api/notification/page/<int:page>'], type='json', auth='user')
     def api_notification(self, page=1, search='', search_in='all', **kw):
         # Utilisation de la fonction du helper
-        search_notifications, searchbar_inputs = Helpers.notification(search, search_in)
+        search_notifications, searchbar_inputs = Helpers.notification(search=search, search_in=search_in)
         notifications = []
         for search_notification in search_notifications:
             notification = {}

@@ -187,7 +187,7 @@ class PortalAccount(portal.CustomerPortal):
         else:
             timetable_selected_month = int(selected_month) + 1
         # Utilisation de la fonction du helper
-        search_timetables, searchbar_inputs, search_month = Helpers.timetable(search, search_in, selected_month)
+        search_timetables, searchbar_inputs, search_month = Helpers.timetable(search=search, search_in=search_in, selected_month=selected_month)
         timetables = []
         for search_timetable in search_timetables:
             timetable = {}
@@ -307,7 +307,7 @@ class PortalAccount(portal.CustomerPortal):
         else:
             timetable_selected_month = int(selected_month) + 1
         # Utilisation de la fonction du helper
-        search_timetables, searchbar_inputs, search_month = Helpers.timetable(search, search_in, selected_month)
+        search_timetables, searchbar_inputs, search_month = Helpers.timetable(search=search, search_in=search_in, selected_month=selected_month)
         timetables = []
         for search_timetable in search_timetables:
             timetable = {}
@@ -459,7 +459,7 @@ class PortalAccount(portal.CustomerPortal):
     @http.route(['/my/schoolfee'], type='http', auth="user", website=True)
     def portal_schoolfee(self, search='', search_in='all', **kw):
         # Utilisation de la fonction du helper
-        search_schoolfees, searchbar_inputs = Helpers.schoolfee(search, search_in)
+        search_schoolfees, searchbar_inputs = Helpers.schoolfee(search=search, search_in=search_in)
         total_amount = 0.0
         total_structure_amount = 0.0
         total_rest_amount = 0.0
@@ -491,7 +491,7 @@ class PortalAccount(portal.CustomerPortal):
     @http.route(['/my/examscore'], type='http', auth="user", website=True)
     def portal_examscore(self, search='', search_in='all', **kw):
         # Utilisation de la fonction du helper
-        search_examscores, searchbar_inputs = Helpers.examscore(search, search_in)
+        search_examscores, searchbar_inputs = Helpers.examscore(search=search, search_in=search_in)
         examscores = []
         if http.request.env.user.student_id.id:
             user = http.request.env.user.student_id
@@ -643,7 +643,7 @@ class PortalAccount(portal.CustomerPortal):
     @http.route(['/my/paymenthistory'], type='http', auth="user", website=True)
     def portal_paymenthistory(self, search='', search_in='all', **kw):
         # Utilisation de la fonction du helper
-        search_paymenthistories, searchbar_inputs = Helpers.paymenthistory(search, search_in)
+        search_paymenthistories, searchbar_inputs = Helpers.paymenthistory(search=search, search_in=search_in)
         total_amount = 0.0
         total_number_of_hours = 0.0
         paymenthistories = []
@@ -715,7 +715,7 @@ class PortalAccount(portal.CustomerPortal):
         timetable_ids = [payslip['timetable_id'] for payslip in key_payslips.values()]
 
         # Utilisation de la fonction du helper
-        search_accountbalances, searchbar_inputs, search_month = Helpers.accountbalance(search, search_in, selected_month)
+        search_accountbalances, searchbar_inputs, search_month = Helpers.accountbalance(search=search, search_in=search_in, selected_month=selected_month)
         total_rate = 0.0
         total_number_of_hours = 0.0
         accountbalances = []
@@ -878,7 +878,7 @@ class PortalAccount(portal.CustomerPortal):
     @http.route(['/my/consumptionhour'], type='http', auth="user", website=True)
     def portal_consumptionhour(self, search='', search_in='all', **kw):
         # Utilisation de la fonction du helper
-        search_consumptionhours, searchbar_inputs = Helpers.consumptionhour(search, search_in)
+        search_consumptionhours, searchbar_inputs = Helpers.consumptionhour(search=search, search_in=search_in)
         consumptionhours = []
         for search_consumptionhour in search_consumptionhours:
             consumptionhour = {}
@@ -925,7 +925,7 @@ class PortalAccount(portal.CustomerPortal):
     @http.route(['/my/progressreport'], type='http', auth="user", website=True)
     def portal_progressreport(self, search='', search_in='all', **kw):
         # Utilisation de la fonction du helper
-        search_progressreports, searchbar_inputs = Helpers.progressreport(search, search_in)
+        search_progressreports, searchbar_inputs = Helpers.progressreport(search=search, search_in=search_in)
         progressreports = []
         for search_progressreport in search_progressreports:
             progressreport = {}
@@ -1003,7 +1003,7 @@ class PortalAccount(portal.CustomerPortal):
         params['class_name'] = class_id.name
         params['subject_id'] = subject_id.id
         params['subject_name'] = subject_id.name
-        search_subjectsessions, searchbar_inputs = Helpers.subjectsession(search, search_in, class_id=class_id, subject_id=subject_id)
+        search_subjectsessions, searchbar_inputs = Helpers.subjectsession(search=search, search_in=search_in, class_id=class_id, subject_id=subject_id)
         subjectsessions = []
         for search_subjectsession in search_subjectsessions:
             subjectsession = {}
@@ -1067,7 +1067,7 @@ class PortalAccount(portal.CustomerPortal):
         # Utilisation de la fonction du helper
         class_id = http.request.env['siantou.ems.core.class'].sudo().search([('id', '=', classe)], limit=1)
         subject_id = http.request.env['siantou.ems.core.subject'].sudo().search([('id', '=', subject)], limit=1)
-        search_reports, searchbar_inputs = Helpers.report(search, search_in, class_id, subject_id)
+        search_reports, searchbar_inputs = Helpers.report(search=search, search_in=search_in, class_id=class_id, subject_id=subject_id)
         report_ids = []
         for search_report in search_reports:
             report_ids.append(search_report.id)
@@ -1113,7 +1113,7 @@ class PortalAccount(portal.CustomerPortal):
         params['class_name'] = class_id.name
         params['subject_id'] = subject_id.id
         params['subject_name'] = subject_id.name
-        search_subjectsessions, searchbar_inputs = Helpers.subjectsession(search, search_in, class_id=class_id, subject_id=subject_id)
+        search_subjectsessions, searchbar_inputs = Helpers.subjectsession(search=search, search_in=search_in, class_id=class_id, subject_id=subject_id)
         subjectsessions = []
         for search_subjectsession in search_subjectsessions:
             subjectsession = {}
@@ -1218,7 +1218,6 @@ class PortalAccount(portal.CustomerPortal):
             ('group_parent_id.is_active', '=', True),
             ('group_parent_id.is_submit', '=', False),
             ('employee_id', '=', timetable.employee_id.id),
-            # ('subject_id', '=', timetable.subject_id.id),
             ('date', '=', timetable.date),
             ('start_time', '=', timetable.start_time),
             ('end_time', '=', timetable.end_time),
@@ -1269,7 +1268,7 @@ class PortalAccount(portal.CustomerPortal):
         params['subject_id'] = subject_id.id
         params['subject_name'] = subject_id.name
         params['session_id'] = session_id.id
-        search_subjectsessions, searchbar_inputs = Helpers.subjectsession(search, search_in, class_id=class_id, subject_id=subject_id)
+        search_subjectsessions, searchbar_inputs = Helpers.subjectsession(search=search, search_in=search_in, class_id=class_id, subject_id=subject_id)
         subjectsessions = []
         for search_subjectsession in search_subjectsessions:
             subjectsession = {}
@@ -1360,7 +1359,6 @@ class PortalAccount(portal.CustomerPortal):
             ('group_parent_id.is_active', '=', True),
             ('group_parent_id.is_submit', '=', False),
             ('employee_id', '=', timetable.employee_id.id),
-            # ('subject_id', '=', timetable.subject_id.id),
             ('date', '=', timetable.date),
             ('start_time', '=', timetable.start_time),
             ('end_time', '=', timetable.end_time),
@@ -1395,7 +1393,7 @@ class PortalAccount(portal.CustomerPortal):
     @http.route(['/my/calendar', '/my/calendar/page/<int:page>'], type='http', auth="user", website=True)
     def portal_calendar(self, page=1, search='', search_in='all', **kw):
         # Utilisation de la fonction du helper
-        search_calendars, searchbar_inputs, search_year = Helpers.calendar(search, search_in)
+        search_calendars, searchbar_inputs, search_year = Helpers.calendar(search=search, search_in=search_in)
         calendars = []
         for search_calendar in search_calendars:
             calendar = {}
@@ -1433,7 +1431,7 @@ class PortalAccount(portal.CustomerPortal):
     @http.route(['/my/notification'], type='http', auth="user", website=True)
     def portal_notification(self, search='', search_in='all', **kw):
         # Utilisation de la fonction du helper
-        search_notifications, searchbar_inputs = Helpers.notification(search, search_in)
+        search_notifications, searchbar_inputs = Helpers.notification(search=search, search_in=search_in)
         notifications = []
         for search_notification in search_notifications:
             notification = {}

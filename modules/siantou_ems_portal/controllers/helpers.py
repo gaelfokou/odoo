@@ -551,7 +551,7 @@ class Helpers:
         order = 'id asc'
 
         search_reports = []
-        reports = http.request.env['siantou.ems.core.progress.report'].sudo().search(search_domain, order=order).sorted(lambda rec: (rec.date, rec.id))
+        reports = http.request.env['siantou.ems.core.progress.report'].sudo().search(search_domain, order=order).sorted(lambda rec: rec.id)
         reports = list(reports)
         for report in reports:
             search_reports.append(report)

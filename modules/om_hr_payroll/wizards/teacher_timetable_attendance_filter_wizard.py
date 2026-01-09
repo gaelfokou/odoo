@@ -290,7 +290,6 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
                     domain = [
                         ('hourly_rate_id', '=', hourly_rate.id),
                         ('employee_id', '=', timetable.employee_id.id),
-                        # ('subject_id', '=', timetable.subject_id.id),
                     ]
 
                     teacher_hourly_rates = self.env['siantou.ems.core.teacher.hourly.rate'].search(domain, limit=1)

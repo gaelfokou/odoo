@@ -656,6 +656,40 @@ class ProgressReport(models.Model):
         report_action = self.env.ref('siantou_ems_core.action_report_progress_report')
         return report_action.report_action(self, data=data)
 
+    def update_progress_report_class(self, report):
+        try:
+            year_id = self.env['siantou.ems.core.year'].search([('is_active', '=', True)], limit=1)
+            if report.class_id.year_id.id != year_id.id:
+                class_id = self.env['siantou.ems.core.class'].search([
+                    ('name', '=', report.class_id.name),
+                    ('year_id', '=', year_id.id),
+                ], limit=1)
+                if class_id:
+                    report.write({
+                        'class_id': class_id.id,
+                    })
+            # self.env.cr.commit()
+        except psycopg2.errors.NotNullViolation as error:
+            _logger.info(f'----------- tototototototo Exception {error} -----------')
+        except psycopg2.Error as error:
+            _logger.info(f'----------- tototototototo Exception {error} -----------')
+        except Exception as error:
+            _logger.info(f'----------- tototototototo Exception {error} -----------')
+
+    def action_update_all_progress_report_class(self):
+        active_ids = self.env.context.get('active_ids', [])
+        reports = self.env['siantou.ems.core.progress.report'].browse(active_ids)
+        if len(active_ids) == 0:
+            raise UserError('Aucune donnée sélectionnée')
+
+        for report in reports:
+            self.update_progress_report_class(report)
+
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'reload',
+        }
+
     @staticmethod
     def format_subjectsession(data):
         subjectsessions = {}
