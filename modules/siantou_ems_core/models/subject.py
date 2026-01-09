@@ -648,7 +648,7 @@ class ProgressReport(models.Model):
         domains = [
             ('id', 'in', active_ids)
         ]
-        data = report_data.print_report_report_data(domains=domains)
+        data = report_data.print_progress_report_data(domains=domains)
 
         # Appeler le rapport PDF
         if len(data['docdata']['report_data']) == 0:

@@ -1083,24 +1083,18 @@ class PortalAccount(portal.CustomerPortal):
         params['class_name'] = class_id.name
         params['subject_id'] = subject_id.id
         params['subject_name'] = subject_id.name
-        search_progressreports, searchbar_inputs = Helpers.progressreport(search, search_in, class_id, subject_id)
-        progressreports = []
-        for search_progressreport in search_progressreports:
-            progressreport = {}
-            progressreport['id'] = search_progressreport.id
-            progressreports.append(progressreport)
-        progressreport_ids = []
-        for progressreport in progressreports:
-            progressreport_ids.append(progressreport['id'])
-        progressreport_ids = list(set(progressreport_ids))
+        search_reports, searchbar_inputs = Helpers.report(search, search_in, class_id, subject_id)
+        report_ids = []
+        for search_report in search_reports:
+            report_ids.append(search_report.id)
         report_name = 'siantou_ems_core.template_report_progress_report'
         report_action = 'siantou_ems_core.action_report_progress_report'
         pdf_report = http.request.env['ir.actions.report'].sudo()._get_report_from_name(report_action)
         report_data = http.request.env['progress.report.print.wizard'].create({})
         domain = [
-            ('id', 'in', progressreport_ids)
+            ('id', 'in', report_ids)
         ]
-        data = report_data.print_report_report_data(domains=domain)
+        data = report_data.print_progress_report_data(domains=domain)
         pdf, _ = pdf_report.sudo().with_context()._render_qweb_pdf(report_name, data=data)
         filename = 'Fiche de progression PDF.pdf'
         headers = [

@@ -40,7 +40,7 @@ class ProgressReportPrintWizard(models.TransientModel):
     _description = 'Assistant d\'impression des fiches de progression'
 
     def action_print_pdf(self):
-        data = self.print_report_report_data()
+        data = self.print_progress_report_data()
 
         # Appeler le rapport PDF
         if len(data['docdata']['report_data']) == 0:
@@ -48,7 +48,7 @@ class ProgressReportPrintWizard(models.TransientModel):
         report_action = self.env.ref('siantou_ems_core.action_report_class')
         return report_action.report_action(self, data=data)
 
-    def print_report_report_data(self, domains=None):
+    def print_progress_report_data(self, domains=None):
         # Récupérer les emplois du temps pour le semestre sélectionné
         domain = []
 
