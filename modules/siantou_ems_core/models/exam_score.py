@@ -331,20 +331,12 @@ class SubjectScore(models.Model):
 
     student_id_domain = fields.Binary(compute='_compute_class_domain', default=[])
 
-    @api.depends('student_id', 'anonymous', 'exam_id')
+    @api.depends('student_id', 'exam_id')
     def _compute_name(self):
         for record in self:
-            if record.exam_id.exam_type in ['sn', 'rsn']:
-                if record.exam_id.status in ['start_write', 'end_write']:
-                    anonymous = record.anonymous if record.anonymous else ''
-                    name = '{}'.format(anonymous)
-                else:
-                    anonymous = record.anonymous if record.anonymous else ''
-                    student_name = record.student_id.name if record.student_id.id else ''
-                    name = '{} - {}'.format(anonymous, student_name)
-            else:
-                student_name = record.student_id.name if record.student_id.id else ''
-                name = '{}'.format(student_name)
+            student_name = record.student_id.name if record.student_id.id else ''
+            exam_name = record.exam_id.name if record.exam_id.id else ''
+            name = '{} - {}'.format(student_name, exam_name)
             while True:
                 if name.startswith(' - '):
                     name = re.sub('^ - ', ' ', name)
@@ -360,20 +352,12 @@ class SubjectScore(models.Model):
             name = name.upper()
             record.name = name
 
-    @api.onchange('student_id', 'anonymous', 'exam_id')
+    @api.onchange('student_id', 'exam_id')
     def _onchange_name(self):
         for record in self:
-            if record.exam_id.exam_type in ['sn', 'rsn']:
-                if record.exam_id.status in ['start_write', 'end_write']:
-                    anonymous = record.anonymous if record.anonymous else ''
-                    name = '{}'.format(anonymous)
-                else:
-                    anonymous = record.anonymous if record.anonymous else ''
-                    student_name = record.student_id.name if record.student_id.id else ''
-                    name = '{} - {}'.format(anonymous, student_name)
-            else:
-                student_name = record.student_id.name if record.student_id.id else ''
-                name = '{}'.format(student_name)
+            student_name = record.student_id.name if record.student_id.id else ''
+            exam_name = record.exam_id.name if record.exam_id.id else ''
+            name = '{} - {}'.format(student_name, exam_name)
             while True:
                 if name.startswith(' - '):
                     name = re.sub('^ - ', ' ', name)

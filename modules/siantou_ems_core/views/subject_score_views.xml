@@ -6,11 +6,18 @@
             <field name="model">siantou.ems.core.subject.score</field>
             <field name="arch" type="xml">
                 <tree string="Notes d'examen">
-                    <field name="name"/>
+                    <!-- <field name="name"/> -->
                     <field name="exam_id"/>
-                    <field name="exam_type"/>
+                    <field name="student_id" invisible="exam_type in ['sn', 'rsn'] and status in ['start_write', 'end_write']"/>
+                    <field name="anonymous" invisible="exam_type not in ['sn', 'rsn']"/>
                     <field name="score"/>
                     <field name="note"/>
+                    <field name="exam_type"/>
+					<field name="status" widget="badge"
+                        decoration-muted="status == 'start'"
+                        decoration-primary="status == 'start_write'"
+                        decoration-warning="status == 'end_write'"
+                        decoration-success="status == 'end'"/>
                 </tree>
             </field>
         </record>
@@ -25,11 +32,12 @@
                             <field name="name"/>
                             <field name="exam_id" options="{'no_create': True}"/>
                             <field name="student_id_domain" invisible="1"/>
-                            <field name="student_id" options="{'no_create': True}" domain="student_id_domain"/>
-                            <field name="exam_type"/>
+                            <field name="student_id" invisible="exam_type in ['sn', 'rsn'] and status in ['start_write', 'end_write']" options="{'no_create': True}" domain="student_id_domain"/>
                             <field name="anonymous" invisible="exam_type not in ['sn', 'rsn']"/>
-                            <field name="score" widget="radio"/>
+                            <field name="score"/>
                             <field name="note"/>
+                            <field name="exam_type" widget="radio"/>
+                            <field name="status" invisible="1"/>
                         </group>
                     </sheet>
                     <div class="oe_chatter">

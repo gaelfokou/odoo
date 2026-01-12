@@ -12,6 +12,11 @@
                     <field name="class_id"/>
                     <field name="subject_id"/>
                     <field name="exam_type"/>
+					<field name="status" widget="badge"
+                        decoration-muted="status == 'start'"
+                        decoration-primary="status == 'start_write'"
+                        decoration-warning="status == 'end_write'"
+                        decoration-success="status == 'end'"/>
                     <field name="score_ids"/>
                 </tree>
             </field>
@@ -38,11 +43,15 @@
                             <field name="subject_id_domain" invisible="1"/>
                             <field name="subject_id" options="{'no_create': True}" domain="subject_id_domain"/>
                             <field name="exam_type" widget="radio"/>
+                            <field name="status" invisible="1"/>
                             <field name="score_ids" widget="one2many_list">
                                 <tree create="0" editable="bottom">
-                                    <field name="name"/>
+                                    <field name="student_id" invisible="exam_type in ['sn', 'rsn'] and status in ['start_write', 'end_write']"/>
+                                    <field name="anonymous" invisible="exam_type not in ['sn', 'rsn']"/>
                                     <field name="score"/>
                                     <field name="note"/>
+                                    <field name="exam_type" invisible="1"/>
+                                    <field name="status" invisible="1"/>
                                 </tree>
                             </field>
                         </group>
