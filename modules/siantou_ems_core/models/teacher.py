@@ -562,9 +562,8 @@ class TeacherSubjectPriority(models.Model):
         required=True
     )
 
-    # Contrainte SQL pour s'assurer de l'unicité du couple (enseignant, couple) dans la base de donnée
     _sql_constraints = [
-        ('unique_teacher_subject_rel', 'unique(employee_id, subject_id)', 'Un enseignant ne peut être lié à un même cours qu\'une seule fois.')
+        ('unique_teacher_subject', 'unique(employee_id, subject_id)', 'Un enseignant ne peut être lié à un même cours qu\'une seule fois.')
     ]
 
     # Contrainte logique pour s'assurer que l'utilisateur donne une priorité entre 1 et 10

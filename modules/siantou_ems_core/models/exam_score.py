@@ -111,19 +111,20 @@ class ExamScore(models.Model):
         tracking=True
     )
 
-    # Contrainte SQL pour s'assurer de l'unicité du couple (classe, couple) dans la base de donnée
     _sql_constraints = [
-        ('unique_class_subject_rel', 'unique(class_id, subject_id)', 'Un cours ne peut être lié à une même classe qu\'une seule fois.')
+        ('unique_semester_class_subject_exam_type', 'unique(semester_id, class_id, subject_id, exam_type)', 'Un cours ne peut être lié à une classe et un examen pour un même semestre qu\'une seule fois.')
     ]
 
     subject_id_domain = fields.Binary(compute='_compute_class_domain', default=[])
 
-    @api.depends('class_id', 'subject_id')
+    @api.depends('semester_id', 'class_id', 'subject_id', 'exam_type')
     def _compute_name(self):
         for record in self:
+            semester_name = record.semester_id.name if record.semester_id.id else ''
             class_name = record.class_id.name if record.class_id.id else ''
             subject_name = record.subject_id.name if record.subject_id.id else ''
-            name = '{} - {}'.format(class_name, subject_name)
+            exam_type_name = record.exam_type
+            name = '{} - {} - {} - {}'.format(semester_name, class_name, subject_name, exam_type_name)
             while True:
                 if name.startswith(' - '):
                     name = re.sub('^ - ', ' ', name)
@@ -139,12 +140,14 @@ class ExamScore(models.Model):
             name = name.upper()
             record.name = name
 
-    @api.onchange('class_id', 'subject_id')
+    @api.onchange('semester_id', 'class_id', 'subject_id', 'exam_type')
     def _onchange_name(self):
         for record in self:
+            semester_name = record.semester_id.name if record.semester_id.id else ''
             class_name = record.class_id.name if record.class_id.id else ''
             subject_name = record.subject_id.name if record.subject_id.id else ''
-            name = '{} - {}'.format(class_name, subject_name)
+            exam_type_name = record.exam_type
+            name = '{} - {} - {} - {}'.format(semester_name, class_name, subject_name, exam_type_name)
             while True:
                 if name.startswith(' - '):
                     name = re.sub('^ - ', ' ', name)
