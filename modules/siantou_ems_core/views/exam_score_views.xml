@@ -65,16 +65,30 @@
             </field>
         </record>
 
-        <record id="action_exam_score" model="ir.actions.act_window">
+        <record id="action_show_exam_score" model="ir.actions.act_window">
             <field name="name">Fiches d'examen</field>
             <field name="res_model">siantou.ems.core.exam.score</field>
             <field name="view_mode">tree,form</field>
         </record>
 
+        <record id="action_show_exam_score_2" model="ir.actions.act_window">
+            <field name="name">Fiches d'examen</field>
+            <field name="res_model">siantou.ems.core.exam.score</field>
+            <field name="view_mode">tree</field>
+            <field name="context">{'create': False, 'edit': False}</field>
+        </record>
+
         <menuitem id="siantou_menu_exam_score"
                 name="Fiches d'examen"
-                parent="menu_siantou_ems_core_employee"
-                action="action_exam_score"
+                parent="menu_siantou_ems_core_config_pe"
+                action="action_show_exam_score"
+                groups="siantou_ems_core.group_subject_admin,base.group_system"
+            sequence="20"/>
+        <menuitem id="siantou_menu_exam_score_2"
+                name="Fiches d'examen"
+                parent="menu_siantou_ems_core_program"
+                action="action_show_exam_score_2"
+                groups="siantou_ems_core.group_subject_admin,base.group_system"
             sequence="20"/>
     </data>
 </odoo>

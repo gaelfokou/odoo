@@ -41,7 +41,7 @@
              </field>
         </record>
 
-        <record id="action_oe_school_course_supervision" model="ir.actions.act_window">
+        <record id="action_show_oe_school_course_supervision" model="ir.actions.act_window">
             <field name="name">Tutelles académiques</field>
             <field name="res_model">oe.school.course.supervision</field>
             <field name="view_mode">tree,form</field>
@@ -55,7 +55,7 @@
             </field>
         </record>
 
-        <record id="action_oe_school_course_supervision_2" model="ir.actions.act_window">
+        <record id="action_show_oe_school_course_supervision_2" model="ir.actions.act_window">
             <field name="name">Tutelles académiques</field>
             <field name="res_model">oe.school.course.supervision</field>
             <field name="view_mode">tree</field>
@@ -74,14 +74,14 @@
             id="menu_siantou_ems_core_supervision"
             name="Tutelles académiques"
             parent="menu_siantou_ems_core_config_fa"
-            action="action_oe_school_course_supervision"
+            action="action_show_oe_school_course_supervision"
             groups="siantou_ems_core.group_courses_admin,base.group_system"
             sequence="7"/>
         <menuitem
             id="menu_siantou_ems_core_supervision_2"
             name="Tutelles académiques"
             parent="menu_siantou_ems_core_program"
-            action="action_oe_school_course_supervision_2"
+            action="action_show_oe_school_course_supervision_2"
             groups="siantou_ems_core.group_courses_admin,base.group_system"
             sequence="7"/>
     </data>

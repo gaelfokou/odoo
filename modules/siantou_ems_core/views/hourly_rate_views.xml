@@ -42,7 +42,7 @@
             </field>
         </record>
 
-        <record id="action_hourly_rate" model="ir.actions.act_window">
+        <record id="action_show_hourly_rate" model="ir.actions.act_window">
             <field name="name">Taux horaires standards</field>
             <field name="res_model">siantou.ems.core.hourly.rate</field>
             <field name="view_mode">tree,form</field>
@@ -51,7 +51,7 @@
         <menuitem id="siantou_menu_hourly_rate"
                 name="Taux horaires standards"
                 parent="menu_siantou_ems_core_employee"
-                action="action_hourly_rate"
+                action="action_show_hourly_rate"
             sequence="20"/>
     </data>
 </odoo>
