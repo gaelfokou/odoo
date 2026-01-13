@@ -7,11 +7,11 @@
             <field name="arch" type="xml">
                 <tree string="Notes d'examen">
                     <!-- <field name="name"/> -->
+                    <field name="score"/>
+                    <field name="note"/>
                     <field name="exam_id"/>
                     <field name="student_id" invisible="exam_type in ['sn', 'rsn'] and status in ['start_write', 'end_write']"/>
                     <field name="anonymous" invisible="exam_type not in ['sn', 'rsn']"/>
-                    <field name="score"/>
-                    <field name="note"/>
                     <field name="exam_type"/>
 					<field name="status" widget="badge"
                         decoration-muted="status == 'start'"
@@ -28,14 +28,16 @@
             <field name="arch" type="xml">
                 <form string="Note d'examen">
                     <sheet>
-                        <group>
+                        <group colspan="2">
                             <field name="name"/>
+                            <field name="score"/>
+                            <field name="note"/>
+                        </group>
+                        <group colspan="2">
                             <field name="exam_id" options="{'no_create': True}"/>
                             <field name="student_id_domain" invisible="1"/>
                             <field name="student_id" invisible="exam_type in ['sn', 'rsn'] and status in ['start_write', 'end_write']" options="{'no_create': True}" domain="student_id_domain"/>
                             <field name="anonymous" invisible="exam_type not in ['sn', 'rsn']"/>
-                            <field name="score"/>
-                            <field name="note"/>
                             <field name="exam_type" widget="radio"/>
                             <field name="status" invisible="1"/>
                         </group>

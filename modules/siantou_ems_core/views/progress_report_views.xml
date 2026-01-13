@@ -32,6 +32,7 @@
                             string="Mettre à jour classes" 
                             class="oe_highlight"/>
                     </header>
+                    <!-- <field name="name"/> -->
                     <field name="class_id"/>
                     <field name="subject_id"/>
                     <field name="percentage"/>
@@ -48,9 +49,12 @@
             <field name="arch" type="xml">
                 <form string="Fiches de progression">
                     <sheet>
-                        <group string="Informations sur la fiche de progression" col="4">
+                        <group string="Informations sur la fiche de progression">
                             <group colspan="2">
+                                <field name="name"/>
                                 <field name="class_id"/>
+                            </group>
+                            <group colspan="2">
                                 <field name="subject_id_domain" invisible="1"/>
                                 <field name="subject_id" options="{'no_create': True}" domain="subject_id_domain"/>
                                 <field name="percentage"/>

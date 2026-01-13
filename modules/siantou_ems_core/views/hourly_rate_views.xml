@@ -23,10 +23,12 @@
             <field name="arch" type="xml">
                 <form string="Taux horaire">
                     <sheet>
-                        <group>
+                        <group colspan="2">
                             <field name="name"/>
                             <field name="school_id"/>
                             <field name="cycle_id"/>
+                        </group>
+                        <group colspan="2">
                             <field name="diplome_availability_id"/>
                             <field name="level_id"/>
                             <field name="type_cour" widget="radio"/>

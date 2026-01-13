@@ -12,8 +12,8 @@
                 <tree string="Séances de cours">
                     <field name="name"/>
                     <field name="description"/>
-                    <field name="timetable_id"/>
                     <field name="report_id"/>
+                    <field name="timetable_id"/>
                 </tree>
             </field>
         </record>
@@ -27,16 +27,14 @@
             <field name="arch" type="xml">
                 <form string="Séances de cours">
                     <sheet>
-                        <group string="Informations sur la session de cours" col="4">
-                            <group colspan="2">
-                                <field name="name"/>
-                                <field name="description"/>
-                            </group>
-                            <group colspan="2">
-                                <field name="report_id"/>
-                                <field name="timetable_id_domain" invisible="1"/>
-                                <field name="timetable_id" options="{'no_create': True}" domain="timetable_id_domain"/>
-                            </group>
+                        <group colspan="2">
+                            <field name="name"/>
+                            <field name="description"/>
+                        </group>
+                        <group colspan="2">
+                            <field name="report_id" options="{'no_create': True}"/>
+                            <field name="timetable_id_domain" invisible="1"/>
+                            <field name="timetable_id" options="{'no_create': True}" domain="timetable_id_domain"/>
                         </group>
                     </sheet>
                 </form>

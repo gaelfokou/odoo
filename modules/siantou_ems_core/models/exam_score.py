@@ -87,7 +87,7 @@ class ExamScore(models.Model):
         ('sn', 'Session normale'),
         ('rcc', 'Rattrapage contrôle continu'),
         ('rsn', 'Rattrapage session normale'),
-    ], 'Statut',
+    ], 'Type d\'examen',
         default='cc',
     )
 
@@ -299,7 +299,7 @@ class SubjectScore(models.Model):
         ('sn', 'Session normale'),
         ('rcc', 'Rattrapage contrôle continu'),
         ('rsn', 'Rattrapage session normale'),
-    ], 'Statut',
+    ], 'Type d\'examen',
         related='exam_id.exam_type',
         store=True
     )

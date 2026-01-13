@@ -8,8 +8,8 @@
                 <tree string="Taux horaires personnalisés">
                     <!-- <field name="name"/> -->
                     <field name="employee_id"/>
-                    <field name="subject_id"/>
                     <field name="hourly_rate_id"/>
+                    <field name="subject_id"/>
                     <field name="type_cour"/>
                     <field name="rate"/>
                 </tree>
@@ -22,12 +22,14 @@
             <field name="arch" type="xml">
                 <form string="Taux horaire des enseignants">
                     <sheet>
-                        <group>
+                        <group colspan="2">
                             <field name="name"/>
                             <field name="employee_id"/>
+                        </group>
+                        <group colspan="2">
+                            <field name="hourly_rate_id" options="{'no_create': True}"/>
                             <field name="subject_id_domain" invisible="1"/>
                             <field name="subject_id" domain="subject_id_domain"/>
-                            <field name="hourly_rate_id"/>
                             <field name="type_cour"/>
                             <field name="rate"/>
                         </group>
