@@ -62,7 +62,7 @@
                         decoration-danger="status == 'absent'"
                         decoration-info="status in ['permission', 'delay']"
                         decoration-warning="status == 'exception'"/>
-					<field name="reason" invisible="status not in ['exception']" optional="hide"/>
+					<field name="reason" invisible="status not in ['present', 'absent', 'exception']" optional="hide"/>
 					<field name="worked_start_time" invisible="status not in ['present', 'permission', 'exception']" optional="hide"/>
 					<field name="worked_end_time" invisible="status not in ['present', 'permission', 'exception']" optional="hide"/>
 				</tree>
@@ -126,7 +126,7 @@
                             </field>
                             <field name="not_active_slotitems" invisible="1"/>
                             <field name="status" invisible="1"/>
-        					<field name="reason" invisible="status not in ['exception']" readonly="1"/>
+        					<field name="reason" invisible="status not in ['present', 'absent', 'exception']" readonly="1"/>
                             <field name="worked_start_time" invisible="status not in ['present', 'permission', 'exception']" readonly="1"/>
                             <field name="worked_end_time" invisible="status not in ['present', 'permission', 'exception']" readonly="1"/>
                             <field name="session_ids" widget="one2many_list">
