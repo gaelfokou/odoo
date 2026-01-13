@@ -30,8 +30,8 @@
                     <sheet>
                         <group colspan="2">
                             <field name="name"/>
-                            <field name="score"/>
-                            <field name="note"/>
+                            <field name="score" readonly="status != 'start_write'"/>
+                            <field name="note" readonly="status != 'start_write'"/>
                         </group>
                         <group colspan="2">
                             <field name="exam_id" options="{'no_create': True}"/>
