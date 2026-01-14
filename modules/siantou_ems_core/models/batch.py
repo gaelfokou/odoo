@@ -39,11 +39,8 @@ class StudentBatch(models.Model):
         required=True,
     )
 
-    student_ids = fields.Many2many(
+    student_ids = fields.One2many(
         'oe.school.student',
-        'batch_student_rel',
-        'batch_id',
-        'student_id',
         string='Liste des étudiants',
         compute='_compute_students',
         store=False

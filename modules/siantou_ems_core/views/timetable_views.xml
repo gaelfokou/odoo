@@ -89,32 +89,32 @@
                     </header>
 					<sheet>
                         <group>
-                            <field name="group_create_uid" invisible="1"/>
-                            <field name="group_id" readonly="group_create_uid != uid" options="{'no_create': True}" domain="['|', ('create_uid', '=', uid), '&amp;', ('expiry_date', '&gt;', datetime.date.today()), ('user_ids', '=', uid)]"/>
-                            <field name="batch_id" invisible="1" options="{'no_create': True}"/>
-                            <field name="date" invisible="1"/>
+                            <field name="is_readonly" invisible="1"/>
+                            <field name="group_id" readonly="is_readonly == True" options="{'no_create': True}" domain="['|', ('create_uid', '=', uid), '&amp;', ('expiry_date', '&gt;', datetime.date.today()), ('user_ids', '=', uid)]"/>
+                            <field name="batch_id" invisible="1"/>
                             <field name="semester_id" readonly="1" options="{'no_create': True}"/>
                             <field name="year_id" readonly="1" options="{'no_create': True}"/>
                             <field name="school_id_domain" invisible="1"/>
-                            <field name="school_id" options="{'no_create': True}" domain="school_id_domain"/>
+                            <field name="school_id" readonly="is_readonly == True" options="{'no_create': True}" domain="school_id_domain"/>
+                            <field name="cycle_id"/>
                             <field name="field_of_study_id" options="{'no_create': True}" domain="[('school_id', '=', school_id)]"/>
                             <field name="specialty_id_domain" invisible="1"/>
-                            <field name="specialty_id" options="{'no_create': True}" domain="specialty_id_domain"/>
-                            <field name="option_id" options="{'no_create': True}" domain="[('specialty_id', '=', specialty_id)]"/>
-                            <field name="level_id" options="{'no_create': True}" domain="[('semester_ids', '=', semester_id)]"/>
-                            <field name="class_id" options="{'no_create': True}" domain="[('field_of_study_id', '=', field_of_study_id), ('specialty_id', '=', specialty_id), ('option_id', '=', option_id), ('level_id', '=', level_id), ('year_id', '=', year_id)]"/>
-                            <field name="class_group_id" options="{'no_create': True}" domain="[('class_id', '=', class_id)]"/>
+                            <field name="specialty_id" readonly="is_readonly == True" options="{'no_create': True}" domain="specialty_id_domain"/>
+                            <field name="option_id" readonly="is_readonly == True" options="{'no_create': True}" domain="[('specialty_id', '=', specialty_id)]"/>
+                            <field name="level_id" readonly="is_readonly == True" options="{'no_create': True}" domain="[('semester_ids', '=', semester_id)]"/>
+                            <field name="class_id" readonly="is_readonly == True" options="{'no_create': True}" domain="[('field_of_study_id', '=', field_of_study_id), ('specialty_id', '=', specialty_id), ('option_id', '=', option_id), ('level_id', '=', level_id), ('year_id', '=', year_id)]"/>
+                            <field name="class_group_id" readonly="is_readonly == True" options="{'no_create': True}" domain="[('class_id', '=', class_id)]"/>
                             <!-- <field name="ue_id" readonly="1" options="{'no_create': True}" domain="[('class_ids', '=', class_id), ('semestre_id', '=', semester_id)]"/> -->
                             <field name="subject_id_domain" invisible="1"/>
-                            <field name="subject_id" options="{'no_create': True}" domain="subject_id_domain"/>
-                            <field name="building_id" options="{'no_create': True}"/>
-                            <field name="classroom_id" options="{'no_create': True}" domain="[('building_id', '=', building_id)]"/>
-                            <field name="employee_id" options="{'no_create': True}" domain="[('is_teacher', '=', True), ('subject_ids', '=', subject_id)]"/>
-                            <field name="date" invisible="id == False or start_time == end_time"/>
+                            <field name="subject_id" readonly="is_readonly == True" options="{'no_create': True}" domain="subject_id_domain"/>
+                            <field name="building_id" readonly="is_readonly == True" options="{'no_create': True}"/>
+                            <field name="classroom_id" readonly="is_readonly == True" options="{'no_create': True}" domain="[('building_id', '=', building_id)]"/>
+                            <field name="employee_id" readonly="is_readonly == True" options="{'no_create': True}" domain="[('is_teacher', '=', True), ('subject_ids', '=', subject_id)]"/>
+                            <field name="date" readonly="is_readonly == True" invisible="id == False or start_time == end_time"/>
         					<field name="day_of_week" invisible="id == False or start_time == end_time"/>
-                            <field name="start_time" invisible="id == False or start_time == end_time"/>
-                            <field name="end_time" invisible="id == False or start_time == end_time"/>
-                            <field name="subject_day_hour_ids" invisible="id != False and start_time != end_time" context="{'default_group_id': group_id}" widget="one2many_list">
+                            <field name="start_time" readonly="is_readonly == True" invisible="id == False or start_time == end_time"/>
+                            <field name="end_time" readonly="is_readonly == True" invisible="id == False or start_time == end_time"/>
+                            <field name="subject_day_hour_ids" readonly="is_readonly == True" invisible="id != False and start_time != end_time" context="{'default_group_id': group_id}" widget="one2many_list">
                                 <tree edit="1" create="1">
                                     <field name="group_id"/>
                                     <field name="start_date"/>
@@ -130,7 +130,7 @@
         					<field name="reason" invisible="status not in ['present', 'absent', 'exception']" readonly="1"/>
                             <field name="worked_start_time" invisible="status not in ['present', 'permission', 'exception']" readonly="1"/>
                             <field name="worked_end_time" invisible="status not in ['present', 'permission', 'exception']" readonly="1"/>
-                            <field name="session_ids" widget="one2many_list">
+                            <field name="session_ids" readonly="is_readonly == True" widget="one2many_list">
                                 <tree>
                                     <field name="name"/>
                                     <field name="description"/>

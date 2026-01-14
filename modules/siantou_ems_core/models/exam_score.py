@@ -105,7 +105,7 @@ class ExamScore(models.Model):
         ('start_write', 'Début saisie'),
         ('end_write', 'Fin saisie'),
         ('end', 'Fin'),
-    ], 'Statut',
+    ], string='Statut',
         related='status',
         store=True,
         tracking=True
@@ -299,7 +299,7 @@ class SubjectScore(models.Model):
         ('sn', 'Session normale'),
         ('rcc', 'Rattrapage contrôle continu'),
         ('rsn', 'Rattrapage session normale'),
-    ], 'Type d\'examen',
+    ], string='Type d\'examen',
         related='exam_id.exam_type',
         store=True
     )
@@ -309,7 +309,7 @@ class SubjectScore(models.Model):
         ('start_write', 'Début saisie'),
         ('end_write', 'Fin saisie'),
         ('end', 'Fin'),
-    ], 'Statut',
+    ], string='Statut',
         related='exam_id.status',
         store=True
     )

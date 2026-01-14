@@ -70,12 +70,12 @@ class HrPayslip(models.Model):
         'hr.payslip.input', 'payslip_id',
         string='Payslip Inputs', copy=True
     )
-    paid = fields.Boolean(string='Made Payment Order ? ', copy=False)
+    paid = fields.Boolean(string='Made Payment Order ?', copy=False)
     note = fields.Text(string='Internal Note')
     contract_id = fields.Many2one('hr.contract', string='Contract')
     details_by_salary_rule_category = fields.One2many('hr.payslip.line',
         compute='_compute_details_by_salary_rule_category', string='Details by Salary Rule Category')
-    credit_note = fields.Boolean(string='Credit Note',
+    credit_note = fields.Boolean(string='Credit Note ?',
         help="Indicates this payslip has a refund of another")
     payslip_run_id = fields.Many2one('hr.payslip.run', string='Payslip Batches', copy=False)
     payslip_count = fields.Integer(compute='_compute_payslip_count', string="Payslip Computation Details")

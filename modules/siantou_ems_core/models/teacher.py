@@ -72,9 +72,7 @@ class HrEmployee(models.Model):
     # Relation avec les emplois du temps
     timetable_ids = fields.One2many(
         'siantou.ems.timetable.timetable',
-        'employee_id',                     # Champ de relation dans le modèle Timetable
         string='Emplois du temps',
-        domain="['|', '&', ('group_id.is_active', '=', True), ('group_id.is_submit', '=', False), '&', ('group_parent_id.is_active', '=', True), ('group_parent_id.is_submit', '=', False), ('employee_id', '=', id)]",
         compute='_compute_timetables',
         store=False
     )

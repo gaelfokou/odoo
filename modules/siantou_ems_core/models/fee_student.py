@@ -8,7 +8,7 @@ class FeeStruct(models.Model):
 
     code = fields.Char(string="Code", required=True)
     name = fields.Char(string='Nom', required=True)
-    is_active = fields.Boolean(string='Actif', default=True)
+    is_active = fields.Boolean(string='Actif ?', default=True)
     company_id = fields.Many2one('res.company',
         string='Université', index=True,
         default=lambda self: self.env.company,

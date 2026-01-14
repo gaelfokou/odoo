@@ -36,11 +36,8 @@ class EducationClass(models.Model):
         string='Liste des étudiants inscrits',
     )
 
-    student_ids = fields.Many2many(
+    student_ids = fields.One2many(
         'oe.school.student',
-        'class_student_rel',
-        'class_id',
-        'student_id',
         string='Liste des étudiants',
         compute='_compute_students',
         store=False
@@ -61,9 +58,7 @@ class EducationClass(models.Model):
 
     timetable_ids = fields.One2many(
         'siantou.ems.timetable.timetable',
-        'class_id',
         string='Emplois du temps',
-        domain="['|', '&', ('group_id.is_active', '=', True), ('group_id.is_submit', '=', False), '&', ('group_parent_id.is_active', '=', True), ('group_parent_id.is_submit', '=', False), ('class_id', '=', id)]",
         compute='_compute_timetables',
         store=False
     )
@@ -183,7 +178,7 @@ class EducationClass(models.Model):
                 ('id', 'in', students),
             ])
 
-            record.student_ids = [(6, 0, student_ids.ids)]
+            record.student_ids = student_ids
 
     @api.onchange('student_enroll_ids')
     def _onchange_students(self):

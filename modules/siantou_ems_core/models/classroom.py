@@ -96,16 +96,14 @@ class Classroom(models.Model):
     # Relation avec les emplois du temps
     timetable_ids = fields.One2many(
         'siantou.ems.timetable.timetable',
-        'classroom_id',                     # Champ de relation dans le modèle Timetable
         string='Emplois du temps',
-        domain="['|', '&', ('group_id.is_active', '=', True), ('group_id.is_submit', '=', False), '&', ('group_parent_id.is_active', '=', True), ('group_parent_id.is_submit', '=', False), ('classroom_id', '=', id)]",
         compute='_compute_timetables',
         store=False
     )
 
-    is_cours_active = fields.Boolean(string="Actif pour les cours", default=False)
+    is_cours_active = fields.Boolean(string='Actif pour les cours ?', default=False)
 
-    is_examen_active = fields.Boolean(string="Actif pour les examens", default=False)
+    is_examen_active = fields.Boolean(string='Actif pour les examens ?', default=False)
 
     # Contrainte SQL pour garantir que le code de la salle de classe est unique
     _sql_constraints = [

@@ -40,11 +40,8 @@ class Student(models.Model):
         'siantou.ems.core.student.batch',
         string='Lot de l\'étudiant',
     )
-    batch_ids = fields.Many2many(
+    batch_ids = fields.One2many(
         'siantou.ems.core.student.batch',
-        'batch_student_rel',
-        'student_id',
-        'batch_id',
         string='Lots d\'étudiants',
         compute='_compute_batchs',
         store=False
@@ -108,7 +105,7 @@ class Student(models.Model):
         string="Nationalité(Pays d'origine)",
     )
     autre = fields.Char(string="Autre pays")
-    is_autre_pays = fields.Boolean(string="Autre pays ?", default=False)
+    is_autre_pays = fields.Boolean(string='Autre pays ?', default=False)
     lieu_residence = fields.Char(string="Lieu de résidence")
     email = fields.Char(string="E-mail")
     private_email = fields.Char(string="Adresse e-mail privée")
@@ -152,7 +149,6 @@ class Student(models.Model):
     timetable_ids = fields.One2many(
         'siantou.ems.timetable.timetable',
         string='Emplois du temps',
-        domain="['|', '&', ('group_id.is_active', '=', True), ('group_id.is_submit', '=', False), '&', ('group_parent_id.is_active', '=', True), ('group_parent_id.is_submit', '=', False), ('class_id', '=', class_id)]",
         compute='_compute_timetables',
         store=False
     )

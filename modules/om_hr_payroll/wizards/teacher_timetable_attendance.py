@@ -74,59 +74,59 @@ class TeacherTimetableAttendance(models.TransientModel):
     # Enseignant lié à la programmation de cours
     employee_id = fields.Many2one(
         'hr.employee',
-        'Enseignant',
+        string='Enseignant',
         related='timetable_id.employee_id',
         store=True
     )
 
     identifier = fields.Char(
-        'Matricule',
+        string='Matricule',
         related='employee_id.identifier',
         store=True
     )
 
     is_teacher = fields.Boolean(
-        'Est un enseignant',
+        string='Est un enseignant',
         related='employee_id.is_teacher',
         store=True
     )
 
     is_permanent = fields.Boolean(
-        'Est un permanent',
+        string='Est un permanent',
         related='employee_id.is_permanent',
         store=True
     )
 
     date = fields.Date(
-        'Date',
+        string='Date',
         related='timetable_id.date',
         store=True
     )
 
     # Heure de début du cours
     start_time = fields.Float(
-        'Heure de début',
+        string='Heure de début',
         related='timetable_id.start_time',
         store=True
     )
 
     # Heure de fin du cours
     end_time = fields.Float(
-        'Heure de fin',
+        string='Heure de fin',
         related='timetable_id.end_time',
         store=True
     )
 
     # Heure de début du cours
     worked_start_time = fields.Float(
-        'Heure de début effectuée',
+        string='Heure de début effectuée',
         related='timetable_id.worked_start_time',
         store=True
     )
 
     # Heure de fin du cours
     worked_end_time = fields.Float(
-        'Heure de fin effectuée',
+        string='Heure de fin effectuée',
         related='timetable_id.worked_end_time',
         store=True
     )
@@ -169,7 +169,7 @@ class TeacherTimetableAttendance(models.TransientModel):
         ('permission', 'Permission'),
         ('exception', 'Exception'),
         ('delay', 'Retard'),
-    ], 'Statut',
+    ], string='Statut',
         related='timetable_id.status',
         store=True
     )

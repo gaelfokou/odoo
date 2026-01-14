@@ -34,7 +34,7 @@ class FeeEnrollment(models.Model):
     )
     montant_paie = fields.Monetary(string="Montant à payer", required=True)
     currency_id = fields.Many2one('res.currency', string='Currency', required=True, default=lambda self: self.env.company.currency_id)
-    is_active = fields.Boolean(string='Actif', default=False)
+    is_active = fields.Boolean(string='Actif ?', default=False)
 
     @api.constrains('journal_id')
     def _check_journal_id(self):

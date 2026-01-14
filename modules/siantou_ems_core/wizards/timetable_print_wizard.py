@@ -74,7 +74,7 @@ class TimetablePrintWizard(models.TransientModel):
 
     group_id = fields.Many2one(
         'siantou.ems.timetable.group',
-        'Version d\'emploi du temps',
+        string='Version d\'emploi du temps',
         required=True
     )
 

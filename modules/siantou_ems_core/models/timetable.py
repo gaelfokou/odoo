@@ -93,7 +93,7 @@ class TimetableSubjectHour(models.Model):
 
     group_id = fields.Many2one(
         'siantou.ems.timetable.group',
-        'Version d\'emploi du temps',
+        string='Version d\'emploi du temps',
         required=True,
         ondelete='cascade'
     )
@@ -181,7 +181,7 @@ class Timetable(models.Model):
 
     year_id = fields.Many2one(
         'siantou.ems.core.year',
-        'Année académique',
+        string='Année académique',
         related='semester_id.year_id',
         store=True
     )
@@ -463,7 +463,7 @@ class Timetable(models.Model):
     # Version auquel appartient l'emploi du temps
     group_id = fields.Many2one(
         'siantou.ems.timetable.group',
-        'Version d\'emploi du temps',
+        string='Version d\'emploi du temps',
         required=True,
         # default=_default_group,
         ondelete='cascade'
@@ -471,23 +471,42 @@ class Timetable(models.Model):
 
     group_parent_id = fields.Many2one(
         'siantou.ems.timetable.group',
-        'Version d\'emploi du temps parent',
+        string='Version d\'emploi du temps parent',
         related='group_id.group_parent_id',
         store=True
     )
 
     group_child_id = fields.Many2one(
         'siantou.ems.timetable.group',
-        'Version d\'emploi du temps soumise',
+        string='Version d\'emploi du temps soumise',
         domain="[('is_submit', '=', True), ('semester_id', '=', semester_id), ('status', '=', 'valid')]",
     )
 
     group_create_uid = fields.Many2one(
         'res.users',
-        string="Group created by",
+        string='Created by',
         related='group_id.create_uid',
         store=True
     )
+
+    expiry_date = fields.Date(
+        string='Date d\'expiration',
+        related='group_id.expiry_date',
+        store=True
+    )
+
+    is_readonly = fields.Boolean(string='Lecture unique ?', compute='_compute_readonly', store=False)
+
+    @api.depends('group_create_uid', 'expiry_date')
+    def _compute_readonly(self):
+        for record in self:
+            if record.group_create_uid.id == self.env.user.id:
+                record.is_readonly = False
+            else:
+                if record.expiry_date <= date.today():
+                    record.is_readonly = True
+                else:
+                    record.is_readonly = False
 
     @api.constrains('date', 'group_id')
     def _constrains_date(self):
@@ -521,7 +540,7 @@ class Timetable(models.Model):
         ('permission', 'Permission'),
         ('exception', 'Exception'),
         ('delay', 'Retard'),
-    ], 'Statut',
+    ], string='Statut',
         related='status',
         store=True,
         tracking=True
@@ -1251,9 +1270,9 @@ class TimetableGroup(models.Model):
         required=True
     )
 
-    is_active = fields.Boolean(string='Actif', default=False)
+    is_active = fields.Boolean(string='Actif ?', default=False)
 
-    is_submit = fields.Boolean(string="Soumis", default=True)
+    is_submit = fields.Boolean(string='Soumis ?', default=True)
 
     user_ids = fields.Many2many(
         'res.users',
@@ -1311,7 +1330,7 @@ class TimetableGroup(models.Model):
         ('valid', 'Valide'),
         ('invalid', 'Invalide'),
         ('draft', 'Brouillon'),
-    ], 'Statut',
+    ], string='Statut',
         related='status',
         store=True,
         tracking=True
@@ -1326,8 +1345,7 @@ class TimetableGroup(models.Model):
         return expiry_date
 
     expiry_date = fields.Date(
-        'Date d\'expiration',
-        required=True,
+        string='Date d\'expiration',
         default=_default_expiry_date,
     )
 
@@ -1566,7 +1584,7 @@ class TimetableSlotItem(models.Model):
         widget='radio'
     )
 
-    is_active = fields.Boolean(string='Actif', default=True)
+    is_active = fields.Boolean(string='Actif ?', default=True)
 
     @staticmethod
     def are_almost_equal(a, b, tolerance=1e-9):
@@ -1624,7 +1642,7 @@ class TimetableSlot(models.Model):
         string='Filières'
     )
 
-    is_active = fields.Boolean(string='Actif', default=False)
+    is_active = fields.Boolean(string='Actif ?', default=False)
 
     @api.constrains('is_active')
     def _constrains_default(self):
