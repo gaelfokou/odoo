@@ -482,6 +482,13 @@ class Timetable(models.Model):
         domain="[('is_submit', '=', True), ('semester_id', '=', semester_id), ('status', '=', 'valid')]",
     )
 
+    group_create_uid = fields.Many2one(
+        'res.users',
+        string="Group created by",
+        related='group_id.create_uid',
+        store=True
+    )
+
     @api.constrains('date', 'group_id')
     def _constrains_date(self):
         for record in self:

@@ -89,7 +89,8 @@
                     </header>
 					<sheet>
                         <group>
-                            <field name="group_id" options="{'no_create': True}" domain="['|', ('create_uid', '=', uid), '&amp;', ('expiry_date', '&gt;', datetime.date.today()), ('user_ids', '=', uid)]"/>
+                            <field name="group_create_uid" invisible="1"/>
+                            <field name="group_id" readonly="group_create_uid != uid" options="{'no_create': True}" domain="['|', ('create_uid', '=', uid), '&amp;', ('expiry_date', '&gt;', datetime.date.today()), ('user_ids', '=', uid)]"/>
                             <field name="batch_id" invisible="1" options="{'no_create': True}"/>
                             <field name="date" invisible="1"/>
                             <field name="semester_id" readonly="1" options="{'no_create': True}"/>
