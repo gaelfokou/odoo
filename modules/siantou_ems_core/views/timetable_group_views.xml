@@ -17,6 +17,7 @@
                     </header>
                     <field name="name"/>
                     <field name="semester_id"/>
+                    <field name="expiry_date"/>
                     <field name="is_submit"/>
                     <field name="is_active"/>
 					<field name="status" widget="badge"
@@ -43,6 +44,7 @@
                     </header>
                     <field name="name"/>
                     <field name="semester_id"/>
+                    <field name="expiry_date"/>
                     <field name="is_submit"/>
                     <field name="is_active"/>
 					<field name="status" widget="badge"
@@ -79,6 +81,7 @@
                             <field name="user_ids" widget="many2many_tags"/>
                             <field name="school_ids" widget="many2many_tags"/>
                             <field name="create_uid"/>
+                            <field name="expiry_date"/>
                             <field name="timetable_ids" domain="['|', '&amp;', ('group_id.is_active', '=', True), ('group_id.is_submit', '=', False), '&amp;', ('group_parent_id.is_active', '=', True), ('group_parent_id.is_submit', '=', False)]" widget="one2many_list">
                                 <tree edit="1" create="1">
                                     <field name="group_id"/>
@@ -142,6 +145,7 @@
                             <field name="user_ids" widget="many2many_tags"/>
                             <field name="school_ids" widget="many2many_tags"/>
                             <field name="create_uid"/>
+                            <field name="expiry_date"/>
                             <field name="timetable_ids" domain="['|', '&amp;', ('group_id.is_active', '=', True), ('group_id.is_submit', '=', False), '&amp;', ('group_parent_id.is_active', '=', True), ('group_parent_id.is_submit', '=', False)]" widget="one2many_list">
                                 <tree edit="1" create="1">
                                     <field name="group_id"/>

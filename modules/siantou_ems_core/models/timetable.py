@@ -1314,6 +1314,16 @@ class TimetableGroup(models.Model):
         string='Description de la version',
     )
 
+    def _default_expiry_date(self):
+        expiry_date = (datetime.now() + relativedelta(months=+1, day=1, days=-1)).date()
+        return expiry_date
+
+    expiry_date = fields.Date(
+        'Date d\'expiration',
+        required=True,
+        default=_default_expiry_date,
+    )
+
     @api.depends('is_submit', 'is_active')
     def _compute_name(self):
         for record in self:
