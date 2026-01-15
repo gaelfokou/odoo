@@ -79,7 +79,8 @@
                             <field name="group_parent_id" invisible="1"/>
                             <field name="group_child_ids" readonly="is_readonly == True" invisible="is_submit == True" widget="many2many_tags"/>
                             <field name="is_active" readonly="is_readonly == True" invisible="is_submit == True"/>
-                            <field name="user_ids" widget="many2many_tags" readonly="is_readonly == True"/>
+                            <field name="read_user_ids" widget="many2many_tags" readonly="is_readonly == True"/>
+                            <field name="write_user_ids" widget="many2many_tags" readonly="is_readonly == True"/>
                             <field name="school_ids" widget="many2many_tags" readonly="is_readonly == True"/>
                             <field name="create_uid"/>
                             <field name="expiry_date" readonly="is_readonly == True"/>
@@ -144,7 +145,8 @@
                             <field name="group_parent_id" invisible="1"/>
                             <field name="group_child_ids" readonly="is_readonly == True" invisible="is_submit == True" widget="many2many_tags"/>
                             <field name="is_active" readonly="is_readonly == True" invisible="is_submit == True"/>
-                            <field name="user_ids" widget="many2many_tags" readonly="is_readonly == True"/>
+                            <field name="read_user_ids" widget="many2many_tags" readonly="is_readonly == True"/>
+                            <field name="write_user_ids" widget="many2many_tags" readonly="is_readonly == True"/>
                             <field name="school_ids" widget="many2many_tags" readonly="is_readonly == True"/>
                             <field name="create_uid"/>
                             <field name="expiry_date" readonly="is_readonly == True"/>
@@ -197,7 +199,7 @@
                 eval="[(5, 0, 0),
                 (0, 0, {'view_mode': 'tree', 'view_id': ref('view_timetable_group_tree')}),
                 (0, 0, {'view_mode': 'form', 'view_id': ref('view_timetable_group_form')})]"/>
-            <field name="domain">['|', '&amp;', ('is_submit', '=', False), ('create_uid', '=', uid), '&amp;', '&amp;', ('is_submit', '=', False), ('expiry_date', '&gt;', datetime.date.today()), ('user_ids', '=', uid)]</field>
+            <field name="domain">['|', '&amp;', ('is_submit', '=', False), ('create_uid', '=', uid), '&amp;', '&amp;', ('is_submit', '=', False), ('expiry_date', '&gt;', datetime.date.today()), ('write_user_ids', '=', uid)]</field>
             <field name="context">{'default_is_submit': False, 'default_status': 'valid'}</field>
             <field name="help" type="html">
                 <p class="o_view_nocontent_smiling_face">
@@ -225,7 +227,7 @@
                 eval="[(5, 0, 0),
                 (0, 0, {'view_mode': 'tree', 'view_id': ref('view_timetable_group_tree_submit')}),
                 (0, 0, {'view_mode': 'form', 'view_id': ref('view_timetable_group_form_submit')})]"/>
-            <field name="domain">['|', '&amp;', ('is_submit', '=', True), ('create_uid', '=', uid), '&amp;', '&amp;', ('is_submit', '=', True), ('expiry_date', '&gt;', datetime.date.today()), ('user_ids', '=', uid)]</field>
+            <field name="domain">['|', '&amp;', ('is_submit', '=', True), ('create_uid', '=', uid), '&amp;', '&amp;', ('is_submit', '=', True), ('expiry_date', '&gt;', datetime.date.today()), ('write_user_ids', '=', uid)]</field>
             <field name="context">{'default_is_submit': True}</field>
             <field name="help" type="html">
                 <p class="o_view_nocontent_smiling_face">

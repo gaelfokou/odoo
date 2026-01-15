@@ -491,7 +491,7 @@ class Timetable(models.Model):
                 if record.group_id.create_uid.id == self.env.user.id:
                     record.is_readonly = False
                 else:
-                    if self.env.user.id in record.group_id.user_ids.ids:
+                    if self.env.user.id in record.group_id.write_user_ids.ids:
                         if record.group_id.expiry_date <= date.today():
                             record.is_readonly = True
                         else:
@@ -1267,12 +1267,20 @@ class TimetableGroup(models.Model):
 
     is_submit = fields.Boolean(string='Soumis ?', default=True)
 
-    user_ids = fields.Many2many(
+    read_user_ids = fields.Many2many(
         'res.users',
-        'user_group_rel',
+        'read_user_group_rel',
         'group_id',
         'user_id',
-        string='Utilisateurs associés',
+        string='Utilisateurs associés en lecture',
+    )
+
+    write_user_ids = fields.Many2many(
+        'res.users',
+        'write_user_group_rel',
+        'group_id',
+        'user_id',
+        string='Utilisateurs associés en écriture',
     )
 
     group_parent_id = fields.Many2one(
@@ -1344,14 +1352,14 @@ class TimetableGroup(models.Model):
 
     is_readonly = fields.Boolean(string='Lecture unique ?', compute='_compute_readonly', store=False)
 
-    @api.depends('expiry_date', 'user_ids')
+    @api.depends('expiry_date', 'write_user_ids')
     def _compute_readonly(self):
         for record in self:
             if record.create_uid.id:
                 if record.create_uid.id == self.env.user.id:
                     record.is_readonly = False
                 else:
-                    if self.env.user.id in record.user_ids.ids:
+                    if self.env.user.id in record.write_user_ids.ids:
                         if record.expiry_date <= date.today():
                             record.is_readonly = True
                         else:

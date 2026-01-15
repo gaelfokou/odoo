@@ -9,7 +9,7 @@
                     <group>
                         <field name="year_id" options="{'no_create': True}"/>
                         <field name="semester_id" options="{'no_create': True}" domain="[('year_id', '=', year_id)]"/>
-                        <field name="group_id" options="{'no_create': True}" domain="['|', ('create_uid', '=', uid), '&amp;', ('expiry_date', '&gt;', datetime.date.today()), ('user_ids', '=', uid)]"/>
+                        <field name="group_id" options="{'no_create': True}" domain="['|', ('create_uid', '=', uid), '&amp;', ('expiry_date', '&gt;', datetime.date.today()), '|', ('read_user_ids', '=', uid), ('write_user_ids', '=', uid)]"/>
                         <field name="school_id_domain" invisible="1"/>
                         <field name="school_id" options="{'no_create': True}" domain="school_id_domain"/>
                         <field name="field_of_study_id" options="{'no_create': True}" domain="[('school_id', '=', school_id)]"/>

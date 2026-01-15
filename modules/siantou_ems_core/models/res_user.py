@@ -20,12 +20,20 @@ class ResUsers(models.Model):
         ondelete='cascade',
     )
 
-    group_ids = fields.Many2many(
+    read_group_ids = fields.Many2many(
         'siantou.ems.timetable.group',
-        'user_group_rel',
+        'read_user_group_rel',
         'user_id',
         'group_id',
-        string='Versions d\'emploi du temps',
+        string='Versions d\'emploi du temps en lecture',
+    )
+
+    write_group_ids = fields.Many2many(
+        'siantou.ems.timetable.group',
+        'write_user_group_rel',
+        'user_id',
+        'group_id',
+        string='Versions d\'emploi du temps en écriture',
     )
 
     def create_user_employee_or_student(self, user):
