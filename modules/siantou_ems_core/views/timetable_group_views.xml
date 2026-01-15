@@ -63,26 +63,27 @@
             <field name="arch" type="xml">
                 <form string="Versions d'emploi du temps publiées">
                     <header invisible="is_submit == False">
-                        <button name="state_pending_timetable_group" class="oe_highlight" invisible="state in ['pending'] or create_uid != uid" string="En attente" type="object"/>
-                        <button name="state_valid_timetable_group" class="oe_highlight" invisible="state in ['valid'] or create_uid != uid" string="Valide" type="object"/>
-                        <button name="state_invalid_timetable_group" class="oe_highlight" invisible="state in ['invalid'] or create_uid != uid" string="Invalide" type="object"/>
-                        <button name="state_draft_timetable_group" class="oe_highlight" invisible="state in ['draft'] or create_uid != uid" string="Brouillon" type="object"/>
+                        <button name="state_pending_timetable_group" class="oe_highlight" invisible="state in ['pending'] or is_readonly == True" string="En attente" type="object"/>
+                        <button name="state_valid_timetable_group" class="oe_highlight" invisible="state in ['valid'] or is_readonly == True" string="Valide" type="object"/>
+                        <button name="state_invalid_timetable_group" class="oe_highlight" invisible="state in ['invalid'] or is_readonly == True" string="Invalide" type="object"/>
+                        <button name="state_draft_timetable_group" class="oe_highlight" invisible="state in ['draft'] or is_readonly == True" string="Brouillon" type="object"/>
                         <field name="state" widget="statusbar" statusbar_visible="pending,valid,invalid,draft"/>
                     </header>
 					<sheet>
                         <group>
-                            <field name="name" readonly="0"/>
-                            <field name="description" readonly="create_uid != uid"/>
-                            <field name="semester_id" readonly="create_uid != uid"/>
+                            <field name="is_readonly" invisible="1"/>
+                            <field name="name"/>
+                            <field name="description" readonly="is_readonly == True"/>
+                            <field name="semester_id" readonly="is_readonly == True"/>
                             <field name="is_submit" invisible="1"/>
                             <field name="group_parent_id" invisible="1"/>
-                            <field name="group_child_ids" readonly="create_uid != uid" invisible="is_submit == True" widget="many2many_tags"/>
-                            <field name="is_active" readonly="create_uid != uid" invisible="is_submit == True"/>
-                            <field name="user_ids" widget="many2many_tags" readonly="create_uid != uid"/>
-                            <field name="school_ids" widget="many2many_tags" readonly="create_uid != uid"/>
+                            <field name="group_child_ids" readonly="is_readonly == True" invisible="is_submit == True" widget="many2many_tags"/>
+                            <field name="is_active" readonly="is_readonly == True" invisible="is_submit == True"/>
+                            <field name="user_ids" widget="many2many_tags" readonly="is_readonly == True"/>
+                            <field name="school_ids" widget="many2many_tags" readonly="is_readonly == True"/>
                             <field name="create_uid"/>
-                            <field name="expiry_date" readonly="create_uid != uid"/>
-                            <field name="timetable_ids" readonly="create_uid != uid" domain="['|', '&amp;', ('group_id.is_active', '=', True), ('group_id.is_submit', '=', False), '&amp;', ('group_parent_id.is_active', '=', True), ('group_parent_id.is_submit', '=', False)]" widget="one2many_list">
+                            <field name="expiry_date" readonly="is_readonly == True"/>
+                            <field name="timetable_ids" readonly="is_readonly == True" domain="['|', '&amp;', ('group_id.is_active', '=', True), ('group_id.is_submit', '=', False), '&amp;', ('group_parent_id.is_active', '=', True), ('group_parent_id.is_submit', '=', False)]" widget="one2many_list">
                                 <tree edit="1" create="1">
                                     <field name="group_id"/>
                                     <field name="semester_id"/>
@@ -127,26 +128,27 @@
             <field name="arch" type="xml">
                 <form string="Versions d'emploi du temps soumises">
                     <header invisible="is_submit == False">
-                        <button name="state_pending_timetable_group" class="oe_highlight" invisible="state in ['pending'] or create_uid != uid" string="En attente" type="object"/>
-                        <button name="state_valid_timetable_group" class="oe_highlight" invisible="state in ['valid'] or create_uid != uid" string="Valide" type="object"/>
-                        <button name="state_invalid_timetable_group" class="oe_highlight" invisible="state in ['invalid'] or create_uid != uid" string="Invalide" type="object"/>
-                        <button name="state_draft_timetable_group" class="oe_highlight" invisible="state in ['draft'] or create_uid != uid" string="Brouillon" type="object"/>
+                        <button name="state_pending_timetable_group" class="oe_highlight" invisible="state in ['pending'] or is_readonly == True" string="En attente" type="object"/>
+                        <button name="state_valid_timetable_group" class="oe_highlight" invisible="state in ['valid'] or is_readonly == True" string="Valide" type="object"/>
+                        <button name="state_invalid_timetable_group" class="oe_highlight" invisible="state in ['invalid'] or is_readonly == True" string="Invalide" type="object"/>
+                        <button name="state_draft_timetable_group" class="oe_highlight" invisible="state in ['draft'] or is_readonly == True" string="Brouillon" type="object"/>
                         <field name="state" widget="statusbar" statusbar_visible="pending,valid,invalid,draft"/>
                     </header>
 					<sheet>
                         <group>
-                            <field name="name" readonly="0"/>
-                            <field name="description" readonly="create_uid != uid"/>
-                            <field name="semester_id" readonly="create_uid != uid"/>
+                            <field name="is_readonly" invisible="1"/>
+                            <field name="name"/>
+                            <field name="description" readonly="is_readonly == True"/>
+                            <field name="semester_id" readonly="is_readonly == True"/>
                             <field name="is_submit" invisible="1"/>
                             <field name="group_parent_id" invisible="1"/>
-                            <field name="group_child_ids" readonly="create_uid != uid" invisible="is_submit == True" widget="many2many_tags"/>
-                            <field name="is_active" readonly="create_uid != uid" invisible="is_submit == True"/>
-                            <field name="user_ids" widget="many2many_tags" readonly="create_uid != uid"/>
-                            <field name="school_ids" widget="many2many_tags" readonly="create_uid != uid"/>
+                            <field name="group_child_ids" readonly="is_readonly == True" invisible="is_submit == True" widget="many2many_tags"/>
+                            <field name="is_active" readonly="is_readonly == True" invisible="is_submit == True"/>
+                            <field name="user_ids" widget="many2many_tags" readonly="is_readonly == True"/>
+                            <field name="school_ids" widget="many2many_tags" readonly="is_readonly == True"/>
                             <field name="create_uid"/>
-                            <field name="expiry_date" readonly="create_uid != uid"/>
-                            <field name="timetable_ids" readonly="create_uid != uid" domain="['|', '&amp;', ('group_id.is_active', '=', True), ('group_id.is_submit', '=', False), '&amp;', ('group_parent_id.is_active', '=', True), ('group_parent_id.is_submit', '=', False)]" widget="one2many_list">
+                            <field name="expiry_date" readonly="is_readonly == True"/>
+                            <field name="timetable_ids" readonly="is_readonly == True" domain="['|', '&amp;', ('group_id.is_active', '=', True), ('group_id.is_submit', '=', False), '&amp;', ('group_parent_id.is_active', '=', True), ('group_parent_id.is_submit', '=', False)]" widget="one2many_list">
                                 <tree edit="1" create="1">
                                     <field name="group_id"/>
                                     <field name="semester_id"/>
