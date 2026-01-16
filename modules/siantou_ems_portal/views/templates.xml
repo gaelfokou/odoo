@@ -49,6 +49,31 @@
 
         <template id="siantou_ems_portal_timetable_calendar_views" name="siantou_ems_portal.timetable_calendar">
             <t t-call="portal.portal_layout">
+                <style>
+                    .table {
+                        border-collapse: collapse;
+                        width: 100%;
+                    }
+                    .table .thead th, .table td {
+                        border: 1px solid black;
+                        padding: 2px 4px;
+                        margin: 2px 4px;
+                        text-align: center;
+                        font-size: 12px;
+                    }
+                    .table .thead th {
+                        background-color: #f2f2f2;
+                        font-size: 12px;
+                    }
+                    h3 {
+                        font-size: 16px;
+                        margin: 2px 4px;
+                    }
+                    h4 {
+                        font-size: 14px;
+                        margin: 2px 4px;
+                    }
+                </style>
                 <t t-set="breadcrumbs_searchbar" t-value="True"/>
                 <t t-call="portal.portal_searchbar">
                     <t t-set="title">Emploi du temps</t>
@@ -270,6 +295,31 @@
 
         <template id="siantou_ems_portal_timetable_list_views" name="siantou_ems_portal.timetable_list">
             <t t-call="portal.portal_layout">
+                <style>
+                    .table {
+                        border-collapse: collapse;
+                        width: 100%;
+                    }
+                    .table .thead th, .table td {
+                        border: 1px solid black;
+                        padding: 2px 4px;
+                        margin: 2px 4px;
+                        text-align: center;
+                        font-size: 12px;
+                    }
+                    .table .thead th {
+                        background-color: #f2f2f2;
+                        font-size: 12px;
+                    }
+                    h3 {
+                        font-size: 16px;
+                        margin: 2px 4px;
+                    }
+                    h4 {
+                        font-size: 14px;
+                        margin: 2px 4px;
+                    }
+                </style>
                 <t t-set="breadcrumbs_searchbar" t-value="True"/>
                 <t t-call="portal.portal_searchbar">
                     <t t-set="title">Emploi du temps</t>
@@ -430,6 +480,31 @@
 
         <template id="siantou_ems_portal_schoolfee_views" name="siantou_ems_portal.schoolfee">
             <t t-call="portal.portal_layout">
+                <style>
+                    .table {
+                        border-collapse: collapse;
+                        width: 100%;
+                    }
+                    .table .thead th, .table td {
+                        border: 1px solid black;
+                        padding: 2px 4px;
+                        margin: 2px 4px;
+                        text-align: center;
+                        font-size: 12px;
+                    }
+                    .table .thead th {
+                        background-color: #f2f2f2;
+                        font-size: 12px;
+                    }
+                    h3 {
+                        font-size: 16px;
+                        margin: 2px 4px;
+                    }
+                    h4 {
+                        font-size: 14px;
+                        margin: 2px 4px;
+                    }
+                </style>
                 <t t-set="breadcrumbs_searchbar" t-value="True"/>
                 <t t-call="portal.portal_searchbar">
                     <t t-set="title">Frais</t>
@@ -542,6 +617,31 @@
 
         <template id="siantou_ems_portal_examscore_views" name="siantou_ems_portal.examscore">
             <t t-call="portal.portal_layout">
+                <style>
+                    .table {
+                        border-collapse: collapse;
+                        width: 100%;
+                    }
+                    .table .thead th, .table td {
+                        border: 1px solid black;
+                        padding: 2px 4px;
+                        margin: 2px 4px;
+                        text-align: center;
+                        font-size: 12px;
+                    }
+                    .table .thead th {
+                        background-color: #f2f2f2;
+                        font-size: 12px;
+                    }
+                    h3 {
+                        font-size: 16px;
+                        margin: 2px 4px;
+                    }
+                    h4 {
+                        font-size: 14px;
+                        margin: 2px 4px;
+                    }
+                </style>
                 <t t-set="breadcrumbs_searchbar" t-value="True"/>
                 <t t-call="portal.portal_searchbar">
                     <t t-set="title">Notes d'examen</t>
@@ -657,6 +757,31 @@
 
         <template id="siantou_ems_portal_paymenthistory_views" name="siantou_ems_portal.paymenthistory">
             <t t-call="portal.portal_layout">
+                <style>
+                    .table {
+                        border-collapse: collapse;
+                        width: 100%;
+                    }
+                    .table .thead th, .table td {
+                        border: 1px solid black;
+                        padding: 2px 4px;
+                        margin: 2px 4px;
+                        text-align: center;
+                        font-size: 12px;
+                    }
+                    .table .thead th {
+                        background-color: #f2f2f2;
+                        font-size: 12px;
+                    }
+                    h3 {
+                        font-size: 16px;
+                        margin: 2px 4px;
+                    }
+                    h4 {
+                        font-size: 14px;
+                        margin: 2px 4px;
+                    }
+                </style>
                 <t t-set="breadcrumbs_searchbar" t-value="True"/>
                 <t t-call="portal.portal_searchbar">
                     <t t-set="title">Paiements</t>
@@ -765,6 +890,31 @@
 
         <template id="siantou_ems_portal_accountbalance_views" name="siantou_ems_portal.accountbalance">
             <t t-call="portal.portal_layout">
+                <style>
+                    .table {
+                        border-collapse: collapse;
+                        width: 100%;
+                    }
+                    .table .thead th, .table td {
+                        border: 1px solid black;
+                        padding: 2px 4px;
+                        margin: 2px 4px;
+                        text-align: center;
+                        font-size: 12px;
+                    }
+                    .table .thead th {
+                        background-color: #f2f2f2;
+                        font-size: 12px;
+                    }
+                    h3 {
+                        font-size: 16px;
+                        margin: 2px 4px;
+                    }
+                    h4 {
+                        font-size: 14px;
+                        margin: 2px 4px;
+                    }
+                </style>
                 <t t-set="breadcrumbs_searchbar" t-value="True"/>
                 <t t-call="portal.portal_searchbar">
                     <t t-set="title">Cours émargés</t>
@@ -906,6 +1056,31 @@
 
         <template id="siantou_ems_portal_consumptionhour_views" name="siantou_ems_portal.consumptionhour">
             <t t-call="portal.portal_layout">
+                <style>
+                    .table {
+                        border-collapse: collapse;
+                        width: 100%;
+                    }
+                    .table .thead th, .table td {
+                        border: 1px solid black;
+                        padding: 2px 4px;
+                        margin: 2px 4px;
+                        text-align: center;
+                        font-size: 12px;
+                    }
+                    .table .thead th {
+                        background-color: #f2f2f2;
+                        font-size: 12px;
+                    }
+                    h3 {
+                        font-size: 16px;
+                        margin: 2px 4px;
+                    }
+                    h4 {
+                        font-size: 14px;
+                        margin: 2px 4px;
+                    }
+                </style>
                 <t t-set="breadcrumbs_searchbar" t-value="True"/>
                 <t t-call="portal.portal_searchbar">
                     <t t-set="title">Consommation d'heures de cours</t>
@@ -1016,6 +1191,31 @@
 
         <template id="siantou_ems_portal_progressreport_views" name="siantou_ems_portal.progressreport">
             <t t-call="portal.portal_layout">
+                <style>
+                    .table {
+                        border-collapse: collapse;
+                        width: 100%;
+                    }
+                    .table .thead th, .table td {
+                        border: 1px solid black;
+                        padding: 2px 4px;
+                        margin: 2px 4px;
+                        text-align: center;
+                        font-size: 12px;
+                    }
+                    .table .thead th {
+                        background-color: #f2f2f2;
+                        font-size: 12px;
+                    }
+                    h3 {
+                        font-size: 16px;
+                        margin: 2px 4px;
+                    }
+                    h4 {
+                        font-size: 14px;
+                        margin: 2px 4px;
+                    }
+                </style>
                 <t t-set="breadcrumbs_searchbar" t-value="True"/>
                 <t t-call="portal.portal_searchbar">
                     <t t-set="title">Fiches de progression</t>
@@ -1106,6 +1306,31 @@
 
         <template id="siantou_ems_portal_subjectsession_list_views" name="siantou_ems_portal.subjectsession_list">
             <t t-call="portal.portal_layout">
+                <style>
+                    .table {
+                        border-collapse: collapse;
+                        width: 100%;
+                    }
+                    .table .thead th, .table td {
+                        border: 1px solid black;
+                        padding: 2px 4px;
+                        margin: 2px 4px;
+                        text-align: center;
+                        font-size: 12px;
+                    }
+                    .table .thead th {
+                        background-color: #f2f2f2;
+                        font-size: 12px;
+                    }
+                    h3 {
+                        font-size: 16px;
+                        margin: 2px 4px;
+                    }
+                    h4 {
+                        font-size: 14px;
+                        margin: 2px 4px;
+                    }
+                </style>
                 <t t-set="breadcrumbs_searchbar" t-value="True"/>
                 <t t-call="portal.portal_searchbar">
                     <t t-set="title">Sessions de cours</t>
@@ -1217,6 +1442,31 @@
 
         <template id="siantou_ems_portal_subjectsession_new_views" name="siantou_ems_portal.subjectsession_new">
             <t t-call="portal.portal_layout">
+                <style>
+                    .table {
+                        border-collapse: collapse;
+                        width: 100%;
+                    }
+                    .table .thead th, .table td {
+                        border: 1px solid black;
+                        padding: 2px 4px;
+                        margin: 2px 4px;
+                        text-align: center;
+                        font-size: 12px;
+                    }
+                    .table .thead th {
+                        background-color: #f2f2f2;
+                        font-size: 12px;
+                    }
+                    h3 {
+                        font-size: 16px;
+                        margin: 2px 4px;
+                    }
+                    h4 {
+                        font-size: 14px;
+                        margin: 2px 4px;
+                    }
+                </style>
                 <t t-set="breadcrumbs_searchbar" t-value="True"/>
                 <t t-call="portal.portal_searchbar">
                     <t t-set="title">Créer une session de cours</t>
@@ -1293,6 +1543,31 @@
 
         <template id="siantou_ems_portal_subjectsession_edit_views" name="siantou_ems_portal.subjectsession_edit">
             <t t-call="portal.portal_layout">
+                <style>
+                    .table {
+                        border-collapse: collapse;
+                        width: 100%;
+                    }
+                    .table .thead th, .table td {
+                        border: 1px solid black;
+                        padding: 2px 4px;
+                        margin: 2px 4px;
+                        text-align: center;
+                        font-size: 12px;
+                    }
+                    .table .thead th {
+                        background-color: #f2f2f2;
+                        font-size: 12px;
+                    }
+                    h3 {
+                        font-size: 16px;
+                        margin: 2px 4px;
+                    }
+                    h4 {
+                        font-size: 14px;
+                        margin: 2px 4px;
+                    }
+                </style>
                 <t t-set="breadcrumbs_searchbar" t-value="True"/>
                 <t t-call="portal.portal_searchbar">
                     <t t-set="title">Modifier une session de cours</t>
@@ -1359,6 +1634,31 @@
 
         <template id="siantou_ems_portal_calendar_calendar_views" name="siantou_ems_portal.calendar">
             <t t-call="portal.portal_layout">
+                <style>
+                    .table {
+                        border-collapse: collapse;
+                        width: 100%;
+                    }
+                    .table .thead th, .table td {
+                        border: 1px solid black;
+                        padding: 2px 4px;
+                        margin: 2px 4px;
+                        text-align: center;
+                        font-size: 12px;
+                    }
+                    .table .thead th {
+                        background-color: #f2f2f2;
+                        font-size: 12px;
+                    }
+                    h3 {
+                        font-size: 16px;
+                        margin: 2px 4px;
+                    }
+                    h4 {
+                        font-size: 14px;
+                        margin: 2px 4px;
+                    }
+                </style>
                 <t t-set="breadcrumbs_searchbar" t-value="True"/>
                 <t t-call="portal.portal_searchbar">
                     <t t-set="title">Calendrier académique</t>
@@ -1543,6 +1843,31 @@
 
         <template id="siantou_ems_portal_notification_views" name="siantou_ems_portal.notification">
             <t t-call="portal.portal_layout">
+                <style>
+                    .table {
+                        border-collapse: collapse;
+                        width: 100%;
+                    }
+                    .table .thead th, .table td {
+                        border: 1px solid black;
+                        padding: 2px 4px;
+                        margin: 2px 4px;
+                        text-align: center;
+                        font-size: 12px;
+                    }
+                    .table .thead th {
+                        background-color: #f2f2f2;
+                        font-size: 12px;
+                    }
+                    h3 {
+                        font-size: 16px;
+                        margin: 2px 4px;
+                    }
+                    h4 {
+                        font-size: 14px;
+                        margin: 2px 4px;
+                    }
+                </style>
                 <t t-set="breadcrumbs_searchbar" t-value="True"/>
                 <t t-call="portal.portal_searchbar">
                     <t t-set="title">Notifications</t>
@@ -1631,6 +1956,31 @@
 
         <template id="siantou_ems_portal_requireddata_views" name="siantou_ems_portal.data_requireddata">
             <t t-call="portal.portal_layout">
+                <style>
+                    .table {
+                        border-collapse: collapse;
+                        width: 100%;
+                    }
+                    .table .thead th, .table td {
+                        border: 1px solid black;
+                        padding: 2px 4px;
+                        margin: 2px 4px;
+                        text-align: center;
+                        font-size: 12px;
+                    }
+                    .table .thead th {
+                        background-color: #f2f2f2;
+                        font-size: 12px;
+                    }
+                    h3 {
+                        font-size: 16px;
+                        margin: 2px 4px;
+                    }
+                    h4 {
+                        font-size: 14px;
+                        margin: 2px 4px;
+                    }
+                </style>
                 <t t-set="breadcrumbs_searchbar" t-value="True"/>
                 <t t-call="portal.portal_searchbar">
                     <t t-set="title">Données requises</t>
