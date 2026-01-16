@@ -196,7 +196,7 @@
 					<field name="start_time"/>
 					<field name="end_time"/>
 					<field name="status"/>
-                    <filter string="Mon emploi du temps" name="mytimetable" domain="['|', '&amp;', ('group_id.is_active', '=', True), ('group_id.is_submit', '=', False), '&amp;', ('group_parent_id.is_active', '=', True), ('group_parent_id.is_submit', '=', False), ('date', '=', datetime.date.today()), ('employee_id.user_id', '=', uid)]"/>
+                    <filter string="Mon emploi du temps" name="mytimetable" domain="['|', '&amp;', ('group_id.is_active', '=', True), ('group_id.is_submit', '=', False), '&amp;', ('group_parent_id.is_active', '=', True), ('group_parent_id.is_submit', '=', False), ('date', '=', datetime.date.today()), ('group_id.expiry_date', '&gt;', datetime.date.today()), ('employee_id.user_id', '=', uid)]"/>
                     <group expand="0" string="Group By">
                         <filter string="Semestre" name="semester" context="{'group_by': 'semester_id'}"/>
                         <filter string="Année académique" name="year" context="{'group_by': 'year_id'}"/>
@@ -223,7 +223,7 @@
                 (0, 0, {'view_mode': 'tree', 'view_id': ref('timetable_tree_view')}),
                 (0, 0, {'view_mode': 'form', 'view_id': ref('timetable_form_view')}),
                 (0, 0, {'view_mode': 'calendar', 'view_id': ref('timetable_calendar_view')})]"/>
-            <field name="domain">['|', '&amp;', ('group_id.is_active', '=', True), ('group_id.is_submit', '=', False), '&amp;', ('group_parent_id.is_active', '=', True), ('group_parent_id.is_submit', '=', False), ('date', '=', datetime.date.today()), '|', ('group_id.create_uid', '=', uid), '|', ('group_id.read_user_ids', '=', uid), ('group_id.write_user_ids', '=', uid)]</field>
+            <field name="domain">['|', '&amp;', ('group_id.is_active', '=', True), ('group_id.is_submit', '=', False), '&amp;', ('group_parent_id.is_active', '=', True), ('group_parent_id.is_submit', '=', False), ('date', '=', datetime.date.today()), '|', ('group_id.create_uid', '=', uid), '&amp;', ('group_id.expiry_date', '&gt;', datetime.date.today()), '|', ('group_id.read_user_ids', '=', uid), ('group_id.write_user_ids', '=', uid)]</field>
             <field name="target">current</field>
             <field name="help" type="html">
                 <p class="o_view_nocontent_smiling_face">
