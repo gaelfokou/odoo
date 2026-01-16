@@ -105,6 +105,8 @@
                                         </td>
                                         <td class="text-center">
                                             <t t-foreach="timetables[monday]['Lundi'][hour]" t-as="record">
+                                                <span t-esc="record['class_name']"/>
+                                                <br/>
                                                 <span t-esc="record['subject_name']"/>
                                                 <span t-esc="'(' + record['subject_code'] + ')'"/>
                                                 <br/>
