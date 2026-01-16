@@ -254,6 +254,7 @@ class Subject(models.Model):
     def action_print_pdf(self):
         active_ids = self.env.context.get('active_ids', [])
         subjects = self.env['siantou.ems.core.subject'].browse(active_ids)
+        subjects = list(subjects)
         if len(active_ids) == 0:
             raise UserError('Aucune donnée sélectionnée')
         report_data = self.env['subject.print.wizard'].create({})
@@ -641,6 +642,7 @@ class ProgressReport(models.Model):
     def action_print_pdf(self):
         active_ids = self.env.context.get('active_ids', [])
         reports = self.env['siantou.ems.core.progress.report'].browse(active_ids)
+        reports = list(reports)
         if len(active_ids) == 0:
             raise UserError('Aucune donnée sélectionnée')
         report_data = self.env['progress.report.print.wizard'].create({})
@@ -678,6 +680,7 @@ class ProgressReport(models.Model):
     def action_update_all_progress_report_class(self):
         active_ids = self.env.context.get('active_ids', [])
         reports = self.env['siantou.ems.core.progress.report'].browse(active_ids)
+        reports = list(reports)
         if len(active_ids) == 0:
             raise UserError('Aucune donnée sélectionnée')
 

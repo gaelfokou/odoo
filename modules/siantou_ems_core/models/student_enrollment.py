@@ -315,6 +315,7 @@ class StudentEnrollment(models.Model):
     def action_all_accepted_enrollment(self):
         active_ids = self.env.context.get('active_ids', [])
         student_enroll_ids = self.env['oe.school.student.enrollment'].browse(active_ids)
+        student_enroll_ids = list(student_enroll_ids)
         for student_enroll_id in student_enroll_ids:
             self.accepted_enrollment(student_enroll_id)
 
@@ -326,6 +327,7 @@ class StudentEnrollment(models.Model):
     def action_all_rejected_enrollment(self):
         active_ids = self.env.context.get('active_ids', [])
         student_enroll_ids = self.env['oe.school.student.enrollment'].browse(active_ids)
+        student_enroll_ids = list(student_enroll_ids)
         for student_enroll_id in student_enroll_ids:
             self.rejected_enrollment(student_enroll_id)
 
@@ -504,6 +506,7 @@ class StudentEnrollment(models.Model):
     def action_update_all_enrollment(self):
         active_ids = self.env.context.get('active_ids', [])
         student_enrolls = self.env['oe.school.student.enrollment'].browse(active_ids)
+        student_enrolls = list(student_enrolls)
         if len(active_ids) == 0:
             raise UserError('Aucune donnée sélectionnée')
 

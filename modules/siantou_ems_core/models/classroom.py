@@ -180,6 +180,7 @@ class Classroom(models.Model):
     def action_print_pdf(self):
         active_ids = self.env.context.get('active_ids', [])
         classrooms = self.env['siantou.ems.core.building.classroom'].browse(active_ids)
+        classrooms = list(classrooms)
         if len(active_ids) == 0:
             raise UserError('Aucune donnée sélectionnée')
         report_data = self.env['classroom.print.wizard'].create({})

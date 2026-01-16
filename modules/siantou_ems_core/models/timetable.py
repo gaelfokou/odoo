@@ -1042,6 +1042,8 @@ class Timetable(models.Model):
     def action_print_pdf(self):
         active_ids = self.env.context.get('active_ids', [])
         timetables = self.env['siantou.ems.timetable.timetable'].browse(active_ids)
+        timetables = list(timetables)
+        timetables = list(timetables)
         if len(active_ids) == 0:
             raise UserError('Aucune donnée sélectionnée')
         report_data = self.env['timetable.print.wizard'].create({
@@ -1061,6 +1063,7 @@ class Timetable(models.Model):
     def action_present_timetable(self):
         active_ids = self.env.context.get('active_ids', [])
         timetable_ids = self.env['siantou.ems.timetable.timetable'].browse(active_ids)
+        timetable_ids = list(timetable_ids)
         for timetable in timetable_ids:
             timetable.write({
                 'worked_start_time': timetable.start_time,
@@ -1079,6 +1082,7 @@ class Timetable(models.Model):
     def action_absent_timetable(self):
         active_ids = self.env.context.get('active_ids', [])
         timetable_ids = self.env['siantou.ems.timetable.timetable'].browse(active_ids)
+        timetable_ids = list(timetable_ids)
         for timetable in timetable_ids:
             timetable.write({
                 'status': 'absent',
@@ -1092,6 +1096,7 @@ class Timetable(models.Model):
     def action_delay_timetable(self):
         active_ids = self.env.context.get('active_ids', [])
         timetable_ids = self.env['siantou.ems.timetable.timetable'].browse(active_ids)
+        timetable_ids = list(timetable_ids)
         for timetable in timetable_ids:
             timetable.write({
                 'status': 'delay',
@@ -1231,6 +1236,7 @@ class Timetable(models.Model):
     def action_update_all_timetable(self):
         active_ids = self.env.context.get('active_ids', [])
         timetables = self.env['siantou.ems.timetable.timetable'].browse(active_ids)
+        timetables = list(timetables)
         if len(active_ids) == 0:
             raise UserError('Aucune donnée sélectionnée')
 

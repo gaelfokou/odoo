@@ -340,6 +340,7 @@ class EducationClass(models.Model):
     def action_print_pdf(self):
         active_ids = self.env.context.get('active_ids', [])
         classes = self.env['siantou.ems.core.class'].browse(active_ids)
+        classes = list(classes)
         if len(active_ids) == 0:
             raise UserError('Aucune donnée sélectionnée')
         report_data = self.env['class.print.wizard'].create({})
@@ -425,6 +426,7 @@ class EducationClass(models.Model):
     def action_update_all_student_class(self):
         active_ids = self.env.context.get('active_ids', [])
         classes = self.env['siantou.ems.core.class'].browse(active_ids)
+        classes = list(classes)
         if len(active_ids) == 0:
             raise UserError('Aucune donnée sélectionnée')
 

@@ -38,6 +38,7 @@ class DailyAttendance(models.Model):
     def action_print_pdf(self):
         active_ids = self.env.context.get('active_ids', [])
         attendances = self.env['daily.attendance'].browse(active_ids)
+        attendances = list(attendances)
         if len(active_ids) == 0:
             raise UserError('Aucune donnée sélectionnée')
         report_data = self.env['daily.attendance.print.wizard'].create({})

@@ -676,6 +676,8 @@ class TimetableFilterWizard(models.TransientModel):
             all_timetables = all_timetables.filtered(lambda rec: not (rec.start_time >= self.end_time or rec.end_time <= self.start_time))
             # timetables = timetables.filtered(lambda rec: self.search_filtered(rec))
 
+        timetables = list(timetables)
+
         timetable_ids = []
         key_timetables = {}
         for timetable in timetables:
@@ -724,8 +726,6 @@ class TimetableFilterWizard(models.TransientModel):
             title = 'Non spécifié'
 
         self.env['ir.config_parameter'].sudo().set_param(f'siantou.filter_user_{self.env.user.id}', title)
-
-        timetables = list(timetables)
 
         if len(timetable_ids) == 0:
             raise UserError('Aucune donnée sélectionnée')

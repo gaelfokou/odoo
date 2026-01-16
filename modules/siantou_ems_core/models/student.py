@@ -534,6 +534,7 @@ class Student(models.Model):
     def action_create_all_student_user(self):
         active_ids = self.env.context.get('active_ids', [])
         student_ids = self.env['oe.school.student'].browse(active_ids)
+        student_ids = list(student_ids)
         for student in student_ids:
             self.create_student_user(student)
 
@@ -705,6 +706,7 @@ class Student(models.Model):
     def action_print_pdf(self):
         active_ids = self.env.context.get('active_ids', [])
         students = self.env['oe.school.student'].browse(active_ids)
+        students = list(students)
         if len(active_ids) == 0:
             raise UserError('Aucune donnée sélectionnée')
         report_data = self.env['student.print.wizard'].create({})
@@ -746,6 +748,7 @@ class Student(models.Model):
     def action_update_all_student(self):
         active_ids = self.env.context.get('active_ids', [])
         student_enrolls = self.env['oe.school.student.enrollment'].browse(active_ids)
+        student_enrolls = list(student_enrolls)
         if len(active_ids) == 0:
             raise UserError('Aucune donnée sélectionnée')
 

@@ -418,6 +418,7 @@ class HrEmployee(models.Model):
     def action_create_all_employee_user(self):
         active_ids = self.env.context.get('active_ids', [])
         employee_ids = self.env['hr.employee'].browse(active_ids)
+        employee_ids = list(employee_ids)
         for employee in employee_ids:
             self.create_employee_user(employee)
 
@@ -429,6 +430,7 @@ class HrEmployee(models.Model):
     def action_update_all_employee_identifier(self):
         active_ids = self.env.context.get('active_ids', [])
         employee_ids = self.env['hr.employee'].browse(active_ids)
+        employee_ids = list(employee_ids)
         for employee in employee_ids:
             self.update_employee_identifier(employee)
 
@@ -464,6 +466,7 @@ class HrEmployee(models.Model):
     def action_print_pdf(self):
         active_ids = self.env.context.get('active_ids', [])
         teachers = self.env['hr.employee'].browse(active_ids)
+        teachers = list(teachers)
         if len(active_ids) == 0:
             raise UserError('Aucune donnée sélectionnée')
         report_data = self.env['teacher.print.wizard'].create({

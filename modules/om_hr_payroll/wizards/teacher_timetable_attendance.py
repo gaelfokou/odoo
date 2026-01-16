@@ -295,6 +295,7 @@ class TeacherTimetableAttendance(models.TransientModel):
     def action_print_pdf(self):
         active_ids = self.env.context.get('active_ids', [])
         teacher_timetable_attendances = self.env['teacher.timetable.attendance'].browse(active_ids)
+        teacher_timetable_attendances = list(teacher_timetable_attendances)
         if len(active_ids) == 0:
             raise UserError('Aucune donnée sélectionnée')
         report_data = self.env['teacher.timetable.attendance.print.wizard'].create({})
@@ -312,6 +313,7 @@ class TeacherTimetableAttendance(models.TransientModel):
     def action_print_resume_pdf(self):
         active_ids = self.env.context.get('active_ids', [])
         teacher_timetable_attendances = self.env['teacher.timetable.attendance'].browse(active_ids)
+        teacher_timetable_attendances = list(teacher_timetable_attendances)
         if len(active_ids) == 0:
             raise UserError('Aucune donnée sélectionnée')
         report_data = self.env['teacher.timetable.attendance.print.wizard'].create({})
@@ -330,6 +332,7 @@ class TeacherTimetableAttendance(models.TransientModel):
     def action_pay_done(self):
         active_ids = self.env.context.get('active_ids', [])
         teacher_timetable_attendances = self.env['teacher.timetable.attendance'].browse(active_ids)
+        teacher_timetable_attendances = list(teacher_timetable_attendances)
         if len(active_ids) == 0:
             raise UserError('Aucune donnée sélectionnée')
         report_data = self.env['teacher.timetable.attendance.print.wizard'].create({})
