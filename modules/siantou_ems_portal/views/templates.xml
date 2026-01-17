@@ -56,8 +56,8 @@
                     }
                     .table .thead th, .table td {
                         border: 1px solid black;
-                        padding: 2px 4px;
-                        margin: 2px 4px;
+                        padding: 2px 4px !important;
+                        margin: 2px 4px !important;
                         text-align: center;
                         font-size: 12px;
                     }
@@ -67,11 +67,15 @@
                     }
                     h3 {
                         font-size: 16px;
-                        margin: 2px 4px;
+                        margin: 2px 4px !important;
                     }
                     h4 {
                         font-size: 14px;
-                        margin: 2px 4px;
+                        margin: 2px 4px !important;
+                    }
+                    br {
+                        padding: 1px 0px !important;
+                        margin: 1px 0px !important;
                     }
                 </style>
                 <t t-set="breadcrumbs_searchbar" t-value="True"/>
@@ -302,8 +306,8 @@
                     }
                     .table .thead th, .table td {
                         border: 1px solid black;
-                        padding: 2px 4px;
-                        margin: 2px 4px;
+                        padding: 2px 4px !important;
+                        margin: 2px 4px !important;
                         text-align: center;
                         font-size: 12px;
                     }
@@ -313,11 +317,15 @@
                     }
                     h3 {
                         font-size: 16px;
-                        margin: 2px 4px;
+                        margin: 2px 4px !important;
                     }
                     h4 {
                         font-size: 14px;
-                        margin: 2px 4px;
+                        margin: 2px 4px !important;
+                    }
+                    br {
+                        padding: 1px 0px !important;
+                        margin: 1px 0px !important;
                     }
                 </style>
                 <t t-set="breadcrumbs_searchbar" t-value="True"/>
@@ -487,8 +495,8 @@
                     }
                     .table .thead th, .table td {
                         border: 1px solid black;
-                        padding: 2px 4px;
-                        margin: 2px 4px;
+                        padding: 2px 4px !important;
+                        margin: 2px 4px !important;
                         text-align: center;
                         font-size: 12px;
                     }
@@ -498,11 +506,15 @@
                     }
                     h3 {
                         font-size: 16px;
-                        margin: 2px 4px;
+                        margin: 2px 4px !important;
                     }
                     h4 {
                         font-size: 14px;
-                        margin: 2px 4px;
+                        margin: 2px 4px !important;
+                    }
+                    br {
+                        padding: 1px 0px !important;
+                        margin: 1px 0px !important;
                     }
                 </style>
                 <t t-set="breadcrumbs_searchbar" t-value="True"/>
@@ -624,8 +636,8 @@
                     }
                     .table .thead th, .table td {
                         border: 1px solid black;
-                        padding: 2px 4px;
-                        margin: 2px 4px;
+                        padding: 2px 4px !important;
+                        margin: 2px 4px !important;
                         text-align: center;
                         font-size: 12px;
                     }
@@ -635,11 +647,15 @@
                     }
                     h3 {
                         font-size: 16px;
-                        margin: 2px 4px;
+                        margin: 2px 4px !important;
                     }
                     h4 {
                         font-size: 14px;
-                        margin: 2px 4px;
+                        margin: 2px 4px !important;
+                    }
+                    br {
+                        padding: 1px 0px !important;
+                        margin: 1px 0px !important;
                     }
                 </style>
                 <t t-set="breadcrumbs_searchbar" t-value="True"/>
@@ -764,8 +780,8 @@
                     }
                     .table .thead th, .table td {
                         border: 1px solid black;
-                        padding: 2px 4px;
-                        margin: 2px 4px;
+                        padding: 2px 4px !important;
+                        margin: 2px 4px !important;
                         text-align: center;
                         font-size: 12px;
                     }
@@ -775,11 +791,15 @@
                     }
                     h3 {
                         font-size: 16px;
-                        margin: 2px 4px;
+                        margin: 2px 4px !important;
                     }
                     h4 {
                         font-size: 14px;
-                        margin: 2px 4px;
+                        margin: 2px 4px !important;
+                    }
+                    br {
+                        padding: 1px 0px !important;
+                        margin: 1px 0px !important;
                     }
                 </style>
                 <t t-set="breadcrumbs_searchbar" t-value="True"/>
@@ -897,8 +917,8 @@
                     }
                     .table .thead th, .table td {
                         border: 1px solid black;
-                        padding: 2px 4px;
-                        margin: 2px 4px;
+                        padding: 2px 4px !important;
+                        margin: 2px 4px !important;
                         text-align: center;
                         font-size: 12px;
                     }
@@ -908,11 +928,15 @@
                     }
                     h3 {
                         font-size: 16px;
-                        margin: 2px 4px;
+                        margin: 2px 4px !important;
                     }
                     h4 {
                         font-size: 14px;
-                        margin: 2px 4px;
+                        margin: 2px 4px !important;
+                    }
+                    br {
+                        padding: 1px 0px !important;
+                        margin: 1px 0px !important;
                     }
                 </style>
                 <t t-set="breadcrumbs_searchbar" t-value="True"/>
@@ -1063,8 +1087,8 @@
                     }
                     .table .thead th, .table td {
                         border: 1px solid black;
-                        padding: 2px 4px;
-                        margin: 2px 4px;
+                        padding: 2px 4px !important;
+                        margin: 2px 4px !important;
                         text-align: center;
                         font-size: 12px;
                     }
@@ -1074,11 +1098,15 @@
                     }
                     h3 {
                         font-size: 16px;
-                        margin: 2px 4px;
+                        margin: 2px 4px !important;
                     }
                     h4 {
                         font-size: 14px;
-                        margin: 2px 4px;
+                        margin: 2px 4px !important;
+                    }
+                    br {
+                        padding: 1px 0px !important;
+                        margin: 1px 0px !important;
                     }
                 </style>
                 <t t-set="breadcrumbs_searchbar" t-value="True"/>
@@ -1198,8 +1226,8 @@
                     }
                     .table .thead th, .table td {
                         border: 1px solid black;
-                        padding: 2px 4px;
-                        margin: 2px 4px;
+                        padding: 2px 4px !important;
+                        margin: 2px 4px !important;
                         text-align: center;
                         font-size: 12px;
                     }
@@ -1209,11 +1237,15 @@
                     }
                     h3 {
                         font-size: 16px;
-                        margin: 2px 4px;
+                        margin: 2px 4px !important;
                     }
                     h4 {
                         font-size: 14px;
-                        margin: 2px 4px;
+                        margin: 2px 4px !important;
+                    }
+                    br {
+                        padding: 1px 0px !important;
+                        margin: 1px 0px !important;
                     }
                 </style>
                 <t t-set="breadcrumbs_searchbar" t-value="True"/>
@@ -1313,8 +1345,8 @@
                     }
                     .table .thead th, .table td {
                         border: 1px solid black;
-                        padding: 2px 4px;
-                        margin: 2px 4px;
+                        padding: 2px 4px !important;
+                        margin: 2px 4px !important;
                         text-align: center;
                         font-size: 12px;
                     }
@@ -1324,11 +1356,15 @@
                     }
                     h3 {
                         font-size: 16px;
-                        margin: 2px 4px;
+                        margin: 2px 4px !important;
                     }
                     h4 {
                         font-size: 14px;
-                        margin: 2px 4px;
+                        margin: 2px 4px !important;
+                    }
+                    br {
+                        padding: 1px 0px !important;
+                        margin: 1px 0px !important;
                     }
                 </style>
                 <t t-set="breadcrumbs_searchbar" t-value="True"/>
@@ -1449,8 +1485,8 @@
                     }
                     .table .thead th, .table td {
                         border: 1px solid black;
-                        padding: 2px 4px;
-                        margin: 2px 4px;
+                        padding: 2px 4px !important;
+                        margin: 2px 4px !important;
                         text-align: center;
                         font-size: 12px;
                     }
@@ -1460,11 +1496,15 @@
                     }
                     h3 {
                         font-size: 16px;
-                        margin: 2px 4px;
+                        margin: 2px 4px !important;
                     }
                     h4 {
                         font-size: 14px;
-                        margin: 2px 4px;
+                        margin: 2px 4px !important;
+                    }
+                    br {
+                        padding: 1px 0px !important;
+                        margin: 1px 0px !important;
                     }
                 </style>
                 <t t-set="breadcrumbs_searchbar" t-value="True"/>
@@ -1550,8 +1590,8 @@
                     }
                     .table .thead th, .table td {
                         border: 1px solid black;
-                        padding: 2px 4px;
-                        margin: 2px 4px;
+                        padding: 2px 4px !important;
+                        margin: 2px 4px !important;
                         text-align: center;
                         font-size: 12px;
                     }
@@ -1561,11 +1601,15 @@
                     }
                     h3 {
                         font-size: 16px;
-                        margin: 2px 4px;
+                        margin: 2px 4px !important;
                     }
                     h4 {
                         font-size: 14px;
-                        margin: 2px 4px;
+                        margin: 2px 4px !important;
+                    }
+                    br {
+                        padding: 1px 0px !important;
+                        margin: 1px 0px !important;
                     }
                 </style>
                 <t t-set="breadcrumbs_searchbar" t-value="True"/>
@@ -1641,8 +1685,8 @@
                     }
                     .table .thead th, .table td {
                         border: 1px solid black;
-                        padding: 2px 4px;
-                        margin: 2px 4px;
+                        padding: 2px 4px !important;
+                        margin: 2px 4px !important;
                         text-align: center;
                         font-size: 12px;
                     }
@@ -1652,11 +1696,15 @@
                     }
                     h3 {
                         font-size: 16px;
-                        margin: 2px 4px;
+                        margin: 2px 4px !important;
                     }
                     h4 {
                         font-size: 14px;
-                        margin: 2px 4px;
+                        margin: 2px 4px !important;
+                    }
+                    br {
+                        padding: 1px 0px !important;
+                        margin: 1px 0px !important;
                     }
                 </style>
                 <t t-set="breadcrumbs_searchbar" t-value="True"/>
@@ -1850,8 +1898,8 @@
                     }
                     .table .thead th, .table td {
                         border: 1px solid black;
-                        padding: 2px 4px;
-                        margin: 2px 4px;
+                        padding: 2px 4px !important;
+                        margin: 2px 4px !important;
                         text-align: center;
                         font-size: 12px;
                     }
@@ -1861,11 +1909,15 @@
                     }
                     h3 {
                         font-size: 16px;
-                        margin: 2px 4px;
+                        margin: 2px 4px !important;
                     }
                     h4 {
                         font-size: 14px;
-                        margin: 2px 4px;
+                        margin: 2px 4px !important;
+                    }
+                    br {
+                        padding: 1px 0px !important;
+                        margin: 1px 0px !important;
                     }
                 </style>
                 <t t-set="breadcrumbs_searchbar" t-value="True"/>
@@ -1963,8 +2015,8 @@
                     }
                     .table .thead th, .table td {
                         border: 1px solid black;
-                        padding: 2px 4px;
-                        margin: 2px 4px;
+                        padding: 2px 4px !important;
+                        margin: 2px 4px !important;
                         text-align: center;
                         font-size: 12px;
                     }
@@ -1974,11 +2026,15 @@
                     }
                     h3 {
                         font-size: 16px;
-                        margin: 2px 4px;
+                        margin: 2px 4px !important;
                     }
                     h4 {
                         font-size: 14px;
-                        margin: 2px 4px;
+                        margin: 2px 4px !important;
+                    }
+                    br {
+                        padding: 1px 0px !important;
+                        margin: 1px 0px !important;
                     }
                 </style>
                 <t t-set="breadcrumbs_searchbar" t-value="True"/>
