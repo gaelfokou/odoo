@@ -719,6 +719,10 @@ class Helpers:
             return False
 
     @staticmethod
+    def sort_by_indexes(lst, indexes, reverse=False):
+        return [val for (_, val) in sorted(zip(indexes, lst), key=lambda x: x[0], reverse=reverse)]
+
+    @staticmethod
     def format_timetable(data, hours=[]):
         n = 0.0
         current_data = []

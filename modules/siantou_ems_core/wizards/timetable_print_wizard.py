@@ -245,6 +245,15 @@ class TimetablePrintWizard(models.TransientModel):
                     tm[0] = TimetablePrintWizard.convert_float_to_time(tm[0])
                     tm[1] = TimetablePrintWizard.convert_float_to_time(tm[1])
                     key_timetables[key][monday]['Heure'][i] = '{}-{}'.format(tm[0], tm[1])
+                hours = [(i[0] + 1) for i in sorted(enumerate(key_timetables[key][monday]['Heure']), key=lambda x: x[1])]
+                key_timetables[key][monday]['Heure'] = TimetablePrintWizard.sort_by_indexes(key_timetables[key][monday]['Heure'], hours)
+                key_timetables[key][monday]['Lundi'] = TimetablePrintWizard.sort_by_indexes(key_timetables[key][monday]['Lundi'], hours)
+                key_timetables[key][monday]['Mardi'] = TimetablePrintWizard.sort_by_indexes(key_timetables[key][monday]['Mardi'], hours)
+                key_timetables[key][monday]['Mercredi'] = TimetablePrintWizard.sort_by_indexes(key_timetables[key][monday]['Mercredi'], hours)
+                key_timetables[key][monday]['Jeudi'] = TimetablePrintWizard.sort_by_indexes(key_timetables[key][monday]['Jeudi'], hours)
+                key_timetables[key][monday]['Vendredi'] = TimetablePrintWizard.sort_by_indexes(key_timetables[key][monday]['Vendredi'], hours)
+                key_timetables[key][monday]['Samedi'] = TimetablePrintWizard.sort_by_indexes(key_timetables[key][monday]['Samedi'], hours)
+                key_timetables[key][monday]['Dimanche'] = TimetablePrintWizard.sort_by_indexes(key_timetables[key][monday]['Dimanche'], hours)
             key_timetables[key] = TimetablePrintWizard.paginate_calendar(key_timetables[key], len(key_timetables[key].keys()))
             key_timetables[key]['semester'] = info_timetables[key]['semester']
             key_timetables[key]['study'] = info_timetables[key]['study']
@@ -505,6 +514,10 @@ class TimetablePrintWizard(models.TransientModel):
             return True
         except ValueError:
             return False
+
+    @staticmethod
+    def sort_by_indexes(lst, indexes, reverse=False):
+        return [val for (_, val) in sorted(zip(indexes, lst), key=lambda x: x[0], reverse=reverse)]
 
     @staticmethod
     def format_timetable(data, hours=[]):

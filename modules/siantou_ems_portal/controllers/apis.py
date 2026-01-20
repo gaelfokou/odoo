@@ -138,6 +138,15 @@ class ApiAccount(http.Controller):
                     tm[0] = Helpers.convert_float_to_time(tm[0])
                     tm[1] = Helpers.convert_float_to_time(tm[1])
                     timetables[monday]['Heure'][i] = '{}-{}'.format(tm[0], tm[1])
+                hours = [(i[0] + 1) for i in sorted(enumerate(timetables[monday]['Heure']), key=lambda x: x[1])]
+                timetables[monday]['Heure'] = Helpers.sort_by_indexes(timetables[monday]['Heure'], hours)
+                timetables[monday]['Lundi'] = Helpers.sort_by_indexes(timetables[monday]['Lundi'], hours)
+                timetables[monday]['Mardi'] = Helpers.sort_by_indexes(timetables[monday]['Mardi'], hours)
+                timetables[monday]['Mercredi'] = Helpers.sort_by_indexes(timetables[monday]['Mercredi'], hours)
+                timetables[monday]['Jeudi'] = Helpers.sort_by_indexes(timetables[monday]['Jeudi'], hours)
+                timetables[monday]['Vendredi'] = Helpers.sort_by_indexes(timetables[monday]['Vendredi'], hours)
+                timetables[monday]['Samedi'] = Helpers.sort_by_indexes(timetables[monday]['Samedi'], hours)
+                timetables[monday]['Dimanche'] = Helpers.sort_by_indexes(timetables[monday]['Dimanche'], hours)
             timetables = Helpers.paginate_calendar(timetables, 1, page)
         else:
             for timetable in timetables:
