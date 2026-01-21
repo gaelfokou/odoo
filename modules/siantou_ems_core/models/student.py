@@ -13,7 +13,7 @@ _logger = logging.getLogger(__name__)
 
 class Student(models.Model):
     _name = 'oe.school.student'
-    _description = 'Gestion des étudiants'
+    _description = 'Étudiant'
     _inherit=['mail.thread', 'mail.activity.mixin',]
 
     name = fields.Char(string="Nom(s) et prénom(s)", compute='_compute_name', store=True)
@@ -762,7 +762,7 @@ class Student(models.Model):
 
 class StudentCareer(models.Model):
     _name = 'oe.school.student.career'
-    _description = 'Gestion du parcours des étudiants'
+    _description = 'Parcours des étudiants'
 
     name = fields.Char(string="Libellé", required=True)
     student_id = fields.Many2one(

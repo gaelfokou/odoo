@@ -29,4 +29,5 @@ from . import menu
 from . import hourly_rate
 from . import daily_attendance
 from . import exam_score
+from . import hr_department
 # from . import account_move

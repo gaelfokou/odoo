@@ -8,7 +8,7 @@ import re
 
 class Semester(models.Model):
     _name = 'siantou.ems.core.year.semester'
-    _description = 'Gestion des Semestres'
+    _description = 'Semestre'
     _inherit=['mail.thread', 'mail.activity.mixin',]
 
     # Nom du semestre
@@ -44,7 +44,7 @@ class Semester(models.Model):
     # class_ids = fields.One2many(
     #     'siantou.ems.core.class',
     #     'semestre_id',
-    #     string='Classe',
+    #     string='Classes',
     #     help="classe à laquelle est lié le semestre",
     #     required=True
     # )

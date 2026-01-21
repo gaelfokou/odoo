@@ -4,7 +4,7 @@ from odoo.exceptions import UserError, AccessError, ValidationError
 
 class FeeSchool(models.Model):
     _name = 'siantou.ems.core.fee.school'
-    _description = 'Gestion des Frais de scolarité'
+    _description = 'Frais de scolarité'
 
     code = fields.Char(string="Code", required=True, index=True,)
     name = fields.Char(string='Nom', required=True, index=True,)

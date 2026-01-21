@@ -83,11 +83,10 @@ class EducationClass(models.Model):
 
     ue_ids = fields.Many2many('siantou.ems.core.unite.enseignement', 'class_ue_rel', 'class_id', 'ue_id', string='Unités d\'enseignement')
 
-    subject_ids = fields.Many2many(
+    group_ids = fields.Many2many('siantou.ems.timetable.group', 'class_group_rel', 'class_id', 'group_id', string='Versions d\'emploi du temps')
+
+    subject_ids = fields.One2many(
         'siantou.ems.core.subject',
-        'class_subject_rel',
-        'class_id',
-        'subject_id',
         string='Cours',
         compute='_compute_subjects',
         store=False
@@ -192,7 +191,7 @@ class EducationClass(models.Model):
                 ('id', 'in', students),
             ])
 
-            record.student_ids = [(6, 0, student_ids.ids)]
+            record.student_ids = student_ids
 
     @api.depends('student_enroll_ids')
     def _compute_number_of_student(self):
@@ -229,7 +228,7 @@ class EducationClass(models.Model):
                 ('ue_ids', 'in', record.ue_ids.ids)
             ])
 
-            record.subject_ids = [(6, 0, subject_ids.ids)]
+            record.subject_ids = subject_ids
 
     @api.onchange('ue_ids')
     def _onchange_subjects(self):
@@ -238,7 +237,7 @@ class EducationClass(models.Model):
                 ('ue_ids', 'in', record.ue_ids.ids)
             ])
 
-            record.subject_ids = [(6, 0, subject_ids.ids)]
+            record.subject_ids = subject_ids
 
     @api.onchange('school_id')
     def _onchange_school(self):

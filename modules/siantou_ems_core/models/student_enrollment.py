@@ -13,7 +13,7 @@ _logger = logging.getLogger(__name__)
 
 class StudentEnrollment(models.Model):
     _name = 'oe.school.student.enrollment'
-    _description = 'Gestion des inscriptions des étudiants'
+    _description = 'Inscriptions des étudiants'
     _inherit=['mail.thread', 'mail.activity.mixin',]
 
     name = fields.Char(
@@ -550,7 +550,7 @@ class StudentEnrollment(models.Model):
 
 class StudentEnrollmentAdmission(models.Model):
     _name = 'oe.school.student.enrollment.admission'
-    _description = 'Gestion des Admission scolarité des étudiants'
+    _description = 'Admission scolarité des étudiants'
 
     student_enrollemnt_id = fields.Many2one(
         'oe.school.student.enrollment', 

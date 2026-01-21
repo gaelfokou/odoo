@@ -28,7 +28,7 @@ class OeSchoolCourseSupervision(models.Model):
 
 class OeSchoolCourse(models.Model):
     _name = 'oe.school.course'
-    _description = 'Gestion des Cycles'
+    _description = 'Cycle'
     _order = 'name'
     _inherit=['mail.thread', 'mail.activity.mixin',]
 
@@ -169,7 +169,7 @@ class OeSchoolCourse(models.Model):
 
 class SchoolSyllabus(models.Model):
     _name = 'siantou.ems.core.syllabus'
-    _description = 'Syllabus'
+    _description = 'Syllabu'
 
     def _get_default_acadmic_year(self):
         """Get the default acedemic year active"""

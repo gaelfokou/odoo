@@ -4,7 +4,7 @@ from odoo.exceptions import UserError, AccessError, ValidationError
 
 class FeeStruct(models.Model):
     _name = 'siantou.ems.core.fee.struct'
-    _description = 'Gestion des structuration des frais de scolarité'
+    _description = 'Structuration des frais de scolarité'
 
     code = fields.Char(string="Code", required=True)
     name = fields.Char(string='Nom', required=True)

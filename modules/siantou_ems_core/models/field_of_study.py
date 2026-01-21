@@ -2,7 +2,7 @@ from odoo import models, fields
 
 class OptionOfStudy(models.Model):
     _name = 'siantou.ems.core.option'
-    _description = 'Gestion des options'
+    _description = 'Option'
     _inherit=['mail.thread', 'mail.activity.mixin',]
 
     specialty_id = fields.Many2one(
@@ -30,7 +30,7 @@ class OptionOfStudy(models.Model):
 
 class SpecialtyOfStudy(models.Model):
     _name = 'siantou.ems.core.specialty'
-    _description = 'Gestion des spécialités'
+    _description = 'Spécialités'
     _inherit=['mail.thread', 'mail.activity.mixin',]
 
     field_of_study_id = fields.Many2one(
@@ -65,7 +65,7 @@ class SpecialtyOfStudy(models.Model):
 
 class FieldOfStudy(models.Model):
     _name = 'siantou.ems.core.field_of_study'
-    _description = 'Gestion des Filières'
+    _description = 'Filières'
     _inherit=['mail.thread', 'mail.activity.mixin',]
 
     # Code du programme

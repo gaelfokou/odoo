@@ -2,7 +2,7 @@ from odoo import models, fields
 
 class Level(models.Model):
     _name = 'siantou.ems.core.level'
-    _description = 'Gestion des niveaux'
+    _description = 'Niveaux'
     _inherit=['mail.thread', 'mail.activity.mixin',]
 
     # Nom du niveau
@@ -22,7 +22,7 @@ class Level(models.Model):
     class_ids = fields.One2many(
         'siantou.ems.core.class',
         'level_id',
-        'Cours'
+        string='Classes'
     )
 
     batch_ids = fields.One2many(

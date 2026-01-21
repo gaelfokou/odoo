@@ -32,7 +32,7 @@ class Campus(models.Model):
 
 class Building(models.Model):
     _name = 'siantou.ems.core.building'
-    _description = 'Bâtiments'
+    _description = 'Bâtiment'
 
     # Code du bâtiment
     code = fields.Char(

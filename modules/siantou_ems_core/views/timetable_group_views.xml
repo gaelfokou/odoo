@@ -74,17 +74,21 @@
                             <field name="is_readonly" invisible="1"/>
                             <field name="name"/>
                             <field name="description" readonly="is_readonly == True"/>
-                            <field name="semester_id" readonly="is_readonly == True"/>
+                            <field name="semester_id" options="{'no_create': True}" readonly="is_readonly == True"/>
                             <field name="is_submit" invisible="1"/>
                             <field name="group_parent_id" invisible="1"/>
-                            <field name="group_child_ids" readonly="is_readonly == True" invisible="is_submit == True" widget="many2many_tags"/>
+                            <field name="group_child_ids" options="{'no_create': True}" readonly="is_readonly == True" invisible="is_submit == True" widget="many2many_tags"/>
                             <field name="is_active" readonly="is_readonly == True" invisible="is_submit == True"/>
                             <field name="read_user_ids" widget="many2many_tags" readonly="is_readonly == True"/>
                             <field name="write_user_ids" widget="many2many_tags" readonly="is_readonly == True"/>
                             <field name="school_ids" widget="many2many_tags" readonly="is_readonly == True"/>
                             <field name="create_uid"/>
                             <field name="expiry_date" readonly="is_readonly == True"/>
-                            <!-- <field name="timetable_ids" readonly="is_readonly == True" domain="['|', '&amp;', ('group_id.is_active', '=', True), ('group_id.is_submit', '=', False), '&amp;', ('group_parent_id.is_active', '=', True), ('group_parent_id.is_submit', '=', False)]" widget="one2many_list">
+                            <field name="year_id" invisible="1"/>
+                            <field name="department_id_domain" invisible="1"/>
+                            <field name="department_id" options="{'no_create': True}" readonly="is_readonly == True" domain="department_id_domain"/>
+                            <field name="class_ids" options="{'no_create': True}" readonly="is_readonly == True" domain="[('field_of_study_id.department_id', '=', department_id), ('year_id', '=', year_id)]"/>
+                            <!-- <field name="timetable_ids" options="{'no_create': True}" readonly="is_readonly == True" domain="['|', '&amp;', ('group_id.is_active', '=', True), ('group_id.is_submit', '=', False), '&amp;', ('group_parent_id.is_active', '=', True), ('group_parent_id.is_submit', '=', False)]" widget="one2many_list">
                                 <tree edit="1" create="1">
                                     <field name="group_id"/>
                                     <field name="semester_id"/>
@@ -140,17 +144,21 @@
                             <field name="is_readonly" invisible="1"/>
                             <field name="name"/>
                             <field name="description" readonly="is_readonly == True"/>
-                            <field name="semester_id" readonly="is_readonly == True"/>
+                            <field name="semester_id" options="{'no_create': True}" readonly="is_readonly == True"/>
                             <field name="is_submit" invisible="1"/>
                             <field name="group_parent_id" invisible="1"/>
-                            <field name="group_child_ids" readonly="is_readonly == True" invisible="is_submit == True" widget="many2many_tags"/>
+                            <field name="group_child_ids" options="{'no_create': True}" readonly="is_readonly == True" invisible="is_submit == True" widget="many2many_tags"/>
                             <field name="is_active" readonly="is_readonly == True" invisible="is_submit == True"/>
                             <field name="read_user_ids" widget="many2many_tags" readonly="is_readonly == True"/>
                             <field name="write_user_ids" widget="many2many_tags" readonly="is_readonly == True"/>
                             <field name="school_ids" widget="many2many_tags" readonly="is_readonly == True"/>
                             <field name="create_uid"/>
                             <field name="expiry_date" readonly="is_readonly == True"/>
-                            <!-- <field name="timetable_ids" readonly="is_readonly == True" domain="['|', '&amp;', ('group_id.is_active', '=', True), ('group_id.is_submit', '=', False), '&amp;', ('group_parent_id.is_active', '=', True), ('group_parent_id.is_submit', '=', False)]" widget="one2many_list">
+                            <field name="year_id" invisible="1"/>
+                            <field name="department_id_domain" invisible="1"/>
+                            <field name="department_id" options="{'no_create': True}" readonly="is_readonly == True" domain="department_id_domain"/>
+                            <field name="class_ids" options="{'no_create': True}" readonly="is_readonly == True" domain="[('field_of_study_id.department_id', '=', department_id), ('year_id', '=', year_id)]"/>
+                            <!-- <field name="timetable_ids" options="{'no_create': True}" readonly="is_readonly == True" domain="['|', '&amp;', ('group_id.is_active', '=', True), ('group_id.is_submit', '=', False), '&amp;', ('group_parent_id.is_active', '=', True), ('group_parent_id.is_submit', '=', False)]" widget="one2many_list">
                                 <tree edit="1" create="1">
                                     <field name="group_id"/>
                                     <field name="semester_id"/>

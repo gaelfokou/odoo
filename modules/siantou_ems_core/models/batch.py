@@ -2,7 +2,7 @@ from odoo import models, fields, api, tools, _
 
 class StudentBatch(models.Model):
     _name = 'siantou.ems.core.student.batch'
-    _description = 'Lots d\'étudiants'
+    _description = 'Lot d\'étudiants'
 
     name = fields.Char(
         string='Nom'
@@ -48,6 +48,11 @@ class StudentBatch(models.Model):
 
     @api.depends('class_id')
     def _compute_students(self):
+        for record in self:
+            record.student_ids = record.class_id.student_ids
+
+    @api.onchange('class_id')
+    def _onchange_students(self):
         for record in self:
             record.student_ids = record.class_id.student_ids
 

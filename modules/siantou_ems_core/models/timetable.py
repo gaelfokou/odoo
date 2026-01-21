@@ -1269,6 +1269,13 @@ class TimetableGroup(models.Model):
         required=True
     )
 
+    year_id = fields.Many2one(
+        'siantou.ems.core.year',
+        string='Année académique',
+        related='semester_id.year_id',
+        store=True
+    )
+
     is_active = fields.Boolean(string='Actif ?', default=False)
 
     is_submit = fields.Boolean(string='Soumis ?', default=True)
@@ -1346,6 +1353,60 @@ class TimetableGroup(models.Model):
     description = fields.Text(
         string='Description de la version',
     )
+
+    department_id = fields.Many2one(
+        'hr.department',
+        string='Département'
+    )
+
+    department_id_domain = fields.Binary(compute='_compute_school_domain', default=[])
+
+    @api.depends('school_ids')
+    def _compute_school_domain(self):
+        for record in self:
+            school_ids = record.school_ids
+            domain = [
+                ('school_id', 'in', school_ids.ids),
+            ]
+            record.department_id_domain = domain
+
+    class_ids = fields.Many2many('siantou.ems.core.class', 'class_group_rel', 'group_id', 'class_id', string='Classes')
+
+    # class_ids = fields.One2many(
+    #     'siantou.ems.core.class',
+    #     compute='_compute_classes',
+    #     store=False
+    # )
+
+    # @api.depends('department_id', 'semester_id')
+    # def _compute_classes(self):
+    #     for record in self:
+    #         class_ids = []
+    #         if record.department_id.id:
+    #             field_of_study_ids = self.env['siantou.ems.core.field_of_study'].search([
+    #                 ('department_id', '=', record.department_id.id),
+    #             ])
+    #             class_ids = self.env['siantou.ems.core.class'].search([
+    #                 ('field_of_study_id', 'in', field_of_study_ids.ids),
+    #                 ('year_id', '=', semester_id.year_id.id),
+    #             ])
+
+    #         record.class_ids = class_ids
+
+    # @api.onchange('department_id', 'semester_id')
+    # def _onchange_classes(self):
+    #     for record in self:
+    #         class_ids = []
+    #         if record.department_id.id:
+    #             field_of_study_ids = self.env['siantou.ems.core.field_of_study'].search([
+    #                 ('department_id', '=', record.department_id.id),
+    #             ])
+    #             class_ids = self.env['siantou.ems.core.class'].search([
+    #                 ('field_of_study_id', 'in', field_of_study_ids.ids),
+    #                 ('year_id', '=', semester_id.year_id.id),
+    #             ])
+
+    #         record.class_ids = class_ids
 
     def _default_expiry_date(self):
         expiry_date = (datetime.now() + relativedelta(months=+1, day=1, days=-1)).date()
