@@ -84,7 +84,7 @@
                             <field name="school_ids" widget="many2many_tags" readonly="is_readonly == True"/>
                             <field name="create_uid"/>
                             <field name="expiry_date" readonly="is_readonly == True"/>
-                            <field name="timetable_ids" readonly="is_readonly == True" domain="['|', '&amp;', ('group_id.is_active', '=', True), ('group_id.is_submit', '=', False), '&amp;', ('group_parent_id.is_active', '=', True), ('group_parent_id.is_submit', '=', False)]" widget="one2many_list">
+                            <!-- <field name="timetable_ids" readonly="is_readonly == True" domain="['|', '&amp;', ('group_id.is_active', '=', True), ('group_id.is_submit', '=', False), '&amp;', ('group_parent_id.is_active', '=', True), ('group_parent_id.is_submit', '=', False)]" widget="one2many_list">
                                 <tree edit="1" create="1">
                                     <field name="group_id"/>
                                     <field name="semester_id"/>
@@ -95,8 +95,8 @@
                                     <field name="specialty_id"/>
                                     <field name="option_id"/>
                                     <field name="class_id"/>
-                                    <field name="class_group_id"/>
-                                    <!-- <field name="ue_id"/> -->
+                                    <field name="class_group_id"/> -->
+                                    <!-- <field name="ue_id"/>
                                     <field name="subject_id"/>
                                     <field name="building_id"/>
                                     <field name="classroom_id"/>
@@ -113,7 +113,7 @@
                                         decoration-info="status in ['permission', 'delay']"
                                         decoration-warning="status == 'exception'"/>
                                 </tree>
-                            </field>
+                            </field> -->
                             <!-- <field name="status" invisible="is_submit == False"/> -->
                             <field name="status" invisible="1"/>
                         </group>
@@ -150,7 +150,7 @@
                             <field name="school_ids" widget="many2many_tags" readonly="is_readonly == True"/>
                             <field name="create_uid"/>
                             <field name="expiry_date" readonly="is_readonly == True"/>
-                            <field name="timetable_ids" readonly="is_readonly == True" domain="['|', '&amp;', ('group_id.is_active', '=', True), ('group_id.is_submit', '=', False), '&amp;', ('group_parent_id.is_active', '=', True), ('group_parent_id.is_submit', '=', False)]" widget="one2many_list">
+                            <!-- <field name="timetable_ids" readonly="is_readonly == True" domain="['|', '&amp;', ('group_id.is_active', '=', True), ('group_id.is_submit', '=', False), '&amp;', ('group_parent_id.is_active', '=', True), ('group_parent_id.is_submit', '=', False)]" widget="one2many_list">
                                 <tree edit="1" create="1">
                                     <field name="group_id"/>
                                     <field name="semester_id"/>
@@ -161,8 +161,8 @@
                                     <field name="specialty_id"/>
                                     <field name="option_id"/>
                                     <field name="class_id"/>
-                                    <field name="class_group_id"/>
-                                    <!-- <field name="ue_id"/> -->
+                                    <field name="class_group_id"/> -->
+                                    <!-- <field name="ue_id"/>
                                     <field name="subject_id"/>
                                     <field name="building_id"/>
                                     <field name="classroom_id"/>
@@ -179,7 +179,7 @@
                                         decoration-info="status in ['permission', 'delay']"
                                         decoration-warning="status == 'exception'"/>
                                 </tree>
-                            </field>
+                            </field> -->
                             <!-- <field name="status" invisible="is_submit == False"/> -->
                             <field name="status" invisible="1"/>
                         </group>
