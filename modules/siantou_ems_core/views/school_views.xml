@@ -25,6 +25,9 @@
                         </field>
                     </group>
                     <notebook>
+                        <page name="department_ids" string="Départements">
+                            <field name="department_ids"/>
+                        </page>
                         <page name="field_of_study_ids" string="Filières">
                             <field name="field_of_study_ids"/>
                         </page>
