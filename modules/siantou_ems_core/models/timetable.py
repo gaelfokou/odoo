@@ -652,15 +652,18 @@ class Timetable(models.Model):
             name = name.upper()
             record.name = name
 
-    @api.depends('school_id')
+    @api.depends('school_id', 'group_id')
     def _compute_school_domain(self):
         for record in self:
             domain = []
             if record.school_id.id:
-                field_of_study_ids = self.env['siantou.ems.core.field_of_study'].search([('school_id', '=', record.school_id.id)])
-                domain = [
-                    ('field_of_study_id', 'in', field_of_study_ids.ids)
-                ]
+                domain.append(('school_id', '=', record.school_id.id))
+            if record.group_id.department_id.id:
+                domain.append(('department_id', '=', record.group_id.department_id.id))
+            field_of_study_ids = self.env['siantou.ems.core.field_of_study'].search(domain)
+            domain = [
+                ('field_of_study_id', 'in', field_of_study_ids.ids)
+            ]
             record.specialty_id_domain = domain
 
     @api.depends('group_id')
