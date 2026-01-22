@@ -97,6 +97,7 @@
                             <field name="school_id_domain" invisible="1"/>
                             <field name="school_id" options="{'no_create': True}" readonly="is_readonly == True" domain="school_id_domain"/>
                             <field name="cycle_id"/>
+                            <field name="department_id"/>
                             <field name="field_of_study_id" options="{'no_create': True}" domain="[('school_id', '=', school_id)]"/>
                             <field name="specialty_id_domain" invisible="1"/>
                             <field name="specialty_id" options="{'no_create': True}" readonly="is_readonly == True" domain="specialty_id_domain"/>

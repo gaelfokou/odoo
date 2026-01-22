@@ -227,6 +227,13 @@ class Timetable(models.Model):
         store=True
     )
 
+    department_id = fields.Many2one(
+        'hr.department',
+        string='Département',
+        related='field_of_study_id.department_id',
+        store=True
+    )
+
     specialty_id = fields.Many2one(
         'siantou.ems.core.specialty',
         string='Spécialité',
