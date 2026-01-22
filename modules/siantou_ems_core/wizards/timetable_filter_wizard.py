@@ -50,24 +50,16 @@ class TimetableFilterWizard(models.TransientModel):
         required=True
     )
 
-    # Semestre liée à la programmation de cours
     semester_id = fields.Many2one(
         'siantou.ems.core.year.semester',
         string='Semestre',
         required=True
     )
 
-    # Version auquel appartient l'emploi du temps
     group_id = fields.Many2one(
         'siantou.ems.timetable.group',
         string='Version d\'emploi du temps',
         required=True
-    )
-
-    # Ajouter un champ de relation vers hr.department pour lier la filière au département
-    department_id = fields.Many2one(
-        'hr.department',
-        string='Département'
     )
 
     school_id = fields.Many2one(
@@ -75,17 +67,29 @@ class TimetableFilterWizard(models.TransientModel):
         string='École',
     )
 
-    # Niveau lié à la programmation de cours
     level_id = fields.Many2one(
         'siantou.ems.core.level',
         'Niveau',
     )
 
-    # Filière liée à la programmation de cours
     field_of_study_id = fields.Many2one(
         'siantou.ems.core.field_of_study',
         string='Filière',
         related='specialty_id.field_of_study_id',
+        store=True
+    )
+
+    cycle_id = fields.Many2one(
+        'oe.school.course',
+        string='Cursus ou Cycle',
+        related='field_of_study_id.cycle_id',
+        store=True
+    )
+
+    department_id = fields.Many2one(
+        'hr.department',
+        string='Département',
+        related='field_of_study_id.department_id',
         store=True
     )
 
@@ -142,7 +146,7 @@ class TimetableFilterWizard(models.TransientModel):
         return start_date
 
     start_date = fields.Date(
-        'Date de début',
+        string='Date de début',
         default=_default_start_date,
     )
 
@@ -151,7 +155,7 @@ class TimetableFilterWizard(models.TransientModel):
         return end_date
 
     end_date = fields.Date(
-        'Date de fin',
+        string='Date de fin',
         default=_default_end_date,
     )
 
@@ -273,14 +277,12 @@ class TimetableFilterWizard(models.TransientModel):
             ]
             record.class_id_domain = domain
 
-    # Contrainte logique pour s'assurer que les dates de début et de fin sont définies et que la date de fin est supérieure à la date de début
     @api.constrains('start_date', 'end_date')
     def _constrains_date(self):
         for record in self:
             if record.start_date > record.end_date:
                 raise ValidationError("La date de fin doit être supérieure à la date de début")
 
-    # Contrainte logique pour s'assurer que les heures de début et de fin sont définies et que l'heure de fin est supérieure à l'heure de début
     @api.constrains('start_time', 'end_time')
     def _constrains_time(self):
         for record in self:
@@ -335,15 +337,18 @@ class TimetableFilterWizard(models.TransientModel):
             record.option_id = None
             record.subject_id = None
 
-    @api.depends('school_id')
+    @api.depends('school_id', 'group_id')
     def _compute_school_domain(self):
         for record in self:
             domain = []
             if record.school_id.id:
-                field_of_study_ids = self.env['siantou.ems.core.field_of_study'].search([('school_id', '=', record.school_id.id)])
-                domain = [
-                    ('field_of_study_id', 'in', field_of_study_ids.ids)
-                ]
+                domain.append(('school_id', '=', record.school_id.id))
+            if record.group_id.department_id.id:
+                domain.append(('department_id', '=', record.group_id.department_id.id))
+            field_of_study_ids = self.env['siantou.ems.core.field_of_study'].search(domain)
+            domain = [
+                ('field_of_study_id', 'in', field_of_study_ids.ids)
+            ]
             record.specialty_id_domain = domain
 
     @api.onchange('school_id')
@@ -410,9 +415,6 @@ class TimetableFilterWizard(models.TransientModel):
         if self.semester_id.id:
             domain.append(('semester_id', '=', self.semester_id.id))
             title.append(self.semester_id.name)
-        if self.department_id.id:
-            domain.append(('department_id', '=', self.department_id.id))
-            title.append(self.department_id.name)
         if self.school_id.id:
             domain.append(('school_id', '=', self.school_id.id))
             title.append(self.school_id.name)
@@ -565,9 +567,6 @@ class TimetableFilterWizard(models.TransientModel):
         if self.semester_id.id:
             domain.append(('semester_id', '=', self.semester_id.id))
             title.append(self.semester_id.name)
-        if self.department_id.id:
-            domain.append(('department_id', '=', self.department_id.id))
-            title.append(self.department_id.name)
         if self.school_id.id:
             domain.append(('school_id', '=', self.school_id.id))
             title.append(self.school_id.name)

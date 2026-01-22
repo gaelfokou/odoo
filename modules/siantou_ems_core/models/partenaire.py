@@ -6,7 +6,7 @@ class UniversityPartner(models.Model):
 
     #===== Nom
     name = fields.Char(
-        'Nom',
+        string='Nom',
         required=True,
     )
     image = fields.Image(string='Image')

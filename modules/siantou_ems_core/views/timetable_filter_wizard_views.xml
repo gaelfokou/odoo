@@ -9,10 +9,12 @@
                     <group>
                         <field name="year_id" options="{'no_create': True}"/>
                         <field name="semester_id" options="{'no_create': True}" domain="[('year_id', '=', year_id)]"/>
-                        <field name="group_id" options="{'no_create': True}" domain="['|', ('create_uid', '=', uid), '&amp;', ('expiry_date', '&gt;', datetime.date.today()), '|', ('read_user_ids', '=', uid), ('write_user_ids', '=', uid)]"/>
+                        <field name="group_id" options="{'no_create': True}" domain="['|', ('create_uid', '=', uid), '&amp;', ('end_date', '&gt;', datetime.date.today()), '|', ('read_user_ids', '=', uid), ('write_user_ids', '=', uid)]"/>
                         <field name="school_id_domain" invisible="1"/>
                         <field name="school_id" options="{'no_create': True}" domain="school_id_domain"/>
-                        <field name="field_of_study_id" options="{'no_create': True}" domain="[('school_id', '=', school_id)]"/>
+                        <field name="cycle_id"/>
+                        <field name="department_id" options="{'no_create': True}" domain="[('school_id', '=', school_id)]"/>
+                        <field name="field_of_study_id" options="{'no_create': True}" domain="[('school_id', '=', school_id), ('cycle_id', '=', cycle_id)]"/>
                         <field name="level_id" options="{'no_create': True}" domain="[('semester_ids', '=', semester_id)]"/>
                         <field name="specialty_id_domain" invisible="1"/>
                         <field name="specialty_id" options="{'no_create': True}" domain="specialty_id_domain"/>

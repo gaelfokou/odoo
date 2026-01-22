@@ -65,14 +65,12 @@ class FeeSchoolLine(models.Model):
         ('unique_name', 'unique(name)', 'Nom déjà utilisé'),
     ]
 
-    # Contrainte logique pour empêcher d'avoir des semestres qui se chevauchent
     @api.constrains('date_debut', 'date_fin')
     def _check_date_overlap(self):
         for record in self:
             if self.search([('id', '!=', record.id), ('date_debut', '<=', record.date_fin), ('date_fin', '>=', record.date_debut),]):
                 raise ValidationError('Les semestres ne peuvent se superposer')
 
-    # Contrainte logique pour s'assurer que la date de fin est supérieure à la date de début
     @api.constrains('date_debut', 'date_fin')
     def _constrains_date(self):
         for record in self:

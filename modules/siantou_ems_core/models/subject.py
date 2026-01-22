@@ -82,7 +82,7 @@ class Subject(models.Model):
 
     # Nom du cours
     name = fields.Char(
-        'Nom du cours',
+        string='Nom',
         required=True
     )
 
@@ -122,12 +122,10 @@ class Subject(models.Model):
         store=True,
     )
 
-    # Contrainte SQL pour empêcher d'avoir le même code pour différentes filières
     _sql_constraints = [
         ('unique_code', 'unique(code)', 'Le code du cours doit être unique.'),
     ]
 
-    # Contrainte logique pour s'assurer que les cours en tronc commun sont ajoutés
     @api.constrains('subject_child_ids')
     def _check_subject_child_ids(self):
         for record in self:
@@ -139,7 +137,6 @@ class Subject(models.Model):
         for record in self:
             record.subject_child_ids = []
 
-    # Contrainte logique pour s'assurer que le volume horaire est précisé et supérieur à 0
     @api.constrains('hours_credit')
     def _check_hours_credit(self):
         for record in self:

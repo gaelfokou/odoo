@@ -36,7 +36,7 @@ class TimetableSubjectHour(models.Model):
 
     # Date du jour où le cours sera programmé
     start_date = fields.Date(
-        'Date de début',
+        string='Date de début',
         readonly=False,
         compute='_compute_start_date',
         store=True
@@ -52,7 +52,7 @@ class TimetableSubjectHour(models.Model):
 
     # Date du jour où le cours sera programmé
     end_date = fields.Date(
-        'Date de fin',
+        string='Date de fin',
         readonly=False,
         compute='_compute_end_date',
         store=True
@@ -121,7 +121,6 @@ class TimetableSubjectHour(models.Model):
         default='pending',
     )
 
-    # Contrainte logique pour s'assurer que la date de fin est supérieure à la date de début
     @api.constrains('start_date', 'end_date')
     def _constrains_date(self):
         for record in self:
@@ -144,7 +143,6 @@ class TimetableSubjectHour(models.Model):
             else:
                 record.day_of_week = None
 
-    # Contrainte logique pour s'assurer que les heures de début et de fin sont définies et que l'heure de fin est supérieure à l'heure de début
     @api.constrains('start_time', 'end_time')
     def _constrains_time(self):
         for record in self:
@@ -170,7 +168,6 @@ class Timetable(models.Model):
         else:
             return None
 
-    # Semestre liée à la programmation de cours
     semester_id = fields.Many2one(
         'siantou.ems.core.year.semester',
         string='Semestre',
@@ -191,12 +188,6 @@ class Timetable(models.Model):
         string='Lot d\'étudiants'
     )
 
-    # Ajouter un champ de relation vers hr.department pour lier la filière au département
-    department_id = fields.Many2one(
-        'hr.department',
-        string='Département'
-    )
-
     school_id = fields.Many2one(
         'siantou.ems.core.school',
         string='École',
@@ -204,7 +195,6 @@ class Timetable(models.Model):
         ondelete='cascade'
     )
 
-    # Niveau lié à la programmation de cours
     level_id = fields.Many2one(
         'siantou.ems.core.level',
         'Niveau',
@@ -212,7 +202,6 @@ class Timetable(models.Model):
         ondelete='cascade'
     )
 
-    # Filière liée à la programmation de cours
     field_of_study_id = fields.Many2one(
         'siantou.ems.core.field_of_study',
         string='Filière',
@@ -309,7 +298,7 @@ class Timetable(models.Model):
 
     # Date du jour où le cours sera programmé
     date = fields.Date(
-        'Date du jour',
+        string='Date du jour',
         required=True,
         default=_default_date,
     )
@@ -403,14 +392,14 @@ class Timetable(models.Model):
 
     # Date et heure de début du cours
     start_datetime = fields.Datetime(
-        'Date et heure de début',
+        string='Date et heure de début',
         compute='_compute_start_datetime',
         store=False
     )
 
     # Date et heure de fin du cours
     end_datetime = fields.Datetime(
-        'Date et heure de fin',
+        string='Date et heure de fin',
         compute='_compute_end_datetime',
         store=False
     )
@@ -467,7 +456,6 @@ class Timetable(models.Model):
     def _default_group(self):
         return self.env['siantou.ems.timetable.group'].search([('is_active', '=', True)], limit=1)
 
-    # Version auquel appartient l'emploi du temps
     group_id = fields.Many2one(
         'siantou.ems.timetable.group',
         string='Version d\'emploi du temps',
@@ -499,7 +487,7 @@ class Timetable(models.Model):
                     record.is_readonly = False
                 else:
                     if self.env.user.id in record.group_id.write_user_ids.ids:
-                        if record.group_id.expiry_date <= date.today():
+                        if record.group_id.end_date <= date.today():
                             record.is_readonly = True
                         else:
                             record.is_readonly = False
@@ -768,7 +756,6 @@ class Timetable(models.Model):
             else:
                 record.day_of_week = None
 
-    # Contrainte logique pour s'assurer que les heures de début et de fin sont définies et que l'heure de fin est supérieure à l'heure de début
     @api.constrains('start_time', 'end_time')
     def _constrains_time(self):
         for record in self:
@@ -777,7 +764,6 @@ class Timetable(models.Model):
             elif record.start_time >= record.end_time:
                 raise ValidationError("L'heure de fin du cours doit être supérieure à l'heure de début du cours")
 
-    # Contrainte logique pour s'assurer que les heures de début et de fin sont définies et que l'heure de fin est supérieure à l'heure de début
     @api.constrains('status', 'worked_start_time', 'worked_end_time')
     def _constrains_worked_time(self):
         for record in self:
@@ -786,7 +772,6 @@ class Timetable(models.Model):
             elif record.status in ['present', 'permission'] and record.worked_start_time > record.worked_end_time:
                 raise ValidationError("L'heure de fin effectuée du cours doit être supérieure à l'heure de début effectuée du cours")
 
-    # Contrainte logique pour se rassurer que deux cours ne sont pas programmés dans la même salle de classe sur des horaires qui se chevauchent le même jour
     @api.constrains('class_id', 'class_group_id', 'employee_id', 'date', 'start_time', 'end_time')
     def _constrains_class(self):
         for record in self:
@@ -1262,6 +1247,11 @@ class TimetableGroup(models.Model):
     _name = 'siantou.ems.timetable.group'
     _description = 'Version d\'emploi du temps'
 
+    group_name = fields.Char(
+        string='Nom',
+        required=True
+    )
+
     name = fields.Char(
         string='Nom de la version',
         compute='_compute_name', store=True,
@@ -1412,18 +1402,27 @@ class TimetableGroup(models.Model):
 
     #         record.class_ids = class_ids
 
-    def _default_expiry_date(self):
-        expiry_date = (datetime.now() + relativedelta(months=+1, day=1, days=-1)).date()
-        return expiry_date
+    def _default_start_date(self):
+        start_date = date.today().replace(day=1)
+        return start_date
 
-    expiry_date = fields.Date(
-        string='Date d\'expiration',
-        default=_default_expiry_date,
+    start_date = fields.Date(
+        string='Date de début',
+        default=_default_start_date,
+    )
+
+    def _default_end_date(self):
+        end_date = (datetime.now() + relativedelta(months=+1, day=1, days=-1)).date()
+        return end_date
+
+    end_date = fields.Date(
+        string='Date de fin',
+        default=_default_end_date,
     )
 
     is_readonly = fields.Boolean(string='Lecture unique ?', compute='_compute_readonly', store=False)
 
-    @api.depends('expiry_date', 'write_user_ids')
+    @api.depends('end_date', 'write_user_ids')
     def _compute_readonly(self):
         for record in self:
             if record.create_uid.id:
@@ -1431,7 +1430,7 @@ class TimetableGroup(models.Model):
                     record.is_readonly = False
                 else:
                     if self.env.user.id in record.write_user_ids.ids:
-                        if record.expiry_date <= date.today():
+                        if record.end_date <= date.today():
                             record.is_readonly = True
                         else:
                             record.is_readonly = False
@@ -1440,11 +1439,11 @@ class TimetableGroup(models.Model):
             else:
                 record.is_readonly = False
 
-    @api.depends('is_submit', 'is_active')
+    @api.depends('group_name', 'is_submit', 'is_active')
     def _compute_name(self):
         for record in self:
             if record.name:
-                name = record.name
+                name = record.group_name
                 name = name.lower()
                 while True:
                     if name.find('(soumis)') != -1:
@@ -1466,11 +1465,11 @@ class TimetableGroup(models.Model):
                 name = name.upper()
                 record.name = name
 
-    @api.onchange('is_submit', 'is_active')
+    @api.onchange('group_name', 'is_submit', 'is_active')
     def _onchange_name(self):
         for record in self:
             if record.name:
-                name = record.name
+                name = record.group_name
                 name = name.lower()
                 while True:
                     if name.find('(soumis)') != -1:

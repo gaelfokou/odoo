@@ -7,7 +7,7 @@ class Level(models.Model):
 
     # Nom du niveau
     name = fields.Char(
-        'Nom du niveau',
+        string='Nom',
         required=True,
     )
 

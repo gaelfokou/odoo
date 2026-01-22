@@ -73,7 +73,7 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
         return start_date
 
     start_date = fields.Date(
-        'Date de début',
+        string='Date de début',
         default=_default_start_date,
     )
 
@@ -82,7 +82,7 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
         return end_date
 
     end_date = fields.Date(
-        'Date de fin',
+        string='Date de fin',
         default=_default_end_date,
     )
 
@@ -98,7 +98,6 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
         default=False,
     )
 
-    # Contrainte logique pour s'assurer que les dates de début et de fin sont définies et que la date de fin est supérieure à la date de début
     @api.constrains('start_date', 'end_date')
     def _constrains_date(self):
         for record in self:

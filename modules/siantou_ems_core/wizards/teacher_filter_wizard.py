@@ -25,7 +25,6 @@ class TeacherFilterWizard(models.TransientModel):
         'Année académique',
     )
 
-    # Ajouter un champ de relation vers hr.department pour lier la filière au département
     department_id = fields.Many2one(
         'hr.department',
         string='Département'
@@ -36,13 +35,11 @@ class TeacherFilterWizard(models.TransientModel):
         string='École',
     )
 
-    # Niveau lié à la programmation de cours
     level_id = fields.Many2one(
         'siantou.ems.core.level',
         'Niveau',
     )
 
-    # Filière liée à la programmation de cours
     field_of_study_id = fields.Many2one(
         'siantou.ems.core.field_of_study',
         string='Filière',

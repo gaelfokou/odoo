@@ -60,7 +60,6 @@ class HourlyRate(models.Model):
         required=True
     )
 
-    # Contrainte SQL pour empêcher d'avoir le même code pour différentes filières
     _sql_constraints = [
         ('unique_school_cycle_level_diplome_availability', 'unique(school_id,cycle_id,level_id,diplome_availability_id)', 'L\'école, le cursus ou cycle, le niveau, et le diplôme doivent être uniques.'),
     ]
@@ -163,7 +162,6 @@ class TeacherHourlyRate(models.Model):
         required=True
     )
 
-    # Contrainte SQL pour empêcher d'avoir le même code pour différentes filières
     _sql_constraints = [
         ('unique_employee_subject_hourly_rate', 'unique(employee_id,subject_id,hourly_rate_id)', 'L\enseignant, le cours, et le taux horaire doivent être uniques.'),
     ]

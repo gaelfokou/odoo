@@ -11,7 +11,7 @@ class Country(models.Model):
     )
     # Nom du pays
     name = fields.Char(
-        'Nom',
+        string='Nom',
         required=True,
     )
 
@@ -26,7 +26,7 @@ class Region(models.Model):
 
     # Nom de la région
     name = fields.Char(
-        'Nom',
+        string='Nom',
         required=True,
     )
     country_id = fields.Many2one(
@@ -44,7 +44,7 @@ class City(models.Model):
 
     # Nom de la ville
     name = fields.Char(
-        'Nom',
+        string='Nom',
         required=True,
     )
     region_id = fields.Many2one(
@@ -62,7 +62,7 @@ class Quarter(models.Model):
 
     # Nom du quartsier
     name = fields.Char(
-        'Nom',
+        string='Nom',
         required=True,
     )
     city_id = fields.Many2one(

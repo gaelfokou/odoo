@@ -23,7 +23,6 @@ class OptionOfStudy(models.Model):
         required=True
     )
 
-    # Contrainte SQL pour empêcher d'avoir le même code pour différentes filières
     _sql_constraints = [
         ('unique_code', 'unique(code)', "Le code de l'option doit être unique."),
     ]
@@ -47,7 +46,7 @@ class SpecialtyOfStudy(models.Model):
 
     # Nom du programme
     name = fields.Char(
-        'Nom de la spécialité',
+        string='Nom',
         required=True
     )
 
@@ -58,7 +57,6 @@ class SpecialtyOfStudy(models.Model):
         'Liste des options'
     )
 
-    # Contrainte SQL pour empêcher d'avoir le même code pour différentes filières
     _sql_constraints = [
         ('unique_code', 'unique(code)', 'Le code de la spécialité doit être unique.'),
     ]
@@ -76,7 +74,7 @@ class FieldOfStudy(models.Model):
 
     # Nom du programme
     name = fields.Char(
-        'Nom de la filière',
+        string='Nom',
         required=True
     )
 
@@ -103,7 +101,6 @@ class FieldOfStudy(models.Model):
         string='Lots de la filière'
     )
 
-    # Ajouter un champ de relation vers hr.department pour lier la filière au département
     department_id = fields.Many2one(
         'hr.department',
         string='Département'
@@ -114,7 +111,6 @@ class FieldOfStudy(models.Model):
         string='Créneau horaire',
     )
 
-    # Contrainte SQL pour empêcher d'avoir le même code pour différentes filières
     _sql_constraints = [
         ('unique_code', 'unique(code)', 'Le code de la filière doit être unique.'),
     ]

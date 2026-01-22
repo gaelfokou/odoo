@@ -195,7 +195,7 @@ class TeacherTimetableAttendance(models.TransientModel):
         return start_date
 
     start_date = fields.Date(
-        'Date de début',
+        string='Date de début',
         default=_default_start_date,
     )
 
@@ -204,7 +204,7 @@ class TeacherTimetableAttendance(models.TransientModel):
         return end_date
 
     end_date = fields.Date(
-        'Date de fin',
+        string='Date de fin',
         default=_default_end_date,
     )
 
@@ -248,7 +248,6 @@ class TeacherTimetableAttendance(models.TransientModel):
         for record in self:
             record.name = record.timetable_id.name
 
-    # Contrainte logique pour s'assurer que les heures de début et de fin sont définies et que l'heure de fin est supérieure à l'heure de début
     @api.constrains('start_time', 'end_time')
     def _constrains_time(self):
         for record in self:
@@ -257,7 +256,6 @@ class TeacherTimetableAttendance(models.TransientModel):
             elif record.start_time > record.end_time:
                 raise ValidationError("L'heure de fin du cours doit être supérieure à l'heure de début du cours")
 
-    # Contrainte logique pour s'assurer que les heures de début et de fin sont définies et que l'heure de fin est supérieure à l'heure de début
     @api.constrains('status', 'worked_start_time', 'worked_end_time')
     def _constrains_worked_time(self):
         for record in self:

@@ -54,13 +54,11 @@ class ClassUeCopierWizard(models.TransientModel):
         string='École',
     )
 
-    # Niveau lié à la programmation de cours
     level_id = fields.Many2one(
         'siantou.ems.core.level',
         'Niveau',
     )
 
-    # Filière liée à la programmation de cours
     field_of_study_id = fields.Many2one(
         'siantou.ems.core.field_of_study',
         string='Filière',

@@ -78,7 +78,7 @@ class HrEmployee(models.Model):
     )
 
     birthday = fields.Date(
-        'Date de naissance',
+        string='Date de naissance',
     )
 
     has_ir = fields.Boolean(
@@ -134,7 +134,6 @@ class HrEmployee(models.Model):
             name = name.strip()
             record.name = name
 
-    # Contrainte logique pour s'assurer que le quota horaire hebdommadaire de cours pour un enseignant permanent est de 24
     @api.constrains('weekly_hours_limit')
     def _check_weekly_hours_limit_permanent(self):
         for record in self:
@@ -567,7 +566,6 @@ class TeacherSubjectPriority(models.Model):
         ('unique_teacher_subject', 'unique(employee_id, subject_id)', 'Un enseignant ne peut être lié à un même cours qu\'une seule fois.')
     ]
 
-    # Contrainte logique pour s'assurer que l'utilisateur donne une priorité entre 1 et 10
     @api.constrains('priority')
     def _check_priority(self):
         for record in self:

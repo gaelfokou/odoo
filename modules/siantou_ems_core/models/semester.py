@@ -11,28 +11,24 @@ class Semester(models.Model):
     _description = 'Semestre'
     _inherit=['mail.thread', 'mail.activity.mixin',]
 
-    # Nom du semestre
     semester_name = fields.Char(
-        'Nom',
+        string='Nom',
         required=True
     )
 
     name = fields.Char(string='Nom',
                        compute='_compute_name', store=True)
 
-    # Date de début de l'année académique
     start_time = fields.Date(
-        'Date de début',
+        string='Date de début',
         required=True
     )
 
-    # Date de fin de l'année académique
     end_time = fields.Date(
-        'Date de fin',
+        string='Date de fin',
         required=True
     )
 
-    # Année académique à laquelle est lié le semestre
     year_id = fields.Many2one(
         'siantou.ems.core.year',
         'Année académique',
@@ -40,7 +36,6 @@ class Semester(models.Model):
         required=True,
     )
 
-    # classe liée au semestre
     # class_ids = fields.One2many(
     #     'siantou.ems.core.class',
     #     'semestre_id',
@@ -49,7 +44,6 @@ class Semester(models.Model):
     #     required=True
     # )
 
-    # Nombre de semaines dans un semestre
     number_of_week = fields.Integer(
         'Nombre de semaines',
         compute='_compute_number_of_week',
@@ -72,7 +66,6 @@ class Semester(models.Model):
         string='Niveaux',
     )
 
-    # Contrainte SQL pour empêcher d'avoir le même nom pour différents semestres
     # _sql_constraints = [
     #     ('unique_name', 'unique(name)', 'Le nom du semestre doit être unique.'),
     # ]
@@ -107,7 +100,6 @@ class Semester(models.Model):
             name = name.upper()
             record.name = name
 
-    # Contrainte logique pour empêcher d'avoir des semestres qui se chevauchent
     # @api.constrains('start_time', 'end_time')
     # def _check_date_overlap(self):
     #     for record in self:
@@ -116,14 +108,12 @@ class Semester(models.Model):
     #         if len(semesters) > 0:
     #             raise ValidationError('Les semestres ne peuvent se supperposer')
 
-    # Contrainte logique pour s'assurer que la date de fin est supérieure à la date de début
     @api.constrains('start_time', 'end_time')
     def _constrains_date(self):
         for record in self:
             if record.start_time >= record.end_time:
                 raise ValidationError('La date de fin doit être supérieure à la date de début')
 
-    # Fonction pour le champ calculé number_of_week
     @api.onchange('start_time', 'end_time')
     def _onchange_number_of_week(self):
         for record in self:
@@ -135,7 +125,6 @@ class Semester(models.Model):
             else:
                 record.number_of_week = 0
 
-    # Fonction pour le champ calculé number_of_week
     @api.depends('start_time', 'end_time')
     def _compute_number_of_week(self):
         for record in self:

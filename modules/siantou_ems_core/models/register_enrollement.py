@@ -48,7 +48,7 @@ class SessionEnrollment(models.Model):
     )
     start_date = fields.Date('Date de début', required=True, related='year_id.start_time')
     end_date = fields.Date(
-        'Date de fin',
+        string='Date de fin',
         required=True, related='year_id.end_time')
     cycle_ids = fields.Many2many(
         'oe.school.course',
@@ -157,9 +157,9 @@ class SessionRegisterEnrollment(models.Model):
     name = fields.Char(
         'Name', required=True, readonly=True)
     start_date = fields.Date(
-        'Date de début', store=True, related='session_id.start_date')
+        string='Date de début', store=True, related='session_id.start_date')
     end_date = fields.Date(
-        'Date de fin', store=True, related='session_id.end_date')
+        string='Date de fin', store=True, related='session_id.end_date')
     cycle_id = fields.Many2one(
         'oe.school.course', 'Cursus ou Cycle',
         required=True,

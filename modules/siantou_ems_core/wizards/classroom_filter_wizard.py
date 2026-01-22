@@ -28,7 +28,7 @@ class ClassroomFilterWizard(models.TransientModel):
     _description = 'Filtre des salles de classe'
 
     date = fields.Date(
-        'Date du jour',
+        string='Date du jour',
     )
 
     # Heure de début du cours
@@ -52,7 +52,6 @@ class ClassroomFilterWizard(models.TransientModel):
         # default='available',
     )
 
-    # Contrainte logique pour s'assurer que les heures de début et de fin sont définies et que l'heure de fin est supérieure à l'heure de début
     @api.constrains('start_time', 'end_time')
     def _constrains_time(self):
         for record in self:

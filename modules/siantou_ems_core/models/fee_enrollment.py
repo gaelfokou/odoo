@@ -44,7 +44,6 @@ class FeeEnrollment(models.Model):
                     _("Journal incorrect: Le journal doit être rédigé dans la même devise que l'entreprise.")
                 )
 
-    # Contrainte logique pour empêcher d'avoir plusieurs structure de frais d'inscritption actives simultannément
     @api.constrains('is_active')
     def _check_unique_active(self):
         for record in self:

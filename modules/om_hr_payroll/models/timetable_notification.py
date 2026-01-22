@@ -35,7 +35,6 @@ class TimetableNotification(models.Model):
         default='pending',
     )
 
-    # Contrainte logique pour s'assurer que les heures de début et de fin sont définies
     @api.constrains('template')
     def _check_template(self):
         for record in self:

@@ -63,14 +63,12 @@ class DailyAttendanceFilterWizard(models.TransientModel):
     end_punching_time = fields.Datetime(string='End Punching Time',
                                     help='End punching time in the device')
 
-    # Contrainte logique pour s'assurer que les dates de début et de fin sont définies et que la date de fin est supérieure à la date de début
     @api.constrains('start_punching_day', 'end_punching_day')
     def _constrains_punching_day(self):
         for record in self:
             if record.end_punching_day < record.start_punching_day:
                 raise ValidationError("La date de fin doit être supérieure à la date de début")
 
-    # Contrainte logique pour s'assurer que les dates de début et de fin sont définies et que la date de fin est supérieure à la date de début
     @api.constrains('start_punching_time', 'end_punching_time')
     def _constrains_punching_time(self):
         for record in self:

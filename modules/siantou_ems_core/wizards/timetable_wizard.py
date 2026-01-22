@@ -20,14 +20,12 @@ class TimetableWizard(models.TransientModel):
         required=True
     )
 
-    # Filière liée à la programmation de cours
     field_of_study_id = fields.Many2one(
         'siantou.ems.core.field_of_study',
         'Filière',
         ondelete='cascade'
     )
 
-    # Niveau lié à la programmation de cours
     level_id = fields.Many2one(
         'siantou.ems.core.level',
         'Niveau',
@@ -41,12 +39,12 @@ class TimetableWizard(models.TransientModel):
 
     # Date du jour où le cours sera programmé
     start_date = fields.Date(
-        'Date de début',
+        string='Date de début',
     )
 
     # Date du jour où le cours sera programmé
     end_date = fields.Date(
-        'Date de fin',
+        string='Date de fin',
     )
 
     @api.constrains('start_date', 'end_date')
