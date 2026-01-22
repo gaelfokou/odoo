@@ -1383,11 +1383,8 @@ class TimetableGroup(models.Model):
     #     for record in self:
     #         class_ids = []
     #         if record.department_id.id:
-    #             field_of_study_ids = self.env['siantou.ems.core.field_of_study'].search([
-    #                 ('department_id', '=', record.department_id.id),
-    #             ])
     #             class_ids = self.env['siantou.ems.core.class'].search([
-    #                 ('field_of_study_id', 'in', field_of_study_ids.ids),
+    #                 ('field_of_study_id', 'in', record.department_id.field_of_study_ids.ids),
     #                 ('year_id', '=', semester_id.year_id.id),
     #             ])
 
@@ -1398,11 +1395,8 @@ class TimetableGroup(models.Model):
     #     for record in self:
     #         class_ids = []
     #         if record.department_id.id:
-    #             field_of_study_ids = self.env['siantou.ems.core.field_of_study'].search([
-    #                 ('department_id', '=', record.department_id.id),
-    #             ])
     #             class_ids = self.env['siantou.ems.core.class'].search([
-    #                 ('field_of_study_id', 'in', field_of_study_ids.ids),
+    #                 ('field_of_study_id', 'in', record.department_id.field_of_study_ids.ids),
     #                 ('year_id', '=', semester_id.year_id.id),
     #             ])
 
