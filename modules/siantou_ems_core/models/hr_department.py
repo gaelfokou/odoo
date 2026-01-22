@@ -12,3 +12,17 @@ class Department(models.Model):
         'siantou.ems.core.school',
         string='École',
     )
+
+    field_of_study_ids = fields.One2many(
+        'siantou.ems.core.field_of_study',
+        'department_id',
+        string='Filières'
+    )
+
+    code = fields.Char(
+        string='Code',
+    )
+
+    _sql_constraints = [
+        ('unique_code', 'unique(code)', 'Le code du département doit être unique.'),
+    ]
