@@ -477,17 +477,32 @@ class Timetable(models.Model):
         domain="[('is_submit', '=', True), ('semester_id', '=', semester_id), ('status', '=', 'valid')]",
     )
 
+    has_expired = fields.Boolean(string='A expiré ?', compute='_compute_expired', store=True)
+
     is_readonly = fields.Boolean(string='Lecture unique ?', compute='_compute_readonly', store=False)
+
+    @api.depends('group_id')
+    def _compute_expired(self):
+        for record in self:
+            current_date = date.today()
+            if record.group_id.id:
+                if record.group_id.start_date > current_date or record.group_id.end_date <= current_date:
+                    record.has_expired = True
+                else:
+                    record.has_expired = False
+            else:
+                record.has_expired = False
 
     @api.depends('group_id')
     def _compute_readonly(self):
         for record in self:
+            current_date = date.today()
             if record.group_id.id:
                 if record.group_id.create_uid.id == self.env.user.id:
                     record.is_readonly = False
                 else:
                     if self.env.user.id in record.group_id.write_user_ids.ids:
-                        if record.group_id.end_date <= date.today():
+                        if record.group_id.end_date <= current_date:
                             record.is_readonly = True
                         else:
                             record.is_readonly = False
@@ -1301,6 +1316,10 @@ class TimetableGroup(models.Model):
         string='Utilisateurs associés en écriture',
     )
 
+    has_expired = fields.Boolean(string='A expiré ?', compute='_compute_expired', store=True)
+
+    is_readonly = fields.Boolean(string='Lecture unique ?', compute='_compute_readonly', store=False)
+
     group_parent_id = fields.Many2one(
         'siantou.ems.timetable.group',
         string='Version d\'emploi du temps parent',
@@ -1431,17 +1450,28 @@ class TimetableGroup(models.Model):
             if record.start_date > record.end_date:
                 raise ValidationError('La date de fin doit être supérieure ou égale à la date de début')
 
-    is_readonly = fields.Boolean(string='Lecture unique ?', compute='_compute_readonly', store=False)
+    @api.depends('start_date', 'end_date')
+    def _compute_expired(self):
+        for record in self:
+            current_date = date.today()
+            if record.start_date and record.end_date:
+                if record.start_date > current_date or record.end_date <= current_date:
+                    record.has_expired = True
+                else:
+                    record.has_expired = False
+            else:
+                record.has_expired = False
 
     @api.depends('end_date', 'write_user_ids')
     def _compute_readonly(self):
         for record in self:
+            current_date = date.today()
             if record.create_uid.id:
                 if record.create_uid.id == self.env.user.id:
                     record.is_readonly = False
                 else:
                     if self.env.user.id in record.write_user_ids.ids:
-                        if record.end_date <= date.today():
+                        if record.end_date <= current_date:
                             record.is_readonly = True
                         else:
                             record.is_readonly = False

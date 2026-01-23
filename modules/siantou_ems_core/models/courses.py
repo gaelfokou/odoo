@@ -37,7 +37,7 @@ class OeSchoolCourse(models.Model):
 
     name = fields.Char(string='Nom', required=True)
     code = fields.Char(string='Code', required=True, size=10)
-    complete_name = fields.Char(string='Nom complet', compute='_compute_complete_name', recursive=True, )
+    complete_name = fields.Char(string='Nom complet', compute='_compute_complete_name', recursive=True)
     parent_id = fields.Many2one(
         'oe.school.course',
         string='Cursus parent', index=True,
