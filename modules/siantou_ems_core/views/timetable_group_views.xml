@@ -21,12 +21,12 @@
                     <field name="end_date"/>
                     <field name="is_submit"/>
                     <field name="is_active"/>
-                    <field name="has_expired"/>
 					<field name="status" widget="badge"
                         decoration-muted="status == 'pending'"
                         decoration-success="status == 'valid'"
                         decoration-danger="status == 'invalid'"
                         decoration-warning="status == 'draft'"/>
+                    <field name="has_expired"/>
                 </tree>
             </field>
         </record>
@@ -50,12 +50,12 @@
                     <field name="end_date"/>
                     <field name="is_submit"/>
                     <field name="is_active"/>
-                    <field name="has_expired"/>
 					<field name="status" widget="badge"
                         decoration-muted="status == 'pending'"
                         decoration-success="status == 'valid'"
                         decoration-danger="status == 'invalid'"
                         decoration-warning="status == 'draft'"/>
+                    <field name="has_expired"/>
                 </tree>
             </field>
         </record>
@@ -89,7 +89,6 @@
                             <field name="create_uid"/>
                             <field name="start_date" readonly="is_readonly == True"/>
                             <field name="end_date" readonly="is_readonly == True"/>
-                            <field name="has_expired" invisible="1"/>
                             <field name="year_id" invisible="1"/>
                             <field name="department_id_domain" invisible="1"/>
                             <field name="department_id" options="{'no_create': True}" readonly="is_readonly == True" domain="department_id_domain"/>
@@ -126,6 +125,7 @@
                             </field> -->
                             <!-- <field name="status" invisible="is_submit == False"/> -->
                             <field name="status" invisible="1"/>
+                            <field name="has_expired"/>
                         </group>
 					</sheet>
                 </form>
@@ -161,7 +161,6 @@
                             <field name="create_uid"/>
                             <field name="start_date" readonly="is_readonly == True"/>
                             <field name="end_date" readonly="is_readonly == True"/>
-                            <field name="has_expired" invisible="1"/>
                             <field name="year_id" invisible="1"/>
                             <field name="department_id_domain" invisible="1"/>
                             <field name="department_id" options="{'no_create': True}" readonly="is_readonly == True" domain="department_id_domain"/>
@@ -198,6 +197,7 @@
                             </field> -->
                             <!-- <field name="status" invisible="is_submit == False"/> -->
                             <field name="status" invisible="1"/>
+                            <field name="has_expired"/>
                         </group>
 					</sheet>
                 </form>
@@ -215,7 +215,7 @@
                 eval="[(5, 0, 0),
                 (0, 0, {'view_mode': 'tree', 'view_id': ref('view_timetable_group_tree')}),
                 (0, 0, {'view_mode': 'form', 'view_id': ref('view_timetable_group_form')})]"/>
-            <field name="domain">['|', '&amp;', ('is_submit', '=', False), ('create_uid', '=', uid), '&amp;', '&amp;', ('is_submit', '=', False), ('has_expired', '=', False), ('write_user_ids', '=', uid)]</field>
+            <field name="domain">['|', '|', '&amp;', ('is_submit', '=', False), ('create_uid', '=', uid), '&amp;', ('is_submit', '=', False), ('read_user_ids', '=', uid), '&amp;', ('is_submit', '=', False), ('write_user_ids', '=', uid)]</field>
             <field name="context">{'default_is_submit': False, 'default_status': 'valid'}</field>
             <field name="help" type="html">
                 <p class="o_view_nocontent_smiling_face">
@@ -243,7 +243,7 @@
                 eval="[(5, 0, 0),
                 (0, 0, {'view_mode': 'tree', 'view_id': ref('view_timetable_group_tree_submit')}),
                 (0, 0, {'view_mode': 'form', 'view_id': ref('view_timetable_group_form_submit')})]"/>
-            <field name="domain">['|', '&amp;', ('is_submit', '=', True), ('create_uid', '=', uid), '&amp;', '&amp;', ('is_submit', '=', True), ('has_expired', '=', False), ('write_user_ids', '=', uid)]</field>
+            <field name="domain">['|', '|', '&amp;', ('is_submit', '=', True), ('create_uid', '=', uid), '&amp;', ('is_submit', '=', True), ('read_user_ids', '=', uid), '&amp;', ('is_submit', '=', True), ('write_user_ids', '=', uid)]</field>
             <field name="context">{'default_is_submit': True}</field>
             <field name="help" type="html">
                 <p class="o_view_nocontent_smiling_face">
