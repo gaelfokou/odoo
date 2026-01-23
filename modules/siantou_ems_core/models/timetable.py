@@ -772,7 +772,7 @@ class Timetable(models.Model):
             elif record.status in ['present', 'permission'] and record.worked_start_time > record.worked_end_time:
                 raise ValidationError("L'heure de fin effectuée du cours doit être supérieure à l'heure de début effectuée du cours")
 
-    @api.constrains('class_id', 'class_group_id', 'employee_id', 'date', 'start_time', 'end_time')
+    @api.constrains('group_id', 'class_id', 'class_group_id', 'employee_id', 'date', 'start_time', 'end_time')
     def _constrains_class(self):
         for record in self:
             group_ids = []
@@ -788,7 +788,8 @@ class Timetable(models.Model):
             if record.class_group_id.id:
                 timetables = self.env['siantou.ems.timetable.timetable'].search([
                     ('id', '!=', record.id),
-                    ('group_id', 'in', group_ids),
+                    # ('group_id', 'in', group_ids),
+                    ('year_id', '=', record.group_id.semester_id.year_id.id),
                     ('class_id', '=', record.class_id.id),
                     ('class_group_id', '=', record.class_group_id.id),
                     ('date', '=', record.date),
@@ -796,7 +797,8 @@ class Timetable(models.Model):
             else:
                 timetables = self.env['siantou.ems.timetable.timetable'].search([
                     ('id', '!=', record.id),
-                    ('group_id', 'in', group_ids),
+                    # ('group_id', 'in', group_ids),
+                    ('year_id', '=', record.group_id.semester_id.year_id.id),
                     ('class_id', '=', record.class_id.id),
                     ('date', '=', record.date),
                 ]).filtered(lambda rec: not (rec.start_time >= record.end_time or rec.end_time <= record.start_time))
@@ -809,6 +811,7 @@ class Timetable(models.Model):
                 for timetable in timetables:
                     timetable_date = datetime.strftime(timetable.date, DATE_FORMAT_FR)
                     validation_error_message += f"""
+                        Version: {timetable.group_id.name}
                         Enseignant: {timetable.employee_id.name}
                         Date: {timetable_date}
                         Heure de début: {timetable.start_time}
@@ -819,7 +822,8 @@ class Timetable(models.Model):
 
             timetables = self.env['siantou.ems.timetable.timetable'].search([
                 ('id', '!=', record.id),
-                ('group_id', 'in', group_ids),
+                # ('group_id', 'in', group_ids),
+                ('year_id', '=', record.group_id.semester_id.year_id.id),
                 ('employee_id', '=', record.employee_id.id),
                 ('date', '=', record.date),
             ]).filtered(lambda rec: not (rec.start_time >= record.end_time or rec.end_time <= record.start_time or (rec.start_time == record.start_time and rec.end_time == record.end_time)))
@@ -832,6 +836,7 @@ class Timetable(models.Model):
                 for timetable in timetables:
                     timetable_date = datetime.strftime(timetable.date, DATE_FORMAT_FR)
                     validation_error_message += f"""
+                        Version: {timetable.group_id.name}
                         Classe: {timetable.class_id.name}
                         Date: {timetable_date}
                         Heure de début: {timetable.start_time}
@@ -1419,6 +1424,12 @@ class TimetableGroup(models.Model):
         string='Date de fin',
         default=_default_end_date,
     )
+
+    @api.constrains('start_date', 'end_date')
+    def _constrains_date(self):
+        for record in self:
+            if record.start_date > record.end_date:
+                raise ValidationError('La date de fin doit être supérieure ou égale à la date de début')
 
     is_readonly = fields.Boolean(string='Lecture unique ?', compute='_compute_readonly', store=False)
 
