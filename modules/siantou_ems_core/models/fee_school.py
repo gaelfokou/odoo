@@ -47,7 +47,7 @@ class FeeSchool(models.Model):
 
 class FeeSchoolLine(models.Model):
     _name = 's.e.core.fee.school.line'
-    _description = " Gestion des élements de frais de scolarité des étudiants"
+    _description = 'Gestion des élements de frais de scolarité des étudiants'
     _order = 'desc name'
 
     name = fields.Char(string='Nom', required=True)

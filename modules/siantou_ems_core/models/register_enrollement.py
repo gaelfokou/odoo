@@ -10,7 +10,7 @@ _logger = logging.getLogger(__name__)
 class SessionEnrollment(models.Model):
     _name = 'siantou.session'
     _inherit = 'mail.thread'
-    _description = "Gestion des Session d'admission"
+    _description = 'Session d\'admission'
     _order = 'id desc'
     _sql_constraints = [
         ('uniq_session', 'unique(name,year_id,campus)',
@@ -147,7 +147,7 @@ class SessionEnrollment(models.Model):
 class SessionRegisterEnrollment(models.Model):
     _name = "siantou.session.registre"
     _inherit = 'mail.thread'
-    _description = "Gestion des Registre d'admission"
+    _description = 'Registre d\'admission'
     _order = 'id desc'
     _sql_constraints = [
         ('uniq_registre', 'unique(name,field_of_study_id,year_id,campus)',

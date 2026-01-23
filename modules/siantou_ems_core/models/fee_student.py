@@ -77,7 +77,7 @@ class FeeStruct(models.Model):
 
 class FeeStudent(models.Model):
     _name = 'siantou.ems.core.fee.student'
-    _description = "Frais de d'inscription des étudiants"
+    _description = 'Frais de d\'inscription des étudiants'
 
     fee_enroll_struct_id = fields.Many2one(
         'siantou.ems.core.fee.enrollment',

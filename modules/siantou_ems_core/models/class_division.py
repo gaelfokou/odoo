@@ -10,7 +10,7 @@ _logger = logging.getLogger(__name__)
 
 class EducationClass(models.Model):
     _name = 'siantou.ems.core.class'
-    _description = "Classe"
+    _description = 'Classe'
     _inherit=['mail.thread', 'mail.activity.mixin',]
 
     name = fields.Char(string='Nom',

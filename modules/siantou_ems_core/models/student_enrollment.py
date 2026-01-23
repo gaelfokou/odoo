@@ -520,7 +520,7 @@ class StudentEnrollment(models.Model):
 
 # class StudentEnrollmentFileAdmission(models.Model):
 #     _name = 'oe.school.student.enrollment.file'
-#     _description = "Gestion des fichiers d'enrollement des étudiants"
+#     _description = 'Fichier d\'enrollement des étudiants'
 
 #     student_enrollemnt_id = fields.Many2one(
 #         'oe.school.student.enrollment', 

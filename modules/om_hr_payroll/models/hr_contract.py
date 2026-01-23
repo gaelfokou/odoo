@@ -56,7 +56,7 @@ class HrContract(models.Model):
 
 class HrContractAdvantageTemplate(models.Model):
     _name = 'hr.contract.advantage.template'
-    _description = "Employee's Advantage on Contract"
+    _description = 'Employee\'s Advantage on Contract'
 
     name = fields.Char(string='Name', required=True)
     code = fields.Char(string='Code', required=True)
