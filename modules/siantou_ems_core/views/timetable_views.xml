@@ -90,7 +90,7 @@
 					<sheet>
                         <group>
                             <field name="is_readonly" invisible="1"/>
-                            <field name="group_id" options="{'no_create': True}" readonly="is_readonly == True" domain="['|', ('create_uid', '=', uid), '&amp;', ('has_write_access', '=', False), ('write_user_ids', '=', uid)]"/>
+                            <field name="group_id" options="{'no_create': True}" readonly="is_readonly == True" domain="['|', ('create_uid', '=', uid), '&amp;', ('has_write_access', '=', True), ('write_user_ids', '=', uid)]"/>
                             <field name="batch_id" invisible="1"/>
                             <field name="semester_id" readonly="1" options="{'no_create': True}"/>
                             <field name="year_id" readonly="1" options="{'no_create': True}"/>
