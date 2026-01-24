@@ -781,12 +781,17 @@ class Helpers:
 
         for i in range(len(hours)):
             while Helpers.increment_float_time(hours[i][0]) < Helpers.increment_float_time(hours[i][1]):
-                if Helpers.increment_float_time(hours[i][0], n) < Helpers.increment_float_time(hours[i][1]):
-                    h = '{}-{}'.format(Helpers.increment_float_time(hours[i][0]), Helpers.increment_float_time(hours[i][0], n))
-                else:
+                if Helpers.increment_float_time(hours[i][0], n) == 0.0:
                     h = '{}-{}'.format(Helpers.increment_float_time(hours[i][0]), Helpers.increment_float_time(hours[i][1]))
-                current_hours.append(h)
-                hours[i][0] = Helpers.increment_float_time(hours[i][0], n)
+                    current_hours.append(h)
+                    hours[i][0] = Helpers.increment_float_time(hours[i][1])
+                else:
+                    if Helpers.increment_float_time(hours[i][0], n) < Helpers.increment_float_time(hours[i][1]):
+                        h = '{}-{}'.format(Helpers.increment_float_time(hours[i][0]), Helpers.increment_float_time(hours[i][0], n))
+                    else:
+                        h = '{}-{}'.format(Helpers.increment_float_time(hours[i][0]), Helpers.increment_float_time(hours[i][1]))
+                    current_hours.append(h)
+                    hours[i][0] = Helpers.increment_float_time(hours[i][0], n)
 
         current_hours = list(set(current_hours))
         current_hours.sort(key=lambda h: float(h.split('-')[0]))

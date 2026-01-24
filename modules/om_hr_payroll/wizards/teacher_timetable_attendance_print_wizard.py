@@ -503,12 +503,17 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
 
         for i in range(len(hours)):
             while TeacherTimetableAttendancePrintWizard.increment_float_time(hours[i][0]) < TeacherTimetableAttendancePrintWizard.increment_float_time(hours[i][1]):
-                if TeacherTimetableAttendancePrintWizard.increment_float_time(hours[i][0], n) < TeacherTimetableAttendancePrintWizard.increment_float_time(hours[i][1]):
-                    h = '{}-{}'.format(TeacherTimetableAttendancePrintWizard.increment_float_time(hours[i][0]), TeacherTimetableAttendancePrintWizard.increment_float_time(hours[i][0], n))
-                else:
+                if TeacherTimetableAttendancePrintWizard.increment_float_time(hours[i][0], n) == 0.0:
                     h = '{}-{}'.format(TeacherTimetableAttendancePrintWizard.increment_float_time(hours[i][0]), TeacherTimetableAttendancePrintWizard.increment_float_time(hours[i][1]))
-                current_hours.append(h)
-                hours[i][0] = TeacherTimetableAttendancePrintWizard.increment_float_time(hours[i][0], n)
+                    current_hours.append(h)
+                    hours[i][0] = TeacherTimetableAttendancePrintWizard.increment_float_time(hours[i][1])
+                else:
+                    if TeacherTimetableAttendancePrintWizard.increment_float_time(hours[i][0], n) < TeacherTimetableAttendancePrintWizard.increment_float_time(hours[i][1]):
+                        h = '{}-{}'.format(TeacherTimetableAttendancePrintWizard.increment_float_time(hours[i][0]), TeacherTimetableAttendancePrintWizard.increment_float_time(hours[i][0], n))
+                    else:
+                        h = '{}-{}'.format(TeacherTimetableAttendancePrintWizard.increment_float_time(hours[i][0]), TeacherTimetableAttendancePrintWizard.increment_float_time(hours[i][1]))
+                    current_hours.append(h)
+                    hours[i][0] = TeacherTimetableAttendancePrintWizard.increment_float_time(hours[i][0], n)
 
         current_hours = list(set(current_hours))
         current_hours.sort(key=lambda h: float(h.split('-')[0]))
