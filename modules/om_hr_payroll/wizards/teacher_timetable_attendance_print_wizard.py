@@ -546,22 +546,49 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
             if monday not in df:
                 df[monday] = pd.DataFrame(timetables[monday], dtype=str)
             while TeacherTimetableAttendancePrintWizard.increment_float_time(d['start_time']) < TeacherTimetableAttendancePrintWizard.increment_float_time(d['end_time']):
-                if TeacherTimetableAttendancePrintWizard.increment_float_time(d['start_time'], n) < TeacherTimetableAttendancePrintWizard.increment_float_time(d['end_time']):
-                    h = '{}-{}'.format(TeacherTimetableAttendancePrintWizard.increment_float_time(d['start_time']), TeacherTimetableAttendancePrintWizard.increment_float_time(d['start_time'], n))
-                else:
+                if TeacherTimetableAttendancePrintWizard.increment_float_time(d['start_time'], n) == 0.0:
                     h = '{}-{}'.format(TeacherTimetableAttendancePrintWizard.increment_float_time(d['start_time']), TeacherTimetableAttendancePrintWizard.increment_float_time(d['end_time']))
-                for i, row in df[monday].iterrows():
-                    if h == timetables[monday]['Heure'][i]:
-                        for j, column in enumerate(df[monday].columns):
-                            for k, key in enumerate(timetables[monday].keys()):
-                                if k == d['date'].weekday() + 1:
-                                    if column == key:
-                                        if TeacherTimetableAttendancePrintWizard.is_float(str(df[monday].loc[i, column])) and np.isnan(float(str(df[monday].loc[i, column]))):
-                                            df[monday].loc[i, column] = str(d['id'])
-                                        else:
-                                            df[monday].loc[i, column] = '{}-{}'.format(df[monday].loc[i, column], str(d['id']))
-                                    break
-                d['start_time'] = TeacherTimetableAttendancePrintWizard.increment_float_time(d['start_time'], n)
+                    for i, row in df[monday].iterrows():
+                        if h == timetables[monday]['Heure'][i]:
+                            for j, column in enumerate(df[monday].columns):
+                                for k, key in enumerate(timetables[monday].keys()):
+                                    if k == d['date'].weekday() + 1:
+                                        if column == key:
+                                            if TeacherTimetableAttendancePrintWizard.is_float(str(df[monday].loc[i, column])) and np.isnan(float(str(df[monday].loc[i, column]))):
+                                                df[monday].loc[i, column] = str(d['id'])
+                                            else:
+                                                df[monday].loc[i, column] = '{}-{}'.format(df[monday].loc[i, column], str(d['id']))
+                                        break
+                    d['start_time'] = TeacherTimetableAttendancePrintWizard.increment_float_time(d['end_time'])
+                else:
+                    if TeacherTimetableAttendancePrintWizard.increment_float_time(d['start_time'], n) < TeacherTimetableAttendancePrintWizard.increment_float_time(d['end_time']):
+                        h = '{}-{}'.format(TeacherTimetableAttendancePrintWizard.increment_float_time(d['start_time']), TeacherTimetableAttendancePrintWizard.increment_float_time(d['start_time'], n))
+                        for i, row in df[monday].iterrows():
+                            if h == timetables[monday]['Heure'][i]:
+                                for j, column in enumerate(df[monday].columns):
+                                    for k, key in enumerate(timetables[monday].keys()):
+                                        if k == d['date'].weekday() + 1:
+                                            if column == key:
+                                                if TeacherTimetableAttendancePrintWizard.is_float(str(df[monday].loc[i, column])) and np.isnan(float(str(df[monday].loc[i, column]))):
+                                                    df[monday].loc[i, column] = str(d['id'])
+                                                else:
+                                                    df[monday].loc[i, column] = '{}-{}'.format(df[monday].loc[i, column], str(d['id']))
+                                            break
+                        d['start_time'] = TeacherTimetableAttendancePrintWizard.increment_float_time(d['start_time'], n)
+                    else:
+                        h = '{}-{}'.format(TeacherTimetableAttendancePrintWizard.increment_float_time(d['start_time']), TeacherTimetableAttendancePrintWizard.increment_float_time(d['end_time']))
+                        for i, row in df[monday].iterrows():
+                            if h == timetables[monday]['Heure'][i]:
+                                for j, column in enumerate(df[monday].columns):
+                                    for k, key in enumerate(timetables[monday].keys()):
+                                        if k == d['date'].weekday() + 1:
+                                            if column == key:
+                                                if TeacherTimetableAttendancePrintWizard.is_float(str(df[monday].loc[i, column])) and np.isnan(float(str(df[monday].loc[i, column]))):
+                                                    df[monday].loc[i, column] = str(d['id'])
+                                                else:
+                                                    df[monday].loc[i, column] = '{}-{}'.format(df[monday].loc[i, column], str(d['id']))
+                                            break
+                        d['start_time'] = TeacherTimetableAttendancePrintWizard.increment_float_time(d['end_time'])
 
         for monday in df.keys():
             df[monday].replace(np.nan, '-', inplace=True)
