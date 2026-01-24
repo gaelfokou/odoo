@@ -582,10 +582,12 @@ class TimetablePrintWizard(models.TransientModel):
                 else:
                     if TimetablePrintWizard.increment_float_time(hours[i][0], n) < TimetablePrintWizard.increment_float_time(hours[i][1]):
                         h = '{}-{}'.format(TimetablePrintWizard.increment_float_time(hours[i][0]), TimetablePrintWizard.increment_float_time(hours[i][0], n))
+                        current_hours.append(h)
+                        hours[i][0] = TimetablePrintWizard.increment_float_time(hours[i][0], n)
                     else:
                         h = '{}-{}'.format(TimetablePrintWizard.increment_float_time(hours[i][0]), TimetablePrintWizard.increment_float_time(hours[i][1]))
-                    current_hours.append(h)
-                    hours[i][0] = TimetablePrintWizard.increment_float_time(hours[i][0], n)
+                        current_hours.append(h)
+                        hours[i][0] = TimetablePrintWizard.increment_float_time(hours[i][1])
 
         current_hours = list(set(current_hours))
         current_hours.sort(key=lambda h: float(h.split('-')[0]))
