@@ -26,7 +26,7 @@
                         decoration-success="status == 'valid'"
                         decoration-danger="status == 'invalid'"
                         decoration-warning="status == 'draft'"/>
-                    <field name="has_expired"/>
+                    <field name="has_write_access"/>
                 </tree>
             </field>
         </record>
@@ -55,7 +55,7 @@
                         decoration-success="status == 'valid'"
                         decoration-danger="status == 'invalid'"
                         decoration-warning="status == 'draft'"/>
-                    <field name="has_expired"/>
+                    <field name="has_write_access"/>
                 </tree>
             </field>
         </record>
@@ -125,7 +125,7 @@
                             </field> -->
                             <!-- <field name="status" invisible="is_submit == False"/> -->
                             <field name="status" invisible="1"/>
-                            <field name="has_expired"/>
+                            <field name="has_write_access"/>
                         </group>
 					</sheet>
                 </form>
@@ -197,7 +197,7 @@
                             </field> -->
                             <!-- <field name="status" invisible="is_submit == False"/> -->
                             <field name="status" invisible="1"/>
-                            <field name="has_expired"/>
+                            <field name="has_write_access"/>
                         </group>
 					</sheet>
                 </form>

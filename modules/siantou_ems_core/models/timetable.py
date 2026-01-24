@@ -1432,31 +1432,31 @@ class TimetableGroup(models.Model):
             if record.start_date > record.end_date:
                 raise ValidationError('La date de fin doit être supérieure ou égale à la date de début')
 
-    has_expired = fields.Boolean(string='A expiré ?', compute='_compute_expired', store=True)
+    has_write_access = fields.Boolean(string='Accès en écriture ?', compute='_compute_access', store=True)
 
     @api.depends('start_date', 'end_date')
-    def _compute_expired(self):
+    def _compute_access(self):
         for record in self:
             current_date = date.today()
             if record.start_date and record.end_date:
                 if record.start_date > current_date or record.end_date <= current_date:
-                    record.has_expired = True
+                    record.has_write_access = False
                 else:
-                    record.has_expired = False
+                    record.has_write_access = True
             else:
-                record.has_expired = False
+                record.has_write_access = False
 
     @api.onchange('start_date', 'end_date')
-    def _onchange_expired(self):
+    def _onchange_access(self):
         for record in self:
             current_date = date.today()
             if record.start_date and record.end_date:
                 if record.start_date > current_date or record.end_date <= current_date:
-                    record.has_expired = True
+                    record.has_write_access = False
                 else:
-                    record.has_expired = False
+                    record.has_write_access = True
             else:
-                record.has_expired = False
+                record.has_write_access = False
 
     is_readonly = fields.Boolean(string='Lecture unique ?', compute='_compute_readonly', store=False)
 
