@@ -828,7 +828,7 @@ class Timetable(models.Model):
                 ('year_id', '=', record.group_id.semester_id.year_id.id),
                 ('employee_id', '=', record.employee_id.id),
                 ('date', '=', record.date),
-            ]).filtered(lambda rec: not (rec.start_time >= record.end_time or rec.end_time <= record.start_time or (rec.start_time == record.start_time and rec.end_time == record.end_time)))
+            ]).filtered(lambda rec: not (rec.start_time >= record.end_time or rec.end_time <= record.start_time or (rec.class_id.level_id.id == record.class_id.level_id.id and rec.start_time == record.start_time and rec.end_time == record.end_time)))
             timetables = list(timetables)
             if len(timetables) > 0:
                 validation_error_message = """
