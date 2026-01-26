@@ -126,6 +126,7 @@
                                             <td class="text-center"></td>
                                             <td class="text-center"></td>
                                             <td class="text-center"></td>
+                                            <td class="text-center"></td>
                                         </tr>
                                     </t>
                                     <tr>
@@ -133,6 +134,7 @@
                                         <td class="text-center">
                                             <span t-esc="str(docdata['total_percentage']) + '%'"/>
                                         </td>
+                                        <td class="text-center"></td>
                                         <td class="text-center"></td>
                                         <td class="text-center"></td>
                                         <td class="text-center"></td>
