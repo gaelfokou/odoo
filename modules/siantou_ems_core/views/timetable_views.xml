@@ -56,6 +56,7 @@
 					<field name="end_time"/>
 					<field name="worked_start_time" invisible="status not in ['present', 'permission', 'exception']" optional="hide"/>
 					<field name="worked_end_time" invisible="status not in ['present', 'permission', 'exception']" optional="hide"/>
+					<field name="reason" invisible="status not in ['present', 'absent', 'exception']" optional="hide"/>
 					<field name="status" widget="badge"
                         decoration-muted="status == 'pending'"
                         decoration-primary="status == 'progress'"
@@ -63,7 +64,6 @@
                         decoration-danger="status == 'absent'"
                         decoration-info="status in ['permission', 'delay']"
                         decoration-warning="status == 'exception'"/>
-					<field name="reason" invisible="status not in ['present', 'absent', 'exception']" optional="hide"/>
 				</tree>
 			</field>
 		</record>
@@ -116,6 +116,8 @@
                             <field name="end_time" readonly="is_readonly == True" invisible="id == False or start_time == end_time"/>
                             <field name="worked_start_time" invisible="status not in ['present', 'permission', 'exception']" readonly="1"/>
                             <field name="worked_end_time" invisible="status not in ['present', 'permission', 'exception']" readonly="1"/>
+        					<field name="reason" invisible="status not in ['present', 'absent', 'exception']" readonly="1"/>
+                            <field name="status" invisible="1"/>
                             <field name="subject_day_hour_ids" options="{'no_create': True}" readonly="is_readonly == True" invisible="id != False and start_time != end_time" context="{'default_group_id': group_id}" widget="one2many_list">
                                 <tree edit="1" create="1">
                                     <field name="group_id"/>
@@ -128,8 +130,6 @@
                                 </tree>
                             </field>
                             <field name="not_active_slotitems" invisible="1"/>
-                            <field name="status" invisible="1"/>
-        					<field name="reason" invisible="status not in ['present', 'absent', 'exception']" readonly="1"/>
                             <field name="session_ids" options="{'no_create': True}" readonly="is_readonly == True" widget="one2many_list">
                                 <tree>
                                     <field name="name"/>

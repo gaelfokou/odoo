@@ -359,8 +359,8 @@
                                 <th class="text-left">Jour de la semaine</th>
                                 <th class="text-left">Heure</th>
                                 <th class="text-left">Heure effectuée</th>
-                                <th class="text-left">Statut</th>
                                 <th class="text-left">Motif</th>
+                                <th class="text-left">Statut</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -395,10 +395,10 @@
                                         <span t-esc="record['worked_start_time'] + '-' + record['worked_end_time']"/>
                                     </td>
                                     <td class="text-left">
-                                        <span t-esc="record['status']"/>
+                                        <span t-esc="record['reason']"/>
                                     </td>
                                     <td class="text-left">
-                                        <span t-esc="record['reason']"/>
+                                        <span t-esc="record['status']"/>
                                     </td>
                                 </tr>
                             </t>
