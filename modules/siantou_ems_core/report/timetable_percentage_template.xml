@@ -64,9 +64,9 @@
                                         <th class="text-center">Cours</th>
                                         <th class="text-center">Date</th>
                                         <th class="text-center">Heure</th>
+                                        <th class="text-center">Satut</th>
                                         <th class="text-center">Heure effectuée</th>
                                         <th class="text-center">Motif</th>
-                                        <th class="text-center">Satut</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -95,13 +95,13 @@
                                                     <span t-esc="timetable['start_time'] + '-' + timetable['end_time']"/>
                                                 </td>
                                                 <td class="text-center">
+                                                    <span t-esc="timetable['status']"/>
+                                                </td>
+                                                <td class="text-center">
                                                     <span t-esc="timetable['worked_start_time'] + '-' + timetable['worked_end_time']"/>
                                                 </td>
                                                 <td class="text-center">
                                                     <span t-esc="timetable['reason']"/>
-                                                </td>
-                                                <td class="text-center">
-                                                    <span t-esc="timetable['status']"/>
                                                 </td>
                                             </tr>
                                         </t>
