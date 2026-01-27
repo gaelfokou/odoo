@@ -1406,7 +1406,7 @@
                                         <td class="text-left">
                                             <span t-esc="subjectsessions[timetable]['status']"/>
                                         </td>
-                                        <td class="text-left">
+                                        <td class="text-center">
                                             <t t-if="is_user == 'is_teacher'">
                                                 <div>
                                                     <a t-attf-href="/my/subjectsession/{{ params['class_id'] }}/{{ params['subject_id'] }}/{{ session['id'] }}/edit" class="btn btn-primary btn-sm">Modifier</a>
