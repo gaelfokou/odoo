@@ -38,7 +38,6 @@
                     </header>
                     <field name="group_id"/>
                     <field name="semester_id"/>
-                    <field name="year_id"/>
                     <field name="school_id"/>
                     <field name="field_of_study_id"/>
                     <field name="specialty_id"/>
@@ -55,6 +54,8 @@
 					<field name="day_of_week"/>
 					<field name="start_time"/>
 					<field name="end_time"/>
+					<field name="worked_start_time" invisible="status not in ['present', 'permission', 'exception']" optional="hide"/>
+					<field name="worked_end_time" invisible="status not in ['present', 'permission', 'exception']" optional="hide"/>
 					<field name="status" widget="badge"
                         decoration-muted="status == 'pending'"
                         decoration-primary="status == 'progress'"
@@ -63,8 +64,6 @@
                         decoration-info="status in ['permission', 'delay']"
                         decoration-warning="status == 'exception'"/>
 					<field name="reason" invisible="status not in ['present', 'absent', 'exception']" optional="hide"/>
-					<field name="worked_start_time" invisible="status not in ['present', 'permission', 'exception']" optional="hide"/>
-					<field name="worked_end_time" invisible="status not in ['present', 'permission', 'exception']" optional="hide"/>
 				</tree>
 			</field>
 		</record>
@@ -115,6 +114,8 @@
         					<field name="day_of_week" invisible="id == False or start_time == end_time"/>
                             <field name="start_time" readonly="is_readonly == True" invisible="id == False or start_time == end_time"/>
                             <field name="end_time" readonly="is_readonly == True" invisible="id == False or start_time == end_time"/>
+                            <field name="worked_start_time" invisible="status not in ['present', 'permission', 'exception']" readonly="1"/>
+                            <field name="worked_end_time" invisible="status not in ['present', 'permission', 'exception']" readonly="1"/>
                             <field name="subject_day_hour_ids" options="{'no_create': True}" readonly="is_readonly == True" invisible="id != False and start_time != end_time" context="{'default_group_id': group_id}" widget="one2many_list">
                                 <tree edit="1" create="1">
                                     <field name="group_id"/>
@@ -129,8 +130,6 @@
                             <field name="not_active_slotitems" invisible="1"/>
                             <field name="status" invisible="1"/>
         					<field name="reason" invisible="status not in ['present', 'absent', 'exception']" readonly="1"/>
-                            <field name="worked_start_time" invisible="status not in ['present', 'permission', 'exception']" readonly="1"/>
-                            <field name="worked_end_time" invisible="status not in ['present', 'permission', 'exception']" readonly="1"/>
                             <field name="session_ids" options="{'no_create': True}" readonly="is_readonly == True" widget="one2many_list">
                                 <tree>
                                     <field name="name"/>
@@ -179,7 +178,6 @@
                 <search>
                     <field name="group_id"/>
                     <field name="semester_id"/>
-                    <field name="year_id"/>
                     <field name="school_id"/>
                     <field name="field_of_study_id"/>
                     <field name="specialty_id"/>
@@ -200,7 +198,6 @@
                     <filter string="Mon emploi du temps" name="mytimetable" domain="['|', '&amp;', ('group_id.is_active', '=', True), ('group_id.is_submit', '=', False), '&amp;', ('group_parent_id.is_active', '=', True), ('group_parent_id.is_submit', '=', False), ('date', '=', datetime.date.today()), ('employee_id.user_id', '=', uid)]"/>
                     <group expand="0" string="Group By">
                         <filter string="Semestre" name="semester" context="{'group_by': 'semester_id'}"/>
-                        <filter string="Année académique" name="year" context="{'group_by': 'year_id'}"/>
                         <filter string="École" name="school" context="{'group_by': 'school_id'}"/>
                         <filter string="Filière" name="field_of_study" context="{'group_by': 'field_of_study_id'}"/>
                         <filter string="Niveau" name="level" context="{'group_by': 'level_id'}"/>

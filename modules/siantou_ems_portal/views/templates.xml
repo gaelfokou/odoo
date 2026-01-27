@@ -350,25 +350,22 @@
                     <t t-if="len(timetables) > 0">
                         <thead>
                             <tr class="active">
-                                <th class="text-left">Date</th>
                                 <th class="text-left">Semestre</th>
                                 <th class="text-left">Classe</th>
                                 <th class="text-left">Cours</th>
                                 <th class="text-left">Salle de classe</th>
                                 <th class="text-left">Enseignant</th>
+                                <th class="text-left">Date</th>
                                 <th class="text-left">Jour de la semaine</th>
                                 <th class="text-left">Heure</th>
+                                <th class="text-left">Heure effectuée</th>
                                 <th class="text-left">Statut</th>
                                 <th class="text-left">Motif</th>
-                                <th class="text-left">Heure effectuée</th>
                             </tr>
                         </thead>
                         <tbody>
                             <t t-foreach="timetables" t-as="record">
                                 <tr>
-                                    <td class="text-left">
-                                        <span t-esc="record['date']"/>
-                                    </td>
                                     <td class="text-left">
                                         <span t-esc="record['semester_name']"/>
                                     </td>
@@ -386,19 +383,22 @@
                                         <span t-esc="record['employee_name']"/>
                                     </td>
                                     <td class="text-left">
+                                        <span t-esc="record['date']"/>
+                                    </td>
+                                    <td class="text-left">
                                         <span t-esc="record['day_of_week']"/>
                                     </td>
                                     <td class="text-left">
                                         <span t-esc="record['start_time'] + '-' + record['end_time']"/>
                                     </td>
                                     <td class="text-left">
+                                        <span t-esc="record['worked_start_time'] + '-' + record['worked_end_time']"/>
+                                    </td>
+                                    <td class="text-left">
                                         <span t-esc="record['status']"/>
                                     </td>
                                     <td class="text-left">
                                         <span t-esc="record['reason']"/>
-                                    </td>
-                                    <td class="text-left">
-                                        <span t-esc="record['worked_start_time'] + '-' + record['worked_end_time']"/>
                                     </td>
                                 </tr>
                             </t>
