@@ -610,7 +610,7 @@ class HrPayslip(models.Model):
                         start_time = datetime.strptime(f"{employee_timetable.date} {HrPayslip.convert_float_to_time(employee_timetable.start_time, True)}", DATETIME_FORMAT)
                         end_time = datetime.strftime(end_time, TIME_FORMAT_FR)
                         start_time = datetime.strftime(start_time, TIME_FORMAT_FR)
-                        message = 'Absence du {}, {} {} {}'.format(CURRENT_WEEKDAY[str(employee_timetable.date.weekday())], datetime.strftime(employee_timetable.date, DATE_FORMAT_FR), start_time, end_time)
+                        message = 'Absence du {}, {} {}-{}'.format(CURRENT_WEEKDAY[str(employee_timetable.date.weekday())], datetime.strftime(employee_timetable.date, DATE_FORMAT_FR), start_time, end_time)
                         timetable_notifications = self.env['siantou.ems.timetable.notification'].sudo().search([
                             ('template', '=', template),
                             ('timetable_id', '=', employee_timetable.id),
