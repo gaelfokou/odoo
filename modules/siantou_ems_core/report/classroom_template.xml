@@ -12,7 +12,7 @@
                                 width: 100%;
                             }
                             .table .thead th, .table td {
-                                border: 1px solid black;
+                                border: 1px solid inherit !important;
                                 padding: 2px 4px !important;
                                 margin: 2px 4px !important;
                                 text-align: center;

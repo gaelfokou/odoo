@@ -14,5 +14,8 @@
 
 .o_portal_wrap .o_portal_my_doc_table td, .o_portal_wrap .o_portal_my_doc_table th {
     vertical-align: top !important;
-    /* white-space: wrap !important; */
+}
+
+.text-left {
+    text-align: left !important;
 }
