@@ -133,5 +133,8 @@
             'siantou_ems_core/static/src/js/student_component.js',
         	'siantou_ems_core/static/src/xml/student_component.xml',
         ],
+        'web.assets_frontend': [
+            'siantou_ems_core/static/src/css/main.css',
+        ],
     },
 }

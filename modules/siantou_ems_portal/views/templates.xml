@@ -1271,7 +1271,7 @@
                                         <td class="text-left">
                                             <span t-esc="progressreports[classe]['data'][subject]['name']"/>
                                         </td>
-                                        <td class="text-left">
+                                        <td class="text-center">
                                             <div>
                                                 <a t-attf-href="/my/subjectsession/{{ classe }}/{{ subject }}/list" class="btn btn-primary btn-sm">Fiche de progression</a>
                                             </div>
