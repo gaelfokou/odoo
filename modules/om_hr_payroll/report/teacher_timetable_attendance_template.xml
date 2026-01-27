@@ -12,8 +12,8 @@
                                 width: 100%;
                             }
                             .table .thead th, .table td {
-                                border: 1px solid inherit !important;
-                                padding: 2px 4px !important;
+                                border: 1px solid lightgrey !important;
+                                padding: 4px 4px !important;
                                 margin: 2px 4px !important;
                                 text-align: center;
                                 font-size: 12px;
@@ -39,7 +39,7 @@
                             <table class="table table-bordered table-sm text-center">
                                 <thead>
                                     <tr>
-                                        <th class="text-center" t-attf-colspan="#{'13' if docdata['is_permanent'] == False else '11'}" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;">
+                                        <th class="text-center" t-attf-colspan="#{'12' if docdata['is_permanent'] == False else '10'}" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;">
                                             <h3>INSTITUT UNIVERSITAIRE SIANTOU</h3>
                                             <h4>
                                                 <span t-esc="'Liste des émargements des enseignants'"/>
@@ -53,7 +53,7 @@
                                 </thead>
                                 <thead>
                                     <tr>
-                                        <th class="text-left" t-attf-colspan="#{'13' if docdata['is_permanent'] == False else '11'}" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
+                                        <th class="text-left" t-attf-colspan="#{'12' if docdata['is_permanent'] == False else '10'}" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
                                     </tr>
                                 </thead>
                                 <thead class="thead">
@@ -63,11 +63,9 @@
                                         <th class="text-center">Classe</th>
                                         <th class="text-center">Cours</th>
                                         <th class="text-center">Date</th>
-                                        <!-- <th class="text-center">Heure de début</th>
-                                        <th class="text-center">Heure de fin</th> -->
-                                        <th class="text-center">Heure de début effectuée</th>
-                                        <th class="text-center">Heure de fin effectuée</th>
+                                        <!-- <th class="text-center">Heure</th> -->
                                         <th class="text-center">Heure effectuée</th>
+                                        <th class="text-center">Nombre d'heures effectuées</th>
                                         <th class="text-center" t-if="docdata['is_permanent'] == False">Taux horaire</th>
                                         <th class="text-center" t-if="docdata['is_permanent'] == False">Montant</th>
                                         <th class="text-center">Volume horaire</th>
@@ -106,16 +104,10 @@
                                                     <span t-esc="timetable['date_of_week']"/>
                                                 </td>
                                                 <!-- <td class="text-center">
-                                                    <span t-esc="timetable['start_time']"/>
-                                                </td>
-                                                <td class="text-center">
-                                                    <span t-esc="timetable['end_time']"/>
+                                                    <span t-esc="timetable['start_time'] + '-' + timetable['end_time'] if timetable['class_name'] else ''"/>
                                                 </td> -->
                                                 <td class="text-center">
-                                                    <span t-esc="timetable['worked_start_time']"/>
-                                                </td>
-                                                <td class="text-center">
-                                                    <span t-esc="timetable['worked_end_time']"/>
+                                                    <span t-esc="timetable['worked_start_time'] + '-' + timetable['worked_end_time'] if timetable['class_name'] else ''"/>
                                                 </td>
                                                 <td class="text-center">
                                                     <span t-esc="timetable['worked_time']"/>

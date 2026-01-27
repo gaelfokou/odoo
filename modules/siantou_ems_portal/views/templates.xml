@@ -55,8 +55,8 @@
                         width: 100%;
                     }
                     .table .thead th, .table td {
-                        border: 1px solid inherit !important;
-                        padding: 2px 4px !important;
+                        border: 1px solid lightgrey !important;
+                        padding: 4px 4px !important;
                         margin: 2px 4px !important;
                         text-align: center;
                         font-size: 12px;
@@ -305,8 +305,8 @@
                         width: 100%;
                     }
                     .table .thead th, .table td {
-                        border: 1px solid inherit !important;
-                        padding: 2px 4px !important;
+                        border: 1px solid lightgrey !important;
+                        padding: 4px 4px !important;
                         margin: 2px 4px !important;
                         text-align: center;
                         font-size: 12px;
@@ -357,12 +357,10 @@
                                 <th class="text-left">Salle de classe</th>
                                 <th class="text-left">Enseignant</th>
                                 <th class="text-left">Jour de la semaine</th>
-                                <th class="text-left">Heure de début</th>
-                                <th class="text-left">Heure de fin</th>
+                                <th class="text-left">Heure</th>
                                 <th class="text-left">Statut</th>
                                 <th class="text-left">Motif</th>
-                                <th class="text-left">Heure de début effectuée</th>
-                                <th class="text-left">Heure de fin effectuée</th>
+                                <th class="text-left">Heure effectuée</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -391,10 +389,7 @@
                                         <span t-esc="record['day_of_week']"/>
                                     </td>
                                     <td class="text-left">
-                                        <span t-esc="record['start_time']"/>
-                                    </td>
-                                    <td class="text-left">
-                                        <span t-esc="record['end_time']"/>
+                                        <span t-esc="record['start_time'] + '-' + record['end_time']"/>
                                     </td>
                                     <td class="text-left">
                                         <span t-esc="record['status']"/>
@@ -403,22 +398,19 @@
                                         <span t-esc="record['reason']"/>
                                     </td>
                                     <td class="text-left">
-                                        <span t-esc="record['worked_start_time']"/>
-                                    </td>
-                                    <td class="text-left">
-                                        <span t-esc="record['worked_end_time']"/>
+                                        <span t-esc="record['worked_start_time'] + '-' + record['worked_end_time']"/>
                                     </td>
                                 </tr>
                             </t>
                         </tbody>
                         <tfooter>
                             <tr>
-                                <th class="text-left" colspan="14" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
+                                <th class="text-left" colspan="12" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
                             </tr>
                         </tfooter>
                         <tbody>
                             <tr>
-                                <td class="text-left" colspan="14">
+                                <td class="text-left" colspan="12">
                                     <nav aria-label="Page navigation timetable">
                                         <ul class="pagination">
                                             <li class="page-item"><a class="page-link" t-attf-href="/my/timetable/page/1?view_type={{ timetable_view_type }}&amp;selected_month={{ selected_month }}">Précédent</a></li>
@@ -438,21 +430,21 @@
                         </tbody>
                         <tfooter>
                             <tr>
-                                <th class="text-left" colspan="14" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
+                                <th class="text-left" colspan="12" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
                             </tr>
                         </tfooter>
                     </t>
                     <t t-else="">
                         <tfooter>
                             <tr>
-                                <th class="text-center" colspan="14" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;">
+                                <th class="text-center" colspan="12" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;">
                                     <span t-esc="'Aucune donnée disponible'"/>
                                 </th>
                             </tr>
                         </tfooter>
                         <tfooter>
                             <tr>
-                                <th class="text-left" colspan="14" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
+                                <th class="text-left" colspan="12" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
                             </tr>
                         </tfooter>
                     </t>
@@ -494,8 +486,8 @@
                         width: 100%;
                     }
                     .table .thead th, .table td {
-                        border: 1px solid inherit !important;
-                        padding: 2px 4px !important;
+                        border: 1px solid lightgrey !important;
+                        padding: 4px 4px !important;
                         margin: 2px 4px !important;
                         text-align: center;
                         font-size: 12px;
@@ -635,8 +627,8 @@
                         width: 100%;
                     }
                     .table .thead th, .table td {
-                        border: 1px solid inherit !important;
-                        padding: 2px 4px !important;
+                        border: 1px solid lightgrey !important;
+                        padding: 4px 4px !important;
                         margin: 2px 4px !important;
                         text-align: center;
                         font-size: 12px;
@@ -779,8 +771,8 @@
                         width: 100%;
                     }
                     .table .thead th, .table td {
-                        border: 1px solid inherit !important;
-                        padding: 2px 4px !important;
+                        border: 1px solid lightgrey !important;
+                        padding: 4px 4px !important;
                         margin: 2px 4px !important;
                         text-align: center;
                         font-size: 12px;
@@ -916,8 +908,8 @@
                         width: 100%;
                     }
                     .table .thead th, .table td {
-                        border: 1px solid inherit !important;
-                        padding: 2px 4px !important;
+                        border: 1px solid lightgrey !important;
+                        padding: 4px 4px !important;
                         margin: 2px 4px !important;
                         text-align: center;
                         font-size: 12px;
@@ -1086,8 +1078,8 @@
                         width: 100%;
                     }
                     .table .thead th, .table td {
-                        border: 1px solid inherit !important;
-                        padding: 2px 4px !important;
+                        border: 1px solid lightgrey !important;
+                        padding: 4px 4px !important;
                         margin: 2px 4px !important;
                         text-align: center;
                         font-size: 12px;
@@ -1225,8 +1217,8 @@
                         width: 100%;
                     }
                     .table .thead th, .table td {
-                        border: 1px solid inherit !important;
-                        padding: 2px 4px !important;
+                        border: 1px solid lightgrey !important;
+                        padding: 4px 4px !important;
                         margin: 2px 4px !important;
                         text-align: center;
                         font-size: 12px;
@@ -1344,8 +1336,8 @@
                         width: 100%;
                     }
                     .table .thead th, .table td {
-                        border: 1px solid inherit !important;
-                        padding: 2px 4px !important;
+                        border: 1px solid lightgrey !important;
+                        padding: 4px 4px !important;
                         margin: 2px 4px !important;
                         text-align: center;
                         font-size: 12px;
@@ -1484,8 +1476,8 @@
                         width: 100%;
                     }
                     .table .thead th, .table td {
-                        border: 1px solid inherit !important;
-                        padding: 2px 4px !important;
+                        border: 1px solid lightgrey !important;
+                        padding: 4px 4px !important;
                         margin: 2px 4px !important;
                         text-align: center;
                         font-size: 12px;
@@ -1589,8 +1581,8 @@
                         width: 100%;
                     }
                     .table .thead th, .table td {
-                        border: 1px solid inherit !important;
-                        padding: 2px 4px !important;
+                        border: 1px solid lightgrey !important;
+                        padding: 4px 4px !important;
                         margin: 2px 4px !important;
                         text-align: center;
                         font-size: 12px;
@@ -1684,8 +1676,8 @@
                         width: 100%;
                     }
                     .table .thead th, .table td {
-                        border: 1px solid inherit !important;
-                        padding: 2px 4px !important;
+                        border: 1px solid lightgrey !important;
+                        padding: 4px 4px !important;
                         margin: 2px 4px !important;
                         text-align: center;
                         font-size: 12px;
@@ -1897,8 +1889,8 @@
                         width: 100%;
                     }
                     .table .thead th, .table td {
-                        border: 1px solid inherit !important;
-                        padding: 2px 4px !important;
+                        border: 1px solid lightgrey !important;
+                        padding: 4px 4px !important;
                         margin: 2px 4px !important;
                         text-align: center;
                         font-size: 12px;
@@ -2014,8 +2006,8 @@
                         width: 100%;
                     }
                     .table .thead th, .table td {
-                        border: 1px solid inherit !important;
-                        padding: 2px 4px !important;
+                        border: 1px solid lightgrey !important;
+                        padding: 4px 4px !important;
                         margin: 2px 4px !important;
                         text-align: center;
                         font-size: 12px;
