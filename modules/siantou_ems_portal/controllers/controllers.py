@@ -302,6 +302,7 @@ class PortalAccount(portal.CustomerPortal):
                                     'searchbar_inputs': searchbar_inputs,
                                     'timetable_selected_month': timetable_selected_month,
                                     'selected_month': selected_month,
+                                    'search_month': search_month,
                                 })
 
     @http.route(['/my/timetable/download', '/my/timetable/download/page/<int:page>'], type='http', auth="user", website=True)

@@ -103,7 +103,7 @@
                             <t t-set="current_hours" t-value="[i for i in range(len(timetables[monday]['Heure']))]"/>
                             <thead>
                                 <tr>
-                                    <th class="text-center" colspan="8" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;">
+                                    <th class="text-left" colspan="8" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;">
                                         <span t-esc="'Période :'"/>
                                         <span t-esc="monday"/>
                                     </th>
@@ -343,6 +343,19 @@
                         <a t-attf-href="/my/timetable?view_type=calendar&amp;selected_month={{ selected_month }}" class="btn btn-primary">Calendrier</a>
                         <a t-attf-href="/my/timetable?view_type=list&amp;selected_month={{ selected_month }}" class="btn btn-primary">Liste</a><br/><br/>
                     </div>
+                    <thead>
+                        <tr>
+                            <th class="text-left" colspan="12" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;">
+                                <span t-esc="'Période :'"/>
+                                <span t-esc="search_month"/>
+                            </th>
+                        </tr>
+                    </thead>
+                    <thead>
+                        <tr>
+                            <th class="text-left" colspan="12" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
+                        </tr>
+                    </thead>
                     <t t-set="total_timetables" t-value="[(i+1) for i in range(timetable_pages_total)]"/>
                     <t t-set="total_timetables" t-value="[total_timetables[i:i+5] for i in range(0, len(total_timetables), 5)]"/>
                     <t t-set="total_timetables" t-value="[p for p in total_timetables if (timetable_page_number in p or (timetable_page_number - 1) in p or (timetable_page_number + 1) in p)]"/>
@@ -942,7 +955,7 @@
                     </div>
                     <thead>
                         <tr>
-                            <th class="text-center" colspan="8" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;">
+                            <th class="text-left" colspan="8" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;">
                                 <span t-esc="'Période :'"/>
                                 <span t-esc="search_month"/>
                             </th>
