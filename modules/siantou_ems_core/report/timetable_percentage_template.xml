@@ -42,7 +42,7 @@
                                         <th class="text-center" colspan="9" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;">
                                             <h3>INSTITUT UNIVERSITAIRE SIANTOU</h3>
                                             <h4>
-                                                <span t-esc="'Liste des emplois du temps'"/>
+                                                <span t-esc="'Emplois du temps'"/>
                                             </h4>
                                             <h5 class="text-left">
                                                 <span t-esc="'Filtre :'"/>

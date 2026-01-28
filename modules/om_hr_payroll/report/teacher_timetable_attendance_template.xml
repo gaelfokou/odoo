@@ -42,7 +42,7 @@
                                         <th class="text-center" t-attf-colspan="#{'12' if docdata['is_permanent'] == False else '10'}" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;">
                                             <h3>INSTITUT UNIVERSITAIRE SIANTOU</h3>
                                             <h4>
-                                                <span t-esc="'Liste des émargements des enseignants'"/>
+                                                <span t-esc="'Émargements des enseignants'"/>
                                             </h4>
                                             <h5 class="text-left">
                                                 <span t-esc="'Filtre :'"/>
@@ -137,7 +137,6 @@
                                             <td class="text-center"></td>
                                             <!-- <td class="text-center"></td> -->
                                             <td class="text-center"></td>
-                                            <td class="text-center"></td>
                                             <td class="text-center">
                                                 <span t-esc="teacher_timetable_attendance_data[key]['worked_time']"/>
                                             </td>
@@ -145,6 +144,7 @@
                                             <td class="text-center" t-if="docdata['is_permanent'] == False">
                                                 <span t-esc="'{:,.2f}'.format(teacher_timetable_attendance_data[key]['amount'])"/>
                                             </td>
+                                            <td class="text-center"></td>
                                             <td class="text-center"></td>
                                             <td class="text-center"></td>
                                         </tr>
@@ -157,7 +157,6 @@
                                         <td class="text-center"></td>
                                         <!-- <td class="text-center"></td> -->
                                         <td class="text-center"></td>
-                                        <td class="text-center"></td>
                                         <td class="text-center">
                                             <span t-esc="docdata['total_worked_time']"/>
                                         </td>
@@ -165,6 +164,7 @@
                                         <td class="text-center" t-if="docdata['is_permanent'] == False">
                                             <span t-esc="'{:,.2f}'.format(docdata['total_amount'])"/>
                                         </td>
+                                        <td class="text-center"></td>
                                         <td class="text-center"></td>
                                         <td class="text-center"></td>
                                     </tr>

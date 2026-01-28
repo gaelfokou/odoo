@@ -74,7 +74,7 @@
                             <field name="cycle_ids" widget="many2many_tags"/>
                         </group> -->
                         <notebook>
-                            <page name="name" string="Liste des régistres">
+                            <page name="name" string="Régistres">
                                 <field name="registre_ids"/>
                             </page>
                         </notebook>

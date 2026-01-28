@@ -54,7 +54,7 @@ class SpecialtyOfStudy(models.Model):
     option_ids = fields.One2many(
         'siantou.ems.core.option',
         'specialty_id',
-        'Liste des options'
+        'Options'
     )
 
     _sql_constraints = [
@@ -92,7 +92,7 @@ class FieldOfStudy(models.Model):
     specialty_ids = fields.One2many(
         'siantou.ems.core.specialty',
         'field_of_study_id',
-        'Liste des spécialités'
+        'Spécialités'
     )
 
     batch_ids = fields.One2many(

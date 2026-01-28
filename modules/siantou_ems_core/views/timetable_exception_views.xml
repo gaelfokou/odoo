@@ -101,7 +101,7 @@
             <field name="domain">['|', '&amp;', ('group_id.is_active', '=', True), ('group_id.is_submit', '=', False), '&amp;', ('group_parent_id.is_active', '=', True), ('group_parent_id.is_submit', '=', False), ('status', '=', 'exception')]</field>
             <field name="help" type="html">
                 <p class="o_view_nocontent_smiling_face">
-                    Liste des exceptions.
+                    Exceptions.
                 </p>
             </field>
             <field name="search_view_id" ref="timetable_exception_search_view"/>

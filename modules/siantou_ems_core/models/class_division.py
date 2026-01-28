@@ -33,12 +33,12 @@ class EducationClass(models.Model):
     student_enroll_ids = fields.One2many(
         'oe.school.student.enrollment',
         'class_id',
-        string='Liste des étudiants inscrits',
+        string='Étudiants inscrits',
     )
 
     student_ids = fields.One2many(
         'oe.school.student',
-        string='Liste des étudiants',
+        string='Étudiants',
         compute='_compute_students',
         store=False
     )

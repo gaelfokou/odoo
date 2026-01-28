@@ -60,7 +60,6 @@ class TimetableFilterWizard(models.TransientModel):
     group_id = fields.Many2one(
         'siantou.ems.timetable.group',
         string='Version d\'emploi du temps',
-        required=True
     )
 
     school_id = fields.Many2one(
@@ -456,6 +455,9 @@ class TimetableFilterWizard(models.TransientModel):
         if self.group_id.id:
             domain.append(('group_id', '=', self.group_id.id))
             title.append(self.group_id.name)
+        else:
+            group_ids = self.env['siantou.ems.timetable.group'].search(['|', '|', ('create_uid', '=', self.env.user.id), ('read_user_ids', '=', self.env.user.id), ('write_user_ids', '=', self.env.user.id)])
+            domain.append(('group_id', 'in', group_ids.ids))
 
         if self.status:
             if self.status == 'delay':
@@ -613,6 +615,9 @@ class TimetableFilterWizard(models.TransientModel):
         if self.group_id.id:
             domain.append(('group_id', '=', self.group_id.id))
             title.append(self.group_id.name)
+        else:
+            group_ids = self.env['siantou.ems.timetable.group'].search(['|', '|', ('create_uid', '=', self.env.user.id), ('read_user_ids', '=', self.env.user.id), ('write_user_ids', '=', self.env.user.id)])
+            domain.append(('group_id', 'in', group_ids.ids))
 
         all_domain = []
         all_domain += domain
