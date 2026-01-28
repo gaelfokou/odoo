@@ -135,8 +135,7 @@
                                             <td class="text-center"></td>
                                             <td class="text-center"></td>
                                             <td class="text-center"></td>
-                                            <!-- <td class="text-center"></td>
-                                            <td class="text-center"></td> -->
+                                            <!-- <td class="text-center"></td> -->
                                             <td class="text-center"></td>
                                             <td class="text-center"></td>
                                             <td class="text-center">
@@ -148,7 +147,6 @@
                                             </td>
                                             <td class="text-center"></td>
                                             <td class="text-center"></td>
-                                            <td class="text-center"></td>
                                         </tr>
                                     </t>
                                     <tr>
@@ -157,8 +155,7 @@
                                         <td class="text-center"></td>
                                         <td class="text-center"></td>
                                         <td class="text-center"></td>
-                                        <!-- <td class="text-center"></td>
-                                        <td class="text-center"></td> -->
+                                        <!-- <td class="text-center"></td> -->
                                         <td class="text-center"></td>
                                         <td class="text-center"></td>
                                         <td class="text-center">
@@ -168,7 +165,6 @@
                                         <td class="text-center" t-if="docdata['is_permanent'] == False">
                                             <span t-esc="'{:,.2f}'.format(docdata['total_amount'])"/>
                                         </td>
-                                        <td class="text-center"></td>
                                         <td class="text-center"></td>
                                         <td class="text-center"></td>
                                     </tr>
