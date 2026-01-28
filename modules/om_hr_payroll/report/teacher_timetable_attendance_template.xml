@@ -79,7 +79,7 @@
                                     <t t-foreach="keys" t-as="key">
                                         <t t-set="timetables" t-value="teacher_timetable_attendance_data[key]['data']"/>
                                         <t t-foreach="timetables" t-as="timetable">
-                                            <tr>
+                                            <tr t-if="docdata['is_permanent'] == False or docdata['is_permanent'] == True and timetable['class_name']">
                                                 <t t-if="timetable['class_name']">
                                                     <td class="text-center">
                                                         <span t-esc="timetable['identifier']"/>

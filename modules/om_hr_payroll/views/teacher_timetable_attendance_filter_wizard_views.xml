@@ -11,8 +11,8 @@
                         <field name="employee_id" options="{'no_create': True}" domain="[('is_teacher', '=', True), ('is_permanent', '=', is_permanent)]"/>
                         <field name="start_date"/>
                         <field name="end_date"/>
-                        <field name="has_rate"/>
-                        <field name="status"/>
+                        <field name="has_rate" invisible="is_permanent == True"/>
+                        <field name="status" invisible="is_permanent == True"/>
                     </group>
                     <footer>
                         <button string="Filtrer" type="object" name="action_filter" class="btn-primary"/>
