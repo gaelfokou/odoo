@@ -1369,6 +1369,8 @@ class TimetableGroup(models.Model):
 
     department_id_domain = fields.Binary(compute='_compute_school_domain', default=[])
 
+    class_id_domain = fields.Binary(compute='_compute_department_domain', default=[])
+
     @api.depends('school_ids')
     def _compute_school_domain(self):
         for record in self:
@@ -1377,6 +1379,19 @@ class TimetableGroup(models.Model):
                 ('school_id', 'in', school_ids.ids),
             ]
             record.department_id_domain = domain
+
+    @api.depends('school_ids', 'department_id', 'year_id')
+    def _compute_department_domain(self):
+        for record in self:
+            school_ids = record.school_ids
+            domain = [
+                ('school_id', 'in', school_ids.ids),
+            ]
+            if record.department_id.id:
+                domain.append(('specialty_id.department_id', '=', record.department_id.id))
+            if record.year_id.id:
+                domain.append(('year_id', '=', record.year_id.id))
+            record.class_id_domain = domain
 
     class_ids = fields.Many2many('siantou.ems.core.class', 'class_group_rel', 'group_id', 'class_id', string='Classes')
 
@@ -1433,6 +1448,23 @@ class TimetableGroup(models.Model):
         for record in self:
             if record.start_date > record.end_date:
                 raise ValidationError('La date de fin doit être supérieure ou égale à la date de début')
+
+    @api.onchange('semester_id')
+    def _onchange_semester(self):
+        for record in self:
+            record.department_id = None
+            record.class_ids = []
+
+    @api.onchange('department_id')
+    def _onchange_department(self):
+        for record in self:
+            record.class_ids = []
+
+    @api.onchange('school_ids')
+    def _onchange_school(self):
+        for record in self:
+            record.department_id = None
+            record.class_ids = []
 
     has_write_access = fields.Boolean(string='Accès en écriture ?', compute='_compute_access', store=True)
 

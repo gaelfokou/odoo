@@ -89,7 +89,7 @@ class TimetableFilterWizard(models.TransientModel):
     department_id = fields.Many2one(
         'hr.department',
         string='Département',
-        related='field_of_study_id.department_id',
+        related='specialty_id.department_id',
         store=True
     )
 
