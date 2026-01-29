@@ -15,17 +15,25 @@
                 </xpath>
                 <xpath expr="//group[1]" position="inside">
                     <group>
-                        <field name="field_of_study_ids" options="{'no_create': True}" domain="[('school_id', '=', school_id)]" widget="one2many_list">
+                        <field name="specialty_ids" options="{'no_create': True}" domain="[('school_id', '=', school_id)]" widget="one2many_list">
                             <tree create="0" editable="bottom">
                                 <field name="code"/>
                                 <field name="name"/>
-                                <field name="school_id"/>
-                                <field name="cycle_id"/>
+                                <field name="field_of_study_id"/>
                             </tree>
                         </field>
                     </group>
                 </xpath>
             </field>
         </record>
+
+        <!-- Menu pour la gestion des départements -->
+        <menuitem
+                id="menu_siantou_ems_core_program_field_of_study"
+                name="Départements"
+                parent="menu_siantou_ems_core_config_fa"
+                action="hr.hr_department_kanban_action"
+                groups="siantou_ems_core.group_field_of_study_admin,base.group_system"
+            sequence="1"/>
     </data>
 </odoo>

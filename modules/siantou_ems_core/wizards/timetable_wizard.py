@@ -234,7 +234,7 @@ class TimetableWizard(models.TransientModel):
                                                         if len(shared_timetables) > 0:
                                                             continue
                                                         self.env['siantou.ems.timetable.timetable'].create({
-                                                            'department_id': classe.field_of_study_id.department_id.id,
+                                                            'department_id': classe.specialty_id.department_id.id,
                                                             'school_id': classe.school_id.id,
                                                             'level_id': classe.level_id.id,
                                                             'specialty_id': classe.specialty_id.id,
@@ -279,7 +279,7 @@ class TimetableWizard(models.TransientModel):
                                                     if teacher_priority:
                                                         teacher_priority = self.find_available_teacher(teacher_priority, target_date, available_slot["start_time"], available_slot["end_time"])
                                                     self.env['siantou.ems.timetable.timetable'].create({
-                                                        'department_id': classe.field_of_study_id.department_id.id,
+                                                        'department_id': classe.specialty_id.department_id.id,
                                                         'school_id': classe.school_id.id,
                                                         'level_id': classe.level_id.id,
                                                         'specialty_id': classe.specialty_id.id,

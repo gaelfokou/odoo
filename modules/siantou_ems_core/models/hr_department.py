@@ -19,6 +19,12 @@ class Department(models.Model):
         string='Filières'
     )
 
+    specialty_ids = fields.One2many(
+        'siantou.ems.core.specialty',
+        'department_id',
+        string='Spécialités'
+    )
+
     code = fields.Char(
         string='Code',
     )

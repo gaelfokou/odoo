@@ -236,7 +236,7 @@ class FeeEnrollmentWizard(models.TransientModel):
             'payment_ref': "Frais d'inscription de %s" % self.student_id.name,
             'ref': "Frais d'inscription de %s" % self.student_id.name,
             'ecole_id': self.student_id.field_of_study_id.school_id.id,
-            'departement_id': self.student_id.field_of_study_id.department_id.id,
+            'departement_id': self.student_id.specialty_id.department_id.id,
             'field_of_study_id': self.student_id.field_of_study_id.id,
             'specialite_id': self.student_id.specialty_id.id,
             'year_id': self.year_id.id,

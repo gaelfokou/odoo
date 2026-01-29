@@ -38,6 +38,18 @@ class SpecialtyOfStudy(models.Model):
         required=True,
     )
 
+    school_id = fields.Many2one(
+        'siantou.ems.core.school',
+        string='École',
+        related='field_of_study_id.school_id',
+        store=True
+    )
+
+    department_id = fields.Many2one(
+        'hr.department',
+        string='Département'
+    )
+
     # Code du programme
     code = fields.Char(
         'Code',
@@ -55,6 +67,11 @@ class SpecialtyOfStudy(models.Model):
         'siantou.ems.core.option',
         'specialty_id',
         'Options'
+    )
+
+    slot_id = fields.Many2one(
+        'siantou.ems.timetable.slot',
+        string='Créneau horaire',
     )
 
     _sql_constraints = [
@@ -104,11 +121,6 @@ class FieldOfStudy(models.Model):
     department_id = fields.Many2one(
         'hr.department',
         string='Département'
-    )
-
-    slot_id = fields.Many2one(
-        'siantou.ems.timetable.slot',
-        string='Créneau horaire',
     )
 
     _sql_constraints = [

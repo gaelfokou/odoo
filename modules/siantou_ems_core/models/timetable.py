@@ -219,7 +219,7 @@ class Timetable(models.Model):
     department_id = fields.Many2one(
         'hr.department',
         string='Département',
-        related='field_of_study_id.department_id',
+        related='specialty_id.department_id',
         store=True
     )
 
@@ -649,9 +649,9 @@ class Timetable(models.Model):
                 domain.append(('school_id', '=', record.school_id.id))
             if record.group_id.department_id.id:
                 domain.append(('department_id', '=', record.group_id.department_id.id))
-            field_of_study_ids = self.env['siantou.ems.core.field_of_study'].search(domain)
+            specialty_ids = self.env['siantou.ems.core.specialty'].search(domain)
             domain = [
-                ('field_of_study_id', 'in', field_of_study_ids.ids)
+                ('id', 'in', specialty_ids.ids)
             ]
             record.specialty_id_domain = domain
 
@@ -864,7 +864,7 @@ class Timetable(models.Model):
                     times = [subject_day_hour_id.start_date, subject_day_hour_id.end_date]
                 else:
                     timetable_id = self.env['siantou.ems.timetable.timetable'].create({
-                        'department_id': timetable.field_of_study_id.department_id.id,
+                        'department_id': timetable.specialty_id.department_id.id,
                         'school_id': timetable.school_id.id,
                         'level_id': timetable.level_id.id,
                         'specialty_id': timetable.specialty_id.id,
@@ -902,7 +902,7 @@ class Timetable(models.Model):
                         if week > 0:
                             target_date = first_timetable.date + timedelta(weeks=week)
                             timetable_id = self.env['siantou.ems.timetable.timetable'].create({
-                                'department_id': first_timetable.field_of_study_id.department_id.id,
+                                'department_id': first_timetable.specialty_id.department_id.id,
                                 'school_id': first_timetable.school_id.id,
                                 'level_id': first_timetable.level_id.id,
                                 'specialty_id': first_timetable.specialty_id.id,
@@ -1392,7 +1392,7 @@ class TimetableGroup(models.Model):
     #         class_ids = []
     #         if record.department_id.id:
     #             class_ids = self.env['siantou.ems.core.class'].search([
-    #                 ('field_of_study_id', 'in', record.department_id.field_of_study_ids.ids),
+    #                 ('specialty_id', 'in', record.department_id.specialty_ids.ids),
     #                 ('year_id', '=', semester_id.year_id.id),
     #             ])
 
@@ -1404,7 +1404,7 @@ class TimetableGroup(models.Model):
     #         class_ids = []
     #         if record.department_id.id:
     #             class_ids = self.env['siantou.ems.core.class'].search([
-    #                 ('field_of_study_id', 'in', record.department_id.field_of_study_ids.ids),
+    #                 ('specialty_id', 'in', record.department_id.specialty_ids.ids),
     #                 ('year_id', '=', semester_id.year_id.id),
     #             ])
 
@@ -1785,10 +1785,10 @@ class TimetableSlot(models.Model):
         string='Département'
     )
 
-    field_of_study_ids = fields.One2many(
-        'siantou.ems.core.field_of_study',
+    specialty_ids = fields.One2many(
+        'siantou.ems.core.specialty',
         'slot_id',
-        string='Filières'
+        string='Spécialités'
     )
 
     is_active = fields.Boolean(string='Actif ?', default=False)
@@ -1809,8 +1809,8 @@ class TimetableSlot(models.Model):
     def _onchange_department(self):
         for record in self:
             if record.department_id.id:
-                record.field_of_study_ids = self.env['siantou.ems.core.field_of_study'].search([
+                record.specialty_ids = self.env['siantou.ems.core.specialty'].search([
                     ('department_id', '=', record.department_id.id),
                 ])
             else:
-                record.field_of_study_ids = []
+                record.specialty_ids = []

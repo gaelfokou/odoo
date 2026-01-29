@@ -11,7 +11,7 @@
                     <field name="slotitem_day_ids"/>
                     <field name="slotitem_night_ids"/>
                     <field name="department_id"/>
-                    <field name="field_of_study_ids"/>
+                    <field name="specialty_ids"/>
                     <field name="is_active"/>
                 </tree>
             </field>
@@ -35,8 +35,8 @@
                                         <field name="name"/>
                                     </tree>
                                 </field>
-                                <!-- <field name="field_of_study_ids" widget="many2many_tags" domain="[('department_id', '=', department_id)]"> -->
-                                <field name="field_of_study_ids" widget="many2many_tags">
+                                <!-- <field name="specialty_ids" widget="many2many_tags" domain="[('department_id', '=', department_id)]"> -->
+                                <field name="specialty_ids" widget="many2many_tags">
                                     <tree string="">
                                         <field name="name"/>
                                         <field name="code"/>

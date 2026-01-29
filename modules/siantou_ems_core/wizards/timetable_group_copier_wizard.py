@@ -192,7 +192,7 @@ class TimetableGroupCopierWizard(models.TransientModel):
                     ue_ids = [(4, ue_id.id) for ue_id in ue_ids]
                     class_id.write({'ue_ids': ue_ids })
                 self.env['siantou.ems.timetable.timetable'].create({
-                    'department_id': timetable_id.field_of_study_id.department_id.id,
+                    'department_id': timetable_id.specialty_id.department_id.id,
                     'school_id': timetable_id.school_id.id,
                     'level_id': timetable_id.level_id.id,
                     'specialty_id': timetable_id.specialty_id.id,
