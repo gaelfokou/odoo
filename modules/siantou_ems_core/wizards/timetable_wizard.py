@@ -115,9 +115,9 @@ class TimetableWizard(models.TransientModel):
 
             available_slotitem = None
             for slot in slots:
-                field_of_study_ids = list(slot.field_of_study_ids)
-                for field_of_study in field_of_study_ids:
-                    if field_of_study.id == classe.field_of_study_id.id:
+                specialty_ids = list(slot.specialty_ids)
+                for specialty in specialty_ids:
+                    if specialty.id == classe.specialty_id.id:
                         available_slotitem = slot
                         break
                 if available_slotitem:

@@ -91,7 +91,7 @@
                             <field name="end_date" readonly="is_readonly == True"/>
                             <field name="year_id" invisible="1"/>
                             <field name="department_id_domain" invisible="1"/>
-                            <field name="department_id" options="{'no_create': True}" readonly="is_readonly == True" domain="department_id_domain"/>
+                            <field name="department_ids" options="{'no_create': True}" readonly="is_readonly == True" domain="department_id_domain"/>
                             <!-- <field name="class_ids" options="{'no_create': True}" readonly="is_readonly == True" domain="[('specialty_id.department_id', '=', department_id), ('year_id', '=', year_id)]"/> -->
                             <field name="class_id_domain" invisible="1"/>
                             <field name="class_ids" options="{'no_create': True}" readonly="is_readonly == True" domain="class_id_domain"/>
@@ -165,7 +165,7 @@
                             <field name="end_date" readonly="is_readonly == True"/>
                             <field name="year_id" invisible="1"/>
                             <field name="department_id_domain" invisible="1"/>
-                            <field name="department_id" options="{'no_create': True}" readonly="is_readonly == True" domain="department_id_domain"/>
+                            <field name="department_ids" options="{'no_create': True}" readonly="is_readonly == True" domain="department_id_domain"/>
                             <!-- <field name="class_ids" options="{'no_create': True}" readonly="is_readonly == True" domain="[('specialty_id.department_id', '=', department_id), ('year_id', '=', year_id)]"/> -->
                             <field name="class_id_domain" invisible="1"/>
                             <field name="class_ids" options="{'no_create': True}" readonly="is_readonly == True" domain="class_id_domain"/>

@@ -341,15 +341,12 @@ class TimetableFilterWizard(models.TransientModel):
     @api.depends('school_id', 'group_id')
     def _compute_school_domain(self):
         for record in self:
+            department_ids = record.group_id.department_ids
             domain = []
             if record.school_id.id:
                 domain.append(('school_id', '=', record.school_id.id))
-            if record.group_id.department_id.id:
-                domain.append(('department_id', '=', record.group_id.department_id.id))
-            field_of_study_ids = self.env['siantou.ems.core.field_of_study'].search(domain)
-            domain = [
-                ('field_of_study_id', 'in', field_of_study_ids.ids)
-            ]
+            if len(department_ids.ids) > 0:
+                domain.append(('department_id', 'in', department_ids.ids))
             record.specialty_id_domain = domain
 
     @api.onchange('school_id')

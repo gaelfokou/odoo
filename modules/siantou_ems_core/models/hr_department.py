@@ -8,6 +8,10 @@ from odoo.exceptions import ValidationError
 class Department(models.Model):
     _inherit = 'hr.department'
 
+    code = fields.Char(
+        string='Code',
+    )
+
     school_id = fields.Many2one(
         'siantou.ems.core.school',
         string='École',
@@ -25,9 +29,7 @@ class Department(models.Model):
         string='Spécialités'
     )
 
-    code = fields.Char(
-        string='Code',
-    )
+    group_ids = fields.Many2many('siantou.ems.timetable.group', 'department_group_rel', 'department_id', 'group_id', string="Versions d'emploi du temps")
 
     _sql_constraints = [
         ('unique_code', 'unique(code)', 'Le code du département doit être unique.'),

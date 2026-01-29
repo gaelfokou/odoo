@@ -404,36 +404,6 @@ class Timetable(models.Model):
         store=False
     )
 
-    # @api.depends('date', 'worked_start_time', 'worked_end_time')
-    # def _compute_worked_time(self):
-    #     for record in self:
-    #         if record.date and record.worked_start_time and record.worked_end_time:
-    #             end_time = Timetable.convert_float_to_time(record.worked_end_time, True)
-    #             start_time = Timetable.convert_float_to_time(record.worked_start_time, True)
-    #             datetime_to = datetime.strptime(f"{record.date} {end_time}", DATETIME_FORMAT)
-    #             datetime_from = datetime.strptime(f"{record.date} {start_time}", DATETIME_FORMAT)
-    #             worked_hours = datetime_to - datetime_from
-    #             worked_hours = worked_hours.total_seconds() / 3600.0
-    #             worked_hours = round(worked_hours, 2)
-    #             record.worked_time = worked_hours
-    #         else:
-    #             record.worked_time = 0.0
-
-    # @api.onchange('date', 'worked_start_time', 'worked_end_time')
-    # def _onchange_worked_time(self):
-    #     for record in self:
-    #         if record.date and record.worked_start_time and record.worked_end_time:
-    #             end_time = Timetable.convert_float_to_time(record.worked_end_time, True)
-    #             start_time = Timetable.convert_float_to_time(record.worked_start_time, True)
-    #             datetime_to = datetime.strptime(f"{record.date} {end_time}", DATETIME_FORMAT)
-    #             datetime_from = datetime.strptime(f"{record.date} {start_time}", DATETIME_FORMAT)
-    #             worked_hours = datetime_to - datetime_from
-    #             worked_hours = worked_hours.total_seconds() / 3600.0
-    #             worked_hours = round(worked_hours, 2)
-    #             record.worked_time = worked_hours
-    #         else:
-    #             record.worked_time = 0.0
-
     # Heure de fin du cours
     worked_time = fields.Float(
         'Heure effectuée',
@@ -644,15 +614,12 @@ class Timetable(models.Model):
     @api.depends('school_id', 'group_id')
     def _compute_school_domain(self):
         for record in self:
+            department_ids = record.group_id.department_ids
             domain = []
             if record.school_id.id:
                 domain.append(('school_id', '=', record.school_id.id))
-            if record.group_id.department_id.id:
-                domain.append(('department_id', '=', record.group_id.department_id.id))
-            specialty_ids = self.env['siantou.ems.core.specialty'].search(domain)
-            domain = [
-                ('id', 'in', specialty_ids.ids)
-            ]
+            if len(department_ids.ids) > 0:
+                domain.append(('department_id', 'in', department_ids.ids))
             record.specialty_id_domain = domain
 
     @api.depends('group_id')
@@ -1318,24 +1285,6 @@ class TimetableGroup(models.Model):
         domain="[('is_submit', '=', True), ('semester_id', '=', semester_id), ('status', '=', 'valid')]",
     )
 
-    # group_parent_ids = fields.Many2many(
-    #     'siantou.ems.timetable.group',
-    #     'group_parent_child_rel',
-    #     'group_child_id',
-    #     'group_parent_id',
-    #     string='Versions d\'emploi du temps publiées',
-    #     domain="[('is_submit', '=', False), ('semester_id', '=', semester_id)]",
-    # )
-
-    # group_child_ids = fields.Many2many(
-    #     'siantou.ems.timetable.group',
-    #     'group_parent_child_rel',
-    #     'group_parent_id',
-    #     'group_child_id',
-    #     string='Versions d\'emploi du temps soumises',
-    #     domain="[('is_submit', '=', True), ('semester_id', '=', semester_id), ('status', '=', 'valid')]",
-    # )
-
     school_ids = fields.Many2many('siantou.ems.core.school', 'school_group_rel', 'group_id', 'school_id', string='Écoles')
 
     status = fields.Selection([
@@ -1362,10 +1311,7 @@ class TimetableGroup(models.Model):
         string='Description de la version',
     )
 
-    department_id = fields.Many2one(
-        'hr.department',
-        string='Département'
-    )
+    department_ids = fields.Many2many('hr.department', 'department_group_rel', 'group_id', 'department_id', string='Écoles')
 
     department_id_domain = fields.Binary(compute='_compute_school_domain', default=[])
 
@@ -1380,50 +1326,21 @@ class TimetableGroup(models.Model):
             ]
             record.department_id_domain = domain
 
-    @api.depends('school_ids', 'department_id', 'year_id')
+    @api.depends('school_ids', 'department_ids', 'semester_id')
     def _compute_department_domain(self):
         for record in self:
             school_ids = record.school_ids
+            department_ids = record.department_ids
             domain = [
                 ('school_id', 'in', school_ids.ids),
             ]
-            if record.department_id.id:
-                domain.append(('specialty_id.department_id', '=', record.department_id.id))
-            if record.year_id.id:
-                domain.append(('year_id', '=', record.year_id.id))
+            if len(department_ids.ids) > 0:
+                domain.append(('specialty_id.department_id', 'in', department_ids.ids))
+            if record.semester_id.id:
+                domain.append(('year_id', '=', record.semester_id.year_id.id))
             record.class_id_domain = domain
 
     class_ids = fields.Many2many('siantou.ems.core.class', 'class_group_rel', 'group_id', 'class_id', string='Classes')
-
-    # class_ids = fields.One2many(
-    #     'siantou.ems.core.class',
-    #     compute='_compute_classes',
-    #     store=False
-    # )
-
-    # @api.depends('department_id', 'semester_id')
-    # def _compute_classes(self):
-    #     for record in self:
-    #         class_ids = []
-    #         if record.department_id.id:
-    #             class_ids = self.env['siantou.ems.core.class'].search([
-    #                 ('specialty_id', 'in', record.department_id.specialty_ids.ids),
-    #                 ('year_id', '=', semester_id.year_id.id),
-    #             ])
-
-    #         record.class_ids = class_ids
-
-    # @api.onchange('department_id', 'semester_id')
-    # def _onchange_classes(self):
-    #     for record in self:
-    #         class_ids = []
-    #         if record.department_id.id:
-    #             class_ids = self.env['siantou.ems.core.class'].search([
-    #                 ('specialty_id', 'in', record.department_id.specialty_ids.ids),
-    #                 ('year_id', '=', semester_id.year_id.id),
-    #             ])
-
-    #         record.class_ids = class_ids
 
     def _default_start_date(self):
         start_date = date.today().replace(day=1)
@@ -1452,10 +1369,10 @@ class TimetableGroup(models.Model):
     @api.onchange('semester_id')
     def _onchange_semester(self):
         for record in self:
-            record.department_id = None
+            record.department_ids = []
             record.class_ids = []
 
-    @api.onchange('department_id')
+    @api.onchange('department_ids')
     def _onchange_department(self):
         for record in self:
             record.class_ids = []
@@ -1463,7 +1380,7 @@ class TimetableGroup(models.Model):
     @api.onchange('school_ids')
     def _onchange_school(self):
         for record in self:
-            record.department_id = None
+            record.department_ids = []
             record.class_ids = []
 
     has_write_access = fields.Boolean(string='Accès en écriture ?', compute='_compute_access', store=True)

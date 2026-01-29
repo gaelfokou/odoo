@@ -63,15 +63,23 @@ class ApiAccount(http.Controller):
             timetable['date'] = search_timetable.date
             timetable['date_of_week'] = datetime.strftime(search_timetable.date, DATE_FORMAT_FR)
             timetable['semester_name'] = search_timetable.semester_id.name
+            timetable['cycle_id'] = search_timetable.cycle_id.id
             timetable['cycle_name'] = search_timetable.cycle_id.name
+            timetable['level_id'] = search_timetable.level_id.id
             timetable['level_name'] = search_timetable.level_id.name
             timetable['field_of_study_id'] = search_timetable.field_of_study_id.id
             timetable['field_of_study_name'] = search_timetable.field_of_study_id.name
+            timetable['specialty_id'] = search_timetable.specialty_id.id
             timetable['specialty_name'] = search_timetable.specialty_id.name
+            timetable['option_id'] = search_timetable.option_id.id
             timetable['option_name'] = search_timetable.option_id.name
+            timetable['class_id'] = search_timetable.class_id.id
             timetable['class_name'] = search_timetable.class_id.name
             timetable['department_id'] = search_timetable.department_id.id
             timetable['department_name'] = search_timetable.department_id.name
+            timetable['school_id'] = search_timetable.school_id.id
+            timetable['school_name'] = search_timetable.school_id.name
+            timetable['subject_id'] = search_timetable.subject_id.id
             timetable['subject_name'] = search_timetable.subject_id.name
             timetable['subject_code'] = search_timetable.subject_id.code
             timetable['subject_hours_credit'] = search_timetable.subject_id.hours_credit
@@ -91,7 +99,7 @@ class ApiAccount(http.Controller):
             timetables.append(timetable)
         if view_type == 'calendar':
             if len(timetables) > 0:
-                field_of_study_id = timetables[0]['field_of_study_id']
+                specialty_id = timetables[0]['specialty_id']
 
                 slots = http.request.env['siantou.ems.timetable.slot'].sudo().search([
                     ('is_active', '=', False),
@@ -100,9 +108,9 @@ class ApiAccount(http.Controller):
 
                 available_slotitem = None
                 for slot in slots:
-                    field_of_study_ids = list(slot.field_of_study_ids)
-                    for field_of_study in field_of_study_ids:
-                        if field_of_study.id == field_of_study_id:
+                    specialty_ids = list(slot.specialty_ids)
+                    for specialty in specialty_ids:
+                        if specialty.id == specialty_id:
                             available_slotitem = slot
                             break
                     if available_slotitem:

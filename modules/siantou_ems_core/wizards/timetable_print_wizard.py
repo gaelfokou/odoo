@@ -194,7 +194,7 @@ class TimetablePrintWizard(models.TransientModel):
 
         for key in key_timetables.keys():
             if len(key_timetables[key]) > 0:
-                field_of_study_id = key_timetables[key][0]['field_of_study_id']
+                specialty_id = key_timetables[key][0]['specialty_id']
 
                 slots = self.env['siantou.ems.timetable.slot'].search([
                     ('is_active', '=', False),
@@ -203,9 +203,9 @@ class TimetablePrintWizard(models.TransientModel):
 
                 available_slotitem = None
                 for slot in slots:
-                    field_of_study_ids = list(slot.field_of_study_ids)
-                    for field_of_study in field_of_study_ids:
-                        if field_of_study.id == field_of_study_id:
+                    specialty_ids = list(slot.specialty_ids)
+                    for specialty in specialty_ids:
+                        if specialty.id == specialty_id:
                             available_slotitem = slot
                             break
                     if available_slotitem:
