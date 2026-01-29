@@ -325,6 +325,7 @@ class PortalAccount(portal.CustomerPortal):
             timetable_selected_month = int(selected_month) + 1
         # Utilisation de la fonction du helper
         search_timetables, searchbar_inputs, search_month = Helpers.timetable(search=search, search_in=search_in, selected_month=selected_month)
+        timetable_ids = []
         timetables = []
         for search_timetable in search_timetables:
             timetable = {}
@@ -366,7 +367,6 @@ class PortalAccount(portal.CustomerPortal):
             timetable['not_active_slotitems'] = search_timetable.not_active_slotitems
             timetable['status'] = STATUS_TIMETABLE[search_timetable.status]
             timetables.append(timetable)
-        timetable_ids = []
         if view_type == 'calendar':
             if len(timetables) > 0:
                 specialty_id = timetables[0]['specialty_id']
