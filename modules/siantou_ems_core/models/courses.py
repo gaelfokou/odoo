@@ -320,8 +320,8 @@ class SchoolCourseSubject(models.Model):
         ],
         required=True
     )
-    code = fields.Char(string="Code UE", required=True,)
-    name = fields.Char(string="Intitulé de l'unité", required=True,)
+    code = fields.Char(string="Code UE", required=True)
+    name = fields.Char(string="Intitulé de l'unité", required=True)
 
     class_ids = fields.Many2many('siantou.ems.core.class', 'class_ue_rel', 'ue_id', 'class_id', string='Classes')
 
@@ -333,7 +333,19 @@ class SchoolCourseSubject(models.Model):
 
     syllabus_ids = fields.One2many('siantou.ems.core.syllabus', 'ue_id', string='Syllabus')
 
-    total_credit = fields.Integer('Nombre de crédit total', compute='_compute_total_credit', store=True,)
+    total_credit = fields.Integer('Nombre de crédit total', compute='_compute_total_credit', store=True)
+
+    class_id_domain = fields.Binary(compute='_compute_semester_domain', default=[])
+
+    @api.depends('semester_ids')
+    def _compute_semester_domain(self):
+        for record in self:
+            semester_ids = record.group_id.semester_ids
+            domain = []
+            if len(semester_ids.ids) > 0:
+                year_ids = [semester_id.year_id.id for semester_id in semester_ids]
+                domain.append(('year_id', 'in', year_ids))
+            record.class_id_domain = domain
 
     # _sql_constraints = [
     #     ('unique_code', 'unique(code)', "Le code de l'unité d'enseignement doit être unique.")
