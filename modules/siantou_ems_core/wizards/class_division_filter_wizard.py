@@ -95,6 +95,15 @@ class ClassFilterWizard(models.TransientModel):
                 ]
             record.specialty_id_domain = domain
 
+    @api.onchange('year_id')
+    def _onchange_year(self):
+        for record in self:
+            record.school_id = None
+            record.field_of_study_id = None
+            record.level_id = None
+            record.specialty_id = None
+            record.option_id = None
+
     @api.onchange('school_id')
     def _onchange_school(self):
         for record in self:
