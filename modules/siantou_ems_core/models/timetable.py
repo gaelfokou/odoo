@@ -1311,7 +1311,7 @@ class TimetableGroup(models.Model):
         string='Description de la version',
     )
 
-    department_ids = fields.Many2many('hr.department', 'department_group_rel', 'group_id', 'department_id', string='Écoles')
+    department_ids = fields.Many2many('hr.department', 'department_group_rel', 'group_id', 'department_id', string='Départements')
 
     department_id_domain = fields.Binary(compute='_compute_school_domain', default=[])
 
