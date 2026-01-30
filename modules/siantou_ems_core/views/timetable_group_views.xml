@@ -11,7 +11,7 @@
                     <header>
                         <button name="action_open_copier" 
                             type="object" 
-                            string="Copier" 
+                            string="Copier les versions d'emploi du temps" 
                             class="oe_highlight" 
                             display="always"/>
                     </header>
