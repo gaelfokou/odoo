@@ -613,7 +613,7 @@ class ProgressReport(models.Model):
                     record.percentage = progressreports[key_class]['data'][key_subject]['percentage']
 
     def action_open_filter(self):
-        view_id = self.env.ref('siantou_ems_core.class_filter_wizard').id
+        view_id = self.env.ref('siantou_ems_core.progress_report_filter_wizard').id
         return {
             'name': 'Filtre des fiches de progression',
             'type': 'ir.actions.act_window',

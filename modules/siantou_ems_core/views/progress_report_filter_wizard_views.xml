@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-        <record id="class_filter_wizard" model="ir.ui.view">
+        <record id="progress_report_filter_wizard" model="ir.ui.view">
             <field name="name">progress.report.filter.wizard.form</field>
             <field name="model">progress.report.filter.wizard</field>
             <field name="arch" type="xml">
@@ -29,12 +29,12 @@
         </record>
 
         <!-- Define an action to open the form view -->
-        <record id="action_filter_class_wizard" model="ir.actions.act_window">
+        <record id="action_filter_progress_report_wizard" model="ir.actions.act_window">
             <field name="name">Filtre des classes</field>
             <field name="res_model">progress.report.filter.wizard</field>
             <field name="view_mode">form</field>
             <field name="target">new</field>
-            <field name="view_id" ref="class_filter_wizard"/>
+            <field name="view_id" ref="progress_report_filter_wizard"/>
         </record>
     </data>
 </odoo>
