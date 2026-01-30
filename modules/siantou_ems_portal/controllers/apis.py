@@ -196,25 +196,16 @@ class ApiAccount(http.Controller):
             report_name = 'siantou_ems_core.template_report_timetable'
             report_action = 'siantou_ems_core.action_report_timetable'
             pdf_report = http.request.env['ir.actions.report'].sudo()._get_report_from_name(report_action)
+            report_data = http.request.env['timetable.print.wizard'].sudo().create({})
             domain = [
-                ('is_active', '=', True)
+                ('group_id.is_active', '=', True)
             ]
-            group_id = http.request.env['siantou.ems.timetable.group'].sudo().search(domain, limit=1)
-            if group_id:
-                report_data = http.request.env['timetable.print.wizard'].sudo().create({
-                    'group_id': group_id.id,
-                })
-                domains = [
-                    ('group_id', '=', group_id.id)
-                ]
-                if is_user == 'is_teacher':
-                    domains.append(('employee_id', '=', user.id))
-                elif is_user == 'is_student':
-                    domains.append(('class_id', '=', user.class_id.id))
-                data = report_data.print_timetable_report_data(domains=domains)
-                pdf, _ = pdf_report.sudo().with_context()._render_qweb_pdf(report_name, data=data)
-            else:
-                pdf = None
+            if is_user == 'is_teacher':
+                domains.append(('employee_id', '=', user.id))
+            elif is_user == 'is_student':
+                domains.append(('class_id', '=', user.class_id.id))
+            data = report_data.print_timetable_report_data(domains=domain)
+            pdf, _ = pdf_report.sudo().with_context()._render_qweb_pdf(report_name, data=data)
         else:
             pdf = None
         filename = 'Emploi du temps PDF.pdf'

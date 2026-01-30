@@ -107,31 +107,6 @@ class TimetablePrintWizard(models.TransientModel):
         # Récupérer les emplois du temps pour le semestre sélectionné
         domain = []
 
-        # Ajouter le critère Semestre seulement s'il est sélectionné
-        if self.semester_id.id:
-            domain.append(('semester_id', '=', self.semester_id.id))
-
-        # Ajouter le critère Version seulement s'il est sélectionné
-        if self.group_id.id:
-            domain.append(('group_id', '=', self.group_id.id))
-
-        # Ajouter le critère Filière seulement s'il est sélectionné
-        if self.department_id.id:
-            domain.append(('department_id', '=', self.department_id.id))
-
-        # Ajouter le critère Filière seulement s'il est sélectionné
-        if self.field_of_study_id.id:
-            domain.append(('field_of_study_id', '=', self.field_of_study_id.id))
-
-        # Ajouter le critère Niveau seulement s'il est sélectionné
-        if self.level_id.id:
-            domain.append(('level_id', '=', self.level_id.id))
-
-        # Ajouter le critère de période seulement si la date de début et la date de fin sont sélectionnées
-        if self.start_date and self.end_date:
-            domain.append(('date', '>=', self.start_date))
-            domain.append(('date', '<=', self.end_date))
-
         if domains:
             for d in domains:
                 domain.append(d)
@@ -261,7 +236,6 @@ class TimetablePrintWizard(models.TransientModel):
         return {
             'docdata': {
                 'timetable_data': key_timetables,
-                'semester': self.semester_id.name,
             }
         }
 
@@ -274,31 +248,6 @@ class TimetablePrintWizard(models.TransientModel):
     def print_timetable_percentage_report_data(self, domains=None, all_domains=None):
         # Récupérer les emplois du temps pour le semestre sélectionné
         domain = []
-
-        # Ajouter le critère Semestre seulement s'il est sélectionné
-        if self.semester_id.id:
-            domain.append(('semester_id', '=', self.semester_id.id))
-
-        # Ajouter le critère Version seulement s'il est sélectionné
-        if self.group_id.id:
-            domain.append(('group_id', '=', self.group_id.id))
-
-        # Ajouter le critère Filière seulement s'il est sélectionné
-        if self.department_id.id:
-            domain.append(('department_id', '=', self.department_id.id))
-
-        # Ajouter le critère Filière seulement s'il est sélectionné
-        if self.field_of_study_id.id:
-            domain.append(('field_of_study_id', '=', self.field_of_study_id.id))
-
-        # Ajouter le critère Niveau seulement s'il est sélectionné
-        if self.level_id.id:
-            domain.append(('level_id', '=', self.level_id.id))
-
-        # Ajouter le critère de période seulement si la date de début et la date de fin sont sélectionnées
-        if self.start_date and self.end_date:
-            domain.append(('date', '>=', self.start_date))
-            domain.append(('date', '<=', self.end_date))
 
         if domains:
             for d in domains:

@@ -453,30 +453,15 @@ class PortalAccount(portal.CustomerPortal):
             for timetable in timetables['pages']:
                 timetable_ids.append(timetable['id'])
         timetable_ids = list(set(timetable_ids))
+        report_name = 'siantou_ems_core.template_report_timetable'
+        report_action = 'siantou_ems_core.action_report_timetable'
+        pdf_report = http.request.env['ir.actions.report'].sudo()._get_report_from_name(report_action)
+        report_data = http.request.env['timetable.print.wizard'].sudo().create({})
         domain = [
-            '|',
-            '&',
-            ('is_active', '=', True),
-            ('is_submit', '=', False),
-            '&',
-            ('group_parent_id.is_active', '=', True),
-            ('group_parent_id.is_submit', '=', False),
+            ('id', 'in', timetable_ids)
         ]
-        group_id = http.request.env['siantou.ems.timetable.group'].sudo().search(domain, limit=1)
-        if group_id:
-            report_name = 'siantou_ems_core.template_report_timetable'
-            report_action = 'siantou_ems_core.action_report_timetable'
-            pdf_report = http.request.env['ir.actions.report'].sudo()._get_report_from_name(report_action)
-            report_data = http.request.env['timetable.print.wizard'].sudo().create({
-                'group_id': group_id.id,
-            })
-            domain = [
-                ('id', 'in', timetable_ids)
-            ]
-            data = report_data.print_timetable_report_data(domains=domain)
-            pdf, _ = pdf_report.sudo().with_context()._render_qweb_pdf(report_name, data=data)
-        else:
-            pdf = None
+        data = report_data.print_timetable_report_data(domains=domain)
+        pdf, _ = pdf_report.sudo().with_context()._render_qweb_pdf(report_name, data=data)
         filename = 'Emploi du temps PDF.pdf'
         headers = [
             ('Content-Type', 'application/pdf'),

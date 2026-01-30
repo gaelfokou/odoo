@@ -1011,14 +1011,9 @@ class Timetable(models.Model):
 
     def action_print_pdf(self):
         active_ids = self.env.context.get('active_ids', [])
-        timetables = self.env['siantou.ems.timetable.timetable'].browse(active_ids)
-        timetables = list(timetables)
-        timetables = list(timetables)
         if len(active_ids) == 0:
             raise UserError('Aucune donnée sélectionnée')
-        report_data = self.env['timetable.print.wizard'].create({
-            'group_id': timetables[0].group_id.id,
-        })
+        report_data = self.env['timetable.print.wizard'].create({})
         domains = [
             ('id', 'in', active_ids)
         ]

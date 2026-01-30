@@ -742,9 +742,7 @@ class TimetableFilterWizard(models.TransientModel):
 
         if len(timetable_ids) == 0:
             raise UserError('Aucune donnée sélectionnée')
-        report_data = self.env['timetable.print.wizard'].create({
-            'group_id': timetables[0].group_id.id,
-        })
+        report_data = self.env['timetable.print.wizard'].create({})
         data = report_data.print_timetable_percentage_report_data(domains=domain, all_domains=all_domain)
 
         # Appeler le rapport PDF

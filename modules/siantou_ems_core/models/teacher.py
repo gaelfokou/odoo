@@ -468,9 +468,7 @@ class HrEmployee(models.Model):
         teachers = list(teachers)
         if len(active_ids) == 0:
             raise UserError('Aucune donnée sélectionnée')
-        report_data = self.env['teacher.print.wizard'].create({
-            'is_teacher': True,
-        })
+        report_data = self.env['teacher.print.wizard'].create({})
         domains = [
             ('id', 'in', active_ids)
         ]
