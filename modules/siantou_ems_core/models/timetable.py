@@ -1361,23 +1361,6 @@ class TimetableGroup(models.Model):
             if record.start_date > record.end_date:
                 raise ValidationError('La date de fin doit être supérieure ou égale à la date de début')
 
-    @api.onchange('semester_id')
-    def _onchange_semester(self):
-        for record in self:
-            record.department_ids = []
-            record.class_ids = []
-
-    @api.onchange('department_ids')
-    def _onchange_department(self):
-        for record in self:
-            record.class_ids = []
-
-    @api.onchange('school_ids')
-    def _onchange_school(self):
-        for record in self:
-            record.department_ids = []
-            record.class_ids = []
-
     has_write_access = fields.Boolean(string='Accès en écriture ?', compute='_compute_access', store=True)
 
     @api.depends('start_date', 'end_date')
