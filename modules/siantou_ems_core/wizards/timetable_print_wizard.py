@@ -44,56 +44,6 @@ class TimetablePrintWizard(models.TransientModel):
     _name = 'timetable.print.wizard'
     _description = 'Assistant d\'impression des emplois du temps'
 
-    # Semestre pour lequel on souhaite tirer l'emploi du temps
-    semester_id = fields.Many2one(
-        'siantou.ems.core.year.semester',
-        string='Semestre',
-        related='group_id.semester_id',
-        store=True
-    )
-
-    department_id = fields.Many2one(
-        'hr.department',
-        string='Département'
-    )
-
-    field_of_study_id = fields.Many2one(
-        'siantou.ems.core.field_of_study',
-        'Filière',
-        ondelete='cascade'
-    )
-
-    level_id = fields.Many2one(
-        'siantou.ems.core.level',
-        'Niveau',
-        ondelete='cascade'
-    )
-
-    group_id = fields.Many2one(
-        'siantou.ems.timetable.group',
-        string='Version d\'emploi du temps',
-        required=True
-    )
-
-    # Date du jour où le cours sera programmé
-    start_date = fields.Date(
-        string='Date de début',
-    )
-
-    # Date du jour où le cours sera programmé
-    end_date = fields.Date(
-        string='Date de fin',
-    )
-
-    @api.constrains('start_date', 'end_date')
-    def _constrains_date(self):
-        for record in self:
-            if record.start_date and record.end_date:
-                if record.start_date > record.end_date:
-                    raise ValidationError('La date de fin doit être supérieure ou égale à la date de début')
-                elif record.start_date + relativedelta(months=1) < record.end_date:
-                    raise ValidationError(f"La plage entre la date de début et la date de fin ne doit pas être supérieure 1 mois")
-
     def action_print_pdf(self):
         data = self.print_timetable_report_data()
 
