@@ -15,6 +15,13 @@ class Department(models.Model):
     school_id = fields.Many2one(
         'siantou.ems.core.school',
         string='École',
+        required=True,
+    )
+
+    cycle_id = fields.Many2one(
+        'oe.school.course',
+        string='Cursus ou Cycle',
+        required=True,
     )
 
     field_of_study_ids = fields.One2many(

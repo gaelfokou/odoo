@@ -29,7 +29,7 @@
 
         <!-- Menu pour la gestion des départements -->
         <menuitem
-                id="menu_siantou_ems_core_program_field_of_study"
+                id="menu_siantou_ems_core_program_department"
                 name="Départements"
                 parent="menu_siantou_ems_core_config_fa"
                 action="hr.hr_department_kanban_action"
