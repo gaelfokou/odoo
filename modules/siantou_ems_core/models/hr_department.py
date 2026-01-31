@@ -41,3 +41,7 @@ class Department(models.Model):
     _sql_constraints = [
         ('unique_code', 'unique(code)', 'Le code du département doit être unique.'),
     ]
+
+    _sql_constraints = [
+        ('unique_school_cycle', 'unique(school_id, cycle_id)', 'Un cycle ne peut être lié à une même école qu\'une seule fois.')
+    ]

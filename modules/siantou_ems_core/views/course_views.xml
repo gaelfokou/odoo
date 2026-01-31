@@ -65,6 +65,11 @@
                                 <field name="company_id" options="{'no_create': True}"/>
                             </group>
                         </group>
+                        <notebook>
+                            <page name="department_ids" string="Départements">
+                                <field name="department_ids"/>
+                            </page>
+                        </notebook>
 
 						<!-- <notebook>
                             <page string="Affectation des cours">

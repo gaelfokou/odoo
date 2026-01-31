@@ -12,6 +12,7 @@
                 <xpath expr="//group[1]/group[1]" position="inside">
                     <field name="code"/>
                     <field name="school_id"/>
+                    <field name="cycle_id"/>
                 </xpath>
                 <xpath expr="//group[1]" position="inside">
                     <group>
