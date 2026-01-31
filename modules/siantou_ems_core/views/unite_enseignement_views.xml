@@ -43,7 +43,7 @@
                             <group colspan="2">
                                 <field name="semester_ids" widget="many2many_tags"/>
                                 <field name="class_id_domain" invisible="1"/>
-                                <field name="class_ids" domain="class_id_domain"/>
+                                <field name="class_ids" domain="class_id_domain" widget="many2many_tags"/>
                                 <field name="type_ue"/>
                             </group>
                         </group>
