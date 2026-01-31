@@ -312,7 +312,7 @@ class ClassUeCopierWizard(models.TransientModel):
                         end_time = date.fromisocalendar(year, week, day)
 
                         destination_semester_id = self.env['siantou.ems.core.year.semester'].create({
-                            'name': source_semester_id.name,
+                            'semester_name': source_semester_id.semester_name,
                             'start_time': start_time,
                             'end_time': end_time,
                             'year_id': self.destination_year_id.id,

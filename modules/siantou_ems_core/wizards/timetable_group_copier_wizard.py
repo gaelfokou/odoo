@@ -98,7 +98,7 @@ class TimetableGroupCopierWizard(models.TransientModel):
                 end_time = date.fromisocalendar(year, week, day)
 
                 semester_id = self.env['siantou.ems.core.year.semester'].create({
-                    'name': group_id.semester_id.name,
+                    'semester_name': group_id.semester_id.semester_name,
                     'start_time': start_time,
                     'end_time': end_time,
                     'year_id': self.destination_year_id.id,
@@ -110,7 +110,7 @@ class TimetableGroupCopierWizard(models.TransientModel):
             unique_string = datetime.now().strftime("%Y%m%d%H%M%S")
             name = '{} copie {}'.format(group_id.name, unique_string)
             new_group = self.env['siantou.ems.timetable.group'].create({
-                'name': name,
+                'group_name': name,
                 'semester_id': semester_id.id,
                 'is_submit': group_id.is_submit,
                 'status': group_id.status,
