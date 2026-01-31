@@ -116,6 +116,15 @@ class TimetableGroupCopierWizard(models.TransientModel):
                 'status': group_id.status,
             })
 
+            school_ids = [(4, school_id.id) for school_id in group_id.school_ids]
+            department_ids = [(4, department_id.id) for department_id in group_id.department_ids]
+            class_ids = [(4, class_id.id) for class_id in group_id.class_ids]
+            new_group.write({
+                'school_ids': school_ids,
+                'department_ids': department_ids,
+                'class_ids': class_ids,
+            })
+
             for timetable_id in group_id.timetable_ids:
                 year, week, day = timetable_id.date.isocalendar()
                 try:
