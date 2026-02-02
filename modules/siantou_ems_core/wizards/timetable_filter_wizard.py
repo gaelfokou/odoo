@@ -338,7 +338,7 @@ class TimetableFilterWizard(models.TransientModel):
             record.option_id = None
             record.subject_id = None
 
-    @api.depends('school_id', 'group_id')
+    @api.depends('group_id', 'school_id')
     def _compute_school_domain(self):
         for record in self:
             department_ids = record.group_id.department_ids

@@ -30,7 +30,7 @@
                             type="object" 
                             string="Mettre à jour étudiants et classes" 
                             class="oe_highlight"/>
-                        <button name="action_open_copier" 
+                        <button name="action_open_copy" 
                             type="object" 
                             string="Copier les UEs" 
                             class="oe_highlight" 

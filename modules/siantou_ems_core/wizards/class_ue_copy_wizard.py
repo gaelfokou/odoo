@@ -248,7 +248,7 @@ class ClassUeCopyWizard(models.TransientModel):
             record.destination_class_id = None
             record.destination_ue_ids = []
 
-    def action_copier(self):
+    def action_copy(self):
         source_class_id = self.env['siantou.ems.core.class'].search([('id', '=', self.source_class_id.id)], limit=1)
         if source_class_id:
             destination_class_id = self.env['siantou.ems.core.class'].search([('id', '=', self.destination_class_id.id)], limit=1)

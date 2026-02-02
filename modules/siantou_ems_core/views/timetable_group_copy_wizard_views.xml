@@ -9,11 +9,11 @@
                     <group>
                         <field name="is_submit" readonly="1"/>
                         <field name="source_year_id" options="{'no_create': True}"/>
-                        <field name="group_id" options="{'no_create': True}" domain="['|', ('create_uid', '=', uid), ('write_user_ids', '=', uid), ('semester_id.year_id', '=', source_year_id)]"/>
+                        <field name="group_id" options="{'no_create': True}" domain="['|', '&amp;', ('is_submit', '=', is_submit), ('create_uid', '=', uid), '&amp;', ('is_submit', '=', is_submit), ('write_user_ids', '=', uid), ('semester_id.year_id', '=', source_year_id)]"/>
                         <field name="destination_year_id" options="{'no_create': True}"/>
                     </group>
                     <footer>
-                        <button string="Copier" type="object" name="action_copier" class="btn-primary"/>
+                        <button string="Copier" type="object" name="action_copy" class="btn-primary"/>
                         <button string="Annuler" class="btn-secondary" special="cancel"/>
                     </footer>
                 </form>
@@ -21,7 +21,7 @@
         </record>
 
         <!-- Define an action to open the form view -->
-        <record id="action_copier_timetable_wizard" model="ir.actions.act_window">
+        <record id="action_copy_timetable_wizard" model="ir.actions.act_window">
             <field name="name">Copie des versions d'emploi du temps</field>
             <field name="res_model">timetable.group.copy.wizard</field>
             <field name="view_mode">form</field>

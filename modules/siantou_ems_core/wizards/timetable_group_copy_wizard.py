@@ -62,12 +62,8 @@ class TimetableGroupCopyWizard(models.TransientModel):
         for record in self:
             record.group_id = None
 
-    def action_copier(self):
-        domain = []
-        if self.group_id.id:
-            domain.append(('id', '=', self.group_id.id))
-
-        group_id = self.env['siantou.ems.timetable.group'].search(domain, limit=1)
+    def action_copy(self):
+        group_id = self.env['siantou.ems.timetable.group'].search([('id', '=', self.group_id.id)], limit=1)
         if group_id:
             years = group_id.semester_id.year_id.name.split('-')
             years = [int(y) for y in years]

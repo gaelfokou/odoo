@@ -440,7 +440,7 @@ class EducationClass(models.Model):
             'tag': 'reload',
         }
 
-    def action_open_copier(self):
+    def action_open_copy(self):
         view_id = self.env.ref('siantou_ems_core.class_ue_copy_wizard').id
         return {
             'name': 'Copie des unités d\'enseignement',

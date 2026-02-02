@@ -467,7 +467,7 @@ class Timetable(models.Model):
             else:
                 record.is_readonly = False
 
-    @api.constrains('date', 'group_id')
+    @api.constrains('group_id', 'date')
     def _constrains_date(self):
         for record in self:
             if record.date < record.group_id.semester_id.start_time:
@@ -611,7 +611,7 @@ class Timetable(models.Model):
             name = name.upper()
             record.name = name
 
-    @api.depends('school_id', 'group_id')
+    @api.depends('group_id', 'school_id')
     def _compute_school_domain(self):
         for record in self:
             department_ids = record.group_id.department_ids
@@ -1594,7 +1594,7 @@ class TimetableGroup(models.Model):
             'tag': 'reload',
         }
 
-    def action_open_copier(self):
+    def action_open_copy(self):
         view_id = self.env.ref('siantou_ems_core.timetable_group_copy_wizard').id
         return {
             'name': 'Copie des versions d\'emploi du temps',
@@ -1611,7 +1611,7 @@ class TimetableGroup(models.Model):
             },
         }
 
-    def action_open_copier_submit(self):
+    def action_open_copy_submit(self):
         view_id = self.env.ref('siantou_ems_core.timetable_group_copy_wizard').id
         return {
             'name': 'Copie des versions d\'emploi du temps',
@@ -1624,6 +1624,39 @@ class TimetableGroup(models.Model):
             'target': 'new',
             'context': {
                 'default_source_year_id': self.env['siantou.ems.core.year'].search([('is_active', '=', True)], limit=1).id,
+            },
+        }
+
+    def action_open_move(self):
+        view_id = self.env.ref('siantou_ems_core.timetable_group_move_wizard').id
+        return {
+            'name': 'Déplacement des versions d\'emploi du temps',
+            'type': 'ir.actions.act_window',
+            'view_type': 'form',
+            'view_mode': 'form',
+            'res_model': 'timetable.group.move.wizard',
+            'views': [(view_id, 'form')],
+            'view_id': view_id,
+            'target': 'new',
+            'context': {
+                'default_year_id': self.env['siantou.ems.core.year'].search([('is_active', '=', True)], limit=1).id,
+                'default_is_submit': False,
+            },
+        }
+
+    def action_open_move_submit(self):
+        view_id = self.env.ref('siantou_ems_core.timetable_group_move_wizard').id
+        return {
+            'name': 'Déplacement des versions d\'emploi du temps',
+            'type': 'ir.actions.act_window',
+            'view_type': 'form',
+            'view_mode': 'form',
+            'res_model': 'timetable.group.move.wizard',
+            'views': [(view_id, 'form')],
+            'view_id': view_id,
+            'target': 'new',
+            'context': {
+                'default_year_id': self.env['siantou.ems.core.year'].search([('is_active', '=', True)], limit=1).id,
             },
         }
 

@@ -9,9 +9,14 @@
             <field name="arch" type="xml">
                 <tree>
                     <header>
-                        <button name="action_open_copier" 
+                        <button name="action_open_copy" 
                             type="object" 
                             string="Copier" 
+                            class="oe_highlight" 
+                            display="always"/>
+                        <button name="action_open_move" 
+                            type="object" 
+                            string="Déplacer" 
                             class="oe_highlight" 
                             display="always"/>
                     </header>
@@ -38,9 +43,14 @@
             <field name="arch" type="xml">
                 <tree>
                     <header>
-                        <button name="action_open_copier_submit" 
+                        <button name="action_open_copy_submit" 
                             type="object" 
                             string="Copier" 
+                            class="oe_highlight" 
+                            display="always"/>
+                        <button name="action_open_move_submit" 
+                            type="object" 
+                            string="Déplacer" 
                             class="oe_highlight" 
                             display="always"/>
                     </header>
