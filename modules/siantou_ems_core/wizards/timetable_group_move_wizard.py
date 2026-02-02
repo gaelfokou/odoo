@@ -162,7 +162,14 @@ class TimetableGroupMoveWizard(models.TransientModel):
         if source_group_id:
             destination_group_id = self.env['siantou.ems.timetable.group'].search([('id', '=', self.destination_group_id.id)], limit=1)
             if destination_group_id:
-                for timetable_id in source_group_id.timetable_ids:
+                timetable_ids = source_group_id.timetable_ids
+                if self.school_id.id:
+                    timetable_ids = timetable_ids.filtered(lambda rec: rec.school_id.id and self.school_id.id)
+                if self.department_id.id:
+                    timetable_ids = timetable_ids.filtered(lambda rec: rec.department_id.id and self.department_id.id)
+                if self.class_id.id:
+                    timetable_ids = timetable_ids.filtered(lambda rec: rec.class_id.id and self.class_id.id)
+                for timetable_id in timetable_ids:
                     timetable_id.write({
                         'group_id': destination_group_id.id,
                     })
