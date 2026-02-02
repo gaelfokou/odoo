@@ -69,7 +69,7 @@ class Classroom(models.Model):
 
     # Nom de la salle de classe
     name = fields.Char(
-        string='Nom de la salle',
+        string='Nom',
         required=True,
         index=True,
         translate=True,
