@@ -27,6 +27,8 @@
                     <field name="semester_id"/>
                     <field name="year_id"/>
                     <field name="school_id"/>
+                    <field name="cycle_id"/>
+                    <field name="department_id"/>
                     <field name="field_of_study_id"/>
                     <field name="level_id"/>
                     <field name="specialty_id"/>
@@ -62,6 +64,8 @@
                     <field name="semester_id"/>
                     <field name="year_id"/>
                     <field name="school_id"/>
+                    <field name="cycle_id"/>
+                    <field name="department_id"/>
                     <field name="field_of_study_id"/>
                     <field name="level_id"/>
                     <field name="specialty_id"/>

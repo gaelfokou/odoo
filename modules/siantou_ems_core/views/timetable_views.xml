@@ -39,6 +39,8 @@
                     <field name="group_id"/>
                     <field name="semester_id"/>
                     <field name="school_id"/>
+                    <field name="cycle_id"/>
+                    <field name="department_id"/>
                     <field name="field_of_study_id"/>
                     <field name="specialty_id"/>
                     <field name="option_id"/>
@@ -156,6 +158,8 @@
 			<field name="arch" type="xml">
 				<calendar string="Emplois du temps" date_start="start_datetime" date_stop="end_datetime" mode="week" color="subject_id" event_open_popup="true">
                     <field name="school_id"/>
+                    <field name="cycle_id"/>
+                    <field name="department_id"/>
                     <field name="field_of_study_id"/>
                     <field name="specialty_id"/>
                     <field name="option_id"/>
@@ -179,6 +183,8 @@
                     <field name="group_id"/>
                     <field name="semester_id"/>
                     <field name="school_id"/>
+                    <field name="cycle_id"/>
+                    <field name="department_id"/>
                     <field name="field_of_study_id"/>
                     <field name="specialty_id"/>
                     <field name="option_id"/>
