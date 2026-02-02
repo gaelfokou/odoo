@@ -73,9 +73,14 @@ class Semester(models.Model):
     @api.depends('semester_name', 'year_id')
     def _compute_name(self):
         for record in self:
-            semester_name = record.semester_name
-            year_name = record.year_id.name
+            semester_name = record.semester_name if record.semester_name else ''
+            year_name = record.year_id.name if record.year_id.id else ''
             name = '{} ({})'.format(semester_name, year_name)
+            while True:
+                if name.find('()') != -1:
+                    name = name.replace('()', '')
+                else:
+                    break
             while True:
                 if name.find('  ') != -1:
                     name = name.replace('  ', ' ')
@@ -88,9 +93,14 @@ class Semester(models.Model):
     @api.onchange('semester_name', 'year_id')
     def _onchange_name(self):
         for record in self:
-            semester_name = record.semester_name
-            year_name = record.year_id.name
+            semester_name = record.semester_name if record.semester_name else ''
+            year_name = record.year_id.name if record.year_id.id else ''
             name = '{} ({})'.format(semester_name, year_name)
+            while True:
+                if name.find('()') != -1:
+                    name = name.replace('()', '')
+                else:
+                    break
             while True:
                 if name.find('  ') != -1:
                     name = name.replace('  ', ' ')
