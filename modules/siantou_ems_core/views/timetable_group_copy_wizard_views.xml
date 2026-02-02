@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-        <record id="timetable_group_copier_wizard" model="ir.ui.view">
-            <field name="name">timetable.group.copier.wizard.form</field>
-            <field name="model">timetable.group.copier.wizard</field>
+        <record id="timetable_group_copy_wizard" model="ir.ui.view">
+            <field name="name">timetable.group.copy.wizard.form</field>
+            <field name="model">timetable.group.copy.wizard</field>
             <field name="arch" type="xml">
-                <form string="Copieur des versions d'emploi du temps">
+                <form string="Copie des versions d'emploi du temps">
                     <group>
                         <field name="is_submit" readonly="1"/>
                         <field name="source_year_id" options="{'no_create': True}"/>
@@ -22,11 +22,11 @@
 
         <!-- Define an action to open the form view -->
         <record id="action_copier_timetable_wizard" model="ir.actions.act_window">
-            <field name="name">Copieur des versions d'emploi du temps</field>
-            <field name="res_model">timetable.group.copier.wizard</field>
+            <field name="name">Copie des versions d'emploi du temps</field>
+            <field name="res_model">timetable.group.copy.wizard</field>
             <field name="view_mode">form</field>
             <field name="target">new</field>
-            <field name="view_id" ref="timetable_group_copier_wizard"/>
+            <field name="view_id" ref="timetable_group_copy_wizard"/>
         </record>
     </data>
 </odoo>

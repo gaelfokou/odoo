@@ -33,9 +33,9 @@ TYPE_COUR = {
 
 _logger = logging.getLogger(__name__)
 
-class TimetableGroupCopierWizard(models.TransientModel):
-    _name = 'timetable.group.copier.wizard'
-    _description = 'Copieur des versions d\'emploi du temps'
+class TimetableGroupCopyWizard(models.TransientModel):
+    _name = 'timetable.group.copy.wizard'
+    _description = 'Copie des versions d\'emploi du temps'
 
     source_year_id = fields.Many2one(
         'siantou.ems.core.year',

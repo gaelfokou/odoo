@@ -1595,13 +1595,13 @@ class TimetableGroup(models.Model):
         }
 
     def action_open_copier(self):
-        view_id = self.env.ref('siantou_ems_core.timetable_group_copier_wizard').id
+        view_id = self.env.ref('siantou_ems_core.timetable_group_copy_wizard').id
         return {
-            'name': 'Copieur des versions d\'emploi du temps',
+            'name': 'Copie des versions d\'emploi du temps',
             'type': 'ir.actions.act_window',
             'view_type': 'form',
             'view_mode': 'form',
-            'res_model': 'timetable.group.copier.wizard',
+            'res_model': 'timetable.group.copy.wizard',
             'views': [(view_id, 'form')],
             'view_id': view_id,
             'target': 'new',
@@ -1612,13 +1612,13 @@ class TimetableGroup(models.Model):
         }
 
     def action_open_copier_submit(self):
-        view_id = self.env.ref('siantou_ems_core.timetable_group_copier_wizard').id
+        view_id = self.env.ref('siantou_ems_core.timetable_group_copy_wizard').id
         return {
-            'name': 'Copieur des versions d\'emploi du temps',
+            'name': 'Copie des versions d\'emploi du temps',
             'type': 'ir.actions.act_window',
             'view_type': 'form',
             'view_mode': 'form',
-            'res_model': 'timetable.group.copier.wizard',
+            'res_model': 'timetable.group.copy.wizard',
             'views': [(view_id, 'form')],
             'view_id': view_id,
             'target': 'new',

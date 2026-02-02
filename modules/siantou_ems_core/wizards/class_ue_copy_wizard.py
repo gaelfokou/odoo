@@ -33,9 +33,9 @@ TYPE_COUR = {
 
 _logger = logging.getLogger(__name__)
 
-class ClassUeCopierWizard(models.TransientModel):
-    _name = 'class.ue.copier.wizard'
-    _description = 'Copieur des unités d\'enseignement'
+class ClassUeCopyWizard(models.TransientModel):
+    _name = 'class.ue.copy.wizard'
+    _description = 'Copie des unités d\'enseignement'
 
     source_year_id = fields.Many2one(
         'siantou.ems.core.year',
