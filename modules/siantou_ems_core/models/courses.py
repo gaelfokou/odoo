@@ -57,11 +57,11 @@ class OeSchoolCourse(models.Model):
 
     sequence_id = fields.Many2one('ir.sequence', 'Séquence des numéros d\'enregistrement', copy=False, check_company=True)
 
-    department_ids = fields.One2many(
-        'hr.department',
-        'cycle_id',
-        string='Départements'
-    )
+    # department_ids = fields.One2many(
+    #     'hr.department',
+    #     'cycle_id',
+    #     string='Départements'
+    # )
 
     # batch_ids = fields.One2many('oe.school.course.batch', 'course_id', string="Lots")
     # batch_count = fields.Integer(string='Nombre de lot', compute='_compute_course_batch_count')

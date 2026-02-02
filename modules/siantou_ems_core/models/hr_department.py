@@ -18,11 +18,11 @@ class Department(models.Model):
         required=True,
     )
 
-    cycle_id = fields.Many2one(
-        'oe.school.course',
-        string='Cursus ou Cycle',
-        required=True,
-    )
+    # cycle_id = fields.Many2one(
+    #     'oe.school.course',
+    #     string='Cursus ou Cycle',
+    #     required=True,
+    # )
 
     field_of_study_ids = fields.One2many(
         'siantou.ems.core.field_of_study',
@@ -40,8 +40,4 @@ class Department(models.Model):
 
     _sql_constraints = [
         ('unique_code', 'unique(code)', 'Le code du département doit être unique.'),
-    ]
-
-    _sql_constraints = [
-        ('unique_school_cycle', 'unique(school_id, cycle_id)', 'Un cycle ne peut être lié à une même école qu\'une seule fois.')
     ]

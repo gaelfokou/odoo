@@ -98,7 +98,7 @@
                                     <field name="name"/>
                                     <field name="manager_id"/>
                                     <field name="school_id"/>
-                                    <field name="cycle_id"/>
+                                    <!-- <field name="cycle_id"/> -->
                                 </tree>
                             </field>
                             <!-- <field name="class_ids" options="{'no_create': True}" readonly="is_readonly == True" domain="[('specialty_id.department_id', '=', department_id), ('year_id', '=', year_id)]"/> -->
@@ -181,7 +181,7 @@
                                     <field name="name"/>
                                     <field name="manager_id"/>
                                     <field name="school_id"/>
-                                    <field name="cycle_id"/>
+                                    <!-- <field name="cycle_id"/> -->
                                 </tree>
                             </field>
                             <!-- <field name="class_ids" options="{'no_create': True}" readonly="is_readonly == True" domain="[('specialty_id.department_id', '=', department_id), ('year_id', '=', year_id)]"/> -->
