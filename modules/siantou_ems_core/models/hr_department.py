@@ -13,7 +13,7 @@ class Department(models.Model):
         required=True
     )
 
-    name = fields.Char(string='Nom',
+    name = fields.Char(string='Nom du département',
                        compute='_compute_name', store=True)
 
     code = fields.Char(

@@ -1230,7 +1230,7 @@ class TimetableGroup(models.Model):
     )
 
     name = fields.Char(
-        string='Nom',
+        string='Nom de la version',
         compute='_compute_name', store=True,
     )
 
