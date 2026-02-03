@@ -8,6 +8,14 @@ from odoo.exceptions import ValidationError
 class Department(models.Model):
     _inherit = 'hr.department'
 
+    department_name = fields.Char(
+        string='Nom',
+        required=True
+    )
+
+    name = fields.Char(string='Nom',
+                       compute='_compute_name', store=True)
+
     code = fields.Char(
         string='Code',
     )
@@ -41,3 +49,43 @@ class Department(models.Model):
     _sql_constraints = [
         ('unique_code', 'unique(code)', 'Le code du département doit être unique.'),
     ]
+
+    @api.depends('department_name', 'school_id')
+    def _compute_name(self):
+        for record in self:
+            department_name = record.department_name if record.department_name else ''
+            school_name = record.school_id.name if record.school_id.id else ''
+            name = '{} ({})'.format(department_name, school_name)
+            while True:
+                if name.find('()') != -1:
+                    name = name.replace('()', '')
+                else:
+                    break
+            while True:
+                if name.find('  ') != -1:
+                    name = name.replace('  ', ' ')
+                else:
+                    break
+            name = name.strip()
+            name = name.upper()
+            record.name = name
+
+    @api.onchange('department_name', 'school_id')
+    def _onchange_name(self):
+        for record in self:
+            department_name = record.department_name if record.department_name else ''
+            school_name = record.school_id.name if record.school_id.id else ''
+            name = '{} ({})'.format(department_name, school_name)
+            while True:
+                if name.find('()') != -1:
+                    name = name.replace('()', '')
+                else:
+                    break
+            while True:
+                if name.find('  ') != -1:
+                    name = name.replace('  ', ' ')
+                else:
+                    break
+            name = name.strip()
+            name = name.upper()
+            record.name = name
