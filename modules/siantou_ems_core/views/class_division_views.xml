@@ -32,7 +32,7 @@
                             class="oe_highlight"/>
                         <button name="action_open_copy" 
                             type="object" 
-                            string="Copier les UEs" 
+                            string="Copier UE" 
                             class="oe_highlight" 
                             display="always"
                             groups="siantou_ems_core.group_ue_open_copy"/>
