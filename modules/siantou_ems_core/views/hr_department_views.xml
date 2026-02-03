@@ -6,6 +6,9 @@
             <field name="model">hr.department</field>
             <field name="inherit_id" ref="hr.view_department_form"/>
             <field name="arch" type="xml">
+                <xpath expr="//field[@name='name']" position="attributes">
+                    <attribute name="readonly">0</attribute>
+                </xpath>
                 <xpath expr="//field[@name='color']" position="attributes">
                     <attribute name="string">Couleur</attribute>
                 </xpath>
