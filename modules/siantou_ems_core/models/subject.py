@@ -778,7 +778,7 @@ class SubjectSession(models.Model):
         ondelete='cascade'
     )
 
-    is_update = fields.Boolean('Mise à jour', default=False)
+    is_update = fields.Boolean('Mise à jour ?', default=False)
 
     timetable_id_domain = fields.Binary(compute='_compute_class_domain', default=[])
 

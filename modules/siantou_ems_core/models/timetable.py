@@ -527,6 +527,8 @@ class Timetable(models.Model):
         string='Motif',
     )
 
+    skip_validation = fields.Boolean('Ignorer la validation ?', default=False)
+
     specialty_id_domain = fields.Binary(compute='_compute_school_domain', default=[])
 
     subject_id_domain = fields.Binary(compute='_compute_class_domain', default=[])
@@ -742,9 +744,9 @@ class Timetable(models.Model):
 
     @api.constrains('group_id', 'class_id', 'class_group_id', 'employee_id', 'date', 'start_time', 'end_time')
     def _constrains_class(self):
-        if self.env.context.get('skip_validation', False):
-            return True
         for record in self:
+            if record.skip_validation:
+                return True
             group_ids = []
             if record.group_id.group_parent_id.id:
                 group_ids.append(record.group_id.group_parent_id.id)
@@ -910,6 +912,9 @@ class Timetable(models.Model):
         return timetable
 
     def write(self, vals):
+        if 'skip_validation' not in vals:
+            vals['skip_validation'] = False
+
         timetable = self.env['siantou.ems.timetable.timetable'].search([('id', '=', self.id)], limit=1)
 
         if not self.env.user.has_group('base.user_root') and not self.env.user.has_group('base.user_admin') and self.env.user.id != 2:
