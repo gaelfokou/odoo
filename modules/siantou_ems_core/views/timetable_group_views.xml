@@ -13,12 +13,14 @@
                             type="object" 
                             string="Copier" 
                             class="oe_highlight" 
-                            display="always"/>
+                            display="always"
+                            groups="siantou_ems_core.group_timetable_open_copy"/>
                         <button name="action_open_move" 
                             type="object" 
                             string="Déplacer" 
                             class="oe_highlight" 
-                            display="always"/>
+                            display="always"
+                            groups="siantou_ems_core.group_timetable_open_move"/>
                     </header>
                     <field name="name"/>
                     <field name="semester_id"/>

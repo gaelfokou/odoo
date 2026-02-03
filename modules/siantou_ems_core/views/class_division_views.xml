@@ -34,7 +34,8 @@
                             type="object" 
                             string="Copier les UEs" 
                             class="oe_highlight" 
-                            display="always"/>
+                            display="always"
+                            groups="siantou_ems_core.group_ue_open_copy"/>
                     </header>
 					<field name="name"/>
                     <field name="year_id"/>
