@@ -170,7 +170,7 @@ class TimetableGroupMoveWizard(models.TransientModel):
                 if self.class_id.id:
                     timetable_ids = timetable_ids.filtered(lambda rec: rec.class_id.id and self.class_id.id)
                 for timetable_id in timetable_ids:
-                    timetable_id.write({
+                    timetable_id.with_context(skip_validation=True).write({
                         'group_id': destination_group_id.id,
                     })
 

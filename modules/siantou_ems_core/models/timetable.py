@@ -742,6 +742,8 @@ class Timetable(models.Model):
 
     @api.constrains('group_id', 'class_id', 'class_group_id', 'employee_id', 'date', 'start_time', 'end_time')
     def _constrains_class(self):
+        if self.env.context.get('skip_validation', False):
+            return True
         for record in self:
             group_ids = []
             if record.group_id.group_parent_id.id:
