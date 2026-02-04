@@ -93,7 +93,7 @@
                             <field name="semester_id" options="{'no_create': True}" readonly="is_readonly == True"/>
                             <field name="is_submit" invisible="1"/>
                             <field name="group_parent_id" invisible="1"/>
-                            <field name="group_child_ids" options="{'no_create': True}" readonly="is_readonly == True" invisible="is_submit == True" widget="many2many_tags"/>
+                            <field name="group_child_ids" options="{'no_create': True}" readonly="id != False or is_readonly == True" invisible="is_submit == True" widget="many2many_tags"/>
                             <field name="is_active" readonly="is_readonly == True" invisible="is_submit == True"/>
                             <field name="read_user_ids" widget="many2many_tags" readonly="is_readonly == True"/>
                             <field name="write_user_ids" widget="many2many_tags" readonly="is_readonly == True"/>
@@ -176,7 +176,7 @@
                             <field name="semester_id" options="{'no_create': True}" readonly="is_readonly == True"/>
                             <field name="is_submit" invisible="1"/>
                             <field name="group_parent_id" invisible="1"/>
-                            <field name="group_child_ids" options="{'no_create': True}" readonly="is_readonly == True" invisible="is_submit == True" widget="many2many_tags"/>
+                            <field name="group_child_ids" options="{'no_create': True}" readonly="id != False or is_readonly == True" invisible="is_submit == True" widget="many2many_tags"/>
                             <field name="is_active" readonly="is_readonly == True" invisible="is_submit == True"/>
                             <field name="read_user_ids" widget="many2many_tags" readonly="is_readonly == True"/>
                             <field name="write_user_ids" widget="many2many_tags" readonly="is_readonly == True"/>

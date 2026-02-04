@@ -10,6 +10,8 @@
                         <field name="is_submit" readonly="1"/>
                         <field name="source_year_id" options="{'no_create': True}"/>
                         <field name="group_id" options="{'no_create': True}" domain="['|', '&amp;', ('is_submit', '=', is_submit), ('create_uid', '=', uid), '&amp;', ('is_submit', '=', is_submit), ('write_user_ids', '=', uid), ('semester_id.year_id', '=', source_year_id)]"/>
+                        <field name="start_date"/>
+                        <field name="end_date"/>
                         <field name="destination_year_id" options="{'no_create': True}"/>
                     </group>
                     <footer>

@@ -16,6 +16,8 @@
                         <field name="department_id" options="{'no_create': True}" domain="department_id_domain"/>
                         <field name="class_id_domain" invisible="1"/>
                         <field name="class_id" options="{'no_create': True}" domain="class_id_domain"/>
+                        <field name="start_date"/>
+                        <field name="end_date"/>
                         <field name="destination_group_id_domain" invisible="1"/>
                         <field name="destination_group_id" options="{'no_create': True}" domain="destination_group_id_domain"/>
                     </group>

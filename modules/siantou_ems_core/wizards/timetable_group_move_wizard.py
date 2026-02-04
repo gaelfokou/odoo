@@ -72,6 +72,20 @@ class TimetableGroupMoveWizard(models.TransientModel):
 
     is_submit = fields.Boolean(string='Soumis ?', default=True)
 
+    start_date = fields.Date(
+        string='Date de début',
+    )
+
+    end_date = fields.Date(
+        string='Date de fin',
+    )
+
+    @api.constrains('start_date', 'end_date')
+    def _constrains_date(self):
+        for record in self:
+            if record.start_date > record.end_date:
+                raise ValidationError("La date de fin doit être supérieure à la date de début")
+
     @api.onchange('year_id')
     def _onchange_year(self):
         for record in self:
@@ -175,6 +189,11 @@ class TimetableGroupMoveWizard(models.TransientModel):
                     timetable_ids = timetable_ids.filtered(lambda rec: rec.department_id.id and self.department_id.id)
                 if self.class_id.id:
                     timetable_ids = timetable_ids.filtered(lambda rec: rec.class_id.id and self.class_id.id)
+                if self.start_date and self.end_date:
+                    start_date = datetime.strftime(self.start_date, DATE_FORMAT_FR)
+                    end_date = datetime.strftime(self.end_date, DATE_FORMAT_FR)
+                    title.append('{} - {}'.format(start_date, end_date))
+                    timetable_ids = timetable_ids.filtered(lambda rec: rec.date and rec.day_of_week and rec.date >= self.start_date and rec.date <= self.end_date)
                 for timetable_id in timetable_ids:
                     timetable_id.write({
                         'group_id': destination_group_id.id,
