@@ -1276,7 +1276,7 @@ class TimetableGroup(models.Model):
     group_parent_id = fields.Many2one(
         'siantou.ems.timetable.group',
         string='Version d\'emploi du temps parent',
-        domain="[('is_submit', '=', False), ('semester_id', '=', semester_id)]",
+        domain="[('is_submit', '=', False), ('semester_id', '=', semester_id), ('status', '=', 'valid')]",
         ondelete='cascade'
     )
 

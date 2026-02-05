@@ -61,6 +61,7 @@
                     <field name="start_date"/>
                     <field name="end_date"/>
                     <field name="is_submit"/>
+                    <field name="is_active"/>
 					<field name="status" widget="badge"
                         decoration-muted="status == 'pending'"
                         decoration-success="status == 'valid'"
@@ -91,8 +92,9 @@
                             <field name="description" readonly="is_readonly == True"/>
                             <field name="semester_id" options="{'no_create': True}" readonly="is_readonly == True"/>
                             <field name="is_submit" invisible="1"/>
-                            <field name="group_child_ids" options="{'no_create': True}" readonly="id != False or is_readonly == True" invisible="is_submit == True" widget="many2many_tags"/>
-                            <field name="is_active" readonly="is_readonly == True" invisible="is_submit == True"/>
+                            <field name="group_parent_id" options="{'no_create': True}" invisible="is_submit == False"/>
+                            <field name="group_child_ids" options="{'no_create': True}" readonly="id != False" invisible="is_submit == True" widget="many2many_tags"/>
+                            <field name="is_active" readonly="is_readonly == True or is_submit == True"/>
                             <field name="read_user_ids" widget="many2many_tags" readonly="is_readonly == True"/>
                             <field name="write_user_ids" widget="many2many_tags" readonly="is_readonly == True"/>
                             <field name="school_ids" widget="many2many_tags" readonly="is_readonly == True"/>
@@ -110,6 +112,7 @@
                             </field>
                             <field name="class_id_domain" invisible="1"/>
                             <field name="class_ids" options="{'no_create': True}" readonly="is_readonly == True" domain="class_id_domain"/>
+                            <field name="status" invisible="1"/>
                             <field name="has_write_access"/>
                         </group>
 					</sheet>
@@ -137,6 +140,9 @@
                             <field name="description" readonly="is_readonly == True"/>
                             <field name="semester_id" options="{'no_create': True}" readonly="is_readonly == True"/>
                             <field name="is_submit" invisible="1"/>
+                            <field name="group_parent_id" options="{'no_create': True}" invisible="is_submit == False"/>
+                            <field name="group_child_ids" options="{'no_create': True}" readonly="id != False" invisible="is_submit == True" widget="many2many_tags"/>
+                            <field name="is_active" readonly="is_readonly == True or is_submit == True"/>
                             <field name="read_user_ids" widget="many2many_tags" readonly="is_readonly == True"/>
                             <field name="write_user_ids" widget="many2many_tags" readonly="is_readonly == True"/>
                             <field name="school_ids" widget="many2many_tags" readonly="is_readonly == True"/>
@@ -154,6 +160,7 @@
                             </field>
                             <field name="class_id_domain" invisible="1"/>
                             <field name="class_ids" options="{'no_create': True}" readonly="is_readonly == True" domain="class_id_domain"/>
+                            <field name="status" invisible="1"/>
                             <field name="has_write_access"/>
                         </group>
 					</sheet>

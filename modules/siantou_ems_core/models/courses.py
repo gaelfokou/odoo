@@ -40,7 +40,7 @@ class OeSchoolCourse(models.Model):
     complete_name = fields.Char(string='Nom complet', compute='_compute_complete_name', recursive=True)
     parent_id = fields.Many2one(
         'oe.school.course',
-        string='Cursus parent', index=True,
+        string='Cycle parent', index=True,
         domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]")
     is_active = fields.Boolean('Actif', default=True)
     company_id = fields.Many2one('res.company',
