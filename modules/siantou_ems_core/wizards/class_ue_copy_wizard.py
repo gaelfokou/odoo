@@ -122,8 +122,20 @@ class ClassUeCopyWizard(models.TransientModel):
         for record in self:
             record.source_ue_ids = record.source_class_id.ue_ids
 
+    @api.onchange('source_class_id')
+    def _onchange_source_ues(self):
+        # Recherche des emplois du temps qui correspondent à la classe
+        for record in self:
+            record.source_ue_ids = record.source_class_id.ue_ids
+
     @api.depends('destination_class_id')
     def _compute_destination_ues(self):
+        # Recherche des emplois du temps qui correspondent à la classe
+        for record in self:
+            record.destination_ue_ids = record.destination_class_id.ue_ids
+
+    @api.onchange('destination_class_id')
+    def _onchange_destination_ues(self):
         # Recherche des emplois du temps qui correspondent à la classe
         for record in self:
             record.destination_ue_ids = record.destination_class_id.ue_ids
