@@ -261,25 +261,16 @@ class EducationClass(models.Model):
     def _compute_timetables(self):
         # Recherche des emplois du temps qui correspondent à la spécialité et au niveau
         for record in self:
-            timetables = []
-            class_id = self.env['siantou.ems.core.class'].search([
-                ('year_id', '=', record.year_id.id),
-                ('specialty_id', '=', record.specialty_id.id),
-                ('option_id', '=', record.option_id.id),
-                ('level_id', '=', record.level_id.id),
-                ('type_cour', '=', record.type_cour),
-            ], limit=1)
-            if class_id:
-                timetables = self.env['siantou.ems.timetable.timetable'].search([
-                    ('class_id', '=', class_id.id),
-                    '|',
-                    '&',
-                    ('group_id.is_active', '=', True),
-                    ('group_id.is_submit', '=', False),
-                    '&',
-                    ('group_parent_id.is_active', '=', True),
-                    ('group_parent_id.is_submit', '=', False),
-                ])
+            timetables = self.env['siantou.ems.timetable.timetable'].search([
+                ('class_id', '=', record.id),
+                '|',
+                '&',
+                ('group_id.is_active', '=', True),
+                ('group_id.is_submit', '=', False),
+                '&',
+                ('group_parent_id.is_active', '=', True),
+                ('group_parent_id.is_submit', '=', False),
+            ])
 
             # Affecter les emplois du temps trouvés à l'attribut timetable_ids
             record.timetable_ids = timetables
@@ -288,25 +279,16 @@ class EducationClass(models.Model):
     def _onchange_timetables(self):
         # Recherche des emplois du temps qui correspondent à la spécialité et au niveau
         for record in self:
-            timetables = []
-            class_id = self.env['siantou.ems.core.class'].search([
-                ('year_id', '=', record.year_id.id),
-                ('specialty_id', '=', record.specialty_id.id),
-                ('option_id', '=', record.option_id.id),
-                ('level_id', '=', record.level_id.id),
-                ('type_cour', '=', record.type_cour),
-            ], limit=1)
-            if class_id:
-                timetables = self.env['siantou.ems.timetable.timetable'].search([
-                    ('class_id', '=', class_id.id),
-                    '|',
-                    '&',
-                    ('group_id.is_active', '=', True),
-                    ('group_id.is_submit', '=', False),
-                    '&',
-                    ('group_parent_id.is_active', '=', True),
-                    ('group_parent_id.is_submit', '=', False),
-                ])
+            timetables = self.env['siantou.ems.timetable.timetable'].search([
+                ('class_id', '=', record.id),
+                '|',
+                '&',
+                ('group_id.is_active', '=', True),
+                ('group_id.is_submit', '=', False),
+                '&',
+                ('group_parent_id.is_active', '=', True),
+                ('group_parent_id.is_submit', '=', False),
+            ])
 
             # Affecter les emplois du temps trouvés à l'attribut timetable_ids
             record.timetable_ids = timetables
