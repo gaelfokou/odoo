@@ -115,7 +115,7 @@ class Classroom(models.Model):
             if record.capacity <= 0:
                 raise ValidationError('La capacité doit être supérieure à 0')
 
-    @api.depends('building_id')
+    @api.depends('is_cours_active')
     def _compute_timetables(self):
         # Recherche des emplois du temps qui correspondent à la salle de classe
         for record in self:
@@ -133,7 +133,7 @@ class Classroom(models.Model):
             # Affecter les emplois du temps trouvés à l'attribut timetable_ids
             record.timetable_ids = timetables
 
-    @api.onchange('building_id')
+    @api.onchange('is_cours_active')
     def _onchange_timetables(self):
         # Recherche des emplois du temps qui correspondent à la salle de classe
         for record in self:

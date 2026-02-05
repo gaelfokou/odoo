@@ -140,7 +140,7 @@ class HrEmployee(models.Model):
             if record.is_permanent and record.weekly_hours_limit != 24:
                 raise ValidationError("Vous devez définir le quota horaire hebdommadaire de cours pour un enseignant permanent à 24")
 
-    @api.depends('weekly_hours_limit')
+    @api.depends('is_teacher')
     def _compute_timetables(self):
         # Recherche des emplois du temps qui correspondent à l'enseignant
         for record in self:
@@ -158,7 +158,7 @@ class HrEmployee(models.Model):
             # Affecter les emplois du temps trouvés à l'attribut timetable_ids
             record.timetable_ids = timetables
 
-    @api.onchange('weekly_hours_limit')
+    @api.onchange('is_teacher')
     def _onchange_timetables(self):
         # Recherche des emplois du temps qui correspondent à l'enseignant
         for record in self:
