@@ -60,7 +60,7 @@
                                     <tr class="active">
                                         <th class="text-center">Matricule</th>
                                         <th class="text-center">Enseignant</th>
-                                        <th class="text-center" t-if="docdata['is_permanent'] == True">Heure effectuée</th>
+                                        <th class="text-center" t-if="docdata['is_permanent'] == True">Nombre d'heures effectuées</th>
                                         <th class="text-center" t-if="docdata['is_permanent'] == False">Montant</th>
                                         <th class="text-center" t-if="docdata['is_permanent'] == False">Prêt</th>
                                         <th class="text-center" t-if="docdata['is_permanent'] == False">Net</th>
