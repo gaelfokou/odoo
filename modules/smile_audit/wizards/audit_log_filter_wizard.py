@@ -7,7 +7,10 @@ import re
 from datetime import date, datetime, timedelta, time
 from dateutil.relativedelta import relativedelta
 import copy
+import pytz
 import logging
+
+UTC_TZ = pytz.utc
 
 DATE_FORMAT = '%Y-%m-%d'
 DATE_FORMAT_FR = '%d/%m/%Y'
@@ -77,6 +80,22 @@ class AuditLogFilterWizard(models.TransientModel):
             ]
             record.model_id_domain = domain
 
+    @staticmethod
+    def convert_datetime_from_utc(dt):
+        new_tz = pytz.timezone('Africa/Douala')
+        old_tz = pytz.utc
+        local_dt = old_tz.localize(dt)
+        dt = local_dt.astimezone(new_tz)
+        return dt
+
+    @staticmethod
+    def convert_datetime_to_utc(dt):
+        old_tz = pytz.timezone('Africa/Douala')
+        new_tz = pytz.utc
+        local_dt = old_tz.localize(dt)
+        dt = local_dt.astimezone(new_tz)
+        return dt
+
     def action_filter(self):
         domain = []
         title = []
@@ -96,8 +115,11 @@ class AuditLogFilterWizard(models.TransientModel):
         audit_log_ids = []
         audit_logs = self.env['audit.log'].sudo().search(domain)
         if self.start_date and self.end_date:
-            start_date = datetime.strftime(self.start_date, DATE_FORMAT_FR)
-            end_date = datetime.strftime(self.end_date, DATE_FORMAT_FR)
+            datetime_before = AuditLogFilterWizard.convert_datetime_from_utc(self.start_date)
+            datetime_after = AuditLogFilterWizard.convert_datetime_from_utc(self.end_date)
+            start_date = datetime.strftime(datetime_before, DATETIME_FORMAT_FR)
+            end_date = datetime.strftime(datetime_after, DATETIME_FORMAT_FR)
+            title.append('Date')
             title.append('{} - {}'.format(start_date, end_date))
             audit_logs = audit_logs.filtered(lambda rec: rec.create_date and rec.create_date >= self.start_date and rec.create_date <= self.end_date)
         for audit_log in audit_logs:
@@ -109,7 +131,7 @@ class AuditLogFilterWizard(models.TransientModel):
         ]
 
         if len(title) > 0:
-            title = '/'.join(title)
+            title = ' / '.join(title)
         else:
             title = 'Non spécifié'
 
