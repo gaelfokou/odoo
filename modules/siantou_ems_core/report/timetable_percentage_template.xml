@@ -108,7 +108,18 @@
                                         <tr>
                                             <td class="text-center">POURCENTAGE</td>
                                             <td class="text-center">
-                                                <span t-esc="str(timetable_percentage_data[key]['percentage']) + '%'" t-attf-class="timetable_percentage_data[key]['class']"/>
+                                                <t t-if="timetable_percentage_data[key]['class'] == 'text-success'">
+                                                    <span t-esc="str(timetable_percentage_data[key]['percentage']) + '%'" style="color: green !important;"/>
+                                                </t>
+                                                <t t-elif="timetable_percentage_data[key]['class'] == 'text-warning'">
+                                                    <span t-esc="str(timetable_percentage_data[key]['percentage']) + '%'" style="color: orange !important;"/>
+                                                </t>
+                                                <t t-elif="timetable_percentage_data[key]['class'] == 'text-danger'">
+                                                    <span t-esc="str(timetable_percentage_data[key]['percentage']) + '%'" style="color: red !important;"/>
+                                                </t>
+                                                <t t-else="">
+                                                    <span t-esc="str(timetable_percentage_data[key]['percentage']) + '%'"/>
+                                                </t>
                                             </td>
                                             <td class="text-center"></td>
                                             <td class="text-center"></td>
