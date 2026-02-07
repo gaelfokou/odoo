@@ -108,7 +108,7 @@
                                         <tr>
                                             <td class="text-center">POURCENTAGE</td>
                                             <td class="text-center">
-                                                <span t-esc="str(timetable_percentage_data[key]['percentage']) + '%'"/>
+                                                <span t-esc="str(timetable_percentage_data[key]['percentage']) + '%'" t-attf-class="timetable_percentage_data[key]['class']"/>
                                             </td>
                                             <td class="text-center"></td>
                                             <td class="text-center"></td>

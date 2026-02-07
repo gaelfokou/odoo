@@ -237,6 +237,7 @@ class TimetablePrintWizard(models.TransientModel):
                 key_timetable_percentages[key]['identifier'] = search_timetable_percentage.employee_id.identifier
                 key_timetable_percentages[key]['data'] = []
                 key_timetable_percentages[key]['percentage'] = 0.0
+                key_timetable_percentages[key]['class'] = ''
             timetable_percentage = {}
             timetable_percentage['id'] = search_timetable_percentage.id
             timetable_percentage['date'] = search_timetable_percentage.date
@@ -286,6 +287,12 @@ class TimetablePrintWizard(models.TransientModel):
                 if total_timetable_percentage_count[key] > 0:
                     key_timetable_percentages[key]['percentage'] = (timetable_percentage_count / total_timetable_percentage_count[key]) * 100
                     key_timetable_percentages[key]['percentage'] = round(key_timetable_percentages[key]['percentage'], 2)
+                    if key_timetable_percentages[key]['percentage'] >= 90.0:
+                        key_timetable_percentages[key]['class'] = 'text-success'
+                    if key_timetable_percentages[key]['percentage'] >= 80.0 and key_timetable_percentages[key]['percentage'] < 90.0:
+                        key_timetable_percentages[key]['class'] = 'text-warning'
+                    if key_timetable_percentages[key]['percentage'] < 80.0:
+                        key_timetable_percentages[key]['class'] = 'text-danger'
                 all_timetable_percentage_count += timetable_percentage_count
 
         total_percentage = 0.0
