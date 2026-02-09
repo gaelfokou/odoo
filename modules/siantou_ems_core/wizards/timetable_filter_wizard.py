@@ -748,14 +748,21 @@ class TimetableFilterWizard(models.TransientModel):
         # Appeler le rapport PDF
         if len(data['docdata']['timetable_percentage_data'].keys()) == 0:
             raise UserError('Aucune donnée trouvée')
+        if sort_type:
+            return data
+        else:
+            report_action = self.env.ref('siantou_ems_core.action_report_timetable_percentage')
+            return report_action.report_action(self, data=data)
+
+    def action_print_top_percentage_pdf(self):
+        data = self.action_print_percentage_pdf(sort_type='top')
         report_action = self.env.ref('siantou_ems_core.action_report_timetable_percentage')
         return report_action.report_action(self, data=data)
 
-    def action_print_top_percentage_pdf(self):
-        self.action_print_percentage_pdf(sort_type='top')
-
     def action_print_last_percentage_pdf(self):
-        self.action_print_percentage_pdf(sort_type='last')
+        data = self.action_print_percentage_pdf(sort_type='last')
+        report_action = self.env.ref('siantou_ems_core.action_report_timetable_percentage')
+        return report_action.report_action(self, data=data)
 
     @staticmethod
     def convert_float_to_time(tm, has_second=False):
