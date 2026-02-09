@@ -130,43 +130,43 @@
                                             </tr>
                                         </t>
                                         <tr>
-                                            <td class="text-center">TOTAL</td>
-                                            <td class="text-center"></td>
-                                            <td class="text-center"></td>
-                                            <td class="text-center"></td>
-                                            <td class="text-center"></td>
-                                            <!-- <td class="text-center"></td> -->
-                                            <td class="text-center"></td>
-                                            <td class="text-center">
+                                            <td class="text-center" style="background-color: #f2f2f2;">TOTAL</td>
+                                            <td class="text-center" style="background-color: #f2f2f2;"></td>
+                                            <td class="text-center" style="background-color: #f2f2f2;"></td>
+                                            <td class="text-center" style="background-color: #f2f2f2;"></td>
+                                            <td class="text-center" style="background-color: #f2f2f2;"></td>
+                                            <!-- <td class="text-center" style="background-color: #f2f2f2;"></td> -->
+                                            <td class="text-center" style="background-color: #f2f2f2;"></td>
+                                            <td class="text-center" style="background-color: #f2f2f2;">
                                                 <span t-esc="teacher_timetable_attendance_data[key]['worked_time']"/>
                                             </td>
-                                            <td class="text-center" t-if="docdata['is_permanent'] == False"></td>
-                                            <td class="text-center" t-if="docdata['is_permanent'] == False">
+                                            <td class="text-center" style="background-color: #f2f2f2;" t-if="docdata['is_permanent'] == False"></td>
+                                            <td class="text-center" style="background-color: #f2f2f2;" t-if="docdata['is_permanent'] == False">
                                                 <span t-esc="'{:,.2f}'.format(teacher_timetable_attendance_data[key]['amount'])"/>
                                             </td>
-                                            <td class="text-center"></td>
-                                            <td class="text-center"></td>
-                                            <td class="text-center"></td>
+                                            <td class="text-center" style="background-color: #f2f2f2;"></td>
+                                            <td class="text-center" style="background-color: #f2f2f2;"></td>
+                                            <td class="text-center" style="background-color: #f2f2f2;"></td>
                                         </tr>
                                     </t>
                                     <tr>
-                                        <td class="text-center">TOTAL GLOBAL</td>
-                                        <td class="text-center"></td>
-                                        <td class="text-center"></td>
-                                        <td class="text-center"></td>
-                                        <td class="text-center"></td>
-                                        <!-- <td class="text-center"></td> -->
-                                        <td class="text-center"></td>
-                                        <td class="text-center">
+                                        <td class="text-center" style="background-color: #f2f2f2;">TOTAL GLOBAL</td>
+                                        <td class="text-center" style="background-color: #f2f2f2;"></td>
+                                        <td class="text-center" style="background-color: #f2f2f2;"></td>
+                                        <td class="text-center" style="background-color: #f2f2f2;"></td>
+                                        <td class="text-center" style="background-color: #f2f2f2;"></td>
+                                        <!-- <td class="text-center" style="background-color: #f2f2f2;"></td> -->
+                                        <td class="text-center" style="background-color: #f2f2f2;"></td>
+                                        <td class="text-center" style="background-color: #f2f2f2;">
                                             <span t-esc="docdata['total_worked_time']"/>
                                         </td>
-                                        <td class="text-center" t-if="docdata['is_permanent'] == False"></td>
-                                        <td class="text-center" t-if="docdata['is_permanent'] == False">
+                                        <td class="text-center" style="background-color: #f2f2f2;" t-if="docdata['is_permanent'] == False"></td>
+                                        <td class="text-center" style="background-color: #f2f2f2;" t-if="docdata['is_permanent'] == False">
                                             <span t-esc="'{:,.2f}'.format(docdata['total_amount'])"/>
                                         </td>
-                                        <td class="text-center"></td>
-                                        <td class="text-center"></td>
-                                        <td class="text-center"></td>
+                                        <td class="text-center" style="background-color: #f2f2f2;"></td>
+                                        <td class="text-center" style="background-color: #f2f2f2;"></td>
+                                        <td class="text-center" style="background-color: #f2f2f2;"></td>
                                     </tr>
                                 </tbody>
                             </table>
