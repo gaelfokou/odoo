@@ -135,6 +135,10 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
             teacher_timetable_attendance['total_all'] = search_teacher_timetable_attendance.total_all
             teacher_timetable_attendance['total_done'] = search_teacher_timetable_attendance.total_done
             teacher_timetable_attendance['total_awaiting'] = search_teacher_timetable_attendance.total_awaiting
+            if teacher_timetable_attendance['total_done'] > teacher_timetable_attendance['hours_credit']:
+                teacher_timetable_attendance['class'] = 'text-danger'
+            else:
+                teacher_timetable_attendance['class'] = ''
             teacher_timetable_attendance['status'] = STATUS_TIMETABLE[search_teacher_timetable_attendance.status]
             teacher_timetable_attendance['start_date'] = search_teacher_timetable_attendance.start_date
             teacher_timetable_attendance['end_date'] = search_teacher_timetable_attendance.end_date
@@ -169,6 +173,7 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
                     teacher_timetable_attendance['hours_credit'] = ''
                     teacher_timetable_attendance['total_all'] = ''
                     teacher_timetable_attendance['total_done'] = ''
+                    teacher_timetable_attendance['class'] = ''
                     teacher_timetable_attendance['total_awaiting'] = ''
                     key_teacher_timetable_attendances[key]['amount'] += teacher_timetable_attendance['amount']
                     key_teacher_timetable_attendances[key]['total_amount'] = key_teacher_timetable_attendances[key]['amount']
@@ -193,6 +198,7 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
                     teacher_timetable_attendance['hours_credit'] = ''
                     teacher_timetable_attendance['total_all'] = ''
                     teacher_timetable_attendance['total_done'] = ''
+                    teacher_timetable_attendance['class'] = ''
                     teacher_timetable_attendance['total_awaiting'] = ''
                     key_teacher_timetable_attendances[key]['amount'] += teacher_timetable_attendance['amount']
                     key_teacher_timetable_attendances[key]['total_amount'] = key_teacher_timetable_attendances[key]['amount']
@@ -214,6 +220,7 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
             teacher_timetable_attendance['hours_credit'] = ''
             teacher_timetable_attendance['total_all'] = ''
             teacher_timetable_attendance['total_done'] = ''
+            teacher_timetable_attendance['class'] = ''
             teacher_timetable_attendance['total_awaiting'] = ''
             key_teacher_timetable_attendances[key]['data'].append(teacher_timetable_attendance)
 
@@ -237,6 +244,7 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
                     teacher_timetable_attendance['hours_credit'] = ''
                     teacher_timetable_attendance['total_all'] = ''
                     teacher_timetable_attendance['total_done'] = ''
+                    teacher_timetable_attendance['class'] = ''
                     teacher_timetable_attendance['total_awaiting'] = ''
                     key_teacher_timetable_attendances[key]['reduce_amount'] += teacher_timetable_attendance['amount']
                     key_teacher_timetable_attendances[key]['amount'] -= teacher_timetable_attendance['amount']
@@ -261,6 +269,7 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
                     teacher_timetable_attendance['hours_credit'] = ''
                     teacher_timetable_attendance['total_all'] = ''
                     teacher_timetable_attendance['total_done'] = ''
+                    teacher_timetable_attendance['class'] = ''
                     teacher_timetable_attendance['total_awaiting'] = ''
                     key_teacher_timetable_attendances[key]['reduce_amount'] += teacher_timetable_attendance['amount']
                     key_teacher_timetable_attendances[key]['amount'] -= teacher_timetable_attendance['amount']
@@ -285,6 +294,7 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
                     teacher_timetable_attendance['hours_credit'] = ''
                     teacher_timetable_attendance['total_all'] = ''
                     teacher_timetable_attendance['total_done'] = ''
+                    teacher_timetable_attendance['class'] = ''
                     teacher_timetable_attendance['total_awaiting'] = ''
                     key_teacher_timetable_attendances[key]['reduce_amount'] += teacher_timetable_attendance['amount']
                     key_teacher_timetable_attendances[key]['amount'] -= teacher_timetable_attendance['amount']
@@ -306,6 +316,7 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
             teacher_timetable_attendance['hours_credit'] = ''
             teacher_timetable_attendance['total_all'] = ''
             teacher_timetable_attendance['total_done'] = ''
+            teacher_timetable_attendance['class'] = ''
             teacher_timetable_attendance['total_awaiting'] = ''
             key_teacher_timetable_attendances[key]['data'].append(teacher_timetable_attendance)
 

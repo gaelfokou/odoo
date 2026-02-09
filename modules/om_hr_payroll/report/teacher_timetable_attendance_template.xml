@@ -122,7 +122,12 @@
                                                     <span t-esc="timetable['hours_credit']"/>
                                                 </td>
                                                 <td class="text-center">
-                                                    <span t-esc="timetable['total_done']"/>
+                                                    <t t-if="timetable['class'] == 'text-danger'">
+                                                        <span t-esc="timetable['total_done']" style="color: red !important;"/>
+                                                    </t>
+                                                    <t t-else="">
+                                                        <span t-esc="timetable['total_done']"/>
+                                                    </t>
                                                 </td>
                                                 <td class="text-center">
                                                     <span t-esc="timetable['total_awaiting']"/>
