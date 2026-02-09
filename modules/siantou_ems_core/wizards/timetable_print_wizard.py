@@ -195,7 +195,7 @@ class TimetablePrintWizard(models.TransientModel):
         name = name.lower()
         return name
 
-    def print_timetable_percentage_report_data(self, domains=None, all_domains=None):
+    def print_timetable_percentage_report_data(self, domains=None, all_domains=None, status=None):
         # Récupérer les emplois du temps pour le semestre sélectionné
         domain = []
 
@@ -287,12 +287,20 @@ class TimetablePrintWizard(models.TransientModel):
                 if total_timetable_percentage_count[key] > 0:
                     key_timetable_percentages[key]['percentage'] = (timetable_percentage_count / total_timetable_percentage_count[key]) * 100
                     key_timetable_percentages[key]['percentage'] = round(key_timetable_percentages[key]['percentage'], 2)
-                    if key_timetable_percentages[key]['percentage'] >= 90.0:
-                        key_timetable_percentages[key]['class'] = 'text-success'
-                    if key_timetable_percentages[key]['percentage'] >= 80.0 and key_timetable_percentages[key]['percentage'] < 90.0:
-                        key_timetable_percentages[key]['class'] = 'text-warning'
-                    if key_timetable_percentages[key]['percentage'] < 80.0:
-                        key_timetable_percentages[key]['class'] = 'text-danger'
+                    if status in ['present', 'punctuality']:
+                        if key_timetable_percentages[key]['percentage'] >= 90.0:
+                            key_timetable_percentages[key]['class'] = 'text-success'
+                        if key_timetable_percentages[key]['percentage'] >= 80.0 and key_timetable_percentages[key]['percentage'] < 90.0:
+                            key_timetable_percentages[key]['class'] = 'text-warning'
+                        if key_timetable_percentages[key]['percentage'] < 80.0:
+                            key_timetable_percentages[key]['class'] = 'text-danger'
+                    else:
+                        if key_timetable_percentages[key]['percentage'] < 10.0:
+                            key_timetable_percentages[key]['class'] = 'text-success'
+                        if key_timetable_percentages[key]['percentage'] >= 10.0 and key_timetable_percentages[key]['percentage'] < 20.0:
+                            key_timetable_percentages[key]['class'] = 'text-warning'
+                        if key_timetable_percentages[key]['percentage'] >= 20.0:
+                            key_timetable_percentages[key]['class'] = 'text-danger'
                 all_timetable_percentage_count += timetable_percentage_count
 
         total_percentage = 0.0
