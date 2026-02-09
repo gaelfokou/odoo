@@ -16,7 +16,7 @@
                         <field name="option_id" options="{'no_create': True}" domain="[('specialty_id', '=', specialty_id)]"/>
                         <field name="type_cour" widget="radio"/>
                         <field name="status"/>
-                        <field name="number_of_student" invisible="status not in ['student_more_than_or_equal', 'student_less_than']"/>
+                        <field name="number_of_student" invisible="not status or status not in ['student_more_than_or_equal', 'student_less_than']"/>
                     </group>
                     <footer>
                         <button string="Filtrer" type="object" name="action_filter" class="btn-primary"/>

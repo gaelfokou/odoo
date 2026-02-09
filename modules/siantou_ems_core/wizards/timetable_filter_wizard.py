@@ -564,7 +564,13 @@ class TimetableFilterWizard(models.TransientModel):
             'target': 'main',
         }
 
-    def action_print(self):
+    def action_print_top_percentage_pdf(self):
+        self.action_print_percentage_pdf(sort_type='top')
+
+    def action_print_last_percentage_pdf(self):
+        self.action_print_percentage_pdf(sort_type='last')
+
+    def action_print_percentage_pdf(self, sort_type=None):
         domain = []
         title = []
         if self.year_id.id:
@@ -743,7 +749,7 @@ class TimetableFilterWizard(models.TransientModel):
         if len(timetable_ids) == 0:
             raise UserError('Aucune donnée sélectionnée')
         report_data = self.env['timetable.print.wizard'].create({})
-        data = report_data.print_timetable_percentage_report_data(domains=domain, all_domains=all_domain, status=self.status)
+        data = report_data.print_timetable_percentage_report_data(domains=domain, all_domains=all_domain, status=self.status, sort_type=sort_type)
 
         # Appeler le rapport PDF
         if len(data['docdata']['timetable_percentage_data'].keys()) == 0:

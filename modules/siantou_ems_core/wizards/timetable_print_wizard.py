@@ -195,7 +195,7 @@ class TimetablePrintWizard(models.TransientModel):
         name = name.lower()
         return name
 
-    def print_timetable_percentage_report_data(self, domains=None, all_domains=None, status=None):
+    def print_timetable_percentage_report_data(self, domains=None, all_domains=None, status=None, sort_type=None):
         # Récupérer les emplois du temps pour le semestre sélectionné
         domain = []
 
