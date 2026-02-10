@@ -52,7 +52,7 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
             raise UserError("Aucune donnée trouvée")
         report_action = self.env.ref('om_hr_payroll.action_report_teacher_timetable_attendance')
         report_action.update({
-            'name': 'Émargement d\'enseignant PDF',
+            'name': 'Émargements d\'enseignant PDF',
         })
         return report_action.report_action(self, data=data)
 
@@ -64,7 +64,7 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
             raise UserError("Aucune donnée trouvée")
         report_action = self.env.ref('om_hr_payroll.action_report_teacher_timetable_attendance_resume')
         report_action.update({
-            'name': 'Condensé émargement d\'enseignant PDF',
+            'name': 'Condensé émargements d\'enseignant PDF',
         })
         return report_action.report_action(self, data=data)
 
@@ -349,7 +349,7 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
 
         return {
             'docdata': {
-                'title': 'Condensé émargement d\'enseignant' if resume else 'Émargement d\'enseignant',
+                'title': 'Condensé émargements d\'enseignant' if resume else 'Émargements d\'enseignant',
                 'filter': filter_title,
                 'teacher_timetable_attendance_data': key_teacher_timetable_attendances,
                 'is_permanent': is_permanent,

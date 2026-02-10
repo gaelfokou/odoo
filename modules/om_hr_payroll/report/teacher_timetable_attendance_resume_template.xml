@@ -131,7 +131,7 @@
             <field name="dpi">90</field>
         </record>
         <record id="action_report_teacher_timetable_attendance_resume" model="ir.actions.report">
-            <field name="name">Condensé émargement d'enseignant PDF</field>
+            <field name="name">Condensé émargements d'enseignant PDF</field>
             <field name="model">teacher.timetable.attendance</field>
             <field name="report_type">qweb-pdf</field>
             <field name="report_name">om_hr_payroll.template_report_teacher_timetable_attendance_resume</field>

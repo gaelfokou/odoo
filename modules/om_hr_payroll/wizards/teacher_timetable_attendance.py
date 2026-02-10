@@ -307,7 +307,7 @@ class TeacherTimetableAttendance(models.TransientModel):
             raise UserError('Aucune donnée trouvée')
         report_action = self.env.ref('om_hr_payroll.action_report_teacher_timetable_attendance')
         report_action.update({
-            'name': 'Émargement d\'enseignant PDF',
+            'name': 'Émargements d\'enseignant PDF',
         })
         return report_action.report_action(self, data=data)
 
@@ -328,7 +328,7 @@ class TeacherTimetableAttendance(models.TransientModel):
             raise UserError('Aucune donnée trouvée')
         report_action = self.env.ref('om_hr_payroll.action_report_teacher_timetable_attendance_resume')
         report_action.update({
-            'name': 'Condensé émargement d\'enseignant PDF',
+            'name': 'Condensé émargements d\'enseignant PDF',
         })
         return report_action.report_action(self, data=data)
 
