@@ -354,11 +354,11 @@ class TimetablePrintWizard(models.TransientModel):
 
         if sort_type:
             if sort_type == 'top':
-                title = 'Emploi du temps {} Top 10'.format(STATUS_TIMETABLE[status])
+                title = '{} Top 10'.format(STATUS_TIMETABLE[status])
             else:
-                title = 'Emploi du temps {} Last 10'.format(STATUS_TIMETABLE[status])
+                title = '{} Last 10'.format(STATUS_TIMETABLE[status])
         else:
-            title = 'Emploi du temps {}'.format(STATUS_TIMETABLE[status])
+            title = '{}'.format(STATUS_TIMETABLE[status])
 
         return {
             'docdata': {

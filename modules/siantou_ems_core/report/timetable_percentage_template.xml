@@ -78,36 +78,55 @@
                                     </t>
                                     <t t-set="keys" t-value="timetable_percentage_data.keys()"/>
                                     <t t-foreach="keys" t-as="key">
-                                        <t t-set="timetables" t-value="timetable_percentage_data[key]['data']"/>
-                                        <t t-foreach="timetables" t-as="timetable">
+                                        <t t-if="not docdata['sort_type']">
+                                            <t t-set="timetables" t-value="timetable_percentage_data[key]['data']"/>
+                                            <t t-foreach="timetables" t-as="timetable">
+                                                <tr>
+                                                    <td class="text-center">
+                                                        <span t-esc="timetable['identifier']"/>
+                                                    </td>
+                                                    <td class="text-left">
+                                                        <span t-esc="timetable['employee_name']"/>
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <span t-esc="timetable['class_name']"/>
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <span t-esc="timetable['subject_name']"/>
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <span t-esc="timetable['date_of_week']"/>
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <span t-esc="timetable['start_time'] + '-' + timetable['end_time']"/>
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <span t-esc="timetable['status']"/>
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <span t-esc="timetable['worked_start_time'] + '-' + timetable['worked_end_time']"/>
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <span t-esc="timetable['reason']"/>
+                                                    </td>
+                                                </tr>
+                                            </t>
+                                        </t>
+                                        <t t-else="">
                                             <tr>
                                                 <td class="text-center">
-                                                    <span t-esc="timetable['identifier']"/>
+                                                    <span t-esc="timetable_percentage_data[key]['identifier']"/>
                                                 </td>
                                                 <td class="text-left">
-                                                    <span t-esc="timetable['employee_name']"/>
+                                                    <span t-esc="timetable_percentage_data[key]['name']"/>
                                                 </td>
-                                                <td class="text-center">
-                                                    <span t-esc="timetable['class_name']"/>
-                                                </td>
-                                                <td class="text-center">
-                                                    <span t-esc="timetable['subject_name']"/>
-                                                </td>
-                                                <td class="text-center">
-                                                    <span t-esc="timetable['date_of_week']"/>
-                                                </td>
-                                                <td class="text-center">
-                                                    <span t-esc="timetable['start_time'] + '-' + timetable['end_time']"/>
-                                                </td>
-                                                <td class="text-center">
-                                                    <span t-esc="timetable['status']"/>
-                                                </td>
-                                                <td class="text-center">
-                                                    <span t-esc="timetable['worked_start_time'] + '-' + timetable['worked_end_time']"/>
-                                                </td>
-                                                <td class="text-center">
-                                                    <span t-esc="timetable['reason']"/>
-                                                </td>
+                                                <td class="text-center" style="background-color: #f2f2f2;"></td>
+                                                <td class="text-center" style="background-color: #f2f2f2;"></td>
+                                                <td class="text-center" style="background-color: #f2f2f2;"></td>
+                                                <td class="text-center" style="background-color: #f2f2f2;"></td>
+                                                <td class="text-center" style="background-color: #f2f2f2;"></td>
+                                                <td class="text-center" style="background-color: #f2f2f2;"></td>
+                                                <td class="text-center" style="background-color: #f2f2f2;"></td>
                                             </tr>
                                         </t>
                                         <tr>
