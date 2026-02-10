@@ -70,7 +70,12 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <t t-set="timetable_percentage_data" t-value="dict(sorted(docdata['timetable_percentage_data'].items(), key=lambda item: item[1]['name'] if item[1]['name'] else ''))"/>
+                                    <t t-if="docdata['sort_type']">
+                                        <t t-set="timetable_percentage_data" t-value="dict(sorted(docdata['timetable_percentage_data'].items(), key=lambda item: item[1]['percentage'], reverse=True))"/>
+                                    </t>
+                                    <t t-else="">
+                                        <t t-set="timetable_percentage_data" t-value="dict(sorted(docdata['timetable_percentage_data'].items(), key=lambda item: item[1]['name'] if item[1]['name'] else ''))"/>
+                                    </t>
                                     <t t-set="keys" t-value="timetable_percentage_data.keys()"/>
                                     <t t-foreach="keys" t-as="key">
                                         <t t-set="timetables" t-value="timetable_percentage_data[key]['data']"/>
@@ -132,7 +137,7 @@
                                             <td class="text-center" style="background-color: #f2f2f2;"></td>
                                         </tr>
                                     </t>
-                                    <t t-if="not sort_type">
+                                    <t t-if="not docdata['sort_type']">
                                         <tr>
                                             <td class="text-center" style="background-color: #f2f2f2;">POURCENTAGE GLOBAL</td>
                                             <td class="text-center" style="background-color: #f2f2f2;">

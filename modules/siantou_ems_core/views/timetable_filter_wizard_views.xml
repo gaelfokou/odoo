@@ -40,8 +40,8 @@
                     <footer>
                         <button string="Filtrer" type="object" name="action_filter" class="btn-primary"/>
                         <button string="Imprimer pourcentage" type="object" name="action_print_percentage_pdf" class="btn-primary" groups="siantou_ems_core.group_timetable_percentage_print_pdf"/>
-                        <button string="Imprimer pourcentage Top 10" type="object" name="action_print_top_percentage_pdf" class="btn-primary" invisible="not status or status not in ['present', 'punctuality']" groups="siantou_ems_core.group_timetable_percentage_print_pdf"/>
-                        <button string="Imprimer pourcentage Last 10" type="object" name="action_print_last_percentage_pdf" class="btn-primary" invisible="not status or status in ['present', 'punctuality']" groups="siantou_ems_core.group_timetable_percentage_print_pdf"/>
+                        <button string="Imprimer pourcentage Top 10" type="object" name="action_print_top_percentage_pdf" class="btn-primary" invisible="not status" groups="siantou_ems_core.group_timetable_percentage_print_pdf"/>
+                        <button string="Imprimer pourcentage Last 10" type="object" name="action_print_last_percentage_pdf" class="btn-primary" invisible="not status" groups="siantou_ems_core.group_timetable_percentage_print_pdf"/>
                         <button string="Annuler" class="btn-secondary" special="cancel"/>
                     </footer>
                 </form>
