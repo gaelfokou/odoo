@@ -39,7 +39,7 @@
                             <table class="table table-bordered table-sm text-center">
                                 <thead>
                                     <tr>
-                                        <th class="text-center" colspan="9" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;">
+                                        <th class="text-center" t-attf-colspan="#{'2' if docdata['sort_type'] else '9'}" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;">
                                             <h3>INSTITUT UNIVERSITAIRE SIANTOU</h3>
                                             <h2>
                                                 <span t-esc="docdata['title']"/>
@@ -53,20 +53,22 @@
                                 </thead>
                                 <thead>
                                     <tr>
-                                        <th class="text-left" colspan="9" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
+                                        <th class="text-left" t-attf-colspan="#{'2' if docdata['sort_type'] else '9'}" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
                                     </tr>
                                 </thead>
                                 <thead class="thead">
                                     <tr class="active">
                                         <th class="text-center">Matricule</th>
                                         <th class="text-center">Enseignant</th>
-                                        <th class="text-center">Classe</th>
-                                        <th class="text-center">Cours</th>
-                                        <th class="text-center">Date</th>
-                                        <th class="text-center">Heure</th>
-                                        <th class="text-center">Satut</th>
-                                        <th class="text-center">Heure effectuée</th>
-                                        <th class="text-center">Motif</th>
+                                        <t t-if="not docdata['sort_type']">
+                                            <th class="text-center">Classe</th>
+                                            <th class="text-center">Cours</th>
+                                            <th class="text-center">Date</th>
+                                            <th class="text-center">Heure</th>
+                                            <th class="text-center">Satut</th>
+                                            <th class="text-center">Heure effectuée</th>
+                                            <th class="text-center">Motif</th>
+                                        </t>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -120,13 +122,6 @@
                                                 <td class="text-left">
                                                     <span t-esc="timetable_percentage_data[key]['name']"/>
                                                 </td>
-                                                <td class="text-center" style="background-color: #f2f2f2;"></td>
-                                                <td class="text-center" style="background-color: #f2f2f2;"></td>
-                                                <td class="text-center" style="background-color: #f2f2f2;"></td>
-                                                <td class="text-center" style="background-color: #f2f2f2;"></td>
-                                                <td class="text-center" style="background-color: #f2f2f2;"></td>
-                                                <td class="text-center" style="background-color: #f2f2f2;"></td>
-                                                <td class="text-center" style="background-color: #f2f2f2;"></td>
                                             </tr>
                                         </t>
                                         <tr>
@@ -145,15 +140,17 @@
                                                     <span t-esc="str(timetable_percentage_data[key]['percentage']) + '%'"/>
                                                 </t>
                                             </td>
-                                            <td class="text-center" style="background-color: #f2f2f2;"></td>
-                                            <td class="text-center" style="background-color: #f2f2f2;"></td>
-                                            <td class="text-center" style="background-color: #f2f2f2;"></td>
-                                            <td class="text-center" style="background-color: #f2f2f2;"></td>
-                                            <td class="text-center" style="background-color: #f2f2f2;"></td>
-                                            <td class="text-center" style="background-color: #f2f2f2;"></td>
-                                            <td class="text-center" style="background-color: #f2f2f2;"></td>
-                                            <td class="text-center" style="background-color: #f2f2f2;"></td>
-                                            <td class="text-center" style="background-color: #f2f2f2;"></td>
+                                            <t t-if="not docdata['sort_type']">
+                                                <td class="text-center" style="background-color: #f2f2f2;"></td>
+                                                <td class="text-center" style="background-color: #f2f2f2;"></td>
+                                                <td class="text-center" style="background-color: #f2f2f2;"></td>
+                                                <td class="text-center" style="background-color: #f2f2f2;"></td>
+                                                <td class="text-center" style="background-color: #f2f2f2;"></td>
+                                                <td class="text-center" style="background-color: #f2f2f2;"></td>
+                                                <td class="text-center" style="background-color: #f2f2f2;"></td>
+                                                <td class="text-center" style="background-color: #f2f2f2;"></td>
+                                                <td class="text-center" style="background-color: #f2f2f2;"></td>
+                                            </t>
                                         </tr>
                                     </t>
                                     <t t-if="not docdata['sort_type']">
