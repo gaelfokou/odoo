@@ -39,6 +39,11 @@ TYPE_COUR = {
     'cs': 'Cours du soir',
 }
 
+TYPE_PERCENTAGE = {
+    'top': 'Top 10',
+    'last': 'Last 10',
+}
+
 _logger = logging.getLogger(__name__)
 
 class TimetableFilterWizard(models.TransientModel):
@@ -675,6 +680,10 @@ class TimetableFilterWizard(models.TransientModel):
                 timetables = self.env['siantou.ems.timetable.timetable'].search(domain)
         else:
             timetables = self.env['siantou.ems.timetable.timetable'].search(domain)
+
+        if sort_type:
+            title.append(TYPE_PERCENTAGE[sort_type])
+
         if self.start_date and self.end_date:
             start_date = datetime.strftime(self.start_date, DATE_FORMAT_FR)
             end_date = datetime.strftime(self.end_date, DATE_FORMAT_FR)

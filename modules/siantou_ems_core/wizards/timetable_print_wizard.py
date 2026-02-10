@@ -280,6 +280,7 @@ class TimetablePrintWizard(models.TransientModel):
             timetable_percentage['status'] = STATUS_TIMETABLE[search_timetable_percentage.status]
             key_timetable_percentages[key]['data'].append(timetable_percentage)
 
+        list_timetable_percentages = []
         all_timetable_percentage_count = 0
         for key in key_timetable_percentages.keys():
             if key in total_timetable_percentage_count:
@@ -287,6 +288,8 @@ class TimetablePrintWizard(models.TransientModel):
                 if total_timetable_percentage_count[key] > 0:
                     key_timetable_percentages[key]['percentage'] = (timetable_percentage_count / total_timetable_percentage_count[key]) * 100
                     key_timetable_percentages[key]['percentage'] = round(key_timetable_percentages[key]['percentage'], 2)
+                    if key_timetable_percentages[key]['percentage'] not in list_timetable_percentages:
+                        list_timetable_percentages.append(key_timetable_percentages[key]['percentage'])
                     if status in ['present', 'punctuality']:
                         if key_timetable_percentages[key]['percentage'] >= 90.0:
                             key_timetable_percentages[key]['class'] = 'text-success'
@@ -302,6 +305,17 @@ class TimetablePrintWizard(models.TransientModel):
                         if key_timetable_percentages[key]['percentage'] >= 20.0:
                             key_timetable_percentages[key]['class'] = 'text-danger'
                 all_timetable_percentage_count += timetable_percentage_count
+
+        list_timetable_percentages = sorted(list_timetable_percentages, key=lambda x: x, reverse=True)
+        if len(list_timetable_percentages) > 0:
+            list_timetable_percentages = list_timetable_percentages[:10]
+
+        key_list_timetable_percentages = {}
+        for key in key_timetable_percentages.keys():
+            if key_timetable_percentages[key]['percentage'] in list_timetable_percentages:
+                key_list_timetable_percentages[key] = key_timetable_percentages[key]
+
+        key_timetable_percentages = key_list_timetable_percentages
 
         total_percentage = 0.0
         if total_all_timetable_percentage_count > 0:
@@ -320,6 +334,7 @@ class TimetablePrintWizard(models.TransientModel):
                 'filter': title,
                 'timetable_percentage_data': key_timetable_percentages,
                 'total_percentage': total_percentage,
+                'sort_type': sort_type,
             }
         }
 
