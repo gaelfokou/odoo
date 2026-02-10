@@ -1030,6 +1030,9 @@ class Timetable(models.Model):
         if len(data['docdata']['timetable_data']) == 0:
             raise UserError('Aucune donnée trouvée')
         report_action = self.env.ref('siantou_ems_core.action_report_timetable')
+        report_action.update({
+            'name': 'Emplois du temps PDF',
+        })
         return report_action.report_action(self, data=data)
 
     def action_present_timetable(self):

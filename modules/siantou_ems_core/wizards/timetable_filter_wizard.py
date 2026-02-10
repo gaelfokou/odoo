@@ -762,7 +762,7 @@ class TimetableFilterWizard(models.TransientModel):
         else:
             report_action = self.env.ref('siantou_ems_core.action_report_timetable_percentage')
             report_action.update({
-                'name': 'Emploi du temps {} PDF'.format(STATUS_TIMETABLE[self.status]),
+                'name': 'Emplois du temps {} PDF'.format(STATUS_TIMETABLE[self.status]),
             })
             return report_action.report_action(self, data=data)
 
@@ -770,7 +770,7 @@ class TimetableFilterWizard(models.TransientModel):
         data = self.action_print_percentage_pdf(sort_type='top')
         report_action = self.env.ref('siantou_ems_core.action_report_timetable_percentage')
         report_action.update({
-            'name': 'Emploi du temps {} Top 10 PDF'.format(STATUS_TIMETABLE[self.status]),
+            'name': 'Emplois du temps {} Top 10 PDF'.format(STATUS_TIMETABLE[self.status]),
         })
         return report_action.report_action(self, data=data)
 
@@ -778,7 +778,7 @@ class TimetableFilterWizard(models.TransientModel):
         data = self.action_print_percentage_pdf(sort_type='last')
         report_action = self.env.ref('siantou_ems_core.action_report_timetable_percentage')
         report_action.update({
-            'name': 'Emploi du temps {} Last 10 PDF'.format(STATUS_TIMETABLE[self.status]),
+            'name': 'Emplois du temps {} Last 10 PDF'.format(STATUS_TIMETABLE[self.status]),
         })
         return report_action.report_action(self, data=data)
 

@@ -462,7 +462,7 @@ class PortalAccount(portal.CustomerPortal):
         ]
         data = report_data.print_timetable_report_data(domains=domain)
         pdf, _ = pdf_report.sudo().with_context()._render_qweb_pdf(report_name, data=data)
-        filename = 'Emploi du temps PDF.pdf'
+        filename = 'Emplois du temps PDF.pdf'
         headers = [
             ('Content-Type', 'application/pdf'),
             ('Content-Length', len(pdf)),
@@ -1098,7 +1098,7 @@ class PortalAccount(portal.CustomerPortal):
         ]
         data = report_data.print_progress_report_data(domains=domain)
         pdf, _ = pdf_report.sudo().with_context()._render_qweb_pdf(report_name, data=data)
-        filename = 'Fiche de progression PDF.pdf'
+        filename = 'Fiches de progression PDF.pdf'
         headers = [
             ('Content-Type', 'application/pdf'),
             ('Content-Length', len(pdf)),

@@ -35,7 +35,15 @@ STATUS_TIMETABLE = {
     'absent': 'Absent',
     'permission': 'Permission',
     'exception': 'Exception',
+    'exception_start_time_invalid': 'Exception poinçonnement de début absent ou invalide',
+    'exception_end_time_invalid': 'Exception poinçonnement de fin absent ou invalide',
+    'exception_time_invalid': 'Exception poinçonnement absent ou invalide',
+    'exception_reverse': 'Exception poinçonnement de début et de fin inversé',
+    'exception_other': 'Exception autre',
     'delay': 'Retard',
+    'delay_more_than_or_equal': 'Retard plus de ou égal à',
+    'delay_less_than': 'Retard moins de',
+    'punctuality': 'Ponctualité',
 }
 
 _logger = logging.getLogger(__name__)
@@ -51,6 +59,9 @@ class TimetablePrintWizard(models.TransientModel):
         if len(data['docdata']['timetable_data']) == 0:
             raise UserError("Aucune donnée trouvée")
         report_action = self.env.ref('siantou_ems_core.action_report_timetable')
+        report_action.update({
+            'name': 'Emplois du temps PDF',
+        })
         return report_action.report_action(self, data=data)
 
     def print_timetable_report_data(self, domains=None):
@@ -185,6 +196,7 @@ class TimetablePrintWizard(models.TransientModel):
 
         return {
             'docdata': {
+                'title': 'Emplois du temps',
                 'timetable_data': key_timetables,
             }
         }
@@ -294,7 +306,7 @@ class TimetablePrintWizard(models.TransientModel):
                     key_timetable_percentages[key]['percentage'] = round(key_timetable_percentages[key]['percentage'], 2)
                     if key_timetable_percentages[key]['percentage'] not in list_timetable_percentages:
                         list_timetable_percentages.append(key_timetable_percentages[key]['percentage'])
-                    if status in ['present', 'punctuality']:
+                    if status and status in ['present', 'punctuality']:
                         if key_timetable_percentages[key]['percentage'] >= 90.0:
                             key_timetable_percentages[key]['class'] = 'text-success'
                         if key_timetable_percentages[key]['percentage'] >= 80.0 and key_timetable_percentages[key]['percentage'] < 90.0:
@@ -338,11 +350,20 @@ class TimetablePrintWizard(models.TransientModel):
 
         _logger.info(f'----------- tototototototo key_timetable_percentages {key_timetable_percentages} -----------')
 
-        title = self.env['ir.config_parameter'].sudo().get_param(f'siantou.filter_user_{self.env.user.id}', '')
+        filter_title = self.env['ir.config_parameter'].sudo().get_param(f'siantou.filter_user_{self.env.user.id}', '')
+
+        if sort_type:
+            if sort_type == 'top':
+                title = 'Emploi du temps {} Top 10'.format(STATUS_TIMETABLE[status])
+            else:
+                title = 'Emploi du temps {} Last 10'.format(STATUS_TIMETABLE[status])
+        else:
+            title = 'Emploi du temps {}'.format(STATUS_TIMETABLE[status])
 
         return {
             'docdata': {
-                'filter': title,
+                'title': title,
+                'filter': filter_title,
                 'timetable_percentage_data': key_timetable_percentages,
                 'total_percentage': total_percentage,
                 'sort_type': sort_type,

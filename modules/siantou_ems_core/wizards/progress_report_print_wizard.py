@@ -45,7 +45,10 @@ class ProgressReportPrintWizard(models.TransientModel):
         # Appeler le rapport PDF
         if len(data['docdata']['report_data']) == 0:
             raise UserError("Aucune donnée trouvée")
-        report_action = self.env.ref('siantou_ems_core.action_report_class')
+        report_action = self.env.ref('siantou_ems_core.action_report_progress_report')
+        report_action.update({
+            'name': 'Fiches de progression PDF',
+        })
         return report_action.report_action(self, data=data)
 
     def print_progress_report_data(self, domains=None):
@@ -81,13 +84,14 @@ class ProgressReportPrintWizard(models.TransientModel):
             report['sessions'] = sessions
             reports.append(report)
 
-        title = self.env['ir.config_parameter'].sudo().get_param(f'siantou.filter_user_{self.env.user.id}', '')
+        filter_title = self.env['ir.config_parameter'].sudo().get_param(f'siantou.filter_user_{self.env.user.id}', '')
 
         _logger.info(f'----------- tototototototo reports {reports} -----------')
 
         return {
             'docdata': {
-                'filter': title,
+                'title': 'Fiches de progression',
+                'filter': filter_title,
                 'report_data': reports,
             }
         }

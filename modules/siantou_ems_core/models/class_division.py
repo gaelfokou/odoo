@@ -334,6 +334,9 @@ class EducationClass(models.Model):
         if len(data['docdata']['class_data']) == 0:
             raise UserError('Aucune donnée trouvée')
         report_action = self.env.ref('siantou_ems_core.action_report_class')
+        report_action.update({
+            'name': 'Classes PDF',
+        })
         return report_action.report_action(self, data=data)
 
     def add_number_of_student_class(self, classe):

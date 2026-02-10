@@ -208,7 +208,7 @@ class ApiAccount(http.Controller):
             pdf, _ = pdf_report.sudo().with_context()._render_qweb_pdf(report_name, data=data)
         else:
             pdf = None
-        filename = 'Emploi du temps PDF.pdf'
+        filename = 'Emplois du temps PDF.pdf'
         headers = [
             ('Content-Type', 'application/pdf'),
             ('Content-Length', len(pdf)),

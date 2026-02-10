@@ -41,9 +41,9 @@
                                     <tr>
                                         <th class="text-center" colspan="6" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;">
                                             <h3>INSTITUT UNIVERSITAIRE SIANTOU</h3>
-                                            <h4>
-                                                <span t-esc="'Présences'"/>
-                                            </h4>
+                                            <h2>
+                                                <span t-esc="docdata['title']"/>
+                                            </h2>
                                             <h5 class="text-left">
                                                 <span t-esc="'Filtre :'"/>
                                                 <span t-esc="docdata['filter'] or 'Non spécifié'"/>
@@ -115,7 +115,7 @@
             <field name="dpi">90</field>
         </record>
         <record id="action_report_daily_attendance" model="ir.actions.report">
-            <field name="name">Présence PDF</field>
+            <field name="name">Présences PDF</field>
             <field name="model">daily.attendance</field>
             <field name="report_type">qweb-pdf</field>
             <field name="report_name">siantou_ems_core.template_report_daily_attendance</field>

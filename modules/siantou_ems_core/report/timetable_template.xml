@@ -46,10 +46,10 @@
                                             <tr>
                                                 <th class="text-center" colspan="8" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;">
                                                     <h3>INSTITUT UNIVERSITAIRE SIANTOU</h3>
-                                                    <h4>
-                                                        <span t-esc="'Emploi du temps'"/>
+                                                    <h2>
+                                                        <span t-esc="docdata['title']"/>
                                                         <span t-esc="docdata['timetable_data'][key]['semester']"/>
-                                                    </h4>
+                                                    </h2>
                                                     <h5 class="text-left">
                                                         <span t-esc="docdata['timetable_data'][key]['study']"/>
                                                     </h5>
@@ -57,10 +57,10 @@
                                                         <span t-esc="'Filtre :'"/>
                                                         <span t-esc="docdata['timetable_data'][key]['filter'] or 'Non spécifié'"/>
                                                     </h5>
-                                                    <h5 class="text-left">
+                                                    <!-- <h5 class="text-left">
                                                         <span t-esc="'Période :'"/>
                                                         <span t-esc="monday"/>
-                                                    </h5>
+                                                    </h5> -->
                                                 </th>
                                             </tr>
                                         </thead>
@@ -216,7 +216,7 @@
             <field name="dpi">90</field>
         </record>
         <record id="action_report_timetable" model="ir.actions.report">
-            <field name="name">Emploi du temps PDF</field>
+            <field name="name">Emplois du temps PDF</field>
             <field name="model">siantou.ems.timetable.timetable</field>
             <field name="report_type">qweb-pdf</field>
             <field name="report_name">siantou_ems_core.template_report_timetable</field>

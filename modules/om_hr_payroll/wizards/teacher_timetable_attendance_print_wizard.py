@@ -51,16 +51,21 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
         if len(data['docdata']['teacher_timetable_attendance_data'].keys()) == 0:
             raise UserError("Aucune donnée trouvée")
         report_action = self.env.ref('om_hr_payroll.action_report_teacher_timetable_attendance')
+        report_action.update({
+            'name': 'Émargement d\'enseignant PDF',
+        })
         return report_action.report_action(self, data=data)
 
     def action_print_resume_pdf(self):
-        resume = True
-        data = self.print_teacher_timetable_attendance_report_data(resume=resume)
+        data = self.print_teacher_timetable_attendance_report_data(resume=True)
 
         # Appeler le rapport PDF
         if len(data['docdata']['teacher_timetable_attendance_data'].keys()) == 0:
             raise UserError("Aucune donnée trouvée")
         report_action = self.env.ref('om_hr_payroll.action_report_teacher_timetable_attendance_resume')
+        report_action.update({
+            'name': 'Condensé émargement d\'enseignant PDF',
+        })
         return report_action.report_action(self, data=data)
 
     def sort_teacher_timetable_attendance_level(self, teacher_timetable_attendance):
@@ -338,13 +343,14 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
         key_teacher_timetable_attendances = sorted(key_teacher_timetable_attendances.items(), key=self.sort_teacher_timetable_attendance)
         key_teacher_timetable_attendances = dict(key_teacher_timetable_attendances)
 
-        title = self.env['ir.config_parameter'].sudo().get_param(f'siantou.filter_user_{self.env.user.id}', '')
+        filter_title = self.env['ir.config_parameter'].sudo().get_param(f'siantou.filter_user_{self.env.user.id}', '')
 
         _logger.info(f'----------- tototototototo key_teacher_timetable_attendances {key_teacher_timetable_attendances} -----------')
 
         return {
             'docdata': {
-                'filter': title,
+                'title': 'Condensé émargement d\'enseignant' if resume else 'Émargement d\'enseignant',
+                'filter': filter_title,
                 'teacher_timetable_attendance_data': key_teacher_timetable_attendances,
                 'is_permanent': is_permanent,
                 'total_worked_time': total_worked_time,

@@ -24,6 +24,9 @@ class ClassroomPrintWizard(models.TransientModel):
         if len(data['docdata']['classroom_data']) == 0:
             raise UserError("Aucune donnée trouvée")
         report_action = self.env.ref('siantou_ems_core.action_report_classroom')
+        report_action.update({
+            'name': 'Salles de classe PDF',
+        })
         return report_action.report_action(self, data=data)
 
     def print_classroom_report_data(self, domains=None):
@@ -45,13 +48,14 @@ class ClassroomPrintWizard(models.TransientModel):
             classroom['capacity'] = search_classroom.capacity
             classrooms.append(classroom)
 
-        title = self.env['ir.config_parameter'].sudo().get_param(f'siantou.filter_user_{self.env.user.id}', '')
+        filter_title = self.env['ir.config_parameter'].sudo().get_param(f'siantou.filter_user_{self.env.user.id}', '')
 
         _logger.info(f'----------- tototototototo classrooms {classrooms} -----------')
 
         return {
             'docdata': {
-                'filter': title,
+                'title': 'Salles de classe',
+                'filter': filter_title,
                 'classroom_data': classrooms,
             }
         }

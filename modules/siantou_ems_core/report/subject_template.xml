@@ -41,9 +41,9 @@
                                     <tr>
                                         <th subject="text-center" colspan="5" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;">
                                             <h3>INSTITUT UNIVERSITAIRE SIANTOU</h3>
-                                            <h4>
-                                                <span t-esc="'Cours'"/>
-                                            </h4>
+                                            <h2>
+                                                <span t-esc="docdata['title']"/>
+                                            </h2>
                                             <h5 subject="text-left">
                                                 <span t-esc="'Filtre :'"/>
                                                 <span t-esc="docdata['filter'] or 'Non spécifié'"/>

@@ -34,6 +34,9 @@ class TeacherPrintWizard(models.TransientModel):
         if len(data['docdata']['teacher_data']) == 0:
             raise UserError("Aucune donnée trouvée")
         report_action = self.env.ref('siantou_ems_core.action_report_teacher')
+        report_action.update({
+            'name': 'Enseignants PDF',
+        })
         return report_action.report_action(self, data=data)
 
     def print_teacher_report_data(self, domains=None):
@@ -64,13 +67,14 @@ class TeacherPrintWizard(models.TransientModel):
             teacher['weekly_hours_limit'] = search_teacher.weekly_hours_limit
             teachers.append(teacher)
 
-        title = self.env['ir.config_parameter'].sudo().get_param(f'siantou.filter_user_{self.env.user.id}', '')
+        filter_title = self.env['ir.config_parameter'].sudo().get_param(f'siantou.filter_user_{self.env.user.id}', '')
 
         _logger.info(f'----------- tototototototo teachers {teachers} -----------')
 
         return {
             'docdata': {
-                'filter': title,
+                'title': 'Enseignants',
+                'filter': filter_title,
                 'teacher_data': teachers,
             }
         }

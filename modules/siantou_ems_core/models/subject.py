@@ -264,6 +264,9 @@ class Subject(models.Model):
         if len(data['docdata']['subject_data']) == 0:
             raise UserError('Aucune donnée trouvée')
         report_action = self.env.ref('siantou_ems_core.action_report_subject')
+        report_action.update({
+            'name': 'Cours PDF',
+        })
         return report_action.report_action(self, data=data)
 
 class ProgressReport(models.Model):
@@ -652,6 +655,9 @@ class ProgressReport(models.Model):
         if len(data['docdata']['report_data']) == 0:
             raise UserError('Aucune donnée trouvée')
         report_action = self.env.ref('siantou_ems_core.action_report_progress_report')
+        report_action.update({
+            'name': 'Fiches de progression PDF',
+        })
         return report_action.report_action(self, data=data)
 
     def update_progress_report_class(self, report):
