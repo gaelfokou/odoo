@@ -26,10 +26,14 @@
                                     font-size: 12px;
                                 }
                                 h3 {
-                                    font-size: 16px;
+                                    font-size: 18px;
                                     margin: 2px 4px !important;
                                 }
                                 h4 {
+                                    font-size: 16px;
+                                    margin: 2px 4px !important;
+                                }
+                                h5 {
                                     font-size: 14px;
                                     margin: 2px 4px !important;
                                 }
@@ -50,9 +54,9 @@
                                                         <span t-esc="docdata['title']"/>
                                                         <span t-esc="docdata['timetable_data'][key]['semester']"/>
                                                     </h4>
-                                                    <h5 class="text-left">
+                                                    <h4>
                                                         <span t-esc="docdata['timetable_data'][key]['study']"/>
-                                                    </h5>
+                                                    </h4>
                                                     <h5 class="text-left">
                                                         <span t-esc="'Filtre :'"/>
                                                         <span t-esc="docdata['timetable_data'][key]['filter'] or 'Non spécifié'"/>
