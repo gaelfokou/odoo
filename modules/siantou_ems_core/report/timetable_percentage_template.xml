@@ -43,7 +43,7 @@
                             <table class="table table-bordered table-sm text-center">
                                 <thead>
                                     <tr>
-                                        <th class="text-center" t-attf-colspan="#{'2' if docdata['sort_type'] else '9'}" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;">
+                                        <th class="text-center" t-attf-colspan="#{'2' if docdata['sort_type'] else '8'}" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;">
                                             <h3>INSTITUT UNIVERSITAIRE SIANTOU</h3>
                                             <h4>
                                                 <span t-esc="docdata['title']"/>
@@ -57,14 +57,16 @@
                                 </thead>
                                 <thead>
                                     <tr>
-                                        <th class="text-left" t-attf-colspan="#{'2' if docdata['sort_type'] else '9'}" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
+                                        <th class="text-left" t-attf-colspan="#{'2' if docdata['sort_type'] else '8'}" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
                                     </tr>
                                 </thead>
                                 <thead class="thead">
                                     <tr class="active">
-                                        <th class="text-center">Matricule</th>
                                         <th class="text-center">Enseignant</th>
-                                        <t t-if="not docdata['sort_type']">
+                                        <t t-if="docdata['sort_type']">
+                                            <th class="text-center"></th>
+                                        </t>
+                                        <t t-else="">
                                             <th class="text-center">Classe</th>
                                             <th class="text-center">Cours</th>
                                             <th class="text-center">Date</th>
@@ -84,13 +86,18 @@
                                     </t>
                                     <t t-set="keys" t-value="timetable_percentage_data.keys()"/>
                                     <t t-foreach="keys" t-as="key">
-                                        <t t-if="not docdata['sort_type']">
+                                        <t t-if="docdata['sort_type']">
+                                            <tr>
+                                                <td class="text-left">
+                                                    <span t-esc="timetable_percentage_data[key]['name']"/>
+                                                </td>
+                                                <td class="text-center"></td>
+                                            </tr>
+                                        </t>
+                                        <t t-else="">
                                             <t t-set="timetables" t-value="timetable_percentage_data[key]['data']"/>
                                             <t t-foreach="timetables" t-as="timetable">
                                                 <tr>
-                                                    <td class="text-center">
-                                                        <span t-esc="timetable['identifier']"/>
-                                                    </td>
                                                     <td class="text-left">
                                                         <span t-esc="timetable['employee_name']"/>
                                                     </td>
@@ -118,16 +125,6 @@
                                                 </tr>
                                             </t>
                                         </t>
-                                        <t t-else="">
-                                            <tr>
-                                                <td class="text-center">
-                                                    <span t-esc="timetable_percentage_data[key]['identifier']"/>
-                                                </td>
-                                                <td class="text-left">
-                                                    <span t-esc="timetable_percentage_data[key]['name']"/>
-                                                </td>
-                                            </tr>
-                                        </t>
                                         <tr>
                                             <td class="text-center" style="background-color: #f2f2f2;">POURCENTAGE</td>
                                             <td class="text-center" style="background-color: #f2f2f2;">
@@ -151,9 +148,6 @@
                                                 <td class="text-center" style="background-color: #f2f2f2;"></td>
                                                 <td class="text-center" style="background-color: #f2f2f2;"></td>
                                                 <td class="text-center" style="background-color: #f2f2f2;"></td>
-                                                <td class="text-center" style="background-color: #f2f2f2;"></td>
-                                                <td class="text-center" style="background-color: #f2f2f2;"></td>
-                                                <td class="text-center" style="background-color: #f2f2f2;"></td>
                                             </t>
                                         </tr>
                                     </t>
@@ -163,9 +157,6 @@
                                             <td class="text-center" style="background-color: #f2f2f2;">
                                                 <span t-esc="str(docdata['total_percentage']) + '%'"/>
                                             </td>
-                                            <td class="text-center" style="background-color: #f2f2f2;"></td>
-                                            <td class="text-center" style="background-color: #f2f2f2;"></td>
-                                            <td class="text-center" style="background-color: #f2f2f2;"></td>
                                             <td class="text-center" style="background-color: #f2f2f2;"></td>
                                             <td class="text-center" style="background-color: #f2f2f2;"></td>
                                             <td class="text-center" style="background-color: #f2f2f2;"></td>
