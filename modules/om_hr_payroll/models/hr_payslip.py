@@ -495,11 +495,17 @@ class HrPayslip(models.Model):
         employee_timetables = self.env['siantou.ems.timetable.timetable'].sudo().search([
             '|',
             '&',
+            '&',
             ('group_id.is_active', '=', True),
             ('group_id.is_submit', '=', False),
+            ('group_id.status', '=', 'valid'),
+            '&',
+            '&',
             '&',
             ('group_parent_id.is_active', '=', True),
             ('group_parent_id.is_submit', '=', False),
+            ('group_parent_id.status', '=', 'valid'),
+            ('group_id.status', '=', 'valid'),
             ('status', 'in', ['pending', 'progress', 'exception']),
         ], order='date asc').filtered(lambda rec: (rec.date < current_date) or (rec.date == current_date and rec.end_time <= time_before))
         employee_timetables = list(employee_timetables)
@@ -671,11 +677,17 @@ class HrPayslip(models.Model):
         employee_timetables = self.env['siantou.ems.timetable.timetable'].sudo().search([
             '|',
             '&',
+            '&',
             ('group_id.is_active', '=', True),
             ('group_id.is_submit', '=', False),
+            ('group_id.status', '=', 'valid'),
+            '&',
+            '&',
             '&',
             ('group_parent_id.is_active', '=', True),
             ('group_parent_id.is_submit', '=', False),
+            ('group_parent_id.status', '=', 'valid'),
+            ('group_id.status', '=', 'valid'),
             ('status', '=', 'pending'),
         ], order='date asc').filtered(lambda rec: rec.date == current_date and rec.start_time <= time_before and rec.end_time >= time_before)
         employee_timetables = list(employee_timetables)
@@ -729,11 +741,17 @@ class HrPayslip(models.Model):
         employee_timetables = self.env['siantou.ems.timetable.timetable'].sudo().search([
             '|',
             '&',
+            '&',
             ('group_id.is_active', '=', True),
             ('group_id.is_submit', '=', False),
+            ('group_id.status', '=', 'valid'),
+            '&',
+            '&',
             '&',
             ('group_parent_id.is_active', '=', True),
             ('group_parent_id.is_submit', '=', False),
+            ('group_parent_id.status', '=', 'valid'),
+            ('group_id.status', '=', 'valid'),
             ('status', '=', 'pending'),
         ], order='date asc').filtered(lambda rec: rec.date == current_date and rec.start_time <= time_before and rec.end_time >= time_before)
         employee_timetables = list(employee_timetables)
@@ -843,11 +861,17 @@ class HrPayslip(models.Model):
                     employee_timetables = self.env['siantou.ems.timetable.timetable'].sudo().search([
                         '|',
                         '&',
+                        '&',
                         ('group_id.is_active', '=', True),
                         ('group_id.is_submit', '=', False),
+                        ('group_id.status', '=', 'valid'),
+                        '&',
+                        '&',
                         '&',
                         ('group_parent_id.is_active', '=', True),
                         ('group_parent_id.is_submit', '=', False),
+                        ('group_parent_id.status', '=', 'valid'),
+                        ('group_id.status', '=', 'valid'),
                         ('employee_id', '=', daily_attendance.employee_id.id),
                         ('status', 'in', ['pending', 'progress']),
                     ], order='date asc').filtered(lambda rec: self.search_filtered_daily_attendance_teacher(rec, punching_time))

@@ -64,11 +64,17 @@ class ClassroomFilterWizard(models.TransientModel):
         domain = [
             '|',
             '&',
+            '&',
             ('group_id.is_active', '=', True),
             ('group_id.is_submit', '=', False),
+            ('group_id.status', '=', 'valid'),
+            '&',
+            '&',
             '&',
             ('group_parent_id.is_active', '=', True),
             ('group_parent_id.is_submit', '=', False),
+            ('group_parent_id.status', '=', 'valid'),
+            ('group_id.status', '=', 'valid'),
         ]
         title = []
         if self.date:

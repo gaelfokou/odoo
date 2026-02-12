@@ -820,11 +820,17 @@ class SubjectSession(models.Model):
                     ('id', 'in', timetable_ids.ids),
                     '|',
                     '&',
+                    '&',
                     ('group_id.is_active', '=', True),
                     ('group_id.is_submit', '=', False),
+                    ('group_id.status', '=', 'valid'),
+                    '&',
+                    '&',
                     '&',
                     ('group_parent_id.is_active', '=', True),
                     ('group_parent_id.is_submit', '=', False),
+                    ('group_parent_id.status', '=', 'valid'),
+                    ('group_id.status', '=', 'valid'),
                     ('subject_id', '=', record.report_id.subject_id.id)
                 ]
             record.timetable_id_domain = domain

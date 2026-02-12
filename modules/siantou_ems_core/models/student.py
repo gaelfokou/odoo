@@ -307,11 +307,17 @@ class Student(models.Model):
                 ('class_id', '=', record.class_id.id),
                 '|',
                 '&',
+                '&',
                 ('group_id.is_active', '=', True),
                 ('group_id.is_submit', '=', False),
+                ('group_id.status', '=', 'valid'),
+                '&',
+                '&',
                 '&',
                 ('group_parent_id.is_active', '=', True),
                 ('group_parent_id.is_submit', '=', False),
+                ('group_parent_id.status', '=', 'valid'),
+                ('group_id.status', '=', 'valid'),
             ])
 
             # Affecter les emplois du temps trouvés à l'attribut timetable_ids
@@ -325,11 +331,17 @@ class Student(models.Model):
                 ('class_id', '=', record.class_id.id),
                 '|',
                 '&',
+                '&',
                 ('group_id.is_active', '=', True),
                 ('group_id.is_submit', '=', False),
+                ('group_id.status', '=', 'valid'),
+                '&',
+                '&',
                 '&',
                 ('group_parent_id.is_active', '=', True),
                 ('group_parent_id.is_submit', '=', False),
+                ('group_parent_id.status', '=', 'valid'),
+                ('group_id.status', '=', 'valid'),
             ])
 
             # Affecter les emplois du temps trouvés à l'attribut timetable_ids
