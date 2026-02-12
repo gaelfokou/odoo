@@ -692,7 +692,7 @@ class Timetable(models.Model):
             record.ue_id = None
             record.subject_id = None
 
-    @api.depends('class_id')
+    @api.depends('class_id', 'semester_id')
     def _compute_class_domain(self):
         for record in self:
             domain = []
