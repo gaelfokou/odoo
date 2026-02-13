@@ -330,10 +330,16 @@ class TimetablePrintWizard(models.TransientModel):
         if sort_type:
             list_timetable_percentages = sorted(list_timetable_percentages, key=lambda x: x, reverse=True)
             if len(list_timetable_percentages) > 0:
-                if sort_type == 'top':
-                    list_timetable_percentages = list_timetable_percentages[:10]
+                if status and status in ['present', 'punctuality']:
+                    if sort_type == 'top':
+                        list_timetable_percentages = list_timetable_percentages[:10]
+                    else:
+                        list_timetable_percentages = list_timetable_percentages[-10:]
                 else:
-                    list_timetable_percentages = list_timetable_percentages[-10:]
+                    if sort_type == 'top':
+                        list_timetable_percentages = list_timetable_percentages[-10:]
+                    else:
+                        list_timetable_percentages = list_timetable_percentages[:10]
 
             key_list_timetable_percentages = {}
             for key in key_timetable_percentages.keys():
@@ -342,8 +348,12 @@ class TimetablePrintWizard(models.TransientModel):
 
             key_timetable_percentages = key_list_timetable_percentages
 
-            key_timetable_percentages = sorted(key_timetable_percentages.items(), key=self.sort_type_timetable_percentage, reverse=True)
-            key_timetable_percentages = dict(key_timetable_percentages)
+            if status and status in ['present', 'punctuality']:
+                key_timetable_percentages = sorted(key_timetable_percentages.items(), key=self.sort_type_timetable_percentage, reverse=True)
+                key_timetable_percentages = dict(key_timetable_percentages)
+            else:
+                key_timetable_percentages = sorted(key_timetable_percentages.items(), key=self.sort_type_timetable_percentage)
+                key_timetable_percentages = dict(key_timetable_percentages)
         else:
             key_timetable_percentages = sorted(key_timetable_percentages.items(), key=self.sort_timetable_percentage)
             key_timetable_percentages = dict(key_timetable_percentages)
@@ -367,6 +377,7 @@ class TimetablePrintWizard(models.TransientModel):
                 'timetable_percentage_data': key_timetable_percentages,
                 'total_percentage': total_percentage,
                 'sort_type': sort_type,
+                'status': status,
             }
         }
 

@@ -79,7 +79,12 @@
                                 </thead>
                                 <tbody>
                                     <t t-if="docdata['sort_type']">
-                                        <t t-set="timetable_percentage_data" t-value="dict(sorted(docdata['timetable_percentage_data'].items(), key=lambda item: item[1]['percentage'], reverse=True))"/>
+                                        <t t-if="docdata['status'] and docdata['status'] in ['present', 'punctuality']">
+                                            <t t-set="timetable_percentage_data" t-value="dict(sorted(docdata['timetable_percentage_data'].items(), key=lambda item: item[1]['percentage'], reverse=True))"/>
+                                        </t>
+                                        <t t-else="">
+                                            <t t-set="timetable_percentage_data" t-value="dict(sorted(docdata['timetable_percentage_data'].items(), key=lambda item: item[1]['percentage']))"/>
+                                        </t>
                                     </t>
                                     <t t-else="">
                                         <t t-set="timetable_percentage_data" t-value="dict(sorted(docdata['timetable_percentage_data'].items(), key=lambda item: item[1]['name'] if item[1]['name'] else ''))"/>
