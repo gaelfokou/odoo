@@ -272,6 +272,7 @@ class Subject(models.Model):
 class ProgressReport(models.Model):
     _name = 'siantou.ems.core.progress.report'
     _description = 'Fiche de progression'
+    _inherit=['mail.thread', 'mail.activity.mixin',]
 
     name = fields.Char(
         string='Nom',
@@ -759,6 +760,7 @@ class ProgressReport(models.Model):
 class SubjectSession(models.Model):
     _name = 'siantou.ems.core.subject.session'
     _description = 'Séance de cours'
+    _inherit=['mail.thread', 'mail.activity.mixin',]
 
     name = fields.Char(
         string='Séance',
