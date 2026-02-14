@@ -52,8 +52,10 @@
                                                     <h3>INSTITUT UNIVERSITAIRE SIANTOU</h3>
                                                     <h4>
                                                         <span t-esc="docdata['title']"/>
-                                                        <span t-esc="docdata['timetable_data'][key]['semester']"/>
                                                     </h4>
+                                                    <h5>
+                                                        <span t-esc="docdata['timetable_data'][key]['semester']"/>
+                                                    </h5>
                                                     <h4>
                                                         <span t-esc="docdata['timetable_data'][key]['study']"/>
                                                     </h4>
