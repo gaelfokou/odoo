@@ -77,7 +77,7 @@
                                     <t t-set="teachers" t-value="docdata['teacher_data']"/>
                                     <t t-foreach="teachers" t-as="teacher">
                                         <tr>
-                                            <td class="text-center">
+                                            <td class="text-left">
                                                 <span t-esc="teacher['name']"/>
                                             </td>
                                             <td class="text-center">

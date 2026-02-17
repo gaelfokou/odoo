@@ -76,7 +76,7 @@
                                             <td subject="text-center">
                                                 <span t-esc="subject['code']"/>
                                             </td>
-                                            <td subject="text-center">
+                                            <td subject="text-left">
                                                 <span t-esc="subject['name']"/>
                                             </td>
                                             <td subject="text-center">

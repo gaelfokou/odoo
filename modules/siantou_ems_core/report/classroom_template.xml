@@ -75,7 +75,7 @@
                                             <td class="text-center">
                                                 <span t-esc="classroom['code']"/>
                                             </td>
-                                            <td class="text-center">
+                                            <td class="text-left">
                                                 <span t-esc="classroom['name']"/>
                                             </td>
                                             <td class="text-center">

@@ -71,10 +71,10 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <t t-set="attendances" t-value="docdata['attendance_data']"/>
+                                    <t t-set="attendances" t-value="sorted(docdata['attendance_data'], key=lambda item: (item['employee_name'] if item['employee_name'] else '').strip().lower())"/>
                                     <t t-foreach="attendances" t-as="attendance">
                                         <tr>
-                                            <td class="text-center">
+                                            <td class="text-left">
                                                 <span t-esc="attendance['employee_name']"/>
                                             </td>
                                             <td class="text-center">

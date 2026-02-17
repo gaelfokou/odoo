@@ -77,7 +77,7 @@
                                         <t t-set="sessions" t-value="sorted(report['sessions'], key=lambda item: int(item['name'].replace('Séance ', '')))"/>
                                         <t t-foreach="sessions" t-as="session">
                                             <tr>
-                                                <td class="text-center">
+                                                <td class="text-left">
                                                     <span t-esc="session['name']"/>
                                                 </td>
                                                 <td class="text-left">
