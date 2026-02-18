@@ -62,18 +62,21 @@
                                 </thead>
                                 <thead class="thead">
                                     <tr class="active">
+                                        <th class="text-center">Matricule</th>
                                         <th class="text-center">Nom(s) et prénom(s)</th>
                                         <th class="text-center">Nom(s)</th>
                                         <th class="text-center">Prénom(s)</th>
                                         <th class="text-center">E-mail</th>
-                                        <th class="text-center">Date de naissance</th>
-                                        <th class="text-center">Matricule</th>
+                                        <th class="text-center">Téléphone</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <t t-set="students" t-value="sorted(docdata['student_data'], key=lambda item: (item['name'] if item['name'] else '').strip().lower())"/>
                                     <t t-foreach="students" t-as="student">
                                         <tr>
+                                            <td class="text-center">
+                                                <span t-esc="student['matricule']"/>
+                                            </td>
                                             <td class="text-left">
                                                 <span t-esc="student['name']"/>
                                             </td>
@@ -87,10 +90,7 @@
                                                 <span t-esc="student['email']"/>
                                             </td>
                                             <td class="text-center">
-                                                <span t-esc="student['date_naissance']"/>
-                                            </td>
-                                            <td class="text-center">
-                                                <span t-esc="student['matricule']"/>
+                                                <span t-esc="student['private_phone']"/>
                                             </td>
                                         </tr>
                                     </t>

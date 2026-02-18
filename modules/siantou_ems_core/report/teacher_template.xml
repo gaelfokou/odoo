@@ -43,7 +43,7 @@
                             <table class="table table-bordered table-sm text-center">
                                 <thead>
                                     <tr>
-                                        <th class="text-center" colspan="9" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;">
+                                        <th class="text-center" colspan="8" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;">
                                             <h3>INSTITUT UNIVERSITAIRE SIANTOU</h3>
                                             <h4>
                                                 <span t-esc="docdata['title']"/>
@@ -57,26 +57,28 @@
                                 </thead>
                                 <thead>
                                     <tr>
-                                        <th class="text-left" colspan="9" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
+                                        <th class="text-left" colspan="8" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
                                     </tr>
                                 </thead>
                                 <thead class="thead">
                                     <tr class="active">
+                                        <th class="text-center">Matricule</th>
                                         <th class="text-center">Nom(s) et prénom(s)</th>
                                         <th class="text-center">Nom(s)</th>
                                         <th class="text-center">Prénom(s)</th>
                                         <th class="text-center">E-mail</th>
-                                        <th class="text-center">Date de naissance</th>
+                                        <th class="text-center">Téléphone</th>
                                         <th class="text-center">Est un enseignant</th>
                                         <th class="text-center">Est un permanent</th>
-                                        <th class="text-center">Matricule</th>
-                                        <th class="text-center">Quota horaire hebdommadaire</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <t t-set="teachers" t-value="sorted(docdata['teacher_data'], key=lambda item: (item['name'] if item['name'] else '').strip().lower())"/>
                                     <t t-foreach="teachers" t-as="teacher">
                                         <tr>
+                                            <td class="text-center">
+                                                <span t-esc="teacher['identifier']"/>
+                                            </td>
                                             <td class="text-left">
                                                 <span t-esc="teacher['name']"/>
                                             </td>
@@ -90,19 +92,13 @@
                                                 <span t-esc="teacher['work_email']"/>
                                             </td>
                                             <td class="text-center">
-                                                <span t-esc="teacher['birthday']"/>
+                                                <span t-esc="teacher['work_phone']"/>
                                             </td>
                                             <td class="text-center">
                                                 <span t-esc="'Oui' if teacher['is_teacher'] else 'Non'"/>
                                             </td>
                                             <td class="text-center">
                                                 <span t-esc="'Oui' if teacher['is_permanent'] else 'Non'"/>
-                                            </td>
-                                            <td class="text-center">
-                                                <span t-esc="teacher['identifier']"/>
-                                            </td>
-                                            <td class="text-center">
-                                                <span t-esc="teacher['weekly_hours_limit']"/>
                                             </td>
                                         </tr>
                                     </t>

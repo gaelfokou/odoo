@@ -52,7 +52,7 @@ class StudentPrintWizard(models.TransientModel):
             student['last_name'] = search_student.last_name
             student['first_name'] = search_student.first_name
             student['email'] = search_student.email
-            student['date_naissance'] = search_student.date_naissance
+            student['private_phone'] = search_student.private_phone
             student['matricule'] = search_student.matricule
             students.append(student)
 

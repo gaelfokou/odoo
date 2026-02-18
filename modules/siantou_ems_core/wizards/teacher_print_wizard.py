@@ -66,11 +66,10 @@ class TeacherPrintWizard(models.TransientModel):
             teacher['last_name'] = search_teacher.last_name
             teacher['first_name'] = search_teacher.first_name
             teacher['work_email'] = search_teacher.work_email
-            teacher['birthday'] = search_teacher.birthday
+            teacher['work_phone'] = search_teacher.work_phone
             teacher['is_teacher'] = search_teacher.is_teacher
             teacher['is_permanent'] = search_teacher.is_permanent
             teacher['identifier'] = search_teacher.identifier
-            teacher['weekly_hours_limit'] = search_teacher.weekly_hours_limit
             teachers.append(teacher)
 
         teachers = sorted(teachers, key=self.sort_teacher)
