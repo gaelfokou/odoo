@@ -71,7 +71,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <t t-set="students" t-value="docdata['student_data']"/>
+                                    <t t-set="students" t-value="sorted(docdata['student_data'], key=lambda item: (item['name'] if item['name'] else '').strip().lower())"/>
                                     <t t-foreach="students" t-as="student">
                                         <tr>
                                             <td class="text-left">

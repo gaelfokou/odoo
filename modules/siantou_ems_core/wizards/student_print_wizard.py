@@ -29,6 +29,12 @@ class StudentPrintWizard(models.TransientModel):
         })
         return report_action.report_action(self, data=data)
 
+    def sort_student(self, student):
+        name = student['name'] if student['name'] else ''
+        name = name.strip()
+        name = name.lower()
+        return name
+
     def print_student_report_data(self, domains=None):
         # Récupérer les emplois du temps pour le semestre sélectionné
         domain = []
@@ -49,6 +55,8 @@ class StudentPrintWizard(models.TransientModel):
             student['date_naissance'] = search_student.date_naissance
             student['matricule'] = search_student.matricule
             students.append(student)
+
+        students = sorted(students, key=self.sort_student)
 
         filter_title = self.env['ir.config_parameter'].sudo().get_param(f'siantou.filter_user_{self.env.user.id}', '')
 

@@ -29,6 +29,12 @@ class ClassroomPrintWizard(models.TransientModel):
         })
         return report_action.report_action(self, data=data)
 
+    def sort_classroom(self, classroom):
+        name = classroom['name'] if classroom['name'] else ''
+        name = name.strip()
+        name = name.lower()
+        return name
+
     def print_classroom_report_data(self, domains=None):
         # Récupérer les emplois du temps pour le semestre sélectionné
         domain = []
@@ -47,6 +53,8 @@ class ClassroomPrintWizard(models.TransientModel):
             classroom['building_name'] = search_classroom.building_id.name
             classroom['capacity'] = search_classroom.capacity
             classrooms.append(classroom)
+
+        classrooms = sorted(classrooms, key=self.sort_classroom)
 
         filter_title = self.env['ir.config_parameter'].sudo().get_param(f'siantou.filter_user_{self.env.user.id}', '')
 

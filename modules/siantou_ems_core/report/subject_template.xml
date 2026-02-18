@@ -70,7 +70,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <t t-set="subjects" t-value="docdata['subject_data']"/>
+                                    <t t-set="subjects" t-value="sorted(docdata['subject_data'], key=lambda item: (item['name'] if item['name'] else '').strip().lower())"/>
                                     <t t-foreach="subjects" t-as="subject">
                                         <tr>
                                             <td subject="text-center">

@@ -31,6 +31,12 @@ class SubjectPrintWizard(models.TransientModel):
         report_action = self.env.ref('siantou_ems_core.action_report_subject')
         return report_action.report_action(self, data=data)
 
+    def sort_subject(self, subject):
+        name = subject['name'] if subject['name'] else ''
+        name = name.strip()
+        name = name.lower()
+        return name
+
     def print_subject_report_data(self, domains=None):
         # Récupérer les emplois du temps pour le semestre sélectionné
         domain = []
@@ -53,6 +59,8 @@ class SubjectPrintWizard(models.TransientModel):
             subject['ue_ids'] = ' / '.join(ue_ids)
             total_hours_credit += subject['hours_credit']
             subjects.append(subject)
+
+        subjects = sorted(subjects, key=self.sort_subject)
 
         filter_title = self.env['ir.config_parameter'].sudo().get_param(f'siantou.filter_user_{self.env.user.id}', '')
 

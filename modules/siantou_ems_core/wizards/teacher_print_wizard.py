@@ -39,6 +39,12 @@ class TeacherPrintWizard(models.TransientModel):
         })
         return report_action.report_action(self, data=data)
 
+    def sort_teacher(self, teacher):
+        name = teacher['name'] if teacher['name'] else ''
+        name = name.strip()
+        name = name.lower()
+        return name
+
     def print_teacher_report_data(self, domains=None):
         # Récupérer les emplois du temps pour le semestre sélectionné
         domain = []
@@ -66,6 +72,8 @@ class TeacherPrintWizard(models.TransientModel):
             teacher['identifier'] = search_teacher.identifier
             teacher['weekly_hours_limit'] = search_teacher.weekly_hours_limit
             teachers.append(teacher)
+
+        teachers = sorted(teachers, key=self.sort_teacher)
 
         filter_title = self.env['ir.config_parameter'].sudo().get_param(f'siantou.filter_user_{self.env.user.id}', '')
 

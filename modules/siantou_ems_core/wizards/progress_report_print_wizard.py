@@ -80,7 +80,7 @@ class ProgressReportPrintWizard(models.TransientModel):
                 session['start_time'] = ProgressReportPrintWizard.convert_float_to_time(session_id.timetable_id.start_time)
                 session['end_time'] = ProgressReportPrintWizard.convert_float_to_time(session_id.timetable_id.end_time)
                 sessions.append(session)
-            sessions = sorted(sessions, key=lambda item: int(item['name'].replace('Séance ', '')))
+            sessions = sorted(sessions, key=lambda item: int((item['name'] if item['name'] else '').replace('Séance ', '')))
             report['sessions'] = sessions
             reports.append(report)
 
