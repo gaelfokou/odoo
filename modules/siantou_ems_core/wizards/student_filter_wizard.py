@@ -66,12 +66,14 @@ class StudentFilterWizard(models.TransientModel):
 
     class_id_domain = fields.Binary(compute='_compute_all_domain', default=[])
 
-    @api.depends('year_id', 'level_id', 'field_of_study_id', 'specialty_id', 'option_id', 'type_cour')
+    @api.depends('year_id', 'school_id', 'level_id', 'field_of_study_id', 'specialty_id', 'option_id', 'type_cour')
     def _compute_all_domain(self):
         for record in self:
             domain = []
             if record.year_id.id:
                 domain.append(('year_id', '=', record.year_id.id))
+            if record.school_id.id:
+                domain.append(('school_id', '=', record.school_id.id))
             if record.level_id.id:
                 domain.append(('level_id', '=', record.level_id.id))
             if record.field_of_study_id.id:

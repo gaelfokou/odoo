@@ -346,7 +346,7 @@ class SchoolCourseSubject(models.Model):
     @api.depends('semester_ids')
     def _compute_semester_domain(self):
         for record in self:
-            semester_ids = record.group_id.semester_ids
+            semester_ids = record.semester_ids
             domain = []
             if len(semester_ids.ids) > 0:
                 year_ids = [semester_id.year_id.id for semester_id in semester_ids]
