@@ -221,6 +221,13 @@ class TimetablePrintWizard(models.TransientModel):
 
         search_timetable_percentages = self.env['siantou.ems.timetable.timetable'].search(domain)
 
+        if status and status in ['delay']:
+            search_delay_timetable_percentages = search_timetable_percentages.filtered(lambda rec: rec.date and rec.day_of_week and TimetablePrintWizard.compare_float_time(rec.date, rec.worked_start_time, rec.start_time) > 0.0)
+            search_punctuality_timetable_percentages = search_timetable_percentages.filtered(lambda rec: rec.date and rec.day_of_week and TimetablePrintWizard.compare_float_time(rec.date, rec.worked_start_time, rec.start_time) == 0.0)
+        else:
+            search_delay_timetable_percentages = search_timetable_percentages
+            search_punctuality_timetable_percentages = search_timetable_percentages
+
         all_domain = []
 
         if all_domains:
@@ -241,19 +248,18 @@ class TimetablePrintWizard(models.TransientModel):
                 total_timetable_percentage_count[key] += 1
             total_all_timetable_percentage_count += 1
 
-        key_timetable_percentages = {}
-        info_timetable_percentages = {}
-        for search_timetable_percentage in search_timetable_percentages:
+        key_delay_timetable_percentages = {}
+        for search_timetable_percentage in search_delay_timetable_percentages:
             if not search_timetable_percentage.date or not search_timetable_percentage.day_of_week or not search_timetable_percentage.employee_id.id:
                 continue
             key = '{}'.format(search_timetable_percentage.employee_id.id)
-            if key not in key_timetable_percentages:
-                key_timetable_percentages[key] = {}
-                key_timetable_percentages[key]['name'] = search_timetable_percentage.employee_id.name
-                key_timetable_percentages[key]['identifier'] = search_timetable_percentage.employee_id.identifier
-                key_timetable_percentages[key]['data'] = []
-                key_timetable_percentages[key]['percentage'] = 0.0
-                key_timetable_percentages[key]['class'] = ''
+            if key not in key_delay_timetable_percentages:
+                key_delay_timetable_percentages[key] = {}
+                key_delay_timetable_percentages[key]['name'] = search_timetable_percentage.employee_id.name
+                key_delay_timetable_percentages[key]['identifier'] = search_timetable_percentage.employee_id.identifier
+                key_delay_timetable_percentages[key]['data'] = []
+                key_delay_timetable_percentages[key]['percentage'] = 0.0
+                key_delay_timetable_percentages[key]['class'] = ''
             timetable_percentage = {}
             timetable_percentage['id'] = search_timetable_percentage.id
             timetable_percentage['date'] = search_timetable_percentage.date
@@ -294,33 +300,118 @@ class TimetablePrintWizard(models.TransientModel):
             timetable_percentage['reason'] = search_timetable_percentage.reason
             timetable_percentage['not_active_slotitems'] = search_timetable_percentage.not_active_slotitems
             timetable_percentage['status'] = STATUS_TIMETABLE[search_timetable_percentage.status]
-            key_timetable_percentages[key]['data'].append(timetable_percentage)
+            key_delay_timetable_percentages[key]['data'].append(timetable_percentage)
+
+        key_punctuality_timetable_percentages = {}
+        for search_timetable_percentage in search_punctuality_timetable_percentages:
+            if not search_timetable_percentage.date or not search_timetable_percentage.day_of_week or not search_timetable_percentage.employee_id.id:
+                continue
+            key = '{}'.format(search_timetable_percentage.employee_id.id)
+            if key in key_delay_timetable_percentages:
+                continue
+            if key not in key_punctuality_timetable_percentages:
+                key_punctuality_timetable_percentages[key] = {}
+                key_punctuality_timetable_percentages[key]['name'] = search_timetable_percentage.employee_id.name
+                key_punctuality_timetable_percentages[key]['identifier'] = search_timetable_percentage.employee_id.identifier
+                key_punctuality_timetable_percentages[key]['data'] = []
+                key_punctuality_timetable_percentages[key]['percentage'] = 0.0
+                key_punctuality_timetable_percentages[key]['class'] = ''
+            timetable_percentage = {}
+            timetable_percentage['id'] = search_timetable_percentage.id
+            timetable_percentage['date'] = search_timetable_percentage.date
+            timetable_percentage['date_of_week'] = datetime.strftime(search_timetable_percentage.date, DATE_FORMAT_FR)
+            timetable_percentage['semester_name'] = search_timetable_percentage.semester_id.name
+            timetable_percentage['cycle_id'] = search_timetable_percentage.cycle_id.id
+            timetable_percentage['cycle_name'] = search_timetable_percentage.cycle_id.name
+            timetable_percentage['level_id'] = search_timetable_percentage.level_id.id
+            timetable_percentage['level_name'] = search_timetable_percentage.level_id.name
+            timetable_percentage['field_of_study_id'] = search_timetable_percentage.field_of_study_id.id
+            timetable_percentage['field_of_study_name'] = search_timetable_percentage.field_of_study_id.name
+            timetable_percentage['specialty_id'] = search_timetable_percentage.specialty_id.id
+            timetable_percentage['specialty_name'] = search_timetable_percentage.specialty_id.name
+            timetable_percentage['option_id'] = search_timetable_percentage.option_id.id
+            timetable_percentage['option_name'] = search_timetable_percentage.option_id.name
+            timetable_percentage['class_id'] = search_timetable_percentage.class_id.id
+            timetable_percentage['class_name'] = search_timetable_percentage.class_id.name
+            timetable_percentage['department_id'] = search_timetable_percentage.department_id.id
+            timetable_percentage['department_name'] = search_timetable_percentage.department_id.name
+            timetable_percentage['school_id'] = search_timetable_percentage.school_id.id
+            timetable_percentage['school_name'] = search_timetable_percentage.school_id.name
+            timetable_percentage['subject_id'] = search_timetable_percentage.subject_id.id
+            timetable_percentage['subject_name'] = search_timetable_percentage.subject_id.name
+            timetable_percentage['subject_code'] = search_timetable_percentage.subject_id.code
+            timetable_percentage['subject_hours_credit'] = search_timetable_percentage.subject_id.hours_credit
+            timetable_percentage['subject_shared_subject'] = '(TC)' if search_timetable_percentage.subject_id.shared_subject else ''
+            timetable_percentage['classroom_name'] = search_timetable_percentage.classroom_id.name
+            timetable_percentage['building_name'] = search_timetable_percentage.classroom_id.building_id.name
+            timetable_percentage['batch_name'] = search_timetable_percentage.batch_id.name
+            timetable_percentage['employee_id'] = search_timetable_percentage.employee_id.id
+            timetable_percentage['identifier'] = search_timetable_percentage.employee_id.identifier
+            timetable_percentage['employee_name'] = search_timetable_percentage.employee_id.name
+            timetable_percentage['day_of_week'] = CURRENT_WEEKDAY[search_timetable_percentage.day_of_week]
+            timetable_percentage['start_time'] = TimetablePrintWizard.convert_float_to_time(search_timetable_percentage.start_time)
+            timetable_percentage['end_time'] = TimetablePrintWizard.convert_float_to_time(search_timetable_percentage.end_time)
+            timetable_percentage['worked_start_time'] = TimetablePrintWizard.convert_float_to_time(search_timetable_percentage.worked_start_time)
+            timetable_percentage['worked_end_time'] = TimetablePrintWizard.convert_float_to_time(search_timetable_percentage.worked_end_time)
+            timetable_percentage['reason'] = search_timetable_percentage.reason
+            timetable_percentage['not_active_slotitems'] = search_timetable_percentage.not_active_slotitems
+            timetable_percentage['status'] = STATUS_TIMETABLE[search_timetable_percentage.status]
+            key_punctuality_timetable_percentages[key]['data'].append(timetable_percentage)
 
         list_timetable_percentages = []
         all_timetable_percentage_count = 0
-        for key in key_timetable_percentages.keys():
+        for key in key_delay_timetable_percentages.keys():
             if key in total_timetable_percentage_count:
-                timetable_percentage_count = len(key_timetable_percentages[key]['data'])
+                timetable_percentage_count = len(key_delay_timetable_percentages[key]['data'])
                 if total_timetable_percentage_count[key] > 0:
-                    key_timetable_percentages[key]['percentage'] = (timetable_percentage_count / total_timetable_percentage_count[key]) * 100
-                    key_timetable_percentages[key]['percentage'] = round(key_timetable_percentages[key]['percentage'], 2)
-                    if key_timetable_percentages[key]['percentage'] not in list_timetable_percentages:
-                        list_timetable_percentages.append(key_timetable_percentages[key]['percentage'])
+                    key_delay_timetable_percentages[key]['percentage'] = (timetable_percentage_count / total_timetable_percentage_count[key]) * 100
+                    key_delay_timetable_percentages[key]['percentage'] = round(key_delay_timetable_percentages[key]['percentage'], 2)
+                    if key_delay_timetable_percentages[key]['percentage'] not in list_timetable_percentages:
+                        list_timetable_percentages.append(key_delay_timetable_percentages[key]['percentage'])
                     if status and status in ['present', 'punctuality']:
-                        if key_timetable_percentages[key]['percentage'] >= 90.0:
-                            key_timetable_percentages[key]['class'] = 'text-success'
-                        if key_timetable_percentages[key]['percentage'] >= 80.0 and key_timetable_percentages[key]['percentage'] < 90.0:
-                            key_timetable_percentages[key]['class'] = 'text-warning'
-                        if key_timetable_percentages[key]['percentage'] < 80.0:
-                            key_timetable_percentages[key]['class'] = 'text-danger'
+                        if key_delay_timetable_percentages[key]['percentage'] >= 90.0:
+                            key_delay_timetable_percentages[key]['class'] = 'text-success'
+                        if key_delay_timetable_percentages[key]['percentage'] >= 80.0 and key_delay_timetable_percentages[key]['percentage'] < 90.0:
+                            key_delay_timetable_percentages[key]['class'] = 'text-warning'
+                        if key_delay_timetable_percentages[key]['percentage'] < 80.0:
+                            key_delay_timetable_percentages[key]['class'] = 'text-danger'
                     else:
-                        if key_timetable_percentages[key]['percentage'] < 10.0:
-                            key_timetable_percentages[key]['class'] = 'text-success'
-                        if key_timetable_percentages[key]['percentage'] >= 10.0 and key_timetable_percentages[key]['percentage'] < 20.0:
-                            key_timetable_percentages[key]['class'] = 'text-warning'
-                        if key_timetable_percentages[key]['percentage'] >= 20.0:
-                            key_timetable_percentages[key]['class'] = 'text-danger'
+                        if key_delay_timetable_percentages[key]['percentage'] < 10.0:
+                            key_delay_timetable_percentages[key]['class'] = 'text-success'
+                        if key_delay_timetable_percentages[key]['percentage'] >= 10.0 and key_delay_timetable_percentages[key]['percentage'] < 20.0:
+                            key_delay_timetable_percentages[key]['class'] = 'text-warning'
+                        if key_delay_timetable_percentages[key]['percentage'] >= 20.0:
+                            key_delay_timetable_percentages[key]['class'] = 'text-danger'
                 all_timetable_percentage_count += timetable_percentage_count
+
+        for key in key_punctuality_timetable_percentages.keys():
+            if key in total_timetable_percentage_count:
+                timetable_percentage_count = len(key_punctuality_timetable_percentages[key]['data'])
+                if total_timetable_percentage_count[key] > 0:
+                    if key_punctuality_timetable_percentages[key]['percentage'] not in list_timetable_percentages:
+                        list_timetable_percentages.append(key_punctuality_timetable_percentages[key]['percentage'])
+                    if status and status in ['present', 'punctuality']:
+                        if key_punctuality_timetable_percentages[key]['percentage'] >= 90.0:
+                            key_punctuality_timetable_percentages[key]['class'] = 'text-success'
+                        if key_punctuality_timetable_percentages[key]['percentage'] >= 80.0 and key_punctuality_timetable_percentages[key]['percentage'] < 90.0:
+                            key_punctuality_timetable_percentages[key]['class'] = 'text-warning'
+                        if key_punctuality_timetable_percentages[key]['percentage'] < 80.0:
+                            key_punctuality_timetable_percentages[key]['class'] = 'text-danger'
+                    else:
+                        if key_punctuality_timetable_percentages[key]['percentage'] < 10.0:
+                            key_punctuality_timetable_percentages[key]['class'] = 'text-success'
+                        if key_punctuality_timetable_percentages[key]['percentage'] >= 10.0 and key_punctuality_timetable_percentages[key]['percentage'] < 20.0:
+                            key_punctuality_timetable_percentages[key]['class'] = 'text-warning'
+                        if key_punctuality_timetable_percentages[key]['percentage'] >= 20.0:
+                            key_punctuality_timetable_percentages[key]['class'] = 'text-danger'
+                all_timetable_percentage_count += timetable_percentage_count
+
+        key_timetable_percentages = {}
+        for key, value in key_delay_timetable_percentages.items():
+            key_timetable_percentages[key] = value
+
+        for key, value in key_punctuality_timetable_percentages.items():
+            key_timetable_percentages[key] = value
 
         total_percentage = 0.0
         if total_all_timetable_percentage_count > 0:
@@ -380,6 +471,15 @@ class TimetablePrintWizard(models.TransientModel):
                 'status': status,
             }
         }
+
+    @staticmethod
+    def compare_float_time(date_time, first_time, second_time):
+        first_time = datetime.strptime(f"{date_time} {TimetablePrintWizard.convert_float_to_time(first_time, True)}", DATETIME_FORMAT)
+        second_time = datetime.strptime(f"{date_time} {TimetablePrintWizard.convert_float_to_time(second_time, True)}", DATETIME_FORMAT)
+        delay_time = first_time - second_time
+        delay_time = delay_time.total_seconds() / 60.0
+        delay_time = round(delay_time, 2)
+        return delay_time
 
     @staticmethod
     def convert_float_to_time(tm, has_second=False):
