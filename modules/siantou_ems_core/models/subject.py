@@ -375,11 +375,17 @@ class ProgressReport(models.Model):
 
             search_domain.append('|')
             search_domain.append('&')
+            search_domain.append('&')
             search_domain.append(('group_id.is_active', '=', True))
             search_domain.append(('group_id.is_submit', '=', False))
+            search_domain.append(('group_id.status', '=', 'valid'))
+            search_domain.append('&')
+            search_domain.append('&')
             search_domain.append('&')
             search_domain.append(('group_parent_id.is_active', '=', True))
             search_domain.append(('group_parent_id.is_submit', '=', False))
+            search_domain.append(('group_parent_id.status', '=', 'valid'))
+            search_domain.append(('group_id.status', '=', 'valid'))
 
             order = 'date asc, id asc'
 
@@ -500,11 +506,17 @@ class ProgressReport(models.Model):
 
             search_domain.append('|')
             search_domain.append('&')
+            search_domain.append('&')
             search_domain.append(('group_id.is_active', '=', True))
             search_domain.append(('group_id.is_submit', '=', False))
+            search_domain.append(('group_id.status', '=', 'valid'))
+            search_domain.append('&')
+            search_domain.append('&')
             search_domain.append('&')
             search_domain.append(('group_parent_id.is_active', '=', True))
             search_domain.append(('group_parent_id.is_submit', '=', False))
+            search_domain.append(('group_parent_id.status', '=', 'valid'))
+            search_domain.append(('group_id.status', '=', 'valid'))
 
             order = 'date asc, id asc'
 
