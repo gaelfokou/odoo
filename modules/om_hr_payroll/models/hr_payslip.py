@@ -898,6 +898,45 @@ class HrPayslip(models.Model):
                                 'message': message,
                             })
 
+    @api.model
+    def cron_timetable_reset(self):
+        _logger.info(f'+++++++++++ Cron Timetable Reset Executed +++++++++++')
+
+        datetime_from = datetime.now()
+
+        current_date = datetime_from.date()
+
+        _logger.info(f'----------- tototototototo current_date {datetime.strftime(current_date, DATE_FORMAT)} -----------')
+
+        # Recherche des emplois du temps de l'enseignant pour une période donnée
+        employee_timetables = self.env['siantou.ems.timetable.timetable'].sudo().search([
+            '|',
+            '&',
+            '&',
+            ('group_id.is_active', '=', True),
+            ('group_id.is_submit', '=', False),
+            ('group_id.status', '=', 'valid'),
+            '&',
+            '&',
+            '&',
+            ('group_parent_id.is_active', '=', True),
+            ('group_parent_id.is_submit', '=', False),
+            ('group_parent_id.status', '=', 'valid'),
+            ('group_id.status', '=', 'valid'),
+            ('status', 'in', ['present', 'progress', 'absent']),
+        ], order='date asc').filtered(lambda rec: rec.date == current_date)
+        employee_timetables = list(employee_timetables)
+        for employee_timetable in employee_timetables:
+            employee_timetable.sudo().write({
+                'worked_start_time': 0.0,
+                'worked_end_time': 0.0,
+                'worked_time': 0.0,
+                'rate': 0.0,
+                'amount': 0.0,
+                'status': 'pending',
+                'reason': None,
+            })
+
     @api.depends('employee_id', 'date_to', 'date_from')
     def _compute_total_hours(self):
         for payslip in self:
