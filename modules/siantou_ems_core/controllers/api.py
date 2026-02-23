@@ -242,7 +242,7 @@ class DeSchool(http.Controller):
                 for cycle_id in session_id.cycle_ids:
                     cycles.append(cycle_id)
 
-        _logger.info(f"=========== API cycles :: {cycles}")   
+        # _logger.info(f"=========== API cycles :: {cycles}")   
         if cycles:
             for cycle in cycles:
                 level_ids = cycle.level_ids
@@ -270,7 +270,7 @@ class DeSchool(http.Controller):
                         'diplo_requis': [{'id': diplo.id, 'name': diplo.name} for diplo in diplo_requis_ids]
                     })
 
-            _logger.info(f"=========== data :: {data}") 
+            # _logger.info(f"=========== data :: {data}") 
             if data:
                 return http.Response(
                     json.dumps({
@@ -314,7 +314,7 @@ class DeSchool(http.Controller):
     @http.route('/api/v1/<int:id>/etudiants', type="http", methods=['GET'], cors="*", website=True, auth="public")
     def get_etudiant_by_id(self, id,**kw):
         try:
-            _logger.info(f"=========== id:: {id}")
+            # _logger.info(f"=========== id:: {id}")
             year_id = http.request.env['siantou.ems.core.year'].sudo().search(
                 [('is_active', '=', True),],
                 limit=1
@@ -480,7 +480,7 @@ class DeSchool(http.Controller):
 
             del(data['specialites'])
 
-            _logger.info(f"=========== specialites :: {specialites}")
+            # _logger.info(f"=========== specialites :: {specialites}")
 
             #=== Get matricule generated
             code_enrol = self.generate_code()
@@ -606,7 +606,7 @@ class DeSchool(http.Controller):
     @http.route('/api/v1/student-old/checking', type="http", methods=['POST'], cors="*", website=True, auth="public", csrf=False)
     def check_old_student(self, **kwargs):
         data = json.loads(http.request.httprequest.data)
-        _logger.info(f"=========== matricule :: {data['matricule']}")
+        # _logger.info(f"=========== matricule :: {data['matricule']}")
         etudiant = http.request.env['oe.school.student'].sudo().search(
             [
                 ('matricule', '=', data['matricule']),
@@ -650,7 +650,7 @@ class DeSchool(http.Controller):
     @http.route('/api/v1/student-old/save', type="http", methods=['POST'], cors="*", website=True, auth="public", csrf=False)
     def admission_form_submit_old_student(self, **kwargs):
         data = json.loads(http.request.httprequest.data)
-        _logger.info(f"=========== data :: {data}")
+        # _logger.info(f"=========== data :: {data}")
         is_existing = True
 
         try:
@@ -671,7 +671,7 @@ class DeSchool(http.Controller):
 
             del(data['specialites'])
 
-            _logger.info(f"=========== specialites :: {specialites}")
+            # _logger.info(f"=========== specialites :: {specialites}")
 
             #=== Get matricule generated
             code_enrol = self.generate_code()
@@ -752,10 +752,8 @@ class DeSchool(http.Controller):
                                 # else:
 
                                 data['class_id'] = False
-                                if not data['option_id']:
-                                    data['option_id'] = False
-                                etudiant_enrollment = http.request.env['oe.school.student.enrollment'].sudo().create(data)
 
+                                etudiant_enrollment = http.request.env['oe.school.student.enrollment'].sudo().create(data)
                                 if etudiant_enrollment:
                                     for specialite in specialites:
                                         if not specialite['option_id']:
@@ -899,7 +897,7 @@ class DeSchool(http.Controller):
                         'niveaux': [{'id': niv.id, 'name': niv.name} for niv in level_ids],
                     })
 
-            _logger.info(f"===========>>> data :: {data}")
+            # _logger.info(f"===========>>> data :: {data}")
             if data:
                 return http.Response(
                     json.dumps({
@@ -931,7 +929,7 @@ class DeSchool(http.Controller):
     @http.route('/api/v1/concours/save', type="http", methods=['POST'], cors="*", website=True, auth="public", csrf=False)
     def admission_competition_submit(self, **kwargs):
         data = json.loads(http.request.httprequest.data)
-        _logger.info(f"=========== data :: {data}")
+        # _logger.info(f"=========== data :: {data}")
 
         try:
             year_id = http.request.env['siantou.ems.core.year'].sudo().search(
@@ -987,7 +985,7 @@ class DeSchool(http.Controller):
                         partner = check_partner
                     data['partner_id'] = partner.id
                     
-                    _logger.info(f"=============  data :: {data}")
+                    # _logger.info(f"=============  data :: {data}")
                     etudiant = http.request.env['oe.school.student.enrollment.competition'].sudo().search([
                         ('last_name', '=', data['last_name']),
                         ('first_name', '=', data['first_name']),
@@ -1044,7 +1042,7 @@ class DeSchool(http.Controller):
     @http.route('/api/v1/field-study/change', type="http", methods=['POST'], cors="*", website=True, auth="public", csrf=False)
     def field_study_change_submit(self, **kwargs):
         data = json.loads(http.request.httprequest.data)
-        _logger.info(f"=========== data :: {data}")
+        # _logger.info(f"=========== data :: {data}")
 
         try:
             year_id = http.request.env['siantou.ems.core.year'].sudo().search(

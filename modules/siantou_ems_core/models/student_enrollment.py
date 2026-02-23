@@ -356,15 +356,16 @@ class StudentEnrollment(models.Model):
                 ('type_cour', '=', vals['type_cour']),
             ], limit=1)
             if not class_id:
-                class_id = self.env['siantou.ems.core.class'].create({
-                    'school_id': vals['school_id'],
-                    'field_of_study_id': vals['field_of_study_id'],
-                    'specialty_id': vals['specialty_id'],
-                    'option_id': vals['option_id'],
-                    'level_id': vals['level_id'],
-                    'year_id': vals['year_id'],
-                    'type_cour': vals['type_cour'],
-                })
+                raise UserError('Aucune classe trouvée')
+                # class_id = self.env['siantou.ems.core.class'].create({
+                #     'school_id': vals['school_id'],
+                #     'field_of_study_id': vals['field_of_study_id'],
+                #     'specialty_id': vals['specialty_id'],
+                #     'option_id': vals['option_id'],
+                #     'level_id': vals['level_id'],
+                #     'year_id': vals['year_id'],
+                #     'type_cour': vals['type_cour'],
+                # })
         vals['class_id'] = class_id.id
 
         if 'batch_id' not in vals:
@@ -430,15 +431,16 @@ class StudentEnrollment(models.Model):
                 ('type_cour', '=', vals['type_cour']),
             ], limit=1)
             if not class_id:
-                class_id = self.env['siantou.ems.core.class'].create({
-                    'school_id': vals['school_id'],
-                    'field_of_study_id': vals['field_of_study_id'],
-                    'specialty_id': vals['specialty_id'],
-                    'option_id': vals['option_id'],
-                    'level_id': vals['level_id'],
-                    'year_id': vals['year_id'],
-                    'type_cour': vals['type_cour'],
-                })
+                raise UserError('Aucune classe trouvée')
+                # class_id = self.env['siantou.ems.core.class'].create({
+                #     'school_id': vals['school_id'],
+                #     'field_of_study_id': vals['field_of_study_id'],
+                #     'specialty_id': vals['specialty_id'],
+                #     'option_id': vals['option_id'],
+                #     'level_id': vals['level_id'],
+                #     'year_id': vals['year_id'],
+                #     'type_cour': vals['type_cour'],
+                # })
         vals['class_id'] = class_id.id
 
         if 'batch_id' not in vals:
