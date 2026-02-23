@@ -68,12 +68,16 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
         })
         return report_action.report_action(self, data=data)
 
-    def sort_teacher_timetable_attendance_level(self, teacher_timetable_attendance):
+    def sort_teacher_timetable_attendance_level_rate(self, teacher_timetable_attendance):
         if 'level_id' in teacher_timetable_attendance:
             level = teacher_timetable_attendance['level_id']
         else:
             level = 10
-        return level
+        if 'rate' in teacher_timetable_attendance and teacher_timetable_attendance['rate']:
+            rate = teacher_timetable_attendance['rate']
+        else:
+            rate = 100000.0
+        return (level, rate)
 
     def sort_teacher_timetable_attendance(self, teacher_timetable_attendance):
         name = teacher_timetable_attendance[1]['name'] if teacher_timetable_attendance[1]['name'] else ''
@@ -328,7 +332,7 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
         total_worked_time = 0.0
         total_amount = 0.0
         for key in key_teacher_timetable_attendances.keys():
-            key_teacher_timetable_attendances[key]['data'] = sorted(key_teacher_timetable_attendances[key]['data'], key=self.sort_teacher_timetable_attendance_level)
+            key_teacher_timetable_attendances[key]['data'] = sorted(key_teacher_timetable_attendances[key]['data'], key=self.sort_teacher_timetable_attendance_level_rate)
             key_teacher_timetable_attendances[key]['worked_time'] = round(key_teacher_timetable_attendances[key]['worked_time'], 2)
             key_teacher_timetable_attendances[key]['amount'] = round(key_teacher_timetable_attendances[key]['amount'], 2)
             key_teacher_timetable_attendances[key]['total_amount'] = round(key_teacher_timetable_attendances[key]['total_amount'], 2)
