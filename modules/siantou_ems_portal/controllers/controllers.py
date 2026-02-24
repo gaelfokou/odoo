@@ -737,24 +737,12 @@ class PortalAccount(portal.CustomerPortal):
         total_rate = 0.0
         total_number_of_hours = 0.0
         accountbalances = []
-        shared_subjects = {}
         for search_accountbalance in search_accountbalances:
             end_time = Helpers.convert_float_to_time(search_accountbalance.end_time, True)
             start_time = Helpers.convert_float_to_time(search_accountbalance.start_time, True)
             key = '{}-{}-{}-{}'.format(search_accountbalance.employee_id.id, search_accountbalance.date, start_time, end_time)
             if key in key_payslips and key_payslips[key]['timetable_id'] != search_accountbalance.id:
                 continue
-
-            timetable_day = datetime.strftime(search_accountbalance.date, DATE_FORMAT)
-
-            if timetable_day not in shared_subjects.keys():
-                shared_subjects[timetable_day] = []
-
-            if search_accountbalance.subject_id.shared_subject:
-                if search_accountbalance.subject_id.id not in shared_subjects[timetable_day]:
-                    shared_subjects[timetable_day].append(search_accountbalance.subject_id.id)
-                else:
-                    continue
 
             accountbalance = {}
             accountbalance['id'] = search_accountbalance.id

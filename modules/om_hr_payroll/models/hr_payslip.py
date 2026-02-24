@@ -517,6 +517,13 @@ class HrPayslip(models.Model):
                     # Vérification du temps de cours de l'enseignant en biométrie
                     daily_attendances = self.filter_daily_attendance_teacher(employee_timetable.date, employee_timetable.end_time, employee_timetable.start_time, employee_timetable.employee_id)
                     if len(daily_attendances) == 1:
+                        if len(employee_timetable.building_id.device_ids.ids) > 0:
+                            if daily_attendances[0].device_id in employee_timetable.building_id.device_ids.ids:
+                                pass
+                            else:
+                                pass
+                        else:
+                            pass
                         if daily_attendances[0].punch_type == '0':
                             start_punching_time = daily_attendances[0].punching_time
                             start_punching_time = UTC_TZ.localize(start_punching_time)
@@ -566,6 +573,17 @@ class HrPayslip(models.Model):
                                 'reason': 'Poinçonnement absent ou invalide',
                             })
                     elif len(daily_attendances) > 1:
+                        if len(employee_timetable.building_id.device_ids.ids) > 0:
+                            if daily_attendances[1].device_id in employee_timetable.building_id.device_ids.ids:
+                                pass
+                            else:
+                                pass
+                            if daily_attendances[0].device_id in employee_timetable.building_id.device_ids.ids:
+                                pass
+                            else:
+                                pass
+                        else:
+                            pass
                         end_punching_time = daily_attendances[1].punching_time
                         start_punching_time = daily_attendances[0].punching_time
                         end_punching_time = UTC_TZ.localize(end_punching_time)
@@ -1260,7 +1278,6 @@ class HrPayslip(models.Model):
                                 total_rate = 0.0
                                 total_number_of_days = 0.0
                                 key_timetables = {}
-                                shared_subjects = {}
                                 for worked_days_line_id in worked_days_line_ids:
                                     if worked_days_line_id.timetable_id.id:
                                         teacher_timetable_attendance_id = self.env['teacher.timetable.attendance'].search([('timetable_id', '=', worked_days_line_id.timetable_id.id)], limit=1)
@@ -1339,7 +1356,6 @@ class HrPayslip(models.Model):
                                 total_rate = 0.0
                                 total_number_of_days = 0.0
                                 key_timetables = {}
-                                shared_subjects = {}
                                 for worked_days_line_id in worked_days_line_ids:
                                     if worked_days_line_id.timetable_id.id:
                                         teacher_timetable_attendance_id = self.env['teacher.timetable.attendance'].search([('timetable_id', '=', worked_days_line_id.timetable_id.id)], limit=1)
