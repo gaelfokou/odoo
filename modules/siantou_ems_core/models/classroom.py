@@ -54,6 +54,8 @@ class Building(models.Model):
 
     school_ids = fields.Many2many('siantou.ems.core.school', 'school_building_rel', 'building_id', 'school_id', string='Écoles')
 
+    device_ids = fields.Many2many('biometric.device.details', 'device_building_rel', 'building_id', 'device_id', string='Biometric Devices')
+
     is_active = fields.Boolean('Actif', default=True)
 
 class Classroom(models.Model):
