@@ -151,8 +151,6 @@ class TimetableGroupCopyWizard(models.TransientModel):
                     year = new_years[index_year]
                 start_date = date.fromisocalendar(year, week, day)
                 class_id = self.env['siantou.ems.core.class'].search([
-                    ('school_id', '=', timetable_id.school_id.id),
-                    ('field_of_study_id', '=', timetable_id.field_of_study_id.id),
                     ('specialty_id', '=', timetable_id.specialty_id.id),
                     ('option_id', '=', timetable_id.option_id.id),
                     ('level_id', '=', timetable_id.level_id.id),
@@ -160,15 +158,16 @@ class TimetableGroupCopyWizard(models.TransientModel):
                     ('type_cour', '=', timetable_id.type_cour),
                 ], limit=1)
                 if not class_id:
-                    class_id = self.env['siantou.ems.core.class'].create({
-                        'school_id': timetable_id.school_id.id,
-                        'field_of_study_id': timetable_id.field_of_study_id.id,
-                        'specialty_id': timetable_id.specialty_id.id,
-                        'option_id': timetable_id.option_id.id,
-                        'level_id': timetable_id.level_id.id,
-                        'year_id': self.destination_year_id.id,
-                        'type_cour': timetable_id.type_cour,
-                    })
+                    raise UserError('Aucune classe trouvée')
+                    # class_id = self.env['siantou.ems.core.class'].create({
+                    #     'school_id': timetable_id.school_id.id,
+                    #     'field_of_study_id': timetable_id.field_of_study_id.id,
+                    #     'specialty_id': timetable_id.specialty_id.id,
+                    #     'option_id': timetable_id.option_id.id,
+                    #     'level_id': timetable_id.level_id.id,
+                    #     'year_id': self.destination_year_id.id,
+                    #     'type_cour': timetable_id.type_cour,
+                    # })
 
                     for group_id in timetable_id.class_id.group_ids:
                         class_id.group_ids.create({
