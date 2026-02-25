@@ -3,7 +3,7 @@
     'name': "SIANTOU - EMS Core App",
     'category': 'Education',
     'version': '17.0.0.0',
-    'depends': ['base', 'web', 'sale', 'board', 'hr','account','mail'],
+    'depends': ['base', 'web', 'sale', 'board', 'hr', 'account', 'mail'],
     'data': [
         # Fichiers de datas
         # 'data/email_template_preinscription.xml',
