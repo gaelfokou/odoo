@@ -390,7 +390,7 @@ class HrPayslip(models.Model):
                             datetime_to = datetime.strptime(f"{teacher_timetable_attendance['date']} {end_time}:00", DATETIME_FORMAT)
                             datetime_from = datetime.strptime(f"{teacher_timetable_attendance['date']} {start_time}:00", DATETIME_FORMAT)
                             self.env['hr.payslip.worked_days'].create({
-                                'name': '{} {} {}, {}'.format(teacher_timetable_attendance['day_of_week'], datetime.strftime(datetime_from, DATETIME_FORMAT_FR), datetime.strftime(datetime_to, TIME_FORMAT_FR), teacher_timetable_attendance['subject_name']),
+                                'name': '{} {} {}-{}, {}'.format(teacher_timetable_attendance['day_of_week'], datetime.strftime(datetime_from, DATE_FORMAT_FR), datetime.strftime(datetime_from, TIME_FORMAT_FR), datetime.strftime(datetime_to, TIME_FORMAT_FR), teacher_timetable_attendance['subject_name']),
                                 'payslip_id': payslip_id.id,
                                 'code': payslip_id.code,
                                 'number_of_days': 1,
@@ -414,7 +414,7 @@ class HrPayslip(models.Model):
                             datetime_to = datetime.strptime(f"{teacher_timetable_attendance['date']} {end_time}:00", DATETIME_FORMAT)
                             datetime_from = datetime.strptime(f"{teacher_timetable_attendance['date']} {start_time}:00", DATETIME_FORMAT)
                             self.env['hr.payslip.worked_days'].create({
-                                'name': '{} {} {}, {}'.format(teacher_timetable_attendance['day_of_week'], datetime.strftime(datetime_from, DATETIME_FORMAT_FR), datetime.strftime(datetime_to, TIME_FORMAT_FR), teacher_timetable_attendance['subject_name']),
+                                'name': '{} {} {}-{}, {}'.format(teacher_timetable_attendance['day_of_week'], datetime.strftime(datetime_from, DATE_FORMAT_FR), datetime.strftime(datetime_from, TIME_FORMAT_FR), datetime.strftime(datetime_to, TIME_FORMAT_FR), teacher_timetable_attendance['subject_name']),
                                 'payslip_id': payslip_id.id,
                                 'code': payslip_id.code,
                                 'number_of_days': 1,
