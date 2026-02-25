@@ -519,11 +519,63 @@ class HrPayslip(models.Model):
                     if len(daily_attendances) == 1:
                         if len(employee_timetable.building_id.device_ids.ids) > 0:
                             if daily_attendances[0].device_id in employee_timetable.building_id.device_ids.ids:
-                                pass
-                            else:
-                                pass
-                        else:
-                            pass
+                                if daily_attendances[0].punch_type == '0':
+                                    punching_time = daily_attendances[0].punching_time
+                                    template = 'om_hr_payroll.om_hr_payroll_template_timetable_notification_device'
+                                    punching_time = HrPayslip.convert_datetime_from_utc(punching_time)
+                                    message = 'Poinçonnement de début du {}, {}'.format(CURRENT_WEEKDAY[str(punching_time.weekday())], datetime.strftime(punching_time, DATETIME_FORMAT_FR))
+                                    timetable_notifications = self.env['siantou.ems.timetable.notification'].sudo().search([
+                                        ('template', '=', template),
+                                        ('attendance_id', '=', daily_attendance.id),
+                                        ('employee_id', '=', daily_attendance.employee_id.id),
+                                    ])
+                                    timetable_notifications = list(timetable_notifications)
+                                    if len(timetable_notifications) == 0:
+                                        self.env['siantou.ems.timetable.notification'].sudo().create({
+                                            'template': template,
+                                            'attendance_id': daily_attendance.id,
+                                            'employee_id': daily_attendance.employee_id.id,
+                                            'date': date.today(),
+                                            'message': message,
+                                        })
+                                elif daily_attendances[0].punch_type == '1':
+                                    punching_time = daily_attendances[0].punching_time
+                                    template = 'om_hr_payroll.om_hr_payroll_template_timetable_notification_device'
+                                    punching_time = HrPayslip.convert_datetime_from_utc(punching_time)
+                                    message = 'Poinçonnement de fin du {}, {}'.format(CURRENT_WEEKDAY[str(punching_time.weekday())], datetime.strftime(punching_time, DATETIME_FORMAT_FR))
+                                    timetable_notifications = self.env['siantou.ems.timetable.notification'].sudo().search([
+                                        ('template', '=', template),
+                                        ('attendance_id', '=', daily_attendance.id),
+                                        ('employee_id', '=', daily_attendance.employee_id.id),
+                                    ])
+                                    timetable_notifications = list(timetable_notifications)
+                                    if len(timetable_notifications) == 0:
+                                        self.env['siantou.ems.timetable.notification'].sudo().create({
+                                            'template': template,
+                                            'attendance_id': daily_attendance.id,
+                                            'employee_id': daily_attendance.employee_id.id,
+                                            'date': date.today(),
+                                            'message': message,
+                                        })
+                                else:
+                                    punching_time = daily_attendances[0].punching_time
+                                    template = 'om_hr_payroll.om_hr_payroll_template_timetable_notification_device'
+                                    punching_time = HrPayslip.convert_datetime_from_utc(punching_time)
+                                    message = 'Poinçonnement de début ou de fin du {}, {}'.format(CURRENT_WEEKDAY[str(punching_time.weekday())], datetime.strftime(punching_time, DATETIME_FORMAT_FR))
+                                    timetable_notifications = self.env['siantou.ems.timetable.notification'].sudo().search([
+                                        ('template', '=', template),
+                                        ('attendance_id', '=', daily_attendance.id),
+                                        ('employee_id', '=', daily_attendance.employee_id.id),
+                                    ])
+                                    timetable_notifications = list(timetable_notifications)
+                                    if len(timetable_notifications) == 0:
+                                        self.env['siantou.ems.timetable.notification'].sudo().create({
+                                            'template': template,
+                                            'attendance_id': daily_attendance.id,
+                                            'employee_id': daily_attendance.employee_id.id,
+                                            'date': date.today(),
+                                            'message': message,
+                                        })
                         if daily_attendances[0].punch_type == '0':
                             start_punching_time = daily_attendances[0].punching_time
                             start_punching_time = UTC_TZ.localize(start_punching_time)
@@ -575,15 +627,43 @@ class HrPayslip(models.Model):
                     elif len(daily_attendances) > 1:
                         if len(employee_timetable.building_id.device_ids.ids) > 0:
                             if daily_attendances[1].device_id in employee_timetable.building_id.device_ids.ids:
-                                pass
-                            else:
-                                pass
+                                punching_time = daily_attendances[1].punching_time
+                                template = 'om_hr_payroll.om_hr_payroll_template_timetable_notification_device'
+                                punching_time = HrPayslip.convert_datetime_from_utc(punching_time)
+                                message = 'Poinçonnement de fin du {}, {}'.format(CURRENT_WEEKDAY[str(punching_time.weekday())], datetime.strftime(punching_time, DATETIME_FORMAT_FR))
+                                timetable_notifications = self.env['siantou.ems.timetable.notification'].sudo().search([
+                                    ('template', '=', template),
+                                    ('attendance_id', '=', daily_attendance.id),
+                                    ('employee_id', '=', daily_attendance.employee_id.id),
+                                ])
+                                timetable_notifications = list(timetable_notifications)
+                                if len(timetable_notifications) == 0:
+                                    self.env['siantou.ems.timetable.notification'].sudo().create({
+                                        'template': template,
+                                        'attendance_id': daily_attendance.id,
+                                        'employee_id': daily_attendance.employee_id.id,
+                                        'date': date.today(),
+                                        'message': message,
+                                    })
                             if daily_attendances[0].device_id in employee_timetable.building_id.device_ids.ids:
-                                pass
-                            else:
-                                pass
-                        else:
-                            pass
+                                punching_time = daily_attendances[0].punching_time
+                                template = 'om_hr_payroll.om_hr_payroll_template_timetable_notification_device'
+                                punching_time = HrPayslip.convert_datetime_from_utc(punching_time)
+                                message = 'Poinçonnement de début du {}, {}'.format(CURRENT_WEEKDAY[str(punching_time.weekday())], datetime.strftime(punching_time, DATETIME_FORMAT_FR))
+                                timetable_notifications = self.env['siantou.ems.timetable.notification'].sudo().search([
+                                    ('template', '=', template),
+                                    ('attendance_id', '=', daily_attendance.id),
+                                    ('employee_id', '=', daily_attendance.employee_id.id),
+                                ])
+                                timetable_notifications = list(timetable_notifications)
+                                if len(timetable_notifications) == 0:
+                                    self.env['siantou.ems.timetable.notification'].sudo().create({
+                                        'template': template,
+                                        'attendance_id': daily_attendance.id,
+                                        'employee_id': daily_attendance.employee_id.id,
+                                        'date': date.today(),
+                                        'message': message,
+                                    })
                         end_punching_time = daily_attendances[1].punching_time
                         start_punching_time = daily_attendances[0].punching_time
                         end_punching_time = UTC_TZ.localize(end_punching_time)
