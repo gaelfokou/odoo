@@ -386,7 +386,6 @@ class TimetablePrintWizard(models.TransientModel):
 
         for key in key_punctuality_timetable_percentages.keys():
             if key in total_timetable_percentage_count:
-                timetable_percentage_count = len(key_punctuality_timetable_percentages[key]['data'])
                 if total_timetable_percentage_count[key] > 0:
                     if key_punctuality_timetable_percentages[key]['percentage'] not in list_timetable_percentages:
                         list_timetable_percentages.append(key_punctuality_timetable_percentages[key]['percentage'])
@@ -404,7 +403,6 @@ class TimetablePrintWizard(models.TransientModel):
                             key_punctuality_timetable_percentages[key]['class'] = 'text-warning'
                         if key_punctuality_timetable_percentages[key]['percentage'] >= 20.0:
                             key_punctuality_timetable_percentages[key]['class'] = 'text-danger'
-                all_timetable_percentage_count += timetable_percentage_count
 
         key_timetable_percentages = {}
         for key, value in key_delay_timetable_percentages.items():
