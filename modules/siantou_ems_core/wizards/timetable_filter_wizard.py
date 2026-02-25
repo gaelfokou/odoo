@@ -762,40 +762,46 @@ class TimetableFilterWizard(models.TransientModel):
         if sort_type:
             return data
         else:
+            start_date = datetime.strftime(self.start_date, DATE_FORMAT_FR)
+            end_date = datetime.strftime(self.end_date, DATE_FORMAT_FR)
             report_action = self.env.ref('siantou_ems_core.action_report_timetable_percentage')
             if self.school_id.id:
                 report_action.update({
-                    'name': '{} {} PDF'.format(STATUS_TIMETABLE[self.status], self.school_id.name),
+                    'name': '{} {} du {} - {} PDF'.format(STATUS_TIMETABLE[self.status], self.school_id.name, start_date, end_date),
                 })
             else:
                 report_action.update({
-                    'name': '{} PDF'.format(STATUS_TIMETABLE[self.status]),
+                    'name': '{} du {} - {} PDF'.format(STATUS_TIMETABLE[self.status], start_date, end_date),
                 })
             return report_action.report_action(self, data=data)
 
     def action_print_top_percentage_pdf(self):
+        start_date = datetime.strftime(self.start_date, DATE_FORMAT_FR)
+        end_date = datetime.strftime(self.end_date, DATE_FORMAT_FR)
         data = self.action_print_percentage_pdf(sort_type='top')
         report_action = self.env.ref('siantou_ems_core.action_report_timetable_percentage')
         if self.school_id.id:
             report_action.update({
-                'name': '{} {} Top 10 PDF'.format(STATUS_TIMETABLE[self.status], self.school_id.name),
+                'name': '{} {} Top 10 du {} - {} PDF'.format(STATUS_TIMETABLE[self.status], self.school_id.name, start_date, end_date),
             })
         else:
             report_action.update({
-                'name': '{} Top 10 PDF'.format(STATUS_TIMETABLE[self.status]),
+                'name': '{} Top 10 du {} - {} PDF'.format(STATUS_TIMETABLE[self.status], start_date, end_date),
             })
         return report_action.report_action(self, data=data)
 
     def action_print_last_percentage_pdf(self):
+        start_date = datetime.strftime(self.start_date, DATE_FORMAT_FR)
+        end_date = datetime.strftime(self.end_date, DATE_FORMAT_FR)
         data = self.action_print_percentage_pdf(sort_type='last')
         report_action = self.env.ref('siantou_ems_core.action_report_timetable_percentage')
         if self.school_id.id:
             report_action.update({
-                'name': '{} {} Last 10 PDF'.format(STATUS_TIMETABLE[self.status], self.school_id.name),
+                'name': '{} {} Last 10 du {} - {} PDF'.format(STATUS_TIMETABLE[self.status], self.school_id.name, start_date, end_date),
             })
         else:
             report_action.update({
-                'name': '{} Last 10 PDF'.format(STATUS_TIMETABLE[self.status]),
+                'name': '{} Last 10 du {} - {} PDF'.format(STATUS_TIMETABLE[self.status], start_date, end_date),
             })
         return report_action.report_action(self, data=data)
 
