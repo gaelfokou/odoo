@@ -518,7 +518,7 @@ class HrPayslip(models.Model):
                     daily_attendances = self.filter_daily_attendance_teacher(employee_timetable.date, employee_timetable.end_time, employee_timetable.start_time, employee_timetable.employee_id)
                     if len(daily_attendances) == 1:
                         if len(employee_timetable.building_id.device_ids.ids) > 0:
-                            if daily_attendances[0].device_id in employee_timetable.building_id.device_ids.ids:
+                            if daily_attendances[0].device_id not in employee_timetable.building_id.device_ids.ids:
                                 if daily_attendances[0].punch_type == '0':
                                     punching_time = daily_attendances[0].punching_time
                                     template = 'om_hr_payroll.om_hr_payroll_template_timetable_notification_device'
@@ -626,7 +626,7 @@ class HrPayslip(models.Model):
                             })
                     elif len(daily_attendances) > 1:
                         if len(employee_timetable.building_id.device_ids.ids) > 0:
-                            if daily_attendances[1].device_id in employee_timetable.building_id.device_ids.ids:
+                            if daily_attendances[1].device_id not in employee_timetable.building_id.device_ids.ids:
                                 punching_time = daily_attendances[1].punching_time
                                 template = 'om_hr_payroll.om_hr_payroll_template_timetable_notification_device'
                                 punching_time = HrPayslip.convert_datetime_from_utc(punching_time)
@@ -645,7 +645,7 @@ class HrPayslip(models.Model):
                                         'date': date.today(),
                                         'message': message,
                                     })
-                            if daily_attendances[0].device_id in employee_timetable.building_id.device_ids.ids:
+                            if daily_attendances[0].device_id not in employee_timetable.building_id.device_ids.ids:
                                 punching_time = daily_attendances[0].punching_time
                                 template = 'om_hr_payroll.om_hr_payroll_template_timetable_notification_device'
                                 punching_time = HrPayslip.convert_datetime_from_utc(punching_time)
