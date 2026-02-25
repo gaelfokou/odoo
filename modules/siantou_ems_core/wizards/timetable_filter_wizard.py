@@ -763,25 +763,40 @@ class TimetableFilterWizard(models.TransientModel):
             return data
         else:
             report_action = self.env.ref('siantou_ems_core.action_report_timetable_percentage')
-            report_action.update({
-                'name': '{} PDF'.format(STATUS_TIMETABLE[self.status]),
-            })
+            if self.school_id.id:
+                report_action.update({
+                    'name': '{} {} PDF'.format(STATUS_TIMETABLE[self.status], self.school_id.name),
+                })
+            else:
+                report_action.update({
+                    'name': '{} PDF'.format(STATUS_TIMETABLE[self.status]),
+                })
             return report_action.report_action(self, data=data)
 
     def action_print_top_percentage_pdf(self):
         data = self.action_print_percentage_pdf(sort_type='top')
         report_action = self.env.ref('siantou_ems_core.action_report_timetable_percentage')
-        report_action.update({
-            'name': '{} Top 10 PDF'.format(STATUS_TIMETABLE[self.status]),
-        })
+        if self.school_id.id:
+            report_action.update({
+                'name': '{} {} Top 10 PDF'.format(STATUS_TIMETABLE[self.status], self.school_id.name),
+            })
+        else:
+            report_action.update({
+                'name': '{} Top 10 PDF'.format(STATUS_TIMETABLE[self.status]),
+            })
         return report_action.report_action(self, data=data)
 
     def action_print_last_percentage_pdf(self):
         data = self.action_print_percentage_pdf(sort_type='last')
         report_action = self.env.ref('siantou_ems_core.action_report_timetable_percentage')
-        report_action.update({
-            'name': '{} Last 10 PDF'.format(STATUS_TIMETABLE[self.status]),
-        })
+        if self.school_id.id:
+            report_action.update({
+                'name': '{} {} Last 10 PDF'.format(STATUS_TIMETABLE[self.status], self.school_id.name),
+            })
+        else:
+            report_action.update({
+                'name': '{} Last 10 PDF'.format(STATUS_TIMETABLE[self.status]),
+            })
         return report_action.report_action(self, data=data)
 
     @staticmethod
