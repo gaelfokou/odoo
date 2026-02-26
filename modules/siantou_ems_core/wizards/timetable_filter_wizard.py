@@ -571,7 +571,7 @@ class TimetableFilterWizard(models.TransientModel):
             'target': 'main',
         }
 
-    def action_print_percentage_pdf(self, sort_type=None):
+    def action_print_percentage_pdf(self, sort_type=None, school_type=False):
         domain = []
         title = []
         if self.year_id.id:
@@ -759,7 +759,7 @@ class TimetableFilterWizard(models.TransientModel):
         # Appeler le rapport PDF
         if len(data['docdata']['timetable_percentage_data'].keys()) == 0:
             raise UserError('Aucune donnée trouvée')
-        if sort_type:
+        if sort_type or school_type:
             return data
         else:
             start_date = datetime.strftime(self.start_date, DATE_FORMAT_FR)
@@ -805,11 +805,17 @@ class TimetableFilterWizard(models.TransientModel):
             })
         return report_action.report_action(self, data=data)
 
-    def action_print_school_percentage_pdf(self, sort_type=None):
-        domain = []
-        title = []
+    def action_print_school_percentage_pdf(self, sort_type=None, school_type=False):
+        start_date = datetime.strftime(self.start_date, DATE_FORMAT_FR)
+        end_date = datetime.strftime(self.end_date, DATE_FORMAT_FR)
+        data = self.action_print_percentage_pdf(sort_type=None, school_type=True)
+        report_action = self.env.ref('siantou_ems_core.action_report_timetable_percentage')
+        report_action.update({
+            'name': '{} du {} - {} PDF'.format(STATUS_TIMETABLE[self.status], start_date, end_date),
+        })
+        return report_action.report_action(self, data=data)
 
-    def action_print_compare_percentage_pdf(self, sort_type=None):
+    def action_print_compare_percentage_pdf(self, sort_type=None, school_type=False):
         domain = []
         title = []
 
