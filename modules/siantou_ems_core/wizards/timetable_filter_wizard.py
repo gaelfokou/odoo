@@ -571,14 +571,6 @@ class TimetableFilterWizard(models.TransientModel):
             'target': 'main',
         }
 
-    def action_print_school_percentage_pdf(self, sort_type=None):
-        domain = []
-        title = []
-
-    def action_print_compare_percentage_pdf(self, sort_type=None):
-        domain = []
-        title = []
-
     def action_print_percentage_pdf(self, sort_type=None):
         domain = []
         title = []
@@ -812,6 +804,14 @@ class TimetableFilterWizard(models.TransientModel):
                 'name': '{} Last 10 du {} - {} PDF'.format(STATUS_TIMETABLE[self.status], start_date, end_date),
             })
         return report_action.report_action(self, data=data)
+
+    def action_print_school_percentage_pdf(self, sort_type=None):
+        domain = []
+        title = []
+
+    def action_print_compare_percentage_pdf(self, sort_type=None):
+        domain = []
+        title = []
 
     @staticmethod
     def convert_float_to_time(tm, has_second=False):
