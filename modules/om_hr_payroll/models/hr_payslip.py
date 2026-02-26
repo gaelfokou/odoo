@@ -526,15 +526,15 @@ class HrPayslip(models.Model):
                                     message = 'Poinçonnement de début du {}, {}'.format(CURRENT_WEEKDAY[str(punching_time.weekday())], datetime.strftime(punching_time, DATETIME_FORMAT_FR))
                                     timetable_notifications = self.env['siantou.ems.timetable.notification'].sudo().search([
                                         ('template', '=', template),
-                                        ('attendance_id', '=', daily_attendance.id),
-                                        ('employee_id', '=', daily_attendance.employee_id.id),
+                                        ('attendance_id', '=', daily_attendances[0].id),
+                                        ('employee_id', '=', daily_attendances[0].employee_id.id),
                                     ])
                                     timetable_notifications = list(timetable_notifications)
                                     if len(timetable_notifications) == 0:
                                         self.env['siantou.ems.timetable.notification'].sudo().create({
                                             'template': template,
-                                            'attendance_id': daily_attendance.id,
-                                            'employee_id': daily_attendance.employee_id.id,
+                                            'attendance_id': daily_attendances[0].id,
+                                            'employee_id': daily_attendances[0].employee_id.id,
                                             'date': date.today(),
                                             'message': message,
                                         })
@@ -545,15 +545,15 @@ class HrPayslip(models.Model):
                                     message = 'Poinçonnement de fin du {}, {}'.format(CURRENT_WEEKDAY[str(punching_time.weekday())], datetime.strftime(punching_time, DATETIME_FORMAT_FR))
                                     timetable_notifications = self.env['siantou.ems.timetable.notification'].sudo().search([
                                         ('template', '=', template),
-                                        ('attendance_id', '=', daily_attendance.id),
-                                        ('employee_id', '=', daily_attendance.employee_id.id),
+                                        ('attendance_id', '=', daily_attendances[0].id),
+                                        ('employee_id', '=', daily_attendances[0].employee_id.id),
                                     ])
                                     timetable_notifications = list(timetable_notifications)
                                     if len(timetable_notifications) == 0:
                                         self.env['siantou.ems.timetable.notification'].sudo().create({
                                             'template': template,
-                                            'attendance_id': daily_attendance.id,
-                                            'employee_id': daily_attendance.employee_id.id,
+                                            'attendance_id': daily_attendances[0].id,
+                                            'employee_id': daily_attendances[0].employee_id.id,
                                             'date': date.today(),
                                             'message': message,
                                         })
@@ -564,15 +564,15 @@ class HrPayslip(models.Model):
                                     message = 'Poinçonnement de début ou de fin du {}, {}'.format(CURRENT_WEEKDAY[str(punching_time.weekday())], datetime.strftime(punching_time, DATETIME_FORMAT_FR))
                                     timetable_notifications = self.env['siantou.ems.timetable.notification'].sudo().search([
                                         ('template', '=', template),
-                                        ('attendance_id', '=', daily_attendance.id),
-                                        ('employee_id', '=', daily_attendance.employee_id.id),
+                                        ('attendance_id', '=', daily_attendances[0].id),
+                                        ('employee_id', '=', daily_attendances[0].employee_id.id),
                                     ])
                                     timetable_notifications = list(timetable_notifications)
                                     if len(timetable_notifications) == 0:
                                         self.env['siantou.ems.timetable.notification'].sudo().create({
                                             'template': template,
-                                            'attendance_id': daily_attendance.id,
-                                            'employee_id': daily_attendance.employee_id.id,
+                                            'attendance_id': daily_attendances[0].id,
+                                            'employee_id': daily_attendances[0].employee_id.id,
                                             'date': date.today(),
                                             'message': message,
                                         })
@@ -633,15 +633,15 @@ class HrPayslip(models.Model):
                                 message = 'Poinçonnement de fin du {}, {}'.format(CURRENT_WEEKDAY[str(punching_time.weekday())], datetime.strftime(punching_time, DATETIME_FORMAT_FR))
                                 timetable_notifications = self.env['siantou.ems.timetable.notification'].sudo().search([
                                     ('template', '=', template),
-                                    ('attendance_id', '=', daily_attendance.id),
-                                    ('employee_id', '=', daily_attendance.employee_id.id),
+                                    ('attendance_id', '=', daily_attendances[1].id),
+                                    ('employee_id', '=', daily_attendances[1].employee_id.id),
                                 ])
                                 timetable_notifications = list(timetable_notifications)
                                 if len(timetable_notifications) == 0:
                                     self.env['siantou.ems.timetable.notification'].sudo().create({
                                         'template': template,
-                                        'attendance_id': daily_attendance.id,
-                                        'employee_id': daily_attendance.employee_id.id,
+                                        'attendance_id': daily_attendances[1].id,
+                                        'employee_id': daily_attendances[1].employee_id.id,
                                         'date': date.today(),
                                         'message': message,
                                     })
@@ -652,15 +652,15 @@ class HrPayslip(models.Model):
                                 message = 'Poinçonnement de début du {}, {}'.format(CURRENT_WEEKDAY[str(punching_time.weekday())], datetime.strftime(punching_time, DATETIME_FORMAT_FR))
                                 timetable_notifications = self.env['siantou.ems.timetable.notification'].sudo().search([
                                     ('template', '=', template),
-                                    ('attendance_id', '=', daily_attendance.id),
-                                    ('employee_id', '=', daily_attendance.employee_id.id),
+                                    ('attendance_id', '=', daily_attendances[0].id),
+                                    ('employee_id', '=', daily_attendances[0].employee_id.id),
                                 ])
                                 timetable_notifications = list(timetable_notifications)
                                 if len(timetable_notifications) == 0:
                                     self.env['siantou.ems.timetable.notification'].sudo().create({
                                         'template': template,
-                                        'attendance_id': daily_attendance.id,
-                                        'employee_id': daily_attendance.employee_id.id,
+                                        'attendance_id': daily_attendances[0].id,
+                                        'employee_id': daily_attendances[0].employee_id.id,
                                         'date': date.today(),
                                         'message': message,
                                     })

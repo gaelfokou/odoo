@@ -221,9 +221,12 @@ class TimetablePrintWizard(models.TransientModel):
 
         search_timetable_percentages = self.env['siantou.ems.timetable.timetable'].search(domain)
 
-        if status and status in ['delay']:
+        if status and status == 'delay':
             search_delay_timetable_percentages = search_timetable_percentages.filtered(lambda rec: rec.date and rec.day_of_week and TimetablePrintWizard.compare_float_time(rec.date, rec.worked_start_time, rec.start_time) > 0.0)
             search_punctuality_timetable_percentages = search_timetable_percentages.filtered(lambda rec: rec.date and rec.day_of_week and TimetablePrintWizard.compare_float_time(rec.date, rec.worked_start_time, rec.start_time) == 0.0)
+        elif status and status == 'punctuality':
+            search_delay_timetable_percentages = search_timetable_percentages.filtered(lambda rec: rec.date and rec.day_of_week and rec.status == 'absent')
+            search_punctuality_timetable_percentages = search_timetable_percentages.filtered(lambda rec: rec.date and rec.day_of_week and rec.status == 'present')
         else:
             search_delay_timetable_percentages = search_timetable_percentages
             search_punctuality_timetable_percentages = search_timetable_percentages
@@ -357,6 +360,12 @@ class TimetablePrintWizard(models.TransientModel):
             timetable_percentage['not_active_slotitems'] = search_timetable_percentage.not_active_slotitems
             timetable_percentage['status'] = STATUS_TIMETABLE[search_timetable_percentage.status]
             key_punctuality_timetable_percentages[key]['data'].append(timetable_percentage)
+
+        if status and status == 'punctuality':
+            key_delay_timetable_percentages = {}
+            for key, value in key_punctuality_timetable_percentages.items():
+                key_delay_timetable_percentages[key] = value
+            key_punctuality_timetable_percentages = {}
 
         list_timetable_percentages = []
         all_timetable_percentage_count = 0

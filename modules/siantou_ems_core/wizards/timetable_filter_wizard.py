@@ -468,7 +468,7 @@ class TimetableFilterWizard(models.TransientModel):
                 domain.append(('status', '=', 'present'))
                 title.append(STATUS_TIMETABLE[self.status])
                 timetables = self.env['siantou.ems.timetable.timetable'].search(domain)
-                timetables = timetables.filtered(lambda rec: rec.date and rec.day_of_week and TimetableFilterWizard.compare_float_time(rec.date, rec.worked_start_time, rec.start_time) >= 0.0)
+                timetables = timetables.filtered(lambda rec: rec.date and rec.day_of_week and TimetableFilterWizard.compare_float_time(rec.date, rec.worked_start_time, rec.start_time) > 0.0)
             elif self.status == 'delay_more_than_or_equal':
                 domain.append(('status', '=', 'present'))
                 title.append(STATUS_TIMETABLE[self.status])
@@ -571,6 +571,14 @@ class TimetableFilterWizard(models.TransientModel):
             'target': 'main',
         }
 
+    def action_print_school_percentage_pdf(self, sort_type=None):
+        domain = []
+        title = []
+
+    def action_print_compare_percentage_pdf(self, sort_type=None):
+        domain = []
+        title = []
+
     def action_print_percentage_pdf(self, sort_type=None):
         domain = []
         title = []
@@ -647,10 +655,10 @@ class TimetableFilterWizard(models.TransientModel):
                 timetables = self.env['siantou.ems.timetable.timetable'].search(domain)
                 timetables = timetables.filtered(lambda rec: rec.date and rec.day_of_week and TimetableFilterWizard.compare_float_time(rec.date, rec.worked_start_time, rec.start_time) > 0.0 and TimetableFilterWizard.compare_float_time(rec.date, rec.worked_start_time, rec.start_time) < self.number_of_minute)
             elif self.status == 'punctuality':
-                domain.append(('status', '=', 'present'))
+                domain.append(('status', 'in', ['present', 'absent']))
                 title.append(STATUS_TIMETABLE[self.status])
                 timetables = self.env['siantou.ems.timetable.timetable'].search(domain)
-                timetables = timetables.filtered(lambda rec: rec.date and rec.day_of_week and TimetableFilterWizard.compare_float_time(rec.date, rec.worked_start_time, rec.start_time) == 0.0)
+                timetables = timetables.filtered(lambda rec: rec.date and rec.day_of_week and (rec.status == 'absent' or (rec.status == 'present' and TimetableFilterWizard.compare_float_time(rec.date, rec.worked_start_time, rec.start_time) == 0.0)))
             elif self.status == 'exception_start_time_invalid':
                 domain.append(('status', '=', 'exception'))
                 title.append(STATUS_TIMETABLE[self.status])
