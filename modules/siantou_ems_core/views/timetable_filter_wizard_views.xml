@@ -39,11 +39,11 @@
                     </group>
                     <footer>
                         <button string="Filtrer" type="object" name="action_filter" class="btn-primary"/>
-                        <button string="Imprimer École" type="object" name="action_print_school_percentage_pdf" class="btn-primary" invisible="school_id or not status" groups="siantou_ems_core.group_timetable_percentage_print_pdf"/>
+                        <button string="Imprimer école" type="object" name="action_print_school_percentage_pdf" class="btn-primary" invisible="school_id or not status" groups="siantou_ems_core.group_timetable_percentage_print_pdf"/>
                         <button string="Imprimer" type="object" name="action_print_percentage_pdf" class="btn-primary" invisible="not school_id or not status" groups="siantou_ems_core.group_timetable_percentage_print_pdf"/>
-                        <button string="Imprimer Comparaison" type="object" name="action_print_compare_percentage_pdf" class="btn-primary" invisible="not school_id or not status" groups="siantou_ems_core.group_timetable_percentage_print_pdf"/>
-                        <button string="Imprimer Top 10" type="object" name="action_print_top_percentage_pdf" class="btn-primary" invisible="not school_id or not status" groups="siantou_ems_core.group_timetable_percentage_print_pdf"/>
-                        <button string="Imprimer Last 10" type="object" name="action_print_last_percentage_pdf" class="btn-primary" invisible="not school_id or not status" groups="siantou_ems_core.group_timetable_percentage_print_pdf"/>
+                        <button string="Imprimer comparaison" type="object" name="action_print_compare_percentage_pdf" class="btn-primary" invisible="not school_id or not status" groups="siantou_ems_core.group_timetable_percentage_print_pdf"/>
+                        <button string="Imprimer top 10" type="object" name="action_print_top_percentage_pdf" class="btn-primary" invisible="not school_id or not status" groups="siantou_ems_core.group_timetable_percentage_print_pdf"/>
+                        <button string="Imprimer last 10" type="object" name="action_print_last_percentage_pdf" class="btn-primary" invisible="not school_id or not status" groups="siantou_ems_core.group_timetable_percentage_print_pdf"/>
                         <button string="Annuler" class="btn-secondary" special="cancel"/>
                     </footer>
                 </form>
