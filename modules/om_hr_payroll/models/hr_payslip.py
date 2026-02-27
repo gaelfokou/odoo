@@ -523,7 +523,7 @@ class HrPayslip(models.Model):
                                     punching_time = daily_attendances[0].punching_time
                                     template = 'om_hr_payroll.om_hr_payroll_template_timetable_notification_device'
                                     punching_time = HrPayslip.convert_datetime_from_utc(punching_time)
-                                    message = 'Poinçonnement de début du {}, {}'.format(CURRENT_WEEKDAY[str(punching_time.weekday())], datetime.strftime(punching_time, DATETIME_FORMAT_FR))
+                                    message = 'Poinçonnement de début du {}, {} sur la biométrie {}'.format(CURRENT_WEEKDAY[str(punching_time.weekday())], datetime.strftime(punching_time, DATETIME_FORMAT_FR), daily_attendances[0].device_id.name)
                                     timetable_notifications = self.env['siantou.ems.timetable.notification'].sudo().search([
                                         ('template', '=', template),
                                         ('attendance_id', '=', daily_attendances[0].id),
@@ -542,7 +542,7 @@ class HrPayslip(models.Model):
                                     punching_time = daily_attendances[0].punching_time
                                     template = 'om_hr_payroll.om_hr_payroll_template_timetable_notification_device'
                                     punching_time = HrPayslip.convert_datetime_from_utc(punching_time)
-                                    message = 'Poinçonnement de fin du {}, {}'.format(CURRENT_WEEKDAY[str(punching_time.weekday())], datetime.strftime(punching_time, DATETIME_FORMAT_FR))
+                                    message = 'Poinçonnement de fin du {}, {} sur la biométrie {}'.format(CURRENT_WEEKDAY[str(punching_time.weekday())], datetime.strftime(punching_time, DATETIME_FORMAT_FR), daily_attendances[0].device_id.name)
                                     timetable_notifications = self.env['siantou.ems.timetable.notification'].sudo().search([
                                         ('template', '=', template),
                                         ('attendance_id', '=', daily_attendances[0].id),
@@ -561,7 +561,7 @@ class HrPayslip(models.Model):
                                     punching_time = daily_attendances[0].punching_time
                                     template = 'om_hr_payroll.om_hr_payroll_template_timetable_notification_device'
                                     punching_time = HrPayslip.convert_datetime_from_utc(punching_time)
-                                    message = 'Poinçonnement de début ou de fin du {}, {}'.format(CURRENT_WEEKDAY[str(punching_time.weekday())], datetime.strftime(punching_time, DATETIME_FORMAT_FR))
+                                    message = 'Poinçonnement de début ou de fin du {}, {} sur la biométrie {}'.format(CURRENT_WEEKDAY[str(punching_time.weekday())], datetime.strftime(punching_time, DATETIME_FORMAT_FR), daily_attendances[0].device_id.name)
                                     timetable_notifications = self.env['siantou.ems.timetable.notification'].sudo().search([
                                         ('template', '=', template),
                                         ('attendance_id', '=', daily_attendances[0].id),
@@ -630,7 +630,7 @@ class HrPayslip(models.Model):
                                 punching_time = daily_attendances[1].punching_time
                                 template = 'om_hr_payroll.om_hr_payroll_template_timetable_notification_device'
                                 punching_time = HrPayslip.convert_datetime_from_utc(punching_time)
-                                message = 'Poinçonnement de fin du {}, {}'.format(CURRENT_WEEKDAY[str(punching_time.weekday())], datetime.strftime(punching_time, DATETIME_FORMAT_FR))
+                                message = 'Poinçonnement de fin du {}, {} sur la biométrie {}'.format(CURRENT_WEEKDAY[str(punching_time.weekday())], datetime.strftime(punching_time, DATETIME_FORMAT_FR), daily_attendances[1].device_id.name)
                                 timetable_notifications = self.env['siantou.ems.timetable.notification'].sudo().search([
                                     ('template', '=', template),
                                     ('attendance_id', '=', daily_attendances[1].id),
@@ -649,7 +649,7 @@ class HrPayslip(models.Model):
                                 punching_time = daily_attendances[0].punching_time
                                 template = 'om_hr_payroll.om_hr_payroll_template_timetable_notification_device'
                                 punching_time = HrPayslip.convert_datetime_from_utc(punching_time)
-                                message = 'Poinçonnement de début du {}, {}'.format(CURRENT_WEEKDAY[str(punching_time.weekday())], datetime.strftime(punching_time, DATETIME_FORMAT_FR))
+                                message = 'Poinçonnement de début du {}, {} sur la biométrie {}'.format(CURRENT_WEEKDAY[str(punching_time.weekday())], datetime.strftime(punching_time, DATETIME_FORMAT_FR), daily_attendances[0].device_id.name)
                                 timetable_notifications = self.env['siantou.ems.timetable.notification'].sudo().search([
                                     ('template', '=', template),
                                     ('attendance_id', '=', daily_attendances[0].id),
@@ -980,7 +980,7 @@ class HrPayslip(models.Model):
                     else:
                         template = 'om_hr_payroll.om_hr_payroll_template_timetable_notification_exception'
                         punching_time = HrPayslip.convert_datetime_from_utc(punching_time)
-                        message = 'Exception du {}, {}'.format(CURRENT_WEEKDAY[str(punching_time.weekday())], datetime.strftime(punching_time, DATETIME_FORMAT_FR))
+                        message = 'Exception du {}, {} sur la biométrie {}'.format(CURRENT_WEEKDAY[str(punching_time.weekday())], datetime.strftime(punching_time, DATETIME_FORMAT_FR), daily_attendance.device_id.name)
                         timetable_notifications = self.env['siantou.ems.timetable.notification'].sudo().search([
                             ('template', '=', template),
                             ('attendance_id', '=', daily_attendance.id),
