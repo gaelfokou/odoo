@@ -1029,7 +1029,7 @@
                                     <th class="text-left" colspan="1">Total nombre d'heures</th>
                                     <th class="text-left" t-attf-colspan="#{'7' if is_user_permanent == False else '5'}"><span t-esc="accountbalances[classe]['total_number_of_hours']"/></th>
                                 </tr>
-                                <tr>
+                                <tr t-if="is_user_permanent == False">
                                     <th class="text-left" colspan="1">Total montant</th>
                                     <th class="text-left" t-attf-colspan="#{'7' if is_user_permanent == False else '5'}"><span t-esc="'{:,.2f}'.format(accountbalances[classe]['total_rate'])"/></th>
                                 </tr>
