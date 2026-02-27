@@ -788,6 +788,7 @@ class PortalAccount(portal.CustomerPortal):
             accountbalance['worked_end_time'] = search_accountbalance.worked_end_time
             accountbalance['not_active_slotitems'] = search_accountbalance.not_active_slotitems
             accountbalance['time_of_week'] = '{}-{}'.format(Helpers.convert_float_to_time(search_accountbalance.start_time), Helpers.convert_float_to_time(search_accountbalance.end_time))
+            accountbalance['worked_time_of_week'] = '{}-{}'.format(Helpers.convert_float_to_time(search_accountbalance.worked_start_time), Helpers.convert_float_to_time(search_accountbalance.worked_end_time))
             accountbalance['status'] = STATUS_TIMETABLE[search_accountbalance.status]
 
             if search_accountbalance.status == 'present':

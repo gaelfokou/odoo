@@ -247,11 +247,6 @@
                                     </tr>
                                 </t>
                             </tbody>
-                            <tfooter>
-                                <tr>
-                                    <th class="text-left" colspan="8" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
-                                </tr>
-                            </tfooter>
                             <tbody>
                                 <tr>
                                     <td class="text-left" colspan="8">
@@ -345,7 +340,7 @@
                     </div>
                     <thead>
                         <tr>
-                            <th class="text-left" colspan="12" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;">
+                            <th class="text-left" colspan="11" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;">
                                 <span t-esc="'Période :'"/>
                                 <span t-esc="search_month"/>
                             </th>
@@ -353,7 +348,7 @@
                     </thead>
                     <thead>
                         <tr>
-                            <th class="text-left" colspan="12" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
+                            <th class="text-left" colspan="11" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
                         </tr>
                     </thead>
                     <t t-set="total_timetables" t-value="[(i+1) for i in range(timetable_pages_total)]"/>
@@ -363,7 +358,6 @@
                     <t t-if="len(timetables) > 0">
                         <thead>
                             <tr class="active">
-                                <th class="text-left">Semestre</th>
                                 <th class="text-left">Classe</th>
                                 <th class="text-left">Cours</th>
                                 <th class="text-left">Salle de classe</th>
@@ -379,9 +373,6 @@
                         <tbody>
                             <t t-foreach="timetables" t-as="record">
                                 <tr>
-                                    <td class="text-left">
-                                        <span t-esc="record['semester_name']"/>
-                                    </td>
                                     <td class="text-left">
                                         <span t-esc="record['class_name']"/>
                                     </td>
@@ -416,14 +407,9 @@
                                 </tr>
                             </t>
                         </tbody>
-                        <tfooter>
-                            <tr>
-                                <th class="text-left" colspan="12" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
-                            </tr>
-                        </tfooter>
                         <tbody>
                             <tr>
-                                <td class="text-left" colspan="12">
+                                <td class="text-left" colspan="11">
                                     <nav aria-label="Page navigation timetable">
                                         <ul class="pagination">
                                             <li class="page-item"><a class="page-link" t-attf-href="/my/timetable/page/1?view_type={{ timetable_view_type }}&amp;selected_month={{ selected_month }}">Précédent</a></li>
@@ -443,21 +429,21 @@
                         </tbody>
                         <tfooter>
                             <tr>
-                                <th class="text-left" colspan="12" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
+                                <th class="text-left" colspan="11" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
                             </tr>
                         </tfooter>
                     </t>
                     <t t-else="">
                         <tfooter>
                             <tr>
-                                <th class="text-center" colspan="12" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;">
+                                <th class="text-center" colspan="11" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;">
                                     <span t-esc="'Aucune donnée disponible'"/>
                                 </th>
                             </tr>
                         </tfooter>
                         <tfooter>
                             <tr>
-                                <th class="text-left" colspan="12" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
+                                <th class="text-left" colspan="11" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
                             </tr>
                         </tfooter>
                     </t>
@@ -572,9 +558,6 @@
                         </tbody>
                         <tfooter>
                             <tr>
-                                <th class="text-left" colspan="8" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
-                            </tr>
-                            <tr>
                                 <th class="text-left" colspan="1">Total net à payer</th>
                                 <th class="text-left" colspan="7"><span t-esc="total_structure_amount"/></th>
                             </tr>
@@ -585,6 +568,11 @@
                             <tr>
                                 <th class="text-left" colspan="1">Total restant à payer</th>
                                 <th class="text-left" colspan="7"><span t-esc="'{:,.2f}'.format(total_rest_amount)"/></th>
+                            </tr>
+                        </tfooter>
+                        <tfooter>
+                            <tr>
+                                <th class="text-left" colspan="8" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
                             </tr>
                         </tfooter>
                     </t>
@@ -729,6 +717,11 @@
                                         </t>
                                     </t>
                                 </tbody>
+                                <tfooter>
+                                    <tr>
+                                        <th class="text-left" colspan="6" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
+                                    </tr>
+                                </tfooter>
                             </t>
                         </t>
                     </t>
@@ -820,7 +813,7 @@
                                 <th class="text-left">Réference</th>
                                 <th class="text-left">Règles salariales</th>
                                 <th class="text-left">Contrat</th>
-                                <th class="text-left">Nombre d'heures</th>
+                                <th class="text-left">Nombre d'heures effectuées</th>
                                 <th class="text-left">Montant payé</th>
                                 <th class="text-left">Statut</th>
                             </tr>
@@ -857,15 +850,17 @@
                         </tbody>
                         <tfooter>
                             <tr>
-                                <th class="text-left" colspan="8" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
-                            </tr>
-                            <tr>
-                                <th class="text-left" colspan="1">Total nombre d'heures</th>
+                                <th class="text-left" colspan="1">Total nombre d'heures effectuées</th>
                                 <th class="text-left" colspan="7"><span t-esc="total_number_of_hours"/></th>
                             </tr>
                             <tr>
                                 <th class="text-left" colspan="1">Total montant payé</th>
                                 <th class="text-left" colspan="7"><span t-esc="'{:,.2f}'.format(total_amount)"/></th>
+                            </tr>
+                        </tfooter>
+                        <tfooter>
+                            <tr>
+                                <th class="text-left" colspan="8" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
                             </tr>
                         </tfooter>
                     </t>
@@ -955,7 +950,7 @@
                     </div>
                     <thead>
                         <tr>
-                            <th class="text-left" t-attf-colspan="#{'8' if is_user_permanent == False else '6'}" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;">
+                            <th class="text-left" t-attf-colspan="#{'7' if is_user_permanent == False else '5'}" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;">
                                 <span t-esc="'Période :'"/>
                                 <span t-esc="search_month"/>
                             </th>
@@ -963,7 +958,7 @@
                     </thead>
                     <thead>
                         <tr>
-                            <th class="text-left" t-attf-colspan="#{'8' if is_user_permanent == False else '6'}" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
+                            <th class="text-left" t-attf-colspan="#{'7' if is_user_permanent == False else '5'}" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
                         </tr>
                     </thead>
                     <t t-set="classes" t-value="accountbalances.keys()"/>
@@ -973,10 +968,9 @@
                                 <th class="text-left">Cours</th>
                                 <th class="text-left">Jour</th>
                                 <th class="text-left">Date</th>
-                                <th class="text-left">Heure</th>
-                                <th class="text-left">Semestre</th>
+                                <th class="text-left">Heure effectuée</th>
                                 <th class="text-left" t-if="is_user_permanent == False">Taux horaire</th>
-                                <th class="text-left">Nombre d'heures</th>
+                                <th class="text-left">Nombre d'heures effectuées</th>
                                 <th class="text-left" t-if="is_user_permanent == False">Montant</th>
                             </tr>
                         </thead>
@@ -986,7 +980,7 @@
                                     <th class="text-left">
                                         <span t-esc="accountbalances[classe]['name']"/>
                                     </th>
-                                    <th class="text-left" t-attf-colspan="#{'7' if is_user_permanent == False else '5'}">
+                                    <th class="text-left" t-attf-colspan="#{'6' if is_user_permanent == False else '4'}">
                                         <span t-esc="'Empty'" style="visibility: hidden;"/>
                                     </th>
                                 </tr>
@@ -1006,10 +1000,7 @@
                                                 <span t-esc="record['date_of_week']"/>
                                             </td>
                                             <td class="text-left">
-                                                <span t-esc="record['time_of_week']"/>
-                                            </td>
-                                            <td class="text-left">
-                                                <span t-esc="record['semester_name']"/>
+                                                <span t-esc="record['worked_time_of_week']"/>
                                             </td>
                                             <td class="text-left" t-if="is_user_permanent == False">
                                                 <span t-esc="'{:,.2f}'.format(record['rate'])"/>
@@ -1026,15 +1017,17 @@
                             </tbody>
                             <tfooter>
                                 <tr>
-                                    <th class="text-left" colspan="1">Total nombre d'heures</th>
-                                    <th class="text-left" t-attf-colspan="#{'7' if is_user_permanent == False else '5'}"><span t-esc="accountbalances[classe]['total_number_of_hours']"/></th>
+                                    <th class="text-left" colspan="1">Total nombre d'heures effectuées</th>
+                                    <th class="text-left" t-attf-colspan="#{'6' if is_user_permanent == False else '4'}"><span t-esc="accountbalances[classe]['total_number_of_hours']"/></th>
                                 </tr>
                                 <tr t-if="is_user_permanent == False">
                                     <th class="text-left" colspan="1">Total montant</th>
-                                    <th class="text-left" t-attf-colspan="#{'7' if is_user_permanent == False else '5'}"><span t-esc="'{:,.2f}'.format(accountbalances[classe]['total_rate'])"/></th>
+                                    <th class="text-left" t-attf-colspan="#{'6' if is_user_permanent == False else '4'}"><span t-esc="'{:,.2f}'.format(accountbalances[classe]['total_rate'])"/></th>
                                 </tr>
+                            </tfooter>
+                            <tfooter>
                                 <tr>
-                                    <th class="text-left" t-attf-colspan="#{'8' if is_user_permanent == False else '6'}" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
+                                    <th class="text-left" t-attf-colspan="#{'7' if is_user_permanent == False else '5'}" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
                                 </tr>
                             </tfooter>
                         </t>
@@ -1042,14 +1035,14 @@
                     <t t-else="">
                         <tfooter>
                             <tr>
-                                <th class="text-center" t-attf-colspan="#{'8' if is_user_permanent == False else '6'}" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;">
+                                <th class="text-center" t-attf-colspan="#{'7' if is_user_permanent == False else '5'}" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;">
                                     <span t-esc="'Aucune donnée disponible'"/>
                                 </th>
                             </tr>
                         </tfooter>
                         <tfooter>
                             <tr>
-                                <th class="text-left" t-attf-colspan="#{'8' if is_user_permanent == False else '6'}" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
+                                <th class="text-left" t-attf-colspan="#{'7' if is_user_permanent == False else '5'}" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
                             </tr>
                         </tfooter>
                     </t>
@@ -1176,6 +1169,11 @@
                                     <th class="text-left" colspan="4" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
                                 </tr>
                             </tfooter>
+                            <tfooter>
+                                <tr>
+                                    <th class="text-left" colspan="4" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
+                                </tr>
+                            </tfooter>
                         </t>
                     </t>
                     <t t-else="">
@@ -1295,6 +1293,11 @@
                                     </tr>
                                 </t>
                             </tbody>
+                            <tfooter>
+                                <tr>
+                                    <th class="text-left" colspan="3" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
+                                </tr>
+                            </tfooter>
                         </t>
                     </t>
                     <t t-else="">
@@ -1430,12 +1433,12 @@
                                     </tr>
                                 </t>
                             </tbody>
+                            <tfooter>
+                                <tr>
+                                    <th class="text-left" colspan="7" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
+                                </tr>
+                            </tfooter>
                         </t>
-                        <tfooter>
-                            <tr>
-                                <th class="text-left" colspan="7" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
-                            </tr>
-                        </tfooter>
                     </t>
                     <t t-else="">
                         <tfooter>
@@ -1819,11 +1822,6 @@
                                 </td>
                             </tr>
                         </tbody>
-                        <tfooter>
-                            <tr>
-                                <th class="text-left" colspan="12" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
-                            </tr>
-                        </tfooter>
                         <tbody>
                             <tr>
                                 <td class="text-left" colspan="12">
