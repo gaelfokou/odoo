@@ -73,10 +73,13 @@ class Extension(portal.CustomerPortal):
     def check_completed_request(self):
         user = None
         is_user = None
+        is_user_permanent = False
         if http.request.env.user.employee_id.id:
             user = http.request.env.user.employee_id
             if http.request.env.user.employee_id.is_teacher:
                 is_user = 'is_teacher'
+                if http.request.env.user.employee_id.is_permanent:
+                    is_user_permanent = True
             else:
                 is_user = 'is_employee'
         elif http.request.env.user.student_id.id:
@@ -111,10 +114,13 @@ class Home(WebHome):
             ], limit=1)
             user = None
             is_user = None
+            is_user_permanent = False
             if res_user_id.employee_id.id:
                 user = res_user_id.employee_id
                 if res_user_id.employee_id.is_teacher:
                     is_user = 'is_teacher'
+                    if http.request.env.user.employee_id.is_permanent:
+                        is_user_permanent = True
                 else:
                     is_user = 'is_employee'
             else:
@@ -138,9 +144,12 @@ class PortalAccount(portal.CustomerPortal):
     def _prepare_home_portal_values(self, counters):
         values = super()._prepare_home_portal_values(counters)
         is_user = None
+        is_user_permanent = False
         if http.request.env.user.employee_id.id:
             if http.request.env.user.employee_id.is_teacher:
                 is_user = 'is_teacher'
+                if http.request.env.user.employee_id.is_permanent:
+                    is_user_permanent = True
             else:
                 is_user = 'is_employee'
         elif http.request.env.user.student_id.id:
@@ -705,10 +714,13 @@ class PortalAccount(portal.CustomerPortal):
         key_payslips = {}
         user = None
         is_user = None
+        is_user_permanent = False
         if http.request.env.user.employee_id.id:
             user = http.request.env.user.employee_id
             if http.request.env.user.employee_id.is_teacher:
                 is_user = 'is_teacher'
+                if http.request.env.user.employee_id.is_permanent:
+                    is_user_permanent = True
             else:
                 is_user = 'is_employee'
         elif http.request.env.user.student_id.id:
@@ -879,6 +891,7 @@ class PortalAccount(portal.CustomerPortal):
                                     'total_number_of_hours': total_number_of_hours,
                                     'accountbalance_selected_month': accountbalance_selected_month,
                                     'search_month': search_month,
+                                    'is_user_permanent': is_user_permanent,
                                 })
 
     @http.route(['/my/consumptionhour'], type='http', auth="user", website=True)
@@ -993,10 +1006,13 @@ class PortalAccount(portal.CustomerPortal):
         # Utilisation de la fonction du helper
         user = None
         is_user = None
+        is_user_permanent = False
         if http.request.env.user.employee_id.id:
             user = http.request.env.user.employee_id
             if http.request.env.user.employee_id.is_teacher:
                 is_user = 'is_teacher'
+                if http.request.env.user.employee_id.is_permanent:
+                    is_user_permanent = True
             else:
                 is_user = 'is_employee'
         elif http.request.env.user.student_id.id:
@@ -1103,10 +1119,13 @@ class PortalAccount(portal.CustomerPortal):
         # Utilisation de la fonction du helper
         user = None
         is_user = None
+        is_user_permanent = False
         if http.request.env.user.employee_id.id:
             user = http.request.env.user.employee_id
             if http.request.env.user.employee_id.is_teacher:
                 is_user = 'is_teacher'
+                if http.request.env.user.employee_id.is_permanent:
+                    is_user_permanent = True
             else:
                 is_user = 'is_employee'
         elif http.request.env.user.student_id.id:
@@ -1268,10 +1287,13 @@ class PortalAccount(portal.CustomerPortal):
         # Utilisation de la fonction du helper
         user = None
         is_user = None
+        is_user_permanent = False
         if http.request.env.user.employee_id.id:
             user = http.request.env.user.employee_id
             if http.request.env.user.employee_id.is_teacher:
                 is_user = 'is_teacher'
+                if http.request.env.user.employee_id.is_permanent:
+                    is_user_permanent = True
             else:
                 is_user = 'is_employee'
         elif http.request.env.user.student_id.id:
@@ -1529,6 +1551,7 @@ class PortalAccount(portal.CustomerPortal):
         quarter_id = None
         user = None
         is_user = None
+        is_user_permanent = False
         if http.request.env.user.employee_id.id:
             return http.request.redirect('/my/home')
         elif http.request.env.user.student_id.id:
@@ -1560,10 +1583,13 @@ class PortalAccount(portal.CustomerPortal):
     def portal_requireddata_create(self, **kw):
         user = None
         is_user = None
+        is_user_permanent = False
         if http.request.env.user.employee_id.id:
             user = http.request.env.user.employee_id
             if http.request.env.user.employee_id.is_teacher:
                 is_user = 'is_teacher'
+                if http.request.env.user.employee_id.is_permanent:
+                    is_user_permanent = True
             else:
                 is_user = 'is_employee'
         elif http.request.env.user.student_id.id:
@@ -1596,6 +1622,7 @@ class PortalAccount(portal.CustomerPortal):
     @http.route(['/my/portal/switch'], type='http', auth="user", website=True)
     def portal_switch(self, search='', search_in='all', **kw):
         is_user = None
+        is_user_permanent = False
         if http.request.env.user.employee_id.id:
             user = http.request.env.user
             if http.request.env.user.employee_id.is_teacher and http.request.env.user.employee_id.is_portal:

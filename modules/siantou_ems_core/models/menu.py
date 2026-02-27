@@ -19,6 +19,7 @@ class Menu(models.Model):
         if not self.env['ir.config_parameter'].sudo().get_param(f'siantou.url_user'):
             self.env['ir.config_parameter'].sudo().set_param(f'siantou.url_user', '/web')
         is_user = None
+        is_user_permanent = False
         if self.env.user.employee_id.id:
             user = self.env.user.employee_id
             if self.env.user.employee_id.is_teacher and self.env.user.employee_id.is_portal:

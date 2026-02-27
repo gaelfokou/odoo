@@ -106,10 +106,13 @@ class Helpers:
         search_timetables = []
         user = None
         is_user = None
+        is_user_permanent = False
         if http.request.env.user.employee_id.id:
             user = http.request.env.user.employee_id
             if http.request.env.user.employee_id.is_teacher:
                 is_user = 'is_teacher'
+                if http.request.env.user.employee_id.is_permanent:
+                    is_user_permanent = True
             else:
                 is_user = 'is_employee'
         elif http.request.env.user.student_id.id:
@@ -399,10 +402,13 @@ class Helpers:
         search_consumptionhours = []
         user = None
         is_user = None
+        is_user_permanent = False
         if http.request.env.user.employee_id.id:
             user = http.request.env.user.employee_id
             if http.request.env.user.employee_id.is_teacher:
                 is_user = 'is_teacher'
+                if http.request.env.user.employee_id.is_permanent:
+                    is_user_permanent = True
             else:
                 is_user = 'is_employee'
         elif http.request.env.user.student_id.id:
@@ -502,10 +508,13 @@ class Helpers:
         search_progressreports = []
         user = None
         is_user = None
+        is_user_permanent = False
         if http.request.env.user.employee_id.id:
             user = http.request.env.user.employee_id
             if http.request.env.user.employee_id.is_teacher:
                 is_user = 'is_teacher'
+                if http.request.env.user.employee_id.is_permanent:
+                    is_user_permanent = True
             else:
                 is_user = 'is_employee'
         elif http.request.env.user.student_id.id:
@@ -635,10 +644,13 @@ class Helpers:
         search_subjectsessions = []
         user = None
         is_user = None
+        is_user_permanent = False
         if http.request.env.user.employee_id.id:
             user = http.request.env.user.employee_id
             if http.request.env.user.employee_id.is_teacher:
                 is_user = 'is_teacher'
+                if http.request.env.user.employee_id.is_permanent:
+                    is_user_permanent = True
             else:
                 is_user = 'is_employee'
         elif http.request.env.user.student_id.id:

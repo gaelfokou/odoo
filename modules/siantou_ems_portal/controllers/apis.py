@@ -183,10 +183,13 @@ class ApiAccount(http.Controller):
     def api_timetable_download(self, page=1, search='', search_in='all', **kw):
         user = None
         is_user = None
+        is_user_permanent = False
         if http.request.env.user.employee_id.id:
             user = http.request.env.user.employee_id
             if http.request.env.user.employee_id.is_teacher:
                 is_user = 'is_teacher'
+                if http.request.env.user.employee_id.is_permanent:
+                    is_user_permanent = True
             else:
                 is_user = 'is_employee'
         elif http.request.env.user.student_id.id:
@@ -345,10 +348,13 @@ class ApiAccount(http.Controller):
     def api_user(self, page=1, search='', search_in='all', **kw):
         user = None
         is_user = None
+        is_user_permanent = False
         if http.request.env.user.employee_id.id:
             user = http.request.env.user.employee_id
             if http.request.env.user.employee_id.is_teacher:
                 is_user = 'is_teacher'
+                if http.request.env.user.employee_id.is_permanent:
+                    is_user_permanent = True
             else:
                 is_user = 'is_employee'
         elif http.request.env.user.student_id.id:
@@ -389,10 +395,13 @@ class ApiAccount(http.Controller):
                         data['login'] = user.login
                         data['name'] = user.name
                         is_user = None
+                        is_user_permanent = False
                         if user.employee_id.id:
                             user = user.employee_id
                             if user.employee_id.is_teacher:
                                 is_user = 'is_teacher'
+                                if http.request.env.user.employee_id.is_permanent:
+                                    is_user_permanent = True
                             else:
                                 is_user = 'is_employee'
                         else:
