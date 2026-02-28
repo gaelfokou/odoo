@@ -807,25 +807,67 @@ class TimetableFilterWizard(models.TransientModel):
             })
         return report_action.report_action(self, data=data)
 
+    def sort_type_timetable_percentage(self, timetable_percentage):
+        percentage = timetable_percentage[1]['percentage']
+        return percentage
+
     def action_print_school_percentage_pdf(self):
         start_date = datetime.strftime(self.start_date, DATE_FORMAT_FR)
         end_date = datetime.strftime(self.end_date, DATE_FORMAT_FR)
-        data = {}
+        all_data = {
+            'docdata': {}
+        }
         school_ids = self.env['siantou.ems.core.school'].search([])
         school_ids = list(school_ids)
         for school_id in school_ids:
-            key = '{}'.format(school_id.id)
-            data[key] = {}
-            data[key]['name'] = school_id.name
             try:
-                data[key]['data'] = self.action_print_percentage_pdf(school=school_id)
+                data = self.action_print_percentage_pdf(school=school_id)
+                key = '{}'.format(school_id.id)
+                all_data['docdata'] = {}
+                all_data['docdata']['title'] = data['docdata']['title']
+                all_data['docdata']['filter'] = data['docdata']['filter']
+                if 'timetable_percentage_data' not in all_data['docdata']:
+                    all_data['docdata']['timetable_percentage_data'] = {}
+                all_data['docdata']['timetable_percentage_data'][key] = {}
+                all_data['docdata']['timetable_percentage_data'][key]['name'] = school_id.name
+                all_data['docdata']['timetable_percentage_data'][key]['data'] = data['docdata']['timetable_percentage_data']
+                all_data['docdata']['timetable_percentage_data'][key]['percentage'] = data['docdata']['total_percentage']
+                all_data['docdata']['sort_type'] = data['docdata']['sort_type']
+                all_data['docdata']['status'] = data['docdata']['status']
+                all_data['docdata']['timetable_percentage_data'][key]['class'] = ''
             except UserError as error:
-                data[key]['data'] = {}
-        report_action = self.env.ref('siantou_ems_core.action_report_timetable_percentage')
+                continue
+
+        if self.status and self.status in ['present', 'punctuality']:
+            all_data['docdata']['timetable_percentage_data'] = sorted(all_data['docdata']['timetable_percentage_data'].items(), key=self.sort_type_timetable_percentage, reverse=True)
+            all_data['docdata']['timetable_percentage_data'] = dict(all_data['docdata']['timetable_percentage_data'])
+        else:
+            all_data['docdata']['timetable_percentage_data'] = sorted(all_data['docdata']['timetable_percentage_data'].items(), key=self.sort_type_timetable_percentage)
+            all_data['docdata']['timetable_percentage_data'] = dict(all_data['docdata']['timetable_percentage_data'])
+
+        for key in all_data['docdata']['timetable_percentage_data'].keys():
+            if self.status and self.status in ['present', 'punctuality']:
+                if all_data['docdata']['timetable_percentage_data'][key]['percentage'] >= 90.0:
+                    all_data['docdata']['timetable_percentage_data'][key]['class'] = 'text-success'
+                if all_data['docdata']['timetable_percentage_data'][key]['percentage'] >= 80.0 and all_data['docdata']['timetable_percentage_data'][key]['percentage'] < 90.0:
+                    all_data['docdata']['timetable_percentage_data'][key]['class'] = 'text-warning'
+                if all_data['docdata']['timetable_percentage_data'][key]['percentage'] < 80.0:
+                    all_data['docdata']['timetable_percentage_data'][key]['class'] = 'text-danger'
+            else:
+                if all_data['docdata']['timetable_percentage_data'][key]['percentage'] < 10.0:
+                    all_data['docdata']['timetable_percentage_data'][key]['class'] = 'text-success'
+                if all_data['docdata']['timetable_percentage_data'][key]['percentage'] >= 10.0 and all_data['docdata']['timetable_percentage_data'][key]['percentage'] < 20.0:
+                    all_data['docdata']['timetable_percentage_data'][key]['class'] = 'text-warning'
+                if all_data['docdata']['timetable_percentage_data'][key]['percentage'] >= 20.0:
+                    all_data['docdata']['timetable_percentage_data'][key]['class'] = 'text-danger'
+
+        if len(all_data['docdata'].keys()) == 0:
+            raise UserError('Aucune donnée trouvée')
+        report_action = self.env.ref('siantou_ems_core.action_report_timetable_school_percentage')
         report_action.update({
             'name': '{} du {} - {} PDF'.format(STATUS_TIMETABLE[self.status], start_date, end_date),
         })
-        return report_action.report_action(self, data=data)
+        return report_action.report_action(self, data=all_data)
 
     def action_print_compare_percentage_pdf(self):
         domain = []
