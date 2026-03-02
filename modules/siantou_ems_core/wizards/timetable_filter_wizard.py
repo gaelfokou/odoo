@@ -821,7 +821,7 @@ class TimetableFilterWizard(models.TransientModel):
         school_ids = list(school_ids)
         for school_id in school_ids:
             try:
-                data = self.action_print_percentage_pdf(school=school_id)
+                data = self.action_print_percentage_pdf(sort_type=None, school=school_id)
                 key = '{}'.format(school_id.id)
                 all_data['docdata'] = {}
                 all_data['docdata']['title'] = data['docdata']['title']
