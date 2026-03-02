@@ -890,19 +890,36 @@ class TimetableFilterWizard(models.TransientModel):
         except UserError as error:
             _logger.info(f'----------- tototototototo Exception {error} -----------')
 
-        key_timetable_percentages = {}
+        all_data = {
+            'docdata': {}
+        }
         for key in data.keys():
-            key_timetable_percentages['title'] = data[key]['docdata']['title']
-            key_timetable_percentages['filter'] = data[key]['docdata']['filter']
-            key_timetable_percentages['status'] = data[key]['docdata']['status']
-            if 'timetable_percentage_data' not in key_timetable_percentages:
-                key_timetable_percentages['timetable_percentage_data'] = data[key]['docdata']['timetable_percentage_data']
+            all_data['docdata']['title'] = data[key]['docdata']['title']
+            all_data['docdata']['filter'] = data[key]['docdata']['filter']
+            all_data['docdata']['status'] = data[key]['docdata']['status']
+            if 'timetable_percentage_data' not in all_data['docdata']:
+                all_data['docdata']['timetable_percentage_data'] = data[key]['docdata']['timetable_percentage_data']
             else:
-                for key, value in data[key]['docdata']['timetable_percentage_data'].items():
-                    pass
+                for k, value in all_data['docdata']['timetable_percentage_data'].items():
+                    if k in data[key]['docdata']['timetable_percentage_data']:
+                        all_data['docdata']['timetable_percentage_data'][k]['previous_percentage'] = data[key]['docdata']['timetable_percentage_data'][k]['percentage']
+                        if all_data['docdata']['timetable_percentage_data'][k]['percentage'] > data[key]['docdata']['timetable_percentage_data'][k]['percentage']:
+                            all_data['docdata']['timetable_percentage_data'][k]['progress'] = '+'
+                        elif all_data['docdata']['timetable_percentage_data'][k]['percentage'] < data[key]['docdata']['timetable_percentage_data'][k]['percentage']:
+                            all_data['docdata']['timetable_percentage_data'][k]['progress'] = '-'
+                        else:
+                            all_data['docdata']['timetable_percentage_data'][k]['progress'] = '='
 
         self.start_date = datetime.strptime(start_date, DATE_FORMAT_FR)
         self.end_date = datetime.strptime(end_date, DATE_FORMAT_FR)
+
+        if len(all_data['docdata'].keys()) == 0:
+            raise UserError('Aucune donnée trouvée')
+        report_action = self.env.ref('siantou_ems_core.action_report_timetable_percentage')
+        report_action.update({
+            'name': '{} du {} - {} PDF'.format(STATUS_TIMETABLE[self.status], start_date, end_date),
+        })
+        return report_action.report_action(self, data=all_data)
 
     @staticmethod
     def convert_float_to_time(tm, has_second=False):
