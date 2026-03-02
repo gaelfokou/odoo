@@ -834,6 +834,8 @@ class TimetableFilterWizard(models.TransientModel):
             except UserError as error:
                 _logger.info(f'----------- tototototototo Exception {school_id.name} {error} -----------')
 
+        self.school_id = None
+
         if self.status and self.status in ['present', 'punctuality']:
             all_data['docdata']['timetable_percentage_data'] = sorted(all_data['docdata']['timetable_percentage_data'].items(), key=self.sort_type_timetable_percentage, reverse=True)
             all_data['docdata']['timetable_percentage_data'] = dict(all_data['docdata']['timetable_percentage_data'])
