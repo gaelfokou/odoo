@@ -822,7 +822,7 @@ class TimetableFilterWizard(models.TransientModel):
                 data[key] = self.action_print_percentage_pdf(print_percentage=False)
                 data[key]['docdata']['name'] = school_id.name
             except UserError as error:
-                _logger.info(f'----------- tototototototo Exception {school_id.name} {error} -----------')
+                _logger.info(f'----------- tototototototo Exception {error} -----------')
 
         all_data = {
             'docdata': {}
@@ -872,8 +872,37 @@ class TimetableFilterWizard(models.TransientModel):
         return report_action.report_action(self, data=all_data)
 
     def action_print_compare_percentage_pdf(self):
-        domain = []
-        title = []
+        start_date = datetime.strftime(self.start_date, DATE_FORMAT_FR)
+        end_date = datetime.strftime(self.end_date, DATE_FORMAT_FR)
+        data = {}
+
+        try:
+            key = '{}-{}'.format(self.start_date, self.end_date)
+            data[key] = self.action_print_percentage_pdf(print_percentage=False)
+        except UserError as error:
+            _logger.info(f'----------- tototototototo Exception {error} -----------')
+
+        try:
+            self.start_date = self.start_date - timedelta(weeks=1)
+            self.end_date = self.end_date - timedelta(weeks=1)
+            key = '{}-{}'.format(self.start_date, self.end_date)
+            data[key] = self.action_print_percentage_pdf(print_percentage=False)
+        except UserError as error:
+            _logger.info(f'----------- tototototototo Exception {error} -----------')
+
+        key_timetable_percentages = {}
+        for key in data.keys():
+            key_timetable_percentages['title'] = data[key]['docdata']['title']
+            key_timetable_percentages['filter'] = data[key]['docdata']['filter']
+            key_timetable_percentages['status'] = data[key]['docdata']['status']
+            if 'timetable_percentage_data' not in key_timetable_percentages:
+                key_timetable_percentages['timetable_percentage_data'] = data[key]['docdata']['timetable_percentage_data']
+            else:
+                for key, value in data[key]['docdata']['timetable_percentage_data'].items():
+                    pass
+
+        self.start_date = datetime.strptime(start_date, DATE_FORMAT_FR)
+        self.end_date = datetime.strptime(end_date, DATE_FORMAT_FR)
 
     @staticmethod
     def convert_float_to_time(tm, has_second=False):
