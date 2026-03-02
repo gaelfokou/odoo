@@ -823,7 +823,6 @@ class TimetableFilterWizard(models.TransientModel):
             try:
                 data = self.action_print_percentage_pdf(sort_type=None, school=school_id)
                 key = '{}'.format(school_id.id)
-                all_data['docdata'] = {}
                 all_data['docdata']['title'] = data['docdata']['title']
                 all_data['docdata']['filter'] = data['docdata']['filter']
                 if 'timetable_percentage_data' not in all_data['docdata']:
