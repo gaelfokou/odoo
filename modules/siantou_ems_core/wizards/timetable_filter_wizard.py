@@ -571,7 +571,7 @@ class TimetableFilterWizard(models.TransientModel):
             'target': 'main',
         }
 
-    def action_print_percentage_pdf(self, sort_type=None, print_percentage=False):
+    def action_print_percentage_pdf(self, sort_type=None, print_percentage=True):
         domain = []
         title = []
         if self.year_id.id:
@@ -760,8 +760,6 @@ class TimetableFilterWizard(models.TransientModel):
         if len(data['docdata']['timetable_percentage_data'].keys()) == 0:
             raise UserError('Aucune donnée trouvée')
         if print_percentage:
-            return data
-        else:
             start_date = datetime.strftime(self.start_date, DATE_FORMAT_FR)
             end_date = datetime.strftime(self.end_date, DATE_FORMAT_FR)
             report_action = self.env.ref('siantou_ems_core.action_report_timetable_percentage')
@@ -774,11 +772,13 @@ class TimetableFilterWizard(models.TransientModel):
                     'name': '{} du {} - {} PDF'.format(STATUS_TIMETABLE[self.status], start_date, end_date),
                 })
             return report_action.report_action(self, data=data)
+        else:
+            return data
 
     def action_print_top_percentage_pdf(self):
         start_date = datetime.strftime(self.start_date, DATE_FORMAT_FR)
         end_date = datetime.strftime(self.end_date, DATE_FORMAT_FR)
-        data = self.action_print_percentage_pdf(sort_type='top', print_percentage=True)
+        data = self.action_print_percentage_pdf(sort_type='top', print_percentage=False)
         report_action = self.env.ref('siantou_ems_core.action_report_timetable_percentage')
         if self.school_id.id:
             report_action.update({
@@ -793,7 +793,7 @@ class TimetableFilterWizard(models.TransientModel):
     def action_print_last_percentage_pdf(self):
         start_date = datetime.strftime(self.start_date, DATE_FORMAT_FR)
         end_date = datetime.strftime(self.end_date, DATE_FORMAT_FR)
-        data = self.action_print_percentage_pdf(sort_type='last', print_percentage=True)
+        data = self.action_print_percentage_pdf(sort_type='last', print_percentage=False)
         report_action = self.env.ref('siantou_ems_core.action_report_timetable_percentage')
         if self.school_id.id:
             report_action.update({
@@ -820,7 +820,7 @@ class TimetableFilterWizard(models.TransientModel):
         for school_id in school_ids:
             try:
                 self.school_id = school_id
-                data = self.action_print_percentage_pdf(print_percentage=True)
+                data = self.action_print_percentage_pdf(print_percentage=False)
                 key = '{}'.format(school_id.id)
                 all_data['docdata']['title'] = data['docdata']['title']
                 all_data['docdata']['filter'] = data['docdata']['filter']
