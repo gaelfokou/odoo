@@ -875,13 +875,11 @@ class TimetableFilterWizard(models.TransientModel):
         start_date = datetime.strftime(self.start_date, DATE_FORMAT_FR)
         end_date = datetime.strftime(self.end_date, DATE_FORMAT_FR)
         data = {}
-
         try:
             key = '{}-{}'.format(self.start_date, self.end_date)
             data[key] = self.action_print_percentage_pdf(print_percentage=False)
         except UserError as error:
             _logger.info(f'----------- tototototototo Exception {error} -----------')
-
         try:
             self.start_date = self.start_date - timedelta(weeks=1)
             self.end_date = self.end_date - timedelta(weeks=1)
