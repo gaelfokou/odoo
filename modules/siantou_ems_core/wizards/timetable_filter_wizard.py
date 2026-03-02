@@ -812,27 +812,31 @@ class TimetableFilterWizard(models.TransientModel):
     def action_print_school_percentage_pdf(self):
         start_date = datetime.strftime(self.start_date, DATE_FORMAT_FR)
         end_date = datetime.strftime(self.end_date, DATE_FORMAT_FR)
-        all_data = {
-            'docdata': {}
-        }
+        data = {}
         school_ids = self.env['siantou.ems.core.school'].search([])
         school_ids = list(school_ids)
         for school_id in school_ids:
             try:
                 self.school_id = school_id
-                data = self.action_print_percentage_pdf(print_percentage=False)
                 key = '{}'.format(school_id.id)
-                all_data['docdata']['title'] = data['docdata']['title']
-                all_data['docdata']['filter'] = data['docdata']['filter']
-                all_data['docdata']['status'] = data['docdata']['status']
-                if 'timetable_percentage_data' not in all_data['docdata']:
-                    all_data['docdata']['timetable_percentage_data'] = {}
-                all_data['docdata']['timetable_percentage_data'][key] = {}
-                all_data['docdata']['timetable_percentage_data'][key]['name'] = school_id.name
-                all_data['docdata']['timetable_percentage_data'][key]['percentage'] = data['docdata']['total_percentage']
-                all_data['docdata']['timetable_percentage_data'][key]['class'] = ''
+                data[key] = self.action_print_percentage_pdf(print_percentage=False)
+                data[key]['docdata']['name'] = school_id.name
             except UserError as error:
                 _logger.info(f'----------- tototototototo Exception {school_id.name} {error} -----------')
+
+        all_data = {
+            'docdata': {}
+        }
+        for key in data.keys():
+            all_data['docdata']['title'] = data[key]['docdata']['title']
+            all_data['docdata']['filter'] = data[key]['docdata']['filter']
+            all_data['docdata']['status'] = data[key]['docdata']['status']
+            if 'timetable_percentage_data' not in all_data['docdata']:
+                all_data['docdata']['timetable_percentage_data'] = {}
+            all_data['docdata']['timetable_percentage_data'][key] = {}
+            all_data['docdata']['timetable_percentage_data'][key]['name'] = data[key]['docdata']['name']
+            all_data['docdata']['timetable_percentage_data'][key]['percentage'] = data[key]['docdata']['total_percentage']
+            all_data['docdata']['timetable_percentage_data'][key]['class'] = ''
 
         self.school_id = None
 
