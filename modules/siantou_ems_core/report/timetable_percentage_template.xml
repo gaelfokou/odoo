@@ -64,8 +64,8 @@
                                     <tr class="active">
                                         <th class="text-center">Enseignant</th>
                                         <t t-if="'compare' in docdata">
-                                            <th class="text-center">Précédent</th>
-                                            <th class="text-center">En cours</th>
+                                            <th class="text-center">Semaine précédente</th>
+                                            <th class="text-center">Semaine en question</th>
                                         </t>
                                         <th class="text-center"></th>
                                     </tr>

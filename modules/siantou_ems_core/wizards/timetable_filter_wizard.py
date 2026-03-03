@@ -829,11 +829,10 @@ class TimetableFilterWizard(models.TransientModel):
         }
         for key in data.keys():
             all_data['docdata']['title'] = data[key]['docdata']['title']
-            all_data['docdata']['status'] = data[key]['docdata']['status']
+            all_data['docdata']['filter'] = data[key]['docdata']['filter']
             all_data['docdata']['sort_type'] = data[key]['docdata']['sort_type']
+            all_data['docdata']['status'] = data[key]['docdata']['status']
             if 'timetable_percentage_data' not in all_data['docdata']:
-                filter_title = self.env['ir.config_parameter'].sudo().get_param(f'siantou.filter_user_{self.env.user.id}', '')
-                all_data['docdata']['filter'] = data[key]['docdata']['filter']
                 all_data['docdata']['timetable_percentage_data'] = {}
             all_data['docdata']['timetable_percentage_data'][key] = {}
             all_data['docdata']['timetable_percentage_data'][key]['name'] = data[key]['docdata']['name']
@@ -882,6 +881,9 @@ class TimetableFilterWizard(models.TransientModel):
             data[key] = self.action_print_percentage_pdf(print_percentage=False)
         except UserError as error:
             _logger.info(f'----------- tototototototo Exception {error} -----------')
+
+        filter_title = self.env['ir.config_parameter'].sudo().get_param(f'siantou.filter_user_{self.env.user.id}', '')
+
         try:
             self.start_date = self.start_date - timedelta(weeks=1)
             self.end_date = self.end_date - timedelta(weeks=1)
@@ -895,12 +897,11 @@ class TimetableFilterWizard(models.TransientModel):
         }
         for key in data.keys():
             all_data['docdata']['title'] = data[key]['docdata']['title']
-            all_data['docdata']['status'] = data[key]['docdata']['status']
+            all_data['docdata']['filter'] = filter_title
             all_data['docdata']['sort_type'] = data[key]['docdata']['sort_type']
+            all_data['docdata']['status'] = data[key]['docdata']['status']
             all_data['docdata']['compare'] = True
             if 'timetable_percentage_data' not in all_data['docdata']:
-                filter_title = self.env['ir.config_parameter'].sudo().get_param(f'siantou.filter_user_{self.env.user.id}', '')
-                all_data['docdata']['filter'] = data[key]['docdata']['filter']
                 all_data['docdata']['timetable_percentage_data'] = data[key]['docdata']['timetable_percentage_data']
             else:
                 for k in all_data['docdata']['timetable_percentage_data'].keys():
@@ -909,20 +910,24 @@ class TimetableFilterWizard(models.TransientModel):
                         all_data['docdata']['timetable_percentage_data'][k]['previous_class'] = data[key]['docdata']['timetable_percentage_data'][k]['class']
                         if self.status and self.status in ['present', 'punctuality']:
                             if all_data['docdata']['timetable_percentage_data'][k]['percentage'] > data[key]['docdata']['timetable_percentage_data'][k]['percentage']:
-                                all_data['docdata']['timetable_percentage_data'][k]['progress'] = '+'
+                                progress = all_data['docdata']['timetable_percentage_data'][k]['percentage'] - data[key]['docdata']['timetable_percentage_data'][k]['percentage']
+                                all_data['docdata']['timetable_percentage_data'][k]['progress'] = '+{}'.format(progress)
                                 all_data['docdata']['timetable_percentage_data'][k]['progress_class'] = 'text-success'
                             elif all_data['docdata']['timetable_percentage_data'][k]['percentage'] < data[key]['docdata']['timetable_percentage_data'][k]['percentage']:
-                                all_data['docdata']['timetable_percentage_data'][k]['progress'] = '-'
+                                progress = data[key]['docdata']['timetable_percentage_data'][k]['percentage'] - all_data['docdata']['timetable_percentage_data'][k]['percentage']
+                                all_data['docdata']['timetable_percentage_data'][k]['progress'] = '-{}'.format(progress)
                                 all_data['docdata']['timetable_percentage_data'][k]['progress_class'] = 'text-danger'
                             else:
                                 all_data['docdata']['timetable_percentage_data'][k]['progress'] = '='
                                 all_data['docdata']['timetable_percentage_data'][k]['progress_class'] = 'text-warning'
                         else:
                             if all_data['docdata']['timetable_percentage_data'][k]['percentage'] > data[key]['docdata']['timetable_percentage_data'][k]['percentage']:
-                                all_data['docdata']['timetable_percentage_data'][k]['progress'] = '+'
+                                progress = all_data['docdata']['timetable_percentage_data'][k]['percentage'] - data[key]['docdata']['timetable_percentage_data'][k]['percentage']
+                                all_data['docdata']['timetable_percentage_data'][k]['progress'] = '+{}'.format(progress)
                                 all_data['docdata']['timetable_percentage_data'][k]['progress_class'] = 'text-danger'
                             elif all_data['docdata']['timetable_percentage_data'][k]['percentage'] < data[key]['docdata']['timetable_percentage_data'][k]['percentage']:
-                                all_data['docdata']['timetable_percentage_data'][k]['progress'] = '-'
+                                progress = data[key]['docdata']['timetable_percentage_data'][k]['percentage'] - all_data['docdata']['timetable_percentage_data'][k]['percentage']
+                                all_data['docdata']['timetable_percentage_data'][k]['progress'] = '-{}'.format(progress)
                                 all_data['docdata']['timetable_percentage_data'][k]['progress_class'] = 'text-success'
                             else:
                                 all_data['docdata']['timetable_percentage_data'][k]['progress'] = '='
