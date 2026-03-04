@@ -916,6 +916,7 @@ class TimetableFilterWizard(models.TransientModel):
                                 all_data['docdata']['timetable_percentage_data'][k]['progress_class'] = 'text-success'
                             elif all_data['docdata']['timetable_percentage_data'][k]['percentage'] < data[key]['docdata']['timetable_percentage_data'][k]['percentage']:
                                 progress = data[key]['docdata']['timetable_percentage_data'][k]['percentage'] - all_data['docdata']['timetable_percentage_data'][k]['percentage']
+                                progress = round(progress, 2)
                                 all_data['docdata']['timetable_percentage_data'][k]['progress'] = '-{}'.format(progress)
                                 all_data['docdata']['timetable_percentage_data'][k]['progress_class'] = 'text-danger'
                             else:
@@ -929,6 +930,7 @@ class TimetableFilterWizard(models.TransientModel):
                                 all_data['docdata']['timetable_percentage_data'][k]['progress_class'] = 'text-danger'
                             elif all_data['docdata']['timetable_percentage_data'][k]['percentage'] < data[key]['docdata']['timetable_percentage_data'][k]['percentage']:
                                 progress = data[key]['docdata']['timetable_percentage_data'][k]['percentage'] - all_data['docdata']['timetable_percentage_data'][k]['percentage']
+                                progress = round(progress, 2)
                                 all_data['docdata']['timetable_percentage_data'][k]['progress'] = '-{}'.format(progress)
                                 all_data['docdata']['timetable_percentage_data'][k]['progress_class'] = 'text-success'
                             else:
