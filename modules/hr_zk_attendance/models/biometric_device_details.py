@@ -146,10 +146,35 @@ class BiometricDeviceDetails(models.Model):
             except Exception as error:
                 raise ValidationError(f'{error}')
 
+    def run_next_execution(self, machine):
+        order = 'id asc'
+        next_machines = self.env['biometric.device.details'].search([], order=order).sorted(lambda rec: rec.id)
+        next_machines = list(next_machines)
+        if len(next_machines) > 0:
+            next_machine_ids = [next_machine.id for next_machine in next_machines]
+            machine_index = next_machine_ids.index(machine.id)
+            try:
+                next_machine = next_machines[machine_index + 1]
+                next_machine.write({
+                    'is_next_execution': True
+                })
+            except IndexError :
+                next_machine = next_machines[0]
+                next_machine.write({
+                    'is_next_execution': True
+                })
+        machine.write({
+            'is_next_execution': False
+        })
+
     @api.model
     def cron_download(self):
-        machines = self.env['biometric.device.details'].search([])
-        for machine in machines:
+        # machines = self.env['biometric.device.details'].search([('is_next_execution', '=', True)])
+        # machines = list(machines)
+        # if len(machines) > 0:
+        #     for machine in machines:
+        machine = self.env['biometric.device.details'].search([('is_next_execution', '=', True)], limit=1)
+        if machine:
             try:
                 machine.action_download_attendance()
             except UserError as error:
@@ -158,6 +183,21 @@ class BiometricDeviceDetails(models.Model):
                 _logger.info(f'----------- tititititititi ValidationError {error} -----------')
             except Exception as error:
                 _logger.info(f'----------- tititititititi Exception {error} -----------')
+
+            self.run_next_execution(machine)
+        else:
+            machine = self.env['biometric.device.details'].search([('is_next_execution', '=', False)], limit=1)
+            if machine:
+                try:
+                    machine.action_download_attendance()
+                except UserError as error:
+                    _logger.info(f'----------- tititititititi UserError {error} -----------')
+                except ValidationError as error:
+                    _logger.info(f'----------- tititititititi ValidationError {error} -----------')
+                except Exception as error:
+                    _logger.info(f'----------- tititititititi Exception {error} -----------')
+
+                self.run_next_execution(machine)
 
     def action_download_attendance(self):
         """Function to download attendance records from the device"""
