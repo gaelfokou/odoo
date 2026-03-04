@@ -944,9 +944,14 @@ class TimetableFilterWizard(models.TransientModel):
         if len(all_data['docdata'].keys()) == 0:
             raise UserError('Aucune donnée trouvée')
         report_action = self.env.ref('siantou_ems_core.action_report_timetable_percentage')
-        report_action.update({
-            'name': '{} du {} - {} PDF'.format(STATUS_TIMETABLE[self.status], start_date, end_date),
-        })
+        if self.school_id.id:
+            report_action.update({
+                'name': '{} {} du {} - {} PDF'.format(STATUS_TIMETABLE[self.status], self.school_id.name, start_date, end_date),
+            })
+        else:
+            report_action.update({
+                'name': '{} du {} - {} PDF'.format(STATUS_TIMETABLE[self.status], start_date, end_date),
+            })
         return report_action.report_action(self, data=all_data)
 
     @staticmethod
