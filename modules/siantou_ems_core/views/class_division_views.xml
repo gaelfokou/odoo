@@ -71,6 +71,7 @@
                                 <field name="school_id"/>
                                 <field name="level_id"/>
                                 <field name="number_of_student"/>
+                                <field name="is_timetable_active"/>
                                 <field name="delegate_student_ids" domain="[('class_id', '=', id)]" widget="many2many_tags"/>
                             </group>
                             <group>
