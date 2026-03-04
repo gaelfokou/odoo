@@ -148,7 +148,7 @@ class BiometricDeviceDetails(models.Model):
 
     def run_next_execution(self, machine):
         order = 'id asc'
-        next_machines = self.env['biometric.device.details'].search([], order=order).sorted(lambda rec: rec.id)
+        next_machines = self.env['biometric.device.details'].search([('is_active', '=', True)], order=order).sorted(lambda rec: rec.id)
         next_machines = list(next_machines)
         if len(next_machines) > 0:
             next_machine_ids = [next_machine.id for next_machine in next_machines]
@@ -169,11 +169,11 @@ class BiometricDeviceDetails(models.Model):
 
     @api.model
     def cron_download(self):
-        # machines = self.env['biometric.device.details'].search([('is_next_execution', '=', True)])
+        # machines = self.env['biometric.device.details'].search([('is_next_execution', '=', True), ('is_active', '=', True)])
         # machines = list(machines)
         # if len(machines) > 0:
         #     for machine in machines:
-        machine = self.env['biometric.device.details'].search([('is_next_execution', '=', True)], limit=1)
+        machine = self.env['biometric.device.details'].search([('is_next_execution', '=', True), ('is_active', '=', True)], limit=1)
         if machine:
             try:
                 machine.action_download_attendance()
@@ -186,7 +186,7 @@ class BiometricDeviceDetails(models.Model):
 
             self.run_next_execution(machine)
         else:
-            machine = self.env['biometric.device.details'].search([('is_next_execution', '=', False)], limit=1)
+            machine = self.env['biometric.device.details'].search([('is_next_execution', '=', False), ('is_active', '=', True)], limit=1)
             if machine:
                 try:
                     machine.action_download_attendance()

@@ -42,7 +42,7 @@ class OeSchoolCourse(models.Model):
         'oe.school.course',
         string='Cycle parent', index=True,
         domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]")
-    is_active = fields.Boolean('Actif', default=True)
+    is_active = fields.Boolean(string='Actif ?', default=True)
     company_id = fields.Many2one('res.company',
         string='Université', index=True,
         default=lambda self: self.env.company,

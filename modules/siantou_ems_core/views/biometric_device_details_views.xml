@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <record id="biometric_device_details_view_tree_inherit" model="ir.ui.view">
+            <field name="name">biometric.device.details.view.tree</field>
+            <field name="model">biometric.device.details</field>
+            <field name="inherit_id" ref="hr_zk_attendance.biometric_device_details_view_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='port_number']" position="after">
+                    <field name="is_next_execution"/>
+                    <field name="is_active"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

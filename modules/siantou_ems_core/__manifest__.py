@@ -121,6 +121,7 @@
         'views/supervision_views.xml',
         'views/daily_attendance_views.xml',
         'views/hr_department_views.xml',
+        'views/biometric_device_details_views.xml',
     ],
     'license': 'LGPL-3',
     'installable': True,

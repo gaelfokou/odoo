@@ -10,3 +10,4 @@ class BiometricDeviceDetails(models.Model):
 
     building_ids = fields.Many2many('siantou.ems.core.building', 'device_building_rel', 'device_id', 'building_id', string="Bâtiments")
     is_next_execution = fields.Boolean(string='Prochaine exécution ?', default=False)
+    is_active = fields.Boolean(string='Actif ?', default=True)
