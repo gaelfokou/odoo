@@ -59,7 +59,8 @@ class TimetableFilterWizard(models.TransientModel):
     semester_id = fields.Many2one(
         'siantou.ems.core.year.semester',
         string='Semestre',
-        required=True
+        related='group_id.semester_id',
+        store=True
     )
 
     group_id = fields.Many2one(
@@ -213,6 +214,11 @@ class TimetableFilterWizard(models.TransientModel):
         compute='_compute_has_group', store=True,
     )
 
+    is_permanent = fields.Boolean(
+        'Est un permanent',
+        default=False,
+    )
+
     @api.depends('specialty_id')
     def _compute_has_option(self):
         for record in self:
@@ -256,6 +262,8 @@ class TimetableFilterWizard(models.TransientModel):
     class_id_domain = fields.Binary(compute='_compute_all_domain', default=[])
 
     school_id_domain = fields.Binary(compute='_compute_group_domain', default=[])
+
+    employee_id_domain = fields.Binary(compute='_compute_permanent_domain', default=[])
 
     @api.depends('year_id', 'school_id', 'level_id', 'field_of_study_id', 'specialty_id', 'option_id', 'type_cour')
     def _compute_all_domain(self):
@@ -302,7 +310,6 @@ class TimetableFilterWizard(models.TransientModel):
     @api.onchange('year_id')
     def _onchange_year(self):
         for record in self:
-            record.semester_id = None
             record.group_id = None
             record.school_id = None
             record.field_of_study_id = None
@@ -334,17 +341,6 @@ class TimetableFilterWizard(models.TransientModel):
                 ]
             record.school_id_domain = domain
 
-    @api.onchange('group_id')
-    def _onchange_group(self):
-        for record in self:
-            record.school_id = None
-            record.field_of_study_id = None
-            record.level_id = None
-            record.class_id = None
-            record.specialty_id = None
-            record.option_id = None
-            record.subject_id = None
-
     @api.depends('group_id', 'school_id')
     def _compute_school_domain(self):
         for record in self:
@@ -355,6 +351,35 @@ class TimetableFilterWizard(models.TransientModel):
             if len(department_ids.ids) > 0:
                 domain.append(('department_id', 'in', department_ids.ids))
             record.specialty_id_domain = domain
+
+    @api.depends('is_permanent')
+    def _compute_permanent_domain(self):
+        for record in self:
+            domain = [
+                ('is_teacher', '=', True)
+            ]
+            if record.is_permanent:
+                domain = [
+                    ('is_permanent', '=', True)
+                ]
+            record.employee_id_domain = domain
+
+    @api.onchange('group_id')
+    def _onchange_group(self):
+        for record in self:
+            record.school_id = None
+            record.field_of_study_id = None
+            record.level_id = None
+            record.class_id = None
+            record.specialty_id = None
+            record.option_id = None
+            record.subject_id = None
+            record.employee_id = None
+
+    @api.onchange('is_permanent')
+    def _onchange_permanent(self):
+        for record in self:
+            record.employee_id = None
 
     @api.onchange('school_id')
     def _onchange_school(self):
