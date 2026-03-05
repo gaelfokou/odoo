@@ -958,6 +958,9 @@ class TimetableFilterWizard(models.TransientModel):
             })
         return report_action.report_action(self, data=all_data)
 
+    def action_print_hours_and_cost_pdf(self):
+        pass
+
     @staticmethod
     def convert_float_to_time(tm, has_second=False):
         tm = str(tm)
