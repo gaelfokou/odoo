@@ -117,6 +117,7 @@
                             <field name="start_time" readonly="is_readonly == True" invisible="id == False or start_time == end_time"/>
                             <field name="end_time" readonly="is_readonly == True" invisible="id == False or start_time == end_time"/>
                             <field name="status" invisible="1"/>
+                            <field name="is_active" invisible="id == False"/>
                             <field name="worked_start_time" invisible="not status or status not in ['present', 'permission', 'exception']" readonly="1"/>
                             <field name="worked_end_time" invisible="not status or status not in ['present', 'permission', 'exception']" readonly="1"/>
         					<field name="reason" invisible="not status or status not in ['present', 'absent', 'exception']" readonly="1"/>

@@ -529,6 +529,12 @@ class Timetable(models.Model):
 
     skip_validation = fields.Boolean('Ignorer la validation ?', default=False)
 
+    is_active = fields.Boolean(
+        string='Actif ?',
+        related='class_id.is_timetable_active',
+        store=True
+    )
+
     specialty_id_domain = fields.Binary(compute='_compute_school_domain', default=[])
 
     subject_id_domain = fields.Binary(compute='_compute_class_domain', default=[])
