@@ -386,6 +386,7 @@ class ProgressReport(models.Model):
             search_domain.append(('group_parent_id.is_submit', '=', False))
             search_domain.append(('group_parent_id.status', '=', 'valid'))
             search_domain.append(('group_id.status', '=', 'valid'))
+            search_domain.append(('is_active', '=', True))
 
             order = 'date asc, id asc'
 
@@ -517,6 +518,7 @@ class ProgressReport(models.Model):
             search_domain.append(('group_parent_id.is_submit', '=', False))
             search_domain.append(('group_parent_id.status', '=', 'valid'))
             search_domain.append(('group_id.status', '=', 'valid'))
+            search_domain.append(('is_active', '=', True))
 
             order = 'date asc, id asc'
 
@@ -845,6 +847,7 @@ class SubjectSession(models.Model):
                     ('group_parent_id.is_submit', '=', False),
                     ('group_parent_id.status', '=', 'valid'),
                     ('group_id.status', '=', 'valid'),
+                    ('is_active', '=', True),
                     ('subject_id', '=', record.report_id.subject_id.id)
                 ]
             record.timetable_id_domain = domain

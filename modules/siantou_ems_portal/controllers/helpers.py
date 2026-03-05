@@ -99,6 +99,7 @@ class Helpers:
         search_domain.append(('group_parent_id.is_submit', '=', False))
         search_domain.append(('group_parent_id.status', '=', 'valid'))
         search_domain.append(('group_id.status', '=', 'valid'))
+        search_domain.append(('is_active', '=', True))
 
         order = 'date asc, id asc'
 
@@ -310,6 +311,7 @@ class Helpers:
         search_domain.append(('group_parent_id.is_submit', '=', False))
         search_domain.append(('group_parent_id.status', '=', 'valid'))
         search_domain.append(('group_id.status', '=', 'valid'))
+        search_domain.append(('is_active', '=', True))
         search_domain.append(('status', 'in', ['present', 'permission']))
 
         order = 'date asc, id asc'
@@ -395,6 +397,7 @@ class Helpers:
         search_domain.append(('group_parent_id.is_submit', '=', False))
         search_domain.append(('group_parent_id.status', '=', 'valid'))
         search_domain.append(('group_id.status', '=', 'valid'))
+        search_domain.append(('is_active', '=', True))
         search_domain.append(('status', 'in', ['present', 'permission']))
 
         order = 'date asc, id asc'
@@ -502,6 +505,7 @@ class Helpers:
         search_domain.append(('group_parent_id.is_submit', '=', False))
         search_domain.append(('group_parent_id.status', '=', 'valid'))
         search_domain.append(('group_id.status', '=', 'valid'))
+        search_domain.append(('is_active', '=', True))
 
         order = 'date asc, id asc'
 
@@ -638,6 +642,7 @@ class Helpers:
         search_domain.append(('group_parent_id.is_submit', '=', False))
         search_domain.append(('group_parent_id.status', '=', 'valid'))
         search_domain.append(('group_id.status', '=', 'valid'))
+        search_domain.append(('is_active', '=', True))
 
         order = 'date asc, id asc'
 

@@ -164,6 +164,7 @@ class ClassFilterWizard(models.TransientModel):
                     ('group_parent_id.is_submit', '=', False),
                     ('group_parent_id.status', '=', 'valid'),
                     ('group_id.status', '=', 'valid'),
+                    ('is_active', '=', True),
                     ('class_id', 'in', class_ids),
                 ]
                 timetable_class_ids = []
@@ -188,6 +189,7 @@ class ClassFilterWizard(models.TransientModel):
                     ('group_parent_id.is_submit', '=', False),
                     ('group_parent_id.status', '=', 'valid'),
                     ('group_id.status', '=', 'valid'),
+                    ('is_active', '=', True),
                     ('class_id', 'in', class_ids),
                 ]
                 timetable_class_ids = []

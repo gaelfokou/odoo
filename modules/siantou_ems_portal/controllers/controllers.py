@@ -1239,6 +1239,7 @@ class PortalAccount(portal.CustomerPortal):
             ('group_parent_id.is_submit', '=', False),
             ('group_parent_id.status', '=', 'valid'),
             ('group_id.status', '=', 'valid'),
+            ('is_active', '=', True),
             ('id', '=', vals['timetable_id'])
         ], limit=1)
         timetable_ids = http.request.env['siantou.ems.timetable.timetable'].sudo().search([
@@ -1255,6 +1256,7 @@ class PortalAccount(portal.CustomerPortal):
             ('group_parent_id.is_submit', '=', False),
             ('group_parent_id.status', '=', 'valid'),
             ('group_id.status', '=', 'valid'),
+            ('is_active', '=', True),
             ('employee_id', '=', timetable.employee_id.id),
             ('date', '=', timetable.date),
             ('start_time', '=', timetable.start_time),
@@ -1405,6 +1407,7 @@ class PortalAccount(portal.CustomerPortal):
             ('group_parent_id.is_submit', '=', False),
             ('group_parent_id.status', '=', 'valid'),
             ('group_id.status', '=', 'valid'),
+            ('is_active', '=', True),
             ('employee_id', '=', timetable.employee_id.id),
             ('date', '=', timetable.date),
             ('start_time', '=', timetable.start_time),

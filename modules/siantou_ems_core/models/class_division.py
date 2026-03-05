@@ -285,6 +285,7 @@ class EducationClass(models.Model):
                 ('group_parent_id.is_submit', '=', False),
                 ('group_parent_id.status', '=', 'valid'),
                 ('group_id.status', '=', 'valid'),
+                ('is_active', '=', True),
             ])
 
             # Affecter les emplois du temps trouvés à l'attribut timetable_ids
@@ -309,6 +310,7 @@ class EducationClass(models.Model):
                 ('group_parent_id.is_submit', '=', False),
                 ('group_parent_id.status', '=', 'valid'),
                 ('group_id.status', '=', 'valid'),
+                ('is_active', '=', True),
             ])
 
             # Affecter les emplois du temps trouvés à l'attribut timetable_ids
