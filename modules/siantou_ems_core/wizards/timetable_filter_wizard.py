@@ -359,9 +359,7 @@ class TimetableFilterWizard(models.TransientModel):
                 ('is_teacher', '=', True)
             ]
             if record.is_permanent:
-                domain = [
-                    ('is_permanent', '=', True)
-                ]
+                domain.append(('is_permanent', '=', True))
             record.employee_id_domain = domain
 
     @api.onchange('group_id')
