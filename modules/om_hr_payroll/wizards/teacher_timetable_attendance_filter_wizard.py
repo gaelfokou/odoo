@@ -68,6 +68,21 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
         default=False,
     )
 
+    is_temporary = fields.Boolean(
+        'Est un temporaire',
+        compute='_compute_temporary',
+    )
+
+    @api.depends('is_permanent')
+    def _compute_temporary(self):
+        for record in self:
+            record.is_temporary = not record.is_permanent
+
+    @api.onchange('is_permanent')
+    def _onchange_temporary(self):
+        for record in self:
+            record.is_temporary = not record.is_permanent
+
     def _default_start_date(self):
         start_date = date.today().replace(day=1)
         return start_date
@@ -97,6 +112,20 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
         'Taux horaire défini',
         default=False,
     )
+
+    employee_id_domain = fields.Binary(compute='_compute_employee_domain', default=[])
+
+    @api.depends('is_permanent')
+    def _compute_employee_domain(self):
+        for record in self:
+            domain = [
+                ('is_teacher', '=', True)
+            ]
+            if record.is_permanent:
+                domain.append(('is_permanent', '=', True))
+            else:
+                domain.append(('is_permanent', '=', False))
+            record.employee_id_domain = domain
 
     @api.constrains('start_date', 'end_date')
     def _constrains_date(self):

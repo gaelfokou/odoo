@@ -219,6 +219,11 @@ class TimetableFilterWizard(models.TransientModel):
         default=False,
     )
 
+    is_temporary = fields.Boolean(
+        'Est un temporaire',
+        default=False,
+    )
+
     @api.depends('specialty_id')
     def _compute_has_option(self):
         for record in self:
@@ -263,7 +268,7 @@ class TimetableFilterWizard(models.TransientModel):
 
     school_id_domain = fields.Binary(compute='_compute_group_domain', default=[])
 
-    employee_id_domain = fields.Binary(compute='_compute_permanent_domain', default=[])
+    employee_id_domain = fields.Binary(compute='_compute_employee_domain', default=[])
 
     @api.depends('year_id', 'school_id', 'level_id', 'field_of_study_id', 'specialty_id', 'option_id', 'type_cour')
     def _compute_all_domain(self):
@@ -352,14 +357,17 @@ class TimetableFilterWizard(models.TransientModel):
                 domain.append(('department_id', 'in', department_ids.ids))
             record.specialty_id_domain = domain
 
-    @api.depends('is_permanent')
-    def _compute_permanent_domain(self):
+    @api.depends('is_permanent', 'is_temporary')
+    def _compute_employee_domain(self):
         for record in self:
             domain = [
                 ('is_teacher', '=', True)
             ]
-            if record.is_permanent:
-                domain.append(('is_permanent', '=', True))
+            if not record.is_permanent or not record.is_temporary:
+                if record.is_permanent:
+                    domain.append(('is_permanent', '=', True))
+                if record.is_temporary:
+                    domain.append(('is_permanent', '=', False))
             record.employee_id_domain = domain
 
     @api.onchange('group_id')
@@ -374,8 +382,8 @@ class TimetableFilterWizard(models.TransientModel):
             record.subject_id = None
             record.employee_id = None
 
-    @api.onchange('is_permanent')
-    def _onchange_permanent(self):
+    @api.onchange('is_permanent', 'is_temporary')
+    def _onchange_employee(self):
         for record in self:
             record.employee_id = None
 

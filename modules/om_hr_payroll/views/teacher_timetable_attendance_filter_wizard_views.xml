@@ -8,7 +8,9 @@
                 <form string="Filtre des émargements des enseignants">
                     <group>
                         <field name="is_permanent"/>
-                        <field name="employee_id" options="{'no_create': True}" domain="[('is_teacher', '=', True), ('is_permanent', '=', is_permanent)]"/>
+                        <field name="is_temporary"/>
+                        <field name="employee_id_domain" invisible="1"/>
+                        <field name="employee_id" options="{'no_create': True}" domain="employee_id_domain"/>
                         <field name="start_date"/>
                         <field name="end_date"/>
                         <field name="has_rate" invisible="is_permanent == True"/>
