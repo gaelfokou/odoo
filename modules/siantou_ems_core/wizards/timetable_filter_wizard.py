@@ -1177,12 +1177,7 @@ class TimetableFilterWizard(models.TransientModel):
                 rate = 0.0
                 amount = 0.0
 
-            hours_credit = 0.0
-            key_class = '{}'.format(timetable.class_id.id)
-            key_subject = '{}'.format(timetable.subject_id.id)
-            if key_class in consumptionhours:
-                if key_subject in consumptionhours[key_class]['data']:
-                    hours_credit = consumptionhours[key_class]['data'][key_subject]['data']['credit']
+            hours_credit = timetable.subject_id.hours_credit
 
             key_timetables[key]['rate'] = rate
             key_timetables[key]['amount'] = amount
@@ -1197,6 +1192,9 @@ class TimetableFilterWizard(models.TransientModel):
                 key_teacher_timetable_attendances[k]['id'] = key_timetables[key]['timetable'].school_id.id
                 key_teacher_timetable_attendances[k]['name'] = key_timetables[key]['timetable'].school_id.name
                 key_teacher_timetable_attendances[k]['data'] = []
+                key_teacher_timetable_attendances[k]['worked_time'] = 0.0
+                key_teacher_timetable_attendances[k]['amount'] = 0.0
+                key_teacher_timetable_attendances[k]['total_amount'] = 0.0
             teacher_timetable_attendance = {}
             teacher_timetable_attendance['id'] = key_timetables[key]['timetable'].id
             teacher_timetable_attendance['date'] = key_timetables[key]['timetable'].date
@@ -1221,16 +1219,7 @@ class TimetableFilterWizard(models.TransientModel):
             teacher_timetable_attendance['rate'] = key_timetables[key]['rate']
             teacher_timetable_attendance['amount'] = key_timetables[key]['amount']
             teacher_timetable_attendance['hours_credit'] = key_timetables[key]['hours_credit']
-            teacher_timetable_attendance['total_all'] = key_timetables[key]['timetable'].total_all
-            teacher_timetable_attendance['total_done'] = key_timetables[key]['timetable'].total_done
-            teacher_timetable_attendance['total_awaiting'] = key_timetables[key]['timetable'].total_awaiting
-            if teacher_timetable_attendance['total_done'] > teacher_timetable_attendance['hours_credit']:
-                teacher_timetable_attendance['class'] = 'text-danger'
-            else:
-                teacher_timetable_attendance['class'] = ''
             teacher_timetable_attendance['status'] = STATUS_TIMETABLE[key_timetables[key]['timetable'].status]
-            teacher_timetable_attendance['start_date'] = key_timetables[key]['timetable'].start_date
-            teacher_timetable_attendance['end_date'] = key_timetables[key]['timetable'].end_date
             key_teacher_timetable_attendances[k]['has_ir'] = key_timetables[key]['timetable'].employee_id.has_ir
             key_teacher_timetable_attendances[k]['has_apecus'] = key_timetables[key]['timetable'].employee_id.has_apecus
             key_teacher_timetable_attendances[k]['has_cnps'] = key_timetables[key]['timetable'].employee_id.has_cnps
