@@ -484,6 +484,12 @@ class TimetableFilterWizard(models.TransientModel):
         if self.classroom_id.id:
             domain.append(('classroom_id', '=', self.classroom_id.id))
             title.append(self.classroom_id.name)
+        if not self.is_permanent or not self.is_temporary:
+            if self.is_permanent:
+                domain.append(('is_permanent', '=', True))
+                title.append('Est un permanent')
+            if self.is_temporary:
+                domain.append(('is_permanent', '=', False))
         if self.employee_id.id:
             domain.append(('employee_id', '=', self.employee_id.id))
             title.append(self.employee_id.name)
@@ -644,6 +650,12 @@ class TimetableFilterWizard(models.TransientModel):
         if self.classroom_id.id:
             domain.append(('classroom_id', '=', self.classroom_id.id))
             title.append(self.classroom_id.name)
+        if not self.is_permanent or not self.is_temporary:
+            if self.is_permanent:
+                domain.append(('is_permanent', '=', True))
+                title.append('Est un permanent')
+            if self.is_temporary:
+                domain.append(('is_permanent', '=', False))
         if self.employee_id.id:
             domain.append(('employee_id', '=', self.employee_id.id))
             title.append(self.employee_id.name)
