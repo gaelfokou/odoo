@@ -101,6 +101,8 @@ class Helpers:
         search_domain.append(('group_id.status', '=', 'valid'))
         search_domain.append(('is_active', '=', True))
 
+        search_domain.append(('employee_id.is_teacher', '=', True))
+
         order = 'date asc, id asc'
 
         search_month = ''
@@ -314,6 +316,8 @@ class Helpers:
         search_domain.append(('is_active', '=', True))
         search_domain.append(('status', 'in', ['present', 'permission']))
 
+        search_domain.append(('employee_id.is_teacher', '=', True))
+
         order = 'date asc, id asc'
 
         search_month = ''
@@ -399,6 +403,8 @@ class Helpers:
         search_domain.append(('group_id.status', '=', 'valid'))
         search_domain.append(('is_active', '=', True))
         search_domain.append(('status', 'in', ['present', 'permission']))
+
+        search_domain.append(('employee_id.is_teacher', '=', True))
 
         order = 'date asc, id asc'
 
@@ -506,6 +512,8 @@ class Helpers:
         search_domain.append(('group_parent_id.status', '=', 'valid'))
         search_domain.append(('group_id.status', '=', 'valid'))
         search_domain.append(('is_active', '=', True))
+
+        search_domain.append(('employee_id.is_teacher', '=', True))
 
         order = 'date asc, id asc'
 
@@ -643,6 +651,8 @@ class Helpers:
         search_domain.append(('group_parent_id.status', '=', 'valid'))
         search_domain.append(('group_id.status', '=', 'valid'))
         search_domain.append(('is_active', '=', True))
+
+        search_domain.append(('employee_id.is_teacher', '=', True))
 
         order = 'date asc, id asc'
 

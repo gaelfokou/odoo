@@ -388,6 +388,8 @@ class ProgressReport(models.Model):
             search_domain.append(('group_id.status', '=', 'valid'))
             search_domain.append(('is_active', '=', True))
 
+            search_domain.append(('employee_id.is_teacher', '=', True))
+
             order = 'date asc, id asc'
 
             search_progressreports = self.env['siantou.ems.timetable.timetable'].search(search_domain, order=order).sorted(lambda rec: (rec.date, rec.id))
@@ -519,6 +521,8 @@ class ProgressReport(models.Model):
             search_domain.append(('group_parent_id.status', '=', 'valid'))
             search_domain.append(('group_id.status', '=', 'valid'))
             search_domain.append(('is_active', '=', True))
+
+            search_domain.append(('employee_id.is_teacher', '=', True))
 
             order = 'date asc, id asc'
 
