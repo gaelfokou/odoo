@@ -16,6 +16,16 @@ DATETIME_FORMAT_FR = '%d/%m/%Y %H:%M'
 TIME_FORMAT = '%H:%M:%S'
 TIME_FORMAT_FR = '%H:%M'
 
+CURRENT_WEEKDAY = {
+    '0': 'Lundi',
+    '1': 'Mardi',
+    '2': 'Mercredi',
+    '3': 'Jeudi',
+    '4': 'Vendredi',
+    '5': 'Samedi',
+    '6': 'Dimanche'
+}
+
 STATUS_TIMETABLE = {
     'pending': 'En attente',
     'progress': 'En cours',
