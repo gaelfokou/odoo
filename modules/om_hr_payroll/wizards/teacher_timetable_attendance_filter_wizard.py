@@ -156,11 +156,11 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
         domain.append(('is_active', '=', True))
         domain.append(('status', 'in', ['present', 'permission']))
 
-        if self.is_permanent:
-            title.append('Est un permanent')
-
         domain.append(('employee_id.is_teacher', '=', True))
         domain.append(('employee_id.is_permanent', '=', self.is_permanent))
+
+        if self.is_permanent:
+            title.append('Est un permanent')
 
         if self.employee_id.id:
             domain.append(('employee_id', '=', self.employee_id.id))
