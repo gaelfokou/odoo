@@ -1177,9 +1177,17 @@ class TimetableFilterWizard(models.TransientModel):
                 rate = 0.0
                 amount = 0.0
 
+            hours_credit = 0.0
+            key_class = '{}'.format(timetable.class_id.id)
+            key_subject = '{}'.format(timetable.subject_id.id)
+            if key_class in consumptionhours:
+                if key_subject in consumptionhours[key_class]['data']:
+                    hours_credit = consumptionhours[key_class]['data'][key_subject]['data']['credit']
+
             key_timetables[key]['rate'] = rate
             key_timetables[key]['amount'] = amount
             key_timetables[key]['worked_hours'] = worked_hours
+            key_timetables[key]['hours_credit'] = hours_credit
 
         key_teacher_timetable_attendances = {}
         for key in key_timetables.keys():
@@ -1212,7 +1220,7 @@ class TimetableFilterWizard(models.TransientModel):
             teacher_timetable_attendance['worked_time'] = key_timetables[key]['worked_hours']
             teacher_timetable_attendance['rate'] = key_timetables[key]['rate']
             teacher_timetable_attendance['amount'] = key_timetables[key]['amount']
-            teacher_timetable_attendance['hours_credit'] = key_timetables[key]['timetable'].hours_credit
+            teacher_timetable_attendance['hours_credit'] = key_timetables[key]['hours_credit']
             teacher_timetable_attendance['total_all'] = key_timetables[key]['timetable'].total_all
             teacher_timetable_attendance['total_done'] = key_timetables[key]['timetable'].total_done
             teacher_timetable_attendance['total_awaiting'] = key_timetables[key]['timetable'].total_awaiting
