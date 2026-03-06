@@ -1093,7 +1093,8 @@ class TimetableFilterWizard(models.TransientModel):
             start_time = TimetableFilterWizard.convert_float_to_time(timetable.start_time, True)
             key = '{}-{}-{}-{}'.format(timetable.class_id.id, timetable.date, start_time, end_time)
             if key not in key_timetables:
-                key_timetables[key] = timetable
+                key_timetables[key] = {}
+                key_timetables[key]['timetable'] = timetable
             else:
                 continue
 
@@ -1165,6 +1166,62 @@ class TimetableFilterWizard(models.TransientModel):
             if timetable.employee_id.is_permanent:
                 rate = 0.0
                 amount = 0.0
+
+            key_timetables[key]['rate'] = rate
+            key_timetables[key]['amount'] = amount
+            key_timetables[key]['worked_hours'] = worked_hours
+
+        key_teacher_timetable_attendances = {}
+        for key in key_timetables.keys():
+            k = '{}'.format(key_timetables[key]['timetable'].school_id.id)
+            if k not in key_teacher_timetable_attendances:
+                key_teacher_timetable_attendances[k] = {}
+                key_teacher_timetable_attendances[k]['id'] = key_timetables[key]['timetable'].school_id.id
+                key_teacher_timetable_attendances[k]['name'] = key_timetables[key]['timetable'].school_id.name
+                key_teacher_timetable_attendances[k]['data'] = []
+            teacher_timetable_attendance = {}
+            teacher_timetable_attendance['id'] = key_timetables[key]['timetable'].id
+            teacher_timetable_attendance['date'] = key_timetables[key]['timetable'].date
+            teacher_timetable_attendance['date_of_week'] = datetime.strftime(key_timetables[key]['timetable'].date, DATE_FORMAT_FR)
+            teacher_timetable_attendance['class_id'] = key_timetables[key]['timetable'].class_id.id
+            teacher_timetable_attendance['class_name'] = key_timetables[key]['timetable'].class_id.name
+            teacher_timetable_attendance['level_id'] = key_timetables[key]['timetable'].level_id.id
+            teacher_timetable_attendance['level_name'] = key_timetables[key]['timetable'].level_id.name
+            teacher_timetable_attendance['subject_id'] = key_timetables[key]['timetable'].subject_id.id
+            teacher_timetable_attendance['subject_name'] = key_timetables[key]['timetable'].subject_id.name
+            teacher_timetable_attendance['subject_code'] = key_timetables[key]['timetable'].subject_id.code
+            teacher_timetable_attendance['subject_shared_subject'] = '(TC)' if key_timetables[key]['timetable'].subject_id.shared_subject else ''
+            teacher_timetable_attendance['employee_id'] = key_timetables[key]['timetable'].employee_id.id
+            teacher_timetable_attendance['identifier'] = key_timetables[key]['timetable'].employee_id.identifier
+            teacher_timetable_attendance['employee_name'] = key_timetables[key]['timetable'].employee_id.name
+            teacher_timetable_attendance['start_time'] = TimetableFilterWizard.convert_float_to_time(key_timetables[key]['timetable'].start_time)
+            teacher_timetable_attendance['end_time'] = TimetableFilterWizard.convert_float_to_time(key_timetables[key]['timetable'].end_time)
+            teacher_timetable_attendance['day_of_week'] = CURRENT_WEEKDAY[key_timetables[key]['timetable'].day_of_week]
+            teacher_timetable_attendance['worked_start_time'] = TimetableFilterWizard.convert_float_to_time(key_timetables[key]['timetable'].worked_start_time)
+            teacher_timetable_attendance['worked_end_time'] = TimetableFilterWizard.convert_float_to_time(key_timetables[key]['timetable'].worked_end_time)
+            teacher_timetable_attendance['worked_time'] = key_timetables[key]['worked_hours']
+            teacher_timetable_attendance['rate'] = key_timetables[key]['rate']
+            teacher_timetable_attendance['amount'] = key_timetables[key]['amount']
+            teacher_timetable_attendance['hours_credit'] = key_timetables[key]['timetable'].hours_credit
+            teacher_timetable_attendance['total_all'] = key_timetables[key]['timetable'].total_all
+            teacher_timetable_attendance['total_done'] = key_timetables[key]['timetable'].total_done
+            teacher_timetable_attendance['total_awaiting'] = key_timetables[key]['timetable'].total_awaiting
+            if teacher_timetable_attendance['total_done'] > teacher_timetable_attendance['hours_credit']:
+                teacher_timetable_attendance['class'] = 'text-danger'
+            else:
+                teacher_timetable_attendance['class'] = ''
+            teacher_timetable_attendance['status'] = STATUS_TIMETABLE[key_timetables[key]['timetable'].status]
+            teacher_timetable_attendance['start_date'] = key_timetables[key]['timetable'].start_date
+            teacher_timetable_attendance['end_date'] = key_timetables[key]['timetable'].end_date
+            key_teacher_timetable_attendances[k]['has_ir'] = key_timetables[key]['timetable'].employee_id.has_ir
+            key_teacher_timetable_attendances[k]['has_apecus'] = key_timetables[key]['timetable'].employee_id.has_apecus
+            key_teacher_timetable_attendances[k]['has_cnps'] = key_timetables[key]['timetable'].employee_id.has_cnps
+            key_teacher_timetable_attendances[k]['has_allowance_cd'] = key_timetables[key]['timetable'].employee_id.has_allowance_cd
+            key_teacher_timetable_attendances[k]['has_allowance_co'] = key_timetables[key]['timetable'].employee_id.has_allowance_co
+            key_teacher_timetable_attendances[k]['worked_time'] += teacher_timetable_attendance['worked_time']
+            key_teacher_timetable_attendances[k]['amount'] += teacher_timetable_attendance['amount']
+            key_teacher_timetable_attendances[k]['total_amount'] = key_teacher_timetable_attendances[k]['amount']
+            key_teacher_timetable_attendances[k]['data'].append(teacher_timetable_attendance)
 
         start_date = datetime.strftime(self.start_date, DATE_FORMAT_FR)
         end_date = datetime.strftime(self.end_date, DATE_FORMAT_FR)
