@@ -1177,8 +1177,9 @@ class TimetableFilterWizard(models.TransientModel):
                 rate = 0.0
                 amount = 0.0
 
-            if rate == 0.0:
-                continue
+            if not timetable.employee_id.is_permanent:
+                if rate == 0.0:
+                    continue
 
             hours_credit = timetable.subject_id.hours_credit
 

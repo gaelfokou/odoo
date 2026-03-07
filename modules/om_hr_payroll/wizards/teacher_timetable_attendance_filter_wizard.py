@@ -360,9 +360,10 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
                 rate = key_payslips[key]['rate']
                 amount = key_payslips[key]['amount']
 
-            if self.has_rate:
-                if rate == 0.0:
-                    continue
+            if not timetable.employee_id.is_permanent:
+                if self.has_rate:
+                    if rate == 0.0:
+                        continue
 
             hours_credit = 0.0
             total_all = 0.0
