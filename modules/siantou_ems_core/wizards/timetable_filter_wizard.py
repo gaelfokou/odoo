@@ -1177,6 +1177,9 @@ class TimetableFilterWizard(models.TransientModel):
                 rate = 0.0
                 amount = 0.0
 
+            if rate == 0.0:
+                continue
+
             hours_credit = timetable.subject_id.hours_credit
 
             key_timetables[key]['rate'] = rate
