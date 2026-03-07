@@ -1017,6 +1017,10 @@ class TimetableFilterWizard(models.TransientModel):
             })
         return report_action.report_action(self, data=all_data)
 
+    def action_print_hours_percentage_pdf(self):
+        domain = []
+        title = []
+
     def action_print_hours_and_cost_pdf(self):
         domain = []
         title = []
