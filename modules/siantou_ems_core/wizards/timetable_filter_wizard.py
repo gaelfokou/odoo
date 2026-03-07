@@ -1159,7 +1159,6 @@ class TimetableFilterWizard(models.TransientModel):
             teacher_timetable_attendance['worked_start_time'] = TimetableFilterWizard.convert_float_to_time(key_timetables[key]['timetable'].worked_start_time)
             teacher_timetable_attendance['worked_end_time'] = TimetableFilterWizard.convert_float_to_time(key_timetables[key]['timetable'].worked_end_time)
             teacher_timetable_attendance['worked_time'] = key_timetables[key]['worked_hours']
-            teacher_timetable_attendance['hours_credit'] = key_timetables[key]['hours_credit']
             teacher_timetable_attendance['status'] = STATUS_TIMETABLE[key_timetables[key]['timetable'].status]
             key_teacher_timetable_attendances[k]['worked_time'] += teacher_timetable_attendance['worked_time']
             key_teacher_timetable_attendances[k]['data'].append(teacher_timetable_attendance)
