@@ -5,6 +5,7 @@ from odoo.tools import DEFAULT_SERVER_DATETIME_FORMAT
 from odoo.exceptions import UserError, ValidationError
 from odoo.addons.base.models.res_partner import WARNING_MESSAGE, WARNING_HELP
 from datetime import date, datetime, timedelta, time
+import random
 import re
 import psycopg2
 import copy
@@ -230,12 +231,18 @@ class ExamScore(models.Model):
                     else:
                         exist_student_ids.append(score_id.student_id.id)
                 exist_student_ids = list(set(exist_student_ids))
+                not_exist_student_ids = []
                 for student_id in exam.class_id.student_ids:
                     if student_id.id not in exist_student_ids:
-                        exam.score_ids.create({
-                            'exam_id': exam.id,
-                            'student_id': student_id.id,
-                        })
+                        not_exist_student_ids.append(student_id.id)
+                not_exist_student_ids = list(set(not_exist_student_ids))
+                random.shuffle(not_exist_student_ids)
+                for i, not_exist_student_id in enumerate(not_exist_student_ids):
+                    exam.score_ids.create({
+                        'exam_id': exam.id,
+                        'student_id': not_exist_student_id,
+                        'sequence': i + 1,
+                    })
             # self.env.cr.commit()
         except psycopg2.errors.NotNullViolation as error:
             _logger.info(f'----------- tototototototo Exception {error} -----------')
@@ -247,9 +254,26 @@ class ExamScore(models.Model):
     def update_student_score(self, exam):
         try:
             if exam.exam_type in ['sn', 'rsn']:
+                student_ids = exam.class_id.student_ids.ids
+                exist_student_ids = []
                 for score_id in exam.score_ids:
-                    score_id.write({
-                        'student_id': score_id.student_id.id,
+                    if score_id.student_id.id not in student_ids:
+                        score_id.unlink()
+                    else:
+                        exist_student_ids.append(score_id.student_id.id)
+                exist_student_ids = list(set(exist_student_ids))
+                not_exist_student_ids = []
+                for student_id in exam.class_id.student_ids:
+                    if student_id.id not in exist_student_ids:
+                        not_exist_student_ids.append(student_id.id)
+                not_exist_student_ids = list(set(not_exist_student_ids))
+                random.shuffle(not_exist_student_ids)
+                i = len(exist_student_ids)
+                for not_exist_student_id in not_exist_student_ids:
+                    exam.score_ids.create({
+                        'exam_id': exam.id,
+                        'student_id': not_exist_student_id,
+                        'sequence': i + 1,
                     })
             # self.env.cr.commit()
         except psycopg2.errors.NotNullViolation as error:
@@ -279,6 +303,7 @@ class ExamScore(models.Model):
 class SubjectScore(models.Model):
     _name = 'siantou.ems.core.subject.score'
     _description = 'Note d\'examen'
+    _order = 'sequence'
     _inherit=['mail.thread', 'mail.activity.mixin',]
 
     name = fields.Char(
@@ -323,6 +348,8 @@ class SubjectScore(models.Model):
 
     anonymous = fields.Char(string="Anonymat")
 
+    sequence = fields.Integer(string='Séquence', required=True, default=1)
+
     score = fields.Float(
         'Note',
         default=0.0,
@@ -333,6 +360,10 @@ class SubjectScore(models.Model):
     )
 
     student_id_domain = fields.Binary(compute='_compute_class_domain', default=[])
+
+    _sql_constraints = [
+        ('unique_sequence', 'unique(sequence)', 'La séquence de la note d\'examen doit être unique.'),
+    ]
 
     @api.depends('student_id', 'exam_id')
     def _compute_name(self):
