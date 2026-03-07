@@ -1020,6 +1020,177 @@ class TimetableFilterWizard(models.TransientModel):
     def action_print_hours_percentage_pdf(self):
         domain = []
         title = []
+        if self.year_id.id:
+            domain.append(('year_id', '=', self.year_id.id))
+            title.append(self.year_id.name)
+        if self.semester_id.id:
+            domain.append(('semester_id', '=', self.semester_id.id))
+            title.append(self.semester_id.name)
+        if self.school_id.id:
+            domain.append(('school_id', '=', self.school_id.id))
+            title.append(self.school_id.name)
+        if self.level_id.id:
+            domain.append(('level_id', '=', self.level_id.id))
+            title.append(self.level_id.name)
+        if self.field_of_study_id.id:
+            domain.append(('field_of_study_id', '=', self.field_of_study_id.id))
+            title.append(self.field_of_study_id.name)
+        if self.specialty_id.id:
+            domain.append(('specialty_id', '=', self.specialty_id.id))
+            title.append(self.specialty_id.name)
+        if self.option_id.id:
+            domain.append(('option_id', '=', self.option_id.id))
+            title.append(self.option_id.name)
+        if self.type_cour:
+            domain.append(('class_id.type_cour', '=', self.type_cour))
+            title.append(TYPE_COUR[self.type_cour])
+        if self.class_id.id:
+            domain.append(('class_id', '=', self.class_id.id))
+            title.append(self.class_id.name)
+        if self.class_group_id.id:
+            domain.append(('class_group_id', '=', self.class_group_id.id))
+            title.append(self.class_group_id.name)
+        if self.subject_id.id:
+            domain.append(('subject_id', '=', self.subject_id.id))
+            title.append(self.subject_id.name)
+        if self.building_id.id:
+            domain.append(('building_id', '=', self.building_id.id))
+            title.append(self.building_id.name)
+        if self.classroom_id.id:
+            domain.append(('classroom_id', '=', self.classroom_id.id))
+            title.append(self.classroom_id.name)
+        domain.append(('employee_id.is_teacher', '=', True))
+        if self.group_id.id:
+            domain.append(('group_id', '=', self.group_id.id))
+            title.append(self.group_id.name)
+        else:
+            group_ids = self.env['siantou.ems.timetable.group'].search(['|', '|', ('create_uid', '=', self.env.user.id), ('read_user_ids', '=', self.env.user.id), ('write_user_ids', '=', self.env.user.id)])
+            domain.append(('group_id', 'in', group_ids.ids))
+
+        order = 'date asc, id asc'
+
+        all_domain = []
+        all_domain += domain
+        all_timetables = self.env['siantou.ems.timetable.timetable'].search(all_domain, order=order).sorted(lambda rec: (rec.date, rec.id))
+
+        if not self.is_permanent or not self.is_temporary:
+            if self.is_permanent:
+                domain.append(('employee_id.is_permanent', '=', True))
+                title.append('Est un permanent')
+            if self.is_temporary:
+                domain.append(('employee_id.is_permanent', '=', False))
+        if self.employee_id.id:
+            domain.append(('employee_id', '=', self.employee_id.id))
+            title.append(self.employee_id.name)
+
+        timetables = self.env['siantou.ems.timetable.timetable'].search(domain, order=order).sorted(lambda rec: (rec.date, rec.id))
+
+        if self.start_date and self.end_date:
+            start_date = datetime.strftime(self.start_date, DATE_FORMAT_FR)
+            end_date = datetime.strftime(self.end_date, DATE_FORMAT_FR)
+            title.append('{} - {}'.format(start_date, end_date))
+            timetables = timetables.filtered(lambda rec: rec.date and rec.day_of_week and rec.date >= self.start_date and rec.date <= self.end_date)
+            all_timetables = all_timetables.filtered(lambda rec: rec.date and rec.day_of_week and rec.date >= self.start_date and rec.date <= self.end_date)
+        if self.start_time and self.end_time:
+            start_time = TimetableFilterWizard.convert_float_to_time(self.start_time)
+            end_time = TimetableFilterWizard.convert_float_to_time(self.end_time)
+            title.append('{} - {}'.format(start_time, end_time))
+            timetables = timetables.filtered(lambda rec: not (rec.start_time >= self.end_time or rec.end_time <= self.start_time))
+            all_timetables = all_timetables.filtered(lambda rec: not (rec.start_time >= self.end_time or rec.end_time <= self.start_time))
+            # timetables = timetables.filtered(lambda rec: self.search_filtered(rec))
+
+        timetables = list(timetables)
+
+        key_timetables = {}
+        for timetable in timetables:
+            if not timetable.date or not timetable.day_of_week or not timetable.employee_id.id:
+                continue
+
+            end_time = TimetableFilterWizard.convert_float_to_time(timetable.end_time, True)
+            start_time = TimetableFilterWizard.convert_float_to_time(timetable.start_time, True)
+            key = '{}-{}-{}-{}'.format(timetable.class_id.id, timetable.date, start_time, end_time)
+            if key not in key_timetables:
+                key_timetables[key] = {}
+                key_timetables[key]['timetable'] = timetable
+            else:
+                continue
+
+            end_time = TimetableFilterWizard.convert_float_to_time(timetable.end_time, True)
+            start_time = TimetableFilterWizard.convert_float_to_time(timetable.start_time, True)
+            end_time = datetime.strptime(f"{timetable.date} {end_time}", DATETIME_FORMAT)
+            start_time = datetime.strptime(f"{timetable.date} {start_time}", DATETIME_FORMAT)
+
+            worked_hours = end_time - start_time
+            worked_hours = worked_hours.total_seconds() / 3600.0
+            worked_hours = round(worked_hours, 2)
+
+            if worked_hours < 0.0:
+                continue
+
+            key_timetables[key]['worked_hours'] = worked_hours
+
+        key_teacher_timetable_attendances = {}
+        for key in key_timetables.keys():
+            k = '{}'.format(key_timetables[key]['timetable'].school_id.id)
+            if k not in key_teacher_timetable_attendances:
+                key_teacher_timetable_attendances[k] = {}
+                key_teacher_timetable_attendances[k]['id'] = key_timetables[key]['timetable'].school_id.id
+                key_teacher_timetable_attendances[k]['name'] = key_timetables[key]['timetable'].school_id.name
+                key_teacher_timetable_attendances[k]['data'] = []
+                key_teacher_timetable_attendances[k]['worked_time'] = 0.0
+            teacher_timetable_attendance = {}
+            teacher_timetable_attendance['id'] = key_timetables[key]['timetable'].id
+            teacher_timetable_attendance['date'] = key_timetables[key]['timetable'].date
+            teacher_timetable_attendance['date_of_week'] = datetime.strftime(key_timetables[key]['timetable'].date, DATE_FORMAT_FR)
+            teacher_timetable_attendance['class_id'] = key_timetables[key]['timetable'].class_id.id
+            teacher_timetable_attendance['class_name'] = key_timetables[key]['timetable'].class_id.name
+            teacher_timetable_attendance['level_id'] = key_timetables[key]['timetable'].level_id.id
+            teacher_timetable_attendance['level_name'] = key_timetables[key]['timetable'].level_id.name
+            teacher_timetable_attendance['subject_id'] = key_timetables[key]['timetable'].subject_id.id
+            teacher_timetable_attendance['subject_name'] = key_timetables[key]['timetable'].subject_id.name
+            teacher_timetable_attendance['subject_code'] = key_timetables[key]['timetable'].subject_id.code
+            teacher_timetable_attendance['subject_shared_subject'] = '(TC)' if key_timetables[key]['timetable'].subject_id.shared_subject else ''
+            teacher_timetable_attendance['employee_id'] = key_timetables[key]['timetable'].employee_id.id
+            teacher_timetable_attendance['identifier'] = key_timetables[key]['timetable'].employee_id.identifier
+            teacher_timetable_attendance['employee_name'] = key_timetables[key]['timetable'].employee_id.name
+            teacher_timetable_attendance['start_time'] = TimetableFilterWizard.convert_float_to_time(key_timetables[key]['timetable'].start_time)
+            teacher_timetable_attendance['end_time'] = TimetableFilterWizard.convert_float_to_time(key_timetables[key]['timetable'].end_time)
+            teacher_timetable_attendance['day_of_week'] = CURRENT_WEEKDAY[key_timetables[key]['timetable'].day_of_week]
+            teacher_timetable_attendance['worked_start_time'] = TimetableFilterWizard.convert_float_to_time(key_timetables[key]['timetable'].worked_start_time)
+            teacher_timetable_attendance['worked_end_time'] = TimetableFilterWizard.convert_float_to_time(key_timetables[key]['timetable'].worked_end_time)
+            teacher_timetable_attendance['worked_time'] = key_timetables[key]['worked_hours']
+            teacher_timetable_attendance['hours_credit'] = key_timetables[key]['hours_credit']
+            teacher_timetable_attendance['status'] = STATUS_TIMETABLE[key_timetables[key]['timetable'].status]
+            key_teacher_timetable_attendances[k]['worked_time'] += teacher_timetable_attendance['worked_time']
+            key_teacher_timetable_attendances[k]['data'].append(teacher_timetable_attendance)
+
+        key_all_timetables = {}
+        for timetable in all_timetables:
+            if not timetable.date or not timetable.day_of_week or not timetable.employee_id.id:
+                continue
+
+            end_time = TimetableFilterWizard.convert_float_to_time(timetable.end_time, True)
+            start_time = TimetableFilterWizard.convert_float_to_time(timetable.start_time, True)
+            key = '{}-{}-{}-{}'.format(timetable.class_id.id, timetable.date, start_time, end_time)
+            if key not in key_all_timetables:
+                key_all_timetables[key] = {}
+                key_all_timetables[key]['timetable'] = timetable
+            else:
+                continue
+
+            end_time = TimetableFilterWizard.convert_float_to_time(timetable.end_time, True)
+            start_time = TimetableFilterWizard.convert_float_to_time(timetable.start_time, True)
+            end_time = datetime.strptime(f"{timetable.date} {end_time}", DATETIME_FORMAT)
+            start_time = datetime.strptime(f"{timetable.date} {start_time}", DATETIME_FORMAT)
+
+            worked_hours = end_time - start_time
+            worked_hours = worked_hours.total_seconds() / 3600.0
+            worked_hours = round(worked_hours, 2)
+
+            if worked_hours < 0.0:
+                continue
+
+            key_all_timetables[key]['worked_hours'] = worked_hours
 
     def action_print_hours_and_cost_pdf(self):
         domain = []
