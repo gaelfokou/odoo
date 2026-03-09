@@ -13,7 +13,8 @@
                         <field name="school_id_domain" invisible="1"/>
                         <field name="school_id" options="{'no_create': True}" domain="school_id_domain"/>
                         <field name="cycle_id"/>
-                        <field name="department_id" options="{'no_create': True}" domain="[('school_id', '=', school_id)]"/>
+                        <field name="department_id_domain" invisible="1"/>
+                        <field name="department_id" options="{'no_create': True}" domain="department_id_domain"/>
                         <field name="field_of_study_id" options="{'no_create': True}" domain="[('school_id', '=', school_id), ('cycle_id', '=', cycle_id)]"/>
                         <field name="level_id" options="{'no_create': True}" domain="[('semester_ids', '=', semester_id)]"/>
                         <field name="specialty_id_domain" invisible="1"/>

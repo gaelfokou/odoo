@@ -105,8 +105,8 @@ class TimetableFilterWizard(models.TransientModel):
     department_id = fields.Many2one(
         'hr.department',
         string='Département',
-        related='specialty_id.department_id',
-        store=True
+        # related='specialty_id.department_id',
+        # store=True
     )
 
     specialty_id = fields.Many2one(
@@ -270,6 +270,8 @@ class TimetableFilterWizard(models.TransientModel):
 
             record.has_group = len(group_ids.ids) > 0
 
+    department_id_domain = fields.Binary(compute='_compute_department_domain', default=[])
+
     specialty_id_domain = fields.Binary(compute='_compute_school_domain', default=[])
 
     subject_id_domain = fields.Binary(compute='_compute_class_domain', default=[])
@@ -357,12 +359,25 @@ class TimetableFilterWizard(models.TransientModel):
             record.school_id_domain = domain
 
     @api.depends('group_id', 'school_id')
+    def _compute_department_domain(self):
+        for record in self:
+            department_ids = record.group_id.department_ids
+            domain = []
+            if record.school_id.id:
+                domain.append(('school_id', '=', record.school_id.id))
+            if len(department_ids.ids) > 0:
+                domain.append(('id', 'in', department_ids.ids))
+            record.department_id_domain = domain
+
+    @api.depends('group_id', 'school_id', 'department_id')
     def _compute_school_domain(self):
         for record in self:
             department_ids = record.group_id.department_ids
             domain = []
             if record.school_id.id:
                 domain.append(('school_id', '=', record.school_id.id))
+            if record.department_id.id:
+                domain.append(('department_id', '=', record.department_id.id))
             if len(department_ids.ids) > 0:
                 domain.append(('department_id', 'in', department_ids.ids))
             record.specialty_id_domain = domain
