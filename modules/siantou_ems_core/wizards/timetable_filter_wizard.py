@@ -1167,16 +1167,31 @@ class TimetableFilterWizard(models.TransientModel):
         for key in key_timetables.keys():
             if self.department_id.id:
                 k = '{}'.format(key_timetables[key]['timetable'].specialty_id.id)
+                if k not in key_teacher_timetable_attendances:
+                    key_teacher_timetable_attendances[k] = {}
+                    key_teacher_timetable_attendances[k]['id'] = key_timetables[key]['timetable'].specialty_id.id
+                    key_teacher_timetable_attendances[k]['name'] = key_timetables[key]['timetable'].specialty_id.name
+                    key_teacher_timetable_attendances[k]['data'] = []
+                    key_teacher_timetable_attendances[k]['worked_time'] = 0.0
+                    key_teacher_timetable_attendances[k]['percentage'] = 0.0
             elif self.school_id.id:
                 k = '{}'.format(key_timetables[key]['timetable'].department_id.id)
+                if k not in key_teacher_timetable_attendances:
+                    key_teacher_timetable_attendances[k] = {}
+                    key_teacher_timetable_attendances[k]['id'] = key_timetables[key]['timetable'].department_id.id
+                    key_teacher_timetable_attendances[k]['name'] = key_timetables[key]['timetable'].department_id.name
+                    key_teacher_timetable_attendances[k]['data'] = []
+                    key_teacher_timetable_attendances[k]['worked_time'] = 0.0
+                    key_teacher_timetable_attendances[k]['percentage'] = 0.0
             else:
                 k = '{}'.format(key_timetables[key]['timetable'].school_id.id)
-            if k not in key_teacher_timetable_attendances:
-                key_teacher_timetable_attendances[k] = {}
-                key_teacher_timetable_attendances[k]['id'] = key_timetables[key]['timetable'].school_id.id
-                key_teacher_timetable_attendances[k]['name'] = key_timetables[key]['timetable'].school_id.name
-                key_teacher_timetable_attendances[k]['data'] = []
-                key_teacher_timetable_attendances[k]['worked_time'] = 0.0
+                if k not in key_teacher_timetable_attendances:
+                    key_teacher_timetable_attendances[k] = {}
+                    key_teacher_timetable_attendances[k]['id'] = key_timetables[key]['timetable'].school_id.id
+                    key_teacher_timetable_attendances[k]['name'] = key_timetables[key]['timetable'].school_id.name
+                    key_teacher_timetable_attendances[k]['data'] = []
+                    key_teacher_timetable_attendances[k]['worked_time'] = 0.0
+                    key_teacher_timetable_attendances[k]['percentage'] = 0.0
             teacher_timetable_attendance = {}
             teacher_timetable_attendance['id'] = key_timetables[key]['timetable'].id
             teacher_timetable_attendance['date'] = key_timetables[key]['timetable'].date
@@ -1201,6 +1216,9 @@ class TimetableFilterWizard(models.TransientModel):
             teacher_timetable_attendance['status'] = STATUS_TIMETABLE[key_timetables[key]['timetable'].status]
             key_teacher_timetable_attendances[k]['worked_time'] += teacher_timetable_attendance['worked_time']
             key_teacher_timetable_attendances[k]['data'].append(teacher_timetable_attendance)
+
+        for key in key_teacher_timetable_attendances.keys():
+            key_teacher_timetable_attendances[key]['worked_time'] = round(key_teacher_timetable_attendances[key]['worked_time'], 2)
 
         key_all_timetables = {}
         for timetable in all_timetables:
@@ -1234,16 +1252,31 @@ class TimetableFilterWizard(models.TransientModel):
         for key in key_all_timetables.keys():
             if self.department_id.id:
                 k = '{}'.format(key_all_timetables[key]['timetable'].specialty_id.id)
+                if k not in key_all_teacher_timetable_attendances:
+                    key_all_teacher_timetable_attendances[k] = {}
+                    key_all_teacher_timetable_attendances[k]['id'] = key_all_timetables[key]['timetable'].specialty_id.id
+                    key_all_teacher_timetable_attendances[k]['name'] = key_all_timetables[key]['timetable'].specialty_id.name
+                    key_all_teacher_timetable_attendances[k]['data'] = []
+                    key_all_teacher_timetable_attendances[k]['worked_time'] = 0.0
+                    key_all_teacher_timetable_attendances[k]['percentage'] = 0.0
             elif self.school_id.id:
                 k = '{}'.format(key_all_timetables[key]['timetable'].department_id.id)
+                if k not in key_all_teacher_timetable_attendances:
+                    key_all_teacher_timetable_attendances[k] = {}
+                    key_all_teacher_timetable_attendances[k]['id'] = key_all_timetables[key]['timetable'].department_id.id
+                    key_all_teacher_timetable_attendances[k]['name'] = key_all_timetables[key]['timetable'].department_id.name
+                    key_all_teacher_timetable_attendances[k]['data'] = []
+                    key_all_teacher_timetable_attendances[k]['worked_time'] = 0.0
+                    key_all_teacher_timetable_attendances[k]['percentage'] = 0.0
             else:
                 k = '{}'.format(key_all_timetables[key]['timetable'].school_id.id)
-            if k not in key_all_teacher_timetable_attendances:
-                key_all_teacher_timetable_attendances[k] = {}
-                key_all_teacher_timetable_attendances[k]['id'] = key_all_timetables[key]['timetable'].school_id.id
-                key_all_teacher_timetable_attendances[k]['name'] = key_all_timetables[key]['timetable'].school_id.name
-                key_all_teacher_timetable_attendances[k]['data'] = []
-                key_all_teacher_timetable_attendances[k]['worked_time'] = 0.0
+                if k not in key_all_teacher_timetable_attendances:
+                    key_all_teacher_timetable_attendances[k] = {}
+                    key_all_teacher_timetable_attendances[k]['id'] = key_all_timetables[key]['timetable'].school_id.id
+                    key_all_teacher_timetable_attendances[k]['name'] = key_all_timetables[key]['timetable'].school_id.name
+                    key_all_teacher_timetable_attendances[k]['data'] = []
+                    key_all_teacher_timetable_attendances[k]['worked_time'] = 0.0
+                    key_all_teacher_timetable_attendances[k]['percentage'] = 0.0
             teacher_timetable_attendance = {}
             teacher_timetable_attendance['id'] = key_all_timetables[key]['timetable'].id
             teacher_timetable_attendance['date'] = key_all_timetables[key]['timetable'].date
@@ -1268,6 +1301,16 @@ class TimetableFilterWizard(models.TransientModel):
             teacher_timetable_attendance['status'] = STATUS_TIMETABLE[key_all_timetables[key]['timetable'].status]
             key_all_teacher_timetable_attendances[k]['worked_time'] += teacher_timetable_attendance['worked_time']
             key_all_teacher_timetable_attendances[k]['data'].append(teacher_timetable_attendance)
+
+        for key in key_all_teacher_timetable_attendances.keys():
+            key_all_teacher_timetable_attendances[key]['worked_time'] = round(key_all_teacher_timetable_attendances[key]['worked_time'], 2)
+
+        for key in key_teacher_timetable_attendances.keys():
+            if key in key_all_teacher_timetable_attendances:
+                worked_time = key_teacher_timetable_attendances[key]['worked_time']
+                if key_all_teacher_timetable_attendances[key]['worked_time'] > 0:
+                    key_teacher_timetable_attendances[key]['percentage'] = (worked_time / key_all_teacher_timetable_attendances[key]['worked_time']) * 100
+                    key_teacher_timetable_attendances[key]['percentage'] = round(key_teacher_timetable_attendances[key]['percentage'], 2)
 
     def action_print_hours_and_cost_pdf(self):
         domain = []
@@ -1447,18 +1490,34 @@ class TimetableFilterWizard(models.TransientModel):
         for key in key_timetables.keys():
             if self.department_id.id:
                 k = '{}'.format(key_timetables[key]['timetable'].specialty_id.id)
+                if k not in key_teacher_timetable_attendances:
+                    key_teacher_timetable_attendances[k] = {}
+                    key_teacher_timetable_attendances[k]['id'] = key_timetables[key]['timetable'].specialty_id.id
+                    key_teacher_timetable_attendances[k]['name'] = key_timetables[key]['timetable'].specialty_id.name
+                    key_teacher_timetable_attendances[k]['data'] = []
+                    key_teacher_timetable_attendances[k]['worked_time'] = 0.0
+                    key_teacher_timetable_attendances[k]['amount'] = 0.0
+                    key_teacher_timetable_attendances[k]['total_amount'] = 0.0
             elif self.school_id.id:
                 k = '{}'.format(key_timetables[key]['timetable'].department_id.id)
+                if k not in key_teacher_timetable_attendances:
+                    key_teacher_timetable_attendances[k] = {}
+                    key_teacher_timetable_attendances[k]['id'] = key_timetables[key]['timetable'].department_id.id
+                    key_teacher_timetable_attendances[k]['name'] = key_timetables[key]['timetable'].department_id.name
+                    key_teacher_timetable_attendances[k]['data'] = []
+                    key_teacher_timetable_attendances[k]['worked_time'] = 0.0
+                    key_teacher_timetable_attendances[k]['amount'] = 0.0
+                    key_teacher_timetable_attendances[k]['total_amount'] = 0.0
             else:
                 k = '{}'.format(key_timetables[key]['timetable'].school_id.id)
-            if k not in key_teacher_timetable_attendances:
-                key_teacher_timetable_attendances[k] = {}
-                key_teacher_timetable_attendances[k]['id'] = key_timetables[key]['timetable'].school_id.id
-                key_teacher_timetable_attendances[k]['name'] = key_timetables[key]['timetable'].school_id.name
-                key_teacher_timetable_attendances[k]['data'] = []
-                key_teacher_timetable_attendances[k]['worked_time'] = 0.0
-                key_teacher_timetable_attendances[k]['amount'] = 0.0
-                key_teacher_timetable_attendances[k]['total_amount'] = 0.0
+                if k not in key_teacher_timetable_attendances:
+                    key_teacher_timetable_attendances[k] = {}
+                    key_teacher_timetable_attendances[k]['id'] = key_timetables[key]['timetable'].school_id.id
+                    key_teacher_timetable_attendances[k]['name'] = key_timetables[key]['timetable'].school_id.name
+                    key_teacher_timetable_attendances[k]['data'] = []
+                    key_teacher_timetable_attendances[k]['worked_time'] = 0.0
+                    key_teacher_timetable_attendances[k]['amount'] = 0.0
+                    key_teacher_timetable_attendances[k]['total_amount'] = 0.0
             teacher_timetable_attendance = {}
             teacher_timetable_attendance['id'] = key_timetables[key]['timetable'].id
             teacher_timetable_attendance['date'] = key_timetables[key]['timetable'].date
