@@ -529,11 +529,25 @@ class Timetable(models.Model):
 
     skip_validation = fields.Boolean('Ignorer la validation ?', default=False)
 
-    is_active = fields.Boolean(
-        string='Actif ?',
-        related='class_id.is_timetable_active',
-        store=True
-    )
+    is_active = fields.Boolean(string='Actif ?', compute='_compute_active', store=True)
+
+    is_timetable_active = fields.Boolean(string='Emploi du temps actif ?', default=True)
+
+    @api.depends('class_id', 'is_timetable_active')
+    def _compute_active(self):
+        for record in self:
+            if record.class_id.is_timetable_active and record.is_timetable_active:
+                record.is_active = True
+            else:
+                record.is_active = False
+
+    @api.onchange('class_id', 'is_timetable_active')
+    def _onchange_active(self):
+        for record in self:
+            if record.class_id.is_timetable_active and record.is_timetable_active:
+                record.is_active = True
+            else:
+                record.is_active = False
 
     specialty_id_domain = fields.Binary(compute='_compute_school_domain', default=[])
 
