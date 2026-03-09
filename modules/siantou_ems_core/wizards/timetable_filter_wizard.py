@@ -1321,24 +1321,30 @@ class TimetableFilterWizard(models.TransientModel):
 
         _logger.info(f'----------- tototototototo key_timetable_percentages {key_timetable_percentages} -----------')
 
+        if len(title) > 0:
+            title = ' / '.join(title)
+        else:
+            title = 'Non spécifié'
+
+        self.env['ir.config_parameter'].sudo().set_param(f'siantou.filter_user_{self.env.user.id}', title)
+
         filter_title = self.env['ir.config_parameter'].sudo().get_param(f'siantou.filter_user_{self.env.user.id}', '')
 
         if self.department_id.id:
-            title = 'Spécialité'
-            sort_type = 'specialty'
+            label = 'Spécialité'
         elif self.school_id.id:
-            title = 'Département'
-            sort_type = 'department'
+            label = 'Département'
         else:
-            title = 'École'
-            sort_type = 'school'
+            label = 'École'
+
+        title = 'Pourcentage d\'heures {}'.format(label)
 
         data = {
             'docdata': {}
         }
+        data['docdata']['label'] = label
         data['docdata']['title'] = title
         data['docdata']['filter'] = filter_title
-        data['docdata']['sort_type'] = sort_type
         data['docdata']['timetable_percentage_data'] = key_timetable_percentages
 
         start_date = datetime.strftime(self.start_date, DATE_FORMAT_FR)
@@ -1347,7 +1353,7 @@ class TimetableFilterWizard(models.TransientModel):
         # Appeler le rapport PDF
         if len(data['docdata']['timetable_percentage_data'].keys()) == 0:
             raise UserError('Aucune donnée trouvée')
-        report_action = self.env.ref('siantou_ems_core.action_report_timetable_percentage')
+        report_action = self.env.ref('siantou_ems_core.action_report_timetable_hours_percentage')
         report_action.update({
             'name': '{} du {} - {} PDF'.format(title, start_date, end_date),
         })
