@@ -1165,7 +1165,12 @@ class TimetableFilterWizard(models.TransientModel):
 
         key_teacher_timetable_attendances = {}
         for key in key_timetables.keys():
-            k = '{}'.format(key_timetables[key]['timetable'].school_id.id)
+            if self.department_id.id:
+                k = '{}'.format(key_timetables[key]['timetable'].specialty_id.id)
+            elif self.school_id.id:
+                k = '{}'.format(key_timetables[key]['timetable'].department_id.id)
+            else:
+                k = '{}'.format(key_timetables[key]['timetable'].school_id.id)
             if k not in key_teacher_timetable_attendances:
                 key_teacher_timetable_attendances[k] = {}
                 key_teacher_timetable_attendances[k]['id'] = key_timetables[key]['timetable'].school_id.id
@@ -1401,7 +1406,12 @@ class TimetableFilterWizard(models.TransientModel):
 
         key_teacher_timetable_attendances = {}
         for key in key_timetables.keys():
-            k = '{}'.format(key_timetables[key]['timetable'].school_id.id)
+            if self.department_id.id:
+                k = '{}'.format(key_timetables[key]['timetable'].specialty_id.id)
+            elif self.school_id.id:
+                k = '{}'.format(key_timetables[key]['timetable'].department_id.id)
+            else:
+                k = '{}'.format(key_timetables[key]['timetable'].school_id.id)
             if k not in key_teacher_timetable_attendances:
                 key_teacher_timetable_attendances[k] = {}
                 key_teacher_timetable_attendances[k]['id'] = key_timetables[key]['timetable'].school_id.id
