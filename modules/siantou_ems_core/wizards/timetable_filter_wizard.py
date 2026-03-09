@@ -434,6 +434,16 @@ class TimetableFilterWizard(models.TransientModel):
             record.class_id = None
             record.option_id = None
             record.subject_id = None
+            if not record.department_id.id:
+                record.department_id = record.specialty_id.department_id
+
+    # @api.onchange('department_id')
+    # def _onchange_department(self):
+    #     for record in self:
+    #         record.specialty_id = None
+    #         record.class_id = None
+    #         record.option_id = None
+    #         record.subject_id = None
 
     @api.onchange('option_id')
     def _onchange_option(self):
@@ -479,6 +489,9 @@ class TimetableFilterWizard(models.TransientModel):
         if self.school_id.id:
             domain.append(('school_id', '=', self.school_id.id))
             title.append(self.school_id.name)
+        if self.department_id.id:
+            domain.append(('department_id', '=', self.department_id.id))
+            title.append(self.department_id.name)
         if self.level_id.id:
             domain.append(('level_id', '=', self.level_id.id))
             title.append(self.level_id.name)
@@ -648,6 +661,9 @@ class TimetableFilterWizard(models.TransientModel):
         if self.school_id.id:
             domain.append(('school_id', '=', self.school_id.id))
             title.append(self.school_id.name)
+        if self.department_id.id:
+            domain.append(('department_id', '=', self.department_id.id))
+            title.append(self.department_id.name)
         if self.level_id.id:
             domain.append(('level_id', '=', self.level_id.id))
             title.append(self.level_id.name)
@@ -1044,6 +1060,9 @@ class TimetableFilterWizard(models.TransientModel):
         if self.school_id.id:
             domain.append(('school_id', '=', self.school_id.id))
             title.append(self.school_id.name)
+        if self.department_id.id:
+            domain.append(('department_id', '=', self.department_id.id))
+            title.append(self.department_id.name)
         if self.level_id.id:
             domain.append(('level_id', '=', self.level_id.id))
             title.append(self.level_id.name)
@@ -1218,6 +1237,9 @@ class TimetableFilterWizard(models.TransientModel):
         if self.school_id.id:
             domain.append(('school_id', '=', self.school_id.id))
             title.append(self.school_id.name)
+        if self.department_id.id:
+            domain.append(('department_id', '=', self.department_id.id))
+            title.append(self.department_id.name)
         if self.level_id.id:
             domain.append(('level_id', '=', self.level_id.id))
             title.append(self.level_id.name)
