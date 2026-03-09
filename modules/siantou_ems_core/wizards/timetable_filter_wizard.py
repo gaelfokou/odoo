@@ -1230,6 +1230,45 @@ class TimetableFilterWizard(models.TransientModel):
 
             key_all_timetables[key]['worked_hours'] = worked_hours
 
+        key_all_teacher_timetable_attendances = {}
+        for key in key_all_timetables.keys():
+            if self.department_id.id:
+                k = '{}'.format(key_all_timetables[key]['timetable'].specialty_id.id)
+            elif self.school_id.id:
+                k = '{}'.format(key_all_timetables[key]['timetable'].department_id.id)
+            else:
+                k = '{}'.format(key_all_timetables[key]['timetable'].school_id.id)
+            if k not in key_all_teacher_timetable_attendances:
+                key_all_teacher_timetable_attendances[k] = {}
+                key_all_teacher_timetable_attendances[k]['id'] = key_all_timetables[key]['timetable'].school_id.id
+                key_all_teacher_timetable_attendances[k]['name'] = key_all_timetables[key]['timetable'].school_id.name
+                key_all_teacher_timetable_attendances[k]['data'] = []
+                key_all_teacher_timetable_attendances[k]['worked_time'] = 0.0
+            teacher_timetable_attendance = {}
+            teacher_timetable_attendance['id'] = key_all_timetables[key]['timetable'].id
+            teacher_timetable_attendance['date'] = key_all_timetables[key]['timetable'].date
+            teacher_timetable_attendance['date_of_week'] = datetime.strftime(key_all_timetables[key]['timetable'].date, DATE_FORMAT_FR)
+            teacher_timetable_attendance['class_id'] = key_all_timetables[key]['timetable'].class_id.id
+            teacher_timetable_attendance['class_name'] = key_all_timetables[key]['timetable'].class_id.name
+            teacher_timetable_attendance['level_id'] = key_all_timetables[key]['timetable'].level_id.id
+            teacher_timetable_attendance['level_name'] = key_all_timetables[key]['timetable'].level_id.name
+            teacher_timetable_attendance['subject_id'] = key_all_timetables[key]['timetable'].subject_id.id
+            teacher_timetable_attendance['subject_name'] = key_all_timetables[key]['timetable'].subject_id.name
+            teacher_timetable_attendance['subject_code'] = key_all_timetables[key]['timetable'].subject_id.code
+            teacher_timetable_attendance['subject_shared_subject'] = '(TC)' if key_all_timetables[key]['timetable'].subject_id.shared_subject else ''
+            teacher_timetable_attendance['employee_id'] = key_all_timetables[key]['timetable'].employee_id.id
+            teacher_timetable_attendance['identifier'] = key_all_timetables[key]['timetable'].employee_id.identifier
+            teacher_timetable_attendance['employee_name'] = key_all_timetables[key]['timetable'].employee_id.name
+            teacher_timetable_attendance['start_time'] = TimetableFilterWizard.convert_float_to_time(key_all_timetables[key]['timetable'].start_time)
+            teacher_timetable_attendance['end_time'] = TimetableFilterWizard.convert_float_to_time(key_all_timetables[key]['timetable'].end_time)
+            teacher_timetable_attendance['day_of_week'] = CURRENT_WEEKDAY[key_all_timetables[key]['timetable'].day_of_week]
+            teacher_timetable_attendance['worked_start_time'] = TimetableFilterWizard.convert_float_to_time(key_all_timetables[key]['timetable'].worked_start_time)
+            teacher_timetable_attendance['worked_end_time'] = TimetableFilterWizard.convert_float_to_time(key_all_timetables[key]['timetable'].worked_end_time)
+            teacher_timetable_attendance['worked_time'] = key_all_timetables[key]['worked_hours']
+            teacher_timetable_attendance['status'] = STATUS_TIMETABLE[key_all_timetables[key]['timetable'].status]
+            key_all_teacher_timetable_attendances[k]['worked_time'] += teacher_timetable_attendance['worked_time']
+            key_all_teacher_timetable_attendances[k]['data'].append(teacher_timetable_attendance)
+
     def action_print_hours_and_cost_pdf(self):
         domain = []
         title = []
