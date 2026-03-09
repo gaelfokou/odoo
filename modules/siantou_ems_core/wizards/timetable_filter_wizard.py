@@ -529,6 +529,7 @@ class TimetableFilterWizard(models.TransientModel):
                 title.append('Est un permanent')
             if self.is_temporary:
                 domain.append(('employee_id.is_permanent', '=', False))
+                title.append('Est un temporaire')
         if self.employee_id.id:
             domain.append(('employee_id', '=', self.employee_id.id))
             title.append(self.employee_id.name)
@@ -701,6 +702,7 @@ class TimetableFilterWizard(models.TransientModel):
                 title.append('Est un permanent')
             if self.is_temporary:
                 domain.append(('employee_id.is_permanent', '=', False))
+                title.append('Est un temporaire')
         if self.employee_id.id:
             domain.append(('employee_id', '=', self.employee_id.id))
             title.append(self.employee_id.name)
@@ -1120,6 +1122,7 @@ class TimetableFilterWizard(models.TransientModel):
                 title.append('Est un permanent')
             if self.is_temporary:
                 domain.append(('employee_id.is_permanent', '=', False))
+                title.append('Est un temporaire')
         if self.employee_id.id:
             domain.append(('employee_id', '=', self.employee_id.id))
             title.append(self.employee_id.name)
@@ -1177,7 +1180,7 @@ class TimetableFilterWizard(models.TransientModel):
                 if k not in key_timetable_percentages:
                     key_timetable_percentages[k] = {}
                     key_timetable_percentages[k]['id'] = key_timetables[key]['timetable'].specialty_id.id
-                    key_timetable_percentages[k]['name'] = key_timetables[key]['timetable'].specialty_id.name
+                    key_timetable_percentages[k]['name'] = '{} ({})'.format(key_timetables[key]['timetable'].specialty_id.name, key_timetables[key]['timetable'].specialty_id.field_of_study_id.cycle_id.name)
                     key_timetable_percentages[k]['data'] = []
                     key_timetable_percentages[k]['worked_time'] = 0.0
                     key_timetable_percentages[k]['percentage'] = 0.0
@@ -1262,7 +1265,7 @@ class TimetableFilterWizard(models.TransientModel):
                 if k not in key_all_timetable_percentages:
                     key_all_timetable_percentages[k] = {}
                     key_all_timetable_percentages[k]['id'] = key_all_timetables[key]['timetable'].specialty_id.id
-                    key_all_timetable_percentages[k]['name'] = key_all_timetables[key]['timetable'].specialty_id.name
+                    key_all_timetable_percentages[k]['name'] = '{} ({})'.format(key_all_timetables[key]['timetable'].specialty_id.name, key_all_timetables[key]['timetable'].specialty_id.field_of_study_id.cycle_id.name)
                     key_all_timetable_percentages[k]['data'] = []
                     key_all_timetable_percentages[k]['worked_time'] = 0.0
                     key_all_timetable_percentages[k]['percentage'] = 0.0
@@ -1319,6 +1322,9 @@ class TimetableFilterWizard(models.TransientModel):
                     key_timetable_percentages[key]['percentage'] = (worked_time / key_all_timetable_percentages[key]['worked_time']) * 100
                     key_timetable_percentages[key]['percentage'] = round(key_timetable_percentages[key]['percentage'], 2)
 
+        key_timetable_percentages = sorted(key_timetable_percentages.items(), key=self.sort_type_timetable_percentage, reverse=True)
+        key_timetable_percentages = dict(key_timetable_percentages)
+
         _logger.info(f'----------- tototototototo key_timetable_percentages {key_timetable_percentages} -----------')
 
         if len(title) > 0:
@@ -1337,7 +1343,7 @@ class TimetableFilterWizard(models.TransientModel):
         else:
             label = 'École'
 
-        title = 'Pourcentage d\'heures {}'.format(label)
+        title = 'Pourcentage d\'heures par {}'.format(label)
 
         data = {
             'docdata': {}
@@ -1346,6 +1352,12 @@ class TimetableFilterWizard(models.TransientModel):
         data['docdata']['title'] = title
         data['docdata']['filter'] = filter_title
         data['docdata']['timetable_percentage_data'] = key_timetable_percentages
+
+        if not self.is_permanent or not self.is_temporary:
+            if self.is_permanent:
+                title = 'Pourcentage d\'heures permanent'
+            if self.is_temporary:
+                title = 'Pourcentage d\'heures temporaire'
 
         start_date = datetime.strftime(self.start_date, DATE_FORMAT_FR)
         end_date = datetime.strftime(self.end_date, DATE_FORMAT_FR)
@@ -1411,6 +1423,7 @@ class TimetableFilterWizard(models.TransientModel):
                 title.append('Est un permanent')
             if self.is_temporary:
                 domain.append(('employee_id.is_permanent', '=', False))
+                title.append('Est un temporaire')
         if self.employee_id.id:
             domain.append(('employee_id', '=', self.employee_id.id))
             title.append(self.employee_id.name)
@@ -1540,7 +1553,7 @@ class TimetableFilterWizard(models.TransientModel):
                 if k not in key_timetable_percentages:
                     key_timetable_percentages[k] = {}
                     key_timetable_percentages[k]['id'] = key_timetables[key]['timetable'].specialty_id.id
-                    key_timetable_percentages[k]['name'] = key_timetables[key]['timetable'].specialty_id.name
+                    key_timetable_percentages[k]['name'] = '{} ({})'.format(key_timetables[key]['timetable'].specialty_id.name, key_timetables[key]['timetable'].specialty_id.field_of_study_id.cycle_id.name)
                     key_timetable_percentages[k]['data'] = []
                     key_timetable_percentages[k]['worked_time'] = 0.0
                     key_timetable_percentages[k]['amount'] = 0.0
