@@ -535,7 +535,7 @@ class PortalAccount(portal.CustomerPortal):
                 examscore['subject_code'] = search_examscore.subject_id.code
                 examscore['exam_type'] = TYPE_EXAMSCORE[search_examscore.exam_type]
                 examscore['status'] = STATUS_EXAMSCORE[search_examscore.status]
-                score_ids = search_examscore.score_ids.filtered(lambda rec: rec.student_id.id == user.id)
+                score_ids = search_examscore.score_ids.filtered(lambda rec: rec.student_id.id == user.id and rec.exam_id.class_id.id == user.class_id.id)
                 score_ids = list(score_ids)
                 students = []
                 for score_id in score_ids:

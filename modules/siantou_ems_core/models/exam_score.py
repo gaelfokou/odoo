@@ -319,6 +319,20 @@ class SubjectScore(models.Model):
         ondelete='cascade'
     )
 
+    class_id = fields.Many2one(
+        'siantou.ems.core.class',
+        string='Classe',
+        related='exam_id.class_id',
+        store=True
+    )
+
+    subject_id = fields.Many2one(
+        'siantou.ems.core.subject',
+        string='Cours',
+        related='exam_id.subject_id',
+        store=True
+    )
+
     exam_type = fields.Selection([
         ('cc', 'Contrôle continu'),
         ('sn', 'Session normale'),
