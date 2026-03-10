@@ -1399,8 +1399,8 @@
                                 <th class="text-left">Actions</th>
                             </tr>
                         </thead>
-                        <t t-foreach="timetables" t-as="timetable">
-                            <tbody>
+                        <tbody>
+                            <t t-foreach="timetables" t-as="timetable">
                                 <t t-set="sessions" t-value="sorted(subjectsessions[timetable]['data'], key=lambda item: int((item['name'] if item['name'] else '').replace('Séance ', '')))"/>
                                 <t t-foreach="sessions" t-as="session">
                                     <tr>
@@ -1432,13 +1432,13 @@
                                         </td>
                                     </tr>
                                 </t>
-                            </tbody>
-                            <tfooter>
-                                <tr>
-                                    <th class="text-left" colspan="7" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
-                                </tr>
-                            </tfooter>
-                        </t>
+                            </t>
+                        </tbody>
+                        <tfooter>
+                            <tr>
+                                <th class="text-left" colspan="7" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
+                            </tr>
+                        </tfooter>
                     </t>
                     <t t-else="">
                         <tfooter>
