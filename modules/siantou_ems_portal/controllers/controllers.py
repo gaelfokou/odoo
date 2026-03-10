@@ -535,7 +535,7 @@ class PortalAccount(portal.CustomerPortal):
                 examscore['subject_code'] = search_examscore.subject_id.code
                 examscore['exam_type'] = TYPE_EXAMSCORE[search_examscore.exam_type]
                 examscore['status'] = STATUS_EXAMSCORE[search_examscore.status]
-                score_ids = search_examscore.score_ids
+                score_ids = search_examscore.score_ids.filtered(lambda rec: rec.student_id.id == user.id)
                 score_ids = list(score_ids)
                 students = []
                 for score_id in score_ids:
@@ -569,24 +569,23 @@ class PortalAccount(portal.CustomerPortal):
         for examscore in examscores:
             examscore = {}
             for student in examscore['students']:
-                if student['id'] == user.id:
-                    examscore['id'] = examscore['id']
-                    examscore['name'] = examscore['name']
-                    examscore['semester_id'] = examscore['semester_id']
-                    examscore['semester_name'] = examscore['semester_name']
-                    examscore['class_id'] = examscore['class_id']
-                    examscore['class_name'] = examscore['class_name']
-                    examscore['subject_id'] = examscore['subject_id']
-                    examscore['subject_name'] = examscore['subject_name']
-                    examscore['subject_code'] = examscore['subject_code']
-                    examscore['exam_type'] = examscore['exam_type']
-                    examscore['student_id'] = student['id']
-                    examscore['student_name'] = student['name']
-                    examscore['cc_note'] = student['cc_note']
-                    examscore['sn_note'] = student['sn_note']
-                    examscore['rcc_note'] = student['rcc_note']
-                    examscore['rsn_note'] = student['rsn_note']
-                    examscores.append(examscore)
+                examscore['id'] = examscore['id']
+                examscore['name'] = examscore['name']
+                examscore['semester_id'] = examscore['semester_id']
+                examscore['semester_name'] = examscore['semester_name']
+                examscore['class_id'] = examscore['class_id']
+                examscore['class_name'] = examscore['class_name']
+                examscore['subject_id'] = examscore['subject_id']
+                examscore['subject_name'] = examscore['subject_name']
+                examscore['subject_code'] = examscore['subject_code']
+                examscore['exam_type'] = examscore['exam_type']
+                examscore['student_id'] = student['id']
+                examscore['student_name'] = student['name']
+                examscore['cc_note'] = student['cc_note']
+                examscore['sn_note'] = student['sn_note']
+                examscore['rcc_note'] = student['rcc_note']
+                examscore['rsn_note'] = student['rsn_note']
+                examscores.append(examscore)
         examscores = Helpers.format_examscore(examscores)
         all_examscores = {}
         for key_class in examscores.keys():
