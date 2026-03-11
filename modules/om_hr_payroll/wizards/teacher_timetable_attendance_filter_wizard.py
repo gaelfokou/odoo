@@ -177,8 +177,8 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
             if not search_consumptionhour.date or not search_consumptionhour.day_of_week or not search_consumptionhour.employee_id.id:
                 continue
 
-            end_time = TeacherTimetableAttendanceFilterWizard.convert_float_to_time(search_consumptionhour.end_time, True)
-            start_time = TeacherTimetableAttendanceFilterWizard.convert_float_to_time(search_consumptionhour.start_time, True)
+            end_time = TeacherTimetableAttendanceFilterWizard.convert_float_to_time(search_consumptionhour.end_time, has_second=True)
+            start_time = TeacherTimetableAttendanceFilterWizard.convert_float_to_time(search_consumptionhour.start_time, has_second=True)
             key = '{}-{}-{}-{}'.format(search_consumptionhour.class_id.id, search_consumptionhour.date, start_time, end_time)
             if key not in key_consumptionhours:
                 key_consumptionhours[key] = search_consumptionhour
@@ -236,8 +236,8 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
                 paymenthistories = list(paymenthistories)
                 for paymenthistory in paymenthistories:
                     for worked_days_line_id in paymenthistory.worked_days_line_ids:
-                        end_time = TeacherTimetableAttendanceFilterWizard.convert_float_to_time(worked_days_line_id.timetable_id.end_time, True)
-                        start_time = TeacherTimetableAttendanceFilterWizard.convert_float_to_time(worked_days_line_id.timetable_id.start_time, True)
+                        end_time = TeacherTimetableAttendanceFilterWizard.convert_float_to_time(worked_days_line_id.timetable_id.end_time, has_second=True)
+                        start_time = TeacherTimetableAttendanceFilterWizard.convert_float_to_time(worked_days_line_id.timetable_id.start_time, has_second=True)
                         key = '{}-{}-{}-{}'.format(worked_days_line_id.timetable_id.employee_id.id, worked_days_line_id.timetable_id.date, start_time, end_time)
                         if key not in key_payslips:
                             key_payslips[key] = {}
@@ -260,8 +260,8 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
             if not timetable.date or not timetable.day_of_week or not timetable.employee_id.id:
                 continue
 
-            end_time = TeacherTimetableAttendanceFilterWizard.convert_float_to_time(timetable.end_time, True)
-            start_time = TeacherTimetableAttendanceFilterWizard.convert_float_to_time(timetable.start_time, True)
+            end_time = TeacherTimetableAttendanceFilterWizard.convert_float_to_time(timetable.end_time, has_second=True)
+            start_time = TeacherTimetableAttendanceFilterWizard.convert_float_to_time(timetable.start_time, has_second=True)
             key = '{}-{}-{}-{}'.format(timetable.employee_id.id, timetable.date, start_time, end_time)
             if key in key_payslips and key_payslips[key]['timetable_id'] != timetable.id:
                 continue
@@ -271,8 +271,8 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
                 continue
 
             if timetable.status == 'present':
-                end_time = TeacherTimetableAttendanceFilterWizard.convert_float_to_time(timetable.worked_end_time, True)
-                start_time = TeacherTimetableAttendanceFilterWizard.convert_float_to_time(timetable.worked_start_time, True)
+                end_time = TeacherTimetableAttendanceFilterWizard.convert_float_to_time(timetable.worked_end_time, has_second=True)
+                start_time = TeacherTimetableAttendanceFilterWizard.convert_float_to_time(timetable.worked_start_time, has_second=True)
                 end_time = datetime.strptime(f"{timetable.date} {end_time}", DATETIME_FORMAT)
                 start_time = datetime.strptime(f"{timetable.date} {start_time}", DATETIME_FORMAT)
 
@@ -280,8 +280,8 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
                 worked_hours = worked_hours.total_seconds() / 3600.0
                 worked_hours = round(worked_hours, 2)
             elif timetable.status == 'permission':
-                end_time = TeacherTimetableAttendanceFilterWizard.convert_float_to_time(timetable.end_time, True)
-                start_time = TeacherTimetableAttendanceFilterWizard.convert_float_to_time(timetable.start_time, True)
+                end_time = TeacherTimetableAttendanceFilterWizard.convert_float_to_time(timetable.end_time, has_second=True)
+                start_time = TeacherTimetableAttendanceFilterWizard.convert_float_to_time(timetable.start_time, has_second=True)
                 end_time = datetime.strptime(f"{timetable.date} {end_time}", DATETIME_FORMAT)
                 start_time = datetime.strptime(f"{timetable.date} {start_time}", DATETIME_FORMAT)
 
@@ -289,8 +289,8 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
                 worked_hours = worked_hours.total_seconds() / 3600.0
                 worked_hours = round(worked_hours, 2)
             else:
-                end_time = TeacherTimetableAttendanceFilterWizard.convert_float_to_time(0.0, True)
-                start_time = TeacherTimetableAttendanceFilterWizard.convert_float_to_time(0.0, True)
+                end_time = TeacherTimetableAttendanceFilterWizard.convert_float_to_time(0.0, has_second=True)
+                start_time = TeacherTimetableAttendanceFilterWizard.convert_float_to_time(0.0, has_second=True)
                 end_time = datetime.strptime(f"{timetable.date} {end_time}", DATETIME_FORMAT)
                 start_time = datetime.strptime(f"{timetable.date} {start_time}", DATETIME_FORMAT)
 
@@ -500,8 +500,8 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
 
     @staticmethod
     def convert_number_of_hours(tm):
-        end_time = TeacherTimetableAttendanceFilterWizard.convert_float_to_time(tm['end_time'], True)
-        start_time = TeacherTimetableAttendanceFilterWizard.convert_float_to_time(tm['start_time'], True)
+        end_time = TeacherTimetableAttendanceFilterWizard.convert_float_to_time(tm['end_time'], has_second=True)
+        start_time = TeacherTimetableAttendanceFilterWizard.convert_float_to_time(tm['start_time'], has_second=True)
         datetime_to = datetime.strptime(f"{tm['date']} {end_time}", DATETIME_FORMAT)
         datetime_from = datetime.strptime(f"{tm['date']} {start_time}", DATETIME_FORMAT)
         weekly_hours_credit = datetime_to - datetime_from

@@ -384,8 +384,8 @@ class TeacherTimetableAttendance(models.TransientModel):
             paymenthistories = list(paymenthistories)
             for paymenthistory in paymenthistories:
                 for worked_days_line_id in paymenthistory.worked_days_line_ids:
-                    end_time = TeacherTimetableAttendance.convert_float_to_time(worked_days_line_id.timetable_id.end_time, True)
-                    start_time = TeacherTimetableAttendance.convert_float_to_time(worked_days_line_id.timetable_id.start_time, True)
+                    end_time = TeacherTimetableAttendance.convert_float_to_time(worked_days_line_id.timetable_id.end_time, has_second=True)
+                    start_time = TeacherTimetableAttendance.convert_float_to_time(worked_days_line_id.timetable_id.start_time, has_second=True)
                     key = '{}-{}-{}-{}'.format(worked_days_line_id.timetable_id.employee_id.id, worked_days_line_id.timetable_id.date, start_time, end_time)
                     if key not in key_payslips:
                         key_payslips[key] = {}

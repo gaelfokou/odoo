@@ -139,8 +139,8 @@ class Helpers:
                     if not timetable.date or not timetable.day_of_week or not timetable.employee_id.id:
                         continue
 
-                    end_time = Helpers.convert_float_to_time(timetable.end_time, True)
-                    start_time = Helpers.convert_float_to_time(timetable.start_time, True)
+                    end_time = Helpers.convert_float_to_time(timetable.end_time, has_second=True)
+                    start_time = Helpers.convert_float_to_time(timetable.start_time, has_second=True)
                     key = '{}-{}-{}-{}-{}'.format(timetable.employee_id.id, timetable.class_id.id, timetable.date, start_time, end_time)
                     if key not in key_timetables:
                         key_timetables[key] = timetable
@@ -168,8 +168,8 @@ class Helpers:
                     if not timetable.date or not timetable.day_of_week or not timetable.employee_id.id:
                         continue
 
-                    end_time = Helpers.convert_float_to_time(timetable.end_time, True)
-                    start_time = Helpers.convert_float_to_time(timetable.start_time, True)
+                    end_time = Helpers.convert_float_to_time(timetable.end_time, has_second=True)
+                    start_time = Helpers.convert_float_to_time(timetable.start_time, has_second=True)
                     key = '{}-{}-{}-{}'.format(timetable.class_id.id, timetable.date, start_time, end_time)
                     if key not in key_timetables:
                         key_timetables[key] = timetable
@@ -340,8 +340,8 @@ class Helpers:
                     if not accountbalance.date or not accountbalance.day_of_week or not accountbalance.employee_id.id:
                         continue
 
-                    end_time = Helpers.convert_float_to_time(accountbalance.end_time, True)
-                    start_time = Helpers.convert_float_to_time(accountbalance.start_time, True)
+                    end_time = Helpers.convert_float_to_time(accountbalance.end_time, has_second=True)
+                    start_time = Helpers.convert_float_to_time(accountbalance.start_time, has_second=True)
                     key = '{}-{}-{}-{}'.format(accountbalance.employee_id.id, accountbalance.date, start_time, end_time)
                     if key not in key_accountbalances:
                         key_accountbalances[key] = accountbalance
@@ -435,8 +435,8 @@ class Helpers:
                     if not consumptionhour.date or not consumptionhour.day_of_week or not consumptionhour.employee_id.id:
                         continue
 
-                    end_time = Helpers.convert_float_to_time(consumptionhour.end_time, True)
-                    start_time = Helpers.convert_float_to_time(consumptionhour.start_time, True)
+                    end_time = Helpers.convert_float_to_time(consumptionhour.end_time, has_second=True)
+                    start_time = Helpers.convert_float_to_time(consumptionhour.start_time, has_second=True)
                     key = '{}-{}-{}-{}-{}'.format(consumptionhour.employee_id.id, consumptionhour.class_id.id, consumptionhour.date, start_time, end_time)
                     if key not in key_consumptionhours:
                         key_consumptionhours[key] = consumptionhour
@@ -454,8 +454,8 @@ class Helpers:
                     if not consumptionhour.date or not consumptionhour.day_of_week or not consumptionhour.employee_id.id:
                         continue
 
-                    end_time = Helpers.convert_float_to_time(consumptionhour.end_time, True)
-                    start_time = Helpers.convert_float_to_time(consumptionhour.start_time, True)
+                    end_time = Helpers.convert_float_to_time(consumptionhour.end_time, has_second=True)
+                    start_time = Helpers.convert_float_to_time(consumptionhour.start_time, has_second=True)
                     key = '{}-{}-{}-{}'.format(consumptionhour.class_id.id, consumptionhour.date, start_time, end_time)
                     if key not in key_consumptionhours:
                         key_consumptionhours[key] = consumptionhour
@@ -544,8 +544,8 @@ class Helpers:
                     if not progressreport.date or not progressreport.day_of_week or not progressreport.employee_id.id:
                         continue
 
-                    end_time = Helpers.convert_float_to_time(progressreport.end_time, True)
-                    start_time = Helpers.convert_float_to_time(progressreport.start_time, True)
+                    end_time = Helpers.convert_float_to_time(progressreport.end_time, has_second=True)
+                    start_time = Helpers.convert_float_to_time(progressreport.start_time, has_second=True)
                     key = '{}-{}-{}-{}-{}'.format(progressreport.employee_id.id, progressreport.class_id.id, progressreport.date, start_time, end_time)
                     if key not in key_progressreports:
                         key_progressreports[key] = progressreport
@@ -563,8 +563,8 @@ class Helpers:
                     if not progressreport.date or not progressreport.day_of_week or not progressreport.employee_id.id:
                         continue
 
-                    end_time = Helpers.convert_float_to_time(progressreport.end_time, True)
-                    start_time = Helpers.convert_float_to_time(progressreport.start_time, True)
+                    end_time = Helpers.convert_float_to_time(progressreport.end_time, has_second=True)
+                    start_time = Helpers.convert_float_to_time(progressreport.start_time, has_second=True)
                     key = '{}-{}-{}-{}'.format(progressreport.class_id.id, progressreport.date, start_time, end_time)
                     if key not in key_progressreports:
                         key_progressreports[key] = progressreport
@@ -683,8 +683,8 @@ class Helpers:
                     if not subjectsession.date or not subjectsession.day_of_week or not subjectsession.employee_id.id:
                         continue
 
-                    end_time = Helpers.convert_float_to_time(subjectsession.end_time, True)
-                    start_time = Helpers.convert_float_to_time(subjectsession.start_time, True)
+                    end_time = Helpers.convert_float_to_time(subjectsession.end_time, has_second=True)
+                    start_time = Helpers.convert_float_to_time(subjectsession.start_time, has_second=True)
                     key = '{}-{}-{}-{}-{}'.format(subjectsession.employee_id.id, subjectsession.class_id.id, subjectsession.date, start_time, end_time)
                     if key not in key_subjectsessions:
                         key_subjectsessions[key] = subjectsession
@@ -702,8 +702,8 @@ class Helpers:
                     if not subjectsession.date or not subjectsession.day_of_week or not subjectsession.employee_id.id:
                         continue
 
-                    end_time = Helpers.convert_float_to_time(subjectsession.end_time, True)
-                    start_time = Helpers.convert_float_to_time(subjectsession.start_time, True)
+                    end_time = Helpers.convert_float_to_time(subjectsession.end_time, has_second=True)
+                    start_time = Helpers.convert_float_to_time(subjectsession.start_time, has_second=True)
                     key = '{}-{}-{}-{}'.format(subjectsession.class_id.id, subjectsession.date, start_time, end_time)
                     if key not in key_subjectsessions:
                         key_subjectsessions[key] = subjectsession
@@ -1246,8 +1246,8 @@ class Helpers:
 
     @staticmethod
     def convert_number_of_hours(tm):
-        end_time = Helpers.convert_float_to_time(tm['end_time'], True)
-        start_time = Helpers.convert_float_to_time(tm['start_time'], True)
+        end_time = Helpers.convert_float_to_time(tm['end_time'], has_second=True)
+        start_time = Helpers.convert_float_to_time(tm['start_time'], has_second=True)
         datetime_to = datetime.strptime(f"{tm['date']} {end_time}", DATETIME_FORMAT)
         datetime_from = datetime.strptime(f"{tm['date']} {start_time}", DATETIME_FORMAT)
         weekly_hours_credit = datetime_to - datetime_from

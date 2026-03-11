@@ -614,8 +614,8 @@ class TimetableFilterWizard(models.TransientModel):
             if not timetable.date or not timetable.day_of_week or not timetable.employee_id.id:
                 continue
 
-            end_time = TimetableFilterWizard.convert_float_to_time(timetable.end_time, True)
-            start_time = TimetableFilterWizard.convert_float_to_time(timetable.start_time, True)
+            end_time = TimetableFilterWizard.convert_float_to_time(timetable.end_time, has_second=True)
+            start_time = TimetableFilterWizard.convert_float_to_time(timetable.start_time, has_second=True)
             key = '{}-{}-{}-{}'.format(timetable.class_id.id, timetable.date, start_time, end_time)
             if key not in key_timetables:
                 key_timetables[key] = timetable
@@ -800,8 +800,8 @@ class TimetableFilterWizard(models.TransientModel):
             if not timetable.date or not timetable.day_of_week or not timetable.employee_id.id:
                 continue
 
-            end_time = TimetableFilterWizard.convert_float_to_time(timetable.end_time, True)
-            start_time = TimetableFilterWizard.convert_float_to_time(timetable.start_time, True)
+            end_time = TimetableFilterWizard.convert_float_to_time(timetable.end_time, has_second=True)
+            start_time = TimetableFilterWizard.convert_float_to_time(timetable.start_time, has_second=True)
             key = '{}-{}-{}-{}'.format(timetable.class_id.id, timetable.date, start_time, end_time)
             if key not in key_timetables:
                 key_timetables[key] = timetable
@@ -821,8 +821,8 @@ class TimetableFilterWizard(models.TransientModel):
             if not timetable.date or not timetable.day_of_week or not timetable.employee_id.id:
                 continue
 
-            end_time = TimetableFilterWizard.convert_float_to_time(timetable.end_time, True)
-            start_time = TimetableFilterWizard.convert_float_to_time(timetable.start_time, True)
+            end_time = TimetableFilterWizard.convert_float_to_time(timetable.end_time, has_second=True)
+            start_time = TimetableFilterWizard.convert_float_to_time(timetable.start_time, has_second=True)
             key = '{}-{}-{}-{}'.format(timetable.class_id.id, timetable.date, start_time, end_time)
             if key not in key_all_timetables:
                 key_all_timetables[key] = timetable
@@ -1154,8 +1154,8 @@ class TimetableFilterWizard(models.TransientModel):
             if not timetable.date or not timetable.day_of_week or not timetable.employee_id.id:
                 continue
 
-            end_time = TimetableFilterWizard.convert_float_to_time(timetable.end_time, True)
-            start_time = TimetableFilterWizard.convert_float_to_time(timetable.start_time, True)
+            end_time = TimetableFilterWizard.convert_float_to_time(timetable.end_time, has_second=True)
+            start_time = TimetableFilterWizard.convert_float_to_time(timetable.start_time, has_second=True)
             key = '{}-{}-{}-{}'.format(timetable.class_id.id, timetable.date, start_time, end_time)
             if key not in key_timetables:
                 key_timetables[key] = {}
@@ -1163,8 +1163,8 @@ class TimetableFilterWizard(models.TransientModel):
             else:
                 continue
 
-            end_time = TimetableFilterWizard.convert_float_to_time(timetable.end_time, True)
-            start_time = TimetableFilterWizard.convert_float_to_time(timetable.start_time, True)
+            end_time = TimetableFilterWizard.convert_float_to_time(timetable.end_time, has_second=True)
+            start_time = TimetableFilterWizard.convert_float_to_time(timetable.start_time, has_second=True)
             end_time = datetime.strptime(f"{timetable.date} {end_time}", DATETIME_FORMAT)
             start_time = datetime.strptime(f"{timetable.date} {start_time}", DATETIME_FORMAT)
 
@@ -1239,8 +1239,8 @@ class TimetableFilterWizard(models.TransientModel):
             if not timetable.date or not timetable.day_of_week or not timetable.employee_id.id:
                 continue
 
-            end_time = TimetableFilterWizard.convert_float_to_time(timetable.end_time, True)
-            start_time = TimetableFilterWizard.convert_float_to_time(timetable.start_time, True)
+            end_time = TimetableFilterWizard.convert_float_to_time(timetable.end_time, has_second=True)
+            start_time = TimetableFilterWizard.convert_float_to_time(timetable.start_time, has_second=True)
             key = '{}-{}-{}-{}'.format(timetable.class_id.id, timetable.date, start_time, end_time)
             if key not in key_all_timetables:
                 key_all_timetables[key] = {}
@@ -1248,8 +1248,8 @@ class TimetableFilterWizard(models.TransientModel):
             else:
                 continue
 
-            end_time = TimetableFilterWizard.convert_float_to_time(timetable.end_time, True)
-            start_time = TimetableFilterWizard.convert_float_to_time(timetable.start_time, True)
+            end_time = TimetableFilterWizard.convert_float_to_time(timetable.end_time, has_second=True)
+            start_time = TimetableFilterWizard.convert_float_to_time(timetable.start_time, has_second=True)
             end_time = datetime.strptime(f"{timetable.date} {end_time}", DATETIME_FORMAT)
             start_time = datetime.strptime(f"{timetable.date} {start_time}", DATETIME_FORMAT)
 
@@ -1461,8 +1461,8 @@ class TimetableFilterWizard(models.TransientModel):
             if not timetable.date or not timetable.day_of_week or not timetable.employee_id.id:
                 continue
 
-            end_time = TimetableFilterWizard.convert_float_to_time(timetable.end_time, True)
-            start_time = TimetableFilterWizard.convert_float_to_time(timetable.start_time, True)
+            end_time = TimetableFilterWizard.convert_float_to_time(timetable.end_time, has_second=True)
+            start_time = TimetableFilterWizard.convert_float_to_time(timetable.start_time, has_second=True)
             key = '{}-{}-{}-{}'.format(timetable.class_id.id, timetable.date, start_time, end_time)
             if key not in key_timetables:
                 key_timetables[key] = {}
@@ -1470,8 +1470,8 @@ class TimetableFilterWizard(models.TransientModel):
             else:
                 continue
 
-            end_time = TimetableFilterWizard.convert_float_to_time(timetable.end_time, True)
-            start_time = TimetableFilterWizard.convert_float_to_time(timetable.start_time, True)
+            end_time = TimetableFilterWizard.convert_float_to_time(timetable.end_time, has_second=True)
+            start_time = TimetableFilterWizard.convert_float_to_time(timetable.start_time, has_second=True)
             end_time = datetime.strptime(f"{timetable.date} {end_time}", DATETIME_FORMAT)
             start_time = datetime.strptime(f"{timetable.date} {start_time}", DATETIME_FORMAT)
 
@@ -1690,8 +1690,8 @@ class TimetableFilterWizard(models.TransientModel):
 
     @staticmethod
     def compare_float_time(date_time, first_time, second_time):
-        first_time = datetime.strptime(f"{date_time} {TimetableFilterWizard.convert_float_to_time(first_time, True)}", DATETIME_FORMAT)
-        second_time = datetime.strptime(f"{date_time} {TimetableFilterWizard.convert_float_to_time(second_time, True)}", DATETIME_FORMAT)
+        first_time = datetime.strptime(f"{date_time} {TimetableFilterWizard.convert_float_to_time(first_time, has_second=True)}", DATETIME_FORMAT)
+        second_time = datetime.strptime(f"{date_time} {TimetableFilterWizard.convert_float_to_time(second_time, has_second=True)}", DATETIME_FORMAT)
         delay_time = first_time - second_time
         delay_time = delay_time.total_seconds() / 60.0
         delay_time = round(delay_time, 2)

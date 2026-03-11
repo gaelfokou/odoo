@@ -481,8 +481,8 @@ class TimetablePrintWizard(models.TransientModel):
 
     @staticmethod
     def compare_float_time(date_time, first_time, second_time):
-        first_time = datetime.strptime(f"{date_time} {TimetablePrintWizard.convert_float_to_time(first_time, True)}", DATETIME_FORMAT)
-        second_time = datetime.strptime(f"{date_time} {TimetablePrintWizard.convert_float_to_time(second_time, True)}", DATETIME_FORMAT)
+        first_time = datetime.strptime(f"{date_time} {TimetablePrintWizard.convert_float_to_time(first_time, has_second=True)}", DATETIME_FORMAT)
+        second_time = datetime.strptime(f"{date_time} {TimetablePrintWizard.convert_float_to_time(second_time, has_second=True)}", DATETIME_FORMAT)
         delay_time = first_time - second_time
         delay_time = delay_time.total_seconds() / 60.0
         delay_time = round(delay_time, 2)

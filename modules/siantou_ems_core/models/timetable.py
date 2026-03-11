@@ -354,7 +354,7 @@ class Timetable(models.Model):
     def _compute_start_datetime(self):
         for record in self:
             if record.date and record.start_time:
-                start_time = Timetable.convert_float_to_time(record.start_time, True)
+                start_time = Timetable.convert_float_to_time(record.start_time, has_second=True)
                 datetime_from = datetime.strptime(f"{record.date} {start_time}", DATETIME_FORMAT)
                 record.start_datetime = datetime_from
             else:
@@ -364,7 +364,7 @@ class Timetable(models.Model):
     def _onchange_start_datetime(self):
         for record in self:
             if record.date and record.start_time:
-                start_time = Timetable.convert_float_to_time(record.start_time, True)
+                start_time = Timetable.convert_float_to_time(record.start_time, has_second=True)
                 datetime_from = datetime.strptime(f"{record.date} {start_time}", DATETIME_FORMAT)
                 record.start_datetime = datetime_from
             else:
@@ -374,7 +374,7 @@ class Timetable(models.Model):
     def _compute_end_datetime(self):
         for record in self:
             if record.date and record.end_time:
-                end_time = Timetable.convert_float_to_time(record.end_time, True)
+                end_time = Timetable.convert_float_to_time(record.end_time, has_second=True)
                 datetime_to = datetime.strptime(f"{record.date} {end_time}", DATETIME_FORMAT)
                 record.end_datetime = datetime_to
             else:
@@ -384,7 +384,7 @@ class Timetable(models.Model):
     def _onchange_end_datetime(self):
         for record in self:
             if record.date and record.end_time:
-                end_time = Timetable.convert_float_to_time(record.end_time, True)
+                end_time = Timetable.convert_float_to_time(record.end_time, has_second=True)
                 datetime_to = datetime.strptime(f"{record.date} {end_time}", DATETIME_FORMAT)
                 record.end_datetime = datetime_to
             else:

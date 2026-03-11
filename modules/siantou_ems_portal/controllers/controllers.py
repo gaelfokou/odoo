@@ -733,8 +733,8 @@ class PortalAccount(portal.CustomerPortal):
                 paymenthistories = list(paymenthistories)
                 for paymenthistory in paymenthistories:
                     for worked_days_line_id in paymenthistory.worked_days_line_ids:
-                        end_time = Helpers.convert_float_to_time(worked_days_line_id.timetable_id.end_time, True)
-                        start_time = Helpers.convert_float_to_time(worked_days_line_id.timetable_id.start_time, True)
+                        end_time = Helpers.convert_float_to_time(worked_days_line_id.timetable_id.end_time, has_second=True)
+                        start_time = Helpers.convert_float_to_time(worked_days_line_id.timetable_id.start_time, has_second=True)
                         key = '{}-{}-{}-{}'.format(worked_days_line_id.timetable_id.employee_id.id, worked_days_line_id.timetable_id.date, start_time, end_time)
                         if key not in key_payslips:
                             key_payslips[key] = {}
@@ -750,8 +750,8 @@ class PortalAccount(portal.CustomerPortal):
         total_number_of_hours = 0.0
         accountbalances = []
         for search_accountbalance in search_accountbalances:
-            end_time = Helpers.convert_float_to_time(search_accountbalance.end_time, True)
-            start_time = Helpers.convert_float_to_time(search_accountbalance.start_time, True)
+            end_time = Helpers.convert_float_to_time(search_accountbalance.end_time, has_second=True)
+            start_time = Helpers.convert_float_to_time(search_accountbalance.start_time, has_second=True)
             key = '{}-{}-{}-{}'.format(search_accountbalance.employee_id.id, search_accountbalance.date, start_time, end_time)
             if key in key_payslips and key_payslips[key]['timetable_id'] != search_accountbalance.id:
                 continue
@@ -792,8 +792,8 @@ class PortalAccount(portal.CustomerPortal):
             accountbalance['status'] = STATUS_TIMETABLE[search_accountbalance.status]
 
             if search_accountbalance.status == 'present':
-                end_time = Helpers.convert_float_to_time(search_accountbalance.worked_end_time, True)
-                start_time = Helpers.convert_float_to_time(search_accountbalance.worked_start_time, True)
+                end_time = Helpers.convert_float_to_time(search_accountbalance.worked_end_time, has_second=True)
+                start_time = Helpers.convert_float_to_time(search_accountbalance.worked_start_time, has_second=True)
                 datetime_to = datetime.strptime(f"{search_accountbalance.date} {end_time}", DATETIME_FORMAT)
                 datetime_from = datetime.strptime(f"{search_accountbalance.date} {start_time}", DATETIME_FORMAT)
                 weekly_hours_credit = datetime_to - datetime_from
@@ -802,8 +802,8 @@ class PortalAccount(portal.CustomerPortal):
                 weekly_hours_credit = round(weekly_hours_credit, 2)
                 accountbalance['number_of_hours'] = weekly_hours_credit
             else:
-                end_time = Helpers.convert_float_to_time(search_accountbalance.end_time, True)
-                start_time = Helpers.convert_float_to_time(search_accountbalance.start_time, True)
+                end_time = Helpers.convert_float_to_time(search_accountbalance.end_time, has_second=True)
+                start_time = Helpers.convert_float_to_time(search_accountbalance.start_time, has_second=True)
                 datetime_to = datetime.strptime(f"{search_accountbalance.date} {end_time}", DATETIME_FORMAT)
                 datetime_from = datetime.strptime(f"{search_accountbalance.date} {start_time}", DATETIME_FORMAT)
                 weekly_hours_credit = datetime_to - datetime_from
@@ -870,8 +870,8 @@ class PortalAccount(portal.CustomerPortal):
                 accountbalance['rate'] = 0.0
                 accountbalance['amount'] = 0.0
 
-            end_time = Helpers.convert_float_to_time(search_accountbalance.end_time, True)
-            start_time = Helpers.convert_float_to_time(search_accountbalance.start_time, True)
+            end_time = Helpers.convert_float_to_time(search_accountbalance.end_time, has_second=True)
+            start_time = Helpers.convert_float_to_time(search_accountbalance.start_time, has_second=True)
             key = '{}-{}-{}-{}'.format(search_accountbalance.employee_id.id, search_accountbalance.date, start_time, end_time)
             if key in key_payslips:
                 accountbalance['rate'] = key_payslips[key]['rate']
