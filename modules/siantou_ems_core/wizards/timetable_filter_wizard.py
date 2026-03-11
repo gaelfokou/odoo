@@ -906,6 +906,10 @@ class TimetableFilterWizard(models.TransientModel):
         percentage = timetable_percentage[1]['percentage']
         return percentage
 
+    def sort_time_timetable_percentage(self, timetable_percentage):
+        worked_time = timetable_percentage[1]['worked_time']
+        return worked_time
+
     def action_print_school_percentage_pdf(self):
         start_date = datetime.strftime(self.start_date, DATE_FORMAT_FR)
         end_date = datetime.strftime(self.end_date, DATE_FORMAT_FR)
@@ -1608,8 +1612,54 @@ class TimetableFilterWizard(models.TransientModel):
             key_timetable_percentages[k]['total_amount'] = key_timetable_percentages[k]['amount']
             key_timetable_percentages[k]['data'].append(teacher_timetable_attendance)
 
+        key_timetable_percentages = sorted(key_timetable_percentages.items(), key=self.sort_time_timetable_percentage, reverse=True)
+        key_timetable_percentages = dict(key_timetable_percentages)
+
+        _logger.info(f'----------- tototototototo key_timetable_percentages {key_timetable_percentages} -----------')
+
+        if len(title) > 0:
+            title = ' / '.join(title)
+        else:
+            title = 'Non spécifié'
+
+        self.env['ir.config_parameter'].sudo().set_param(f'siantou.filter_user_{self.env.user.id}', title)
+
+        filter_title = self.env['ir.config_parameter'].sudo().get_param(f'siantou.filter_user_{self.env.user.id}', '')
+
+        if self.department_id.id:
+            label = 'Spécialité'
+        elif self.school_id.id:
+            label = 'Département'
+        else:
+            label = 'École'
+
+        title = 'Nombre d\'heures et coût par {}'.format(label)
+
+        data = {
+            'docdata': {}
+        }
+        data['docdata']['label'] = label
+        data['docdata']['title'] = title
+        data['docdata']['filter'] = filter_title
+        data['docdata']['timetable_percentage_data'] = key_timetable_percentages
+
+        if not self.is_permanent or not self.is_temporary:
+            if self.is_permanent:
+                title = 'Nombre d\'heures et coût permanent'
+            if self.is_temporary:
+                title = 'Nombre d\'heures et coût temporaire'
+
         start_date = datetime.strftime(self.start_date, DATE_FORMAT_FR)
         end_date = datetime.strftime(self.end_date, DATE_FORMAT_FR)
+
+        # Appeler le rapport PDF
+        if len(data['docdata']['timetable_percentage_data'].keys()) == 0:
+            raise UserError('Aucune donnée trouvée')
+        report_action = self.env.ref('siantou_ems_core.action_report_timetable_hours_and_cost_percentage')
+        report_action.update({
+            'name': '{} du {} - {} PDF'.format(title, start_date, end_date),
+        })
+        return report_action.report_action(self, data=data)
 
     @staticmethod
     def convert_float_to_time(tm, has_second=False):
