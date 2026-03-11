@@ -120,11 +120,11 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
                 key_teacher_timetable_attendances[key]['amount'] = 0.0
                 key_teacher_timetable_attendances[key]['total_amount'] = 0.0
                 key_teacher_timetable_attendances[key]['reduce_amount'] = 0.0
-                key_teacher_timetable_attendances[key]['has_allowance_cd'] = None
-                key_teacher_timetable_attendances[key]['has_allowance_co'] = None
                 key_teacher_timetable_attendances[key]['has_ir'] = None
                 key_teacher_timetable_attendances[key]['has_apecus'] = None
                 key_teacher_timetable_attendances[key]['has_cnps'] = None
+                key_teacher_timetable_attendances[key]['has_allowance_cd'] = None
+                key_teacher_timetable_attendances[key]['has_allowance_co'] = None
             is_permanent = search_teacher_timetable_attendance.employee_id.is_permanent
             teacher_timetable_attendance = {}
             teacher_timetable_attendance['id'] = search_teacher_timetable_attendance.id

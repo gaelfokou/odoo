@@ -1603,11 +1603,6 @@ class TimetableFilterWizard(models.TransientModel):
             teacher_timetable_attendance['amount'] = key_timetables[key]['amount']
             teacher_timetable_attendance['hours_credit'] = key_timetables[key]['hours_credit']
             teacher_timetable_attendance['status'] = STATUS_TIMETABLE[key_timetables[key]['timetable'].status]
-            key_timetable_percentages[k]['has_ir'] = key_timetables[key]['timetable'].employee_id.has_ir
-            key_timetable_percentages[k]['has_apecus'] = key_timetables[key]['timetable'].employee_id.has_apecus
-            key_timetable_percentages[k]['has_cnps'] = key_timetables[key]['timetable'].employee_id.has_cnps
-            key_timetable_percentages[k]['has_allowance_cd'] = key_timetables[key]['timetable'].employee_id.has_allowance_cd
-            key_timetable_percentages[k]['has_allowance_co'] = key_timetables[key]['timetable'].employee_id.has_allowance_co
             key_timetable_percentages[k]['worked_time'] += teacher_timetable_attendance['worked_time']
             key_timetable_percentages[k]['amount'] += teacher_timetable_attendance['amount']
             key_timetable_percentages[k]['total_amount'] = key_timetable_percentages[k]['amount']
