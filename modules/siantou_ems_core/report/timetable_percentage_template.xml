@@ -64,10 +64,13 @@
                                     <tr class="active">
                                         <th class="text-center">Enseignant</th>
                                         <t t-if="'compare' in docdata">
-                                            <th class="text-center">Semaine précédente</th>
-                                            <th class="text-center">Semaine en question</th>
+                                            <th class="text-center">Pourcentage semaine précédente</th>
+                                            <th class="text-center">Pourcentage semaine en question</th>
+                                            <th class="text-center">Comparaison</th>
                                         </t>
-                                        <th class="text-center"></th>
+                                        <t t-else="">
+                                            <th class="text-center">Pourcentage</th>
+                                        </t>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -95,7 +98,7 @@
                                             <td class="text-center"></td>
                                         </tr>
                                         <tr>
-                                            <td class="text-center" style="background-color: #f2f2f2;">POURCENTAGE</td>
+                                            <td class="text-left" style="background-color: #f2f2f2;"></td>
                                             <t t-if="'compare' in docdata">
                                                 <td class="text-center" style="background-color: #f2f2f2;">
                                                     <t t-if="timetable_percentage_data[key]['previous_class'] == 'text-success'">

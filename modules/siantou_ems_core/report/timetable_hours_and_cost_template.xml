@@ -2,9 +2,9 @@
 <odoo>
     <data>
         <!-- Template du rapport PDF -->
-        <template id="template_report_timetable_school_percentage">
+        <template id="template_report_timetable_hours_and_cost">
             <t t-call="web.html_container">
-                <t t-if="docdata and docdata['timetable_percentage_data']">
+                <t t-if="docdata and docdata['timetable_hours_and_cost_data']">
                     <t t-call="web.external_layout">
                         <style>
                             .table {
@@ -62,40 +62,29 @@
                                 </thead>
                                 <thead class="thead">
                                     <tr class="active">
-                                        <th class="text-center">École</th>
-                                        <th class="text-center">Pourcentage</th>
+                                        <th class="text-center" t-esc="docdata['label']"/>
+                                        <th class="text-center">Nombre d'heures</th>
+                                        <th class="text-center">Coût</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <t t-if="docdata['status'] and docdata['status'] in ['present', 'punctuality']">
-                                        <t t-set="timetable_percentage_data" t-value="dict(sorted(docdata['timetable_percentage_data'].items(), key=lambda item: item[1]['percentage'], reverse=True))"/>
-                                    </t>
-                                    <t t-else="">
-                                        <t t-set="timetable_percentage_data" t-value="dict(sorted(docdata['timetable_percentage_data'].items(), key=lambda item: item[1]['percentage']))"/>
-                                    </t>
-                                    <t t-set="keys" t-value="timetable_percentage_data.keys()"/>
+                                    <t t-set="timetable_hours_and_cost_data" t-value="dict(sorted(docdata['timetable_hours_and_cost_data'].items(), key=lambda item: item[1]['worked_time'], reverse=True))"/>
+                                    <t t-set="keys" t-value="timetable_hours_and_cost_data.keys()"/>
                                     <t t-foreach="keys" t-as="key">
                                         <tr>
                                             <td class="text-left">
-                                                <span t-esc="timetable_percentage_data[key]['name']"/>
+                                                <span t-esc="timetable_hours_and_cost_data[key]['name']"/>
                                             </td>
+                                            <td class="text-center"></td>
                                             <td class="text-center"></td>
                                         </tr>
                                         <tr>
                                             <td class="text-left" style="background-color: #f2f2f2;"></td>
                                             <td class="text-center" style="background-color: #f2f2f2;">
-                                                <t t-if="timetable_percentage_data[key]['class'] == 'text-success'">
-                                                    <span t-esc="str(timetable_percentage_data[key]['percentage']) + '%'" style="color: green !important;"/>
-                                                </t>
-                                                <t t-elif="timetable_percentage_data[key]['class'] == 'text-warning'">
-                                                    <span t-esc="str(timetable_percentage_data[key]['percentage']) + '%'" style="color: orange !important;"/>
-                                                </t>
-                                                <t t-elif="timetable_percentage_data[key]['class'] == 'text-danger'">
-                                                    <span t-esc="str(timetable_percentage_data[key]['percentage']) + '%'" style="color: red !important;"/>
-                                                </t>
-                                                <t t-else="">
-                                                    <span t-esc="str(timetable_percentage_data[key]['percentage']) + '%'"/>
-                                                </t>
+                                                <span t-esc="timetable_hours_and_cost_data[key]['worked_time']"/>
+                                            </td>
+                                            <td class="text-center" style="background-color: #f2f2f2;">
+                                                <span t-esc="'{:,.2f}'.format(timetable_hours_and_cost_data[key]['amount'])"/>
                                             </td>
                                         </tr>
                                     </t>
@@ -110,7 +99,7 @@
             </t>
         </template>
 
-        <record id="paperformat_timetable_school_percentage" model="report.paperformat">
+        <record id="paperformat_timetable_hours_and_cost" model="report.paperformat">
             <field name="name">Format du diplome</field>
             <field name="default" eval="True"/>
             <field name="format">A2</field>
@@ -123,15 +112,15 @@
             <field name="header_spacing">5</field>
             <field name="dpi">90</field>
         </record>
-        <record id="action_report_timetable_school_percentage" model="ir.actions.report">
+        <record id="action_report_timetable_hours_and_cost" model="ir.actions.report">
             <field name="name">Emplois du temps PDF</field>
             <field name="model">teacher.timetable.attendance</field>
             <field name="report_type">qweb-pdf</field>
-            <field name="report_name">siantou_ems_core.template_report_timetable_school_percentage</field>
-            <field name="report_file">siantou_ems_core.template_report_timetable_school_percentage</field>
+            <field name="report_name">siantou_ems_core.template_report_timetable_hours_and_cost</field>
+            <field name="report_file">siantou_ems_core.template_report_timetable_hours_and_cost</field>
             <field name="print_report_name">'Fiche de - %s' % (docdata.semester)</field>
             <field name="binding_model_id" eval="False"/>
-            <field name="paperformat_id" ref="paperformat_timetable_school_percentage"/>
+            <field name="paperformat_id" ref="paperformat_timetable_hours_and_cost"/>
             <field name="binding_type">report</field>
         </record>
     </data>

@@ -201,11 +201,11 @@ class TimetablePrintWizard(models.TransientModel):
             }
         }
 
-    def sort_type_timetable_percentage(self, timetable_percentage):
+    def sort_timetable_percentage(self, timetable_percentage):
         percentage = timetable_percentage[1]['percentage']
         return percentage
 
-    def sort_timetable_percentage(self, timetable_percentage):
+    def sort_timetable(self, timetable_percentage):
         name = timetable_percentage[1]['name'] if timetable_percentage[1]['name'] else ''
         name = name.strip()
         name = name.lower()
@@ -447,13 +447,13 @@ class TimetablePrintWizard(models.TransientModel):
             key_timetable_percentages = key_list_timetable_percentages
 
             if status and status in ['present', 'punctuality']:
-                key_timetable_percentages = sorted(key_timetable_percentages.items(), key=self.sort_type_timetable_percentage, reverse=True)
+                key_timetable_percentages = sorted(key_timetable_percentages.items(), key=self.sort_timetable_percentage, reverse=True)
                 key_timetable_percentages = dict(key_timetable_percentages)
             else:
-                key_timetable_percentages = sorted(key_timetable_percentages.items(), key=self.sort_type_timetable_percentage)
+                key_timetable_percentages = sorted(key_timetable_percentages.items(), key=self.sort_timetable_percentage)
                 key_timetable_percentages = dict(key_timetable_percentages)
         else:
-            key_timetable_percentages = sorted(key_timetable_percentages.items(), key=self.sort_timetable_percentage)
+            key_timetable_percentages = sorted(key_timetable_percentages.items(), key=self.sort_timetable)
             key_timetable_percentages = dict(key_timetable_percentages)
 
         _logger.info(f'----------- tototototototo key_timetable_percentages {key_timetable_percentages} -----------')
