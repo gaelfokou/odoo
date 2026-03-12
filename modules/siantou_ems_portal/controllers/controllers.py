@@ -946,6 +946,21 @@ class PortalAccount(portal.CustomerPortal):
 
     @http.route(['/my/consumptionhour'], type='http', auth="user", website=True)
     def portal_consumptionhour(self, search='', search_in='all', **kw):
+        user = None
+        is_user = None
+        is_user_permanent = False
+        if http.request.env.user.employee_id.id:
+            user = http.request.env.user.employee_id
+            if http.request.env.user.employee_id.is_teacher:
+                is_user = 'is_teacher'
+                if http.request.env.user.employee_id.is_permanent:
+                    is_user_permanent = True
+            else:
+                is_user = 'is_employee'
+        elif http.request.env.user.student_id.id:
+            user = http.request.env.user.student_id
+            is_user = 'is_student'
+
         search_consumptionhours, searchbar_inputs = Helpers.consumptionhour(search=search, search_in=search_in)
         consumptionhours = []
         for search_consumptionhour in search_consumptionhours:
@@ -988,10 +1003,26 @@ class PortalAccount(portal.CustomerPortal):
                                     'consumptionhours': consumptionhours,
                                     'page_name': 'consumptionhour',
                                     'consumptionhour': 0,
+                                    'is_user': is_user,
                                 })
 
     @http.route(['/my/progressreport'], type='http', auth="user", website=True)
     def portal_progressreport(self, search='', search_in='all', **kw):
+        user = None
+        is_user = None
+        is_user_permanent = False
+        if http.request.env.user.employee_id.id:
+            user = http.request.env.user.employee_id
+            if http.request.env.user.employee_id.is_teacher:
+                is_user = 'is_teacher'
+                if http.request.env.user.employee_id.is_permanent:
+                    is_user_permanent = True
+            else:
+                is_user = 'is_employee'
+        elif http.request.env.user.student_id.id:
+            user = http.request.env.user.student_id
+            is_user = 'is_student'
+
         search_progressreports, searchbar_inputs = Helpers.progressreport(search=search, search_in=search_in)
         progressreports = []
         for search_progressreport in search_progressreports:
@@ -1047,6 +1078,7 @@ class PortalAccount(portal.CustomerPortal):
                                     'progressreports': progressreports,
                                     'page_name': 'progressreport',
                                     'progressreport': 0,
+                                    'is_user': is_user,
                                 })
 
     @http.route(['/my/subjectsession/<int:classe>/<int:subject>/list'], type='http', auth="user", website=True)
