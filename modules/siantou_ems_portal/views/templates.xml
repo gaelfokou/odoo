@@ -134,8 +134,10 @@
                                         </td>
                                         <td class="text-center">
                                             <t t-foreach="timetables[monday]['Lundi'][hour]" t-as="record">
-                                                <span t-esc="record['class_name']"/>
-                                                <br/>
+                                                <t t-if="is_user and is_user == 'is_teacher'">
+                                                    <span t-esc="record['class_name']"/>
+                                                    <br/>
+                                                </t>
                                                 <span t-esc="record['subject_name']"/>
                                                 <span t-esc="'(' + record['subject_code'] + ')'"/>
                                                 <br/>
@@ -150,8 +152,10 @@
                                         </td>
                                         <td class="text-center">
                                             <t t-foreach="timetables[monday]['Mardi'][hour]" t-as="record">
-                                                <span t-esc="record['class_name']"/>
-                                                <br/>
+                                                <t t-if="is_user and is_user == 'is_teacher'">
+                                                    <span t-esc="record['class_name']"/>
+                                                    <br/>
+                                                </t>
                                                 <span t-esc="record['subject_name']"/>
                                                 <span t-esc="' (' + record['subject_code'] + ')'"/>
                                                 <br/>
@@ -166,8 +170,10 @@
                                         </td>
                                         <td class="text-center">
                                             <t t-foreach="timetables[monday]['Mercredi'][hour]" t-as="record">
-                                                <span t-esc="record['class_name']"/>
-                                                <br/>
+                                                <t t-if="is_user and is_user == 'is_teacher'">
+                                                    <span t-esc="record['class_name']"/>
+                                                    <br/>
+                                                </t>
                                                 <span t-esc="record['subject_name']"/>
                                                 <span t-esc="' (' + record['subject_code'] + ')'"/>
                                                 <br/>
@@ -182,8 +188,10 @@
                                         </td>
                                         <td class="text-center">
                                             <t t-foreach="timetables[monday]['Jeudi'][hour]" t-as="record">
-                                                <span t-esc="record['class_name']"/>
-                                                <br/>
+                                                <t t-if="is_user and is_user == 'is_teacher'">
+                                                    <span t-esc="record['class_name']"/>
+                                                    <br/>
+                                                </t>
                                                 <span t-esc="record['subject_name']"/>
                                                 <span t-esc="' (' + record['subject_code'] + ')'"/>
                                                 <br/>
@@ -198,8 +206,10 @@
                                         </td>
                                         <td class="text-center">
                                             <t t-foreach="timetables[monday]['Vendredi'][hour]" t-as="record">
-                                                <span t-esc="record['class_name']"/>
-                                                <br/>
+                                                <t t-if="is_user and is_user == 'is_teacher'">
+                                                    <span t-esc="record['class_name']"/>
+                                                    <br/>
+                                                </t>
                                                 <span t-esc="record['subject_name']"/>
                                                 <span t-esc="' (' + record['subject_code'] + ')'"/>
                                                 <br/>
@@ -214,8 +224,10 @@
                                         </td>
                                         <td class="text-center">
                                             <t t-foreach="timetables[monday]['Samedi'][hour]" t-as="record">
-                                                <span t-esc="record['class_name']"/>
-                                                <br/>
+                                                <t t-if="is_user and is_user == 'is_teacher'">
+                                                    <span t-esc="record['class_name']"/>
+                                                    <br/>
+                                                </t>
                                                 <span t-esc="record['subject_name']"/>
                                                 <span t-esc="' (' + record['subject_code'] + ')'"/>
                                                 <br/>
@@ -230,8 +242,10 @@
                                         </td>
                                         <td class="text-center">
                                             <t t-foreach="timetables[monday]['Dimanche'][hour]" t-as="record">
-                                                <span t-esc="record['class_name']"/>
-                                                <br/>
+                                                <t t-if="is_user and is_user == 'is_teacher'">
+                                                    <span t-esc="record['class_name']"/>
+                                                    <br/>
+                                                </t>
                                                 <span t-esc="record['subject_name']"/>
                                                 <span t-esc="' (' + record['subject_code'] + ')'"/>
                                                 <br/>

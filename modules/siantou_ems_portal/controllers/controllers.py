@@ -195,7 +195,22 @@ class PortalAccount(portal.CustomerPortal):
             timetable_selected_month = 0
         else:
             timetable_selected_month = int(selected_month) + 1
-        # Utilisation de la fonction du helper
+
+        user = None
+        is_user = None
+        is_user_permanent = False
+        if http.request.env.user.employee_id.id:
+            user = http.request.env.user.employee_id
+            if http.request.env.user.employee_id.is_teacher:
+                is_user = 'is_teacher'
+                if http.request.env.user.employee_id.is_permanent:
+                    is_user_permanent = True
+            else:
+                is_user = 'is_employee'
+        elif http.request.env.user.student_id.id:
+            user = http.request.env.user.student_id
+            is_user = 'is_student'
+
         search_timetables, searchbar_inputs, search_month = Helpers.timetable(search=search, search_in=search_in, selected_month=selected_month)
         timetables = []
         for search_timetable in search_timetables:
@@ -319,6 +334,7 @@ class PortalAccount(portal.CustomerPortal):
                                     'timetable_selected_month': timetable_selected_month,
                                     'selected_month': selected_month,
                                     'search_month': search_month,
+                                    'is_user': is_user,
                                 })
 
     @http.route(['/my/timetable/download', '/my/timetable/download/page/<int:page>'], type='http', auth="user", website=True)
@@ -332,7 +348,22 @@ class PortalAccount(portal.CustomerPortal):
             timetable_selected_month = 0
         else:
             timetable_selected_month = int(selected_month) + 1
-        # Utilisation de la fonction du helper
+
+        user = None
+        is_user = None
+        is_user_permanent = False
+        if http.request.env.user.employee_id.id:
+            user = http.request.env.user.employee_id
+            if http.request.env.user.employee_id.is_teacher:
+                is_user = 'is_teacher'
+                if http.request.env.user.employee_id.is_permanent:
+                    is_user_permanent = True
+            else:
+                is_user = 'is_employee'
+        elif http.request.env.user.student_id.id:
+            user = http.request.env.user.student_id
+            is_user = 'is_student'
+
         search_timetables, searchbar_inputs, search_month = Helpers.timetable(search=search, search_in=search_in, selected_month=selected_month)
         timetable_ids = []
         timetables = []
@@ -462,6 +493,28 @@ class PortalAccount(portal.CustomerPortal):
             for timetable in timetables['pages']:
                 timetable_ids.append(timetable['id'])
         timetable_ids = list(set(timetable_ids))
+
+        title = []
+
+        if is_user:
+            if is_user == 'is_teacher':
+                title.append(user.name)
+            elif is_user == 'is_student':
+                title.append(user.class_id.name)
+
+        if view_type == 'calendar':
+            for monday in timetables['pages'].keys():
+                title.append(monday)
+        else:
+            title.append(search_month)
+
+        if len(title) > 0:
+            title = ' / '.join(title)
+        else:
+            title = 'Non spécifié'
+
+        http.request.env['ir.config_parameter'].sudo().set_param(f'siantou.filter_user_{http.request.env.user.id}', title)
+
         report_name = 'siantou_ems_core.template_report_timetable'
         report_action = 'siantou_ems_core.action_report_timetable'
         pdf_report = http.request.env['ir.actions.report'].sudo()._get_report_from_name(report_action)
@@ -485,7 +538,6 @@ class PortalAccount(portal.CustomerPortal):
 
     @http.route(['/my/schoolfee'], type='http', auth="user", website=True)
     def portal_schoolfee(self, search='', search_in='all', **kw):
-        # Utilisation de la fonction du helper
         search_schoolfees, searchbar_inputs = Helpers.schoolfee(search=search, search_in=search_in)
         total_amount = 0.0
         total_structure_amount = 0.0
@@ -517,7 +569,6 @@ class PortalAccount(portal.CustomerPortal):
 
     @http.route(['/my/examscore'], type='http', auth="user", website=True)
     def portal_examscore(self, search='', search_in='all', **kw):
-        # Utilisation de la fonction du helper
         search_examscores, searchbar_inputs = Helpers.examscore(search=search, search_in=search_in)
         examscores = []
         if http.request.env.user.student_id.id:
@@ -668,7 +719,6 @@ class PortalAccount(portal.CustomerPortal):
 
     @http.route(['/my/paymenthistory'], type='http', auth="user", website=True)
     def portal_paymenthistory(self, search='', search_in='all', **kw):
-        # Utilisation de la fonction du helper
         search_paymenthistories, searchbar_inputs = Helpers.paymenthistory(search=search, search_in=search_in)
         total_amount = 0.0
         total_number_of_hours = 0.0
@@ -744,7 +794,6 @@ class PortalAccount(portal.CustomerPortal):
 
         timetable_ids = [payslip['timetable_id'] for payslip in key_payslips.values()]
 
-        # Utilisation de la fonction du helper
         search_accountbalances, searchbar_inputs, search_month = Helpers.accountbalance(search=search, search_in=search_in, selected_month=selected_month)
         total_rate = 0.0
         total_number_of_hours = 0.0
@@ -897,7 +946,6 @@ class PortalAccount(portal.CustomerPortal):
 
     @http.route(['/my/consumptionhour'], type='http', auth="user", website=True)
     def portal_consumptionhour(self, search='', search_in='all', **kw):
-        # Utilisation de la fonction du helper
         search_consumptionhours, searchbar_inputs = Helpers.consumptionhour(search=search, search_in=search_in)
         consumptionhours = []
         for search_consumptionhour in search_consumptionhours:
@@ -944,7 +992,6 @@ class PortalAccount(portal.CustomerPortal):
 
     @http.route(['/my/progressreport'], type='http', auth="user", website=True)
     def portal_progressreport(self, search='', search_in='all', **kw):
-        # Utilisation de la fonction du helper
         search_progressreports, searchbar_inputs = Helpers.progressreport(search=search, search_in=search_in)
         progressreports = []
         for search_progressreport in search_progressreports:
@@ -1004,7 +1051,6 @@ class PortalAccount(portal.CustomerPortal):
 
     @http.route(['/my/subjectsession/<int:classe>/<int:subject>/list'], type='http', auth="user", website=True)
     def portal_subjectsession_list(self, classe=None, subject=None, search='', search_in='all', **kw):
-        # Utilisation de la fonction du helper
         user = None
         is_user = None
         is_user_permanent = False
@@ -1087,13 +1133,43 @@ class PortalAccount(portal.CustomerPortal):
 
     @http.route(['/my/subjectsession/<int:classe>/<int:subject>/download'], type='http', auth="user", website=True)
     def portal_subjectsession_download(self, classe=None, subject=None, search='', search_in='all', **kw):
-        # Utilisation de la fonction du helper
         class_id = http.request.env['siantou.ems.core.class'].sudo().search([('id', '=', classe)], limit=1)
         subject_id = http.request.env['siantou.ems.core.subject'].sudo().search([('id', '=', subject)], limit=1)
         search_reports, searchbar_inputs = Helpers.report(search=search, search_in=search_in, class_id=class_id, subject_id=subject_id)
         report_ids = []
         for search_report in search_reports:
             report_ids.append(search_report.id)
+
+        user = None
+        is_user = None
+        is_user_permanent = False
+        if http.request.env.user.employee_id.id:
+            user = http.request.env.user.employee_id
+            if http.request.env.user.employee_id.is_teacher:
+                is_user = 'is_teacher'
+                if http.request.env.user.employee_id.is_permanent:
+                    is_user_permanent = True
+            else:
+                is_user = 'is_employee'
+        elif http.request.env.user.student_id.id:
+            user = http.request.env.user.student_id
+            is_user = 'is_student'
+
+        title = []
+
+        if is_user:
+            if is_user == 'is_teacher':
+                title.append(user.name)
+            elif is_user == 'is_student':
+                title.append(user.class_id.name)
+
+        if len(title) > 0:
+            title = ' / '.join(title)
+        else:
+            title = 'Non spécifié'
+
+        http.request.env['ir.config_parameter'].sudo().set_param(f'siantou.filter_user_{http.request.env.user.id}', title)
+
         report_name = 'siantou_ems_core.template_report_progress_report'
         report_action = 'siantou_ems_core.action_report_progress_report'
         pdf_report = http.request.env['ir.actions.report'].sudo()._get_report_from_name(report_action)
@@ -1117,7 +1193,6 @@ class PortalAccount(portal.CustomerPortal):
 
     @http.route(['/my/subjectsession/<int:classe>/<int:subject>/new'], type='http', auth="user", website=True)
     def portal_subjectsession_new(self, classe=None, subject=None, search='', search_in='all', **kw):
-        # Utilisation de la fonction du helper
         user = None
         is_user = None
         is_user_permanent = False
@@ -1287,7 +1362,6 @@ class PortalAccount(portal.CustomerPortal):
 
     @http.route(['/my/subjectsession/<int:classe>/<int:subject>/<int:session>/edit'], type='http', auth="user", website=True)
     def portal_subjectsession_edit(self, classe=None, subject=None, session=None, search='', search_in='all', **kw):
-        # Utilisation de la fonction du helper
         user = None
         is_user = None
         is_user_permanent = False
@@ -1442,7 +1516,6 @@ class PortalAccount(portal.CustomerPortal):
 
     @http.route(['/my/calendar', '/my/calendar/page/<int:page>'], type='http', auth="user", website=True)
     def portal_calendar(self, page=1, search='', search_in='all', **kw):
-        # Utilisation de la fonction du helper
         search_calendars, searchbar_inputs, search_year = Helpers.calendar(search=search, search_in=search_in)
         calendars = []
         for search_calendar in search_calendars:
@@ -1480,7 +1553,6 @@ class PortalAccount(portal.CustomerPortal):
 
     @http.route(['/my/notification'], type='http', auth="user", website=True)
     def portal_notification(self, search='', search_in='all', **kw):
-        # Utilisation de la fonction du helper
         search_notifications, searchbar_inputs = Helpers.notification(search=search, search_in=search_in)
         notifications = []
         for search_notification in search_notifications:

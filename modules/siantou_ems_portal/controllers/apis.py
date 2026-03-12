@@ -52,7 +52,6 @@ class ApiAccount(http.Controller):
     def api_timetable(self, page=1, search='', search_in='all', view_type='calendar', **kw):
         if view_type not in ['calendar', 'list']:
             view_type = 'calendar'
-        # Utilisation de la fonction du helper
         search_timetables, searchbar_inputs = Helpers.timetable(search=search, search_in=search_in)
         timetables = []
         for search_timetable in search_timetables:
@@ -225,7 +224,6 @@ class ApiAccount(http.Controller):
 
     @http.route(['/api/schoolfee', '/api/schoolfee/page/<int:page>'], type='json', auth='user')
     def api_schoolfee(self, page=1, search='', search_in='all', **kw):
-        # Utilisation de la fonction du helper
         search_schoolfees, searchbar_inputs = Helpers.schoolfee(search=search, search_in=search_in)
         total_amount = 0.0
         total_structure_amount = 0.0
@@ -261,7 +259,6 @@ class ApiAccount(http.Controller):
 
     @http.route(['/api/paymenthistory', '/api/paymenthistory/page/<int:page>'], type='json', auth='user')
     def api_paymenthistory(self, page=1, search='', search_in='all', **kw):
-        # Utilisation de la fonction du helper
         search_paymenthistories, searchbar_inputs = Helpers.paymenthistory(search=search, search_in=search_in)
         total_amount = 0.0
         total_number_of_hours = 0.0
@@ -297,7 +294,6 @@ class ApiAccount(http.Controller):
 
     @http.route(['/api/notification', '/api/notification/page/<int:page>'], type='json', auth='user')
     def api_notification(self, page=1, search='', search_in='all', **kw):
-        # Utilisation de la fonction du helper
         search_notifications, searchbar_inputs = Helpers.notification(search=search, search_in=search_in)
         notifications = []
         for search_notification in search_notifications:
@@ -384,7 +380,6 @@ class ApiAccount(http.Controller):
 
     @http.route(['/api/password/reset'], type='json', auth='public')
     def api_password_reset(self, **kw):
-        # Utilisation de la fonction du helper
         data = {}
         if http.request.httprequest.method == 'POST':
             json_data = json.loads(request.httprequest.data)
@@ -421,7 +416,6 @@ class ApiAccount(http.Controller):
 
     @http.route(['/api/password/confirm'], type='json', auth='public')
     def api_password_confirm(self, **kw):
-        # Utilisation de la fonction du helper
         data = {}
         if http.request.httprequest.method == 'POST':
             json_data = json.loads(request.httprequest.data)
@@ -433,7 +427,6 @@ class ApiAccount(http.Controller):
 
     @http.route(['/api/password/update'], type='json', auth='public')
     def api_password_update(self, **kw):
-        # Utilisation de la fonction du helper
         data = {}
         if http.request.httprequest.method == 'POST':
             json_data = json.loads(request.httprequest.data)

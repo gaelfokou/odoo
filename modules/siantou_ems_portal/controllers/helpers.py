@@ -123,7 +123,6 @@ class Helpers:
             is_user = 'is_student'
         if is_user:
             if is_user == 'is_teacher':
-                user = http.request.env.user.employee_id
                 search_domain.append(('employee_id', '=', user.id))
 
                 timetables = http.request.env['siantou.ems.timetable.timetable'].sudo().search(search_domain, order=order).sorted(lambda rec: (rec.date, rec.id))
@@ -425,7 +424,6 @@ class Helpers:
             is_user = 'is_student'
         if is_user:
             if is_user == 'is_teacher':
-                user = http.request.env.user.employee_id
                 search_domain.append(('employee_id', '=', user.id))
 
                 consumptionhours = http.request.env['siantou.ems.timetable.timetable'].sudo().search(search_domain, order=order).sorted(lambda rec: (rec.date, rec.id))
@@ -534,7 +532,6 @@ class Helpers:
             is_user = 'is_student'
         if is_user:
             if is_user == 'is_teacher':
-                user = http.request.env.user.employee_id
                 search_domain.append(('employee_id', '=', user.id))
 
                 progressreports = http.request.env['siantou.ems.timetable.timetable'].sudo().search(search_domain, order=order).sorted(lambda rec: (rec.date, rec.id))
@@ -673,7 +670,6 @@ class Helpers:
             is_user = 'is_student'
         if is_user:
             if is_user == 'is_teacher':
-                user = http.request.env.user.employee_id
                 search_domain.append(('employee_id', '=', user.id))
 
                 subjectsessions = http.request.env['siantou.ems.timetable.timetable'].sudo().search(search_domain, order=order).sorted(lambda rec: (rec.date, rec.id))
