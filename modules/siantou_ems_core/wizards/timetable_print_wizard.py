@@ -74,29 +74,30 @@ class TimetablePrintWizard(models.TransientModel):
 
         search_timetables = self.env['siantou.ems.timetable.timetable'].search(domain)
 
+        find_name = None
+        filter_title = self.env['ir.config_parameter'].sudo().get_param(f'siantou.filter_user_{self.env.user.id}', '')
+        if filter_title:
+            title = filter_title.lower()
+            employees = self.env['hr.employee'].search([('is_teacher', '=', True)])
+            for employee in employees:
+                if employee.name:
+                    name = employee.name
+                    name = name.lower()
+                    if title.find(name) != -1:
+                        find_name = employee.name
+                        break
+
         key_timetables = {}
         info_timetables = {}
         for search_timetable in search_timetables:
             if not search_timetable.date or not search_timetable.day_of_week or not search_timetable.employee_id.id:
                 continue
-            find_name = None
-            filter_title = self.env['ir.config_parameter'].sudo().get_param(f'siantou.filter_user_{self.env.user.id}', '')
-            if filter_title:
-                title = filter_title.lower()
-                employees = self.env['hr.employee'].search([('is_teacher', '=', True)])
-                for employee in employees:
-                    if employee.name:
-                        name = employee.name
-                        name = name.lower()
-                        if title.find(name) != -1:
-                            find_name = employee.name
-                            break
             if find_name:
-                key = '{}'.format(search_timetable.employee_id.id)
+                key = '{}-{}'.format(search_timetable.semester_id.id, search_timetable.employee_id.id)
                 semester = '{}'.format(search_timetable.semester_id.name)
                 study = '{}'.format(search_timetable.employee_id.name)
             else:
-                key = '{}'.format(search_timetable.class_id.id)
+                key = '{}-{}'.format(search_timetable.semester_id.id, search_timetable.class_id.id)
                 semester = '{}'.format(search_timetable.semester_id.name)
                 study = '{}'.format(search_timetable.class_id.name)
             if key not in key_timetables:
@@ -215,6 +216,7 @@ class TimetablePrintWizard(models.TransientModel):
             'docdata': {
                 'title': 'Emplois du temps',
                 'timetable_data': key_timetables,
+                'find_name': find_name,
             }
         }
 
