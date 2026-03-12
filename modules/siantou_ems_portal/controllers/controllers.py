@@ -569,6 +569,21 @@ class PortalAccount(portal.CustomerPortal):
 
     @http.route(['/my/examscore'], type='http', auth="user", website=True)
     def portal_examscore(self, search='', search_in='all', **kw):
+        user = None
+        is_user = None
+        is_user_permanent = False
+        if http.request.env.user.employee_id.id:
+            user = http.request.env.user.employee_id
+            if http.request.env.user.employee_id.is_teacher:
+                is_user = 'is_teacher'
+                if http.request.env.user.employee_id.is_permanent:
+                    is_user_permanent = True
+            else:
+                is_user = 'is_employee'
+        elif http.request.env.user.student_id.id:
+            user = http.request.env.user.student_id
+            is_user = 'is_student'
+
         search_examscores, searchbar_inputs = Helpers.examscore(search=search, search_in=search_in)
         examscores = []
         if http.request.env.user.student_id.id:
@@ -715,6 +730,7 @@ class PortalAccount(portal.CustomerPortal):
                                     'examscores': all_examscores,
                                     'page_name': 'examscore',
                                     'examscore': 0,
+                                    'is_user': is_user,
                                 })
 
     @http.route(['/my/paymenthistory'], type='http', auth="user", website=True)

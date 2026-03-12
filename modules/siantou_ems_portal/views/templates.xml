@@ -683,16 +683,18 @@
                             </tr>
                         </thead>
                         <t t-foreach="classes" t-as="classe">
-                            <thead>
-                                <tr class="active">
-                                    <th class="text-left">
-                                        <span t-esc="examscores[classe]['name']"/>
-                                    </th>
-                                    <th class="text-left" colspan="5">
-                                        <span t-esc="'Empty'" style="visibility: hidden;"/>
-                                    </th>
-                                </tr>
-                            </thead>
+                            <t t-if="is_user and is_user == 'is_teacher'">
+                                <thead>
+                                    <tr class="active">
+                                        <th class="text-left">
+                                            <span t-esc="examscores[classe]['name']"/>
+                                        </th>
+                                        <th class="text-left" colspan="5">
+                                            <span t-esc="'Empty'" style="visibility: hidden;"/>
+                                        </th>
+                                    </tr>
+                                </thead>
+                            </t>
                             <t t-set="semesters" t-value="examscores[classe]['data'].keys()"/>
                             <t t-foreach="semesters" t-as="semester">
                                 <tbody>
