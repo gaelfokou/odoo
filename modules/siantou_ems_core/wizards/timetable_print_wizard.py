@@ -79,15 +79,32 @@ class TimetablePrintWizard(models.TransientModel):
         for search_timetable in search_timetables:
             if not search_timetable.date or not search_timetable.day_of_week or not search_timetable.employee_id.id:
                 continue
-            key = '{}-{}'.format(search_timetable.semester_id.id, search_timetable.class_id.id)
-            semester = '{}'.format(search_timetable.semester_id.name)
-            study = '{} - {} - {} - {}'.format(search_timetable.class_id.name, search_timetable.field_of_study_id.name, search_timetable.specialty_id.name if search_timetable.specialty_id.id else '', search_timetable.level_id.name, search_timetable.batch_id.name)
+            find_name = None
+            filter_title = self.env['ir.config_parameter'].sudo().get_param(f'siantou.filter_user_{self.env.user.id}', '')
+            if filter_title:
+                title = filter_title.lower()
+                employees = self.env['hr.employee'].search([('is_teacher', '=', True)])
+                for employee in employees:
+                    if employee.name:
+                        name = employee.name
+                        name = name.lower()
+                        if title.find(name) != -1:
+                            find_name = employee.name
+                            break
+            if find_name:
+                key = '{}'.format(search_timetable.employee_id.id)
+                semester = '{}'.format(search_timetable.semester_id.name)
+                study = '{}'.format(search_timetable.employee_id.name)
+            else:
+                key = '{}'.format(search_timetable.class_id.id)
+                semester = '{}'.format(search_timetable.semester_id.name)
+                study = '{}'.format(search_timetable.class_id.name)
             if key not in key_timetables:
                 key_timetables[key] = []
                 info_timetables[key] = {}
                 info_timetables[key]['semester'] = semester
                 info_timetables[key]['study'] = study
-                info_timetables[key]['filter'] = self.env['ir.config_parameter'].sudo().get_param(f'siantou.filter_user_{self.env.user.id}', '')
+                info_timetables[key]['filter'] = filter_title
             timetable = {}
             timetable['id'] = search_timetable.id
             timetable['date'] = search_timetable.date
