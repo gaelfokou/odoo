@@ -968,7 +968,7 @@ class TimetableFilterWizard(models.TransientModel):
             raise UserError('Aucune donnée trouvée')
         report_action = self.env.ref('siantou_ems_core.action_report_timetable_school_percentage')
         report_action.update({
-            'name': '{} par École du {} - {} PDF'.format(STATUS_TIMETABLE[self.status].replace('Présent', 'Présence').replace('Absent', 'Absence'), start_date, end_date),
+            'name': '{} du {} - {} PDF'.format(STATUS_TIMETABLE[self.status].replace('Présent', 'Présence').replace('Absent', 'Absence'), start_date, end_date),
         })
         return report_action.report_action(self, data=all_data)
 
@@ -1348,6 +1348,12 @@ class TimetableFilterWizard(models.TransientModel):
 
         title = 'Pourcentage d\'heures par {}'.format(label)
 
+        if not self.is_permanent or not self.is_temporary:
+            if self.is_permanent:
+                title = 'Pourcentage d\'heures permanent par {}'.format(label)
+            if self.is_temporary:
+                title = 'Pourcentage d\'heures temporaire par {}'.format(label)
+
         data = {
             'docdata': {}
         }
@@ -1355,12 +1361,6 @@ class TimetableFilterWizard(models.TransientModel):
         data['docdata']['title'] = title
         data['docdata']['filter'] = filter_title
         data['docdata']['timetable_percentage_data'] = key_timetable_percentages
-
-        if not self.is_permanent or not self.is_temporary:
-            if self.is_permanent:
-                title = 'Pourcentage d\'heures permanent'
-            if self.is_temporary:
-                title = 'Pourcentage d\'heures temporaire'
 
         start_date = datetime.strftime(self.start_date, DATE_FORMAT_FR)
         end_date = datetime.strftime(self.end_date, DATE_FORMAT_FR)
@@ -1370,15 +1370,15 @@ class TimetableFilterWizard(models.TransientModel):
         report_action = self.env.ref('siantou_ems_core.action_report_timetable_hours_percentage')
         if self.department_id.id:
             report_action.update({
-                'name': '{} par Spécialité du {} - {} PDF'.format(title, start_date, end_date),
+                'name': '{} du {} - {} PDF'.format(title, start_date, end_date),
             })
         elif self.school_id.id:
             report_action.update({
-                'name': '{} par Département du {} - {} PDF'.format(title, start_date, end_date),
+                'name': '{} du {} - {} PDF'.format(title, start_date, end_date),
             })
         else:
             report_action.update({
-                'name': '{} par École du {} - {} PDF'.format(title, start_date, end_date),
+                'name': '{} du {} - {} PDF'.format(title, start_date, end_date),
             })
         return report_action.report_action(self, data=data)
 
@@ -1648,6 +1648,12 @@ class TimetableFilterWizard(models.TransientModel):
 
         title = 'Nombre d\'heures et coût par {}'.format(label)
 
+        if not self.is_permanent or not self.is_temporary:
+            if self.is_permanent:
+                title = 'Nombre d\'heures et coût permanent par {}'.format(label)
+            if self.is_temporary:
+                title = 'Nombre d\'heures et coût temporaire par {}'.format(label)
+
         is_permanent = False
         if not self.is_permanent or not self.is_temporary:
             if self.is_permanent:
@@ -1662,12 +1668,6 @@ class TimetableFilterWizard(models.TransientModel):
         data['docdata']['timetable_hours_and_cost_data'] = key_timetable_hours_and_costs
         data['docdata']['is_permanent'] = is_permanent
 
-        if not self.is_permanent or not self.is_temporary:
-            if self.is_permanent:
-                title = 'Nombre d\'heures et coût permanent'
-            if self.is_temporary:
-                title = 'Nombre d\'heures et coût temporaire'
-
         start_date = datetime.strftime(self.start_date, DATE_FORMAT_FR)
         end_date = datetime.strftime(self.end_date, DATE_FORMAT_FR)
 
@@ -1676,15 +1676,15 @@ class TimetableFilterWizard(models.TransientModel):
         report_action = self.env.ref('siantou_ems_core.action_report_timetable_hours_and_cost')
         if self.department_id.id:
             report_action.update({
-                'name': '{} par Spécialité du {} - {} PDF'.format(title, start_date, end_date),
+                'name': '{} du {} - {} PDF'.format(title, start_date, end_date),
             })
         elif self.school_id.id:
             report_action.update({
-                'name': '{} par Département du {} - {} PDF'.format(title, start_date, end_date),
+                'name': '{} du {} - {} PDF'.format(title, start_date, end_date),
             })
         else:
             report_action.update({
-                'name': '{} par École du {} - {} PDF'.format(title, start_date, end_date),
+                'name': '{} du {} - {} PDF'.format(title, start_date, end_date),
             })
         return report_action.report_action(self, data=data)
 

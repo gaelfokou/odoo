@@ -355,13 +355,24 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
         key_teacher_timetable_attendances = sorted(key_teacher_timetable_attendances.items(), key=self.sort_teacher_timetable_attendance)
         key_teacher_timetable_attendances = dict(key_teacher_timetable_attendances)
 
+        _logger.info(f'----------- tototototototo key_teacher_timetable_attendances {key_teacher_timetable_attendances} -----------')
+
         filter_title = self.env['ir.config_parameter'].sudo().get_param(f'siantou.filter_user_{self.env.user.id}', '')
 
-        _logger.info(f'----------- tototototototo key_teacher_timetable_attendances {key_teacher_timetable_attendances} -----------')
+        if resume:
+            if is_permanent:
+                title = 'Condensé émargements d\'enseignant permanent'
+            else:
+                title = 'Condensé émargements d\'enseignant temporaire'
+        else:
+            if is_permanent:
+                title = 'Émargements d\'enseignant permanent'
+            else:
+                title = 'Émargements d\'enseignant temporaire'
 
         return {
             'docdata': {
-                'title': 'Condensé émargements d\'enseignant' if resume else 'Émargements d\'enseignant',
+                'title': title,
                 'filter': filter_title,
                 'teacher_timetable_attendance_data': key_teacher_timetable_attendances,
                 'is_permanent': is_permanent,
