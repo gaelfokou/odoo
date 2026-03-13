@@ -47,7 +47,6 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
     def action_print_pdf(self):
         data = self.print_teacher_timetable_attendance_report_data()
 
-        # Appeler le rapport PDF
         if len(data['docdata']['teacher_timetable_attendance_data'].keys()) == 0:
             raise UserError("Aucune donnée trouvée")
         report_action = self.env.ref('om_hr_payroll.action_report_teacher_timetable_attendance')
@@ -64,7 +63,6 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
     def action_print_resume_pdf(self):
         data = self.print_teacher_timetable_attendance_report_data(resume=True)
 
-        # Appeler le rapport PDF
         if len(data['docdata']['teacher_timetable_attendance_data'].keys()) == 0:
             raise UserError("Aucune donnée trouvée")
         report_action = self.env.ref('om_hr_payroll.action_report_teacher_timetable_attendance_resume')

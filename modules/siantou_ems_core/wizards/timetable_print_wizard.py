@@ -55,7 +55,6 @@ class TimetablePrintWizard(models.TransientModel):
     def action_print_pdf(self):
         data = self.print_timetable_report_data()
 
-        # Appeler le rapport PDF
         if len(data['docdata']['timetable_data'].keys()) == 0:
             raise UserError("Aucune donnée trouvée")
         report_action = self.env.ref('siantou_ems_core.action_report_timetable')
@@ -481,11 +480,11 @@ class TimetablePrintWizard(models.TransientModel):
 
         if sort_type:
             if sort_type == 'top':
-                title = '{} Top 10'.format(STATUS_TIMETABLE[status])
+                title = '{} Top 10'.format(STATUS_TIMETABLE[status].replace('Présent', 'Présence'))
             else:
-                title = '{} Last 10'.format(STATUS_TIMETABLE[status])
+                title = '{} Last 10'.format(STATUS_TIMETABLE[status].replace('Présent', 'Présence'))
         else:
-            title = '{}'.format(STATUS_TIMETABLE[status])
+            title = '{}'.format(STATUS_TIMETABLE[status].replace('Présent', 'Présence'))
 
         return {
             'docdata': {

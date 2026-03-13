@@ -260,7 +260,6 @@ class Subject(models.Model):
         ]
         data = report_data.print_subject_report_data(domains=domains)
 
-        # Appeler le rapport PDF
         if len(data['docdata']['subject_data']) == 0:
             raise UserError('Aucune donnée trouvée')
         report_action = self.env.ref('siantou_ems_core.action_report_subject')
@@ -670,7 +669,6 @@ class ProgressReport(models.Model):
         ]
         data = report_data.print_progress_report_data(domains=domains)
 
-        # Appeler le rapport PDF
         if len(data['docdata']['report_data']) == 0:
             raise UserError('Aucune donnée trouvée')
         report_action = self.env.ref('siantou_ems_core.action_report_progress_report')

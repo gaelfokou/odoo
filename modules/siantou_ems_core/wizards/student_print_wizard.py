@@ -20,7 +20,6 @@ class StudentPrintWizard(models.TransientModel):
     def action_print_pdf(self):
         data = self.print_student_report_data()
 
-        # Appeler le rapport PDF
         if len(data['docdata']['student_data']) == 0:
             raise UserError("Aucune donnée trouvée")
         report_action = self.env.ref('siantou_ems_core.action_report_student')

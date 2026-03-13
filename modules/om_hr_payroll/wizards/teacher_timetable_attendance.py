@@ -302,7 +302,6 @@ class TeacherTimetableAttendance(models.TransientModel):
         ]
         data = report_data.print_teacher_timetable_attendance_report_data(domains=domains)
 
-        # Appeler le rapport PDF
         if len(data['docdata']['teacher_timetable_attendance_data'].keys()) == 0:
             raise UserError('Aucune donnée trouvée')
         report_action = self.env.ref('om_hr_payroll.action_report_teacher_timetable_attendance')
@@ -328,7 +327,6 @@ class TeacherTimetableAttendance(models.TransientModel):
         ]
         data = report_data.print_teacher_timetable_attendance_report_data(resume=True, domains=domains)
 
-        # Appeler le rapport PDF
         if len(data['docdata']['teacher_timetable_attendance_data'].keys()) == 0:
             raise UserError('Aucune donnée trouvée')
         report_action = self.env.ref('om_hr_payroll.action_report_teacher_timetable_attendance_resume')
@@ -354,7 +352,6 @@ class TeacherTimetableAttendance(models.TransientModel):
         ]
         data = report_data.print_teacher_timetable_attendance_report_data(resume=True, domains=domains)
 
-        # Appeler le rapport PDF
         if len(data['docdata']['teacher_timetable_attendance_data'].keys()) == 0:
             raise UserError('Aucune donnée trouvée')
         from_date = None
