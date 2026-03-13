@@ -229,7 +229,7 @@ class TimetablePrintWizard(models.TransientModel):
         name = name.lower()
         return name
 
-    def print_timetable_percentage_report_data(self, domains=None, all_domains=None, status=None, sort_type=None):
+    def print_timetable_percentage_report_data(self, domains=None, all_domains=None, school=None, status=None, sort_type=None):
         # Récupérer les emplois du temps pour le semestre sélectionné
         domain = []
 
@@ -478,13 +478,22 @@ class TimetablePrintWizard(models.TransientModel):
 
         filter_title = self.env['ir.config_parameter'].sudo().get_param(f'siantou.filter_user_{self.env.user.id}', '')
 
-        if sort_type:
-            if sort_type == 'top':
-                title = '{} Top 10'.format(STATUS_TIMETABLE[status].replace('Présent', 'Présence'))
+        if school and school.id:
+            if sort_type:
+                if sort_type == 'top':
+                    title = '{} {} Top 10'.format(STATUS_TIMETABLE[status].replace('Présent', 'Présence').replace('Absent', 'Absence'), school.name)
+                else:
+                    title = '{} {} Last 10'.format(STATUS_TIMETABLE[status].replace('Présent', 'Présence').replace('Absent', 'Absence'), school.name)
             else:
-                title = '{} Last 10'.format(STATUS_TIMETABLE[status].replace('Présent', 'Présence'))
+                title = '{} {}'.format(STATUS_TIMETABLE[status].replace('Présent', 'Présence').replace('Absent', 'Absence'), school.name)
         else:
-            title = '{}'.format(STATUS_TIMETABLE[status].replace('Présent', 'Présence'))
+            if sort_type:
+                if sort_type == 'top':
+                    title = '{} Top 10'.format(STATUS_TIMETABLE[status].replace('Présent', 'Présence').replace('Absent', 'Absence'))
+                else:
+                    title = '{} Last 10'.format(STATUS_TIMETABLE[status].replace('Présent', 'Présence').replace('Absent', 'Absence'))
+            else:
+                title = '{}'.format(STATUS_TIMETABLE[status].replace('Présent', 'Présence').replace('Absent', 'Absence'))
 
         return {
             'docdata': {
@@ -492,8 +501,8 @@ class TimetablePrintWizard(models.TransientModel):
                 'filter': filter_title,
                 'timetable_percentage_data': key_timetable_percentages,
                 'total_percentage': total_percentage,
-                'sort_type': sort_type,
                 'status': status,
+                'sort_type': sort_type,
             }
         }
 

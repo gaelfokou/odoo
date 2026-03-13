@@ -846,7 +846,7 @@ class TimetableFilterWizard(models.TransientModel):
         if len(timetable_ids) == 0:
             raise UserError('Aucune donnée sélectionnée')
         report_data = self.env['timetable.print.wizard'].create({})
-        data = report_data.print_timetable_percentage_report_data(domains=domain, all_domains=all_domain, status=self.status, sort_type=sort_type)
+        data = report_data.print_timetable_percentage_report_data(domains=domain, all_domains=all_domain, school=self.school_id, status=self.status, sort_type=sort_type)
 
         if len(data['docdata']['timetable_percentage_data'].keys()) == 0:
             raise UserError('Aucune donnée trouvée')
@@ -857,11 +857,11 @@ class TimetableFilterWizard(models.TransientModel):
             report_action = self.env.ref('siantou_ems_core.action_report_timetable_percentage')
             if self.school_id.id:
                 report_action.update({
-                    'name': '{} {} du {} - {} PDF'.format(STATUS_TIMETABLE[self.status].replace('Présent', 'Présence'), self.school_id.name, start_date, end_date),
+                    'name': '{} {} du {} - {} PDF'.format(STATUS_TIMETABLE[self.status].replace('Présent', 'Présence').replace('Absent', 'Absence'), self.school_id.name, start_date, end_date),
                 })
             else:
                 report_action.update({
-                    'name': '{} du {} - {} PDF'.format(STATUS_TIMETABLE[self.status].replace('Présent', 'Présence'), start_date, end_date),
+                    'name': '{} du {} - {} PDF'.format(STATUS_TIMETABLE[self.status].replace('Présent', 'Présence').replace('Absent', 'Absence'), start_date, end_date),
                 })
             return report_action.report_action(self, data=data)
         else:
@@ -876,11 +876,11 @@ class TimetableFilterWizard(models.TransientModel):
         report_action = self.env.ref('siantou_ems_core.action_report_timetable_percentage')
         if self.school_id.id:
             report_action.update({
-                'name': '{} {} Top 10 du {} - {} PDF'.format(STATUS_TIMETABLE[self.status].replace('Présent', 'Présence'), self.school_id.name, start_date, end_date),
+                'name': '{} {} Top 10 du {} - {} PDF'.format(STATUS_TIMETABLE[self.status].replace('Présent', 'Présence').replace('Absent', 'Absence'), self.school_id.name, start_date, end_date),
             })
         else:
             report_action.update({
-                'name': '{} Top 10 du {} - {} PDF'.format(STATUS_TIMETABLE[self.status].replace('Présent', 'Présence'), start_date, end_date),
+                'name': '{} Top 10 du {} - {} PDF'.format(STATUS_TIMETABLE[self.status].replace('Présent', 'Présence').replace('Absent', 'Absence'), start_date, end_date),
             })
         return report_action.report_action(self, data=data)
 
@@ -893,11 +893,11 @@ class TimetableFilterWizard(models.TransientModel):
         report_action = self.env.ref('siantou_ems_core.action_report_timetable_percentage')
         if self.school_id.id:
             report_action.update({
-                'name': '{} {} Last 10 du {} - {} PDF'.format(STATUS_TIMETABLE[self.status].replace('Présent', 'Présence'), self.school_id.name, start_date, end_date),
+                'name': '{} {} Last 10 du {} - {} PDF'.format(STATUS_TIMETABLE[self.status].replace('Présent', 'Présence').replace('Absent', 'Absence'), self.school_id.name, start_date, end_date),
             })
         else:
             report_action.update({
-                'name': '{} Last 10 du {} - {} PDF'.format(STATUS_TIMETABLE[self.status].replace('Présent', 'Présence'), start_date, end_date),
+                'name': '{} Last 10 du {} - {} PDF'.format(STATUS_TIMETABLE[self.status].replace('Présent', 'Présence').replace('Absent', 'Absence'), start_date, end_date),
             })
         return report_action.report_action(self, data=data)
 
@@ -928,7 +928,7 @@ class TimetableFilterWizard(models.TransientModel):
             'docdata': {}
         }
         for key in data.keys():
-            all_data['docdata']['title'] = '{} École'.format(data[key]['docdata']['title'])
+            all_data['docdata']['title'] = '{} par École'.format(STATUS_TIMETABLE[data[key]['docdata']['status']].replace('Présent', 'Présence').replace('Absent', 'Absence'))
             all_data['docdata']['filter'] = data[key]['docdata']['filter']
             all_data['docdata']['sort_type'] = data[key]['docdata']['sort_type']
             all_data['docdata']['status'] = data[key]['docdata']['status']
@@ -968,7 +968,7 @@ class TimetableFilterWizard(models.TransientModel):
             raise UserError('Aucune donnée trouvée')
         report_action = self.env.ref('siantou_ems_core.action_report_timetable_school_percentage')
         report_action.update({
-            'name': '{} par École du {} - {} PDF'.format(STATUS_TIMETABLE[self.status].replace('Présent', 'Présence'), start_date, end_date),
+            'name': '{} par École du {} - {} PDF'.format(STATUS_TIMETABLE[self.status].replace('Présent', 'Présence').replace('Absent', 'Absence'), start_date, end_date),
         })
         return report_action.report_action(self, data=all_data)
 
@@ -1050,11 +1050,11 @@ class TimetableFilterWizard(models.TransientModel):
         report_action = self.env.ref('siantou_ems_core.action_report_timetable_percentage')
         if self.school_id.id:
             report_action.update({
-                'name': '{} {} Comparaison du {} - {} PDF'.format(STATUS_TIMETABLE[self.status].replace('Présent', 'Présence'), self.school_id.name, start_date, end_date),
+                'name': '{} {} Comparaison du {} - {} PDF'.format(STATUS_TIMETABLE[self.status].replace('Présent', 'Présence').replace('Absent', 'Absence'), self.school_id.name, start_date, end_date),
             })
         else:
             report_action.update({
-                'name': '{} Comparaison du {} - {} PDF'.format(STATUS_TIMETABLE[self.status].replace('Présent', 'Présence'), start_date, end_date),
+                'name': '{} Comparaison du {} - {} PDF'.format(STATUS_TIMETABLE[self.status].replace('Présent', 'Présence').replace('Absent', 'Absence'), start_date, end_date),
             })
         return report_action.report_action(self, data=all_data)
 
