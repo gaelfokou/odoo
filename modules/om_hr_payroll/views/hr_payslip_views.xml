@@ -74,6 +74,18 @@
             <field name="arch" type="xml">
                 <tree decoration-info="state in ('done')"
                       decoration-muted="state == 'cancel'" string="Payslips">
+                    <header>
+                        <button string="Confirm" name="action_payslip_all_done" type="object"
+                                class="oe_highlight"
+                                display="always"
+                                groups="om_hr_payroll.group_hr_payroll_perm_write"/>
+                        <button string="Set to Draft" name="action_payslip_all_draft" type="object"
+                                display="always"
+                                groups="om_hr_payroll.group_hr_payroll_perm_write"/>
+                        <button string="Cancel Payslip" name="action_payslip_all_cancel" type="object"
+                                display="always"
+                                groups="om_hr_payroll.group_hr_payroll_perm_write"/>
+                    </header>
                     <field name="number"/>
                     <field name="employee_id"/>
                     <field name="name"/>
@@ -147,9 +159,9 @@
                         <button string="Compute Sheet" name="compute_sheet" type="object" invisible="state != 'draft'"
                                 class="oe_highlight"/>
                         <button string="Cancel Payslip" name="action_payslip_cancel" type="object"
-                                invisible="state not in ('draft', 'verify','done')"/>
+                                invisible="state not in ('draft', 'verify', 'done')"/>
                         <button string="Send E-Mail" name="action_send_email" type="object"
-                                class="oe_highlight" invisible="state not in ('verify','done')"/>/>
+                                class="oe_highlight" invisible="state not in ('verify', 'done')"/>/>
                         <field name="state" widget="statusbar" statusbar_visible="draft,confirm"/>
                     </header>
                     <sheet>

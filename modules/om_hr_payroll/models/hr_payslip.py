@@ -1115,6 +1115,54 @@ class HrPayslip(models.Model):
         #     raise UserError(_('Cannot cancel a payslip that is done'))
         return self.write({'state': 'cancel'})
 
+    def action_payslip_all_draft(self):
+        active_ids = self.env.context.get('active_ids', [])
+        if len(active_ids) == 0:
+            raise UserError('Aucune donnée sélectionnée')
+        payslips = self.env['hr.payslip'].search([
+            ('id', 'in', active_ids),
+            ('state', '=', 'cancel'),
+        ])
+        for payslip in payslips:
+            payslip.action_payslip_draft()
+
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'reload',
+        }
+
+    def action_payslip_all_done(self):
+        active_ids = self.env.context.get('active_ids', [])
+        if len(active_ids) == 0:
+            raise UserError('Aucune donnée sélectionnée')
+        payslips = self.env['hr.payslip'].search([
+            ('id', 'in', active_ids),
+            ('state', '=', 'draft'),
+        ])
+        for payslip in payslips:
+            payslip.action_payslip_done()
+
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'reload',
+        }
+
+    def action_payslip_all_cancel(self):
+        active_ids = self.env.context.get('active_ids', [])
+        if len(active_ids) == 0:
+            raise UserError('Aucune donnée sélectionnée')
+        payslips = self.env['hr.payslip'].search([
+            ('id', 'in', active_ids),
+            ('state', 'in', ['draft', 'verify', 'done']),
+        ])
+        for payslip in payslips:
+            payslip.action_payslip_cancel()
+
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'reload',
+        }
+
     def refund_sheet(self):
         for payslip in self:
             copied_payslip = payslip.copy({'credit_note': True, 'name': _('Refund: ') + payslip.name})
