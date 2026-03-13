@@ -95,7 +95,7 @@
                                                     </td>
                                                     <td class="text-center">
                                                         <t t-foreach="docdata['timetable_data'][key]['pages'][monday]['Lundi'][hour]" t-as="record">
-                                                            <t t-if="docdata['find_name']">
+                                                            <t t-if="docdata['is_user'] and docdata['is_user'] == 'is_teacher'">
                                                                 <span t-esc="record['class_name']"/>
                                                                 <br/>
                                                             </t>
@@ -113,7 +113,7 @@
                                                     </td>
                                                     <td class="text-center">
                                                         <t t-foreach="docdata['timetable_data'][key]['pages'][monday]['Mardi'][hour]" t-as="record">
-                                                            <t t-if="docdata['find_name']">
+                                                            <t t-if="docdata['is_user'] and docdata['is_user'] == 'is_teacher'">
                                                                 <span t-esc="record['class_name']"/>
                                                                 <br/>
                                                             </t>
@@ -131,7 +131,7 @@
                                                     </td>
                                                     <td class="text-center">
                                                         <t t-foreach="docdata['timetable_data'][key]['pages'][monday]['Mercredi'][hour]" t-as="record">
-                                                            <t t-if="docdata['find_name']">
+                                                            <t t-if="docdata['is_user'] and docdata['is_user'] == 'is_teacher'">
                                                                 <span t-esc="record['class_name']"/>
                                                                 <br/>
                                                             </t>
@@ -149,7 +149,7 @@
                                                     </td>
                                                     <td class="text-center">
                                                         <t t-foreach="docdata['timetable_data'][key]['pages'][monday]['Jeudi'][hour]" t-as="record">
-                                                            <t t-if="docdata['find_name']">
+                                                            <t t-if="docdata['is_user'] and docdata['is_user'] == 'is_teacher'">
                                                                 <span t-esc="record['class_name']"/>
                                                                 <br/>
                                                             </t>
@@ -167,7 +167,7 @@
                                                     </td>
                                                     <td class="text-center">
                                                         <t t-foreach="docdata['timetable_data'][key]['pages'][monday]['Vendredi'][hour]" t-as="record">
-                                                            <t t-if="docdata['find_name']">
+                                                            <t t-if="docdata['is_user'] and docdata['is_user'] == 'is_teacher'">
                                                                 <span t-esc="record['class_name']"/>
                                                                 <br/>
                                                             </t>
@@ -185,7 +185,7 @@
                                                     </td>
                                                     <td class="text-center">
                                                         <t t-foreach="docdata['timetable_data'][key]['pages'][monday]['Samedi'][hour]" t-as="record">
-                                                            <t t-if="docdata['find_name']">
+                                                            <t t-if="docdata['is_user'] and docdata['is_user'] == 'is_teacher'">
                                                                 <span t-esc="record['class_name']"/>
                                                                 <br/>
                                                             </t>
@@ -203,7 +203,7 @@
                                                     </td>
                                                     <td class="text-center">
                                                         <t t-foreach="docdata['timetable_data'][key]['pages'][monday]['Dimanche'][hour]" t-as="record">
-                                                            <t t-if="docdata['find_name']">
+                                                            <t t-if="docdata['is_user'] and docdata['is_user'] == 'is_teacher'">
                                                                 <span t-esc="record['class_name']"/>
                                                                 <br/>
                                                             </t>
