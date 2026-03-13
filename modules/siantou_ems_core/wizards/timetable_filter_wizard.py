@@ -1170,6 +1170,7 @@ class TimetableFilterWizard(models.TransientModel):
             worked_hours = round(worked_hours, 2)
 
             if worked_hours < 0.0:
+                del(key_timetables[key])
                 continue
 
             key_timetables[key]['worked_hours'] = worked_hours
@@ -1203,30 +1204,30 @@ class TimetableFilterWizard(models.TransientModel):
                     key_timetable_percentages[k]['data'] = []
                     key_timetable_percentages[k]['worked_time'] = 0.0
                     key_timetable_percentages[k]['percentage'] = 0.0
-            teacher_timetable_attendance = {}
-            teacher_timetable_attendance['id'] = key_timetables[key]['timetable'].id
-            teacher_timetable_attendance['date'] = key_timetables[key]['timetable'].date
-            teacher_timetable_attendance['date_of_week'] = datetime.strftime(key_timetables[key]['timetable'].date, DATE_FORMAT_FR)
-            teacher_timetable_attendance['class_id'] = key_timetables[key]['timetable'].class_id.id
-            teacher_timetable_attendance['class_name'] = key_timetables[key]['timetable'].class_id.name
-            teacher_timetable_attendance['level_id'] = key_timetables[key]['timetable'].level_id.id
-            teacher_timetable_attendance['level_name'] = key_timetables[key]['timetable'].level_id.name
-            teacher_timetable_attendance['subject_id'] = key_timetables[key]['timetable'].subject_id.id
-            teacher_timetable_attendance['subject_name'] = key_timetables[key]['timetable'].subject_id.name
-            teacher_timetable_attendance['subject_code'] = key_timetables[key]['timetable'].subject_id.code
-            teacher_timetable_attendance['subject_shared_subject'] = '(TC)' if key_timetables[key]['timetable'].subject_id.shared_subject else ''
-            teacher_timetable_attendance['employee_id'] = key_timetables[key]['timetable'].employee_id.id
-            teacher_timetable_attendance['identifier'] = key_timetables[key]['timetable'].employee_id.identifier
-            teacher_timetable_attendance['employee_name'] = key_timetables[key]['timetable'].employee_id.name
-            teacher_timetable_attendance['start_time'] = TimetableFilterWizard.convert_float_to_time(key_timetables[key]['timetable'].start_time)
-            teacher_timetable_attendance['end_time'] = TimetableFilterWizard.convert_float_to_time(key_timetables[key]['timetable'].end_time)
-            teacher_timetable_attendance['day_of_week'] = CURRENT_WEEKDAY[key_timetables[key]['timetable'].day_of_week]
-            teacher_timetable_attendance['worked_start_time'] = TimetableFilterWizard.convert_float_to_time(key_timetables[key]['timetable'].worked_start_time)
-            teacher_timetable_attendance['worked_end_time'] = TimetableFilterWizard.convert_float_to_time(key_timetables[key]['timetable'].worked_end_time)
-            teacher_timetable_attendance['worked_time'] = key_timetables[key]['worked_hours']
-            teacher_timetable_attendance['status'] = STATUS_TIMETABLE[key_timetables[key]['timetable'].status]
-            key_timetable_percentages[k]['worked_time'] += teacher_timetable_attendance['worked_time']
-            key_timetable_percentages[k]['data'].append(teacher_timetable_attendance)
+            timetable_percentage = {}
+            timetable_percentage['id'] = key_timetables[key]['timetable'].id
+            timetable_percentage['date'] = key_timetables[key]['timetable'].date
+            timetable_percentage['date_of_week'] = datetime.strftime(key_timetables[key]['timetable'].date, DATE_FORMAT_FR)
+            timetable_percentage['class_id'] = key_timetables[key]['timetable'].class_id.id
+            timetable_percentage['class_name'] = key_timetables[key]['timetable'].class_id.name
+            timetable_percentage['level_id'] = key_timetables[key]['timetable'].level_id.id
+            timetable_percentage['level_name'] = key_timetables[key]['timetable'].level_id.name
+            timetable_percentage['subject_id'] = key_timetables[key]['timetable'].subject_id.id
+            timetable_percentage['subject_name'] = key_timetables[key]['timetable'].subject_id.name
+            timetable_percentage['subject_code'] = key_timetables[key]['timetable'].subject_id.code
+            timetable_percentage['subject_shared_subject'] = '(TC)' if key_timetables[key]['timetable'].subject_id.shared_subject else ''
+            timetable_percentage['employee_id'] = key_timetables[key]['timetable'].employee_id.id
+            timetable_percentage['identifier'] = key_timetables[key]['timetable'].employee_id.identifier
+            timetable_percentage['employee_name'] = key_timetables[key]['timetable'].employee_id.name
+            timetable_percentage['start_time'] = TimetableFilterWizard.convert_float_to_time(key_timetables[key]['timetable'].start_time)
+            timetable_percentage['end_time'] = TimetableFilterWizard.convert_float_to_time(key_timetables[key]['timetable'].end_time)
+            timetable_percentage['day_of_week'] = CURRENT_WEEKDAY[key_timetables[key]['timetable'].day_of_week]
+            timetable_percentage['worked_start_time'] = TimetableFilterWizard.convert_float_to_time(key_timetables[key]['timetable'].worked_start_time)
+            timetable_percentage['worked_end_time'] = TimetableFilterWizard.convert_float_to_time(key_timetables[key]['timetable'].worked_end_time)
+            timetable_percentage['worked_time'] = key_timetables[key]['worked_hours']
+            timetable_percentage['status'] = STATUS_TIMETABLE[key_timetables[key]['timetable'].status]
+            key_timetable_percentages[k]['worked_time'] += timetable_percentage['worked_time']
+            key_timetable_percentages[k]['data'].append(timetable_percentage)
 
         for key in key_timetable_percentages.keys():
             key_timetable_percentages[key]['worked_time'] = round(key_timetable_percentages[key]['worked_time'], 2)
@@ -1255,6 +1256,7 @@ class TimetableFilterWizard(models.TransientModel):
             worked_hours = round(worked_hours, 2)
 
             if worked_hours < 0.0:
+                del(key_all_timetables[key])
                 continue
 
             key_all_timetables[key]['worked_hours'] = worked_hours
@@ -1288,30 +1290,30 @@ class TimetableFilterWizard(models.TransientModel):
                     key_all_timetable_percentages[k]['data'] = []
                     key_all_timetable_percentages[k]['worked_time'] = 0.0
                     key_all_timetable_percentages[k]['percentage'] = 0.0
-            teacher_timetable_attendance = {}
-            teacher_timetable_attendance['id'] = key_all_timetables[key]['timetable'].id
-            teacher_timetable_attendance['date'] = key_all_timetables[key]['timetable'].date
-            teacher_timetable_attendance['date_of_week'] = datetime.strftime(key_all_timetables[key]['timetable'].date, DATE_FORMAT_FR)
-            teacher_timetable_attendance['class_id'] = key_all_timetables[key]['timetable'].class_id.id
-            teacher_timetable_attendance['class_name'] = key_all_timetables[key]['timetable'].class_id.name
-            teacher_timetable_attendance['level_id'] = key_all_timetables[key]['timetable'].level_id.id
-            teacher_timetable_attendance['level_name'] = key_all_timetables[key]['timetable'].level_id.name
-            teacher_timetable_attendance['subject_id'] = key_all_timetables[key]['timetable'].subject_id.id
-            teacher_timetable_attendance['subject_name'] = key_all_timetables[key]['timetable'].subject_id.name
-            teacher_timetable_attendance['subject_code'] = key_all_timetables[key]['timetable'].subject_id.code
-            teacher_timetable_attendance['subject_shared_subject'] = '(TC)' if key_all_timetables[key]['timetable'].subject_id.shared_subject else ''
-            teacher_timetable_attendance['employee_id'] = key_all_timetables[key]['timetable'].employee_id.id
-            teacher_timetable_attendance['identifier'] = key_all_timetables[key]['timetable'].employee_id.identifier
-            teacher_timetable_attendance['employee_name'] = key_all_timetables[key]['timetable'].employee_id.name
-            teacher_timetable_attendance['start_time'] = TimetableFilterWizard.convert_float_to_time(key_all_timetables[key]['timetable'].start_time)
-            teacher_timetable_attendance['end_time'] = TimetableFilterWizard.convert_float_to_time(key_all_timetables[key]['timetable'].end_time)
-            teacher_timetable_attendance['day_of_week'] = CURRENT_WEEKDAY[key_all_timetables[key]['timetable'].day_of_week]
-            teacher_timetable_attendance['worked_start_time'] = TimetableFilterWizard.convert_float_to_time(key_all_timetables[key]['timetable'].worked_start_time)
-            teacher_timetable_attendance['worked_end_time'] = TimetableFilterWizard.convert_float_to_time(key_all_timetables[key]['timetable'].worked_end_time)
-            teacher_timetable_attendance['worked_time'] = key_all_timetables[key]['worked_hours']
-            teacher_timetable_attendance['status'] = STATUS_TIMETABLE[key_all_timetables[key]['timetable'].status]
-            key_all_timetable_percentages[k]['worked_time'] += teacher_timetable_attendance['worked_time']
-            key_all_timetable_percentages[k]['data'].append(teacher_timetable_attendance)
+            timetable_percentage = {}
+            timetable_percentage['id'] = key_all_timetables[key]['timetable'].id
+            timetable_percentage['date'] = key_all_timetables[key]['timetable'].date
+            timetable_percentage['date_of_week'] = datetime.strftime(key_all_timetables[key]['timetable'].date, DATE_FORMAT_FR)
+            timetable_percentage['class_id'] = key_all_timetables[key]['timetable'].class_id.id
+            timetable_percentage['class_name'] = key_all_timetables[key]['timetable'].class_id.name
+            timetable_percentage['level_id'] = key_all_timetables[key]['timetable'].level_id.id
+            timetable_percentage['level_name'] = key_all_timetables[key]['timetable'].level_id.name
+            timetable_percentage['subject_id'] = key_all_timetables[key]['timetable'].subject_id.id
+            timetable_percentage['subject_name'] = key_all_timetables[key]['timetable'].subject_id.name
+            timetable_percentage['subject_code'] = key_all_timetables[key]['timetable'].subject_id.code
+            timetable_percentage['subject_shared_subject'] = '(TC)' if key_all_timetables[key]['timetable'].subject_id.shared_subject else ''
+            timetable_percentage['employee_id'] = key_all_timetables[key]['timetable'].employee_id.id
+            timetable_percentage['identifier'] = key_all_timetables[key]['timetable'].employee_id.identifier
+            timetable_percentage['employee_name'] = key_all_timetables[key]['timetable'].employee_id.name
+            timetable_percentage['start_time'] = TimetableFilterWizard.convert_float_to_time(key_all_timetables[key]['timetable'].start_time)
+            timetable_percentage['end_time'] = TimetableFilterWizard.convert_float_to_time(key_all_timetables[key]['timetable'].end_time)
+            timetable_percentage['day_of_week'] = CURRENT_WEEKDAY[key_all_timetables[key]['timetable'].day_of_week]
+            timetable_percentage['worked_start_time'] = TimetableFilterWizard.convert_float_to_time(key_all_timetables[key]['timetable'].worked_start_time)
+            timetable_percentage['worked_end_time'] = TimetableFilterWizard.convert_float_to_time(key_all_timetables[key]['timetable'].worked_end_time)
+            timetable_percentage['worked_time'] = key_all_timetables[key]['worked_hours']
+            timetable_percentage['status'] = STATUS_TIMETABLE[key_all_timetables[key]['timetable'].status]
+            key_all_timetable_percentages[k]['worked_time'] += timetable_percentage['worked_time']
+            key_all_timetable_percentages[k]['data'].append(timetable_percentage)
 
         for key in key_all_timetable_percentages.keys():
             key_all_timetable_percentages[key]['worked_time'] = round(key_all_timetable_percentages[key]['worked_time'], 2)
@@ -1485,6 +1487,7 @@ class TimetableFilterWizard(models.TransientModel):
             worked_hours = round(worked_hours, 2)
 
             if worked_hours < 0.0:
+                del(key_timetables[key])
                 continue
 
             if len(timetable.employee_id.diplome_ids.ids) > 0:
@@ -1546,6 +1549,7 @@ class TimetableFilterWizard(models.TransientModel):
 
             if not timetable.employee_id.is_permanent:
                 if rate == 0.0:
+                    del(key_timetables[key])
                     continue
 
             hours_credit = timetable.subject_id.hours_credit
@@ -1587,35 +1591,35 @@ class TimetableFilterWizard(models.TransientModel):
                     key_timetable_hours_and_costs[k]['worked_time'] = 0.0
                     key_timetable_hours_and_costs[k]['amount'] = 0.0
                     key_timetable_hours_and_costs[k]['total_amount'] = 0.0
-            teacher_timetable_attendance = {}
-            teacher_timetable_attendance['id'] = key_timetables[key]['timetable'].id
-            teacher_timetable_attendance['date'] = key_timetables[key]['timetable'].date
-            teacher_timetable_attendance['date_of_week'] = datetime.strftime(key_timetables[key]['timetable'].date, DATE_FORMAT_FR)
-            teacher_timetable_attendance['class_id'] = key_timetables[key]['timetable'].class_id.id
-            teacher_timetable_attendance['class_name'] = key_timetables[key]['timetable'].class_id.name
-            teacher_timetable_attendance['level_id'] = key_timetables[key]['timetable'].level_id.id
-            teacher_timetable_attendance['level_name'] = key_timetables[key]['timetable'].level_id.name
-            teacher_timetable_attendance['subject_id'] = key_timetables[key]['timetable'].subject_id.id
-            teacher_timetable_attendance['subject_name'] = key_timetables[key]['timetable'].subject_id.name
-            teacher_timetable_attendance['subject_code'] = key_timetables[key]['timetable'].subject_id.code
-            teacher_timetable_attendance['subject_shared_subject'] = '(TC)' if key_timetables[key]['timetable'].subject_id.shared_subject else ''
-            teacher_timetable_attendance['employee_id'] = key_timetables[key]['timetable'].employee_id.id
-            teacher_timetable_attendance['identifier'] = key_timetables[key]['timetable'].employee_id.identifier
-            teacher_timetable_attendance['employee_name'] = key_timetables[key]['timetable'].employee_id.name
-            teacher_timetable_attendance['start_time'] = TimetableFilterWizard.convert_float_to_time(key_timetables[key]['timetable'].start_time)
-            teacher_timetable_attendance['end_time'] = TimetableFilterWizard.convert_float_to_time(key_timetables[key]['timetable'].end_time)
-            teacher_timetable_attendance['day_of_week'] = CURRENT_WEEKDAY[key_timetables[key]['timetable'].day_of_week]
-            teacher_timetable_attendance['worked_start_time'] = TimetableFilterWizard.convert_float_to_time(key_timetables[key]['timetable'].worked_start_time)
-            teacher_timetable_attendance['worked_end_time'] = TimetableFilterWizard.convert_float_to_time(key_timetables[key]['timetable'].worked_end_time)
-            teacher_timetable_attendance['worked_time'] = key_timetables[key]['worked_hours']
-            teacher_timetable_attendance['rate'] = key_timetables[key]['rate']
-            teacher_timetable_attendance['amount'] = key_timetables[key]['amount']
-            teacher_timetable_attendance['hours_credit'] = key_timetables[key]['hours_credit']
-            teacher_timetable_attendance['status'] = STATUS_TIMETABLE[key_timetables[key]['timetable'].status]
-            key_timetable_hours_and_costs[k]['worked_time'] += teacher_timetable_attendance['worked_time']
-            key_timetable_hours_and_costs[k]['amount'] += teacher_timetable_attendance['amount']
+            timetable_hours_and_cost = {}
+            timetable_hours_and_cost['id'] = key_timetables[key]['timetable'].id
+            timetable_hours_and_cost['date'] = key_timetables[key]['timetable'].date
+            timetable_hours_and_cost['date_of_week'] = datetime.strftime(key_timetables[key]['timetable'].date, DATE_FORMAT_FR)
+            timetable_hours_and_cost['class_id'] = key_timetables[key]['timetable'].class_id.id
+            timetable_hours_and_cost['class_name'] = key_timetables[key]['timetable'].class_id.name
+            timetable_hours_and_cost['level_id'] = key_timetables[key]['timetable'].level_id.id
+            timetable_hours_and_cost['level_name'] = key_timetables[key]['timetable'].level_id.name
+            timetable_hours_and_cost['subject_id'] = key_timetables[key]['timetable'].subject_id.id
+            timetable_hours_and_cost['subject_name'] = key_timetables[key]['timetable'].subject_id.name
+            timetable_hours_and_cost['subject_code'] = key_timetables[key]['timetable'].subject_id.code
+            timetable_hours_and_cost['subject_shared_subject'] = '(TC)' if key_timetables[key]['timetable'].subject_id.shared_subject else ''
+            timetable_hours_and_cost['employee_id'] = key_timetables[key]['timetable'].employee_id.id
+            timetable_hours_and_cost['identifier'] = key_timetables[key]['timetable'].employee_id.identifier
+            timetable_hours_and_cost['employee_name'] = key_timetables[key]['timetable'].employee_id.name
+            timetable_hours_and_cost['start_time'] = TimetableFilterWizard.convert_float_to_time(key_timetables[key]['timetable'].start_time)
+            timetable_hours_and_cost['end_time'] = TimetableFilterWizard.convert_float_to_time(key_timetables[key]['timetable'].end_time)
+            timetable_hours_and_cost['day_of_week'] = CURRENT_WEEKDAY[key_timetables[key]['timetable'].day_of_week]
+            timetable_hours_and_cost['worked_start_time'] = TimetableFilterWizard.convert_float_to_time(key_timetables[key]['timetable'].worked_start_time)
+            timetable_hours_and_cost['worked_end_time'] = TimetableFilterWizard.convert_float_to_time(key_timetables[key]['timetable'].worked_end_time)
+            timetable_hours_and_cost['worked_time'] = key_timetables[key]['worked_hours']
+            timetable_hours_and_cost['rate'] = key_timetables[key]['rate']
+            timetable_hours_and_cost['amount'] = key_timetables[key]['amount']
+            timetable_hours_and_cost['hours_credit'] = key_timetables[key]['hours_credit']
+            timetable_hours_and_cost['status'] = STATUS_TIMETABLE[key_timetables[key]['timetable'].status]
+            key_timetable_hours_and_costs[k]['worked_time'] += timetable_hours_and_cost['worked_time']
+            key_timetable_hours_and_costs[k]['amount'] += timetable_hours_and_cost['amount']
             key_timetable_hours_and_costs[k]['total_amount'] = key_timetable_hours_and_costs[k]['amount']
-            key_timetable_hours_and_costs[k]['data'].append(teacher_timetable_attendance)
+            key_timetable_hours_and_costs[k]['data'].append(timetable_hours_and_cost)
 
         for key in key_timetable_hours_and_costs.keys():
             key_timetable_hours_and_costs[key]['worked_time'] = round(key_timetable_hours_and_costs[key]['worked_time'], 2)
@@ -1644,6 +1648,11 @@ class TimetableFilterWizard(models.TransientModel):
 
         title = 'Nombre d\'heures et coût par {}'.format(label)
 
+        is_permanent = False
+        if not self.is_permanent or not self.is_temporary:
+            if self.is_permanent:
+                is_permanent = True
+
         data = {
             'docdata': {}
         }
@@ -1651,6 +1660,7 @@ class TimetableFilterWizard(models.TransientModel):
         data['docdata']['title'] = title
         data['docdata']['filter'] = filter_title
         data['docdata']['timetable_hours_and_cost_data'] = key_timetable_hours_and_costs
+        data['docdata']['is_permanent'] = is_permanent
 
         if not self.is_permanent or not self.is_temporary:
             if self.is_permanent:

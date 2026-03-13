@@ -43,7 +43,7 @@
                             <table class="table table-bordered table-sm text-center">
                                 <thead>
                                     <tr>
-                                        <th class="text-center" t-attf-colspan="2" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;">
+                                        <th class="text-center" t-attf-colspan="#{'3' if docdata['is_permanent'] == False else '2'}" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;">
                                             <h3>INSTITUT UNIVERSITAIRE SIANTOU</h3>
                                             <h4>
                                                 <span t-esc="docdata['title']"/>
@@ -57,14 +57,16 @@
                                 </thead>
                                 <thead>
                                     <tr>
-                                        <th class="text-left" t-attf-colspan="2" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
+                                        <th class="text-left" t-attf-colspan="#{'3' if docdata['is_permanent'] == False else '2'}" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
                                     </tr>
                                 </thead>
                                 <thead class="thead">
                                     <tr class="active">
                                         <th class="text-center" t-esc="docdata['label']"/>
                                         <th class="text-center">Nombre d'heures</th>
-                                        <th class="text-center">Coût</th>
+                                        <t t-if="docdata['is_permanent'] == False">
+                                            <th class="text-center">Coût</th>
+                                        </t>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -76,16 +78,20 @@
                                                 <span t-esc="timetable_hours_and_cost_data[key]['name']"/>
                                             </td>
                                             <td class="text-center"></td>
-                                            <td class="text-center"></td>
+                                            <t t-if="docdata['is_permanent'] == False">
+                                                <td class="text-center"></td>
+                                            </t>
                                         </tr>
                                         <tr>
                                             <td class="text-left" style="background-color: #f2f2f2;"></td>
                                             <td class="text-center" style="background-color: #f2f2f2;">
                                                 <span t-esc="timetable_hours_and_cost_data[key]['worked_time']"/>
                                             </td>
-                                            <td class="text-center" style="background-color: #f2f2f2;">
-                                                <span t-esc="'{:,.2f}'.format(timetable_hours_and_cost_data[key]['amount'])"/>
-                                            </td>
+                                            <t t-if="docdata['is_permanent'] == False">
+                                                <td class="text-center" style="background-color: #f2f2f2;">
+                                                    <span t-esc="'{:,.2f}'.format(timetable_hours_and_cost_data[key]['amount'])"/>
+                                                </td>
+                                            </t>
                                         </tr>
                                     </t>
                                 </tbody>
