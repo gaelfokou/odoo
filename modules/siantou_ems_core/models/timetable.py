@@ -533,21 +533,27 @@ class Timetable(models.Model):
 
     is_timetable_active = fields.Boolean(string='Emploi du temps actif ?', default=True)
 
-    @api.depends('class_id', 'is_timetable_active')
+    @api.depends('class_id', 'is_timetable_active', 'status')
     def _compute_active(self):
         for record in self:
-            if record.class_id.is_timetable_active and record.is_timetable_active:
-                record.is_active = True
+            if record.status == 'pending':
+                if record.class_id.is_timetable_active and record.is_timetable_active:
+                    record.is_active = True
+                else:
+                    record.is_active = False
             else:
-                record.is_active = False
+                record.is_active = True
 
-    @api.onchange('class_id', 'is_timetable_active')
+    @api.onchange('class_id', 'is_timetable_active', 'status')
     def _onchange_active(self):
         for record in self:
-            if record.class_id.is_timetable_active and record.is_timetable_active:
-                record.is_active = True
+            if record.status == 'pending':
+                if record.class_id.is_timetable_active and record.is_timetable_active:
+                    record.is_active = True
+                else:
+                    record.is_active = False
             else:
-                record.is_active = False
+                record.is_active = True
 
     specialty_id_domain = fields.Binary(compute='_compute_school_domain', default=[])
 
