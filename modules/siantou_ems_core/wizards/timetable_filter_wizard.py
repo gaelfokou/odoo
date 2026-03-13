@@ -1370,11 +1370,11 @@ class TimetableFilterWizard(models.TransientModel):
         report_action = self.env.ref('siantou_ems_core.action_report_timetable_hours_percentage')
         if self.department_id.id:
             report_action.update({
-                'name': '{} {} du {} - {} PDF'.format(title, self.department_id.name, start_date, end_date),
+                'name': '{} par Spécialité du {} - {} PDF'.format(title, start_date, end_date),
             })
         elif self.school_id.id:
             report_action.update({
-                'name': '{} {} du {} - {} PDF'.format(title, self.school_id.name, start_date, end_date),
+                'name': '{} par Département du {} - {} PDF'.format(title, start_date, end_date),
             })
         else:
             report_action.update({
@@ -1676,11 +1676,11 @@ class TimetableFilterWizard(models.TransientModel):
         report_action = self.env.ref('siantou_ems_core.action_report_timetable_hours_and_cost')
         if self.department_id.id:
             report_action.update({
-                'name': '{} {} du {} - {} PDF'.format(title, self.department_id.name, start_date, end_date),
+                'name': '{} par Spécialité du {} - {} PDF'.format(title, start_date, end_date),
             })
         elif self.school_id.id:
             report_action.update({
-                'name': '{} {} du {} - {} PDF'.format(title, self.school_id.name, start_date, end_date),
+                'name': '{} par Département du {} - {} PDF'.format(title, start_date, end_date),
             })
         else:
             report_action.update({
