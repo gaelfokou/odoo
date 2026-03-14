@@ -1159,7 +1159,7 @@ class TimetableFilterWizard(models.TransientModel):
             end_time = TimetableFilterWizard.convert_float_to_time(timetable.end_time, has_second=True)
             start_time = TimetableFilterWizard.convert_float_to_time(timetable.start_time, has_second=True)
             if self.is_teacher:
-                key = '{}-{}-{}'.format(timetable.date, start_time, end_time)
+                key = '{}-{}-{}-{}'.format(timetable.employee_id.id, timetable.date, start_time, end_time)
             else:
                 key = '{}-{}-{}-{}'.format(timetable.class_id.id, timetable.date, start_time, end_time)
             if key not in key_timetables:
@@ -1257,7 +1257,7 @@ class TimetableFilterWizard(models.TransientModel):
             end_time = TimetableFilterWizard.convert_float_to_time(timetable.end_time, has_second=True)
             start_time = TimetableFilterWizard.convert_float_to_time(timetable.start_time, has_second=True)
             if self.is_teacher:
-                key = '{}-{}-{}'.format(timetable.date, start_time, end_time)
+                key = '{}-{}-{}-{}'.format(timetable.employee_id.id, timetable.date, start_time, end_time)
             else:
                 key = '{}-{}-{}-{}'.format(timetable.class_id.id, timetable.date, start_time, end_time)
             if key not in key_all_timetables:
@@ -1502,7 +1502,7 @@ class TimetableFilterWizard(models.TransientModel):
             end_time = TimetableFilterWizard.convert_float_to_time(timetable.end_time, has_second=True)
             start_time = TimetableFilterWizard.convert_float_to_time(timetable.start_time, has_second=True)
             if self.is_teacher:
-                key = '{}-{}-{}'.format(timetable.date, start_time, end_time)
+                key = '{}-{}-{}-{}'.format(timetable.employee_id.id, timetable.date, start_time, end_time)
             else:
                 key = '{}-{}-{}-{}'.format(timetable.class_id.id, timetable.date, start_time, end_time)
             if key not in key_timetables:
