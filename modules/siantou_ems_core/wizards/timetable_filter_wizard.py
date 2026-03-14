@@ -235,7 +235,7 @@ class TimetableFilterWizard(models.TransientModel):
     )
 
     is_teacher = fields.Boolean(
-        'Est un enseignant',
+        'Par enseignant',
         default=False,
     )
 
@@ -1158,7 +1158,10 @@ class TimetableFilterWizard(models.TransientModel):
 
             end_time = TimetableFilterWizard.convert_float_to_time(timetable.end_time, has_second=True)
             start_time = TimetableFilterWizard.convert_float_to_time(timetable.start_time, has_second=True)
-            key = '{}-{}-{}-{}'.format(timetable.class_id.id, timetable.date, start_time, end_time)
+            if self.is_teacher:
+                key = '{}-{}-{}'.format(timetable.date, start_time, end_time)
+            else:
+                key = '{}-{}-{}-{}'.format(timetable.class_id.id, timetable.date, start_time, end_time)
             if key not in key_timetables:
                 key_timetables[key] = {}
                 key_timetables[key]['timetable'] = timetable
@@ -1253,7 +1256,10 @@ class TimetableFilterWizard(models.TransientModel):
 
             end_time = TimetableFilterWizard.convert_float_to_time(timetable.end_time, has_second=True)
             start_time = TimetableFilterWizard.convert_float_to_time(timetable.start_time, has_second=True)
-            key = '{}-{}-{}-{}'.format(timetable.class_id.id, timetable.date, start_time, end_time)
+            if self.is_teacher:
+                key = '{}-{}-{}'.format(timetable.date, start_time, end_time)
+            else:
+                key = '{}-{}-{}-{}'.format(timetable.class_id.id, timetable.date, start_time, end_time)
             if key not in key_all_timetables:
                 key_all_timetables[key] = {}
                 key_all_timetables[key]['timetable'] = timetable
@@ -1495,7 +1501,10 @@ class TimetableFilterWizard(models.TransientModel):
 
             end_time = TimetableFilterWizard.convert_float_to_time(timetable.end_time, has_second=True)
             start_time = TimetableFilterWizard.convert_float_to_time(timetable.start_time, has_second=True)
-            key = '{}-{}-{}-{}'.format(timetable.class_id.id, timetable.date, start_time, end_time)
+            if self.is_teacher:
+                key = '{}-{}-{}'.format(timetable.date, start_time, end_time)
+            else:
+                key = '{}-{}-{}-{}'.format(timetable.class_id.id, timetable.date, start_time, end_time)
             if key not in key_timetables:
                 key_timetables[key] = {}
                 key_timetables[key]['timetable'] = timetable
