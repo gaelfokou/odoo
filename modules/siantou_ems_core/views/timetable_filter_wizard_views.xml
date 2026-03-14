@@ -32,6 +32,7 @@
                         <field name="classroom_id" options="{'no_create': True}" domain="[('building_id', '=', building_id)]"/>
                         <field name="is_permanent"/>
                         <field name="is_temporary"/>
+                        <field name="is_teacher" invisible="status"/>
                         <field name="employee_id_domain" invisible="1"/>
                         <field name="employee_id" options="{'no_create': True}" domain="employee_id_domain"/>
                         <field name="start_date"/>

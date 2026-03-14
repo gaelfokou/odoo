@@ -69,7 +69,7 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
     )
 
     is_temporary = fields.Boolean(
-        'Est un temporaire',
+        'Est un vacataire',
         compute='_compute_temporary',
     )
 
@@ -162,7 +162,7 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
         if self.is_permanent:
             title.append('Est un permanent')
         else:
-            title.append('Est un temporaire')
+            title.append('Est un vacataire')
 
         if self.employee_id.id:
             domain.append(('employee_id', '=', self.employee_id.id))

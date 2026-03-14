@@ -230,7 +230,12 @@ class TimetableFilterWizard(models.TransientModel):
     )
 
     is_temporary = fields.Boolean(
-        'Est un temporaire',
+        'Est un vacataire',
+        default=False,
+    )
+
+    is_teacher = fields.Boolean(
+        'Est un enseignant',
         default=False,
     )
 
@@ -529,7 +534,7 @@ class TimetableFilterWizard(models.TransientModel):
                 title.append('Est un permanent')
             if self.is_temporary:
                 domain.append(('employee_id.is_permanent', '=', False))
-                title.append('Est un temporaire')
+                title.append('Est un vacataire')
         if self.employee_id.id:
             domain.append(('employee_id', '=', self.employee_id.id))
             title.append(self.employee_id.name)
@@ -702,7 +707,7 @@ class TimetableFilterWizard(models.TransientModel):
                 title.append('Est un permanent')
             if self.is_temporary:
                 domain.append(('employee_id.is_permanent', '=', False))
-                title.append('Est un temporaire')
+                title.append('Est un vacataire')
         if self.employee_id.id:
             domain.append(('employee_id', '=', self.employee_id.id))
             title.append(self.employee_id.name)
@@ -1123,7 +1128,7 @@ class TimetableFilterWizard(models.TransientModel):
                 title.append('Est un permanent')
             if self.is_temporary:
                 domain.append(('employee_id.is_permanent', '=', False))
-                title.append('Est un temporaire')
+                title.append('Est un vacataire')
         if self.employee_id.id:
             domain.append(('employee_id', '=', self.employee_id.id))
             title.append(self.employee_id.name)
@@ -1177,7 +1182,16 @@ class TimetableFilterWizard(models.TransientModel):
 
         key_timetable_percentages = {}
         for key in key_timetables.keys():
-            if self.department_id.id:
+            if self.is_teacher:
+                k = '{}'.format(key_timetables[key]['timetable'].employee_id.id)
+                if k not in key_timetable_percentages:
+                    key_timetable_percentages[k] = {}
+                    key_timetable_percentages[k]['id'] = key_timetables[key]['timetable'].employee_id.id
+                    key_timetable_percentages[k]['name'] = key_timetables[key]['timetable'].employee_id.name
+                    key_timetable_percentages[k]['data'] = []
+                    key_timetable_percentages[k]['worked_time'] = 0.0
+                    key_timetable_percentages[k]['percentage'] = 0.0
+            elif self.department_id.id:
                 k = '{}'.format(key_timetables[key]['timetable'].specialty_id.id)
                 if k not in key_timetable_percentages:
                     key_timetable_percentages[k] = {}
@@ -1263,7 +1277,16 @@ class TimetableFilterWizard(models.TransientModel):
 
         key_all_timetable_percentages = {}
         for key in key_all_timetables.keys():
-            if self.department_id.id:
+            if self.is_teacher:
+                k = '{}'.format(key_all_timetables[key]['timetable'].employee_id.id)
+                if k not in key_all_timetable_percentages:
+                    key_all_timetable_percentages[k] = {}
+                    key_all_timetable_percentages[k]['id'] = key_all_timetables[key]['timetable'].employee_id.id
+                    key_all_timetable_percentages[k]['name'] = key_all_timetables[key]['timetable'].employee_id.name
+                    key_all_timetable_percentages[k]['data'] = []
+                    key_all_timetable_percentages[k]['worked_time'] = 0.0
+                    key_all_timetable_percentages[k]['percentage'] = 0.0
+            elif self.department_id.id:
                 k = '{}'.format(key_all_timetables[key]['timetable'].specialty_id.id)
                 if k not in key_all_timetable_percentages:
                     key_all_timetable_percentages[k] = {}
@@ -1339,7 +1362,9 @@ class TimetableFilterWizard(models.TransientModel):
 
         filter_title = self.env['ir.config_parameter'].sudo().get_param(f'siantou.filter_user_{self.env.user.id}', '')
 
-        if self.department_id.id:
+        if self.is_teacher:
+            label = 'Enseignant'
+        elif self.department_id.id:
             label = 'Spécialité'
         elif self.school_id.id:
             label = 'Département'
@@ -1352,7 +1377,7 @@ class TimetableFilterWizard(models.TransientModel):
             if self.is_permanent:
                 title = 'Pourcentage d\'heures permanent par {}'.format(label)
             if self.is_temporary:
-                title = 'Pourcentage d\'heures temporaire par {}'.format(label)
+                title = 'Pourcentage d\'heures vacataire par {}'.format(label)
 
         data = {
             'docdata': {}
@@ -1434,7 +1459,7 @@ class TimetableFilterWizard(models.TransientModel):
                 title.append('Est un permanent')
             if self.is_temporary:
                 domain.append(('employee_id.is_permanent', '=', False))
-                title.append('Est un temporaire')
+                title.append('Est un vacataire')
         if self.employee_id.id:
             domain.append(('employee_id', '=', self.employee_id.id))
             title.append(self.employee_id.name)
@@ -1561,7 +1586,17 @@ class TimetableFilterWizard(models.TransientModel):
 
         key_timetable_hours_and_costs = {}
         for key in key_timetables.keys():
-            if self.department_id.id:
+            if self.is_teacher:
+                k = '{}'.format(key_timetables[key]['timetable'].employee_id.id)
+                if k not in key_timetable_hours_and_costs:
+                    key_timetable_hours_and_costs[k] = {}
+                    key_timetable_hours_and_costs[k]['id'] = key_timetables[key]['timetable'].employee_id.id
+                    key_timetable_hours_and_costs[k]['name'] = key_timetables[key]['timetable'].employee_id.name
+                    key_timetable_hours_and_costs[k]['data'] = []
+                    key_timetable_hours_and_costs[k]['worked_time'] = 0.0
+                    key_timetable_hours_and_costs[k]['amount'] = 0.0
+                    key_timetable_hours_and_costs[k]['total_amount'] = 0.0
+            elif self.department_id.id:
                 k = '{}'.format(key_timetables[key]['timetable'].specialty_id.id)
                 if k not in key_timetable_hours_and_costs:
                     key_timetable_hours_and_costs[k] = {}
@@ -1639,7 +1674,9 @@ class TimetableFilterWizard(models.TransientModel):
 
         filter_title = self.env['ir.config_parameter'].sudo().get_param(f'siantou.filter_user_{self.env.user.id}', '')
 
-        if self.department_id.id:
+        if self.is_teacher:
+            label = 'Enseignant'
+        elif self.department_id.id:
             label = 'Spécialité'
         elif self.school_id.id:
             label = 'Département'
@@ -1652,7 +1689,7 @@ class TimetableFilterWizard(models.TransientModel):
             if self.is_permanent:
                 title = 'Nombre d\'heures et coût permanent par {}'.format(label)
             if self.is_temporary:
-                title = 'Nombre d\'heures et coût temporaire par {}'.format(label)
+                title = 'Nombre d\'heures et coût vacataire par {}'.format(label)
 
         is_permanent = False
         if not self.is_permanent or not self.is_temporary:
