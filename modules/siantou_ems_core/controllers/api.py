@@ -887,7 +887,8 @@ class DeSchool(http.Controller):
                         'name': cycle.name,
                         'specialites': [{
                                 'id': specialty_id.id, 
-                                'name': specialty_id.name,
+                                'code': specialty_id.code, 
+                                'name': '{} - {}'.format(specialty_id.code, specialty_id.name),
                                 'school_name': specialty_id.field_of_study_id.school_id.name,
                                 'field_of_study_name': specialty_id.field_of_study_id.name,
                                 'options':[{'id': opt.id, 'name': opt.name} for opt in specialty_id.option_ids]
