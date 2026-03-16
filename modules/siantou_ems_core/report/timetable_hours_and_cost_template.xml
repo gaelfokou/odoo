@@ -94,6 +94,17 @@
                                             </t>
                                         </tr>
                                     </t>
+                                    <tr>
+                                        <td class="text-center" style="background-color: #f2f2f2;">TOTAL GLOBAL</td>
+                                        <td class="text-center" style="background-color: #f2f2f2;">
+                                            <span t-esc="docdata['total_hours']"/>
+                                        </td>
+                                        <t t-if="docdata['is_permanent'] == False">
+                                            <td class="text-center" style="background-color: #f2f2f2;">
+                                                <span t-esc="'{:,.2f}'.format(docdata['total_cost'])"/>
+                                            </td>
+                                        </t>
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>

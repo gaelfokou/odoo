@@ -44,6 +44,13 @@ STATUS_TIMETABLE = {
     'punctuality': 'Ponctualité',
 }
 
+PRINT_TYPE = {
+    'school': 'Par école',
+    'department': 'Par département',
+    'specialty': 'Par spécialité',
+    'teacher': 'Par enseignant',
+}
+
 TYPE_COUR = {
     'cj': 'Cours du jour',
     'cs': 'Cours du soir',
@@ -234,9 +241,13 @@ class TimetableFilterWizard(models.TransientModel):
         default=False,
     )
 
-    is_teacher = fields.Boolean(
-        'Par enseignant',
-        default=False,
+    print_type = fields.Selection([
+        ('school', 'Par école'),
+        ('department', 'Par département'),
+        ('specialty', 'Par spécialité'),
+        ('teacher', 'Par enseignant'),
+    ], 'Type d\'impression',
+        # default='school',
     )
 
     @api.depends('specialty_id')
@@ -1158,7 +1169,7 @@ class TimetableFilterWizard(models.TransientModel):
 
             end_time = TimetableFilterWizard.convert_float_to_time(timetable.end_time, has_second=True)
             start_time = TimetableFilterWizard.convert_float_to_time(timetable.start_time, has_second=True)
-            if self.is_teacher:
+            if self.print_type == 'teacher':
                 key = '{}-{}-{}-{}'.format(timetable.employee_id.id, timetable.date, start_time, end_time)
             else:
                 key = '{}-{}-{}-{}'.format(timetable.class_id.id, timetable.date, start_time, end_time)
@@ -1185,7 +1196,7 @@ class TimetableFilterWizard(models.TransientModel):
 
         key_timetable_percentages = {}
         for key in key_timetables.keys():
-            if self.is_teacher:
+            if self.print_type == 'teacher':
                 k = '{}'.format(key_timetables[key]['timetable'].employee_id.id)
                 if k not in key_timetable_percentages:
                     key_timetable_percentages[k] = {}
@@ -1194,7 +1205,7 @@ class TimetableFilterWizard(models.TransientModel):
                     key_timetable_percentages[k]['data'] = []
                     key_timetable_percentages[k]['worked_time'] = 0.0
                     key_timetable_percentages[k]['percentage'] = 0.0
-            elif self.department_id.id:
+            elif self.print_type == 'specialty':
                 k = '{}'.format(key_timetables[key]['timetable'].specialty_id.id)
                 if k not in key_timetable_percentages:
                     key_timetable_percentages[k] = {}
@@ -1203,7 +1214,7 @@ class TimetableFilterWizard(models.TransientModel):
                     key_timetable_percentages[k]['data'] = []
                     key_timetable_percentages[k]['worked_time'] = 0.0
                     key_timetable_percentages[k]['percentage'] = 0.0
-            elif self.school_id.id:
+            elif self.print_type == 'department':
                 k = '{}'.format(key_timetables[key]['timetable'].department_id.id)
                 if k not in key_timetable_percentages:
                     key_timetable_percentages[k] = {}
@@ -1256,7 +1267,7 @@ class TimetableFilterWizard(models.TransientModel):
 
             end_time = TimetableFilterWizard.convert_float_to_time(timetable.end_time, has_second=True)
             start_time = TimetableFilterWizard.convert_float_to_time(timetable.start_time, has_second=True)
-            if self.is_teacher:
+            if self.print_type == 'teacher':
                 key = '{}-{}-{}-{}'.format(timetable.employee_id.id, timetable.date, start_time, end_time)
             else:
                 key = '{}-{}-{}-{}'.format(timetable.class_id.id, timetable.date, start_time, end_time)
@@ -1283,7 +1294,7 @@ class TimetableFilterWizard(models.TransientModel):
 
         key_all_timetable_percentages = {}
         for key in key_all_timetables.keys():
-            if self.is_teacher:
+            if self.print_type == 'teacher':
                 k = '{}'.format(key_all_timetables[key]['timetable'].employee_id.id)
                 if k not in key_all_timetable_percentages:
                     key_all_timetable_percentages[k] = {}
@@ -1292,7 +1303,7 @@ class TimetableFilterWizard(models.TransientModel):
                     key_all_timetable_percentages[k]['data'] = []
                     key_all_timetable_percentages[k]['worked_time'] = 0.0
                     key_all_timetable_percentages[k]['percentage'] = 0.0
-            elif self.department_id.id:
+            elif self.print_type == 'specialty':
                 k = '{}'.format(key_all_timetables[key]['timetable'].specialty_id.id)
                 if k not in key_all_timetable_percentages:
                     key_all_timetable_percentages[k] = {}
@@ -1301,7 +1312,7 @@ class TimetableFilterWizard(models.TransientModel):
                     key_all_timetable_percentages[k]['data'] = []
                     key_all_timetable_percentages[k]['worked_time'] = 0.0
                     key_all_timetable_percentages[k]['percentage'] = 0.0
-            elif self.school_id.id:
+            elif self.print_type == 'department':
                 k = '{}'.format(key_all_timetables[key]['timetable'].department_id.id)
                 if k not in key_all_timetable_percentages:
                     key_all_timetable_percentages[k] = {}
@@ -1368,11 +1379,11 @@ class TimetableFilterWizard(models.TransientModel):
 
         filter_title = self.env['ir.config_parameter'].sudo().get_param(f'siantou.filter_user_{self.env.user.id}', '')
 
-        if self.is_teacher:
+        if self.print_type == 'teacher':
             label = 'Enseignant'
-        elif self.department_id.id:
+        elif self.print_type == 'specialty':
             label = 'Spécialité'
-        elif self.school_id.id:
+        elif self.print_type == 'department':
             label = 'Département'
         else:
             label = 'École'
@@ -1399,18 +1410,32 @@ class TimetableFilterWizard(models.TransientModel):
         if len(data['docdata']['timetable_percentage_data'].keys()) == 0:
             raise UserError('Aucune donnée trouvée')
         report_action = self.env.ref('siantou_ems_core.action_report_timetable_hours_percentage')
-        if self.department_id.id:
-            report_action.update({
-                'name': '{} du {} - {} PDF'.format(title, start_date, end_date),
-            })
-        elif self.school_id.id:
-            report_action.update({
-                'name': '{} du {} - {} PDF'.format(title, start_date, end_date),
-            })
+        if self.school_id.id:
+            if self.department_id.id:
+                report_action.update({
+                    'name': '{} {} du {} - {} PDF'.format(title, self.school_id.name, start_date, end_date),
+                })
+            elif self.school_id.id:
+                report_action.update({
+                    'name': '{} {} du {} - {} PDF'.format(title, self.school_id.name, start_date, end_date),
+                })
+            else:
+                report_action.update({
+                    'name': '{} {} du {} - {} PDF'.format(title, self.school_id.name, start_date, end_date),
+                })
         else:
-            report_action.update({
-                'name': '{} du {} - {} PDF'.format(title, start_date, end_date),
-            })
+            if self.department_id.id:
+                report_action.update({
+                    'name': '{} du {} - {} PDF'.format(title, start_date, end_date),
+                })
+            elif self.school_id.id:
+                report_action.update({
+                    'name': '{} du {} - {} PDF'.format(title, start_date, end_date),
+                })
+            else:
+                report_action.update({
+                    'name': '{} du {} - {} PDF'.format(title, start_date, end_date),
+                })
         return report_action.report_action(self, data=data)
 
     def action_print_hours_and_cost_pdf(self):
@@ -1501,7 +1526,7 @@ class TimetableFilterWizard(models.TransientModel):
 
             end_time = TimetableFilterWizard.convert_float_to_time(timetable.end_time, has_second=True)
             start_time = TimetableFilterWizard.convert_float_to_time(timetable.start_time, has_second=True)
-            if self.is_teacher:
+            if self.print_type == 'teacher':
                 key = '{}-{}-{}-{}'.format(timetable.employee_id.id, timetable.date, start_time, end_time)
             else:
                 key = '{}-{}-{}-{}'.format(timetable.class_id.id, timetable.date, start_time, end_time)
@@ -1595,7 +1620,7 @@ class TimetableFilterWizard(models.TransientModel):
 
         key_timetable_hours_and_costs = {}
         for key in key_timetables.keys():
-            if self.is_teacher:
+            if self.print_type == 'teacher':
                 k = '{}'.format(key_timetables[key]['timetable'].employee_id.id)
                 if k not in key_timetable_hours_and_costs:
                     key_timetable_hours_and_costs[k] = {}
@@ -1605,7 +1630,7 @@ class TimetableFilterWizard(models.TransientModel):
                     key_timetable_hours_and_costs[k]['worked_time'] = 0.0
                     key_timetable_hours_and_costs[k]['amount'] = 0.0
                     key_timetable_hours_and_costs[k]['total_amount'] = 0.0
-            elif self.department_id.id:
+            elif self.print_type == 'specialty':
                 k = '{}'.format(key_timetables[key]['timetable'].specialty_id.id)
                 if k not in key_timetable_hours_and_costs:
                     key_timetable_hours_and_costs[k] = {}
@@ -1615,7 +1640,7 @@ class TimetableFilterWizard(models.TransientModel):
                     key_timetable_hours_and_costs[k]['worked_time'] = 0.0
                     key_timetable_hours_and_costs[k]['amount'] = 0.0
                     key_timetable_hours_and_costs[k]['total_amount'] = 0.0
-            elif self.school_id.id:
+            elif self.print_type == 'department':
                 k = '{}'.format(key_timetables[key]['timetable'].department_id.id)
                 if k not in key_timetable_hours_and_costs:
                     key_timetable_hours_and_costs[k] = {}
@@ -1665,9 +1690,15 @@ class TimetableFilterWizard(models.TransientModel):
             key_timetable_hours_and_costs[k]['total_amount'] = key_timetable_hours_and_costs[k]['amount']
             key_timetable_hours_and_costs[k]['data'].append(timetable_hours_and_cost)
 
+        total_hours = 0.0
+        total_cost = 0.0
         for key in key_timetable_hours_and_costs.keys():
             key_timetable_hours_and_costs[key]['worked_time'] = round(key_timetable_hours_and_costs[key]['worked_time'], 2)
             key_timetable_hours_and_costs[key]['amount'] = round(key_timetable_hours_and_costs[key]['amount'], 2)
+            total_hours += key_timetable_hours_and_costs[key]['worked_time']
+            total_cost += key_timetable_hours_and_costs[key]['amount']
+        total_hours = round(total_hours, 2)
+        total_cost = round(total_cost, 2)
 
         key_timetable_hours_and_costs = sorted(key_timetable_hours_and_costs.items(), key=self.sort_timetable_hours, reverse=True)
         key_timetable_hours_and_costs = dict(key_timetable_hours_and_costs)
@@ -1683,11 +1714,11 @@ class TimetableFilterWizard(models.TransientModel):
 
         filter_title = self.env['ir.config_parameter'].sudo().get_param(f'siantou.filter_user_{self.env.user.id}', '')
 
-        if self.is_teacher:
+        if self.print_type == 'teacher':
             label = 'Enseignant'
-        elif self.department_id.id:
+        elif self.print_type == 'specialty':
             label = 'Spécialité'
-        elif self.school_id.id:
+        elif self.print_type == 'department':
             label = 'Département'
         else:
             label = 'École'
@@ -1712,6 +1743,8 @@ class TimetableFilterWizard(models.TransientModel):
         data['docdata']['title'] = title
         data['docdata']['filter'] = filter_title
         data['docdata']['timetable_hours_and_cost_data'] = key_timetable_hours_and_costs
+        data['docdata']['total_hours'] = total_hours
+        data['docdata']['total_cost'] = total_cost
         data['docdata']['is_permanent'] = is_permanent
 
         start_date = datetime.strftime(self.start_date, DATE_FORMAT_FR)
@@ -1720,18 +1753,32 @@ class TimetableFilterWizard(models.TransientModel):
         if len(data['docdata']['timetable_hours_and_cost_data'].keys()) == 0:
             raise UserError('Aucune donnée trouvée')
         report_action = self.env.ref('siantou_ems_core.action_report_timetable_hours_and_cost')
-        if self.department_id.id:
-            report_action.update({
-                'name': '{} du {} - {} PDF'.format(title, start_date, end_date),
-            })
-        elif self.school_id.id:
-            report_action.update({
-                'name': '{} du {} - {} PDF'.format(title, start_date, end_date),
-            })
+        if self.school_id.id:
+            if self.department_id.id:
+                report_action.update({
+                    'name': '{} {} du {} - {} PDF'.format(title, self.school_id.name, start_date, end_date),
+                })
+            elif self.school_id.id:
+                report_action.update({
+                    'name': '{} {} du {} - {} PDF'.format(title, self.school_id.name, start_date, end_date),
+                })
+            else:
+                report_action.update({
+                    'name': '{} {} du {} - {} PDF'.format(title, self.school_id.name, start_date, end_date),
+                })
         else:
-            report_action.update({
-                'name': '{} du {} - {} PDF'.format(title, start_date, end_date),
-            })
+            if self.department_id.id:
+                report_action.update({
+                    'name': '{} du {} - {} PDF'.format(title, start_date, end_date),
+                })
+            elif self.school_id.id:
+                report_action.update({
+                    'name': '{} du {} - {} PDF'.format(title, start_date, end_date),
+                })
+            else:
+                report_action.update({
+                    'name': '{} du {} - {} PDF'.format(title, start_date, end_date),
+                })
         return report_action.report_action(self, data=data)
 
     @staticmethod
