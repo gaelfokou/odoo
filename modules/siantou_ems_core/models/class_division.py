@@ -3,6 +3,9 @@
 import re
 from odoo import models, fields, api, tools, _
 from odoo.exceptions import UserError, ValidationError
+import psycopg2
+from datetime import date, datetime, timedelta, time
+from dateutil.relativedelta import relativedelta
 from odoo.tools import unique
 import logging
 
@@ -114,6 +117,28 @@ class EducationClass(models.Model):
     )
 
     is_timetable_active = fields.Boolean(string='Emplois du temps actifs ?', default=True)
+
+    timetable_inactive_date = fields.Date(
+        string='Date de désactivation des emplois du temps',
+        compute='_compute_timetable_inactive_date',
+        store=True
+    )
+
+    @api.depends('is_timetable_active')
+    def _compute_timetable_inactive_date(self):
+        for record in self:
+            if record.is_timetable_active:
+                record.timetable_inactive_date = None
+            else:
+                record.timetable_inactive_date = date.today()
+
+    @api.onchange('is_timetable_active')
+    def _onchange_timetable_inactive_date(self):
+        for record in self:
+            if record.is_timetable_active:
+                record.timetable_inactive_date = None
+            else:
+                record.timetable_inactive_date = date.today()
 
     # _sql_constraints = [
     #     ('unique_year_specialty_option_level_type_cour', 'unique(year_id,specialty_id,option_id,level_id,type_cour)', 'L\'année académique, la spécialité, l\'option, le niveau, et le type de cours doivent être uniques.'),

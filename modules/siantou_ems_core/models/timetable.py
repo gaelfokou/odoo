@@ -533,25 +533,43 @@ class Timetable(models.Model):
 
     is_timetable_active = fields.Boolean(string='Emploi du temps actif ?', default=True)
 
-    @api.depends('class_id', 'is_timetable_active', 'status')
+    @api.depends('class_id', 'is_timetable_active', 'status', 'date')
     def _compute_active(self):
         for record in self:
             if record.status == 'pending':
                 if record.class_id.is_timetable_active and record.is_timetable_active:
                     record.is_active = True
                 else:
-                    record.is_active = False
+                    if record.is_timetable_active:
+                        if record.date and record.class_id.timetable_inactive_date:
+                            if record.date < record.class_id.timetable_inactive_date:
+                                record.is_active = True
+                            else:
+                                record.is_active = False
+                        else:
+                            record.is_active = False
+                    else:
+                        record.is_active = False
             else:
                 record.is_active = True
 
-    @api.onchange('class_id', 'is_timetable_active', 'status')
+    @api.onchange('class_id', 'is_timetable_active', 'status', 'date')
     def _onchange_active(self):
         for record in self:
             if record.status == 'pending':
                 if record.class_id.is_timetable_active and record.is_timetable_active:
                     record.is_active = True
                 else:
-                    record.is_active = False
+                    if record.is_timetable_active:
+                        if record.date and record.class_id.timetable_inactive_date:
+                            if record.date < record.class_id.timetable_inactive_date:
+                                record.is_active = True
+                            else:
+                                record.is_active = False
+                        else:
+                            record.is_active = False
+                    else:
+                        record.is_active = False
             else:
                 record.is_active = True
 
