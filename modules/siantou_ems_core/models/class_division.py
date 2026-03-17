@@ -120,6 +120,7 @@ class EducationClass(models.Model):
 
     timetable_inactive_date = fields.Date(
         string='Date de désactivation des emplois du temps',
+        readonly=False,
         compute='_compute_timetable_inactive_date',
         store=True
     )
