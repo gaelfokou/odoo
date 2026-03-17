@@ -935,7 +935,7 @@ class TimetableFilterWizard(models.TransientModel):
         }
         for key in data.keys():
             all_data['docdata']['label'] = data[key]['docdata']['label']
-            all_data['docdata']['title'] = '{} Comparaison'.format(data[key]['docdata']['title'])
+            all_data['docdata']['title'] = 'Comparaison {}'.format(data[key]['docdata']['title'])
             all_data['docdata']['filter'] = filter_title
             all_data['docdata']['sort_type'] = data[key]['docdata']['sort_type']
             all_data['docdata']['status'] = data[key]['docdata']['status']
