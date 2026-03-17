@@ -62,7 +62,7 @@
                                 </thead>
                                 <thead class="thead">
                                     <tr class="active">
-                                        <th class="text-center">Enseignant</th>
+                                        <th class="text-center" t-esc="docdata['label']"/>
                                         <t t-if="'compare' in docdata">
                                             <th class="text-center">Pourcentage semaine précédente</th>
                                             <th class="text-center">Pourcentage semaine en question</th>

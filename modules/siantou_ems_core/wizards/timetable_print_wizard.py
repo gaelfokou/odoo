@@ -572,25 +572,29 @@ class TimetablePrintWizard(models.TransientModel):
 
         filter_title = self.env['ir.config_parameter'].sudo().get_param(f'siantou.filter_user_{self.env.user.id}', '')
 
-        if school and school.id:
-            if sort_type:
-                if sort_type == 'top':
-                    title = '{} {} Top 10'.format(STATUS_TIMETABLE[status].replace('Présent', 'Présence').replace('Absent', 'Absence'), school.name)
-                else:
-                    title = '{} {} Last 10'.format(STATUS_TIMETABLE[status].replace('Présent', 'Présence').replace('Absent', 'Absence'), school.name)
+        if print_type:
+            if print_type == 'school':
+                label = 'École'
+            elif print_type == 'specialty':
+                label = 'Spécialité'
+            elif print_type == 'department':
+                label = 'Département'
             else:
-                title = '{} {}'.format(STATUS_TIMETABLE[status].replace('Présent', 'Présence').replace('Absent', 'Absence'), school.name)
+                label = 'Enseignant'
         else:
-            if sort_type:
-                if sort_type == 'top':
-                    title = '{} Top 10'.format(STATUS_TIMETABLE[status].replace('Présent', 'Présence').replace('Absent', 'Absence'))
-                else:
-                    title = '{} Last 10'.format(STATUS_TIMETABLE[status].replace('Présent', 'Présence').replace('Absent', 'Absence'))
+            label = 'Enseignant'
+
+        if sort_type:
+            if sort_type == 'top':
+                title = '{} Top 10 par {}'.format(STATUS_TIMETABLE[status].replace('Présent', 'Présence').replace('Absent', 'Absence'), label)
             else:
-                title = '{}'.format(STATUS_TIMETABLE[status].replace('Présent', 'Présence').replace('Absent', 'Absence'))
+                title = '{} Last 10 par {}'.format(STATUS_TIMETABLE[status].replace('Présent', 'Présence').replace('Absent', 'Absence'), label)
+        else:
+            title = '{} par {}'.format(STATUS_TIMETABLE[status].replace('Présent', 'Présence').replace('Absent', 'Absence'), label)
 
         return {
             'docdata': {
+                'label': label,
                 'title': title,
                 'filter': filter_title,
                 'timetable_percentage_data': key_timetable_percentages,
