@@ -599,7 +599,7 @@ class PortalAccount(portal.CustomerPortal):
                 examscore['subject_id'] = search_examscore.subject_id.id
                 examscore['subject_name'] = search_examscore.subject_id.name
                 examscore['subject_code'] = search_examscore.subject_id.code
-                examscore['exam_type'] = TYPE_EXAMSCORE[search_examscore.exam_type]
+                examscore['exam_type'] = search_examscore.exam_type
                 examscore['status'] = STATUS_EXAMSCORE[search_examscore.status]
                 score_ids = search_examscore.score_ids.filtered(lambda rec: rec.student_id.id == user.id and rec.exam_id.class_id.id == user.class_id.id)
                 score_ids = list(score_ids)
@@ -725,6 +725,12 @@ class PortalAccount(portal.CustomerPortal):
                                                     all_examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['data']['sn_note'] = d['sn_note']
                                                 elif d['exam_type'] == 'rcc':
                                                     all_examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['data']['rcc_note'] = d['rcc_note']
+        for key_class in all_examscores.keys():
+            for key_semester in examscores[key_class]['data'].keys():
+                for key_student in examscores[key_class]['data'][key_semester]['data'].keys():
+                    for key_subject in examscores[key_class]['data'][key_semester]['data'][key_student]['data'].keys():
+                        for d in examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['data']:
+                            d['exam_type'] = TYPE_EXAMSCORE[d['exam_type']]
         return http.request.render('siantou_ems_portal.siantou_ems_portal_examscore_views',
                                 {
                                     'examscores': all_examscores,
