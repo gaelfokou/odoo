@@ -40,12 +40,11 @@
                         <field name="end_time"/>
                         <field name="status"/>
                         <field name="number_of_minute" invisible="not status or status not in ['delay_more_than_or_equal', 'delay_less_than']"/>
-                        <field name="print_type" widget="radio" invisible="status"/>
+                        <field name="print_type" widget="radio"/>
                     </group>
                     <footer>
                         <button string="Filtrer" type="object" name="action_filter" class="btn-primary"/>
-                        <button string="Pourcentage école" type="object" name="action_print_school_percentage_pdf" class="btn-primary" invisible="school_id or not status" groups="siantou_ems_core.group_timetable_percentage_print_pdf"/>
-                        <button string="Pourcentage" type="object" name="action_print_percentage_pdf" class="btn-primary" invisible="not school_id or not status" groups="siantou_ems_core.group_timetable_percentage_print_pdf"/>
+                        <button string="Pourcentage" type="object" name="action_print_percentage_pdf" class="btn-primary" invisible="not status" groups="siantou_ems_core.group_timetable_percentage_print_pdf"/>
                         <button string="Pourcentage comparaison" type="object" name="action_print_compare_percentage_pdf" class="btn-primary" invisible="not school_id or not status" groups="siantou_ems_core.group_timetable_percentage_print_pdf"/>
                         <button string="Pourcentage top 10" type="object" name="action_print_top_percentage_pdf" class="btn-primary" invisible="not school_id or not status" groups="siantou_ems_core.group_timetable_percentage_print_pdf"/>
                         <button string="Pourcentage last 10" type="object" name="action_print_last_percentage_pdf" class="btn-primary" invisible="not school_id or not status" groups="siantou_ems_core.group_timetable_percentage_print_pdf"/>

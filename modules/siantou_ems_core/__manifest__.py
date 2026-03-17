@@ -82,7 +82,6 @@
         'views/timetable_exception_views.xml',
         'report/timetable_template.xml',
         'report/timetable_percentage_template.xml',
-        'report/timetable_school_percentage_template.xml',
         'report/timetable_hours_percentage_template.xml',
         'report/timetable_hours_and_cost_template.xml',
         'report/teacher_template.xml',

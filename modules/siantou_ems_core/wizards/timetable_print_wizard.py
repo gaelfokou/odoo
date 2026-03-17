@@ -229,7 +229,7 @@ class TimetablePrintWizard(models.TransientModel):
         name = name.lower()
         return name
 
-    def print_timetable_percentage_report_data(self, domains=None, all_domains=None, school=None, status=None, sort_type=None):
+    def print_timetable_percentage_report_data(self, domains=None, all_domains=None, school=None, status=None, sort_type=None, print_type=None):
         # Récupérer les emplois du temps pour le semestre sélectionné
         domain = []
 
@@ -262,7 +262,17 @@ class TimetablePrintWizard(models.TransientModel):
         for search_all_timetable_percentage in search_all_timetable_percentages:
             if not search_all_timetable_percentage.date or not search_all_timetable_percentage.day_of_week or not search_all_timetable_percentage.employee_id.id:
                 continue
-            key = '{}'.format(search_all_timetable_percentage.employee_id.id)
+            if print_type:
+                if print_type == 'school':
+                    key = '{}'.format(search_all_timetable_percentage.school_id.id)
+                elif print_type == 'specialty':
+                    key = '{}'.format(search_all_timetable_percentage.specialty_id.id)
+                elif print_type == 'department':
+                    key = '{}'.format(search_all_timetable_percentage.department_id.id)
+                else:
+                    key = '{}'.format(search_all_timetable_percentage.employee_id.id)
+            else:
+                key = '{}'.format(search_all_timetable_percentage.employee_id.id)
             if key not in total_timetable_percentage_count:
                 total_timetable_percentage_count[key] = 1
             else:
@@ -273,14 +283,52 @@ class TimetablePrintWizard(models.TransientModel):
         for search_timetable_percentage in search_delay_timetable_percentages:
             if not search_timetable_percentage.date or not search_timetable_percentage.day_of_week or not search_timetable_percentage.employee_id.id:
                 continue
-            key = '{}'.format(search_timetable_percentage.employee_id.id)
-            if key not in key_delay_timetable_percentages:
-                key_delay_timetable_percentages[key] = {}
-                key_delay_timetable_percentages[key]['name'] = search_timetable_percentage.employee_id.name
-                key_delay_timetable_percentages[key]['identifier'] = search_timetable_percentage.employee_id.identifier
-                key_delay_timetable_percentages[key]['data'] = []
-                key_delay_timetable_percentages[key]['percentage'] = 0.0
-                key_delay_timetable_percentages[key]['class'] = ''
+            if print_type:
+                if print_type == 'school':
+                    key = '{}'.format(search_timetable_percentage.school_id.id)
+                    if key not in key_delay_timetable_percentages:
+                        key_delay_timetable_percentages[key] = {}
+                        key_delay_timetable_percentages[key]['name'] = search_timetable_percentage.school_id.name
+                        key_delay_timetable_percentages[key]['identifier'] = ''
+                        key_delay_timetable_percentages[key]['data'] = []
+                        key_delay_timetable_percentages[key]['percentage'] = 0.0
+                        key_delay_timetable_percentages[key]['class'] = ''
+                elif print_type == 'specialty':
+                    key = '{}'.format(search_timetable_percentage.specialty_id.id)
+                    if key not in key_delay_timetable_percentages:
+                        key_delay_timetable_percentages[key] = {}
+                        key_delay_timetable_percentages[key]['name'] = search_timetable_percentage.specialty_id.name
+                        key_delay_timetable_percentages[key]['identifier'] = ''
+                        key_delay_timetable_percentages[key]['data'] = []
+                        key_delay_timetable_percentages[key]['percentage'] = 0.0
+                        key_delay_timetable_percentages[key]['class'] = ''
+                elif print_type == 'department':
+                    key = '{}'.format(search_timetable_percentage.department_id.id)
+                    if key not in key_delay_timetable_percentages:
+                        key_delay_timetable_percentages[key] = {}
+                        key_delay_timetable_percentages[key]['name'] = search_timetable_percentage.department_id.name
+                        key_delay_timetable_percentages[key]['identifier'] = ''
+                        key_delay_timetable_percentages[key]['data'] = []
+                        key_delay_timetable_percentages[key]['percentage'] = 0.0
+                        key_delay_timetable_percentages[key]['class'] = ''
+                else:
+                    key = '{}'.format(search_timetable_percentage.employee_id.id)
+                    if key not in key_delay_timetable_percentages:
+                        key_delay_timetable_percentages[key] = {}
+                        key_delay_timetable_percentages[key]['name'] = search_timetable_percentage.employee_id.name
+                        key_delay_timetable_percentages[key]['identifier'] = search_timetable_percentage.employee_id.identifier
+                        key_delay_timetable_percentages[key]['data'] = []
+                        key_delay_timetable_percentages[key]['percentage'] = 0.0
+                        key_delay_timetable_percentages[key]['class'] = ''
+            else:
+                key = '{}'.format(search_timetable_percentage.employee_id.id)
+                if key not in key_delay_timetable_percentages:
+                    key_delay_timetable_percentages[key] = {}
+                    key_delay_timetable_percentages[key]['name'] = search_timetable_percentage.employee_id.name
+                    key_delay_timetable_percentages[key]['identifier'] = search_timetable_percentage.employee_id.identifier
+                    key_delay_timetable_percentages[key]['data'] = []
+                    key_delay_timetable_percentages[key]['percentage'] = 0.0
+                    key_delay_timetable_percentages[key]['class'] = ''
             timetable_percentage = {}
             timetable_percentage['id'] = search_timetable_percentage.id
             timetable_percentage['date'] = search_timetable_percentage.date
@@ -327,16 +375,62 @@ class TimetablePrintWizard(models.TransientModel):
         for search_timetable_percentage in search_punctuality_timetable_percentages:
             if not search_timetable_percentage.date or not search_timetable_percentage.day_of_week or not search_timetable_percentage.employee_id.id:
                 continue
-            key = '{}'.format(search_timetable_percentage.employee_id.id)
-            if key in key_delay_timetable_percentages:
-                continue
-            if key not in key_punctuality_timetable_percentages:
-                key_punctuality_timetable_percentages[key] = {}
-                key_punctuality_timetable_percentages[key]['name'] = search_timetable_percentage.employee_id.name
-                key_punctuality_timetable_percentages[key]['identifier'] = search_timetable_percentage.employee_id.identifier
-                key_punctuality_timetable_percentages[key]['data'] = []
-                key_punctuality_timetable_percentages[key]['percentage'] = 0.0
-                key_punctuality_timetable_percentages[key]['class'] = ''
+            if print_type:
+                if print_type == 'school':
+                    key = '{}'.format(search_timetable_percentage.school_id.id)
+                    if key in key_delay_timetable_percentages:
+                        continue
+                    if key not in key_punctuality_timetable_percentages:
+                        key_punctuality_timetable_percentages[key] = {}
+                        key_punctuality_timetable_percentages[key]['name'] = search_timetable_percentage.school_id.name
+                        key_punctuality_timetable_percentages[key]['identifier'] = ''
+                        key_punctuality_timetable_percentages[key]['data'] = []
+                        key_punctuality_timetable_percentages[key]['percentage'] = 0.0
+                        key_punctuality_timetable_percentages[key]['class'] = ''
+                elif print_type == 'specialty':
+                    key = '{}'.format(search_timetable_percentage.specialty_id.id)
+                    if key in key_delay_timetable_percentages:
+                        continue
+                    if key not in key_punctuality_timetable_percentages:
+                        key_punctuality_timetable_percentages[key] = {}
+                        key_punctuality_timetable_percentages[key]['name'] = search_timetable_percentage.specialty_id.name
+                        key_punctuality_timetable_percentages[key]['identifier'] = ''
+                        key_punctuality_timetable_percentages[key]['data'] = []
+                        key_punctuality_timetable_percentages[key]['percentage'] = 0.0
+                        key_punctuality_timetable_percentages[key]['class'] = ''
+                elif print_type == 'department':
+                    key = '{}'.format(search_timetable_percentage.department_id.id)
+                    if key in key_delay_timetable_percentages:
+                        continue
+                    if key not in key_punctuality_timetable_percentages:
+                        key_punctuality_timetable_percentages[key] = {}
+                        key_punctuality_timetable_percentages[key]['name'] = search_timetable_percentage.department_id.name
+                        key_punctuality_timetable_percentages[key]['identifier'] = ''
+                        key_punctuality_timetable_percentages[key]['data'] = []
+                        key_punctuality_timetable_percentages[key]['percentage'] = 0.0
+                        key_punctuality_timetable_percentages[key]['class'] = ''
+                else:
+                    key = '{}'.format(search_timetable_percentage.employee_id.id)
+                    if key in key_delay_timetable_percentages:
+                        continue
+                    if key not in key_punctuality_timetable_percentages:
+                        key_punctuality_timetable_percentages[key] = {}
+                        key_punctuality_timetable_percentages[key]['name'] = search_timetable_percentage.employee_id.name
+                        key_punctuality_timetable_percentages[key]['identifier'] = search_timetable_percentage.employee_id.identifier
+                        key_punctuality_timetable_percentages[key]['data'] = []
+                        key_punctuality_timetable_percentages[key]['percentage'] = 0.0
+                        key_punctuality_timetable_percentages[key]['class'] = ''
+            else:
+                key = '{}'.format(search_timetable_percentage.employee_id.id)
+                if key in key_delay_timetable_percentages:
+                    continue
+                if key not in key_punctuality_timetable_percentages:
+                    key_punctuality_timetable_percentages[key] = {}
+                    key_punctuality_timetable_percentages[key]['name'] = search_timetable_percentage.employee_id.name
+                    key_punctuality_timetable_percentages[key]['identifier'] = search_timetable_percentage.employee_id.identifier
+                    key_punctuality_timetable_percentages[key]['data'] = []
+                    key_punctuality_timetable_percentages[key]['percentage'] = 0.0
+                    key_punctuality_timetable_percentages[key]['class'] = ''
             timetable_percentage = {}
             timetable_percentage['id'] = search_timetable_percentage.id
             timetable_percentage['date'] = search_timetable_percentage.date
