@@ -871,14 +871,9 @@ class TimetableFilterWizard(models.TransientModel):
             end_date = datetime.strftime(self.end_date, DATE_FORMAT_FR)
 
             report_action = self.env.ref('siantou_ems_core.action_report_timetable_percentage')
-            if self.school_id.id:
-                report_action.update({
-                    'name': '{} {} du {} - {} PDF'.format(STATUS_TIMETABLE[self.status].replace('Présent', 'Présence').replace('Absent', 'Absence'), self.school_id.name, start_date, end_date),
-                })
-            else:
-                report_action.update({
-                    'name': '{} du {} - {} PDF'.format(STATUS_TIMETABLE[self.status].replace('Présent', 'Présence').replace('Absent', 'Absence'), start_date, end_date),
-                })
+            report_action.update({
+                'name': '{} du {} - {} PDF'.format(data['docdata']['title'], start_date, end_date),
+            })
             return report_action.report_action(self, data=data)
         else:
             return data
@@ -890,14 +885,9 @@ class TimetableFilterWizard(models.TransientModel):
         end_date = datetime.strftime(self.end_date, DATE_FORMAT_FR)
 
         report_action = self.env.ref('siantou_ems_core.action_report_timetable_percentage')
-        if self.school_id.id:
-            report_action.update({
-                'name': '{} {} Top 10 du {} - {} PDF'.format(STATUS_TIMETABLE[self.status].replace('Présent', 'Présence').replace('Absent', 'Absence'), self.school_id.name, start_date, end_date),
-            })
-        else:
-            report_action.update({
-                'name': '{} Top 10 du {} - {} PDF'.format(STATUS_TIMETABLE[self.status].replace('Présent', 'Présence').replace('Absent', 'Absence'), start_date, end_date),
-            })
+        report_action.update({
+            'name': '{} du {} - {} PDF'.format(data['docdata']['title'], start_date, end_date),
+        })
         return report_action.report_action(self, data=data)
 
     def action_print_last_percentage_pdf(self):
@@ -907,14 +897,9 @@ class TimetableFilterWizard(models.TransientModel):
         end_date = datetime.strftime(self.end_date, DATE_FORMAT_FR)
 
         report_action = self.env.ref('siantou_ems_core.action_report_timetable_percentage')
-        if self.school_id.id:
-            report_action.update({
-                'name': '{} {} Last 10 du {} - {} PDF'.format(STATUS_TIMETABLE[self.status].replace('Présent', 'Présence').replace('Absent', 'Absence'), self.school_id.name, start_date, end_date),
-            })
-        else:
-            report_action.update({
-                'name': '{} Last 10 du {} - {} PDF'.format(STATUS_TIMETABLE[self.status].replace('Présent', 'Présence').replace('Absent', 'Absence'), start_date, end_date),
-            })
+        report_action.update({
+            'name': '{} du {} - {} PDF'.format(data['docdata']['title'], start_date, end_date),
+        })
         return report_action.report_action(self, data=data)
 
     def sort_timetable_percentage(self, timetable_percentage):
@@ -1001,14 +986,9 @@ class TimetableFilterWizard(models.TransientModel):
         if len(all_data['docdata'].keys()) == 0:
             raise UserError('Aucune donnée trouvée')
         report_action = self.env.ref('siantou_ems_core.action_report_timetable_percentage')
-        if self.school_id.id:
-            report_action.update({
-                'name': '{} {} Comparaison du {} - {} PDF'.format(STATUS_TIMETABLE[self.status].replace('Présent', 'Présence').replace('Absent', 'Absence'), self.school_id.name, start_date, end_date),
-            })
-        else:
-            report_action.update({
-                'name': '{} Comparaison du {} - {} PDF'.format(STATUS_TIMETABLE[self.status].replace('Présent', 'Présence').replace('Absent', 'Absence'), start_date, end_date),
-            })
+        report_action.update({
+            'name': 'Comparaison {} du {} - {} PDF'.format(all_data['docdata']['title'], start_date, end_date),
+        })
         return report_action.report_action(self, data=all_data)
 
     def action_print_hours_percentage_pdf(self):
@@ -1347,32 +1327,9 @@ class TimetableFilterWizard(models.TransientModel):
         if len(data['docdata']['timetable_percentage_data'].keys()) == 0:
             raise UserError('Aucune donnée trouvée')
         report_action = self.env.ref('siantou_ems_core.action_report_timetable_hours_percentage')
-        if self.school_id.id:
-            if self.department_id.id:
-                report_action.update({
-                    'name': '{} {} du {} - {} PDF'.format(title, self.school_id.name, start_date, end_date),
-                })
-            elif self.school_id.id:
-                report_action.update({
-                    'name': '{} {} du {} - {} PDF'.format(title, self.school_id.name, start_date, end_date),
-                })
-            else:
-                report_action.update({
-                    'name': '{} {} du {} - {} PDF'.format(title, self.school_id.name, start_date, end_date),
-                })
-        else:
-            if self.department_id.id:
-                report_action.update({
-                    'name': '{} du {} - {} PDF'.format(title, start_date, end_date),
-                })
-            elif self.school_id.id:
-                report_action.update({
-                    'name': '{} du {} - {} PDF'.format(title, start_date, end_date),
-                })
-            else:
-                report_action.update({
-                    'name': '{} du {} - {} PDF'.format(title, start_date, end_date),
-                })
+        report_action.update({
+            'name': '{} du {} - {} PDF'.format(title, start_date, end_date),
+        })
         return report_action.report_action(self, data=data)
 
     def action_print_hours_and_cost_pdf(self):
@@ -1690,32 +1647,9 @@ class TimetableFilterWizard(models.TransientModel):
         if len(data['docdata']['timetable_hours_and_cost_data'].keys()) == 0:
             raise UserError('Aucune donnée trouvée')
         report_action = self.env.ref('siantou_ems_core.action_report_timetable_hours_and_cost')
-        if self.school_id.id:
-            if self.department_id.id:
-                report_action.update({
-                    'name': '{} {} du {} - {} PDF'.format(title, self.school_id.name, start_date, end_date),
-                })
-            elif self.school_id.id:
-                report_action.update({
-                    'name': '{} {} du {} - {} PDF'.format(title, self.school_id.name, start_date, end_date),
-                })
-            else:
-                report_action.update({
-                    'name': '{} {} du {} - {} PDF'.format(title, self.school_id.name, start_date, end_date),
-                })
-        else:
-            if self.department_id.id:
-                report_action.update({
-                    'name': '{} du {} - {} PDF'.format(title, start_date, end_date),
-                })
-            elif self.school_id.id:
-                report_action.update({
-                    'name': '{} du {} - {} PDF'.format(title, start_date, end_date),
-                })
-            else:
-                report_action.update({
-                    'name': '{} du {} - {} PDF'.format(title, start_date, end_date),
-                })
+        report_action.update({
+            'name': '{} du {} - {} PDF'.format(title, start_date, end_date),
+        })
         return report_action.report_action(self, data=data)
 
     @staticmethod
