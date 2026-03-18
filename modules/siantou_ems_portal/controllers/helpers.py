@@ -234,6 +234,7 @@ class Helpers:
         if http.request.env.user.student_id.id:
             user = http.request.env.user.student_id
             search_domain.append(('class_id', '=', user.class_id.id))
+            search_domain.append(('status', '=', 'end'))
 
             examscores = http.request.env['siantou.ems.core.exam.score'].sudo().search(search_domain, order=order)
             examscores = list(examscores)

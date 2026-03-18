@@ -373,6 +373,13 @@ class SubjectScore(models.Model):
         'Remarque',
     )
 
+    student_status = fields.Selection([
+        ('present', 'Présent'),
+        ('absent', 'Absent'),
+    ], 'Statut',
+        default='absent',
+    )
+
     student_id_domain = fields.Binary(compute='_compute_class_domain', default=[])
 
     _sql_constraints = [

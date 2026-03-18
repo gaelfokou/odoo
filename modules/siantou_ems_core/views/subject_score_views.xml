@@ -9,6 +9,7 @@
                     <!-- <field name="name"/> -->
                     <field name="score"/>
                     <field name="note"/>
+                    <field name="student_status"/>
                     <field name="exam_id"/>
                     <field name="student_id" invisible="exam_type in ['sn', 'rsn'] and status in ['start_write', 'end_write']"/>
                     <field name="anonymous" invisible="exam_type not in ['sn', 'rsn']"/>
@@ -32,6 +33,7 @@
                             <field name="name"/>
                             <field name="score" readonly="status != 'start_write'"/>
                             <field name="note" readonly="status != 'start_write'"/>
+                            <field name="student_status" readonly="status != 'start_write'"/>
                         </group>
                         <group colspan="2">
                             <field name="exam_id" options="{'no_create': True}"/>

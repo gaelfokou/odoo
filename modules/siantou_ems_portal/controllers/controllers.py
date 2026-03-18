@@ -67,6 +67,11 @@ STATUS_EXAMSCORE = {
     'end': 'Fin',
 }
 
+STATUS_SUBJECTSCORE = {
+    'present': 'Présent',
+    'absent': 'Absent',
+}
+
 _logger = logging.getLogger(__name__)
 
 class Extension(portal.CustomerPortal):
@@ -600,8 +605,8 @@ class PortalAccount(portal.CustomerPortal):
                 examscore['subject_name'] = search_examscore.subject_id.name
                 examscore['subject_code'] = search_examscore.subject_id.code
                 examscore['exam_type'] = search_examscore.exam_type
-                examscore['status'] = STATUS_EXAMSCORE[search_examscore.status]
-                score_ids = search_examscore.score_ids.filtered(lambda rec: rec.student_id.id == user.id and rec.exam_id.class_id.id == user.class_id.id)
+                examscore['status'] = search_examscore.status
+                score_ids = search_examscore.score_ids.filtered(lambda rec: rec.student_id.id == user.id and rec.exam_id.class_id.id == user.class_id.id and rec.student_status == 'present')
                 score_ids = list(score_ids)
                 students = []
                 for score_id in score_ids:
@@ -613,21 +618,37 @@ class PortalAccount(portal.CustomerPortal):
                         student['sn_note'] = None
                         student['rcc_note'] = None
                         student['rsn_note'] = None
+                        student['cc_status'] = score_id.student_status
+                        student['sn_status'] = None
+                        student['rcc_status'] = None
+                        student['rsn_status'] = None
                     elif score_id.exam_type == 'sn':
-                        student['cc_note'] = None
                         student['sn_note'] = score_id.note
+                        student['cc_note'] = None
                         student['rcc_note'] = None
                         student['rsn_note'] = None
+                        student['sn_status'] = score_id.student_status
+                        student['cc_status'] = None
+                        student['rcc_status'] = None
+                        student['rsn_status'] = None
                     elif score_id.exam_type == 'rcc':
+                        student['rcc_note'] = score_id.note
                         student['cc_note'] = None
                         student['sn_note'] = None
-                        student['rcc_note'] = score_id.note
                         student['rsn_note'] = None
+                        student['rcc_status'] = score_id.student_status
+                        student['cc_status'] = None
+                        student['sn_status'] = None
+                        student['rsn_status'] = None
                     elif score_id.exam_type == 'rsn':
+                        student['rsn_note'] = score_id.note
                         student['cc_note'] = None
                         student['sn_note'] = None
                         student['rcc_note'] = None
-                        student['rsn_note'] = score_id.note
+                        student['rsn_status'] = score_id.student_status
+                        student['cc_status'] = None
+                        student['sn_status'] = None
+                        student['rcc_status'] = None
                     students.append(student)
                 examscore['students'] = students
                 examscores.append(examscore)
@@ -651,6 +672,10 @@ class PortalAccount(portal.CustomerPortal):
                 examscore['sn_note'] = student['sn_note']
                 examscore['rcc_note'] = student['rcc_note']
                 examscore['rsn_note'] = student['rsn_note']
+                examscore['cc_status'] = student['cc_status']
+                examscore['sn_status'] = student['sn_status']
+                examscore['rcc_status'] = student['rcc_status']
+                examscore['rsn_status'] = student['rsn_status']
                 examscores.append(examscore)
         examscores = Helpers.format_examscore(examscores)
         all_examscores = {}
@@ -731,6 +756,11 @@ class PortalAccount(portal.CustomerPortal):
                     for key_subject in examscores[key_class]['data'][key_semester]['data'][key_student]['data'].keys():
                         for d in examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['data']:
                             d['exam_type'] = TYPE_EXAMSCORE[d['exam_type']]
+                            d['status'] = STATUS_EXAMSCORE[d['status']]
+                            d['cc_status'] = STATUS_SUBJECTSCORE[d['cc_status']] if d['cc_status'] else None
+                            d['sn_status'] = STATUS_SUBJECTSCORE[d['sn_status']] if d['sn_status'] else None
+                            d['rcc_status'] = STATUS_SUBJECTSCORE[d['rcc_status']] if d['rcc_status'] else None
+                            d['rsn_status'] = STATUS_SUBJECTSCORE[d['rsn_status']] if d['rsn_status'] else None
         return http.request.render('siantou_ems_portal.siantou_ems_portal_examscore_views',
                                 {
                                     'examscores': all_examscores,

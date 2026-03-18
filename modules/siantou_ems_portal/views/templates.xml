@@ -677,9 +677,13 @@
                                 <th class="text-left">Étudiant</th>
                                 <th class="text-left">Cours</th>
                                 <th class="text-left">Note CC</th>
+                                <th class="text-left">Présence CC</th>
                                 <th class="text-left">Note SN</th>
+                                <th class="text-left">Présence SN</th>
                                 <th class="text-left">Note rattrapage CC</th>
+                                <th class="text-left">Présence rattrapage CC</th>
                                 <th class="text-left">Note rattrapage SN</th>
+                                <th class="text-left">Présence rattrapage SN</th>
                             </tr>
                         </thead>
                         <t t-foreach="classes" t-as="classe">
@@ -721,13 +725,25 @@
                                                     <span t-esc="examscores[classe]['data'][semester]['data'][student]['data'][subject]['data']['cc_note']"/>
                                                 </td>
                                                 <td class="text-center">
+                                                    <span t-esc="examscores[classe]['data'][semester]['data'][student]['data'][subject]['data']['cc_status']"/>
+                                                </td>
+                                                <td class="text-center">
                                                     <span t-esc="examscores[classe]['data'][semester]['data'][student]['data'][subject]['data']['sn_note']"/>
+                                                </td>
+                                                <td class="text-center">
+                                                    <span t-esc="examscores[classe]['data'][semester]['data'][student]['data'][subject]['data']['sn_status']"/>
                                                 </td>
                                                 <td class="text-center">
                                                     <span t-esc="examscores[classe]['data'][semester]['data'][student]['data'][subject]['data']['rcc_note']"/>
                                                 </td>
                                                 <td class="text-center">
+                                                    <span t-esc="examscores[classe]['data'][semester]['data'][student]['data'][subject]['data']['rcc_status']"/>
+                                                </td>
+                                                <td class="text-center">
                                                     <span t-esc="examscores[classe]['data'][semester]['data'][student]['data'][subject]['data']['rsn_note']"/>
+                                                </td>
+                                                <td class="text-center">
+                                                    <span t-esc="examscores[classe]['data'][semester]['data'][student]['data'][subject]['data']['rsn_status']"/>
                                                 </td>
                                             </tr>
                                         </t>
