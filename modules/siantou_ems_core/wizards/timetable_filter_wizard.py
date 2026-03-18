@@ -864,6 +864,9 @@ class TimetableFilterWizard(models.TransientModel):
         report_data = self.env['timetable.print.wizard'].create({})
         data = report_data.print_timetable_percentage_report_data(domains=domain, all_domains=all_domain, school=self.school_id, status=self.status, sort_type=sort_type, print_type=self.print_type)
 
+        if self.school_id.id:
+            data['docdata']['title'] = '{} {}'.format(data['docdata']['title'], self.school_id.name)
+
         if len(data['docdata']['timetable_percentage_data'].keys()) == 0:
             raise UserError('Aucune donnée trouvée')
         if print_percentage:
@@ -881,6 +884,9 @@ class TimetableFilterWizard(models.TransientModel):
     def action_print_top_percentage_pdf(self):
         data = self.action_print_percentage_pdf(sort_type='top', print_percentage=False)
 
+        if self.school_id.id:
+            data['docdata']['title'] = '{} {}'.format(data['docdata']['title'], self.school_id.name)
+
         start_date = datetime.strftime(self.start_date, DATE_FORMAT_FR)
         end_date = datetime.strftime(self.end_date, DATE_FORMAT_FR)
 
@@ -892,6 +898,9 @@ class TimetableFilterWizard(models.TransientModel):
 
     def action_print_last_percentage_pdf(self):
         data = self.action_print_percentage_pdf(sort_type='last', print_percentage=False)
+
+        if self.school_id.id:
+            data['docdata']['title'] = '{} {}'.format(data['docdata']['title'], self.school_id.name)
 
         start_date = datetime.strftime(self.start_date, DATE_FORMAT_FR)
         end_date = datetime.strftime(self.end_date, DATE_FORMAT_FR)
@@ -980,6 +989,9 @@ class TimetableFilterWizard(models.TransientModel):
                         all_data['docdata']['timetable_percentage_data'][k]['previous_class'] = ''
                         all_data['docdata']['timetable_percentage_data'][k]['progress'] = ''
                         all_data['docdata']['timetable_percentage_data'][k]['progress_class'] = ''
+
+        if self.school_id.id:
+            all_data['docdata']['title'] = '{} {}'.format(all_data['docdata']['title'], self.school_id.name)
 
         self.end_date = datetime.strptime(end_date, DATE_FORMAT_FR)
         self.start_date = datetime.strptime(start_date, DATE_FORMAT_FR)
@@ -1322,6 +1334,9 @@ class TimetableFilterWizard(models.TransientModel):
         data['docdata']['filter'] = filter_title
         data['docdata']['timetable_percentage_data'] = key_timetable_percentages
 
+        if self.school_id.id:
+            data['docdata']['title'] = '{} {}'.format(data['docdata']['title'], self.school_id.name)
+
         start_date = datetime.strftime(self.start_date, DATE_FORMAT_FR)
         end_date = datetime.strftime(self.end_date, DATE_FORMAT_FR)
 
@@ -1641,6 +1656,9 @@ class TimetableFilterWizard(models.TransientModel):
         data['docdata']['total_hours'] = total_hours
         data['docdata']['total_cost'] = total_cost
         data['docdata']['is_permanent'] = is_permanent
+
+        if self.school_id.id:
+            data['docdata']['title'] = '{} {}'.format(data['docdata']['title'], self.school_id.name)
 
         start_date = datetime.strftime(self.start_date, DATE_FORMAT_FR)
         end_date = datetime.strftime(self.end_date, DATE_FORMAT_FR)
