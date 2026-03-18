@@ -590,7 +590,7 @@ class PortalAccount(portal.CustomerPortal):
             is_user = 'is_student'
 
         search_examscores, searchbar_inputs = Helpers.examscore(search=search, search_in=search_in)
-        examscores = []
+        all_examscores = []
         if http.request.env.user.student_id.id:
             user = http.request.env.user.student_id
             for search_examscore in search_examscores:
@@ -651,21 +651,21 @@ class PortalAccount(portal.CustomerPortal):
                         student['rcc_status'] = None
                     students.append(student)
                 examscore['students'] = students
-                examscores.append(examscore)
+                all_examscores.append(examscore)
         examscores = []
-        for examscore in examscores:
-            examscore = {}
-            for student in examscore['students']:
-                examscore['id'] = examscore['id']
-                examscore['name'] = examscore['name']
-                examscore['semester_id'] = examscore['semester_id']
-                examscore['semester_name'] = examscore['semester_name']
-                examscore['class_id'] = examscore['class_id']
-                examscore['class_name'] = examscore['class_name']
-                examscore['subject_id'] = examscore['subject_id']
-                examscore['subject_name'] = examscore['subject_name']
-                examscore['subject_code'] = examscore['subject_code']
-                examscore['exam_type'] = examscore['exam_type']
+        for all_examscore in all_examscores:
+            for student in all_examscore['students']:
+                examscore = {}
+                examscore['id'] = all_examscore['id']
+                examscore['name'] = all_examscore['name']
+                examscore['semester_id'] = all_examscore['semester_id']
+                examscore['semester_name'] = all_examscore['semester_name']
+                examscore['class_id'] = all_examscore['class_id']
+                examscore['class_name'] = all_examscore['class_name']
+                examscore['subject_id'] = all_examscore['subject_id']
+                examscore['subject_name'] = all_examscore['subject_name']
+                examscore['subject_code'] = all_examscore['subject_code']
+                examscore['exam_type'] = all_examscore['exam_type']
                 examscore['student_id'] = student['id']
                 examscore['student_name'] = student['name']
                 examscore['cc_note'] = student['cc_note']
@@ -725,31 +725,43 @@ class PortalAccount(portal.CustomerPortal):
                                             if all_examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['data']['exam_type'] == 'cc':
                                                 if d['exam_type'] == 'sn':
                                                     all_examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['data']['sn_note'] = d['sn_note']
+                                                    all_examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['data']['sn_status'] = d['sn_status']
                                                 elif d['exam_type'] == 'rcc':
                                                     all_examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['data']['rcc_note'] = d['rcc_note']
+                                                    all_examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['data']['rcc_status'] = d['rcc_status']
                                                 elif d['exam_type'] == 'rsn':
                                                     all_examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['data']['rsn_note'] = d['rsn_note']
+                                                    all_examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['data']['rsn_status'] = d['rsn_status']
                                             elif all_examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['data']['exam_type'] == 'sn':
                                                 if d['exam_type'] == 'cc':
                                                     all_examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['data']['cc_note'] = d['cc_note']
+                                                    all_examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['data']['cc_status'] = d['cc_status']
                                                 elif d['exam_type'] == 'rcc':
                                                     all_examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['data']['rcc_note'] = d['rcc_note']
+                                                    all_examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['data']['rcc_status'] = d['rcc_status']
                                                 elif d['exam_type'] == 'rsn':
                                                     all_examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['data']['rsn_note'] = d['rsn_note']
+                                                    all_examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['data']['rsn_status'] = d['rsn_status']
                                             elif all_examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['data']['exam_type'] == 'rcc':
                                                 if d['exam_type'] == 'cc':
                                                     all_examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['data']['cc_note'] = d['cc_note']
+                                                    all_examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['data']['cc_status'] = d['cc_status']
                                                 elif d['exam_type'] == 'sn':
                                                     all_examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['data']['sn_note'] = d['sn_note']
+                                                    all_examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['data']['sn_status'] = d['sn_status']
                                                 elif d['exam_type'] == 'rsn':
                                                     all_examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['data']['rsn_note'] = d['rsn_note']
+                                                    all_examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['data']['rsn_status'] = d['rsn_status']
                                             elif all_examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['data']['exam_type'] == 'rsn':
                                                 if d['exam_type'] == 'cc':
                                                     all_examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['data']['cc_note'] = d['cc_note']
+                                                    all_examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['data']['cc_status'] = d['cc_status']
                                                 elif d['exam_type'] == 'sn':
                                                     all_examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['data']['sn_note'] = d['sn_note']
+                                                    all_examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['data']['sn_status'] = d['sn_status']
                                                 elif d['exam_type'] == 'rcc':
                                                     all_examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['data']['rcc_note'] = d['rcc_note']
+                                                    all_examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['data']['rcc_status'] = d['rcc_status']
         for key_class in all_examscores.keys():
             for key_semester in examscores[key_class]['data'].keys():
                 for key_student in examscores[key_class]['data'][key_semester]['data'].keys():
