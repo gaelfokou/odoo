@@ -884,9 +884,6 @@ class TimetableFilterWizard(models.TransientModel):
     def action_print_top_percentage_pdf(self):
         data = self.action_print_percentage_pdf(sort_type='top', print_percentage=False)
 
-        if self.school_id.id:
-            data['docdata']['title'] = '{} {}'.format(data['docdata']['title'], self.school_id.name)
-
         start_date = datetime.strftime(self.start_date, DATE_FORMAT_FR)
         end_date = datetime.strftime(self.end_date, DATE_FORMAT_FR)
 
@@ -898,9 +895,6 @@ class TimetableFilterWizard(models.TransientModel):
 
     def action_print_last_percentage_pdf(self):
         data = self.action_print_percentage_pdf(sort_type='last', print_percentage=False)
-
-        if self.school_id.id:
-            data['docdata']['title'] = '{} {}'.format(data['docdata']['title'], self.school_id.name)
 
         start_date = datetime.strftime(self.start_date, DATE_FORMAT_FR)
         end_date = datetime.strftime(self.end_date, DATE_FORMAT_FR)
@@ -989,9 +983,6 @@ class TimetableFilterWizard(models.TransientModel):
                         all_data['docdata']['timetable_percentage_data'][k]['previous_class'] = ''
                         all_data['docdata']['timetable_percentage_data'][k]['progress'] = ''
                         all_data['docdata']['timetable_percentage_data'][k]['progress_class'] = ''
-
-        if self.school_id.id:
-            all_data['docdata']['title'] = '{} {}'.format(all_data['docdata']['title'], self.school_id.name)
 
         self.end_date = datetime.strptime(end_date, DATE_FORMAT_FR)
         self.start_date = datetime.strptime(start_date, DATE_FORMAT_FR)
