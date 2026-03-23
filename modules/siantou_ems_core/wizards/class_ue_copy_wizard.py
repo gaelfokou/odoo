@@ -71,7 +71,6 @@ class ClassUeCopyWizard(models.TransientModel):
     specialty_id = fields.Many2one(
         'siantou.ems.core.specialty',
         string='Spécialité',
-        required=True,
     )
 
     option_id = fields.Many2one(
