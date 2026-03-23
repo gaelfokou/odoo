@@ -239,12 +239,19 @@ class TimetablePrintWizard(models.TransientModel):
 
         search_timetable_percentages = self.env['siantou.ems.timetable.timetable'].search(domain)
 
-        if status and status == 'delay':
-            search_delay_timetable_percentages = search_timetable_percentages.filtered(lambda rec: rec.date and rec.day_of_week and TimetablePrintWizard.compare_float_time(rec.date, rec.worked_start_time, rec.start_time) > 0.0)
-            search_punctuality_timetable_percentages = search_timetable_percentages.filtered(lambda rec: rec.date and rec.day_of_week and TimetablePrintWizard.compare_float_time(rec.date, rec.worked_start_time, rec.start_time) == 0.0)
-        elif status and status == 'punctuality':
-            search_delay_timetable_percentages = search_timetable_percentages.filtered(lambda rec: rec.date and rec.day_of_week and rec.status == 'absent')
-            search_punctuality_timetable_percentages = search_timetable_percentages.filtered(lambda rec: rec.date and rec.day_of_week and rec.status == 'present')
+        if status:
+            if status == 'delay':
+                search_delay_timetable_percentages = search_timetable_percentages.filtered(lambda rec: rec.date and rec.day_of_week and TimetablePrintWizard.compare_float_time(rec.date, rec.worked_start_time, rec.start_time) > 0.0)
+                search_punctuality_timetable_percentages = search_timetable_percentages.filtered(lambda rec: rec.date and rec.day_of_week and TimetablePrintWizard.compare_float_time(rec.date, rec.worked_start_time, rec.start_time) == 0.0)
+            elif status == 'absent':
+                search_delay_timetable_percentages = search_timetable_percentages.filtered(lambda rec: rec.date and rec.day_of_week and rec.status == 'absent')
+                search_punctuality_timetable_percentages = search_timetable_percentages.filtered(lambda rec: rec.date and rec.day_of_week and rec.status == 'present')
+            elif status == 'punctuality':
+                search_delay_timetable_percentages = search_timetable_percentages.filtered(lambda rec: rec.date and rec.day_of_week and rec.status == 'absent')
+                search_punctuality_timetable_percentages = search_timetable_percentages.filtered(lambda rec: rec.date and rec.day_of_week and rec.status == 'present')
+            else:
+                search_delay_timetable_percentages = search_timetable_percentages
+                search_punctuality_timetable_percentages = search_timetable_percentages
         else:
             search_delay_timetable_percentages = search_timetable_percentages
             search_punctuality_timetable_percentages = search_timetable_percentages
@@ -473,11 +480,12 @@ class TimetablePrintWizard(models.TransientModel):
             timetable_percentage['status'] = STATUS_TIMETABLE[search_timetable_percentage.status]
             key_punctuality_timetable_percentages[key]['data'].append(timetable_percentage)
 
-        if status and status == 'punctuality':
-            key_delay_timetable_percentages = {}
-            for key, value in key_punctuality_timetable_percentages.items():
-                key_delay_timetable_percentages[key] = value
-            key_punctuality_timetable_percentages = {}
+        if status:
+            if status == 'punctuality':
+                key_delay_timetable_percentages = {}
+                for key, value in key_punctuality_timetable_percentages.items():
+                    key_delay_timetable_percentages[key] = value
+                key_punctuality_timetable_percentages = {}
 
         list_timetable_percentages = []
         all_timetable_percentage_count = 0
@@ -489,13 +497,21 @@ class TimetablePrintWizard(models.TransientModel):
                     key_delay_timetable_percentages[key]['percentage'] = round(key_delay_timetable_percentages[key]['percentage'], 2)
                     if key_delay_timetable_percentages[key]['percentage'] not in list_timetable_percentages:
                         list_timetable_percentages.append(key_delay_timetable_percentages[key]['percentage'])
-                    if status and status in ['present', 'punctuality']:
-                        if key_delay_timetable_percentages[key]['percentage'] >= 90.0:
-                            key_delay_timetable_percentages[key]['class'] = 'text-success'
-                        if key_delay_timetable_percentages[key]['percentage'] >= 80.0 and key_delay_timetable_percentages[key]['percentage'] < 90.0:
-                            key_delay_timetable_percentages[key]['class'] = 'text-warning'
-                        if key_delay_timetable_percentages[key]['percentage'] < 80.0:
-                            key_delay_timetable_percentages[key]['class'] = 'text-danger'
+                    if status:
+                        if status in ['present', 'punctuality']:
+                            if key_delay_timetable_percentages[key]['percentage'] >= 90.0:
+                                key_delay_timetable_percentages[key]['class'] = 'text-success'
+                            if key_delay_timetable_percentages[key]['percentage'] >= 80.0 and key_delay_timetable_percentages[key]['percentage'] < 90.0:
+                                key_delay_timetable_percentages[key]['class'] = 'text-warning'
+                            if key_delay_timetable_percentages[key]['percentage'] < 80.0:
+                                key_delay_timetable_percentages[key]['class'] = 'text-danger'
+                        else:
+                            if key_delay_timetable_percentages[key]['percentage'] < 10.0:
+                                key_delay_timetable_percentages[key]['class'] = 'text-success'
+                            if key_delay_timetable_percentages[key]['percentage'] >= 10.0 and key_delay_timetable_percentages[key]['percentage'] < 20.0:
+                                key_delay_timetable_percentages[key]['class'] = 'text-warning'
+                            if key_delay_timetable_percentages[key]['percentage'] >= 20.0:
+                                key_delay_timetable_percentages[key]['class'] = 'text-danger'
                     else:
                         if key_delay_timetable_percentages[key]['percentage'] < 10.0:
                             key_delay_timetable_percentages[key]['class'] = 'text-success'
@@ -510,13 +526,21 @@ class TimetablePrintWizard(models.TransientModel):
                 if total_timetable_percentage_count[key] > 0:
                     if key_punctuality_timetable_percentages[key]['percentage'] not in list_timetable_percentages:
                         list_timetable_percentages.append(key_punctuality_timetable_percentages[key]['percentage'])
-                    if status and status in ['present', 'punctuality']:
-                        if key_punctuality_timetable_percentages[key]['percentage'] >= 90.0:
-                            key_punctuality_timetable_percentages[key]['class'] = 'text-success'
-                        if key_punctuality_timetable_percentages[key]['percentage'] >= 80.0 and key_punctuality_timetable_percentages[key]['percentage'] < 90.0:
-                            key_punctuality_timetable_percentages[key]['class'] = 'text-warning'
-                        if key_punctuality_timetable_percentages[key]['percentage'] < 80.0:
-                            key_punctuality_timetable_percentages[key]['class'] = 'text-danger'
+                    if status:
+                        if status in ['present', 'punctuality']:
+                            if key_punctuality_timetable_percentages[key]['percentage'] >= 90.0:
+                                key_punctuality_timetable_percentages[key]['class'] = 'text-success'
+                            if key_punctuality_timetable_percentages[key]['percentage'] >= 80.0 and key_punctuality_timetable_percentages[key]['percentage'] < 90.0:
+                                key_punctuality_timetable_percentages[key]['class'] = 'text-warning'
+                            if key_punctuality_timetable_percentages[key]['percentage'] < 80.0:
+                                key_punctuality_timetable_percentages[key]['class'] = 'text-danger'
+                        else:
+                            if key_punctuality_timetable_percentages[key]['percentage'] < 10.0:
+                                key_punctuality_timetable_percentages[key]['class'] = 'text-success'
+                            if key_punctuality_timetable_percentages[key]['percentage'] >= 10.0 and key_punctuality_timetable_percentages[key]['percentage'] < 20.0:
+                                key_punctuality_timetable_percentages[key]['class'] = 'text-warning'
+                            if key_punctuality_timetable_percentages[key]['percentage'] >= 20.0:
+                                key_punctuality_timetable_percentages[key]['class'] = 'text-danger'
                     else:
                         if key_punctuality_timetable_percentages[key]['percentage'] < 10.0:
                             key_punctuality_timetable_percentages[key]['class'] = 'text-success'
@@ -540,11 +564,17 @@ class TimetablePrintWizard(models.TransientModel):
         if sort_type:
             list_timetable_percentages = sorted(list_timetable_percentages, key=lambda x: x, reverse=True)
             if len(list_timetable_percentages) > 0:
-                if status and status in ['present', 'punctuality']:
-                    if sort_type == 'top':
-                        list_timetable_percentages = list_timetable_percentages[:10]
+                if status:
+                    if status in ['present', 'punctuality']:
+                        if sort_type == 'top':
+                            list_timetable_percentages = list_timetable_percentages[:10]
+                        else:
+                            list_timetable_percentages = list_timetable_percentages[-10:]
                     else:
-                        list_timetable_percentages = list_timetable_percentages[-10:]
+                        if sort_type == 'top':
+                            list_timetable_percentages = list_timetable_percentages[-10:]
+                        else:
+                            list_timetable_percentages = list_timetable_percentages[:10]
                 else:
                     if sort_type == 'top':
                         list_timetable_percentages = list_timetable_percentages[-10:]
@@ -558,9 +588,13 @@ class TimetablePrintWizard(models.TransientModel):
 
             key_timetable_percentages = key_list_timetable_percentages
 
-            if status and status in ['present', 'punctuality']:
-                key_timetable_percentages = sorted(key_timetable_percentages.items(), key=self.sort_timetable_percentage, reverse=True)
-                key_timetable_percentages = dict(key_timetable_percentages)
+            if status:
+                if status in ['present', 'punctuality']:
+                    key_timetable_percentages = sorted(key_timetable_percentages.items(), key=self.sort_timetable_percentage, reverse=True)
+                    key_timetable_percentages = dict(key_timetable_percentages)
+                else:
+                    key_timetable_percentages = sorted(key_timetable_percentages.items(), key=self.sort_timetable_percentage)
+                    key_timetable_percentages = dict(key_timetable_percentages)
             else:
                 key_timetable_percentages = sorted(key_timetable_percentages.items(), key=self.sort_timetable_percentage)
                 key_timetable_percentages = dict(key_timetable_percentages)

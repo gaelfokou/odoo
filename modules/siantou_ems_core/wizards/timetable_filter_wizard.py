@@ -754,6 +754,10 @@ class TimetableFilterWizard(models.TransientModel):
                 title.append('{} minute(s)'.format(self.number_of_minute))
                 timetables = self.env['siantou.ems.timetable.timetable'].search(domain, order=order).sorted(lambda rec: (rec.date, rec.id))
                 timetables = timetables.filtered(lambda rec: rec.date and rec.day_of_week and TimetableFilterWizard.compare_float_time(rec.date, rec.worked_start_time, rec.start_time) > 0.0 and TimetableFilterWizard.compare_float_time(rec.date, rec.worked_start_time, rec.start_time) < self.number_of_minute)
+            elif self.status == 'absent':
+                domain.append(('status', 'in', ['present', 'absent']))
+                title.append(STATUS_TIMETABLE[self.status])
+                timetables = self.env['siantou.ems.timetable.timetable'].search(domain, order=order).sorted(lambda rec: (rec.date, rec.id))
             elif self.status == 'punctuality':
                 domain.append(('status', 'in', ['present', 'absent']))
                 title.append(STATUS_TIMETABLE[self.status])
