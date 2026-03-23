@@ -150,7 +150,7 @@ class ClassUeCopyWizard(models.TransientModel):
                 ]
             record.specialty_id_domain = domain
 
-    @api.depends('source_year_id', 'level_id', 'field_of_study_id', 'specialty_id', 'option_id', 'type_cour')
+    @api.depends('source_year_id', 'level_id', 'school_id', 'specialty_id', 'option_id', 'type_cour')
     def _compute_all_source_domain(self):
         for record in self:
             domain = []
@@ -158,8 +158,9 @@ class ClassUeCopyWizard(models.TransientModel):
                 domain.append(('year_id', '=', record.source_year_id.id))
             if record.level_id.id:
                 domain.append(('level_id', '=', record.level_id.id))
-            if record.field_of_study_id.id:
-                domain.append(('field_of_study_id', '=', record.field_of_study_id.id))
+            if record.school_id.id:
+                field_of_study_ids = self.env['siantou.ems.core.field_of_study'].search([('school_id', '=', record.school_id.id)])
+                domain.append(('field_of_study_id', 'in', field_of_study_ids.ids))
             if record.specialty_id.id:
                 domain.append(('specialty_id', '=', record.specialty_id.id))
             if record.option_id.id:
@@ -176,7 +177,7 @@ class ClassUeCopyWizard(models.TransientModel):
             ]
             record.source_class_id_domain = domain
 
-    @api.depends('destination_year_id', 'level_id', 'field_of_study_id', 'specialty_id', 'option_id', 'type_cour')
+    @api.depends('destination_year_id', 'level_id', 'school_id', 'specialty_id', 'option_id', 'type_cour')
     def _compute_all_destination_domain(self):
         for record in self:
             domain = []
@@ -184,8 +185,9 @@ class ClassUeCopyWizard(models.TransientModel):
                 domain.append(('year_id', '=', record.destination_year_id.id))
             if record.level_id.id:
                 domain.append(('level_id', '=', record.level_id.id))
-            if record.field_of_study_id.id:
-                domain.append(('field_of_study_id', '=', record.field_of_study_id.id))
+            if record.school_id.id:
+                field_of_study_ids = self.env['siantou.ems.core.field_of_study'].search([('school_id', '=', record.school_id.id)])
+                domain.append(('field_of_study_id', 'in', field_of_study_ids.ids))
             if record.specialty_id.id:
                 domain.append(('specialty_id', '=', record.specialty_id.id))
             if record.option_id.id:
