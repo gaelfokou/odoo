@@ -351,14 +351,14 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
 
         if resume:
             if is_permanent:
-                title = 'Condensé émargements d\'enseignant permanent'
+                title = 'Condensé émargements des enseignants permanents'
             else:
-                title = 'Condensé émargements d\'enseignant vacataire'
+                title = 'Condensé émargements des enseignants vacataires'
         else:
             if is_permanent:
-                title = 'Émargements d\'enseignant permanent'
+                title = 'Émargements des enseignants permanents'
             else:
-                title = 'Émargements d\'enseignant vacataire'
+                title = 'Émargements des enseignants vacataires'
 
         return {
             'docdata': {
