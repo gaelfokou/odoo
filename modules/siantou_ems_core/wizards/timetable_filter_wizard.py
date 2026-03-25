@@ -666,6 +666,47 @@ class TimetableFilterWizard(models.TransientModel):
             'target': 'main',
         }
 
+    def action_print_cumulative_percentage_pdf(self, sort_type=None, print_percentage=True):
+        current_date = self.start_date
+        current_start_date = current_date - timedelta(days=current_date.weekday())
+        current_end_date = current_start_date + timedelta(days=6)
+        start_date = datetime.strftime(current_start_date, DATE_FORMAT_FR)
+        end_date = datetime.strftime(current_end_date, DATE_FORMAT_FR)
+        data = {}
+        try:
+            self.start_date = current_start_date
+            self.end_date = current_end_date
+            key = '{}-{}'.format(current_start_date, current_end_date)
+            data[key] = self.action_print_percentage_pdf(print_percentage=False)
+        except UserError as error:
+            _logger.info(f'----------- tototototototo Exception {error} -----------')
+
+        filter_title = self.env['ir.config_parameter'].sudo().get_param(f'siantou.filter_user_{self.env.user.id}', '')
+
+        try:
+            current_start_date = current_date.replace(day=1)
+            current_end_date = (datetime(current_date.year, current_date.month, current_date.day) + relativedelta(months=+1, day=1, days=-1)).date()
+            self.start_date = current_start_date
+            self.end_date = current_end_date
+            key = '{}-{}'.format(current_start_date, current_end_date)
+            data[key] = self.action_print_percentage_pdf(print_percentage=False)
+        except UserError as error:
+            _logger.info(f'----------- tototototototo Exception {error} -----------')
+
+        try:
+            current_start_date = current_date.replace(month=1, day=1)
+            current_end_date = current_date.replace(month=12, day=31)
+            self.start_date = current_start_date
+            self.end_date = current_end_date
+            key = '{}-{}'.format(current_start_date, current_end_date)
+            data[key] = self.action_print_percentage_pdf(print_percentage=False)
+        except UserError as error:
+            _logger.info(f'----------- tototototototo Exception {error} -----------')
+
+        all_data = {
+            'docdata': {}
+        }
+
     def action_print_percentage_pdf(self, sort_type=None, print_percentage=True):
         domain = []
         title = []
@@ -930,8 +971,9 @@ class TimetableFilterWizard(models.TransientModel):
         filter_title = self.env['ir.config_parameter'].sudo().get_param(f'siantou.filter_user_{self.env.user.id}', '')
 
         try:
-            self.start_date = self.start_date - timedelta(weeks=1)
-            self.end_date = self.end_date - timedelta(weeks=1)
+            diff = self.end_date - self.start_date
+            self.start_date = self.start_date - timedelta(days=diff.days+1)
+            self.end_date = self.end_date - timedelta(days=diff.days+1)
             key = '{}-{}'.format(self.start_date, self.end_date)
             data[key] = self.action_print_percentage_pdf(print_percentage=False)
         except UserError as error:
@@ -988,8 +1030,8 @@ class TimetableFilterWizard(models.TransientModel):
                         all_data['docdata']['timetable_percentage_data'][k]['progress'] = ''
                         all_data['docdata']['timetable_percentage_data'][k]['progress_class'] = ''
 
-        self.end_date = datetime.strptime(end_date, DATE_FORMAT_FR)
-        self.start_date = datetime.strptime(start_date, DATE_FORMAT_FR)
+        self.end_date = datetime.strptime(end_date, DATE_FORMAT_FR).date()
+        self.start_date = datetime.strptime(start_date, DATE_FORMAT_FR).date()
 
         if len(all_data['docdata'].keys()) == 0:
             raise UserError('Aucune donnée trouvée')
