@@ -45,7 +45,7 @@
                     <footer>
                         <button string="Filtrer" type="object" name="action_filter" class="btn-primary"/>
                         <button string="Pourcentage" type="object" name="action_print_percentage_pdf" class="btn-primary" invisible="not status" groups="siantou_ems_core.group_timetable_percentage_print_pdf"/>
-                        <button string="Pourcentage cumulé" type="object" name="action_print_cumulative_percentage_pdf" class="btn-primary" invisible="not status" groups="siantou_ems_core.group_timetable_percentage_print_pdf"/>
+                        <button string="Pourcentage cumulation" type="object" name="action_print_cumulative_percentage_pdf" class="btn-primary" invisible="not status" groups="siantou_ems_core.group_timetable_percentage_print_pdf"/>
                         <button string="Pourcentage comparaison" type="object" name="action_print_compare_percentage_pdf" class="btn-primary" invisible="not school_id or not status" groups="siantou_ems_core.group_timetable_percentage_print_pdf"/>
                         <button string="Pourcentage top 10" type="object" name="action_print_top_percentage_pdf" class="btn-primary" invisible="not school_id or not status" groups="siantou_ems_core.group_timetable_percentage_print_pdf"/>
                         <button string="Pourcentage last 10" type="object" name="action_print_last_percentage_pdf" class="btn-primary" invisible="not school_id or not status" groups="siantou_ems_core.group_timetable_percentage_print_pdf"/>

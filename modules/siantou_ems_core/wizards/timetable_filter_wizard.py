@@ -706,6 +706,30 @@ class TimetableFilterWizard(models.TransientModel):
         all_data = {
             'docdata': {}
         }
+        for i, key in enumerate(list(data.keys())[::-1]):
+            all_data['docdata']['label'] = data[key]['docdata']['label']
+            all_data['docdata']['title'] = 'Cumulation {}'.format(data[key]['docdata']['title'])
+            all_data['docdata']['filter'] = filter_title
+            all_data['docdata']['sort_type'] = data[key]['docdata']['sort_type']
+            all_data['docdata']['status'] = data[key]['docdata']['status']
+            all_data['docdata']['compare'] = True
+            if 'timetable_percentage_data' not in all_data['docdata']:
+                all_data['docdata']['timetable_percentage_data'] = data[key]['docdata']['timetable_percentage_data']
+                for k in all_data['docdata']['timetable_percentage_data'].keys():
+                    all_data['docdata']['timetable_percentage_data'][k]['month_percentage'] = 0.0
+                    all_data['docdata']['timetable_percentage_data'][k]['month_class'] = ''
+                    all_data['docdata']['timetable_percentage_data'][k]['week_percentage'] = 0.0
+                    all_data['docdata']['timetable_percentage_data'][k]['week_class'] = ''
+            else:
+                for k in all_data['docdata']['timetable_percentage_data'].keys():
+                    if i == 1:
+                        if k in data[key]['docdata']['timetable_percentage_data']:
+                            all_data['docdata']['timetable_percentage_data'][k]['month_percentage'] = data[key]['docdata']['timetable_percentage_data'][k]['percentage']
+                            all_data['docdata']['timetable_percentage_data'][k]['month_class'] = data[key]['docdata']['timetable_percentage_data'][k]['class']
+                    else:
+                        if k in data[key]['docdata']['timetable_percentage_data']:
+                            all_data['docdata']['timetable_percentage_data'][k]['week_percentage'] = data[key]['docdata']['timetable_percentage_data'][k]['percentage']
+                            all_data['docdata']['timetable_percentage_data'][k]['week_class'] = data[key]['docdata']['timetable_percentage_data'][k]['class']
 
     def action_print_percentage_pdf(self, sort_type=None, print_percentage=True):
         domain = []
