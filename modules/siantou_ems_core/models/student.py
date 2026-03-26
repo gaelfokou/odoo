@@ -522,7 +522,7 @@ class Student(models.Model):
             user_id = self.env['res.users'].with_context(no_reset_password=True).create({
                 'login': email,
                 'name': student.name,
-                'password' : password,
+                'password': password,
                 'groups_id': [(6, 0, [group_id.id])],
             })
             # self.env.cr.commit()

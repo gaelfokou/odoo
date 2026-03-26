@@ -59,7 +59,7 @@ class ProductionDpo(models.Model):
                                     0,
                                     {
                                         "class_id": record.class_id.id,
-                                        "ue_id" : ue.id,
+                                        "ue_id": ue.id,
                                         "subject_id": mat.id,
                                     },
                                 )

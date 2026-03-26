@@ -176,6 +176,6 @@ class SubjectFilterWizard(models.TransientModel):
             'res_model': 'siantou.ems.core.subject',
             'views': [(view_id, 'tree'), (False, 'form')],
             'view_id': view_id,
-            'domain' : domain,
+            'domain': domain,
             'target': 'main',
         }

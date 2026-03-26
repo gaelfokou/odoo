@@ -121,7 +121,7 @@ class ClassroomFilterWizard(models.TransientModel):
             'res_model': 'siantou.ems.core.building.classroom',
             'views': [(view_id, 'tree'), (False, 'form')],
             'view_id': view_id,
-            'domain' : domain,
+            'domain': domain,
             'target': 'main',
         }
 

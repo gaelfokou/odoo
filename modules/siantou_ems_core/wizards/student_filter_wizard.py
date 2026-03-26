@@ -189,6 +189,6 @@ class StudentFilterWizard(models.TransientModel):
             'res_model': 'oe.school.student',
             'views': [(view_id, 'tree'), (False, 'form')],
             'view_id': view_id,
-            'domain' : domain,
+            'domain': domain,
             'target': 'main',
         }

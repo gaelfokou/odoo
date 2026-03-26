@@ -226,6 +226,6 @@ class ProgressReportFilterWizard(models.TransientModel):
             'res_model': 'siantou.ems.core.progress.report',
             'views': [(view_id, 'tree'), (False, 'form')],
             'view_id': view_id,
-            'domain' : domain,
+            'domain': domain,
             'target': 'main',
         }

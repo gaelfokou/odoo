@@ -320,14 +320,14 @@ class HrEmployee(models.Model):
                 user_id = self.env['res.users'].with_context(no_reset_password=True).create({
                     'login': email,
                     'name': employee.name,
-                    'password' : password,
+                    'password': password,
                     'groups_id': [(6, 0, [group_id.id])],
                 })
             else:
                 user_id = self.env['res.users'].with_context(no_reset_password=True).create({
                     'login': email,
                     'name': employee.name,
-                    'password' : password,
+                    'password': password,
                 })
             # self.env.cr.commit()
         except psycopg2.errors.NotNullViolation as error:
@@ -352,7 +352,7 @@ class HrEmployee(models.Model):
                 if employee.user_id.id:
                     password = identifier
                     employee.user_id.write({
-                        'password' : password,
+                        'password': password,
                     })
             # self.env.cr.commit()
         except psycopg2.errors.NotNullViolation as error:

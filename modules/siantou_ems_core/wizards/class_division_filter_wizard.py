@@ -269,6 +269,6 @@ class ClassFilterWizard(models.TransientModel):
             'res_model': 'siantou.ems.core.class',
             'views': [(view_id, 'tree'), (False, 'form')],
             'view_id': view_id,
-            'domain' : domain,
+            'domain': domain,
             'target': 'main',
         }

@@ -149,6 +149,6 @@ class DailyAttendanceFilterWizard(models.TransientModel):
             'res_model': 'daily.attendance',
             'views': [(view_id, 'tree'), (False, 'form')],
             'view_id': view_id,
-            'domain' : domain,
+            'domain': domain,
             'target': 'main',
         }
