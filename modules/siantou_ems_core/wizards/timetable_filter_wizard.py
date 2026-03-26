@@ -712,7 +712,7 @@ class TimetableFilterWizard(models.TransientModel):
             all_data['docdata']['filter'] = filter_title
             all_data['docdata']['sort_type'] = data[key]['docdata']['sort_type']
             all_data['docdata']['status'] = data[key]['docdata']['status']
-            all_data['docdata']['compare'] = True
+            all_data['docdata']['cumulative'] = True
             if 'timetable_percentage_data' not in all_data['docdata']:
                 all_data['docdata']['timetable_percentage_data'] = data[key]['docdata']['timetable_percentage_data']
                 for k in all_data['docdata']['timetable_percentage_data'].keys():
@@ -726,10 +726,27 @@ class TimetableFilterWizard(models.TransientModel):
                         if k in data[key]['docdata']['timetable_percentage_data']:
                             all_data['docdata']['timetable_percentage_data'][k]['month_percentage'] = data[key]['docdata']['timetable_percentage_data'][k]['percentage']
                             all_data['docdata']['timetable_percentage_data'][k]['month_class'] = data[key]['docdata']['timetable_percentage_data'][k]['class']
+                        else:
+                            all_data['docdata']['timetable_percentage_data'][k]['month_percentage'] = 0.0
+                            all_data['docdata']['timetable_percentage_data'][k]['month_class'] = ''
                     else:
                         if k in data[key]['docdata']['timetable_percentage_data']:
                             all_data['docdata']['timetable_percentage_data'][k]['week_percentage'] = data[key]['docdata']['timetable_percentage_data'][k]['percentage']
                             all_data['docdata']['timetable_percentage_data'][k]['week_class'] = data[key]['docdata']['timetable_percentage_data'][k]['class']
+                        else:
+                            all_data['docdata']['timetable_percentage_data'][k]['week_percentage'] = 0.0
+                            all_data['docdata']['timetable_percentage_data'][k]['week_class'] = ''
+
+        self.end_date = datetime.strptime(end_date, DATE_FORMAT_FR).date()
+        self.start_date = datetime.strptime(start_date, DATE_FORMAT_FR).date()
+
+        if len(all_data['docdata'].keys()) == 0:
+            raise UserError('Aucune donnée trouvée')
+        report_action = self.env.ref('siantou_ems_core.action_report_timetable_percentage')
+        report_action.update({
+            'name': '{} du {} - {} PDF'.format(all_data['docdata']['title'], start_date, end_date),
+        })
+        return report_action.report_action(self, data=all_data)
 
     def action_print_percentage_pdf(self, sort_type=None, print_percentage=True):
         domain = []
