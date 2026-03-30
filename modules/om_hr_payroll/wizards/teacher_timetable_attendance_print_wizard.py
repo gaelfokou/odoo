@@ -49,9 +49,12 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
 
         if len(data['docdata']['teacher_timetable_attendance_data'].keys()) == 0:
             raise UserError("Aucune donnée trouvée")
+        key = list(data['docdata']['teacher_timetable_attendance_data'].keys())[0]
+        start_date = datetime.strftime(data['docdata']['teacher_timetable_attendance_data'][key]['start_date'], DATE_FORMAT_FR)
+        end_date = datetime.strftime(data['docdata']['teacher_timetable_attendance_data'][key]['end_date'], DATE_FORMAT_FR)
         report_action = self.env.ref('om_hr_payroll.action_report_teacher_timetable_attendance')
         report_action.update({
-            'name': '{} PDF'.format(data['docdata']['title']),
+            'name': '{} du {} - {} PDF'.format(data['docdata']['title'], start_date, end_date),
         })
         return report_action.report_action(self, data=data)
 
@@ -60,9 +63,12 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
 
         if len(data['docdata']['teacher_timetable_attendance_data'].keys()) == 0:
             raise UserError("Aucune donnée trouvée")
+        key = list(data['docdata']['teacher_timetable_attendance_data'].keys())[0]
+        start_date = datetime.strftime(data['docdata']['teacher_timetable_attendance_data'][key]['start_date'], DATE_FORMAT_FR)
+        end_date = datetime.strftime(data['docdata']['teacher_timetable_attendance_data'][key]['end_date'], DATE_FORMAT_FR)
         report_action = self.env.ref('om_hr_payroll.action_report_teacher_timetable_attendance_resume')
         report_action.update({
-            'name': '{} PDF'.format(data['docdata']['title']),
+            'name': '{} du {} - {} PDF'.format(data['docdata']['title'], start_date, end_date),
         })
         return report_action.report_action(self, data=data)
 
@@ -113,6 +119,8 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
                 key_teacher_timetable_attendances[key]['has_cnps'] = None
                 key_teacher_timetable_attendances[key]['has_allowance_cd'] = None
                 key_teacher_timetable_attendances[key]['has_allowance_co'] = None
+                key_teacher_timetable_attendances[key]['start_date'] = search_teacher_timetable_attendance.start_date
+                key_teacher_timetable_attendances[key]['end_date'] = search_teacher_timetable_attendance.end_date
             is_permanent = search_teacher_timetable_attendance.employee_id.is_permanent
             teacher_timetable_attendance = {}
             teacher_timetable_attendance['id'] = search_teacher_timetable_attendance.id
@@ -147,8 +155,6 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
             else:
                 teacher_timetable_attendance['class'] = ''
             teacher_timetable_attendance['status'] = STATUS_TIMETABLE[search_teacher_timetable_attendance.status]
-            teacher_timetable_attendance['start_date'] = search_teacher_timetable_attendance.start_date
-            teacher_timetable_attendance['end_date'] = search_teacher_timetable_attendance.end_date
             key_teacher_timetable_attendances[key]['has_ir'] = search_teacher_timetable_attendance.employee_id.has_ir
             key_teacher_timetable_attendances[key]['has_apecus'] = search_teacher_timetable_attendance.employee_id.has_apecus
             key_teacher_timetable_attendances[key]['has_cnps'] = search_teacher_timetable_attendance.employee_id.has_cnps

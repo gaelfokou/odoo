@@ -579,6 +579,25 @@ class HrPayslip(models.Model):
                                             'date': date.today(),
                                             'message': message,
                                         })
+                                    start_punching_time = daily_attendances[0].punching_time
+                                    start_punching_time = UTC_TZ.localize(start_punching_time)
+                                    start_time = datetime.strptime(f"{employee_timetable.date} {HrPayslip.convert_float_to_time(employee_timetable.start_time, has_second=True)}", DATETIME_FORMAT)
+                                    start_time = HrPayslip.convert_datetime_to_utc(start_time)
+                                    if start_punching_time > start_time:
+                                        start_time = start_punching_time
+                                    start_time = datetime.strftime(start_time, TIME_FORMAT_FR)
+                                    start_time = HrPayslip.convert_time_to_float(start_time)
+                                    start_time = HrPayslip.increment_float_time(start_time, 1.0)
+                                    employee_timetable.sudo().write({
+                                        'worked_start_time': start_time,
+                                        'worked_end_time': 0.0,
+                                        'worked_time': 0.0,
+                                        'rate': 0.0,
+                                        'amount': 0.0,
+                                        'status': 'exception',
+                                        'reason': 'Poinçonnement de début du {}, {} sur la biométrie {}'.format(CURRENT_WEEKDAY[str(punching_time.weekday())], datetime.strftime(punching_time, DATETIME_FORMAT_FR), daily_attendances[0].device_id.name),
+                                    })
+                                    continue
                                 elif daily_attendances[0].punch_type == '1':
                                     punching_time = daily_attendances[0].punching_time
                                     template = 'om_hr_payroll.om_hr_payroll_template_timetable_notification_device'
@@ -598,6 +617,25 @@ class HrPayslip(models.Model):
                                             'date': date.today(),
                                             'message': message,
                                         })
+                                    end_punching_time = daily_attendances[0].punching_time
+                                    end_punching_time = UTC_TZ.localize(end_punching_time)
+                                    end_time = datetime.strptime(f"{employee_timetable.date} {HrPayslip.convert_float_to_time(employee_timetable.end_time, has_second=True)}", DATETIME_FORMAT)
+                                    end_time = HrPayslip.convert_datetime_to_utc(end_time)
+                                    if end_punching_time < end_time:
+                                        end_time = end_punching_time
+                                    end_time = datetime.strftime(end_time, TIME_FORMAT_FR)
+                                    end_time = HrPayslip.convert_time_to_float(end_time)
+                                    end_time = HrPayslip.increment_float_time(end_time, 1.0)
+                                    employee_timetable.sudo().write({
+                                        'worked_start_time': 0.0,
+                                        'worked_end_time': end_time,
+                                        'worked_time': 0.0,
+                                        'rate': 0.0,
+                                        'amount': 0.0,
+                                        'status': 'exception',
+                                        'reason': 'Poinçonnement de fin du {}, {} sur la biométrie {}'.format(CURRENT_WEEKDAY[str(punching_time.weekday())], datetime.strftime(punching_time, DATETIME_FORMAT_FR), daily_attendances[0].device_id.name),
+                                    })
+                                    continue
                                 else:
                                     punching_time = daily_attendances[0].punching_time
                                     template = 'om_hr_payroll.om_hr_payroll_template_timetable_notification_device'
@@ -617,6 +655,16 @@ class HrPayslip(models.Model):
                                             'date': date.today(),
                                             'message': message,
                                         })
+                                    employee_timetable.sudo().write({
+                                        'worked_start_time': 0.0,
+                                        'worked_end_time': 0.0,
+                                        'worked_time': 0.0,
+                                        'rate': 0.0,
+                                        'amount': 0.0,
+                                        'status': 'exception',
+                                        'reason': 'Poinçonnement de début ou de fin du {}, {} sur la biométrie {}'.format(CURRENT_WEEKDAY[str(punching_time.weekday())], datetime.strftime(punching_time, DATETIME_FORMAT_FR), daily_attendances[0].device_id.name),
+                                    })
+                                    continue
                         if daily_attendances[0].punch_type == '0':
                             start_punching_time = daily_attendances[0].punching_time
                             start_punching_time = UTC_TZ.localize(start_punching_time)
@@ -686,6 +734,25 @@ class HrPayslip(models.Model):
                                         'date': date.today(),
                                         'message': message,
                                     })
+                                    end_punching_time = daily_attendances[1].punching_time
+                                    end_punching_time = UTC_TZ.localize(end_punching_time)
+                                    end_time = datetime.strptime(f"{employee_timetable.date} {HrPayslip.convert_float_to_time(employee_timetable.end_time, has_second=True)}", DATETIME_FORMAT)
+                                    end_time = HrPayslip.convert_datetime_to_utc(end_time)
+                                    if end_punching_time < end_time:
+                                        end_time = end_punching_time
+                                    end_time = datetime.strftime(end_time, TIME_FORMAT_FR)
+                                    end_time = HrPayslip.convert_time_to_float(end_time)
+                                    end_time = HrPayslip.increment_float_time(end_time, 1.0)
+                                    employee_timetable.sudo().write({
+                                        'worked_start_time': 0.0,
+                                        'worked_end_time': end_time,
+                                        'worked_time': 0.0,
+                                        'rate': 0.0,
+                                        'amount': 0.0,
+                                        'status': 'exception',
+                                        'reason': 'Poinçonnement de fin du {}, {} sur la biométrie {}'.format(CURRENT_WEEKDAY[str(punching_time.weekday())], datetime.strftime(punching_time, DATETIME_FORMAT_FR), daily_attendances[1].device_id.name),
+                                    })
+                                    continue
                             if daily_attendances[0].device_id.id not in employee_timetable.building_id.device_ids.ids:
                                 punching_time = daily_attendances[0].punching_time
                                 template = 'om_hr_payroll.om_hr_payroll_template_timetable_notification_device'
@@ -705,6 +772,25 @@ class HrPayslip(models.Model):
                                         'date': date.today(),
                                         'message': message,
                                     })
+                                    start_punching_time = daily_attendances[0].punching_time
+                                    start_punching_time = UTC_TZ.localize(start_punching_time)
+                                    start_time = datetime.strptime(f"{employee_timetable.date} {HrPayslip.convert_float_to_time(employee_timetable.start_time, has_second=True)}", DATETIME_FORMAT)
+                                    start_time = HrPayslip.convert_datetime_to_utc(start_time)
+                                    if start_punching_time > start_time:
+                                        start_time = start_punching_time
+                                    start_time = datetime.strftime(start_time, TIME_FORMAT_FR)
+                                    start_time = HrPayslip.convert_time_to_float(start_time)
+                                    start_time = HrPayslip.increment_float_time(start_time, 1.0)
+                                    employee_timetable.sudo().write({
+                                        'worked_start_time': start_time,
+                                        'worked_end_time': 0.0,
+                                        'worked_time': 0.0,
+                                        'rate': 0.0,
+                                        'amount': 0.0,
+                                        'status': 'exception',
+                                        'reason': 'Poinçonnement de début du {}, {} sur la biométrie {}'.format(CURRENT_WEEKDAY[str(punching_time.weekday())], datetime.strftime(punching_time, DATETIME_FORMAT_FR), daily_attendances[0].device_id.name),
+                                    })
+                                    continue
                         end_punching_time = daily_attendances[1].punching_time
                         start_punching_time = daily_attendances[0].punching_time
                         end_punching_time = UTC_TZ.localize(end_punching_time)

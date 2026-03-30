@@ -304,9 +304,12 @@ class TeacherTimetableAttendance(models.TransientModel):
 
         if len(data['docdata']['teacher_timetable_attendance_data'].keys()) == 0:
             raise UserError('Aucune donnée trouvée')
+        key = list(data['docdata']['teacher_timetable_attendance_data'].keys())[0]
+        start_date = datetime.strftime(data['docdata']['teacher_timetable_attendance_data'][key]['start_date'], DATE_FORMAT_FR)
+        end_date = datetime.strftime(data['docdata']['teacher_timetable_attendance_data'][key]['end_date'], DATE_FORMAT_FR)
         report_action = self.env.ref('om_hr_payroll.action_report_teacher_timetable_attendance')
         report_action.update({
-            'name': '{} PDF'.format(data['docdata']['title']),
+            'name': '{} du {} - {} PDF'.format(data['docdata']['title'], start_date, end_date),
         })
         return report_action.report_action(self, data=data)
 
@@ -324,9 +327,12 @@ class TeacherTimetableAttendance(models.TransientModel):
 
         if len(data['docdata']['teacher_timetable_attendance_data'].keys()) == 0:
             raise UserError('Aucune donnée trouvée')
+        key = list(data['docdata']['teacher_timetable_attendance_data'].keys())[0]
+        start_date = datetime.strftime(data['docdata']['teacher_timetable_attendance_data'][key]['start_date'], DATE_FORMAT_FR)
+        end_date = datetime.strftime(data['docdata']['teacher_timetable_attendance_data'][key]['end_date'], DATE_FORMAT_FR)
         report_action = self.env.ref('om_hr_payroll.action_report_teacher_timetable_attendance_resume')
         report_action.update({
-            'name': '{} PDF'.format(data['docdata']['title']),
+            'name': '{} du {} - {} PDF'.format(data['docdata']['title'], start_date, end_date),
         })
         return report_action.report_action(self, data=data)
 

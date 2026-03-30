@@ -31,6 +31,7 @@
             <field name="view_mode">form</field>
             <field name="target">new</field>
             <field name="view_id" ref="teacher_timetable_attendance_filter_wizard"/>
+            <field name="context">{'default_is_permanent': False}</field>
         </record>
     </data>
 </odoo>
