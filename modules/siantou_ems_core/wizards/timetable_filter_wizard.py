@@ -232,12 +232,17 @@ class TimetableFilterWizard(models.TransientModel):
     )
 
     is_permanent = fields.Boolean(
-        'Est un permanent',
+        'Est un permanent ?',
         default=False,
     )
 
     is_temporary = fields.Boolean(
-        'Est un vacataire',
+        'Est un vacataire ?',
+        default=False,
+    )
+
+    is_active = fields.Boolean(
+        'Actif ?',
         default=False,
     )
 
@@ -538,6 +543,9 @@ class TimetableFilterWizard(models.TransientModel):
         if self.classroom_id.id:
             domain.append(('classroom_id', '=', self.classroom_id.id))
             title.append(self.classroom_id.name)
+        if self.is_active:
+            domain.append(('is_active', '=', True))
+            title.append('Actif')
         domain.append(('employee_id.is_teacher', '=', True))
         if not self.is_permanent or not self.is_temporary:
             if self.is_permanent:
@@ -793,6 +801,9 @@ class TimetableFilterWizard(models.TransientModel):
         if self.classroom_id.id:
             domain.append(('classroom_id', '=', self.classroom_id.id))
             title.append(self.classroom_id.name)
+        if self.is_active:
+            domain.append(('is_active', '=', True))
+            title.append('Actif')
         domain.append(('employee_id.is_teacher', '=', True))
         if not self.is_permanent or not self.is_temporary:
             if self.is_permanent:
@@ -1127,6 +1138,9 @@ class TimetableFilterWizard(models.TransientModel):
         if self.classroom_id.id:
             domain.append(('classroom_id', '=', self.classroom_id.id))
             title.append(self.classroom_id.name)
+        if self.is_active:
+            domain.append(('is_active', '=', True))
+            title.append('Actif')
         domain.append(('employee_id.is_teacher', '=', True))
         if self.group_id.id:
             domain.append(('group_id', '=', self.group_id.id))
@@ -1471,6 +1485,9 @@ class TimetableFilterWizard(models.TransientModel):
         if self.classroom_id.id:
             domain.append(('classroom_id', '=', self.classroom_id.id))
             title.append(self.classroom_id.name)
+        if self.is_active:
+            domain.append(('is_active', '=', True))
+            title.append('Actif')
         domain.append(('employee_id.is_teacher', '=', True))
         if not self.is_permanent or not self.is_temporary:
             if self.is_permanent:

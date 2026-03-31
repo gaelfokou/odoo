@@ -23,7 +23,7 @@ class TeacherPrintWizard(models.TransientModel):
     )
 
     is_permanent = fields.Boolean(
-        'Est un permanent',
+        'Est un permanent ?',
         default=False,
     )
 

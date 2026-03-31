@@ -24,7 +24,7 @@ class HrEmployee(models.Model):
 
     # Variable booléenne pour identifier un employé permanent
     is_permanent = fields.Boolean(
-        'Est un permanent',
+        'Est un permanent ?',
         default=False,
     )
 

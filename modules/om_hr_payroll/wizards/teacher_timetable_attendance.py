@@ -92,7 +92,7 @@ class TeacherTimetableAttendance(models.TransientModel):
     )
 
     is_permanent = fields.Boolean(
-        string='Est un permanent',
+        string='Est un permanent ?',
         related='employee_id.is_permanent',
         store=True
     )

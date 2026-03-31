@@ -64,12 +64,12 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
     )
 
     is_permanent = fields.Boolean(
-        'Est un permanent',
+        'Est un permanent ?',
         default=False,
     )
 
     is_temporary = fields.Boolean(
-        'Est un vacataire',
+        'Est un vacataire ?',
         compute='_compute_temporary',
     )
 

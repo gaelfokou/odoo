@@ -21,6 +21,8 @@ STATUS_CLASS = {
     'student_not_available': 'Étudiants pas disponibles',
     'student_more_than_or_equal': 'Étudiants plus de ou égal à',
     'student_less_than': 'Étudiants moins de',
+    'timetable_active': 'Emplois du temps actifs',
+    'timetable_not_active': 'Emplois du temps pas actifs',
 }
 
 _logger = logging.getLogger(__name__)
@@ -73,6 +75,8 @@ class ClassFilterWizard(models.TransientModel):
         ('student_not_available', 'Étudiants pas disponibles'),
         ('student_more_than_or_equal', 'Étudiants plus de ou égal à'),
         ('student_less_than', 'Étudiants moins de'),
+        ('timetable_active', 'Emplois du temps actifs'),
+        ('timetable_not_active', 'Emplois du temps pas actifs'),
     ], 'Statut',
         # default='timetable_available',
     )
@@ -141,6 +145,13 @@ class ClassFilterWizard(models.TransientModel):
         if self.type_cour:
             domain.append(('type_cour', '=', self.type_cour))
             title.append(TYPE_COUR[self.type_cour])
+        if self.status:
+            if self.status == 'timetable_active':
+                domain.append(('is_timetable_active', '=', True))
+                title.append(STATUS_CLASS[self.status])
+            elif self.status == 'timetable_not_active':
+                domain.append(('is_timetable_active', '=', False))
+                title.append(STATUS_CLASS[self.status])
 
         class_ids = []
         classes = self.env['siantou.ems.core.class'].search(domain)
