@@ -359,7 +359,7 @@ class EducationClass(models.Model):
                     'worked_time': 0.0,
                     'rate': 0.0,
                     'amount': 0.0,
-                    'status': 'absent',
+                    'status': 'pending',
                     'reason': None,
                 })
 
