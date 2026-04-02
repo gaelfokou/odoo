@@ -348,13 +348,19 @@ class EducationClass(models.Model):
         if 'is_timetable_active' in vals:
             timetables = self.env['siantou.ems.timetable.timetable'].search([
                 ('class_id', '=', self.id),
-                ('status', '=', 'pending'),
             ])
             timetables = list(timetables)
             for timetable in timetables:
                 timetable.write({
                     'class_id': self.id,
                     'skip_validation': True,
+                    'worked_start_time': 0.0,
+                    'worked_end_time': 0.0,
+                    'worked_time': 0.0,
+                    'rate': 0.0,
+                    'amount': 0.0,
+                    'status': 'absent',
+                    'reason': None,
                 })
 
         return classe

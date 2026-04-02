@@ -595,7 +595,7 @@ class HrPayslip(models.Model):
                                         'rate': 0.0,
                                         'amount': 0.0,
                                         'status': 'exception',
-                                        'reason': 'Poinçonnement de début du {}, {} sur la biométrie {}'.format(CURRENT_WEEKDAY[str(punching_time.weekday())], datetime.strftime(punching_time, DATETIME_FORMAT_FR), daily_attendances[0].device_id.name),
+                                        'reason': 'Poinçonnement de début sur la biométrie {}'.format(daily_attendances[0].device_id.name),
                                     })
                                     continue
                                 elif daily_attendances[0].punch_type == '1':
@@ -633,7 +633,7 @@ class HrPayslip(models.Model):
                                         'rate': 0.0,
                                         'amount': 0.0,
                                         'status': 'exception',
-                                        'reason': 'Poinçonnement de fin du {}, {} sur la biométrie {}'.format(CURRENT_WEEKDAY[str(punching_time.weekday())], datetime.strftime(punching_time, DATETIME_FORMAT_FR), daily_attendances[0].device_id.name),
+                                        'reason': 'Poinçonnement de fin sur la biométrie {}'.format(daily_attendances[0].device_id.name),
                                     })
                                     continue
                                 else:
@@ -662,7 +662,7 @@ class HrPayslip(models.Model):
                                         'rate': 0.0,
                                         'amount': 0.0,
                                         'status': 'exception',
-                                        'reason': 'Poinçonnement de début ou de fin du {}, {} sur la biométrie {}'.format(CURRENT_WEEKDAY[str(punching_time.weekday())], datetime.strftime(punching_time, DATETIME_FORMAT_FR), daily_attendances[0].device_id.name),
+                                        'reason': 'Poinçonnement de début ou de fin sur la biométrie {}'.format(daily_attendances[0].device_id.name),
                                     })
                                     continue
                         if daily_attendances[0].punch_type == '0':
@@ -750,7 +750,7 @@ class HrPayslip(models.Model):
                                         'rate': 0.0,
                                         'amount': 0.0,
                                         'status': 'exception',
-                                        'reason': 'Poinçonnement de fin du {}, {} sur la biométrie {}'.format(CURRENT_WEEKDAY[str(punching_time.weekday())], datetime.strftime(punching_time, DATETIME_FORMAT_FR), daily_attendances[1].device_id.name),
+                                        'reason': 'Poinçonnement de fin sur la biométrie {}'.format(daily_attendances[1].device_id.name),
                                     })
                                     continue
                             if daily_attendances[0].device_id.id not in employee_timetable.building_id.device_ids.ids:
@@ -788,7 +788,7 @@ class HrPayslip(models.Model):
                                         'rate': 0.0,
                                         'amount': 0.0,
                                         'status': 'exception',
-                                        'reason': 'Poinçonnement de début du {}, {} sur la biométrie {}'.format(CURRENT_WEEKDAY[str(punching_time.weekday())], datetime.strftime(punching_time, DATETIME_FORMAT_FR), daily_attendances[0].device_id.name),
+                                        'reason': 'Poinçonnement de début sur la biométrie {}'.format(daily_attendances[0].device_id.name),
                                     })
                                     continue
                         end_punching_time = daily_attendances[1].punching_time
