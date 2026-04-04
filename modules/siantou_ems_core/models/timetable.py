@@ -999,7 +999,7 @@ class Timetable(models.Model):
             total_worked_hours = round(total_worked_hours, 2)
             hours_credit = round(subject.hours_credit, 2)
             if hours_credit <= total_worked_hours:
-                raise UserError(f"Nombre d'heures effectuées: {str(total_worked_hours)} / {str(hours_credit)}")
+                raise UserError(f"Nombre d'heures effectuées : {total_worked_hours} / {hours_credit}")
 
         timetable = super(Timetable, self).create(vals)
 
