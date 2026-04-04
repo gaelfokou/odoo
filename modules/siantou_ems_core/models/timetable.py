@@ -943,6 +943,64 @@ class Timetable(models.Model):
                 if not self.env.user.has_group('siantou_ems_core.group_timetable_present_perm_create_present'):
                     raise ValidationError(_("Vous n'êtes pas autorisé à créer les enregistrements pour (status in [present, permission]) d'emploi du temps (siantou.ems.timetable.timetable)'."))
 
+        if 'class_id' in vals and 'subject_id' in vals:
+            classe = self.env['siantou.ems.core.class'].search([('id', '=', vals['class_id'])], limit=1)
+            subject = self.env['siantou.ems.core.subject'].search([('id', '=', vals['subject_id'])], limit=1)
+            timetables = self.env['siantou.ems.timetable.timetable'].search([
+                '|',
+                '&',
+                '&',
+                ('group_id.is_active', '=', True),
+                ('group_id.is_submit', '=', False),
+                ('group_id.status', '=', 'valid'),
+                '&',
+                '&',
+                '&',
+                ('group_parent_id.is_active', '=', True),
+                ('group_parent_id.is_submit', '=', False),
+                ('group_parent_id.status', '=', 'valid'),
+                ('group_id.status', '=', 'valid'),
+                ('is_active', '=', True),
+                ('status', '=', 'present'),
+            ], order='date asc').filtered(lambda rec: rec.class_id.id == classe.id and rec.subject_id.id == subject.id)
+
+            timetables = list(timetables)
+
+            total_worked_hours = 0.0
+            key_timetables = {}
+            for timetable in timetables:
+                if not timetable.date or not timetable.day_of_week or not timetable.employee_id.id:
+                    continue
+
+                end_time = Timetable.convert_float_to_time(timetable.end_time, has_second=True)
+                start_time = Timetable.convert_float_to_time(timetable.start_time, has_second=True)
+                key = '{}-{}-{}-{}'.format(timetable.class_id.id, timetable.date, start_time, end_time)
+                if key not in key_timetables:
+                    key_timetables[key] = {}
+                    key_timetables[key]['timetable'] = timetable
+                else:
+                    continue
+
+                end_time = Timetable.convert_float_to_time(timetable.worked_end_time, has_second=True)
+                start_time = Timetable.convert_float_to_time(timetable.worked_start_time, has_second=True)
+                end_time = datetime.strptime(f"{timetable.date} {end_time}", DATETIME_FORMAT)
+                start_time = datetime.strptime(f"{timetable.date} {start_time}", DATETIME_FORMAT)
+
+                worked_hours = end_time - start_time
+                worked_hours = worked_hours.total_seconds() / 3600.0
+                worked_hours = round(worked_hours, 2)
+
+                if worked_hours < 0.0:
+                    del(key_timetables[key])
+                    continue
+
+                key_timetables[key]['worked_hours'] = worked_hours
+                total_worked_hours += key_timetables[key]['worked_hours']
+            total_worked_hours = round(total_worked_hours, 2)
+            hours_credit = round(subject.hours_credit, 2)
+            if hours_credit <= total_worked_hours:
+                raise UserError(f"Nombre d'heures effectuées: {str(total_worked_hours)} / {str(hours_credit)}")
+
         timetable = super(Timetable, self).create(vals)
 
         self.create_timetable(timetable)
