@@ -961,7 +961,7 @@ class Timetable(models.Model):
                 ('group_parent_id.status', '=', 'valid'),
                 ('group_id.status', '=', 'valid'),
                 ('is_active', '=', True),
-                ('status', '=', 'present'),
+                # ('status', '=', 'present'),
             ], order='date asc').filtered(lambda rec: rec.class_id.id == classe.id and rec.subject_id.id == subject.id)
 
             timetables = list(timetables)
@@ -981,8 +981,8 @@ class Timetable(models.Model):
                 else:
                     continue
 
-                end_time = Timetable.convert_float_to_time(timetable.worked_end_time, has_second=True)
-                start_time = Timetable.convert_float_to_time(timetable.worked_start_time, has_second=True)
+                end_time = Timetable.convert_float_to_time(timetable.end_time, has_second=True)
+                start_time = Timetable.convert_float_to_time(timetable.start_time, has_second=True)
                 end_time = datetime.strptime(f"{timetable.date} {end_time}", DATETIME_FORMAT)
                 start_time = datetime.strptime(f"{timetable.date} {start_time}", DATETIME_FORMAT)
 
@@ -999,7 +999,7 @@ class Timetable(models.Model):
             total_worked_hours = round(total_worked_hours, 2)
             hours_credit = round(subject.hours_credit, 2)
             if hours_credit <= total_worked_hours:
-                raise UserError(f"Nombre d'heures effectuées : {total_worked_hours} / {hours_credit}")
+                raise UserError(f"Nombre d'heures programmées : {total_worked_hours} / {hours_credit}")
 
         timetable = super(Timetable, self).create(vals)
 
