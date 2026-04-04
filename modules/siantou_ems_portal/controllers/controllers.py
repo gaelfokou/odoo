@@ -1149,7 +1149,6 @@ class PortalAccount(portal.CustomerPortal):
                     report_id._compute_percentage()
                     report_id.sudo().write({
                         'class_id': report_id.class_id.id,
-                        'subject_id': report_id.subject_id.id,
                     })
         return http.request.render('siantou_ems_portal.siantou_ems_portal_progressreport_views',
                                 {
@@ -1185,7 +1184,6 @@ class PortalAccount(portal.CustomerPortal):
             report_id._compute_percentage()
             report_id.sudo().write({
                 'class_id': report_id.class_id.id,
-                'subject_id': report_id.subject_id.id,
             })
         params = {}
         params['class_id'] = class_id.id

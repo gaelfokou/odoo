@@ -689,6 +689,10 @@ class ProgressReport(models.Model):
                     report.write({
                         'class_id': class_id.id,
                     })
+            report._compute_percentage()
+            report.write({
+                'class_id': report.class_id.id,
+            })
             # self.env.cr.commit()
         except psycopg2.errors.NotNullViolation as error:
             _logger.info(f'----------- tototototototo Exception {error} -----------')
