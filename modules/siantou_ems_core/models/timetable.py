@@ -810,6 +810,7 @@ class Timetable(models.Model):
                     # ('group_id', 'in', group_ids),
                     ('year_id', '=', record.group_id.semester_id.year_id.id),
                     ('class_id', '=', record.class_id.id),
+                    ('class_group_id', '=', False),
                     ('date', '=', record.date),
                 ]).filtered(lambda rec: not (rec.start_time >= record.end_time or rec.end_time <= record.start_time))
             timetables = list(timetables)
@@ -823,6 +824,7 @@ class Timetable(models.Model):
                     validation_error_message += f"""
                         ID: {timetable.id}
                         Version: {timetable.group_id.name}
+                        Classe: {timetable.class_id.name}
                         Enseignant: {timetable.employee_id.name}
                         Date: {timetable_date}
                         Heure de début: {timetable.start_time}
@@ -850,6 +852,7 @@ class Timetable(models.Model):
                         ID: {timetable.id}
                         Version: {timetable.group_id.name}
                         Classe: {timetable.class_id.name}
+                        Enseignant: {timetable.employee_id.name}
                         Date: {timetable_date}
                         Heure de début: {timetable.start_time}
                         Heure de fin: {timetable.end_time}

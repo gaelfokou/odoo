@@ -99,7 +99,7 @@
             <field name="arch" type="xml">
                 <xpath expr="//header" position="inside">
                     <button name="action_create_all_employee_user" type="object" string="Créer les comptes utilisateurs" class="oe_highlight"/>
-                    <button name="action_update_all_employee_identifier" type="object" string="Mettre à jour matricules" class="oe_highlight"/>
+                    <button name="action_update_all_employee_identifier" type="object" string="Mettre à jour les matricules" class="oe_highlight"/>
                     <button name="action_reset_filter" 
                         type="object" 
                         string="Réinitialiser" 

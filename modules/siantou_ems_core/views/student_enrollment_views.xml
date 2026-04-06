@@ -8,7 +8,7 @@
                 <header>
                     <!-- <button name="action_update_all_enrollment" 
                         type="object" 
-                        string="Mettre à jour candidatures et étudiants" 
+                        string="Mettre à jour les candidatures et étudiants" 
                         class="oe_highlight"/> -->
                 </header>
                 <field name="date_preins" widget="datetime"/>

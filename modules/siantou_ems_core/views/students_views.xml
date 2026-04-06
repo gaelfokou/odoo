@@ -32,7 +32,7 @@
                         class="oe_highlight"/> -->
                     <!-- <button name="action_update_all_student" 
                         type="object" 
-                        string="Mettre à jour étudiants et candidatures" 
+                        string="Mettre à jour les étudiants et candidatures" 
                         class="oe_highlight"/> -->
                 </header>
                 <field name="matricule"/>

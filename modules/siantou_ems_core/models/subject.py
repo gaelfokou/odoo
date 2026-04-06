@@ -677,6 +677,35 @@ class ProgressReport(models.Model):
         })
         return report_action.report_action(self, data=data)
 
+    def update_progress_report(self, report):
+        try:
+            report._compute_percentage()
+            report.write({
+                'class_id': report.class_id.id,
+            })
+            # self.env.cr.commit()
+        except psycopg2.errors.NotNullViolation as error:
+            _logger.info(f'----------- tototototototo Exception {error} -----------')
+        except psycopg2.Error as error:
+            _logger.info(f'----------- tototototototo Exception {error} -----------')
+        except Exception as error:
+            _logger.info(f'----------- tototototototo Exception {error} -----------')
+
+    def action_update_all_progress_report(self):
+        active_ids = self.env.context.get('active_ids', [])
+        reports = self.env['siantou.ems.core.progress.report'].browse(active_ids)
+        reports = list(reports)
+        if len(active_ids) == 0:
+            raise UserError('Aucune donnée sélectionnée')
+
+        for report in reports:
+            self.update_progress_report(report)
+
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'reload',
+        }
+
     def update_progress_report_class(self, report):
         try:
             year_id = self.env['siantou.ems.core.year'].search([('is_active', '=', True)], limit=1)
@@ -689,10 +718,6 @@ class ProgressReport(models.Model):
                     report.write({
                         'class_id': class_id.id,
                     })
-            report._compute_percentage()
-            report.write({
-                'class_id': report.class_id.id,
-            })
             # self.env.cr.commit()
         except psycopg2.errors.NotNullViolation as error:
             _logger.info(f'----------- tototototototo Exception {error} -----------')
