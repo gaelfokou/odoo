@@ -78,7 +78,12 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <t t-set="teacher_timetable_attendance_data" t-value="dict(sorted(docdata['teacher_timetable_attendance_data'].items(), key=lambda item: item[1]['name'] if item[1]['name'] else ''))"/>
+                                    <t t-if="docdata['print_type'] == 'hour'">
+                                        <t t-set="teacher_timetable_attendance_data" t-value="dict(sorted(docdata['teacher_timetable_attendance_data'].items(), key=lambda item: item[1]['worked_time'] if item[1]['worked_time'] else 0.0, reverse=True))"/>
+                                    </t>
+                                    <t t-else="">
+                                        <t t-set="teacher_timetable_attendance_data" t-value="dict(sorted(docdata['teacher_timetable_attendance_data'].items(), key=lambda item: item[1]['name'] if item[1]['name'] else ''))"/>
+                                    </t>
                                     <t t-set="keys" t-value="teacher_timetable_attendance_data.keys()"/>
                                     <t t-foreach="keys" t-as="key">
                                         <t t-set="timetables" t-value="sorted(teacher_timetable_attendance_data[key]['data'], key=lambda item: ((item['level_id'] if 'level_id' in item else 10), (item['rate'] if 'rate' in item and item['rate'] else 100000.0)))"/>

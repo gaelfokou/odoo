@@ -83,6 +83,10 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
             rate = 100000.0
         return (level, rate)
 
+    def sort_teacher_timetable_attendance_hour(self, teacher_timetable_attendance):
+        worked_time = teacher_timetable_attendance[1]['worked_time'] if teacher_timetable_attendance[1]['worked_time'] else 0.0
+        return worked_time
+
     def sort_teacher_timetable_attendance(self, teacher_timetable_attendance):
         name = teacher_timetable_attendance[1]['name'] if teacher_timetable_attendance[1]['name'] else ''
         name = name.strip()
@@ -99,6 +103,7 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
 
         search_teacher_timetable_attendances = self.env['teacher.timetable.attendance'].search(domain)
 
+        print_type = None
         is_permanent = False
         key_teacher_timetable_attendances = {}
         for search_teacher_timetable_attendance in search_teacher_timetable_attendances:
@@ -121,6 +126,8 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
                 key_teacher_timetable_attendances[key]['has_allowance_co'] = None
                 key_teacher_timetable_attendances[key]['start_date'] = search_teacher_timetable_attendance.start_date
                 key_teacher_timetable_attendances[key]['end_date'] = search_teacher_timetable_attendance.end_date
+                key_teacher_timetable_attendances[key]['print_type'] = search_teacher_timetable_attendance.print_type
+                print_type = search_teacher_timetable_attendance.print_type
             is_permanent = search_teacher_timetable_attendance.employee_id.is_permanent
             teacher_timetable_attendance = {}
             teacher_timetable_attendance['id'] = search_teacher_timetable_attendance.id
@@ -348,7 +355,14 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
         total_worked_time = round(total_worked_time, 2)
         total_amount = round(total_amount, 2)
 
-        key_teacher_timetable_attendances = sorted(key_teacher_timetable_attendances.items(), key=self.sort_teacher_timetable_attendance)
+        if not print_type:
+            print_type = 'teacher'
+
+        if print_type == 'hour':
+            key_teacher_timetable_attendances = sorted(key_teacher_timetable_attendances.items(), key=self.sort_teacher_timetable_attendance_hour, reverse=True)
+        else:
+            key_teacher_timetable_attendances = sorted(key_teacher_timetable_attendances.items(), key=self.sort_teacher_timetable_attendance)
+
         key_teacher_timetable_attendances = dict(key_teacher_timetable_attendances)
 
         _logger.info(f'----------- tototototototo key_teacher_timetable_attendances {key_teacher_timetable_attendances} -----------')
@@ -374,6 +388,7 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
                 'is_permanent': is_permanent,
                 'total_worked_time': total_worked_time,
                 'total_amount': total_amount,
+                'print_type': print_type,
             }
         }
 

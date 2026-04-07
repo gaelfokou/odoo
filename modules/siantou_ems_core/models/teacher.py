@@ -30,7 +30,7 @@ class HrEmployee(models.Model):
 
     # Variable booléenne pour identifier un portail
     is_portal = fields.Boolean(
-        'Accéder au portail enseignant',
+        'Accéder au portail enseignant ?',
         default=False,
     )
 
@@ -82,27 +82,27 @@ class HrEmployee(models.Model):
     )
 
     has_ir = fields.Boolean(
-        'Droit IR',
+        'Droit IR ?',
         default=True,
     )
 
     has_apecus = fields.Boolean(
-        'Droit APECUS',
+        'Droit APECUS ?',
         default=True,
     )
 
     has_cnps = fields.Boolean(
-        'Droit CNPS',
+        'Droit CNPS ?',
         default=False,
     )
 
     has_allowance_cd = fields.Boolean(
-        'Droit prime chef de département',
+        'Droit prime chef de département ?',
         default=False,
     )
 
     has_allowance_co = fields.Boolean(
-        'Droit prime coordonnateur',
+        'Droit prime coordonnateur ?',
         default=False,
     )
 

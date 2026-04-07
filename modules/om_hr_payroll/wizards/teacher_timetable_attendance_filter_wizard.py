@@ -109,8 +109,15 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
     )
 
     has_rate = fields.Boolean(
-        'Taux horaire défini',
+        'Taux horaire défini ?',
         default=False,
+    )
+
+    print_type = fields.Selection([
+        ('teacher', 'Par enseignant'),
+        ('hour', 'Par heure'),
+    ], 'Type d\'impression',
+        # default='teacher',
     )
 
     employee_id_domain = fields.Binary(compute='_compute_employee_domain', default=[])
@@ -393,6 +400,7 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
                 'start_date': self.start_date,
                 'end_date': self.end_date,
                 'is_paid': True if timetable.id in timetable_ids else False,
+                'print_type': self.print_type,
             })
 
         if len(title) > 0:
