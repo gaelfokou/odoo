@@ -949,23 +949,45 @@ class Timetable(models.Model):
         if 'class_id' in vals and 'subject_id' in vals:
             classe = self.env['siantou.ems.core.class'].search([('id', '=', vals['class_id'])], limit=1)
             subject = self.env['siantou.ems.core.subject'].search([('id', '=', vals['subject_id'])], limit=1)
-            timetables = self.env['siantou.ems.timetable.timetable'].search([
-                '|',
-                '&',
-                '&',
-                ('group_id.is_active', '=', True),
-                ('group_id.is_submit', '=', False),
-                ('group_id.status', '=', 'valid'),
-                '&',
-                '&',
-                '&',
-                ('group_parent_id.is_active', '=', True),
-                ('group_parent_id.is_submit', '=', False),
-                ('group_parent_id.status', '=', 'valid'),
-                ('group_id.status', '=', 'valid'),
-                ('is_active', '=', True),
-                # ('status', '=', 'present'),
-            ], order='date asc').filtered(lambda rec: rec.class_id.id == classe.id and rec.subject_id.id == subject.id)
+            class_group = None
+            if 'class_group_id' in vals:
+                class_group = self.env['siantou.ems.core.class.group'].search([('id', '=', vals['class_group_id'])], limit=1)
+            if class_group:
+                timetables = self.env['siantou.ems.timetable.timetable'].search([
+                    '|',
+                    '&',
+                    '&',
+                    ('group_id.is_active', '=', True),
+                    ('group_id.is_submit', '=', False),
+                    ('group_id.status', '=', 'valid'),
+                    '&',
+                    '&',
+                    '&',
+                    ('group_parent_id.is_active', '=', True),
+                    ('group_parent_id.is_submit', '=', False),
+                    ('group_parent_id.status', '=', 'valid'),
+                    ('group_id.status', '=', 'valid'),
+                    ('is_active', '=', True),
+                    # ('status', '=', 'present'),
+                ], order='date asc').filtered(lambda rec: rec.class_id.id == classe.id and rec.class_group_id.id == class_group.id and rec.subject_id.id == subject.id)
+            else:
+                timetables = self.env['siantou.ems.timetable.timetable'].search([
+                    '|',
+                    '&',
+                    '&',
+                    ('group_id.is_active', '=', True),
+                    ('group_id.is_submit', '=', False),
+                    ('group_id.status', '=', 'valid'),
+                    '&',
+                    '&',
+                    '&',
+                    ('group_parent_id.is_active', '=', True),
+                    ('group_parent_id.is_submit', '=', False),
+                    ('group_parent_id.status', '=', 'valid'),
+                    ('group_id.status', '=', 'valid'),
+                    ('is_active', '=', True),
+                    # ('status', '=', 'present'),
+                ], order='date asc').filtered(lambda rec: rec.class_id.id == classe.id and not rec.class_group_id.id and rec.subject_id.id == subject.id)
 
             timetables = list(timetables)
 
