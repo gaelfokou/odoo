@@ -97,10 +97,10 @@ class TeacherTimetableAttendance(models.TransientModel):
         store=True
     )
 
-    print_type = fields.Selection([
+    sort_type = fields.Selection([
         ('teacher', 'Par enseignant'),
         ('hour', 'Par heure'),
-    ], 'Type d\'impression',
+    ], 'Ordre d\'impression',
         # default='teacher',
     )
 

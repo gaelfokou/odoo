@@ -113,10 +113,10 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
         default=False,
     )
 
-    print_type = fields.Selection([
+    sort_type = fields.Selection([
         ('teacher', 'Par enseignant'),
         ('hour', 'Par heure'),
-    ], 'Type d\'impression',
+    ], 'Ordre d\'impression',
         # default='teacher',
     )
 
@@ -400,7 +400,7 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
                 'start_date': self.start_date,
                 'end_date': self.end_date,
                 'is_paid': True if timetable.id in timetable_ids else False,
-                'print_type': self.print_type,
+                'sort_type': self.sort_type,
             })
 
         if len(title) > 0:

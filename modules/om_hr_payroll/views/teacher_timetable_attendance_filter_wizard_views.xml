@@ -15,7 +15,7 @@
                         <field name="end_date"/>
                         <field name="has_rate" invisible="is_permanent == True"/>
                         <field name="status" invisible="is_permanent == True"/>
-                        <field name="print_type" invisible="is_permanent == False"/>
+                        <field name="sort_type" invisible="is_permanent == False"/>
                     </group>
                     <footer>
                         <button string="Filtrer" type="object" name="action_filter" class="btn-primary"/>

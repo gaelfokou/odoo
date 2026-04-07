@@ -72,7 +72,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <t t-if="docdata['print_type'] == 'hour'">
+                                    <t t-if="docdata['sort_type'] == 'hour'">
                                         <t t-set="teacher_timetable_attendance_data" t-value="dict(sorted(docdata['teacher_timetable_attendance_data'].items(), key=lambda item: item[1]['worked_time'] if item[1]['worked_time'] else 0.0, reverse=True))"/>
                                     </t>
                                     <t t-else="">
