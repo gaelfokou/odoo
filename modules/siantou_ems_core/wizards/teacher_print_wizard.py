@@ -18,7 +18,7 @@ class TeacherPrintWizard(models.TransientModel):
     _description = 'Assistant d\'impression des enseignants'
 
     is_teacher = fields.Boolean(
-        'Est un enseignant',
+        'Est un enseignant ?',
         default=True,
     )
 

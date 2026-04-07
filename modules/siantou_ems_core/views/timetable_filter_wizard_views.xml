@@ -30,6 +30,7 @@
                         <field name="subject_id" options="{'no_create': True}" domain="subject_id_domain"/>
                         <field name="building_id" options="{'no_create': True}"/>
                         <field name="classroom_id" options="{'no_create': True}" domain="[('building_id', '=', building_id)]"/>
+                        <field name="is_teacher"/>
                         <field name="is_permanent"/>
                         <field name="is_temporary"/>
                         <field name="employee_id_domain" invisible="1"/>

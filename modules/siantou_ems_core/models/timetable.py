@@ -822,7 +822,7 @@ class Timetable(models.Model):
                 for timetable in timetables:
                     timetable_date = datetime.strftime(timetable.date, DATE_FORMAT_FR)
                     validation_error_message += f"""
-                        ID: {timetable.id}
+                        • ID: {timetable.id}
                         Version: {timetable.group_id.name}
                         Classe: {timetable.class_id.name}
                         Enseignant: {timetable.employee_id.name}
@@ -849,7 +849,7 @@ class Timetable(models.Model):
                 for timetable in timetables:
                     timetable_date = datetime.strftime(timetable.date, DATE_FORMAT_FR)
                     validation_error_message += f"""
-                        ID: {timetable.id}
+                        • ID: {timetable.id}
                         Version: {timetable.group_id.name}
                         Classe: {timetable.class_id.name}
                         Enseignant: {timetable.employee_id.name}

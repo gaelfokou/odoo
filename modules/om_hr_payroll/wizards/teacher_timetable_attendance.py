@@ -86,7 +86,7 @@ class TeacherTimetableAttendance(models.TransientModel):
     )
 
     is_teacher = fields.Boolean(
-        string='Est un enseignant',
+        string='Est un enseignant ?',
         related='employee_id.is_teacher',
         store=True
     )

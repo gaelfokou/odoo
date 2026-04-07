@@ -59,7 +59,7 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
     )
 
     is_teacher = fields.Boolean(
-        'Est un enseignant',
+        'Est un enseignant ?',
         default=True,
     )
 

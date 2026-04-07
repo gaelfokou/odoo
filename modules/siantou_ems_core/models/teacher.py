@@ -18,7 +18,7 @@ class HrEmployee(models.Model):
 
     # Variable booléenne pour identifier un enseignant
     is_teacher = fields.Boolean(
-        'Est un enseignant',
+        'Est un enseignant ?',
         default=True,
     )
 
