@@ -825,6 +825,7 @@ class Timetable(models.Model):
                         • ID: {timetable.id}
                         Version: {timetable.group_id.name}
                         Classe: {timetable.class_id.name}
+                        Groupe: {timetable.class_group_id.name}
                         Enseignant: {timetable.employee_id.name}
                         Date: {timetable_date}
                         Heure de début: {timetable.start_time}
@@ -852,6 +853,7 @@ class Timetable(models.Model):
                         • ID: {timetable.id}
                         Version: {timetable.group_id.name}
                         Classe: {timetable.class_id.name}
+                        Groupe: {timetable.class_group_id.name}
                         Enseignant: {timetable.employee_id.name}
                         Date: {timetable_date}
                         Heure de début: {timetable.start_time}
