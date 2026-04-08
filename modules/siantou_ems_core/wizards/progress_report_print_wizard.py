@@ -50,7 +50,7 @@ class ProgressReportPrintWizard(models.TransientModel):
         })
         return report_action.report_action(self, data=data)
 
-    def print_progress_report_data(self, domains=None):
+    def print_progress_report_data(self, domains=None, sort_type=None):
         # Récupérer les emplois du temps pour le semestre sélectionné
         domain = []
 
@@ -67,6 +67,7 @@ class ProgressReportPrintWizard(models.TransientModel):
             report['name'] = search_report.name
             report['classe'] = search_report.class_id.name
             report['subject'] = search_report.subject_id.name
+            report['percentage'] = search_report.percentage
             session_ids = search_report.session_ids
             session_ids = list(session_ids)
             sessions = []
@@ -75,6 +76,10 @@ class ProgressReportPrintWizard(models.TransientModel):
                 session['id'] = session_id.id
                 session['name'] = session_id.name
                 session['description'] = session_id.description
+                session['timetable_id'] = session_id.timetable_id.id
+                session['report_id'] = session_id.report_id.id
+                session['employee_id'] = session_id.timetable_id.employee_id.id
+                session['employee_name'] = session_id.timetable_id.employee_id.name
                 session['date'] = datetime.strftime(session_id.timetable_id.date, DATE_FORMAT_FR)
                 session['start_time'] = ProgressReportPrintWizard.convert_float_to_time(session_id.timetable_id.start_time)
                 session['end_time'] = ProgressReportPrintWizard.convert_float_to_time(session_id.timetable_id.end_time)
@@ -92,6 +97,7 @@ class ProgressReportPrintWizard(models.TransientModel):
                 'title': 'Fiches de progression',
                 'filter': filter_title,
                 'report_data': reports,
+                'sort_type': sort_type,
             }
         }
 

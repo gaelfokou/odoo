@@ -7,7 +7,16 @@ import re
 from datetime import date, datetime, timedelta, time
 from dateutil.relativedelta import relativedelta
 import copy
+from datetime import date, datetime, timedelta, time
+from dateutil.relativedelta import relativedelta
 import logging
+
+DATE_FORMAT = '%Y-%m-%d'
+DATE_FORMAT_FR = '%d/%m/%Y'
+DATETIME_FORMAT = '%Y-%m-%d %H:%M:%S'
+DATETIME_FORMAT_FR = '%d/%m/%Y %H:%M'
+TIME_FORMAT = '%H:%M:%S'
+TIME_FORMAT_FR = '%H:%M'
 
 TYPE_COUR = {
     'cj': 'Cours du jour',
@@ -231,3 +240,127 @@ class ProgressReportFilterWizard(models.TransientModel):
             'domain': domain,
             'target': 'main',
         }
+
+    def action_print_percentage_pdf(self, sort_type=None):
+        domain = []
+        title = []
+        if self.class_id.id:
+            domain.append(('class_id', '=', self.class_id.id))
+            title.append(self.class_id.name)
+        if self.subject_id.id:
+            domain.append(('subject_id', '=', self.subject_id.id))
+            title.append(self.subject_id.name)
+
+        report_ids = []
+        reports = self.env['siantou.ems.core.progress.report'].search(domain)
+        for report in reports:
+            report_ids.append(report.id)
+        report_ids = list(set(report_ids))
+
+        domain = [
+            ('id', 'in', report_ids),
+        ]
+
+        if len(title) > 0:
+            title = ' / '.join(title)
+        else:
+            title = 'Non spécifié'
+
+        self.env['ir.config_parameter'].sudo().set_param(f'siantou.filter_user_{self.env.user.id}', title)
+
+        if len(report_ids) == 0:
+            raise UserError('Aucune donnée sélectionnée')
+        report_data = self.env['progress.report.print.wizard'].create({})
+        data = report_data.print_progress_report_data(domains=domain, sort_type=sort_type)
+
+        if len(data['docdata']['report_data']) == 0:
+            raise UserError('Aucune donnée trouvée')
+
+        key_employees = {}
+        for report in data['docdata']['report_data']:
+            for session in report['sessions']:
+                key_employee = '{}'.format(session['employee_id'])
+                key_progress_report = '{}'.format(session['report_id'])
+                if key_employee not in key_employees:
+                    key_employees[key_employee] = {}
+                    key_employees[key_employee]['name'] = session['employee_name']
+                    key_employees[key_employee]['data'] = {}
+                    key_employees[key_employee]['data'][key_progress_report] = report['percentage']
+                else:
+                    if key_progress_report not in key_employees[key_employee]['data']:
+                        key_employees[key_employee]['data'][key_progress_report] = report['percentage']
+
+        progress_report_percentages = {}
+        for key_employee in key_employees.keys():
+            percentage = 0.0
+            percentage_count = 0
+            for key_progress_report in key_employees[key_employee]['data'].keys():
+                if key_employee not in progress_report_percentages:
+                    progress_report_percentages[key_employee] = {}
+                    progress_report_percentages[key_employee]['name'] = key_employees[key_employee]['name']
+                    percentage += key_employees[key_employee]['data'][key_progress_report]
+                    progress_report_percentages[key_employee]['class'] = ''
+                else:
+                    percentage += key_employees[key_employee]['data'][key_progress_report]
+                percentage_count += 1
+
+            progress_report_percentages[key_employee]['percentage'] = 0.0
+            if percentage_count > 0:
+                progress_report_percentages[key_employee]['percentage'] = (percentage / percentage_count) * 100
+                progress_report_percentages[key_employee]['percentage'] = round(progress_report_percentages[key_employee]['percentage'], 2)
+
+        for key in progress_report_percentages.keys():
+            if progress_report_percentages[key]['percentage'] >= 90.0:
+                progress_report_percentages[key]['class'] = 'text-success'
+            if progress_report_percentages[key]['percentage'] >= 80.0 and progress_report_percentages[key]['percentage'] < 90.0:
+                progress_report_percentages[key]['class'] = 'text-warning'
+            if progress_report_percentages[key]['percentage'] < 80.0:
+                progress_report_percentages[key]['class'] = 'text-danger'
+
+        if len(title) > 0:
+            title = ' / '.join(title)
+        else:
+            title = 'Non spécifié'
+
+        self.env['ir.config_parameter'].sudo().set_param(f'siantou.filter_user_{self.env.user.id}', title)
+
+        filter_title = self.env['ir.config_parameter'].sudo().get_param(f'siantou.filter_user_{self.env.user.id}', '')
+
+        label = 'Enseignant'
+
+        title = 'Pourcentage progression par {}'.format(label)
+
+        data = {
+            'docdata': {}
+        }
+        data['docdata']['label'] = label
+        data['docdata']['title'] = title
+        data['docdata']['filter'] = filter_title
+        data['docdata']['progress_report_percentages'] = progress_report_percentages
+        data['docdata']['sort_type'] = sort_type
+
+        return self.env.ref('siantou_ems_core.action_report_progress_report_percentage').report_action(self, data=data)
+
+    def action_print_top_percentage_pdf(self):
+        data = self.action_print_percentage_pdf(sort_type='top')
+
+        start_date = datetime.strftime(self.start_date, DATE_FORMAT_FR)
+        end_date = datetime.strftime(self.end_date, DATE_FORMAT_FR)
+
+        report_action = self.env.ref('siantou_ems_core.action_report_timetable_percentage')
+        report_action.update({
+            'name': '{} du {} - {} PDF'.format(data['docdata']['title'], start_date, end_date),
+        })
+        return report_action.report_action(self, data=data)
+
+    def action_print_last_percentage_pdf(self):
+        data = self.action_print_percentage_pdf(sort_type='last')
+
+        start_date = datetime.strftime(self.start_date, DATE_FORMAT_FR)
+        end_date = datetime.strftime(self.end_date, DATE_FORMAT_FR)
+
+        report_action = self.env.ref('siantou_ems_core.action_report_timetable_percentage')
+        report_action.update({
+            'name': '{} du {} - {} PDF'.format(data['docdata']['title'], start_date, end_date),
+        })
+        return report_action.report_action(self, data=data)

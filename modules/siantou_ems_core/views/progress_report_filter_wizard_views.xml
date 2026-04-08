@@ -22,6 +22,9 @@
                     </group>
                     <footer>
                         <button string="Filtrer" type="object" name="action_filter" class="btn-primary"/>
+                        <button string="Pourcentage" type="object" name="action_print_percentage_pdf" class="btn-primary" groups="siantou_ems_core.group_progress_report_print_pdf"/>
+                        <button string="Pourcentage top 10" type="object" name="action_print_top_percentage_pdf" class="btn-primary" groups="siantou_ems_core.group_progress_report_print_pdf"/>
+                        <button string="Pourcentage last 10" type="object" name="action_print_last_percentage_pdf" class="btn-primary" groups="siantou_ems_core.group_progress_report_print_pdf"/>
                         <button string="Annuler" class="btn-secondary" special="cancel"/>
                     </footer>
                 </form>
