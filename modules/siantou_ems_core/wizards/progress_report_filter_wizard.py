@@ -251,7 +251,7 @@ class ProgressReportFilterWizard(models.TransientModel):
         name = name.lower()
         return name
 
-    def action_print_percentage_pdf(self, sort_type=None):
+    def action_print_percentage_pdf(self, sort_type=None, print_percentage=True):
         domain = []
         title = []
         if self.year_id.id:
@@ -440,14 +440,17 @@ class ProgressReportFilterWizard(models.TransientModel):
         if self.school_id.id:
             data['docdata']['title'] = '{} {}'.format(data['docdata']['title'], self.school_id.name)
 
-        report_action = self.env.ref('siantou_ems_core.action_report_progress_report_percentage')
-        report_action.update({
-            'name': '{} PDF'.format(title),
-        })
-        return report_action.report_action(self, data=data)
+        if print_percentage:
+            report_action = self.env.ref('siantou_ems_core.action_report_progress_report_percentage')
+            report_action.update({
+                'name': '{} PDF'.format(title),
+            })
+            return report_action.report_action(self, data=data)
+        else:
+            return data
 
     def action_print_top_percentage_pdf(self):
-        data = self.action_print_percentage_pdf(sort_type='top')
+        data = self.action_print_percentage_pdf(sort_type='top', print_percentage=False)
 
         report_action = self.env.ref('siantou_ems_core.action_report_progress_report_percentage')
         report_action.update({
@@ -456,7 +459,7 @@ class ProgressReportFilterWizard(models.TransientModel):
         return report_action.report_action(self, data=data)
 
     def action_print_last_percentage_pdf(self):
-        data = self.action_print_percentage_pdf(sort_type='last')
+        data = self.action_print_percentage_pdf(sort_type='last', print_percentage=False)
 
         report_action = self.env.ref('siantou_ems_core.action_report_progress_report_percentage')
         report_action.update({
