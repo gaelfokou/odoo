@@ -241,9 +241,37 @@ class ProgressReportFilterWizard(models.TransientModel):
             'target': 'main',
         }
 
+    def sort_progress_report_percentage(self, progress_report_percentage):
+        percentage = progress_report_percentage[1]['percentage']
+        return percentage
+
+    def sort_progress_report(self, progress_report_percentage):
+        name = progress_report_percentage[1]['name'] if progress_report_percentage[1]['name'] else ''
+        name = name.strip()
+        name = name.lower()
+        return name
+
     def action_print_percentage_pdf(self, sort_type=None):
         domain = []
         title = []
+        if self.year_id.id:
+            domain.append(('year_id', '=', self.year_id.id))
+            title.append(self.year_id.name)
+        if self.school_id.id:
+            domain.append(('school_id', '=', self.school_id.id))
+            title.append(self.school_id.name)
+        if self.level_id.id:
+            domain.append(('level_id', '=', self.level_id.id))
+            title.append(self.level_id.name)
+        if self.field_of_study_id.id:
+            domain.append(('field_of_study_id', '=', self.field_of_study_id.id))
+            title.append(self.field_of_study_id.name)
+        if self.specialty_id.id:
+            domain.append(('specialty_id', '=', self.specialty_id.id))
+            title.append(self.specialty_id.name)
+        if self.option_id.id:
+            domain.append(('option_id', '=', self.option_id.id))
+            title.append(self.option_id.name)
         if self.class_id.id:
             domain.append(('class_id', '=', self.class_id.id))
             title.append(self.class_id.name)
@@ -290,6 +318,7 @@ class ProgressReportFilterWizard(models.TransientModel):
                     if key_progress_report not in key_employees[key_employee]['data']:
                         key_employees[key_employee]['data'][key_progress_report] = report['percentage']
 
+        list_progress_report_percentages = []
         progress_report_percentages = {}
         for key_employee in key_employees.keys():
             percentage = 0.0
@@ -308,6 +337,8 @@ class ProgressReportFilterWizard(models.TransientModel):
             if percentage_count > 0:
                 progress_report_percentages[key_employee]['percentage'] = (percentage / percentage_count) * 100
                 progress_report_percentages[key_employee]['percentage'] = round(progress_report_percentages[key_employee]['percentage'], 2)
+                if progress_report_percentages[key_employee]['percentage'] not in list_progress_report_percentages:
+                    list_progress_report_percentages.append(progress_report_percentages[key_employee]['percentage'])
 
         for key in progress_report_percentages.keys():
             if progress_report_percentages[key]['percentage'] >= 90.0:
@@ -316,6 +347,28 @@ class ProgressReportFilterWizard(models.TransientModel):
                 progress_report_percentages[key]['class'] = 'text-warning'
             if progress_report_percentages[key]['percentage'] < 80.0:
                 progress_report_percentages[key]['class'] = 'text-danger'
+
+        if sort_type:
+            list_progress_report_percentages = list(set(list_progress_report_percentages))
+            list_progress_report_percentages = sorted(list_progress_report_percentages, key=lambda x: x, reverse=True)
+            if len(list_progress_report_percentages) > 0:
+                if sort_type == 'top':
+                    list_progress_report_percentages = list_progress_report_percentages[:10]
+                else:
+                    list_progress_report_percentages = list_progress_report_percentages[-10:]
+
+            key_list_progress_report_percentages = {}
+            for key in progress_report_percentages.keys():
+                if progress_report_percentages[key]['percentage'] in list_progress_report_percentages:
+                    key_list_progress_report_percentages[key] = progress_report_percentages[key]
+
+            progress_report_percentages = key_list_progress_report_percentages
+
+            progress_report_percentages = sorted(progress_report_percentages.items(), key=self.sort_progress_report_percentage, reverse=True)
+            progress_report_percentages = dict(progress_report_percentages)
+        else:
+            progress_report_percentages = sorted(progress_report_percentages.items(), key=self.sort_progress_report)
+            progress_report_percentages = dict(progress_report_percentages)
 
         if len(title) > 0:
             title = ' / '.join(title)
@@ -328,7 +381,13 @@ class ProgressReportFilterWizard(models.TransientModel):
 
         label = 'Enseignant'
 
-        title = 'Pourcentage progression par {}'.format(label)
+        if sort_type:
+            if sort_type == 'top':
+                title = 'Pourcentage progression Top 10 par {}'.format(label)
+            else:
+                title = 'Pourcentage progression Last 10 par {}'.format(label)
+        else:
+            title = 'Pourcentage progression par {}'.format(label)
 
         data = {
             'docdata': {}
@@ -339,7 +398,14 @@ class ProgressReportFilterWizard(models.TransientModel):
         data['docdata']['progress_report_percentages'] = progress_report_percentages
         data['docdata']['sort_type'] = sort_type
 
-        return self.env.ref('siantou_ems_core.action_report_progress_report_percentage').report_action(self, data=data)
+        if self.school_id.id:
+            data['docdata']['title'] = '{} {}'.format(data['docdata']['title'], self.school_id.name)
+
+        report_action = self.env.ref('siantou_ems_core.action_report_progress_report_percentage')
+        report_action.update({
+            'name': '{} PDF'.format(title),
+        })
+        return report_action.report_action(self, data=data)
 
     def action_print_top_percentage_pdf(self):
         data = self.action_print_percentage_pdf(sort_type='top')
@@ -347,7 +413,7 @@ class ProgressReportFilterWizard(models.TransientModel):
         start_date = datetime.strftime(self.start_date, DATE_FORMAT_FR)
         end_date = datetime.strftime(self.end_date, DATE_FORMAT_FR)
 
-        report_action = self.env.ref('siantou_ems_core.action_report_timetable_percentage')
+        report_action = self.env.ref('siantou_ems_core.action_report_progress_report_percentage')
         report_action.update({
             'name': '{} du {} - {} PDF'.format(data['docdata']['title'], start_date, end_date),
         })
@@ -359,7 +425,7 @@ class ProgressReportFilterWizard(models.TransientModel):
         start_date = datetime.strftime(self.start_date, DATE_FORMAT_FR)
         end_date = datetime.strftime(self.end_date, DATE_FORMAT_FR)
 
-        report_action = self.env.ref('siantou_ems_core.action_report_timetable_percentage')
+        report_action = self.env.ref('siantou_ems_core.action_report_progress_report_percentage')
         report_action.update({
             'name': '{} du {} - {} PDF'.format(data['docdata']['title'], start_date, end_date),
         })

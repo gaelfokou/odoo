@@ -562,6 +562,7 @@ class TimetablePrintWizard(models.TransientModel):
             total_percentage = round(total_percentage, 2)
 
         if sort_type:
+            list_timetable_percentages = list(set(list_timetable_percentages))
             list_timetable_percentages = sorted(list_timetable_percentages, key=lambda x: x, reverse=True)
             if len(list_timetable_percentages) > 0:
                 if status:
