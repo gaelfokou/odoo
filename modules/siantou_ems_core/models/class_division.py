@@ -116,7 +116,7 @@ class EducationClass(models.Model):
         string='Groupes de classe'
     )
 
-    is_timetable_active = fields.Boolean(string='Emplois du temps actifs ?', default=True)
+    is_timetable_active = fields.Boolean(string='Emplois du temps actifs ?', default=False)
 
     timetable_inactive_date = fields.Date(
         string='Date de désactivation des emplois du temps',
