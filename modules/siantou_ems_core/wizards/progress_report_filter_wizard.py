@@ -307,10 +307,8 @@ class ProgressReportFilterWizard(models.TransientModel):
         domain = []
         if self.class_id.id:
             domain.append(('class_id', '=', self.class_id.id))
-            title.append(self.class_id.name)
         if self.subject_id.id:
             domain.append(('subject_id', '=', self.subject_id.id))
-            title.append(self.subject_id.name)
 
         report_ids = []
         reports = self.env['siantou.ems.core.progress.report'].search(domain)
@@ -367,12 +365,12 @@ class ProgressReportFilterWizard(models.TransientModel):
                     progress_report_percentages[key_employee] = {}
                     progress_report_percentages[key_employee]['name'] = key_employees[key_employee]['name']
                     percentage += key_employees[key_employee]['data'][key_progress_report]
+                    progress_report_percentages[key_employee]['percentage'] = 0.0
                     progress_report_percentages[key_employee]['class'] = ''
                 else:
                     percentage += key_employees[key_employee]['data'][key_progress_report]
                 percentage_count += 1
 
-            progress_report_percentages[key_employee]['percentage'] = 0.0
             if percentage_count > 0:
                 progress_report_percentages[key_employee]['percentage'] = percentage / percentage_count
                 progress_report_percentages[key_employee]['percentage'] = round(progress_report_percentages[key_employee]['percentage'], 2)
