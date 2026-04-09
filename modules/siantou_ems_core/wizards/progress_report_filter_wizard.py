@@ -272,6 +272,15 @@ class ProgressReportFilterWizard(models.TransientModel):
         if self.option_id.id:
             domain.append(('option_id', '=', self.option_id.id))
             title.append(self.option_id.name)
+        if self.type_cour:
+            domain.append(('class_id.type_cour', '=', self.type_cour))
+            title.append(TYPE_COUR[self.type_cour])
+        if self.class_id.id:
+            domain.append(('class_id', '=', self.class_id.id))
+            title.append(self.class_id.name)
+        if self.subject_id.id:
+            domain.append(('subject_id', '=', self.subject_id.id))
+            title.append(self.subject_id.name)
 
         order = 'date asc, id asc'
 
