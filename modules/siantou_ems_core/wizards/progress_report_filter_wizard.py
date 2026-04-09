@@ -272,6 +272,30 @@ class ProgressReportFilterWizard(models.TransientModel):
         if self.option_id.id:
             domain.append(('option_id', '=', self.option_id.id))
             title.append(self.option_id.name)
+
+        order = 'date asc, id asc'
+
+        timetables = self.env['siantou.ems.timetable.timetable'].search(domain, order=order).sorted(lambda rec: (rec.date, rec.id))
+        timetables = list(timetables)
+
+        timetable_ids = []
+        key_timetables = {}
+        for timetable in timetables:
+            if not timetable.date or not timetable.day_of_week or not timetable.employee_id.id:
+                continue
+
+            end_time = ProgressReportFilterWizard.convert_float_to_time(timetable.end_time, has_second=True)
+            start_time = ProgressReportFilterWizard.convert_float_to_time(timetable.start_time, has_second=True)
+            key = '{}-{}-{}-{}'.format(timetable.class_id.id, timetable.date, start_time, end_time)
+            if key not in key_timetables:
+                key_timetables[key] = timetable
+            else:
+                continue
+
+            timetable_ids.append(timetable.id)
+        timetable_ids = list(set(timetable_ids))
+
+        domain = []
         if self.class_id.id:
             domain.append(('class_id', '=', self.class_id.id))
             title.append(self.class_id.name)
@@ -306,6 +330,7 @@ class ProgressReportFilterWizard(models.TransientModel):
 
         key_employees = {}
         for report in data['docdata']['report_data']:
+            exist_timetable_ids = []
             for session in report['sessions']:
                 key_employee = '{}'.format(session['employee_id'])
                 key_progress_report = '{}'.format(session['report_id'])
@@ -317,6 +342,11 @@ class ProgressReportFilterWizard(models.TransientModel):
                 else:
                     if key_progress_report not in key_employees[key_employee]['data']:
                         key_employees[key_employee]['data'][key_progress_report] = report['percentage']
+                exist_timetable_ids.append(session['timetable_id'])
+                if len(timetable_ids) > 0:
+                    res = list(set(exist_timetable_ids) & set(timetable_ids))
+                    if len(res) == 0:
+                        del(key_employees[key_employee]['data'][key_progress_report])
 
         list_progress_report_percentages = []
         progress_report_percentages = {}
@@ -335,7 +365,7 @@ class ProgressReportFilterWizard(models.TransientModel):
 
             progress_report_percentages[key_employee]['percentage'] = 0.0
             if percentage_count > 0:
-                progress_report_percentages[key_employee]['percentage'] = (percentage / percentage_count) * 100
+                progress_report_percentages[key_employee]['percentage'] = percentage / percentage_count
                 progress_report_percentages[key_employee]['percentage'] = round(progress_report_percentages[key_employee]['percentage'], 2)
                 if progress_report_percentages[key_employee]['percentage'] not in list_progress_report_percentages:
                     list_progress_report_percentages.append(progress_report_percentages[key_employee]['percentage'])
@@ -410,23 +440,40 @@ class ProgressReportFilterWizard(models.TransientModel):
     def action_print_top_percentage_pdf(self):
         data = self.action_print_percentage_pdf(sort_type='top')
 
-        start_date = datetime.strftime(self.start_date, DATE_FORMAT_FR)
-        end_date = datetime.strftime(self.end_date, DATE_FORMAT_FR)
-
         report_action = self.env.ref('siantou_ems_core.action_report_progress_report_percentage')
         report_action.update({
-            'name': '{} du {} - {} PDF'.format(data['docdata']['title'], start_date, end_date),
+            'name': '{} PDF'.format(data['docdata']['title']),
         })
         return report_action.report_action(self, data=data)
 
     def action_print_last_percentage_pdf(self):
         data = self.action_print_percentage_pdf(sort_type='last')
 
-        start_date = datetime.strftime(self.start_date, DATE_FORMAT_FR)
-        end_date = datetime.strftime(self.end_date, DATE_FORMAT_FR)
-
         report_action = self.env.ref('siantou_ems_core.action_report_progress_report_percentage')
         report_action.update({
-            'name': '{} du {} - {} PDF'.format(data['docdata']['title'], start_date, end_date),
+            'name': '{} PDF'.format(data['docdata']['title']),
         })
         return report_action.report_action(self, data=data)
+
+    @staticmethod
+    def convert_float_to_time(tm, has_second=False):
+        tm = str(tm)
+        tm = tm.split('.')
+        if len(tm) == 1:
+            tm.append('0')
+        if len(tm[0]) == 1:
+            tm[0] = '0{}'.format(tm[0])
+        elif len(tm[0]) > 2:
+            tm[0] = '{}'.format(tm[0][0:2])
+        if int(tm[0]) > 23:
+            tm[0] = '00'
+        if len(tm[1]) == 1:
+            tm[1] = '{}0'.format(tm[1])
+        elif len(tm[1]) > 2:
+            tm[1] = '{}'.format(tm[1][0:2])
+        if int(tm[1]) > 59:
+            tm[1] = '00'
+        tm = ':'.join(tm)
+        if has_second:
+            tm = '{}:00'.format(tm)
+        return tm
