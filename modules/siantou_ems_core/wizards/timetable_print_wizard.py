@@ -249,6 +249,9 @@ class TimetablePrintWizard(models.TransientModel):
             elif status == 'punctuality':
                 search_delay_timetable_percentages = search_timetable_percentages.filtered(lambda rec: rec.date and rec.day_of_week and rec.status == 'absent')
                 search_punctuality_timetable_percentages = search_timetable_percentages.filtered(lambda rec: rec.date and rec.day_of_week and rec.status == 'present')
+            elif status == 'exception':
+                search_delay_timetable_percentages = search_timetable_percentages.filtered(lambda rec: rec.date and rec.day_of_week and rec.status == 'exception')
+                search_punctuality_timetable_percentages = search_timetable_percentages.filtered(lambda rec: rec.date and rec.day_of_week and rec.status == 'present')
             else:
                 search_delay_timetable_percentages = search_timetable_percentages
                 search_punctuality_timetable_percentages = search_timetable_percentages

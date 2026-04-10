@@ -865,6 +865,10 @@ class TimetableFilterWizard(models.TransientModel):
                 title.append(STATUS_TIMETABLE[self.status])
                 timetables = self.env['siantou.ems.timetable.timetable'].search(domain, order=order).sorted(lambda rec: (rec.date, rec.id))
                 timetables = timetables.filtered(lambda rec: rec.date and rec.day_of_week and (rec.status == 'absent' or (rec.status == 'present' and TimetableFilterWizard.compare_float_time(rec.date, rec.worked_start_time, rec.start_time) == 0.0)))
+            elif self.status == 'exception':
+                domain.append(('status', 'in', ['present', 'exception']))
+                title.append(STATUS_TIMETABLE[self.status])
+                timetables = self.env['siantou.ems.timetable.timetable'].search(domain, order=order).sorted(lambda rec: (rec.date, rec.id))
             elif self.status == 'exception_start_time_invalid':
                 domain.append(('status', '=', 'exception'))
                 title.append(STATUS_TIMETABLE[self.status])
