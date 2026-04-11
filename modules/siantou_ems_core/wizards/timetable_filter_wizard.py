@@ -23,7 +23,22 @@ CURRENT_WEEKDAY = {
     '3': 'Jeudi',
     '4': 'Vendredi',
     '5': 'Samedi',
-    '6': 'Dimanche'
+    '6': 'Dimanche',
+}
+
+CURRENT_MONTH = {
+    '1': 'Janvier',
+    '2': 'Février',
+    '3': 'Mars',
+    '4': 'Avril',
+    '5': 'Mai',
+    '6': 'Juin',
+    '7': 'Juillet',
+    '8': 'Août',
+    '9': 'Septembre',
+    '10': 'Octobre',
+    '11': 'Novembre',
+    '12': 'Décembre',
 }
 
 STATUS_TIMETABLE = {
@@ -685,14 +700,22 @@ class TimetableFilterWizard(models.TransientModel):
         current_date = self.start_date
         current_start_date = current_date - timedelta(days=current_date.weekday())
         current_end_date = current_start_date + timedelta(days=6)
-        start_date = datetime.strftime(current_start_date, DATE_FORMAT_FR)
-        end_date = datetime.strftime(current_end_date, DATE_FORMAT_FR)
+        start_date = datetime.strftime(self.start_date, DATE_FORMAT_FR)
+        end_date = datetime.strftime(self.end_date, DATE_FORMAT_FR)
+        current_month = current_date.month
+        current_year = current_date.year
         data = {}
         try:
             self.start_date = current_start_date
             self.end_date = current_end_date
             key = '{}-{}'.format(current_start_date, current_end_date)
             data[key] = self.action_print_percentage_pdf(print_percentage=False)
+            if self.start_date and self.end_date:
+                filter_start_date = datetime.strftime(self.start_date, DATE_FORMAT_FR)
+                filter_end_date = datetime.strftime(self.end_date, DATE_FORMAT_FR)
+                filter_date = '{} - {}'.format(filter_start_date, filter_end_date)
+                data[key]['docdata']['filter'] = data[key]['docdata']['filter'].replace(filter_date, 'Semaine : {} / Mois : {} / Année : {}'.format(filter_date, CURRENT_MONTH[str(current_month)], current_year))
+                self.env['ir.config_parameter'].sudo().set_param(f'siantou.filter_user_{self.env.user.id}', data[key]['docdata']['filter'])
         except UserError as error:
             _logger.info(f'----------- tototototototo Exception {error} -----------')
 

@@ -22,7 +22,7 @@ CURRENT_WEEKDAY = {
     '3': 'Jeudi',
     '4': 'Vendredi',
     '5': 'Samedi',
-    '6': 'Dimanche'
+    '6': 'Dimanche',
 }
 
 STATUS_TIMETABLE = {
