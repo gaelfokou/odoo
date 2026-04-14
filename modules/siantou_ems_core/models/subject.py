@@ -449,6 +449,7 @@ class ProgressReport(models.Model):
                     session['description'] = session_id.description
                     session['timetable_id'] = session_id.timetable_id.id
                     session['report_id'] = session_id.report_id.id
+                    session['is_session_active'] = session_id.is_session_active
                     sessions.append(session)
                 sessions = sorted(sessions, key=lambda item: int((item['name'] if item['name'] else '').replace('Séance ', '')))
                 progressreport['sessions'] = sessions
@@ -583,6 +584,7 @@ class ProgressReport(models.Model):
                     session['description'] = session_id.description
                     session['timetable_id'] = session_id.timetable_id.id
                     session['report_id'] = session_id.report_id.id
+                    session['is_session_active'] = session_id.is_session_active
                     sessions.append(session)
                 sessions = sorted(sessions, key=lambda item: int((item['name'] if item['name'] else '').replace('Séance ', '')))
                 progressreport['sessions'] = sessions
