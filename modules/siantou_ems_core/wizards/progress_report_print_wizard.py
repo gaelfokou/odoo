@@ -78,7 +78,6 @@ class ProgressReportPrintWizard(models.TransientModel):
                 session['description'] = session_id.description
                 session['timetable_id'] = session_id.timetable_id.id
                 session['report_id'] = session_id.report_id.id
-                session['is_session_active'] = session_id.is_session_active
                 session['employee_id'] = session_id.timetable_id.employee_id.id
                 session['employee_name'] = session_id.timetable_id.employee_id.name
                 session['date'] = datetime.strftime(session_id.timetable_id.date, DATE_FORMAT_FR)
