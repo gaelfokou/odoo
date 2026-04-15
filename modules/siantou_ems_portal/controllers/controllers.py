@@ -1137,19 +1137,6 @@ class PortalAccount(portal.CustomerPortal):
             progressreport['sessions'] = sessions
             progressreports.append(progressreport)
         progressreports = Helpers.format_progressreport(progressreports)
-        for key_class in progressreports.keys():
-            for key_subject in progressreports[key_class]['data'].keys():
-                classe = int(key_class)
-                subject = int(key_subject)
-                report_id = http.request.env['siantou.ems.core.progress.report'].sudo().search([
-                    ('class_id', '=', classe),
-                    ('subject_id', '=', subject),
-                ], limit=1)
-                if report_id:
-                    report_id._compute_percentage()
-                    report_id.sudo().write({
-                        'class_id': report_id.class_id.id,
-                    })
         return http.request.render('siantou_ems_portal.siantou_ems_portal_progressreport_views',
                                 {
                                     'progressreports': progressreports,
@@ -1177,8 +1164,8 @@ class PortalAccount(portal.CustomerPortal):
         class_id = http.request.env['siantou.ems.core.class'].sudo().search([('id', '=', classe)], limit=1)
         subject_id = http.request.env['siantou.ems.core.subject'].sudo().search([('id', '=', subject)], limit=1)
         report_id = http.request.env['siantou.ems.core.progress.report'].sudo().search([
-            ('class_id', '=', classe),
-            ('subject_id', '=', subject),
+            ('class_id', '=', class_id.id),
+            ('subject_id', '=', subject_id.id)
         ], limit=1)
         if report_id:
             report_id._compute_percentage()
