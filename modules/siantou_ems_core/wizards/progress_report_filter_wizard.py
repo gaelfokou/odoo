@@ -311,26 +311,32 @@ class ProgressReportFilterWizard(models.TransientModel):
                 key_timetable_progressreports[k] = {}
                 key_timetable_progressreports[k]['id'] = key_timetables[key]['timetable'].employee_id.id
                 key_timetable_progressreports[k]['name'] = key_timetables[key]['timetable'].employee_id.name
-                key_timetable_progressreports[k]['total'] = 1
                 key_timetable_progressreports[k]['available'] = len(key_timetables[key]['timetable'].session_ids.ids)
+                key_timetable_progressreports[k]['total'] = 1
+                key_timetable_progressreports[k]['percentage'] = 0.0
             else:
-                key_timetable_progressreports[k]['total'] += 1
                 key_timetable_progressreports[k]['available'] += len(key_timetables[key]['timetable'].session_ids.ids)
+                key_timetable_progressreports[k]['total'] += 1
 
-        key_progressreports = {}
+        for key in key_timetable_progressreports.keys():
+            if key_timetable_progressreports[key]['total'] > 0:
+                key_timetable_progressreports[key]['percentage'] = (key_timetable_progressreports[key]['available'] / key_timetable_progressreports[key]['total']) * 100
+                key_timetable_progressreports[key]['percentage'] = round(key_timetable_progressreports[key]['percentage'], 2)
+
+        key_progress_report_teachers = {}
         if self.status:
             if self.status == 'progressreport_available':
                 title.append(STATUS_PROGRESSREPORT[self.status])
                 for key in key_timetable_progressreports.keys():
-                    if key_timetable_progressreports[key]['available'] > 0:
-                        key_progressreports[key] = key_timetable_progressreports[key]
+                    if key_timetable_progressreports[key]['percentage'] > 0.0:
+                        key_progress_report_teachers[key] = key_timetable_progressreports[key]
             elif self.status == 'progressreport_not_available':
                 title.append(STATUS_PROGRESSREPORT[self.status])
                 for key in key_timetable_progressreports.keys():
-                    if key_timetable_progressreports[key]['available'] == 0:
-                        key_progressreports[key] = key_timetable_progressreports[key]
+                    if key_timetable_progressreports[key]['percentage'] == 0.0:
+                        key_progress_report_teachers[key] = key_timetable_progressreports[key]
 
-        _logger.info(f'----------- tototototototo key_progressreports {key_progressreports} -----------')
+        _logger.info(f'----------- tototototototo key_progress_report_teachers {key_progress_report_teachers} -----------')
 
         if len(title) > 0:
             title = ' / '.join(title)
@@ -341,24 +347,24 @@ class ProgressReportFilterWizard(models.TransientModel):
 
         filter_title = self.env['ir.config_parameter'].sudo().get_param(f'siantou.filter_user_{self.env.user.id}', '')
 
-        title = 'Fiches de progression'
+        title = 'Pourcentage de remplissage fiches de progression'
 
         if self.status:
             if self.status == 'progressreport_available':
-                title = 'Fiches de progression disponibles'
+                title = 'Pourcentage de remplissage fiches de progression disponibles'
             elif self.status == 'progressreport_not_available':
-                title = 'Fiches de progression pas disponibles'
+                title = 'Pourcentage de remplissage fiches de progression pas disponibles'
 
         data = {
             'docdata': {}
         }
         data['docdata']['title'] = title
         data['docdata']['filter'] = filter_title
-        data['docdata']['progressreport_data'] = key_progressreports
+        data['docdata']['progress_report_teacher_data'] = key_progress_report_teachers
 
-        if len(data['docdata']['progressreport_data'].keys()) == 0:
+        if len(data['docdata']['progress_report_teacher_data'].keys()) == 0:
             raise UserError('Aucune donnée trouvée')
-        report_action = self.env.ref('siantou_ems_core.action_report_timetable_hours_percentage')
+        report_action = self.env.ref('siantou_ems_core.action_report_progress_report_teacher')
         report_action.update({
             'name': '{} PDF'.format(title),
         })

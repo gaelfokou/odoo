@@ -85,6 +85,7 @@
         'report/timetable_hours_percentage_template.xml',
         'report/timetable_hours_and_cost_template.xml',
         'report/progress_report_percentage_template.xml',
+        'report/progress_report_teacher_template.xml',
         'report/teacher_template.xml',
         'report/student_template.xml',
         'report/classroom_template.xml',
