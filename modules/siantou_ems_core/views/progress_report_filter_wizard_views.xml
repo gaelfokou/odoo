@@ -5,7 +5,7 @@
             <field name="name">progress.report.filter.wizard.form</field>
             <field name="model">progress.report.filter.wizard</field>
             <field name="arch" type="xml">
-                <form string="Filtre des classes">
+                <form string="Filtre des fiches de progression">
                     <group>
                         <field name="year_id" options="{'no_create': True}"/>
                         <field name="school_id" options="{'no_create': True}"/>
@@ -19,12 +19,14 @@
                         <field name="class_id" options="{'no_create': True}" domain="class_id_domain"/>
                         <field name="subject_id_domain" invisible="1"/>
                         <field name="subject_id" options="{'no_create': True}" domain="subject_id_domain"/>
+                        <field name="status"/>
                     </group>
                     <footer>
                         <button string="Filtrer" type="object" name="action_filter" class="btn-primary"/>
-                        <button string="Pourcentage" type="object" name="action_print_percentage_pdf" class="btn-primary" groups="siantou_ems_core.group_progress_report_print_pdf"/>
-                        <button string="Pourcentage top 10" type="object" name="action_print_top_percentage_pdf" class="btn-primary" groups="siantou_ems_core.group_progress_report_print_pdf"/>
-                        <button string="Pourcentage last 10" type="object" name="action_print_last_percentage_pdf" class="btn-primary" groups="siantou_ems_core.group_progress_report_print_pdf"/>
+                        <button string="Pourcentage" type="object" name="action_print_percentage_pdf" class="btn-primary" invisible="status" groups="siantou_ems_core.group_progress_report_print_pdf"/>
+                        <button string="Pourcentage top 10" type="object" name="action_print_top_percentage_pdf" class="btn-primary" invisible="status" groups="siantou_ems_core.group_progress_report_print_pdf"/>
+                        <button string="Pourcentage last 10" type="object" name="action_print_last_percentage_pdf" class="btn-primary" invisible="status" groups="siantou_ems_core.group_progress_report_print_pdf"/>
+                        <button string="Enseignants" type="object" name="action_print_progress_pdf" class="btn-primary" invisible="not status" groups="siantou_ems_core.group_progress_report_print_pdf"/>
                         <button string="Annuler" class="btn-secondary" special="cancel"/>
                     </footer>
                 </form>

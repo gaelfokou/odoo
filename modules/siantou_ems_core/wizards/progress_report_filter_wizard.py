@@ -23,13 +23,9 @@ TYPE_COUR = {
     'cs': 'Cours du soir',
 }
 
-STATUS_CLASS = {
-    'timetable_available': 'Emplois du temps disponibles',
-    'timetable_not_available': 'Emplois du temps pas disponibles',
-    'student_available': 'Étudiants disponibles',
-    'student_not_available': 'Étudiants pas disponibles',
-    'student_more_than_or_equal': 'Étudiants plus de ou égal à',
-    'student_less_than': 'Étudiants moins de',
+STATUS_PROGRESSREPORT = {
+    'progressreport_available': 'Fiches de progression disponibles',
+    'progressreport_not_available': 'Fiches de progression pas disponibles',
 }
 
 _logger = logging.getLogger(__name__)
@@ -83,6 +79,13 @@ class ProgressReportFilterWizard(models.TransientModel):
     subject_id = fields.Many2one(
         'siantou.ems.core.subject',
         string='Cours',
+    )
+
+    status = fields.Selection([
+        ('progressreport_available', 'Fiches de progression disponibles'),
+        ('progressreport_not_available', 'Fiches de progression pas disponibles'),
+    ], 'Statut',
+        # default='progressreport_available',
     )
 
     subject_id_domain = fields.Binary(compute='_compute_class_domain', default=[])
@@ -250,6 +253,116 @@ class ProgressReportFilterWizard(models.TransientModel):
         name = name.strip()
         name = name.lower()
         return name
+
+    def action_print_progress_pdf(self):
+        domain = []
+        title = []
+        if self.year_id.id:
+            domain.append(('year_id', '=', self.year_id.id))
+            title.append(self.year_id.name)
+        if self.school_id.id:
+            domain.append(('school_id', '=', self.school_id.id))
+            title.append(self.school_id.name)
+        if self.level_id.id:
+            domain.append(('level_id', '=', self.level_id.id))
+            title.append(self.level_id.name)
+        if self.field_of_study_id.id:
+            domain.append(('field_of_study_id', '=', self.field_of_study_id.id))
+            title.append(self.field_of_study_id.name)
+        if self.specialty_id.id:
+            domain.append(('specialty_id', '=', self.specialty_id.id))
+            title.append(self.specialty_id.name)
+        if self.option_id.id:
+            domain.append(('option_id', '=', self.option_id.id))
+            title.append(self.option_id.name)
+        if self.type_cour:
+            domain.append(('class_id.type_cour', '=', self.type_cour))
+            title.append(TYPE_COUR[self.type_cour])
+        if self.class_id.id:
+            domain.append(('class_id', '=', self.class_id.id))
+            title.append(self.class_id.name)
+        if self.subject_id.id:
+            domain.append(('subject_id', '=', self.subject_id.id))
+            title.append(self.subject_id.name)
+
+        order = 'date asc, id asc'
+
+        timetables = self.env['siantou.ems.timetable.timetable'].search(domain, order=order).sorted(lambda rec: (rec.date, rec.id))
+        timetables = list(timetables)
+
+        key_timetables = {}
+        for timetable in timetables:
+            if not timetable.date or not timetable.day_of_week or not timetable.employee_id.id:
+                continue
+
+            end_time = ProgressReportFilterWizard.convert_float_to_time(timetable.end_time, has_second=True)
+            start_time = ProgressReportFilterWizard.convert_float_to_time(timetable.start_time, has_second=True)
+            key = '{}-{}-{}-{}'.format(timetable.employee_id.id, timetable.date, start_time, end_time)
+            if key not in key_timetables:
+                key_timetables[key] = {}
+                key_timetables[key]['timetable'] = timetable
+            else:
+                continue
+
+        key_timetable_progressreports = {}
+        for key in key_timetables.keys():
+            k = '{}'.format(key_timetables[key]['timetable'].employee_id.id)
+            if k not in key_timetable_progressreports:
+                key_timetable_progressreports[k] = {}
+                key_timetable_progressreports[k]['id'] = key_timetables[key]['timetable'].employee_id.id
+                key_timetable_progressreports[k]['name'] = key_timetables[key]['timetable'].employee_id.name
+                key_timetable_progressreports[k]['total'] = 1
+                key_timetable_progressreports[k]['available'] = len(key_timetables[key]['timetable'].session_ids.ids)
+            else:
+                key_timetable_progressreports[k]['total'] += 1
+                key_timetable_progressreports[k]['available'] += len(key_timetables[key]['timetable'].session_ids.ids)
+
+        key_progressreports = {}
+        if self.status:
+            if self.status == 'progressreport_available':
+                title.append(STATUS_PROGRESSREPORT[self.status])
+                for key in key_timetable_progressreports.keys():
+                    if key_timetable_progressreports[key]['available'] > 0:
+                        key_progressreports[key] = key_timetable_progressreports[key]
+            elif self.status == 'progressreport_not_available':
+                title.append(STATUS_PROGRESSREPORT[self.status])
+                for key in key_timetable_progressreports.keys():
+                    if key_timetable_progressreports[key]['available'] == 0:
+                        key_progressreports[key] = key_timetable_progressreports[key]
+
+        _logger.info(f'----------- tototototototo key_progressreports {key_progressreports} -----------')
+
+        if len(title) > 0:
+            title = ' / '.join(title)
+        else:
+            title = 'Non spécifié'
+
+        self.env['ir.config_parameter'].sudo().set_param(f'siantou.filter_user_{self.env.user.id}', title)
+
+        filter_title = self.env['ir.config_parameter'].sudo().get_param(f'siantou.filter_user_{self.env.user.id}', '')
+
+        title = 'Fiches de progression'
+
+        if self.status:
+            if self.status == 'progressreport_available':
+                title = 'Fiches de progression disponibles'
+            elif self.status == 'progressreport_not_available':
+                title = 'Fiches de progression pas disponibles'
+
+        data = {
+            'docdata': {}
+        }
+        data['docdata']['title'] = title
+        data['docdata']['filter'] = filter_title
+        data['docdata']['progressreport_data'] = key_progressreports
+
+        if len(data['docdata']['progressreport_data'].keys()) == 0:
+            raise UserError('Aucune donnée trouvée')
+        report_action = self.env.ref('siantou_ems_core.action_report_timetable_hours_percentage')
+        report_action.update({
+            'name': '{} PDF'.format(title),
+        })
+        return report_action.report_action(self, data=data)
 
     def action_print_percentage_pdf(self, sort_type=None, print_percentage=True):
         domain = []
