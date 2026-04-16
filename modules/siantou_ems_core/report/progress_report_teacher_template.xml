@@ -67,7 +67,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <t t-set="progress_report_teacher_data" t-value="docdata['progress_report_teacher_data']"/>
+                                    <t t-set="progress_report_teacher_data" t-value="dict(sorted(docdata['progress_report_teacher_data'].items(), key=lambda item: item[1]['name'] if item[1]['name'] else ''))"/>
                                     <t t-set="keys" t-value="progress_report_teacher_data.keys()"/>
                                     <t t-foreach="keys" t-as="key">
                                         <tr>

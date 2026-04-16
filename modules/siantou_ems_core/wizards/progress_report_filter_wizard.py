@@ -338,6 +338,9 @@ class ProgressReportFilterWizard(models.TransientModel):
 
         _logger.info(f'----------- tototototototo key_progress_report_teachers {key_progress_report_teachers} -----------')
 
+        key_progress_report_teachers = sorted(key_progress_report_teachers.items(), key=self.sort_progress_report)
+        key_progress_report_teachers = dict(key_progress_report_teachers)
+
         if len(title) > 0:
             title = ' / '.join(title)
         else:
