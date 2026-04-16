@@ -366,11 +366,14 @@ class ProgressReportFilterWizard(models.TransientModel):
         data['docdata']['filter'] = filter_title
         data['docdata']['progress_report_teacher_data'] = key_progress_report_teachers
 
+        if self.school_id.id:
+            data['docdata']['title'] = '{} {}'.format(data['docdata']['title'], self.school_id.name)
+
         if len(data['docdata']['progress_report_teacher_data'].keys()) == 0:
             raise UserError('Aucune donnée trouvée')
         report_action = self.env.ref('siantou_ems_core.action_report_progress_report_teacher')
         report_action.update({
-            'name': '{} PDF'.format(title),
+            'name': '{} PDF'.format(data['docdata']['title']),
         })
         return report_action.report_action(self, data=data)
 
