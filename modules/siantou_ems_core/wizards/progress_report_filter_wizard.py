@@ -284,6 +284,7 @@ class ProgressReportFilterWizard(models.TransientModel):
         if self.subject_id.id:
             domain.append(('subject_id', '=', self.subject_id.id))
             title.append(self.subject_id.name)
+        domain.append(('status', '!=', 'pending'))
 
         order = 'date asc, id asc'
 
