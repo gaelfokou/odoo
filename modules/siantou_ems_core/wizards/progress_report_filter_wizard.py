@@ -315,6 +315,7 @@ class ProgressReportFilterWizard(models.TransientModel):
                 key_timetable_progressreports[k]['available'] = len(key_timetables[key]['timetable'].session_ids.ids)
                 key_timetable_progressreports[k]['total'] = 1
                 key_timetable_progressreports[k]['percentage'] = 0.0
+                key_timetable_progressreports[k]['class'] = ''
             else:
                 key_timetable_progressreports[k]['available'] += len(key_timetables[key]['timetable'].session_ids.ids)
                 key_timetable_progressreports[k]['total'] += 1
@@ -323,6 +324,14 @@ class ProgressReportFilterWizard(models.TransientModel):
             if key_timetable_progressreports[key]['total'] > 0:
                 key_timetable_progressreports[key]['percentage'] = (key_timetable_progressreports[key]['available'] / key_timetable_progressreports[key]['total']) * 100
                 key_timetable_progressreports[key]['percentage'] = round(key_timetable_progressreports[key]['percentage'], 2)
+
+        for key in key_timetable_progressreports.keys():
+            if key_timetable_progressreports[key]['percentage'] >= 90.0:
+                key_timetable_progressreports[key]['class'] = 'text-success'
+            if key_timetable_progressreports[key]['percentage'] >= 80.0 and key_timetable_progressreports[key]['percentage'] < 90.0:
+                key_timetable_progressreports[key]['class'] = 'text-warning'
+            if key_timetable_progressreports[key]['percentage'] < 80.0:
+                key_timetable_progressreports[key]['class'] = 'text-danger'
 
         key_progress_report_teachers = {}
         if self.status:
@@ -564,7 +573,7 @@ class ProgressReportFilterWizard(models.TransientModel):
         if print_percentage:
             report_action = self.env.ref('siantou_ems_core.action_report_progress_report_percentage')
             report_action.update({
-                'name': '{} PDF'.format(title),
+                'name': '{} PDF'.format(data['docdata']['title']),
             })
             return report_action.report_action(self, data=data)
         else:
