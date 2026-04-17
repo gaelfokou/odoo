@@ -62,7 +62,7 @@
                                 </thead>
                                 <thead class="thead">
                                     <tr class="active">
-                                        <th class="text-center" t-esc="docdata['label']"/>
+                                        <th class="text-center">Enseignant</th>
                                         <th class="text-center">Pourcentage</th>
                                     </tr>
                                 </thead>

@@ -542,20 +542,17 @@ class ProgressReportFilterWizard(models.TransientModel):
 
         filter_title = self.env['ir.config_parameter'].sudo().get_param(f'siantou.filter_user_{self.env.user.id}', '')
 
-        label = 'Enseignant'
-
         if sort_type:
             if sort_type == 'top':
-                title = 'Pourcentage progression Top 10 par {}'.format(label)
+                title = 'Pourcentage progression Top 10'
             else:
-                title = 'Pourcentage progression Last 10 par {}'.format(label)
+                title = 'Pourcentage progression Last 10'
         else:
-            title = 'Pourcentage progression par {}'.format(label)
+            title = 'Pourcentage progression'
 
         data = {
             'docdata': {}
         }
-        data['docdata']['label'] = label
         data['docdata']['title'] = title
         data['docdata']['filter'] = filter_title
         data['docdata']['progress_report_percentages'] = progress_report_percentages
