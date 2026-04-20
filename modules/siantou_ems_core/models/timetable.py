@@ -266,6 +266,55 @@ class Timetable(models.Model):
         ondelete='cascade'
     )
 
+    hours_credit = fields.Float(
+        'Volume horaire',
+        related='subject_id.hours_credit',
+        store=True
+    )
+
+    @api.constrains('class_id', 'class_group_id', 'subject_id', 'date', 'hours_credit')
+    def _constrains_hours_credit(self):
+        for record in self:
+            if record.hours_credit > record.subject_id.hours_credit:
+                raise ValidationError(f"Le volume horaire du semestre doit être inférieure ou égale au volume horaire du cours {record.subject_id.hours_credit}")
+            start_date = record.date - timedelta(days=record.date.weekday())
+            end_date = start_date + timedelta(days=6)
+            if record.class_group_id.id:
+                timetables = self.env['siantou.ems.timetable.timetable'].search([
+                    ('id', '!=', record.id),
+                    ('class_id', '=', record.class_id.id),
+                    ('subject_id', '=', record.subject_id.id),
+                    ('class_group_id', '=', record.class_group_id.id),
+                ]).filtered(lambda rec: rec.date and rec.day_of_week and rec.date >= start_date and rec.date <= end_date)
+            else:
+                timetables = self.env['siantou.ems.timetable.timetable'].search([
+                    ('id', '!=', record.id),
+                    ('class_id', '=', record.class_id.id),
+                    ('subject_id', '=', record.subject_id.id),
+                    ('class_group_id', '=', False),
+                ]).filtered(lambda rec: rec.date and rec.day_of_week and rec.date >= start_date and rec.date <= end_date)
+            timetables = list(timetables)
+            if len(timetables) > 0:
+                hours_credit = 0.0
+                key_timetables = {}
+                for timetable in timetables:
+                    if not timetable.date or not timetable.day_of_week or not timetable.employee_id.id:
+                        continue
+
+                    end_time = Timetable.convert_float_to_time(timetable.end_time, has_second=True)
+                    start_time = Timetable.convert_float_to_time(timetable.start_time, has_second=True)
+                    key = '{}-{}-{}-{}'.format(timetable.class_id.id, timetable.date, start_time, end_time)
+                    if key not in key_timetables:
+                        key_timetables[key] = {}
+                        key_timetables[key]['timetable'] = timetable
+                    else:
+                        continue
+
+                    hours_credit += key_timetables[key]['timetable'].hours_credit
+                    hours_credit += record.hours_credit
+                if hours_credit > record.subject_id.hours_credit:
+                    raise ValidationError(f"Le volume horaire de la semaine doit être inférieure ou égale au volume horaire du cours {record.subject_id.hours_credit}")
+
     # Bâtiment auquel appartient la salle de classe
     building_id = fields.Many2one(
         'siantou.ems.core.building',
@@ -898,21 +947,31 @@ class Timetable(models.Model):
                     timetables.append(timetable_id)
                 subject_day_hour_id.unlink()
             if len(timetables) > 0:
-                semester_hours_credit = timetable.subject_id.hours_credit
-                if times[0] == timetable.semestre_id.start_time and times[1] == timetable.semestre_id.end_time:
-                    number_of_week = timetable.semestre_id.number_of_week
+                hours_credit = timetable.hours_credit
+                if times[0] == timetable.semester_id.start_time and times[1] == timetable.semester_id.end_time:
+                    number_of_week = timetable.semester_id.number_of_week
                 else:
                     start_time = times[0]
                     end_time = times[1]
                     diff_days = (end_time - start_time).days
                     number_of_week = math.ceil(diff_days / 7)
                 for week in range(0, number_of_week):
-                    if semester_hours_credit <= 0:
+                    if hours_credit <= 0:
                         break
                     for first_timetable in timetables:
-                        weekly_hours = first_timetable.end_time - first_timetable.start_time
+                        end_time = Timetable.convert_float_to_time(first_timetable.end_time, has_second=True)
+                        start_time = Timetable.convert_float_to_time(first_timetable.start_time, has_second=True)
+                        end_time = datetime.strptime(f"{first_timetable.date} {end_time}", DATETIME_FORMAT)
+                        start_time = datetime.strptime(f"{first_timetable.date} {start_time}", DATETIME_FORMAT)
+
+                        worked_hours = end_time - start_time
+                        worked_hours = worked_hours.total_seconds() / 3600.0
+                        worked_hours = round(worked_hours, 2)
+
                         weekly_hours = weekly_hours - first_timetable.not_active_slotitems
-                        semester_hours_credit -= weekly_hours
+                        if worked_hours < 0.0:
+                            continue
+                        hours_credit -= weekly_hours
                         if week > 0:
                             target_date = first_timetable.date + timedelta(weeks=week)
                             timetable_id = self.env['siantou.ems.timetable.timetable'].create({
@@ -1026,7 +1085,7 @@ class Timetable(models.Model):
             total_worked_hours = round(total_worked_hours, 2)
             hours_credit = round(subject.hours_credit, 2)
             if hours_credit <= total_worked_hours:
-                raise UserError(f"Nombre d'heures programmées : {total_worked_hours} / {hours_credit}")
+                raise UserError(f"Le volume horaire programmé du semestre doit être inférieure ou égale au volume horaire du cours {total_worked_hours} / {hours_credit}")
 
         timetable = super(Timetable, self).create(vals)
 

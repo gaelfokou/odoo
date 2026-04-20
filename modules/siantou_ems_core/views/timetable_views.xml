@@ -109,6 +109,7 @@
                             <!-- <field name="ue_id" readonly="1" options="{'no_create': True}" domain="[('class_ids', '=', class_id), ('semestre_id', '=', semester_id)]"/> -->
                             <field name="subject_id_domain" invisible="1"/>
                             <field name="subject_id" options="{'no_create': True}" readonly="is_readonly == True" domain="subject_id_domain"/>
+                            <field name="hours_credit" readonly="0"/>
                             <field name="building_id" options="{'no_create': True}" readonly="is_readonly == True"/>
                             <field name="classroom_id" options="{'no_create': True}" readonly="is_readonly == True" domain="[('building_id', '=', building_id)]"/>
                             <field name="employee_id" options="{'no_create': True}" readonly="is_readonly == True" domain="[('is_teacher', '=', True), ('subject_ids', '=', subject_id)]"/>

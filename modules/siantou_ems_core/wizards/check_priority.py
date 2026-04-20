@@ -1,7 +1,19 @@
 from odoo import models, fields, api, tools, _
 from odoo.exceptions import ValidationError
-from datetime import timedelta
+from datetime import date, datetime, timedelta, time
+from dateutil.relativedelta import relativedelta
+import pytz
+import re
 import logging
+
+UTC_TZ = pytz.utc
+
+DATE_FORMAT = '%Y-%m-%d'
+DATE_FORMAT_FR = '%d/%m/%Y'
+DATETIME_FORMAT = '%Y-%m-%d %H:%M:%S'
+DATETIME_FORMAT_FR = '%d/%m/%Y %H:%M'
+TIME_FORMAT = '%H:%M:%S'
+TIME_FORMAT_FR = '%H:%M'
 
 _logger = logging.getLogger(__name__)
 
@@ -111,7 +123,52 @@ class CheckPriority(models.Model):
         total_hours = 0
         timetables = list(timetables)
         for timetable in timetables:
-            total_hours += timetable.end_time - timetable.start_time
-            total_hours = total_hours - timetable.not_active_slotitems
+            end_time = CheckPriority.convert_float_to_time(timetable.end_time, has_second=True)
+            start_time = CheckPriority.convert_float_to_time(timetable.start_time, has_second=True)
+            end_time = datetime.strptime(f"{timetable.date} {end_time}", DATETIME_FORMAT)
+            start_time = datetime.strptime(f"{timetable.date} {start_time}", DATETIME_FORMAT)
+
+            worked_hours = end_time - start_time
+            worked_hours = worked_hours.total_seconds() / 3600.0
+            worked_hours = round(worked_hours, 2)
+
+            weekly_hours = weekly_hours - timetable.not_active_slotitems
+            if worked_hours < 0.0:
+                continue
+            total_hours += weekly_hours
 
         return total_hours
+
+    @staticmethod
+    def convert_float_to_time(tm, has_second=False):
+        tm = str(tm)
+        tm = tm.split('.')
+        if len(tm) == 1:
+            tm.append('0')
+        if len(tm[0]) == 1:
+            tm[0] = '0{}'.format(tm[0])
+        elif len(tm[0]) > 2:
+            tm[0] = '{}'.format(tm[0][0:2])
+        if int(tm[0]) > 23:
+            tm[0] = '00'
+        if len(tm[1]) == 1:
+            tm[1] = '{}0'.format(tm[1])
+        elif len(tm[1]) > 2:
+            tm[1] = '{}'.format(tm[1][0:2])
+        if int(tm[1]) > 59:
+            tm[1] = '00'
+        tm = ':'.join(tm)
+        if has_second:
+            tm = '{}:00'.format(tm)
+        return tm
+
+    @staticmethod
+    def convert_time_to_float(tm):
+        tm = str(tm)
+        tm = tm.split(':')
+        tm = tm[0:2]
+        tm = '.'.join(tm)
+        tm = eval(tm)
+        tm = float(tm)
+        tm = round(tm, 2)
+        return tm

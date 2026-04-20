@@ -69,12 +69,12 @@ class TimetableWizard(models.TransientModel):
         #     unique_string = datetime.now().strftime("%Y%m%d%H%M%S")
         #     new_group = self.env['siantou.ems.timetable.group'].create({'group_name': "group-" + unique_string, 'semester_id': self.semester_id.id})
 
-        check_classes = None
+        check_classe = None
         check_specialties = None
-        check_ues = None
-        check_subjects = None
-        check_batches = None
-        check_semester_hours_credit = 0
+        check_ue = None
+        check_subject = None
+        check_batch = None
+        check_hours_credit = 0
         check_weekly_hours_credit = 0
         check_classroom_slot = None
 
@@ -95,7 +95,7 @@ class TimetableWizard(models.TransientModel):
         for i, classe in enumerate(classes):
             if not classe.field_of_study_id.school_id.id:
                 continue
-            check_classes = classe
+            check_classe = classe
             if shared_subject:
                 if self.group and self.group.strip() != '':
                     name_group = self.group + "-" + classe.name
@@ -174,26 +174,26 @@ class TimetableWizard(models.TransientModel):
             if specialty_id.id:
                 check_specialties = specialty_id
                 for ue_id in ue_ids:
-                    check_ues = ue_id
+                    check_ue = ue_id
                     subject_ids = ue_id.subject_ids.ids
                     for subject_id in subject_ids:
-                        check_subjects = subject_id
+                        check_subject = subject_id
                         for batch in batches:
-                            check_batches = batch
+                            check_batch = batch
                             subject = self.env['siantou.ems.core.subject'].browse(subject_id)
                             if shared_subject and not subject.shared_subject:
                                 continue
                             if not shared_subject and subject.shared_subject:
                                 continue
-                            semester_hours_credit = subject.hours_credit
+                            hours_credit = subject.hours_credit
                             # on verifie si le quota semestriel est atteint
-                            if semester_hours_credit > 0:
+                            if hours_credit > 0:
                                 # On parcours toutes les semaines du semestre
                                 for week in range(0, self.semester_id.number_of_week):
                                     # on verifie si le quota semestriel est atteint
-                                    if semester_hours_credit <= 0:
+                                    if hours_credit <= 0:
                                         break
-                                    check_semester_hours_credit += semester_hours_credit
+                                    check_hours_credit += hours_credit
                                     # On initialise subject_hours_credit pour gérer le nombre de jours sur lesquels on doit programmer le cours
                                     subject_hours_credit = math.ceil(subject.hours_credit / self.semester_id.number_of_week)
                                     # on verifie si le quota hebdomadaire est atteint
@@ -299,7 +299,7 @@ class TimetableWizard(models.TransientModel):
                                                     })
                                                     # self.env.cr.commit()
                                                     duration_weekly_hours_credit = available_slot['duration_weekly_hours_credit']
-                                                    semester_hours_credit -= duration_weekly_hours_credit
+                                                    hours_credit -= duration_weekly_hours_credit
                                                     weekly_hours -= duration_weekly_hours_credit
                                     else:
                                         break
@@ -313,17 +313,17 @@ class TimetableWizard(models.TransientModel):
                 if not timetable:
                     new_group.unlink()
 
-        if not check_classes:
+        if not check_classe:
             raise UserError("Aucune classe trouvée")
         elif not check_specialties:
             raise UserError("Aucune spécialité trouvée dans les classes")
-        elif not check_ues:
+        elif not check_ue:
             raise UserError("Aucun unité d'enseignement trouvé dans les classes")
-        elif not check_subjects:
+        elif not check_subject:
             raise UserError("Aucun cours trouvé")
-        elif not check_batches:
+        elif not check_batch:
             raise UserError("Aucun étudiant trouvé")
-        elif check_semester_hours_credit == 0:
+        elif check_hours_credit == 0:
             raise UserError("Aucun volume horaire semestriel trouvé")
         elif check_weekly_hours_credit == 0:
             raise UserError("Aucun volume horaire hebdomadaire trouvé")
