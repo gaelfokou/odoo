@@ -311,7 +311,9 @@ class Timetable(models.Model):
                         continue
 
                     total_hours_credit += key_timetables[key]['timetable'].hours_credit
+
                 total_hours_credit += record.hours_credit
+
                 if total_hours_credit > record.subject_id.hours_credit:
                     raise ValidationError(f"La somme des volumes horaires hebdomadaires doit être inférieure ou égale au volume horaire semestriel {total_hours_credit} / {record.subject_id.hours_credit}")
 
@@ -1058,7 +1060,6 @@ class Timetable(models.Model):
 
             timetables = list(timetables)
 
-            worked_hours = 0.0
             total_worked_hours = 0.0
             key_timetables = {}
             for timetable in timetables:
@@ -1099,11 +1100,10 @@ class Timetable(models.Model):
 
             if worked_hours >= 0.0:
                 total_worked_hours += worked_hours
-
             total_worked_hours = round(total_worked_hours, 2)
-            hours_credit = round(vals['hours_credit'], 2)
-            if total_worked_hours > hours_credit:
-                raise ValidationError(f"Le volume horaire programmé doit être inférieure ou égale au volume horaire hebdomadaire {total_worked_hours} / {hours_credit}")
+
+            if total_worked_hours > subject.hours_credit:
+                raise ValidationError(f"Le volume horaire programmé doit être inférieure ou égale au volume horaire hebdomadaire {total_worked_hours} / {subject.hours_credit}")
 
         timetable = super(Timetable, self).create(vals)
 
