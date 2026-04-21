@@ -276,7 +276,7 @@ class Timetable(models.Model):
     def _constrains_hours_credit(self):
         for record in self:
             if record.hours_credit > record.subject_id.hours_credit:
-                raise ValidationError(f"Le volume horaire hebdomadaire doit être inférieure ou égale au volume horaire semestriel {record.subject_id.hours_credit}")
+                raise ValidationError(f"Le volume horaire hebdomadaire doit être inférieure ou égale au volume horaire semestriel {record.hours_credit} / {record.subject_id.hours_credit}")
             start_date = record.date - timedelta(days=record.date.weekday())
             end_date = start_date + timedelta(days=6)
             if record.class_group_id.id:
@@ -311,9 +311,9 @@ class Timetable(models.Model):
                         continue
 
                     total_hours_credit += key_timetables[key]['timetable'].hours_credit
-                    total_hours_credit += record.hours_credit
+                total_hours_credit += record.hours_credit
                 if total_hours_credit > record.subject_id.hours_credit:
-                    raise ValidationError(f"La somme des volumes horaires hebdomadaires doit être inférieure ou égale au volume horaire semestriel {record.subject_id.hours_credit}")
+                    raise ValidationError(f"La somme des volumes horaires hebdomadaires doit être inférieure ou égale au volume horaire semestriel {total_hours_credit} / {record.subject_id.hours_credit}")
 
     # Bâtiment auquel appartient la salle de classe
     building_id = fields.Many2one(
