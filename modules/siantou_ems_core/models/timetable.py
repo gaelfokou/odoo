@@ -266,11 +266,41 @@ class Timetable(models.Model):
         ondelete='cascade'
     )
 
+    is_custom_hours_credit = fields.Boolean(string='Volume horaire personnalisé ?', default=False)
+
     hours_credit = fields.Float(
         'Volume horaire',
-        related='subject_id.hours_credit',
+        compute="_compute_hours_credit",
         store=True
     )
+
+    @api.depends('subject_id', 'is_custom_hours_credit')
+    def _compute_hours_credit(self):
+        for record in self:
+            if record.subject_id.id:
+                if record.is_custom_hours_credit:
+                    record.hours_credit = record.hours_credit
+                else:
+                    record.hours_credit = record.subject_id.hours_credit
+            else:
+                if record.is_custom_hours_credit:
+                    record.hours_credit = record.hours_credit
+                else:
+                    record.hours_credit = None
+
+    @api.onchange('subject_id')
+    def _onchange_hours_credit(self):
+        for record in self:
+            if record.subject_id.id:
+                if record.is_custom_hours_credit:
+                    record.hours_credit = record.hours_credit
+                else:
+                    record.hours_credit = record.subject_id.hours_credit
+            else:
+                if record.is_custom_hours_credit:
+                    record.hours_credit = record.hours_credit
+                else:
+                    record.hours_credit = None
 
     @api.constrains('class_id', 'class_group_id', 'subject_id', 'date', 'hours_credit')
     def _constrains_hours_credit(self):
@@ -939,6 +969,7 @@ class Timetable(models.Model):
                         'class_group_id': timetable.class_group_id.id,
                         'ue_id': timetable.ue_id.id,
                         'subject_id': timetable.subject_id.id,
+                        'is_custom_hours_credit': timetable.is_custom_hours_credit,
                         'hours_credit': timetable.hours_credit,
                         'building_id': timetable.building_id.id,
                         'classroom_id': timetable.classroom_id.id,
@@ -991,6 +1022,7 @@ class Timetable(models.Model):
                                 'class_group_id': first_timetable.class_group_id.id,
                                 'ue_id': first_timetable.ue_id.id,
                                 'subject_id': first_timetable.subject_id.id,
+                                'is_custom_hours_credit': first_timetable.is_custom_hours_credit,
                                 'hours_credit': first_timetable.hours_credit,
                                 'building_id': first_timetable.building_id.id,
                                 'classroom_id': first_timetable.classroom_id.id,
@@ -1726,6 +1758,7 @@ class TimetableGroup(models.Model):
                             'class_group_id': timetable_id.class_group_id.id,
                             'ue_id': timetable_id.ue_id.id,
                             'subject_id': timetable_id.subject_id.id,
+                            'is_custom_hours_credit': timetable_id.is_custom_hours_credit,
                             'hours_credit': timetable_id.hours_credit,
                             'building_id': timetable_id.building_id.id,
                             'classroom_id': timetable_id.classroom_id.id,
