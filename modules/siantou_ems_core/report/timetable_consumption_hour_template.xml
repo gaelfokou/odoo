@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Template du rapport PDF -->
+        <template id="template_report_timetable_consumption_hour">
+            <t t-call="web.html_container">
+                <t t-if="docdata and docdata['timetable_consumption_hour_data']">
+                    <t t-call="web.basic_layout">
+                        <style>
+                            .table {
+                                border-collapse: collapse;
+                                width: 100%;
+                            }
+                            .table .thead th, .table td {
+                                border: 1px solid lightgrey !important;
+                                padding: 4px 4px !important;
+                                margin: 2px 4px !important;
+                                text-align: center;
+                                font-size: 12px;
+                            }
+                            .table .thead th {
+                                background-color: #f2f2f2;
+                                font-size: 12px;
+                            }
+                            h3 {
+                                font-size: 18px;
+                                margin: 2px 4px !important;
+                            }
+                            h4 {
+                                font-size: 16px;
+                                margin: 2px 4px !important;
+                            }
+                            h5 {
+                                font-size: 14px;
+                                margin: 2px 4px !important;
+                            }
+                            br {
+                                padding: 1px 0px !important;
+                                margin: 1px 0px !important;
+                            }
+                        </style>
+                        <div class="page">
+                            <table class="table table-bordered table-sm text-center">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center" t-attf-colspan="3" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;">
+                                            <h3>INSTITUT UNIVERSITAIRE SIANTOU</h3>
+                                            <h4>
+                                                <span t-esc="docdata['title']"/>
+                                            </h4>
+                                            <h5 class="text-left">
+                                                <span t-esc="'Filtre :'"/>
+                                                <span t-esc="docdata['filter'] or 'Non spécifié'"/>
+                                            </h5>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <thead>
+                                    <tr>
+                                        <th class="text-left" t-attf-colspan="3" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
+                                    </tr>
+                                </thead>
+                                <thead class="thead">
+                                    <tr class="active">
+                                        <th class="text-center" t-esc="docdata['label']"/>
+                                        <th class="text-center">Consommation</th>
+                                        <th class="text-center">Pourcentage</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-set="timetable_consumption_hour_data" t-value="dict(sorted(docdata['timetable_consumption_hour_data'].items(), key=lambda item: item[1]['percentage'], reverse=True))"/>
+                                    <t t-set="keys" t-value="timetable_consumption_hour_data.keys()"/>
+                                    <t t-foreach="keys" t-as="key">
+                                        <tr>
+                                            <td class="text-left">
+                                                <span t-esc="timetable_consumption_hour_data[key]['name']"/>
+                                            </td>
+                                            <td class="text-center"></td>
+                                            <td class="text-center"></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-left" style="background-color: #f2f2f2;"></td>
+                                            <td class="text-center" style="background-color: #f2f2f2;">
+                                                <span t-esc="str(timetable_consumption_hour_data[key]['worked_time']) + ' / ' + str(timetable_consumption_hour_data[key]['all_worked_time'])"/>
+                                            </td>
+                                            <td class="text-center" style="background-color: #f2f2f2;">
+                                                <span t-esc="str(timetable_consumption_hour_data[key]['percentage']) + '%'"/>
+                                            </td>
+                                        </tr>
+                                    </t>
+                                </tbody>
+                            </table>
+                        </div>
+                    </t>
+                </t>
+                <t t-else="">
+                    <div>Aucune donnée d'emploi du temps disponible. Veuillez vérifier vos filtres.</div>
+                </t>
+            </t>
+        </template>
+
+        <record id="paperformat_timetable_consumption_hour" model="report.paperformat">
+            <field name="name">Format du diplome</field>
+            <field name="default" eval="True"/>
+            <field name="format">A2</field>
+            <field name="orientation">Landscape</field>
+            <field name="margin_top">5</field>
+            <field name="margin_bottom">15</field>
+            <field name="margin_left">7</field>
+            <field name="margin_right">7</field>
+            <field name="header_line" eval="True"/>
+            <field name="header_spacing">5</field>
+            <field name="dpi">90</field>
+        </record>
+        <record id="action_report_timetable_consumption_hour" model="ir.actions.report">
+            <field name="name">Emplois du temps PDF</field>
+            <field name="model">teacher.timetable.attendance</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">siantou_ems_core.template_report_timetable_consumption_hour</field>
+            <field name="report_file">siantou_ems_core.template_report_timetable_consumption_hour</field>
+            <field name="print_report_name">'Fiche de - %s' % (docdata.semester)</field>
+            <field name="binding_model_id" eval="False"/>
+            <field name="paperformat_id" ref="paperformat_timetable_consumption_hour"/>
+            <field name="binding_type">report</field>
+        </record>
+    </data>
+</odoo>

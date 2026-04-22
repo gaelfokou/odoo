@@ -1607,71 +1607,71 @@ class TimetableFilterWizard(models.TransientModel):
 
             key_timetables[key]['worked_hours'] = worked_hours
 
-        key_timetable_percentages = {}
+        key_timetable_consumption_hours = {}
         for key in key_timetables.keys():
             if self.print_type == 'teacher':
                 k = '{}'.format(key_timetables[key]['timetable'].employee_id.id)
-                if k not in key_timetable_percentages:
-                    key_timetable_percentages[k] = {}
-                    key_timetable_percentages[k]['id'] = key_timetables[key]['timetable'].employee_id.id
-                    key_timetable_percentages[k]['name'] = key_timetables[key]['timetable'].employee_id.name
-                    key_timetable_percentages[k]['data'] = []
-                    key_timetable_percentages[k]['worked_time'] = 0.0
-                    key_timetable_percentages[k]['percentage'] = 0.0
+                if k not in key_timetable_consumption_hours:
+                    key_timetable_consumption_hours[k] = {}
+                    key_timetable_consumption_hours[k]['id'] = key_timetables[key]['timetable'].employee_id.id
+                    key_timetable_consumption_hours[k]['name'] = key_timetables[key]['timetable'].employee_id.name
+                    key_timetable_consumption_hours[k]['data'] = []
+                    key_timetable_consumption_hours[k]['worked_time'] = 0.0
+                    key_timetable_consumption_hours[k]['percentage'] = 0.0
             elif self.print_type == 'specialty':
                 k = '{}'.format(key_timetables[key]['timetable'].specialty_id.id)
-                if k not in key_timetable_percentages:
-                    key_timetable_percentages[k] = {}
-                    key_timetable_percentages[k]['id'] = key_timetables[key]['timetable'].specialty_id.id
-                    key_timetable_percentages[k]['name'] = '{} ({})'.format(key_timetables[key]['timetable'].specialty_id.name, key_timetables[key]['timetable'].specialty_id.field_of_study_id.cycle_id.name)
-                    key_timetable_percentages[k]['data'] = []
-                    key_timetable_percentages[k]['worked_time'] = 0.0
-                    key_timetable_percentages[k]['percentage'] = 0.0
+                if k not in key_timetable_consumption_hours:
+                    key_timetable_consumption_hours[k] = {}
+                    key_timetable_consumption_hours[k]['id'] = key_timetables[key]['timetable'].specialty_id.id
+                    key_timetable_consumption_hours[k]['name'] = '{} ({})'.format(key_timetables[key]['timetable'].specialty_id.name, key_timetables[key]['timetable'].specialty_id.field_of_study_id.cycle_id.name)
+                    key_timetable_consumption_hours[k]['data'] = []
+                    key_timetable_consumption_hours[k]['worked_time'] = 0.0
+                    key_timetable_consumption_hours[k]['percentage'] = 0.0
             elif self.print_type == 'department':
                 k = '{}'.format(key_timetables[key]['timetable'].department_id.id)
-                if k not in key_timetable_percentages:
-                    key_timetable_percentages[k] = {}
-                    key_timetable_percentages[k]['id'] = key_timetables[key]['timetable'].department_id.id
-                    key_timetable_percentages[k]['name'] = key_timetables[key]['timetable'].department_id.name
-                    key_timetable_percentages[k]['data'] = []
-                    key_timetable_percentages[k]['worked_time'] = 0.0
-                    key_timetable_percentages[k]['percentage'] = 0.0
+                if k not in key_timetable_consumption_hours:
+                    key_timetable_consumption_hours[k] = {}
+                    key_timetable_consumption_hours[k]['id'] = key_timetables[key]['timetable'].department_id.id
+                    key_timetable_consumption_hours[k]['name'] = key_timetables[key]['timetable'].department_id.name
+                    key_timetable_consumption_hours[k]['data'] = []
+                    key_timetable_consumption_hours[k]['worked_time'] = 0.0
+                    key_timetable_consumption_hours[k]['percentage'] = 0.0
             else:
                 k = '{}'.format(key_timetables[key]['timetable'].school_id.id)
-                if k not in key_timetable_percentages:
-                    key_timetable_percentages[k] = {}
-                    key_timetable_percentages[k]['id'] = key_timetables[key]['timetable'].school_id.id
-                    key_timetable_percentages[k]['name'] = key_timetables[key]['timetable'].school_id.name
-                    key_timetable_percentages[k]['data'] = []
-                    key_timetable_percentages[k]['worked_time'] = 0.0
-                    key_timetable_percentages[k]['percentage'] = 0.0
-            timetable_percentage = {}
-            timetable_percentage['id'] = key_timetables[key]['timetable'].id
-            timetable_percentage['date'] = key_timetables[key]['timetable'].date
-            timetable_percentage['date_of_week'] = datetime.strftime(key_timetables[key]['timetable'].date, DATE_FORMAT_FR)
-            timetable_percentage['class_id'] = key_timetables[key]['timetable'].class_id.id
-            timetable_percentage['class_name'] = key_timetables[key]['timetable'].class_id.name
-            timetable_percentage['level_id'] = key_timetables[key]['timetable'].level_id.id
-            timetable_percentage['level_name'] = key_timetables[key]['timetable'].level_id.name
-            timetable_percentage['subject_id'] = key_timetables[key]['timetable'].subject_id.id
-            timetable_percentage['subject_name'] = key_timetables[key]['timetable'].subject_id.name
-            timetable_percentage['subject_code'] = key_timetables[key]['timetable'].subject_id.code
-            timetable_percentage['subject_shared_subject'] = '(TC)' if key_timetables[key]['timetable'].subject_id.shared_subject else ''
-            timetable_percentage['employee_id'] = key_timetables[key]['timetable'].employee_id.id
-            timetable_percentage['identifier'] = key_timetables[key]['timetable'].employee_id.identifier
-            timetable_percentage['employee_name'] = key_timetables[key]['timetable'].employee_id.name
-            timetable_percentage['start_time'] = TimetableFilterWizard.convert_float_to_time(key_timetables[key]['timetable'].start_time)
-            timetable_percentage['end_time'] = TimetableFilterWizard.convert_float_to_time(key_timetables[key]['timetable'].end_time)
-            timetable_percentage['day_of_week'] = CURRENT_WEEKDAY[key_timetables[key]['timetable'].day_of_week]
-            timetable_percentage['worked_start_time'] = TimetableFilterWizard.convert_float_to_time(key_timetables[key]['timetable'].worked_start_time)
-            timetable_percentage['worked_end_time'] = TimetableFilterWizard.convert_float_to_time(key_timetables[key]['timetable'].worked_end_time)
-            timetable_percentage['worked_time'] = key_timetables[key]['worked_hours']
-            timetable_percentage['status'] = STATUS_TIMETABLE[key_timetables[key]['timetable'].status]
-            key_timetable_percentages[k]['worked_time'] += timetable_percentage['worked_time']
-            key_timetable_percentages[k]['data'].append(timetable_percentage)
+                if k not in key_timetable_consumption_hours:
+                    key_timetable_consumption_hours[k] = {}
+                    key_timetable_consumption_hours[k]['id'] = key_timetables[key]['timetable'].school_id.id
+                    key_timetable_consumption_hours[k]['name'] = key_timetables[key]['timetable'].school_id.name
+                    key_timetable_consumption_hours[k]['data'] = []
+                    key_timetable_consumption_hours[k]['worked_time'] = 0.0
+                    key_timetable_consumption_hours[k]['percentage'] = 0.0
+            timetable_consumption_hour = {}
+            timetable_consumption_hour['id'] = key_timetables[key]['timetable'].id
+            timetable_consumption_hour['date'] = key_timetables[key]['timetable'].date
+            timetable_consumption_hour['date_of_week'] = datetime.strftime(key_timetables[key]['timetable'].date, DATE_FORMAT_FR)
+            timetable_consumption_hour['class_id'] = key_timetables[key]['timetable'].class_id.id
+            timetable_consumption_hour['class_name'] = key_timetables[key]['timetable'].class_id.name
+            timetable_consumption_hour['level_id'] = key_timetables[key]['timetable'].level_id.id
+            timetable_consumption_hour['level_name'] = key_timetables[key]['timetable'].level_id.name
+            timetable_consumption_hour['subject_id'] = key_timetables[key]['timetable'].subject_id.id
+            timetable_consumption_hour['subject_name'] = key_timetables[key]['timetable'].subject_id.name
+            timetable_consumption_hour['subject_code'] = key_timetables[key]['timetable'].subject_id.code
+            timetable_consumption_hour['subject_shared_subject'] = '(TC)' if key_timetables[key]['timetable'].subject_id.shared_subject else ''
+            timetable_consumption_hour['employee_id'] = key_timetables[key]['timetable'].employee_id.id
+            timetable_consumption_hour['identifier'] = key_timetables[key]['timetable'].employee_id.identifier
+            timetable_consumption_hour['employee_name'] = key_timetables[key]['timetable'].employee_id.name
+            timetable_consumption_hour['start_time'] = TimetableFilterWizard.convert_float_to_time(key_timetables[key]['timetable'].start_time)
+            timetable_consumption_hour['end_time'] = TimetableFilterWizard.convert_float_to_time(key_timetables[key]['timetable'].end_time)
+            timetable_consumption_hour['day_of_week'] = CURRENT_WEEKDAY[key_timetables[key]['timetable'].day_of_week]
+            timetable_consumption_hour['worked_start_time'] = TimetableFilterWizard.convert_float_to_time(key_timetables[key]['timetable'].worked_start_time)
+            timetable_consumption_hour['worked_end_time'] = TimetableFilterWizard.convert_float_to_time(key_timetables[key]['timetable'].worked_end_time)
+            timetable_consumption_hour['worked_time'] = key_timetables[key]['worked_hours']
+            timetable_consumption_hour['status'] = STATUS_TIMETABLE[key_timetables[key]['timetable'].status]
+            key_timetable_consumption_hours[k]['worked_time'] += timetable_consumption_hour['worked_time']
+            key_timetable_consumption_hours[k]['data'].append(timetable_consumption_hour)
 
-        for key in key_timetable_percentages.keys():
-            key_timetable_percentages[key]['worked_time'] = round(key_timetable_percentages[key]['worked_time'], 2)
+        for key in key_timetable_consumption_hours.keys():
+            key_timetable_consumption_hours[key]['worked_time'] = round(key_timetable_consumption_hours[key]['worked_time'], 2)
 
         key_all_timetables = {}
         for timetable in all_timetables:
@@ -1706,83 +1706,84 @@ class TimetableFilterWizard(models.TransientModel):
 
             key_all_timetables[key]['worked_hours'] = worked_hours
 
-        key_all_timetable_percentages = {}
+        key_all_timetable_consumption_hours = {}
         for key in key_all_timetables.keys():
             if self.print_type == 'teacher':
                 k = '{}'.format(key_all_timetables[key]['timetable'].employee_id.id)
-                if k not in key_all_timetable_percentages:
-                    key_all_timetable_percentages[k] = {}
-                    key_all_timetable_percentages[k]['id'] = key_all_timetables[key]['timetable'].employee_id.id
-                    key_all_timetable_percentages[k]['name'] = key_all_timetables[key]['timetable'].employee_id.name
-                    key_all_timetable_percentages[k]['data'] = []
-                    key_all_timetable_percentages[k]['worked_time'] = 0.0
-                    key_all_timetable_percentages[k]['percentage'] = 0.0
+                if k not in key_all_timetable_consumption_hours:
+                    key_all_timetable_consumption_hours[k] = {}
+                    key_all_timetable_consumption_hours[k]['id'] = key_all_timetables[key]['timetable'].employee_id.id
+                    key_all_timetable_consumption_hours[k]['name'] = key_all_timetables[key]['timetable'].employee_id.name
+                    key_all_timetable_consumption_hours[k]['data'] = []
+                    key_all_timetable_consumption_hours[k]['worked_time'] = 0.0
+                    key_all_timetable_consumption_hours[k]['percentage'] = 0.0
             elif self.print_type == 'specialty':
                 k = '{}'.format(key_all_timetables[key]['timetable'].specialty_id.id)
-                if k not in key_all_timetable_percentages:
-                    key_all_timetable_percentages[k] = {}
-                    key_all_timetable_percentages[k]['id'] = key_all_timetables[key]['timetable'].specialty_id.id
-                    key_all_timetable_percentages[k]['name'] = '{} ({})'.format(key_all_timetables[key]['timetable'].specialty_id.name, key_all_timetables[key]['timetable'].specialty_id.field_of_study_id.cycle_id.name)
-                    key_all_timetable_percentages[k]['data'] = []
-                    key_all_timetable_percentages[k]['worked_time'] = 0.0
-                    key_all_timetable_percentages[k]['percentage'] = 0.0
+                if k not in key_all_timetable_consumption_hours:
+                    key_all_timetable_consumption_hours[k] = {}
+                    key_all_timetable_consumption_hours[k]['id'] = key_all_timetables[key]['timetable'].specialty_id.id
+                    key_all_timetable_consumption_hours[k]['name'] = '{} ({})'.format(key_all_timetables[key]['timetable'].specialty_id.name, key_all_timetables[key]['timetable'].specialty_id.field_of_study_id.cycle_id.name)
+                    key_all_timetable_consumption_hours[k]['data'] = []
+                    key_all_timetable_consumption_hours[k]['worked_time'] = 0.0
+                    key_all_timetable_consumption_hours[k]['percentage'] = 0.0
             elif self.print_type == 'department':
                 k = '{}'.format(key_all_timetables[key]['timetable'].department_id.id)
-                if k not in key_all_timetable_percentages:
-                    key_all_timetable_percentages[k] = {}
-                    key_all_timetable_percentages[k]['id'] = key_all_timetables[key]['timetable'].department_id.id
-                    key_all_timetable_percentages[k]['name'] = key_all_timetables[key]['timetable'].department_id.name
-                    key_all_timetable_percentages[k]['data'] = []
-                    key_all_timetable_percentages[k]['worked_time'] = 0.0
-                    key_all_timetable_percentages[k]['percentage'] = 0.0
+                if k not in key_all_timetable_consumption_hours:
+                    key_all_timetable_consumption_hours[k] = {}
+                    key_all_timetable_consumption_hours[k]['id'] = key_all_timetables[key]['timetable'].department_id.id
+                    key_all_timetable_consumption_hours[k]['name'] = key_all_timetables[key]['timetable'].department_id.name
+                    key_all_timetable_consumption_hours[k]['data'] = []
+                    key_all_timetable_consumption_hours[k]['worked_time'] = 0.0
+                    key_all_timetable_consumption_hours[k]['percentage'] = 0.0
             else:
                 k = '{}'.format(key_all_timetables[key]['timetable'].school_id.id)
-                if k not in key_all_timetable_percentages:
-                    key_all_timetable_percentages[k] = {}
-                    key_all_timetable_percentages[k]['id'] = key_all_timetables[key]['timetable'].school_id.id
-                    key_all_timetable_percentages[k]['name'] = key_all_timetables[key]['timetable'].school_id.name
-                    key_all_timetable_percentages[k]['data'] = []
-                    key_all_timetable_percentages[k]['worked_time'] = 0.0
-                    key_all_timetable_percentages[k]['percentage'] = 0.0
-            timetable_percentage = {}
-            timetable_percentage['id'] = key_all_timetables[key]['timetable'].id
-            timetable_percentage['date'] = key_all_timetables[key]['timetable'].date
-            timetable_percentage['date_of_week'] = datetime.strftime(key_all_timetables[key]['timetable'].date, DATE_FORMAT_FR)
-            timetable_percentage['class_id'] = key_all_timetables[key]['timetable'].class_id.id
-            timetable_percentage['class_name'] = key_all_timetables[key]['timetable'].class_id.name
-            timetable_percentage['level_id'] = key_all_timetables[key]['timetable'].level_id.id
-            timetable_percentage['level_name'] = key_all_timetables[key]['timetable'].level_id.name
-            timetable_percentage['subject_id'] = key_all_timetables[key]['timetable'].subject_id.id
-            timetable_percentage['subject_name'] = key_all_timetables[key]['timetable'].subject_id.name
-            timetable_percentage['subject_code'] = key_all_timetables[key]['timetable'].subject_id.code
-            timetable_percentage['subject_shared_subject'] = '(TC)' if key_all_timetables[key]['timetable'].subject_id.shared_subject else ''
-            timetable_percentage['employee_id'] = key_all_timetables[key]['timetable'].employee_id.id
-            timetable_percentage['identifier'] = key_all_timetables[key]['timetable'].employee_id.identifier
-            timetable_percentage['employee_name'] = key_all_timetables[key]['timetable'].employee_id.name
-            timetable_percentage['start_time'] = TimetableFilterWizard.convert_float_to_time(key_all_timetables[key]['timetable'].start_time)
-            timetable_percentage['end_time'] = TimetableFilterWizard.convert_float_to_time(key_all_timetables[key]['timetable'].end_time)
-            timetable_percentage['day_of_week'] = CURRENT_WEEKDAY[key_all_timetables[key]['timetable'].day_of_week]
-            timetable_percentage['worked_start_time'] = TimetableFilterWizard.convert_float_to_time(key_all_timetables[key]['timetable'].worked_start_time)
-            timetable_percentage['worked_end_time'] = TimetableFilterWizard.convert_float_to_time(key_all_timetables[key]['timetable'].worked_end_time)
-            timetable_percentage['worked_time'] = key_all_timetables[key]['worked_hours']
-            timetable_percentage['status'] = STATUS_TIMETABLE[key_all_timetables[key]['timetable'].status]
-            key_all_timetable_percentages[k]['worked_time'] += timetable_percentage['worked_time']
-            key_all_timetable_percentages[k]['data'].append(timetable_percentage)
+                if k not in key_all_timetable_consumption_hours:
+                    key_all_timetable_consumption_hours[k] = {}
+                    key_all_timetable_consumption_hours[k]['id'] = key_all_timetables[key]['timetable'].school_id.id
+                    key_all_timetable_consumption_hours[k]['name'] = key_all_timetables[key]['timetable'].school_id.name
+                    key_all_timetable_consumption_hours[k]['data'] = []
+                    key_all_timetable_consumption_hours[k]['worked_time'] = 0.0
+                    key_all_timetable_consumption_hours[k]['percentage'] = 0.0
+            timetable_consumption_hour = {}
+            timetable_consumption_hour['id'] = key_all_timetables[key]['timetable'].id
+            timetable_consumption_hour['date'] = key_all_timetables[key]['timetable'].date
+            timetable_consumption_hour['date_of_week'] = datetime.strftime(key_all_timetables[key]['timetable'].date, DATE_FORMAT_FR)
+            timetable_consumption_hour['class_id'] = key_all_timetables[key]['timetable'].class_id.id
+            timetable_consumption_hour['class_name'] = key_all_timetables[key]['timetable'].class_id.name
+            timetable_consumption_hour['level_id'] = key_all_timetables[key]['timetable'].level_id.id
+            timetable_consumption_hour['level_name'] = key_all_timetables[key]['timetable'].level_id.name
+            timetable_consumption_hour['subject_id'] = key_all_timetables[key]['timetable'].subject_id.id
+            timetable_consumption_hour['subject_name'] = key_all_timetables[key]['timetable'].subject_id.name
+            timetable_consumption_hour['subject_code'] = key_all_timetables[key]['timetable'].subject_id.code
+            timetable_consumption_hour['subject_shared_subject'] = '(TC)' if key_all_timetables[key]['timetable'].subject_id.shared_subject else ''
+            timetable_consumption_hour['employee_id'] = key_all_timetables[key]['timetable'].employee_id.id
+            timetable_consumption_hour['identifier'] = key_all_timetables[key]['timetable'].employee_id.identifier
+            timetable_consumption_hour['employee_name'] = key_all_timetables[key]['timetable'].employee_id.name
+            timetable_consumption_hour['start_time'] = TimetableFilterWizard.convert_float_to_time(key_all_timetables[key]['timetable'].start_time)
+            timetable_consumption_hour['end_time'] = TimetableFilterWizard.convert_float_to_time(key_all_timetables[key]['timetable'].end_time)
+            timetable_consumption_hour['day_of_week'] = CURRENT_WEEKDAY[key_all_timetables[key]['timetable'].day_of_week]
+            timetable_consumption_hour['worked_start_time'] = TimetableFilterWizard.convert_float_to_time(key_all_timetables[key]['timetable'].worked_start_time)
+            timetable_consumption_hour['worked_end_time'] = TimetableFilterWizard.convert_float_to_time(key_all_timetables[key]['timetable'].worked_end_time)
+            timetable_consumption_hour['worked_time'] = key_all_timetables[key]['worked_hours']
+            timetable_consumption_hour['status'] = STATUS_TIMETABLE[key_all_timetables[key]['timetable'].status]
+            key_all_timetable_consumption_hours[k]['worked_time'] += timetable_consumption_hour['worked_time']
+            key_all_timetable_consumption_hours[k]['data'].append(timetable_consumption_hour)
 
-        for key in key_all_timetable_percentages.keys():
-            key_all_timetable_percentages[key]['worked_time'] = round(key_all_timetable_percentages[key]['worked_time'], 2)
+        for key in key_all_timetable_consumption_hours.keys():
+            key_all_timetable_consumption_hours[key]['worked_time'] = round(key_all_timetable_consumption_hours[key]['worked_time'], 2)
 
-        for key in key_timetable_percentages.keys():
-            if key in key_all_timetable_percentages:
-                worked_time = key_timetable_percentages[key]['worked_time']
-                if key_all_timetable_percentages[key]['worked_time'] > 0:
-                    key_timetable_percentages[key]['percentage'] = (worked_time / key_all_timetable_percentages[key]['worked_time']) * 100
-                    key_timetable_percentages[key]['percentage'] = round(key_timetable_percentages[key]['percentage'], 2)
+        for key in key_timetable_consumption_hours.keys():
+            if key in key_all_timetable_consumption_hours:
+                worked_time = key_timetable_consumption_hours[key]['worked_time']
+                if key_all_timetable_consumption_hours[key]['worked_time'] > 0:
+                    key_timetable_consumption_hours[key]['all_worked_time'] = key_all_timetable_consumption_hours[key]['worked_time']
+                    key_timetable_consumption_hours[key]['percentage'] = (worked_time / key_all_timetable_consumption_hours[key]['worked_time']) * 100
+                    key_timetable_consumption_hours[key]['percentage'] = round(key_timetable_consumption_hours[key]['percentage'], 2)
 
-        key_timetable_percentages = sorted(key_timetable_percentages.items(), key=self.sort_timetable_percentage, reverse=True)
-        key_timetable_percentages = dict(key_timetable_percentages)
+        key_timetable_consumption_hours = sorted(key_timetable_consumption_hours.items(), key=self.sort_timetable_percentage, reverse=True)
+        key_timetable_consumption_hours = dict(key_timetable_consumption_hours)
 
-        _logger.info(f'----------- tototototototo key_timetable_percentages {key_timetable_percentages} -----------')
+        _logger.info(f'----------- tototototototo key_timetable_consumption_hours {key_timetable_consumption_hours} -----------')
 
         if len(title) > 0:
             title = ' / '.join(title)
@@ -1810,7 +1811,7 @@ class TimetableFilterWizard(models.TransientModel):
         data['docdata']['label'] = label
         data['docdata']['title'] = title
         data['docdata']['filter'] = filter_title
-        data['docdata']['timetable_percentage_data'] = key_timetable_percentages
+        data['docdata']['timetable_consumption_hour_data'] = key_timetable_consumption_hours
 
         if self.school_id.id:
             data['docdata']['title'] = '{} {}'.format(data['docdata']['title'], self.school_id.name)
@@ -1818,9 +1819,9 @@ class TimetableFilterWizard(models.TransientModel):
         start_date = datetime.strftime(self.start_date, DATE_FORMAT_FR)
         end_date = datetime.strftime(self.end_date, DATE_FORMAT_FR)
 
-        if len(data['docdata']['timetable_percentage_data'].keys()) == 0:
+        if len(data['docdata']['timetable_consumption_hour_data'].keys()) == 0:
             raise UserError('Aucune donnée trouvée')
-        report_action = self.env.ref('siantou_ems_core.action_report_timetable_hour_percentage')
+        report_action = self.env.ref('siantou_ems_core.action_report_timetable_consumption_hour')
         report_action.update({
             'name': '{} du {} - {} PDF'.format(title, start_date, end_date),
         })
