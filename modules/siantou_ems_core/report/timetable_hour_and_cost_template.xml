@@ -2,9 +2,9 @@
 <odoo>
     <data>
         <!-- Template du rapport PDF -->
-        <template id="template_report_timetable_hours_percentage">
+        <template id="template_report_timetable_hour_and_cost">
             <t t-call="web.html_container">
-                <t t-if="docdata and docdata['timetable_percentage_data']">
+                <t t-if="docdata and docdata['timetable_hour_and_cost_data']">
                     <t t-call="web.basic_layout">
                         <style>
                             .table {
@@ -43,7 +43,7 @@
                             <table class="table table-bordered table-sm text-center">
                                 <thead>
                                     <tr>
-                                        <th class="text-center" t-attf-colspan="2" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;">
+                                        <th class="text-center" t-attf-colspan="#{'3' if docdata['is_permanent'] == False else '2'}" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;">
                                             <h3>INSTITUT UNIVERSITAIRE SIANTOU</h3>
                                             <h4>
                                                 <span t-esc="docdata['title']"/>
@@ -57,32 +57,54 @@
                                 </thead>
                                 <thead>
                                     <tr>
-                                        <th class="text-left" t-attf-colspan="2" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
+                                        <th class="text-left" t-attf-colspan="#{'3' if docdata['is_permanent'] == False else '2'}" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
                                     </tr>
                                 </thead>
                                 <thead class="thead">
                                     <tr class="active">
                                         <th class="text-center" t-esc="docdata['label']"/>
-                                        <th class="text-center">Pourcentage</th>
+                                        <th class="text-center">Nombre d'heures</th>
+                                        <t t-if="docdata['is_permanent'] == False">
+                                            <th class="text-center">Coût</th>
+                                        </t>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <t t-set="timetable_percentage_data" t-value="dict(sorted(docdata['timetable_percentage_data'].items(), key=lambda item: item[1]['percentage'], reverse=True))"/>
-                                    <t t-set="keys" t-value="timetable_percentage_data.keys()"/>
+                                    <t t-set="timetable_hour_and_cost_data" t-value="dict(sorted(docdata['timetable_hour_and_cost_data'].items(), key=lambda item: item[1]['worked_time'], reverse=True))"/>
+                                    <t t-set="keys" t-value="timetable_hour_and_cost_data.keys()"/>
                                     <t t-foreach="keys" t-as="key">
                                         <tr>
                                             <td class="text-left">
-                                                <span t-esc="timetable_percentage_data[key]['name']"/>
+                                                <span t-esc="timetable_hour_and_cost_data[key]['name']"/>
                                             </td>
                                             <td class="text-center"></td>
+                                            <t t-if="docdata['is_permanent'] == False">
+                                                <td class="text-center"></td>
+                                            </t>
                                         </tr>
                                         <tr>
                                             <td class="text-left" style="background-color: #f2f2f2;"></td>
                                             <td class="text-center" style="background-color: #f2f2f2;">
-                                                <span t-esc="str(timetable_percentage_data[key]['percentage']) + '%'"/>
+                                                <span t-esc="timetable_hour_and_cost_data[key]['worked_time']"/>
                                             </td>
+                                            <t t-if="docdata['is_permanent'] == False">
+                                                <td class="text-center" style="background-color: #f2f2f2;">
+                                                    <span t-esc="'{:,.2f}'.format(timetable_hour_and_cost_data[key]['amount'])"/>
+                                                </td>
+                                            </t>
                                         </tr>
                                     </t>
+                                    <tr>
+                                        <td class="text-center" style="background-color: #f2f2f2;">TOTAL GLOBAL</td>
+                                        <td class="text-center" style="background-color: #f2f2f2;">
+                                            <span t-esc="docdata['total_hours']"/>
+                                        </td>
+                                        <t t-if="docdata['is_permanent'] == False">
+                                            <td class="text-center" style="background-color: #f2f2f2;">
+                                                <span t-esc="'{:,.2f}'.format(docdata['total_cost'])"/>
+                                            </td>
+                                        </t>
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -94,7 +116,7 @@
             </t>
         </template>
 
-        <record id="paperformat_timetable_hours_percentage" model="report.paperformat">
+        <record id="paperformat_timetable_hour_and_cost" model="report.paperformat">
             <field name="name">Format du diplome</field>
             <field name="default" eval="True"/>
             <field name="format">A2</field>
@@ -107,15 +129,15 @@
             <field name="header_spacing">5</field>
             <field name="dpi">90</field>
         </record>
-        <record id="action_report_timetable_hours_percentage" model="ir.actions.report">
+        <record id="action_report_timetable_hour_and_cost" model="ir.actions.report">
             <field name="name">Emplois du temps PDF</field>
             <field name="model">teacher.timetable.attendance</field>
             <field name="report_type">qweb-pdf</field>
-            <field name="report_name">siantou_ems_core.template_report_timetable_hours_percentage</field>
-            <field name="report_file">siantou_ems_core.template_report_timetable_hours_percentage</field>
+            <field name="report_name">siantou_ems_core.template_report_timetable_hour_and_cost</field>
+            <field name="report_file">siantou_ems_core.template_report_timetable_hour_and_cost</field>
             <field name="print_report_name">'Fiche de - %s' % (docdata.semester)</field>
             <field name="binding_model_id" eval="False"/>
-            <field name="paperformat_id" ref="paperformat_timetable_hours_percentage"/>
+            <field name="paperformat_id" ref="paperformat_timetable_hour_and_cost"/>
             <field name="binding_type">report</field>
         </record>
     </data>

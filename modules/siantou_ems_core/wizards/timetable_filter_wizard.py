@@ -1129,7 +1129,7 @@ class TimetableFilterWizard(models.TransientModel):
         })
         return report_action.report_action(self, data=all_data)
 
-    def action_print_hours_percentage_pdf(self):
+    def action_print_hour_percentage_pdf(self):
         domain = []
         title = []
         if self.year_id.id:
@@ -1474,13 +1474,17 @@ class TimetableFilterWizard(models.TransientModel):
 
         if len(data['docdata']['timetable_percentage_data'].keys()) == 0:
             raise UserError('Aucune donnée trouvée')
-        report_action = self.env.ref('siantou_ems_core.action_report_timetable_hours_percentage')
+        report_action = self.env.ref('siantou_ems_core.action_report_timetable_hour_percentage')
         report_action.update({
             'name': '{} du {} - {} PDF'.format(title, start_date, end_date),
         })
         return report_action.report_action(self, data=data)
 
-    def action_print_hours_and_cost_pdf(self):
+    def action_print_consumption_hour_pdf(self):
+        domain = []
+        title = []
+
+    def action_print_hour_and_cost_pdf(self):
         domain = []
         title = []
         if self.year_id.id:
@@ -1666,92 +1670,92 @@ class TimetableFilterWizard(models.TransientModel):
             key_timetables[key]['worked_hours'] = worked_hours
             key_timetables[key]['hours_credit'] = hours_credit
 
-        key_timetable_hours_and_costs = {}
+        key_timetable_hour_and_costs = {}
         for key in key_timetables.keys():
             if self.print_type == 'teacher':
                 k = '{}'.format(key_timetables[key]['timetable'].employee_id.id)
-                if k not in key_timetable_hours_and_costs:
-                    key_timetable_hours_and_costs[k] = {}
-                    key_timetable_hours_and_costs[k]['id'] = key_timetables[key]['timetable'].employee_id.id
-                    key_timetable_hours_and_costs[k]['name'] = key_timetables[key]['timetable'].employee_id.name
-                    key_timetable_hours_and_costs[k]['data'] = []
-                    key_timetable_hours_and_costs[k]['worked_time'] = 0.0
-                    key_timetable_hours_and_costs[k]['amount'] = 0.0
-                    key_timetable_hours_and_costs[k]['total_amount'] = 0.0
+                if k not in key_timetable_hour_and_costs:
+                    key_timetable_hour_and_costs[k] = {}
+                    key_timetable_hour_and_costs[k]['id'] = key_timetables[key]['timetable'].employee_id.id
+                    key_timetable_hour_and_costs[k]['name'] = key_timetables[key]['timetable'].employee_id.name
+                    key_timetable_hour_and_costs[k]['data'] = []
+                    key_timetable_hour_and_costs[k]['worked_time'] = 0.0
+                    key_timetable_hour_and_costs[k]['amount'] = 0.0
+                    key_timetable_hour_and_costs[k]['total_amount'] = 0.0
             elif self.print_type == 'specialty':
                 k = '{}'.format(key_timetables[key]['timetable'].specialty_id.id)
-                if k not in key_timetable_hours_and_costs:
-                    key_timetable_hours_and_costs[k] = {}
-                    key_timetable_hours_and_costs[k]['id'] = key_timetables[key]['timetable'].specialty_id.id
-                    key_timetable_hours_and_costs[k]['name'] = '{} ({})'.format(key_timetables[key]['timetable'].specialty_id.name, key_timetables[key]['timetable'].specialty_id.field_of_study_id.cycle_id.name)
-                    key_timetable_hours_and_costs[k]['data'] = []
-                    key_timetable_hours_and_costs[k]['worked_time'] = 0.0
-                    key_timetable_hours_and_costs[k]['amount'] = 0.0
-                    key_timetable_hours_and_costs[k]['total_amount'] = 0.0
+                if k not in key_timetable_hour_and_costs:
+                    key_timetable_hour_and_costs[k] = {}
+                    key_timetable_hour_and_costs[k]['id'] = key_timetables[key]['timetable'].specialty_id.id
+                    key_timetable_hour_and_costs[k]['name'] = '{} ({})'.format(key_timetables[key]['timetable'].specialty_id.name, key_timetables[key]['timetable'].specialty_id.field_of_study_id.cycle_id.name)
+                    key_timetable_hour_and_costs[k]['data'] = []
+                    key_timetable_hour_and_costs[k]['worked_time'] = 0.0
+                    key_timetable_hour_and_costs[k]['amount'] = 0.0
+                    key_timetable_hour_and_costs[k]['total_amount'] = 0.0
             elif self.print_type == 'department':
                 k = '{}'.format(key_timetables[key]['timetable'].department_id.id)
-                if k not in key_timetable_hours_and_costs:
-                    key_timetable_hours_and_costs[k] = {}
-                    key_timetable_hours_and_costs[k]['id'] = key_timetables[key]['timetable'].department_id.id
-                    key_timetable_hours_and_costs[k]['name'] = key_timetables[key]['timetable'].department_id.name
-                    key_timetable_hours_and_costs[k]['data'] = []
-                    key_timetable_hours_and_costs[k]['worked_time'] = 0.0
-                    key_timetable_hours_and_costs[k]['amount'] = 0.0
-                    key_timetable_hours_and_costs[k]['total_amount'] = 0.0
+                if k not in key_timetable_hour_and_costs:
+                    key_timetable_hour_and_costs[k] = {}
+                    key_timetable_hour_and_costs[k]['id'] = key_timetables[key]['timetable'].department_id.id
+                    key_timetable_hour_and_costs[k]['name'] = key_timetables[key]['timetable'].department_id.name
+                    key_timetable_hour_and_costs[k]['data'] = []
+                    key_timetable_hour_and_costs[k]['worked_time'] = 0.0
+                    key_timetable_hour_and_costs[k]['amount'] = 0.0
+                    key_timetable_hour_and_costs[k]['total_amount'] = 0.0
             else:
                 k = '{}'.format(key_timetables[key]['timetable'].school_id.id)
-                if k not in key_timetable_hours_and_costs:
-                    key_timetable_hours_and_costs[k] = {}
-                    key_timetable_hours_and_costs[k]['id'] = key_timetables[key]['timetable'].school_id.id
-                    key_timetable_hours_and_costs[k]['name'] = key_timetables[key]['timetable'].school_id.name
-                    key_timetable_hours_and_costs[k]['data'] = []
-                    key_timetable_hours_and_costs[k]['worked_time'] = 0.0
-                    key_timetable_hours_and_costs[k]['amount'] = 0.0
-                    key_timetable_hours_and_costs[k]['total_amount'] = 0.0
-            timetable_hours_and_cost = {}
-            timetable_hours_and_cost['id'] = key_timetables[key]['timetable'].id
-            timetable_hours_and_cost['date'] = key_timetables[key]['timetable'].date
-            timetable_hours_and_cost['date_of_week'] = datetime.strftime(key_timetables[key]['timetable'].date, DATE_FORMAT_FR)
-            timetable_hours_and_cost['class_id'] = key_timetables[key]['timetable'].class_id.id
-            timetable_hours_and_cost['class_name'] = key_timetables[key]['timetable'].class_id.name
-            timetable_hours_and_cost['level_id'] = key_timetables[key]['timetable'].level_id.id
-            timetable_hours_and_cost['level_name'] = key_timetables[key]['timetable'].level_id.name
-            timetable_hours_and_cost['subject_id'] = key_timetables[key]['timetable'].subject_id.id
-            timetable_hours_and_cost['subject_name'] = key_timetables[key]['timetable'].subject_id.name
-            timetable_hours_and_cost['subject_code'] = key_timetables[key]['timetable'].subject_id.code
-            timetable_hours_and_cost['subject_shared_subject'] = '(TC)' if key_timetables[key]['timetable'].subject_id.shared_subject else ''
-            timetable_hours_and_cost['employee_id'] = key_timetables[key]['timetable'].employee_id.id
-            timetable_hours_and_cost['identifier'] = key_timetables[key]['timetable'].employee_id.identifier
-            timetable_hours_and_cost['employee_name'] = key_timetables[key]['timetable'].employee_id.name
-            timetable_hours_and_cost['start_time'] = TimetableFilterWizard.convert_float_to_time(key_timetables[key]['timetable'].start_time)
-            timetable_hours_and_cost['end_time'] = TimetableFilterWizard.convert_float_to_time(key_timetables[key]['timetable'].end_time)
-            timetable_hours_and_cost['day_of_week'] = CURRENT_WEEKDAY[key_timetables[key]['timetable'].day_of_week]
-            timetable_hours_and_cost['worked_start_time'] = TimetableFilterWizard.convert_float_to_time(key_timetables[key]['timetable'].worked_start_time)
-            timetable_hours_and_cost['worked_end_time'] = TimetableFilterWizard.convert_float_to_time(key_timetables[key]['timetable'].worked_end_time)
-            timetable_hours_and_cost['worked_time'] = key_timetables[key]['worked_hours']
-            timetable_hours_and_cost['rate'] = key_timetables[key]['rate']
-            timetable_hours_and_cost['amount'] = key_timetables[key]['amount']
-            timetable_hours_and_cost['hours_credit'] = key_timetables[key]['hours_credit']
-            timetable_hours_and_cost['status'] = STATUS_TIMETABLE[key_timetables[key]['timetable'].status]
-            key_timetable_hours_and_costs[k]['worked_time'] += timetable_hours_and_cost['worked_time']
-            key_timetable_hours_and_costs[k]['amount'] += timetable_hours_and_cost['amount']
-            key_timetable_hours_and_costs[k]['total_amount'] = key_timetable_hours_and_costs[k]['amount']
-            key_timetable_hours_and_costs[k]['data'].append(timetable_hours_and_cost)
+                if k not in key_timetable_hour_and_costs:
+                    key_timetable_hour_and_costs[k] = {}
+                    key_timetable_hour_and_costs[k]['id'] = key_timetables[key]['timetable'].school_id.id
+                    key_timetable_hour_and_costs[k]['name'] = key_timetables[key]['timetable'].school_id.name
+                    key_timetable_hour_and_costs[k]['data'] = []
+                    key_timetable_hour_and_costs[k]['worked_time'] = 0.0
+                    key_timetable_hour_and_costs[k]['amount'] = 0.0
+                    key_timetable_hour_and_costs[k]['total_amount'] = 0.0
+            timetable_hour_and_cost = {}
+            timetable_hour_and_cost['id'] = key_timetables[key]['timetable'].id
+            timetable_hour_and_cost['date'] = key_timetables[key]['timetable'].date
+            timetable_hour_and_cost['date_of_week'] = datetime.strftime(key_timetables[key]['timetable'].date, DATE_FORMAT_FR)
+            timetable_hour_and_cost['class_id'] = key_timetables[key]['timetable'].class_id.id
+            timetable_hour_and_cost['class_name'] = key_timetables[key]['timetable'].class_id.name
+            timetable_hour_and_cost['level_id'] = key_timetables[key]['timetable'].level_id.id
+            timetable_hour_and_cost['level_name'] = key_timetables[key]['timetable'].level_id.name
+            timetable_hour_and_cost['subject_id'] = key_timetables[key]['timetable'].subject_id.id
+            timetable_hour_and_cost['subject_name'] = key_timetables[key]['timetable'].subject_id.name
+            timetable_hour_and_cost['subject_code'] = key_timetables[key]['timetable'].subject_id.code
+            timetable_hour_and_cost['subject_shared_subject'] = '(TC)' if key_timetables[key]['timetable'].subject_id.shared_subject else ''
+            timetable_hour_and_cost['employee_id'] = key_timetables[key]['timetable'].employee_id.id
+            timetable_hour_and_cost['identifier'] = key_timetables[key]['timetable'].employee_id.identifier
+            timetable_hour_and_cost['employee_name'] = key_timetables[key]['timetable'].employee_id.name
+            timetable_hour_and_cost['start_time'] = TimetableFilterWizard.convert_float_to_time(key_timetables[key]['timetable'].start_time)
+            timetable_hour_and_cost['end_time'] = TimetableFilterWizard.convert_float_to_time(key_timetables[key]['timetable'].end_time)
+            timetable_hour_and_cost['day_of_week'] = CURRENT_WEEKDAY[key_timetables[key]['timetable'].day_of_week]
+            timetable_hour_and_cost['worked_start_time'] = TimetableFilterWizard.convert_float_to_time(key_timetables[key]['timetable'].worked_start_time)
+            timetable_hour_and_cost['worked_end_time'] = TimetableFilterWizard.convert_float_to_time(key_timetables[key]['timetable'].worked_end_time)
+            timetable_hour_and_cost['worked_time'] = key_timetables[key]['worked_hours']
+            timetable_hour_and_cost['rate'] = key_timetables[key]['rate']
+            timetable_hour_and_cost['amount'] = key_timetables[key]['amount']
+            timetable_hour_and_cost['hours_credit'] = key_timetables[key]['hours_credit']
+            timetable_hour_and_cost['status'] = STATUS_TIMETABLE[key_timetables[key]['timetable'].status]
+            key_timetable_hour_and_costs[k]['worked_time'] += timetable_hour_and_cost['worked_time']
+            key_timetable_hour_and_costs[k]['amount'] += timetable_hour_and_cost['amount']
+            key_timetable_hour_and_costs[k]['total_amount'] = key_timetable_hour_and_costs[k]['amount']
+            key_timetable_hour_and_costs[k]['data'].append(timetable_hour_and_cost)
 
         total_hours = 0.0
         total_cost = 0.0
-        for key in key_timetable_hours_and_costs.keys():
-            key_timetable_hours_and_costs[key]['worked_time'] = round(key_timetable_hours_and_costs[key]['worked_time'], 2)
-            key_timetable_hours_and_costs[key]['amount'] = round(key_timetable_hours_and_costs[key]['amount'], 2)
-            total_hours += key_timetable_hours_and_costs[key]['worked_time']
-            total_cost += key_timetable_hours_and_costs[key]['amount']
+        for key in key_timetable_hour_and_costs.keys():
+            key_timetable_hour_and_costs[key]['worked_time'] = round(key_timetable_hour_and_costs[key]['worked_time'], 2)
+            key_timetable_hour_and_costs[key]['amount'] = round(key_timetable_hour_and_costs[key]['amount'], 2)
+            total_hours += key_timetable_hour_and_costs[key]['worked_time']
+            total_cost += key_timetable_hour_and_costs[key]['amount']
         total_hours = round(total_hours, 2)
         total_cost = round(total_cost, 2)
 
-        key_timetable_hours_and_costs = sorted(key_timetable_hours_and_costs.items(), key=self.sort_timetable_hours, reverse=True)
-        key_timetable_hours_and_costs = dict(key_timetable_hours_and_costs)
+        key_timetable_hour_and_costs = sorted(key_timetable_hour_and_costs.items(), key=self.sort_timetable_hours, reverse=True)
+        key_timetable_hour_and_costs = dict(key_timetable_hour_and_costs)
 
-        _logger.info(f'----------- tototototototo key_timetable_hours_and_costs {key_timetable_hours_and_costs} -----------')
+        _logger.info(f'----------- tototototototo key_timetable_hour_and_costs {key_timetable_hour_and_costs} -----------')
 
         if len(title) > 0:
             title = ' / '.join(title)
@@ -1790,7 +1794,7 @@ class TimetableFilterWizard(models.TransientModel):
         data['docdata']['label'] = label
         data['docdata']['title'] = title
         data['docdata']['filter'] = filter_title
-        data['docdata']['timetable_hours_and_cost_data'] = key_timetable_hours_and_costs
+        data['docdata']['timetable_hour_and_cost_data'] = key_timetable_hour_and_costs
         data['docdata']['total_hours'] = total_hours
         data['docdata']['total_cost'] = total_cost
         data['docdata']['is_permanent'] = is_permanent
@@ -1801,9 +1805,9 @@ class TimetableFilterWizard(models.TransientModel):
         start_date = datetime.strftime(self.start_date, DATE_FORMAT_FR)
         end_date = datetime.strftime(self.end_date, DATE_FORMAT_FR)
 
-        if len(data['docdata']['timetable_hours_and_cost_data'].keys()) == 0:
+        if len(data['docdata']['timetable_hour_and_cost_data'].keys()) == 0:
             raise UserError('Aucune donnée trouvée')
-        report_action = self.env.ref('siantou_ems_core.action_report_timetable_hours_and_cost')
+        report_action = self.env.ref('siantou_ems_core.action_report_timetable_hour_and_cost')
         report_action.update({
             'name': '{} du {} - {} PDF'.format(title, start_date, end_date),
         })
