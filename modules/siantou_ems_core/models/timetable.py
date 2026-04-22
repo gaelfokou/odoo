@@ -1069,7 +1069,7 @@ class Timetable(models.Model):
                     ('group_parent_id.status', '=', 'valid'),
                     ('group_id.status', '=', 'valid'),
                     ('is_active', '=', True),
-                    # ('status', '=', 'present'),
+                    # ('status', 'in', ['present', 'permission']),
                 ], order='date asc').filtered(lambda rec: rec.class_id.id == classe.id and rec.class_group_id.id == class_group.id and rec.subject_id.id == subject.id)
             else:
                 timetables = self.env['siantou.ems.timetable.timetable'].search([
@@ -1087,7 +1087,7 @@ class Timetable(models.Model):
                     ('group_parent_id.status', '=', 'valid'),
                     ('group_id.status', '=', 'valid'),
                     ('is_active', '=', True),
-                    # ('status', '=', 'present'),
+                    # ('status', 'in', ['present', 'permission']),
                 ], order='date asc').filtered(lambda rec: rec.class_id.id == classe.id and not rec.class_group_id.id and rec.subject_id.id == subject.id)
 
             timetables = list(timetables)

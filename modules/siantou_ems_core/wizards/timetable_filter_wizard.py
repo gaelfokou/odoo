@@ -590,24 +590,24 @@ class TimetableFilterWizard(models.TransientModel):
 
         if self.status:
             if self.status == 'delay':
-                domain.append(('status', '=', 'present'))
+                domain.append(('status', 'in', ['present', 'permission']))
                 title.append(STATUS_TIMETABLE[self.status])
                 timetables = self.env['siantou.ems.timetable.timetable'].search(domain, order=order).sorted(lambda rec: (rec.date, rec.id))
                 timetables = timetables.filtered(lambda rec: rec.date and rec.day_of_week and TimetableFilterWizard.compare_float_time(rec.date, rec.worked_start_time, rec.start_time) > 0.0)
             elif self.status == 'delay_more_than_or_equal':
-                domain.append(('status', '=', 'present'))
+                domain.append(('status', 'in', ['present', 'permission']))
                 title.append(STATUS_TIMETABLE[self.status])
                 title.append('{} minute(s)'.format(self.number_of_minute))
                 timetables = self.env['siantou.ems.timetable.timetable'].search(domain, order=order).sorted(lambda rec: (rec.date, rec.id))
                 timetables = timetables.filtered(lambda rec: rec.date and rec.day_of_week and TimetableFilterWizard.compare_float_time(rec.date, rec.worked_start_time, rec.start_time) >= self.number_of_minute)
             elif self.status == 'delay_less_than':
-                domain.append(('status', '=', 'present'))
+                domain.append(('status', 'in', ['present', 'permission']))
                 title.append(STATUS_TIMETABLE[self.status])
                 title.append('{} minute(s)'.format(self.number_of_minute))
                 timetables = self.env['siantou.ems.timetable.timetable'].search(domain, order=order).sorted(lambda rec: (rec.date, rec.id))
                 timetables = timetables.filtered(lambda rec: rec.date and rec.day_of_week and TimetableFilterWizard.compare_float_time(rec.date, rec.worked_start_time, rec.start_time) > 0.0 and TimetableFilterWizard.compare_float_time(rec.date, rec.worked_start_time, rec.start_time) < self.number_of_minute)
             elif self.status == 'punctuality':
-                domain.append(('status', '=', 'present'))
+                domain.append(('status', 'in', ['present', 'permission']))
                 title.append(STATUS_TIMETABLE[self.status])
                 timetables = self.env['siantou.ems.timetable.timetable'].search(domain, order=order).sorted(lambda rec: (rec.date, rec.id))
                 timetables = timetables.filtered(lambda rec: rec.date and rec.day_of_week and TimetableFilterWizard.compare_float_time(rec.date, rec.worked_start_time, rec.start_time) == 0.0)
@@ -863,33 +863,33 @@ class TimetableFilterWizard(models.TransientModel):
 
         if self.status:
             if self.status == 'delay':
-                domain.append(('status', '=', 'present'))
+                domain.append(('status', 'in', ['present', 'permission']))
                 title.append(STATUS_TIMETABLE[self.status])
                 timetables = self.env['siantou.ems.timetable.timetable'].search(domain, order=order).sorted(lambda rec: (rec.date, rec.id))
                 timetables = timetables.filtered(lambda rec: rec.date and rec.day_of_week and TimetableFilterWizard.compare_float_time(rec.date, rec.worked_start_time, rec.start_time) >= 0.0)
             elif self.status == 'delay_more_than_or_equal':
-                domain.append(('status', '=', 'present'))
+                domain.append(('status', 'in', ['present', 'permission']))
                 title.append(STATUS_TIMETABLE[self.status])
                 title.append('{} minute(s)'.format(self.number_of_minute))
                 timetables = self.env['siantou.ems.timetable.timetable'].search(domain, order=order).sorted(lambda rec: (rec.date, rec.id))
                 timetables = timetables.filtered(lambda rec: rec.date and rec.day_of_week and TimetableFilterWizard.compare_float_time(rec.date, rec.worked_start_time, rec.start_time) >= self.number_of_minute)
             elif self.status == 'delay_less_than':
-                domain.append(('status', '=', 'present'))
+                domain.append(('status', 'in', ['present', 'permission']))
                 title.append(STATUS_TIMETABLE[self.status])
                 title.append('{} minute(s)'.format(self.number_of_minute))
                 timetables = self.env['siantou.ems.timetable.timetable'].search(domain, order=order).sorted(lambda rec: (rec.date, rec.id))
                 timetables = timetables.filtered(lambda rec: rec.date and rec.day_of_week and TimetableFilterWizard.compare_float_time(rec.date, rec.worked_start_time, rec.start_time) > 0.0 and TimetableFilterWizard.compare_float_time(rec.date, rec.worked_start_time, rec.start_time) < self.number_of_minute)
             elif self.status == 'absent':
-                domain.append(('status', 'in', ['present', 'absent']))
+                domain.append(('status', 'in', ['present', 'permission', 'absent']))
                 title.append(STATUS_TIMETABLE[self.status])
                 timetables = self.env['siantou.ems.timetable.timetable'].search(domain, order=order).sorted(lambda rec: (rec.date, rec.id))
             elif self.status == 'punctuality':
-                domain.append(('status', 'in', ['present', 'absent']))
+                domain.append(('status', 'in', ['present', 'permission', 'absent']))
                 title.append(STATUS_TIMETABLE[self.status])
                 timetables = self.env['siantou.ems.timetable.timetable'].search(domain, order=order).sorted(lambda rec: (rec.date, rec.id))
-                timetables = timetables.filtered(lambda rec: rec.date and rec.day_of_week and (rec.status == 'absent' or (rec.status == 'present' and TimetableFilterWizard.compare_float_time(rec.date, rec.worked_start_time, rec.start_time) == 0.0)))
+                timetables = timetables.filtered(lambda rec: rec.date and rec.day_of_week and (rec.status == 'absent' or (rec.status in ['present', 'permission'] and TimetableFilterWizard.compare_float_time(rec.date, rec.worked_start_time, rec.start_time) == 0.0)))
             elif self.status == 'exception':
-                domain.append(('status', 'in', ['present', 'exception']))
+                domain.append(('status', 'in', ['present', 'permission', 'exception']))
                 title.append(STATUS_TIMETABLE[self.status])
                 timetables = self.env['siantou.ems.timetable.timetable'].search(domain, order=order).sorted(lambda rec: (rec.date, rec.id))
             elif self.status == 'exception_start_time_invalid':
@@ -1483,6 +1483,348 @@ class TimetableFilterWizard(models.TransientModel):
     def action_print_consumption_hour_pdf(self):
         domain = []
         title = []
+        if self.year_id.id:
+            domain.append(('year_id', '=', self.year_id.id))
+            title.append(self.year_id.name)
+        if self.semester_id.id:
+            domain.append(('semester_id', '=', self.semester_id.id))
+            title.append(self.semester_id.name)
+        if self.school_id.id:
+            domain.append(('school_id', '=', self.school_id.id))
+            title.append(self.school_id.name)
+        if self.department_id.id:
+            domain.append(('department_id', '=', self.department_id.id))
+            title.append(self.department_id.name)
+        if self.level_id.id:
+            domain.append(('level_id', '=', self.level_id.id))
+            title.append(self.level_id.name)
+        if self.field_of_study_id.id:
+            domain.append(('field_of_study_id', '=', self.field_of_study_id.id))
+            title.append(self.field_of_study_id.name)
+        if self.specialty_id.id:
+            domain.append(('specialty_id', '=', self.specialty_id.id))
+            title.append(self.specialty_id.name)
+        if self.option_id.id:
+            domain.append(('option_id', '=', self.option_id.id))
+            title.append(self.option_id.name)
+        if self.type_cour:
+            domain.append(('class_id.type_cour', '=', self.type_cour))
+            title.append(TYPE_COUR[self.type_cour])
+        if self.class_id.id:
+            domain.append(('class_id', '=', self.class_id.id))
+            title.append(self.class_id.name)
+        if self.class_group_id.id:
+            domain.append(('class_group_id', '=', self.class_group_id.id))
+            title.append(self.class_group_id.name)
+        if self.subject_id.id:
+            domain.append(('subject_id', '=', self.subject_id.id))
+            title.append(self.subject_id.name)
+        if self.building_id.id:
+            domain.append(('building_id', '=', self.building_id.id))
+            title.append(self.building_id.name)
+        if self.classroom_id.id:
+            domain.append(('classroom_id', '=', self.classroom_id.id))
+            title.append(self.classroom_id.name)
+        if self.is_active:
+            domain.append(('is_active', '=', True))
+            title.append('Actif')
+        if self.is_teacher:
+            domain.append(('employee_id.is_teacher', '=', True))
+            title.append('Est un enseignant')
+        if not self.is_permanent or not self.is_temporary:
+            if self.is_permanent:
+                domain.append(('employee_id.is_permanent', '=', True))
+                title.append('Est un permanent')
+            if self.is_temporary:
+                domain.append(('employee_id.is_permanent', '=', False))
+                title.append('Est un vacataire')
+        if self.employee_id.id:
+            domain.append(('employee_id', '=', self.employee_id.id))
+            title.append(self.employee_id.name)
+        if self.group_id.id:
+            domain.append(('group_id', '=', self.group_id.id))
+            title.append(self.group_id.name)
+        else:
+            group_ids = self.env['siantou.ems.timetable.group'].search(['|', '|', ('create_uid', '=', self.env.user.id), ('read_user_ids', '=', self.env.user.id), ('write_user_ids', '=', self.env.user.id)])
+            domain.append(('group_id', 'in', group_ids.ids))
+
+        order = 'date asc, id asc'
+
+        all_domain = []
+        all_domain += domain
+        all_domain.append(('status', '!=', 'pending'))
+        all_timetables = self.env['siantou.ems.timetable.timetable'].search(all_domain, order=order).sorted(lambda rec: (rec.date, rec.id))
+
+        domain.append(('status', 'in', ['present', 'permission']))
+        timetables = self.env['siantou.ems.timetable.timetable'].search(domain, order=order).sorted(lambda rec: (rec.date, rec.id))
+
+        if self.start_date and self.end_date:
+            start_date = datetime.strftime(self.start_date, DATE_FORMAT_FR)
+            end_date = datetime.strftime(self.end_date, DATE_FORMAT_FR)
+            title.append('{} - {}'.format(start_date, end_date))
+            timetables = timetables.filtered(lambda rec: rec.date and rec.day_of_week and rec.date >= self.start_date and rec.date <= self.end_date)
+            all_timetables = all_timetables.filtered(lambda rec: rec.date and rec.day_of_week and rec.date >= self.start_date and rec.date <= self.end_date)
+        if self.start_time and self.end_time:
+            start_time = TimetableFilterWizard.convert_float_to_time(self.start_time)
+            end_time = TimetableFilterWizard.convert_float_to_time(self.end_time)
+            title.append('{} - {}'.format(start_time, end_time))
+            timetables = timetables.filtered(lambda rec: not (rec.start_time >= self.end_time or rec.end_time <= self.start_time))
+            all_timetables = all_timetables.filtered(lambda rec: not (rec.start_time >= self.end_time or rec.end_time <= self.start_time))
+            # timetables = timetables.filtered(lambda rec: self.search_filtered(rec))
+
+        timetables = list(timetables)
+
+        key_timetables = {}
+        for timetable in timetables:
+            if not timetable.date or not timetable.day_of_week or not timetable.employee_id.id:
+                continue
+
+            end_time = TimetableFilterWizard.convert_float_to_time(timetable.end_time, has_second=True)
+            start_time = TimetableFilterWizard.convert_float_to_time(timetable.start_time, has_second=True)
+            key = '{}-{}-{}-{}'.format(timetable.employee_id.id, timetable.date, start_time, end_time)
+            # if self.print_type == 'teacher':
+            #     key = '{}-{}-{}-{}'.format(timetable.employee_id.id, timetable.date, start_time, end_time)
+            # else:
+            #     key = '{}-{}-{}-{}'.format(timetable.class_id.id, timetable.date, start_time, end_time)
+            if key not in key_timetables:
+                key_timetables[key] = {}
+                key_timetables[key]['timetable'] = timetable
+            else:
+                continue
+
+            end_time = TimetableFilterWizard.convert_float_to_time(timetable.end_time, has_second=True)
+            start_time = TimetableFilterWizard.convert_float_to_time(timetable.start_time, has_second=True)
+            end_time = datetime.strptime(f"{timetable.date} {end_time}", DATETIME_FORMAT)
+            start_time = datetime.strptime(f"{timetable.date} {start_time}", DATETIME_FORMAT)
+
+            worked_hours = end_time - start_time
+            worked_hours = worked_hours.total_seconds() / 3600.0
+            worked_hours = round(worked_hours, 2)
+
+            if worked_hours < 0.0:
+                del(key_timetables[key])
+                continue
+
+            key_timetables[key]['worked_hours'] = worked_hours
+
+        key_timetable_percentages = {}
+        for key in key_timetables.keys():
+            if self.print_type == 'teacher':
+                k = '{}'.format(key_timetables[key]['timetable'].employee_id.id)
+                if k not in key_timetable_percentages:
+                    key_timetable_percentages[k] = {}
+                    key_timetable_percentages[k]['id'] = key_timetables[key]['timetable'].employee_id.id
+                    key_timetable_percentages[k]['name'] = key_timetables[key]['timetable'].employee_id.name
+                    key_timetable_percentages[k]['data'] = []
+                    key_timetable_percentages[k]['worked_time'] = 0.0
+                    key_timetable_percentages[k]['percentage'] = 0.0
+            elif self.print_type == 'specialty':
+                k = '{}'.format(key_timetables[key]['timetable'].specialty_id.id)
+                if k not in key_timetable_percentages:
+                    key_timetable_percentages[k] = {}
+                    key_timetable_percentages[k]['id'] = key_timetables[key]['timetable'].specialty_id.id
+                    key_timetable_percentages[k]['name'] = '{} ({})'.format(key_timetables[key]['timetable'].specialty_id.name, key_timetables[key]['timetable'].specialty_id.field_of_study_id.cycle_id.name)
+                    key_timetable_percentages[k]['data'] = []
+                    key_timetable_percentages[k]['worked_time'] = 0.0
+                    key_timetable_percentages[k]['percentage'] = 0.0
+            elif self.print_type == 'department':
+                k = '{}'.format(key_timetables[key]['timetable'].department_id.id)
+                if k not in key_timetable_percentages:
+                    key_timetable_percentages[k] = {}
+                    key_timetable_percentages[k]['id'] = key_timetables[key]['timetable'].department_id.id
+                    key_timetable_percentages[k]['name'] = key_timetables[key]['timetable'].department_id.name
+                    key_timetable_percentages[k]['data'] = []
+                    key_timetable_percentages[k]['worked_time'] = 0.0
+                    key_timetable_percentages[k]['percentage'] = 0.0
+            else:
+                k = '{}'.format(key_timetables[key]['timetable'].school_id.id)
+                if k not in key_timetable_percentages:
+                    key_timetable_percentages[k] = {}
+                    key_timetable_percentages[k]['id'] = key_timetables[key]['timetable'].school_id.id
+                    key_timetable_percentages[k]['name'] = key_timetables[key]['timetable'].school_id.name
+                    key_timetable_percentages[k]['data'] = []
+                    key_timetable_percentages[k]['worked_time'] = 0.0
+                    key_timetable_percentages[k]['percentage'] = 0.0
+            timetable_percentage = {}
+            timetable_percentage['id'] = key_timetables[key]['timetable'].id
+            timetable_percentage['date'] = key_timetables[key]['timetable'].date
+            timetable_percentage['date_of_week'] = datetime.strftime(key_timetables[key]['timetable'].date, DATE_FORMAT_FR)
+            timetable_percentage['class_id'] = key_timetables[key]['timetable'].class_id.id
+            timetable_percentage['class_name'] = key_timetables[key]['timetable'].class_id.name
+            timetable_percentage['level_id'] = key_timetables[key]['timetable'].level_id.id
+            timetable_percentage['level_name'] = key_timetables[key]['timetable'].level_id.name
+            timetable_percentage['subject_id'] = key_timetables[key]['timetable'].subject_id.id
+            timetable_percentage['subject_name'] = key_timetables[key]['timetable'].subject_id.name
+            timetable_percentage['subject_code'] = key_timetables[key]['timetable'].subject_id.code
+            timetable_percentage['subject_shared_subject'] = '(TC)' if key_timetables[key]['timetable'].subject_id.shared_subject else ''
+            timetable_percentage['employee_id'] = key_timetables[key]['timetable'].employee_id.id
+            timetable_percentage['identifier'] = key_timetables[key]['timetable'].employee_id.identifier
+            timetable_percentage['employee_name'] = key_timetables[key]['timetable'].employee_id.name
+            timetable_percentage['start_time'] = TimetableFilterWizard.convert_float_to_time(key_timetables[key]['timetable'].start_time)
+            timetable_percentage['end_time'] = TimetableFilterWizard.convert_float_to_time(key_timetables[key]['timetable'].end_time)
+            timetable_percentage['day_of_week'] = CURRENT_WEEKDAY[key_timetables[key]['timetable'].day_of_week]
+            timetable_percentage['worked_start_time'] = TimetableFilterWizard.convert_float_to_time(key_timetables[key]['timetable'].worked_start_time)
+            timetable_percentage['worked_end_time'] = TimetableFilterWizard.convert_float_to_time(key_timetables[key]['timetable'].worked_end_time)
+            timetable_percentage['worked_time'] = key_timetables[key]['worked_hours']
+            timetable_percentage['status'] = STATUS_TIMETABLE[key_timetables[key]['timetable'].status]
+            key_timetable_percentages[k]['worked_time'] += timetable_percentage['worked_time']
+            key_timetable_percentages[k]['data'].append(timetable_percentage)
+
+        for key in key_timetable_percentages.keys():
+            key_timetable_percentages[key]['worked_time'] = round(key_timetable_percentages[key]['worked_time'], 2)
+
+        key_all_timetables = {}
+        for timetable in all_timetables:
+            if not timetable.date or not timetable.day_of_week or not timetable.employee_id.id:
+                continue
+
+            end_time = TimetableFilterWizard.convert_float_to_time(timetable.end_time, has_second=True)
+            start_time = TimetableFilterWizard.convert_float_to_time(timetable.start_time, has_second=True)
+            key = '{}-{}-{}-{}'.format(timetable.employee_id.id, timetable.date, start_time, end_time)
+            # if self.print_type == 'teacher':
+            #     key = '{}-{}-{}-{}'.format(timetable.employee_id.id, timetable.date, start_time, end_time)
+            # else:
+            #     key = '{}-{}-{}-{}'.format(timetable.class_id.id, timetable.date, start_time, end_time)
+            if key not in key_all_timetables:
+                key_all_timetables[key] = {}
+                key_all_timetables[key]['timetable'] = timetable
+            else:
+                continue
+
+            end_time = TimetableFilterWizard.convert_float_to_time(timetable.end_time, has_second=True)
+            start_time = TimetableFilterWizard.convert_float_to_time(timetable.start_time, has_second=True)
+            end_time = datetime.strptime(f"{timetable.date} {end_time}", DATETIME_FORMAT)
+            start_time = datetime.strptime(f"{timetable.date} {start_time}", DATETIME_FORMAT)
+
+            worked_hours = end_time - start_time
+            worked_hours = worked_hours.total_seconds() / 3600.0
+            worked_hours = round(worked_hours, 2)
+
+            if worked_hours < 0.0:
+                del(key_all_timetables[key])
+                continue
+
+            key_all_timetables[key]['worked_hours'] = worked_hours
+
+        key_all_timetable_percentages = {}
+        for key in key_all_timetables.keys():
+            if self.print_type == 'teacher':
+                k = '{}'.format(key_all_timetables[key]['timetable'].employee_id.id)
+                if k not in key_all_timetable_percentages:
+                    key_all_timetable_percentages[k] = {}
+                    key_all_timetable_percentages[k]['id'] = key_all_timetables[key]['timetable'].employee_id.id
+                    key_all_timetable_percentages[k]['name'] = key_all_timetables[key]['timetable'].employee_id.name
+                    key_all_timetable_percentages[k]['data'] = []
+                    key_all_timetable_percentages[k]['worked_time'] = 0.0
+                    key_all_timetable_percentages[k]['percentage'] = 0.0
+            elif self.print_type == 'specialty':
+                k = '{}'.format(key_all_timetables[key]['timetable'].specialty_id.id)
+                if k not in key_all_timetable_percentages:
+                    key_all_timetable_percentages[k] = {}
+                    key_all_timetable_percentages[k]['id'] = key_all_timetables[key]['timetable'].specialty_id.id
+                    key_all_timetable_percentages[k]['name'] = '{} ({})'.format(key_all_timetables[key]['timetable'].specialty_id.name, key_all_timetables[key]['timetable'].specialty_id.field_of_study_id.cycle_id.name)
+                    key_all_timetable_percentages[k]['data'] = []
+                    key_all_timetable_percentages[k]['worked_time'] = 0.0
+                    key_all_timetable_percentages[k]['percentage'] = 0.0
+            elif self.print_type == 'department':
+                k = '{}'.format(key_all_timetables[key]['timetable'].department_id.id)
+                if k not in key_all_timetable_percentages:
+                    key_all_timetable_percentages[k] = {}
+                    key_all_timetable_percentages[k]['id'] = key_all_timetables[key]['timetable'].department_id.id
+                    key_all_timetable_percentages[k]['name'] = key_all_timetables[key]['timetable'].department_id.name
+                    key_all_timetable_percentages[k]['data'] = []
+                    key_all_timetable_percentages[k]['worked_time'] = 0.0
+                    key_all_timetable_percentages[k]['percentage'] = 0.0
+            else:
+                k = '{}'.format(key_all_timetables[key]['timetable'].school_id.id)
+                if k not in key_all_timetable_percentages:
+                    key_all_timetable_percentages[k] = {}
+                    key_all_timetable_percentages[k]['id'] = key_all_timetables[key]['timetable'].school_id.id
+                    key_all_timetable_percentages[k]['name'] = key_all_timetables[key]['timetable'].school_id.name
+                    key_all_timetable_percentages[k]['data'] = []
+                    key_all_timetable_percentages[k]['worked_time'] = 0.0
+                    key_all_timetable_percentages[k]['percentage'] = 0.0
+            timetable_percentage = {}
+            timetable_percentage['id'] = key_all_timetables[key]['timetable'].id
+            timetable_percentage['date'] = key_all_timetables[key]['timetable'].date
+            timetable_percentage['date_of_week'] = datetime.strftime(key_all_timetables[key]['timetable'].date, DATE_FORMAT_FR)
+            timetable_percentage['class_id'] = key_all_timetables[key]['timetable'].class_id.id
+            timetable_percentage['class_name'] = key_all_timetables[key]['timetable'].class_id.name
+            timetable_percentage['level_id'] = key_all_timetables[key]['timetable'].level_id.id
+            timetable_percentage['level_name'] = key_all_timetables[key]['timetable'].level_id.name
+            timetable_percentage['subject_id'] = key_all_timetables[key]['timetable'].subject_id.id
+            timetable_percentage['subject_name'] = key_all_timetables[key]['timetable'].subject_id.name
+            timetable_percentage['subject_code'] = key_all_timetables[key]['timetable'].subject_id.code
+            timetable_percentage['subject_shared_subject'] = '(TC)' if key_all_timetables[key]['timetable'].subject_id.shared_subject else ''
+            timetable_percentage['employee_id'] = key_all_timetables[key]['timetable'].employee_id.id
+            timetable_percentage['identifier'] = key_all_timetables[key]['timetable'].employee_id.identifier
+            timetable_percentage['employee_name'] = key_all_timetables[key]['timetable'].employee_id.name
+            timetable_percentage['start_time'] = TimetableFilterWizard.convert_float_to_time(key_all_timetables[key]['timetable'].start_time)
+            timetable_percentage['end_time'] = TimetableFilterWizard.convert_float_to_time(key_all_timetables[key]['timetable'].end_time)
+            timetable_percentage['day_of_week'] = CURRENT_WEEKDAY[key_all_timetables[key]['timetable'].day_of_week]
+            timetable_percentage['worked_start_time'] = TimetableFilterWizard.convert_float_to_time(key_all_timetables[key]['timetable'].worked_start_time)
+            timetable_percentage['worked_end_time'] = TimetableFilterWizard.convert_float_to_time(key_all_timetables[key]['timetable'].worked_end_time)
+            timetable_percentage['worked_time'] = key_all_timetables[key]['worked_hours']
+            timetable_percentage['status'] = STATUS_TIMETABLE[key_all_timetables[key]['timetable'].status]
+            key_all_timetable_percentages[k]['worked_time'] += timetable_percentage['worked_time']
+            key_all_timetable_percentages[k]['data'].append(timetable_percentage)
+
+        for key in key_all_timetable_percentages.keys():
+            key_all_timetable_percentages[key]['worked_time'] = round(key_all_timetable_percentages[key]['worked_time'], 2)
+
+        for key in key_timetable_percentages.keys():
+            if key in key_all_timetable_percentages:
+                worked_time = key_timetable_percentages[key]['worked_time']
+                if key_all_timetable_percentages[key]['worked_time'] > 0:
+                    key_timetable_percentages[key]['percentage'] = (worked_time / key_all_timetable_percentages[key]['worked_time']) * 100
+                    key_timetable_percentages[key]['percentage'] = round(key_timetable_percentages[key]['percentage'], 2)
+
+        key_timetable_percentages = sorted(key_timetable_percentages.items(), key=self.sort_timetable_percentage, reverse=True)
+        key_timetable_percentages = dict(key_timetable_percentages)
+
+        _logger.info(f'----------- tototototototo key_timetable_percentages {key_timetable_percentages} -----------')
+
+        if len(title) > 0:
+            title = ' / '.join(title)
+        else:
+            title = 'Non spécifié'
+
+        self.env['ir.config_parameter'].sudo().set_param(f'siantou.filter_user_{self.env.user.id}', title)
+
+        filter_title = self.env['ir.config_parameter'].sudo().get_param(f'siantou.filter_user_{self.env.user.id}', '')
+
+        if self.print_type == 'teacher':
+            label = 'Enseignant'
+        elif self.print_type == 'specialty':
+            label = 'Spécialité'
+        elif self.print_type == 'department':
+            label = 'Département'
+        else:
+            label = 'École'
+
+        title = 'Consommation d\'heures par {}'.format(label)
+
+        data = {
+            'docdata': {}
+        }
+        data['docdata']['label'] = label
+        data['docdata']['title'] = title
+        data['docdata']['filter'] = filter_title
+        data['docdata']['timetable_percentage_data'] = key_timetable_percentages
+
+        if self.school_id.id:
+            data['docdata']['title'] = '{} {}'.format(data['docdata']['title'], self.school_id.name)
+
+        start_date = datetime.strftime(self.start_date, DATE_FORMAT_FR)
+        end_date = datetime.strftime(self.end_date, DATE_FORMAT_FR)
+
+        if len(data['docdata']['timetable_percentage_data'].keys()) == 0:
+            raise UserError('Aucune donnée trouvée')
+        report_action = self.env.ref('siantou_ems_core.action_report_timetable_hour_percentage')
+        report_action.update({
+            'name': '{} du {} - {} PDF'.format(title, start_date, end_date),
+        })
+        return report_action.report_action(self, data=data)
 
     def action_print_hour_and_cost_pdf(self):
         domain = []

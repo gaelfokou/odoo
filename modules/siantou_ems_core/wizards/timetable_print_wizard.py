@@ -245,13 +245,13 @@ class TimetablePrintWizard(models.TransientModel):
                 search_punctuality_timetable_percentages = search_timetable_percentages.filtered(lambda rec: rec.date and rec.day_of_week and TimetablePrintWizard.compare_float_time(rec.date, rec.worked_start_time, rec.start_time) == 0.0)
             elif status == 'absent':
                 search_delay_timetable_percentages = search_timetable_percentages.filtered(lambda rec: rec.date and rec.day_of_week and rec.status == 'absent')
-                search_punctuality_timetable_percentages = search_timetable_percentages.filtered(lambda rec: rec.date and rec.day_of_week and rec.status == 'present')
+                search_punctuality_timetable_percentages = search_timetable_percentages.filtered(lambda rec: rec.date and rec.day_of_week and rec.status in ['present', 'permission'])
             elif status == 'punctuality':
                 search_delay_timetable_percentages = search_timetable_percentages.filtered(lambda rec: rec.date and rec.day_of_week and rec.status == 'absent')
-                search_punctuality_timetable_percentages = search_timetable_percentages.filtered(lambda rec: rec.date and rec.day_of_week and rec.status == 'present')
+                search_punctuality_timetable_percentages = search_timetable_percentages.filtered(lambda rec: rec.date and rec.day_of_week and rec.status in ['present', 'permission'])
             elif status == 'exception':
                 search_delay_timetable_percentages = search_timetable_percentages.filtered(lambda rec: rec.date and rec.day_of_week and rec.status == 'exception')
-                search_punctuality_timetable_percentages = search_timetable_percentages.filtered(lambda rec: rec.date and rec.day_of_week and rec.status == 'present')
+                search_punctuality_timetable_percentages = search_timetable_percentages.filtered(lambda rec: rec.date and rec.day_of_week and rec.status in ['present', 'permission'])
             else:
                 search_delay_timetable_percentages = search_timetable_percentages
                 search_punctuality_timetable_percentages = search_timetable_percentages
