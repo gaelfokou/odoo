@@ -64,6 +64,7 @@ PRINT_TYPE = {
     'department': 'Par département',
     'specialty': 'Par spécialité',
     'teacher': 'Par enseignant',
+    'subject': 'Par cours',
 }
 
 TYPE_COUR = {
@@ -271,6 +272,7 @@ class TimetableFilterWizard(models.TransientModel):
         ('department', 'Par département'),
         ('specialty', 'Par spécialité'),
         ('teacher', 'Par enseignant'),
+        ('subject', 'Par cours'),
     ], 'Type d\'impression',
         # default='school',
     )
@@ -1113,7 +1115,7 @@ class TimetableFilterWizard(models.TransientModel):
                                 all_data['docdata']['timetable_percentage_data'][k]['progress'] = '='
                                 all_data['docdata']['timetable_percentage_data'][k]['progress_class'] = 'text-warning'
                     else:
-                        all_data['docdata']['timetable_percentage_data'][k]['previous_percentage'] = ''
+                        all_data['docdata']['timetable_percentage_data'][k]['previous_percentage'] = 0.0
                         all_data['docdata']['timetable_percentage_data'][k]['previous_class'] = ''
                         all_data['docdata']['timetable_percentage_data'][k]['progress'] = ''
                         all_data['docdata']['timetable_percentage_data'][k]['progress_class'] = ''
@@ -1284,6 +1286,15 @@ class TimetableFilterWizard(models.TransientModel):
                     key_timetable_percentages[k]['data'] = []
                     key_timetable_percentages[k]['worked_time'] = 0.0
                     key_timetable_percentages[k]['percentage'] = 0.0
+            elif self.print_type == 'subject':
+                k = '{}'.format(key_timetables[key]['timetable'].subject_id.id)
+                if k not in key_timetable_percentages:
+                    key_timetable_percentages[k] = {}
+                    key_timetable_percentages[k]['id'] = key_timetables[key]['timetable'].subject_id.id
+                    key_timetable_percentages[k]['name'] = key_timetables[key]['timetable'].subject_id.name
+                    key_timetable_percentages[k]['data'] = []
+                    key_timetable_percentages[k]['worked_time'] = 0.0
+                    key_timetable_percentages[k]['percentage'] = 0.0
             else:
                 k = '{}'.format(key_timetables[key]['timetable'].school_id.id)
                 if k not in key_timetable_percentages:
@@ -1383,6 +1394,15 @@ class TimetableFilterWizard(models.TransientModel):
                     key_all_timetable_percentages[k]['data'] = []
                     key_all_timetable_percentages[k]['worked_time'] = 0.0
                     key_all_timetable_percentages[k]['percentage'] = 0.0
+            elif self.print_type == 'subject':
+                k = '{}'.format(key_all_timetables[key]['timetable'].subject_id.id)
+                if k not in key_all_timetable_percentages:
+                    key_all_timetable_percentages[k] = {}
+                    key_all_timetable_percentages[k]['id'] = key_all_timetables[key]['timetable'].subject_id.id
+                    key_all_timetable_percentages[k]['name'] = key_all_timetables[key]['timetable'].subject_id.name
+                    key_all_timetable_percentages[k]['data'] = []
+                    key_all_timetable_percentages[k]['worked_time'] = 0.0
+                    key_all_timetable_percentages[k]['percentage'] = 0.0
             else:
                 k = '{}'.format(key_all_timetables[key]['timetable'].school_id.id)
                 if k not in key_all_timetable_percentages:
@@ -1447,6 +1467,8 @@ class TimetableFilterWizard(models.TransientModel):
             label = 'Spécialité'
         elif self.print_type == 'department':
             label = 'Département'
+        elif self.print_type == 'subject':
+            label = 'Cours'
         else:
             label = 'École'
 
@@ -1636,6 +1658,15 @@ class TimetableFilterWizard(models.TransientModel):
                     key_timetable_consumption_hours[k]['data'] = []
                     key_timetable_consumption_hours[k]['worked_time'] = 0.0
                     key_timetable_consumption_hours[k]['percentage'] = 0.0
+            elif self.print_type == 'subject':
+                k = '{}'.format(key_timetables[key]['timetable'].subject_id.id)
+                if k not in key_timetable_consumption_hours:
+                    key_timetable_consumption_hours[k] = {}
+                    key_timetable_consumption_hours[k]['id'] = key_timetables[key]['timetable'].subject_id.id
+                    key_timetable_consumption_hours[k]['name'] = key_timetables[key]['timetable'].subject_id.name
+                    key_timetable_consumption_hours[k]['data'] = []
+                    key_timetable_consumption_hours[k]['worked_time'] = 0.0
+                    key_timetable_consumption_hours[k]['percentage'] = 0.0
             else:
                 k = '{}'.format(key_timetables[key]['timetable'].school_id.id)
                 if k not in key_timetable_consumption_hours:
@@ -1735,6 +1766,15 @@ class TimetableFilterWizard(models.TransientModel):
                     key_all_timetable_consumption_hours[k]['data'] = []
                     key_all_timetable_consumption_hours[k]['worked_time'] = 0.0
                     key_all_timetable_consumption_hours[k]['percentage'] = 0.0
+            elif self.print_type == 'subject':
+                k = '{}'.format(key_all_timetables[key]['timetable'].subject_id.id)
+                if k not in key_all_timetable_consumption_hours:
+                    key_all_timetable_consumption_hours[k] = {}
+                    key_all_timetable_consumption_hours[k]['id'] = key_all_timetables[key]['timetable'].subject_id.id
+                    key_all_timetable_consumption_hours[k]['name'] = key_all_timetables[key]['timetable'].subject_id.name
+                    key_all_timetable_consumption_hours[k]['data'] = []
+                    key_all_timetable_consumption_hours[k]['worked_time'] = 0.0
+                    key_all_timetable_consumption_hours[k]['percentage'] = 0.0
             else:
                 k = '{}'.format(key_all_timetables[key]['timetable'].school_id.id)
                 if k not in key_all_timetable_consumption_hours:
@@ -1774,11 +1814,13 @@ class TimetableFilterWizard(models.TransientModel):
 
         for key in key_timetable_consumption_hours.keys():
             if key in key_all_timetable_consumption_hours:
+                key_timetable_consumption_hours[key]['all_worked_time'] = key_all_timetable_consumption_hours[key]['worked_time']
                 worked_time = key_timetable_consumption_hours[key]['worked_time']
                 if key_all_timetable_consumption_hours[key]['worked_time'] > 0:
-                    key_timetable_consumption_hours[key]['all_worked_time'] = key_all_timetable_consumption_hours[key]['worked_time']
                     key_timetable_consumption_hours[key]['percentage'] = (worked_time / key_all_timetable_consumption_hours[key]['worked_time']) * 100
                     key_timetable_consumption_hours[key]['percentage'] = round(key_timetable_consumption_hours[key]['percentage'], 2)
+            else:
+                key_timetable_consumption_hours[key]['all_worked_time'] = 0.0
 
         key_timetable_consumption_hours = sorted(key_timetable_consumption_hours.items(), key=self.sort_timetable_percentage, reverse=True)
         key_timetable_consumption_hours = dict(key_timetable_consumption_hours)
@@ -1800,6 +1842,8 @@ class TimetableFilterWizard(models.TransientModel):
             label = 'Spécialité'
         elif self.print_type == 'department':
             label = 'Département'
+        elif self.print_type == 'subject':
+            label = 'Cours'
         else:
             label = 'École'
 
@@ -2045,6 +2089,16 @@ class TimetableFilterWizard(models.TransientModel):
                     key_timetable_hour_and_costs[k]['worked_time'] = 0.0
                     key_timetable_hour_and_costs[k]['amount'] = 0.0
                     key_timetable_hour_and_costs[k]['total_amount'] = 0.0
+            elif self.print_type == 'subject':
+                k = '{}'.format(key_timetables[key]['timetable'].subject_id.id)
+                if k not in key_timetable_hour_and_costs:
+                    key_timetable_hour_and_costs[k] = {}
+                    key_timetable_hour_and_costs[k]['id'] = key_timetables[key]['timetable'].subject_id.id
+                    key_timetable_hour_and_costs[k]['name'] = key_timetables[key]['timetable'].subject_id.name
+                    key_timetable_hour_and_costs[k]['data'] = []
+                    key_timetable_hour_and_costs[k]['worked_time'] = 0.0
+                    key_timetable_hour_and_costs[k]['amount'] = 0.0
+                    key_timetable_hour_and_costs[k]['total_amount'] = 0.0
             else:
                 k = '{}'.format(key_timetables[key]['timetable'].school_id.id)
                 if k not in key_timetable_hour_and_costs:
@@ -2115,6 +2169,8 @@ class TimetableFilterWizard(models.TransientModel):
             label = 'Spécialité'
         elif self.print_type == 'department':
             label = 'Département'
+        elif self.print_type == 'subject':
+            label = 'Cours'
         else:
             label = 'École'
 
