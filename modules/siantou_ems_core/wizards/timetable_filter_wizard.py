@@ -1552,7 +1552,7 @@ class TimetableFilterWizard(models.TransientModel):
 
         all_domain = []
         all_domain += domain
-        all_domain.append(('status', '!=', 'pending'))
+        # all_domain.append(('status', '!=', 'pending'))
         all_timetables = self.env['siantou.ems.timetable.timetable'].search(all_domain, order=order).sorted(lambda rec: (rec.date, rec.id))
 
         domain.append(('status', 'in', ['present', 'permission']))
