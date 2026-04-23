@@ -76,9 +76,8 @@
             <field name="name">syllabus.search.view</field>
             <field name="model">siantou.ems.core.syllabus.subject</field>
             <field name="arch" type="xml">
-                <search string="Unité d'enseignement">
-                    <field name="name" string="Intitulé"/>
-                    <separator/>
+                <search>
+                    <field name="name"/>
                 </search>
              </field>
         </record>
