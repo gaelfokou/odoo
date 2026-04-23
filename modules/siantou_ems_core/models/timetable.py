@@ -1118,7 +1118,10 @@ class Timetable(models.Model):
                     del(key_timetables[key])
                     continue
 
+                hours_credit = timetable.subject_id.hours_credit
+
                 key_timetables[key]['worked_hours'] = worked_hours
+                key_timetables[key]['hours_credit'] = hours_credit
                 total_worked_hours += key_timetables[key]['worked_hours']
 
             end_time = Timetable.convert_float_to_time(vals['end_time'], has_second=True)
