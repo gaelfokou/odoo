@@ -1812,13 +1812,15 @@ class TimetableFilterWizard(models.TransientModel):
             key_all_timetable_consumption_hours[key]['worked_time'] = round(key_all_timetable_consumption_hours[key]['worked_time'], 2)
 
         key_consumption_hours = {}
-        for key in key_timetable_consumption_hours.keys():
-            if key in key_all_timetable_consumption_hours:
-                key_timetable_consumption_hours[key]['all_worked_time'] = key_all_timetable_consumption_hours[key]['worked_time']
+        for key in key_all_timetable_consumption_hours.keys():
+            if key in key_timetable_consumption_hours:
+                key_all_timetable_consumption_hours[key]['all_worked_time'] = key_timetable_consumption_hours[key]['worked_time']
                 if key_all_timetable_consumption_hours[key]['worked_time'] > 0:
-                    key_timetable_consumption_hours[key]['percentage'] = (key_timetable_consumption_hours[key]['worked_time'] / key_all_timetable_consumption_hours[key]['worked_time']) * 100
-                    key_timetable_consumption_hours[key]['percentage'] = round(key_timetable_consumption_hours[key]['percentage'], 2)
-                    key_consumption_hours[key] = key_timetable_consumption_hours[key]
+                    key_all_timetable_consumption_hours[key]['percentage'] = (key_timetable_consumption_hours[key]['worked_time'] / key_all_timetable_consumption_hours[key]['worked_time']) * 100
+                    key_all_timetable_consumption_hours[key]['percentage'] = round(key_all_timetable_consumption_hours[key]['percentage'], 2)
+            else:
+                key_all_timetable_consumption_hours[key]['all_worked_time'] = 0.0
+            key_consumption_hours[key] = key_all_timetable_consumption_hours[key]
 
         key_timetable_consumption_hours = key_consumption_hours
 

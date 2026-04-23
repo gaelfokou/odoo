@@ -81,7 +81,7 @@
                                         <tr>
                                             <td class="text-left" style="background-color: #f2f2f2;"></td>
                                             <td class="text-center" style="background-color: #f2f2f2;">
-                                                <span t-esc="str(timetable_consumption_hour_data[key]['worked_time']) + ' / ' + str(timetable_consumption_hour_data[key]['all_worked_time'])"/>
+                                                <span t-esc="str(timetable_consumption_hour_data[key]['all_worked_time']) + ' / ' + str(timetable_consumption_hour_data[key]['worked_time'])"/>
                                             </td>
                                             <td class="text-center" style="background-color: #f2f2f2;">
                                                 <span t-esc="str(timetable_consumption_hour_data[key]['percentage']) + '%'"/>
