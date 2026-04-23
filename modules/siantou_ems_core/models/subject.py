@@ -216,11 +216,19 @@ class Subject(models.Model):
         return subject
 
     def write(self, vals):
-        subject = self.env['siantou.ems.core.subject'].search([('id', '=', self.id)], limit=1)
+        subjects = []
+        try:
+            subject = self.env['siantou.ems.core.subject'].search([('id', '=', self.id)], limit=1)
+            subjects.append(subject)
+        except ValueError:
+            active_ids = self.env.context.get('active_ids', [])
+            subjects = self.env['siantou.ems.core.subject'].browse(active_ids)
+            subjects = list(subjects)
 
         res = super(Subject, self).write(vals)
 
-        self.update_teacher_priority(subject)
+        for subject in subjects:
+            self.update_teacher_priority(subject)
 
         return res
 
