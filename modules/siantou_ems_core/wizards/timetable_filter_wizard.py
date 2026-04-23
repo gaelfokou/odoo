@@ -1807,7 +1807,8 @@ class TimetableFilterWizard(models.TransientModel):
             timetable_consumption_hour['worked_end_time'] = TimetableFilterWizard.convert_float_to_time(key_all_timetables[key]['timetable'].worked_end_time)
             timetable_consumption_hour['worked_time'] = key_all_timetables[key]['worked_hours']
             timetable_consumption_hour['status'] = STATUS_TIMETABLE[key_all_timetables[key]['timetable'].status]
-            key_all_timetable_consumption_hours[k]['worked_time'] += timetable_consumption_hour['worked_time']
+            # key_all_timetable_consumption_hours[k]['worked_time'] += timetable_consumption_hour['worked_time']
+            key_all_timetable_consumption_hours[k]['worked_time'] = timetable_consumption_hour['worked_time']
             key_all_timetable_consumption_hours[k]['data'].append(timetable_consumption_hour)
 
         for key in key_all_timetable_consumption_hours.keys():
