@@ -574,11 +574,11 @@ class Student(models.Model):
         vals['school_id'] = specialty_id.field_of_study_id.school_id.id
         vals['field_of_study_id'] = specialty_id.field_of_study_id.id
 
-        student = super(Student, self).create(vals)
+        res = super(Student, self).create(vals)
 
-        self.create_student_user(student)
+        self.create_student_user(res)
 
-        return student
+        return res
 
     def write(self, vals):
         student = self.env['oe.school.student'].search([('id', '=', self.id)], limit=1)
@@ -651,9 +651,9 @@ class Student(models.Model):
         if registre_id:
             vals['registre_id'] = registre_id.id
 
-        student = super(Student, self).write(vals)
+        res = super(Student, self).write(vals)
 
-        return student
+        return res
 
     def open_student_form(self):
         # return {

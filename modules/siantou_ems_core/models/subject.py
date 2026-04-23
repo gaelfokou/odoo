@@ -209,11 +209,11 @@ class Subject(models.Model):
 
     @api.model
     def create(self, vals):
-        subject = super(Subject, self).create(vals)
+        res = super(Subject, self).create(vals)
 
-        self.update_teacher_priority(subject)
+        self.update_teacher_priority(res)
 
-        return subject
+        return res
 
     def write(self, vals):
         subjects = []
@@ -917,20 +917,28 @@ class SubjectSession(models.Model):
 
     @api.model
     def create(self, vals):
-        session = super(SubjectSession, self).create(vals)
+        res = super(SubjectSession, self).create(vals)
 
-        report = session.report_id
+        report = res.report_id
         self.update_session_name(report)
 
-        return session
+        return res
 
     def write(self, vals):
-        session = self.env['siantou.ems.core.subject.session'].search([('id', '=', self.id)], limit=1)
+        sessions = []
+        try:
+            session = self.env['siantou.ems.core.subject.session'].search([('id', '=', self.id)], limit=1)
+            sessions.append(session)
+        except ValueError:
+            active_ids = self.env.context.get('active_ids', [])
+            sessions = self.env['siantou.ems.core.subject.session'].browse(active_ids)
+            sessions = list(sessions)
 
         res = super(SubjectSession, self).write(vals)
 
         if 'is_update' not in vals or not vals['is_update']:
-            report = session.report_id
-            self.update_session_name(report)
+            for session in sessions:
+                report = session.report_id
+                self.update_session_name(report)
 
         return res

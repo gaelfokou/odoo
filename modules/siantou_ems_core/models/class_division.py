@@ -343,7 +343,7 @@ class EducationClass(models.Model):
             record.timetable_ids = timetables
 
     def write(self, vals):
-        classe = super(EducationClass, self).write(vals)
+        res = super(EducationClass, self).write(vals)
 
         if 'is_timetable_active' in vals:
             timetables = self.env['siantou.ems.timetable.timetable'].search([
@@ -363,7 +363,7 @@ class EducationClass(models.Model):
                     'reason': None,
                 })
 
-        return classe
+        return res
 
     def action_open_filter(self):
         view_id = self.env.ref('siantou_ems_core.class_filter_wizard').id

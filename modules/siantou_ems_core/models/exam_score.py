@@ -285,18 +285,26 @@ class ExamScore(models.Model):
 
     @api.model
     def create(self, vals):
-        exam = super(ExamScore, self).create(vals)
+        res = super(ExamScore, self).create(vals)
 
-        self.create_student_score(exam)
+        self.create_student_score(res)
 
-        return exam
+        return res
 
     def write(self, vals):
-        exam = self.env['siantou.ems.core.exam.score'].search([('id', '=', self.id)], limit=1)
+        exams = []
+        try:
+            exam = self.env['siantou.ems.core.exam.score'].search([('id', '=', self.id)], limit=1)
+            exams.append(exam)
+        except ValueError:
+            active_ids = self.env.context.get('active_ids', [])
+            exams = self.env['siantou.ems.core.exam.score'].browse(active_ids)
+            exams = list(exams)
 
         res = super(ExamScore, self).write(vals)
 
-        self.update_student_score(exam)
+        for exam in exams:
+            self.update_student_score(exam)
 
         return res
 
@@ -472,8 +480,8 @@ class SubjectScore(models.Model):
 
     @api.model
     def create(self, vals):
-        score = super(SubjectScore, self).create(vals)
+        res = super(SubjectScore, self).create(vals)
 
-        self.create_student_anonymous(score)
+        self.create_student_anonymous(res)
 
-        return score
+        return res

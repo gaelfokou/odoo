@@ -399,20 +399,28 @@ class HrEmployee(models.Model):
             if 'first_name' not in vals or not vals['first_name'] or not vals['first_name'].strip():
                 vals['first_name'] = HrEmployee.get_first_name(vals['name'])
 
-        employee = super(HrEmployee, self).create(vals)
+        res = super(HrEmployee, self).create(vals)
 
-        self.create_employee_user(employee)
+        self.create_employee_user(res)
 
-        self.update_subject_priority(employee)
+        self.update_subject_priority(res)
 
-        return employee
+        return res
 
     def write(self, vals):
-        employee = self.env['hr.employee'].search([('id', '=', self.id)], limit=1)
+        employees = []
+        try:
+            employee = self.env['hr.employee'].search([('id', '=', self.id)], limit=1)
+            employees.append(employee)
+        except ValueError:
+            active_ids = self.env.context.get('active_ids', [])
+            employees = self.env['hr.employee'].browse(active_ids)
+            employees = list(employees)
 
         res = super(HrEmployee, self).write(vals)
 
-        self.update_subject_priority(employee)
+        for employee in employees:
+            self.update_subject_priority(employee)
 
         return res
 

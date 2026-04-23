@@ -121,8 +121,8 @@ class OeSchoolCourse(models.Model):
             'company_id': vals.get('company_id'),
         })
         vals['sequence_id'] = sequence.id
-        course = super(OeSchoolCourse, self).create(vals)
-        return course
+        res = super(OeSchoolCourse, self).create(vals)
+        return res
 
     def write(self, vals):
         if 'code' in vals:

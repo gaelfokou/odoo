@@ -394,9 +394,9 @@ class StudentEnrollment(models.Model):
         if registre_id:
             vals['registre_id'] = registre_id.id
 
-        student_enroll = super(StudentEnrollment, self).create(vals)
+        res = super(StudentEnrollment, self).create(vals)
 
-        return student_enroll
+        return res
 
     def write(self, vals):
         student_enroll = self.env['oe.school.student.enrollment'].search([('id', '=', self.id)], limit=1)
@@ -469,9 +469,9 @@ class StudentEnrollment(models.Model):
         if registre_id:
             vals['registre_id'] = registre_id.id
 
-        student_enroll = super(StudentEnrollment, self).write(vals)
+        res = super(StudentEnrollment, self).write(vals)
 
-        return student_enroll
+        return res
 
     def unlink(self):
         if self.status == "transfer":
