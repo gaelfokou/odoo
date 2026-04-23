@@ -1721,20 +1721,22 @@ class TimetableFilterWizard(models.TransientModel):
             else:
                 continue
 
-            end_time = TimetableFilterWizard.convert_float_to_time(timetable.end_time, has_second=True)
-            start_time = TimetableFilterWizard.convert_float_to_time(timetable.start_time, has_second=True)
-            end_time = datetime.strptime(f"{timetable.date} {end_time}", DATETIME_FORMAT)
-            start_time = datetime.strptime(f"{timetable.date} {start_time}", DATETIME_FORMAT)
+            # end_time = TimetableFilterWizard.convert_float_to_time(timetable.end_time, has_second=True)
+            # start_time = TimetableFilterWizard.convert_float_to_time(timetable.start_time, has_second=True)
+            # end_time = datetime.strptime(f"{timetable.date} {end_time}", DATETIME_FORMAT)
+            # start_time = datetime.strptime(f"{timetable.date} {start_time}", DATETIME_FORMAT)
 
-            worked_hours = end_time - start_time
-            worked_hours = worked_hours.total_seconds() / 3600.0
-            worked_hours = round(worked_hours, 2)
+            # worked_hours = end_time - start_time
+            # worked_hours = worked_hours.total_seconds() / 3600.0
+            # worked_hours = round(worked_hours, 2)
 
-            if worked_hours < 0.0:
-                del(key_all_timetables[key])
-                continue
+            # if worked_hours < 0.0:
+            #     del(key_all_timetables[key])
+            #     continue
 
-            key_all_timetables[key]['worked_hours'] = worked_hours
+            hours_credit = timetable.subject_id.hours_credit
+
+            key_all_timetables[key]['worked_hours'] = hours_credit
 
         key_all_timetable_consumption_hours = {}
         for key in key_all_timetables.keys():
