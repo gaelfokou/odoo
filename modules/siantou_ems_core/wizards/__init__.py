@@ -1,3 +1,4 @@
+# from . import timetable_wizard
 from . import timetable_print_wizard
 from . import teacher_print_wizard
 from . import student_print_wizard
@@ -6,7 +7,6 @@ from . import classroom_print_wizard
 from . import class_division_print_wizard
 from . import subject_print_wizard
 from . import progress_report_print_wizard
-from . import timetable_wizard
 from . import check_priority
 from . import check_avaible_slot
 from . import data_request_wizard
