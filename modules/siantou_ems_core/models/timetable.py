@@ -1055,40 +1055,16 @@ class Timetable(models.Model):
                 class_group = self.env['siantou.ems.core.class.group'].search([('id', '=', vals['class_group_id'])], limit=1)
             if class_group:
                 timetables = self.env['siantou.ems.timetable.timetable'].search([
-                    '|',
-                    '&',
-                    '&',
-                    ('group_id.is_active', '=', True),
-                    ('group_id.is_submit', '=', False),
-                    ('group_id.status', '=', 'valid'),
-                    '&',
-                    '&',
-                    '&',
-                    ('group_parent_id.is_active', '=', True),
-                    ('group_parent_id.is_submit', '=', False),
-                    ('group_parent_id.status', '=', 'valid'),
-                    ('group_id.status', '=', 'valid'),
-                    ('is_active', '=', True),
-                    # ('status', 'in', ['present', 'permission']),
-                ], order='date asc').filtered(lambda rec: rec.class_id.id == classe.id and rec.class_group_id.id == class_group.id and rec.subject_id.id == subject.id)
+                    ('class_id', '=', classe.id),
+                    ('subject_id', '=', subject.id),
+                    ('class_group_id', '=', class_group.id),
+                ])
             else:
                 timetables = self.env['siantou.ems.timetable.timetable'].search([
-                    '|',
-                    '&',
-                    '&',
-                    ('group_id.is_active', '=', True),
-                    ('group_id.is_submit', '=', False),
-                    ('group_id.status', '=', 'valid'),
-                    '&',
-                    '&',
-                    '&',
-                    ('group_parent_id.is_active', '=', True),
-                    ('group_parent_id.is_submit', '=', False),
-                    ('group_parent_id.status', '=', 'valid'),
-                    ('group_id.status', '=', 'valid'),
-                    ('is_active', '=', True),
-                    # ('status', 'in', ['present', 'permission']),
-                ], order='date asc').filtered(lambda rec: rec.class_id.id == classe.id and not rec.class_group_id.id and rec.subject_id.id == subject.id)
+                    ('class_id', '=', classe.id),
+                    ('subject_id', '=', subject.id),
+                    ('class_group_id', '=', False),
+                ])
 
             timetables = list(timetables)
 
