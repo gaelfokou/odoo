@@ -423,12 +423,12 @@ class TimetableFilterWizard(models.TransientModel):
                 domain.append(('department_id', 'in', department_ids.ids))
             record.specialty_id_domain = domain
 
-    @api.depends('is_permanent', 'is_temporary')
+    @api.depends('is_teacher', 'is_permanent', 'is_temporary')
     def _compute_employee_domain(self):
         for record in self:
-            domain = [
-                ('is_teacher', '=', True)
-            ]
+            domain = []
+            if record.is_teacher:
+                domain.append(('is_teacher', '=', True))
             if not record.is_permanent or not record.is_temporary:
                 if record.is_permanent:
                     domain.append(('is_permanent', '=', True))

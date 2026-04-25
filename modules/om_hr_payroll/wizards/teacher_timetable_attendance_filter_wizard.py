@@ -122,12 +122,12 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
 
     employee_id_domain = fields.Binary(compute='_compute_employee_domain', default=[])
 
-    @api.depends('is_permanent')
+    @api.depends('is_teacher', 'is_permanent')
     def _compute_employee_domain(self):
         for record in self:
-            domain = [
-                ('is_teacher', '=', True)
-            ]
+            domain = []
+            if record.is_teacher:
+                domain.append(('is_teacher', '=', True))
             if record.is_permanent:
                 domain.append(('is_permanent', '=', True))
             else:
@@ -163,12 +163,14 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
         domain.append(('is_active', '=', True))
         domain.append(('status', 'in', ['present', 'permission']))
 
-        domain.append(('employee_id.is_teacher', '=', True))
-        domain.append(('employee_id.is_permanent', '=', self.is_permanent))
-
+        if self.is_teacher:
+            domain.append(('employee_id.is_teacher', '=', True))
+            title.append('Est un enseignant')
         if self.is_permanent:
+            domain.append(('employee_id.is_permanent', '=', True))
             title.append('Est un permanent')
         else:
+            domain.append(('employee_id.is_permanent', '=', False))
             title.append('Est un vacataire')
 
         if self.employee_id.id:

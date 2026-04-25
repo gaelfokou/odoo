@@ -7,6 +7,7 @@
             <field name="arch" type="xml">
                 <form string="Filtre des émargements des enseignants">
                     <group>
+                        <field name="is_teacher"/>
                         <field name="is_permanent"/>
                         <field name="is_temporary"/>
                         <field name="employee_id_domain" invisible="1"/>
