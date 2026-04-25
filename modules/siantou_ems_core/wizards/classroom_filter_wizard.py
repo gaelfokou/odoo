@@ -82,15 +82,18 @@ class ClassroomFilterWizard(models.TransientModel):
             domain.append(('date', '=', self.date))
             title.append(datetime.strftime(self.date, DATE_FORMAT_FR))
 
-        classroom_ids = []
         timetables = self.env['siantou.ems.timetable.timetable'].search(domain)
+
         if self.start_time and self.end_time:
             start_time = ClassroomFilterWizard.convert_float_to_time(self.start_time)
             end_time = ClassroomFilterWizard.convert_float_to_time(self.end_time)
             title.append('{} - {}'.format(start_time, end_time))
             timetables = timetables.filtered(lambda rec: not (rec.start_time >= self.end_time or rec.end_time <= self.start_time))
+
+        classroom_ids = []
         for timetable in timetables:
             classroom_ids.append(timetable.classroom_id.id)
+
         classroom_ids = list(set(classroom_ids))
 
         if self.status:

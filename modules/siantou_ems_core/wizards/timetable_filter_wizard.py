@@ -382,14 +382,12 @@ class TimetableFilterWizard(models.TransientModel):
     @api.onchange('semester_id')
     def _onchange_semester(self):
         for record in self:
-            record.group_id = None
-            record.school_id = None
-            record.field_of_study_id = None
-            record.level_id = None
-            record.class_id = None
-            record.specialty_id = None
-            record.option_id = None
-            record.subject_id = None
+            if record.semester_id.id:
+                record.start_date = record.semester_id.start_time
+                record.end_date = record.semester_id.end_time
+            else:
+                record.start_date = date.today().replace(day=1)
+                record.end_date = (datetime.now() + relativedelta(months=+1, day=1, days=-1)).date()
 
     @api.depends('group_id')
     def _compute_group_domain(self):
@@ -644,6 +642,7 @@ class TimetableFilterWizard(models.TransientModel):
                 timetables = self.env['siantou.ems.timetable.timetable'].search(domain, order=order).sorted(lambda rec: (rec.date, rec.id))
         else:
             timetables = self.env['siantou.ems.timetable.timetable'].search(domain, order=order).sorted(lambda rec: (rec.date, rec.id))
+
         if self.start_date and self.end_date:
             start_date = datetime.strftime(self.start_date, DATE_FORMAT_FR)
             end_date = datetime.strftime(self.end_date, DATE_FORMAT_FR)
@@ -942,6 +941,7 @@ class TimetableFilterWizard(models.TransientModel):
             timetables = timetables.filtered(lambda rec: not (rec.start_time >= self.end_time or rec.end_time <= self.start_time))
             all_timetables = all_timetables.filtered(lambda rec: not (rec.start_time >= self.end_time or rec.end_time <= self.start_time))
             # timetables = timetables.filtered(lambda rec: self.search_filtered(rec))
+            # all_timetables = all_timetables.filtered(lambda rec: self.search_filtered(rec))
 
         timetables = list(timetables)
 
@@ -1221,6 +1221,7 @@ class TimetableFilterWizard(models.TransientModel):
             timetables = timetables.filtered(lambda rec: not (rec.start_time >= self.end_time or rec.end_time <= self.start_time))
             all_timetables = all_timetables.filtered(lambda rec: not (rec.start_time >= self.end_time or rec.end_time <= self.start_time))
             # timetables = timetables.filtered(lambda rec: self.search_filtered(rec))
+            # all_timetables = all_timetables.filtered(lambda rec: self.search_filtered(rec))
 
         timetables = list(timetables)
 
@@ -1585,6 +1586,7 @@ class TimetableFilterWizard(models.TransientModel):
         all_timetables = self.env['siantou.ems.timetable.timetable'].search(all_domain, order=order).sorted(lambda rec: (rec.date, rec.id))
 
         domain.append(('status', 'in', ['present', 'permission']))
+
         timetables = self.env['siantou.ems.timetable.timetable'].search(domain, order=order).sorted(lambda rec: (rec.date, rec.id))
 
         if self.start_date and self.end_date:
@@ -1600,6 +1602,7 @@ class TimetableFilterWizard(models.TransientModel):
             timetables = timetables.filtered(lambda rec: not (rec.start_time >= self.end_time or rec.end_time <= self.start_time))
             all_timetables = all_timetables.filtered(lambda rec: not (rec.start_time >= self.end_time or rec.end_time <= self.start_time))
             # timetables = timetables.filtered(lambda rec: self.search_filtered(rec))
+            # all_timetables = all_timetables.filtered(lambda rec: self.search_filtered(rec))
 
         timetables = list(timetables)
 
