@@ -271,30 +271,86 @@ class ClassUeCopyWizard(models.TransientModel):
                 res = list(set(source_ue_ids) & set(destination_ue_ids))
                 if len(source_ue_ids) > len(res):
                     raise ValidationError(f"Les unités d\'enseignement de la classe source doivent être copiées dans la classe destination")
+
+                for group_id in source_class_id.group_ids:
+                    group = self.env['siantou.ems.core.class.group'].search([
+                        ('name', '=', group_id.name),
+                        ('class_id', '=', destination_class_id.id),
+                    ], limit=1)
+                    if not group:
+                        destination_class_id.group_ids.create({
+                            'name': group_id.name,
+                            'class_id': destination_class_id.id,
+                        })
+
                 destination_timetable_ids = destination_class_id.timetable_ids
                 # for timetable_id in destination_timetable_ids:
                 #     timetable_id.unlink()
+
                 source_timetable_ids = source_class_id.timetable_ids
                 for timetable_id in source_timetable_ids:
-                    self.env['siantou.ems.timetable.timetable'].create({
-                        'department_id': timetable_id.specialty_id.department_id.id,
-                        'school_id': timetable_id.school_id.id,
-                        'level_id': timetable_id.level_id.id,
-                        'specialty_id': timetable_id.specialty_id.id,
-                        'option_id': timetable_id.option_id.id,
-                        'class_id': destination_class_id.id,
-                        'class_group_id': timetable_id.class_group_id.id,
-                        'ue_id': timetable_id.ue_id.id,
-                        'subject_id': timetable_id.subject_id.id,
-                        'building_id': timetable_id.building_id.id,
-                        'classroom_id': timetable_id.classroom_id.id,
-                        'employee_id': timetable_id.employee_id.id,
-                        'date': timetable_id.date,
-                        'start_time': timetable_id.start_time,
-                        'end_time': timetable_id.end_time,
-                        'group_id': timetable_id.group_id.id,
-                        'skip_validation': True,
-                    })
+                    group_ids = []
+                    if timetable_id.class_group_id.id:
+                        group_ids = destination_class_id.group_ids.filtered(lambda rec: rec.name == timetable_id.class_group_id.name)
+                        group_ids = list(group_ids)
+                    if len(group_ids) > 0:
+                        timetable = self.env['siantou.ems.timetable.timetable'].search([
+                            ('class_id', '=', destination_class_id.id),
+                            ('class_group_id', '=', group_ids[0].id),
+                            ('subject_id', '=', timetable_id.subject_id.id),
+                            ('employee_id', '=', timetable_id.employee_id.id),
+                            ('date', '=', timetable_id.date),
+                            ('start_time', '=', timetable_id.start_time),
+                            ('end_time', '=', timetable_id.end_time),
+                        ], limit=1)
+                        if not timetable:
+                            self.env['siantou.ems.timetable.timetable'].create({
+                                'department_id': timetable_id.specialty_id.department_id.id,
+                                'school_id': timetable_id.school_id.id,
+                                'level_id': timetable_id.level_id.id,
+                                'specialty_id': timetable_id.specialty_id.id,
+                                'option_id': timetable_id.option_id.id,
+                                'class_id': destination_class_id.id,
+                                'class_group_id': group_ids[0].id,
+                                'ue_id': timetable_id.ue_id.id,
+                                'subject_id': timetable_id.subject_id.id,
+                                'building_id': timetable_id.building_id.id,
+                                'classroom_id': timetable_id.classroom_id.id,
+                                'employee_id': timetable_id.employee_id.id,
+                                'date': timetable_id.date,
+                                'start_time': timetable_id.start_time,
+                                'end_time': timetable_id.end_time,
+                                'group_id': timetable_id.group_id.id,
+                                'skip_validation': True,
+                            })
+                    else:
+                        timetable = self.env['siantou.ems.timetable.timetable'].search([
+                            ('class_id', '=', destination_class_id.id),
+                            ('subject_id', '=', timetable_id.subject_id.id),
+                            ('employee_id', '=', timetable_id.employee_id.id),
+                            ('date', '=', timetable_id.date),
+                            ('start_time', '=', timetable_id.start_time),
+                            ('end_time', '=', timetable_id.end_time),
+                        ], limit=1)
+                        if not timetable:
+                            self.env['siantou.ems.timetable.timetable'].create({
+                                'department_id': timetable_id.specialty_id.department_id.id,
+                                'school_id': timetable_id.school_id.id,
+                                'level_id': timetable_id.level_id.id,
+                                'specialty_id': timetable_id.specialty_id.id,
+                                'option_id': timetable_id.option_id.id,
+                                'class_id': destination_class_id.id,
+                                'ue_id': timetable_id.ue_id.id,
+                                'subject_id': timetable_id.subject_id.id,
+                                'building_id': timetable_id.building_id.id,
+                                'classroom_id': timetable_id.classroom_id.id,
+                                'employee_id': timetable_id.employee_id.id,
+                                'date': timetable_id.date,
+                                'start_time': timetable_id.start_time,
+                                'end_time': timetable_id.end_time,
+                                'group_id': timetable_id.group_id.id,
+                                'skip_validation': True,
+                            })
 
         return {
             'type': 'ir.actions.client',
@@ -307,10 +363,15 @@ class ClassUeCopyWizard(models.TransientModel):
             destination_class_id = self.env['siantou.ems.core.class'].search([('id', '=', self.destination_class_id.id)], limit=1)
             if destination_class_id:
                 for group_id in source_class_id.group_ids:
-                    destination_class_id.group_ids.create({
-                        'name': group_id.name,
-                        'class_id': destination_class_id.id,
-                    })
+                    group = self.env['siantou.ems.core.class.group'].search([
+                        ('name', '=', group_id.name),
+                        ('class_id', '=', destination_class_id.id),
+                    ], limit=1)
+                    if not group:
+                        destination_class_id.group_ids.create({
+                            'name': group_id.name,
+                            'class_id': destination_class_id.id,
+                        })
 
                 ue_ids = []
                 for ue_id in source_class_id.ue_ids:
