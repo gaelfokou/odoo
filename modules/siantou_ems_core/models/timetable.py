@@ -305,6 +305,8 @@ class Timetable(models.Model):
     @api.constrains('class_id', 'class_group_id', 'subject_id', 'date', 'hours_credit')
     def _constrains_hours_credit(self):
         for record in self:
+            if record.skip_validation:
+                return True
             if record.hours_credit > record.subject_id.hours_credit:
                 raise ValidationError(f"Le volume horaire hebdomadaire doit être inférieure ou égale au volume horaire semestriel {record.hours_credit} / {record.subject_id.hours_credit}")
             start_date = record.date - timedelta(days=record.date.weekday())
@@ -1115,8 +1117,9 @@ class Timetable(models.Model):
 
             hours_credit = round(subject.hours_credit, 2)
 
-            if total_worked_hours > hours_credit:
-                raise ValidationError(f"La somme des volumes horaires programmés doit être inférieure ou égale au volume horaire semestriel {total_worked_hours} / {hours_credit}")
+            if 'skip_validation' not in vals or not vals['skip_validation']:
+                if total_worked_hours > hours_credit:
+                    raise ValidationError(f"La somme des volumes horaires programmés doit être inférieure ou égale au volume horaire semestriel {total_worked_hours} / {hours_credit}")
 
         res = super(Timetable, self).create(vals)
 

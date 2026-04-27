@@ -25,6 +25,7 @@
                     </group>
                     <footer>
                         <button string="Copier" type="object" name="action_copy" class="btn-primary"/>
+                        <button string="Copier les emplois du temps" type="object" name="action_copy_timetable" class="btn-primary"/>
                         <button string="Annuler" class="btn-secondary" special="cancel"/>
                     </footer>
                 </form>
@@ -32,7 +33,7 @@
         </record>
 
         <!-- Define an action to open the form view -->
-        <record id="action_copy_timetable_wizard" model="ir.actions.act_window">
+        <record id="action_copy_ue_wizard" model="ir.actions.act_window">
             <field name="name">Copie des unités d'enseignement</field>
             <field name="res_model">class.ue.copy.wizard</field>
             <field name="view_mode">form</field>
