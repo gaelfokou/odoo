@@ -272,8 +272,8 @@ class ClassUeCopyWizard(models.TransientModel):
                 if len(source_ue_ids) > len(res):
                     raise ValidationError(f"Les unités d\'enseignement de la classe source doivent être copiées dans la classe destination")
                 destination_timetable_ids = destination_class_id.timetable_ids
-                for timetable_id in destination_timetable_ids:
-                    timetable_id.unlink()
+                # for timetable_id in destination_timetable_ids:
+                #     timetable_id.unlink()
                 source_timetable_ids = source_class_id.timetable_ids
                 for timetable_id in source_timetable_ids:
                     self.env['siantou.ems.timetable.timetable'].create({
