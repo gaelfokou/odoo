@@ -67,6 +67,7 @@
             <field name="domain">[('create_uid', '=', uid)]</field>
             <field name="target">current</field>
             <field name="view_id" ref="teacher_timetable_attendance_tree_view"/>
+            <field name="context">{'default_is_teacher': True, 'default_is_permanent': False}</field>
         </record>
 
         <menuitem

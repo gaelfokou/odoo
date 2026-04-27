@@ -67,6 +67,7 @@
             <field name="view_mode">form</field>
             <field name="target">new</field>
             <field name="view_id" ref="timetable_filter_wizard"/>
+            <field name="context">{'default_is_teacher': True, 'default_is_permanent': False}</field>
         </record>
     </data>
 </odoo>

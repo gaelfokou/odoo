@@ -249,7 +249,7 @@ class TimetableFilterWizard(models.TransientModel):
 
     is_teacher = fields.Boolean(
         'Est un enseignant ?',
-        default=False,
+        default=True,
     )
 
     is_permanent = fields.Boolean(
