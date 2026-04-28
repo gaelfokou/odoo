@@ -16,6 +16,7 @@ from . import class_division_filter_wizard
 from . import teacher_filter_wizard
 from . import student_filter_wizard
 from . import daily_attendance_filter_wizard
+from . import timetable_copy_wizard
 from . import timetable_group_copy_wizard
 from . import timetable_group_move_wizard
 from . import subject_filter_wizard

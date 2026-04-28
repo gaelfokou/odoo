@@ -190,9 +190,6 @@ class TimetableGroupMoveWizard(models.TransientModel):
                 if self.class_id.id:
                     timetable_ids = timetable_ids.filtered(lambda rec: rec.class_id.id and self.class_id.id)
                 if self.start_date and self.end_date:
-                    start_date = datetime.strftime(self.start_date, DATE_FORMAT_FR)
-                    end_date = datetime.strftime(self.end_date, DATE_FORMAT_FR)
-                    title.append('{} - {}'.format(start_date, end_date))
                     timetable_ids = timetable_ids.filtered(lambda rec: rec.date and rec.day_of_week and rec.date >= self.start_date and rec.date <= self.end_date)
                 for timetable_id in timetable_ids:
                     timetable_id.write({

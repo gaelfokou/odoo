@@ -1462,6 +1462,23 @@ class Timetable(models.Model):
             'tag': 'reload',
         }
 
+    def action_open_copy(self):
+        view_id = self.env.ref('siantou_ems_core.timetable_group_copy_wizard').id
+        return {
+            'name': 'Copie des emplois du temps',
+            'type': 'ir.actions.act_window',
+            'view_type': 'form',
+            'view_mode': 'form',
+            'res_model': 'timetable.copy.wizard',
+            'views': [(view_id, 'form')],
+            'view_id': view_id,
+            'target': 'new',
+            'context': {
+                'default_source_year_id': self.env['siantou.ems.core.year'].search([('is_active', '=', True)], limit=1).id,
+                'default_is_submit': False,
+            },
+        }
+
 class TimetableGroup(models.Model):
     _name = 'siantou.ems.timetable.group'
     _description = 'Version d\'emploi du temps'

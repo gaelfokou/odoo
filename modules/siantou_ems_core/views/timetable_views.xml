@@ -31,6 +31,12 @@
                             class="oe_highlight" 
                             display="always"
                             groups="siantou_ems_core.group_timetable_print_pdf"/>
+                        <button name="action_open_copy" 
+                            type="object" 
+                            string="Copier" 
+                            class="oe_highlight" 
+                            display="always"
+                            groups="siantou_ems_core.group_timetable_open_copy"/>
                         <!-- <button name="action_update_all_timetable" 
                             type="object" 
                             string="Mettre à jour les emplois du temps et présences" 

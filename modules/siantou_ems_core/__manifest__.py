@@ -108,6 +108,7 @@
         'views/student_component_views.xml',
         'views/data_request_wizard_views.xml',
         'views/timetable_filter_wizard_views.xml',
+        'views/timetable_copy_wizard_views.xml',
         'views/timetable_group_copy_wizard_views.xml',
         'views/timetable_group_move_wizard_views.xml',
         'views/class_ue_copy_wizard_views.xml',
