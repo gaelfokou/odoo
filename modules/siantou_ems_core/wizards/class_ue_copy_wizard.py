@@ -326,6 +326,7 @@ class ClassUeCopyWizard(models.TransientModel):
                     else:
                         timetable = self.env['siantou.ems.timetable.timetable'].search([
                             ('class_id', '=', destination_class_id.id),
+                            ('class_group_id', '=', False),
                             ('subject_id', '=', timetable_id.subject_id.id),
                             ('employee_id', '=', timetable_id.employee_id.id),
                             ('date', '=', timetable_id.date),
