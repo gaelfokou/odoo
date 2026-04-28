@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-        <record id="class_ue_copy_wizard" model="ir.ui.view">
+        <record id="timetable_copy_wizard" model="ir.ui.view">
             <field name="name">timetable.copy.wizard.form</field>
             <field name="model">timetable.copy.wizard</field>
             <field name="arch" type="xml">
@@ -17,11 +17,57 @@
                         <field name="source_year_id" options="{'no_create': True}"/>
                         <field name="source_class_id_domain" invisible="1"/>
                         <field name="source_class_id" options="{'no_create': True}" domain="source_class_id_domain"/>
-                        <field name="source_timetable_ids"/>
+                        <field name="subject_id_domain" invisible="1"/>
+                        <field name="subject_id" options="{'no_create': True}" domain="subject_id_domain"/>
+                        <field name="source_timetable_ids">
+                            <tree>
+                                <field name="group_id"/>
+                                <field name="semester_id"/>
+                                <field name="class_id"/>
+                                <field name="class_group_id"/>
+                                <field name="subject_id"/>
+                                <field name="building_id"/>
+                                <field name="classroom_id"/>
+                                <field name="employee_id"/>
+                                <field name="date"/>
+                                <field name="day_of_week"/>
+                                <field name="start_time"/>
+                                <field name="end_time"/>
+                                <field name="status" widget="badge"
+                                    decoration-muted="status == 'pending'"
+                                    decoration-primary="status == 'progress'"
+                                    decoration-success="status == 'present'"
+                                    decoration-danger="status == 'absent'"
+                                    decoration-info="status in ['permission', 'delay']"
+                                    decoration-warning="status == 'exception'"/>
+                            </tree>
+                        </field>
                         <field name="destination_year_id" options="{'no_create': True}"/>
                         <field name="destination_class_id_domain" invisible="1"/>
                         <field name="destination_class_id" options="{'no_create': True}" domain="destination_class_id_domain"/>
-                        <field name="destination_timetable_ids"/>
+                        <field name="destination_timetable_ids">
+                            <tree>
+                                <field name="group_id"/>
+                                <field name="semester_id"/>
+                                <field name="class_id"/>
+                                <field name="class_group_id"/>
+                                <field name="subject_id"/>
+                                <field name="building_id"/>
+                                <field name="classroom_id"/>
+                                <field name="employee_id"/>
+                                <field name="date"/>
+                                <field name="day_of_week"/>
+                                <field name="start_time"/>
+                                <field name="end_time"/>
+                                <field name="status" widget="badge"
+                                    decoration-muted="status == 'pending'"
+                                    decoration-primary="status == 'progress'"
+                                    decoration-success="status == 'present'"
+                                    decoration-danger="status == 'absent'"
+                                    decoration-info="status in ['permission', 'delay']"
+                                    decoration-warning="status == 'exception'"/>
+                            </tree>
+                        </field>
                     </group>
                     <footer>
                         <button string="Copier" type="object" name="action_copy" class="btn-primary"/>
@@ -38,7 +84,7 @@
             <field name="res_model">timetable.copy.wizard</field>
             <field name="view_mode">form</field>
             <field name="target">new</field>
-            <field name="view_id" ref="class_ue_copy_wizard"/>
+            <field name="view_id" ref="timetable_copy_wizard"/>
         </record>
     </data>
 </odoo>

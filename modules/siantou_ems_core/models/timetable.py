@@ -1463,7 +1463,7 @@ class Timetable(models.Model):
         }
 
     def action_open_copy(self):
-        view_id = self.env.ref('siantou_ems_core.timetable_group_copy_wizard').id
+        view_id = self.env.ref('siantou_ems_core.timetable_copy_wizard').id
         return {
             'name': 'Copie des emplois du temps',
             'type': 'ir.actions.act_window',
