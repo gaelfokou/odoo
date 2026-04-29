@@ -49,6 +49,18 @@ class TimetableCopyWizard(models.TransientModel):
         required=True,
     )
 
+    semester_id = fields.Many2one(
+        'siantou.ems.core.year.semester',
+        string='Semestre',
+        related='group_id.semester_id',
+        store=True
+    )
+
+    group_id = fields.Many2one(
+        'siantou.ems.timetable.group',
+        string='Version d\'emploi du temps',
+    )
+
     school_id = fields.Many2one(
         'siantou.ems.core.school',
         string='École',
@@ -66,6 +78,13 @@ class TimetableCopyWizard(models.TransientModel):
         string='Filière',
         related='specialty_id.field_of_study_id',
         store=True
+    )
+
+    department_id = fields.Many2one(
+        'hr.department',
+        string='Département',
+        # related='specialty_id.department_id',
+        # store=True
     )
 
     specialty_id = fields.Many2one(
@@ -120,7 +139,45 @@ class TimetableCopyWizard(models.TransientModel):
 
     destination_class_id_domain = fields.Binary(compute='_compute_all_destination_domain', default=[])
 
+    department_id_domain = fields.Binary(compute='_compute_department_domain', default=[])
+
     subject_id_domain = fields.Binary(compute='_compute_class_domain', default=[])
+
+    school_id_domain = fields.Binary(compute='_compute_group_domain', default=[])
+
+    @api.depends('group_id')
+    def _compute_group_domain(self):
+        for record in self:
+            domain = []
+            if record.group_id.id:
+                domain = [
+                    ('id', 'in', record.group_id.school_ids.ids)
+                ]
+            record.school_id_domain = domain
+
+    @api.depends('group_id', 'school_id')
+    def _compute_department_domain(self):
+        for record in self:
+            department_ids = record.group_id.department_ids
+            domain = []
+            if record.school_id.id:
+                domain.append(('school_id', '=', record.school_id.id))
+            if len(department_ids.ids) > 0:
+                domain.append(('id', 'in', department_ids.ids))
+            record.department_id_domain = domain
+
+    @api.depends('group_id', 'school_id', 'department_id')
+    def _compute_school_domain(self):
+        for record in self:
+            department_ids = record.group_id.department_ids
+            domain = []
+            if record.school_id.id:
+                domain.append(('school_id', '=', record.school_id.id))
+            if record.department_id.id:
+                domain.append(('department_id', '=', record.department_id.id))
+            if len(department_ids.ids) > 0:
+                domain.append(('department_id', 'in', department_ids.ids))
+            record.specialty_id_domain = domain
 
     @api.depends('source_class_id')
     def _compute_class_domain(self):
@@ -169,28 +226,16 @@ class TimetableCopyWizard(models.TransientModel):
                 timetable_ids = timetable_ids.filtered(lambda rec: rec.subject_id.id == record.subject_id.id)
             record.destination_timetable_ids = timetable_ids
 
-    @api.depends('school_id')
-    def _compute_school_domain(self):
-        for record in self:
-            domain = []
-            if record.school_id.id:
-                field_of_study_ids = self.env['siantou.ems.core.field_of_study'].search([('school_id', '=', record.school_id.id)])
-                domain = [
-                    ('field_of_study_id', 'in', field_of_study_ids.ids)
-                ]
-            record.specialty_id_domain = domain
-
     @api.depends('source_year_id', 'level_id', 'school_id', 'specialty_id', 'option_id', 'type_cour')
     def _compute_all_source_domain(self):
         for record in self:
             domain = []
             if record.source_year_id.id:
                 domain.append(('year_id', '=', record.source_year_id.id))
+            if record.school_id.id:
+                domain.append(('school_id', '=', record.school_id.id))
             if record.level_id.id:
                 domain.append(('level_id', '=', record.level_id.id))
-            if record.school_id.id:
-                field_of_study_ids = self.env['siantou.ems.core.field_of_study'].search([('school_id', '=', record.school_id.id)])
-                domain.append(('field_of_study_id', 'in', field_of_study_ids.ids))
             if record.specialty_id.id:
                 domain.append(('specialty_id', '=', record.specialty_id.id))
             if record.option_id.id:
@@ -213,11 +258,10 @@ class TimetableCopyWizard(models.TransientModel):
             domain = []
             if record.destination_year_id.id:
                 domain.append(('year_id', '=', record.destination_year_id.id))
+            if record.school_id.id:
+                domain.append(('school_id', '=', record.school_id.id))
             if record.level_id.id:
                 domain.append(('level_id', '=', record.level_id.id))
-            if record.school_id.id:
-                field_of_study_ids = self.env['siantou.ems.core.field_of_study'].search([('school_id', '=', record.school_id.id)])
-                domain.append(('field_of_study_id', 'in', field_of_study_ids.ids))
             if record.specialty_id.id:
                 domain.append(('specialty_id', '=', record.specialty_id.id))
             if record.option_id.id:

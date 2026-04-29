@@ -144,10 +144,7 @@ class ClassUeCopyWizard(models.TransientModel):
         for record in self:
             domain = []
             if record.school_id.id:
-                field_of_study_ids = self.env['siantou.ems.core.field_of_study'].search([('school_id', '=', record.school_id.id)])
-                domain = [
-                    ('field_of_study_id', 'in', field_of_study_ids.ids)
-                ]
+                domain.append(('school_id', '=', record.school_id.id))
             record.specialty_id_domain = domain
 
     @api.depends('source_year_id', 'level_id', 'school_id', 'specialty_id', 'option_id', 'type_cour')
@@ -156,11 +153,10 @@ class ClassUeCopyWizard(models.TransientModel):
             domain = []
             if record.source_year_id.id:
                 domain.append(('year_id', '=', record.source_year_id.id))
+            if record.school_id.id:
+                domain.append(('school_id', '=', record.school_id.id))
             if record.level_id.id:
                 domain.append(('level_id', '=', record.level_id.id))
-            if record.school_id.id:
-                field_of_study_ids = self.env['siantou.ems.core.field_of_study'].search([('school_id', '=', record.school_id.id)])
-                domain.append(('field_of_study_id', 'in', field_of_study_ids.ids))
             if record.specialty_id.id:
                 domain.append(('specialty_id', '=', record.specialty_id.id))
             if record.option_id.id:
@@ -183,11 +179,10 @@ class ClassUeCopyWizard(models.TransientModel):
             domain = []
             if record.destination_year_id.id:
                 domain.append(('year_id', '=', record.destination_year_id.id))
+            if record.school_id.id:
+                domain.append(('school_id', '=', record.school_id.id))
             if record.level_id.id:
                 domain.append(('level_id', '=', record.level_id.id))
-            if record.school_id.id:
-                field_of_study_ids = self.env['siantou.ems.core.field_of_study'].search([('school_id', '=', record.school_id.id)])
-                domain.append(('field_of_study_id', 'in', field_of_study_ids.ids))
             if record.specialty_id.id:
                 domain.append(('specialty_id', '=', record.specialty_id.id))
             if record.option_id.id:

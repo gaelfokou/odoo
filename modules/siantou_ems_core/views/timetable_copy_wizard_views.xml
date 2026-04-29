@@ -7,9 +7,14 @@
             <field name="arch" type="xml">
                 <form string="Copie des emplois du temps">
                     <group>
-                        <field name="school_id" options="{'no_create': True}"/>
+                        <field name="semester_id"/>
+                        <field name="group_id" options="{'no_create': True}" domain="['|', '|', ('create_uid', '=', uid), ('read_user_ids', '=', uid), ('write_user_ids', '=', uid)]"/>
+                        <field name="school_id_domain" invisible="1"/>
+                        <field name="school_id" options="{'no_create': True}" domain="school_id_domain"/>
+                        <field name="department_id_domain" invisible="1"/>
+                        <field name="department_id" options="{'no_create': True}" domain="department_id_domain"/>
                         <field name="field_of_study_id" options="{'no_create': True}" domain="[('school_id', '=', school_id)]"/>
-                        <field name="level_id" options="{'no_create': True}"/>
+                        <field name="level_id" options="{'no_create': True}" domain="[('semester_ids', '=', semester_id)]"/>
                         <field name="specialty_id_domain" invisible="1"/>
                         <field name="specialty_id" options="{'no_create': True}" domain="specialty_id_domain"/>
                         <field name="option_id" options="{'no_create': True}" domain="[('specialty_id', '=', specialty_id)]"/>

@@ -76,8 +76,6 @@ class StudentFilterWizard(models.TransientModel):
                 domain.append(('school_id', '=', record.school_id.id))
             if record.level_id.id:
                 domain.append(('level_id', '=', record.level_id.id))
-            if record.field_of_study_id.id:
-                domain.append(('field_of_study_id', '=', record.field_of_study_id.id))
             if record.specialty_id.id:
                 domain.append(('specialty_id', '=', record.specialty_id.id))
             if record.option_id.id:
@@ -99,10 +97,7 @@ class StudentFilterWizard(models.TransientModel):
         for record in self:
             domain = []
             if record.school_id.id:
-                field_of_study_ids = self.env['siantou.ems.core.field_of_study'].search([('school_id', '=', record.school_id.id)])
-                domain = [
-                    ('field_of_study_id', 'in', field_of_study_ids.ids)
-                ]
+                domain.append(('school_id', '=', record.school_id.id))
             record.specialty_id_domain = domain
 
     @api.onchange('school_id')
