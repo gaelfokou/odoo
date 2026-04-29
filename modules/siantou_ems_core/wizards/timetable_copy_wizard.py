@@ -179,12 +179,14 @@ class TimetableCopyWizard(models.TransientModel):
                 domain.append(('department_id', 'in', department_ids.ids))
             record.specialty_id_domain = domain
 
-    @api.depends('source_class_id')
+    @api.depends('source_class_id', 'semester_id')
     def _compute_class_domain(self):
         for record in self:
             domain = []
             if record.source_class_id.id:
                 ue_ids = record.source_class_id.ue_ids
+                if record.semester_id.id:
+                    ue_ids = ue_ids.filtered(lambda rec: record.semester_id.id in rec.semester_ids.ids)
                 domain = [
                     ('ue_ids', 'in', ue_ids.ids)
                 ]
@@ -335,15 +337,15 @@ class TimetableCopyWizard(models.TransientModel):
             record.destination_class_id = None
             record.destination_timetable_ids = []
 
-    def action_copy_timetable(self):
+    def action_copy(self):
         source_class_id = self.env['siantou.ems.core.class'].search([('id', '=', self.source_class_id.id)], limit=1)
         if source_class_id:
             destination_class_id = self.env['siantou.ems.core.class'].search([('id', '=', self.destination_class_id.id)], limit=1)
             if destination_class_id:
-                source_timetable_ids = source_class_id.timetable_ids.ids
-                destination_timetable_ids = destination_class_id.timetable_ids.ids
-                res = list(set(source_timetable_ids) & set(destination_timetable_ids))
-                if len(source_timetable_ids) > len(res):
+                source_ue_ids = source_class_id.ue_ids.ids
+                destination_ue_ids = destination_class_id.ue_ids.ids
+                res = list(set(source_ue_ids) & set(destination_ue_ids))
+                if len(source_ue_ids) > len(res):
                     raise ValidationError(f"Les unités d\'enseignement de la classe source doivent être copiées dans la classe destination")
 
                 for group_id in source_class_id.group_ids:
@@ -357,11 +359,11 @@ class TimetableCopyWizard(models.TransientModel):
                             'class_id': destination_class_id.id,
                         })
 
-                destination_timetable_ids = destination_class_id.timetable_ids
+                destination_timetable_ids = self.destination_timetable_ids
                 # for timetable_id in destination_timetable_ids:
                 #     timetable_id.unlink()
 
-                source_timetable_ids = source_class_id.timetable_ids
+                source_timetable_ids = self.source_timetable_ids
                 for timetable_id in source_timetable_ids:
                     group_ids = []
                     if timetable_id.class_group_id.id:
@@ -426,110 +428,6 @@ class TimetableCopyWizard(models.TransientModel):
                                 'group_id': timetable_id.group_id.id,
                                 'skip_validation': True,
                             })
-
-        return {
-            'type': 'ir.actions.client',
-            'tag': 'reload',
-        }
-
-    def action_copy(self):
-        source_class_id = self.env['siantou.ems.core.class'].search([('id', '=', self.source_class_id.id)], limit=1)
-        if source_class_id:
-            destination_class_id = self.env['siantou.ems.core.class'].search([('id', '=', self.destination_class_id.id)], limit=1)
-            if destination_class_id:
-                for group_id in source_class_id.group_ids:
-                    group = self.env['siantou.ems.core.class.group'].search([
-                        ('name', '=', group_id.name),
-                        ('class_id', '=', destination_class_id.id),
-                    ], limit=1)
-                    if not group:
-                        destination_class_id.group_ids.create({
-                            'name': group_id.name,
-                            'class_id': destination_class_id.id,
-                        })
-
-                ue_ids = []
-                for ue_id in source_class_id.timetable_ids:
-                    destination_semester_ids = []
-                    for source_semester_id in ue_id.semester_ids:
-                        years = source_semester_id.year_id.name.split('-')
-                        years = [int(y) for y in years]
-                        new_years = self.destination_year_id.name.split('-')
-                        new_years = [int(y) for y in new_years]
-
-                        destination_semester_id = self.env['siantou.ems.core.year.semester'].search([
-                            ('semester_name', '=', source_semester_id.semester_name),
-                            ('year_id', '=', self.destination_year_id.id),
-                        ], limit=1)
-                        if not destination_semester_id:
-                            year, week, day = source_semester_id.start_time.isocalendar()
-                            try:
-                                index_year = years.index(year)
-                            except ValueError:
-                                index_year = -1
-                            if index_year != -1 and len(years) > 1 and len(new_years) > 1:
-                                year = new_years[index_year]
-                            start_time = date.fromisocalendar(year, week, day)
-
-                            year, week, day = source_semester_id.end_time.isocalendar()
-                            try:
-                                index_year = years.index(year)
-                            except ValueError:
-                                index_year = -1
-                            if index_year != -1 and len(years) > 1 and len(new_years) > 1:
-                                year = new_years[index_year]
-                            end_time = date.fromisocalendar(year, week, day)
-
-                            destination_semester_id = self.env['siantou.ems.core.year.semester'].create({
-                                'semester_name': source_semester_id.semester_name,
-                                'start_time': start_time,
-                                'end_time': end_time,
-                                'year_id': self.destination_year_id.id,
-                            })
-                            level_ids = [(4, level_id.id) for level_id in source_semester_id.level_ids]
-                            # destination_semester_id.level_ids = level_ids
-                            destination_semester_id.write({'level_ids': level_ids })
-
-                        destination_semester_ids.append(destination_semester_id)
-
-                    ue = self.env['siantou.ems.core.unite.enseignement'].search([
-                        ('code', '=', ue_id.code),
-                        ('semester_ids', 'in', [semester_id.id for semester_id in destination_semester_ids]),
-                    ], limit=1)
-                    if not ue:
-                        ue = self.env['siantou.ems.core.unite.enseignement'].create({
-                            'code': ue_id.code,
-                            'name': ue_id.name,
-                            'type_ue': ue_id.type_ue,
-                        })
-                        semester_ids = [(4, semester_id.id) for semester_id in destination_semester_ids]
-                        subject_ids = [(4, subject_id.id) for subject_id in ue_id.subject_ids]
-                        ue.write({
-                            'semester_ids': semester_ids,
-                            'subject_ids': subject_ids,
-                        })
-                        for syllabus_id in ue_id.syllabus_ids:
-                            self.env['siantou.ems.core.syllabus'].create({
-                                'name': syllabus_id.name,
-                                'ue_id': ue.id,
-                                'subject_id': syllabus_id.subject_id.id,
-                                'class_id': destination_class_id.id,
-                                'description': syllabus_id.description,
-                                'pourcentage_cc': syllabus_id.pourcentage_cc,
-                                'pourcentage_exam': syllabus_id.pourcentage_exam,
-                                'pourcentage_presence': syllabus_id.pourcentage_presence,
-                                'note_sn': syllabus_id.note_sn,
-                                'coefficient': syllabus_id.coefficient,
-                                'note_sn': syllabus_id.note_sn,
-                                'cm': syllabus_id.cm,
-                                'tp': syllabus_id.tp,
-                                'td': syllabus_id.td,
-                                'te': syllabus_id.te,
-                                # 'pro_pe_id': syllabus_id.pro_pe_id,
-                            })
-                    ue_ids.append(ue)
-                ue_ids = [(4, ue_id.id) for ue_id in ue_ids]
-                destination_class_id.write({'ue_ids': ue_ids })
 
         return {
             'type': 'ir.actions.client',

@@ -818,7 +818,9 @@ class Timetable(models.Model):
         for record in self:
             domain = []
             if record.class_id.id:
-                ue_ids = record.class_id.ue_ids.filtered(lambda rec: record.semester_id.id in rec.semester_ids.ids)
+                ue_ids = record.class_id.ue_ids
+                if record.semester_id.id:
+                    ue_ids = ue_ids.filtered(lambda rec: record.semester_id.id in rec.semester_ids.ids)
                 domain = [
                     ('ue_ids', 'in', ue_ids.ids)
                 ]
