@@ -192,38 +192,46 @@ class TimetableCopyWizard(models.TransientModel):
                 ]
             record.subject_id_domain = domain
 
-    @api.depends('source_class_id', 'subject_id')
+    @api.depends('source_class_id', 'semester_id', 'subject_id')
     def _compute_source_timetables(self):
         # Recherche des emplois du temps qui correspondent à la classe
         for record in self:
             timetable_ids = record.source_class_id.timetable_ids
+            if record.semester_id.id:
+                timetable_ids = timetable_ids.filtered(lambda rec: rec.semester_id.id == record.semester_id.id)
             if record.subject_id.id:
                 timetable_ids = timetable_ids.filtered(lambda rec: rec.subject_id.id == record.subject_id.id)
             record.source_timetable_ids = timetable_ids
 
-    @api.onchange('source_class_id', 'subject_id')
+    @api.onchange('source_class_id', 'semester_id', 'subject_id')
     def _onchange_source_timetables(self):
         # Recherche des emplois du temps qui correspondent à la classe
         for record in self:
             timetable_ids = record.source_class_id.timetable_ids
+            if record.semester_id.id:
+                timetable_ids = timetable_ids.filtered(lambda rec: rec.semester_id.id == record.semester_id.id)
             if record.subject_id.id:
                 timetable_ids = timetable_ids.filtered(lambda rec: rec.subject_id.id == record.subject_id.id)
             record.source_timetable_ids = timetable_ids
 
-    @api.depends('destination_class_id', 'subject_id')
+    @api.depends('destination_class_id', 'semester_id', 'subject_id')
     def _compute_destination_timetables(self):
         # Recherche des emplois du temps qui correspondent à la classe
         for record in self:
             timetable_ids = record.destination_class_id.timetable_ids
+            if record.semester_id.id:
+                timetable_ids = timetable_ids.filtered(lambda rec: rec.semester_id.id == record.semester_id.id)
             if record.subject_id.id:
                 timetable_ids = timetable_ids.filtered(lambda rec: rec.subject_id.id == record.subject_id.id)
             record.destination_timetable_ids = timetable_ids
 
-    @api.onchange('destination_class_id', 'subject_id')
+    @api.onchange('destination_class_id', 'semester_id', 'subject_id')
     def _onchange_destination_timetables(self):
         # Recherche des emplois du temps qui correspondent à la classe
         for record in self:
             timetable_ids = record.destination_class_id.timetable_ids
+            if record.semester_id.id:
+                timetable_ids = timetable_ids.filtered(lambda rec: rec.semester_id.id == record.semester_id.id)
             if record.subject_id.id:
                 timetable_ids = timetable_ids.filtered(lambda rec: rec.subject_id.id == record.subject_id.id)
             record.destination_timetable_ids = timetable_ids
