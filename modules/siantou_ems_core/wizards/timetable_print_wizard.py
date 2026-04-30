@@ -204,7 +204,7 @@ class TimetablePrintWizard(models.TransientModel):
                 key_timetables[key][monday]['Vendredi'] = TimetablePrintWizard.sort_by_indexes(key_timetables[key][monday]['Vendredi'], hours)
                 key_timetables[key][monday]['Samedi'] = TimetablePrintWizard.sort_by_indexes(key_timetables[key][monday]['Samedi'], hours)
                 key_timetables[key][monday]['Dimanche'] = TimetablePrintWizard.sort_by_indexes(key_timetables[key][monday]['Dimanche'], hours)
-            key_timetables[key] = TimetablePrintWizard.paginate_calendar(key_timetables[key], len(key_timetables[key].keys()))
+            key_timetables[key] = TimetablePrintWizard.paginate_calendar(key_timetables[key], page_size=len(key_timetables[key].keys()))
             key_timetables[key]['semester'] = info_timetables[key]['semester']
             key_timetables[key]['study'] = info_timetables[key]['study']
             key_timetables[key]['filter'] = info_timetables[key]['filter']

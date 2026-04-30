@@ -216,7 +216,7 @@ class PortalAccount(portal.CustomerPortal):
             user = http.request.env.user.student_id
             is_user = 'is_student'
 
-        search_timetables, searchbar_inputs, search_month = Helpers.timetable(search=search, search_in=search_in, selected_month=selected_month)
+        search_timetables, searchbar_inputs, search_month = Helpers.timetable(search=search, search_in=search_in, page=page, view_type=view_type, selected_month=selected_month)
         timetables = []
         for search_timetable in search_timetables:
             timetable = {}
@@ -316,7 +316,7 @@ class PortalAccount(portal.CustomerPortal):
                 timetables[monday]['Vendredi'] = Helpers.sort_by_indexes(timetables[monday]['Vendredi'], hours)
                 timetables[monday]['Samedi'] = Helpers.sort_by_indexes(timetables[monday]['Samedi'], hours)
                 timetables[monday]['Dimanche'] = Helpers.sort_by_indexes(timetables[monday]['Dimanche'], hours)
-            timetables = Helpers.paginate_calendar(timetables, 1, page)
+            timetables = Helpers.paginate_calendar(timetables, page_size=1, page_number=page)
         else:
             for timetable in timetables:
                 timetable['date'] = date.strftime(timetable['date'], DATE_FORMAT_FR)
@@ -324,7 +324,7 @@ class PortalAccount(portal.CustomerPortal):
                 timetable['end_time'] = Helpers.convert_float_to_time(timetable['end_time'])
                 timetable['worked_start_time'] = Helpers.convert_float_to_time(timetable['worked_start_time'])
                 timetable['worked_end_time'] = Helpers.convert_float_to_time(timetable['worked_end_time'])
-            timetables = Helpers.paginate_list(timetables, 10, page)
+            timetables = Helpers.paginate_list(timetables, page_size=10, page_number=page)
         return http.request.render(f'siantou_ems_portal.siantou_ems_portal_timetable_{view_type}_views',
                                 {
                                     'timetables': timetables['pages'],
@@ -369,7 +369,7 @@ class PortalAccount(portal.CustomerPortal):
             user = http.request.env.user.student_id
             is_user = 'is_student'
 
-        search_timetables, searchbar_inputs, search_month = Helpers.timetable(search=search, search_in=search_in, selected_month=selected_month)
+        search_timetables, searchbar_inputs, search_month = Helpers.timetable(search=search, search_in=search_in, page=page, view_type=view_type, selected_month=selected_month)
         timetable_ids = []
         timetables = []
         for search_timetable in search_timetables:
@@ -470,7 +470,7 @@ class PortalAccount(portal.CustomerPortal):
                 timetables[monday]['Vendredi'] = Helpers.sort_by_indexes(timetables[monday]['Vendredi'], hours)
                 timetables[monday]['Samedi'] = Helpers.sort_by_indexes(timetables[monday]['Samedi'], hours)
                 timetables[monday]['Dimanche'] = Helpers.sort_by_indexes(timetables[monday]['Dimanche'], hours)
-            timetables = Helpers.paginate_calendar(timetables, 1, page)
+            timetables = Helpers.paginate_calendar(timetables, page_size=1, page_number=page)
             for monday in timetables['pages'].keys():
                 for hour in range(len(timetables['pages'][monday]['Heure'])):
                     for timetable in timetables['pages'][monday]['Lundi'][hour]:
@@ -494,7 +494,7 @@ class PortalAccount(portal.CustomerPortal):
                 timetable['end_time'] = Helpers.convert_float_to_time(timetable['end_time'])
                 timetable['worked_start_time'] = Helpers.convert_float_to_time(timetable['worked_start_time'])
                 timetable['worked_end_time'] = Helpers.convert_float_to_time(timetable['worked_end_time'])
-            timetables = Helpers.paginate_list(timetables, 10, page)
+            timetables = Helpers.paginate_list(timetables, page_size=10, page_number=page)
             for timetable in timetables['pages']:
                 timetable_ids.append(timetable['id'])
         timetable_ids = list(set(timetable_ids))
@@ -1641,7 +1641,7 @@ class PortalAccount(portal.CustomerPortal):
         for month in calendars.keys():
             if calendars[month]['is_current_month']:
                 current_calendars[month] = calendars[month]
-        calendars = Helpers.paginate_calendar(calendars, 1, page)
+        calendars = Helpers.paginate_calendar(calendars, page_size=1, page_number=page)
         return http.request.render(f'siantou_ems_portal.siantou_ems_portal_calendar_calendar_views',
                                 {
                                     'calendars': calendars['pages'],

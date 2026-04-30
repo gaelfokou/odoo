@@ -154,13 +154,13 @@ class ApiAccount(http.Controller):
                 timetables[monday]['Vendredi'] = Helpers.sort_by_indexes(timetables[monday]['Vendredi'], hours)
                 timetables[monday]['Samedi'] = Helpers.sort_by_indexes(timetables[monday]['Samedi'], hours)
                 timetables[monday]['Dimanche'] = Helpers.sort_by_indexes(timetables[monday]['Dimanche'], hours)
-            timetables = Helpers.paginate_calendar(timetables, 1, page)
+            timetables = Helpers.paginate_calendar(timetables, page_size=1, page_number=page)
         else:
             for timetable in timetables:
                 timetable['date'] = date.strftime(timetable['date'], DATE_FORMAT_FR)
                 timetable['start_time'] = Helpers.convert_float_to_time(timetable['start_time'])
                 timetable['end_time'] = Helpers.convert_float_to_time(timetable['end_time'])
-            timetables = Helpers.paginate_list(timetables, 10, page)
+            timetables = Helpers.paginate_list(timetables, page_size=10, page_number=page)
         body = {
             'code': 200,
             'message': '',

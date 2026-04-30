@@ -57,7 +57,7 @@ _logger = logging.getLogger(__name__)
 
 class Helpers:
     @staticmethod
-    def timetable(search='', search_in='all', selected_month='0', cycle_id=None, level_id=None, field_of_study_id=None, specialty_id=None, option_id=None, class_id=None):
+    def timetable(search='', search_in='all', page=1, view_type='calendar', selected_month='0', cycle_id=None, level_id=None, field_of_study_id=None, specialty_id=None, option_id=None, class_id=None):
         searchbar_inputs = {
             'all': {'label': 'Tout', 'input': 'all', 'domain': []},
             'cycle': {'label': 'Cycle', 'input': 'cycle', 'domain': [('cycle_id.name', 'like', search)]},
@@ -130,6 +130,11 @@ class Helpers:
                 current_date = current_date - relativedelta(day=1, months=int(selected_month))
                 start_date = current_date + relativedelta(day=1)
                 end_date = current_date + relativedelta(day=1, months=1, days=-1)
+                if start_date.weekday() > 0 and start_date.weekday() < 6:
+                    start_date = start_date - timedelta(days=start_date.weekday())
+                if end_date.weekday() > 0 and end_date.weekday() < 6:
+                    end_date = end_date - timedelta(days=end_date.weekday())
+                    end_date = end_date + timedelta(days=6)
                 if start_date and end_date:
                     timetables = timetables.filtered(lambda rec: rec.date and rec.day_of_week and rec.date >= start_date and rec.date <= end_date)
                 timetables = list(timetables)
@@ -159,6 +164,11 @@ class Helpers:
                 current_date = current_date - relativedelta(day=1, months=int(selected_month))
                 start_date = current_date + relativedelta(day=1)
                 end_date = current_date + relativedelta(day=1, months=1, days=-1)
+                if start_date.weekday() > 0 and start_date.weekday() < 6:
+                    start_date = start_date - timedelta(days=start_date.weekday())
+                if end_date.weekday() > 0 and end_date.weekday() < 6:
+                    end_date = end_date - timedelta(days=end_date.weekday())
+                    end_date = end_date + timedelta(days=6)
                 if start_date and end_date:
                     timetables = timetables.filtered(lambda rec: rec.date and rec.day_of_week and rec.date >= start_date and rec.date <= end_date)
                 timetables = list(timetables)
