@@ -46,6 +46,7 @@ class SessionEnrollment(models.Model):
         string="Nom de la session",
         required=True,
     )
+
     start_date = fields.Date('Date de début', required=True, related='year_id.start_time')
     end_date = fields.Date(
         string='Date de fin',
@@ -55,6 +56,7 @@ class SessionEnrollment(models.Model):
         string='Cycles',
         required=True,
     )
+
     year_id = fields.Many2one(
         'siantou.ems.core.year',
         string='Année Académique',
@@ -62,6 +64,7 @@ class SessionEnrollment(models.Model):
         required=True,
         default=lambda self: self._get_default_acadmic_year()
     )
+
     is_active = fields.Boolean(string='Actif ?', default=False)
     state = fields.Selection([
             ('draft', 'Brouillon'),
@@ -72,6 +75,7 @@ class SessionEnrollment(models.Model):
         'Statut',
         default='draft'
     )
+
     registre_ids = fields.One2many(
         'siantou.session.registre',
         'session_id',
@@ -164,17 +168,20 @@ class SessionRegisterEnrollment(models.Model):
         'oe.school.course', 'Cursus ou Cycle',
         required=True,
     )
+
     session_id = fields.Many2one(
         'siantou.session',
         "Session d'admission",
         required=True,
         ondelete='cascade'
     )
+
     admission_ids = fields.One2many(
         'oe.school.student.enrollment',
         'registre_id',
         'Candidatures'
     )
+
     state = fields.Selection(
         [
             ('draft', 'Brouillon'),

@@ -145,6 +145,18 @@ class TimetableCopyWizard(models.TransientModel):
 
     school_id_domain = fields.Binary(compute='_compute_group_domain', default=[])
 
+    level_id_domain = fields.Binary(compute='_compute_semester_domain', default=[])
+
+    @api.depends('semester_id')
+    def _compute_semester_domain(self):
+        for record in self:
+            domain = []
+            if record.semester_id.id:
+                domain = [
+                    ('semester_ids', '=', record.semester_id.id)
+                ]
+            record.level_id_domain = domain
+
     @api.depends('group_id')
     def _compute_group_domain(self):
         for record in self:

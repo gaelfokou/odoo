@@ -221,6 +221,7 @@ class Task(models.Model):
         index='btree_not_null',
         help="Deliver your services automatically when a milestone is reached by linking it to a sales order item."
     )
+
     has_late_and_unreached_milestone = fields.Boolean(
         compute='_compute_has_late_and_unreached_milestone',
         search='_search_has_late_and_unreached_milestone',

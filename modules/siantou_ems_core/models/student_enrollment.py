@@ -21,50 +21,60 @@ class StudentEnrollment(models.Model):
         related='student_id.name',
         store=True
     )
+
     registre_id = fields.Many2one(
         'siantou.session.registre', 
         "Registre d'admission" ,
         # domain="[('state', '=', 'application')]",
     )
+
     year_id = fields.Many2one(
         "siantou.ems.core.year", 
         string="Année académique", 
         default=lambda self: self.env['siantou.ems.core.year'].search([('is_active', '=', True)], limit=1)
     )
+
     code_enrol = fields.Char(string="Code de préinscription", default="001485KOPLL")
     batch_id = fields.Many2one(
         'siantou.ems.core.student.batch',
         string='Lot de l\'étudiant',
     )
+
     school_id = fields.Many2one(
         'siantou.ems.core.school',
         string='École',
         required=True
     )
+
     cycle_id = fields.Many2one(
         'oe.school.course',
         string='Cursus ou Cycle',
         required=True
     )
+
     field_of_study_id = fields.Many2one(
         'siantou.ems.core.field_of_study',
         string='Filière',
         related='specialty_id.field_of_study_id',
         store=True
     )
+
     specialty_id = fields.Many2one(
         'siantou.ems.core.specialty',
         string='Spécialité',
         required=True
     )
+
     option_id = fields.Many2one(
         'siantou.ems.core.option',
         string='Option',
     )
+
     class_id = fields.Many2one(
         'siantou.ems.core.class',
         string='Classe',
     )
+
     type_cour = fields.Selection([
             ('cj', 'Cours du jour'),
             ('cs', 'Cours du soir'),
@@ -72,6 +82,7 @@ class StudentEnrollment(models.Model):
         string='Type de cours',
         default='cj',
     )
+
     status_univ = fields.Selection([
             ('new', 'Nouveau'),
             ('old', 'Ancien'),
@@ -93,17 +104,20 @@ class StudentEnrollment(models.Model):
         string='Statut',
         default='inscrip',
     )
+
     observations = fields.Html(string="Observations")
     file_ids = fields.Many2many(
         'ir.attachment',
         string="Attachment"
     )
+
     student_id = fields.Many2one(
         'oe.school.student',
         string='Étudiant',
         ondelete='cascade',
         required=True
     )
+
     priority = fields.Selection([
             ('1', 'Priorité 1'),
             ('2', 'Priorité 2'),
@@ -111,6 +125,7 @@ class StudentEnrollment(models.Model):
         string="Priorité",
         default="1",
     )
+
     is_active_candidature = fields.Boolean(default=False, string="Activé")
 
     specialty_id_domain = fields.Binary(compute='_compute_school_domain', default=[])
@@ -558,5 +573,6 @@ class StudentEnrollmentAdmission(models.Model):
         'oe.school.student.enrollment', 
         string="Étudiant préinscrit", 
     )
+
     observations = fields.Html(string="Observations")
 

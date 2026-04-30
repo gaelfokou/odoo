@@ -48,6 +48,7 @@ class OeSchoolCourse(models.Model):
         default=lambda self: self.env.company,
         domain=[('active', '=', True),('is_university', '=', True)]
     )
+
     level_ids = fields.Many2many('siantou.ems.core.level', 'course_level_rel', 'cycle_id', 'level_id', string='Niveaux')
     diplo_requis_ids = fields.Many2many('oe.school.course.degree', 'course_degree_rel', 'cycle_id', 'diplo_requis_id', string='Diplômes requis')
     supervision_id = fields.Many2one('oe.school.course.supervision', string='Tutelle académique')
@@ -222,25 +223,31 @@ class SchoolSyllabus(models.Model):
     cm = fields.Integer(
         string='Cour Magistral (CM)'
     )
+
     tp = fields.Integer(
         string='Travaux pratiques (TP)'
     )
+
     td = fields.Integer(
         string='Travaux dirigés (TD)'
     )
+
     te = fields.Integer(
         string='Travaux de l\'étudiant (TE)'
     )
+
     vhp = fields.Integer(
         string='Volume horaire prévue (VHP)',
         compute='_compute_vhp'
 
     )
+
     vht = fields.Integer(
         string='Volume horaire total (VHT)',
         compute='_compute_vht'
 
     )
+
     subject_credit = fields.Integer(
         string='Crédit de la matière',
         compute='_compute_subject_credit'
@@ -326,6 +333,7 @@ class SchoolCourseSubject(models.Model):
         ],
         required=True
     )
+
     code = fields.Char(string="Code UE", required=True)
     name = fields.Char(string="Intitulé de l'unité", required=True)
 

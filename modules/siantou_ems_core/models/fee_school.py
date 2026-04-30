@@ -14,6 +14,7 @@ class FeeSchool(models.Model):
         required=True,
         index=True,
     )
+
     note = fields.Html(string='Description')
     journal_id = fields.Many2one(
         'account.journal',
@@ -23,16 +24,19 @@ class FeeSchool(models.Model):
         company_dependent=True,
         default=lambda self: self.env['account.journal'].sudo().search([('company_id', '=', self.env.company.id)], limit=1)
     )
+
     field_of_study_ids = fields.Many2many(
         'siantou.ems.core.field_of_study',
         required=True,
         string="Filières"
     )
+
     line_ids = fields.Many2many(
         's.e.core.fee.school.line',
         required=True,
         string="Filières"
     )
+
     nbre_tranche = fields.Integer(string="Nombre de tranche", required=True, default=1)
     currency_id = fields.Many2one('res.currency', string='Devise', required=True, default=lambda self: self.env.company.currency_id)
     montant_paie = fields.Monetary(string="Montant à payer", required=True, currency_field="currency_id", store=True)
@@ -56,6 +60,7 @@ class FeeSchoolLine(models.Model):
         string="Frais de scolarité",
         required=True,
     )
+
     currency_id = fields.Many2one('res.currency', string='Devise', required=True, default=lambda self: self.env.company.currency_id)
     montant_paie = fields.Monetary(string="Montant à payer", required=True, currency_field="currency_id", store=True)
     date_debut = fields.Date(string="Date de début", required=True)

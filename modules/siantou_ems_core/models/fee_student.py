@@ -14,6 +14,7 @@ class FeeStruct(models.Model):
         default=lambda self: self.env.company,
         domain=[('active', '=', True),('is_university', '=', True)]
     )
+
     note = fields.Html(string='Description')
     journal_id = fields.Many2one(
         'account.journal',
@@ -91,5 +92,6 @@ class FeeStudent(models.Model):
         ondelete='cascade',
         required=True,
     )
+
     date_paiement = fields.Date(string="Date de paiement", required=True)
 

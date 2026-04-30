@@ -23,6 +23,7 @@ class StudentEnrollmentAdmissionWizard(models.TransientModel):
         string="Étudiant inscrit",
         # required=True,
     )
+
     observations = fields.Html(string="Observations", required=True)
 
     @api.model

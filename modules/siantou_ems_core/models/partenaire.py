@@ -9,6 +9,7 @@ class UniversityPartner(models.Model):
         string='Nom',
         required=True,
     )
+
     image = fields.Image(string='Image')
     field_of_study_ids = fields.Many2many(
         'siantou.ems.core.field_of_study',

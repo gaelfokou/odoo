@@ -62,14 +62,17 @@ class HrPayslip(models.Model):
         'res.company', string='Company', copy=False,
         default=lambda self: self.env.company
     )
+
     worked_days_line_ids = fields.One2many(
         'hr.payslip.worked_days', 'payslip_id',
         string='Payslip Worked Days', copy=True
     )
+
     input_line_ids = fields.One2many(
         'hr.payslip.input', 'payslip_id',
         string='Payslip Inputs', copy=True
     )
+
     paid = fields.Boolean(string='Made Payment Order ?', copy=False)
     note = fields.Text(string='Internal Note')
     contract_id = fields.Many2one('hr.contract', string='Contract')
@@ -1900,6 +1903,7 @@ class HrPayslipWorkedDays(models.Model):
         'Taux horaire',
         default=0.0,
     )
+
     amount = fields.Float(
         'Montant',
         default=0.0,
@@ -1935,10 +1939,12 @@ class HrPayslipRun(models.Model):
         string='Date From', required=True,
         default=lambda self: fields.Date.to_string(date.today().replace(day=1))
     )
+
     date_end = fields.Date(
         string='Date To', required=True,
         default=lambda self: fields.Date.to_string((datetime.now() + relativedelta(months=+1, day=1, days=-1)).date())
     )
+
     credit_note = fields.Boolean(
         string='Credit Note',
         help="If its checked, indicates that all payslips generated from here are refund payslips."

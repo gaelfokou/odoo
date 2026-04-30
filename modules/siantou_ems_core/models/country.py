@@ -29,6 +29,7 @@ class Region(models.Model):
         string='Nom',
         required=True,
     )
+
     country_id = fields.Many2one(
         'siantou.ems.core.country',
         string='Pays',
@@ -47,6 +48,7 @@ class City(models.Model):
         string='Nom',
         required=True,
     )
+
     region_id = fields.Many2one(
         'siantou.ems.core.region',
         string='Région',
@@ -65,6 +67,7 @@ class Quarter(models.Model):
         string='Nom',
         required=True,
     )
+
     city_id = fields.Many2one(
         'siantou.ems.core.city',
         string='Ville',

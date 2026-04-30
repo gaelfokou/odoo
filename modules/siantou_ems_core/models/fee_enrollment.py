@@ -13,11 +13,13 @@ class FeeEnrollment(models.Model):
         string="Année académique",
         required=True, index=True,
     )
+
     company_id = fields.Many2one('res.company',
         string='Université', index=True,
         default=lambda self: self.env.company,
         domain=[('active', '=', True),('is_university', '=', True)]
     )
+
     note = fields.Html(string='Description')
     journal_id = fields.Many2one(
         'account.journal',
@@ -27,11 +29,13 @@ class FeeEnrollment(models.Model):
         company_dependent=True,
         default=lambda self: self.env['account.journal'].sudo().search([('company_id', '=', self.env.company.id)], limit=1)
     )
+
     level_ids = fields.Many2many(
         'siantou.ems.core.level',
         required=True,
         string="Niveaux"
     )
+
     montant_paie = fields.Monetary(string="Montant à payer", required=True)
     currency_id = fields.Many2one('res.currency', string='Currency', required=True, default=lambda self: self.env.company.currency_id)
     is_active = fields.Boolean(string='Actif ?', default=False)
@@ -67,4 +71,5 @@ class FeeEnrollStudent(models.Model):
         ondelete='cascade',
         required=True,
     )
+
     date_paiement = fields.Date(string="Date de paiement", required=True)

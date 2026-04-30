@@ -28,6 +28,7 @@ class Student(models.Model):
         compute='_compute_student_enroll',
         store=False
     )
+
     other_student_enroll_ids = fields.One2many(
         'oe.school.student.enrollment',
         'student_id',
@@ -36,26 +37,31 @@ class Student(models.Model):
         compute='_compute_other_student_enroll',
         store=False
     )
+
     batch_id = fields.Many2one(
         'siantou.ems.core.student.batch',
         string='Lot de l\'étudiant',
     )
+
     batch_ids = fields.One2many(
         'siantou.ems.core.student.batch',
         string='Lots d\'étudiants',
         compute='_compute_batchs',
         store=False
     )
+
     school_id = fields.Many2one(
         'siantou.ems.core.school',
         string='École',
         required=True
     )
+
     cycle_id = fields.Many2one(
         'oe.school.course',
         string='Cursus ou Cycle',
         required=True
     )
+
     region_id = fields.Many2one("siantou.ems.core.region", string="Région")
     city_id = fields.Many2one('siantou.ems.core.city', string="Ville")
     quarter_id = fields.Many2one('siantou.ems.core.quarter', string="Quartier")
@@ -65,15 +71,18 @@ class Student(models.Model):
         related='specialty_id.field_of_study_id',
         store=True
     )
+
     specialty_id = fields.Many2one(
         'siantou.ems.core.specialty',
         string='Spécialité',
         required=True
     )
+
     option_id = fields.Many2one(
         'siantou.ems.core.option',
         string='Option',
     )
+
     type_cour = fields.Selection([
             ('cj', 'Cours du jour'),
             ('cs', 'Cours du soir'),
@@ -81,6 +90,7 @@ class Student(models.Model):
         string='Type de cours',
         default='cj',
     )
+
     status_univ = fields.Selection([
             ('new', 'Nouveau'),
             ('old', 'Ancien'),
@@ -88,6 +98,7 @@ class Student(models.Model):
         string='Statut universitaire',
         default='old',
     )
+
     date_naissance = fields.Date(string="Date de naissance")
     lieu_naissance = fields.Char(string="Lieu de naissance")
     sexe = fields.Selection([
@@ -95,6 +106,7 @@ class Student(models.Model):
             ('feminin', 'Féminin'),
         ], string="Sexe"
     )
+
     situat_matri = fields.Selection([
         ('marie', 'Marié'),
         ('celibat', 'Célibataire'),
@@ -104,6 +116,7 @@ class Student(models.Model):
         'siantou.ems.core.country',
         string="Nationalité(Pays d'origine)",
     )
+
     autre = fields.Char(string="Autre pays")
     is_autre_pays = fields.Boolean(string='Autre pays ?', default=False)
     lieu_residence = fields.Char(string="Lieu de résidence")
@@ -115,6 +128,7 @@ class Student(models.Model):
         string="Niveau",
         required=True
     )
+
     year_id = fields.Many2one(
         'siantou.ems.core.year',
         string='Année Académique',
@@ -132,12 +146,14 @@ class Student(models.Model):
         string="Utilisateur associé",
         help="Utilisateur associé à cet étudiant"
     )
+
     partner_id = fields.Many2one(
         'res.partner',
         string='Rest partner',
         related='user_id.partner_id',
         store=True
     )
+
     status_user = fields.Selection([
             ('new', 'Jamais connecté'),
             ('active', 'Confirmé'),
@@ -788,20 +804,24 @@ class StudentCareer(models.Model):
         ondelete='cascade',
         required=True
     )
+
     year_id = fields.Many2one(
         "siantou.ems.core.year",
         string="Année académique",
         required=True
     )
+
     level_id = fields.Many2one("siantou.ems.core.level", string="Niveau", required=True)
     field_of_study_id = fields.Many2one(
         'siantou.ems.core.field_of_study',
         string='Filière',
         required=True,
     )
+
     cycle_id = fields.Many2one(
         'oe.school.course',
         string='Cursus ou Cycle',
         required=True
     )
+
     observations = fields.Html(string="Observations")

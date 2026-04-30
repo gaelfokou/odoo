@@ -18,33 +18,40 @@ class FeeEnrollmentWizard(models.TransientModel):
         'siantou.ems.core.year',
         string='Année académique active'
     )
+
     student_enrol_id = fields.Many2one(
         'oe.school.student.enrollment',
         string='Candidature',
         required=True
     )
+
     student_id = fields.Many2one(
         'oe.school.student',
         string='Étudiant',
         related='student_enrol_id.student_id',
         store=True
     )
+
     student_name = fields.Char(
         string='Nom du déposant',
         related='student_id.name'
     )
+
     student_phone = fields.Char(
         string='Téléphone du déposant',
         related='student_id.private_phone'
     )
+
     structure_frais_name = fields.Char(
         string='Structure de frais'
     )
+
     amount = fields.Monetary(
         'Montant versé',
         required=True,
         tracking=True
     )
+
     cash_register_id = fields.Many2one(
         'account.journal',
         string='caisse',
@@ -78,6 +85,7 @@ class FeeEnrollmentWizard(models.TransientModel):
         required=True,
         default=fields.Date.context_today
     )
+
     currency_id = fields.Many2one(
         'res.currency',
         default=lambda self: self.env.company.currency_id,
