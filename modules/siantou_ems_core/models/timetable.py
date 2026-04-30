@@ -553,6 +553,8 @@ class Timetable(models.Model):
     @api.constrains('group_id', 'date')
     def _constrains_date(self):
         for record in self:
+            if record.skip_validation:
+                return True
             if record.date < record.group_id.semester_id.start_time:
                 start_time = datetime.strftime(record.group_id.semester_id.start_time, DATE_FORMAT_FR)
                 raise ValidationError(f"L'emploi du temps ne peut avoir une date inférieure à la date de début du semestre ({start_time})")
@@ -864,6 +866,8 @@ class Timetable(models.Model):
     @api.constrains('start_time', 'end_time')
     def _constrains_time(self):
         for record in self:
+            if record.skip_validation:
+                return True
             if record.start_time < 0.0 or record.end_time < 0.0 or record.start_time > 23.59 or record.end_time > 23.59:
                 raise ValidationError("Vous devez définir des heures de début et de fin corrects")
             elif record.start_time >= record.end_time:
@@ -872,6 +876,8 @@ class Timetable(models.Model):
     @api.constrains('status', 'worked_start_time', 'worked_end_time')
     def _constrains_worked_time(self):
         for record in self:
+            if record.skip_validation:
+                return True
             if record.worked_start_time < 0.0 or record.worked_end_time < 0.0 or record.worked_start_time > 23.59 or record.worked_end_time > 23.59:
                 raise ValidationError("Vous devez définir des heures de début effectuée et de fin effectuée corrects")
             elif record.status in ['present', 'permission'] and record.worked_start_time > record.worked_end_time:
