@@ -264,8 +264,11 @@ class ClassUeCopyWizard(models.TransientModel):
                 source_ue_ids = source_class_id.ue_ids.ids
                 destination_ue_ids = destination_class_id.ue_ids.ids
                 res = list(set(source_ue_ids) & set(destination_ue_ids))
-                if len(source_ue_ids) > len(res):
-                    raise ValidationError(f"Les unités d\'enseignement de la classe source doivent être copiées dans la classe destination")
+                if len(source_ue_ids) > 0:
+                    if len(source_ue_ids) > len(res):
+                        raise ValidationError(f"Les unités d\'enseignement de la classe source doivent être copiées dans la classe destination")
+                else:
+                    raise ValidationError(f"Les unités d\'enseignement de la classe source n'existent pas")
 
                 for group_id in source_class_id.group_ids:
                     group = self.env['siantou.ems.core.class.group'].search([

@@ -41,7 +41,7 @@ STATUS_TIMETABLE = {
 
 class Subject(models.Model):
     _name = 'siantou.ems.core.subject'
-    _description = 'Cour'
+    _description = 'Cours'
     _inherit=['mail.thread', 'mail.activity.mixin',]
 
     # Code du cours

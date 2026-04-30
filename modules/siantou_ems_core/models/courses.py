@@ -221,7 +221,7 @@ class SchoolSyllabus(models.Model):
     ], string='Type de participation', tracking=True,default='whit_sn',states={'draft': [('readonly', False)]})
 
     cm = fields.Integer(
-        string='Cour Magistral (CM)'
+        string='Cours Magistral (CM)'
     )
 
     tp = fields.Integer(

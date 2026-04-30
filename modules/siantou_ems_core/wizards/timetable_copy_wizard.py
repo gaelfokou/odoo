@@ -362,11 +362,24 @@ class TimetableCopyWizard(models.TransientModel):
         if source_class_id:
             destination_class_id = self.env['siantou.ems.core.class'].search([('id', '=', self.destination_class_id.id)], limit=1)
             if destination_class_id:
-                source_ue_ids = source_class_id.ue_ids.ids
-                destination_ue_ids = destination_class_id.ue_ids.ids
-                res = list(set(source_ue_ids) & set(destination_ue_ids))
-                if len(source_ue_ids) > len(res):
-                    raise ValidationError(f"Les unités d\'enseignement de la classe source doivent être copiées dans la classe destination")
+                if self.subject_id.id:
+                    source_ue_ids = self.subject_id.ue_ids.ids
+                    destination_ue_ids = destination_class_id.ue_ids.ids
+                    res = list(set(source_ue_ids) & set(destination_ue_ids))
+                    if len(source_ue_ids) > 0:
+                        if len(res) == 0:
+                            raise ValidationError(f"L'unité d\'enseignement du cours doit être copiée dans la classe destination")
+                    else:
+                        raise ValidationError(f"Les unités d\'enseignement du cours n'existent pas")
+                else:
+                    source_ue_ids = source_class_id.ue_ids.ids
+                    destination_ue_ids = destination_class_id.ue_ids.ids
+                    res = list(set(source_ue_ids) & set(destination_ue_ids))
+                    if len(source_ue_ids) > 0:
+                        if len(source_ue_ids) > len(res):
+                            raise ValidationError(f"Les unités d\'enseignement de la classe source doivent être copiées dans la classe destination")
+                    else:
+                        raise ValidationError(f"Les unités d\'enseignement de la classe source n'existent pas")
 
                 for group_id in source_class_id.group_ids:
                     group = self.env['siantou.ems.core.class.group'].search([
