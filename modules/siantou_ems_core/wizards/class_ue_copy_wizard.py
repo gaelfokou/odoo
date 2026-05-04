@@ -286,6 +286,58 @@ class ClassUeCopyWizard(models.TransientModel):
 
                 source_timetable_ids = source_class_id.timetable_ids
                 for timetable_id in source_timetable_ids:
+                    years = timetable_id.semester_id.year_id.name.split('-')
+                    years = [int(y) for y in years]
+                    new_years = self.destination_year_id.name.split('-')
+                    new_years = [int(y) for y in new_years]
+
+                    semester_id = self.env['siantou.ems.core.year.semester'].search([
+                        ('semester_name', '=', timetable_id.semester_id.semester_name),
+                        ('year_id', '=', self.destination_year_id.id),
+                    ], limit=1)
+                    if not semester_id:
+                        year, week, day = timetable_id.semester_id.start_time.isocalendar()
+                        try:
+                            index_year = years.index(year)
+                        except ValueError:
+                            index_year = -1
+                        if index_year != -1 and len(years) > 1 and len(new_years) > 1:
+                            year = new_years[index_year]
+                        start_time = date.fromisocalendar(year, week, day)
+
+                        year, week, day = timetable_id.semester_id.end_time.isocalendar()
+                        try:
+                            index_year = years.index(year)
+                        except ValueError:
+                            index_year = -1
+                        if index_year != -1 and len(years) > 1 and len(new_years) > 1:
+                            year = new_years[index_year]
+                        end_time = date.fromisocalendar(year, week, day)
+
+                        semester_id = self.env['siantou.ems.core.year.semester'].create({
+                            'semester_name': timetable_id.semester_id.semester_name,
+                            'start_time': start_time,
+                            'end_time': end_time,
+                            'year_id': self.destination_year_id.id,
+                        })
+                        level_ids = [(4, level_id.id) for level_id in timetable_id.semester_id.level_ids]
+                        # semester_id.level_ids = level_ids
+                        semester_id.write({'level_ids': level_ids })
+
+                    group_id = self.env['siantou.ems.timetable.group'].search([
+                        ('group_name', '=', timetable_id.group_id.group_name),
+                        ('semester_id', '=', semester_id.id),
+                        ('is_submit', '=', timetable_id.group_id.is_submit),
+                        ('status', '=', timetable_id.group_id.status),
+                    ], limit=1)
+                    if not group_id:
+                        group_id = self.env['siantou.ems.timetable.group'].create({
+                            'group_name': timetable_id.group_id.group_name,
+                            'semester_id': semester_id.id,
+                            'is_submit': timetable_id.group_id.is_submit,
+                            'status': timetable_id.group_id.status,
+                        })
+
                     group_ids = []
                     if timetable_id.class_group_id.id:
                         group_ids = destination_class_id.group_ids.filtered(lambda rec: rec.name == timetable_id.class_group_id.name)
@@ -317,7 +369,7 @@ class ClassUeCopyWizard(models.TransientModel):
                                 'date': timetable_id.date,
                                 'start_time': timetable_id.start_time,
                                 'end_time': timetable_id.end_time,
-                                'group_id': timetable_id.group_id.id,
+                                'group_id': group_id.id,
                                 'skip_validation': True,
                             })
                     else:
@@ -346,7 +398,7 @@ class ClassUeCopyWizard(models.TransientModel):
                                 'date': timetable_id.date,
                                 'start_time': timetable_id.start_time,
                                 'end_time': timetable_id.end_time,
-                                'group_id': timetable_id.group_id.id,
+                                'group_id': group_id.id,
                                 'skip_validation': True,
                             })
 

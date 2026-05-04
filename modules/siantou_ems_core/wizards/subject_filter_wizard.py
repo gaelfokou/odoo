@@ -119,9 +119,6 @@ class SubjectFilterWizard(models.TransientModel):
         if self.school_id.id:
             domain.append(('school_id', '=', self.school_id.id))
             title.append(self.school_id.name)
-        if self.field_of_study_id.id:
-            domain.append(('field_of_study_id', '=', self.field_of_study_id.id))
-            title.append(self.field_of_study_id.name)
         if self.level_id.id:
             domain.append(('level_id', '=', self.level_id.id))
             title.append(self.level_id.name)

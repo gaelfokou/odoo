@@ -86,6 +86,11 @@ class ClassFilterWizard(models.TransientModel):
         default=0,
     )
 
+    semester_id = fields.Many2one(
+        'siantou.ems.core.year.semester',
+        string='Semestre',
+    )
+
     specialty_id_domain = fields.Binary(compute='_compute_school_domain', default=[])
 
     @api.depends('school_id')
@@ -125,9 +130,6 @@ class ClassFilterWizard(models.TransientModel):
         if self.school_id.id:
             domain.append(('school_id', '=', self.school_id.id))
             title.append(self.school_id.name)
-        if self.field_of_study_id.id:
-            domain.append(('field_of_study_id', '=', self.field_of_study_id.id))
-            title.append(self.field_of_study_id.name)
         if self.level_id.id:
             domain.append(('level_id', '=', self.level_id.id))
             title.append(self.level_id.name)
@@ -173,6 +175,9 @@ class ClassFilterWizard(models.TransientModel):
                     ('is_active', '=', True),
                     ('class_id', 'in', class_ids),
                 ]
+                if self.semester_id.id:
+                    domain.append(('semester_id', '=', self.semester_id.id))
+                    title.append(self.semester_id.name)
                 timetable_class_ids = []
                 timetables = self.env['siantou.ems.timetable.timetable'].search(domain)
                 for timetable in timetables:
@@ -198,6 +203,9 @@ class ClassFilterWizard(models.TransientModel):
                     ('is_active', '=', True),
                     ('class_id', 'in', class_ids),
                 ]
+                if self.semester_id.id:
+                    domain.append(('semester_id', '=', self.semester_id.id))
+                    title.append(self.semester_id.name)
                 timetable_class_ids = []
                 timetables = self.env['siantou.ems.timetable.timetable'].search(domain)
                 for timetable in timetables:

@@ -530,9 +530,6 @@ class TimetableFilterWizard(models.TransientModel):
         if self.year_id.id:
             domain.append(('year_id', '=', self.year_id.id))
             title.append(self.year_id.name)
-        if self.semester_id.id:
-            domain.append(('semester_id', '=', self.semester_id.id))
-            title.append(self.semester_id.name)
         if self.school_id.id:
             domain.append(('school_id', '=', self.school_id.id))
             title.append(self.school_id.name)
@@ -542,9 +539,6 @@ class TimetableFilterWizard(models.TransientModel):
         if self.level_id.id:
             domain.append(('level_id', '=', self.level_id.id))
             title.append(self.level_id.name)
-        if self.field_of_study_id.id:
-            domain.append(('field_of_study_id', '=', self.field_of_study_id.id))
-            title.append(self.field_of_study_id.name)
         if self.specialty_id.id:
             domain.append(('specialty_id', '=', self.specialty_id.id))
             title.append(self.specialty_id.name)
@@ -799,9 +793,6 @@ class TimetableFilterWizard(models.TransientModel):
         if self.year_id.id:
             domain.append(('year_id', '=', self.year_id.id))
             title.append(self.year_id.name)
-        if self.semester_id.id:
-            domain.append(('semester_id', '=', self.semester_id.id))
-            title.append(self.semester_id.name)
         if self.school_id.id:
             domain.append(('school_id', '=', self.school_id.id))
             title.append(self.school_id.name)
@@ -811,9 +802,6 @@ class TimetableFilterWizard(models.TransientModel):
         if self.level_id.id:
             domain.append(('level_id', '=', self.level_id.id))
             title.append(self.level_id.name)
-        if self.field_of_study_id.id:
-            domain.append(('field_of_study_id', '=', self.field_of_study_id.id))
-            title.append(self.field_of_study_id.name)
         if self.specialty_id.id:
             domain.append(('specialty_id', '=', self.specialty_id.id))
             title.append(self.specialty_id.name)
@@ -1143,9 +1131,6 @@ class TimetableFilterWizard(models.TransientModel):
         if self.year_id.id:
             domain.append(('year_id', '=', self.year_id.id))
             title.append(self.year_id.name)
-        if self.semester_id.id:
-            domain.append(('semester_id', '=', self.semester_id.id))
-            title.append(self.semester_id.name)
         if self.school_id.id:
             domain.append(('school_id', '=', self.school_id.id))
             title.append(self.school_id.name)
@@ -1155,9 +1140,6 @@ class TimetableFilterWizard(models.TransientModel):
         if self.level_id.id:
             domain.append(('level_id', '=', self.level_id.id))
             title.append(self.level_id.name)
-        if self.field_of_study_id.id:
-            domain.append(('field_of_study_id', '=', self.field_of_study_id.id))
-            title.append(self.field_of_study_id.name)
         if self.specialty_id.id:
             domain.append(('specialty_id', '=', self.specialty_id.id))
             title.append(self.specialty_id.name)
@@ -1522,9 +1504,6 @@ class TimetableFilterWizard(models.TransientModel):
         if self.year_id.id:
             domain.append(('year_id', '=', self.year_id.id))
             title.append(self.year_id.name)
-        if self.semester_id.id:
-            domain.append(('semester_id', '=', self.semester_id.id))
-            title.append(self.semester_id.name)
         if self.school_id.id:
             domain.append(('school_id', '=', self.school_id.id))
             title.append(self.school_id.name)
@@ -1534,9 +1513,6 @@ class TimetableFilterWizard(models.TransientModel):
         if self.level_id.id:
             domain.append(('level_id', '=', self.level_id.id))
             title.append(self.level_id.name)
-        if self.field_of_study_id.id:
-            domain.append(('field_of_study_id', '=', self.field_of_study_id.id))
-            title.append(self.field_of_study_id.name)
         if self.specialty_id.id:
             domain.append(('specialty_id', '=', self.specialty_id.id))
             title.append(self.specialty_id.name)
@@ -1907,9 +1883,6 @@ class TimetableFilterWizard(models.TransientModel):
         if self.year_id.id:
             domain.append(('year_id', '=', self.year_id.id))
             title.append(self.year_id.name)
-        if self.semester_id.id:
-            domain.append(('semester_id', '=', self.semester_id.id))
-            title.append(self.semester_id.name)
         if self.school_id.id:
             domain.append(('school_id', '=', self.school_id.id))
             title.append(self.school_id.name)
@@ -1919,9 +1892,6 @@ class TimetableFilterWizard(models.TransientModel):
         if self.level_id.id:
             domain.append(('level_id', '=', self.level_id.id))
             title.append(self.level_id.name)
-        if self.field_of_study_id.id:
-            domain.append(('field_of_study_id', '=', self.field_of_study_id.id))
-            title.append(self.field_of_study_id.name)
         if self.specialty_id.id:
             domain.append(('specialty_id', '=', self.specialty_id.id))
             title.append(self.specialty_id.name)
