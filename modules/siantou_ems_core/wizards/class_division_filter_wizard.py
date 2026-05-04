@@ -159,20 +159,6 @@ class ClassFilterWizard(models.TransientModel):
         if self.status:
             if self.status == 'timetable_available':
                 domain = [
-                    '|',
-                    '&',
-                    '&',
-                    ('group_id.is_active', '=', True),
-                    ('group_id.is_submit', '=', False),
-                    ('group_id.status', '=', 'valid'),
-                    '&',
-                    '&',
-                    '&',
-                    ('group_parent_id.is_active', '=', True),
-                    ('group_parent_id.is_submit', '=', False),
-                    ('group_parent_id.status', '=', 'valid'),
-                    ('group_id.status', '=', 'valid'),
-                    ('is_active', '=', True),
                     ('class_id', 'in', class_ids),
                 ]
                 if self.semester_id.id:
@@ -187,20 +173,6 @@ class ClassFilterWizard(models.TransientModel):
                 title.append(STATUS_CLASS[self.status])
             elif self.status == 'timetable_not_available':
                 domain = [
-                    '|',
-                    '&',
-                    '&',
-                    ('group_id.is_active', '=', True),
-                    ('group_id.is_submit', '=', False),
-                    ('group_id.status', '=', 'valid'),
-                    '&',
-                    '&',
-                    '&',
-                    ('group_parent_id.is_active', '=', True),
-                    ('group_parent_id.is_submit', '=', False),
-                    ('group_parent_id.status', '=', 'valid'),
-                    ('group_id.status', '=', 'valid'),
-                    ('is_active', '=', True),
                     ('class_id', 'in', class_ids),
                 ]
                 if self.semester_id.id:
