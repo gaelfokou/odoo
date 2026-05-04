@@ -300,15 +300,28 @@ class TimetableCopyWizard(models.TransientModel):
             ]
             record.destination_class_id_domain = domain
 
-    @api.onchange('school_id')
-    def _onchange_school(self):
+    @api.onchange('group_id')
+    def _onchange_group(self):
         for record in self:
-            record.field_of_study_id = None
+            record.school_id = None
             record.level_id = None
             record.source_class_id = None
             record.destination_class_id = None
             record.specialty_id = None
             record.option_id = None
+            record.subject_id = None
+            record.source_timetable_ids = []
+            record.destination_timetable_ids = []
+
+    @api.onchange('school_id')
+    def _onchange_school(self):
+        for record in self:
+            record.level_id = None
+            record.source_class_id = None
+            record.destination_class_id = None
+            record.specialty_id = None
+            record.option_id = None
+            record.subject_id = None
             record.source_timetable_ids = []
             record.destination_timetable_ids = []
 
@@ -317,6 +330,7 @@ class TimetableCopyWizard(models.TransientModel):
         for record in self:
             record.source_class_id = None
             record.destination_class_id = None
+            record.subject_id = None
             record.source_timetable_ids = []
             record.destination_timetable_ids = []
 
@@ -326,6 +340,7 @@ class TimetableCopyWizard(models.TransientModel):
             record.source_class_id = None
             record.destination_class_id = None
             record.option_id = None
+            record.subject_id = None
             record.source_timetable_ids = []
             record.destination_timetable_ids = []
 
@@ -334,6 +349,7 @@ class TimetableCopyWizard(models.TransientModel):
         for record in self:
             record.source_class_id = None
             record.destination_class_id = None
+            record.subject_id = None
             record.source_timetable_ids = []
             record.destination_timetable_ids = []
 
@@ -342,6 +358,7 @@ class TimetableCopyWizard(models.TransientModel):
         for record in self:
             record.source_class_id = None
             record.destination_class_id = None
+            record.subject_id = None
             record.source_timetable_ids = []
             record.destination_timetable_ids = []
 
@@ -349,6 +366,7 @@ class TimetableCopyWizard(models.TransientModel):
     def _onchange_source_year(self):
         for record in self:
             record.source_class_id = None
+            record.subject_id = None
             record.source_timetable_ids = []
 
     @api.onchange('destination_year_id')

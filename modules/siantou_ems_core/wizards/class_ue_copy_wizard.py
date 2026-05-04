@@ -202,7 +202,6 @@ class ClassUeCopyWizard(models.TransientModel):
     @api.onchange('school_id')
     def _onchange_school(self):
         for record in self:
-            record.field_of_study_id = None
             record.level_id = None
             record.source_class_id = None
             record.destination_class_id = None

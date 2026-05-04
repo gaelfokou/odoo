@@ -158,7 +158,6 @@ class StudentEnrollment(models.Model):
     def _onchange_school(self):
         for record in self:
             record.cycle_id = None
-            record.field_of_study_id = None
             record.level_id = None
             record.class_id = None
             record.specialty_id = None
@@ -167,7 +166,6 @@ class StudentEnrollment(models.Model):
     @api.onchange('cycle_id')
     def _onchange_cycle(self):
         for record in self:
-            record.field_of_study_id = None
             record.level_id = None
             record.class_id = None
             record.specialty_id = None

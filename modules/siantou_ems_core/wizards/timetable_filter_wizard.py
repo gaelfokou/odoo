@@ -382,7 +382,6 @@ class TimetableFilterWizard(models.TransientModel):
         for record in self:
             record.group_id = None
             record.school_id = None
-            record.field_of_study_id = None
             record.level_id = None
             record.class_id = None
             record.specialty_id = None
@@ -450,13 +449,11 @@ class TimetableFilterWizard(models.TransientModel):
     def _onchange_group(self):
         for record in self:
             record.school_id = None
-            record.field_of_study_id = None
             record.level_id = None
             record.class_id = None
             record.specialty_id = None
             record.option_id = None
             record.subject_id = None
-            record.employee_id = None
 
     @api.onchange('is_permanent', 'is_temporary')
     def _onchange_employee(self):
@@ -466,7 +463,6 @@ class TimetableFilterWizard(models.TransientModel):
     @api.onchange('school_id')
     def _onchange_school(self):
         for record in self:
-            record.field_of_study_id = None
             record.level_id = None
             record.class_id = None
             record.specialty_id = None
