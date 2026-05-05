@@ -584,8 +584,17 @@ class Users(models.Model):
         user_types_groups = self.env['res.groups'].search(
             [('category_id', '=', user_types_category.id)]) if user_types_category else False
         if user_types_groups:  # needed at install
-            if self._has_multiple_groups(user_types_groups.ids):
-                raise ValidationError(_('The user cannot have more than one user types.'))
+            for user in self:
+                if user._has_multiple_groups(user_types_groups.ids):
+                    # raise ValidationError(_('The user cannot have more than one user types.'))
+                    validation_error_message = f"""
+                        {_('The user cannot have more than one user types.')}
+                        User : {user.name}
+                        Groupes :"""
+                    for user_types_group in user_types_groups:
+                        validation_error_message += f"""
+                        {user_types_group.name}"""
+                    raise ValidationError(validation_error_message)
 
     def _has_multiple_groups(self, group_ids):
         """The method is not fast if the list of ids is very long;

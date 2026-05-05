@@ -923,14 +923,15 @@ class Timetable(models.Model):
                 for timetable in timetables:
                     timetable_date = datetime.strftime(timetable.date, DATE_FORMAT_FR)
                     validation_error_message += f"""
-                        • ID: {timetable.id}
-                        Version: {timetable.group_id.name}
-                        Classe: {timetable.class_id.name}
-                        Groupe: {timetable.class_group_id.name}
-                        Enseignant: {timetable.employee_id.name}
-                        Date: {timetable_date}
-                        Heure de début: {timetable.start_time}
-                        Heure de fin: {timetable.end_time}
+                        • ID : {timetable.id}
+                        Version : {timetable.group_id.name}
+                        Classe : {timetable.class_id.name}
+                        Groupe : {timetable.class_group_id.name}
+                        Enseignant : {timetable.employee_id.name}
+                        Cours : {timetable.subject_id.name}
+                        Date : {timetable_date}
+                        Heure de début : {timetable.start_time}
+                        Heure de fin : {timetable.end_time}
                         -----
                     """
                 raise ValidationError(validation_error_message)
@@ -951,14 +952,15 @@ class Timetable(models.Model):
                 for timetable in timetables:
                     timetable_date = datetime.strftime(timetable.date, DATE_FORMAT_FR)
                     validation_error_message += f"""
-                        • ID: {timetable.id}
-                        Version: {timetable.group_id.name}
-                        Classe: {timetable.class_id.name}
-                        Groupe: {timetable.class_group_id.name}
-                        Enseignant: {timetable.employee_id.name}
-                        Date: {timetable_date}
-                        Heure de début: {timetable.start_time}
-                        Heure de fin: {timetable.end_time}
+                        • ID : {timetable.id}
+                        Version : {timetable.group_id.name}
+                        Classe : {timetable.class_id.name}
+                        Groupe : {timetable.class_group_id.name}
+                        Enseignant : {timetable.employee_id.name}
+                        Cours : {timetable.subject_id.name}
+                        Date : {timetable_date}
+                        Heure de début : {timetable.start_time}
+                        Heure de fin : {timetable.end_time}
                         -----
                     """
                 raise ValidationError(validation_error_message)
