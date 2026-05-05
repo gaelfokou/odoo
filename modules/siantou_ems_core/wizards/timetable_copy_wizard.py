@@ -183,7 +183,7 @@ class TimetableCopyWizard(models.TransientModel):
     def _compute_source_timetables(self):
         # Recherche des emplois du temps qui correspondent à la classe
         for record in self:
-            timetable_ids = record.source_class_id.timetable_ids
+            timetable_ids = self.env['siantou.ems.timetable.timetable'].search([('class_id', '=', record.source_class_id.id)])
             if record.semester_id.id:
                 timetable_ids = timetable_ids.filtered(lambda rec: rec.semester_id.id == record.semester_id.id)
             if record.subject_id.id:
@@ -194,7 +194,7 @@ class TimetableCopyWizard(models.TransientModel):
     def _onchange_source_timetables(self):
         # Recherche des emplois du temps qui correspondent à la classe
         for record in self:
-            timetable_ids = record.source_class_id.timetable_ids
+            timetable_ids = self.env['siantou.ems.timetable.timetable'].search([('class_id', '=', record.source_class_id.id)])
             if record.semester_id.id:
                 timetable_ids = timetable_ids.filtered(lambda rec: rec.semester_id.id == record.semester_id.id)
             if record.subject_id.id:
@@ -205,7 +205,7 @@ class TimetableCopyWizard(models.TransientModel):
     def _compute_destination_timetables(self):
         # Recherche des emplois du temps qui correspondent à la classe
         for record in self:
-            timetable_ids = record.destination_class_id.timetable_ids
+            timetable_ids = self.env['siantou.ems.timetable.timetable'].search([('class_id', '=', record.destination_class_id.id)])
             if record.semester_id.id:
                 timetable_ids = timetable_ids.filtered(lambda rec: rec.semester_id.id == record.semester_id.id)
             if record.subject_id.id:
@@ -216,7 +216,7 @@ class TimetableCopyWizard(models.TransientModel):
     def _onchange_destination_timetables(self):
         # Recherche des emplois du temps qui correspondent à la classe
         for record in self:
-            timetable_ids = record.destination_class_id.timetable_ids
+            timetable_ids = self.env['siantou.ems.timetable.timetable'].search([('class_id', '=', record.destination_class_id.id)])
             if record.semester_id.id:
                 timetable_ids = timetable_ids.filtered(lambda rec: rec.semester_id.id == record.semester_id.id)
             if record.subject_id.id:

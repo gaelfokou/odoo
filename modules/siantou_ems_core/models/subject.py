@@ -870,7 +870,7 @@ class SubjectSession(models.Model):
         for record in self:
             domain = []
             if record.report_id.id:
-                timetable_ids = record.report_id.class_id.timetable_ids
+                timetable_ids = self.env['siantou.ems.timetable.timetable'].search([('class_id', '=', record.report_id.class_id.id)])
                 domain = [
                     ('id', 'in', timetable_ids.ids),
                     '|',

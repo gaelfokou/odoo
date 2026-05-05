@@ -280,11 +280,11 @@ class ClassUeCopyWizard(models.TransientModel):
                             'class_id': destination_class_id.id,
                         })
 
-                destination_timetable_ids = destination_class_id.timetable_ids
+                destination_timetable_ids = self.env['siantou.ems.timetable.timetable'].search([('class_id', '=', destination_class_id.id)])
                 # for timetable_id in destination_timetable_ids:
                 #     timetable_id.unlink()
 
-                source_timetable_ids = source_class_id.timetable_ids
+                source_timetable_ids = self.env['siantou.ems.timetable.timetable'].search([('class_id', '=', source_class_id.id)])
                 for timetable_id in source_timetable_ids:
                     years = timetable_id.semester_id.year_id.name.split('-')
                     years = [int(y) for y in years]
