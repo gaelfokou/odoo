@@ -409,12 +409,11 @@ class HrEmployee(models.Model):
 
     def write(self, vals):
         employees = []
-        try:
-            employee = self.env['hr.employee'].search([('id', '=', self.id)], limit=1)
+        if len(self.ids) == 1:
+            employee = self.env['hr.employee'].browse(self.id)
             employees.append(employee)
-        except ValueError:
-            active_ids = self.env.context.get('active_ids', [])
-            employees = self.env['hr.employee'].browse(active_ids)
+        else:
+            employees = self.env['hr.employee'].browse(self.ids)
             employees = list(employees)
 
         res = super(HrEmployee, self).write(vals)

@@ -1152,12 +1152,11 @@ class Timetable(models.Model):
             vals['skip_validation'] = False
 
         timetables = []
-        try:
-            timetable = self.env['siantou.ems.timetable.timetable'].search([('id', '=', self.id)], limit=1)
+        if len(self.ids) == 1:
+            timetable = self.env['siantou.ems.timetable.timetable'].browse(self.id)
             timetables.append(timetable)
-        except ValueError:
-            active_ids = self.env.context.get('active_ids', [])
-            timetables = self.env['siantou.ems.timetable.timetable'].browse(active_ids)
+        else:
+            timetables = self.env['siantou.ems.timetable.timetable'].browse(self.ids)
             timetables = list(timetables)
 
         for timetable in timetables:
@@ -1190,12 +1189,11 @@ class Timetable(models.Model):
 
     def copy(self, default=None):
         timetables = []
-        try:
-            timetable = self.env['siantou.ems.timetable.timetable'].search([('id', '=', self.id)], limit=1)
+        if len(self.ids) == 1:
+            timetable = self.env['siantou.ems.timetable.timetable'].browse(self.id)
             timetables.append(timetable)
-        except ValueError:
-            active_ids = self.env.context.get('active_ids', [])
-            timetables = self.env['siantou.ems.timetable.timetable'].browse(active_ids)
+        else:
+            timetables = self.env['siantou.ems.timetable.timetable'].browse(self.ids)
             timetables = list(timetables)
 
         for timetable in timetables:
@@ -1218,12 +1216,11 @@ class Timetable(models.Model):
 
     def unlink(self):
         timetables = []
-        try:
-            timetable = self.env['siantou.ems.timetable.timetable'].search([('id', '=', self.id)], limit=1)
+        if len(self.ids) == 1:
+            timetable = self.env['siantou.ems.timetable.timetable'].browse(self.id)
             timetables.append(timetable)
-        except ValueError:
-            active_ids = self.env.context.get('active_ids', [])
-            timetables = self.env['siantou.ems.timetable.timetable'].browse(active_ids)
+        else:
+            timetables = self.env['siantou.ems.timetable.timetable'].browse(self.ids)
             timetables = list(timetables)
 
         for timetable in timetables:
@@ -1832,12 +1829,11 @@ class TimetableGroup(models.Model):
 
     def write(self, vals):
         groups = []
-        try:
-            group = self.env['siantou.ems.timetable.group'].search([('id', '=', self.id)], limit=1)
+        if len(self.ids) == 1:
+            group = self.env['siantou.ems.timetable.group'].browse(self.id)
             groups.append(group)
-        except ValueError:
-            active_ids = self.env.context.get('active_ids', [])
-            groups = self.env['siantou.ems.timetable.group'].browse(active_ids)
+        else:
+            groups = self.env['siantou.ems.timetable.group'].browse(self.ids)
             groups = list(groups)
 
         res = super(TimetableGroup, self).write(vals)

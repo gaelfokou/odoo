@@ -293,12 +293,11 @@ class ExamScore(models.Model):
 
     def write(self, vals):
         exams = []
-        try:
-            exam = self.env['siantou.ems.core.exam.score'].search([('id', '=', self.id)], limit=1)
+        if len(self.ids) == 1:
+            exam = self.env['siantou.ems.core.exam.score'].browse(self.id)
             exams.append(exam)
-        except ValueError:
-            active_ids = self.env.context.get('active_ids', [])
-            exams = self.env['siantou.ems.core.exam.score'].browse(active_ids)
+        else:
+            exams = self.env['siantou.ems.core.exam.score'].browse(self.ids)
             exams = list(exams)
 
         res = super(ExamScore, self).write(vals)

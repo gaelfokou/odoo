@@ -412,75 +412,84 @@ class StudentEnrollment(models.Model):
         return res
 
     def write(self, vals):
-        student_enroll = self.env['oe.school.student.enrollment'].search([('id', '=', self.id)], limit=1)
+        student_enrolls = []
+        if len(self.ids) == 1:
+            student_enroll = self.env['siantou.ems.core.class'].browse(self.id)
+            student_enrolls.append(student_enroll)
+        else:
+            student_enrolls = self.env['siantou.ems.core.class'].browse(self.ids)
+            student_enrolls = list(student_enrolls)
 
-        if 'class_id' not in vals:
-            vals['class_id'] = student_enroll.class_id.id
-        if 'school_id' not in vals:
-            vals['school_id'] = student_enroll.school_id.id
-        if 'field_of_study_id' not in vals:
-            vals['field_of_study_id'] = student_enroll.field_of_study_id.id
-        if 'specialty_id' not in vals:
-            vals['specialty_id'] = student_enroll.specialty_id.id
-        if 'option_id' not in vals:
-            vals['option_id'] = student_enroll.option_id.id
-        if 'level_id' not in vals:
-            vals['level_id'] = student_enroll.level_id.id
-        if 'year_id' not in vals:
-            vals['year_id'] = student_enroll.year_id.id
-        if 'type_cour' not in vals:
-            vals['type_cour'] = student_enroll.type_cour if student_enroll.type_cour else 'cj'
-        if 'cycle_id' not in vals:
-            vals['cycle_id'] = student_enroll.cycle_id.id
+        for student_enroll in student_enrolls:
+            student_enroll = self.env['oe.school.student.enrollment'].browse(self.id)
 
-        class_id = self.env['siantou.ems.core.class'].browse(vals['class_id'])
+            if 'class_id' not in vals:
+                vals['class_id'] = student_enroll.class_id.id
+            if 'school_id' not in vals:
+                vals['school_id'] = student_enroll.school_id.id
+            if 'field_of_study_id' not in vals:
+                vals['field_of_study_id'] = student_enroll.field_of_study_id.id
+            if 'specialty_id' not in vals:
+                vals['specialty_id'] = student_enroll.specialty_id.id
+            if 'option_id' not in vals:
+                vals['option_id'] = student_enroll.option_id.id
+            if 'level_id' not in vals:
+                vals['level_id'] = student_enroll.level_id.id
+            if 'year_id' not in vals:
+                vals['year_id'] = student_enroll.year_id.id
+            if 'type_cour' not in vals:
+                vals['type_cour'] = student_enroll.type_cour if student_enroll.type_cour else 'cj'
+            if 'cycle_id' not in vals:
+                vals['cycle_id'] = student_enroll.cycle_id.id
 
-        if not class_id:
-            class_id = self.env['siantou.ems.core.class'].search([
-                ('specialty_id', '=', vals['specialty_id']),
-                ('option_id', '=', vals['option_id']),
-                ('level_id', '=', vals['level_id']),
-                ('year_id', '=', vals['year_id']),
-                ('type_cour', '=', vals['type_cour']),
-            ], limit=1)
+            class_id = self.env['siantou.ems.core.class'].browse(vals['class_id'])
+
             if not class_id:
-                raise UserError('Aucune classe trouvée')
-                # class_id = self.env['siantou.ems.core.class'].create({
-                #     'school_id': vals['school_id'],
-                #     'field_of_study_id': vals['field_of_study_id'],
-                #     'specialty_id': vals['specialty_id'],
-                #     'option_id': vals['option_id'],
-                #     'level_id': vals['level_id'],
-                #     'year_id': vals['year_id'],
-                #     'type_cour': vals['type_cour'],
-                # })
-        vals['class_id'] = class_id.id
+                class_id = self.env['siantou.ems.core.class'].search([
+                    ('specialty_id', '=', vals['specialty_id']),
+                    ('option_id', '=', vals['option_id']),
+                    ('level_id', '=', vals['level_id']),
+                    ('year_id', '=', vals['year_id']),
+                    ('type_cour', '=', vals['type_cour']),
+                ], limit=1)
+                if not class_id:
+                    raise UserError('Aucune classe trouvée')
+                    # class_id = self.env['siantou.ems.core.class'].create({
+                    #     'school_id': vals['school_id'],
+                    #     'field_of_study_id': vals['field_of_study_id'],
+                    #     'specialty_id': vals['specialty_id'],
+                    #     'option_id': vals['option_id'],
+                    #     'level_id': vals['level_id'],
+                    #     'year_id': vals['year_id'],
+                    #     'type_cour': vals['type_cour'],
+                    # })
+            vals['class_id'] = class_id.id
 
-        if 'batch_id' not in vals:
-            batch_id = self.env['siantou.ems.core.student.batch'].assign_batch(
-                class_id.id
-            )
-            vals['batch_id'] = batch_id.id
+            if 'batch_id' not in vals:
+                batch_id = self.env['siantou.ems.core.student.batch'].assign_batch(
+                    class_id.id
+                )
+                vals['batch_id'] = batch_id.id
 
-        cycle_id = self.env['oe.school.course'].browse(vals['cycle_id'])
-        if not cycle_id:
-            field_of_study_id = self.env['siantou.ems.core.field_of_study'].browse(vals['field_of_study_id'])
-            if field_of_study_id:
-                cycle_id = field_of_study_id.cycle_id
-                vals['cycle_id'] = cycle_id.id
+            cycle_id = self.env['oe.school.course'].browse(vals['cycle_id'])
+            if not cycle_id:
+                field_of_study_id = self.env['siantou.ems.core.field_of_study'].browse(vals['field_of_study_id'])
+                if field_of_study_id:
+                    cycle_id = field_of_study_id.cycle_id
+                    vals['cycle_id'] = cycle_id.id
 
-        diplo_requis = self.env['oe.school.course.degree'].search([('cycle_ids', '=', vals['cycle_id'])])
-        diplo_requis_ids = diplo_requis.ids
-        if len(diplo_requis_ids) == 0:
-            diplo_requis = cycle_id.diplo_requis_ids.create({
-                'name': cycle_id.name,
-            })
-            diplo_requis_ids.append(diplo_requis.id)
-        vals['diplo_requis_ids'] = diplo_requis_ids
+            diplo_requis = self.env['oe.school.course.degree'].search([('cycle_ids', '=', vals['cycle_id'])])
+            diplo_requis_ids = diplo_requis.ids
+            if len(diplo_requis_ids) == 0:
+                diplo_requis = cycle_id.diplo_requis_ids.create({
+                    'name': cycle_id.name,
+                })
+                diplo_requis_ids.append(diplo_requis.id)
+            vals['diplo_requis_ids'] = diplo_requis_ids
 
-        registre_id = self.env['siantou.session.registre'].search([('cycle_id', '=', vals['cycle_id'])], limit=1)
-        if registre_id:
-            vals['registre_id'] = registre_id.id
+            registre_id = self.env['siantou.session.registre'].search([('cycle_id', '=', vals['cycle_id'])], limit=1)
+            if registre_id:
+                vals['registre_id'] = registre_id.id
 
         res = super(StudentEnrollment, self).write(vals)
 

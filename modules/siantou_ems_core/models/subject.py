@@ -217,12 +217,11 @@ class Subject(models.Model):
 
     def write(self, vals):
         subjects = []
-        try:
-            subject = self.env['siantou.ems.core.subject'].search([('id', '=', self.id)], limit=1)
+        if len(self.ids) == 1:
+            subject = self.env['siantou.ems.core.subject'].browse(self.id)
             subjects.append(subject)
-        except ValueError:
-            active_ids = self.env.context.get('active_ids', [])
-            subjects = self.env['siantou.ems.core.subject'].browse(active_ids)
+        else:
+            subjects = self.env['siantou.ems.core.subject'].browse(self.ids)
             subjects = list(subjects)
 
         res = super(Subject, self).write(vals)
@@ -926,12 +925,11 @@ class SubjectSession(models.Model):
 
     def write(self, vals):
         sessions = []
-        try:
-            session = self.env['siantou.ems.core.subject.session'].search([('id', '=', self.id)], limit=1)
+        if len(self.ids) == 1:
+            session = self.env['siantou.ems.core.subject.session'].browse(self.id)
             sessions.append(session)
-        except ValueError:
-            active_ids = self.env.context.get('active_ids', [])
-            sessions = self.env['siantou.ems.core.subject.session'].browse(active_ids)
+        else:
+            sessions = self.env['siantou.ems.core.subject.session'].browse(self.ids)
             sessions = list(sessions)
 
         res = super(SubjectSession, self).write(vals)
