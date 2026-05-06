@@ -618,10 +618,10 @@ class Timetable(models.Model):
 
     is_timetable_active = fields.Boolean(string='Emploi du temps actif ?', default=True)
 
-    @api.depends('class_id', 'is_timetable_active', 'status', 'date')
+    @api.depends('is_timetable_active', 'date', 'class_id')
     def _compute_active(self):
         for record in self:
-            if record.class_id.is_timetable_active and record.is_timetable_active:
+            if record.is_timetable_active and record.class_id.is_timetable_active:
                 record.is_active = True
             else:
                 if record.is_timetable_active:
@@ -635,10 +635,10 @@ class Timetable(models.Model):
                 else:
                     record.is_active = False
 
-    @api.onchange('class_id', 'is_timetable_active', 'status', 'date')
+    @api.onchange('is_timetable_active', 'date', 'class_id')
     def _onchange_active(self):
         for record in self:
-            if record.class_id.is_timetable_active and record.is_timetable_active:
+            if record.is_timetable_active and record.class_id.is_timetable_active:
                 record.is_active = True
             else:
                 if record.is_timetable_active:
