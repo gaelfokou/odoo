@@ -1110,13 +1110,13 @@ class DeSchool(http.Controller):
                 })
             )
 
-    @http.route(['/api/modify/timetable', '/api/modify/timetable/<int:classe_id>/<int:old_subject_id>/<int:new_subject_id>'], type='http', auth='public')
-    def api_modify_timetable(self, classe_id=0, old_subject_id=0, new_subject_id=0, **kw):
-        classe = http.request.env['siantou.ems.core.class'].sudo().search([('id', '=', classe_id)], limit=1)
+    @http.route(['/api/modify/timetable', '/api/modify/timetable/<int:class_id>/<int:old_subject_id>/<int:new_subject_id>'], type='http', auth='public')
+    def api_modify_timetable(self, class_id=0, old_subject_id=0, new_subject_id=0, **kw):
+        classe = http.request.env['siantou.ems.core.class'].sudo().search([('id', '=', class_id)], limit=1)
         if not classe:
             body = {
                 'code': 404,
-                'message': f'Not found class : {classe_id}',
+                'message': f'Not found class : {class_id}',
                 'data': {}
             }
             data = json.dumps(body)
@@ -1159,6 +1159,50 @@ class DeSchool(http.Controller):
                 'class': classe.name,
                 'old_subject': old_subject.name,
                 'new_subject': new_subject.name,
+                'timetables': len(timetables),
+            }
+        }
+        data = json.dumps(body)
+        headers = {'Content-Type': 'application/json'}
+        return http.request.make_response(data, headers=headers, status=200)
+
+    @http.route(['/api/modify/class', '/api/modify/class/<int:old_class_id>/<int:new_class_id>'], type='http', auth='public')
+    def api_modify_class(self, old_class_id=0, new_class_id=0, **kw):
+        old_class = http.request.env['siantou.ems.core.class'].sudo().search([('id', '=', old_class_id)], limit=1)
+        if not old_class:
+            body = {
+                'code': 404,
+                'message': f'Not found old class : {old_class_id}',
+                'data': {}
+            }
+            data = json.dumps(body)
+            headers = {'Content-Type': 'application/json'}
+            return http.request.make_response(data, headers=headers, status=404)
+        new_class = http.request.env['siantou.ems.core.class'].sudo().search([('id', '=', new_class_id)], limit=1)
+        if not new_class:
+            body = {
+                'code': 404,
+                'message': f'Not found new class : {new_class_id}',
+                'data': {}
+            }
+            data = json.dumps(body)
+            headers = {'Content-Type': 'application/json'}
+            return http.request.make_response(data, headers=headers, status=404)
+        timetables = http.request.env['siantou.ems.timetable.timetable'].sudo().search([
+            ('class_id', '=', old_class.id),
+        ])
+        timetables = list(timetables)
+        for timetable in timetables:
+            timetable.write({
+                'class_id': new_class.id,
+                'skip_validation': True,
+            })
+        body = {
+            'code': 200,
+            'message': '',
+            'data': {
+                'old_class': old_class.name,
+                'new_class': new_class.name,
                 'timetables': len(timetables),
             }
         }
