@@ -550,7 +550,7 @@ class Timetable(models.Model):
             else:
                 record.is_readonly = False
 
-    @api.constrains('group_id', 'date')
+    @api.constrains('date', 'group_id')
     def _constrains_date(self):
         for record in self:
             if record.skip_validation:
