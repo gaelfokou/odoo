@@ -1109,3 +1109,59 @@ class DeSchool(http.Controller):
                     'data':f"{e.args}"
                 })
             )
+
+    @http.route(['/api/modify/timetable', '/api/modify/timetable/<int:classe_id>/<int:old_subject_id>/<int:new_subject_id>'], type='http', auth='public')
+    def api_modify_timetable(self, classe_id=0, old_subject_id=0, new_subject_id=0, **kw):
+        classe = http.request.env['siantou.ems.core.class'].sudo().search([('id', '=', classe_id)], limit=1)
+        if not classe:
+            body = {
+                'code': 404,
+                'message': f'Not found class : {classe_id}',
+                'data': {}
+            }
+            data = json.dumps(body)
+            headers = {'Content-Type': 'application/json'}
+            return http.request.make_response(data, headers=headers, status=404)
+        old_subject = http.request.env['siantou.ems.core.subject'].sudo().search([('id', '=', old_subject_id)], limit=1)
+        if not old_subject:
+            body = {
+                'code': 404,
+                'message': f'Not found old subject : {old_subject_id}',
+                'data': {}
+            }
+            data = json.dumps(body)
+            headers = {'Content-Type': 'application/json'}
+            return http.request.make_response(data, headers=headers, status=404)
+        new_subject = http.request.env['siantou.ems.core.subject'].sudo().search([('id', '=', new_subject_id)], limit=1)
+        if not new_subject:
+            body = {
+                'code': 404,
+                'message': f'Not found new subject : {new_subject_id}',
+                'data': {}
+            }
+            data = json.dumps(body)
+            headers = {'Content-Type': 'application/json'}
+            return http.request.make_response(data, headers=headers, status=404)
+        timetables = http.request.env['siantou.ems.timetable.timetable'].sudo().search([
+            ('class_id', '=', classe.id),
+            ('subject_id', '=', old_subject.id),
+        ])
+        timetables = list(timetables)
+        for timetable in timetables:
+            timetable.write({
+                'subject_id': new_subject.id,
+                'skip_validation': True,
+            })
+        body = {
+            'code': 200,
+            'message': '',
+            'data': {
+                'class': classe.name,
+                'old_subject': old_subject.name,
+                'new_subject': new_subject.name,
+                'timetables': len(timetables),
+            }
+        }
+        data = json.dumps(body)
+        headers = {'Content-Type': 'application/json'}
+        return http.request.make_response(data, headers=headers, status=200)
