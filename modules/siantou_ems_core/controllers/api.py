@@ -1110,8 +1110,8 @@ class DeSchool(http.Controller):
                 })
             )
 
-    @http.route(['/api/modify/timetable', '/api/modify/timetable/<int:class_id>/<int:old_subject_id>/<int:new_subject_id>'], type='http', auth='public')
-    def api_modify_timetable(self, class_id=0, old_subject_id=0, new_subject_id=0, **kw):
+    @http.route(['/api/modify/subject', '/api/modify/subject/<int:class_id>/<int:old_subject_id>/<int:new_subject_id>'], type='http', auth='public')
+    def api_modify_subject(self, class_id=0, old_subject_id=0, new_subject_id=0, **kw):
         classe = http.request.env['siantou.ems.core.class'].sudo().search([('id', '=', class_id)], limit=1)
         if not classe:
             body = {
