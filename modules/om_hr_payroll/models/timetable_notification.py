@@ -68,8 +68,8 @@ class TimetableNotification(models.Model):
             timetable_notification.sudo().unlink()
 
         if not self.env['ir.config_parameter'].sudo().get_param(f'siantou.expiration_date'):
-            self.env['ir.config_parameter'].sudo().set_param(f'siantou.expiration_date', '2026-05-07')
-        expiration_date = self.env['ir.config_parameter'].sudo().get_param(f'siantou.expiration_date', '2026-05-07')
+            self.env['ir.config_parameter'].sudo().set_param(f'siantou.expiration_date', '2026-05-31')
+        expiration_date = self.env['ir.config_parameter'].sudo().get_param(f'siantou.expiration_date', '2026-05-31')
         try:
             expiration_date = datetime.strptime(f"{expiration_date}", DATE_FORMAT).date()
             current_date = date.today()
