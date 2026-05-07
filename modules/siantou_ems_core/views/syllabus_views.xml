@@ -30,7 +30,7 @@
                         <group colspan="2">
                             <field name="subject_id" options="{'no_create': True}" domain="[('ue_ids', 'in', [ue_id])]" required="1"/>
                             <field name="pourcentage_cc" placeholder="Pourcentage lors du controle continu"/>
-                            <field name="pourcentage_exam" invisible="[('note_sn','=','not_sn')]" placeholder="Pourcentage lors de l'examen"/>
+                            <field name="pourcentage_exam" invisible="[('note_sn', '=', 'not_sn')]" placeholder="Pourcentage lors de l'examen"/>
                         </group>
                     </group>
                     <group>

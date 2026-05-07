@@ -98,7 +98,7 @@ class FeeEnrollmentWizard(models.TransientModel):
     #     for record in self:
 
     #         journals = self.env['account.journal'].search(
-    #             [('type','=',record.mode_payment)],
+    #             [('type', '=', record.mode_payment)],
     #         )
     #         _logger.info(journals)
     #         record.caisse_id = [(0,0,journals)]
@@ -121,10 +121,10 @@ class FeeEnrollmentWizard(models.TransientModel):
                 structure_frais_id = self.env['siantou.ems.fee.structure'].search(
                     [
                         ('field_of_study_ids','in',student_id.field_of_study_id.id),
-                        ('level_id','=',student_id.level_id.id),
-                        ('type_paiement','=','pu'),
-                        ('type_inclusion_fee','=','fee_inscrip'),
-                        ('academic_year','=',year_id.id),
+                        ('level_id', '=', student_id.level_id.id),
+                        ('type_paiement', '=', 'pu'),
+                        ('type_inclusion_fee', '=', 'fee_inscrip'),
+                        ('academic_year','=', year_id.id),
                         ('state','=', 'validate'),
                     ],
                     limit=1

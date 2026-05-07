@@ -153,7 +153,7 @@ class OeSchoolCourse(models.Model):
     #         'view_mode': 'tree',
     #         'res_model': 'oe.school.course.batch',
     #         'type': 'ir.actions.act_window',
-    #         'domain': [('course_id','=',self.id)],
+    #         'domain': [('course_id', '=', self.id)],
     #         'context': {
     #             'default_course_id': self.id,
     #         }
@@ -167,7 +167,7 @@ class OeSchoolCourse(models.Model):
     #         'view_mode': 'tree',
     #         'res_model': 'oe.school.course.section',
     #         'type': 'ir.actions.act_window',
-    #         'domain': [('course_id','=',self.id)],
+    #         'domain': [('course_id', '=', self.id)],
     #         'context': {
     #             'default_course_id': self.id,
     #         }

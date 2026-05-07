@@ -191,8 +191,8 @@ class StudentEnrollment(models.Model):
         for record in self:
             payment_id = self.env['education.fee.payment.enrollment'].search(
                 [
-                    ('student_id','=',record.id),
-                    ('year_id','=',record.year_id.id),
+                    ('student_id', '=', record.id),
+                    ('year_id', '=', record.year_id.id),
                 ], 
                 limit=1
             )
@@ -276,12 +276,12 @@ class StudentEnrollment(models.Model):
                 'observations': 'Données de la candidature rejetées',
             })
             account_move_id = self.env['account.move'].search([
-                    ('partner_id','=',student_enroll_id.student_id.partner_id.id),
-                    ('type_inclusion_fee','=','fee_inscrip'),
-                    ('year_id','=',student_enroll_id.class_id.year_id.id),
-                    ('level_id','=',student_enroll_id.class_id.level_id.id),
-                    ('field_of_study_id','=',student_enroll_id.class_id.field_of_study_id.id),
-                    ('cycle_id','=',student_enroll_id.class_id.field_of_study_id.cycle_id.id),
+                    ('partner_id', '=', student_enroll_id.student_id.partner_id.id),
+                    ('type_inclusion_fee', '=', 'fee_inscrip'),
+                    ('year_id', '=', student_enroll_id.class_id.year_id.id),
+                    ('level_id', '=', student_enroll_id.class_id.level_id.id),
+                    ('field_of_study_id', '=', student_enroll_id.class_id.field_of_study_id.id),
+                    ('cycle_id', '=', student_enroll_id.class_id.field_of_study_id.cycle_id.id),
                 ],
                 limit=1
             )
@@ -289,12 +289,12 @@ class StudentEnrollment(models.Model):
             account_move_id.unlink()
 
             account_move_ids = self.env['account.move'].search([
-                    ('partner_id','=',student_enroll_id.student_id.partner_id.id),
-                    ('type_inclusion_fee','=','fee_scol'),
-                    ('year_id','=',student_enroll_id.class_id.year_id.id),
-                    ('level_id','=',student_enroll_id.class_id.level_id.id),
-                    ('field_of_study_id','=',student_enroll_id.class_id.field_of_study_id.id),
-                    ('cycle_id','=',student_enroll_id.class_id.field_of_study_id.cycle_id.id),
+                    ('partner_id', '=', student_enroll_id.student_id.partner_id.id),
+                    ('type_inclusion_fee', '=', 'fee_scol'),
+                    ('year_id', '=', student_enroll_id.class_id.year_id.id),
+                    ('level_id', '=', student_enroll_id.class_id.level_id.id),
+                    ('field_of_study_id', '=', student_enroll_id.class_id.field_of_study_id.id),
+                    ('cycle_id', '=', student_enroll_id.class_id.field_of_study_id.cycle_id.id),
                 ]
             )
             for move_id in account_move_ids:

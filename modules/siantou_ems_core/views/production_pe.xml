@@ -47,7 +47,7 @@
                                 <field name="tp"/>
                                 <field name="te"/>
                                 <field name="vht"/>
-                                <field name="pourcentage_exam" attrs="{'invisible': [('note_sn','=','not_sn')]}"/>
+                                <field name="pourcentage_exam" attrs="{'invisible': [('note_sn', '=', 'not_sn')]}"/>
                                 <field name="pourcentage_cc"/>
                                 <field name="pourcentage_presence"/>
                                 <field name="subject_credit"/>

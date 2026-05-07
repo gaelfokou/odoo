@@ -197,7 +197,7 @@ class DeSchool(http.Controller):
     @http.route('/api/v1/regions/<int:id_region>/cities', type="http", methods=['GET'], cors="*", website=True, auth="public")
     def list_cities_of_region(self, id_region):
         datas = []
-        region_id = http.request.env['siantou.ems.core.region'].sudo().search([('id','=',id_region)], limit=1)
+        region_id = http.request.env['siantou.ems.core.region'].sudo().search([('id', '=', id_region)], limit=1)
         if region_id:
             cities = http.request.env['siantou.ems.core.city'].sudo().search([('region_id', '=', region_id.id)])
             datas=[{'id':city.id, 'name': city.name} for city in cities]
@@ -321,7 +321,7 @@ class DeSchool(http.Controller):
             )
             etudiant = http.request.env['oe.school.student.enrollment'].sudo().search([
                     ('id','=', id),
-                    ('year_id','=',year_id.id)
+                    ('year_id','=', year_id.id)
                 ],
                 limit=1
             )
@@ -403,7 +403,7 @@ class DeSchool(http.Controller):
             )
             etudiant = http.request.env['oe.school.student.enrollment'].sudo().search([
                     ('student_id', '=', id),
-                    ('year_id','=',year_id.id)
+                    ('year_id','=', year_id.id)
                 ], 
                 limit=1
             )

@@ -79,10 +79,10 @@ class StudentEnrollmentAdmissionWizard(models.TransientModel):
             """ structure_frais_inscript_id = self.env['siantou.ems.fee.structure'].sudo().search(
                 [
                     ('field_of_study_ids','in',student_id.field_of_study_id.id),
-                    ('level_id','=',student_id.level_id.id),
-                    ('type_paiement','=','pu'),
-                    ('type_inclusion_fee','=','fee_inscrip'),
-                    ('academic_year','=',year_id.id),
+                    ('level_id', '=', student_id.level_id.id),
+                    ('type_paiement', '=', 'pu'),
+                    ('type_inclusion_fee', '=', 'fee_inscrip'),
+                    ('academic_year','=', year_id.id),
                 ],
                 limit=1
             )
@@ -100,12 +100,12 @@ class StudentEnrollmentAdmissionWizard(models.TransientModel):
                     _logger.info(structure_frais_inscript_id)
                     if structure_frais_inscript_id.type_inclusion_fee == 'fee_inscrip':
                             account_move_id = self.env['account.move'].search([
-                                    ('partner_id','=',self.student_enroll_id.partner_id.id),
-                                    ('type_inclusion_fee','=','fee_inscrip'),
-                                    ('year_id','=',structure_frais_inscript_id.academic_year.id),
-                                    ('level_id','=',self.student_enroll_id.level_id.id),
-                                    ('field_of_study_id','=',self.student_enroll_id.field_of_study_id.id),
-                                    ('cycle_id','=',self.student_enroll_id.field_of_study_id.cycle_id.id),
+                                    ('partner_id', '=', self.student_enroll_id.partner_id.id),
+                                    ('type_inclusion_fee', '=', 'fee_inscrip'),
+                                    ('year_id', '=', structure_frais_inscript_id.academic_year.id),
+                                    ('level_id', '=', self.student_enroll_id.level_id.id),
+                                    ('field_of_study_id', '=', self.student_enroll_id.field_of_study_id.id),
+                                    ('cycle_id', '=', self.student_enroll_id.field_of_study_id.cycle_id.id),
                                 ],
                                 limit=1
                             )
@@ -142,10 +142,10 @@ class StudentEnrollmentAdmissionWizard(models.TransientModel):
             """ structure_frais_id = self.env['siantou.ems.fee.structure'].sudo().search(
                 [
                     ('field_of_study_ids','in',student_id.field_of_study_id.id),
-                    ('level_id','=',student_id.level_id.id),
-                    ('type_paiement','=','pt'),
-                    ('type_inclusion_fee','=','fee_scol'),
-                    ('academic_year','=',year_id.id),
+                    ('level_id', '=', student_id.level_id.id),
+                    ('type_paiement', '=', 'pt'),
+                    ('type_inclusion_fee', '=', 'fee_scol'),
+                    ('academic_year','=', year_id.id),
                 ],
                 limit=1
             )
@@ -160,12 +160,12 @@ class StudentEnrollmentAdmissionWizard(models.TransientModel):
                     _logger.info(structure_frais_id)
                     if structure_frais_id.type_inclusion_fee == 'fee_scol':
                         account_move_ids = self.env['account.move'].search([
-                                ('partner_id','=',self.student_enroll_id.partner_id.id),
-                                ('type_inclusion_fee','=','fee_scol'),
-                                ('year_id','=',structure_frais_id.academic_year.id),
-                                ('level_id','=',self.student_enroll_id.level_id.id),
-                                ('field_of_study_id','=',self.student_enroll_id.field_of_study_id.id),
-                                ('cycle_id','=',self.student_enroll_id.field_of_study_id.cycle_id.id),
+                                ('partner_id', '=', self.student_enroll_id.partner_id.id),
+                                ('type_inclusion_fee', '=', 'fee_scol'),
+                                ('year_id', '=', structure_frais_id.academic_year.id),
+                                ('level_id', '=', self.student_enroll_id.level_id.id),
+                                ('field_of_study_id', '=', self.student_enroll_id.field_of_study_id.id),
+                                ('cycle_id', '=', self.student_enroll_id.field_of_study_id.cycle_id.id),
                             ]
                         )
                         if len(account_move_ids)!=len(structure_frais_id.fee_type_ids):
@@ -202,10 +202,10 @@ class StudentEnrollmentAdmissionWizard(models.TransientModel):
             """ structure_spec_frais_ids = self.env['siantou.ems.fee.structure'].sudo().search(
                 [
                     ('field_of_study_ids','in',student_id.field_of_study_id.id),
-                    ('level_id','=',student_id.level_id.id),
-                    ('type_paiement','=','pu'),
-                    ('type_inclusion_fee','=','fee_spec'),
-                    ('academic_year','=',year_id.id),
+                    ('level_id', '=', student_id.level_id.id),
+                    ('type_paiement', '=', 'pu'),
+                    ('type_inclusion_fee', '=', 'fee_spec'),
+                    ('academic_year','=', year_id.id),
                 ]
             )
             for struct_spec_id in structure_spec_frais_ids:
@@ -217,12 +217,12 @@ class StudentEnrollmentAdmissionWizard(models.TransientModel):
                         _logger.info(struct_spec_id)  
                         if struct_spec_id.type_inclusion_fee == 'fee_spec':
                             account_move_id = self.env['account.move'].search([
-                                    ('partner_id','=',self.student_enroll_id.partner_id.id),
-                                    ('type_inclusion_fee','=','fee_spec'),
-                                    ('year_id','=',struct_spec_id.academic_year.id),
-                                    ('level_id','=',self.student_enroll_id.level_id.id),
-                                    ('field_of_study_id','=',self.student_enroll_id.field_of_study_id.id),
-                                    ('cycle_id','=',self.student_enroll_id.field_of_study_id.cycle_id.id),
+                                    ('partner_id', '=', self.student_enroll_id.partner_id.id),
+                                    ('type_inclusion_fee', '=', 'fee_spec'),
+                                    ('year_id', '=', struct_spec_id.academic_year.id),
+                                    ('level_id', '=', self.student_enroll_id.level_id.id),
+                                    ('field_of_study_id', '=', self.student_enroll_id.field_of_study_id.id),
+                                    ('cycle_id', '=', self.student_enroll_id.field_of_study_id.cycle_id.id),
                                 ],
                                 limit=1
                             )

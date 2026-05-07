@@ -13,7 +13,7 @@ class SessionEnrollment(models.Model):
     _description = 'Session d\'admission'
     _order = 'id desc'
     _sql_constraints = [
-        ('uniq_session', 'unique(name,year_id,campus)',
+        ('uniq_session', 'unique(name, year_id,campus)',
          "Cette session existe déja pour cette Année académique!"),
     ]
 
@@ -91,7 +91,7 @@ class SessionEnrollment(models.Model):
     @api.constrains('cycle_ids')
     def check_cycle_id_existe_in_session(self):
         session_ids = self.env['siantou.session'].sudo().search([
-            ('year_id','=',self.year_id.id)
+            ('year_id', '=', self.year_id.id)
         ])
         if len(session_ids)>=1:
             for session_id in session_ids:
@@ -101,7 +101,7 @@ class SessionEnrollment(models.Model):
                     # _logger.info(session_id.cycle_ids.ids)
                     # _logger.info(id in session_id.cycle_ids.ids)
                     if id in session_id.cycle_ids.ids:
-                        cycle_id = self.env['oe.school.course'].search([('id','=',id)], limit=1)
+                        cycle_id = self.env['oe.school.course'].search([('id', '=', id)], limit=1)
                         raise ValidationError(
                             _(f"Le cycle << {cycle_id.name} >> existe déjà dans une session d'admission de l'année {self.year_id.name}"))
 
@@ -139,7 +139,7 @@ class SessionEnrollment(models.Model):
 
     def close_register(self):
         for record in self:
-            registres = self.env["siantou.session.registre"].search([('session_id','=',self.id)])
+            registres = self.env["siantou.session.registre"].search([('session_id', '=', self.id)])
             for reg in registres:
                 for stud in reg.admission_ids:
                     if stud.status not in ['transfer', 'rej']:
@@ -154,7 +154,7 @@ class SessionRegisterEnrollment(models.Model):
     _description = 'Registre d\'admission'
     _order = 'id desc'
     _sql_constraints = [
-        ('uniq_registre', 'unique(name,field_of_study_id,year_id,campus)',
+        ('uniq_registre', 'unique(name,field_of_study_id, year_id,campus)',
          "Cette session existe déja pour cette année académique!"),
     ]
 
