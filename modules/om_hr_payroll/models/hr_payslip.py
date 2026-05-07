@@ -918,7 +918,7 @@ class HrPayslip(models.Model):
             ('group_id.status', '=', 'valid'),
             ('is_active', '=', True),
             ('status', '=', 'pending'),
-        ], order='date asc').filtered(lambda rec: rec.date == current_date and rec.start_time <= time_before and rec.end_time >= time_before)
+        ], order='date asc').filtered(lambda rec: rec.date and rec.day_of_week and rec.date == current_date and rec.start_time <= time_before and rec.end_time >= time_before)
         employee_timetables = list(employee_timetables)
         for employee_timetable in employee_timetables:
             if employee_timetable.employee_id.id:
@@ -983,7 +983,7 @@ class HrPayslip(models.Model):
             ('group_id.status', '=', 'valid'),
             ('is_active', '=', True),
             ('status', '=', 'pending'),
-        ], order='date asc').filtered(lambda rec: rec.date == current_date and rec.start_time <= time_before and rec.end_time >= time_before)
+        ], order='date asc').filtered(lambda rec: rec.date and rec.day_of_week and rec.date == current_date and rec.start_time <= time_before and rec.end_time >= time_before)
         employee_timetables = list(employee_timetables)
         for employee_timetable in employee_timetables:
             if employee_timetable.employee_id.id:
@@ -1156,7 +1156,7 @@ class HrPayslip(models.Model):
             ('group_id.status', '=', 'valid'),
             ('is_active', '=', True),
             ('status', 'in', ['present', 'progress', 'absent']),
-        ], order='date asc').filtered(lambda rec: rec.date == current_date)
+        ], order='date asc').filtered(lambda rec: rec.date and rec.day_of_week and rec.date == current_date)
         employee_timetables = list(employee_timetables)
         for employee_timetable in employee_timetables:
             employee_timetable.sudo().write({
