@@ -354,11 +354,11 @@ class ClassUeCopyWizard(models.TransientModel):
                         ], limit=1)
                         if not timetable:
                             self.env['siantou.ems.timetable.timetable'].create({
-                                'department_id': timetable_id.specialty_id.department_id.id,
-                                'school_id': timetable_id.school_id.id,
-                                'level_id': timetable_id.level_id.id,
-                                'specialty_id': timetable_id.specialty_id.id,
-                                'option_id': timetable_id.option_id.id,
+                                'department_id': destination_class_id.specialty_id.department_id.id,
+                                'school_id': destination_class_id.school_id.id,
+                                'level_id': destination_class_id.level_id.id,
+                                'specialty_id': destination_class_id.specialty_id.id,
+                                'option_id': destination_class_id.option_id.id,
                                 'class_id': destination_class_id.id,
                                 'class_group_id': group_ids[0].id,
                                 'ue_id': timetable_id.ue_id.id,
@@ -384,11 +384,11 @@ class ClassUeCopyWizard(models.TransientModel):
                         ], limit=1)
                         if not timetable:
                             self.env['siantou.ems.timetable.timetable'].create({
-                                'department_id': timetable_id.specialty_id.department_id.id,
-                                'school_id': timetable_id.school_id.id,
-                                'level_id': timetable_id.level_id.id,
-                                'specialty_id': timetable_id.specialty_id.id,
-                                'option_id': timetable_id.option_id.id,
+                                'department_id': destination_class_id.specialty_id.department_id.id,
+                                'school_id': destination_class_id.school_id.id,
+                                'level_id': destination_class_id.level_id.id,
+                                'specialty_id': destination_class_id.specialty_id.id,
+                                'option_id': destination_class_id.option_id.id,
                                 'class_id': destination_class_id.id,
                                 'ue_id': timetable_id.ue_id.id,
                                 'subject_id': timetable_id.subject_id.id,

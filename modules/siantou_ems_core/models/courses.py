@@ -366,6 +366,23 @@ class SchoolCourseSubject(models.Model):
             for semester_id in record.semester_ids:
                 years.append(semester_id.year_id.id)
 
+            years = list(set(years))
+
+            year_ids = self.env['siantou.ems.core.year'].search([
+                ('id', 'in', years),
+            ])
+
+            record.year_ids = year_ids
+
+    @api.onchange('semester_ids')
+    def _onchange_years(self):
+        for record in self:
+            years = []
+            for semester_id in record.semester_ids:
+                years.append(semester_id.year_id.id)
+
+            years = list(set(years))
+
             year_ids = self.env['siantou.ems.core.year'].search([
                 ('id', 'in', years),
             ])
@@ -379,6 +396,24 @@ class SchoolCourseSubject(models.Model):
             for semester_id in record.semester_ids:
                 if semester_id.year_id.is_active:
                     years.append(semester_id.year_id.id)
+
+            years = list(set(years))
+
+            year_id = self.env['siantou.ems.core.year'].search([
+                ('id', 'in', years),
+            ], limit=1)
+
+            record.year_id = year_id
+
+    @api.onchange('semester_ids')
+    def _onchange_year_active(self):
+        for record in self:
+            years = []
+            for semester_id in record.semester_ids:
+                if semester_id.year_id.is_active:
+                    years.append(semester_id.year_id.id)
+
+            years = list(set(years))
 
             year_id = self.env['siantou.ems.core.year'].search([
                 ('id', 'in', years),

@@ -1194,6 +1194,11 @@ class DeSchool(http.Controller):
         timetables = list(timetables)
         for timetable in timetables:
             timetable.write({
+                'department_id': new_class.specialty_id.department_id.id,
+                'school_id': new_class.school_id.id,
+                'level_id': new_class.level_id.id,
+                'specialty_id': new_class.specialty_id.id,
+                'option_id': new_class.option_id.id,
                 'class_id': new_class.id,
                 'skip_validation': True,
             })
@@ -1203,6 +1208,33 @@ class DeSchool(http.Controller):
             'data': {
                 'old_class': old_class.name,
                 'new_class': new_class.name,
+                'timetables': len(timetables),
+            }
+        }
+        data = json.dumps(body)
+        headers = {'Content-Type': 'application/json'}
+        return http.request.make_response(data, headers=headers, status=200)
+
+    @http.route(['/api/modify/class/all'], type='http', auth='public')
+    def api_modify_class_all(self, **kw):
+        timetables = http.request.env['siantou.ems.timetable.timetable'].sudo().search([
+            ('year_id.is_active', '=', True),
+        ])
+        timetables = list(timetables)
+        for timetable in timetables:
+            timetable.write({
+                'department_id': timetable.class_id.specialty_id.department_id.id,
+                'school_id': timetable.class_id.school_id.id,
+                'level_id': timetable.class_id.level_id.id,
+                'specialty_id': timetable.class_id.specialty_id.id,
+                'option_id': timetable.class_id.option_id.id,
+                'class_id': timetable.class_id.id,
+                'skip_validation': True,
+            })
+        body = {
+            'code': 200,
+            'message': '',
+            'data': {
                 'timetables': len(timetables),
             }
         }
