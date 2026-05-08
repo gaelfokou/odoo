@@ -334,7 +334,7 @@ class SchoolCourseSubject(models.Model):
         required=True
     )
 
-    code = fields.Char(string="Code UE", required=True)
+    code = fields.Char(string="Code", required=True)
     name = fields.Char(string="Intitulé de l'unité", required=True)
 
     class_ids = fields.Many2many('siantou.ems.core.class', 'class_ue_rel', 'ue_id', 'class_id', string='Classes')
@@ -344,6 +344,47 @@ class SchoolCourseSubject(models.Model):
     semestre_id = fields.Many2one('siantou.ems.core.year.semester', string='Semestre')
 
     semester_ids = fields.Many2many('siantou.ems.core.year.semester', 'semester_ue_rel', 'ue_id', 'semester_id', string='Semestres')
+
+    year_ids = fields.One2many(
+        'siantou.ems.core.year',
+        string='Années académiques',
+        compute='_compute_years',
+        store=False
+    )
+
+    year_id = fields.Many2one(
+        'siantou.ems.core.year',
+        string='Année académique active',
+        compute='_compute_year_active',
+        store=False
+    )
+
+    @api.depends('semester_ids')
+    def _compute_years(self):
+        for record in self:
+            years = []
+            for semester_id in record.semester_ids:
+                years.append(semester_id.year_id.id)
+
+            year_ids = self.env['siantou.ems.core.year'].search([
+                ('id', 'in', years),
+            ])
+
+            record.year_ids = year_ids
+
+    @api.depends('semester_ids')
+    def _compute_year_active(self):
+        for record in self:
+            years = []
+            for semester_id in record.semester_ids:
+                if semester_id.year_id.is_active:
+                    years.append(semester_id.year_id.id)
+
+            year_id = self.env['siantou.ems.core.year'].search([
+                ('id', 'in', years),
+            ], limit=1)
+
+            record.year_id = year_id
 
     syllabus_ids = fields.One2many('siantou.ems.core.syllabus', 'ue_id', string='Syllabus')
 
@@ -361,9 +402,9 @@ class SchoolCourseSubject(models.Model):
                 domain.append(('year_id', 'in', year_ids))
             record.class_id_domain = domain
 
-    # _sql_constraints = [
-    #     ('unique_code', 'unique(code)', "Le code de l'unité d'enseignement doit être unique.")
-    # ]
+    _sql_constraints = [
+        ('unique_code', 'unique(code)', "Le code de l'unité d'enseignement doit être unique.")
+    ]
 
     @api.depends('subject_ids', 'subject_ids.syllabus_ids.subject_credit')
     def _compute_total_credit(self):
