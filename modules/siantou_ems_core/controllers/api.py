@@ -1215,10 +1215,20 @@ class DeSchool(http.Controller):
         headers = {'Content-Type': 'application/json'}
         return http.request.make_response(data, headers=headers, status=200)
 
-    @http.route(['/api/modify/class/all'], type='http', auth='public')
-    def api_modify_class_all(self, **kw):
+    @http.route(['/api/modify/group', '/api/modify/group/<int:group_id>'], type='http', auth='public')
+    def api_modify_group(self, group_id=0, **kw):
+        group = http.request.env['siantou.ems.timetable.group'].sudo().search([('id', '=', group_id)], limit=1)
+        if not group:
+            body = {
+                'code': 404,
+                'message': f'Not found group : {group_id}',
+                'data': {}
+            }
+            data = json.dumps(body)
+            headers = {'Content-Type': 'application/json'}
+            return http.request.make_response(data, headers=headers, status=404)
         timetables = http.request.env['siantou.ems.timetable.timetable'].sudo().search([
-            ('year_id.is_active', '=', True),
+            ('group_id', '=', group.id),
         ])
         timetables = list(timetables)
         for timetable in timetables:
@@ -1235,6 +1245,7 @@ class DeSchool(http.Controller):
             'code': 200,
             'message': '',
             'data': {
+                'group': group.name,
                 'timetables': len(timetables),
             }
         }
