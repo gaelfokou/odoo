@@ -1029,19 +1029,19 @@ class PortalAccount(portal.CustomerPortal):
                 accountbalance['amount'] = key_payslips[key]['amount']
 
             accountbalance['hours_credit'] = 0.0
-            accountbalance['total_all'] = 0.0
-            accountbalance['total_done'] = 0.0
-            accountbalance['total_awaiting'] = 0.0
+            accountbalance['all'] = 0.0
+            accountbalance['done'] = 0.0
+            accountbalance['awaiting'] = 0.0
             key_class = '{}'.format(search_accountbalance.class_id.id)
             key_subject = '{}'.format(search_accountbalance.subject_id.id)
             if key_class in consumptionhours:
                 if key_subject in consumptionhours[key_class]['data']:
                     accountbalance['hours_credit'] = consumptionhours[key_class]['data'][key_subject]['data']['credit']
-                    accountbalance['total_all'] = consumptionhours[key_class]['data'][key_subject]['data']['done']
-                    accountbalance['total_done'] = consumptionhours[key_class]['data'][key_subject]['data']['done']
-                    accountbalance['total_awaiting'] = consumptionhours[key_class]['data'][key_subject]['data']['awaiting']
+                    accountbalance['all'] = consumptionhours[key_class]['data'][key_subject]['data']['done']
+                    accountbalance['done'] = consumptionhours[key_class]['data'][key_subject]['data']['done']
+                    accountbalance['awaiting'] = consumptionhours[key_class]['data'][key_subject]['data']['awaiting']
 
-            if accountbalance['total_done'] > accountbalance['hours_credit']:
+            if accountbalance['done'] > accountbalance['hours_credit']:
                 accountbalance['amount'] = 0.0
 
             accountbalances.append(accountbalance)
