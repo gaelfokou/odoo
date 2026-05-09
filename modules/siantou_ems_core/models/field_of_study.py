@@ -27,6 +27,30 @@ class OptionOfStudy(models.Model):
         ('unique_code', 'unique(code)', "Le code de l'option doit être unique."),
     ]
 
+    def write(self, vals):
+        res = super(OptionOfStudy, self).write(vals)
+
+        if 'name' in vals:
+            options = []
+            if len(self.ids) == 1:
+                option = self.env['siantou.ems.core.option'].browse(self.id)
+                options.append(option)
+            else:
+                options = self.env['siantou.ems.core.option'].browse(self.ids)
+                options = list(options)
+
+            for option in options:
+                classes = self.env['siantou.ems.core.class'].search([
+                    ('option_id', '=', option.id),
+                ])
+                classes = list(classes)
+                for classe in classes:
+                    classe.write({
+                        'option_id': option.id,
+                    })
+
+        return res
+
 class SpecialtyOfStudy(models.Model):
     _name = 'siantou.ems.core.specialty'
     _description = 'Spécialités'
@@ -85,6 +109,30 @@ class SpecialtyOfStudy(models.Model):
         ('unique_code', 'unique(code)', 'Le code de la spécialité doit être unique.'),
     ]
 
+    def write(self, vals):
+        res = super(SpecialtyOfStudy, self).write(vals)
+
+        if 'name' in vals:
+            specialties = []
+            if len(self.ids) == 1:
+                specialty = self.env['siantou.ems.core.specialty'].browse(self.id)
+                specialties.append(specialty)
+            else:
+                specialties = self.env['siantou.ems.core.specialty'].browse(self.ids)
+                specialties = list(specialties)
+
+            for specialty in specialties:
+                classes = self.env['siantou.ems.core.class'].search([
+                    ('specialty_id', '=', specialty.id),
+                ])
+                classes = list(classes)
+                for classe in classes:
+                    classe.write({
+                        'specialty_id': specialty.id,
+                    })
+
+        return res
+
 class FieldOfStudy(models.Model):
     _name = 'siantou.ems.core.field_of_study'
     _description = 'Filières'
@@ -133,6 +181,30 @@ class FieldOfStudy(models.Model):
     _sql_constraints = [
         ('unique_code', 'unique(code)', 'Le code de la filière doit être unique.'),
     ]
+
+    def write(self, vals):
+        res = super(FieldOfStudy, self).write(vals)
+
+        if 'name' in vals:
+            field_of_studies = []
+            if len(self.ids) == 1:
+                field_of_study = self.env['siantou.ems.core.field_of_study'].browse(self.id)
+                field_of_studies.append(field_of_study)
+            else:
+                field_of_studies = self.env['siantou.ems.core.field_of_study'].browse(self.ids)
+                field_of_studies = list(field_of_studies)
+
+            for field_of_study in field_of_studies:
+                classes = self.env['siantou.ems.core.class'].search([
+                    ('field_of_study_id', '=', field_of_study.id),
+                ])
+                classes = list(classes)
+                for classe in classes:
+                    classe.write({
+                        'field_of_study_id': field_of_study.id,
+                    })
+
+        return res
 
     def get_subject_ids_by_level(self):
         # Dictionnaire pour stocker les IDs des cours par niveau
