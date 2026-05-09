@@ -861,6 +861,44 @@ class PortalAccount(portal.CustomerPortal):
         search_accountbalances, searchbar_inputs, search_month = Helpers.accountbalance(search=search, search_in=search_in, selected_month=selected_month)
         total_rate = 0.0
         total_number_of_hours = 0.0
+
+        consumptionhours = []
+        for search_consumptionhour in search_accountbalances:
+            consumptionhour = {}
+            consumptionhour['id'] = search_consumptionhour.id
+            consumptionhour['name'] = search_consumptionhour.name
+            consumptionhour['date'] = search_consumptionhour.date
+            consumptionhour['date_of_week'] = datetime.strftime(search_consumptionhour.date, DATE_FORMAT_FR)
+            consumptionhour['semester_name'] = search_consumptionhour.semester_id.name
+            consumptionhour['cycle_name'] = search_consumptionhour.cycle_id.name
+            consumptionhour['level_name'] = search_consumptionhour.level_id.name
+            consumptionhour['field_of_study_id'] = search_consumptionhour.field_of_study_id.id
+            consumptionhour['field_of_study_name'] = search_consumptionhour.field_of_study_id.name
+            consumptionhour['specialty_name'] = search_consumptionhour.specialty_id.name
+            consumptionhour['option_name'] = search_consumptionhour.option_id.name
+            consumptionhour['class_id'] = search_consumptionhour.class_id.id
+            consumptionhour['class_name'] = search_consumptionhour.class_id.name
+            consumptionhour['department_id'] = search_consumptionhour.department_id.id
+            consumptionhour['department_name'] = search_consumptionhour.department_id.name
+            consumptionhour['subject_id'] = search_consumptionhour.subject_id.id
+            consumptionhour['subject_name'] = search_consumptionhour.subject_id.name
+            consumptionhour['subject_code'] = search_consumptionhour.subject_id.code
+            consumptionhour['subject_hours_credit'] = search_consumptionhour.subject_id.hours_credit
+            consumptionhour['subject_shared_subject'] = search_consumptionhour.subject_id.shared_subject
+            consumptionhour['classroom_name'] = search_consumptionhour.classroom_id.name
+            consumptionhour['building_name'] = search_consumptionhour.classroom_id.building_id.name
+            consumptionhour['batch_name'] = search_consumptionhour.batch_id.name
+            consumptionhour['employee_name'] = search_consumptionhour.employee_id.name
+            consumptionhour['day_of_week'] = CURRENT_WEEKDAY[search_consumptionhour.day_of_week]
+            consumptionhour['start_time'] = search_consumptionhour.start_time
+            consumptionhour['end_time'] = search_consumptionhour.end_time
+            consumptionhour['worked_start_time'] = search_consumptionhour.worked_start_time
+            consumptionhour['worked_end_time'] = search_consumptionhour.worked_end_time
+            consumptionhour['not_active_slotitems'] = search_consumptionhour.not_active_slotitems
+            consumptionhour['status'] = search_consumptionhour.status
+            consumptionhours.append(consumptionhour)
+        consumptionhours = Helpers.format_consumptionhour(consumptionhours)
+
         accountbalances = []
         for search_accountbalance in search_accountbalances:
             end_time = Helpers.convert_float_to_time(search_accountbalance.end_time, has_second=True)
@@ -989,6 +1027,22 @@ class PortalAccount(portal.CustomerPortal):
             if key in key_payslips:
                 accountbalance['rate'] = key_payslips[key]['rate']
                 accountbalance['amount'] = key_payslips[key]['amount']
+
+            accountbalance['hours_credit'] = 0.0
+            accountbalance['total_all'] = 0.0
+            accountbalance['total_done'] = 0.0
+            accountbalance['total_awaiting'] = 0.0
+            key_class = '{}'.format(search_accountbalance.class_id.id)
+            key_subject = '{}'.format(search_accountbalance.subject_id.id)
+            if key_class in consumptionhours:
+                if key_subject in consumptionhours[key_class]['data']:
+                    accountbalance['hours_credit'] = consumptionhours[key_class]['data'][key_subject]['data']['credit']
+                    accountbalance['total_all'] = consumptionhours[key_class]['data'][key_subject]['data']['done']
+                    accountbalance['total_done'] = consumptionhours[key_class]['data'][key_subject]['data']['done']
+                    accountbalance['total_awaiting'] = consumptionhours[key_class]['data'][key_subject]['data']['awaiting']
+
+            if accountbalance['total_done'] > accountbalance['hours_credit']:
+                accountbalance['amount'] = 0.0
 
             accountbalances.append(accountbalance)
             total_rate += accountbalance['amount']
