@@ -856,14 +856,9 @@ class PortalAccount(portal.CustomerPortal):
                             key_payslips[key]['rate'] = worked_days_line_id.rate
                             key_payslips[key]['amount'] = worked_days_line_id.amount
 
-        timetable_ids = [payslip['timetable_id'] for payslip in key_payslips.values()]
-
-        search_accountbalances, searchbar_inputs, search_month = Helpers.accountbalance(search=search, search_in=search_in, selected_month=selected_month)
-        total_rate = 0.0
-        total_number_of_hours = 0.0
-
+        search_consumptionhours, searchbar_inputs = Helpers.consumptionhour(search=search, search_in=search_in)
         consumptionhours = []
-        for search_consumptionhour in search_accountbalances:
+        for search_consumptionhour in search_consumptionhours:
             consumptionhour = {}
             consumptionhour['id'] = search_consumptionhour.id
             consumptionhour['name'] = search_consumptionhour.name
@@ -899,6 +894,9 @@ class PortalAccount(portal.CustomerPortal):
             consumptionhours.append(consumptionhour)
         consumptionhours = Helpers.format_consumptionhour(consumptionhours)
 
+        search_accountbalances, searchbar_inputs, search_month = Helpers.accountbalance(search=search, search_in=search_in, selected_month=selected_month)
+        total_rate = 0.0
+        total_number_of_hours = 0.0
         accountbalances = []
         for search_accountbalance in search_accountbalances:
             end_time = Helpers.convert_float_to_time(search_accountbalance.end_time, has_second=True)
