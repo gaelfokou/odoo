@@ -407,7 +407,7 @@ class DeSchool(http.Controller):
                 ], 
                 limit=1
             )
-            _logger.info(f'Étudiant: {etudiant}')
+            _logger.info(f'Étudiant : {etudiant}')
 
             files = http.request.httprequest.files.getlist('file')
             _logger.info(files)
