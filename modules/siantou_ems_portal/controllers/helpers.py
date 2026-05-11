@@ -371,7 +371,7 @@ class Helpers:
         return search_accountbalances, searchbar_inputs, search_month
 
     @staticmethod
-    def consumptionhour(search='', search_in='all', cycle_id=None, level_id=None, field_of_study_id=None, specialty_id=None, option_id=None, class_id=None):
+    def consumptionhour(search='', search_in='all', selected_month=None, cycle_id=None, level_id=None, field_of_study_id=None, specialty_id=None, option_id=None, class_id=None):
         searchbar_inputs = {
             'all': {'label': 'Tout', 'input': 'all', 'domain': []},
             'cycle': {'label': 'Cycle', 'input': 'cycle', 'domain': [('cycle_id.name', 'like', search)]},
@@ -440,6 +440,13 @@ class Helpers:
                 search_domain.append(('employee_id', '=', user.id))
 
                 consumptionhours = http.request.env['siantou.ems.timetable.timetable'].sudo().search(search_domain, order=order).sorted(lambda rec: (rec.date, rec.id))
+                if selected_month:
+                    current_date = date.today()
+                    current_date = current_date - relativedelta(day=1, months=int(selected_month))
+                    start_date = current_date + relativedelta(day=1)
+                    end_date = current_date + relativedelta(day=1, months=1, days=-1)
+                    if start_date and end_date:
+                        consumptionhours = consumptionhours.filtered(lambda rec: rec.date and rec.day_of_week and rec.date <= end_date)
                 consumptionhours = list(consumptionhours)
                 key_consumptionhours = {}
                 for consumptionhour in consumptionhours:
@@ -459,6 +466,13 @@ class Helpers:
                 search_domain.append(('class_id', '=', user.class_id.id))
 
                 consumptionhours = http.request.env['siantou.ems.timetable.timetable'].sudo().search(search_domain, order=order).sorted(lambda rec: (rec.date, rec.id))
+                if selected_month:
+                    current_date = date.today()
+                    current_date = current_date - relativedelta(day=1, months=int(selected_month))
+                    start_date = current_date + relativedelta(day=1)
+                    end_date = current_date + relativedelta(day=1, months=1, days=-1)
+                    if start_date and end_date:
+                        consumptionhours = consumptionhours.filtered(lambda rec: rec.date and rec.day_of_week and rec.date <= end_date)
                 consumptionhours = list(consumptionhours)
                 key_consumptionhours = {}
                 for consumptionhour in consumptionhours:

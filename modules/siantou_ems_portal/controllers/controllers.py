@@ -856,7 +856,7 @@ class PortalAccount(portal.CustomerPortal):
                             key_payslips[key]['rate'] = worked_days_line_id.rate
                             key_payslips[key]['amount'] = worked_days_line_id.amount
 
-        search_consumptionhours, searchbar_inputs = Helpers.consumptionhour(search=search, search_in=search_in)
+        search_consumptionhours, searchbar_inputs = Helpers.consumptionhour(search=search, search_in=search_in, selected_month=selected_month)
         consumptionhours = []
         for search_consumptionhour in search_consumptionhours:
             consumptionhour = {}
