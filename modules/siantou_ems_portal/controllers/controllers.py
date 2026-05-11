@@ -1039,8 +1039,10 @@ class PortalAccount(portal.CustomerPortal):
                     accountbalance['done'] = consumptionhours[key_class]['data'][key_subject]['data']['done']
                     accountbalance['awaiting'] = consumptionhours[key_class]['data'][key_subject]['data']['awaiting']
 
-            if accountbalance['done'] > accountbalance['hours_credit']:
-                accountbalance['amount'] = 0.0
+            if not search_accountbalance.employee_id.is_permanent:
+                if key not in key_payslips:
+                    if accountbalance['done'] > accountbalance['hours_credit']:
+                        accountbalance['amount'] = 0.0
 
             accountbalances.append(accountbalance)
             total_rate += accountbalance['amount']

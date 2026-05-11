@@ -389,8 +389,10 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
                     total_done = consumptionhours[key_class]['data'][key_subject]['data']['done']
                     total_awaiting = consumptionhours[key_class]['data'][key_subject]['data']['awaiting']
 
-            if total_done > hours_credit:
-                amount = 0.0
+            if not timetable.employee_id.is_permanent:
+                if key not in key_payslips:
+                    if total_done > hours_credit:
+                        amount = 0.0
 
             teacher_timetable_attendance = self.env['teacher.timetable.attendance'].create({
                 'timetable_id': timetable.id,
