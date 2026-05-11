@@ -856,7 +856,7 @@ class PortalAccount(portal.CustomerPortal):
                             key_payslips[key]['rate'] = worked_days_line_id.rate
                             key_payslips[key]['amount'] = worked_days_line_id.amount
 
-        search_consumptionhours, searchbar_inputs = Helpers.consumptionhour(search=search, search_in=search_in, selected_month=selected_month)
+        search_consumptionhours, searchbar_inputs, search_month = Helpers.consumptionhour(search=search, search_in=search_in, selected_month=selected_month)
         consumptionhours = []
         for search_consumptionhour in search_consumptionhours:
             consumptionhour = {}
@@ -1063,7 +1063,15 @@ class PortalAccount(portal.CustomerPortal):
                                 })
 
     @http.route(['/my/consumptionhour'], type='http', auth="user", website=True)
-    def portal_consumptionhour(self, search='', search_in='all', **kw):
+    def portal_consumptionhour(self, search='', search_in='all', selected_month='0', **kw):
+        selected_month_total = [str(i) for i in range(6)]
+        if selected_month not in selected_month_total:
+            selected_month = '0'
+        if selected_month == selected_month_total[-1]:
+            consumptionhour_selected_month = 0
+        else:
+            consumptionhour_selected_month = int(selected_month) + 1
+
         user = None
         is_user = None
         is_user_permanent = False
@@ -1079,7 +1087,7 @@ class PortalAccount(portal.CustomerPortal):
             user = http.request.env.user.student_id
             is_user = 'is_student'
 
-        search_consumptionhours, searchbar_inputs = Helpers.consumptionhour(search=search, search_in=search_in)
+        search_consumptionhours, searchbar_inputs, search_month = Helpers.consumptionhour(search=search, search_in=search_in, selected_month=selected_month)
         consumptionhours = []
         for search_consumptionhour in search_consumptionhours:
             consumptionhour = {}
@@ -1121,6 +1129,8 @@ class PortalAccount(portal.CustomerPortal):
                                     'consumptionhours': consumptionhours,
                                     'page_name': 'consumptionhour',
                                     'consumptionhour': 0,
+                                    'consumptionhour_selected_month': consumptionhour_selected_month,
+                                    'search_month': search_month,
                                     'is_user': is_user,
                                 })
 
