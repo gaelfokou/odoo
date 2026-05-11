@@ -1042,7 +1042,13 @@ class PortalAccount(portal.CustomerPortal):
             if not search_accountbalance.employee_id.is_permanent:
                 if key not in key_payslips:
                     if accountbalance['done'] > accountbalance['hours_credit']:
-                        accountbalance['amount'] = 0.0
+                        accountbalance['extended_hours'] = accountbalance['done'] - accountbalance['hours_credit']
+                        if accountbalance['number_of_hours'] > accountbalance['extended_hours']:
+                            accountbalance['number_of_hours'] = accountbalance['number_of_hours'] - accountbalance['extended_hours']
+                            accountbalance['amount'] = accountbalance['rate'] * accountbalance['number_of_hours']
+                            accountbalance['amount'] = round(accountbalance['amount'], 2)
+                        else:
+                            accountbalance['amount'] = 0.0
 
             accountbalances.append(accountbalance)
             total_rate += accountbalance['amount']

@@ -394,7 +394,13 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
             if not timetable.employee_id.is_permanent:
                 if key not in key_payslips:
                     if total_done > hours_credit:
-                        amount = 0.0
+                        extended_hours = total_done - hours_credit
+                        if worked_hours > extended_hours:
+                            worked_hours = worked_hours - extended_hours
+                            amount = rate * worked_hours
+                            amount = round(amount, 2)
+                        else:
+                            amount = 0.0
 
             teacher_timetable_attendance = self.env['teacher.timetable.attendance'].create({
                 'timetable_id': timetable.id,
