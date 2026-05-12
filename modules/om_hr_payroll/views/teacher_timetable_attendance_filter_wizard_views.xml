@@ -15,7 +15,7 @@
                         <field name="start_date"/>
                         <field name="end_date"/>
                         <field name="has_rate" invisible="is_permanent == True"/>
-                        <field name="has_not_extended_hours" invisible="is_permanent == True"/>
+                        <field name="remaining_paid" invisible="is_permanent == True"/>
                         <field name="status" invisible="is_permanent == True"/>
                         <field name="sort_type" invisible="is_permanent == False"/>
                     </group>

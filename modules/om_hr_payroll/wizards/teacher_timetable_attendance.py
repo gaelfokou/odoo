@@ -284,7 +284,7 @@ class TeacherTimetableAttendance(models.TransientModel):
             'target': 'new',
             'context': {
                 'default_has_rate': False,
-                'default_has_not_extended_hours': False,
+                'default_remaining_paid': False,
             },
         }
 

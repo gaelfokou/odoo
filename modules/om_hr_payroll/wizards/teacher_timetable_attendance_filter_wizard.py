@@ -113,8 +113,8 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
         default=False,
     )
 
-    has_not_extended_hours = fields.Boolean(
-        'Volume horaire non prolongé ?',
+    remaining_paid = fields.Boolean(
+        'Reste à payer ?',
         default=False,
     )
 
@@ -397,7 +397,12 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
                     total_awaiting = consumptionhours[key_class]['data'][key_subject]['data']['awaiting']
 
             if not timetable.employee_id.is_permanent:
-                if key not in key_payslips:
+                last_worked_hours = 0.0
+                last_worked_hours += worked_hours
+                last_amount = 0.0
+                last_amount += amount
+
+                if self.remaining_paid or key not in key_payslips:
                     if total_done > hours_credit:
                         extended_hours = total_done - hours_credit
                         if worked_hours > extended_hours:
@@ -409,9 +414,14 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
                             worked_hours = 0.0
                             amount = 0.0
 
-                if self.has_not_extended_hours:
-                    if worked_hours == 0.0:
-                        continue
+                if self.remaining_paid:
+                    if last_worked_hours > worked_hours:
+                        worked_hours = last_worked_hours - worked_hours
+                        worked_hours = round(worked_hours, 2)
+
+                    if last_amount > amount:
+                        amount = last_amount - amount
+                        amount = round(amount, 2)
 
             teacher_timetable_attendance = self.env['teacher.timetable.attendance'].create({
                 'timetable_id': timetable.id,
