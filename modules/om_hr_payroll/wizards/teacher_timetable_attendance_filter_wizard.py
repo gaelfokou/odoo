@@ -409,7 +409,6 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
                             worked_hours = 0.0
                             amount = 0.0
 
-            if not timetable.employee_id.is_permanent:
                 if self.has_not_extended_hours:
                     if worked_hours == 0.0:
                         continue
