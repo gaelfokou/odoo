@@ -1045,6 +1045,7 @@ class PortalAccount(portal.CustomerPortal):
                         accountbalance['extended_hours'] = accountbalance['done'] - accountbalance['hours_credit']
                         if accountbalance['number_of_hours'] > accountbalance['extended_hours']:
                             accountbalance['number_of_hours'] = accountbalance['number_of_hours'] - accountbalance['extended_hours']
+                            accountbalance['number_of_hours'] = round(accountbalance['number_of_hours'], 2)
                             accountbalance['amount'] = accountbalance['rate'] * accountbalance['number_of_hours']
                             accountbalance['amount'] = round(accountbalance['amount'], 2)
                         else:

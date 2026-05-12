@@ -113,6 +113,11 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
         default=False,
     )
 
+    has_not_extended_hours = fields.Boolean(
+        'Volume horaire non prolongé ?',
+        default=False,
+    )
+
     sort_type = fields.Selection([
         ('teacher', 'Par enseignant'),
         ('hour', 'Par heure'),
@@ -397,11 +402,17 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
                         extended_hours = total_done - hours_credit
                         if worked_hours > extended_hours:
                             worked_hours = worked_hours - extended_hours
+                            worked_hours = round(worked_hours, 2)
                             amount = rate * worked_hours
                             amount = round(amount, 2)
                         else:
                             worked_hours = 0.0
                             amount = 0.0
+
+            if not timetable.employee_id.is_permanent:
+                if self.has_not_extended_hours:
+                    if worked_hours == 0.0:
+                        continue
 
             teacher_timetable_attendance = self.env['teacher.timetable.attendance'].create({
                 'timetable_id': timetable.id,
