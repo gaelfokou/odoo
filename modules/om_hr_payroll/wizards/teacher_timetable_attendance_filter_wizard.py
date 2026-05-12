@@ -399,6 +399,10 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
                     total_awaiting = consumptionhours[key_class]['data'][key_subject]['data']['awaiting']
 
             if not timetable.employee_id.is_permanent:
+                if self.refundable_additional:
+                    if hours_credit >= total_done:
+                        continue
+
                 last_worked_hours = 0.0
                 last_worked_hours += worked_hours
                 last_amount = 0.0
