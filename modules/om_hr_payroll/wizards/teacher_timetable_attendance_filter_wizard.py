@@ -243,6 +243,9 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
             title.append('{} - {}'.format(start_date, end_date))
             timetables = timetables.filtered(lambda rec: rec.date and rec.day_of_week and rec.date >= self.start_date and rec.date <= self.end_date)
 
+        if self.refundable_additional:
+            title.append('Supplément remboursable')
+
         order = 'date_from asc'
         key_payslips = {}
         key_extended_hours = {}
