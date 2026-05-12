@@ -245,6 +245,7 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
 
         order = 'date_from asc'
         key_payslips = {}
+        key_extended_hours = {}
         employee_ids = []
         for timetable in timetables:
             if timetable.employee_id.id not in employee_ids:
@@ -389,6 +390,7 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
             total_awaiting = 0.0
             key_class = '{}'.format(timetable.class_id.id)
             key_subject = '{}'.format(timetable.subject_id.id)
+            key_class_subject = '{}-{}'.format(key_class, key_subject)
             if key_class in consumptionhours:
                 if key_subject in consumptionhours[key_class]['data']:
                     hours_credit = consumptionhours[key_class]['data'][key_subject]['data']['credit']
@@ -404,13 +406,16 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
 
                 if self.refundable_additional or key not in key_payslips:
                     if total_done > hours_credit:
-                        extended_hours = total_done - hours_credit
-                        if worked_hours > extended_hours:
-                            worked_hours = worked_hours - extended_hours
+                        if key_class_subject not in key_extended_hours:
+                            key_extended_hours[key_class_subject] = total_done - hours_credit
+                        if worked_hours > key_extended_hours[key_class_subject]:
+                            worked_hours = worked_hours - key_extended_hours[key_class_subject]
                             worked_hours = round(worked_hours, 2)
                             amount = rate * worked_hours
                             amount = round(amount, 2)
                         else:
+                            key_extended_hours[key_class_subject] = key_extended_hours[key_class_subject] - worked_hours
+                            key_extended_hours[key_class_subject] = round(key_extended_hours[key_class_subject], 2)
                             worked_hours = 0.0
                             amount = 0.0
 
