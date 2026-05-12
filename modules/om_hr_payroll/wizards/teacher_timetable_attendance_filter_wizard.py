@@ -113,8 +113,8 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
         default=False,
     )
 
-    remaining_paid = fields.Boolean(
-        'Reste à payer ?',
+    refundable_additional = fields.Boolean(
+        'Supplément remboursable ?',
         default=False,
     )
 
@@ -402,7 +402,7 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
                 last_amount = 0.0
                 last_amount += amount
 
-                if self.remaining_paid or key not in key_payslips:
+                if self.refundable_additional or key not in key_payslips:
                     if total_done > hours_credit:
                         extended_hours = total_done - hours_credit
                         if worked_hours > extended_hours:
@@ -414,7 +414,7 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
                             worked_hours = 0.0
                             amount = 0.0
 
-                if self.remaining_paid:
+                if self.refundable_additional:
                     if last_worked_hours > worked_hours:
                         worked_hours = last_worked_hours - worked_hours
                         worked_hours = round(worked_hours, 2)
