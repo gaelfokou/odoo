@@ -1838,12 +1838,11 @@ class TimetableFilterWizard(models.TransientModel):
                     key_consumption_hours[key_class]['name'] = key_all_timetable_consumption_hours[key_class]['name']
                     key_consumption_hours[key_class]['data'] = {}
                 for key in key_all_timetable_consumption_hours[key_class]['data'].keys():
-                    if key in key_all_timetable_consumption_hours:
-                        if key in key_timetable_consumption_hours[key_class]['data']:
-                            key_all_timetable_consumption_hours[key_class]['data'][key]['all_worked_time'] = key_all_timetable_consumption_hours[key_class]['data'][key]['worked_time']
-                            if key_all_timetable_consumption_hours[key_class]['data'][key]['worked_time'] > 0:
-                                key_all_timetable_consumption_hours[key_class]['data'][key]['percentage'] = (key_timetable_consumption_hours[key_class]['data'][key]['worked_time'] / key_all_timetable_consumption_hours[key_class]['data'][key]['worked_time']) * 100
-                                key_all_timetable_consumption_hours[key_class]['data'][key]['percentage'] = round(key_all_timetable_consumption_hours[key_class]['data'][key]['percentage'], 2)
+                    if key in key_timetable_consumption_hours[key_class]['data']:
+                        key_all_timetable_consumption_hours[key_class]['data'][key]['all_worked_time'] = key_timetable_consumption_hours[key_class]['data'][key]['worked_time']
+                        if key_all_timetable_consumption_hours[key_class]['data'][key]['worked_time'] > 0:
+                            key_all_timetable_consumption_hours[key_class]['data'][key]['percentage'] = (key_timetable_consumption_hours[key_class]['data'][key]['worked_time'] / key_all_timetable_consumption_hours[key_class]['data'][key]['worked_time']) * 100
+                            key_all_timetable_consumption_hours[key_class]['data'][key]['percentage'] = round(key_all_timetable_consumption_hours[key_class]['data'][key]['percentage'], 2)
                     else:
                         key_all_timetable_consumption_hours[key_class]['data'][key]['all_worked_time'] = 0.0
                     key_consumption_hours[key_class]['data'][key] = key_all_timetable_consumption_hours[key_class]['data'][key]
