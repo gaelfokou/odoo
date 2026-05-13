@@ -1632,6 +1632,7 @@ class TimetableFilterWizard(models.TransientModel):
                 key_timetable_consumption_hours[key_class]['id'] = key_timetables[key]['timetable'].class_id.id
                 key_timetable_consumption_hours[key_class]['name'] = key_timetables[key]['timetable'].class_id.name
                 key_timetable_consumption_hours[key_class]['data'] = {}
+
             if self.print_type == 'teacher':
                 k = '{}'.format(key_timetables[key]['timetable'].employee_id.id)
                 if k not in key_timetable_consumption_hours:
@@ -1751,6 +1752,7 @@ class TimetableFilterWizard(models.TransientModel):
                 key_all_timetable_consumption_hours[key_class]['id'] = key_all_timetables[key]['timetable'].class_id.id
                 key_all_timetable_consumption_hours[key_class]['name'] = key_all_timetables[key]['timetable'].class_id.name
                 key_all_timetable_consumption_hours[key_class]['data'] = {}
+
             if self.print_type == 'teacher':
                 k = '{}'.format(key_all_timetables[key]['timetable'].employee_id.id)
                 if k not in key_all_timetable_consumption_hours:
@@ -1837,6 +1839,7 @@ class TimetableFilterWizard(models.TransientModel):
                     key_consumption_hours[key_class]['id'] = key_all_timetable_consumption_hours[key_class]['id']
                     key_consumption_hours[key_class]['name'] = key_all_timetable_consumption_hours[key_class]['name']
                     key_consumption_hours[key_class]['data'] = {}
+
                 for key in key_all_timetable_consumption_hours[key_class]['data'].keys():
                     if key in key_timetable_consumption_hours[key_class]['data']:
                         key_all_timetable_consumption_hours[key_class]['data'][key]['all_worked_time'] = key_timetable_consumption_hours[key_class]['data'][key]['worked_time']
