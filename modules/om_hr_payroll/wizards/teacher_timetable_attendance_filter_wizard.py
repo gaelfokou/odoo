@@ -504,6 +504,7 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
             key_subject = '{}'.format(d['subject_id'])
             if key_class not in consumptionhours:
                 consumptionhours[key_class] = {}
+                consumptionhours[key_class]['id'] = d['class_id']
                 consumptionhours[key_class]['name'] = d['class_name']
                 consumptionhours[key_class]['data'] = {}
                 consumptionhours[key_class]['data'][key_subject] = {}

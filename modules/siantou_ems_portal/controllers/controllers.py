@@ -686,6 +686,7 @@ class PortalAccount(portal.CustomerPortal):
                         for d in examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['data']:
                             if key_class not in all_examscores:
                                 all_examscores[key_class] = {}
+                                all_examscores[key_class]['id'] = d['class_id']
                                 all_examscores[key_class]['name'] = d['class_name']
                                 all_examscores[key_class]['data'] = {}
                                 all_examscores[key_class]['data'][key_semester] = {}

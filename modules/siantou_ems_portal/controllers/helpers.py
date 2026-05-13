@@ -991,6 +991,7 @@ class Helpers:
             key_subject = '{}'.format(d['subject_id'])
             if key_class not in accountbalances:
                 accountbalances[key_class] = {}
+                accountbalances[key_class]['id'] = d['class_id']
                 accountbalances[key_class]['name'] = d['class_name']
                 accountbalances[key_class]['data'] = {}
                 accountbalances[key_class]['data'][key_subject] = {}
@@ -1034,6 +1035,7 @@ class Helpers:
             key_subject = '{}'.format(d['subject_id'])
             if key_class not in consumptionhours:
                 consumptionhours[key_class] = {}
+                consumptionhours[key_class]['id'] = d['class_id']
                 consumptionhours[key_class]['name'] = d['class_name']
                 consumptionhours[key_class]['data'] = {}
                 consumptionhours[key_class]['data'][key_subject] = {}
@@ -1095,6 +1097,7 @@ class Helpers:
             key_subject = '{}'.format(d['subject_id'])
             if key_class not in progressreports:
                 progressreports[key_class] = {}
+                progressreports[key_class]['id'] = d['class_id']
                 progressreports[key_class]['name'] = d['class_name']
                 progressreports[key_class]['data'] = {}
                 progressreports[key_class]['data'][key_subject] = {}
@@ -1145,6 +1148,7 @@ class Helpers:
             key_subject = '{}'.format(d['subject_id'])
             if key_class not in examscores:
                 examscores[key_class] = {}
+                examscores[key_class]['id'] = d['class_id']
                 examscores[key_class]['name'] = d['class_name']
                 examscores[key_class]['data'] = {}
                 examscores[key_class]['data'][key_semester] = {}

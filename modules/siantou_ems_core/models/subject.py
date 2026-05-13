@@ -551,6 +551,7 @@ class ProgressReport(models.Model):
                 key_subject = '{}'.format(d['subject_id'])
                 if key_class not in progressreports:
                     progressreports[key_class] = {}
+                    progressreports[key_class]['id'] = d['class_id']
                     progressreports[key_class]['name'] = d['class_name']
                     progressreports[key_class]['data'] = {}
                     progressreports[key_class]['data'][key_subject] = {}
@@ -685,6 +686,7 @@ class ProgressReport(models.Model):
                 key_subject = '{}'.format(d['subject_id'])
                 if key_class not in progressreports:
                     progressreports[key_class] = {}
+                    progressreports[key_class]['id'] = d['class_id']
                     progressreports[key_class]['name'] = d['class_name']
                     progressreports[key_class]['data'] = {}
                     progressreports[key_class]['data'][key_subject] = {}
