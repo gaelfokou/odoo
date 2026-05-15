@@ -140,54 +140,11 @@ class TimetablePrintWizard(models.TransientModel):
             timetable['worked_start_time'] = search_timetable.worked_start_time
             timetable['worked_end_time'] = search_timetable.worked_end_time
             timetable['reason'] = search_timetable.reason
-            timetable['not_active_slotitems'] = search_timetable.not_active_slotitems
             timetable['status'] = STATUS_TIMETABLE[search_timetable.status]
             key_timetables[key].append(timetable)
 
         for key in key_timetables.keys():
-            if len(key_timetables[key]) > 0:
-                specialty_id = key_timetables[key][0]['specialty_id']
-
-                slots = self.env['siantou.ems.timetable.slot'].search([
-                    ('is_active', '=', False),
-                ])
-                slots = list(slots)
-
-                available_slotitem = None
-                for slot in slots:
-                    specialty_ids = list(slot.specialty_ids)
-                    for specialty in specialty_ids:
-                        if specialty.id == specialty_id:
-                            available_slotitem = slot
-                            break
-                    if available_slotitem:
-                        break
-
-                if available_slotitem:
-                    slots = self.env['siantou.ems.timetable.slot'].search([
-                        ('id', '=', available_slotitem.id),
-                    ])
-                else:
-                    slots = self.env['siantou.ems.timetable.slot'].search([
-                        ('is_active', '=', True),
-                    ])
-
-                slots = list(slots)
-
-                not_active_slotitems = []
-                for slot in slots:
-                    not_active_slotitem_day_ids = slot.slotitem_day_ids.filtered(lambda s: not s.is_active)
-                    not_active_slotitem_day_ids = list(not_active_slotitem_day_ids)
-                    for not_active_slotitem_day_id in not_active_slotitem_day_ids:
-                        not_active_slotitems.append([round(not_active_slotitem_day_id.start_time, 2), round(not_active_slotitem_day_id.end_time, 2)])
-                    not_active_slotitem_night_ids = slot.slotitem_night_ids.filtered(lambda s: not s.is_active)
-                    not_active_slotitem_night_ids = list(not_active_slotitem_night_ids)
-                    for not_active_slotitem_night_id in not_active_slotitem_night_ids:
-                        not_active_slotitems.append([round(not_active_slotitem_night_id.start_time, 2), round(not_active_slotitem_night_id.end_time, 2)])
-
-                key_timetables[key] = TimetablePrintWizard.format_timetable(key_timetables[key], not_active_slotitems)
-            else:
-                key_timetables[key] = TimetablePrintWizard.format_timetable(key_timetables[key])
+            key_timetables[key] = TimetablePrintWizard.format_timetable(key_timetables[key])
             for monday in key_timetables[key].keys():
                 for i, timetable in enumerate(key_timetables[key][monday]['Heure']):
                     tm = timetable.split('-')
@@ -375,7 +332,6 @@ class TimetablePrintWizard(models.TransientModel):
             timetable_percentage['worked_start_time'] = TimetablePrintWizard.convert_float_to_time(search_timetable_percentage.worked_start_time)
             timetable_percentage['worked_end_time'] = TimetablePrintWizard.convert_float_to_time(search_timetable_percentage.worked_end_time)
             timetable_percentage['reason'] = search_timetable_percentage.reason
-            timetable_percentage['not_active_slotitems'] = search_timetable_percentage.not_active_slotitems
             timetable_percentage['status'] = STATUS_TIMETABLE[search_timetable_percentage.status]
             key_delay_timetable_percentages[key]['data'].append(timetable_percentage)
 
@@ -477,7 +433,6 @@ class TimetablePrintWizard(models.TransientModel):
             timetable_percentage['worked_start_time'] = TimetablePrintWizard.convert_float_to_time(search_timetable_percentage.worked_start_time)
             timetable_percentage['worked_end_time'] = TimetablePrintWizard.convert_float_to_time(search_timetable_percentage.worked_end_time)
             timetable_percentage['reason'] = search_timetable_percentage.reason
-            timetable_percentage['not_active_slotitems'] = search_timetable_percentage.not_active_slotitems
             timetable_percentage['status'] = STATUS_TIMETABLE[search_timetable_percentage.status]
             key_punctuality_timetable_percentages[key]['data'].append(timetable_percentage)
 

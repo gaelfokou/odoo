@@ -248,7 +248,6 @@ class TimetableWizard(models.TransientModel):
                                                             'date': timetable.date,
                                                             'start_time': timetable.start_time,
                                                             'end_time': timetable.end_time,
-                                                            'not_active_slotitems': timetable.not_active_slotitems,
                                                             'group_id': new_group.id,
                                                             'batch_id': batch.id,
                                                         })
@@ -278,6 +277,9 @@ class TimetableWizard(models.TransientModel):
                                                     teacher_priority = self.env['siantou.ems.timetable.check_priority'].get_teacher_for_period(subject.id, target_date, available_slot["start_time"], available_slot["end_time"], available_slot['not_active_slotitems'])
                                                     if teacher_priority:
                                                         teacher_priority = self.find_available_teacher(teacher_priority, target_date, available_slot["start_time"], available_slot["end_time"])
+                                                    # si aucun enseignant n'est dispo prendre 1 par defaut qui peut donner indepadement de sa disponibilité
+                                                    if not teacher_priority:
+                                                        teacher_priority = self.env['siantou.ems.timetable.check_priority'].get_teacher_for_period(subject.id, target_date, available_slot["start_time"], available_slot["end_time"], available_slot['not_active_slotitems'])
                                                     self.env['siantou.ems.timetable.timetable'].create({
                                                         'department_id': classe.specialty_id.department_id.id,
                                                         'school_id': classe.school_id.id,
@@ -293,7 +295,6 @@ class TimetableWizard(models.TransientModel):
                                                         'date': target_date,
                                                         'start_time': available_slot["start_time"],
                                                         'end_time': available_slot["end_time"],
-                                                        'not_active_slotitems': available_slot['not_active_slotitems'],
                                                         'group_id': new_group.id,
                                                         'batch_id': batch.id,
                                                     })

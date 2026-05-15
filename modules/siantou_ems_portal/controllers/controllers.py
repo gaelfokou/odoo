@@ -255,52 +255,10 @@ class PortalAccount(portal.CustomerPortal):
             timetable['worked_start_time'] = search_timetable.worked_start_time
             timetable['worked_end_time'] = search_timetable.worked_end_time
             timetable['reason'] = search_timetable.reason
-            timetable['not_active_slotitems'] = search_timetable.not_active_slotitems
             timetable['status'] = STATUS_TIMETABLE[search_timetable.status]
             timetables.append(timetable)
         if view_type == 'calendar':
-            if len(timetables) > 0:
-                specialty_id = timetables[0]['specialty_id']
-
-                slots = http.request.env['siantou.ems.timetable.slot'].sudo().search([
-                    ('is_active', '=', False),
-                ])
-                slots = list(slots)
-
-                available_slotitem = None
-                for slot in slots:
-                    specialty_ids = list(slot.specialty_ids)
-                    for specialty in specialty_ids:
-                        if specialty.id == specialty_id:
-                            available_slotitem = slot
-                            break
-                    if available_slotitem:
-                        break
-
-                if available_slotitem:
-                    slots = http.request.env['siantou.ems.timetable.slot'].sudo().search([
-                        ('id', '=', available_slotitem.id),
-                    ])
-                else:
-                    slots = http.request.env['siantou.ems.timetable.slot'].sudo().search([
-                        ('is_active', '=', True),
-                    ])
-
-                slots = list(slots)
-
-                not_active_slotitems = []
-                for slot in slots:
-                    not_active_slotitem_day_ids = slot.slotitem_day_ids.filtered(lambda s: not s.is_active)
-                    not_active_slotitem_day_ids = list(not_active_slotitem_day_ids)
-                    for not_active_slotitem_day_id in not_active_slotitem_day_ids:
-                        not_active_slotitems.append([round(not_active_slotitem_day_id.start_time, 2), round(not_active_slotitem_day_id.end_time, 2)])
-                    not_active_slotitem_night_ids = slot.slotitem_night_ids.filtered(lambda s: not s.is_active)
-                    not_active_slotitem_night_ids = list(not_active_slotitem_night_ids)
-                    for not_active_slotitem_night_id in not_active_slotitem_night_ids:
-                        not_active_slotitems.append([round(not_active_slotitem_night_id.start_time, 2), round(not_active_slotitem_night_id.end_time, 2)])
-                timetables = Helpers.format_timetable(timetables, not_active_slotitems)
-            else:
-                timetables = Helpers.format_timetable(timetables)
+            timetables = Helpers.format_timetable(timetables)
             for monday in timetables.keys():
                 for i, timetable in enumerate(timetables[monday]['Heure']):
                     tm = timetable.split('-')
@@ -409,52 +367,10 @@ class PortalAccount(portal.CustomerPortal):
             timetable['worked_start_time'] = search_timetable.worked_start_time
             timetable['worked_end_time'] = search_timetable.worked_end_time
             timetable['reason'] = search_timetable.reason
-            timetable['not_active_slotitems'] = search_timetable.not_active_slotitems
             timetable['status'] = STATUS_TIMETABLE[search_timetable.status]
             timetables.append(timetable)
         if view_type == 'calendar':
-            if len(timetables) > 0:
-                specialty_id = timetables[0]['specialty_id']
-
-                slots = http.request.env['siantou.ems.timetable.slot'].sudo().search([
-                    ('is_active', '=', False),
-                ])
-                slots = list(slots)
-
-                available_slotitem = None
-                for slot in slots:
-                    specialty_ids = list(slot.specialty_ids)
-                    for specialty in specialty_ids:
-                        if specialty.id == specialty_id:
-                            available_slotitem = slot
-                            break
-                    if available_slotitem:
-                        break
-
-                if available_slotitem:
-                    slots = http.request.env['siantou.ems.timetable.slot'].sudo().search([
-                        ('id', '=', available_slotitem.id),
-                    ])
-                else:
-                    slots = http.request.env['siantou.ems.timetable.slot'].sudo().search([
-                        ('is_active', '=', True),
-                    ])
-
-                slots = list(slots)
-
-                not_active_slotitems = []
-                for slot in slots:
-                    not_active_slotitem_day_ids = slot.slotitem_day_ids.filtered(lambda s: not s.is_active)
-                    not_active_slotitem_day_ids = list(not_active_slotitem_day_ids)
-                    for not_active_slotitem_day_id in not_active_slotitem_day_ids:
-                        not_active_slotitems.append([round(not_active_slotitem_day_id.start_time, 2), round(not_active_slotitem_day_id.end_time, 2)])
-                    not_active_slotitem_night_ids = slot.slotitem_night_ids.filtered(lambda s: not s.is_active)
-                    not_active_slotitem_night_ids = list(not_active_slotitem_night_ids)
-                    for not_active_slotitem_night_id in not_active_slotitem_night_ids:
-                        not_active_slotitems.append([round(not_active_slotitem_night_id.start_time, 2), round(not_active_slotitem_night_id.end_time, 2)])
-                timetables = Helpers.format_timetable(timetables, not_active_slotitems)
-            else:
-                timetables = Helpers.format_timetable(timetables)
+            timetables = Helpers.format_timetable(timetables)
             for monday in timetables.keys():
                 for i, timetable in enumerate(timetables[monday]['Heure']):
                     tm = timetable.split('-')
@@ -891,7 +807,6 @@ class PortalAccount(portal.CustomerPortal):
             consumptionhour['end_time'] = search_consumptionhour.end_time
             consumptionhour['worked_start_time'] = search_consumptionhour.worked_start_time
             consumptionhour['worked_end_time'] = search_consumptionhour.worked_end_time
-            consumptionhour['not_active_slotitems'] = search_consumptionhour.not_active_slotitems
             consumptionhour['status'] = search_consumptionhour.status
             consumptionhours.append(consumptionhour)
         consumptionhours = Helpers.format_consumptionhour(consumptionhours)
@@ -937,7 +852,6 @@ class PortalAccount(portal.CustomerPortal):
             accountbalance['end_time'] = search_accountbalance.end_time
             accountbalance['worked_start_time'] = search_accountbalance.worked_start_time
             accountbalance['worked_end_time'] = search_accountbalance.worked_end_time
-            accountbalance['not_active_slotitems'] = search_accountbalance.not_active_slotitems
             accountbalance['time_of_week'] = '{}-{}'.format(Helpers.convert_float_to_time(search_accountbalance.start_time), Helpers.convert_float_to_time(search_accountbalance.end_time))
             accountbalance['worked_time_of_week'] = '{}-{}'.format(Helpers.convert_float_to_time(search_accountbalance.worked_start_time), Helpers.convert_float_to_time(search_accountbalance.worked_end_time))
             accountbalance['status'] = STATUS_TIMETABLE[search_accountbalance.status]
@@ -948,7 +862,7 @@ class PortalAccount(portal.CustomerPortal):
                 datetime_to = datetime.strptime(f"{search_accountbalance.date} {end_time}", DATETIME_FORMAT)
                 datetime_from = datetime.strptime(f"{search_accountbalance.date} {start_time}", DATETIME_FORMAT)
                 weekly_hours_credit = datetime_to - datetime_from
-                weekly_hours_credit = weekly_hours_credit - timedelta(hours=search_accountbalance.not_active_slotitems)
+
                 weekly_hours_credit = weekly_hours_credit.total_seconds() / 3600.0
                 weekly_hours_credit = round(weekly_hours_credit, 2)
                 accountbalance['number_of_hours'] = weekly_hours_credit
@@ -958,7 +872,7 @@ class PortalAccount(portal.CustomerPortal):
                 datetime_to = datetime.strptime(f"{search_accountbalance.date} {end_time}", DATETIME_FORMAT)
                 datetime_from = datetime.strptime(f"{search_accountbalance.date} {start_time}", DATETIME_FORMAT)
                 weekly_hours_credit = datetime_to - datetime_from
-                weekly_hours_credit = weekly_hours_credit - timedelta(hours=search_accountbalance.not_active_slotitems)
+
                 weekly_hours_credit = weekly_hours_credit.total_seconds() / 3600.0
                 weekly_hours_credit = round(weekly_hours_credit, 2)
                 accountbalance['number_of_hours'] = weekly_hours_credit
@@ -1138,7 +1052,6 @@ class PortalAccount(portal.CustomerPortal):
             consumptionhour['end_time'] = search_consumptionhour.end_time
             consumptionhour['worked_start_time'] = search_consumptionhour.worked_start_time
             consumptionhour['worked_end_time'] = search_consumptionhour.worked_end_time
-            consumptionhour['not_active_slotitems'] = search_consumptionhour.not_active_slotitems
             consumptionhour['status'] = search_consumptionhour.status
             consumptionhours.append(consumptionhour)
         consumptionhours = Helpers.format_consumptionhour(consumptionhours)
@@ -1202,7 +1115,6 @@ class PortalAccount(portal.CustomerPortal):
             progressreport['end_time'] = search_progressreport.end_time
             progressreport['worked_start_time'] = search_progressreport.worked_start_time
             progressreport['worked_end_time'] = search_progressreport.worked_end_time
-            progressreport['not_active_slotitems'] = search_progressreport.not_active_slotitems
             progressreport['status'] = search_progressreport.status
             session_ids = search_progressreport.session_ids
             session_ids = list(session_ids)
@@ -1292,7 +1204,6 @@ class PortalAccount(portal.CustomerPortal):
             subjectsession['end_time'] = search_subjectsession.end_time
             subjectsession['worked_start_time'] = search_subjectsession.worked_start_time
             subjectsession['worked_end_time'] = search_subjectsession.worked_end_time
-            subjectsession['not_active_slotitems'] = search_subjectsession.not_active_slotitems
             subjectsession['status'] = search_subjectsession.status
             session_ids = search_subjectsession.session_ids
             session_ids = list(session_ids)
@@ -1434,7 +1345,6 @@ class PortalAccount(portal.CustomerPortal):
             subjectsession['end_time'] = search_subjectsession.end_time
             subjectsession['worked_start_time'] = search_subjectsession.worked_start_time
             subjectsession['worked_end_time'] = search_subjectsession.worked_end_time
-            subjectsession['not_active_slotitems'] = search_subjectsession.not_active_slotitems
             subjectsession['status'] = search_subjectsession.status
             session_ids = search_subjectsession.session_ids
             session_ids = list(session_ids)
@@ -1605,7 +1515,6 @@ class PortalAccount(portal.CustomerPortal):
             subjectsession['end_time'] = search_subjectsession.end_time
             subjectsession['worked_start_time'] = search_subjectsession.worked_start_time
             subjectsession['worked_end_time'] = search_subjectsession.worked_end_time
-            subjectsession['not_active_slotitems'] = search_subjectsession.not_active_slotitems
             subjectsession['status'] = search_subjectsession.status
             session_ids = search_subjectsession.session_ids
             session_ids = list(session_ids)

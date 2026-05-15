@@ -231,7 +231,6 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
             consumptionhour['end_time'] = search_consumptionhour.end_time
             consumptionhour['worked_start_time'] = search_consumptionhour.worked_start_time
             consumptionhour['worked_end_time'] = search_consumptionhour.worked_end_time
-            consumptionhour['not_active_slotitems'] = search_consumptionhour.not_active_slotitems
             consumptionhour['status'] = search_consumptionhour.status
             consumptionhours.append(consumptionhour)
         consumptionhours = TeacherTimetableAttendanceFilterWizard.format_consumptionhour(consumptionhours)
@@ -569,7 +568,7 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
         datetime_to = datetime.strptime(f"{tm['date']} {end_time}", DATETIME_FORMAT)
         datetime_from = datetime.strptime(f"{tm['date']} {start_time}", DATETIME_FORMAT)
         weekly_hours_credit = datetime_to - datetime_from
-        weekly_hours_credit = weekly_hours_credit - timedelta(hours=tm['not_active_slotitems'])
+
         weekly_hours_credit = weekly_hours_credit.total_seconds() / 3600.0
         weekly_hours_credit = round(weekly_hours_credit, 2)
         return weekly_hours_credit

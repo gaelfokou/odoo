@@ -524,7 +524,6 @@ class ProgressReport(models.Model):
                 progressreport['end_time'] = search_progressreport.end_time
                 progressreport['worked_start_time'] = search_progressreport.worked_start_time
                 progressreport['worked_end_time'] = search_progressreport.worked_end_time
-                progressreport['not_active_slotitems'] = search_progressreport.not_active_slotitems
                 progressreport['status'] = search_progressreport.status
                 session_ids = search_progressreport.session_ids
                 session_ids = list(session_ids)
@@ -659,7 +658,6 @@ class ProgressReport(models.Model):
                 progressreport['end_time'] = search_progressreport.end_time
                 progressreport['worked_start_time'] = search_progressreport.worked_start_time
                 progressreport['worked_end_time'] = search_progressreport.worked_end_time
-                progressreport['not_active_slotitems'] = search_progressreport.not_active_slotitems
                 progressreport['status'] = search_progressreport.status
                 session_ids = search_progressreport.session_ids
                 session_ids = list(session_ids)

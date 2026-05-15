@@ -93,52 +93,10 @@ class ApiAccount(http.Controller):
             timetable['worked_start_time'] = search_timetable.worked_start_time
             timetable['worked_end_time'] = search_timetable.worked_end_time
             timetable['reason'] = search_timetable.reason
-            timetable['not_active_slotitems'] = search_timetable.not_active_slotitems
             timetable['status'] = STATUS_TIMETABLE[search_timetable.status]
             timetables.append(timetable)
         if view_type == 'calendar':
-            if len(timetables) > 0:
-                specialty_id = timetables[0]['specialty_id']
-
-                slots = http.request.env['siantou.ems.timetable.slot'].sudo().search([
-                    ('is_active', '=', False),
-                ])
-                slots = list(slots)
-
-                available_slotitem = None
-                for slot in slots:
-                    specialty_ids = list(slot.specialty_ids)
-                    for specialty in specialty_ids:
-                        if specialty.id == specialty_id:
-                            available_slotitem = slot
-                            break
-                    if available_slotitem:
-                        break
-
-                if available_slotitem:
-                    slots = http.request.env['siantou.ems.timetable.slot'].sudo().search([
-                        ('id', '=', available_slotitem.id),
-                    ])
-                else:
-                    slots = http.request.env['siantou.ems.timetable.slot'].sudo().search([
-                        ('is_active', '=', True),
-                    ])
-
-                slots = list(slots)
-
-                not_active_slotitems = []
-                for slot in slots:
-                    not_active_slotitem_day_ids = slot.slotitem_day_ids.filtered(lambda s: not s.is_active)
-                    not_active_slotitem_day_ids = list(not_active_slotitem_day_ids)
-                    for not_active_slotitem_day_id in not_active_slotitem_day_ids:
-                        not_active_slotitems.append([round(not_active_slotitem_day_id.start_time, 2), round(not_active_slotitem_day_id.end_time, 2)])
-                    not_active_slotitem_night_ids = slot.slotitem_night_ids.filtered(lambda s: not s.is_active)
-                    not_active_slotitem_night_ids = list(not_active_slotitem_night_ids)
-                    for not_active_slotitem_night_id in not_active_slotitem_night_ids:
-                        not_active_slotitems.append([round(not_active_slotitem_night_id.start_time, 2), round(not_active_slotitem_night_id.end_time, 2)])
-                timetables = Helpers.format_timetable(timetables, not_active_slotitems)
-            else:
-                timetables = Helpers.format_timetable(timetables)
+            timetables = Helpers.format_timetable(timetables)
             for monday in timetables.keys():
                 for i, timetable in enumerate(timetables[monday]['Heure']):
                     tm = timetable.split('-')
