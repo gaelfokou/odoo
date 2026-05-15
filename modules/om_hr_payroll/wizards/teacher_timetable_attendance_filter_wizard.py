@@ -320,6 +320,15 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
             if worked_hours < 0.0:
                 continue
 
+            original_end_time = TeacherTimetableAttendanceFilterWizard.convert_float_to_time(timetable.end_time, has_second=True)
+            original_start_time = TeacherTimetableAttendanceFilterWizard.convert_float_to_time(timetable.start_time, has_second=True)
+            original_end_time = datetime.strptime(f"{timetable.date} {original_end_time}", DATETIME_FORMAT)
+            original_start_time = datetime.strptime(f"{timetable.date} {original_start_time}", DATETIME_FORMAT)
+
+            original_worked_hours = original_end_time - original_start_time
+            original_worked_hours = original_worked_hours.total_seconds() / 3600.0
+            original_worked_hours = round(original_worked_hours, 2)
+
             if len(timetable.employee_id.diplome_ids.ids) > 0:
                 domain = [
                     ('school_id', '=', timetable.school_id.id),

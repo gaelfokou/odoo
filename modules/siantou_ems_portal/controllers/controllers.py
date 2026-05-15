@@ -877,6 +877,16 @@ class PortalAccount(portal.CustomerPortal):
                 weekly_hours_credit = round(weekly_hours_credit, 2)
                 accountbalance['number_of_hours'] = weekly_hours_credit
 
+            original_end_time = Helpers.convert_float_to_time(search_accountbalance.end_time, has_second=True)
+            original_start_time = Helpers.convert_float_to_time(search_accountbalance.start_time, has_second=True)
+            original_datetime_to = datetime.strptime(f"{search_accountbalance.date} {original_end_time}", DATETIME_FORMAT)
+            original_datetime_from = datetime.strptime(f"{search_accountbalance.date} {original_start_time}", DATETIME_FORMAT)
+            original_weekly_hours_credit = original_datetime_to - original_datetime_from
+
+            original_weekly_hours_credit = original_weekly_hours_credit.total_seconds() / 3600.0
+            original_weekly_hours_credit = round(original_weekly_hours_credit, 2)
+            accountbalance['original_number_of_hours'] = original_weekly_hours_credit
+
             if len(search_accountbalance.employee_id.diplome_ids.ids) > 0:
                 domain = [
                     ('school_id', '=', search_accountbalance.school_id.id),
