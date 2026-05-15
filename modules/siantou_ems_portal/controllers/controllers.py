@@ -974,14 +974,16 @@ class PortalAccount(portal.CustomerPortal):
                         else:
                             if key_subject not in key_extended_hours[key_class]:
                                 key_extended_hours[key_class][key_subject] = accountbalance['done'] - accountbalance['hours_credit']
-                        if accountbalance['number_of_hours'] > key_extended_hours[key_class][key_subject]:
-                            accountbalance['number_of_hours'] = accountbalance['number_of_hours'] - key_extended_hours[key_class][key_subject]
-                            accountbalance['number_of_hours'] = round(accountbalance['number_of_hours'], 2)
-                            accountbalance['amount'] = accountbalance['rate'] * accountbalance['number_of_hours']
-                            accountbalance['amount'] = round(accountbalance['amount'], 2)
+                        if accountbalance['original_number_of_hours'] > key_extended_hours[key_class][key_subject]:
+                            accountbalance['original_number_of_hours'] = accountbalance['original_number_of_hours'] - key_extended_hours[key_class][key_subject]
+                            accountbalance['original_number_of_hours'] = round(accountbalance['original_number_of_hours'], 2)
+                            if accountbalance['number_of_hours'] > accountbalance['original_number_of_hours']:
+                                accountbalance['number_of_hours'] = accountbalance['original_number_of_hours']
+                                accountbalance['amount'] = accountbalance['rate'] * accountbalance['number_of_hours']
+                                accountbalance['amount'] = round(accountbalance['amount'], 2)
                             key_extended_hours[key_class][key_subject] = 0.0
                         else:
-                            key_extended_hours[key_class][key_subject] = key_extended_hours[key_class][key_subject] - accountbalance['number_of_hours']
+                            key_extended_hours[key_class][key_subject] = key_extended_hours[key_class][key_subject] - accountbalance['original_number_of_hours']
                             key_extended_hours[key_class][key_subject] = round(key_extended_hours[key_class][key_subject], 2)
                             accountbalance['number_of_hours'] = 0.0
                             accountbalance['amount'] = 0.0
