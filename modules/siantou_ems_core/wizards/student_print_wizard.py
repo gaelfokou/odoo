@@ -35,7 +35,6 @@ class StudentPrintWizard(models.TransientModel):
         return name
 
     def print_student_report_data(self, domains=None):
-        # Récupérer les emplois du temps pour le semestre sélectionné
         domain = []
 
         if domains:

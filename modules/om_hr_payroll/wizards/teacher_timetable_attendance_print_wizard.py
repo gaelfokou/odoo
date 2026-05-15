@@ -94,7 +94,8 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
         return name
 
     def print_teacher_timetable_attendance_report_data(self, resume=False, domains=None):
-        # Récupérer les emplois du temps pour le semestre sélectionné
+        filter_title = self.env['ir.config_parameter'].sudo().get_param(f'siantou.filter_user_{self.env.user.id}', '')
+
         domain = []
 
         if domains:
@@ -285,7 +286,10 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
                     teacher_timetable_attendance['worked_end_time'] = ''
                     teacher_timetable_attendance['worked_time'] = ''
                     teacher_timetable_attendance['rate'] = ''
-                    teacher_timetable_attendance['amount'] = employee_salary_deduction.amount
+                    if filter_title.find('Supplément remboursable') != -1:
+                        teacher_timetable_attendance['amount'] = 0.0
+                    else:
+                        teacher_timetable_attendance['amount'] = employee_salary_deduction.amount
                     teacher_timetable_attendance['hours_credit'] = ''
                     teacher_timetable_attendance['total_all'] = ''
                     teacher_timetable_attendance['total_done'] = ''
@@ -367,7 +371,7 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
 
         _logger.info(f'----------- tototototototo key_teacher_timetable_attendances {key_teacher_timetable_attendances} -----------')
 
-        filter_title = self.env['ir.config_parameter'].sudo().get_param(f'siantou.filter_user_{self.env.user.id}', '')
+        # filter_title = self.env['ir.config_parameter'].sudo().get_param(f'siantou.filter_user_{self.env.user.id}', '')
 
         if resume:
             if is_permanent:

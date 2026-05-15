@@ -51,7 +51,6 @@ class ProgressReportPrintWizard(models.TransientModel):
         return report_action.report_action(self, data=data)
 
     def print_progress_report_data(self, domains=None, sort_type=None):
-        # Récupérer les emplois du temps pour le semestre sélectionné
         domain = []
 
         if domains:
