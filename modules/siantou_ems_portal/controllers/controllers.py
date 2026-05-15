@@ -1052,6 +1052,7 @@ class PortalAccount(portal.CustomerPortal):
                             accountbalance['number_of_hours'] = round(accountbalance['number_of_hours'], 2)
                             accountbalance['amount'] = accountbalance['rate'] * accountbalance['number_of_hours']
                             accountbalance['amount'] = round(accountbalance['amount'], 2)
+                            key_extended_hours[key_class_subject] = 0.0
                         else:
                             key_extended_hours[key_class_subject] = key_extended_hours[key_class_subject] - accountbalance['number_of_hours']
                             key_extended_hours[key_class_subject] = round(key_extended_hours[key_class_subject], 2)
