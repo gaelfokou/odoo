@@ -1034,7 +1034,6 @@ class PortalAccount(portal.CustomerPortal):
             accountbalance['awaiting'] = 0.0
             key_class = '{}'.format(search_accountbalance.class_id.id)
             key_subject = '{}'.format(search_accountbalance.subject_id.id)
-            key_class_subject = '{}-{}'.format(key_class, key_subject)
             if key_class in consumptionhours:
                 if key_subject in consumptionhours[key_class]['data']:
                     accountbalance['hours_credit'] = consumptionhours[key_class]['data'][key_subject]['data']['credit']
@@ -1045,17 +1044,21 @@ class PortalAccount(portal.CustomerPortal):
             if not search_accountbalance.employee_id.is_permanent:
                 if key not in key_payslips:
                     if accountbalance['done'] > accountbalance['hours_credit']:
-                        if key_class_subject not in key_extended_hours:
-                            key_extended_hours[key_class_subject] = accountbalance['done'] - accountbalance['hours_credit']
-                        if accountbalance['number_of_hours'] > key_extended_hours[key_class_subject]:
-                            accountbalance['number_of_hours'] = accountbalance['number_of_hours'] - key_extended_hours[key_class_subject]
+                        if key_class not in key_extended_hours:
+                            key_extended_hours[key_class] = {}
+                            key_extended_hours[key_class][key_subject] = accountbalance['done'] - accountbalance['hours_credit']
+                        else:
+                            if key_subject not in key_extended_hours[key_class]:
+                                key_extended_hours[key_class][key_subject] = accountbalance['done'] - accountbalance['hours_credit']
+                        if accountbalance['number_of_hours'] > key_extended_hours[key_class][key_subject]:
+                            accountbalance['number_of_hours'] = accountbalance['number_of_hours'] - key_extended_hours[key_class][key_subject]
                             accountbalance['number_of_hours'] = round(accountbalance['number_of_hours'], 2)
                             accountbalance['amount'] = accountbalance['rate'] * accountbalance['number_of_hours']
                             accountbalance['amount'] = round(accountbalance['amount'], 2)
-                            key_extended_hours[key_class_subject] = 0.0
+                            key_extended_hours[key_class][key_subject] = 0.0
                         else:
-                            key_extended_hours[key_class_subject] = key_extended_hours[key_class_subject] - accountbalance['number_of_hours']
-                            key_extended_hours[key_class_subject] = round(key_extended_hours[key_class_subject], 2)
+                            key_extended_hours[key_class][key_subject] = key_extended_hours[key_class][key_subject] - accountbalance['number_of_hours']
+                            key_extended_hours[key_class][key_subject] = round(key_extended_hours[key_class][key_subject], 2)
                             accountbalance['number_of_hours'] = 0.0
                             accountbalance['amount'] = 0.0
 
