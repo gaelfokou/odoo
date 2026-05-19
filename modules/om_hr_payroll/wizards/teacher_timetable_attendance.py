@@ -363,12 +363,10 @@ class TeacherTimetableAttendance(models.TransientModel):
         employee_ids = []
         teacher_timetable_attendance_data = dict(sorted(data['docdata']['teacher_timetable_attendance_data'].items(), key=lambda item: item[1]['name'] if item[1]['name'] else ''))
         for key in teacher_timetable_attendance_data.keys():
+            from_date = teacher_timetable_attendance_data[key]['start_date']
+            to_date = teacher_timetable_attendance_data[key]['end_date']
             timetables = teacher_timetable_attendance_data[key]['data']
             for timetable in timetables:
-                if 'start_date' in timetable:
-                    from_date = timetable['start_date']
-                if 'end_date' in timetable:
-                    to_date = timetable['end_date']
                 if 'employee_id' in timetable:
                     if timetable['employee_id'] not in employee_ids:
                         employee_ids.append(timetable['employee_id'])
