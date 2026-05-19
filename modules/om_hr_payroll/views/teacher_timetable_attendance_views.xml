@@ -25,7 +25,7 @@
                             groups="om_hr_payroll.group_hr_payroll_print_pdf"/>
                         <button name="action_print_resume_pdf" 
                             type="object" 
-                            string="Imprimer condensé PDF" 
+                            string="Imprimer Condensé PDF" 
                             class="oe_highlight" 
                             display="always"
                             groups="om_hr_payroll.group_hr_payroll_print_resume_pdf"/>
