@@ -143,8 +143,8 @@ class Student(models.Model):
     # )
     user_id = fields.Many2one(
         'res.users',
-        string="Utilisateur associé",
-        help="Utilisateur associé à cet étudiant"
+        string='Utilisateur associé',
+        help='Utilisateur associé à cet étudiant'
     )
 
     partner_id = fields.Many2one(

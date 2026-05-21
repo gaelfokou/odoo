@@ -309,7 +309,7 @@ class ExamScore(models.Model):
 
 class SubjectScore(models.Model):
     _name = 'siantou.ems.core.subject.score'
-    _description = 'Note d\'examen'
+    _description = 'Notes des examens'
     _order = 'sequence'
     _inherit=['mail.thread', 'mail.activity.mixin',]
 
@@ -390,7 +390,7 @@ class SubjectScore(models.Model):
     student_id_domain = fields.Binary(compute='_compute_class_domain', default=[])
 
     _sql_constraints = [
-        ('unique_sequence', 'unique(sequence)', 'La séquence de la note d\'examen doit être unique.'),
+        ('unique_sequence', 'unique(sequence)', 'La séquence de la notes des examens doit être unique.'),
     ]
 
     @api.depends('student_id', 'exam_id')

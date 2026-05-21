@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_request_track_tree" model="ir.ui.view">
+            <field name="name">request.track.tree</field>
+            <field name="model">siantou.ems.core.request.track</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Suivi des requêtes">
+                    <!-- <field name="name"/> -->
+                    <field name="description"/>
+                    <field name="note"/>
+                    <field name="type_request"/>
+                    <field name="create_uid"/>
+                    <field name="user_id"/>
+                    <field name="date"/>
+					<field name="status" widget="badge"
+                        decoration-muted="status == 'pending'"
+                        decoration-primary="status == 'progress'"
+                        decoration-success="status == 'done'"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_request_track_form" model="ir.ui.view">
+            <field name="name">request.track.form</field>
+            <field name="model">siantou.ems.core.request.track</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Suivi d'une requête">
+                    <header>
+                        <button name="state_pending_request" class="oe_highlight" invisible="state in ['done', 'pending']" string="En attente" type="object"/>
+                        <button name="state_progress_request" class="oe_highlight" invisible="state in ['progress']" string="En cours" type="object"/>
+                        <button name="state_done_request" class="oe_highlight" invisible="state in ['done', 'pending']" string="Terminé" type="object"/>
+                        <field name="state" widget="statusbar" statusbar_visible="pending,progress,done"/>
+                    </header>
+                    <sheet>
+                        <group colspan="2">
+                            <field name="name"/>
+                            <field name="description"/>
+                            <field name="type_request"/>
+                            <field name="date" readonly="id != False and create_uid != uid"/>
+                        </group>
+                        <group colspan="2">
+                            <field name="create_uid"/>
+                            <field name="user_id" options="{'no_create': True}" readonly="id != False and create_uid != uid"/>
+                            <field name="note"/>
+                        </group>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" groups="base.group_user"/>
+                        <field name="activity_ids"/>
+                        <field name="message_ids"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+       <record id="view_request_track_search" model="ir.ui.view">
+            <field name="name">request.track.search</field>
+            <field name="model">siantou.ems.core.request.track</field>
+            <field name="type">search</field>
+            <field name="arch" type="xml">
+                <search string="Logs des utilisateurs">
+                    <filter name="status_pending" string="En attente" icon="terp-tools" domain="[('status', '=', 'pending')]"/>
+                    <filter name="status_progress" string="En cours" icon="terp-tools" domain="[('status', '=', 'progress')]"/>
+                    <filter name="status_done" string="Terminé" icon="terp-tools" domain="[('status', '=', 'done')]"/>
+    	            <group expand="0" string="Group By">
+                    	<filter name="group_by_status" string="Status" context="{'group_by': 'status'}"/>
+                	</group>
+                </search>
+            </field>
+        </record>
+
+        <record id="action_show_request_track" model="ir.actions.act_window">
+            <field name="name">Suivi des requêtes</field>
+            <field name="res_model">siantou.ems.core.request.track</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref="view_request_track_search"/>
+            <field name="view_ids"
+                eval="[(5, 0, 0),
+                (0, 0, {'view_mode': 'tree', 'view_id': ref('view_request_track_tree')}),
+                (0, 0, {'view_mode': 'form', 'view_id': ref('view_request_track_form')})]"/>
+            <field name="context">{'search_default_group_by_status': 1}</field>
+        </record>
+
+        <record id="action_show_request_track_1" model="ir.actions.act_window">
+            <field name="name">Suivi des requêtes informations académiques</field>
+            <field name="res_model">siantou.ems.core.request.track</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref="view_request_track_search"/>
+            <field name="view_ids"
+                eval="[(5, 0, 0),
+                (0, 0, {'view_mode': 'tree', 'view_id': ref('view_request_track_tree')}),
+                (0, 0, {'view_mode': 'form', 'view_id': ref('view_request_track_form')})]"/>
+            <field name="context">{'search_default_group_by_status': 1, 'default_type_request': 'academic_information'}</field>
+            <field name="domain">[('type_request', '=', 'academic_information'), ('status', 'in', ['progress', 'done']), ('user_id', '=', uid)]</field>
+        </record>
+
+        <record id="action_show_request_track_2" model="ir.actions.act_window">
+            <field name="name">Suivi des requêtes notes des examens</field>
+            <field name="res_model">siantou.ems.core.request.track</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref="view_request_track_search"/>
+            <field name="view_ids"
+                eval="[(5, 0, 0),
+                (0, 0, {'view_mode': 'tree', 'view_id': ref('view_request_track_tree')}),
+                (0, 0, {'view_mode': 'form', 'view_id': ref('view_request_track_form')})]"/>
+            <field name="context">{'search_default_group_by_status': 1, 'default_type_request': 'exam_score'}</field>
+            <field name="domain">[('type_request', '=', 'exam_score'), ('status', 'in', ['progress', 'done']), ('user_id', '=', uid)]</field>
+        </record>
+
+        <menuitem id="siantou_menu_request_track"
+                name="Suivi des requêtes"
+                parent="menu_siantou_ems_core_config_pe"
+                action="action_show_request_track"
+                groups="siantou_ems_core.group_subject_admin,base.group_system"
+            sequence="20"/>
+        <menuitem id="siantou_menu_request_track_1"
+                name="Suivi des requêtes informations académiques"
+                parent="menu_siantou_ems_core_config_pe"
+                action="action_show_request_track_1"
+                groups="siantou_ems_core.group_subject_admin,base.group_system"
+            sequence="21"/>
+        <menuitem id="siantou_menu_request_track_2"
+                name="Suivi des requêtes notes des examens"
+                parent="menu_siantou_ems_core_config_pe"
+                action="action_show_request_track_2"
+                groups="siantou_ems_core.group_subject_admin,base.group_system"
+            sequence="22"/>
+    </data>
+</odoo>
