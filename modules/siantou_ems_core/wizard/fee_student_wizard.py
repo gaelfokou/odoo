@@ -124,8 +124,8 @@ class FeeEnrollmentWizard(models.TransientModel):
                         ('level_id', '=', student_id.level_id.id),
                         ('type_paiement', '=', 'pu'),
                         ('type_inclusion_fee', '=', 'fee_inscrip'),
-                        ('academic_year','=', year_id.id),
-                        ('state','=', 'validate'),
+                        ('academic_year', '=', year_id.id),
+                        ('state', '=', 'validate'),
                     ],
                     limit=1
                 )

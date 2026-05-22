@@ -82,7 +82,7 @@ class StudentEnrollmentAdmissionWizard(models.TransientModel):
                     ('level_id', '=', student_id.level_id.id),
                     ('type_paiement', '=', 'pu'),
                     ('type_inclusion_fee', '=', 'fee_inscrip'),
-                    ('academic_year','=', year_id.id),
+                    ('academic_year', '=', year_id.id),
                 ],
                 limit=1
             )
@@ -145,7 +145,7 @@ class StudentEnrollmentAdmissionWizard(models.TransientModel):
                     ('level_id', '=', student_id.level_id.id),
                     ('type_paiement', '=', 'pt'),
                     ('type_inclusion_fee', '=', 'fee_scol'),
-                    ('academic_year','=', year_id.id),
+                    ('academic_year', '=', year_id.id),
                 ],
                 limit=1
             )
@@ -205,7 +205,7 @@ class StudentEnrollmentAdmissionWizard(models.TransientModel):
                     ('level_id', '=', student_id.level_id.id),
                     ('type_paiement', '=', 'pu'),
                     ('type_inclusion_fee', '=', 'fee_spec'),
-                    ('academic_year','=', year_id.id),
+                    ('academic_year', '=', year_id.id),
                 ]
             )
             for struct_spec_id in structure_spec_frais_ids:

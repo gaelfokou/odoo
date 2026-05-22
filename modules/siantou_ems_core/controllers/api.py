@@ -320,8 +320,8 @@ class DeSchool(http.Controller):
                 limit=1
             )
             etudiant = http.request.env['oe.school.student.enrollment'].sudo().search([
-                    ('id','=', id),
-                    ('year_id','=', year_id.id)
+                    ('id', '=', id),
+                    ('year_id', '=', year_id.id)
                 ],
                 limit=1
             )
@@ -403,7 +403,7 @@ class DeSchool(http.Controller):
             )
             etudiant = http.request.env['oe.school.student.enrollment'].sudo().search([
                     ('student_id', '=', id),
-                    ('year_id','=', year_id.id)
+                    ('year_id', '=', year_id.id)
                 ], 
                 limit=1
             )

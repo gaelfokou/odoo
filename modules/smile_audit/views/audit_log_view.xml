@@ -66,9 +66,9 @@
             <field name="type">search</field>
             <field name="arch" type="xml">
                 <search string="Logs des utilisateurs">
-                    <filter name="log_create" string="Creation" icon="terp-tools" domain="[('method','=','create')]"/>
-                    <filter name="log_write" string="Update" icon="terp-tools" domain="[('method','=','write')]"/>
-                    <filter name="log_unlink" string="Deletion" icon="terp-tools" domain="[('method','=','unlink')]"/>
+                    <filter name="log_create" string="Creation" icon="terp-tools" domain="[('method', '=', 'create')]"/>
+                    <filter name="log_write" string="Update" icon="terp-tools" domain="[('method', '=', 'write')]"/>
+                    <filter name="log_unlink" string="Deletion" icon="terp-tools" domain="[('method', '=', 'unlink')]"/>
                     <field name="name"/>
                     <field name="model_id"/>
                     <field name="user_id"/>

@@ -45,7 +45,7 @@ class AuditRule(models.Model):
                 "name": _("View audit logs"),
                 "res_model": "audit.log",
                 "binding_model_id": self.model_id.id,
-                "domain": "[('model_id','=', %s), "
+                "domain": "[('model_id', '=', %s), "
                 "('res_id', '=', active_id), ('method', 'in', %s)]"
                 % (
                     self.model_id.id,

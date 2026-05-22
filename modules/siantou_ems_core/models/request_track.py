@@ -21,8 +21,8 @@ TIME_FORMAT = '%H:%M:%S'
 TIME_FORMAT_FR = '%H:%M'
 
 TYPE_TRACKREQUEST = {
-    'academic_information': 'Informations académiques',
-    'exam_score': 'Notes des examens',
+    'academic_information': 'Information académique',
+    'exam_score': 'Note d\'examen',
 }
 
 STATUS_TRACKREQUEST = {
@@ -33,7 +33,7 @@ STATUS_TRACKREQUEST = {
 
 class RequestTrack(models.Model):
     _name = 'siantou.ems.core.request.track'
-    _description = 'Suivi d\'une requête'
+    _description = 'Requête'
     _inherit=['mail.thread', 'mail.activity.mixin',]
 
     name = fields.Char(
@@ -49,8 +49,8 @@ class RequestTrack(models.Model):
     )
 
     type_request = fields.Selection([
-        ('academic_information', 'Informations académiques'),
-        ('exam_score', 'Notes des examens'),
+        ('academic_information', 'Information académique'),
+        ('exam_score', 'Note d\'examen'),
     ], 'Type de requête',
         default='academic_information',
     )
@@ -77,13 +77,16 @@ class RequestTrack(models.Model):
         return date.today().replace(day=1)
 
     date = fields.Date(
-        string='Date',
+        string='Date limite',
         default=_default_date,
     )
 
-    user_id = fields.Many2one(
+    user_ids = fields.Many2many(
         'res.users',
-        string='Utilisateur assigné'
+        'read_user_request_rel',
+        'request_id',
+        'user_id',
+        string='Utilisateurs assignés',
     )
 
     def state_pending_request(self):

@@ -36,6 +36,14 @@ class ResUsers(models.Model):
         string='Versions d\'emploi du temps en écriture',
     )
 
+    request_ids = fields.Many2many(
+        'siantou.ems.core.request.track',
+        'read_user_request_rel',
+        'user_id',
+        'request_id',
+        string='Requêtes',
+    )
+
     def create_user_employee_or_student(self, user):
         partner_id = user.partner_id
         company_id = None
