@@ -14,9 +14,9 @@
                         </div>
                     </div>
                     <div class="row">
-                        <KpiCard name="'En attente'" value="10" percentage="10"/>
-                        <KpiCard name="'En cours'" value="20" percentage="20"/>
-                        <KpiCard name="'Terminé'" value="30" percentage="30"/>
+                        <KpiCard name="'En attente'" value="state.academic_information.pending.value" percentage="state.academic_information.pending.value"/>
+                        <KpiCard name="'En cours'" value="state.academic_information.progress.value" percentage="state.academic_information.progress.value"/>
+                        <KpiCard name="'Terminé'" value="state.academic_information.done.value" percentage="state.academic_information.done.value"/>
                     </div>
                     <div class="row">
                         <div class="col m-0 p-0">
@@ -28,9 +28,9 @@
                         </div>
                     </div>
                     <div class="row">
-                        <KpiCard name="'En attente'" value="10" percentage="10"/>
-                        <KpiCard name="'En cours'" value="20" percentage="20"/>
-                        <KpiCard name="'Terminé'" value="30" percentage="30"/>
+                        <KpiCard name="'En attente'" value="state.exam_score.pending.value" percentage="state.exam_score.pending.value"/>
+                        <KpiCard name="'En cours'" value="state.exam_score.progress.value" percentage="state.exam_score.progress.value"/>
+                        <KpiCard name="'Terminé'" value="state.exam_score.done.value" percentage="state.exam_score.done.value"/>
                     </div>
                 </div>
             </div>
