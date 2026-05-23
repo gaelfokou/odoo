@@ -72,7 +72,7 @@
         </record>
 
         <record id="action_show_request_track_dashboard" model="ir.actions.client">
-            <field name="name">Requêtes Dashboard</field>
+            <field name="name">Statistiques</field>
             <field name="tag">owl.request_track_dashboard</field>
         </record>
 
