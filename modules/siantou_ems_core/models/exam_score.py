@@ -309,7 +309,7 @@ class ExamScore(models.Model):
 
 class SubjectScore(models.Model):
     _name = 'siantou.ems.core.subject.score'
-    _description = 'Note d\'examen'
+    _description = 'Notes d\'examen'
     _order = 'sequence'
     _inherit=['mail.thread', 'mail.activity.mixin',]
 

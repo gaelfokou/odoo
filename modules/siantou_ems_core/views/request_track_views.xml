@@ -62,8 +62,8 @@
             <field name="type">search</field>
             <field name="arch" type="xml">
                 <search string="Logs des utilisateurs">
-                    <filter name="type_request_academic_information" string="Information académique" icon="terp-tools" domain="[('type_request', '=', 'academic_information')]"/>
-                    <filter name="type_request_exam_score" string="Note d'examen" icon="terp-tools" domain="[('type_request', '=', 'exam_score')]"/>
+                    <filter name="type_request_academic_information" string="Informations académiques" icon="terp-tools" domain="[('type_request', '=', 'academic_information')]"/>
+                    <filter name="type_request_exam_score" string="Notes d'examen" icon="terp-tools" domain="[('type_request', '=', 'exam_score')]"/>
     	            <group expand="0" string="Group By">
                     	<filter name="group_by_status" string="Status" context="{'group_by': 'status'}"/>
                 	</group>
@@ -71,7 +71,12 @@
             </field>
         </record>
 
-        <record id="action_show_request_track" model="ir.actions.act_window">
+        <record id="action_show_request_track_dashboard" model="ir.actions.client">
+            <field name="name">Requêtes Dashboard</field>
+            <field name="tag">owl.request_track_dashboard</field>
+        </record>
+
+        <!-- <record id="action_show_request_track" model="ir.actions.act_window">
             <field name="name">Requêtes</field>
             <field name="res_model">siantou.ems.core.request.track</field>
             <field name="view_mode">tree,form</field>
@@ -81,7 +86,7 @@
                 (0, 0, {'view_mode': 'tree', 'view_id': ref('view_request_track_tree')}),
                 (0, 0, {'view_mode': 'form', 'view_id': ref('view_request_track_form')})]"/>
             <field name="context">{'search_default_group_by_status': 1}</field>
-        </record>
+        </record> -->
 
         <record id="action_show_request_track_1" model="ir.actions.act_window">
             <field name="name">Requêtes envoyées</field>
@@ -109,21 +114,30 @@
             <field name="domain">[('user_ids', '=', uid)]</field>
         </record>
 
-        <menuitem id="siantou_menu_request_track"
+        <menuitem id="siantou_menu_request_track_dashboard"
                 name="Requêtes"
-                parent="menu_siantou_ems_core_config_pe"
-                action="action_show_request_track"
+            sequence="10"/>
+        <menuitem id="siantou_menu_request_track"
+                name="Statistiques"
+                parent="siantou_menu_request_track_dashboard"
+                action="action_show_request_track_dashboard"
                 groups="siantou_ems_core.group_subject_admin,base.group_system"
             sequence="20"/>
+        <!-- <menuitem id="siantou_menu_request_track"
+                name="Requêtes"
+                parent="siantou_menu_request_track_dashboard"
+                action="action_show_request_track"
+                groups="siantou_ems_core.group_subject_admin,base.group_system"
+            sequence="20"/> -->
         <menuitem id="siantou_menu_request_track_1"
                 name="Requêtes envoyées"
-                parent="menu_siantou_ems_core_config_pe"
+                parent="siantou_menu_request_track_dashboard"
                 action="action_show_request_track_1"
                 groups="siantou_ems_core.group_subject_admin,base.group_system"
             sequence="21"/>
         <menuitem id="siantou_menu_request_track_2"
                 name="Requêtes reçues"
-                parent="menu_siantou_ems_core_config_pe"
+                parent="siantou_menu_request_track_dashboard"
                 action="action_show_request_track_2"
                 groups="siantou_ems_core.group_subject_admin,base.group_system"
             sequence="22"/>

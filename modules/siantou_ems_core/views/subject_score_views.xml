@@ -27,7 +27,7 @@
             <field name="name">subject.score.form</field>
             <field name="model">siantou.ems.core.subject.score</field>
             <field name="arch" type="xml">
-                <form string="Note d'examen">
+                <form string="Notes d'examen">
                     <sheet>
                         <group colspan="2">
                             <field name="name"/>

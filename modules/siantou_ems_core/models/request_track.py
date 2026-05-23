@@ -21,8 +21,8 @@ TIME_FORMAT = '%H:%M:%S'
 TIME_FORMAT_FR = '%H:%M'
 
 TYPE_TRACKREQUEST = {
-    'academic_information': 'Information académique',
-    'exam_score': 'Note d\'examen',
+    'academic_information': 'Informations académiques',
+    'exam_score': 'Notes d\'examen',
 }
 
 STATUS_TRACKREQUEST = {
@@ -49,8 +49,8 @@ class RequestTrack(models.Model):
     )
 
     type_request = fields.Selection([
-        ('academic_information', 'Information académique'),
-        ('exam_score', 'Note d\'examen'),
+        ('academic_information', 'Informations académiques'),
+        ('exam_score', 'Notes d\'examen'),
     ], 'Type de requête',
         default='academic_information',
     )
