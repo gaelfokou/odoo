@@ -49,6 +49,108 @@ export class OwlRequestTrackDashboard extends Component {
         this.state.exam_score.progress.value = await this.orm.searchCount("siantou.ems.core.request.track", [["type_request", "=", "exam_score"], ["status", "=", "progress"]])
         this.state.exam_score.done.value = await this.orm.searchCount("siantou.ems.core.request.track", [["type_request", "=", "exam_score"], ["status", "=", "done"]])
     }
+
+    async viewAcademicInformationPending(){
+        let domain = [["type_request", "=", "academic_information"], ["status", "=", "pending"]]
+
+        let list_view = await this.orm.searchRead("ir.model.data", [["name", "=", "view_request_track_tree"]], ["res_id"])
+
+        this.actionService.doAction({
+            type: "ir.actions.act_window",
+            name: "Requêtes",
+            res_model: "siantou.ems.core.request.track",
+            domain,
+            views: [
+                [list_view.length > 0 ? list_view[0].res_id : false, "list"],
+                [false, "form"],
+            ]
+        })
+    }
+
+    async viewAcademicInformationProgress(){
+        let domain = [["type_request", "=", "academic_information"], ["status", "=", "progress"]]
+
+        let list_view = await this.orm.searchRead("ir.model.data", [["name", "=", "view_request_track_tree"]], ["res_id"])
+
+        this.actionService.doAction({
+            type: "ir.actions.act_window",
+            name: "Requêtes",
+            res_model: "siantou.ems.core.request.track",
+            domain,
+            views: [
+                [list_view.length > 0 ? list_view[0].res_id : false, "list"],
+                [false, "form"],
+            ]
+        })
+    }
+
+    async viewAcademicInformationDone(){
+        let domain = [["type_request", "=", "academic_information"], ["status", "=", "done"]]
+
+        let list_view = await this.orm.searchRead("ir.model.data", [["name", "=", "view_request_track_tree"]], ["res_id"])
+
+        this.actionService.doAction({
+            type: "ir.actions.act_window",
+            name: "Requêtes",
+            res_model: "siantou.ems.core.request.track",
+            domain,
+            views: [
+                [list_view.length > 0 ? list_view[0].res_id : false, "list"],
+                [false, "form"],
+            ]
+        })
+    }
+
+    async viewExamScorePending(){
+        let domain = [["type_request", "=", "exam_score"], ["status", "=", "pending"]]
+
+        let list_view = await this.orm.searchRead("ir.model.data", [["name", "=", "view_request_track_tree"]], ["res_id"])
+
+        this.actionService.doAction({
+            type: "ir.actions.act_window",
+            name: "Requêtes",
+            res_model: "siantou.ems.core.request.track",
+            domain,
+            views: [
+                [list_view.length > 0 ? list_view[0].res_id : false, "list"],
+                [false, "form"],
+            ]
+        })
+    }
+
+    async viewExamScoreProgress(){
+        let domain = [["type_request", "=", "exam_score"], ["status", "=", "progress"]]
+
+        let list_view = await this.orm.searchRead("ir.model.data", [["name", "=", "view_request_track_tree"]], ["res_id"])
+
+        this.actionService.doAction({
+            type: "ir.actions.act_window",
+            name: "Requêtes",
+            res_model: "siantou.ems.core.request.track",
+            domain,
+            views: [
+                [list_view.length > 0 ? list_view[0].res_id : false, "list"],
+                [false, "form"],
+            ]
+        })
+    }
+
+    async viewExamScoreDone(){
+        let domain = [["type_request", "=", "exam_score"], ["status", "=", "done"]]
+
+        let list_view = await this.orm.searchRead("ir.model.data", [["name", "=", "view_request_track_tree"]], ["res_id"])
+
+        this.actionService.doAction({
+            type: "ir.actions.act_window",
+            name: "Requêtes",
+            res_model: "siantou.ems.core.request.track",
+            domain,
+            views: [
+                [list_view.length > 0 ? list_view[0].res_id : false, "list"],
+                [false, "form"],
+            ]
+        })
+    }
 }
 
 OwlRequestTrackDashboard.template = "owl.OwlRequestTrackDashboard"
