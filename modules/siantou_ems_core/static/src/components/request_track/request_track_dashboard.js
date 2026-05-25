@@ -57,7 +57,7 @@ export class OwlRequestTrackDashboard extends Component {
 
         this.actionService.doAction({
             type: "ir.actions.act_window",
-            name: "Requêtes",
+            name: "Requêtes informations académiques en attente",
             res_model: "siantou.ems.core.request.track",
             domain,
             views: [
@@ -74,7 +74,7 @@ export class OwlRequestTrackDashboard extends Component {
 
         this.actionService.doAction({
             type: "ir.actions.act_window",
-            name: "Requêtes",
+            name: "Requêtes informations académiques en cours",
             res_model: "siantou.ems.core.request.track",
             domain,
             views: [
@@ -91,7 +91,7 @@ export class OwlRequestTrackDashboard extends Component {
 
         this.actionService.doAction({
             type: "ir.actions.act_window",
-            name: "Requêtes",
+            name: "Requêtes informations académiques terminées",
             res_model: "siantou.ems.core.request.track",
             domain,
             views: [
@@ -108,7 +108,7 @@ export class OwlRequestTrackDashboard extends Component {
 
         this.actionService.doAction({
             type: "ir.actions.act_window",
-            name: "Requêtes",
+            name: "Requêtes notes d'examen en attente",
             res_model: "siantou.ems.core.request.track",
             domain,
             views: [
@@ -125,7 +125,7 @@ export class OwlRequestTrackDashboard extends Component {
 
         this.actionService.doAction({
             type: "ir.actions.act_window",
-            name: "Requêtes",
+            name: "Requêtes notes d'examen en cours",
             res_model: "siantou.ems.core.request.track",
             domain,
             views: [
@@ -142,7 +142,7 @@ export class OwlRequestTrackDashboard extends Component {
 
         this.actionService.doAction({
             type: "ir.actions.act_window",
-            name: "Requêtes",
+            name: "Requêtes notes d'examen terminées",
             res_model: "siantou.ems.core.request.track",
             domain,
             views: [
