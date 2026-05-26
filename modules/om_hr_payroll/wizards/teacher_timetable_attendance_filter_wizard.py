@@ -428,7 +428,11 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
                             if key_extended_hours[key_class][key_subject] == 0.0:
                                 continue
                         if original_worked_hours > key_extended_hours[key_class][key_subject]:
-                            original_worked_hours = key_extended_hours[key_class][key_subject]
+                            if self.refundable_additional:
+                                original_worked_hours = key_extended_hours[key_class][key_subject]
+                            else:
+                                original_worked_hours = original_worked_hours - key_extended_hours[key_class][key_subject]
+                                original_worked_hours = round(original_worked_hours, 2)
                             if worked_hours > original_worked_hours:
                                 worked_hours = original_worked_hours
                                 amount = rate * worked_hours
