@@ -415,8 +415,6 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
 
                 last_worked_hours = 0.0
                 last_worked_hours += worked_hours
-                last_amount = 0.0
-                last_amount += amount
 
                 if self.refundable_additional or key not in key_payslips:
                     if total_done > hours_credit:
@@ -430,8 +428,7 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
                             if key_extended_hours[key_class][key_subject] == 0.0:
                                 continue
                         if original_worked_hours > key_extended_hours[key_class][key_subject]:
-                            original_worked_hours = original_worked_hours - key_extended_hours[key_class][key_subject]
-                            original_worked_hours = round(original_worked_hours, 2)
+                            original_worked_hours = key_extended_hours[key_class][key_subject]
                             if worked_hours > original_worked_hours:
                                 worked_hours = original_worked_hours
                                 amount = rate * worked_hours
@@ -444,12 +441,9 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
                             amount = 0.0
 
                 if self.refundable_additional:
-                    if last_worked_hours > worked_hours:
-                        worked_hours = last_worked_hours - worked_hours
-                        worked_hours = round(worked_hours, 2)
-
-                    if last_amount > amount:
-                        amount = last_amount - amount
+                    if worked_hours == 0.0:
+                        worked_hours = last_worked_hours
+                        amount = rate * worked_hours
                         amount = round(amount, 2)
 
             teacher_timetable_attendance = self.env['teacher.timetable.attendance'].create({
