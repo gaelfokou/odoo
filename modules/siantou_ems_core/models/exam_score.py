@@ -106,7 +106,8 @@ class ExamScore(models.Model):
         ('start_write', 'Début saisie'),
         ('end_write', 'Fin saisie'),
         ('end', 'Fin'),
-    ], string='Statut',
+    ],
+        string='Statut',
         related='status',
         store=True,
         tracking=True
@@ -355,7 +356,8 @@ class SubjectScore(models.Model):
         ('start_write', 'Début saisie'),
         ('end_write', 'Fin saisie'),
         ('end', 'Fin'),
-    ], string='Statut',
+    ],
+        string='Statut',
         related='exam_id.status',
         store=True
     )

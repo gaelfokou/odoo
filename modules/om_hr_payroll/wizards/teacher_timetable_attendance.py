@@ -176,7 +176,8 @@ class TeacherTimetableAttendance(models.TransientModel):
         ('permission', 'Permission'),
         ('exception', 'Exception'),
         ('delay', 'Retard'),
-    ], string='Statut',
+    ],
+        string='Statut',
         related='timetable_id.status',
         store=True
     )
@@ -223,8 +224,7 @@ class TeacherTimetableAttendance(models.TransientModel):
             ('4', 'Vendredi'),
             ('5', 'Samedi'),
             ('6', 'Dimanche'),
-        ],
-        'Jour de la semaine',
+        ], string='Jour de la semaine',
         compute='_compute_day_of_week',
         store=True
     )

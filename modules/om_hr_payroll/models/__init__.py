@@ -10,3 +10,4 @@ from . import resource_mixin
 from . import timetable_notification
 from . import employee_salary_deduction
 from . import employee_salary_allowance
+from . import teacher_debt

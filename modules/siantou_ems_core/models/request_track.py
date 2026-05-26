@@ -67,7 +67,8 @@ class RequestTrack(models.Model):
         ('pending', 'En attente'),
         ('progress', 'En cours'),
         ('done', 'Terminé'),
-    ], string='Statut',
+    ],
+        string='Statut',
         related='status',
         store=True,
         tracking=True
