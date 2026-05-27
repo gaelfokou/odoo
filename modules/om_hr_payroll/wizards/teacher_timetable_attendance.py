@@ -353,7 +353,7 @@ class TeacherTimetableAttendance(models.TransientModel):
         if filter_title.find('Supplément remboursable') == -1:
             raise UserError('Aucun supplément remboursable n\'a été filtré')
 
-        data = self.action_print_percentage_pdf(print_resume=False)
+        data = self.action_print_resume_pdf(print_resume=False)
 
         _logger.info(f'----------- tototototototo data {data} -----------')
 
