@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_teacher_debt_tree" model="ir.ui.view">
+            <field name="name">teacher.debt.tree</field>
+            <field name="model">teacher.debt</field>
+            <field name="arch" type="xml">
+                <tree string="Dettes d'enseignant">
+                    <!-- <field name="name"/> -->
+                    <field name="employee_id"/>
+                    <field name="amount"/>
+                    <field name="start_date"/>
+                    <field name="end_date"/>
+					<field name="status" widget="badge"
+                        decoration-muted="status == 'start'"
+                        decoration-primary="status == 'start_write'"
+                        decoration-warning="status == 'end_write'"
+                        decoration-success="status == 'end'"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_teacher_debt_form" model="ir.ui.view">
+            <field name="name">teacher.debt.form</field>
+            <field name="model">teacher.debt</field>
+            <field name="arch" type="xml">
+                <form string="Dette d'enseignant">
+                    <header>
+                        <field name="state" widget="statusbar" statusbar_visible="pending,progress,done"/>
+                    </header>
+                    <sheet>
+                        <group colspan="2">
+                            <field name="name"/>
+                            <field name="employee_id" options="{'no_create': True}"/>
+                            <field name="amount"/>
+                            <field name="start_date"/>
+                            <field name="end_date"/>
+                        </group>
+                        <group colspan="2">
+                            <field name="status" invisible="1"/>
+                            <field name="payment_ids" widget="one2many_list">
+                                <tree create="0" editable="bottom">
+                                    <field name="amount"/>
+                                    <field name="date"/>
+                                </tree>
+                            </field>
+                        </group>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" groups="base.group_user"/>
+                        <field name="activity_ids"/>
+                        <field name="message_ids"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_show_teacher_debt" model="ir.actions.act_window">
+            <field name="name">Dettes d'enseignant</field>
+            <field name="res_model">teacher.debt</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem id="siantou_menu_teacher_debt"
+                name="Dettes d'enseignant"
+                parent="menu_payroll_employee"
+                action="action_show_teacher_debt"
+            sequence="21"/>
+    </data>
+</odoo>

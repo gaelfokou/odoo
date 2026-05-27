@@ -14,8 +14,11 @@ class HourlyRate(models.Model):
     _description = 'Taux horaire'
     _inherit=['mail.thread', 'mail.activity.mixin',]
 
-    name = fields.Char(string='Nom',
-                       compute='_compute_name', store=True)
+    name = fields.Char(
+        string='Nom',
+        compute='_compute_name',
+        store=True,
+    )
 
     school_id = fields.Many2one(
         'siantou.ems.core.school',
@@ -119,8 +122,11 @@ class TeacherHourlyRate(models.Model):
     _description = 'Taux horaire de l\'enseignant'
     _inherit=['mail.thread', 'mail.activity.mixin',]
 
-    name = fields.Char(string='Nom',
-                       compute='_compute_name', store=True)
+    name = fields.Char(
+        string='Nom',
+        compute='_compute_name',
+        store=True,
+    )
 
     # Enseignant pour lequel on souhaite définir la priorité sur le cours
     employee_id = fields.Many2one(

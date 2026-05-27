@@ -157,7 +157,8 @@ class Timetable(models.Model):
 
     name = fields.Char(
         string='Nom',
-        compute='_compute_name', store=True,
+        compute='_compute_name',
+        store=True,
     )
 
     def _default_semester(self):
@@ -1506,7 +1507,8 @@ class TimetableGroup(models.Model):
 
     name = fields.Char(
         string='Nom de la version',
-        compute='_compute_name', store=True,
+        compute='_compute_name',
+        store=True,
     )
 
     timetable_ids = fields.One2many(

@@ -17,7 +17,8 @@ class EducationClass(models.Model):
     _inherit=['mail.thread', 'mail.activity.mixin',]
 
     name = fields.Char(string='Nom',
-                       compute='_compute_name', store=True,
+                       compute='_compute_name',
+                       store=True,
                        help="Entrer le nom de la Classe")
 
     field_of_study_id = fields.Many2one('siantou.ems.core.field_of_study', string='Filière',
@@ -56,7 +57,8 @@ class EducationClass(models.Model):
 
     number_of_student = fields.Integer(
         string='Nombre d\'étudiants',
-        compute='_compute_number_of_student', store=True,
+        compute='_compute_number_of_student',
+        store=True,
     )
 
     timetable_ids = fields.One2many(

@@ -41,7 +41,8 @@ class TeacherTimetableAttendance(models.TransientModel):
 
     name = fields.Char(
         string='Nom',
-        compute='_compute_name', store=True,
+        compute='_compute_name',
+        store=True,
     )
 
     timetable_id = fields.Many2one(

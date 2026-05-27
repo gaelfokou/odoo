@@ -16,8 +16,11 @@ class Semester(models.Model):
         required=True
     )
 
-    name = fields.Char(string='Nom du semestre',
-                       compute='_compute_name', store=True)
+    name = fields.Char(
+        string='Nom du semestre',
+        compute='_compute_name',
+        store=True,
+    )
 
     start_time = fields.Date(
         string='Date de début',

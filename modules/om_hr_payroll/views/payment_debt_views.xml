@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_payment_debt_tree" model="ir.ui.view">
+            <field name="name">payment.debt.tree</field>
+            <field name="model">payment.debt</field>
+            <field name="arch" type="xml">
+                <tree string="Remboursements dette">
+                    <!-- <field name="name"/> -->
+                    <field name="amount"/>
+                    <field name="date"/>
+                    <field name="debt_id"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_payment_debt_form" model="ir.ui.view">
+            <field name="name">payment.debt.form</field>
+            <field name="model">payment.debt</field>
+            <field name="arch" type="xml">
+                <form string="Remboursements dette">
+                    <sheet>
+                        <group colspan="2">
+                            <field name="name"/>
+                            <field name="amount"/>
+                            <field name="date"/>
+                        </group>
+                        <group colspan="2">
+                            <field name="debt_id" options="{'no_create': True}"/>
+                        </group>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" groups="base.group_user"/>
+                        <field name="activity_ids"/>
+                        <field name="message_ids"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_show_payment_debt" model="ir.actions.act_window">
+            <field name="name">Remboursements dette</field>
+            <field name="res_model">payment.debt</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem id="siantou_menu_payment_debt"
+                name="Remboursements dette"
+                parent="menu_payroll_employee"
+                action="action_show_payment_debt"
+            sequence="21"/>
+    </data>
+</odoo>

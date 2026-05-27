@@ -36,9 +36,16 @@ _logger = logging.getLogger(__name__)
 class TeacherDebt(models.Model):
     _name = 'teacher.debt'
     _description = 'Dette d\'enseignant'
+    _inherit=['mail.thread', 'mail.activity.mixin',]
 
     name = fields.Char(
         string='Nom',
+        compute='_compute_name',
+        store=True,
+    )
+
+    description = fields.Text(
+        string='Description',
     )
 
     # Enseignant lié à la programmation de cours
@@ -48,9 +55,9 @@ class TeacherDebt(models.Model):
     )
 
     payment_ids = fields.One2many(
-        'teacher.debt.payment',
+        'payment.debt',
         'debt_id',
-        'Remboursements dette d\'enseignant'
+        'Remboursements dette'
     )
 
     status = fields.Selection([
@@ -63,13 +70,30 @@ class TeacherDebt(models.Model):
         store=True
     )
 
-    @api.depends('date')
+    state = fields.Selection([
+        ('pending', 'En attente'),
+        ('progress', 'En cours'),
+        ('done', 'Terminé'),
+    ],
+        string='Statut',
+        related='status',
+        store=True,
+        tracking=True
+    )
+
+    @api.depends('payment_ids', 'amount')
     def _compute_status(self):
         for record in self:
-            if record.date:
-                record.status = str(record.date.weekday())
+            amount = 0.0
+            for payment_id in record.payment_ids:
+                amount += payment_id.amount
+            if amount > 0.0:
+                if amount < record.amount:
+                    record.status = 'progress'
+                else:
+                    record.status = 'done'
             else:
-                record.status = None
+                record.status = 'pending'
 
     amount = fields.Float(
         'Montant',
@@ -94,6 +118,27 @@ class TeacherDebt(models.Model):
         default=_default_end_date,
     )
 
+    @api.depends('employee_id', 'start_date', 'end_date')
+    def _compute_name(self):
+        for record in self:
+            employee_name = record.employee_id.name if record.employee_id.id else ''
+            start_date = datetime.strftime(record.start_date, DATE_FORMAT_FR) if record.start_date else ''
+            end_date = datetime.strftime(record.end_date, DATE_FORMAT_FR) if record.end_date else ''
+            name = '{} ({}-{})'.format(employee_name, start_date, end_date)
+            while True:
+                if name.find('()') != -1:
+                    name = name.replace('()', '')
+                else:
+                    break
+            while True:
+                if name.find('  ') != -1:
+                    name = name.replace('  ', ' ')
+                else:
+                    break
+            name = name.strip()
+            name = name.upper()
+            record.name = name
+
     @api.constrains('start_date', 'end_date')
     def _constrains_date(self):
         for record in self:
@@ -104,11 +149,12 @@ class TeacherDebt(models.Model):
     def _constrains_amount(self):
         for record in self:
             if record.amount <= 0.0:
-                raise ValidationError("Le montant doit être supérieur 0")
+                raise ValidationError("Le montant doit être supérieur à 0")
 
-class TeacherDebtPayment(models.Model):
-    _name = 'teacher.debt.payment'
-    _description = 'Remboursement dette d\'enseignant'
+class PaymentDebt(models.Model):
+    _name = 'payment.debt'
+    _description = 'Remboursement dette'
+    _inherit=['mail.thread', 'mail.activity.mixin',]
 
     name = fields.Char(
         string='Nom',
@@ -130,29 +176,13 @@ class TeacherDebtPayment(models.Model):
 
     date = fields.Datetime(string="Date", default=datetime.now())
 
-    @api.depends('student_id', 'debt_id')
+    @api.depends('debt_id')
     def _compute_name(self):
         for record in self:
-            student_name = record.student_id.name if record.student_id.id else ''
-            debt_name = record.debt_id.name if record.debt_id.id else ''
-            name = '{} - {}'.format(student_name, debt_name)
-            while True:
-                if name.startswith(' - '):
-                    name = re.sub('^ - ', ' ', name)
-                elif name.endswith(' - '):
-                    name = re.sub(' - $', ' ', name)
-                elif name.find(' -  - ') != -1:
-                    name = name.replace(' -  - ', ' - ')
-                elif name.find('  ') != -1:
-                    name = name.replace('  ', ' ')
-                else:
-                    break
-            name = name.strip()
-            name = name.upper()
-            record.name = name
+            record.name = record.debt_id.name
 
     @api.constrains('amount')
     def _constrains_amount(self):
         for record in self:
             if record.amount <= 0.0:
-                raise ValidationError("Le montant doit être supérieur 0")
+                raise ValidationError("Le montant doit être supérieur à 0")

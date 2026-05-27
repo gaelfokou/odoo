@@ -51,6 +51,8 @@
         'report/teacher_timetable_attendance_resume_template.xml',
         'views/employee_salary_deduction_views.xml',
         'views/employee_salary_allowance_views.xml',
+        'views/teacher_debt_views.xml',
+        'views/payment_debt_views.xml',
     ],
     'images': ['static/description/banner.png'],
     'application': True,
