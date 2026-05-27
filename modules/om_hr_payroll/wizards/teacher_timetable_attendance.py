@@ -322,7 +322,7 @@ class TeacherTimetableAttendance(models.TransientModel):
         })
         return report_action.report_action(self, data=data)
 
-    def action_print_resume_pdf(self):
+    def action_print_resume_pdf(self, print_resume=True):
         active_ids = self.env.context.get('active_ids', [])
         teacher_timetable_attendances = self.env['teacher.timetable.attendance'].browse(active_ids)
         teacher_timetable_attendances = list(teacher_timetable_attendances)
@@ -336,14 +336,26 @@ class TeacherTimetableAttendance(models.TransientModel):
 
         if len(data['docdata']['teacher_timetable_attendance_data'].keys()) == 0:
             raise UserError('Aucune donnée trouvée')
-        key = list(data['docdata']['teacher_timetable_attendance_data'].keys())[0]
-        start_date = datetime.strftime(data['docdata']['teacher_timetable_attendance_data'][key]['start_date'], DATE_FORMAT_FR)
-        end_date = datetime.strftime(data['docdata']['teacher_timetable_attendance_data'][key]['end_date'], DATE_FORMAT_FR)
-        report_action = self.env.ref('om_hr_payroll.action_report_teacher_timetable_attendance_resume')
-        report_action.update({
-            'name': '{} du {} - {} PDF'.format(data['docdata']['title'], start_date, end_date),
-        })
-        return report_action.report_action(self, data=data)
+        if print_resume:
+            key = list(data['docdata']['teacher_timetable_attendance_data'].keys())[0]
+            start_date = datetime.strftime(data['docdata']['teacher_timetable_attendance_data'][key]['start_date'], DATE_FORMAT_FR)
+            end_date = datetime.strftime(data['docdata']['teacher_timetable_attendance_data'][key]['end_date'], DATE_FORMAT_FR)
+            report_action = self.env.ref('om_hr_payroll.action_report_teacher_timetable_attendance_resume')
+            report_action.update({
+                'name': '{} du {} - {} PDF'.format(data['docdata']['title'], start_date, end_date),
+            })
+            return report_action.report_action(self, data=data)
+        else:
+            return data
+
+    def action_save_debt(self):
+        filter_title = self.env['ir.config_parameter'].sudo().get_param(f'siantou.filter_user_{self.env.user.id}', '')
+        if filter_title.find('Supplément remboursable') == -1:
+            raise UserError('Aucun supplément remboursable n\'a été filtré')
+
+        data = self.action_print_percentage_pdf(print_resume=False)
+
+        _logger.info(f'----------- tototototototo data {data} -----------')
 
     def action_pay_done(self):
         active_ids = self.env.context.get('active_ids', [])

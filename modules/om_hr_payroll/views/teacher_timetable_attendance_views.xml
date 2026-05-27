@@ -36,6 +36,13 @@
                             display="always"
                             groups="om_hr_payroll.group_hr_payroll_perm_pay"
                             confirm="Êtes-vous sûr de vouloir confirmer les paiements ?"/>
+                        <button name="action_save_debt" 
+                            type="object" 
+                            string="Enregistrer Dette" 
+                            class="oe_highlight" 
+                            display="always"
+                            groups="om_hr_payroll.group_hr_payroll_perm_debt"
+                            confirm="Êtes-vous sûr de vouloir confirmer les enregistrements ?"/>
                     </header>
                     <field name="timetable_id"/>
                     <field name="level_id"/>
