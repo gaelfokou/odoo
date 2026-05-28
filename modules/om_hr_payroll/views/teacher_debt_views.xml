@@ -9,13 +9,9 @@
                     <!-- <field name="name"/> -->
                     <field name="employee_id"/>
                     <field name="amount"/>
+                    <field name="rest_amount"/>
                     <field name="start_date"/>
                     <field name="end_date"/>
-					<field name="status" widget="badge"
-                        decoration-muted="status == 'start'"
-                        decoration-primary="status == 'start_write'"
-                        decoration-warning="status == 'end_write'"
-                        decoration-success="status == 'end'"/>
                 </tree>
             </field>
         </record>
@@ -25,19 +21,16 @@
             <field name="model">teacher.debt</field>
             <field name="arch" type="xml">
                 <form string="Dette d'enseignant">
-                    <header>
-                        <field name="state" widget="statusbar" statusbar_visible="pending,progress,done"/>
-                    </header>
                     <sheet>
                         <group colspan="2">
                             <field name="name"/>
                             <field name="employee_id" options="{'no_create': True}"/>
                             <field name="amount"/>
+                            <field name="rest_amount"/>
                             <field name="start_date"/>
                             <field name="end_date"/>
                         </group>
                         <group colspan="2">
-                            <field name="status" invisible="1"/>
                             <field name="payment_ids" widget="one2many_list">
                                 <tree create="0" editable="bottom">
                                     <field name="amount"/>

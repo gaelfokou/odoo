@@ -16,16 +16,6 @@ DATETIME_FORMAT_FR = '%d/%m/%Y %H:%M'
 TIME_FORMAT = '%H:%M:%S'
 TIME_FORMAT_FR = '%H:%M'
 
-STATUS_TIMETABLE = {
-    'pending': 'En attente',
-    'progress': 'En cours',
-    'present': 'Présent',
-    'absent': 'Absent',
-    'permission': 'Permission',
-    'exception': 'Exception',
-    'delay': 'Retard',
-}
-
 TYPE_COUR = {
     'cj': 'Cours du jour',
     'cs': 'Cours du soir',
@@ -60,45 +50,26 @@ class TeacherDebt(models.Model):
         'Remboursements dette'
     )
 
-    status = fields.Selection([
-            ('pending', 'En attente'),
-            ('progress', 'En cours'),
-            ('done', 'Terminé'),
-        ],
-        string='Statut',
-        compute='_compute_status',
-        store=True
-    )
-
-    state = fields.Selection([
-        ('pending', 'En attente'),
-        ('progress', 'En cours'),
-        ('done', 'Terminé'),
-    ],
-        string='Statut',
-        related='status',
-        store=True,
-        tracking=True
-    )
-
-    @api.depends('payment_ids', 'amount')
-    def _compute_status(self):
-        for record in self:
-            amount = 0.0
-            for payment_id in record.payment_ids:
-                amount += payment_id.amount
-            if amount > 0.0:
-                if amount < record.amount:
-                    record.status = 'progress'
-                else:
-                    record.status = 'done'
-            else:
-                record.status = 'pending'
-
     amount = fields.Float(
         'Montant',
         default=0.0,
     )
+
+    rest_amount = fields.Float(
+        string='Montant restant',
+        compute='_compute_amount',
+        store=True
+    )
+
+    @api.depends('payment_ids', 'amount')
+    def _compute_amount(self):
+        for record in self:
+            amount = record.amount
+            for payment_id in record.payment_ids:
+                amount -= payment_id.amount
+            if amount < 0.0:
+                amount = 0.0
+            record.rest_amount = amount
 
     def _default_start_date(self):
         start_date = date.today().replace(day=1)

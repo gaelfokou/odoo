@@ -193,7 +193,7 @@ class PortalAccount(portal.CustomerPortal):
     def portal_timetable(self, page=1, search='', search_in='all', view_type='calendar', selected_month='0', **kw):
         if view_type not in ['calendar', 'list']:
             view_type = 'calendar'
-        selected_month_total = [str(i) for i in range(6)]
+        selected_month_total = [str(i) for i in range(12)]
         if selected_month not in selected_month_total:
             selected_month = '0'
         if selected_month == selected_month_total[-1]:
@@ -304,7 +304,7 @@ class PortalAccount(portal.CustomerPortal):
     def portal_timetable_download(self, page=1, search='', search_in='all', view_type='calendar', selected_month='0', **kw):
         if view_type not in ['calendar', 'list']:
             view_type = 'calendar'
-        selected_month_total = [str(i) for i in range(6)]
+        selected_month_total = [str(i) for i in range(12)]
         if selected_month not in selected_month_total:
             selected_month = '0'
         if selected_month == selected_month_total[-1]:
@@ -734,7 +734,7 @@ class PortalAccount(portal.CustomerPortal):
 
     @http.route(['/my/accountbalance'], type='http', auth="user", website=True)
     def portal_accountbalance(self, search='', search_in='all', selected_month='0', **kw):
-        selected_month_total = [str(i) for i in range(6)]
+        selected_month_total = [str(i) for i in range(12)]
         if selected_month not in selected_month_total:
             selected_month = '0'
         if selected_month == selected_month_total[-1]:
@@ -1008,7 +1008,7 @@ class PortalAccount(portal.CustomerPortal):
 
     @http.route(['/my/consumptionhour'], type='http', auth="user", website=True)
     def portal_consumptionhour(self, search='', search_in='all', selected_month='0', **kw):
-        selected_month_total = [str(i) for i in range(6)]
+        selected_month_total = [str(i) for i in range(12)]
         if selected_month not in selected_month_total:
             selected_month = '0'
         if selected_month == selected_month_total[-1]:
