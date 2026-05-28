@@ -253,6 +253,7 @@ class TimetablePrintWizard(models.TransientModel):
                     key = '{}'.format(search_timetable_percentage.school_id.id)
                     if key not in key_delay_timetable_percentages:
                         key_delay_timetable_percentages[key] = {}
+                        key_delay_timetable_percentages[key]['id'] = search_timetable_percentage.school_id.id
                         key_delay_timetable_percentages[key]['name'] = search_timetable_percentage.school_id.name
                         key_delay_timetable_percentages[key]['identifier'] = ''
                         key_delay_timetable_percentages[key]['data'] = []
@@ -262,6 +263,7 @@ class TimetablePrintWizard(models.TransientModel):
                     key = '{}'.format(search_timetable_percentage.specialty_id.id)
                     if key not in key_delay_timetable_percentages:
                         key_delay_timetable_percentages[key] = {}
+                        key_delay_timetable_percentages[key]['id'] = search_timetable_percentage.specialty_id.id
                         key_delay_timetable_percentages[key]['name'] = search_timetable_percentage.specialty_id.name
                         key_delay_timetable_percentages[key]['identifier'] = ''
                         key_delay_timetable_percentages[key]['data'] = []
@@ -271,6 +273,7 @@ class TimetablePrintWizard(models.TransientModel):
                     key = '{}'.format(search_timetable_percentage.department_id.id)
                     if key not in key_delay_timetable_percentages:
                         key_delay_timetable_percentages[key] = {}
+                        key_delay_timetable_percentages[key]['id'] = search_timetable_percentage.department_id.id
                         key_delay_timetable_percentages[key]['name'] = search_timetable_percentage.department_id.name
                         key_delay_timetable_percentages[key]['identifier'] = ''
                         key_delay_timetable_percentages[key]['data'] = []
@@ -280,6 +283,7 @@ class TimetablePrintWizard(models.TransientModel):
                     key = '{}'.format(search_timetable_percentage.employee_id.id)
                     if key not in key_delay_timetable_percentages:
                         key_delay_timetable_percentages[key] = {}
+                        key_delay_timetable_percentages[key]['id'] = search_timetable_percentage.employee_id.id
                         key_delay_timetable_percentages[key]['name'] = search_timetable_percentage.employee_id.name
                         key_delay_timetable_percentages[key]['identifier'] = search_timetable_percentage.employee_id.identifier
                         key_delay_timetable_percentages[key]['data'] = []
@@ -289,6 +293,7 @@ class TimetablePrintWizard(models.TransientModel):
                 key = '{}'.format(search_timetable_percentage.employee_id.id)
                 if key not in key_delay_timetable_percentages:
                     key_delay_timetable_percentages[key] = {}
+                    key_delay_timetable_percentages[key]['id'] = search_timetable_percentage.employee_id.id
                     key_delay_timetable_percentages[key]['name'] = search_timetable_percentage.employee_id.name
                     key_delay_timetable_percentages[key]['identifier'] = search_timetable_percentage.employee_id.identifier
                     key_delay_timetable_percentages[key]['data'] = []
@@ -346,6 +351,7 @@ class TimetablePrintWizard(models.TransientModel):
                         continue
                     if key not in key_punctuality_timetable_percentages:
                         key_punctuality_timetable_percentages[key] = {}
+                        key_punctuality_timetable_percentages[key]['id'] = search_timetable_percentage.school_id.id
                         key_punctuality_timetable_percentages[key]['name'] = search_timetable_percentage.school_id.name
                         key_punctuality_timetable_percentages[key]['identifier'] = ''
                         key_punctuality_timetable_percentages[key]['data'] = []
@@ -357,6 +363,7 @@ class TimetablePrintWizard(models.TransientModel):
                         continue
                     if key not in key_punctuality_timetable_percentages:
                         key_punctuality_timetable_percentages[key] = {}
+                        key_punctuality_timetable_percentages[key]['id'] = search_timetable_percentage.specialty_id.id
                         key_punctuality_timetable_percentages[key]['name'] = search_timetable_percentage.specialty_id.name
                         key_punctuality_timetable_percentages[key]['identifier'] = ''
                         key_punctuality_timetable_percentages[key]['data'] = []
@@ -368,6 +375,7 @@ class TimetablePrintWizard(models.TransientModel):
                         continue
                     if key not in key_punctuality_timetable_percentages:
                         key_punctuality_timetable_percentages[key] = {}
+                        key_punctuality_timetable_percentages[key]['id'] = search_timetable_percentage.department_id.id
                         key_punctuality_timetable_percentages[key]['name'] = search_timetable_percentage.department_id.name
                         key_punctuality_timetable_percentages[key]['identifier'] = ''
                         key_punctuality_timetable_percentages[key]['data'] = []
@@ -379,6 +387,7 @@ class TimetablePrintWizard(models.TransientModel):
                         continue
                     if key not in key_punctuality_timetable_percentages:
                         key_punctuality_timetable_percentages[key] = {}
+                        key_punctuality_timetable_percentages[key]['id'] = search_timetable_percentage.employee_id.id
                         key_punctuality_timetable_percentages[key]['name'] = search_timetable_percentage.employee_id.name
                         key_punctuality_timetable_percentages[key]['identifier'] = search_timetable_percentage.employee_id.identifier
                         key_punctuality_timetable_percentages[key]['data'] = []
@@ -390,6 +399,7 @@ class TimetablePrintWizard(models.TransientModel):
                     continue
                 if key not in key_punctuality_timetable_percentages:
                     key_punctuality_timetable_percentages[key] = {}
+                    key_punctuality_timetable_percentages[key]['id'] = search_timetable_percentage.employee_id.id
                     key_punctuality_timetable_percentages[key]['name'] = search_timetable_percentage.employee_id.name
                     key_punctuality_timetable_percentages[key]['identifier'] = search_timetable_percentage.employee_id.identifier
                     key_punctuality_timetable_percentages[key]['data'] = []

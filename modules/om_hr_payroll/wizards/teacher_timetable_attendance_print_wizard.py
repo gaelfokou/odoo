@@ -113,6 +113,7 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
             key = '{}'.format(search_teacher_timetable_attendance.employee_id.id)
             if key not in key_teacher_timetable_attendances:
                 key_teacher_timetable_attendances[key] = {}
+                key_teacher_timetable_attendances[key]['id'] = search_teacher_timetable_attendance.employee_id.id
                 key_teacher_timetable_attendances[key]['name'] = search_teacher_timetable_attendance.employee_id.name
                 key_teacher_timetable_attendances[key]['identifier'] = search_teacher_timetable_attendance.employee_id.identifier
                 key_teacher_timetable_attendances[key]['data'] = []

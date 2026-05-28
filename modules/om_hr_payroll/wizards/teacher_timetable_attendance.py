@@ -357,6 +357,21 @@ class TeacherTimetableAttendance(models.TransientModel):
 
         _logger.info(f'----------- tototototototo data {data} -----------')
 
+        for key in data['docdata']['teacher_timetable_attendance_data'].keys():
+            debt_ids = self.env['teacher.debt'].search([
+                ('employee_id', '=', data['docdata']['teacher_timetable_attendance_data'][key]['id']),
+                ('start_date', '=', data['docdata']['teacher_timetable_attendance_data'][key]['start_date']),
+                ('end_date', '=', data['docdata']['teacher_timetable_attendance_data'][key]['end_date']),
+            ])
+            debt_ids = list(debt_ids)
+            if len(debt_ids) == 0:
+                debt_id = self.env['teacher.debt'].create({
+                    'employee_id': data['docdata']['teacher_timetable_attendance_data'][key]['id'],
+                    'start_date': data['docdata']['teacher_timetable_attendance_data'][key]['start_date'],
+                    'end_date': data['docdata']['teacher_timetable_attendance_data'][key]['end_date'],
+                    'amount': data['docdata']['teacher_timetable_attendance_data'][key]['amount'],
+                })
+
     def action_pay_done(self):
         active_ids = self.env.context.get('active_ids', [])
         teacher_timetable_attendances = self.env['teacher.timetable.attendance'].browse(active_ids)
