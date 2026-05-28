@@ -318,7 +318,7 @@ class TeacherTimetableAttendance(models.TransientModel):
         end_date = datetime.strftime(data['docdata']['teacher_timetable_attendance_data'][key]['end_date'], DATE_FORMAT_FR)
         report_action = self.env.ref('om_hr_payroll.action_report_teacher_timetable_attendance')
         report_action.update({
-            'name': '{} du {} - {} PDF'.format(data['docdata']['title'], start_date, end_date),
+            'name': '{} du {}-{} PDF'.format(data['docdata']['title'], start_date, end_date),
         })
         return report_action.report_action(self, data=data)
 
@@ -342,7 +342,7 @@ class TeacherTimetableAttendance(models.TransientModel):
             end_date = datetime.strftime(data['docdata']['teacher_timetable_attendance_data'][key]['end_date'], DATE_FORMAT_FR)
             report_action = self.env.ref('om_hr_payroll.action_report_teacher_timetable_attendance_resume')
             report_action.update({
-                'name': '{} du {} - {} PDF'.format(data['docdata']['title'], start_date, end_date),
+                'name': '{} du {}-{} PDF'.format(data['docdata']['title'], start_date, end_date),
             })
             return report_action.report_action(self, data=data)
         else:
