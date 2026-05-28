@@ -371,6 +371,15 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
         total_worked_time = 0.0
         total_amount = 0.0
         for key in key_teacher_timetable_attendances.keys():
+            debt_ids = self.env['teacher.debt'].search([
+                ('employee_id', '=', key_teacher_timetable_attendances[key]['id']),
+                ('start_date', '=', key_teacher_timetable_attendances[key]['start_date']),
+                ('end_date', '=', key_teacher_timetable_attendances[key]['end_date']),
+                ('rest_amount', '>', 0.0),
+            ])
+            debt_ids = list(debt_ids)
+            if len(debt_ids) > 0:
+                pass
             key_teacher_timetable_attendances[key]['data'] = sorted(key_teacher_timetable_attendances[key]['data'], key=self.sort_teacher_timetable_attendance_level_rate)
             key_teacher_timetable_attendances[key]['worked_time'] = round(key_teacher_timetable_attendances[key]['worked_time'], 2)
             key_teacher_timetable_attendances[key]['amount'] = round(key_teacher_timetable_attendances[key]['amount'], 2)
