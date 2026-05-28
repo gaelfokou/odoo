@@ -371,6 +371,16 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
         total_worked_time = 0.0
         total_amount = 0.0
         for key in key_teacher_timetable_attendances.keys():
+            key_teacher_timetable_attendances[key]['data'] = sorted(key_teacher_timetable_attendances[key]['data'], key=self.sort_teacher_timetable_attendance_level_rate)
+            key_teacher_timetable_attendances[key]['worked_time'] = round(key_teacher_timetable_attendances[key]['worked_time'], 2)
+            key_teacher_timetable_attendances[key]['amount'] = round(key_teacher_timetable_attendances[key]['amount'], 2)
+            key_teacher_timetable_attendances[key]['total_amount'] = round(key_teacher_timetable_attendances[key]['total_amount'], 2)
+            key_teacher_timetable_attendances[key]['reduce_amount'] = round(key_teacher_timetable_attendances[key]['reduce_amount'], 2)
+            if key_teacher_timetable_attendances[key]['amount'] < 0.0:
+                key_teacher_timetable_attendances[key]['amount'] = 0.0
+            key_teacher_timetable_attendances[key]['net_amount'] = 0.0
+            key_teacher_timetable_attendances[key]['net_amount'] += key_teacher_timetable_attendances[key]['amount']
+            key_teacher_timetable_attendances[key]['rest_amount'] = 0.0
             debt_ids = self.env['teacher.debt'].search([
                 ('employee_id', '=', key_teacher_timetable_attendances[key]['id']),
                 ('start_date', '=', key_teacher_timetable_attendances[key]['start_date']),
@@ -379,14 +389,13 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
             ])
             debt_ids = list(debt_ids)
             if len(debt_ids) > 0:
-                pass
-            key_teacher_timetable_attendances[key]['data'] = sorted(key_teacher_timetable_attendances[key]['data'], key=self.sort_teacher_timetable_attendance_level_rate)
-            key_teacher_timetable_attendances[key]['worked_time'] = round(key_teacher_timetable_attendances[key]['worked_time'], 2)
-            key_teacher_timetable_attendances[key]['amount'] = round(key_teacher_timetable_attendances[key]['amount'], 2)
-            key_teacher_timetable_attendances[key]['total_amount'] = round(key_teacher_timetable_attendances[key]['total_amount'], 2)
-            key_teacher_timetable_attendances[key]['reduce_amount'] = round(key_teacher_timetable_attendances[key]['reduce_amount'], 2)
-            if key_teacher_timetable_attendances[key]['amount'] < 0.0:
-                key_teacher_timetable_attendances[key]['amount'] = 0.0
+                for debt_id in debt_ids:
+                    key_teacher_timetable_attendances[key]['rest_amount'] += debt_id.rest_amount
+            key_teacher_timetable_attendances[key]['net_amount'] -= key_teacher_timetable_attendances[key]['rest_amount']
+            if key_teacher_timetable_attendances[key]['net_amount'] < 0.0:
+                key_teacher_timetable_attendances[key]['net_amount'] = 0.0
+            key_teacher_timetable_attendances[key]['net_amount'] = round(key_teacher_timetable_attendances[key]['net_amount'], 2)
+            key_teacher_timetable_attendances[key]['rest_amount'] = round(key_teacher_timetable_attendances[key]['rest_amount'], 2)
             total_worked_time += key_teacher_timetable_attendances[key]['worked_time']
             total_amount += key_teacher_timetable_attendances[key]['amount']
         total_worked_time = round(total_worked_time, 2)
