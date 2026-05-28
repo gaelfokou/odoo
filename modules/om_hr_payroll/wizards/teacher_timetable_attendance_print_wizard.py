@@ -370,6 +370,8 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
 
         total_worked_time = 0.0
         total_amount = 0.0
+        total_net_amount = 0.0
+        total_rest_amount = 0.0
         for key in key_teacher_timetable_attendances.keys():
             key_teacher_timetable_attendances[key]['data'] = sorted(key_teacher_timetable_attendances[key]['data'], key=self.sort_teacher_timetable_attendance_level_rate)
             key_teacher_timetable_attendances[key]['worked_time'] = round(key_teacher_timetable_attendances[key]['worked_time'], 2)
@@ -398,8 +400,12 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
             key_teacher_timetable_attendances[key]['rest_amount'] = round(key_teacher_timetable_attendances[key]['rest_amount'], 2)
             total_worked_time += key_teacher_timetable_attendances[key]['worked_time']
             total_amount += key_teacher_timetable_attendances[key]['amount']
+            total_net_amount += key_teacher_timetable_attendances[key]['net_amount']
+            total_rest_amount += key_teacher_timetable_attendances[key]['rest_amount']
         total_worked_time = round(total_worked_time, 2)
         total_amount = round(total_amount, 2)
+        total_net_amount = round(total_net_amount, 2)
+        total_rest_amount = round(total_rest_amount, 2)
 
         if not sort_type:
             sort_type = 'teacher'
@@ -439,6 +445,8 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
                 'is_permanent': is_permanent,
                 'total_worked_time': total_worked_time,
                 'total_amount': total_amount,
+                'total_net_amount': total_net_amount,
+                'total_rest_amount': total_rest_amount,
                 'sort_type': sort_type,
                 'refundable': refundable,
             }

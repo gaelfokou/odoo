@@ -93,9 +93,11 @@
                                             <td class="text-center" t-if="docdata['is_permanent'] == False">
                                                 <span t-esc="'{:,.2f}'.format(teacher_timetable_attendance_data[key]['amount'])"/>
                                             </td>
-                                            <td class="text-center" t-if="docdata['is_permanent'] == False"></td>
                                             <td class="text-center" t-if="docdata['is_permanent'] == False">
-                                                <span t-esc="'{:,.2f}'.format(teacher_timetable_attendance_data[key]['amount'])"/>
+                                                <span t-esc="'{:,.2f}'.format(teacher_timetable_attendance_data[key]['rest_amount'])"/>
+                                            </td>
+                                            <td class="text-center" t-if="docdata['is_permanent'] == False">
+                                                <span t-esc="'{:,.2f}'.format(teacher_timetable_attendance_data[key]['net_amount'])"/>
                                             </td>
                                             <td class="text-center"></td>
                                         </tr>
@@ -109,9 +111,11 @@
                                         <td class="text-center" style="background-color: #f2f2f2;" t-if="docdata['is_permanent'] == False">
                                             <span t-esc="'{:,.2f}'.format(docdata['total_amount'])"/>
                                         </td>
-                                        <td class="text-center" style="background-color: #f2f2f2;" t-if="docdata['is_permanent'] == False"></td>
                                         <td class="text-center" style="background-color: #f2f2f2;" t-if="docdata['is_permanent'] == False">
-                                            <span t-esc="'{:,.2f}'.format(docdata['total_amount'])"/>
+                                            <span t-esc="'{:,.2f}'.format(docdata['total_rest_amount'])"/>
+                                        </td>
+                                        <td class="text-center" style="background-color: #f2f2f2;" t-if="docdata['is_permanent'] == False">
+                                            <span t-esc="'{:,.2f}'.format(docdata['total_net_amount'])"/>
                                         </td>
                                         <td class="text-center" style="background-color: #f2f2f2;"></td>
                                     </tr>
