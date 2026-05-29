@@ -474,6 +474,7 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
                 'start_date': self.start_date,
                 'end_date': self.end_date,
                 'is_paid': True if timetable.id in timetable_ids else False,
+                'is_refundable': True if self.refundable_additional else False,
                 'sort_type': self.sort_type,
             })
 

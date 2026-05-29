@@ -94,8 +94,6 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
         return name
 
     def print_teacher_timetable_attendance_report_data(self, resume=False, domains=None):
-        filter_title = self.env['ir.config_parameter'].sudo().get_param(f'siantou.filter_user_{self.env.user.id}', '')
-
         domain = []
 
         if domains:
@@ -105,6 +103,7 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
         search_teacher_timetable_attendances = self.env['teacher.timetable.attendance'].search(domain)
 
         sort_type = None
+        is_refundable = None
         is_permanent = False
         key_teacher_timetable_attendances = {}
         for search_teacher_timetable_attendance in search_teacher_timetable_attendances:
@@ -129,7 +128,9 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
                 key_teacher_timetable_attendances[key]['start_date'] = search_teacher_timetable_attendance.start_date
                 key_teacher_timetable_attendances[key]['end_date'] = search_teacher_timetable_attendance.end_date
                 key_teacher_timetable_attendances[key]['sort_type'] = search_teacher_timetable_attendance.sort_type
+                key_teacher_timetable_attendances[key]['is_refundable'] = search_teacher_timetable_attendance.is_refundable
                 sort_type = search_teacher_timetable_attendance.sort_type
+                is_refundable = search_teacher_timetable_attendance.is_refundable
             is_permanent = search_teacher_timetable_attendance.employee_id.is_permanent
             teacher_timetable_attendance = {}
             teacher_timetable_attendance['id'] = search_teacher_timetable_attendance.id
@@ -287,7 +288,7 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
                     teacher_timetable_attendance['worked_end_time'] = ''
                     teacher_timetable_attendance['worked_time'] = ''
                     teacher_timetable_attendance['rate'] = ''
-                    if filter_title.find('Supplément remboursable') != -1:
+                    if is_refundable:
                         teacher_timetable_attendance['amount'] = 0.0
                     else:
                         teacher_timetable_attendance['amount'] = employee_salary_deduction.amount
@@ -345,7 +346,7 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
             teacher_timetable_attendance['total_awaiting'] = ''
             key_teacher_timetable_attendances[key]['data'].append(teacher_timetable_attendance)
 
-        # if filter_title.find('Supplément remboursable') != -1:
+        # if is_refundable:
         #     key_extended_hours = {}
         #     for key in key_teacher_timetable_attendances.keys():
         #         for timetable in key_teacher_timetable_attendances[key]['data']:
@@ -419,7 +420,7 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
 
         _logger.info(f'----------- tototototototo key_teacher_timetable_attendances {key_teacher_timetable_attendances} -----------')
 
-        # filter_title = self.env['ir.config_parameter'].sudo().get_param(f'siantou.filter_user_{self.env.user.id}', '')
+        filter_title = self.env['ir.config_parameter'].sudo().get_param(f'siantou.filter_user_{self.env.user.id}', '')
 
         if resume:
             if is_permanent:
@@ -432,11 +433,6 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
             else:
                 title = 'Émargements des enseignants vacataires'
 
-        if filter_title.find('Supplément remboursable') != -1:
-            refundable = True
-        else:
-            refundable = False
-
         return {
             'docdata': {
                 'title': title,
@@ -448,7 +444,7 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
                 'total_net_amount': total_net_amount,
                 'total_rest_amount': total_rest_amount,
                 'sort_type': sort_type,
-                'refundable': refundable,
+                'is_refundable': is_refundable,
             }
         }
 

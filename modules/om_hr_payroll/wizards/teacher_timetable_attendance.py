@@ -188,6 +188,11 @@ class TeacherTimetableAttendance(models.TransientModel):
         default=False,
     )
 
+    is_refundable = fields.Boolean(
+        'Remboursable',
+        default=False,
+    )
+
     # Taux de l\'enseignant
     rate = fields.Float(
         'Taux horaire',

@@ -66,8 +66,8 @@
                                         <th class="text-center">Enseignant</th>
                                         <th class="text-center">Nombre d'heures effectuées</th>
                                         <th class="text-center" t-if="docdata['is_permanent'] == False">Montant</th>
-                                        <th class="text-center" t-if="docdata['is_permanent'] == False">Prêt</th>
-                                        <th class="text-center" t-if="docdata['is_permanent'] == False">Net</th>
+                                        <th class="text-center" t-if="docdata['is_permanent'] == False and docdata['is_refundable'] == False">Prêt</th>
+                                        <th class="text-center" t-if="docdata['is_permanent'] == False and docdata['is_refundable'] == False">Net</th>
                                         <th class="text-center">Émargement</th>
                                     </tr>
                                 </thead>
@@ -93,10 +93,10 @@
                                             <td class="text-center" t-if="docdata['is_permanent'] == False">
                                                 <span t-esc="'{:,.2f}'.format(teacher_timetable_attendance_data[key]['amount'])"/>
                                             </td>
-                                            <td class="text-center" t-if="docdata['is_permanent'] == False">
+                                            <td class="text-center" t-if="docdata['is_permanent'] == False and docdata['is_refundable'] == False">
                                                 <span t-esc="'{:,.2f}'.format(teacher_timetable_attendance_data[key]['rest_amount'])"/>
                                             </td>
-                                            <td class="text-center" t-if="docdata['is_permanent'] == False">
+                                            <td class="text-center" t-if="docdata['is_permanent'] == False and docdata['is_refundable'] == False">
                                                 <span t-esc="'{:,.2f}'.format(teacher_timetable_attendance_data[key]['net_amount'])"/>
                                             </td>
                                             <td class="text-center"></td>
@@ -111,10 +111,10 @@
                                         <td class="text-center" style="background-color: #f2f2f2;" t-if="docdata['is_permanent'] == False">
                                             <span t-esc="'{:,.2f}'.format(docdata['total_amount'])"/>
                                         </td>
-                                        <td class="text-center" style="background-color: #f2f2f2;" t-if="docdata['is_permanent'] == False">
+                                        <td class="text-center" style="background-color: #f2f2f2;" t-if="docdata['is_permanent'] == False and docdata['is_refundable'] == False">
                                             <span t-esc="'{:,.2f}'.format(docdata['total_rest_amount'])"/>
                                         </td>
-                                        <td class="text-center" style="background-color: #f2f2f2;" t-if="docdata['is_permanent'] == False">
+                                        <td class="text-center" style="background-color: #f2f2f2;" t-if="docdata['is_permanent'] == False and docdata['is_refundable'] == False">
                                             <span t-esc="'{:,.2f}'.format(docdata['total_net_amount'])"/>
                                         </td>
                                         <td class="text-center" style="background-color: #f2f2f2;"></td>
