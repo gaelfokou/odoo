@@ -354,11 +354,10 @@ class TeacherTimetableAttendance(models.TransientModel):
             return data
 
     def action_save_debt(self):
-        filter_title = self.env['ir.config_parameter'].sudo().get_param(f'siantou.filter_user_{self.env.user.id}', '')
-        if filter_title.find('Supplément remboursable') == -1:
-            raise UserError('Aucun supplément remboursable n\'a été filtré')
-
         data = self.action_print_resume_pdf(print_resume=False)
+
+        if not data['docdata']['is_refundable']:
+            raise UserError('Aucun supplément remboursable n\'a été filtré')
 
         _logger.info(f'----------- tototototototo data {data} -----------')
 
@@ -389,8 +388,12 @@ class TeacherTimetableAttendance(models.TransientModel):
         ]
         data = report_data.print_teacher_timetable_attendance_report_data(resume=True, domains=domains)
 
+        if data['docdata']['is_refundable']:
+            raise UserError('Aucun émargement n\'a été filtré')
+
         if len(data['docdata']['teacher_timetable_attendance_data'].keys()) == 0:
             raise UserError('Aucune donnée trouvée')
+
         from_date = None
         to_date = None
         employee_ids = []
