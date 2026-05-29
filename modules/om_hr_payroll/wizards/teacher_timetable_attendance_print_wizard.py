@@ -386,8 +386,6 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
             key_teacher_timetable_attendances[key]['rest_amount'] = 0.0
             debt_ids = self.env['teacher.debt'].search([
                 ('employee_id', '=', key_teacher_timetable_attendances[key]['id']),
-                ('start_date', '=', key_teacher_timetable_attendances[key]['start_date']),
-                ('end_date', '=', key_teacher_timetable_attendances[key]['end_date']),
                 ('rest_amount', '>', 0.0),
             ])
             debt_ids = list(debt_ids)
