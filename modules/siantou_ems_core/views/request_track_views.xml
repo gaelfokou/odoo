@@ -86,6 +86,7 @@
                 eval="[(5, 0, 0),
                 (0, 0, {'view_mode': 'tree', 'view_id': ref('view_request_track_tree')}),
                 (0, 0, {'view_mode': 'form', 'view_id': ref('view_request_track_form')})]"/>
+            <field name="context">{'group_by': ['status']}</field>
             <field name="context">{'search_default_group_by_status': 1}</field>
         </record> -->
 
@@ -98,6 +99,7 @@
                 eval="[(5, 0, 0),
                 (0, 0, {'view_mode': 'tree', 'view_id': ref('view_request_track_tree')}),
                 (0, 0, {'view_mode': 'form', 'view_id': ref('view_request_track_form')})]"/>
+            <!-- <field name="context">{'group_by': ['status']}</field> -->
             <field name="context">{'search_default_group_by_status': 1}</field>
             <field name="domain">[('create_uid', '=', uid)]</field>
         </record>
@@ -111,6 +113,7 @@
                 eval="[(5, 0, 0),
                 (0, 0, {'view_mode': 'tree', 'view_id': ref('view_request_track_tree')}),
                 (0, 0, {'view_mode': 'form', 'view_id': ref('view_request_track_form')})]"/>
+            <!-- <field name="context">{'group_by': ['status']}</field> -->
             <field name="context">{'search_default_group_by_status': 1}</field>
             <field name="domain">[('user_ids', '=', uid)]</field>
         </record>
