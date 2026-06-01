@@ -16,6 +16,7 @@
                     <div class="row">
                         <KpiCard onClick.bind="viewAcademicInformationPending" name="'En attente'" value="state.academic_information.pending.value" percentage="state.academic_information.pending.value"/>
                         <KpiCard onClick.bind="viewAcademicInformationProgress" name="'En cours'" value="state.academic_information.progress.value" percentage="state.academic_information.progress.value"/>
+                        <KpiCard onClick.bind="viewAcademicInformationRejected" name="'Rejeté'" value="state.academic_information.rejected.value" percentage="state.academic_information.rejected.value"/>
                         <KpiCard onClick.bind="viewAcademicInformationDone" name="'Terminé'" value="state.academic_information.done.value" percentage="state.academic_information.done.value"/>
                     </div>
                     <div class="row">
@@ -30,6 +31,7 @@
                     <div class="row">
                         <KpiCard onClick.bind="viewExamScorePending" name="'En attente'" value="state.exam_score.pending.value" percentage="state.exam_score.pending.value"/>
                         <KpiCard onClick.bind="viewExamScoreProgress" name="'En cours'" value="state.exam_score.progress.value" percentage="state.exam_score.progress.value"/>
+                        <KpiCard onClick.bind="viewExamScoreRejected" name="'Rejeté'" value="state.exam_score.rejected.value" percentage="state.exam_score.rejected.value"/>
                         <KpiCard onClick.bind="viewExamScoreDone" name="'Terminé'" value="state.exam_score.done.value" percentage="state.exam_score.done.value"/>
                     </div>
                 </div>

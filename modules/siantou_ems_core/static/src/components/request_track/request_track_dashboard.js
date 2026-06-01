@@ -16,6 +16,9 @@ export class OwlRequestTrackDashboard extends Component {
                 progress: {
                     value: 0,
                 },
+                rejected: {
+                    value: 0,
+                },
                 done: {
                     value: 0,
                 },
@@ -25,6 +28,9 @@ export class OwlRequestTrackDashboard extends Component {
                     value: 0,
                 },
                 progress: {
+                    value: 0,
+                },
+                rejected: {
                     value: 0,
                 },
                 done: {
@@ -44,9 +50,11 @@ export class OwlRequestTrackDashboard extends Component {
     async getRequestTracks(){
         this.state.academic_information.pending.value = await this.orm.searchCount("siantou.ems.core.request.track", [["type_request", "=", "academic_information"], ["status", "=", "pending"]])
         this.state.academic_information.progress.value = await this.orm.searchCount("siantou.ems.core.request.track", [["type_request", "=", "academic_information"], ["status", "=", "progress"]])
+        this.state.academic_information.rejected.value = await this.orm.searchCount("siantou.ems.core.request.track", [["type_request", "=", "academic_information"], ["status", "=", "rejected"]])
         this.state.academic_information.done.value = await this.orm.searchCount("siantou.ems.core.request.track", [["type_request", "=", "academic_information"], ["status", "=", "done"]])
         this.state.exam_score.pending.value = await this.orm.searchCount("siantou.ems.core.request.track", [["type_request", "=", "exam_score"], ["status", "=", "pending"]])
         this.state.exam_score.progress.value = await this.orm.searchCount("siantou.ems.core.request.track", [["type_request", "=", "exam_score"], ["status", "=", "progress"]])
+        this.state.exam_score.rejected.value = await this.orm.searchCount("siantou.ems.core.request.track", [["type_request", "=", "exam_score"], ["status", "=", "rejected"]])
         this.state.exam_score.done.value = await this.orm.searchCount("siantou.ems.core.request.track", [["type_request", "=", "exam_score"], ["status", "=", "done"]])
     }
 
@@ -75,6 +83,23 @@ export class OwlRequestTrackDashboard extends Component {
         this.actionService.doAction({
             type: "ir.actions.act_window",
             name: "Requêtes informations académiques en cours",
+            res_model: "siantou.ems.core.request.track",
+            domain,
+            views: [
+                [list_view.length > 0 ? list_view[0].res_id : false, "list"],
+                [false, "form"],
+            ]
+        })
+    }
+
+    async viewAcademicInformationRejected(){
+        let domain = [["type_request", "=", "academic_information"], ["status", "=", "rejected"]]
+
+        let list_view = await this.orm.searchRead("ir.model.data", [["name", "=", "view_request_track_tree"]], ["res_id"])
+
+        this.actionService.doAction({
+            type: "ir.actions.act_window",
+            name: "Requêtes informations académiques rejetées",
             res_model: "siantou.ems.core.request.track",
             domain,
             views: [
@@ -126,6 +151,23 @@ export class OwlRequestTrackDashboard extends Component {
         this.actionService.doAction({
             type: "ir.actions.act_window",
             name: "Requêtes notes d'examen en cours",
+            res_model: "siantou.ems.core.request.track",
+            domain,
+            views: [
+                [list_view.length > 0 ? list_view[0].res_id : false, "list"],
+                [false, "form"],
+            ]
+        })
+    }
+
+    async viewExamScoreRejected(){
+        let domain = [["type_request", "=", "exam_score"], ["status", "=", "rejected"]]
+
+        let list_view = await this.orm.searchRead("ir.model.data", [["name", "=", "view_request_track_tree"]], ["res_id"])
+
+        this.actionService.doAction({
+            type: "ir.actions.act_window",
+            name: "Requêtes notes d'examen rejetées",
             res_model: "siantou.ems.core.request.track",
             domain,
             views: [

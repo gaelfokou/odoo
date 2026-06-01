@@ -29,10 +29,11 @@
             <field name="arch" type="xml">
                 <form string="Requête">
                     <header>
-                        <button name="state_pending_request" class="oe_highlight" invisible="state in ['done', 'pending']" string="En attente" type="object"/>
+                        <button name="state_pending_request" class="oe_highlight" invisible="state in ['pending', 'rejected', 'done']" string="En attente" type="object"/>
                         <button name="state_progress_request" class="oe_highlight" invisible="state in ['progress']" string="En cours" type="object"/>
-                        <button name="state_done_request" class="oe_highlight" invisible="state in ['done', 'pending']" string="Terminé" type="object"/>
-                        <field name="state" widget="statusbar" statusbar_visible="pending,progress,done"/>
+                        <button name="state_rejected_request" class="oe_highlight" invisible="state in ['rejected', 'done']" string="Rejeté" type="object"/>
+                        <button name="state_done_request" class="oe_highlight" invisible="state in ['pending', 'done']" string="Terminé" type="object"/>
+                        <field name="state" widget="statusbar" statusbar_visible="pending,progress,rejected,done"/>
                     </header>
                     <sheet>
                         <group colspan="2">

@@ -28,6 +28,7 @@ TYPE_TRACKREQUEST = {
 STATUS_TRACKREQUEST = {
     'pending': 'En attente',
     'progress': 'En cours',
+    'rejected': 'Rejeté',
     'done': 'Terminé',
 }
 
@@ -58,6 +59,7 @@ class RequestTrack(models.Model):
     status = fields.Selection([
         ('pending', 'En attente'),
         ('progress', 'En cours'),
+        ('rejected', 'Rejeté'),
         ('done', 'Terminé'),
     ], 'Statut',
         default='pending',
@@ -66,6 +68,7 @@ class RequestTrack(models.Model):
     state = fields.Selection([
         ('pending', 'En attente'),
         ('progress', 'En cours'),
+        ('rejected', 'Rejeté'),
         ('done', 'Terminé'),
     ],
         string='Statut',
@@ -103,6 +106,16 @@ class RequestTrack(models.Model):
     def state_progress_request(self):
         self.write({
             'status': 'progress',
+        })
+
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'reload',
+        }
+
+    def state_rejected_request(self):
+        self.write({
+            'status': 'rejected',
         })
 
         return {
