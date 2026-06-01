@@ -59,6 +59,7 @@ export class OwlRequestTrackDashboard extends Component {
     }
 
     async viewAcademicInformationPending(){
+        let context = { search_default_group_by_status: 1 }
         let domain = [["type_request", "=", "academic_information"], ["status", "=", "pending"]]
 
         let list_view = await this.orm.searchRead("ir.model.data", [["name", "=", "view_request_track_tree"]], ["res_id"])
@@ -67,6 +68,7 @@ export class OwlRequestTrackDashboard extends Component {
             type: "ir.actions.act_window",
             name: "Requêtes informations académiques en attente",
             res_model: "siantou.ems.core.request.track",
+            context,
             domain,
             views: [
                 [list_view.length > 0 ? list_view[0].res_id : false, "list"],
@@ -76,6 +78,7 @@ export class OwlRequestTrackDashboard extends Component {
     }
 
     async viewAcademicInformationProgress(){
+        let context = { search_default_group_by_status: 1 }
         let domain = [["type_request", "=", "academic_information"], ["status", "=", "progress"]]
 
         let list_view = await this.orm.searchRead("ir.model.data", [["name", "=", "view_request_track_tree"]], ["res_id"])
@@ -84,6 +87,7 @@ export class OwlRequestTrackDashboard extends Component {
             type: "ir.actions.act_window",
             name: "Requêtes informations académiques en cours",
             res_model: "siantou.ems.core.request.track",
+            context,
             domain,
             views: [
                 [list_view.length > 0 ? list_view[0].res_id : false, "list"],
@@ -93,6 +97,7 @@ export class OwlRequestTrackDashboard extends Component {
     }
 
     async viewAcademicInformationRejected(){
+        let context = { search_default_group_by_status: 1 }
         let domain = [["type_request", "=", "academic_information"], ["status", "=", "rejected"]]
 
         let list_view = await this.orm.searchRead("ir.model.data", [["name", "=", "view_request_track_tree"]], ["res_id"])
@@ -101,6 +106,7 @@ export class OwlRequestTrackDashboard extends Component {
             type: "ir.actions.act_window",
             name: "Requêtes informations académiques rejetées",
             res_model: "siantou.ems.core.request.track",
+            context,
             domain,
             views: [
                 [list_view.length > 0 ? list_view[0].res_id : false, "list"],
@@ -110,6 +116,7 @@ export class OwlRequestTrackDashboard extends Component {
     }
 
     async viewAcademicInformationDone(){
+        let context = { search_default_group_by_status: 1 }
         let domain = [["type_request", "=", "academic_information"], ["status", "=", "done"]]
 
         let list_view = await this.orm.searchRead("ir.model.data", [["name", "=", "view_request_track_tree"]], ["res_id"])
@@ -118,6 +125,7 @@ export class OwlRequestTrackDashboard extends Component {
             type: "ir.actions.act_window",
             name: "Requêtes informations académiques terminées",
             res_model: "siantou.ems.core.request.track",
+            context,
             domain,
             views: [
                 [list_view.length > 0 ? list_view[0].res_id : false, "list"],
@@ -127,6 +135,7 @@ export class OwlRequestTrackDashboard extends Component {
     }
 
     async viewExamScorePending(){
+        let context = { search_default_group_by_status: 1 }
         let domain = [["type_request", "=", "exam_score"], ["status", "=", "pending"]]
 
         let list_view = await this.orm.searchRead("ir.model.data", [["name", "=", "view_request_track_tree"]], ["res_id"])
@@ -135,6 +144,7 @@ export class OwlRequestTrackDashboard extends Component {
             type: "ir.actions.act_window",
             name: "Requêtes notes d'examen en attente",
             res_model: "siantou.ems.core.request.track",
+            context,
             domain,
             views: [
                 [list_view.length > 0 ? list_view[0].res_id : false, "list"],
@@ -144,6 +154,7 @@ export class OwlRequestTrackDashboard extends Component {
     }
 
     async viewExamScoreProgress(){
+        let context = { search_default_group_by_status: 1 }
         let domain = [["type_request", "=", "exam_score"], ["status", "=", "progress"]]
 
         let list_view = await this.orm.searchRead("ir.model.data", [["name", "=", "view_request_track_tree"]], ["res_id"])
@@ -152,6 +163,7 @@ export class OwlRequestTrackDashboard extends Component {
             type: "ir.actions.act_window",
             name: "Requêtes notes d'examen en cours",
             res_model: "siantou.ems.core.request.track",
+            context,
             domain,
             views: [
                 [list_view.length > 0 ? list_view[0].res_id : false, "list"],
@@ -161,6 +173,7 @@ export class OwlRequestTrackDashboard extends Component {
     }
 
     async viewExamScoreRejected(){
+        let context = { search_default_group_by_status: 1 }
         let domain = [["type_request", "=", "exam_score"], ["status", "=", "rejected"]]
 
         let list_view = await this.orm.searchRead("ir.model.data", [["name", "=", "view_request_track_tree"]], ["res_id"])
@@ -169,6 +182,7 @@ export class OwlRequestTrackDashboard extends Component {
             type: "ir.actions.act_window",
             name: "Requêtes notes d'examen rejetées",
             res_model: "siantou.ems.core.request.track",
+            context,
             domain,
             views: [
                 [list_view.length > 0 ? list_view[0].res_id : false, "list"],
@@ -178,6 +192,7 @@ export class OwlRequestTrackDashboard extends Component {
     }
 
     async viewExamScoreDone(){
+        let context = { search_default_group_by_status: 1 }
         let domain = [["type_request", "=", "exam_score"], ["status", "=", "done"]]
 
         let list_view = await this.orm.searchRead("ir.model.data", [["name", "=", "view_request_track_tree"]], ["res_id"])
@@ -186,6 +201,7 @@ export class OwlRequestTrackDashboard extends Component {
             type: "ir.actions.act_window",
             name: "Requêtes notes d'examen terminées",
             res_model: "siantou.ems.core.request.track",
+            context,
             domain,
             views: [
                 [list_view.length > 0 ? list_view[0].res_id : false, "list"],
