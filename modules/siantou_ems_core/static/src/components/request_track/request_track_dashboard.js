@@ -59,7 +59,8 @@ export class OwlRequestTrackDashboard extends Component {
     }
 
     async viewAcademicInformationPending(){
-        let context = { search_default_group_by_status: 1 }
+        // let context = {group_by: ['status']}
+        let context = {search_default_group_by_status: 1}
         let domain = [["type_request", "=", "academic_information"], ["status", "=", "pending"]]
 
         let list_view = await this.orm.searchRead("ir.model.data", [["name", "=", "view_request_track_tree"]], ["res_id"])
@@ -78,7 +79,8 @@ export class OwlRequestTrackDashboard extends Component {
     }
 
     async viewAcademicInformationProgress(){
-        let context = { search_default_group_by_status: 1 }
+        // let context = {group_by: ['status']}
+        let context = {search_default_group_by_status: 1}
         let domain = [["type_request", "=", "academic_information"], ["status", "=", "progress"]]
 
         let list_view = await this.orm.searchRead("ir.model.data", [["name", "=", "view_request_track_tree"]], ["res_id"])
@@ -97,7 +99,8 @@ export class OwlRequestTrackDashboard extends Component {
     }
 
     async viewAcademicInformationRejected(){
-        let context = { search_default_group_by_status: 1 }
+        // let context = {group_by: ['status']}
+        let context = {search_default_group_by_status: 1}
         let domain = [["type_request", "=", "academic_information"], ["status", "=", "rejected"]]
 
         let list_view = await this.orm.searchRead("ir.model.data", [["name", "=", "view_request_track_tree"]], ["res_id"])
@@ -116,7 +119,8 @@ export class OwlRequestTrackDashboard extends Component {
     }
 
     async viewAcademicInformationDone(){
-        let context = { search_default_group_by_status: 1 }
+        // let context = {group_by: ['status']}
+        let context = {search_default_group_by_status: 1}
         let domain = [["type_request", "=", "academic_information"], ["status", "=", "done"]]
 
         let list_view = await this.orm.searchRead("ir.model.data", [["name", "=", "view_request_track_tree"]], ["res_id"])
@@ -135,7 +139,8 @@ export class OwlRequestTrackDashboard extends Component {
     }
 
     async viewExamScorePending(){
-        let context = { search_default_group_by_status: 1 }
+        // let context = {group_by: ['status']}
+        let context = {search_default_group_by_status: 1}
         let domain = [["type_request", "=", "exam_score"], ["status", "=", "pending"]]
 
         let list_view = await this.orm.searchRead("ir.model.data", [["name", "=", "view_request_track_tree"]], ["res_id"])
@@ -154,7 +159,8 @@ export class OwlRequestTrackDashboard extends Component {
     }
 
     async viewExamScoreProgress(){
-        let context = { search_default_group_by_status: 1 }
+        // let context = {group_by: ['status']}
+        let context = {search_default_group_by_status: 1}
         let domain = [["type_request", "=", "exam_score"], ["status", "=", "progress"]]
 
         let list_view = await this.orm.searchRead("ir.model.data", [["name", "=", "view_request_track_tree"]], ["res_id"])
@@ -173,7 +179,8 @@ export class OwlRequestTrackDashboard extends Component {
     }
 
     async viewExamScoreRejected(){
-        let context = { search_default_group_by_status: 1 }
+        // let context = {group_by: ['status']}
+        let context = {search_default_group_by_status: 1}
         let domain = [["type_request", "=", "exam_score"], ["status", "=", "rejected"]]
 
         let list_view = await this.orm.searchRead("ir.model.data", [["name", "=", "view_request_track_tree"]], ["res_id"])
@@ -192,7 +199,8 @@ export class OwlRequestTrackDashboard extends Component {
     }
 
     async viewExamScoreDone(){
-        let context = { search_default_group_by_status: 1 }
+        // let context = {group_by: ['status']}
+        let context = {search_default_group_by_status: 1}
         let domain = [["type_request", "=", "exam_score"], ["status", "=", "done"]]
 
         let list_view = await this.orm.searchRead("ir.model.data", [["name", "=", "view_request_track_tree"]], ["res_id"])
