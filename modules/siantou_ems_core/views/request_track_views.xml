@@ -10,13 +10,16 @@
                     <!-- <field name="name"/> -->
                     <field name="description"/>
                     <field name="type_request"/>
-                    <field name="date"/>
+                    <field name="date"
+                        decoration-warning="status in ['pending', 'progress'] and date and date == datetime.date.today()"
+                        decoration-danger="status in ['pending', 'progress'] and date and date > datetime.date.today()"/>
                     <field name="create_uid"/>
                     <field name="user_ids" widget="many2many_tags"/>
                     <field name="note"/>
 					<field name="status" widget="badge"
                         decoration-muted="status == 'pending'"
                         decoration-primary="status == 'progress'"
+                        decoration-danger="status == 'rejected'"
                         decoration-success="status == 'done'"/>
                 </tree>
             </field>
@@ -29,10 +32,10 @@
             <field name="arch" type="xml">
                 <form string="Requête">
                     <header>
-                        <button name="state_pending_request" class="oe_highlight" invisible="state in ['pending', 'rejected', 'done']" string="En attente" type="object"/>
+                        <button name="state_pending_request" class="oe_highlight" invisible="state in ['pending', 'progress', 'rejected', 'done']" string="En attente" type="object"/>
                         <button name="state_progress_request" class="oe_highlight" invisible="state in ['progress']" string="En cours" type="object"/>
                         <button name="state_rejected_request" class="oe_highlight" invisible="state in ['rejected', 'done']" string="Rejeté" type="object"/>
-                        <button name="state_done_request" class="oe_highlight" invisible="state in ['pending', 'done']" string="Terminé" type="object"/>
+                        <button name="state_done_request" class="oe_highlight" invisible="state in ['pending', 'rejected', 'done']" string="Terminé" type="object"/>
                         <field name="state" widget="statusbar" statusbar_visible="pending,progress,rejected,done"/>
                     </header>
                     <sheet>
@@ -73,7 +76,7 @@
         </record>
 
         <record id="action_show_request_track_dashboard" model="ir.actions.client">
-            <field name="name">Statistiques</field>
+            <field name="name">Tableau de bord</field>
             <field name="tag">owl.request_track_dashboard</field>
         </record>
 
@@ -90,7 +93,20 @@
             <field name="context">{'search_default_group_by_status': 1}</field>
         </record> -->
 
-        <record id="action_show_request_track_1" model="ir.actions.act_window">
+        <record id="action_show_request_track_all" model="ir.actions.act_window">
+            <field name="name">Toutes les requêtes</field>
+            <field name="res_model">siantou.ems.core.request.track</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref="view_request_track_search"/>
+            <field name="view_ids"
+                eval="[(5, 0, 0),
+                (0, 0, {'view_mode': 'tree', 'view_id': ref('view_request_track_tree')}),
+                (0, 0, {'view_mode': 'form', 'view_id': ref('view_request_track_form')})]"/>
+            <!-- <field name="context">{'group_by': ['status']}</field> -->
+            <field name="context">{'search_default_group_by_status': 1}</field>
+        </record>
+
+        <record id="action_show_request_track_sent" model="ir.actions.act_window">
             <field name="name">Requêtes envoyées</field>
             <field name="res_model">siantou.ems.core.request.track</field>
             <field name="view_mode">tree,form</field>
@@ -104,7 +120,7 @@
             <field name="domain">[('create_uid', '=', uid)]</field>
         </record>
 
-        <record id="action_show_request_track_2" model="ir.actions.act_window">
+        <record id="action_show_request_track_received" model="ir.actions.act_window">
             <field name="name">Requêtes reçues</field>
             <field name="res_model">siantou.ems.core.request.track</field>
             <field name="view_mode">tree,form</field>
@@ -122,28 +138,28 @@
                 name="Requêtes"
             sequence="10"/>
         <menuitem id="siantou_menu_request_track"
-                name="Statistiques"
+                name="Tableau de bord"
                 parent="siantou_menu_request_track_dashboard"
                 action="action_show_request_track_dashboard"
-                groups="siantou_ems_core.group_subject_admin,base.group_system"
+                groups="siantou_ems_core.group_request_track_perm_all"
             sequence="20"/>
-        <!-- <menuitem id="siantou_menu_request_track"
-                name="Requêtes"
+        <menuitem id="siantou_menu_request_track_all"
+                name="Toutes les requêtes"
                 parent="siantou_menu_request_track_dashboard"
-                action="action_show_request_track"
-                groups="siantou_ems_core.group_subject_admin,base.group_system"
-            sequence="20"/> -->
-        <menuitem id="siantou_menu_request_track_1"
+                action="action_show_request_track_all"
+                groups="siantou_ems_core.group_request_track_perm_all"
+            sequence="21"/>
+        <menuitem id="siantou_menu_request_track_sent"
                 name="Requêtes envoyées"
                 parent="siantou_menu_request_track_dashboard"
-                action="action_show_request_track_1"
-                groups="siantou_ems_core.group_subject_admin,base.group_system"
-            sequence="21"/>
-        <menuitem id="siantou_menu_request_track_2"
+                action="action_show_request_track_sent"
+                groups="siantou_ems_core.group_request_track_perm_sent"
+            sequence="22"/>
+        <menuitem id="siantou_menu_request_track_received"
                 name="Requêtes reçues"
                 parent="siantou_menu_request_track_dashboard"
-                action="action_show_request_track_2"
-                groups="siantou_ems_core.group_subject_admin,base.group_system"
-            sequence="22"/>
+                action="action_show_request_track_received"
+                groups="siantou_ems_core.group_request_track_perm_received"
+            sequence="23"/>
     </data>
 </odoo>

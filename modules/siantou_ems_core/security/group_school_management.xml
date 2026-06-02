@@ -550,5 +550,24 @@
             <field name="implied_ids" eval="[(4, ref('base.group_system'))]"/>
             <field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
         </record>
+
+        <record id="group_request_track_perm_all" model="res.groups">
+            <field name="name">Toutes - Requêtes</field>
+            <field name="category_id" ref="siantou_ems_core.module_category_school_management"/>
+            <field name="implied_ids" eval="[(4, ref('base.group_system'))]"/>
+            <field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+        </record>
+        <record id="group_request_track_perm_sent" model="res.groups">
+            <field name="name">Envoyées - Requêtes</field>
+            <field name="category_id" ref="siantou_ems_core.module_category_school_management"/>
+            <field name="implied_ids" eval="[(4, ref('base.group_system'))]"/>
+            <field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+        </record>
+        <record id="group_request_track_perm_received" model="res.groups">
+            <field name="name">Reçues - Requêtes</field>
+            <field name="category_id" ref="siantou_ems_core.module_category_school_management"/>
+            <field name="implied_ids" eval="[(4, ref('base.group_system'))]"/>
+            <field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+        </record>
     </data>
 </odoo>

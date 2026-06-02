@@ -78,7 +78,7 @@ class RequestTrack(models.Model):
     )
 
     def _default_date(self):
-        return date.today().replace(day=1)
+        return date.today()
 
     date = fields.Date(
         string='Date limite',
