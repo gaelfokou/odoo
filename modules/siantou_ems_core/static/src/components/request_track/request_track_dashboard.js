@@ -10,33 +10,57 @@ export class OwlRequestTrackDashboard extends Component {
     setup(){
         this.state = useState({
             academic_information: {
-                pending: {
-                    value: 0,
-                },
-                progress: {
-                    value: 0,
-                },
-                rejected: {
-                    value: 0,
-                },
-                done: {
-                    value: 0,
-                },
+                title: 'academic_information',
+                key: 'academic_information',
+                data: {
+                    pending: {
+                        title: 'En attente',
+                        key: 'pending',
+                        value: 0,
+                    },
+                    progress: {
+                        title: 'En cours',
+                        key: 'progress',
+                        value: 0,
+                    },
+                    rejected: {
+                        title: 'Rejeté',
+                        key: 'pending',
+                        value: 0,
+                    },
+                    done: {
+                        title: 'Traité',
+                        key: 'rejected',
+                        value: 0,
+                    }
+                }
             },
             exam_score: {
-                pending: {
-                    value: 0,
-                },
-                progress: {
-                    value: 0,
-                },
-                rejected: {
-                    value: 0,
-                },
-                done: {
-                    value: 0,
-                },
-            },
+                title: 'exam_score',
+                key: 'exam_score',
+                data: {
+                    pending: {
+                        title: 'En attente',
+                        key: 'pending',
+                        value: 0,
+                    },
+                    progress: {
+                        title: 'En cours',
+                        key: 'progress',
+                        value: 0,
+                    },
+                    rejected: {
+                        title: 'Rejeté',
+                        key: 'pending',
+                        value: 0,
+                    },
+                    done: {
+                        title: 'Traité',
+                        key: 'rejected',
+                        value: 0,
+                    }
+                }
+            }
         })
 
         this.orm = useService("orm")
@@ -48,14 +72,13 @@ export class OwlRequestTrackDashboard extends Component {
     }
 
     async getRequestTracks(){
-        this.state.academic_information.pending.value = await this.orm.searchCount("siantou.ems.core.request.track", [["type_request", "=", "academic_information"], ["status", "=", "pending"]])
-        this.state.academic_information.progress.value = await this.orm.searchCount("siantou.ems.core.request.track", [["type_request", "=", "academic_information"], ["status", "=", "progress"]])
-        this.state.academic_information.rejected.value = await this.orm.searchCount("siantou.ems.core.request.track", [["type_request", "=", "academic_information"], ["status", "=", "rejected"]])
-        this.state.academic_information.done.value = await this.orm.searchCount("siantou.ems.core.request.track", [["type_request", "=", "academic_information"], ["status", "=", "done"]])
-        this.state.exam_score.pending.value = await this.orm.searchCount("siantou.ems.core.request.track", [["type_request", "=", "exam_score"], ["status", "=", "pending"]])
-        this.state.exam_score.progress.value = await this.orm.searchCount("siantou.ems.core.request.track", [["type_request", "=", "exam_score"], ["status", "=", "progress"]])
-        this.state.exam_score.rejected.value = await this.orm.searchCount("siantou.ems.core.request.track", [["type_request", "=", "exam_score"], ["status", "=", "rejected"]])
-        this.state.exam_score.done.value = await this.orm.searchCount("siantou.ems.core.request.track", [["type_request", "=", "exam_score"], ["status", "=", "done"]])
+        let self = this
+        Object.keys(self.state).forEach((key_type_request) => {
+            Object.keys(self.state[key_type_request].data).forEach(async (key_status) => {
+                console.log(`${key_type_request} - ${key_status} : ${self.state[key_type_request].data[key_status]}`)
+                self.state[key_type_request].data[key_status].value = await this.orm.searchCount("siantou.ems.core.request.track", [["type_request", "=", key_type_request], ["status", "=", key_status]])
+            });
+        });
     }
 
     async viewAcademicInformationPending(){

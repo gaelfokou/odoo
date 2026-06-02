@@ -14,10 +14,10 @@
                         </div>
                     </div>
                     <div class="row">
-                        <KpiCard onClick.bind="viewAcademicInformationPending" name="'En attente'" value="state.academic_information.pending.value" percentage="state.academic_information.pending.value"/>
-                        <KpiCard onClick.bind="viewAcademicInformationProgress" name="'En cours'" value="state.academic_information.progress.value" percentage="state.academic_information.progress.value"/>
-                        <KpiCard onClick.bind="viewAcademicInformationRejected" name="'Rejeté'" value="state.academic_information.rejected.value" percentage="state.academic_information.rejected.value"/>
-                        <KpiCard onClick.bind="viewAcademicInformationDone" name="'Traité'" value="state.academic_information.done.value" percentage="state.academic_information.done.value"/>
+                        <KpiCard onClick.bind="() => this.viewAcademicInformationPending()" name="state.academic_information.data.pending.title" value="state.academic_information.data.pending.value" percentage="state.academic_information.data.pending.value"/>
+                        <KpiCard onClick.bind="() => this.viewAcademicInformationProgress()" name="state.academic_information.data.progress.title" value="state.academic_information.data.progress.value" percentage="state.academic_information.data.progress.value"/>
+                        <KpiCard onClick.bind="() => this.viewAcademicInformationRejected()" name="state.academic_information.data.rejected.title" value="state.academic_information.data.rejected.value" percentage="state.academic_information.data.rejected.value"/>
+                        <KpiCard onClick.bind="() => this.viewAcademicInformationDone()" name="state.academic_information.data.done.title" value="state.academic_information.data.done.value" percentage="state.academic_information.data.done.value"/>
                     </div>
                     <div class="row">
                         <div class="col m-0 p-0">
@@ -29,10 +29,10 @@
                         </div>
                     </div>
                     <div class="row">
-                        <KpiCard onClick.bind="viewExamScorePending" name="'En attente'" value="state.exam_score.pending.value" percentage="state.exam_score.pending.value"/>
-                        <KpiCard onClick.bind="viewExamScoreProgress" name="'En cours'" value="state.exam_score.progress.value" percentage="state.exam_score.progress.value"/>
-                        <KpiCard onClick.bind="viewExamScoreRejected" name="'Rejeté'" value="state.exam_score.rejected.value" percentage="state.exam_score.rejected.value"/>
-                        <KpiCard onClick.bind="viewExamScoreDone" name="'Traité'" value="state.exam_score.done.value" percentage="state.exam_score.done.value"/>
+                        <KpiCard onClick.bind="() => this.viewExamScorePending()" name="state.exam_score.data.pending.title" value="state.exam_score.data.pending.value" percentage="state.exam_score.data.pending.value"/>
+                        <KpiCard onClick.bind="() => this.viewExamScoreProgress()" name="state.exam_score.data.progress.title" value="state.exam_score.data.progress.value" percentage="state.exam_score.data.progress.value"/>
+                        <KpiCard onClick.bind="() => this.viewExamScoreRejected()" name="state.exam_score.data.rejected.title" value="state.exam_score.data.rejected.value" percentage="state.exam_score.data.rejected.value"/>
+                        <KpiCard onClick.bind="() => this.viewExamScoreDone()" name="state.exam_score.data.done.title" value="state.exam_score.data.done.value" percentage="state.exam_score.data.done.value"/>
                     </div>
                 </div>
             </div>
