@@ -35,7 +35,7 @@
                         <button name="state_pending_request" class="oe_highlight" invisible="state in ['pending', 'progress', 'rejected', 'done']" string="En attente" type="object"/>
                         <button name="state_progress_request" class="oe_highlight" invisible="state in ['progress']" string="En cours" type="object"/>
                         <button name="state_rejected_request" class="oe_highlight" invisible="state in ['rejected', 'done']" string="Rejeté" type="object"/>
-                        <button name="state_done_request" class="oe_highlight" invisible="state in ['pending', 'rejected', 'done']" string="Terminé" type="object"/>
+                        <button name="state_done_request" class="oe_highlight" invisible="state in ['pending', 'rejected', 'done']" string="Traité" type="object"/>
                         <field name="state" widget="statusbar" statusbar_visible="pending,progress,rejected,done"/>
                     </header>
                     <sheet>

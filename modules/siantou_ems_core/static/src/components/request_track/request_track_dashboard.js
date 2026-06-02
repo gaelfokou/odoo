@@ -127,7 +127,7 @@ export class OwlRequestTrackDashboard extends Component {
 
         this.actionService.doAction({
             type: "ir.actions.act_window",
-            name: "Requêtes informations académiques terminées",
+            name: "Requêtes informations académiques traitées",
             res_model: "siantou.ems.core.request.track",
             context,
             domain,
@@ -207,7 +207,7 @@ export class OwlRequestTrackDashboard extends Component {
 
         this.actionService.doAction({
             type: "ir.actions.act_window",
-            name: "Requêtes notes d'examen terminées",
+            name: "Requêtes notes d'examen traitées",
             res_model: "siantou.ems.core.request.track",
             context,
             domain,

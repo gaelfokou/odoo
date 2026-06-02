@@ -29,7 +29,7 @@ STATUS_TRACKREQUEST = {
     'pending': 'En attente',
     'progress': 'En cours',
     'rejected': 'Rejeté',
-    'done': 'Terminé',
+    'done': 'Traité',
 }
 
 class RequestTrack(models.Model):
@@ -60,7 +60,7 @@ class RequestTrack(models.Model):
         ('pending', 'En attente'),
         ('progress', 'En cours'),
         ('rejected', 'Rejeté'),
-        ('done', 'Terminé'),
+        ('done', 'Traité'),
     ], 'Statut',
         default='pending',
     )
@@ -69,7 +69,7 @@ class RequestTrack(models.Model):
         ('pending', 'En attente'),
         ('progress', 'En cours'),
         ('rejected', 'Rejeté'),
-        ('done', 'Terminé'),
+        ('done', 'Traité'),
     ],
         string='Statut',
         related='status',
