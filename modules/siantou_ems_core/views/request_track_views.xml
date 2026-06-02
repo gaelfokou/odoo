@@ -11,8 +11,8 @@
                     <field name="description"/>
                     <field name="type_request"/>
                     <field name="date"
-                        decoration-warning="status in ['pending', 'progress'] and date and date == datetime.date.today()"
-                        decoration-danger="status in ['pending', 'progress'] and date and date > datetime.date.today()"/>
+                        decoration-warning="status in ['pending', 'progress'] and date and date == current_date"
+                        decoration-danger="status in ['pending', 'progress'] and date and date &lt; current_date"/>
                     <field name="create_uid"/>
                     <field name="user_ids" widget="many2many_tags"/>
                     <field name="note"/>
