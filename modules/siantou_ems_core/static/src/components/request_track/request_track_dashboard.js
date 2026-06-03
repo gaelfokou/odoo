@@ -10,7 +10,7 @@ export class OwlRequestTrackDashboard extends Component {
     setup(){
         this.state = useState({
             academic_information: {
-                title: 'academic_information',
+                title: 'Informations académiques',
                 key: 'academic_information',
                 data: {
                     pending: {
@@ -36,7 +36,7 @@ export class OwlRequestTrackDashboard extends Component {
                 }
             },
             exam_score: {
-                title: 'exam_score',
+                title: 'Notes d\'examen',
                 key: 'exam_score',
                 data: {
                     pending: {
