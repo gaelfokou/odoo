@@ -131,7 +131,7 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
                 key_teacher_timetable_attendances[key]['is_refundable'] = search_teacher_timetable_attendance.is_refundable
                 sort_type = search_teacher_timetable_attendance.sort_type
                 is_refundable = search_teacher_timetable_attendance.is_refundable
-            is_permanent = search_teacher_timetable_attendance.employee_id.is_permanent
+                is_permanent = search_teacher_timetable_attendance.employee_id.is_permanent
             teacher_timetable_attendance = {}
             teacher_timetable_attendance['id'] = search_teacher_timetable_attendance.id
             teacher_timetable_attendance['timetable_id'] = search_teacher_timetable_attendance.timetable_id.id
@@ -345,29 +345,6 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
             teacher_timetable_attendance['class'] = ''
             teacher_timetable_attendance['total_awaiting'] = ''
             key_teacher_timetable_attendances[key]['data'].append(teacher_timetable_attendance)
-
-        # if is_refundable:
-        #     key_extended_hours = {}
-        #     for key in key_teacher_timetable_attendances.keys():
-        #         for timetable in key_teacher_timetable_attendances[key]['data']:
-        #             if timetable['class_name']:
-        #                 key_class = '{}'.format(timetable['class_id'])
-        #                 key_subject = '{}'.format(timetable['subject_id'])
-        #                 if key_class not in key_extended_hours:
-        #                     key_extended_hours[key_class] = {}
-        #                     key_extended_hours[key_class][key_subject] = timetable['worked_time']
-        #                 else:
-        #                     if key_subject not in key_extended_hours[key_class]:
-        #                         key_extended_hours[key_class][key_subject] = timetable['worked_time']
-        #                     else:
-        #                         key_extended_hours[key_class][key_subject] += timetable['worked_time']
-        #         for timetable in key_teacher_timetable_attendances[key]['data']:
-        #             if timetable['class_name']:
-        #                 key_class = '{}'.format(timetable['class_id'])
-        #                 key_subject = '{}'.format(timetable['subject_id'])
-        #                 timetable['total_awaiting'] = round(key_extended_hours[key_class][key_subject], 2)
-        #                 timetable['total_done'] = timetable['hours_credit'] + timetable['total_awaiting']
-        #                 timetable['total_awaiting'] = -abs(timetable['total_awaiting'])
 
         total_worked_time = 0.0
         total_amount = 0.0

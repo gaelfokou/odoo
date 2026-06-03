@@ -6,6 +6,14 @@
             <field name="model">teacher.debt</field>
             <field name="arch" type="xml">
                 <tree string="Dettes d'enseignant">
+                    <header>
+                        <button name="action_print_pdf" 
+                            type="object" 
+                            string="Imprimer PDF" 
+                            class="oe_highlight" 
+                            display="always"
+                            groups="om_hr_payroll.group_hr_payroll_print_pdf"/>
+                    </header>
                     <!-- <field name="name"/> -->
                     <field name="employee_id"/>
                     <field name="amount"/>

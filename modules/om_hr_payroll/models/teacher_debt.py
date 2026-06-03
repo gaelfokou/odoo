@@ -122,6 +122,26 @@ class TeacherDebt(models.Model):
             if record.amount <= 0.0:
                 raise ValidationError("Le montant doit être supérieur à 0")
 
+    def action_print_pdf(self):
+        active_ids = self.env.context.get('active_ids', [])
+        debts = self.env['teacher.debt'].browse(active_ids)
+        debts = list(debts)
+        if len(active_ids) == 0:
+            raise UserError('Aucune donnée sélectionnée')
+        report_data = self.env['teacher.debt.print.wizard'].create({})
+        domains = [
+            ('id', 'in', active_ids)
+        ]
+        data = report_data.print_debt_report_data(domains=domains)
+
+        if len(data['docdata']['debt_data'].keys()) == 0:
+            raise UserError('Aucune donnée trouvée')
+        report_action = self.env.ref('om_hr_payroll.action_report_debt')
+        report_action.update({
+            'name': '{} du {}-{} PDF'.format(data['docdata']['title']),
+        })
+        return report_action.report_action(self, data=data)
+
 class PaymentDebt(models.Model):
     _name = 'payment.debt'
     _description = 'Remboursement dette'
