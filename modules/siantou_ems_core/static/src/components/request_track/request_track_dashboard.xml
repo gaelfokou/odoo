@@ -14,10 +14,10 @@
                         </div>
                     </div>
                     <div class="row">
-                        <KpiCard onClick.bind="() => this.viewAcademicInformationPending()" name="state.academic_information.data.pending.title" value="state.academic_information.data.pending.value" percentage="state.academic_information.data.pending.value"/>
-                        <KpiCard onClick.bind="() => this.viewAcademicInformationProgress()" name="state.academic_information.data.progress.title" value="state.academic_information.data.progress.value" percentage="state.academic_information.data.progress.value"/>
-                        <KpiCard onClick.bind="() => this.viewAcademicInformationRejected()" name="state.academic_information.data.rejected.title" value="state.academic_information.data.rejected.value" percentage="state.academic_information.data.rejected.value"/>
-                        <KpiCard onClick.bind="() => this.viewAcademicInformationDone()" name="state.academic_information.data.done.title" value="state.academic_information.data.done.value" percentage="state.academic_information.data.done.value"/>
+                        <KpiCard onClick.bind="() => this.viewRequestTracks(state.academic_information.key, state.academic_information.data.pending.key)" name="state.academic_information.data.pending.title" value="state.academic_information.data.pending.value" percentage="state.academic_information.data.pending.value"/>
+                        <KpiCard onClick.bind="() => this.viewRequestTracks(state.academic_information.key, state.academic_information.data.progress.key)" name="state.academic_information.data.progress.title" value="state.academic_information.data.progress.value" percentage="state.academic_information.data.progress.value"/>
+                        <KpiCard onClick.bind="() => this.viewRequestTracks(state.academic_information.key, state.academic_information.data.rejected.key)" name="state.academic_information.data.rejected.title" value="state.academic_information.data.rejected.value" percentage="state.academic_information.data.rejected.value"/>
+                        <KpiCard onClick.bind="() => this.viewRequestTracks(state.academic_information.key, state.academic_information.data.done.key)" name="state.academic_information.data.done.title" value="state.academic_information.data.done.value" percentage="state.academic_information.data.done.value"/>
                     </div>
                     <div class="row">
                         <div class="col m-0 p-0">
@@ -29,10 +29,10 @@
                         </div>
                     </div>
                     <div class="row">
-                        <KpiCard onClick.bind="() => this.viewExamScorePending()" name="state.exam_score.data.pending.title" value="state.exam_score.data.pending.value" percentage="state.exam_score.data.pending.value"/>
-                        <KpiCard onClick.bind="() => this.viewExamScoreProgress()" name="state.exam_score.data.progress.title" value="state.exam_score.data.progress.value" percentage="state.exam_score.data.progress.value"/>
-                        <KpiCard onClick.bind="() => this.viewExamScoreRejected()" name="state.exam_score.data.rejected.title" value="state.exam_score.data.rejected.value" percentage="state.exam_score.data.rejected.value"/>
-                        <KpiCard onClick.bind="() => this.viewExamScoreDone()" name="state.exam_score.data.done.title" value="state.exam_score.data.done.value" percentage="state.exam_score.data.done.value"/>
+                        <KpiCard onClick.bind="() => this.viewRequestTracks(state.exam_score.key, state.exam_score.data.pending.key)" name="state.exam_score.data.pending.title" value="state.exam_score.data.pending.value" percentage="state.exam_score.data.pending.value"/>
+                        <KpiCard onClick.bind="() => this.viewRequestTracks(state.exam_score.key, state.exam_score.data.progress.key)" name="state.exam_score.data.progress.title" value="state.exam_score.data.progress.value" percentage="state.exam_score.data.progress.value"/>
+                        <KpiCard onClick.bind="() => this.viewRequestTracks(state.exam_score.key, state.exam_score.data.rejected.key)" name="state.exam_score.data.rejected.title" value="state.exam_score.data.rejected.value" percentage="state.exam_score.data.rejected.value"/>
+                        <KpiCard onClick.bind="() => this.viewRequestTracks(state.exam_score.key, state.exam_score.data.done.key)" name="state.exam_score.data.done.title" value="state.exam_score.data.done.value" percentage="state.exam_score.data.done.value"/>
                     </div>
                 </div>
             </div>

@@ -25,12 +25,12 @@ export class OwlRequestTrackDashboard extends Component {
                     },
                     rejected: {
                         title: 'Rejeté',
-                        key: 'pending',
+                        key: 'rejected',
                         value: 0,
                     },
                     done: {
                         title: 'Traité',
-                        key: 'rejected',
+                        key: 'done',
                         value: 0,
                     }
                 }
@@ -51,12 +51,12 @@ export class OwlRequestTrackDashboard extends Component {
                     },
                     rejected: {
                         title: 'Rejeté',
-                        key: 'pending',
+                        key: 'rejected',
                         value: 0,
                     },
                     done: {
                         title: 'Traité',
-                        key: 'rejected',
+                        key: 'done',
                         value: 0,
                     }
                 }
@@ -81,156 +81,33 @@ export class OwlRequestTrackDashboard extends Component {
         });
     }
 
-    async viewAcademicInformationPending(){
+    async viewRequestTracks(type_request, status){
+        console.log(`${type_request} - ${status}`)
         // let context = {group_by: ['status']}
         let context = {search_default_group_by_status: 1}
-        let domain = [["type_request", "=", "academic_information"], ["status", "=", "pending"]]
-
+        let domain = [["type_request", "=", type_request], ["status", "=", status]]
+        let title_request = ''
+        if (type_request == 'academic_information') {
+            title_request = 'Requêtes informations académiques'
+        } else if (type_request == 'exam_score') {
+            title_request = 'Requêtes notes d\'examen'
+        }
+        let title_status = ''
+        if (status == 'pending') {
+            title_status = 'en attente'
+        } else if (status == 'progress') {
+            title_status = 'en cours'
+        } else if (status == 'rejected') {
+            title_status = 'rejetées'
+        } else if (status == 'done') {
+            title_status = 'traitées'
+        }
+        let name = `${title_request} ${title_status}`
         let list_view = await this.orm.searchRead("ir.model.data", [["name", "=", "view_request_track_tree"]], ["res_id"])
 
         this.actionService.doAction({
             type: "ir.actions.act_window",
-            name: "Requêtes informations académiques en attente",
-            res_model: "siantou.ems.core.request.track",
-            context,
-            domain,
-            views: [
-                [list_view.length > 0 ? list_view[0].res_id : false, "list"],
-                [false, "form"],
-            ]
-        })
-    }
-
-    async viewAcademicInformationProgress(){
-        // let context = {group_by: ['status']}
-        let context = {search_default_group_by_status: 1}
-        let domain = [["type_request", "=", "academic_information"], ["status", "=", "progress"]]
-
-        let list_view = await this.orm.searchRead("ir.model.data", [["name", "=", "view_request_track_tree"]], ["res_id"])
-
-        this.actionService.doAction({
-            type: "ir.actions.act_window",
-            name: "Requêtes informations académiques en cours",
-            res_model: "siantou.ems.core.request.track",
-            context,
-            domain,
-            views: [
-                [list_view.length > 0 ? list_view[0].res_id : false, "list"],
-                [false, "form"],
-            ]
-        })
-    }
-
-    async viewAcademicInformationRejected(){
-        // let context = {group_by: ['status']}
-        let context = {search_default_group_by_status: 1}
-        let domain = [["type_request", "=", "academic_information"], ["status", "=", "rejected"]]
-
-        let list_view = await this.orm.searchRead("ir.model.data", [["name", "=", "view_request_track_tree"]], ["res_id"])
-
-        this.actionService.doAction({
-            type: "ir.actions.act_window",
-            name: "Requêtes informations académiques rejetées",
-            res_model: "siantou.ems.core.request.track",
-            context,
-            domain,
-            views: [
-                [list_view.length > 0 ? list_view[0].res_id : false, "list"],
-                [false, "form"],
-            ]
-        })
-    }
-
-    async viewAcademicInformationDone(){
-        // let context = {group_by: ['status']}
-        let context = {search_default_group_by_status: 1}
-        let domain = [["type_request", "=", "academic_information"], ["status", "=", "done"]]
-
-        let list_view = await this.orm.searchRead("ir.model.data", [["name", "=", "view_request_track_tree"]], ["res_id"])
-
-        this.actionService.doAction({
-            type: "ir.actions.act_window",
-            name: "Requêtes informations académiques traitées",
-            res_model: "siantou.ems.core.request.track",
-            context,
-            domain,
-            views: [
-                [list_view.length > 0 ? list_view[0].res_id : false, "list"],
-                [false, "form"],
-            ]
-        })
-    }
-
-    async viewExamScorePending(){
-        // let context = {group_by: ['status']}
-        let context = {search_default_group_by_status: 1}
-        let domain = [["type_request", "=", "exam_score"], ["status", "=", "pending"]]
-
-        let list_view = await this.orm.searchRead("ir.model.data", [["name", "=", "view_request_track_tree"]], ["res_id"])
-
-        this.actionService.doAction({
-            type: "ir.actions.act_window",
-            name: "Requêtes notes d'examen en attente",
-            res_model: "siantou.ems.core.request.track",
-            context,
-            domain,
-            views: [
-                [list_view.length > 0 ? list_view[0].res_id : false, "list"],
-                [false, "form"],
-            ]
-        })
-    }
-
-    async viewExamScoreProgress(){
-        // let context = {group_by: ['status']}
-        let context = {search_default_group_by_status: 1}
-        let domain = [["type_request", "=", "exam_score"], ["status", "=", "progress"]]
-
-        let list_view = await this.orm.searchRead("ir.model.data", [["name", "=", "view_request_track_tree"]], ["res_id"])
-
-        this.actionService.doAction({
-            type: "ir.actions.act_window",
-            name: "Requêtes notes d'examen en cours",
-            res_model: "siantou.ems.core.request.track",
-            context,
-            domain,
-            views: [
-                [list_view.length > 0 ? list_view[0].res_id : false, "list"],
-                [false, "form"],
-            ]
-        })
-    }
-
-    async viewExamScoreRejected(){
-        // let context = {group_by: ['status']}
-        let context = {search_default_group_by_status: 1}
-        let domain = [["type_request", "=", "exam_score"], ["status", "=", "rejected"]]
-
-        let list_view = await this.orm.searchRead("ir.model.data", [["name", "=", "view_request_track_tree"]], ["res_id"])
-
-        this.actionService.doAction({
-            type: "ir.actions.act_window",
-            name: "Requêtes notes d'examen rejetées",
-            res_model: "siantou.ems.core.request.track",
-            context,
-            domain,
-            views: [
-                [list_view.length > 0 ? list_view[0].res_id : false, "list"],
-                [false, "form"],
-            ]
-        })
-    }
-
-    async viewExamScoreDone(){
-        // let context = {group_by: ['status']}
-        let context = {search_default_group_by_status: 1}
-        let domain = [["type_request", "=", "exam_score"], ["status", "=", "done"]]
-
-        let list_view = await this.orm.searchRead("ir.model.data", [["name", "=", "view_request_track_tree"]], ["res_id"])
-
-        this.actionService.doAction({
-            type: "ir.actions.act_window",
-            name: "Requêtes notes d'examen traitées",
+            name,
             res_model: "siantou.ems.core.request.track",
             context,
             domain,
