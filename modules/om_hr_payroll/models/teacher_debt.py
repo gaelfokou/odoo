@@ -138,7 +138,7 @@ class TeacherDebt(models.Model):
             raise UserError('Aucune donnée trouvée')
         report_action = self.env.ref('om_hr_payroll.action_report_debt')
         report_action.update({
-            'name': '{} du {}-{} PDF'.format(data['docdata']['title']),
+            'name': '{} PDF'.format(data['docdata']['title']),
         })
         return report_action.report_action(self, data=data)
 

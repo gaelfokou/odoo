@@ -49,12 +49,9 @@ class TeacherDebtPrintWizard(models.TransientModel):
 
         if len(data['docdata']['debt_data'].keys()) == 0:
             raise UserError("Aucune donnée trouvée")
-        key = list(data['docdata']['debt_data'].keys())[0]
-        start_date = datetime.strftime(data['docdata']['debt_data'][key]['start_date'], DATE_FORMAT_FR)
-        end_date = datetime.strftime(data['docdata']['debt_data'][key]['end_date'], DATE_FORMAT_FR)
         report_action = self.env.ref('om_hr_payroll.action_report_debt')
         report_action.update({
-            'name': '{} du {}-{} PDF'.format(data['docdata']['title'], start_date, end_date),
+            'name': '{} PDF'.format(data['docdata']['title']),
         })
         return report_action.report_action(self, data=data)
 
@@ -142,7 +139,7 @@ class TeacherDebtPrintWizard(models.TransientModel):
 
         _logger.info(f'----------- tototototototo key_debts {key_debts} -----------')
 
-        filter_title = 'Dettes des enseignants'
+        filter_title = None
 
         title = 'Dettes des enseignants'
 

@@ -53,6 +53,7 @@
         'views/employee_salary_allowance_views.xml',
         'views/teacher_debt_views.xml',
         'views/payment_debt_views.xml',
+        'report/teacher_debt_template.xml',
     ],
     'images': ['static/description/banner.png'],
     'application': True,
