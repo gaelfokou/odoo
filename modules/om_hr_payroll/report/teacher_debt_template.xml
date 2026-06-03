@@ -74,7 +74,7 @@
                                     <t t-set="debt_data" t-value="dict(sorted(docdata['debt_data'].items(), key=lambda item: item[1]['name'] if item[1]['name'] else ''))"/>
                                     <t t-set="keys" t-value="debt_data.keys()"/>
                                     <t t-foreach="keys" t-as="key">
-                                        <t t-set="debts" t-value="debt_data[key]['data']"/>
+                                        <t t-set="debts" t-value="sorted(debt_data[key]['data'], key=lambda item: item['start_date'] if 'start_date' in item else datetime.strptime('2015-12-15', '%Y-%m-%d').date())"/>
                                         <t t-foreach="debts" t-as="debt">
                                             <tr>
                                                 <td class="text-center">

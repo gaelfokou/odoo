@@ -55,16 +55,12 @@ class TeacherDebtPrintWizard(models.TransientModel):
         })
         return report_action.report_action(self, data=data)
 
-    def sort_debt_level_rate(self, debt):
-        if 'level_id' in debt:
-            level = debt['level_id']
+    def sort_debt_date(self, debt):
+        if 'start_date' in debt:
+            start_date = debt['start_date']
         else:
-            level = 10
-        if 'rate' in debt and debt['rate']:
-            rate = debt['rate']
-        else:
-            rate = 100000.0
-        return (level, rate)
+            start_date = datetime.strptime('2015-12-15', DATE_FORMAT).date()
+        return start_date
 
     def sort_debt(self, debt):
         name = debt[1]['name'] if debt[1]['name'] else ''
@@ -128,6 +124,7 @@ class TeacherDebtPrintWizard(models.TransientModel):
         total_amount = 0.0
         total_rest_amount = 0.0
         for key in key_debts.keys():
+            key_debts[key]['data'] = sorted(key_debts[key]['data'], key=self.sort_debt_date)
             total_amount += key_debts[key]['amount']
             total_rest_amount += key_debts[key]['rest_amount']
         total_amount = round(total_amount, 2)
