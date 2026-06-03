@@ -5,7 +5,7 @@
             <field name="name">teacher.debt.tree</field>
             <field name="model">teacher.debt</field>
             <field name="arch" type="xml">
-                <tree string="Dettes d'enseignant">
+                <tree string="Dettes des enseignants">
                     <header>
                         <button name="action_print_pdf" 
                             type="object" 
@@ -57,13 +57,13 @@
         </record>
 
         <record id="action_show_teacher_debt" model="ir.actions.act_window">
-            <field name="name">Dettes d'enseignant</field>
+            <field name="name">Dettes des enseignants</field>
             <field name="res_model">teacher.debt</field>
             <field name="view_mode">tree,form</field>
         </record>
 
         <menuitem id="siantou_menu_teacher_debt"
-                name="Dettes d'enseignant"
+                name="Dettes des enseignants"
                 parent="menu_payroll_employee"
                 action="action_show_teacher_debt"
             sequence="21"/>
