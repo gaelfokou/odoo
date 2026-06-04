@@ -409,7 +409,7 @@ class TeacherTimetableAttendance(models.TransientModel):
             debt_ids = list(debt_ids)
             if len(debt_ids) > 0:
                 for debt_id in debt_ids:
-                    if amount <= 0.0:
+                    if amount == 0.0:
                         break
                     if amount >= debt_id.rest_amount:
                         debt_id.payment_ids.create({
@@ -423,8 +423,6 @@ class TeacherTimetableAttendance(models.TransientModel):
                             'debt_id': debt_id.id,
                             'amount': amount,
                         })
-                        amount = 0.0
-                    if amount < 0.0:
                         amount = 0.0
             timetables = teacher_timetable_attendance_data[key]['data']
             for timetable in timetables:
