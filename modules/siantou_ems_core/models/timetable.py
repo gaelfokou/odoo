@@ -1064,80 +1064,80 @@ class Timetable(models.Model):
 
     @api.model
     def create(self, vals):
-        if not self.env.user.has_group('base.user_root') and not self.env.user.has_group('base.user_admin') and self.env.user.id != 2:
-            if 'status' in vals and vals['status'] in ['present', 'permission']:
-                if not self.env.user.has_group('siantou_ems_core.group_timetable_present_perm_create_present'):
-                    raise ValidationError(_("Vous n'êtes pas autorisé à créer les enregistrements pour (status in [present, permission]) d'emploi du temps (siantou.ems.timetable.timetable)'."))
+        if 'skip_validation' not in vals or not vals['skip_validation']:
+            if not self.env.user.has_group('base.user_root') and not self.env.user.has_group('base.user_admin') and self.env.user.id != 2:
+                if 'status' in vals and vals['status'] in ['present', 'permission']:
+                    if not self.env.user.has_group('siantou_ems_core.group_timetable_present_perm_create_present'):
+                        raise ValidationError(_("Vous n'êtes pas autorisé à créer les enregistrements pour (status in [present, permission]) d'emploi du temps (siantou.ems.timetable.timetable)'."))
 
-        if 'class_id' in vals and 'subject_id' in vals and 'hours_credit' in vals:
-            classe = self.env['siantou.ems.core.class'].search([('id', '=', vals['class_id'])], limit=1)
-            subject = self.env['siantou.ems.core.subject'].search([('id', '=', vals['subject_id'])], limit=1)
-            class_group = None
-            if 'class_group_id' in vals:
-                class_group = self.env['siantou.ems.core.class.group'].search([('id', '=', vals['class_group_id'])], limit=1)
-            if class_group:
-                timetables = self.env['siantou.ems.timetable.timetable'].search([
-                    ('class_id', '=', classe.id),
-                    ('subject_id', '=', subject.id),
-                    ('class_group_id', '=', class_group.id),
-                ])
-            else:
-                timetables = self.env['siantou.ems.timetable.timetable'].search([
-                    ('class_id', '=', classe.id),
-                    ('subject_id', '=', subject.id),
-                    ('class_group_id', '=', False),
-                ])
-
-            timetables = list(timetables)
-
-            total_worked_hours = 0.0
-            key_timetables = {}
-            for timetable in timetables:
-                if not timetable.date or not timetable.day_of_week or not timetable.employee_id.id:
-                    continue
-
-                end_time = Timetable.convert_float_to_time(timetable.end_time, has_second=True)
-                start_time = Timetable.convert_float_to_time(timetable.start_time, has_second=True)
-                key = '{}-{}-{}-{}'.format(timetable.class_id.id, timetable.date, start_time, end_time)
-                if key not in key_timetables:
-                    key_timetables[key] = {}
-                    key_timetables[key]['timetable'] = timetable
+            if 'class_id' in vals and 'subject_id' in vals:
+                classe = self.env['siantou.ems.core.class'].search([('id', '=', vals['class_id'])], limit=1)
+                subject = self.env['siantou.ems.core.subject'].search([('id', '=', vals['subject_id'])], limit=1)
+                class_group = None
+                if 'class_group_id' in vals:
+                    class_group = self.env['siantou.ems.core.class.group'].search([('id', '=', vals['class_group_id'])], limit=1)
+                if class_group:
+                    timetables = self.env['siantou.ems.timetable.timetable'].search([
+                        ('class_id', '=', classe.id),
+                        ('subject_id', '=', subject.id),
+                        ('class_group_id', '=', class_group.id),
+                    ])
                 else:
-                    continue
+                    timetables = self.env['siantou.ems.timetable.timetable'].search([
+                        ('class_id', '=', classe.id),
+                        ('subject_id', '=', subject.id),
+                        ('class_group_id', '=', False),
+                    ])
 
-                end_time = datetime.strptime(f"{timetable.date} {end_time}", DATETIME_FORMAT)
-                start_time = datetime.strptime(f"{timetable.date} {start_time}", DATETIME_FORMAT)
+                timetables = list(timetables)
+
+                total_worked_hours = 0.0
+                key_timetables = {}
+                for timetable in timetables:
+                    if not timetable.date or not timetable.day_of_week or not timetable.employee_id.id:
+                        continue
+
+                    end_time = Timetable.convert_float_to_time(timetable.end_time, has_second=True)
+                    start_time = Timetable.convert_float_to_time(timetable.start_time, has_second=True)
+                    key = '{}-{}-{}-{}'.format(timetable.class_id.id, timetable.date, start_time, end_time)
+                    if key not in key_timetables:
+                        key_timetables[key] = {}
+                        key_timetables[key]['timetable'] = timetable
+                    else:
+                        continue
+
+                    end_time = datetime.strptime(f"{timetable.date} {end_time}", DATETIME_FORMAT)
+                    start_time = datetime.strptime(f"{timetable.date} {start_time}", DATETIME_FORMAT)
+
+                    worked_hours = end_time - start_time
+                    worked_hours = worked_hours.total_seconds() / 3600.0
+                    worked_hours = round(worked_hours, 2)
+
+                    if worked_hours < 0.0:
+                        del(key_timetables[key])
+                        continue
+
+                    hours_credit = timetable.subject_id.hours_credit
+
+                    key_timetables[key]['worked_hours'] = worked_hours
+                    key_timetables[key]['hours_credit'] = hours_credit
+                    total_worked_hours += key_timetables[key]['worked_hours']
+
+                end_time = Timetable.convert_float_to_time(vals['end_time'], has_second=True)
+                start_time = Timetable.convert_float_to_time(vals['start_time'], has_second=True)
+                end_time = datetime.strptime(f"{vals['date']} {end_time}", DATETIME_FORMAT)
+                start_time = datetime.strptime(f"{vals['date']} {start_time}", DATETIME_FORMAT)
 
                 worked_hours = end_time - start_time
                 worked_hours = worked_hours.total_seconds() / 3600.0
                 worked_hours = round(worked_hours, 2)
 
-                if worked_hours < 0.0:
-                    del(key_timetables[key])
-                    continue
+                if worked_hours >= 0.0:
+                    total_worked_hours += worked_hours
+                total_worked_hours = round(total_worked_hours, 2)
 
-                hours_credit = timetable.subject_id.hours_credit
+                hours_credit = round(subject.hours_credit, 2)
 
-                key_timetables[key]['worked_hours'] = worked_hours
-                key_timetables[key]['hours_credit'] = hours_credit
-                total_worked_hours += key_timetables[key]['worked_hours']
-
-            end_time = Timetable.convert_float_to_time(vals['end_time'], has_second=True)
-            start_time = Timetable.convert_float_to_time(vals['start_time'], has_second=True)
-            end_time = datetime.strptime(f"{vals['date']} {end_time}", DATETIME_FORMAT)
-            start_time = datetime.strptime(f"{vals['date']} {start_time}", DATETIME_FORMAT)
-
-            worked_hours = end_time - start_time
-            worked_hours = worked_hours.total_seconds() / 3600.0
-            worked_hours = round(worked_hours, 2)
-
-            if worked_hours >= 0.0:
-                total_worked_hours += worked_hours
-            total_worked_hours = round(total_worked_hours, 2)
-
-            hours_credit = round(subject.hours_credit, 2)
-
-            if 'skip_validation' not in vals or not vals['skip_validation']:
                 if total_worked_hours > hours_credit:
                     raise ValidationError(f"La somme des volumes horaires programmés doit être inférieure ou égale au volume horaire semestriel {total_worked_hours} / {hours_credit}")
 
@@ -1148,40 +1148,38 @@ class Timetable(models.Model):
         return res
 
     def write(self, vals):
-        if 'skip_validation' not in vals:
-            vals['skip_validation'] = False
+        if 'skip_validation' not in vals or not vals['skip_validation']:
+            timetables = []
+            if len(self.ids) == 1:
+                timetable = self.env['siantou.ems.timetable.timetable'].browse(self.id)
+                timetables.append(timetable)
+            else:
+                timetables = self.env['siantou.ems.timetable.timetable'].browse(self.ids)
+                timetables = list(timetables)
 
-        timetables = []
-        if len(self.ids) == 1:
-            timetable = self.env['siantou.ems.timetable.timetable'].browse(self.id)
-            timetables.append(timetable)
-        else:
-            timetables = self.env['siantou.ems.timetable.timetable'].browse(self.ids)
-            timetables = list(timetables)
-
-        for timetable in timetables:
-            if not self.env.user.has_group('base.user_root') and not self.env.user.has_group('base.user_admin') and self.env.user.id != 2:
-                if timetable.status in ['present', 'permission']:
-                    if not self.env.user.has_group('siantou_ems_core.group_timetable_present_perm_write'):
-                        raise ValidationError(_("Vous n'êtes pas autorisé à modifier les enregistrements (status in [present, permission]) d'emploi du temps (siantou.ems.timetable.timetable)'."))
-                elif timetable.status == 'exception':
-                    if 'status' in vals and vals['status'] in ['present', 'permission']:
-                        if not self.env.user.has_group('siantou_ems_core.group_timetable_exception_perm_write'):
-                            raise ValidationError(_("Vous n'êtes pas autorisé à modifier les enregistrements (status = exception) d'emploi du temps (siantou.ems.timetable.timetable)'."))
-                        if not self.env.user.has_group('siantou_ems_core.group_timetable_present_perm_write_present'):
-                            raise ValidationError(_("Vous n'êtes pas autorisé à modifier les enregistrements pour (status in [present, permission]) d'emploi du temps (siantou.ems.timetable.timetable)'."))
+            for timetable in timetables:
+                if not self.env.user.has_group('base.user_root') and not self.env.user.has_group('base.user_admin') and self.env.user.id != 2:
+                    if timetable.status in ['present', 'permission']:
+                        if not self.env.user.has_group('siantou_ems_core.group_timetable_present_perm_write'):
+                            raise ValidationError(_("Vous n'êtes pas autorisé à modifier les enregistrements (status in [present, permission]) d'emploi du temps (siantou.ems.timetable.timetable)'."))
+                    elif timetable.status == 'exception':
+                        if 'status' in vals and vals['status'] in ['present', 'permission']:
+                            if not self.env.user.has_group('siantou_ems_core.group_timetable_exception_perm_write'):
+                                raise ValidationError(_("Vous n'êtes pas autorisé à modifier les enregistrements (status = exception) d'emploi du temps (siantou.ems.timetable.timetable)'."))
+                            if not self.env.user.has_group('siantou_ems_core.group_timetable_present_perm_write_present'):
+                                raise ValidationError(_("Vous n'êtes pas autorisé à modifier les enregistrements pour (status in [present, permission]) d'emploi du temps (siantou.ems.timetable.timetable)'."))
+                        else:
+                            if not self.env.user.has_group('siantou_ems_core.group_timetable_exception_perm_write'):
+                                raise ValidationError(_("Vous n'êtes pas autorisé à modifier les enregistrements (status = exception) d'emploi du temps (siantou.ems.timetable.timetable)'."))
                     else:
-                        if not self.env.user.has_group('siantou_ems_core.group_timetable_exception_perm_write'):
-                            raise ValidationError(_("Vous n'êtes pas autorisé à modifier les enregistrements (status = exception) d'emploi du temps (siantou.ems.timetable.timetable)'."))
-                else:
-                    if 'status' in vals and vals['status'] in ['present', 'permission']:
-                        if not self.env.user.has_group('siantou_ems_core.group_timetable_perm_write'):
-                            raise ValidationError(_("Vous n'êtes pas autorisé à modifier les enregistrements d'emploi du temps (siantou.ems.timetable.timetable)'."))
-                        if not self.env.user.has_group('siantou_ems_core.group_timetable_present_perm_write_present'):
-                            raise ValidationError(_("Vous n'êtes pas autorisé à modifier les enregistrements pour (status in [present, permission]) d'emploi du temps (siantou.ems.timetable.timetable)'."))
-                    else:
-                        if not self.env.user.has_group('siantou_ems_core.group_timetable_perm_write'):
-                            raise ValidationError(_("Vous n'êtes pas autorisé à modifier les enregistrements d'emploi du temps (siantou.ems.timetable.timetable)'."))
+                        if 'status' in vals and vals['status'] in ['present', 'permission']:
+                            if not self.env.user.has_group('siantou_ems_core.group_timetable_perm_write'):
+                                raise ValidationError(_("Vous n'êtes pas autorisé à modifier les enregistrements d'emploi du temps (siantou.ems.timetable.timetable)'."))
+                            if not self.env.user.has_group('siantou_ems_core.group_timetable_present_perm_write_present'):
+                                raise ValidationError(_("Vous n'êtes pas autorisé à modifier les enregistrements pour (status in [present, permission]) d'emploi du temps (siantou.ems.timetable.timetable)'."))
+                        else:
+                            if not self.env.user.has_group('siantou_ems_core.group_timetable_perm_write'):
+                                raise ValidationError(_("Vous n'êtes pas autorisé à modifier les enregistrements d'emploi du temps (siantou.ems.timetable.timetable)'."))
 
         res = super(Timetable, self).write(vals)
 

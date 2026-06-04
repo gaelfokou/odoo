@@ -1149,6 +1149,11 @@ class DeSchool(http.Controller):
         timetables = list(timetables)
         for timetable in timetables:
             timetable.write({
+                'school_id': classe.school_id.id,
+                'level_id': classe.level_id.id,
+                'specialty_id': classe.specialty_id.id,
+                'option_id': classe.option_id.id,
+                'class_id': classe.id,
                 'subject_id': new_subject.id,
                 'skip_validation': True,
             })
