@@ -412,11 +412,13 @@ class TeacherTimetableAttendance(models.TransientModel):
                     if amount == 0.0:
                         break
                     if amount >= debt_id.rest_amount:
+                        last_rest_amount = 0.0
+                        last_rest_amount += debt_id.rest_amount
                         debt_id.payment_ids.create({
                             'debt_id': debt_id.id,
                             'amount': debt_id.rest_amount,
                         })
-                        amount -= debt_id.rest_amount
+                        amount -= last_rest_amount
                         amount = round(amount, 2)
                     else:
                         debt_id.payment_ids.create({
