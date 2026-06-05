@@ -110,9 +110,9 @@ class TeacherDebtPrintWizard(models.TransientModel):
                 payment = {}
                 payment['id'] = payment_id.id
                 payment['name'] = payment_id.name
-                debt['date'] = payment_id.date
-                debt['date_of_week'] = datetime.strftime(payment_id.date, DATE_FORMAT_FR)
-                debt['amount'] = payment_id.amount
+                payment['date'] = payment_id.date
+                payment['date_of_week'] = datetime.strftime(payment_id.date, DATE_FORMAT_FR)
+                payment['amount'] = payment_id.amount
                 payments.append(payment)
             debt['payments'] = payments
             key_debts[key]['amount'] += debt['amount']
