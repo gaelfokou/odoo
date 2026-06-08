@@ -43,37 +43,40 @@ export class OwlSalesDashboard extends Component {
         })
 
         this.orm = useService("orm")
+        this.user = useService("user")
 
         onWillStart(async () => {
             let self = this;
-            const years = await self.orm.searchRead("siantou.ems.core.year", []);
-            self.state.years = years
-            await years.forEach(async (year) => {
-                if (year.is_active) {
-                    self.state.year.value = year.id;
-                }
-            });
             setTimeout(async function() {
-                await self.checkGroup();
-            }, 2500);
+                const has_group_dashboard_admin = await self.user.hasGroup("siantou_ems_core.group_dashboard_admin")
+                console.log("User has_group_dashboard_admin:", has_group_dashboard_admin)
+                const years = await self.orm.searchRead("siantou.ems.core.year", [])
+                self.state.years = years
+                await years.forEach(async (year) => {
+                    if (year.is_active) {
+                        self.state.year.value = year.id;
+                    }
+                })
+                await self.checkGroup()
+            }, 2500)
         })
 
         onMounted(async () => {
     		let self = this;
             setTimeout(async function() {
                 const userId = session.uid;
-                console.log("User Id:", userId);
-                const userData = await self.orm.read("res.users", [userId]);
-                console.log("User Details:", userData);
+                console.log("User Id:", userId)
+                const userData = await self.orm.read("res.users", [userId])
+                console.log("User Details:", userData)
                 if (userData.length > 0) {
-                    self.state.userData = userData[0];
+                    self.state.userData = userData[0]
                 }
-                const groupData = await self.orm.searchRead("res.groups", [["name", "=", "Tableau de bord - admin"]]);
-                console.log("Group Details:", groupData);
+                const groupData = await self.orm.searchRead("res.groups", [["name", "=", "Tableau de bord - admin"]])
+                console.log("Group Details:", groupData)
                 if (groupData.length > 0) {
-                    self.state.groupData = groupData[0];
+                    self.state.groupData = groupData[0]
                 }
-            }, 2500);
+            }, 2500)
         })
     }
 
@@ -88,52 +91,52 @@ export class OwlSalesDashboard extends Component {
                 await self.getFiliereDatas()
                 await self.getEcoleDatas()
             }
-    	});
+    	})
 	}
 
-    async onChangeYear(){
-        await this.checkGroup();
+    async onChangeYear() {
+        await this.checkGroup()
     }
 
     async getDatasCount() {
         const classes = await this.orm.searchRead("siantou.ems.core.class", [
             ["year_id", "=", parseInt(this.state.year.value)]
-        ]);
+        ])
         let studentCount = 0
         await classes.forEach(async (classe) => {
             studentCount += classe.number_of_student
-        });
+        })
         this.state.students.value = studentCount;
-        this.state.cycles.value = await this.orm.searchCount("oe.school.course", []);
-        this.state.ecoles.value = await this.orm.searchCount("siantou.ems.core.school", []);
-        this.state.campus.value = await this.orm.searchCount("siantou.ems.core.campus", []);
-        this.state.teachers.value = await this.orm.searchCount("hr.employee", [["is_teacher", "=", true]]);
-        this.state.filieres.value = await this.orm.searchCount("siantou.ems.core.field_of_study", []);
-        console.log('----------- tototototototo years', this.state.years);
-        console.log('----------- tototototototo year', this.state.year);
-        console.log('----------- tototototototo cycles', this.state.cycles);
-        console.log('----------- tototototototo students', this.state.students);
-        console.log('----------- tototototototo ecoles', this.state.ecoles);
-        console.log('----------- tototototototo campus', this.state.campus);
-        console.log('----------- tototototototo teachers', this.state.teachers);
-        console.log('----------- tototototototo filieres', this.state.filieres);
+        this.state.cycles.value = await this.orm.searchCount("oe.school.course", [])
+        this.state.ecoles.value = await this.orm.searchCount("siantou.ems.core.school", [])
+        this.state.campus.value = await this.orm.searchCount("siantou.ems.core.campus", [])
+        this.state.teachers.value = await this.orm.searchCount("hr.employee", [["is_teacher", "=", true]])
+        this.state.filieres.value = await this.orm.searchCount("siantou.ems.core.field_of_study", [])
+        console.log('----------- tototototototo years', this.state.years)
+        console.log('----------- tototototototo year', this.state.year)
+        console.log('----------- tototototototo cycles', this.state.cycles)
+        console.log('----------- tototototototo students', this.state.students)
+        console.log('----------- tototototototo ecoles', this.state.ecoles)
+        console.log('----------- tototototototo campus', this.state.campus)
+        console.log('----------- tototototototo teachers', this.state.teachers)
+        console.log('----------- tototototototo filieres', this.state.filieres)
     }
 
     async getBarChartDatas() {
-        const cycles = await this.orm.searchRead("oe.school.course", []);
+        const cycles = await this.orm.searchRead("oe.school.course", [])
         await cycles.forEach(async (cycle) => {
             let studentCount = await this.orm.searchCount("oe.school.student", [["cycle_id", "=", cycle.id]])
             this.state.datas.push({
                 name:cycle.name,
                 value:studentCount
             })
-        });
-        console.log('----------- tototototototo datas', this.state.datas);
+        })
+        console.log('----------- tototototototo datas', this.state.datas)
     }
 
     async getTearcherDatas() {
-        const teacher_vac = await this.orm.searchCount("hr.employee", [["is_teacher", "=", true], ["is_permanent", "=", false]]);
-        const teacher_perm = await this.orm.searchCount("hr.employee", [["is_permanent", "=", true], ["is_teacher", "=", true]]);
+        const teacher_vac = await this.orm.searchCount("hr.employee", [["is_teacher", "=", true], ["is_permanent", "=", false]])
+        const teacher_perm = await this.orm.searchCount("hr.employee", [["is_permanent", "=", true], ["is_teacher", "=", true]])
         this.state.doughTearchers.push({
             name:"Enseignants permanents",
             value:teacher_perm
@@ -142,13 +145,13 @@ export class OwlSalesDashboard extends Component {
             name:"Enseignants vacataires",
             value:teacher_vac
         })
-        console.log('----------- tototototototo doughTearchers', this.state.doughTearchers);
+        console.log('----------- tototototototo doughTearchers', this.state.doughTearchers)
     }
 
     async getFiliereDatas() {
-        const filieres = await this.orm.searchRead("siantou.ems.core.field_of_study", []);
+        const filieres = await this.orm.searchRead("siantou.ems.core.field_of_study", [])
         await filieres.forEach(async (filiere) => {
-            const classes = await this.orm.searchRead("siantou.ems.core.class", [["field_of_study_id", "=", filiere.id]]);
+            const classes = await this.orm.searchRead("siantou.ems.core.class", [["field_of_study_id", "=", filiere.id]])
             let nbre = 0;
             await classes.forEach(async (classe) => {
                 nbre += classe.student_ids.length
@@ -157,17 +160,17 @@ export class OwlSalesDashboard extends Component {
                 name:filiere.name,
                 value:nbre
             })
-        });
-        console.log('----------- tototototototo doughFilieres', this.state.doughFilieres);
+        })
+        console.log('----------- tototototototo doughFilieres', this.state.doughFilieres)
     }
 
     async getEcoleDatas() {
-        const ecoles = await this.orm.searchRead("siantou.ems.core.school", []);
+        const ecoles = await this.orm.searchRead("siantou.ems.core.school", [])
         await ecoles.forEach(async (ecole) => {
             let nbre = 0
-            const filieres = await this.orm.searchRead("siantou.ems.core.field_of_study", [["school_id", "=", ecole.id]]);
+            const filieres = await this.orm.searchRead("siantou.ems.core.field_of_study", [["school_id", "=", ecole.id]])
             await filieres.forEach(async (filiere) => {
-                const classes = await this.orm.searchRead("siantou.ems.core.class", [["field_of_study_id", "=", filiere.id]]);
+                const classes = await this.orm.searchRead("siantou.ems.core.class", [["field_of_study_id", "=", filiere.id]])
                 await classes.forEach(async (classe) => {
                     nbre += classe.student_ids.length
                 })
@@ -176,8 +179,8 @@ export class OwlSalesDashboard extends Component {
                 name:ecole.name,
                 value:nbre
             })
-        });
-        console.log('----------- tototototototo doughEcoles', this.state.doughEcoles);
+        })
+        console.log('----------- tototototototo doughEcoles', this.state.doughEcoles)
     }
 
 }

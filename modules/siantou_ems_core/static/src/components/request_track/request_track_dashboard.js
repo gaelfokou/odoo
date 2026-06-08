@@ -7,7 +7,7 @@ import { useService } from "@web/core/utils/hooks"
 const { Component, useState, onWillStart } = owl
 
 export class OwlRequestTrackDashboard extends Component {
-    setup(){
+    setup() {
         this.state = useState({
             academic_information: {
                 title: 'Informations académiques',
@@ -64,24 +64,27 @@ export class OwlRequestTrackDashboard extends Component {
         })
 
         this.orm = useService("orm")
-        this.actionService = useService("action")
+        this.action = useService("action")
 
-        onWillStart(async ()=>{
-            await this.getRequestTracks()
+        onWillStart(async () => {
+            let self = this;
+            setTimeout(async function() {
+                await self.getRequestTracks()
+            }, 2500)
         })
     }
 
-    async getRequestTracks(){
+    async getRequestTracks() {
         let self = this
         Object.keys(self.state).forEach((key_type_request) => {
             Object.keys(self.state[key_type_request].data).forEach(async (key_status) => {
                 console.log(`${key_type_request} - ${key_status} : ${self.state[key_type_request].data[key_status]}`)
                 self.state[key_type_request].data[key_status].value = await this.orm.searchCount("siantou.ems.core.request.track", [["type_request", "=", key_type_request], ["status", "=", key_status]])
-            });
-        });
+            })
+        })
     }
 
-    async viewRequestTracks(type_request, status){
+    async viewRequestTracks(type_request, status) {
         console.log(`${type_request} - ${status}`)
         // let context = {group_by: ['status']}
         let context = {search_default_group_by_status: 1}
@@ -105,7 +108,7 @@ export class OwlRequestTrackDashboard extends Component {
         let name = `${title_request} ${title_status}`
         let list_view = await this.orm.searchRead("ir.model.data", [["name", "=", "view_request_track_tree"]], ["res_id"])
 
-        this.actionService.doAction({
+        this.action.doAction({
             type: "ir.actions.act_window",
             name,
             res_model: "siantou.ems.core.request.track",
