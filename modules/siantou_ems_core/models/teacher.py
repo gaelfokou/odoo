@@ -506,7 +506,12 @@ class HrEmployee(models.Model):
     @api.model
     def get_data_group(self):
         data_group = {}
-        data_group['has_group_dashboard'] = self.env.user.has_group('siantou_ems_core.group_dashboard')
+        data_group['has_group_dashboard_admin'] = self.env.user.has_group('siantou_ems_core.group_dashboard_admin')
+        group = self.env.ref('siantou_ems_core.group_dashboard_admin').id
+        group_id = self.env['res.groups'].search([
+            ('id', '=', group),
+        ], limit=1)
+        data_group['group_dashboard_admin_id'] = group_id.id if group_id else None
         return data_group
 
 class TeacherAvailability(models.Model):

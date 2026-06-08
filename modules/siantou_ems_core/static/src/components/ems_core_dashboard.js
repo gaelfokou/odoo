@@ -6,6 +6,7 @@ import { ChartRenderer } from "./chart_renderer/chart_renderer"
 import { DoughnutRenderer } from "./doughnut_renderer/doughnut_renderer"
 import { loadJS } from "@web/core/assets"
 import { useService } from "@web/core/utils/hooks";
+import { session } from "@web/session";
 const { Component, onWillStart, useRef, onMounted, useState } = owl
 
 export class OwlSalesDashboard extends Component {
@@ -37,13 +38,16 @@ export class OwlSalesDashboard extends Component {
             doughTearchers: [],
             doughFilieres: [],
             doughEcoles: [],
+            userData: null,
+            groupData: null
         })
+
         this.orm = useService("orm")
 
         onWillStart(async () => {
             let self = this;
-            const years = await this.orm.searchRead("siantou.ems.core.year", []);
-            this.state.years = years
+            const years = await self.orm.searchRead("siantou.ems.core.year", []);
+            self.state.years = years
             await years.forEach(async (year) => {
                 if (year.is_active) {
                     self.state.year.value = year.id;
@@ -53,13 +57,31 @@ export class OwlSalesDashboard extends Component {
                 await self.checkGroup();
             }, 2500);
         })
+
+        onMounted(async () => {
+    		let self = this;
+            setTimeout(async function() {
+                const userId = session.uid;
+                console.log("User Id:", userId);
+                const userData = await self.orm.read("res.users", [userId]);
+                console.log("User Details:", userData);
+                if (userData.length > 0) {
+                    self.state.userData = userData[0];
+                }
+                const groupData = await self.orm.searchRead("res.groups", [["name", "=", "Tableau de bord - admin"]]);
+                console.log("Group Details:", groupData);
+                if (groupData.length > 0) {
+                    self.state.groupData = groupData[0];
+                }
+            }, 2500);
+        })
     }
 
     async checkGroup() {
 		let self = this;
-		this.orm.call('hr.employee', 'get_data_group').then(async function(data) {
+		self.orm.call("hr.employee", "get_data_group").then(async function(data) {
 			console.log('----------- tototototototo call data', data)
-            if (data.has_group_dashboard) {
+            if (data.has_group_dashboard_admin) {
                 await self.getDatasCount()
                 await self.getBarChartDatas()
                 await self.getTearcherDatas()
@@ -98,7 +120,7 @@ export class OwlSalesDashboard extends Component {
     }
 
     async getBarChartDatas() {
-        const cycles = await this.orm.searchRead("oe.school.course",[]);
+        const cycles = await this.orm.searchRead("oe.school.course", []);
         await cycles.forEach(async (cycle) => {
             let studentCount = await this.orm.searchCount("oe.school.student", [["cycle_id", "=", cycle.id]])
             this.state.datas.push({
@@ -110,8 +132,8 @@ export class OwlSalesDashboard extends Component {
     }
 
     async getTearcherDatas() {
-        const teacher_vac = await this.orm.searchCount("hr.employee",[["is_teacher", "=", true], ["is_permanent", "=", false]]);
-        const teacher_perm = await this.orm.searchCount("hr.employee",[["is_permanent", "=", true], ["is_teacher", "=", true]]);
+        const teacher_vac = await this.orm.searchCount("hr.employee", [["is_teacher", "=", true], ["is_permanent", "=", false]]);
+        const teacher_perm = await this.orm.searchCount("hr.employee", [["is_permanent", "=", true], ["is_teacher", "=", true]]);
         this.state.doughTearchers.push({
             name:"Enseignants permanents",
             value:teacher_perm
@@ -124,9 +146,9 @@ export class OwlSalesDashboard extends Component {
     }
 
     async getFiliereDatas() {
-        const filieres = await this.orm.searchRead("siantou.ems.core.field_of_study",[]);
+        const filieres = await this.orm.searchRead("siantou.ems.core.field_of_study", []);
         await filieres.forEach(async (filiere) => {
-            const classes = await this.orm.searchRead("siantou.ems.core.class",[["field_of_study_id", "=", filiere.id]]);
+            const classes = await this.orm.searchRead("siantou.ems.core.class", [["field_of_study_id", "=", filiere.id]]);
             let nbre = 0;
             await classes.forEach(async (classe) => {
                 nbre += classe.student_ids.length
@@ -140,12 +162,12 @@ export class OwlSalesDashboard extends Component {
     }
 
     async getEcoleDatas() {
-        const ecoles = await this.orm.searchRead("siantou.ems.core.school",[]);
+        const ecoles = await this.orm.searchRead("siantou.ems.core.school", []);
         await ecoles.forEach(async (ecole) => {
             let nbre = 0
-            const filieres = await this.orm.searchRead("siantou.ems.core.field_of_study",[["school_id", "=", ecole.id]]);
+            const filieres = await this.orm.searchRead("siantou.ems.core.field_of_study", [["school_id", "=", ecole.id]]);
             await filieres.forEach(async (filiere) => {
-                const classes = await this.orm.searchRead("siantou.ems.core.class",[["field_of_study_id", "=", filiere.id]]);
+                const classes = await this.orm.searchRead("siantou.ems.core.class", [["field_of_study_id", "=", filiere.id]]);
                 await classes.forEach(async (classe) => {
                     nbre += classe.student_ids.length
                 })
