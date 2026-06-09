@@ -232,12 +232,12 @@
                 model="ir.actions.act_window">
             <field name="name">Emplois du temps</field>
             <field name="res_model">siantou.ems.timetable.timetable</field>
-            <field name="view_mode">tree,form,calendar</field>
+            <field name="view_mode">tree,calendar,form</field>
             <field name="view_ids"
                 eval="[(5, 0, 0),
                 (0, 0, {'view_mode': 'tree', 'view_id': ref('timetable_tree_view')}),
-                (0, 0, {'view_mode': 'form', 'view_id': ref('timetable_form_view')}),
-                (0, 0, {'view_mode': 'calendar', 'view_id': ref('timetable_calendar_view')})]"/>
+                (0, 0, {'view_mode': 'calendar', 'view_id': ref('timetable_calendar_view')}),
+                (0, 0, {'view_mode': 'form', 'view_id': ref('timetable_form_view')})]"/>
             <field name="domain">['|', '&amp;', '&amp;', ('group_id.is_active', '=', True), ('group_id.is_submit', '=', False), ('group_id.status', '=', 'valid'), '&amp;', '&amp;', '&amp;', ('group_parent_id.is_active', '=', True), ('group_parent_id.is_submit', '=', False), ('group_parent_id.status', '=', 'valid'), ('group_id.status', '=', 'valid'), ('date', '=', datetime.date.today()), '|', '|', ('group_id.create_uid', '=', uid), ('group_id.read_user_ids', '=', uid), ('group_id.write_user_ids', '=', uid)]</field>
             <field name="target">current</field>
             <field name="help" type="html">

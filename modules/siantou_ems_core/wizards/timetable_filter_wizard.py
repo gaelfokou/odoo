@@ -690,10 +690,10 @@ class TimetableFilterWizard(models.TransientModel):
         return {
             'name': title,
             'type': 'ir.actions.act_window',
-            'view_type': 'form',
-            'view_mode': 'tree,form,calendar',
             'res_model': 'siantou.ems.timetable.timetable',
-            'views': [(tree_view, 'tree'), (False, 'form'), (calendar_view, 'calendar')],
+            'view_type': 'form',
+            'view_mode': 'tree,calendar,form',
+            'views': [(tree_view, 'tree'), (calendar_view, 'calendar'), (False, 'form')],
             'view_id': tree_view,
             'domain': domain,
             'target': 'main',

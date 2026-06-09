@@ -49,11 +49,57 @@
                 	<field name="supervision_id"/>
                     <field name="type_cour"/>
                     <field name="group_ids" widget="many2many_tags"/>
-                    <field name="number_of_student"/>
+                    <field name="number_of_student"
+                        decoration-warning="number_of_student &gt;= 5 and number_of_student &lt; 10"
+                        decoration-danger="number_of_student &lt; 5"/>
+                    <field name="number_of_timetable"/>
                     <field name="delegate_student_ids" widget="many2many_tags"/>
 				</tree>
 			</field>
 		</record>
+
+		<!-- Affichage en vue kanban -->
+        <record id="class_kanban_view" model="ir.ui.view">
+            <field name="name">siantou_ems_core_class.kanban.view</field>
+			<field name="model">siantou.ems.core.class</field>
+            <field name="arch" type="xml">
+                <kanban class="o_kanban_mobile" sample="1">
+                    <field name="name"/>
+                    <field name="cycle_id"/>
+                    <field name="department_id"/>
+                    <field name="number_of_student"/>
+                    <field name="number_of_timetable"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div t-attf-class="oe_kanban_global_click">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <strong>
+                                            <field name="name"/>
+                                        </strong>
+                                    </div>
+                                </div>
+                                <hr class="mt8 mb8"/>
+                                <div>
+                                    <field name="cycle_id"/>
+                                </div>
+                                <div>
+                                    <field name="department_id"/>
+                                </div>
+                                <div t-attf-class="#{record.number_of_student.raw_value &lt; 5 ? 'text-danger' : record.number_of_student.raw_value &gt;= 5 and record.number_of_student.raw_value &lt; 10 ? 'text-warning' : ''}">
+                                    <span><t t-esc="'Nombre d\'étudiants : '"/></span>
+                                    <field name="number_of_student"/>
+                                </div>
+                                <div>
+                                    <span><t t-esc="'Nombre d\'emplois du temps : '"/></span>
+                                    <field name="number_of_timetable"/>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
 
         <!-- Affichage en vue formulaire -->
 		<record
@@ -123,7 +169,7 @@
                 model="ir.actions.act_window">
             <field name="name">Classes</field>
             <field name="res_model">siantou.ems.core.class</field>
-            <field name="view_mode">tree,form</field>
+            <field name="view_mode">tree,kanban,form</field>
             <field name="domain">[('year_id.is_active', '=', True)]</field>
             <field name="help" type="html">
                 <p class="o_view_nocontent_smiling_face">
