@@ -773,6 +773,7 @@ class PortalAccount(portal.CustomerPortal):
                             key_payslips[key]['timetable_id'] = worked_days_line_id.timetable_id.id
                             key_payslips[key]['rate'] = worked_days_line_id.rate
                             key_payslips[key]['amount'] = worked_days_line_id.amount
+                            key_payslips[key]['number_of_hours'] = worked_days_line_id.number_of_hours
 
         search_consumptionhours, searchbar_inputs, search_month = Helpers.consumptionhour(search=search, search_in=search_in, selected_month=selected_month)
         consumptionhours = []
@@ -951,6 +952,7 @@ class PortalAccount(portal.CustomerPortal):
             if key in key_payslips:
                 accountbalance['rate'] = key_payslips[key]['rate']
                 accountbalance['amount'] = key_payslips[key]['amount']
+                accountbalance['number_of_hours'] = key_payslips[key]['number_of_hours']
 
             accountbalance['hours_credit'] = 0.0
             accountbalance['all'] = 0.0

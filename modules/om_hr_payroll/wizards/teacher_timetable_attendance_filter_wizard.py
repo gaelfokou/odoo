@@ -263,6 +263,7 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
                             key_payslips[key]['timetable_id'] = worked_days_line_id.timetable_id.id
                             key_payslips[key]['rate'] = worked_days_line_id.rate
                             key_payslips[key]['amount'] = worked_days_line_id.amount
+                            key_payslips[key]['number_of_hours'] = worked_days_line_id.number_of_hours
                 employee_ids.append(timetable.employee_id.id)
 
         timetable_ids = [payslip['timetable_id'] for payslip in key_payslips.values()]
