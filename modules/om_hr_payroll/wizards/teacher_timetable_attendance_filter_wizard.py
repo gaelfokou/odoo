@@ -390,6 +390,7 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
             if key in key_payslips:
                 rate = key_payslips[key]['rate']
                 amount = key_payslips[key]['amount']
+                worked_hours = key_payslips[key]['number_of_hours']
 
             if not timetable.employee_id.is_permanent:
                 if self.has_rate:
