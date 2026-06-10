@@ -1068,7 +1068,7 @@ class Timetable(models.Model):
             if not self.env.user.has_group('base.user_root') and not self.env.user.has_group('base.user_admin') and self.env.user.id != 2:
                 if 'status' in vals and vals['status'] in ['present', 'permission']:
                     if not self.env.user.has_group('siantou_ems_core.group_timetable_present_perm_create_present'):
-                        raise ValidationError(_("Vous n'êtes pas autorisé à créer les enregistrements pour (status in [present, permission]) d'emploi du temps (siantou.ems.timetable.timetable)'."))
+                        raise ValidationError(_("Vous n'êtes pas autorisé à créer les enregistrements pour (status in [present, permission]) d'emploi du temps (siantou.ems.timetable.timetable)."))
 
             if 'class_id' in vals and 'subject_id' in vals:
                 classe = self.env['siantou.ems.core.class'].search([('id', '=', vals['class_id'])], limit=1)
@@ -1161,25 +1161,25 @@ class Timetable(models.Model):
                 if not self.env.user.has_group('base.user_root') and not self.env.user.has_group('base.user_admin') and self.env.user.id != 2:
                     if timetable.status in ['present', 'permission']:
                         if not self.env.user.has_group('siantou_ems_core.group_timetable_present_perm_write'):
-                            raise ValidationError(_("Vous n'êtes pas autorisé à modifier les enregistrements (status in [present, permission]) d'emploi du temps (siantou.ems.timetable.timetable)'."))
+                            raise ValidationError(_("Vous n'êtes pas autorisé à modifier les enregistrements (status in [present, permission]) d'emploi du temps (siantou.ems.timetable.timetable)."))
                     elif timetable.status == 'exception':
                         if 'status' in vals and vals['status'] in ['present', 'permission']:
                             if not self.env.user.has_group('siantou_ems_core.group_timetable_exception_perm_write'):
-                                raise ValidationError(_("Vous n'êtes pas autorisé à modifier les enregistrements (status = exception) d'emploi du temps (siantou.ems.timetable.timetable)'."))
+                                raise ValidationError(_("Vous n'êtes pas autorisé à modifier les enregistrements (status = exception) d'emploi du temps (siantou.ems.timetable.timetable)."))
                             if not self.env.user.has_group('siantou_ems_core.group_timetable_present_perm_write_present'):
-                                raise ValidationError(_("Vous n'êtes pas autorisé à modifier les enregistrements pour (status in [present, permission]) d'emploi du temps (siantou.ems.timetable.timetable)'."))
+                                raise ValidationError(_("Vous n'êtes pas autorisé à modifier les enregistrements pour (status in [present, permission]) d'emploi du temps (siantou.ems.timetable.timetable)."))
                         else:
                             if not self.env.user.has_group('siantou_ems_core.group_timetable_exception_perm_write'):
-                                raise ValidationError(_("Vous n'êtes pas autorisé à modifier les enregistrements (status = exception) d'emploi du temps (siantou.ems.timetable.timetable)'."))
+                                raise ValidationError(_("Vous n'êtes pas autorisé à modifier les enregistrements (status = exception) d'emploi du temps (siantou.ems.timetable.timetable)."))
                     else:
                         if 'status' in vals and vals['status'] in ['present', 'permission']:
                             if not self.env.user.has_group('siantou_ems_core.group_timetable_perm_write'):
-                                raise ValidationError(_("Vous n'êtes pas autorisé à modifier les enregistrements d'emploi du temps (siantou.ems.timetable.timetable)'."))
+                                raise ValidationError(_("Vous n'êtes pas autorisé à modifier les enregistrements d'emploi du temps (siantou.ems.timetable.timetable)."))
                             if not self.env.user.has_group('siantou_ems_core.group_timetable_present_perm_write_present'):
-                                raise ValidationError(_("Vous n'êtes pas autorisé à modifier les enregistrements pour (status in [present, permission]) d'emploi du temps (siantou.ems.timetable.timetable)'."))
+                                raise ValidationError(_("Vous n'êtes pas autorisé à modifier les enregistrements pour (status in [present, permission]) d'emploi du temps (siantou.ems.timetable.timetable)."))
                         else:
                             if not self.env.user.has_group('siantou_ems_core.group_timetable_perm_write'):
-                                raise ValidationError(_("Vous n'êtes pas autorisé à modifier les enregistrements d'emploi du temps (siantou.ems.timetable.timetable)'."))
+                                raise ValidationError(_("Vous n'êtes pas autorisé à modifier les enregistrements d'emploi du temps (siantou.ems.timetable.timetable)."))
 
         res = super(Timetable, self).write(vals)
 
@@ -1198,13 +1198,13 @@ class Timetable(models.Model):
             if not self.env.user.has_group('base.user_root') and not self.env.user.has_group('base.user_admin') and self.env.user.id != 2:
                 if timetable.status in ['present', 'permission']:
                     if not self.env.user.has_group('siantou_ems_core.group_timetable_present_perm_copy'):
-                        raise ValidationError(_("Vous n'êtes pas autorisé à dupliquer les enregistrements (status in [present, permission]) d'emploi du temps (siantou.ems.timetable.timetable)'."))
+                        raise ValidationError(_("Vous n'êtes pas autorisé à dupliquer les enregistrements (status in [present, permission]) d'emploi du temps (siantou.ems.timetable.timetable)."))
                 elif timetable.status == 'exception':
                     if not self.env.user.has_group('siantou_ems_core.group_timetable_exception_perm_copy'):
-                        raise ValidationError(_("Vous n'êtes pas autorisé à dupliquer les enregistrements (status = exception) d'emploi du temps (siantou.ems.timetable.timetable)'."))
+                        raise ValidationError(_("Vous n'êtes pas autorisé à dupliquer les enregistrements (status = exception) d'emploi du temps (siantou.ems.timetable.timetable)."))
                 else:
                     if not self.env.user.has_group('siantou_ems_core.group_timetable_perm_copy'):
-                        raise ValidationError(_("Vous n'êtes pas autorisé à dupliquer les enregistrements d'emploi du temps (siantou.ems.timetable.timetable)'."))
+                        raise ValidationError(_("Vous n'êtes pas autorisé à dupliquer les enregistrements d'emploi du temps (siantou.ems.timetable.timetable)."))
 
         default = dict(default or {})
 
@@ -1225,13 +1225,13 @@ class Timetable(models.Model):
             if not self.env.user.has_group('base.user_root') and not self.env.user.has_group('base.user_admin') and self.env.user.id != 2:
                 if timetable.status in ['present', 'permission']:
                     if not self.env.user.has_group('siantou_ems_core.group_timetable_present_perm_unlink'):
-                        raise ValidationError(_("Vous n'êtes pas autorisé à supprimer les enregistrements (status in [present, permission]) d'emploi du temps (siantou.ems.timetable.timetable)'."))
+                        raise ValidationError(_("Vous n'êtes pas autorisé à supprimer les enregistrements (status in [present, permission]) d'emploi du temps (siantou.ems.timetable.timetable)."))
                 elif timetable.status == 'exception':
                     if not self.env.user.has_group('siantou_ems_core.group_timetable_exception_perm_unlink'):
-                        raise ValidationError(_("Vous n'êtes pas autorisé à supprimer les enregistrements (status = exception) d'emploi du temps (siantou.ems.timetable.timetable)'."))
+                        raise ValidationError(_("Vous n'êtes pas autorisé à supprimer les enregistrements (status = exception) d'emploi du temps (siantou.ems.timetable.timetable)."))
                 else:
                     if not self.env.user.has_group('siantou_ems_core.group_timetable_perm_unlink'):
-                        raise ValidationError(_("Vous n'êtes pas autorisé à supprimer les enregistrements d'emploi du temps (siantou.ems.timetable.timetable)'."))
+                        raise ValidationError(_("Vous n'êtes pas autorisé à supprimer les enregistrements d'emploi du temps (siantou.ems.timetable.timetable)."))
 
         res = super(Timetable, self).unlink()
 

@@ -391,8 +391,14 @@ class HrPayslip(models.Model):
     def write(self, vals):
         if not self.env.user.has_group('base.user_root') and not self.env.user.has_group('base.user_admin') and self.env.user.id != 2:
             if 'line_ids' not in vals or 'number' not in vals:
-                if not self.env.user.has_group('om_hr_payroll.group_hr_payroll_perm_write'):
-                    raise ValidationError(_("Vous n'êtes pas autorisé à modifier les enregistrements 'Bulletin de paie (hr.payslip)'."))
+                if 'worked_days_line_ids' in vals:
+                    if not self.env.user.has_group('om_hr_payroll.group_hr_payroll_perm_write'):
+                        raise ValidationError(_("Vous n'êtes pas autorisé à modifier les enregistrements de bulletin de paie (hr.payslip)."))
+                    if not self.env.user.has_group('om_hr_payroll.group_hr_payroll_worked_days_perm_write'):
+                        raise ValidationError(_("Vous n'êtes pas autorisé à modifier les enregistrements (worked_days) de bulletin de paie (hr.payslip)."))
+                else:
+                    if not self.env.user.has_group('om_hr_payroll.group_hr_payroll_perm_write'):
+                        raise ValidationError(_("Vous n'êtes pas autorisé à modifier les enregistrements de bulletin de paie (hr.payslip)."))
 
         res = super(HrPayslip, self).write(vals)
 
@@ -401,7 +407,7 @@ class HrPayslip(models.Model):
     def copy(self, default=None):
         if not self.env.user.has_group('base.user_root') and not self.env.user.has_group('base.user_admin') and self.env.user.id != 2:
             if not self.env.user.has_group('om_hr_payroll.group_hr_payroll_perm_copy'):
-                raise ValidationError(_("Vous n'êtes pas autorisé à dupliquer les enregistrements 'Bulletin de paie (hr.payslip)'."))
+                raise ValidationError(_("Vous n'êtes pas autorisé à dupliquer les enregistrements de bulletin de paie (hr.payslip)."))
 
         default = dict(default or {})
 
@@ -1308,7 +1314,7 @@ class HrPayslip(models.Model):
     def unlink(self):
         if not self.env.user.has_group('base.user_root') and not self.env.user.has_group('base.user_admin') and self.env.user.id != 2:
             if not self.env.user.has_group('om_hr_payroll.group_hr_payroll_perm_unlink'):
-                raise ValidationError(_("Vous n'êtes pas autorisé à supprimer les enregistrements 'Bulletin de paie (hr.payslip)'."))
+                raise ValidationError(_("Vous n'êtes pas autorisé à supprimer les enregistrements de bulletin de paie (hr.payslip)."))
 
         if any(self.filtered(lambda payslip: payslip.state not in ('draft', 'cancel'))):
             raise UserError(_('You cannot delete a payslip which is not draft or cancelled!'))

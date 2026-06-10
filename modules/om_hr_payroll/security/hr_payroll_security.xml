@@ -48,6 +48,12 @@
             <field name="implied_ids" eval="[(4, ref('base.group_system'))]"/>
             <field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
         </record>
+        <record id="group_hr_payroll_worked_days_perm_write" model="res.groups">
+            <field name="name">Modifier (worked_days) - Bulletin de paie</field>
+            <field name="category_id" ref="base.module_category_payroll_localization"/>
+            <field name="implied_ids" eval="[(4, ref('base.group_system'))]"/>
+            <field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+        </record>
         <record id="group_hr_payroll_perm_copy" model="res.groups">
             <field name="name">Dupliquer - Bulletin de paie</field>
             <field name="category_id" ref="base.module_category_payroll_localization"/>
