@@ -973,9 +973,11 @@ class PortalAccount(portal.CustomerPortal):
                         if key_class not in key_extended_hours:
                             key_extended_hours[key_class] = {}
                             key_extended_hours[key_class][key_subject] = accountbalance['done'] - accountbalance['hours_credit']
+                            key_extended_hours[key_class][key_subject] = round(key_extended_hours[key_class][key_subject], 2)
                         else:
                             if key_subject not in key_extended_hours[key_class]:
                                 key_extended_hours[key_class][key_subject] = accountbalance['done'] - accountbalance['hours_credit']
+                                key_extended_hours[key_class][key_subject] = round(key_extended_hours[key_class][key_subject], 2)
                         if accountbalance['original_number_of_hours'] > key_extended_hours[key_class][key_subject]:
                             accountbalance['original_number_of_hours'] = accountbalance['original_number_of_hours'] - key_extended_hours[key_class][key_subject]
                             accountbalance['original_number_of_hours'] = round(accountbalance['original_number_of_hours'], 2)

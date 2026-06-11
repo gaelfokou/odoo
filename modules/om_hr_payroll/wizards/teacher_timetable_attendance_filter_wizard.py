@@ -425,9 +425,11 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
                         if key_class not in key_extended_hours:
                             key_extended_hours[key_class] = {}
                             key_extended_hours[key_class][key_subject] = total_done - hours_credit
+                            key_extended_hours[key_class][key_subject] = round(key_extended_hours[key_class][key_subject], 2)
                         else:
                             if key_subject not in key_extended_hours[key_class]:
                                 key_extended_hours[key_class][key_subject] = total_done - hours_credit
+                                key_extended_hours[key_class][key_subject] = round(key_extended_hours[key_class][key_subject], 2)
                         if self.refundable_additional:
                             if key_extended_hours[key_class][key_subject] == 0.0:
                                 continue
