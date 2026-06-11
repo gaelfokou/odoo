@@ -273,6 +273,6 @@ class TeacherHourlyRate(models.Model):
             record.name = name
 
     @api.onchange('hourly_rate_id')
-    def _onchange_name(self):
+    def _onchange_rate(self):
         for record in self:
             record.rate = record.hourly_rate_id.rate
