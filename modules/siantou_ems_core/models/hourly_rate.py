@@ -63,6 +63,12 @@ class HourlyRate(models.Model):
         required=True
     )
 
+    teacher_hourly_rate_ids = fields.One2many(
+        'siantou.ems.core.teacher.hourly.rate',
+        'hourly_rate_id',
+        'Taux horaires de l\'enseignant'
+    )
+
     _sql_constraints = [
         ('unique_school_cycle_level_diplome_availability', 'unique(school_id,cycle_id,level_id,diplome_availability_id)', 'L\'école, le cursus ou cycle, le niveau, et le diplôme doivent être uniques.'),
     ]
@@ -116,6 +122,38 @@ class HourlyRate(models.Model):
             name = name.strip()
             name = name.upper()
             record.name = name
+
+    def update_hourly_rate(self, hourly_rate):
+        try:
+            hourly_rate.write({
+                'cycle_id': hourly_rate.cycle_id.id,
+            })
+            for teacher_hourly_rate_id in hourly_rate.teacher_hourly_rate_ids:
+                teacher_hourly_rate_id.write({
+                    'hourly_rate_id': teacher_hourly_rate_id.hourly_rate_id.id,
+                })
+            # self.env.cr.commit()
+        except psycopg2.errors.NotNullViolation as error:
+            _logger.info(f'----------- tototototototo Exception {error} -----------')
+        except psycopg2.Error as error:
+            _logger.info(f'----------- tototototototo Exception {error} -----------')
+        except Exception as error:
+            _logger.info(f'----------- tototototototo Exception {error} -----------')
+
+    def action_update_all_hourly_rate(self):
+        active_ids = self.env.context.get('active_ids', [])
+        hourly_rates = self.env['siantou.ems.core.hourly.rate'].browse(active_ids)
+        hourly_rates = list(hourly_rates)
+        if len(active_ids) == 0:
+            raise UserError('Aucune donnée sélectionnée')
+
+        for hourly_rate in hourly_rates:
+            self.update_hourly_rate(hourly_rate)
+
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'reload',
+        }
 
 class TeacherHourlyRate(models.Model):
     _name = 'siantou.ems.core.teacher.hourly.rate'

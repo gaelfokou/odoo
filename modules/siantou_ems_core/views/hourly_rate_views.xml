@@ -6,6 +6,12 @@
             <field name="model">siantou.ems.core.hourly.rate</field>
             <field name="arch" type="xml">
                 <tree string="Taux horaires standards">
+                    <header>
+                        <button name="action_update_all_hourly_rate" 
+                            type="object" 
+                            string="Mettre à jour les taux horaires" 
+                            class="oe_highlight"/>
+                    </header>
                     <!-- <field name="name"/> -->
                     <field name="school_id"/>
                     <field name="cycle_id"/>
