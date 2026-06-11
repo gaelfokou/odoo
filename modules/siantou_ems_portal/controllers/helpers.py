@@ -968,12 +968,12 @@ class Helpers:
                                 timetables[monday][key][i].append([d for d in data if d['id'] == int(v)][0])
 
             monday = datetime.strptime(f"{monday}", DATE_FORMAT).date()
-            saturday = monday + timedelta(days=5)
+            sunday = monday + timedelta(days=6)
             monday_fr = datetime.strftime(monday, DATE_FORMAT_FR)
-            saturday_fr = datetime.strftime(saturday, DATE_FORMAT_FR)
+            sunday_fr = datetime.strftime(sunday, DATE_FORMAT_FR)
             monday = datetime.strftime(monday, DATE_FORMAT)
-            saturday = '{} - {}'.format(monday_fr, saturday_fr)
-            timetables[saturday] = timetables[monday]
+            sunday = '{} - {}'.format(monday_fr, sunday_fr)
+            timetables[sunday] = timetables[monday]
             del(timetables[monday])
 
         _logger.info(f'----------- tototototototo timetables {timetables} -----------')

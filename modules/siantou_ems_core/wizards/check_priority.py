@@ -110,12 +110,12 @@ class CheckPriority(models.Model):
     def get_assigned_hours(self, employee, date):
 
         monday_of_week = date - timedelta(days=date.weekday())
-        saturday_of_week = monday_of_week + timedelta(days=5)
+        sunday_of_week = monday_of_week + timedelta(days=6)
 
         # Rechercher toutes les lignes d'emploi du temps pour cet enseignant pour cette période (lundi - samedi)
         timetables = self.env['siantou.ems.timetable.timetable'].search([
             ('date', '>=', monday_of_week),
-            ('date', '<=', saturday_of_week),
+            ('date', '<=', sunday_of_week),
             ('employee_id', '=', employee.id)
         ])
 

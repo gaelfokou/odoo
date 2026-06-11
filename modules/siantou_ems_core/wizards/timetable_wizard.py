@@ -206,7 +206,7 @@ class TimetableWizard(models.TransientModel):
                                             start_time = first_time + timedelta(days=0)
                                             if start_time.weekday() != 0:
                                                 start_time = start_time - timedelta(days=start_time.weekday())
-                                            end_time = start_time + timedelta(days=5)
+                                            end_time = start_time + timedelta(days=6)
                                             weekly_hours = min(4, subject_hours_credit)
                                             subject_hours_credit = subject_hours_credit - weekly_hours
                                             if subject.shared_subject:

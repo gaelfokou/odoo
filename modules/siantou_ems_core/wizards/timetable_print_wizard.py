@@ -726,7 +726,7 @@ class TimetablePrintWizard(models.TransientModel):
         n = 0.0
         current_data = []
         current_hours = []
-        key_timetables = {}
+        timetables = {}
         df = {}
 
         for i in range(len(data)):
@@ -803,8 +803,8 @@ class TimetablePrintWizard(models.TransientModel):
             else:
                 monday = d['date'] - timedelta(days=d['date'].weekday())
             monday = datetime.strftime(monday, DATE_FORMAT)
-            if monday not in key_timetables:
-                key_timetables[monday] = {
+            if monday not in timetables:
+                timetables[monday] = {
                     'Heure': [hour for hour in current_hours],
                     'Lundi': [],
                     'Mardi': [],
@@ -815,20 +815,20 @@ class TimetablePrintWizard(models.TransientModel):
                     'Dimanche': [],
                 }
 
-                for i in range(len(key_timetables[monday]['Heure'])):
-                    for key in key_timetables[monday].keys():
+                for i in range(len(timetables[monday]['Heure'])):
+                    for key in timetables[monday].keys():
                         if key == 'Heure':
                             continue
-                        key_timetables[monday][key].append(np.nan)
+                        timetables[monday][key].append(np.nan)
             if monday not in df:
-                df[monday] = pd.DataFrame(key_timetables[monday], dtype=str)
+                df[monday] = pd.DataFrame(timetables[monday], dtype=str)
             while TimetablePrintWizard.increment_float_time(d['start_time']) < TimetablePrintWizard.increment_float_time(d['end_time']):
                 if TimetablePrintWizard.increment_float_time(d['start_time'], n) == 0.0:
                     h = '{}-{}'.format(TimetablePrintWizard.increment_float_time(d['start_time']), TimetablePrintWizard.increment_float_time(d['end_time']))
                     for i, row in df[monday].iterrows():
-                        if h == key_timetables[monday]['Heure'][i]:
+                        if h == timetables[monday]['Heure'][i]:
                             for j, column in enumerate(df[monday].columns):
-                                for k, key in enumerate(key_timetables[monday].keys()):
+                                for k, key in enumerate(timetables[monday].keys()):
                                     if k == d['date'].weekday() + 1:
                                         if column == key:
                                             if TimetablePrintWizard.is_float(str(df[monday].loc[i, column])) and np.isnan(float(str(df[monday].loc[i, column]))):
@@ -841,9 +841,9 @@ class TimetablePrintWizard(models.TransientModel):
                     if TimetablePrintWizard.increment_float_time(d['start_time'], n) < TimetablePrintWizard.increment_float_time(d['end_time']):
                         h = '{}-{}'.format(TimetablePrintWizard.increment_float_time(d['start_time']), TimetablePrintWizard.increment_float_time(d['start_time'], n))
                         for i, row in df[monday].iterrows():
-                            if h == key_timetables[monday]['Heure'][i]:
+                            if h == timetables[monday]['Heure'][i]:
                                 for j, column in enumerate(df[monday].columns):
-                                    for k, key in enumerate(key_timetables[monday].keys()):
+                                    for k, key in enumerate(timetables[monday].keys()):
                                         if k == d['date'].weekday() + 1:
                                             if column == key:
                                                 if TimetablePrintWizard.is_float(str(df[monday].loc[i, column])) and np.isnan(float(str(df[monday].loc[i, column]))):
@@ -855,9 +855,9 @@ class TimetablePrintWizard(models.TransientModel):
                     else:
                         h = '{}-{}'.format(TimetablePrintWizard.increment_float_time(d['start_time']), TimetablePrintWizard.increment_float_time(d['end_time']))
                         for i, row in df[monday].iterrows():
-                            if h == key_timetables[monday]['Heure'][i]:
+                            if h == timetables[monday]['Heure'][i]:
                                 for j, column in enumerate(df[monday].columns):
-                                    for k, key in enumerate(key_timetables[monday].keys()):
+                                    for k, key in enumerate(timetables[monday].keys()):
                                         if k == d['date'].weekday() + 1:
                                             if column == key:
                                                 if TimetablePrintWizard.is_float(str(df[monday].loc[i, column])) and np.isnan(float(str(df[monday].loc[i, column]))):
@@ -870,27 +870,27 @@ class TimetablePrintWizard(models.TransientModel):
         for monday in df.keys():
             df[monday].replace(np.nan, '-', inplace=True)
 
-            for key in key_timetables[monday].keys():
-                key_timetables[monday][key] = list(df[monday][key])
+            for key in timetables[monday].keys():
+                timetables[monday][key] = list(df[monday][key])
                 if key != 'Heure':
-                    for i, vals in enumerate(key_timetables[monday][key]):
-                        key_timetables[monday][key][i] = []
+                    for i, vals in enumerate(timetables[monday][key]):
+                        timetables[monday][key][i] = []
                         if vals != '-':
                             for v in vals.split('-'):
-                                key_timetables[monday][key][i].append([d for d in data if d['id'] == int(v)][0])
+                                timetables[monday][key][i].append([d for d in data if d['id'] == int(v)][0])
 
             monday = datetime.strptime(f"{monday}", DATE_FORMAT).date()
-            saturday = monday + timedelta(days=5)
+            sunday = monday + timedelta(days=6)
             monday_fr = datetime.strftime(monday, DATE_FORMAT_FR)
-            saturday_fr = datetime.strftime(saturday, DATE_FORMAT_FR)
+            sunday_fr = datetime.strftime(sunday, DATE_FORMAT_FR)
             monday = datetime.strftime(monday, DATE_FORMAT)
-            saturday = '{} - {}'.format(monday_fr, saturday_fr)
-            key_timetables[saturday] = key_timetables[monday]
-            del(key_timetables[monday])
+            sunday = '{} - {}'.format(monday_fr, sunday_fr)
+            timetables[sunday] = timetables[monday]
+            del(timetables[monday])
 
-        _logger.info(f'----------- tototototototo key_timetables {key_timetables} -----------')
+        _logger.info(f'----------- tototototototo timetables {timetables} -----------')
 
-        return key_timetables
+        return timetables
 
     def convert_number_to_weekday(self, number):
         if number == '0':
