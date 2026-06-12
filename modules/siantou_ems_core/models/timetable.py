@@ -1054,6 +1054,11 @@ class Timetable(models.Model):
                                 'end_time': first_timetable.end_time,
                                 'group_id': first_timetable.group_id.id,
                             })
+
+            timetable.class_id.write({
+                'specialty_id': timetable.class_id.specialty_id.id,
+            })
+
             # self.env.cr.commit()
         except psycopg2.errors.NotNullViolation as error:
             _logger.info(f'----------- tototototototo Exception {error} -----------')
@@ -1221,6 +1226,8 @@ class Timetable(models.Model):
             timetables = self.env['siantou.ems.timetable.timetable'].browse(self.ids)
             timetables = list(timetables)
 
+        class_id = None
+
         for timetable in timetables:
             if not self.env.user.has_group('base.user_root') and not self.env.user.has_group('base.user_admin') and self.env.user.id != 2:
                 if timetable.status in ['present', 'permission']:
@@ -1233,7 +1240,14 @@ class Timetable(models.Model):
                     if not self.env.user.has_group('siantou_ems_core.group_timetable_perm_unlink'):
                         raise ValidationError(_("Vous n'êtes pas autorisé à supprimer les enregistrements d'emploi du temps (siantou.ems.timetable.timetable)."))
 
+            class_id = timetable.class_id if timetable.class_id.id else None
+
         res = super(Timetable, self).unlink()
+
+        if class_id:
+            class_id.write({
+                'specialty_id': class_id.specialty_id.id,
+            })
 
         return res
 
