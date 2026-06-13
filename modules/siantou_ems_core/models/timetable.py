@@ -942,7 +942,7 @@ class Timetable(models.Model):
                 ('year_id', '=', record.group_id.semester_id.year_id.id),
                 ('employee_id', '=', record.employee_id.id),
                 ('date', '=', record.date),
-            ]).filtered(lambda rec: not (rec.start_time >= record.end_time or rec.end_time <= record.start_time or (rec.class_id.level_id.id == record.class_id.level_id.id and rec.start_time == record.start_time and rec.end_time == record.end_time)))
+            ]).filtered(lambda rec: not (rec.start_time >= record.end_time or rec.end_time <= record.start_time or (rec.class_id.level_id.id == record.class_id.level_id.id and rec.class_id.type_cour == record.class_id.type_cour and rec.start_time == record.start_time and rec.end_time == record.end_time)))
             timetables = list(timetables)
             if len(timetables) > 0:
                 validation_error_message = """
@@ -1057,6 +1057,10 @@ class Timetable(models.Model):
 
             timetable.class_id.write({
                 'specialty_id': timetable.class_id.specialty_id.id,
+            })
+
+            timetable.employee_id.write({
+                'is_teacher': timetable.employee_id.is_teacher,
             })
 
             # self.env.cr.commit()
@@ -1227,6 +1231,7 @@ class Timetable(models.Model):
             timetables = list(timetables)
 
         class_id = None
+        employee_id = None
 
         for timetable in timetables:
             if not self.env.user.has_group('base.user_root') and not self.env.user.has_group('base.user_admin') and self.env.user.id != 2:
@@ -1241,12 +1246,18 @@ class Timetable(models.Model):
                         raise ValidationError(_("Vous n'êtes pas autorisé à supprimer les enregistrements d'emploi du temps (siantou.ems.timetable.timetable)."))
 
             class_id = timetable.class_id if timetable.class_id.id else None
+            employee_id = timetable.employee_id if timetable.employee_id.id else None
 
         res = super(Timetable, self).unlink()
 
         if class_id:
             class_id.write({
                 'specialty_id': class_id.specialty_id.id,
+            })
+
+        if employee_id:
+            employee_id.write({
+                'is_teacher': employee_id.is_teacher,
             })
 
         return res

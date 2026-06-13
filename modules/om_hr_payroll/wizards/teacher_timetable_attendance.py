@@ -204,6 +204,13 @@ class TeacherTimetableAttendance(models.TransientModel):
         default=0.0,
     )
 
+    status_attendance = fields.Selection([
+        ('paid', 'Payé'),
+        ('unpaid', 'Non payé'),
+    ], 'Statut',
+        # default='unpaid',
+    )
+
     def _default_start_date(self):
         start_date = date.today().replace(day=1)
         return start_date
@@ -402,30 +409,31 @@ class TeacherTimetableAttendance(models.TransientModel):
             from_date = teacher_timetable_attendance_data[key]['start_date']
             to_date = teacher_timetable_attendance_data[key]['end_date']
             amount = teacher_timetable_attendance_data[key]['amount']
-            debt_ids = self.env['teacher.debt'].search([
-                ('employee_id', '=', teacher_timetable_attendance_data[key]['id']),
-                ('rest_amount', '>', 0.0),
-            ])
-            debt_ids = list(debt_ids)
-            if len(debt_ids) > 0:
-                for debt_id in debt_ids:
-                    if amount == 0.0:
-                        break
-                    if amount >= debt_id.rest_amount:
-                        last_rest_amount = 0.0
-                        last_rest_amount += debt_id.rest_amount
-                        debt_id.payment_ids.create({
-                            'debt_id': debt_id.id,
-                            'amount': debt_id.rest_amount,
-                        })
-                        amount -= last_rest_amount
-                        amount = round(amount, 2)
-                    else:
-                        debt_id.payment_ids.create({
-                            'debt_id': debt_id.id,
-                            'amount': amount,
-                        })
-                        amount = 0.0
+            if not data['docdata']['status_attendance'] or data['docdata']['status_attendance'] == 'unpaid':
+                debt_ids = self.env['teacher.debt'].search([
+                    ('employee_id', '=', teacher_timetable_attendance_data[key]['id']),
+                    ('rest_amount', '>', 0.0),
+                ])
+                debt_ids = list(debt_ids)
+                if len(debt_ids) > 0:
+                    for debt_id in debt_ids:
+                        if amount == 0.0:
+                            break
+                        if amount >= debt_id.rest_amount:
+                            last_rest_amount = 0.0
+                            last_rest_amount += debt_id.rest_amount
+                            debt_id.payment_ids.create({
+                                'debt_id': debt_id.id,
+                                'amount': debt_id.rest_amount,
+                            })
+                            amount -= last_rest_amount
+                            amount = round(amount, 2)
+                        else:
+                            debt_id.payment_ids.create({
+                                'debt_id': debt_id.id,
+                                'amount': amount,
+                            })
+                            amount = 0.0
             timetables = teacher_timetable_attendance_data[key]['data']
             for timetable in timetables:
                 if 'employee_id' in timetable:

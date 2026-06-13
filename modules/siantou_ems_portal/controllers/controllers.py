@@ -1445,6 +1445,8 @@ class PortalAccount(portal.CustomerPortal):
             ('group_parent_id.status', '=', 'valid'),
             ('group_id.status', '=', 'valid'),
             ('is_active', '=', True),
+            ('level_id', '=', timetable.level_id.id),
+            ('type_cour', '=', timetable.type_cour),
             ('employee_id', '=', timetable.employee_id.id),
             ('date', '=', timetable.date),
             ('start_time', '=', timetable.start_time),

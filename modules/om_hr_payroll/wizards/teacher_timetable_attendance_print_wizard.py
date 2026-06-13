@@ -104,6 +104,7 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
 
         sort_type = None
         is_refundable = None
+        status_attendance = None
         is_permanent = False
         key_teacher_timetable_attendances = {}
         for search_teacher_timetable_attendance in search_teacher_timetable_attendances:
@@ -129,8 +130,10 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
                 key_teacher_timetable_attendances[key]['end_date'] = search_teacher_timetable_attendance.end_date
                 key_teacher_timetable_attendances[key]['sort_type'] = search_teacher_timetable_attendance.sort_type
                 key_teacher_timetable_attendances[key]['is_refundable'] = search_teacher_timetable_attendance.is_refundable
+                key_teacher_timetable_attendances[key]['status_attendance'] = search_teacher_timetable_attendance.status_attendance
                 sort_type = search_teacher_timetable_attendance.sort_type
                 is_refundable = search_teacher_timetable_attendance.is_refundable
+                status_attendance = search_teacher_timetable_attendance.status_attendance
                 is_permanent = search_teacher_timetable_attendance.employee_id.is_permanent
             teacher_timetable_attendance = {}
             teacher_timetable_attendance['id'] = search_teacher_timetable_attendance.id
@@ -361,14 +364,15 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
             key_teacher_timetable_attendances[key]['net_amount'] = 0.0
             key_teacher_timetable_attendances[key]['net_amount'] += key_teacher_timetable_attendances[key]['amount']
             key_teacher_timetable_attendances[key]['rest_amount'] = 0.0
-            debt_ids = self.env['teacher.debt'].search([
-                ('employee_id', '=', key_teacher_timetable_attendances[key]['id']),
-                ('rest_amount', '>', 0.0),
-            ])
-            debt_ids = list(debt_ids)
-            if len(debt_ids) > 0:
-                for debt_id in debt_ids:
-                    key_teacher_timetable_attendances[key]['rest_amount'] += debt_id.rest_amount
+            if not status_attendance or status_attendance == 'unpaid':
+                debt_ids = self.env['teacher.debt'].search([
+                    ('employee_id', '=', key_teacher_timetable_attendances[key]['id']),
+                    ('rest_amount', '>', 0.0),
+                ])
+                debt_ids = list(debt_ids)
+                if len(debt_ids) > 0:
+                    for debt_id in debt_ids:
+                        key_teacher_timetable_attendances[key]['rest_amount'] += debt_id.rest_amount
             key_teacher_timetable_attendances[key]['net_amount'] -= key_teacher_timetable_attendances[key]['rest_amount']
             if key_teacher_timetable_attendances[key]['net_amount'] < 0.0:
                 key_teacher_timetable_attendances[key]['net_amount'] = 0.0
@@ -420,6 +424,7 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
                 'total_rest_amount': total_rest_amount,
                 'sort_type': sort_type,
                 'is_refundable': is_refundable,
+                'status_attendance': status_attendance,
             }
         }
 
