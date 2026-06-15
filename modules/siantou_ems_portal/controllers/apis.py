@@ -74,6 +74,8 @@ class ApiAccount(http.Controller):
             timetable['option_name'] = search_timetable.option_id.name
             timetable['class_id'] = search_timetable.class_id.id
             timetable['class_name'] = search_timetable.class_id.name
+            timetable['class_group_id'] = search_timetable.class_group_id.id if search_timetable.class_group_id.id else None
+            timetable['class_group_name'] = search_timetable.class_group_id.name if search_timetable.class_group_id.id else ''
             timetable['department_id'] = search_timetable.department_id.id
             timetable['department_name'] = search_timetable.department_id.name
             timetable['school_id'] = search_timetable.school_id.id

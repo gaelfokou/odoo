@@ -425,6 +425,7 @@ class StudentEnrollment(models.Model):
 
             if 'class_id' not in vals:
                 vals['class_id'] = student_enroll.class_id.id
+                vals['class_name'] = student_enroll.class_id.name
             if 'school_id' not in vals:
                 vals['school_id'] = student_enroll.school_id.id
             if 'field_of_study_id' not in vals:

@@ -488,7 +488,10 @@ class ProgressReport(models.Model):
 
                 end_time = ProgressReport.convert_float_to_time(search_progressreport.end_time)
                 start_time = ProgressReport.convert_float_to_time(search_progressreport.start_time)
-                key = '{}-{}-{}-{}'.format(search_progressreport.class_id.id, search_progressreport.date, start_time, end_time)
+                if search_progressreport.class_group_id.id:
+                    key = '{}-{}-{}-{}-{}'.format(search_progressreport.class_id.id, search_progressreport.class_group_id.id, search_progressreport.date, start_time, end_time)
+                else:
+                    key = '{}-{}-{}-{}'.format(search_progressreport.class_id.id, search_progressreport.date, start_time, end_time)
                 if key not in key_progressreports:
                     key_progressreports[key] = search_progressreport
                 else:
@@ -508,6 +511,8 @@ class ProgressReport(models.Model):
                 progressreport['option_name'] = search_progressreport.option_id.name
                 progressreport['class_id'] = search_progressreport.class_id.id
                 progressreport['class_name'] = search_progressreport.class_id.name
+                progressreport['class_group_id'] = search_progressreport.class_group_id.id if search_progressreport.class_group_id.id else None
+                progressreport['class_group_name'] = search_progressreport.class_group_id.name if search_progressreport.class_group_id.id else ''
                 progressreport['department_id'] = search_progressreport.department_id.id
                 progressreport['department_name'] = search_progressreport.department_id.name
                 progressreport['subject_id'] = search_progressreport.subject_id.id
@@ -546,12 +551,19 @@ class ProgressReport(models.Model):
             sorted_data = copy.deepcopy(data)
 
             for d in sorted_data:
-                key_class = '{}'.format(d['class_id'])
+                if d['class_group_id']:
+                    key_class = '{}-{}'.format(d['class_id'], d['class_group_id'])
+                else:
+                    key_class = '{}'.format(d['class_id'])
                 key_subject = '{}'.format(d['subject_id'])
                 if key_class not in progressreports:
                     progressreports[key_class] = {}
                     progressreports[key_class]['id'] = d['class_id']
-                    progressreports[key_class]['name'] = d['class_name']
+                    progressreports[key_class]['group_id'] = d['class_group_id']
+                    if d['class_group_id']:
+                        progressreports[key_class]['name'] = '{} ({})'.format(d['class_name'], d['class_group_name'])
+                    else:
+                        progressreports[key_class]['name'] = d['class_name']
                     progressreports[key_class]['data'] = {}
                     progressreports[key_class]['data'][key_subject] = {}
                     progressreports[key_class]['data'][key_subject]['name'] = d['subject_name']
@@ -622,7 +634,10 @@ class ProgressReport(models.Model):
 
                 end_time = ProgressReport.convert_float_to_time(search_progressreport.end_time)
                 start_time = ProgressReport.convert_float_to_time(search_progressreport.start_time)
-                key = '{}-{}-{}-{}'.format(search_progressreport.class_id.id, search_progressreport.date, start_time, end_time)
+                if search_progressreport.class_group_id.id:
+                    key = '{}-{}-{}-{}-{}'.format(search_progressreport.class_id.id, search_progressreport.class_group_id.id, search_progressreport.date, start_time, end_time)
+                else:
+                    key = '{}-{}-{}-{}'.format(search_progressreport.class_id.id, search_progressreport.date, start_time, end_time)
                 if key not in key_progressreports:
                     key_progressreports[key] = search_progressreport
                 else:
@@ -642,6 +657,8 @@ class ProgressReport(models.Model):
                 progressreport['option_name'] = search_progressreport.option_id.name
                 progressreport['class_id'] = search_progressreport.class_id.id
                 progressreport['class_name'] = search_progressreport.class_id.name
+                progressreport['class_group_id'] = search_progressreport.class_group_id.id if search_progressreport.class_group_id.id else None
+                progressreport['class_group_name'] = search_progressreport.class_group_id.name if search_progressreport.class_group_id.id else ''
                 progressreport['department_id'] = search_progressreport.department_id.id
                 progressreport['department_name'] = search_progressreport.department_id.name
                 progressreport['subject_id'] = search_progressreport.subject_id.id
@@ -680,12 +697,19 @@ class ProgressReport(models.Model):
             sorted_data = copy.deepcopy(data)
 
             for d in sorted_data:
-                key_class = '{}'.format(d['class_id'])
+                if d['class_group_id']:
+                    key_class = '{}-{}'.format(d['class_id'], d['class_group_id'])
+                else:
+                    key_class = '{}'.format(d['class_id'])
                 key_subject = '{}'.format(d['subject_id'])
                 if key_class not in progressreports:
                     progressreports[key_class] = {}
                     progressreports[key_class]['id'] = d['class_id']
-                    progressreports[key_class]['name'] = d['class_name']
+                    progressreports[key_class]['group_id'] = d['class_group_id']
+                    if d['class_group_id']:
+                        progressreports[key_class]['name'] = '{} ({})'.format(d['class_name'], d['class_group_name'])
+                    else:
+                        progressreports[key_class]['name'] = d['class_name']
                     progressreports[key_class]['data'] = {}
                     progressreports[key_class]['data'][key_subject] = {}
                     progressreports[key_class]['data'][key_subject]['name'] = d['subject_name']

@@ -58,6 +58,13 @@ class TeacherTimetableAttendance(models.TransientModel):
         store=True
     )
 
+    class_group_id = fields.Many2one(
+        'siantou.ems.core.class.group',
+        string='Groupe de classe',
+        related='timetable_id.class_group_id',
+        store=True
+    )
+
     level_id = fields.Many2one(
         'siantou.ems.core.level',
         string='Niveau',

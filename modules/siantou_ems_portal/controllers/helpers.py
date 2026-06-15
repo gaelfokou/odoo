@@ -181,7 +181,10 @@ class Helpers:
 
                     end_time = Helpers.convert_float_to_time(timetable.end_time, has_second=True)
                     start_time = Helpers.convert_float_to_time(timetable.start_time, has_second=True)
-                    key = '{}-{}-{}-{}'.format(timetable.class_id.id, timetable.date, start_time, end_time)
+                    if timetable.class_group_id.id:
+                        key = '{}-{}-{}-{}-{}'.format(timetable.class_id.id, timetable.class_group_id.id, timetable.date, start_time, end_time)
+                    else:
+                        key = '{}-{}-{}-{}'.format(timetable.class_id.id, timetable.date, start_time, end_time)
                     if key not in key_timetables:
                         key_timetables[key] = timetable
                     else:
@@ -484,7 +487,10 @@ class Helpers:
 
                     end_time = Helpers.convert_float_to_time(consumptionhour.end_time, has_second=True)
                     start_time = Helpers.convert_float_to_time(consumptionhour.start_time, has_second=True)
-                    key = '{}-{}-{}-{}'.format(consumptionhour.class_id.id, consumptionhour.date, start_time, end_time)
+                    if consumptionhour.class_group_id.id:
+                        key = '{}-{}-{}-{}-{}'.format(consumptionhour.class_id.id, consumptionhour.class_group_id.id, consumptionhour.date, start_time, end_time)
+                    else:
+                        key = '{}-{}-{}-{}'.format(consumptionhour.class_id.id, consumptionhour.date, start_time, end_time)
                     if key not in key_consumptionhours:
                         key_consumptionhours[key] = consumptionhour
                     else:
@@ -596,7 +602,10 @@ class Helpers:
 
                     end_time = Helpers.convert_float_to_time(progressreport.end_time, has_second=True)
                     start_time = Helpers.convert_float_to_time(progressreport.start_time, has_second=True)
-                    key = '{}-{}-{}-{}'.format(progressreport.class_id.id, progressreport.date, start_time, end_time)
+                    if progressreport.class_group_id.id:
+                        key = '{}-{}-{}-{}-{}'.format(progressreport.class_id.id, progressreport.class_group_id.id, progressreport.date, start_time, end_time)
+                    else:
+                        key = '{}-{}-{}-{}'.format(progressreport.class_id.id, progressreport.date, start_time, end_time)
                     if key not in key_progressreports:
                         key_progressreports[key] = progressreport
                     else:
@@ -734,7 +743,10 @@ class Helpers:
 
                     end_time = Helpers.convert_float_to_time(subjectsession.end_time, has_second=True)
                     start_time = Helpers.convert_float_to_time(subjectsession.start_time, has_second=True)
-                    key = '{}-{}-{}-{}'.format(subjectsession.class_id.id, subjectsession.date, start_time, end_time)
+                    if subjectsession.class_group_id.id:
+                        key = '{}-{}-{}-{}-{}'.format(subjectsession.class_id.id, subjectsession.class_group_id.id, subjectsession.date, start_time, end_time)
+                    else:
+                        key = '{}-{}-{}-{}'.format(subjectsession.class_id.id, subjectsession.date, start_time, end_time)
                     if key not in key_subjectsessions:
                         key_subjectsessions[key] = subjectsession
                     else:
@@ -987,12 +999,19 @@ class Helpers:
         sorted_data = copy.deepcopy(data)
 
         for d in sorted_data:
-            key_class = '{}'.format(d['class_id'])
+            if d['class_group_id']:
+                key_class = '{}-{}'.format(d['class_id'], d['class_group_id'])
+            else:
+                key_class = '{}'.format(d['class_id'])
             key_subject = '{}'.format(d['subject_id'])
             if key_class not in accountbalances:
                 accountbalances[key_class] = {}
                 accountbalances[key_class]['id'] = d['class_id']
-                accountbalances[key_class]['name'] = d['class_name']
+                accountbalances[key_class]['group_id'] = d['class_group_id']
+                if d['class_group_id']:
+                    accountbalances[key_class]['name'] = '{} ({})'.format(d['class_name'], d['class_group_name'])
+                else:
+                    accountbalances[key_class]['name'] = d['class_name']
                 accountbalances[key_class]['data'] = {}
                 accountbalances[key_class]['data'][key_subject] = {}
                 accountbalances[key_class]['data'][key_subject]['name'] = d['subject_name']
@@ -1031,12 +1050,19 @@ class Helpers:
         sorted_data = copy.deepcopy(data)
 
         for d in sorted_data:
-            key_class = '{}'.format(d['class_id'])
+            if d['class_group_id']:
+                key_class = '{}-{}'.format(d['class_id'], d['class_group_id'])
+            else:
+                key_class = '{}'.format(d['class_id'])
             key_subject = '{}'.format(d['subject_id'])
             if key_class not in consumptionhours:
                 consumptionhours[key_class] = {}
                 consumptionhours[key_class]['id'] = d['class_id']
-                consumptionhours[key_class]['name'] = d['class_name']
+                consumptionhours[key_class]['group_id'] = d['class_group_id']
+                if d['class_group_id']:
+                    consumptionhours[key_class]['name'] = '{} ({})'.format(d['class_name'], d['class_group_name'])
+                else:
+                    consumptionhours[key_class]['name'] = d['class_name']
                 consumptionhours[key_class]['data'] = {}
                 consumptionhours[key_class]['data'][key_subject] = {}
                 consumptionhours[key_class]['data'][key_subject]['name'] = d['subject_name']
@@ -1093,12 +1119,19 @@ class Helpers:
         sorted_data = copy.deepcopy(data)
 
         for d in sorted_data:
-            key_class = '{}'.format(d['class_id'])
+            if d['class_group_id']:
+                key_class = '{}-{}'.format(d['class_id'], d['class_group_id'])
+            else:
+                key_class = '{}'.format(d['class_id'])
             key_subject = '{}'.format(d['subject_id'])
             if key_class not in progressreports:
                 progressreports[key_class] = {}
                 progressreports[key_class]['id'] = d['class_id']
-                progressreports[key_class]['name'] = d['class_name']
+                progressreports[key_class]['group_id'] = d['class_group_id']
+                if d['class_group_id']:
+                    progressreports[key_class]['name'] = '{} ({})'.format(d['class_name'], d['class_group_name'])
+                else:
+                    progressreports[key_class]['name'] = d['class_name']
                 progressreports[key_class]['data'] = {}
                 progressreports[key_class]['data'][key_subject] = {}
                 progressreports[key_class]['data'][key_subject]['name'] = d['subject_name']
@@ -1142,14 +1175,21 @@ class Helpers:
         sorted_data = copy.deepcopy(data)
 
         for d in sorted_data:
-            key_class = '{}'.format(d['class_id'])
+            if d['class_group_id']:
+                key_class = '{}-{}'.format(d['class_id'], d['class_group_id'])
+            else:
+                key_class = '{}'.format(d['class_id'])
             key_semester = '{}'.format(d['semester_id'])
             key_student = '{}'.format(d['student_id'])
             key_subject = '{}'.format(d['subject_id'])
             if key_class not in examscores:
                 examscores[key_class] = {}
                 examscores[key_class]['id'] = d['class_id']
-                examscores[key_class]['name'] = d['class_name']
+                examscores[key_class]['group_id'] = d['class_group_id']
+                if d['class_group_id']:
+                    examscores[key_class]['name'] = '{} ({})'.format(d['class_name'], d['class_group_name'])
+                else:
+                    examscores[key_class]['name'] = d['class_name']
                 examscores[key_class]['data'] = {}
                 examscores[key_class]['data'][key_semester] = {}
                 examscores[key_class]['data'][key_semester]['name'] = d['semester_name']

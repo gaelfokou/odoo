@@ -236,6 +236,8 @@ class PortalAccount(portal.CustomerPortal):
             timetable['option_name'] = search_timetable.option_id.name
             timetable['class_id'] = search_timetable.class_id.id
             timetable['class_name'] = search_timetable.class_id.name
+            timetable['class_group_id'] = search_timetable.class_group_id.id if search_timetable.class_group_id.id else None
+            timetable['class_group_name'] = search_timetable.class_group_id.name if search_timetable.class_group_id.id else ''
             timetable['department_id'] = search_timetable.department_id.id
             timetable['department_name'] = search_timetable.department_id.name
             timetable['school_id'] = search_timetable.school_id.id
@@ -348,6 +350,8 @@ class PortalAccount(portal.CustomerPortal):
             timetable['option_name'] = search_timetable.option_id.name
             timetable['class_id'] = search_timetable.class_id.id
             timetable['class_name'] = search_timetable.class_id.name
+            timetable['class_group_id'] = search_timetable.class_group_id.id if search_timetable.class_group_id.id else None
+            timetable['class_group_name'] = search_timetable.class_group_id.name if search_timetable.class_group_id.id else ''
             timetable['department_id'] = search_timetable.department_id.id
             timetable['department_name'] = search_timetable.department_id.name
             timetable['school_id'] = search_timetable.school_id.id
@@ -517,6 +521,8 @@ class PortalAccount(portal.CustomerPortal):
                 examscore['semester_name'] = search_examscore.semester_id.name
                 examscore['class_id'] = search_examscore.class_id.id
                 examscore['class_name'] = search_examscore.class_id.name
+                examscore['class_group_id'] = search_examscore.class_group_id.id if search_examscore.class_group_id.id else None
+                examscore['class_group_name'] = search_examscore.class_group_id.name if search_examscore.class_group_id.id else ''
                 examscore['subject_id'] = search_examscore.subject_id.id
                 examscore['subject_name'] = search_examscore.subject_id.name
                 examscore['subject_code'] = search_examscore.subject_id.code
@@ -603,7 +609,11 @@ class PortalAccount(portal.CustomerPortal):
                             if key_class not in all_examscores:
                                 all_examscores[key_class] = {}
                                 all_examscores[key_class]['id'] = d['class_id']
-                                all_examscores[key_class]['name'] = d['class_name']
+                                all_examscores[key_class]['group_id'] = d['class_group_id']
+                                if d['class_group_id']:
+                                    all_examscores[key_class]['name'] = '{} ({})'.format(d['class_name'], d['class_group_name'])
+                                else:
+                                    all_examscores[key_class]['name'] = d['class_name']
                                 all_examscores[key_class]['data'] = {}
                                 all_examscores[key_class]['data'][key_semester] = {}
                                 all_examscores[key_class]['data'][key_semester]['name'] = d['semester_name']
@@ -792,6 +802,8 @@ class PortalAccount(portal.CustomerPortal):
             consumptionhour['option_name'] = search_consumptionhour.option_id.name
             consumptionhour['class_id'] = search_consumptionhour.class_id.id
             consumptionhour['class_name'] = search_consumptionhour.class_id.name
+            consumptionhour['class_group_id'] = search_consumptionhour.class_group_id.id if search_consumptionhour.class_group_id.id else None
+            consumptionhour['class_group_name'] = search_consumptionhour.class_group_id.name if search_consumptionhour.class_group_id.id else ''
             consumptionhour['department_id'] = search_consumptionhour.department_id.id
             consumptionhour['department_name'] = search_consumptionhour.department_id.name
             consumptionhour['subject_id'] = search_consumptionhour.subject_id.id
@@ -837,6 +849,8 @@ class PortalAccount(portal.CustomerPortal):
             accountbalance['option_name'] = search_accountbalance.option_id.name
             accountbalance['class_id'] = search_accountbalance.class_id.id
             accountbalance['class_name'] = search_accountbalance.class_id.name
+            accountbalance['class_group_id'] = search_accountbalance.class_group_id.id if search_accountbalance.class_group_id.id else None
+            accountbalance['class_group_name'] = search_accountbalance.class_group_id.name if search_accountbalance.class_group_id.id else ''
             accountbalance['department_id'] = search_accountbalance.department_id.id
             accountbalance['department_name'] = search_accountbalance.department_id.name
             accountbalance['subject_id'] = search_accountbalance.subject_id.id
@@ -958,7 +972,10 @@ class PortalAccount(portal.CustomerPortal):
             accountbalance['all'] = 0.0
             accountbalance['done'] = 0.0
             accountbalance['awaiting'] = 0.0
-            key_class = '{}'.format(search_accountbalance.class_id.id)
+            if search_accountbalance.class_group_id.id:
+                key_class = '{}-{}'.format(search_accountbalance.class_id.id, search_accountbalance.class_group_id.id)
+            else:
+                key_class = '{}'.format(search_accountbalance.class_id.id)
             key_subject = '{}'.format(search_accountbalance.subject_id.id)
             if key_class in consumptionhours:
                 if key_subject in consumptionhours[key_class]['data']:
@@ -1052,6 +1069,8 @@ class PortalAccount(portal.CustomerPortal):
             consumptionhour['option_name'] = search_consumptionhour.option_id.name
             consumptionhour['class_id'] = search_consumptionhour.class_id.id
             consumptionhour['class_name'] = search_consumptionhour.class_id.name
+            consumptionhour['class_group_id'] = search_consumptionhour.class_group_id.id if search_consumptionhour.class_group_id.id else None
+            consumptionhour['class_group_name'] = search_consumptionhour.class_group_id.name if search_consumptionhour.class_group_id.id else ''
             consumptionhour['department_id'] = search_consumptionhour.department_id.id
             consumptionhour['department_name'] = search_consumptionhour.department_id.name
             consumptionhour['subject_id'] = search_consumptionhour.subject_id.id
@@ -1115,6 +1134,8 @@ class PortalAccount(portal.CustomerPortal):
             progressreport['option_name'] = search_progressreport.option_id.name
             progressreport['class_id'] = search_progressreport.class_id.id
             progressreport['class_name'] = search_progressreport.class_id.name
+            progressreport['class_group_id'] = search_progressreport.class_group_id.id if search_progressreport.class_group_id.id else None
+            progressreport['class_group_name'] = search_progressreport.class_group_id.name if search_progressreport.class_group_id.id else ''
             progressreport['department_id'] = search_progressreport.department_id.id
             progressreport['department_name'] = search_progressreport.department_id.name
             progressreport['subject_id'] = search_progressreport.subject_id.id
@@ -1204,6 +1225,8 @@ class PortalAccount(portal.CustomerPortal):
             subjectsession['option_name'] = search_subjectsession.option_id.name
             subjectsession['class_id'] = search_subjectsession.class_id.id
             subjectsession['class_name'] = search_subjectsession.class_id.name
+            subjectsession['class_group_id'] = search_subjectsession.class_group_id.id if search_subjectsession.class_group_id.id else None
+            subjectsession['class_group_name'] = search_subjectsession.class_group_id.name if search_subjectsession.class_group_id.id else ''
             subjectsession['department_id'] = search_subjectsession.department_id.id
             subjectsession['department_name'] = search_subjectsession.department_id.name
             subjectsession['subject_id'] = search_subjectsession.subject_id.id
@@ -1345,6 +1368,8 @@ class PortalAccount(portal.CustomerPortal):
             subjectsession['option_name'] = search_subjectsession.option_id.name
             subjectsession['class_id'] = search_subjectsession.class_id.id
             subjectsession['class_name'] = search_subjectsession.class_id.name
+            subjectsession['class_group_id'] = search_subjectsession.class_group_id.id if search_subjectsession.class_group_id.id else None
+            subjectsession['class_group_name'] = search_subjectsession.class_group_id.name if search_subjectsession.class_group_id.id else ''
             subjectsession['department_id'] = search_subjectsession.department_id.id
             subjectsession['department_name'] = search_subjectsession.department_id.name
             subjectsession['subject_id'] = search_subjectsession.subject_id.id
@@ -1517,6 +1542,8 @@ class PortalAccount(portal.CustomerPortal):
             subjectsession['option_name'] = search_subjectsession.option_id.name
             subjectsession['class_id'] = search_subjectsession.class_id.id
             subjectsession['class_name'] = search_subjectsession.class_id.name
+            subjectsession['class_group_id'] = search_subjectsession.class_group_id.id if search_subjectsession.class_group_id.id else None
+            subjectsession['class_group_name'] = search_subjectsession.class_group_id.name if search_subjectsession.class_group_id.id else ''
             subjectsession['department_id'] = search_subjectsession.department_id.id
             subjectsession['department_name'] = search_subjectsession.department_id.name
             subjectsession['subject_id'] = search_subjectsession.subject_id.id

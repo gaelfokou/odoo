@@ -195,7 +195,10 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
 
             end_time = TeacherTimetableAttendanceFilterWizard.convert_float_to_time(search_consumptionhour.end_time, has_second=True)
             start_time = TeacherTimetableAttendanceFilterWizard.convert_float_to_time(search_consumptionhour.start_time, has_second=True)
-            key = '{}-{}-{}-{}'.format(search_consumptionhour.class_id.id, search_consumptionhour.date, start_time, end_time)
+            if search_consumptionhour.class_group_id.id:
+                key = '{}-{}-{}-{}-{}'.format(search_consumptionhour.class_id.id, search_consumptionhour.class_group_id.id, search_consumptionhour.date, start_time, end_time)
+            else:
+                key = '{}-{}-{}-{}'.format(search_consumptionhour.class_id.id, search_consumptionhour.date, start_time, end_time)
             if key not in key_consumptionhours:
                 key_consumptionhours[key] = search_consumptionhour
             else:
@@ -215,6 +218,8 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
             consumptionhour['option_name'] = search_consumptionhour.option_id.name
             consumptionhour['class_id'] = search_consumptionhour.class_id.id
             consumptionhour['class_name'] = search_consumptionhour.class_id.name
+            consumptionhour['class_group_id'] = search_consumptionhour.class_group_id.id if search_consumptionhour.class_group_id.id else None
+            consumptionhour['class_group_name'] = search_consumptionhour.class_group_id.name if search_consumptionhour.class_group_id.id else ''
             consumptionhour['department_id'] = search_consumptionhour.department_id.id
             consumptionhour['department_name'] = search_consumptionhour.department_id.name
             consumptionhour['subject_id'] = search_consumptionhour.subject_id.id
@@ -401,7 +406,10 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
             total_all = 0.0
             total_done = 0.0
             total_awaiting = 0.0
-            key_class = '{}'.format(timetable.class_id.id)
+            if timetable.class_group_id.id:
+                key_class = '{}-{}'.format(timetable.class_id.id, timetable.class_group_id.id)
+            else:
+                key_class = '{}'.format(timetable.class_id.id)
             key_subject = '{}'.format(timetable.subject_id.id)
             if key_class in consumptionhours:
                 if key_subject in consumptionhours[key_class]['data']:
@@ -536,12 +544,19 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
         sorted_data = copy.deepcopy(data)
 
         for d in sorted_data:
-            key_class = '{}'.format(d['class_id'])
+            if d['class_group_id']:
+                key_class = '{}-{}'.format(d['class_id'], d['class_group_id'])
+            else:
+                key_class = '{}'.format(d['class_id'])
             key_subject = '{}'.format(d['subject_id'])
             if key_class not in consumptionhours:
                 consumptionhours[key_class] = {}
                 consumptionhours[key_class]['id'] = d['class_id']
-                consumptionhours[key_class]['name'] = d['class_name']
+                consumptionhours[key_class]['group_id'] = d['class_group_id']
+                if d['class_group_id']:
+                    consumptionhours[key_class]['name'] = '{} ({})'.format(d['class_name'], d['class_group_name'])
+                else:
+                    consumptionhours[key_class]['name'] = d['class_name']
                 consumptionhours[key_class]['data'] = {}
                 consumptionhours[key_class]['data'][key_subject] = {}
                 consumptionhours[key_class]['data'][key_subject]['name'] = d['subject_name']

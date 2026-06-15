@@ -335,7 +335,10 @@ class Timetable(models.Model):
 
                     end_time = Timetable.convert_float_to_time(timetable.end_time, has_second=True)
                     start_time = Timetable.convert_float_to_time(timetable.start_time, has_second=True)
-                    key = '{}-{}-{}-{}'.format(timetable.class_id.id, timetable.date, start_time, end_time)
+                    if timetable.class_group_id.id:
+                        key = '{}-{}-{}-{}-{}'.format(timetable.class_id.id, timetable.class_group_id.id, timetable.date, start_time, end_time)
+                    else:
+                        key = '{}-{}-{}-{}'.format(timetable.class_id.id, timetable.date, start_time, end_time)
                     if key not in key_timetables:
                         key_timetables[key] = {}
                         key_timetables[key]['timetable'] = timetable
@@ -1108,7 +1111,10 @@ class Timetable(models.Model):
 
                     end_time = Timetable.convert_float_to_time(timetable.end_time, has_second=True)
                     start_time = Timetable.convert_float_to_time(timetable.start_time, has_second=True)
-                    key = '{}-{}-{}-{}'.format(timetable.class_id.id, timetable.date, start_time, end_time)
+                    if timetable.class_group_id.id:
+                        key = '{}-{}-{}-{}-{}'.format(timetable.class_id.id, timetable.class_group_id.id, timetable.date, start_time, end_time)
+                    else:
+                        key = '{}-{}-{}-{}'.format(timetable.class_id.id, timetable.date, start_time, end_time)
                     if key not in key_timetables:
                         key_timetables[key] = {}
                         key_timetables[key]['timetable'] = timetable

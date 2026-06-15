@@ -121,6 +121,8 @@ class TimetablePrintWizard(models.TransientModel):
             timetable['option_name'] = search_timetable.option_id.name
             timetable['class_id'] = search_timetable.class_id.id
             timetable['class_name'] = search_timetable.class_id.name
+            timetable['class_group_id'] = search_timetable.class_group_id.id if search_timetable.class_group_id.id else None
+            timetable['class_group_name'] = search_timetable.class_group_id.name if search_timetable.class_group_id.id else ''
             timetable['department_id'] = search_timetable.department_id.id
             timetable['department_name'] = search_timetable.department_id.name
             timetable['school_id'] = search_timetable.school_id.id
@@ -316,6 +318,8 @@ class TimetablePrintWizard(models.TransientModel):
             timetable_percentage['option_name'] = search_timetable_percentage.option_id.name
             timetable_percentage['class_id'] = search_timetable_percentage.class_id.id
             timetable_percentage['class_name'] = search_timetable_percentage.class_id.name
+            timetable_percentage['class_group_id'] = search_timetable_percentage.class_group_id.id if search_timetable_percentage.class_group_id.id else None
+            timetable_percentage['class_group_name'] = search_timetable_percentage.class_group_id.name if search_timetable_percentage.class_group_id.id else ''
             timetable_percentage['department_id'] = search_timetable_percentage.department_id.id
             timetable_percentage['department_name'] = search_timetable_percentage.department_id.name
             timetable_percentage['school_id'] = search_timetable_percentage.school_id.id
@@ -422,6 +426,8 @@ class TimetablePrintWizard(models.TransientModel):
             timetable_percentage['option_name'] = search_timetable_percentage.option_id.name
             timetable_percentage['class_id'] = search_timetable_percentage.class_id.id
             timetable_percentage['class_name'] = search_timetable_percentage.class_id.name
+            timetable_percentage['class_group_id'] = search_timetable_percentage.class_group_id.id if search_timetable_percentage.class_group_id.id else None
+            timetable_percentage['class_group_name'] = search_timetable_percentage.class_group_id.name if search_timetable_percentage.class_group_id.id else ''
             timetable_percentage['department_id'] = search_timetable_percentage.department_id.id
             timetable_percentage['department_name'] = search_timetable_percentage.department_id.name
             timetable_percentage['school_id'] = search_timetable_percentage.school_id.id

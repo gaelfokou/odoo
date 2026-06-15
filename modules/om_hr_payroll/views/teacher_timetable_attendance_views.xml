@@ -47,6 +47,7 @@
                     <field name="timetable_id"/>
                     <field name="level_id"/>
                     <field name="class_id"/>
+                    <field name="class_group_id"/>
                     <field name="subject_id"/>
                     <field name="identifier"/>
                     <field name="employee_id"/>
