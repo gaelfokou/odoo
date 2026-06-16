@@ -1527,8 +1527,8 @@ class PortalAccount(portal.CustomerPortal):
         else:
             return http.request.redirect('/my/subjectsession/{}/{}/list'.format(params['class_id'], params['subject_id']))
 
-    @http.route(['/my/subjectsession/<int:classe>/<int:subject>/<int:session>/edit', '/my/subjectsession/<int:classe>/<int:group>/<int:subject>/<int:session>/edit'], type='http', auth="user", website=True)
-    def portal_subjectsession_edit(self, classe=None, group=None, subject=None, session=None, search='', search_in='all', **kw):
+    @http.route(['/my/subjectsession/<int:classe>/<int:subject>/<int:session>/edit'], type='http', auth="user", website=True)
+    def portal_subjectsession_edit(self, classe=None, subject=None, session=None, search='', search_in='all', **kw):
         user = None
         is_user = None
         is_user_permanent = False
@@ -1544,12 +1544,12 @@ class PortalAccount(portal.CustomerPortal):
             user = http.request.env.user.student_id
             is_user = 'is_student'
         class_id = http.request.env['siantou.ems.core.class'].sudo().search([('id', '=', classe)], limit=1)
-        if group:
-            class_group_id = http.request.env['siantou.ems.core.class.group'].sudo().search([('id', '=', group)], limit=1)
-        else:
-            class_group_id = None
         subject_id = http.request.env['siantou.ems.core.subject'].sudo().search([('id', '=', subject)], limit=1)
         session_id = http.request.env['siantou.ems.core.subject.session'].sudo().search([('id', '=', session)], limit=1)
+        if session_id.report_id.class_group_id.id:
+            class_group_id = session_id.report_id.class_group_id
+        else:
+            class_group_id = None
         params = {}
         params['class_id'] = class_id.id
         params['class_name'] = class_id.name
