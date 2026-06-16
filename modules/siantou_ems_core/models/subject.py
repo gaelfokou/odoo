@@ -373,6 +373,12 @@ class ProgressReport(models.Model):
         ondelete='cascade'
     )
 
+    class_group_id = fields.Many2one(
+        'siantou.ems.core.class.group',
+        'Groupe de classe',
+        ondelete='cascade'
+    )
+
     subject_id = fields.Many2one(
         'siantou.ems.core.subject',
         string='Cours',

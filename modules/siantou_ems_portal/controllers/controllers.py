@@ -299,7 +299,6 @@ class PortalAccount(portal.CustomerPortal):
                                     'timetable_selected_month': timetable_selected_month,
                                     'selected_month': selected_month,
                                     'search_month': search_month,
-                                    'is_user': is_user,
                                 })
 
     @http.route(['/my/timetable/download', '/my/timetable/download/page/<int:page>'], type='http', auth="user", website=True)
@@ -521,8 +520,6 @@ class PortalAccount(portal.CustomerPortal):
                 examscore['semester_name'] = search_examscore.semester_id.name
                 examscore['class_id'] = search_examscore.class_id.id
                 examscore['class_name'] = search_examscore.class_id.name
-                examscore['class_group_id'] = search_examscore.class_group_id.id if search_examscore.class_group_id.id else None
-                examscore['class_group_name'] = search_examscore.class_group_id.name if search_examscore.class_group_id.id else ''
                 examscore['subject_id'] = search_examscore.subject_id.id
                 examscore['subject_name'] = search_examscore.subject_id.name
                 examscore['subject_code'] = search_examscore.subject_id.code
@@ -609,11 +606,7 @@ class PortalAccount(portal.CustomerPortal):
                             if key_class not in all_examscores:
                                 all_examscores[key_class] = {}
                                 all_examscores[key_class]['id'] = d['class_id']
-                                all_examscores[key_class]['group_id'] = d['class_group_id']
-                                if d['class_group_id']:
-                                    all_examscores[key_class]['name'] = '{} ({})'.format(d['class_name'], d['class_group_name'])
-                                else:
-                                    all_examscores[key_class]['name'] = d['class_name']
+                                all_examscores[key_class]['name'] = d['class_name']
                                 all_examscores[key_class]['data'] = {}
                                 all_examscores[key_class]['data'][key_semester] = {}
                                 all_examscores[key_class]['data'][key_semester]['name'] = d['semester_name']
@@ -705,7 +698,6 @@ class PortalAccount(portal.CustomerPortal):
                                     'examscores': all_examscores,
                                     'page_name': 'examscore',
                                     'examscore': 0,
-                                    'is_user': is_user,
                                 })
 
     @http.route(['/my/paymenthistory'], type='http', auth="user", website=True)
@@ -1097,7 +1089,6 @@ class PortalAccount(portal.CustomerPortal):
                                     'consumptionhour': 0,
                                     'consumptionhour_selected_month': consumptionhour_selected_month,
                                     'search_month': search_month,
-                                    'is_user': is_user,
                                 })
 
     @http.route(['/my/progressreport'], type='http', auth="user", website=True)
@@ -1173,11 +1164,10 @@ class PortalAccount(portal.CustomerPortal):
                                     'progressreports': progressreports,
                                     'page_name': 'progressreport',
                                     'progressreport': 0,
-                                    'is_user': is_user,
                                 })
 
-    @http.route(['/my/subjectsession/<int:classe>/<int:subject>/list'], type='http', auth="user", website=True)
-    def portal_subjectsession_list(self, classe=None, subject=None, search='', search_in='all', **kw):
+    @http.route(['/my/subjectsession/<int:classe>/<int:subject>/list', '/my/subjectsession/<int:classe>/<int:group>/<int:subject>/list'], type='http', auth="user", website=True)
+    def portal_subjectsession_list(self, classe=None, group=None, subject=None, search='', search_in='all', **kw):
         user = None
         is_user = None
         is_user_permanent = False
@@ -1193,6 +1183,10 @@ class PortalAccount(portal.CustomerPortal):
             user = http.request.env.user.student_id
             is_user = 'is_student'
         class_id = http.request.env['siantou.ems.core.class'].sudo().search([('id', '=', classe)], limit=1)
+        if group:
+            class_group_id = http.request.env['siantou.ems.core.class.group'].sudo().search([('id', '=', group)], limit=1)
+        else:
+            class_group_id = None
         subject_id = http.request.env['siantou.ems.core.subject'].sudo().search([('id', '=', subject)], limit=1)
         report_id = http.request.env['siantou.ems.core.progress.report'].sudo().search([
             ('class_id', '=', class_id.id),
@@ -1206,9 +1200,12 @@ class PortalAccount(portal.CustomerPortal):
         params = {}
         params['class_id'] = class_id.id
         params['class_name'] = class_id.name
+        if class_group_id:
+            params['class_group_id'] = class_group_id.id
+            params['class_group_name'] = class_group_id.name
         params['subject_id'] = subject_id.id
         params['subject_name'] = subject_id.name
-        search_subjectsessions, searchbar_inputs = Helpers.subjectsession(search=search, search_in=search_in, class_id=class_id, subject_id=subject_id)
+        search_subjectsessions, searchbar_inputs = Helpers.subjectsession(search=search, search_in=search_in, class_id=class_id, class_group_id=class_group_id, subject_id=subject_id)
         subjectsessions = []
         for search_subjectsession in search_subjectsessions:
             subjectsession = {}
@@ -1264,7 +1261,7 @@ class PortalAccount(portal.CustomerPortal):
                                     'subjectsessions': subjectsessions,
                                     'page_name': 'subjectsession_list',
                                     'subjectsession_list': 0,
-                                    'is_user': 'is_teacher' if is_user and is_user == 'is_teacher' else '',
+                                    'is_user': is_user,
                                     'params': params,
                                 })
 
@@ -1328,8 +1325,8 @@ class PortalAccount(portal.CustomerPortal):
             status=200
         )
 
-    @http.route(['/my/subjectsession/<int:classe>/<int:subject>/new'], type='http', auth="user", website=True)
-    def portal_subjectsession_new(self, classe=None, subject=None, search='', search_in='all', **kw):
+    @http.route(['/my/subjectsession/<int:classe>/<int:subject>/new', '/my/subjectsession/<int:classe>/<int:group>/<int:subject>/new'], type='http', auth="user", website=True)
+    def portal_subjectsession_new(self, classe=None, group=None, subject=None, search='', search_in='all', **kw):
         user = None
         is_user = None
         is_user_permanent = False
@@ -1345,13 +1342,20 @@ class PortalAccount(portal.CustomerPortal):
             user = http.request.env.user.student_id
             is_user = 'is_student'
         class_id = http.request.env['siantou.ems.core.class'].sudo().search([('id', '=', classe)], limit=1)
+        if group:
+            class_group_id = http.request.env['siantou.ems.core.class.group'].sudo().search([('id', '=', group)], limit=1)
+        else:
+            class_group_id = None
         subject_id = http.request.env['siantou.ems.core.subject'].sudo().search([('id', '=', subject)], limit=1)
         params = {}
         params['class_id'] = class_id.id
         params['class_name'] = class_id.name
+        if class_group_id:
+            params['class_group_id'] = class_group_id.id
+            params['class_group_name'] = class_group_id.name
         params['subject_id'] = subject_id.id
         params['subject_name'] = subject_id.name
-        search_subjectsessions, searchbar_inputs = Helpers.subjectsession(search=search, search_in=search_in, class_id=class_id, subject_id=subject_id)
+        search_subjectsessions, searchbar_inputs = Helpers.subjectsession(search=search, search_in=search_in, class_id=class_id, class_group_id=class_group_id, subject_id=subject_id)
         subjectsessions = []
         for search_subjectsession in search_subjectsessions:
             subjectsession = {}
@@ -1415,7 +1419,6 @@ class PortalAccount(portal.CustomerPortal):
                                     'subjectsessions': subjectsessions,
                                     'page_name': 'subjectsession_new',
                                     'subjectsession_new': 0,
-                                    'is_user': 'is_teacher' if is_user and is_user == 'is_teacher' else '',
                                     'params': params,
                                     'name': '',
                                     'description': '',
@@ -1426,14 +1429,21 @@ class PortalAccount(portal.CustomerPortal):
     @http.route(['/my/subjectsession/create'], type='http', auth="user", website=True, methods=['POST'])
     def portal_subjectsession_create(self, **kw):
         classe = int(kw.get('classe')),
+        group = int(kw.get('group')),
         subject = int(kw.get('subject')),
         class_id = http.request.env['siantou.ems.core.class'].sudo().search([('id', '=', classe)], limit=1)
+        class_group_id = http.request.env['siantou.ems.core.class.group'].sudo().search([('id', '=', group)], limit=1)
         subject_id = http.request.env['siantou.ems.core.subject'].sudo().search([('id', '=', subject)], limit=1)
         params = {}
         params['class_id'] = class_id.id
+        if class_group_id:
+            params['class_group_id'] = class_group_id.id
         params['subject_id'] = subject_id.id
         if not kw.get('timetable'):
-            return http.request.redirect('/my/subjectsession/{}/{}/new'.format(params['class_id'], params['subject_id']))
+            if kw.get('group'):
+                return http.request.redirect('/my/subjectsession/{}/{}/{}/new'.format(params['class_id'], params['class_group_id'], params['subject_id']))
+            else:
+                return http.request.redirect('/my/subjectsession/{}/{}/new'.format(params['class_id'], params['subject_id']))
         vals = {
             'description': kw.get('description'),
             'timetable_id': int(kw.get('timetable')),
@@ -1479,15 +1489,29 @@ class PortalAccount(portal.CustomerPortal):
         ])
         for timetable_id in timetable_ids:
             vals['timetable_id'] = timetable_id.id
-            report_id = http.request.env['siantou.ems.core.progress.report'].sudo().search([
-                ('class_id', '=', timetable_id.class_id.id),
-                ('subject_id', '=', timetable_id.subject_id.id),
-            ], limit=1)
-            if not report_id:
-                report_id = http.request.env['siantou.ems.core.progress.report'].sudo().create({
-                    'class_id': timetable_id.class_id.id,
-                    'subject_id': timetable_id.subject_id.id,
-                })
+            if timetable_id.class_group_id.id:
+                report_id = http.request.env['siantou.ems.core.progress.report'].sudo().search([
+                    ('class_id', '=', timetable_id.class_id.id),
+                    ('class_group_id', '=', timetable_id.class_group_id.id),
+                    ('subject_id', '=', timetable_id.subject_id.id),
+                ], limit=1)
+                if not report_id:
+                    report_id = http.request.env['siantou.ems.core.progress.report'].sudo().create({
+                        'class_id': timetable_id.class_id.id,
+                        'class_group_id': timetable_id.class_group_id.id,
+                        'subject_id': timetable_id.subject_id.id,
+                    })
+            else:
+                report_id = http.request.env['siantou.ems.core.progress.report'].sudo().search([
+                    ('class_id', '=', timetable_id.class_id.id),
+                    ('class_group_id', '=', False),
+                    ('subject_id', '=', timetable_id.subject_id.id),
+                ], limit=1)
+                if not report_id:
+                    report_id = http.request.env['siantou.ems.core.progress.report'].sudo().create({
+                        'class_id': timetable_id.class_id.id,
+                        'subject_id': timetable_id.subject_id.id,
+                    })
             session_id = http.request.env['siantou.ems.core.subject.session'].sudo().search([
                 ('timetable_id', '=', timetable_id.id),
                 ('report_id', '=', report_id.id),
@@ -1498,10 +1522,13 @@ class PortalAccount(portal.CustomerPortal):
             else:
                 del(vals['timetable_id'])
                 session_id.sudo().write(vals)
-        return http.request.redirect('/my/subjectsession/{}/{}/list'.format(params['class_id'], params['subject_id']))
+        if kw.get('group'):
+            return http.request.redirect('/my/subjectsession/{}/{}/{}/list'.format(params['class_id'], params['class_group_id'], params['subject_id']))
+        else:
+            return http.request.redirect('/my/subjectsession/{}/{}/list'.format(params['class_id'], params['subject_id']))
 
-    @http.route(['/my/subjectsession/<int:classe>/<int:subject>/<int:session>/edit'], type='http', auth="user", website=True)
-    def portal_subjectsession_edit(self, classe=None, subject=None, session=None, search='', search_in='all', **kw):
+    @http.route(['/my/subjectsession/<int:classe>/<int:subject>/<int:session>/edit', '/my/subjectsession/<int:classe>/<int:group>/<int:subject>/<int:session>/edit'], type='http', auth="user", website=True)
+    def portal_subjectsession_edit(self, classe=None, group=None, subject=None, session=None, search='', search_in='all', **kw):
         user = None
         is_user = None
         is_user_permanent = False
@@ -1517,15 +1544,22 @@ class PortalAccount(portal.CustomerPortal):
             user = http.request.env.user.student_id
             is_user = 'is_student'
         class_id = http.request.env['siantou.ems.core.class'].sudo().search([('id', '=', classe)], limit=1)
+        if group:
+            class_group_id = http.request.env['siantou.ems.core.class.group'].sudo().search([('id', '=', group)], limit=1)
+        else:
+            class_group_id = None
         subject_id = http.request.env['siantou.ems.core.subject'].sudo().search([('id', '=', subject)], limit=1)
         session_id = http.request.env['siantou.ems.core.subject.session'].sudo().search([('id', '=', session)], limit=1)
         params = {}
         params['class_id'] = class_id.id
         params['class_name'] = class_id.name
+        if class_group_id:
+            params['class_group_id'] = class_group_id.id
+            params['class_group_name'] = class_group_id.name
         params['subject_id'] = subject_id.id
         params['subject_name'] = subject_id.name
         params['session_id'] = session_id.id
-        search_subjectsessions, searchbar_inputs = Helpers.subjectsession(search=search, search_in=search_in, class_id=class_id, subject_id=subject_id)
+        search_subjectsessions, searchbar_inputs = Helpers.subjectsession(search=search, search_in=search_in, class_id=class_id, class_group_id=class_group_id, subject_id=subject_id)
         subjectsessions = []
         for search_subjectsession in search_subjectsessions:
             subjectsession = {}
@@ -1586,7 +1620,6 @@ class PortalAccount(portal.CustomerPortal):
                                     'subjectsessions': subjectsessions,
                                     'page_name': 'subjectsession_edit',
                                     'subjectsession_edit': 0,
-                                    'is_user': 'is_teacher' if is_user and is_user == 'is_teacher' else '',
                                     'params': params,
                                     'name': name,
                                     'description': description,
@@ -1595,13 +1628,17 @@ class PortalAccount(portal.CustomerPortal):
     @http.route(['/my/subjectsession/update'], type='http', auth="user", website=True, methods=['POST'])
     def portal_subjectsession_update(self, **kw):
         classe = int(kw.get('classe')),
+        group = int(kw.get('group')),
         subject = int(kw.get('subject')),
         session = int(kw.get('session')),
         class_id = http.request.env['siantou.ems.core.class'].sudo().search([('id', '=', classe)], limit=1)
+        class_group_id = http.request.env['siantou.ems.core.class.group'].sudo().search([('id', '=', group)], limit=1)
         subject_id = http.request.env['siantou.ems.core.subject'].sudo().search([('id', '=', subject)], limit=1)
         session_id = http.request.env['siantou.ems.core.subject.session'].sudo().search([('id', '=', session)], limit=1)
         params = {}
         params['class_id'] = class_id.id
+        if class_group_id:
+            params['class_group_id'] = class_group_id.id
         params['subject_id'] = subject_id.id
         params['session_id'] = session_id.id
         vals = {
@@ -1632,15 +1669,29 @@ class PortalAccount(portal.CustomerPortal):
             session_id = http.request.env['siantou.ems.core.subject.session'].sudo().search([('timetable_id', '=', timetable_id.id)], limit=1)
             if not session_id:
                 vals['timetable_id'] = timetable_id.id
-                report_id = http.request.env['siantou.ems.core.progress.report'].sudo().search([
-                    ('class_id', '=', timetable_id.class_id.id),
-                    ('subject_id', '=', timetable_id.subject_id.id),
-                ], limit=1)
-                if not report_id:
-                    report_id = http.request.env['siantou.ems.core.progress.report'].sudo().create({
-                        'class_id': timetable_id.class_id.id,
-                        'subject_id': timetable_id.subject_id.id,
-                    })
+                if timetable_id.class_group_id.id:
+                    report_id = http.request.env['siantou.ems.core.progress.report'].sudo().search([
+                        ('class_id', '=', timetable_id.class_id.id),
+                        ('class_group_id', '=', timetable_id.class_group_id.id),
+                        ('subject_id', '=', timetable_id.subject_id.id),
+                    ], limit=1)
+                    if not report_id:
+                        report_id = http.request.env['siantou.ems.core.progress.report'].sudo().create({
+                            'class_id': timetable_id.class_id.id,
+                            'class_group_id': timetable_id.class_group_id.id,
+                            'subject_id': timetable_id.subject_id.id,
+                        })
+                else:
+                    report_id = http.request.env['siantou.ems.core.progress.report'].sudo().search([
+                        ('class_id', '=', timetable_id.class_id.id),
+                        ('class_group_id', '=', False),
+                        ('subject_id', '=', timetable_id.subject_id.id),
+                    ], limit=1)
+                    if not report_id:
+                        report_id = http.request.env['siantou.ems.core.progress.report'].sudo().create({
+                            'class_id': timetable_id.class_id.id,
+                            'subject_id': timetable_id.subject_id.id,
+                        })
                 session_id = http.request.env['siantou.ems.core.subject.session'].sudo().search([
                     ('timetable_id', '=', timetable_id.id),
                     ('report_id', '=', report_id.id),
@@ -1653,7 +1704,10 @@ class PortalAccount(portal.CustomerPortal):
                     session_id.sudo().write(vals)
             else:
                 session_id.sudo().write(vals)
-        return http.request.redirect('/my/subjectsession/{}/{}/list'.format(params['class_id'], params['subject_id']))
+        if kw.get('group'):
+            return http.request.redirect('/my/subjectsession/{}/{}/{}/list'.format(params['class_id'], params['class_group_id'], params['subject_id']))
+        else:
+            return http.request.redirect('/my/subjectsession/{}/{}/list'.format(params['class_id'], params['subject_id']))
 
     @http.route(['/my/calendar', '/my/calendar/page/<int:page>'], type='http', auth="user", website=True)
     def portal_calendar(self, page=1, search='', search_in='all', **kw):

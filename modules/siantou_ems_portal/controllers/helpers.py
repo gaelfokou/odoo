@@ -646,7 +646,7 @@ class Helpers:
         return search_reports, searchbar_inputs
 
     @staticmethod
-    def subjectsession(search='', search_in='all', cycle_id=None, level_id=None, field_of_study_id=None, specialty_id=None, option_id=None, class_id=None, subject_id=None):
+    def subjectsession(search='', search_in='all', cycle_id=None, level_id=None, field_of_study_id=None, specialty_id=None, option_id=None, class_id=None, class_group_id=None, subject_id=None):
         searchbar_inputs = {
             'all': {'label': 'Tout', 'input': 'all', 'domain': []},
             'cycle': {'label': 'Cycle', 'input': 'cycle', 'domain': [('cycle_id.name', 'like', search)]},
@@ -674,6 +674,8 @@ class Helpers:
             search_domain.append(('option_id', '=', option_id.id))
         if class_id:
             search_domain.append(('class_id', '=', class_id.id))
+        if class_group_id:
+            search_domain.append(('class_group_id', '=', class_group_id.id))
         if subject_id:
             search_domain.append(('subject_id', '=', subject_id.id))
 
@@ -1175,21 +1177,14 @@ class Helpers:
         sorted_data = copy.deepcopy(data)
 
         for d in sorted_data:
-            if d['class_group_id']:
-                key_class = '{}-{}'.format(d['class_id'], d['class_group_id'])
-            else:
-                key_class = '{}'.format(d['class_id'])
+            key_class = '{}'.format(d['class_id'])
             key_semester = '{}'.format(d['semester_id'])
             key_student = '{}'.format(d['student_id'])
             key_subject = '{}'.format(d['subject_id'])
             if key_class not in examscores:
                 examscores[key_class] = {}
                 examscores[key_class]['id'] = d['class_id']
-                examscores[key_class]['group_id'] = d['class_group_id']
-                if d['class_group_id']:
-                    examscores[key_class]['name'] = '{} ({})'.format(d['class_name'], d['class_group_name'])
-                else:
-                    examscores[key_class]['name'] = d['class_name']
+                examscores[key_class]['name'] = d['class_name']
                 examscores[key_class]['data'] = {}
                 examscores[key_class]['data'][key_semester] = {}
                 examscores[key_class]['data'][key_semester]['name'] = d['semester_name']

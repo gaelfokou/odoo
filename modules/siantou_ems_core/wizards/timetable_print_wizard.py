@@ -95,9 +95,14 @@ class TimetablePrintWizard(models.TransientModel):
                 semester = '{}'.format(search_timetable.semester_id.name)
                 study = '{}'.format(search_timetable.employee_id.name)
             else:
-                key = '{}-{}'.format(search_timetable.semester_id.id, search_timetable.class_id.id)
-                semester = '{}'.format(search_timetable.semester_id.name)
-                study = '{}'.format(search_timetable.class_id.name)
+                if search_timetable.class_group_id.id:
+                    key = '{}-{}-{}'.format(search_timetable.semester_id.id, search_timetable.class_id.id, search_timetable.class_group_id.id)
+                    semester = '{}'.format(search_timetable.semester_id.name)
+                    study = '{} ({})'.format(search_timetable.class_id.name, search_timetable.class_group_id.name)
+                else:
+                    key = '{}-{}'.format(search_timetable.semester_id.id, search_timetable.class_id.id)
+                    semester = '{}'.format(search_timetable.semester_id.name)
+                    study = '{}'.format(search_timetable.class_id.name)
             if key not in key_timetables:
                 key_timetables[key] = []
                 info_timetables[key] = {}

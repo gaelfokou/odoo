@@ -134,10 +134,11 @@
                                         </td>
                                         <td class="text-center">
                                             <t t-foreach="timetables[monday]['Lundi'][hour]" t-as="record">
-                                                <t t-if="is_user and is_user == 'is_teacher'">
-                                                    <span t-esc="record['class_name']"/>
-                                                    <br/>
+                                                <span t-esc="record['class_name']"/>
+                                                <t t-if="record['class_group_id']">
+                                                    <span t-esc="'(' + record['class_group_name'] + ')'"/>
                                                 </t>
+                                                <br/>
                                                 <span t-esc="record['subject_name']"/>
                                                 <span t-esc="'(' + record['subject_code'] + ')'"/>
                                                 <br/>
@@ -152,10 +153,11 @@
                                         </td>
                                         <td class="text-center">
                                             <t t-foreach="timetables[monday]['Mardi'][hour]" t-as="record">
-                                                <t t-if="is_user and is_user == 'is_teacher'">
-                                                    <span t-esc="record['class_name']"/>
-                                                    <br/>
+                                                <span t-esc="record['class_name']"/>
+                                                <t t-if="record['class_group_id']">
+                                                    <span t-esc="'(' + record['class_group_name'] + ')'"/>
                                                 </t>
+                                                <br/>
                                                 <span t-esc="record['subject_name']"/>
                                                 <span t-esc="' (' + record['subject_code'] + ')'"/>
                                                 <br/>
@@ -170,10 +172,11 @@
                                         </td>
                                         <td class="text-center">
                                             <t t-foreach="timetables[monday]['Mercredi'][hour]" t-as="record">
-                                                <t t-if="is_user and is_user == 'is_teacher'">
-                                                    <span t-esc="record['class_name']"/>
-                                                    <br/>
+                                                <span t-esc="record['class_name']"/>
+                                                <t t-if="record['class_group_id']">
+                                                    <span t-esc="'(' + record['class_group_name'] + ')'"/>
                                                 </t>
+                                                <br/>
                                                 <span t-esc="record['subject_name']"/>
                                                 <span t-esc="' (' + record['subject_code'] + ')'"/>
                                                 <br/>
@@ -188,10 +191,11 @@
                                         </td>
                                         <td class="text-center">
                                             <t t-foreach="timetables[monday]['Jeudi'][hour]" t-as="record">
-                                                <t t-if="is_user and is_user == 'is_teacher'">
-                                                    <span t-esc="record['class_name']"/>
-                                                    <br/>
+                                                <span t-esc="record['class_name']"/>
+                                                <t t-if="record['class_group_id']">
+                                                    <span t-esc="'(' + record['class_group_name'] + ')'"/>
                                                 </t>
+                                                <br/>
                                                 <span t-esc="record['subject_name']"/>
                                                 <span t-esc="' (' + record['subject_code'] + ')'"/>
                                                 <br/>
@@ -206,10 +210,11 @@
                                         </td>
                                         <td class="text-center">
                                             <t t-foreach="timetables[monday]['Vendredi'][hour]" t-as="record">
-                                                <t t-if="is_user and is_user == 'is_teacher'">
-                                                    <span t-esc="record['class_name']"/>
-                                                    <br/>
+                                                <span t-esc="record['class_name']"/>
+                                                <t t-if="record['class_group_id']">
+                                                    <span t-esc="'(' + record['class_group_name'] + ')'"/>
                                                 </t>
+                                                <br/>
                                                 <span t-esc="record['subject_name']"/>
                                                 <span t-esc="' (' + record['subject_code'] + ')'"/>
                                                 <br/>
@@ -224,10 +229,11 @@
                                         </td>
                                         <td class="text-center">
                                             <t t-foreach="timetables[monday]['Samedi'][hour]" t-as="record">
-                                                <t t-if="is_user and is_user == 'is_teacher'">
-                                                    <span t-esc="record['class_name']"/>
-                                                    <br/>
+                                                <span t-esc="record['class_name']"/>
+                                                <t t-if="record['class_group_id']">
+                                                    <span t-esc="'(' + record['class_group_name'] + ')'"/>
                                                 </t>
+                                                <br/>
                                                 <span t-esc="record['subject_name']"/>
                                                 <span t-esc="' (' + record['subject_code'] + ')'"/>
                                                 <br/>
@@ -242,10 +248,11 @@
                                         </td>
                                         <td class="text-center">
                                             <t t-foreach="timetables[monday]['Dimanche'][hour]" t-as="record">
-                                                <t t-if="is_user and is_user == 'is_teacher'">
-                                                    <span t-esc="record['class_name']"/>
-                                                    <br/>
+                                                <span t-esc="record['class_name']"/>
+                                                <t t-if="record['class_group_id']">
+                                                    <span t-esc="'(' + record['class_group_name'] + ')'"/>
                                                 </t>
+                                                <br/>
                                                 <span t-esc="record['subject_name']"/>
                                                 <span t-esc="' (' + record['subject_code'] + ')'"/>
                                                 <br/>
@@ -354,7 +361,7 @@
                     </div>
                     <thead>
                         <tr>
-                            <th class="text-left" colspan="11" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;">
+                            <th class="text-left" t-attf-colspan="11" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;">
                                 <span t-esc="'Période :'"/>
                                 <span t-esc="search_month"/>
                             </th>
@@ -362,7 +369,7 @@
                     </thead>
                     <thead>
                         <tr>
-                            <th class="text-left" colspan="11" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
+                            <th class="text-left" t-attf-colspan="11" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
                         </tr>
                     </thead>
                     <t t-set="total_timetables" t-value="[(i+1) for i in range(timetable_pages_total)]"/>
@@ -389,6 +396,9 @@
                                 <tr>
                                     <td class="text-left">
                                         <span t-esc="record['class_name']"/>
+                                        <t t-if="record['class_group_id']">
+                                            <span t-esc="'(' + record['class_group_name'] + ')'"/>
+                                        </t>
                                     </td>
                                     <td class="text-left">
                                         <span t-esc="record['subject_name']"/>
@@ -423,7 +433,7 @@
                         </tbody>
                         <tbody>
                             <tr>
-                                <td class="text-left" colspan="11">
+                                <td class="text-left" t-attf-colspan="11">
                                     <nav aria-label="Page navigation timetable">
                                         <ul class="pagination">
                                             <li class="page-item"><a class="page-link" t-attf-href="/my/timetable/page/1?view_type={{ timetable_view_type }}&amp;selected_month={{ selected_month }}">Précédent</a></li>
@@ -443,21 +453,21 @@
                         </tbody>
                         <tfooter>
                             <tr>
-                                <th class="text-left" colspan="11" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
+                                <th class="text-left" t-attf-colspan="11" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
                             </tr>
                         </tfooter>
                     </t>
                     <t t-else="">
                         <tfooter>
                             <tr>
-                                <th class="text-center" colspan="11" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;">
+                                <th class="text-center" t-attf-colspan="11" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;">
                                     <span t-esc="'Aucune donnée disponible'"/>
                                 </th>
                             </tr>
                         </tfooter>
                         <tfooter>
                             <tr>
-                                <th class="text-left" colspan="11" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
+                                <th class="text-left" t-attf-colspan="11" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
                             </tr>
                         </tfooter>
                     </t>
@@ -687,26 +697,24 @@
                             </tr>
                         </thead>
                         <t t-foreach="classes" t-as="classe">
-                            <t t-if="is_user and is_user == 'is_teacher'">
-                                <thead>
-                                    <tr class="active">
-                                        <th class="text-left">
-                                            <span t-esc="examscores[classe]['name']"/>
-                                        </th>
-                                        <th class="text-left" colspan="5">
-                                            <span t-esc="'Empty'" style="visibility: hidden;"/>
-                                        </th>
-                                    </tr>
-                                </thead>
-                            </t>
+                            <thead>
+                                <tr class="active">
+                                    <th class="text-left" colspan="2">
+                                        <span t-esc="examscores[classe]['name']"/>
+                                    </th>
+                                    <th class="text-left" colspan="8">
+                                        <span t-esc="'Empty'" style="visibility: hidden;"/>
+                                    </th>
+                                </tr>
+                            </thead>
                             <t t-set="semesters" t-value="examscores[classe]['data'].keys()"/>
                             <t t-foreach="semesters" t-as="semester">
                                 <tbody>
                                     <tr>
-                                        <td class="text-left">
+                                        <td class="text-left" colspan="2">
                                             <span t-esc="examscores[classe]['data'][semester]['name']"/>
                                         </td>
-                                        <td class="text-left" colspan="5">
+                                        <td class="text-left" colspan="8">
                                             <span t-esc="'Empty'" style="visibility: hidden;"/>
                                         </td>
                                     </tr>
@@ -749,25 +757,25 @@
                                         </t>
                                     </t>
                                 </tbody>
-                                <tfooter>
-                                    <tr>
-                                        <th class="text-left" colspan="6" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
-                                    </tr>
-                                </tfooter>
                             </t>
+                            <tfooter>
+                                <tr>
+                                    <th class="text-left" colspan="10" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
+                                </tr>
+                            </tfooter>
                         </t>
                     </t>
                     <t t-else="">
                         <tfooter>
                             <tr>
-                                <th class="text-center" colspan="6" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;">
+                                <th class="text-center" colspan="10" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;">
                                     <span t-esc="'Aucune donnée disponible'"/>
                                 </th>
                             </tr>
                         </tfooter>
                         <tfooter>
                             <tr>
-                                <th class="text-left" colspan="6" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
+                                <th class="text-left" colspan="10" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
                             </tr>
                         </tfooter>
                     </t>
@@ -1185,18 +1193,16 @@
                             </tr>
                         </thead>
                         <t t-foreach="classes" t-as="classe">
-                            <t t-if="is_user and is_user == 'is_teacher'">
-                                <thead>
-                                    <tr class="active">
-                                        <th class="text-left">
-                                            <span t-esc="consumptionhours[classe]['name']"/>
-                                        </th>
-                                        <th class="text-left" colspan="3">
-                                            <span t-esc="'Empty'" style="visibility: hidden;"/>
-                                        </th>
-                                    </tr>
-                                </thead>
-                            </t>
+                            <thead>
+                                <tr class="active">
+                                    <th class="text-left">
+                                        <span t-esc="consumptionhours[classe]['name']"/>
+                                    </th>
+                                    <th class="text-left" colspan="3">
+                                        <span t-esc="'Empty'" style="visibility: hidden;"/>
+                                    </th>
+                                </tr>
+                            </thead>
                             <tbody>
                                 <t t-set="subjects" t-value="consumptionhours[classe]['data'].keys()"/>
                                 <t t-foreach="subjects" t-as="subject">
@@ -1233,9 +1239,6 @@
                                 <tr>
                                     <th class="text-left" colspan="1">Total volume horaire restant</th>
                                     <th class="text-left" colspan="3"><span t-esc="consumptionhours[classe]['total_awaiting']"/></th>
-                                </tr>
-                                <tr>
-                                    <th class="text-left" colspan="4" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
                                 </tr>
                             </tfooter>
                             <tfooter>
@@ -1334,18 +1337,18 @@
                             </tr>
                         </thead>
                         <t t-foreach="classes" t-as="classe">
-                            <t t-if="is_user and is_user == 'is_teacher'">
-                                <thead>
-                                    <tr class="active">
-                                        <th class="text-left">
-                                            <span t-esc="progressreports[classe]['name']"/>
-                                        </th>
-                                        <th class="text-left" colspan="2">
-                                            <span t-esc="'Empty'" style="visibility: hidden;"/>
-                                        </th>
-                                    </tr>
-                                </thead>
-                            </t>
+                            <t t-set="params" t-value="str(classe)"/>
+                            <t t-set="params" t-value="params.split('-')"/>
+                            <thead>
+                                <tr class="active">
+                                    <th class="text-left">
+                                        <span t-esc="progressreports[classe]['name']"/>
+                                    </th>
+                                    <th class="text-left" colspan="2">
+                                        <span t-esc="'Empty'" style="visibility: hidden;"/>
+                                    </th>
+                                </tr>
+                            </thead>
                             <tbody>
                                 <t t-set="subjects" t-value="progressreports[classe]['data'].keys()"/>
                                 <t t-foreach="subjects" t-as="subject">
@@ -1355,7 +1358,12 @@
                                         </td>
                                         <td class="text-center">
                                             <div>
-                                                <a t-attf-href="/my/subjectsession/{{ classe }}/{{ subject }}/list" class="btn btn-primary btn-sm">Fiche de progression</a>
+                                                <t t-if="len(params) == 1">
+                                                    <a t-attf-href="/my/subjectsession/{{ params[0] }}/{{ subject }}/list" class="btn btn-primary btn-sm">Fiche de progression</a>
+                                                </t>
+                                                <t t-elif="len(params) > 1">
+                                                    <a t-attf-href="/my/subjectsession/{{ params[0] }}/{{ params[1] }}/{{ subject }}/list" class="btn btn-primary btn-sm">Fiche de progression</a>
+                                                </t>
                                             </div>
                                         </td>
                                         <td class="text-left">
@@ -1394,8 +1402,14 @@
         <template id="siantou_ems_portal_subjectsession_list" name="siantou_ems_portal.subjectsession_list_breadcrumbs" inherit_id="portal.portal_breadcrumbs" priority="30">
             <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
                 <li t-if="page_name == 'subjectsession_list'" t-attf-class="breadcrumb-item #{'active ' if subjectsession_list else ''}">
-                    <a t-if="subjectsession_list" t-attf-href="/my/subjectsession/{{ params['class_id'] }}/{{ params['subject_id'] }}/list?{{ keep_query() }}">Sessions de cours</a>
-                    <t t-else=""><a t-attf-href="/my/progressreport">Fiches de progression</a> / <t t-esc="params['class_name'] + ' - ' + params['subject_name']"/></t>
+                    <t t-if="'class_group_id' in params">
+                        <a t-if="subjectsession_list" t-attf-href="/my/subjectsession/{{ params['class_id'] }}/{{ params['class_group_id'] }}/{{ params['subject_id'] }}/list?{{ keep_query() }}">Sessions de cours</a>
+                        <t t-else=""><a t-attf-href="/my/progressreport">Fiches de progression</a> / <t t-esc="params['class_name'] + ' (' + params['class_group_name'] + ') - ' + params['subject_name']"/></t>
+                    </t>
+                    <t t-else="">
+                        <a t-if="subjectsession_list" t-attf-href="/my/subjectsession/{{ params['class_id'] }}/{{ params['subject_id'] }}/list?{{ keep_query() }}">Sessions de cours</a>
+                        <t t-else=""><a t-attf-href="/my/progressreport">Fiches de progression</a> / <t t-esc="params['class_name'] + ' - ' + params['subject_name']"/></t>
+                    </t>
                 </li>
             </xpath>
         </template>
@@ -1451,10 +1465,15 @@
                     <t t-set="title">Sessions de cours</t>
                 </t>
                 <t t-call="portal.portal_table">
-                    <t t-if="is_user == 'is_teacher'">
+                    <t t-if="is_user and is_user == 'is_teacher'">
                         <div>
                             <a t-attf-href="/my/subjectsession/{{ params['class_id'] }}/{{ params['subject_id'] }}/download" class="btn btn-primary">Impression de la fiche de progression</a>
-                            <a t-attf-href="/my/subjectsession/{{ params['class_id'] }}/{{ params['subject_id'] }}/new" class="btn btn-primary">Créer</a><br/><br/>
+                            <t t-if="'class_group_id' in params">
+                                <a t-attf-href="/my/subjectsession/{{ params['class_id'] }}/{{ params['class_group_id'] }}/{{ params['subject_id'] }}/new" class="btn btn-primary">Créer</a><br/><br/>
+                            </t>
+                            <t t-else="">
+                                <a t-attf-href="/my/subjectsession/{{ params['class_id'] }}/{{ params['subject_id'] }}/new" class="btn btn-primary">Créer</a><br/><br/>
+                            </t>
                         </div>
                     </t>
                     <t t-set="timetables" t-value="subjectsessions.keys()"/>
@@ -1494,10 +1513,9 @@
                                             <span t-esc="subjectsessions[timetable]['status']"/>
                                         </td>
                                         <td class="text-center">
-                                            <t t-if="is_user == 'is_teacher'">
+                                            <t t-if="is_user and is_user == 'is_teacher'">
                                                 <div>
                                                     <a t-attf-href="/my/subjectsession/{{ params['class_id'] }}/{{ params['subject_id'] }}/{{ session['id'] }}/edit" class="btn btn-primary btn-sm">Modifier</a>
-                                                    <!-- <a t-attf-href="/my/subjectsession/{{ session['id'] }}/delete" class="btn btn-danger btn-sm">Supprimer</a> -->
                                                 </div>
                                             </t>
                                         </td>
@@ -1534,8 +1552,14 @@
         <template id="siantou_ems_portal_subjectsession_new" name="siantou_ems_portal.subjectsession_new_breadcrumbs" inherit_id="portal.portal_breadcrumbs" priority="30">
             <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
                 <li t-if="page_name == 'subjectsession_new'" t-attf-class="breadcrumb-item #{'active ' if subjectsession_new else ''}">
-                    <a t-if="subjectsession_new" t-attf-href="/my/subjectsession/{{ params['class_id'] }}/{{ params['subject_id'] }}/new?{{ keep_query() }}">Créer une session de cours</a>
-                    <t t-else=""><a t-attf-href="/my/subjectsession/{{ params['class_id'] }}/{{ params['subject_id'] }}/list"><t t-esc="params['class_name'] + ' - ' + params['subject_name']"/></a> / Créer une session de cours</t>
+                    <t t-if="'class_group_id' in params">
+                        <a t-if="subjectsession_new" t-attf-href="/my/subjectsession/{{ params['class_id'] }}/{{ params['class_group_id'] }}/{{ params['subject_id'] }}/new?{{ keep_query() }}">Créer une session de cours</a>
+                        <t t-else=""><a t-attf-href="/my/subjectsession/{{ params['class_id'] }}/{{ params['class_group_id'] }}/{{ params['subject_id'] }}/list"><t t-esc="params['class_name'] + ' (' + params['class_group_name'] + ') - ' + params['subject_name']"/></a> / Créer une session de cours</t>
+                    </t>
+                    <t t-else="">
+                        <a t-if="subjectsession_new" t-attf-href="/my/subjectsession/{{ params['class_id'] }}/{{ params['subject_id'] }}/new?{{ keep_query() }}">Créer une session de cours</a>
+                        <t t-else=""><a t-attf-href="/my/subjectsession/{{ params['class_id'] }}/{{ params['subject_id'] }}/list"><t t-esc="params['class_name'] + ' - ' + params['subject_name']"/></a> / Créer une session de cours</t>
+                    </t>
                 </li>
             </xpath>
         </template>
@@ -1597,6 +1621,9 @@
                                 <form t-attf-action="/my/subjectsession/create" enctype="multipart/form-data" method="post">
                                     <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
                                     <input type="hidden" name="classe" t-att-value="params['class_id']"/>
+                                    <t t-if="'class_group_id' in params">
+                                        <input type="hidden" name="group" t-att-value="params['class_group_id']"/>
+                                    </t>
                                     <input type="hidden" name="subject" t-att-value="params['subject_id']"/>
                                     <div class="row mb-3" style="width: 100%">
                                         <div class="col-6">
@@ -1639,8 +1666,14 @@
         <template id="siantou_ems_portal_subjectsession_edit" name="siantou_ems_portal.subjectsession_edit_breadcrumbs" inherit_id="portal.portal_breadcrumbs" priority="30">
             <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
                 <li t-if="page_name == 'subjectsession_edit'" t-attf-class="breadcrumb-item #{'active ' if subjectsession_edit else ''}">
-                    <a t-if="subjectsession_edit" t-attf-href="/my/subjectsession/{{ params['class_id'] }}/{{ params['subject_id'] }}/edit?{{ keep_query() }}">Modifier une session de cours</a>
-                    <t t-else=""><a t-attf-href="/my/subjectsession/{{ params['class_id'] }}/{{ params['subject_id'] }}/list"><t t-esc="params['class_name'] + ' - ' + params['subject_name']"/></a> / Modifier une session de cours</t>
+                    <t t-if="'class_group_id' in params">
+                        <a t-if="subjectsession_edit" t-attf-href="/my/subjectsession/{{ params['class_id'] }}/{{ params['class_group_id'] }}/{{ params['subject_id'] }}/edit?{{ keep_query() }}">Modifier une session de cours</a>
+                        <t t-else=""><a t-attf-href="/my/subjectsession/{{ params['class_id'] }}/{{ params['class_group_id'] }}/{{ params['subject_id'] }}/list"><t t-esc="params['class_name'] + ' (' + params['class_group_name'] + ') - ' + params['subject_name']"/></a> / Modifier une session de cours</t>
+                    </t>
+                    <t t-else="">
+                        <a t-if="subjectsession_edit" t-attf-href="/my/subjectsession/{{ params['class_id'] }}/{{ params['subject_id'] }}/edit?{{ keep_query() }}">Modifier une session de cours</a>
+                        <t t-else=""><a t-attf-href="/my/subjectsession/{{ params['class_id'] }}/{{ params['subject_id'] }}/list"><t t-esc="params['class_name'] + ' - ' + params['subject_name']"/></a> / Modifier une session de cours</t>
+                    </t>
                 </li>
             </xpath>
         </template>
@@ -1702,6 +1735,9 @@
                                 <form t-attf-action="/my/subjectsession/update" enctype="multipart/form-data" method="post">
                                     <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
                                     <input type="hidden" name="classe" t-att-value="params['class_id']"/>
+                                    <t t-if="'class_group_id' in params">
+                                        <input type="hidden" name="group" t-att-value="params['class_group_id']"/>
+                                    </t>
                                     <input type="hidden" name="subject" t-att-value="params['subject_id']"/>
                                     <input type="hidden" name="session" t-att-value="params['session_id']"/>
                                     <div class="row mb-3" style="width: 100%">

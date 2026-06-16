@@ -38,6 +38,7 @@
                     </header>
                     <!-- <field name="name"/> -->
                     <field name="class_id"/>
+                    <field name="class_group_id"/>
                     <field name="subject_id"/>
                     <field name="percentage"/>
                 </tree>
@@ -57,6 +58,7 @@
                             <group colspan="2">
                                 <field name="name"/>
                                 <field name="class_id"/>
+                                <field name="class_group_id" domain="[('class_id', '=', class_id)]"/>
                             </group>
                             <group colspan="2">
                                 <field name="subject_id_domain" invisible="1"/>
