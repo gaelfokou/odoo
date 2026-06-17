@@ -112,7 +112,7 @@
 					<sheet>
                         <group>
                             <group>
-                                <field name="name" readonly="1"/>
+                                <field name="name"/>
                                 <field name="year_id"/>
                                 <field name="school_id"/>
                                 <field name="level_id"/>

@@ -64,6 +64,7 @@
         'views/city_views.xml',
         'views/quarter_views.xml',
         'views/class_division_views.xml',
+        'views/class_group_views.xml',
         'views/country_views.xml',
         'views/production_pe.xml',
         'views/teacher_avaibility_views.xml',

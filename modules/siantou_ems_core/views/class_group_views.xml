@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+		<!-- Affichage en vue liste -->
+		<record
+                id="class_group_tree_view"
+                model="ir.ui.view">
+            <field name="name">siantou_ems_core_class_group.tree.view</field>
+			<field name="model">siantou.ems.core.class.group</field>
+			<field name="arch" type="xml">
+				<tree string="Groupes des classes">
+					<field name="name"/>
+                    <field name="class_id"/>
+				</tree>
+			</field>
+		</record>
+
+        <!-- Affichage en vue formulaire -->
+		<record
+                id="class_group_form_view"
+                model="ir.ui.view">
+			<field name="name">siantou_ems_core_class_group.form.view</field>
+			<field name="model">siantou.ems.core.class.group</field>
+			<field name="arch" type="xml">
+				<form string="Groupes des classes">
+					<sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="class_id"/>
+                        </group>
+					</sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" groups="base.group_user"/>
+                        <field name="activity_ids"/>
+                        <field name="message_ids"/>
+                    </div>
+				</form>
+			</field>
+		</record>
+
+        <!-- Action pour le menu s'affichage des classes standards -->
+        <record
+                id="action_show_class_group"
+                model="ir.actions.act_window">
+            <field name="name">Groupes des classes</field>
+            <field name="res_model">siantou.ems.core.class.group</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <!-- Menu pour la gestion des classes -->
+        <menuitem
+                id="menu_siantou_ems_core_class_group"
+                name="Groupes des classes"
+                parent="menu_siantou_ems_core_config_fa"
+                action="action_show_class_group"
+            sequence="4"/>
+	</data>
+</odoo>

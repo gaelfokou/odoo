@@ -544,6 +544,7 @@ class EducationClass(models.Model):
 class EducationClassGroup(models.Model):
     _name = 'siantou.ems.core.class.group'
     _description = 'Groupe de classe'
+    _inherit=['mail.thread', 'mail.activity.mixin',]
 
     name = fields.Char(string='Nom', required=True,
                        help="Entrer le nom du groupe")
