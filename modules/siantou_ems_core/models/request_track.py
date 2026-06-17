@@ -57,7 +57,8 @@ class RequestTrack(models.Model):
     def _check_file(self):
         for record in self:
             if record.file_name:
-                file_name = record.file_name.lower()
+                file_name = record.file_name
+                file_name = file_name.lower()
                 if file_name.split('.')[-1] not in ['pdf', 'doc', 'docx', 'xls', 'xlsx']:
                         raise ValidationError('Impossible de télécharger un fichier différent de .pdf, .doc, .docx, .xls, .xlsx')
 

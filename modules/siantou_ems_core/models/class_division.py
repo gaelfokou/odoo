@@ -118,7 +118,7 @@ class EducationClass(models.Model):
         default='cj',
     )
 
-    group_ids = fields.One2many(
+    class_group_ids = fields.One2many(
         'siantou.ems.core.class.group',
         'class_id',
         string='Groupes de classe'
@@ -519,6 +519,61 @@ class EducationClass(models.Model):
 
         classes = list(classes)
         self.remove_duplicate_student_class(classes)
+
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'reload',
+        }
+
+    def update_group_class(self, classe):
+        try:
+            groups = []
+            class_group_ids = self.env['siantou.ems.core.class.group'].search([('class_id', '!=', False)])
+            class_group_ids = list(class_group_ids)
+            for class_group_id in class_group_ids:
+                name = class_group_id.name
+                name = name.strip()
+                name = name.lower()
+                groups.append(name)
+
+            groups = list(set(groups))
+
+            for group in groups:
+                class_group = None
+                class_group_ids = classe.class_group_ids.filtered(lambda rec: rec.name.strip().lower() == group)
+                class_group_ids = list(class_group_ids)
+                for i, class_group_id in enumerate(class_group_ids):
+                    if i == 0:
+                        class_group = class_group_id
+                    else:
+                        timetable_ids = self.env['siantou.ems.timetable.timetable'].search([
+                            ('class_id', '=', classe.id),
+                            ('class_group_id', '=', class_group_id.id)
+                        ])
+                        timetable_ids = list(timetable_ids)
+                        for timetable_id in timetable_ids:
+                            timetable_id.write({
+                                'class_group_id': class_group.id,
+                                'skip_validation': True,
+                            })
+                        class_group_id.unlink()
+            # self.env.cr.commit()
+        except psycopg2.errors.NotNullViolation as error:
+            _logger.info(f'----------- tototototototo Exception {error} -----------')
+        except psycopg2.Error as error:
+            _logger.info(f'----------- tototototototo Exception {error} -----------')
+        except Exception as error:
+            _logger.info(f'----------- tototototototo Exception {error} -----------')
+
+    def action_update_all_group_class(self):
+        active_ids = self.env.context.get('active_ids', [])
+        classes = self.env['siantou.ems.core.class'].browse(active_ids)
+        classes = list(classes)
+        if len(active_ids) == 0:
+            raise UserError('Aucune donnée sélectionnée')
+
+        for classe in classes:
+            self.update_group_class(classe)
 
         return {
             'type': 'ir.actions.client',

@@ -30,6 +30,10 @@
                             type="object" 
                             string="Mettre à jour les étudiants et classes" 
                             class="oe_highlight"/>
+                        <button name="action_update_all_group_class" 
+                            type="object" 
+                            string="Mettre à jour les groupes de classe" 
+                            class="oe_highlight"/>
                         <button name="action_open_copy" 
                             type="object" 
                             string="Copier UE" 
@@ -48,7 +52,7 @@
                 	<field name="department_id"/>
                 	<field name="supervision_id"/>
                     <field name="type_cour"/>
-                    <field name="group_ids" widget="many2many_tags"/>
+                    <field name="class_group_ids" widget="many2many_tags"/>
                     <field name="number_of_student"
                         decoration-warning="number_of_student &gt;= 5 and number_of_student &lt; 10"
                         decoration-danger="number_of_student &lt; 5"/>
@@ -129,7 +133,7 @@
                             	<field name="department_id"/>
                                 <field name="supervision_id" options="{'no_create': True}" domain="[('cycle_ids', '=', cycle_id)]"/>
                                 <field name="type_cour" widget="radio"/>
-                                <field name="group_ids" domain="[('class_id', '=', id)]" widget="many2many_tags"/>
+                                <field name="class_group_ids" domain="[('class_id', '=', id)]" widget="many2many_tags"/>
                             </group>
                         </group>
                         <notebook>
