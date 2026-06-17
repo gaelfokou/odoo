@@ -9,6 +9,7 @@
                 <tree string="Requêtes">
                     <!-- <field name="name"/> -->
                     <field name="description"/>
+                    <field name="file_name"/>
                     <field name="type_request"/>
                     <field name="date"
                         decoration-warning="status in ['pending', 'progress'] and date and date == current_date"
@@ -42,6 +43,8 @@
                         <group colspan="2">
                             <field name="name" readonly="id != False and create_uid != uid"/>
                             <field name="description" readonly="id != False and create_uid != uid"/>
+                            <field name="file_name" invisible="1"/>
+                            <field name="file" filename="file_name" options="{'accepted_file_extensions': '.pdf,.doc,.docx,.xls,.xlsx'}" readonly="id != False and create_uid != uid"/>
                             <field name="type_request" readonly="id != False and create_uid != uid"/>
                             <field name="date" readonly="id != False and create_uid != uid"/>
                         </group>

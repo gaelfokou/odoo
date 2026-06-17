@@ -45,6 +45,22 @@ class RequestTrack(models.Model):
         'Description',
     )
 
+    file = fields.Binary(
+        string='Fichier'
+    )
+
+    file_name = fields.Char(
+        string='Nom du fichier'
+    )
+
+    @api.constrains('file', 'file_name')
+    def _check_file(self):
+        for record in self:
+            if record.file_name:
+                file_name = record.file_name.lower()
+                if file_name.split('.')[-1] not in ['pdf', 'doc', 'docx', 'xls', 'xlsx']:
+                        raise ValidationError('Impossible de télécharger un fichier différent de .pdf, .doc, .docx, .xls, .xlsx')
+
     note = fields.Text(
         'Remarque',
     )
