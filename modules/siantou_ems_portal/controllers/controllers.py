@@ -971,7 +971,7 @@ class PortalAccount(portal.CustomerPortal):
             key_subject = '{}'.format(search_accountbalance.subject_id.id)
             if key_class in consumptionhours:
                 if key_subject in consumptionhours[key_class]['data']:
-                    accountbalance['hours_credit'] = consumptionhours[key_class]['data'][key_subject]['data']['credit']
+                    accountbalance['hours_credit'] = consumptionhours[key_class]['data'][key_subject]['data']['hours_credit']
                     accountbalance['all'] = consumptionhours[key_class]['data'][key_subject]['data']['done']
                     accountbalance['done'] = consumptionhours[key_class]['data'][key_subject]['data']['done']
                     accountbalance['awaiting'] = consumptionhours[key_class]['data'][key_subject]['data']['awaiting']

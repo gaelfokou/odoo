@@ -1069,20 +1069,20 @@ class Helpers:
                 consumptionhours[key_class]['data'][key_subject] = {}
                 consumptionhours[key_class]['data'][key_subject]['name'] = d['subject_name']
                 consumptionhours[key_class]['data'][key_subject]['data'] = {
-                    'credit': 0,
+                    'hours_credit': 0.0,
                     'done': [],
                 }
-                consumptionhours[key_class]['data'][key_subject]['data']['credit'] = d['subject_hours_credit']
+                consumptionhours[key_class]['data'][key_subject]['data']['hours_credit'] = d['subject_hours_credit']
                 consumptionhours[key_class]['data'][key_subject]['data']['done'].append(d)
             else:
                 if key_subject not in consumptionhours[key_class]['data']:
                     consumptionhours[key_class]['data'][key_subject] = {}
                     consumptionhours[key_class]['data'][key_subject]['name'] = d['subject_name']
                     consumptionhours[key_class]['data'][key_subject]['data'] = {
-                        'credit': 0,
+                        'hours_credit': 0.0,
                         'done': [],
                     }
-                    consumptionhours[key_class]['data'][key_subject]['data']['credit'] = d['subject_hours_credit']
+                    consumptionhours[key_class]['data'][key_subject]['data']['hours_credit'] = d['subject_hours_credit']
                     consumptionhours[key_class]['data'][key_subject]['data']['done'].append(d)
                 else:
                     consumptionhours[key_class]['data'][key_subject]['data']['done'].append(d)
@@ -1094,12 +1094,15 @@ class Helpers:
             consumptionhours[key_class]['total_awaiting'] = 0.0
             for key_subject in consumptionhours[key_class]['data'].keys():
                 consumptionhours[key_class]['data'][key_subject]['data']['done'] = sum([Helpers.convert_number_of_hours(v) for v in consumptionhours[key_class]['data'][key_subject]['data']['done']])
-                consumptionhours[key_class]['data'][key_subject]['data']['awaiting'] = consumptionhours[key_class]['data'][key_subject]['data']['credit'] - consumptionhours[key_class]['data'][key_subject]['data']['done']
+                consumptionhours[key_class]['data'][key_subject]['data']['awaiting'] = consumptionhours[key_class]['data'][key_subject]['data']['hours_credit'] - consumptionhours[key_class]['data'][key_subject]['data']['done']
                 consumptionhours[key_class]['data'][key_subject]['data']['done'] = round(consumptionhours[key_class]['data'][key_subject]['data']['done'], 2)
                 consumptionhours[key_class]['data'][key_subject]['data']['done'] = round(consumptionhours[key_class]['data'][key_subject]['data']['done'], 2)
                 consumptionhours[key_class]['data'][key_subject]['data']['awaiting'] = round(consumptionhours[key_class]['data'][key_subject]['data']['awaiting'], 2)
 
-                consumptionhours[key_class]['hours_credit'] += consumptionhours[key_class]['data'][key_subject]['data']['credit']
+                if consumptionhours[key_class]['data'][key_subject]['data']['awaiting'] < 0.0:
+                    consumptionhours[key_class]['data'][key_subject]['data']['awaiting'] = 0.0
+
+                consumptionhours[key_class]['hours_credit'] += consumptionhours[key_class]['data'][key_subject]['data']['hours_credit']
                 consumptionhours[key_class]['total_all'] += consumptionhours[key_class]['data'][key_subject]['data']['done']
                 consumptionhours[key_class]['total_done'] += consumptionhours[key_class]['data'][key_subject]['data']['done']
                 consumptionhours[key_class]['total_awaiting'] += consumptionhours[key_class]['data'][key_subject]['data']['awaiting']
