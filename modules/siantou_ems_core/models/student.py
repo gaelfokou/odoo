@@ -608,7 +608,6 @@ class Student(models.Model):
 
             if 'class_id' not in vals:
                 vals['class_id'] = student.class_id.id
-                vals['class_name'] = student.class_id.name
             if 'school_id' not in vals:
                 vals['school_id'] = student.school_id.id
             if 'field_of_study_id' not in vals:
