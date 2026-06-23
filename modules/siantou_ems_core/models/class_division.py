@@ -18,7 +18,7 @@ class EducationClass(models.Model):
 
     name = fields.Char(string='Nom',
                        compute='_compute_name',
-                       store=True,
+                       store=False,
                        help="Entrer le nom de la Classe")
 
     field_of_study_id = fields.Many2one('siantou.ems.core.field_of_study', string='Filière',
@@ -28,7 +28,7 @@ class EducationClass(models.Model):
         'oe.school.course',
         string='Cursus ou Cycle',
         related='field_of_study_id.cycle_id',
-        store=True
+        store=False
     )
 
     supervision_id = fields.Many2one('oe.school.course.supervision', string='Tutelle académique',
@@ -58,7 +58,7 @@ class EducationClass(models.Model):
     number_of_student = fields.Integer(
         string='Nombre d\'étudiants',
         compute='_compute_number_of_student',
-        store=True,
+        store=False,
     )
 
     timetable_ids = fields.One2many(
@@ -71,7 +71,7 @@ class EducationClass(models.Model):
     number_of_timetable = fields.Integer(
         string='Nombre d\'emplois du temps',
         compute='_compute_number_of_timetable',
-        store=True,
+        store=False,
     )
 
     specialty_id = fields.Many2one('siantou.ems.core.specialty', string='Spécialité',
@@ -81,7 +81,7 @@ class EducationClass(models.Model):
         'hr.department',
         string='Département',
         related='specialty_id.department_id',
-        store=True
+        store=False
     )
 
     option_id = fields.Many2one('siantou.ems.core.option', string='Option',
@@ -130,7 +130,7 @@ class EducationClass(models.Model):
         string='Date de désactivation des emplois du temps',
         readonly=False,
         compute='_compute_timetable_inactive_date',
-        store=True
+        store=False
     )
 
     @api.depends('is_timetable_active')
