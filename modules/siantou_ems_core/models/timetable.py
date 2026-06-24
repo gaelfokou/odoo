@@ -1160,6 +1160,17 @@ class Timetable(models.Model):
 
         self.create_timetable(res)
 
+        if 'class_id' in vals:
+            classe = self.env['siantou.ems.core.class'].search([
+                ('id', '=', vals['class_id']),
+            ], limit=1)
+            if classe:
+                classe._compute_timetables()
+                classe._compute_number_of_timetables()
+                classe.write({
+                    'number_of_timetable': len(classe.timetable_ids.ids),
+                })
+
         return res
 
     def write(self, vals):
@@ -1260,6 +1271,16 @@ class Timetable(models.Model):
             class_id.write({
                 'specialty_id': class_id.specialty_id.id,
             })
+
+            classe = self.env['siantou.ems.core.class'].search([
+                ('id', '=', class_id.id),
+            ], limit=1)
+            if classe:
+                classe._compute_timetables()
+                classe._compute_number_of_timetables()
+                classe.write({
+                    'number_of_timetable': len(classe.timetable_ids.ids),
+                })
 
         if employee_id:
             employee_id.write({
@@ -1868,6 +1889,17 @@ class TimetableGroup(models.Model):
             groups = list(groups)
 
         res = super(TimetableGroup, self).write(vals)
+
+        if 'class_id' in vals:
+            classe = self.env['siantou.ems.core.class'].search([
+                ('id', '=', vals['class_id']),
+            ], limit=1)
+            if classe:
+                classe._compute_timetables()
+                classe._compute_number_of_timetables()
+                classe.write({
+                    'number_of_timetable': len(classe.timetable_ids.ids),
+                })
 
         # for group in groups:
         #     if not group.is_submit:

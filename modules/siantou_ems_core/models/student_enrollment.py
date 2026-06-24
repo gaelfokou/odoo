@@ -409,15 +409,26 @@ class StudentEnrollment(models.Model):
 
         res = super(StudentEnrollment, self).create(vals)
 
+        if 'class_id' in vals:
+            classe = self.env['siantou.ems.core.class'].search([
+                ('id', '=', vals['class_id']),
+            ], limit=1)
+            if classe:
+                classe._compute_students()
+                classe._compute_number_of_students()
+                classe.write({
+                    'number_of_student': len(classe.student_ids.ids),
+                })
+
         return res
 
     def write(self, vals):
         student_enrolls = []
         if len(self.ids) == 1:
-            student_enroll = self.env['siantou.ems.core.class'].browse(self.id)
+            student_enroll = self.env['oe.school.student.enrollment'].browse(self.id)
             student_enrolls.append(student_enroll)
         else:
-            student_enrolls = self.env['siantou.ems.core.class'].browse(self.ids)
+            student_enrolls = self.env['oe.school.student.enrollment'].browse(self.ids)
             student_enrolls = list(student_enrolls)
 
         for student_enroll in student_enrolls:
@@ -493,13 +504,47 @@ class StudentEnrollment(models.Model):
 
         res = super(StudentEnrollment, self).write(vals)
 
+        if 'class_id' in vals:
+            classe = self.env['siantou.ems.core.class'].search([
+                ('id', '=', vals['class_id']),
+            ], limit=1)
+            if classe:
+                classe._compute_students()
+                classe._compute_number_of_students()
+                classe.write({
+                    'number_of_student': len(classe.student_ids.ids),
+                })
+
         return res
 
     def unlink(self):
-        if self.status == "transfer":
-            raise ValidationError("Impossible de supprimer une candidature déjà admise")
+        student_enrols = []
+        if len(self.ids) == 1:
+            student_enrol = self.env['oe.school.student.enrollment'].browse(self.id)
+            student_enrols.append(student_enrol)
+        else:
+            student_enrols = self.env['oe.school.student.enrollment'].browse(self.ids)
+            student_enrols = list(student_enrols)
+
+        class_id = None
+
+        for student_enrol in student_enrols:
+            if self.status == "transfer":
+                raise ValidationError("Impossible de supprimer une candidature déjà admise")
+            class_id = student_enrol.class_id if student_enrol.class_id.id else None
 
         student_enrol = super(StudentEnrollment, self).unlink()
+
+        if class_id:
+            classe = self.env['siantou.ems.core.class'].search([
+                ('id', '=', class_id.id),
+            ], limit=1)
+            if classe:
+                classe._compute_students()
+                classe._compute_number_of_students()
+                classe.write({
+                    'number_of_student': len(classe.student_ids.ids),
+                })
 
         return student_enrol
 

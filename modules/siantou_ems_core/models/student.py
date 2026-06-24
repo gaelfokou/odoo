@@ -592,15 +592,26 @@ class Student(models.Model):
 
         self.create_student_user(res)
 
+        if 'class_id' in vals:
+            classe = self.env['siantou.ems.core.class'].search([
+                ('id', '=', vals['class_id']),
+            ], limit=1)
+            if classe:
+                classe._compute_students()
+                classe._compute_number_of_students()
+                classe.write({
+                    'number_of_student': len(classe.student_ids.ids),
+                })
+
         return res
 
     def write(self, vals):
         students = []
         if len(self.ids) == 1:
-            student = self.env['siantou.ems.core.class'].browse(self.id)
+            student = self.env['oe.school.student'].browse(self.id)
             students.append(student)
         else:
-            students = self.env['siantou.ems.core.class'].browse(self.ids)
+            students = self.env['oe.school.student'].browse(self.ids)
             students = list(students)
 
         for student in students:
@@ -676,7 +687,47 @@ class Student(models.Model):
 
         res = super(Student, self).write(vals)
 
+        if 'class_id' in vals:
+            classe = self.env['siantou.ems.core.class'].search([
+                ('id', '=', vals['class_id']),
+            ], limit=1)
+            if classe:
+                classe._compute_students()
+                classe._compute_number_of_students()
+                classe.write({
+                    'number_of_student': len(classe.student_ids.ids),
+                })
+
         return res
+
+    def unlink(self):
+        students = []
+        if len(self.ids) == 1:
+            student = self.env['oe.school.student'].browse(self.id)
+            students.append(student)
+        else:
+            students = self.env['oe.school.student'].browse(self.ids)
+            students = list(students)
+
+        class_id = None
+
+        for student in students:
+            class_id = student.class_id if student.class_id.id else None
+
+        student = super(Student, self).unlink()
+
+        if class_id:
+            classe = self.env['siantou.ems.core.class'].search([
+                ('id', '=', class_id.id),
+            ], limit=1)
+            if classe:
+                classe._compute_students()
+                classe._compute_number_of_students()
+                classe.write({
+                    'number_of_student': len(classe.student_ids.ids),
+                })
+
+        return student
 
     def open_student_form(self):
         # return {

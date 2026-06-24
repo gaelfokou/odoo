@@ -57,8 +57,8 @@ class EducationClass(models.Model):
 
     number_of_student = fields.Integer(
         string='Nombre d\'étudiants',
-        compute='_compute_number_of_student',
-        store=False,
+        compute='_compute_number_of_students',
+        store=True,
     )
 
     timetable_ids = fields.One2many(
@@ -70,8 +70,8 @@ class EducationClass(models.Model):
 
     number_of_timetable = fields.Integer(
         string='Nombre d\'emplois du temps',
-        compute='_compute_number_of_timetable',
-        store=False,
+        compute='_compute_number_of_timetables',
+        store=True,
     )
 
     specialty_id = fields.Many2one('siantou.ems.core.specialty', string='Spécialité',
@@ -244,7 +244,7 @@ class EducationClass(models.Model):
             record.student_ids = student_ids
 
     @api.depends('student_enroll_ids')
-    def _compute_number_of_student(self):
+    def _compute_number_of_students(self):
         for record in self:
             students = []
             for student_enroll_id in record.student_enroll_ids:
@@ -258,7 +258,7 @@ class EducationClass(models.Model):
             record.number_of_student = len(student_ids.ids)
 
     @api.depends('timetable_ids')
-    def _compute_number_of_timetable(self):
+    def _compute_number_of_timetables(self):
         for record in self:
             record.number_of_timetable = len(record.timetable_ids.ids)
 
