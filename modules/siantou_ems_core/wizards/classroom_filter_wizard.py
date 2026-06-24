@@ -48,7 +48,7 @@ class ClassroomFilterWizard(models.TransientModel):
     status = fields.Selection([
         ('available', 'Disponible'),
         ('not_available', 'Pas disponible'),
-    ], 'Statut',
+    ], string='Statut',
         # default='available',
     )
 

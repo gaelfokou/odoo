@@ -31,7 +31,7 @@ class TimetableNotification(models.Model):
     status = fields.Selection([
         ('pending', 'En attente'),
         ('sent', 'Envoyé'),
-    ], 'Statut',
+    ], string='Statut',
         default='pending',
     )
 

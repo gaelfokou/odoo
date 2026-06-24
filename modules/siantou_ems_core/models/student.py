@@ -86,16 +86,14 @@ class Student(models.Model):
     type_cour = fields.Selection([
             ('cj', 'Cours du jour'),
             ('cs', 'Cours du soir'),
-        ],
-        string='Type de cours',
+        ], string='Type de cours',
         default='cj',
     )
 
     status_univ = fields.Selection([
             ('new', 'Nouveau'),
             ('old', 'Ancien'),
-        ],
-        string='Statut universitaire',
+        ], string='Statut universitaire',
         default='old',
     )
 
@@ -157,8 +155,7 @@ class Student(models.Model):
     status_user = fields.Selection([
             ('new', 'Jamais connecté'),
             ('active', 'Confirmé'),
-        ],
-        string='Statut',
+        ], string='Statut',
         related='user_id.state',
     )
 

@@ -71,8 +71,7 @@ class SessionEnrollment(models.Model):
             ('cancel', 'Cancelled'),
             ('admission', 'Admission en cours'),
             ('done', 'Fait')
-        ],
-        string='Statut',
+        ], string='Statut',
         default='draft'
     )
 
@@ -190,8 +189,7 @@ class SessionRegisterEnrollment(models.Model):
             ('admission', 'Admission En cours'),
             ('done', 'Fait'),
             ('archive', 'Archivé')
-        ],
-        string='Status',
+        ], string='Status',
         default='draft',
         tracking=True
     )

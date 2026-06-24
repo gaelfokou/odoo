@@ -104,7 +104,7 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
     status = fields.Selection([
         ('paid', 'Payé'),
         ('unpaid', 'Non payé'),
-    ], 'Statut',
+    ], string='Statut',
         # default='unpaid',
     )
 
@@ -121,7 +121,7 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
     sort_type = fields.Selection([
         ('teacher', 'Par enseignant'),
         ('hour', 'Par heure'),
-    ], 'Ordre d\'impression',
+    ], string='Ordre d\'impression',
         # default='teacher',
     )
 

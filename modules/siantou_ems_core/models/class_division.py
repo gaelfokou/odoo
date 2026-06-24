@@ -113,8 +113,7 @@ class EducationClass(models.Model):
     type_cour = fields.Selection([
             ('cj', 'Cours du jour'),
             ('cs', 'Cours du soir'),
-        ],
-        string='Type de cours',
+        ], string='Type de cours',
         default='cj',
     )
 

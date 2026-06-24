@@ -84,7 +84,7 @@ class ProgressReportFilterWizard(models.TransientModel):
     status = fields.Selection([
         ('progressreport_available', 'Fiches de progression disponibles'),
         ('progressreport_not_available', 'Fiches de progression pas disponibles'),
-    ], 'Statut',
+    ], string='Statut',
         # default='progressreport_available',
     )
 

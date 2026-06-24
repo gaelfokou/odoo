@@ -77,7 +77,7 @@ class ClassFilterWizard(models.TransientModel):
         ('student_less_than', 'Étudiants moins de'),
         ('timetable_active', 'Emplois du temps actifs'),
         ('timetable_not_active', 'Emplois du temps pas actifs'),
-    ], 'Statut',
+    ], string='Statut',
         # default='timetable_available',
     )
 

@@ -228,7 +228,7 @@ class TimetableFilterWizard(models.TransientModel):
         ('delay_more_than_or_equal', 'Retard plus de ou égal à'),
         ('delay_less_than', 'Retard moins de'),
         ('punctuality', 'Ponctualité'),
-    ], 'Statut',
+    ], string='Statut',
         # default='pending',
     )
 
@@ -275,7 +275,7 @@ class TimetableFilterWizard(models.TransientModel):
         ('specialty', 'Par spécialité'),
         ('teacher', 'Par enseignant'),
         ('subject', 'Par cours'),
-    ], 'Type d\'impression',
+    ], string='Type d\'impression',
         # default='school',
     )
 

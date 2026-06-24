@@ -51,8 +51,7 @@ class HourlyRate(models.Model):
     type_cour = fields.Selection([
             ('cj', 'Cours du jour'),
             ('cs', 'Cours du soir'),
-        ],
-        string='Type de cours',
+        ], string='Type de cours',
         default='cj',
     )
 
@@ -193,8 +192,7 @@ class TeacherHourlyRate(models.Model):
     type_cour = fields.Selection([
             ('cj', 'Cours du jour'),
             ('cs', 'Cours du soir'),
-        ],
-        string='Type de cours',
+        ], string='Type de cours',
         related='hourly_rate_id.type_cour',
         store=False,
     )

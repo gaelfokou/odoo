@@ -69,7 +69,7 @@ class RequestTrack(models.Model):
     type_request = fields.Selection([
         ('academic_information', 'Informations académiques'),
         ('exam_score', 'Notes d\'examen'),
-    ], 'Type de requête',
+    ], string='Type de requête',
         default='academic_information',
     )
 
@@ -78,7 +78,7 @@ class RequestTrack(models.Model):
         ('progress', 'En cours'),
         ('rejected', 'Rejeté'),
         ('done', 'Traité'),
-    ], 'Statut',
+    ], string='Statut',
         default='pending',
     )
 
@@ -87,8 +87,7 @@ class RequestTrack(models.Model):
         ('progress', 'En cours'),
         ('rejected', 'Rejeté'),
         ('done', 'Traité'),
-    ],
-        string='Statut',
+    ], string='Statut',
         related='status',
         store=False,
         tracking=True

@@ -78,8 +78,7 @@ class StudentEnrollment(models.Model):
     type_cour = fields.Selection([
             ('cj', 'Cours du jour'),
             ('cs', 'Cours du soir'),
-        ],
-        string='Type de cours',
+        ], string='Type de cours',
         default='cj',
     )
 
@@ -100,8 +99,7 @@ class StudentEnrollment(models.Model):
             ('inscrip', 'Inscrit'),
             ('rej', 'Candidature rejeté'),
             ('transfer', 'Candidature accepté'),
-        ],
-        string='Statut',
+        ], string='Statut',
         default='inscrip',
     )
 

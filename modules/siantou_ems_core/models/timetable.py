@@ -116,7 +116,7 @@ class TimetableSubjectHour(models.Model):
         ('permission', 'Permission'),
         ('exception', 'Exception'),
         ('delay', 'Retard'),
-    ], 'Statut',
+    ], string='Statut',
         default='pending',
     )
 
@@ -246,8 +246,7 @@ class Timetable(models.Model):
     type_cour = fields.Selection([
             ('cj', 'Cours du jour'),
             ('cs', 'Cours du soir'),
-        ],
-        string='Type de cours',
+        ], string='Type de cours',
         related='class_id.type_cour',
         store=False,
     )
@@ -574,7 +573,7 @@ class Timetable(models.Model):
         ('permission', 'Permission'),
         ('exception', 'Exception'),
         ('delay', 'Retard'),
-    ], 'Statut',
+    ], string='Statut',
         default='pending',
     )
 
@@ -586,8 +585,7 @@ class Timetable(models.Model):
         ('permission', 'Permission'),
         ('exception', 'Exception'),
         ('delay', 'Retard'),
-    ],
-        string='Statut',
+    ], string='Statut',
         related='status',
         store=False,
         tracking=True
@@ -1621,7 +1619,7 @@ class TimetableGroup(models.Model):
         ('valid', 'Valide'),
         ('invalid', 'Invalide'),
         ('draft', 'Brouillon'),
-    ], 'Statut',
+    ], string='Statut',
         default='pending',
     )
 
@@ -1630,8 +1628,7 @@ class TimetableGroup(models.Model):
         ('valid', 'Valide'),
         ('invalid', 'Invalide'),
         ('draft', 'Brouillon'),
-    ],
-        string='Statut',
+    ], string='Statut',
         related='status',
         store=False,
         tracking=True
@@ -2040,8 +2037,7 @@ class TimetableSlotItem(models.Model):
     )
 
     type = fields.Selection(
-        selection=[('0', 'Soir'), ('1', 'Jour')],
-        string='Type',
+        selection=[('0', 'Soir'), ('1', 'Jour')], string='Type',
         default='1',
         widget='radio'
     )

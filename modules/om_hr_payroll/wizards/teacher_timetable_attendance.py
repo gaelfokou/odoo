@@ -108,7 +108,7 @@ class TeacherTimetableAttendance(models.TransientModel):
     sort_type = fields.Selection([
         ('teacher', 'Par enseignant'),
         ('hour', 'Par heure'),
-    ], 'Ordre d\'impression',
+    ], string='Ordre d\'impression',
         # default='teacher',
     )
 
@@ -184,8 +184,7 @@ class TeacherTimetableAttendance(models.TransientModel):
         ('permission', 'Permission'),
         ('exception', 'Exception'),
         ('delay', 'Retard'),
-    ],
-        string='Statut',
+    ], string='Statut',
         related='timetable_id.status',
         store=False
     )
@@ -214,7 +213,7 @@ class TeacherTimetableAttendance(models.TransientModel):
     status_attendance = fields.Selection([
         ('paid', 'Payé'),
         ('unpaid', 'Non payé'),
-    ], 'Statut',
+    ], string='Statut',
         # default='unpaid',
     )
 

@@ -88,7 +88,7 @@ class ExamScore(models.Model):
         ('sn', 'Session normale'),
         ('rcc', 'Rattrapage contrôle continu'),
         ('rsn', 'Rattrapage session normale'),
-    ], 'Type d\'examen',
+    ], string='Type d\'examen',
         default='cc',
     )
 
@@ -97,7 +97,7 @@ class ExamScore(models.Model):
         ('start_write', 'Début saisie'),
         ('end_write', 'Fin saisie'),
         ('end', 'Fin'),
-    ], 'Statut',
+    ], string='Statut',
         default='start',
     )
 
@@ -106,8 +106,7 @@ class ExamScore(models.Model):
         ('start_write', 'Début saisie'),
         ('end_write', 'Fin saisie'),
         ('end', 'Fin'),
-    ],
-        string='Statut',
+    ], string='Statut',
         related='status',
         store=False,
         tracking=True
@@ -356,8 +355,7 @@ class SubjectScore(models.Model):
         ('start_write', 'Début saisie'),
         ('end_write', 'Fin saisie'),
         ('end', 'Fin'),
-    ],
-        string='Statut',
+    ], string='Statut',
         related='exam_id.status',
         store=False
     )
@@ -385,7 +383,7 @@ class SubjectScore(models.Model):
     student_status = fields.Selection([
         ('present', 'Présent'),
         ('absent', 'Absent'),
-    ], 'Statut',
+    ], string='Statut',
         default='absent',
     )
 
