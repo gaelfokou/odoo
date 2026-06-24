@@ -423,7 +423,7 @@ class TeacherTimetableAttendance(models.TransientModel):
                 debt_ids = list(debt_ids)
                 if len(debt_ids) > 0:
                     for debt_id in debt_ids:
-                        if amount == 0.0:
+                        if amount <= 0.0 or debt_id.rest_amount <= 0.0:
                             break
                         if amount >= debt_id.rest_amount:
                             last_rest_amount = 0.0
