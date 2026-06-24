@@ -423,7 +423,7 @@ class SchoolCourseSubject(models.Model):
 
     syllabus_ids = fields.One2many('siantou.ems.core.syllabus', 'ue_id', string='Syllabus')
 
-    total_credit = fields.Integer('Nombre de crédit total', compute='_compute_total_credit', store=True)
+    total_credit = fields.Integer('Nombre de crédit total', compute='_compute_total_credit', store=False)
 
     class_id_domain = fields.Binary(compute='_compute_semester_domain', default=[])
 

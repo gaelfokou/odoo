@@ -29,7 +29,7 @@ class FeeEnrollmentWizard(models.TransientModel):
         'oe.school.student',
         string='Étudiant',
         related='student_enrol_id.student_id',
-        store=True
+        store=False
     )
 
     student_name = fields.Char(

@@ -53,7 +53,7 @@ class TimetableCopyWizard(models.TransientModel):
         'siantou.ems.core.year.semester',
         string='Semestre',
         related='group_id.semester_id',
-        store=True
+        store=False
     )
 
     group_id = fields.Many2one(
@@ -77,7 +77,7 @@ class TimetableCopyWizard(models.TransientModel):
         'siantou.ems.core.field_of_study',
         string='Filière',
         related='specialty_id.field_of_study_id',
-        store=True
+        store=False
     )
 
     specialty_id = fields.Many2one(

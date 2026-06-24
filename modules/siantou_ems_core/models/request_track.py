@@ -90,7 +90,7 @@ class RequestTrack(models.Model):
     ],
         string='Statut',
         related='status',
-        store=True,
+        store=False,
         tracking=True
     )
 

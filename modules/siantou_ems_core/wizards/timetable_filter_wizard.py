@@ -93,7 +93,7 @@ class TimetableFilterWizard(models.TransientModel):
         'siantou.ems.core.year.semester',
         string='Semestre',
         related='group_id.semester_id',
-        store=True
+        store=False
     )
 
     group_id = fields.Many2one(
@@ -115,14 +115,14 @@ class TimetableFilterWizard(models.TransientModel):
         'siantou.ems.core.field_of_study',
         string='Filière',
         related='specialty_id.field_of_study_id',
-        store=True
+        store=False
     )
 
     cycle_id = fields.Many2one(
         'oe.school.course',
         string='Cursus ou Cycle',
         related='field_of_study_id.cycle_id',
-        store=True
+        store=False
     )
 
     department_id = fields.Many2one(
@@ -240,13 +240,13 @@ class TimetableFilterWizard(models.TransientModel):
     has_option = fields.Boolean(
         'Spécialité avec option',
         compute='_compute_has_option',
-        store=True,
+        store=False,
     )
 
     has_group = fields.Boolean(
         'Classe avec groupe',
         compute='_compute_has_group',
-        store=True,
+        store=False,
     )
 
     is_teacher = fields.Boolean(

@@ -18,7 +18,7 @@ class EducationClass(models.Model):
 
     name = fields.Char(string='Nom',
                        compute='_compute_name',
-                       store=False,
+                       store=True,
                        help="Entrer le nom de la Classe")
 
     field_of_study_id = fields.Many2one('siantou.ems.core.field_of_study', string='Filière',

@@ -196,7 +196,7 @@ class TeacherHourlyRate(models.Model):
         ],
         string='Type de cours',
         related='hourly_rate_id.type_cour',
-        store=True,
+        store=False,
     )
 
     # Taux de l\'enseignant

@@ -65,7 +65,7 @@ class ClassUeCopyWizard(models.TransientModel):
         'siantou.ems.core.field_of_study',
         string='Filière',
         related='specialty_id.field_of_study_id',
-        store=True
+        store=False
     )
 
     specialty_id = fields.Many2one(

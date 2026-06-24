@@ -202,7 +202,7 @@ class SessionRegisterEnrollment(models.Model):
         'Année académique',
         readonly=True,
         related='session_id.year_id',
-        store=True
+        store=False
     )
 
     @api.constrains('start_date', 'end_date')

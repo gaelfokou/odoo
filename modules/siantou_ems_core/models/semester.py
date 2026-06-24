@@ -51,7 +51,7 @@ class Semester(models.Model):
         'Nombre de semaines',
         compute='_compute_number_of_week',
         help='Nombre de semaines sur le semestre',
-        store=True
+        store=False
     )
 
     ue_ids = fields.Many2many('siantou.ems.core.unite.enseignement', 'semester_ue_rel', 'semester_id', 'ue_id', string='Unités d\'enseignement')

@@ -109,7 +109,7 @@ class ExamScore(models.Model):
     ],
         string='Statut',
         related='status',
-        store=True,
+        store=False,
         tracking=True
     )
 
@@ -331,14 +331,14 @@ class SubjectScore(models.Model):
         'siantou.ems.core.class',
         string='Classe',
         related='exam_id.class_id',
-        store=True
+        store=False
     )
 
     subject_id = fields.Many2one(
         'siantou.ems.core.subject',
         string='Cours',
         related='exam_id.subject_id',
-        store=True
+        store=False
     )
 
     exam_type = fields.Selection([
@@ -348,7 +348,7 @@ class SubjectScore(models.Model):
         ('rsn', 'Rattrapage session normale'),
     ], string='Type d\'examen',
         related='exam_id.exam_type',
-        store=True
+        store=False
     )
 
     status = fields.Selection([
@@ -359,7 +359,7 @@ class SubjectScore(models.Model):
     ],
         string='Statut',
         related='exam_id.status',
-        store=True
+        store=False
     )
 
     student_id = fields.Many2one(

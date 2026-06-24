@@ -49,7 +49,7 @@ export class OwlSalesDashboard extends Component {
             let self = this;
             setTimeout(async function() {
                 const has_group_dashboard_admin = await self.user.hasGroup("siantou_ems_core.group_dashboard_admin")
-                console.log("User has_group_dashboard_admin:", has_group_dashboard_admin)
+                console.log("User has_group_dashboard_admin :", has_group_dashboard_admin)
                 const years = await self.orm.searchRead("siantou.ems.core.year", [])
                 self.state.years = years
                 await years.forEach(async (year) => {
@@ -65,14 +65,14 @@ export class OwlSalesDashboard extends Component {
     		let self = this;
             setTimeout(async function() {
                 const userId = session.uid;
-                console.log("User Id:", userId)
+                console.log("User Id :", userId)
                 const userData = await self.orm.read("res.users", [userId])
-                console.log("User Details:", userData)
+                console.log("User Details :", userData)
                 if (userData.length > 0) {
                     self.state.userData = userData[0]
                 }
                 const groupData = await self.orm.searchRead("res.groups", [["name", "=", "Tableau de bord - admin"]])
-                console.log("Group Details:", groupData)
+                console.log("Group Details :", groupData)
                 if (groupData.length > 0) {
                     self.state.groupData = groupData[0]
                 }

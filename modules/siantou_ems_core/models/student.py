@@ -69,7 +69,7 @@ class Student(models.Model):
         'siantou.ems.core.field_of_study',
         string='Filière',
         related='specialty_id.field_of_study_id',
-        store=True
+        store=False
     )
 
     specialty_id = fields.Many2one(
@@ -151,7 +151,7 @@ class Student(models.Model):
         'res.partner',
         string='Rest partner',
         related='user_id.partner_id',
-        store=True
+        store=False
     )
 
     status_user = fields.Selection([

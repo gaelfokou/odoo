@@ -199,7 +199,7 @@ class Subject(models.Model):
     total_credit = fields.Integer(
         string='Crédit total',
         compute='_compute_credit',
-        store=True,
+        store=False,
     )
 
     _sql_constraints = [
@@ -392,7 +392,7 @@ class ProgressReport(models.Model):
         'Séances de cours'
     )
 
-    percentage = fields.Float(compute='_compute_percentage', store=True, string='Taux de consommation du volume horaire')
+    percentage = fields.Float(compute='_compute_percentage', store=False, string='Taux de consommation du volume horaire')
 
     _sql_constraints = [
         ('unique_class_subject', 'unique(class_id, subject_id)', 'Un cours ne peut être lié à une même classe qu\'une seule fois.')
@@ -927,7 +927,7 @@ class SubjectSession(models.Model):
     name = fields.Char(
         string='Séance',
         # compute='_compute_name',
-        # store=True,
+        # store=False,
     )
 
     description = fields.Text(

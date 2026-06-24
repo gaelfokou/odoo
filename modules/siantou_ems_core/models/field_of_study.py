@@ -66,14 +66,14 @@ class SpecialtyOfStudy(models.Model):
         'siantou.ems.core.school',
         string='École',
         related='field_of_study_id.school_id',
-        store=True
+        store=False
     )
 
     cycle_id = fields.Many2one(
         'oe.school.course',
         string='Cursus ou Cycle',
         related='field_of_study_id.cycle_id',
-        store=True
+        store=False
     )
 
     department_id = fields.Many2one(
