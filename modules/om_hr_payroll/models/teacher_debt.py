@@ -58,7 +58,7 @@ class TeacherDebt(models.Model):
     rest_amount = fields.Float(
         string='Montant restant',
         compute='_compute_amount',
-        store=False
+        store=True
     )
 
     @api.depends('payment_ids', 'amount')
