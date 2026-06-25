@@ -199,7 +199,7 @@ class Subject(models.Model):
     total_credit = fields.Integer(
         string='Crédit total',
         compute='_compute_credit',
-        store=False,
+        store=True,
     )
 
     _sql_constraints = [

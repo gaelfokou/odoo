@@ -270,7 +270,7 @@ class Timetable(models.Model):
     hours_credit = fields.Float(
         'Volume horaire',
         compute="_compute_hours_credit",
-        store=False
+        store=True
     )
 
     @api.depends('subject_id', 'is_custom_hours_credit')
@@ -478,14 +478,14 @@ class Timetable(models.Model):
     start_datetime = fields.Datetime(
         string='Date et heure de début',
         compute='_compute_start_datetime',
-        store=False
+        store=True
     )
 
     # Date et heure de fin du cours
     end_datetime = fields.Datetime(
         string='Date et heure de fin',
         compute='_compute_end_datetime',
-        store=False
+        store=True
     )
 
     # Heure de fin du cours
@@ -1166,7 +1166,7 @@ class Timetable(models.Model):
                 classe._compute_timetables()
                 classe._compute_number_of_timetables()
                 classe.write({
-                    'number_of_timetable': len(classe.timetable_ids.ids),
+                    'number_of_timetable': classe.number_of_timetable,
                 })
 
         return res
@@ -1277,7 +1277,7 @@ class Timetable(models.Model):
                 classe._compute_timetables()
                 classe._compute_number_of_timetables()
                 classe.write({
-                    'number_of_timetable': len(classe.timetable_ids.ids),
+                    'number_of_timetable': classe.number_of_timetable,
                 })
 
         if employee_id:
@@ -1895,7 +1895,7 @@ class TimetableGroup(models.Model):
                 classe._compute_timetables()
                 classe._compute_number_of_timetables()
                 classe.write({
-                    'number_of_timetable': len(classe.timetable_ids.ids),
+                    'number_of_timetable': classe.number_of_timetable,
                 })
 
         # for group in groups:
@@ -2009,6 +2009,34 @@ class TimetableGroup(models.Model):
                 'default_year_id': self.env['siantou.ems.core.year'].search([('is_active', '=', True)], limit=1).id,
             },
         }
+
+    @api.model
+    def cron_timetable_access(self):
+        _logger.info(f'+++++++++++ Cron Timetable Access Executed +++++++++++')
+
+        current_date = date.today()
+
+        _logger.info(f'----------- tototototototo current_date {datetime.strftime(current_date, DATE_FORMAT)} -----------')
+
+        groups = self.env['siantou.ems.timetable.group'].search([], order='start_date asc')
+        groups = list(groups)
+        for group in groups:
+            group._compute_access()
+            group.sudo().write({
+                'has_write_access': group.has_write_access,
+            })
+
+        if not self.env['ir.config_parameter'].sudo().get_param(f'siantou.expiration_date'):
+            self.env['ir.config_parameter'].sudo().set_param(f'siantou.expiration_date', '2026-05-31')
+        expiration_date = self.env['ir.config_parameter'].sudo().get_param(f'siantou.expiration_date', '2026-05-31')
+        try:
+            expiration_date = datetime.strptime(f"{expiration_date}", DATE_FORMAT).date()
+            if current_date >= expiration_date:
+                year_id = self.env['siantou.ems.core.year'].search([('is_active', '=', True)], limit=1)
+                if year_id:
+                    year_id.sudo().write({'is_active': False})
+        except ValueError:
+            pass
 
 class TimetableSlotItem(models.Model):
     _name = 'siantou.ems.timetable.slotitem'

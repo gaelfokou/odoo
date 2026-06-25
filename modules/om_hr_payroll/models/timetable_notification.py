@@ -66,16 +66,3 @@ class TimetableNotification(models.Model):
         timetable_notifications = list(timetable_notifications)
         for timetable_notification in timetable_notifications:
             timetable_notification.sudo().unlink()
-
-        if not self.env['ir.config_parameter'].sudo().get_param(f'siantou.expiration_date'):
-            self.env['ir.config_parameter'].sudo().set_param(f'siantou.expiration_date', '2026-05-31')
-        expiration_date = self.env['ir.config_parameter'].sudo().get_param(f'siantou.expiration_date', '2026-05-31')
-        try:
-            expiration_date = datetime.strptime(f"{expiration_date}", DATE_FORMAT).date()
-            current_date = date.today()
-            if current_date >= expiration_date:
-                year_id = self.env['siantou.ems.core.year'].search([('is_active', '=', True)], limit=1)
-                if year_id:
-                    year_id.sudo().write({'is_active': False})
-        except ValueError:
-            pass

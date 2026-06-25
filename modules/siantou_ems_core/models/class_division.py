@@ -440,8 +440,10 @@ class EducationClass(models.Model):
 
     def add_number_of_student_class(self, classe):
         try:
+            classe._compute_students()
+            classe._compute_number_of_students()
             classe.write({
-                'number_of_student': len(classe.student_ids.ids),
+                'number_of_student': classe.number_of_student,
             })
             # self.env.cr.commit()
         except psycopg2.errors.NotNullViolation as error:

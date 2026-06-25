@@ -59,7 +59,7 @@ class StudentBatch(models.Model):
     current_size = fields.Integer(
         string="Capacité actuelle",
         compute='_compute_current_size',
-        store=False
+        store=True
     )
 
     @api.depends('class_id')

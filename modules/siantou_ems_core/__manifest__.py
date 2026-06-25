@@ -103,6 +103,7 @@
         #=========== Fichier de sequence
         'data/employee_sequence.xml',
         'data/student_sequence.xml',
+        'data/timetable_access.xml',
         'data/exam_score_sequence.xml',
         'data/menu.xml',
         'data/action_server_student.xml',

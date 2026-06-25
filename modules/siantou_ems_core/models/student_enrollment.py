@@ -415,7 +415,7 @@ class StudentEnrollment(models.Model):
                 classe._compute_students()
                 classe._compute_number_of_students()
                 classe.write({
-                    'number_of_student': len(classe.student_ids.ids),
+                    'number_of_student': classe.number_of_student,
                 })
 
         return res
@@ -510,7 +510,7 @@ class StudentEnrollment(models.Model):
                 classe._compute_students()
                 classe._compute_number_of_students()
                 classe.write({
-                    'number_of_student': len(classe.student_ids.ids),
+                    'number_of_student': classe.number_of_student,
                 })
 
         return res
@@ -541,7 +541,7 @@ class StudentEnrollment(models.Model):
                 classe._compute_students()
                 classe._compute_number_of_students()
                 classe.write({
-                    'number_of_student': len(classe.student_ids.ids),
+                    'number_of_student': classe.number_of_student,
                 })
 
         return student_enrol
