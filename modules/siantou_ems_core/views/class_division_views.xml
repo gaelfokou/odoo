@@ -82,14 +82,14 @@
                                             <field name="name"/>
                                         </strong>
                                     </li>
-                                    <t t-if="record.cycle_id">
+                                    <t t-if="record.cycle_id.raw_value">
                                         <li class="list-group-item d-flex justify-content-between align-items-center">
                                             <span>
                                                 <field name="cycle_id"/>
                                             </span>
                                         </li>
                                     </t>
-                                    <t t-if="record.department_id">
+                                    <t t-if="record.department_id.raw_value">
                                         <li class="list-group-item d-flex justify-content-between align-items-center">
                                             <span>
                                                 <field name="department_id"/>
@@ -102,7 +102,7 @@
                                             <field name="number_of_student"/>
                                         </span>
                                     </li>
-                                    <t t-if="record.is_timetable_active">
+                                    <t t-if="record.is_timetable_active.raw_value">
                                         <li class="list-group-item d-flex justify-content-between align-items-center">
                                             Emplois du temps actifs ?
                                             <span class="badge rounded-pill text-bg-primary" style="display: inline-block !important;" t-esc="'Oui'"/>

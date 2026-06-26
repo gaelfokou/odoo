@@ -389,8 +389,13 @@ class TimetableCopyWizard(models.TransientModel):
                 # for timetable_id in destination_timetable_ids:
                 #     timetable_id.unlink()
 
+                delete_timetable_ids = []
+
                 source_timetable_ids = self.source_timetable_ids
                 for timetable_id in source_timetable_ids:
+                    if not timetable_id.semester_id.id:
+                        delete_timetable_ids.append(timetable_id)
+                        continue
                     years = timetable_id.semester_id.year_id.name.split('-')
                     years = [int(y) for y in years]
                     new_years = self.destination_year_id.name.split('-')
@@ -506,6 +511,9 @@ class TimetableCopyWizard(models.TransientModel):
                                 'group_id': group_id.id,
                                 'skip_validation': True,
                             })
+
+                for timetable_id in delete_timetable_ids:
+                    timetable_id.unlink()
 
         return {
             'type': 'ir.actions.client',
