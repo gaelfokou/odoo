@@ -72,7 +72,7 @@
                     <field name="cycle_id"/>
                     <field name="department_id"/>
                     <field name="number_of_student"/>
-                    <field name="number_of_timetable"/>
+                    <field name="is_timetable_active"/>
                     <templates>
                         <t t-name="kanban-box">
                             <div t-attf-class="oe_kanban_global_click">
@@ -82,28 +82,38 @@
                                             <field name="name"/>
                                         </strong>
                                     </li>
-                                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                                        <span>
-                                            <field name="cycle_id"/>
-                                        </span>
-                                    </li>
-                                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                                        <span>
-                                            <field name="department_id"/>
-                                        </span>
-                                    </li>
+                                    <t t-if="record.cycle_id">
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            <span>
+                                                <field name="cycle_id"/>
+                                            </span>
+                                        </li>
+                                    </t>
+                                    <t t-if="record.department_id">
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            <span>
+                                                <field name="department_id"/>
+                                            </span>
+                                        </li>
+                                    </t>
                                     <li class="list-group-item d-flex justify-content-between align-items-center">
                                         Nombre d'étudiants
                                         <span t-attf-class="badge rounded-pill #{record.number_of_student.raw_value &lt; 5 ? 'bg-danger' : record.number_of_student.raw_value &gt;= 5 and record.number_of_student.raw_value &lt; 10 ? 'bg-warning' : 'bg-primary'}" style="display: inline-block !important;">
                                             <field name="number_of_student"/>
                                         </span>
                                     </li>
-                                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                                        Nombre d'emplois du temps
-                                        <span class="badge bg-primary rounded-pill" style="display: inline-block !important;">
-                                            <field name="number_of_timetable"/>
-                                        </span>
-                                    </li>
+                                    <t t-if="record.is_timetable_active">
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            Emplois du temps actifs ?
+                                            <span class="badge rounded-pill text-bg-primary" style="display: inline-block !important;" t-esc="'Oui'"/>
+                                        </li>
+                                    </t>
+                                    <t t-else="">
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            Emplois du temps actifs ?
+                                            <span class="badge rounded-pill text-bg-secondary" style="display: inline-block !important;" t-esc="'Non'"/>
+                                        </li>
+                                    </t>
                                 </ul>
                             </div>
                         </t>
