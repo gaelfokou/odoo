@@ -159,25 +159,25 @@ class TeacherTimetableAttendance(models.TransientModel):
     )
 
     # Volume horaire effectué du cours
-    total_done = fields.Float(
+    done = fields.Float(
         'Volume horaire effectué théoriquement',
         default=0.0,
     )
 
     # Volume horaire restant du cours
-    total_awaiting = fields.Float(
+    awaiting = fields.Float(
         'Volume horaire restant théoriquement',
         default=0.0,
     )
 
     # Volume horaire effectué du cours
-    total_worked_done = fields.Float(
+    worked_done = fields.Float(
         'Volume horaire effectué',
         default=0.0,
     )
 
     # Volume horaire restant du cours
-    total_worked_awaiting = fields.Float(
+    worked_awaiting = fields.Float(
         'Volume horaire restant',
         default=0.0,
     )

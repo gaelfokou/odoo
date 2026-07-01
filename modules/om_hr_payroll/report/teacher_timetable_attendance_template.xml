@@ -135,14 +135,14 @@
                                                 </td>
                                                 <td class="text-center">
                                                     <t t-if="timetable['class'] == 'text-danger'">
-                                                        <span t-esc="timetable['total_worked_done']" style="color: red !important;"/>
+                                                        <span t-esc="timetable['worked_done']" style="color: red !important;"/>
                                                     </t>
                                                     <t t-else="">
-                                                        <span t-esc="timetable['total_worked_done']"/>
+                                                        <span t-esc="timetable['worked_done']"/>
                                                     </t>
                                                 </td>
                                                 <td class="text-center">
-                                                    <span t-esc="timetable['total_worked_awaiting']"/>
+                                                    <span t-esc="timetable['worked_awaiting']"/>
                                                 </td>
                                             </tr>
                                         </t>

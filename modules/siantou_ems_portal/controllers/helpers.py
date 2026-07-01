@@ -1129,7 +1129,10 @@ class Helpers:
                 consumptionhours[key_class]['hours_credit'] += consumptionhours[key_class]['data'][key_subject]['data']['hours_credit']
                 consumptionhours[key_class]['total_done'] += consumptionhours[key_class]['data'][key_subject]['data']['done']
                 consumptionhours[key_class]['total_awaiting'] += consumptionhours[key_class]['data'][key_subject]['data']['awaiting']
-                consumptionhours[key_class]['total_worked_done'] += consumptionhours[key_class]['data'][key_subject]['data']['worked_done']
+                if consumptionhours[key_class]['data'][key_subject]['data']['worked_done'] > consumptionhours[key_class]['data'][key_subject]['data']['hours_credit']:
+                    consumptionhours[key_class]['total_worked_done'] += consumptionhours[key_class]['data'][key_subject]['data']['hours_credit']
+                else:
+                    consumptionhours[key_class]['total_worked_done'] += consumptionhours[key_class]['data'][key_subject]['data']['worked_done']
                 consumptionhours[key_class]['total_worked_awaiting'] += consumptionhours[key_class]['data'][key_subject]['data']['worked_awaiting']
 
         for key_class in consumptionhours.keys():

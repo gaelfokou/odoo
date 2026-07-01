@@ -1222,7 +1222,7 @@
                                             </t>
                                         </td>
                                         <td class="text-left">
-                                            <span t-esc="consumptionhours[classe]['data'][subject]['data']['awaiting']"/>
+                                            <span t-esc="consumptionhours[classe]['data'][subject]['data']['worked_awaiting']"/>
                                         </td>
                                     </tr>
                                 </t>

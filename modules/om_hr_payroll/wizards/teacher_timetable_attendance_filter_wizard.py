@@ -387,10 +387,10 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
                         continue
 
             hours_credit = 0.0
-            total_done = 0.0
-            total_awaiting = 0.0
-            total_worked_done = 0.0
-            total_worked_awaiting = 0.0
+            done = 0.0
+            awaiting = 0.0
+            worked_done = 0.0
+            worked_awaiting = 0.0
             if timetable.class_group_id.id:
                 key_class = '{}-{}'.format(timetable.class_id.id, timetable.class_group_id.id)
             else:
@@ -399,28 +399,28 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
             if key_class in consumptionhours:
                 if key_subject in consumptionhours[key_class]['data']:
                     hours_credit = consumptionhours[key_class]['data'][key_subject]['data']['hours_credit']
-                    total_done = consumptionhours[key_class]['data'][key_subject]['data']['done']
-                    total_awaiting = consumptionhours[key_class]['data'][key_subject]['data']['awaiting']
-                    total_worked_done = consumptionhours[key_class]['data'][key_subject]['data']['worked_done']
-                    total_worked_awaiting = consumptionhours[key_class]['data'][key_subject]['data']['worked_awaiting']
+                    done = consumptionhours[key_class]['data'][key_subject]['data']['done']
+                    awaiting = consumptionhours[key_class]['data'][key_subject]['data']['awaiting']
+                    worked_done = consumptionhours[key_class]['data'][key_subject]['data']['worked_done']
+                    worked_awaiting = consumptionhours[key_class]['data'][key_subject]['data']['worked_awaiting']
 
             if not timetable.employee_id.is_permanent:
                 if self.refundable_additional:
-                    if hours_credit >= total_worked_done:
+                    if hours_credit >= worked_done:
                         continue
 
                 original_worked_hours = 0.0
                 original_worked_hours += worked_hours
 
                 if self.refundable_additional or key not in key_payslips:
-                    if total_worked_done > hours_credit:
+                    if worked_done > hours_credit:
                         if key_class not in key_extended_hours:
                             key_extended_hours[key_class] = {}
-                            key_extended_hours[key_class][key_subject] = total_worked_done - hours_credit
+                            key_extended_hours[key_class][key_subject] = worked_done - hours_credit
                             key_extended_hours[key_class][key_subject] = round(key_extended_hours[key_class][key_subject], 2)
                         else:
                             if key_subject not in key_extended_hours[key_class]:
-                                key_extended_hours[key_class][key_subject] = total_worked_done - hours_credit
+                                key_extended_hours[key_class][key_subject] = worked_done - hours_credit
                                 key_extended_hours[key_class][key_subject] = round(key_extended_hours[key_class][key_subject], 2)
                         if self.refundable_additional:
                             if key_extended_hours[key_class][key_subject] == 0.0:
@@ -454,10 +454,10 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
                 'rate': rate,
                 'amount': amount,
                 'hours_credit': hours_credit,
-                'total_done': total_done,
-                'total_awaiting': total_awaiting,
-                'total_worked_done': total_worked_done,
-                'total_worked_awaiting': total_worked_awaiting,
+                'done': done,
+                'awaiting': awaiting,
+                'worked_done': worked_done,
+                'worked_awaiting': worked_awaiting,
                 'status': timetable.status,
                 'start_date': self.start_date,
                 'end_date': self.end_date,
@@ -632,7 +632,10 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
                 consumptionhours[key_class]['hours_credit'] += consumptionhours[key_class]['data'][key_subject]['data']['hours_credit']
                 consumptionhours[key_class]['total_done'] += consumptionhours[key_class]['data'][key_subject]['data']['done']
                 consumptionhours[key_class]['total_awaiting'] += consumptionhours[key_class]['data'][key_subject]['data']['awaiting']
-                consumptionhours[key_class]['total_worked_done'] += consumptionhours[key_class]['data'][key_subject]['data']['worked_done']
+                if consumptionhours[key_class]['data'][key_subject]['data']['worked_done'] > consumptionhours[key_class]['data'][key_subject]['data']['hours_credit']:
+                    consumptionhours[key_class]['total_worked_done'] += consumptionhours[key_class]['data'][key_subject]['data']['hours_credit']
+                else:
+                    consumptionhours[key_class]['total_worked_done'] += consumptionhours[key_class]['data'][key_subject]['data']['worked_done']
                 consumptionhours[key_class]['total_worked_awaiting'] += consumptionhours[key_class]['data'][key_subject]['data']['worked_awaiting']
 
         for key_class in consumptionhours.keys():
