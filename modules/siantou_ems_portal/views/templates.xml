@@ -1057,11 +1057,11 @@
                                                 <span t-esc="record['hours_credit']"/>
                                             </td>
                                             <td class="text-left">
-                                                <t t-if="record['done'] &gt; record['hours_credit']">
-                                                    <span t-esc="record['done']" style="color: red !important;"/>
+                                                <t t-if="record['worked_done'] &gt; record['hours_credit']">
+                                                    <span t-esc="record['worked_done']" style="color: red !important;"/>
                                                 </t>
                                                 <t t-else="">
-                                                    <span t-esc="record['done']"/>
+                                                    <span t-esc="record['worked_done']"/>
                                                 </t>
                                             </td>
                                         </tr>
@@ -1214,11 +1214,11 @@
                                             <span t-esc="consumptionhours[classe]['data'][subject]['data']['hours_credit']"/>
                                         </td>
                                         <td class="text-left">
-                                            <t t-if="consumptionhours[classe]['data'][subject]['data']['done'] &gt; consumptionhours[classe]['data'][subject]['data']['hours_credit']">
-                                                <span t-esc="consumptionhours[classe]['data'][subject]['data']['done']" style="color: red !important;"/>
+                                            <t t-if="consumptionhours[classe]['data'][subject]['data']['worked_done'] &gt; consumptionhours[classe]['data'][subject]['data']['hours_credit']">
+                                                <span t-esc="consumptionhours[classe]['data'][subject]['data']['worked_done']" style="color: red !important;"/>
                                             </t>
                                             <t t-else="">
-                                                <span t-esc="consumptionhours[classe]['data'][subject]['data']['done']"/>
+                                                <span t-esc="consumptionhours[classe]['data'][subject]['data']['worked_done']"/>
                                             </t>
                                         </td>
                                         <td class="text-left">
@@ -1234,11 +1234,11 @@
                                 </tr>
                                 <tr>
                                     <th class="text-left" colspan="1">Total volume horaire effectué</th>
-                                    <th class="text-left" colspan="3"><span t-esc="consumptionhours[classe]['total_done']"/></th>
+                                    <th class="text-left" colspan="3"><span t-esc="consumptionhours[classe]['total_worked_done']"/></th>
                                 </tr>
                                 <tr>
                                     <th class="text-left" colspan="1">Total volume horaire restant</th>
-                                    <th class="text-left" colspan="3"><span t-esc="consumptionhours[classe]['total_awaiting']"/></th>
+                                    <th class="text-left" colspan="3"><span t-esc="consumptionhours[classe]['total_worked_awaiting']"/></th>
                                 </tr>
                             </tfooter>
                             <tfooter>

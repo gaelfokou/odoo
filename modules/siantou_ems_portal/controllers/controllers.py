@@ -767,15 +767,26 @@ class PortalAccount(portal.CustomerPortal):
                 paymenthistories = list(paymenthistories)
                 for paymenthistory in paymenthistories:
                     for worked_days_line_id in paymenthistory.worked_days_line_ids:
-                        end_time = Helpers.convert_float_to_time(worked_days_line_id.timetable_id.end_time, has_second=True)
-                        start_time = Helpers.convert_float_to_time(worked_days_line_id.timetable_id.start_time, has_second=True)
-                        key = '{}-{}-{}-{}'.format(worked_days_line_id.timetable_id.employee_id.id, worked_days_line_id.timetable_id.date, start_time, end_time)
-                        if key not in key_payslips:
-                            key_payslips[key] = {}
-                            key_payslips[key]['timetable_id'] = worked_days_line_id.timetable_id.id
-                            key_payslips[key]['rate'] = worked_days_line_id.rate
-                            key_payslips[key]['amount'] = worked_days_line_id.amount
-                            key_payslips[key]['number_of_hours'] = worked_days_line_id.number_of_hours
+                        if worked_days_line_id.timetable_id.id:
+                            end_time = Helpers.convert_float_to_time(worked_days_line_id.timetable_id.end_time, has_second=True)
+                            start_time = Helpers.convert_float_to_time(worked_days_line_id.timetable_id.start_time, has_second=True)
+                            key = '{}-{}-{}-{}'.format(worked_days_line_id.timetable_id.employee_id.id, worked_days_line_id.timetable_id.date, start_time, end_time)
+                            if key not in key_payslips:
+                                key_payslips[key] = {}
+                                key_payslips[key]['timetable_id'] = worked_days_line_id.timetable_id.id
+                                key_payslips[key]['rate'] = worked_days_line_id.rate
+                                key_payslips[key]['amount'] = worked_days_line_id.amount
+                                key_payslips[key]['number_of_hours'] = worked_days_line_id.number_of_hours
+                        else:
+                            end_time = Helpers.convert_float_to_time(worked_days_line_id.end_time, has_second=True)
+                            start_time = Helpers.convert_float_to_time(worked_days_line_id.start_time, has_second=True)
+                            key = '{}-{}-{}-{}'.format(worked_days_line_id.payslip_id.employee_id.id, worked_days_line_id.date, start_time, end_time)
+                            if key not in key_payslips:
+                                key_payslips[key] = {}
+                                key_payslips[key]['timetable_id'] = None
+                                key_payslips[key]['rate'] = worked_days_line_id.rate
+                                key_payslips[key]['amount'] = worked_days_line_id.amount
+                                key_payslips[key]['number_of_hours'] = worked_days_line_id.number_of_hours
 
         search_consumptionhours, searchbar_inputs, search_month = Helpers.consumptionhour(search=search, search_in=search_in, selected_month=selected_month)
         consumptionhours = []
@@ -884,16 +895,6 @@ class PortalAccount(portal.CustomerPortal):
                 weekly_hours_credit = round(weekly_hours_credit, 2)
                 accountbalance['number_of_hours'] = weekly_hours_credit
 
-            original_end_time = Helpers.convert_float_to_time(search_accountbalance.end_time, has_second=True)
-            original_start_time = Helpers.convert_float_to_time(search_accountbalance.start_time, has_second=True)
-            original_datetime_to = datetime.strptime(f"{search_accountbalance.date} {original_end_time}", DATETIME_FORMAT)
-            original_datetime_from = datetime.strptime(f"{search_accountbalance.date} {original_start_time}", DATETIME_FORMAT)
-            original_weekly_hours_credit = original_datetime_to - original_datetime_from
-
-            original_weekly_hours_credit = original_weekly_hours_credit.total_seconds() / 3600.0
-            original_weekly_hours_credit = round(original_weekly_hours_credit, 2)
-            accountbalance['original_number_of_hours'] = original_weekly_hours_credit
-
             if len(search_accountbalance.employee_id.diplome_ids.ids) > 0:
                 domain = [
                     ('school_id', '=', search_accountbalance.school_id.id),
@@ -961,9 +962,10 @@ class PortalAccount(portal.CustomerPortal):
                 accountbalance['number_of_hours'] = key_payslips[key]['number_of_hours']
 
             accountbalance['hours_credit'] = 0.0
-            accountbalance['all'] = 0.0
             accountbalance['done'] = 0.0
             accountbalance['awaiting'] = 0.0
+            accountbalance['worked_done'] = 0.0
+            accountbalance['worked_awaiting'] = 0.0
             if search_accountbalance.class_group_id.id:
                 key_class = '{}-{}'.format(search_accountbalance.class_id.id, search_accountbalance.class_group_id.id)
             else:
@@ -972,31 +974,30 @@ class PortalAccount(portal.CustomerPortal):
             if key_class in consumptionhours:
                 if key_subject in consumptionhours[key_class]['data']:
                     accountbalance['hours_credit'] = consumptionhours[key_class]['data'][key_subject]['data']['hours_credit']
-                    accountbalance['all'] = consumptionhours[key_class]['data'][key_subject]['data']['done']
                     accountbalance['done'] = consumptionhours[key_class]['data'][key_subject]['data']['done']
                     accountbalance['awaiting'] = consumptionhours[key_class]['data'][key_subject]['data']['awaiting']
+                    accountbalance['worked_done'] = consumptionhours[key_class]['data'][key_subject]['data']['worked_done']
+                    accountbalance['worked_awaiting'] = consumptionhours[key_class]['data'][key_subject]['data']['worked_awaiting']
 
             if not search_accountbalance.employee_id.is_permanent:
                 if key not in key_payslips:
-                    if accountbalance['done'] > accountbalance['hours_credit']:
+                    if accountbalance['worked_done'] > accountbalance['hours_credit']:
                         if key_class not in key_extended_hours:
                             key_extended_hours[key_class] = {}
-                            key_extended_hours[key_class][key_subject] = accountbalance['done'] - accountbalance['hours_credit']
+                            key_extended_hours[key_class][key_subject] = accountbalance['worked_done'] - accountbalance['hours_credit']
                             key_extended_hours[key_class][key_subject] = round(key_extended_hours[key_class][key_subject], 2)
                         else:
                             if key_subject not in key_extended_hours[key_class]:
-                                key_extended_hours[key_class][key_subject] = accountbalance['done'] - accountbalance['hours_credit']
+                                key_extended_hours[key_class][key_subject] = accountbalance['worked_done'] - accountbalance['hours_credit']
                                 key_extended_hours[key_class][key_subject] = round(key_extended_hours[key_class][key_subject], 2)
-                        if accountbalance['original_number_of_hours'] > key_extended_hours[key_class][key_subject]:
-                            accountbalance['original_number_of_hours'] = accountbalance['original_number_of_hours'] - key_extended_hours[key_class][key_subject]
-                            accountbalance['original_number_of_hours'] = round(accountbalance['original_number_of_hours'], 2)
-                            if accountbalance['number_of_hours'] > accountbalance['original_number_of_hours']:
-                                accountbalance['number_of_hours'] = accountbalance['original_number_of_hours']
-                                accountbalance['amount'] = accountbalance['rate'] * accountbalance['number_of_hours']
-                                accountbalance['amount'] = round(accountbalance['amount'], 2)
+                        if accountbalance['number_of_hours'] > key_extended_hours[key_class][key_subject]:
+                            accountbalance['number_of_hours'] = accountbalance['number_of_hours'] - key_extended_hours[key_class][key_subject]
+                            accountbalance['number_of_hours'] = round(accountbalance['number_of_hours'], 2)
+                            accountbalance['amount'] = accountbalance['rate'] * accountbalance['number_of_hours']
+                            accountbalance['amount'] = round(accountbalance['amount'], 2)
                             key_extended_hours[key_class][key_subject] = 0.0
                         else:
-                            key_extended_hours[key_class][key_subject] = key_extended_hours[key_class][key_subject] - accountbalance['original_number_of_hours']
+                            key_extended_hours[key_class][key_subject] = key_extended_hours[key_class][key_subject] - accountbalance['number_of_hours']
                             key_extended_hours[key_class][key_subject] = round(key_extended_hours[key_class][key_subject], 2)
                             accountbalance['number_of_hours'] = 0.0
                             accountbalance['amount'] = 0.0

@@ -446,6 +446,9 @@ class HrPayslip(models.Model):
                                 'number_of_hours': teacher_timetable_attendance['worked_time'],
                                 'contract_id': payslip_id.contract_id.id,
                                 'timetable_id': teacher_timetable_attendance['timetable_id'],
+                                'date': teacher_timetable_attendance['date'],
+                                'start_time': teacher_timetable_attendance['worked_start_time'],
+                                'end_time': teacher_timetable_attendance['worked_end_time'],
                                 'rate': teacher_timetable_attendance['rate'],
                                 'amount': teacher_timetable_attendance['amount'],
                             })
@@ -470,6 +473,9 @@ class HrPayslip(models.Model):
                                 'number_of_hours': teacher_timetable_attendance['worked_time'],
                                 'contract_id': payslip_id.contract_id.id,
                                 'timetable_id': teacher_timetable_attendance['timetable_id'],
+                                'date': teacher_timetable_attendance['date'],
+                                'start_time': teacher_timetable_attendance['worked_start_time'],
+                                'end_time': teacher_timetable_attendance['worked_end_time'],
                                 'rate': teacher_timetable_attendance['rate'],
                                 'amount': teacher_timetable_attendance['amount'],
                             })
@@ -1905,15 +1911,11 @@ class HrPayslipWorkedDays(models.Model):
     contract_id = fields.Many2one('hr.contract', string='Contract', required=True,
         help="The contract for which applied this input")
     timetable_id = fields.Many2one('siantou.ems.timetable.timetable', string='Emploi du temps')
-    rate = fields.Float(
-        'Taux horaire',
-        default=0.0,
-    )
-
-    amount = fields.Float(
-        'Montant',
-        default=0.0,
-    )
+    date = fields.Date(string='Date du jour')
+    start_time = fields.Float(string='Heure de début')
+    end_time = fields.Float(string='Heure de fin')
+    rate = fields.Float(string='Taux horaire', default=0.0)
+    amount = fields.Float(string='Montant', default=0.0)
 
 class HrPayslipInput(models.Model):
     _name = 'hr.payslip.input'

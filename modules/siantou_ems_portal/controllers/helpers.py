@@ -1071,9 +1071,11 @@ class Helpers:
                 consumptionhours[key_class]['data'][key_subject]['data'] = {
                     'hours_credit': 0.0,
                     'done': [],
+                    'worked_done': [],
                 }
                 consumptionhours[key_class]['data'][key_subject]['data']['hours_credit'] = d['subject_hours_credit']
                 consumptionhours[key_class]['data'][key_subject]['data']['done'].append(d)
+                consumptionhours[key_class]['data'][key_subject]['data']['worked_done'].append(d)
             else:
                 if key_subject not in consumptionhours[key_class]['data']:
                     consumptionhours[key_class]['data'][key_subject] = {}
@@ -1081,37 +1083,49 @@ class Helpers:
                     consumptionhours[key_class]['data'][key_subject]['data'] = {
                         'hours_credit': 0.0,
                         'done': [],
+                        'worked_done': [],
                     }
                     consumptionhours[key_class]['data'][key_subject]['data']['hours_credit'] = d['subject_hours_credit']
                     consumptionhours[key_class]['data'][key_subject]['data']['done'].append(d)
+                    consumptionhours[key_class]['data'][key_subject]['data']['worked_done'].append(d)
                 else:
                     consumptionhours[key_class]['data'][key_subject]['data']['done'].append(d)
+                    consumptionhours[key_class]['data'][key_subject]['data']['worked_done'].append(d)
 
         for key_class in consumptionhours.keys():
             consumptionhours[key_class]['hours_credit'] = 0.0
-            consumptionhours[key_class]['total_all'] = 0.0
             consumptionhours[key_class]['total_done'] = 0.0
             consumptionhours[key_class]['total_awaiting'] = 0.0
+            consumptionhours[key_class]['total_worked_done'] = 0.0
+            consumptionhours[key_class]['total_worked_awaiting'] = 0.0
             for key_subject in consumptionhours[key_class]['data'].keys():
                 consumptionhours[key_class]['data'][key_subject]['data']['done'] = sum([Helpers.convert_number_of_hours(v) for v in consumptionhours[key_class]['data'][key_subject]['data']['done']])
                 consumptionhours[key_class]['data'][key_subject]['data']['awaiting'] = consumptionhours[key_class]['data'][key_subject]['data']['hours_credit'] - consumptionhours[key_class]['data'][key_subject]['data']['done']
-                consumptionhours[key_class]['data'][key_subject]['data']['done'] = round(consumptionhours[key_class]['data'][key_subject]['data']['done'], 2)
+                consumptionhours[key_class]['data'][key_subject]['data']['worked_done'] = sum([Helpers.convert_number_of_hours(v, worked_time=True) for v in consumptionhours[key_class]['data'][key_subject]['data']['worked_done']])
+                consumptionhours[key_class]['data'][key_subject]['data']['worked_awaiting'] = consumptionhours[key_class]['data'][key_subject]['data']['hours_credit'] - consumptionhours[key_class]['data'][key_subject]['data']['worked_done']
                 consumptionhours[key_class]['data'][key_subject]['data']['done'] = round(consumptionhours[key_class]['data'][key_subject]['data']['done'], 2)
                 consumptionhours[key_class]['data'][key_subject]['data']['awaiting'] = round(consumptionhours[key_class]['data'][key_subject]['data']['awaiting'], 2)
+                consumptionhours[key_class]['data'][key_subject]['data']['worked_done'] = round(consumptionhours[key_class]['data'][key_subject]['data']['worked_done'], 2)
+                consumptionhours[key_class]['data'][key_subject]['data']['worked_awaiting'] = round(consumptionhours[key_class]['data'][key_subject]['data']['worked_awaiting'], 2)
 
                 if consumptionhours[key_class]['data'][key_subject]['data']['awaiting'] < 0.0:
                     consumptionhours[key_class]['data'][key_subject]['data']['awaiting'] = 0.0
 
+                if consumptionhours[key_class]['data'][key_subject]['data']['worked_awaiting'] < 0.0:
+                    consumptionhours[key_class]['data'][key_subject]['data']['worked_awaiting'] = 0.0
+
                 consumptionhours[key_class]['hours_credit'] += consumptionhours[key_class]['data'][key_subject]['data']['hours_credit']
-                consumptionhours[key_class]['total_all'] += consumptionhours[key_class]['data'][key_subject]['data']['done']
                 consumptionhours[key_class]['total_done'] += consumptionhours[key_class]['data'][key_subject]['data']['done']
                 consumptionhours[key_class]['total_awaiting'] += consumptionhours[key_class]['data'][key_subject]['data']['awaiting']
+                consumptionhours[key_class]['total_worked_done'] += consumptionhours[key_class]['data'][key_subject]['data']['worked_done']
+                consumptionhours[key_class]['total_worked_awaiting'] += consumptionhours[key_class]['data'][key_subject]['data']['worked_awaiting']
 
         for key_class in consumptionhours.keys():
             consumptionhours[key_class]['hours_credit'] = round(consumptionhours[key_class]['hours_credit'], 2)
-            consumptionhours[key_class]['total_all'] = round(consumptionhours[key_class]['total_all'], 2)
             consumptionhours[key_class]['total_done'] = round(consumptionhours[key_class]['total_done'], 2)
             consumptionhours[key_class]['total_awaiting'] = round(consumptionhours[key_class]['total_awaiting'], 2)
+            consumptionhours[key_class]['total_worked_done'] = round(consumptionhours[key_class]['total_worked_done'], 2)
+            consumptionhours[key_class]['total_worked_awaiting'] = round(consumptionhours[key_class]['total_worked_awaiting'], 2)
 
         _logger.info(f'----------- tototototototo consumptionhours {consumptionhours} -----------')
 
@@ -1317,9 +1331,13 @@ class Helpers:
         return calendars, search_year
 
     @staticmethod
-    def convert_number_of_hours(tm):
-        end_time = Helpers.convert_float_to_time(tm['end_time'], has_second=True)
-        start_time = Helpers.convert_float_to_time(tm['start_time'], has_second=True)
+    def convert_number_of_hours(tm, worked_time=False):
+        if worked_time:
+            end_time = Helpers.convert_float_to_time(tm['worked_end_time'], has_second=True)
+            start_time = Helpers.convert_float_to_time(tm['worked_start_time'], has_second=True)
+        else:
+            end_time = Helpers.convert_float_to_time(tm['end_time'], has_second=True)
+            start_time = Helpers.convert_float_to_time(tm['start_time'], has_second=True)
         datetime_to = datetime.strptime(f"{tm['date']} {end_time}", DATETIME_FORMAT)
         datetime_from = datetime.strptime(f"{tm['date']} {start_time}", DATETIME_FORMAT)
         weekly_hours_credit = datetime_to - datetime_from

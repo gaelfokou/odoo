@@ -158,20 +158,26 @@ class TeacherTimetableAttendance(models.TransientModel):
         default=0.0,
     )
 
-    # Volume horaire du cours
-    total_all = fields.Float(
-        'Volume horaire programmé',
-        default=0.0,
-    )
-
     # Volume horaire effectué du cours
     total_done = fields.Float(
-        'Volume horaire effectué',
+        'Volume horaire effectué théoriquement',
         default=0.0,
     )
 
     # Volume horaire restant du cours
     total_awaiting = fields.Float(
+        'Volume horaire restant théoriquement',
+        default=0.0,
+    )
+
+    # Volume horaire effectué du cours
+    total_worked_done = fields.Float(
+        'Volume horaire effectué',
+        default=0.0,
+    )
+
+    # Volume horaire restant du cours
+    total_worked_awaiting = fields.Float(
         'Volume horaire restant',
         default=0.0,
     )
@@ -458,17 +464,28 @@ class TeacherTimetableAttendance(models.TransientModel):
             paymenthistories = list(paymenthistories)
             for paymenthistory in paymenthistories:
                 for worked_days_line_id in paymenthistory.worked_days_line_ids:
-                    end_time = TeacherTimetableAttendance.convert_float_to_time(worked_days_line_id.timetable_id.end_time, has_second=True)
-                    start_time = TeacherTimetableAttendance.convert_float_to_time(worked_days_line_id.timetable_id.start_time, has_second=True)
-                    key = '{}-{}-{}-{}'.format(worked_days_line_id.timetable_id.employee_id.id, worked_days_line_id.timetable_id.date, start_time, end_time)
-                    if key not in key_payslips:
-                        key_payslips[key] = {}
-                        key_payslips[key]['timetable_id'] = worked_days_line_id.timetable_id.id
-                        key_payslips[key]['rate'] = worked_days_line_id.rate
-                        key_payslips[key]['amount'] = worked_days_line_id.amount
-                        key_payslips[key]['number_of_hours'] = worked_days_line_id.number_of_hours
+                    if worked_days_line_id.timetable_id.id:
+                        end_time = TeacherTimetableAttendance.convert_float_to_time(worked_days_line_id.timetable_id.end_time, has_second=True)
+                        start_time = TeacherTimetableAttendance.convert_float_to_time(worked_days_line_id.timetable_id.start_time, has_second=True)
+                        key = '{}-{}-{}-{}'.format(worked_days_line_id.timetable_id.employee_id.id, worked_days_line_id.timetable_id.date, start_time, end_time)
+                        if key not in key_payslips:
+                            key_payslips[key] = {}
+                            key_payslips[key]['timetable_id'] = worked_days_line_id.timetable_id.id
+                            key_payslips[key]['rate'] = worked_days_line_id.rate
+                            key_payslips[key]['amount'] = worked_days_line_id.amount
+                            key_payslips[key]['number_of_hours'] = worked_days_line_id.number_of_hours
+                    else:
+                        end_time = TeacherTimetableAttendance.convert_float_to_time(worked_days_line_id.end_time, has_second=True)
+                        start_time = TeacherTimetableAttendance.convert_float_to_time(worked_days_line_id.start_time, has_second=True)
+                        key = '{}-{}-{}-{}'.format(worked_days_line_id.payslip_id.employee_id.id, worked_days_line_id.date, start_time, end_time)
+                        if key not in key_payslips:
+                            key_payslips[key] = {}
+                            key_payslips[key]['timetable_id'] = None
+                            key_payslips[key]['rate'] = worked_days_line_id.rate
+                            key_payslips[key]['amount'] = worked_days_line_id.amount
+                            key_payslips[key]['number_of_hours'] = worked_days_line_id.number_of_hours
 
-        timetable_ids = [payslip['timetable_id'] for payslip in key_payslips.values()]
+        timetable_ids = [payslip['timetable_id'] for payslip in key_payslips.values() if payslip['timetable_id']]
 
         teacher_timetable_attendance_ids = []
         teacher_timetable_attendance_data = dict(sorted(data['docdata']['teacher_timetable_attendance_data'].items(), key=lambda item: item[1]['name'] if item[1]['name'] else ''))
