@@ -125,7 +125,6 @@ class Helpers:
             if is_user == 'is_teacher':
                 search_domain.append(('employee_id', '=', user.id))
 
-                timetables = http.request.env['siantou.ems.timetable.timetable'].sudo().search(search_domain, order=order).sorted(lambda rec: (rec.date, rec.id))
                 current_date = date.today()
                 current_date = current_date - relativedelta(day=1, months=int(selected_month))
                 start_date = current_date + relativedelta(day=1)
@@ -136,6 +135,7 @@ class Helpers:
                     if end_date.weekday() > 0 and end_date.weekday() < 6:
                         end_date = end_date - timedelta(days=end_date.weekday())
                         end_date = end_date + timedelta(days=6)
+                timetables = http.request.env['siantou.ems.timetable.timetable'].sudo().search(search_domain, order=order).sorted(lambda rec: (rec.date, rec.id))
                 if start_date and end_date:
                     timetables = timetables.filtered(lambda rec: rec.date and rec.day_of_week and rec.date >= start_date and rec.date <= end_date)
                 timetables = list(timetables)
@@ -160,7 +160,6 @@ class Helpers:
             elif is_user == 'is_student':
                 search_domain.append(('class_id', '=', user.class_id.id))
 
-                timetables = http.request.env['siantou.ems.timetable.timetable'].sudo().search(search_domain, order=order).sorted(lambda rec: (rec.date, rec.id))
                 current_date = date.today()
                 current_date = current_date - relativedelta(day=1, months=int(selected_month))
                 start_date = current_date + relativedelta(day=1)
@@ -171,6 +170,7 @@ class Helpers:
                     if end_date.weekday() > 0 and end_date.weekday() < 6:
                         end_date = end_date - timedelta(days=end_date.weekday())
                         end_date = end_date + timedelta(days=6)
+                timetables = http.request.env['siantou.ems.timetable.timetable'].sudo().search(search_domain, order=order).sorted(lambda rec: (rec.date, rec.id))
                 if start_date and end_date:
                     timetables = timetables.filtered(lambda rec: rec.date and rec.day_of_week and rec.date >= start_date and rec.date <= end_date)
                 timetables = list(timetables)
@@ -240,8 +240,6 @@ class Helpers:
             search_in = 'all'
 
         search_domain = searchbar_inputs[search_in]['domain']
-
-        # search_domain.append(('status', '=', 'end'))
 
         order = 'id asc'
 
@@ -342,11 +340,11 @@ class Helpers:
                 user = http.request.env.user.employee_id
                 search_domain.append(('employee_id', '=', user.id))
 
-                accountbalances = http.request.env['siantou.ems.timetable.timetable'].sudo().search(search_domain, order=order).sorted(lambda rec: (rec.date, rec.id))
                 current_date = date.today()
                 current_date = current_date - relativedelta(day=1, months=int(selected_month))
                 start_date = current_date + relativedelta(day=1)
                 end_date = current_date + relativedelta(day=1, months=1, days=-1)
+                accountbalances = http.request.env['siantou.ems.timetable.timetable'].sudo().search(search_domain, order=order).sorted(lambda rec: (rec.date, rec.id))
                 if start_date and end_date:
                     accountbalances = accountbalances.filtered(lambda rec: rec.date and rec.day_of_week and rec.date >= start_date and rec.date <= end_date)
                 accountbalances = list(accountbalances)
@@ -441,14 +439,25 @@ class Helpers:
             is_user = 'is_student'
         if is_user:
             if is_user == 'is_teacher':
-                search_domain.append(('employee_id', '=', user.id))
-
-                consumptionhours = http.request.env['siantou.ems.timetable.timetable'].sudo().search(search_domain, order=order).sorted(lambda rec: (rec.date, rec.id))
                 current_date = date.today()
                 current_date = current_date - relativedelta(day=1, months=int(selected_month))
                 start_date = current_date + relativedelta(day=1)
                 end_date = current_date + relativedelta(day=1, months=1, days=-1)
-                if start_date and end_date:
+
+                search_timetables, searchbar_inputs, search_month = Helpers.timetable(search=search, search_in=search_in, page=1, view_type='list', selected_month=selected_month)
+                class_ids = []
+                subject_ids = []
+                for search_timetable in search_timetables:
+                    class_ids.append(search_timetable.class_id.id)
+                    subject_ids.append(search_timetable.subject_id.id)
+                class_ids = list(set(class_ids))
+                subject_ids = list(set(subject_ids))
+
+                search_domain.append(('class_id', 'in', class_ids))
+                search_domain.append(('subject_id', 'in', subject_ids))
+
+                consumptionhours = http.request.env['siantou.ems.timetable.timetable'].sudo().search(search_domain, order=order).sorted(lambda rec: (rec.date, rec.id))
+                if end_date:
                     consumptionhours = consumptionhours.filtered(lambda rec: rec.date and rec.day_of_week and rec.date <= end_date)
                 consumptionhours = list(consumptionhours)
                 key_consumptionhours = {}
@@ -458,7 +467,10 @@ class Helpers:
 
                     end_time = Helpers.convert_float_to_time(consumptionhour.end_time, has_second=True)
                     start_time = Helpers.convert_float_to_time(consumptionhour.start_time, has_second=True)
-                    key = '{}-{}-{}-{}-{}'.format(consumptionhour.employee_id.id, consumptionhour.class_id.id, consumptionhour.date, start_time, end_time)
+                    if consumptionhour.class_group_id.id:
+                        key = '{}-{}-{}-{}-{}'.format(consumptionhour.class_id.id, consumptionhour.class_group_id.id, consumptionhour.date, start_time, end_time)
+                    else:
+                        key = '{}-{}-{}-{}'.format(consumptionhour.class_id.id, consumptionhour.date, start_time, end_time)
                     if key not in key_consumptionhours:
                         key_consumptionhours[key] = consumptionhour
                     else:
@@ -472,12 +484,12 @@ class Helpers:
             elif is_user == 'is_student':
                 search_domain.append(('class_id', '=', user.class_id.id))
 
-                consumptionhours = http.request.env['siantou.ems.timetable.timetable'].sudo().search(search_domain, order=order).sorted(lambda rec: (rec.date, rec.id))
                 current_date = date.today()
                 current_date = current_date - relativedelta(day=1, months=int(selected_month))
                 start_date = current_date + relativedelta(day=1)
                 end_date = current_date + relativedelta(day=1, months=1, days=-1)
-                if start_date and end_date:
+                consumptionhours = http.request.env['siantou.ems.timetable.timetable'].sudo().search(search_domain, order=order).sorted(lambda rec: (rec.date, rec.id))
+                if end_date:
                     consumptionhours = consumptionhours.filtered(lambda rec: rec.date and rec.day_of_week and rec.date <= end_date)
                 consumptionhours = list(consumptionhours)
                 key_consumptionhours = {}

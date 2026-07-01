@@ -149,61 +149,9 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
         self.env['teacher.timetable.attendance']._transient_vacuum()
         self.env['teacher.timetable.attendance'].search([('create_uid', '=', self.env.user.id)]).unlink()
 
-        domain = []
-        title = []
-
-        domain.append('|')
-        domain.append('&')
-        domain.append('&')
-        domain.append(('group_id.is_active', '=', True))
-        domain.append(('group_id.is_submit', '=', False))
-        domain.append(('group_id.status', '=', 'valid'))
-        domain.append('&')
-        domain.append('&')
-        domain.append('&')
-        domain.append(('group_parent_id.is_active', '=', True))
-        domain.append(('group_parent_id.is_submit', '=', False))
-        domain.append(('group_parent_id.status', '=', 'valid'))
-        domain.append(('group_id.status', '=', 'valid'))
-        domain.append(('is_active', '=', True))
-        domain.append(('status', 'in', ['present', 'permission']))
-
-        if self.is_teacher:
-            domain.append(('employee_id.is_teacher', '=', True))
-            title.append('Est un enseignant')
-        if self.is_permanent:
-            domain.append(('employee_id.is_permanent', '=', True))
-            title.append('Est un permanent')
-        else:
-            domain.append(('employee_id.is_permanent', '=', False))
-            title.append('Est un vacataire')
-
-        if self.employee_id.id:
-            domain.append(('employee_id', '=', self.employee_id.id))
-            title.append(self.employee_id.name)
-
-        order = 'date asc, id asc'
-
-        search_consumptionhours = self.env['siantou.ems.timetable.timetable'].search(domain, order=order).sorted(lambda rec: (rec.date, rec.id))
-        if self.start_date and self.end_date:
-            search_consumptionhours = search_consumptionhours.filtered(lambda rec: rec.date and rec.day_of_week and rec.date <= self.end_date)
-        key_consumptionhours = {}
+        search_consumptionhours = self.consumptionhour(end_date=self.end_date)
         consumptionhours = []
         for search_consumptionhour in search_consumptionhours:
-            if not search_consumptionhour.date or not search_consumptionhour.day_of_week or not search_consumptionhour.employee_id.id:
-                continue
-
-            end_time = TeacherTimetableAttendanceFilterWizard.convert_float_to_time(search_consumptionhour.end_time, has_second=True)
-            start_time = TeacherTimetableAttendanceFilterWizard.convert_float_to_time(search_consumptionhour.start_time, has_second=True)
-            if search_consumptionhour.class_group_id.id:
-                key = '{}-{}-{}-{}-{}'.format(search_consumptionhour.class_id.id, search_consumptionhour.class_group_id.id, search_consumptionhour.date, start_time, end_time)
-            else:
-                key = '{}-{}-{}-{}'.format(search_consumptionhour.class_id.id, search_consumptionhour.date, start_time, end_time)
-            if key not in key_consumptionhours:
-                key_consumptionhours[key] = search_consumptionhour
-            else:
-                continue
-
             consumptionhour = {}
             consumptionhour['id'] = search_consumptionhour.id
             consumptionhour['name'] = search_consumptionhour.name
@@ -239,6 +187,40 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
             consumptionhour['status'] = search_consumptionhour.status
             consumptionhours.append(consumptionhour)
         consumptionhours = TeacherTimetableAttendanceFilterWizard.format_consumptionhour(consumptionhours)
+
+        domain = []
+        title = []
+        domain.append('|')
+        domain.append('&')
+        domain.append('&')
+        domain.append(('group_id.is_active', '=', True))
+        domain.append(('group_id.is_submit', '=', False))
+        domain.append(('group_id.status', '=', 'valid'))
+        domain.append('&')
+        domain.append('&')
+        domain.append('&')
+        domain.append(('group_parent_id.is_active', '=', True))
+        domain.append(('group_parent_id.is_submit', '=', False))
+        domain.append(('group_parent_id.status', '=', 'valid'))
+        domain.append(('group_id.status', '=', 'valid'))
+        domain.append(('is_active', '=', True))
+        domain.append(('status', 'in', ['present', 'permission']))
+
+        if self.is_teacher:
+            domain.append(('employee_id.is_teacher', '=', True))
+            title.append('Est un enseignant')
+        if self.is_permanent:
+            domain.append(('employee_id.is_permanent', '=', True))
+            title.append('Est un permanent')
+        else:
+            domain.append(('employee_id.is_permanent', '=', False))
+            title.append('Est un vacataire')
+
+        if self.employee_id.id:
+            domain.append(('employee_id', '=', self.employee_id.id))
+            title.append(self.employee_id.name)
+
+        order = 'date asc, id asc'
 
         timetables = self.env['siantou.ems.timetable.timetable'].search(domain, order=order).sorted(lambda rec: (rec.date, rec.id))
         if self.start_date and self.end_date:
@@ -503,6 +485,57 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
             'view_id': view_id,
             'target': 'main',
         }
+
+    def consumptionhour(self, end_date=None):
+        search_domain = []
+
+        search_domain.append('|')
+        search_domain.append('&')
+        search_domain.append('&')
+        search_domain.append(('group_id.is_active', '=', True))
+        search_domain.append(('group_id.is_submit', '=', False))
+        search_domain.append(('group_id.status', '=', 'valid'))
+        search_domain.append('&')
+        search_domain.append('&')
+        search_domain.append('&')
+        search_domain.append(('group_parent_id.is_active', '=', True))
+        search_domain.append(('group_parent_id.is_submit', '=', False))
+        search_domain.append(('group_parent_id.status', '=', 'valid'))
+        search_domain.append(('group_id.status', '=', 'valid'))
+        search_domain.append(('is_active', '=', True))
+        search_domain.append(('status', 'in', ['present', 'permission']))
+
+        search_domain.append(('employee_id.is_teacher', '=', True))
+
+        order = 'date asc, id asc'
+
+        search_consumptionhours = []
+
+        consumptionhours = self.env['siantou.ems.timetable.timetable'].search(search_domain, order=order).sorted(lambda rec: (rec.date, rec.id))
+        if end_date:
+            consumptionhours = consumptionhours.filtered(lambda rec: rec.date and rec.day_of_week and rec.date <= end_date)
+        consumptionhours = list(consumptionhours)
+        key_consumptionhours = {}
+        for consumptionhour in consumptionhours:
+            if not consumptionhour.date or not consumptionhour.day_of_week or not consumptionhour.employee_id.id:
+                continue
+
+            end_time = TeacherTimetableAttendanceFilterWizard.convert_float_to_time(consumptionhour.end_time, has_second=True)
+            start_time = TeacherTimetableAttendanceFilterWizard.convert_float_to_time(consumptionhour.start_time, has_second=True)
+            if consumptionhour.class_group_id.id:
+                key = '{}-{}-{}-{}-{}'.format(consumptionhour.class_id.id, consumptionhour.class_group_id.id, consumptionhour.date, start_time, end_time)
+            else:
+                key = '{}-{}-{}-{}'.format(consumptionhour.class_id.id, consumptionhour.date, start_time, end_time)
+            if key not in key_consumptionhours:
+                key_consumptionhours[key] = consumptionhour
+            else:
+                continue
+
+            search_consumptionhours.append(consumptionhour)
+
+        _logger.info(f'----------- tototototototo search_consumptionhours {search_consumptionhours} -----------')
+
+        return search_consumptionhours
 
     @staticmethod
     def convert_float_to_time(tm, has_second=False):
