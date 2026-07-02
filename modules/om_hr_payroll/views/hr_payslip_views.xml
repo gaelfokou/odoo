@@ -221,8 +221,8 @@
                                         <field name="name"/>
                                         <field name="timetable_id"/>
                                         <field name="date"/>
-                                        <field name="start_time"/>
-                                        <field name="end_time"/>
+                                        <field name="worked_start_time"/>
+                                        <field name="worked_end_time"/>
                                         <field name="rate"/>
                                         <field name="amount"/>
                                         <field name="code"/>

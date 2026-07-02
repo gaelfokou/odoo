@@ -447,8 +447,10 @@ class HrPayslip(models.Model):
                                 'contract_id': payslip_id.contract_id.id,
                                 'timetable_id': teacher_timetable_attendance['timetable_id'],
                                 'date': teacher_timetable_attendance['date'],
-                                'start_time': HrPayslip.convert_time_to_float(teacher_timetable_attendance['worked_start_time']),
-                                'end_time': HrPayslip.convert_time_to_float(teacher_timetable_attendance['worked_end_time']),
+                                'start_time': HrPayslip.convert_time_to_float(teacher_timetable_attendance['start_time']),
+                                'end_time': HrPayslip.convert_time_to_float(teacher_timetable_attendance['end_time']),
+                                'worked_start_time': HrPayslip.convert_time_to_float(teacher_timetable_attendance['worked_start_time']),
+                                'worked_end_time': HrPayslip.convert_time_to_float(teacher_timetable_attendance['worked_end_time']),
                                 'rate': teacher_timetable_attendance['rate'],
                                 'amount': teacher_timetable_attendance['amount'],
                             })
@@ -474,8 +476,10 @@ class HrPayslip(models.Model):
                                 'contract_id': payslip_id.contract_id.id,
                                 'timetable_id': teacher_timetable_attendance['timetable_id'],
                                 'date': teacher_timetable_attendance['date'],
-                                'start_time': HrPayslip.convert_time_to_float(teacher_timetable_attendance['worked_start_time']),
-                                'end_time': HrPayslip.convert_time_to_float(teacher_timetable_attendance['worked_end_time']),
+                                'start_time': HrPayslip.convert_time_to_float(teacher_timetable_attendance['start_time']),
+                                'end_time': HrPayslip.convert_time_to_float(teacher_timetable_attendance['end_time']),
+                                'worked_start_time': HrPayslip.convert_time_to_float(teacher_timetable_attendance['worked_start_time']),
+                                'worked_end_time': HrPayslip.convert_time_to_float(teacher_timetable_attendance['worked_end_time']),
                                 'rate': teacher_timetable_attendance['rate'],
                                 'amount': teacher_timetable_attendance['amount'],
                             })
@@ -1914,6 +1918,8 @@ class HrPayslipWorkedDays(models.Model):
     date = fields.Date(string='Date')
     start_time = fields.Float(string='Heure de début')
     end_time = fields.Float(string='Heure de fin')
+    worked_start_time = fields.Float(string='Heure de début effectuée')
+    worked_end_time = fields.Float(string='Heure de fin effectuée')
     rate = fields.Float(string='Taux horaire', default=0.0)
     amount = fields.Float(string='Montant', default=0.0)
 
