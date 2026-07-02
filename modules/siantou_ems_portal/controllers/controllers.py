@@ -778,15 +778,20 @@ class PortalAccount(portal.CustomerPortal):
                                 key_payslips[key]['amount'] = worked_days_line_id.amount
                                 key_payslips[key]['number_of_hours'] = worked_days_line_id.number_of_hours
                         else:
-                            end_time = Helpers.convert_float_to_time(worked_days_line_id.end_time, has_second=True)
-                            start_time = Helpers.convert_float_to_time(worked_days_line_id.start_time, has_second=True)
-                            key = '{}-{}-{}-{}'.format(worked_days_line_id.payslip_id.employee_id.id, worked_days_line_id.date, start_time, end_time)
-                            if key not in key_payslips:
-                                key_payslips[key] = {}
-                                key_payslips[key]['timetable_id'] = None
-                                key_payslips[key]['rate'] = worked_days_line_id.rate
-                                key_payslips[key]['amount'] = worked_days_line_id.amount
-                                key_payslips[key]['number_of_hours'] = worked_days_line_id.number_of_hours
+                            if worked_days_line_id.date and worked_days_line_id.start_time and worked_days_line_id.end_time:
+                                end_time = Helpers.convert_float_to_time(worked_days_line_id.end_time, has_second=True)
+                                start_time = Helpers.convert_float_to_time(worked_days_line_id.start_time, has_second=True)
+                                key = '{}-{}-{}-{}'.format(worked_days_line_id.payslip_id.employee_id.id, worked_days_line_id.date, start_time, end_time)
+                                if key not in key_payslips:
+                                    key_payslips[key] = {}
+                                    key_payslips[key]['timetable_id'] = None
+                                    key_payslips[key]['rate'] = worked_days_line_id.rate
+                                    key_payslips[key]['amount'] = worked_days_line_id.amount
+                                    key_payslips[key]['number_of_hours'] = worked_days_line_id.number_of_hours
+                                    key_payslips[key]['employee_id'] = worked_days_line_id.payslip_id.employee_id.id
+                                    key_payslips[key]['date'] = worked_days_line_id.date
+                                    key_payslips[key]['start_time'] = worked_days_line_id.start_time
+                                    key_payslips[key]['end_time'] = worked_days_line_id.end_time
 
         search_consumptionhours, searchbar_inputs, search_month = Helpers.consumptionhour(search=search, search_in=search_in, selected_month=selected_month)
         consumptionhours = []

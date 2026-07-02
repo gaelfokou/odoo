@@ -1911,7 +1911,7 @@ class HrPayslipWorkedDays(models.Model):
     contract_id = fields.Many2one('hr.contract', string='Contract', required=True,
         help="The contract for which applied this input")
     timetable_id = fields.Many2one('siantou.ems.timetable.timetable', string='Emploi du temps')
-    date = fields.Date(string='Date du jour')
+    date = fields.Date(string='Date')
     start_time = fields.Float(string='Heure de début')
     end_time = fields.Float(string='Heure de fin')
     rate = fields.Float(string='Taux horaire', default=0.0)

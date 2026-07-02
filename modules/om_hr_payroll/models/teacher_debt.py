@@ -165,7 +165,7 @@ class PaymentDebt(models.Model):
         default=0.0,
     )
 
-    date = fields.Datetime(string="Date", default=datetime.now())
+    date = fields.Datetime(string='Date', default=datetime.now())
 
     @api.depends('debt_id')
     def _compute_name(self):

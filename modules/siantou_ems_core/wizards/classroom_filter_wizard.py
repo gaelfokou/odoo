@@ -28,7 +28,7 @@ class ClassroomFilterWizard(models.TransientModel):
     _description = 'Filtre des salles de classe'
 
     date = fields.Date(
-        string='Date du jour',
+        string='Date',
     )
 
     # Heure de début du cours
