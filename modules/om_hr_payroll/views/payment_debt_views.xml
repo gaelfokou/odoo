@@ -7,9 +7,9 @@
             <field name="arch" type="xml">
                 <tree string="Remboursements dette">
                     <!-- <field name="name"/> -->
+                    <field name="debt_id"/>
                     <field name="amount"/>
                     <field name="date"/>
-                    <field name="debt_id"/>
                 </tree>
             </field>
         </record>
@@ -21,12 +21,11 @@
                 <form string="Remboursements dette">
                     <sheet>
                         <group colspan="2">
-                            <field name="name"/>
-                            <field name="amount"/>
-                            <field name="date"/>
+                            <field name="debt_id" options="{'no_create': True}"/>
                         </group>
                         <group colspan="2">
-                            <field name="debt_id" options="{'no_create': True}"/>
+                            <field name="amount"/>
+                            <field name="date"/>
                         </group>
                     </sheet>
                     <div class="oe_chatter">
