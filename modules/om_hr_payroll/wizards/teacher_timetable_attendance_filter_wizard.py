@@ -149,7 +149,7 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
         self.env['teacher.timetable.attendance']._transient_vacuum()
         self.env['teacher.timetable.attendance'].search([('create_uid', '=', self.env.user.id)]).unlink()
 
-        search_consumptionhours = self.consumptionhour(end_date=self.end_date)
+        search_consumptionhours = self.consumptionhour()
         consumptionhours = []
         for search_consumptionhour in search_consumptionhours:
             consumptionhour = {}
@@ -486,7 +486,57 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
             'target': 'main',
         }
 
-    def consumptionhour(self, end_date=None):
+    def timetable(self):
+        search_domain = []
+
+        search_domain.append('|')
+        search_domain.append('&')
+        search_domain.append('&')
+        search_domain.append(('group_id.is_active', '=', True))
+        search_domain.append(('group_id.is_submit', '=', False))
+        search_domain.append(('group_id.status', '=', 'valid'))
+        search_domain.append('&')
+        search_domain.append('&')
+        search_domain.append('&')
+        search_domain.append(('group_parent_id.is_active', '=', True))
+        search_domain.append(('group_parent_id.is_submit', '=', False))
+        search_domain.append(('group_parent_id.status', '=', 'valid'))
+        search_domain.append(('group_id.status', '=', 'valid'))
+        search_domain.append(('is_active', '=', True))
+
+        search_domain.append(('employee_id.is_teacher', '=', True))
+
+        order = 'date asc, id asc'
+
+        search_timetables = []
+
+        if self.employee_id.id:
+            search_domain.append(('employee_id', '=', self.employee_id.id))
+
+        timetables = self.env['siantou.ems.timetable.timetable'].sudo().search(search_domain, order=order).sorted(lambda rec: (rec.date, rec.id))
+        if self.start_date and self.end_date:
+            timetables = timetables.filtered(lambda rec: rec.date and rec.day_of_week and rec.date >= self.start_date and rec.date <= self.end_date)
+        timetables = list(timetables)
+        key_timetables = {}
+        for timetable in timetables:
+            if not timetable.date or not timetable.day_of_week or not timetable.employee_id.id:
+                continue
+
+            end_time = TeacherTimetableAttendanceFilterWizard.convert_float_to_time(timetable.end_time, has_second=True)
+            start_time = TeacherTimetableAttendanceFilterWizard.convert_float_to_time(timetable.start_time, has_second=True)
+            key = '{}-{}-{}-{}-{}'.format(timetable.employee_id.id, timetable.class_id.id, timetable.date, start_time, end_time)
+            if key not in key_timetables:
+                key_timetables[key] = timetable
+            else:
+                continue
+
+            search_timetables.append(timetable)
+
+        _logger.info(f'----------- tototototototo search_timetables {search_timetables} -----------')
+
+        return search_timetables
+
+    def consumptionhour(self):
         search_domain = []
 
         search_domain.append('|')
@@ -511,9 +561,21 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
 
         search_consumptionhours = []
 
+        search_timetables = self.timetable()
+        class_ids = []
+        subject_ids = []
+        for search_timetable in search_timetables:
+            class_ids.append(search_timetable.class_id.id)
+            subject_ids.append(search_timetable.subject_id.id)
+        class_ids = list(set(class_ids))
+        subject_ids = list(set(subject_ids))
+
+        search_domain.append(('class_id', 'in', class_ids))
+        search_domain.append(('subject_id', 'in', subject_ids))
+
         consumptionhours = self.env['siantou.ems.timetable.timetable'].search(search_domain, order=order).sorted(lambda rec: (rec.date, rec.id))
-        if end_date:
-            consumptionhours = consumptionhours.filtered(lambda rec: rec.date and rec.day_of_week and rec.date <= end_date)
+        if self.end_date:
+            consumptionhours = consumptionhours.filtered(lambda rec: rec.date and rec.day_of_week and rec.date <= self.end_date)
         consumptionhours = list(consumptionhours)
         key_consumptionhours = {}
         for consumptionhour in consumptionhours:
