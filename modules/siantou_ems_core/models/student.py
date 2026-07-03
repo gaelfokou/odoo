@@ -596,7 +596,7 @@ class Student(models.Model):
             if classe:
                 classe._compute_students()
                 classe._compute_number_of_students()
-                classe.write({
+                classe.sudo().write({
                     'number_of_student': classe.number_of_student,
                 })
 
@@ -691,7 +691,7 @@ class Student(models.Model):
             if classe:
                 classe._compute_students()
                 classe._compute_number_of_students()
-                classe.write({
+                classe.sudo().write({
                     'number_of_student': classe.number_of_student,
                 })
 
@@ -720,7 +720,7 @@ class Student(models.Model):
             if classe:
                 classe._compute_students()
                 classe._compute_number_of_students()
-                classe.write({
+                classe.sudo().write({
                     'number_of_student': classe.number_of_student,
                 })
 

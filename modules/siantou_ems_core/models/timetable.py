@@ -1165,7 +1165,7 @@ class Timetable(models.Model):
             if classe:
                 classe._compute_timetables()
                 classe._compute_number_of_timetables()
-                classe.write({
+                classe.sudo().write({
                     'number_of_timetable': classe.number_of_timetable,
                 })
 
@@ -1276,7 +1276,7 @@ class Timetable(models.Model):
             if classe:
                 classe._compute_timetables()
                 classe._compute_number_of_timetables()
-                classe.write({
+                classe.sudo().write({
                     'number_of_timetable': classe.number_of_timetable,
                 })
 
@@ -1894,7 +1894,7 @@ class TimetableGroup(models.Model):
             if classe:
                 classe._compute_timetables()
                 classe._compute_number_of_timetables()
-                classe.write({
+                classe.sudo().write({
                     'number_of_timetable': classe.number_of_timetable,
                 })
 
