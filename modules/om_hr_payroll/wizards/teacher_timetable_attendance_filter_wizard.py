@@ -460,6 +460,8 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
                         worked_hours = original_worked_hours
                         amount = rate * worked_hours
                         amount = round(amount, 2)
+                    if worked_hours == 0.0:
+                        continue
 
             teacher_timetable_attendance = self.env['teacher.timetable.attendance'].create({
                 'timetable_id': timetable.id,
