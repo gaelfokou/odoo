@@ -68,12 +68,6 @@ class EducationClass(models.Model):
         store=False
     )
 
-    number_of_timetable = fields.Integer(
-        string='Nombre d\'emplois du temps',
-        compute='_compute_number_of_timetables',
-        store=True,
-    )
-
     specialty_id = fields.Many2one('siantou.ems.core.specialty', string='Spécialité',
                                  required=True, help="Spécialité")
 
@@ -256,13 +250,8 @@ class EducationClass(models.Model):
 
             record.number_of_student = len(student_ids.ids)
 
-    @api.depends('timetable_ids')
-    def _compute_number_of_timetables(self):
-        for record in self:
-            record.number_of_timetable = len(record.timetable_ids.ids)
-
     @api.onchange('student_enroll_ids')
-    def _onchange_student(self):
+    def _onchange_number_of_students(self):
         for record in self:
             students = []
             for student_enroll_id in record.student_enroll_ids:
@@ -443,7 +432,7 @@ class EducationClass(models.Model):
             classe._compute_students()
             classe._compute_number_of_students()
             classe.sudo().write({
-                'number_of_student': classe.number_of_student,
+                'specialty_id': classe.specialty_id.id,
             })
             # self.env.cr.commit()
         except psycopg2.errors.NotNullViolation as error:
@@ -575,6 +564,27 @@ class EducationClass(models.Model):
 
         for classe in classes:
             self.update_group_class(classe)
+
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'reload',
+        }
+
+    def action_update_dashboard_class(self):
+        active_ids = self.env.context.get('active_ids', [])
+        classes = self.env['siantou.ems.core.class'].browse(active_ids)
+        classes = list(classes)
+        if len(active_ids) == 0:
+            raise UserError('Aucune donnée sélectionnée')
+
+        for classe in classes:
+            classe._compute_students()
+            classe._compute_number_of_students()
+            classe._compute_timetables()
+            classe._compute_subjects()
+            classe.sudo().write({
+                'specialty_id': classe.specialty_id.id,
+            })
 
         return {
             'type': 'ir.actions.client',

@@ -1166,7 +1166,7 @@ class Timetable(models.Model):
                 classe._compute_timetables()
                 classe._compute_number_of_timetables()
                 classe.sudo().write({
-                    'number_of_timetable': classe.number_of_timetable,
+                    'specialty_id': classe.specialty_id.id,
                 })
 
         return res
@@ -1277,7 +1277,7 @@ class Timetable(models.Model):
                 classe._compute_timetables()
                 classe._compute_number_of_timetables()
                 classe.sudo().write({
-                    'number_of_timetable': classe.number_of_timetable,
+                    'specialty_id': classe.specialty_id.id,
                 })
 
         if employee_id:
@@ -1895,7 +1895,7 @@ class TimetableGroup(models.Model):
                 classe._compute_timetables()
                 classe._compute_number_of_timetables()
                 classe.sudo().write({
-                    'number_of_timetable': classe.number_of_timetable,
+                    'specialty_id': classe.specialty_id.id,
                 })
 
         # for group in groups:

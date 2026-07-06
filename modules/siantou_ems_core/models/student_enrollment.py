@@ -415,7 +415,7 @@ class StudentEnrollment(models.Model):
                 classe._compute_students()
                 classe._compute_number_of_students()
                 classe.sudo().write({
-                    'number_of_student': classe.number_of_student,
+                    'specialty_id': classe.specialty_id.id,
                 })
 
         return res
@@ -510,7 +510,7 @@ class StudentEnrollment(models.Model):
                 classe._compute_students()
                 classe._compute_number_of_students()
                 classe.sudo().write({
-                    'number_of_student': classe.number_of_student,
+                    'specialty_id': classe.specialty_id.id,
                 })
 
         return res
@@ -541,7 +541,7 @@ class StudentEnrollment(models.Model):
                 classe._compute_students()
                 classe._compute_number_of_students()
                 classe.sudo().write({
-                    'number_of_student': classe.number_of_student,
+                    'specialty_id': classe.specialty_id.id,
                 })
 
         return student_enrol
