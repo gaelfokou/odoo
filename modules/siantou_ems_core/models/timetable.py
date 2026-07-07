@@ -152,7 +152,7 @@ class TimetableSubjectHour(models.Model):
 
 class Timetable(models.Model):
     _name = 'siantou.ems.timetable.timetable'
-    _description = 'Emplois du temps'
+    _description = 'Emploi du temps'
     _inherit=['mail.thread', 'mail.activity.mixin',]
 
     name = fields.Char(
@@ -535,6 +535,24 @@ class Timetable(models.Model):
 
     @api.depends('group_id')
     def _compute_readonly(self):
+        for record in self:
+            current_date = date.today()
+            if record.group_id.id:
+                if record.group_id.create_uid.id == self.env.user.id:
+                    record.is_readonly = False
+                else:
+                    if self.env.user.id in record.group_id.write_user_ids.ids:
+                        if record.group_id.start_date > current_date or record.group_id.end_date <= current_date:
+                            record.is_readonly = True
+                        else:
+                            record.is_readonly = False
+                    else:
+                        record.is_readonly = True
+            else:
+                record.is_readonly = False
+
+    @api.onchange('group_id')
+    def _onchange_readonly(self):
         for record in self:
             current_date = date.today()
             if record.group_id.id:
