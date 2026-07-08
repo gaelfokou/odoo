@@ -8,5 +8,5 @@ class DegreeCourse(models.Model):
     _description = 'Diplôme requis lors de la préinscription'
     _order = 'name'
 
-    name = fields.Char(string='Nom', required=True) 
+    name = fields.Char(string='Nom', required=True)
     cycle_ids = fields.Many2many('oe.school.course', 'course_degree_rel', 'diplo_requis_id', 'cycle_id', string='Cursus ou Cycles')

@@ -179,7 +179,7 @@ class FeeEnrollmentWizard(models.TransientModel):
             account_revenue_id = journal_id.default_account_id
             # _logger.info(account_revenue_id)
             if not account_receivable_id or not account_revenue_id:
-                raise ValidationError("Les comptes de créance ou de revenus ne sont pas configurés dans le journal. Veuillez vérifier la configuration")            
+                raise ValidationError("Les comptes de créance ou de revenus ne sont pas configurés dans le journal. Veuillez vérifier la configuration")
 
             mone_vals = {
                 'move_type': 'out_invoice',
@@ -223,19 +223,19 @@ class FeeEnrollmentWizard(models.TransientModel):
 
     #============ Part 1: prepare vals des transactions
     def _prepare_transaction_vals(self):
-        self.ensure_one()  
+        self.ensure_one()
         journal = self.cash_register_id  
         payment_method_line = self.cash_register_id.inbound_payment_method_line_ids[0].payment_method_id
         statement = self.env['account.bank.statement'].search([  
             ('date', '=', self.date_payment),
             ('create_uid', '=', self.env.user.id),
             ('state', '=', 'open'),
-            ('journal_id', '=', journal.id)  
-        ], limit=1)  
+            ('journal_id', '=', journal.id)
+        ], limit=1)
         if not statement:
-            raise ValidationError(_("Vous devez ouvrir une caisse ou un brouillard de banque à la date du %s pour enregistrer le décaissement", self.date_payment))  
+            raise ValidationError(_("Vous devez ouvrir une caisse ou un brouillard de banque à la date du %s pour enregistrer le décaissement", self.date_payment))
         if not payment_method_line:
-            raise ValidationError(_("Vous avez manqué d'ajouter une méthode de paiement manuel au niveau du journal (%s)", journal.name))  
+            raise ValidationError(_("Vous avez manqué d'ajouter une méthode de paiement manuel au niveau du journal (%s)", journal.name))
 
         return {  
             #**self.sheet_id._prepare_move_vals(),
@@ -264,7 +264,7 @@ class FeeEnrollmentWizard(models.TransientModel):
         #     'skip_invoice_line_sync': True,
         #     'skip_account_move_synchronization': True,
         # }  
-        # own_account_sheets = self.filtered(lambda sheet: sheet.payment_mode == 'own_account')  
+        # own_account_sheets = self.filtered(lambda sheet: sheet.payment_mode == 'own_account')
         # company_account_sheets = self - own_account_sheets  
         transaction = self.env['account.bank.statement.line'].create(self._prepare_transaction_vals())
         # Set the main attachment on the moves directly to avoid recomputing the  
@@ -272,9 +272,9 @@ class FeeEnrollmentWizard(models.TransientModel):
         # for move in moves:
         #     move.message_main_attachment_id = move.attachment_ids[0] if move.attachment_ids else None  
         # for expense in company_account_sheets.expense_line_ids:
-        #     transaction = self.env['account.bank.statement.line'].create(expense._prepare_transaction_vals())  
+        #     transaction = self.env['account.bank.statement.line'].create(expense._prepare_transaction_vals())
         #     debit_move_line = transaction.move_id.line_ids[1]
-        #     debit_move_line.write({'account_id': expense.account_id.id, 'name': expense.name})  
+        #     debit_move_line.write({'account_id': expense.account_id.id, 'name': expense.name})
         #     transaction.move_id.button_draft()
         #     moves |= transaction.move_id
         transaction.move_id.button_draft()

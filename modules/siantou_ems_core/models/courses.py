@@ -12,7 +12,7 @@ _logger = logging.getLogger(__name__)
 # class CourseGradingType(models.Model):
 #     _name = 'oe.school.course.grading.type'
 #     _description = 'Type de notation'
-#     name = fields.Char(string='Type', required=True) 
+#     name = fields.Char(string='Type', required=True)
 
 class OeSchoolCourseSupervision(models.Model):
     _name = 'oe.school.course.supervision'

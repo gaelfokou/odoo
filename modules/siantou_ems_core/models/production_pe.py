@@ -44,7 +44,7 @@ class ProductionDpo(models.Model):
     def _onchange_class_id(self):
         for record in self:
             if record.class_id:
-                classes = self.env['siantou.ems.core.class'].search([('id', '=', record.class_id.id)]) 
+                classes = self.env['siantou.ems.core.class'].search([('id', '=', record.class_id.id)])
 
                 if len(record.syllabus_ids) > 0: # Effacer les lignes du syllabus si la classe n'est pas défini
                     for elt in record.syllabus_ids:

@@ -27,7 +27,7 @@ class DeSchool(http.Controller):
         is_moratoire = False
         data = {}
         now = datetime.now()
-        date_str = now.strftime("%d/%m/%Y à %H:%M:%S") 
+        date_str = now.strftime("%d/%m/%Y à %H:%M:%S")
         # _logger.info(f"============ stm_line_id :: {stm_line_id}")
         # _logger.info(f"============ partner_id :: {partner_id}")
 
@@ -73,7 +73,7 @@ class DeSchool(http.Controller):
                 ('payment_state', 'in', ['paid', 'partial'])
             ], 
             order='invoice_date_due ASC, id ASC'
-        ) 
+        )
         redevances_non_payees = http.request.env['account.move'].sudo().search([
             ('move_type', '=', 'out_invoice'),
             ('partner_id', '=', stm_line_obj.partner_id.id),
@@ -85,7 +85,7 @@ class DeSchool(http.Controller):
                 ('moratoire_id.student_id.partner_id', '=', stm_line_obj.partner_id.id),
                 ('state', '=', 'validate')
             ]
-        ) 
+        )
         # _logger.info(f"======= redevances_paiement_partiel_ou_total :: {redevances_paiement_partiel_ou_total}")
         for redevance in redevances_paiement_partiel_ou_total:
             # if not redevance.invoice_payments_widget:
@@ -242,7 +242,7 @@ class DeSchool(http.Controller):
                 for cycle_id in session_id.cycle_ids:
                     cycles.append(cycle_id)
 
-        # _logger.info(f"=========== API cycles :: {cycles}")   
+        # _logger.info(f"=========== API cycles :: {cycles}")
         if cycles:
             for cycle in cycles:
                 level_ids = cycle.level_ids
@@ -270,7 +270,7 @@ class DeSchool(http.Controller):
                         'diplo_requis': [{'id': diplo.id, 'name': diplo.name} for diplo in diplo_requis_ids]
                     })
 
-            # _logger.info(f"=========== data :: {data}") 
+            # _logger.info(f"=========== data :: {data}")
             if data:
                 return http.Response(
                     json.dumps({
@@ -875,7 +875,7 @@ class DeSchool(http.Controller):
             for session_id in session_ids:
                 cycles.append(session_id.cycle_id)
 
-        # _logger.info(f"=========== API cycles :: {cycles}")   
+        # _logger.info(f"=========== API cycles :: {cycles}")
         if cycles:
             for cycle in cycles:
                 level_ids = cycle.level_ids

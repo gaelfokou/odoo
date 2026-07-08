@@ -1224,6 +1224,16 @@ class Timetable(models.Model):
 
         res = super(Timetable, self).write(vals)
 
+        if 'class_id' in vals:
+            classe = self.env['siantou.ems.core.class'].search([
+                ('id', '=', vals['class_id']),
+            ], limit=1)
+            if classe:
+                classe._compute_timetables()
+                classe.sudo().write({
+                    'specialty_id': classe.specialty_id.id,
+                })
+
         return res
 
     def copy(self, default=None):

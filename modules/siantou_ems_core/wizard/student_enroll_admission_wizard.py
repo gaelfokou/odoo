@@ -214,7 +214,7 @@ class StudentEnrollmentAdmissionWizard(models.TransientModel):
                     account_receivable_id = journal_id.default_account_id
                     account_revenue_id = journal_id.default_account_id
                     if account_receivable_id or account_revenue_id:
-                        _logger.info(struct_spec_id)  
+                        _logger.info(struct_spec_id)
                         if struct_spec_id.type_inclusion_fee == 'fee_spec':
                             account_move_id = self.env['account.move'].search([
                                     ('partner_id', '=', self.student_enroll_id.partner_id.id),
