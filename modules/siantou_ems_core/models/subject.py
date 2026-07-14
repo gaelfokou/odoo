@@ -99,18 +99,28 @@ class Subject(models.Model):
     year_ids = fields.One2many(
         'siantou.ems.core.year',
         string='Années académiques',
-        compute='_compute_years',
+        compute='_compute_years_call',
         store=False
     )
 
     year_id = fields.Many2one(
         'siantou.ems.core.year',
         string='Année académique active',
-        compute='_compute_year',
+        compute='_compute_years_call',
         store=False
     )
 
     @api.depends('ue_ids')
+    def _compute_years_call(self):
+        for record in self:
+            record._compute_years()
+            record._compute_year()
+
+    @api.onchange('ue_ids')
+    def _onchange_years_call(self):
+        for record in self:
+            record._compute_years_call()
+
     def _compute_years(self):
         for record in self:
             years = []
@@ -126,41 +136,7 @@ class Subject(models.Model):
 
             record.year_ids = year_ids
 
-    @api.onchange('ue_ids')
-    def _onchange_years(self):
-        for record in self:
-            years = []
-            for ue_id in record.ue_ids:
-                for semester_id in ue_id.semester_ids:
-                    years.append(semester_id.year_id.id)
-
-            years = list(set(years))
-
-            year_ids = self.env['siantou.ems.core.year'].search([
-                ('id', 'in', years),
-            ])
-
-            record.year_ids = year_ids
-
-    @api.depends('ue_ids')
     def _compute_year(self):
-        for record in self:
-            years = []
-            for ue_id in record.ue_ids:
-                for semester_id in ue_id.semester_ids:
-                    if semester_id.year_id.is_active:
-                        years.append(semester_id.year_id.id)
-
-            years = list(set(years))
-
-            year_id = self.env['siantou.ems.core.year'].search([
-                ('id', 'in', years),
-            ], limit=1)
-
-            record.year_id = year_id
-
-    @api.onchange('ue_ids')
-    def _onchange_year_active(self):
         for record in self:
             years = []
             for ue_id in record.ue_ids:
@@ -222,31 +198,6 @@ class Subject(models.Model):
         for record in self:
             if record.hours_credit <= 0:
                 raise ValidationError("Le volume horaire semestriel doit être supérieur à 0")
-
-    # Méthode calculée pour teacher_ids afin de montrer les enseignants liés dans le modèle des priorités
-    # @api.depends('teacher_priority_ids')
-    # def _compute_teacher_ids(self):
-    #     for record in self:
-    #         record.teacher_ids = record.teacher_priority_ids.mapped('employee_id')
-
-    # Méthode inverse pour ajouter/supprimer des enseignants dans le modèle des priorités avec une priorité par défaut de 1
-    # def _set_teacher_ids(self):
-    #     for record in self:
-    #         current_teacher_ids = record.teacher_priority_ids.mapped('employee_id').ids
-    #         new_teacher_ids = record.teacher_ids.ids
-
-    #         # Ajouter les nouveaux enseignants avec une priorité par défaut de 1
-    #         to_add = set(new_teacher_ids) - set(current_teacher_ids)
-    #         for teacher_id in to_add:
-    #             self.env['siantou.ems.core.teacher.subject.priority'].create({
-    #                 'employee_id': teacher_id,
-    #                 'subject_id': record.id,
-    #                 'priority': 1,
-    #             })
-
-    #         # Supprimer les enseignants enlevés de teacher_ids
-    #         to_remove = set(current_teacher_ids) - set(new_teacher_ids)
-    #         record.teacher_priority_ids.filtered(lambda p: p.employee_id.id in to_remove).unlink()
 
     @api.depends('syllabus_ids.subject_credit')
     def _compute_credit(self):

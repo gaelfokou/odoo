@@ -348,18 +348,29 @@ class SchoolCourseSubject(models.Model):
     year_ids = fields.One2many(
         'siantou.ems.core.year',
         string='Années académiques',
-        compute='_compute_years',
+        compute='_compute_years_call',
         store=False
     )
 
     year_id = fields.Many2one(
         'siantou.ems.core.year',
         string='Année académique active',
-        compute='_compute_year',
+        compute='_compute_years_call',
         store=False
     )
 
     @api.depends('semester_ids')
+    def _compute_years_call(self):
+        for record in self:
+            record._compute_years()
+            record._compute_year()
+            record._compute_semester_domain()
+
+    @api.onchange('semester_ids')
+    def _onchange_years_call(self):
+        for record in self:
+            record._compute_years_call()
+
     def _compute_years(self):
         for record in self:
             years = []
@@ -374,22 +385,6 @@ class SchoolCourseSubject(models.Model):
 
             record.year_ids = year_ids
 
-    @api.onchange('semester_ids')
-    def _onchange_years(self):
-        for record in self:
-            years = []
-            for semester_id in record.semester_ids:
-                years.append(semester_id.year_id.id)
-
-            years = list(set(years))
-
-            year_ids = self.env['siantou.ems.core.year'].search([
-                ('id', 'in', years),
-            ])
-
-            record.year_ids = year_ids
-
-    @api.depends('semester_ids')
     def _compute_year(self):
         for record in self:
             years = []
@@ -406,7 +401,7 @@ class SchoolCourseSubject(models.Model):
             record.year_id = year_id
 
     @api.onchange('semester_ids')
-    def _onchange_year_active(self):
+    def _onchange_year(self):
         for record in self:
             years = []
             for semester_id in record.semester_ids:
@@ -425,9 +420,8 @@ class SchoolCourseSubject(models.Model):
 
     total_credit = fields.Integer('Nombre de crédit total', compute='_compute_total_credit', store=True)
 
-    class_id_domain = fields.Binary(compute='_compute_semester_domain', default=[])
+    class_id_domain = fields.Binary(compute='_compute_years_call', default=[])
 
-    @api.depends('semester_ids')
     def _compute_semester_domain(self):
         for record in self:
             semester_ids = record.semester_ids
