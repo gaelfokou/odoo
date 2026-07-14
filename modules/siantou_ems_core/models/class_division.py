@@ -43,7 +43,7 @@ class EducationClass(models.Model):
     student_ids = fields.One2many(
         'oe.school.student',
         string='Étudiants',
-        compute='_compute_students',
+        compute='_compute_students_call',
         store=False
     )
 
@@ -57,7 +57,7 @@ class EducationClass(models.Model):
 
     number_of_student = fields.Integer(
         string='Nombre d\'étudiants',
-        compute='_compute_number_of_students',
+        compute='_compute_students_call',
         store=True,
     )
 
@@ -209,6 +209,16 @@ class EducationClass(models.Model):
             record.name = name
 
     @api.depends('student_enroll_ids')
+    def _compute_students_call(self):
+        for record in self:
+            record._compute_students()
+            record._compute_number_of_students()
+
+    @api.onchange('student_enroll_ids')
+    def _onchange_students_call(self):
+        for record in self:
+            record._compute_students_call()
+
     def _compute_students(self):
         for record in self:
             students = []
@@ -222,36 +232,7 @@ class EducationClass(models.Model):
 
             record.student_ids = student_ids
 
-    @api.onchange('student_enroll_ids')
-    def _onchange_students(self):
-        for record in self:
-            students = []
-            for student_enroll_id in record.student_enroll_ids:
-                if student_enroll_id.is_active_candidature == True and student_enroll_id.status == "transfer":
-                    students.append(student_enroll_id.student_id.id)
-
-            student_ids = self.env['oe.school.student'].search([
-                ('id', 'in', students),
-            ])
-
-            record.student_ids = student_ids
-
-    @api.depends('student_enroll_ids')
     def _compute_number_of_students(self):
-        for record in self:
-            students = []
-            for student_enroll_id in record.student_enroll_ids:
-                if student_enroll_id.is_active_candidature == True and student_enroll_id.status == "transfer":
-                    students.append(student_enroll_id.student_id.id)
-
-            student_ids = self.env['oe.school.student'].search([
-                ('id', 'in', students),
-            ])
-
-            record.number_of_student = len(student_ids.ids)
-
-    @api.onchange('student_enroll_ids')
-    def _onchange_number_of_students(self):
         for record in self:
             students = []
             for student_enroll_id in record.student_enroll_ids:
@@ -429,8 +410,7 @@ class EducationClass(models.Model):
 
     def add_number_of_student_class(self, classe):
         try:
-            classe._compute_students()
-            classe._compute_number_of_students()
+            classe._compute_students_call()
             classe.sudo().write({
                 'specialty_id': classe.specialty_id.id,
             })
@@ -578,8 +558,7 @@ class EducationClass(models.Model):
             raise UserError('Aucune donnée sélectionnée')
 
         for classe in classes:
-            classe._compute_students()
-            classe._compute_number_of_students()
+            classe._compute_students_call()
             classe._compute_timetables()
             classe._compute_subjects()
             classe.sudo().write({

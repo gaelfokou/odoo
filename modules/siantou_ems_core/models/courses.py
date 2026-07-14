@@ -355,7 +355,7 @@ class SchoolCourseSubject(models.Model):
     year_id = fields.Many2one(
         'siantou.ems.core.year',
         string='Année académique active',
-        compute='_compute_year_active',
+        compute='_compute_year',
         store=False
     )
 
@@ -390,7 +390,7 @@ class SchoolCourseSubject(models.Model):
             record.year_ids = year_ids
 
     @api.depends('semester_ids')
-    def _compute_year_active(self):
+    def _compute_year(self):
         for record in self:
             years = []
             for semester_id in record.semester_ids:

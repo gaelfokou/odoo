@@ -106,7 +106,7 @@ class Subject(models.Model):
     year_id = fields.Many2one(
         'siantou.ems.core.year',
         string='Année académique active',
-        compute='_compute_year_active',
+        compute='_compute_year',
         store=False
     )
 
@@ -143,7 +143,7 @@ class Subject(models.Model):
             record.year_ids = year_ids
 
     @api.depends('ue_ids')
-    def _compute_year_active(self):
+    def _compute_year(self):
         for record in self:
             years = []
             for ue_id in record.ue_ids:

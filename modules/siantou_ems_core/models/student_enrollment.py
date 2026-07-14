@@ -412,8 +412,7 @@ class StudentEnrollment(models.Model):
                 ('id', '=', vals['class_id']),
             ], limit=1)
             if classe:
-                classe._compute_students()
-                classe._compute_number_of_students()
+                classe._compute_students_call()
                 classe.sudo().write({
                     'specialty_id': classe.specialty_id.id,
                 })
@@ -507,8 +506,7 @@ class StudentEnrollment(models.Model):
                 ('id', '=', vals['class_id']),
             ], limit=1)
             if classe:
-                classe._compute_students()
-                classe._compute_number_of_students()
+                classe._compute_students_call()
                 classe.sudo().write({
                     'specialty_id': classe.specialty_id.id,
                 })
@@ -538,8 +536,7 @@ class StudentEnrollment(models.Model):
                 ('id', '=', class_id.id),
             ], limit=1)
             if classe:
-                classe._compute_students()
-                classe._compute_number_of_students()
+                classe._compute_students_call()
                 classe.sudo().write({
                     'specialty_id': classe.specialty_id.id,
                 })
