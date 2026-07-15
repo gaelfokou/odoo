@@ -1913,16 +1913,6 @@ class TimetableGroup(models.Model):
 
         res = super(TimetableGroup, self).write(vals)
 
-        if 'class_id' in vals:
-            classe = self.env['siantou.ems.core.class'].search([
-                ('id', '=', vals['class_id']),
-            ], limit=1)
-            if classe:
-                classe._compute_timetables()
-                classe.sudo().write({
-                    'specialty_id': classe.specialty_id.id,
-                })
-
         # for group in groups:
         #     if not group.is_submit:
         #         self.update_timetable_group(group)
