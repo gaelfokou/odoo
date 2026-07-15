@@ -48,7 +48,7 @@ class Semester(models.Model):
     # )
 
     number_of_week = fields.Integer(
-        'Nombre de semaines',
+        string='Nombre de semaines',
         compute='_compute_number_of_week',
         help='Nombre de semaines sur le semestre',
         store=False

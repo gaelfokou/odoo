@@ -27,8 +27,7 @@ class EducationClass(models.Model):
     cycle_id = fields.Many2one(
         'oe.school.course',
         string='Cursus ou Cycle',
-        related='field_of_study_id.cycle_id',
-        store=False
+        related='field_of_study_id.cycle_id'
     )
 
     supervision_id = fields.Many2one('oe.school.course.supervision', string='Tutelle académique',
@@ -43,8 +42,7 @@ class EducationClass(models.Model):
     student_ids = fields.One2many(
         'oe.school.student',
         string='Étudiants',
-        compute='_compute_students_call',
-        store=False
+        compute='_compute_students_call'
     )
 
     delegate_student_ids = fields.Many2many(
@@ -64,8 +62,7 @@ class EducationClass(models.Model):
     timetable_ids = fields.One2many(
         'siantou.ems.timetable.timetable',
         string='Emplois du temps',
-        compute='_compute_timetables',
-        store=False
+        compute='_compute_timetables'
     )
 
     specialty_id = fields.Many2one('siantou.ems.core.specialty', string='Spécialité',
@@ -74,8 +71,7 @@ class EducationClass(models.Model):
     department_id = fields.Many2one(
         'hr.department',
         string='Département',
-        related='specialty_id.department_id',
-        store=False
+        related='specialty_id.department_id'
     )
 
     option_id = fields.Many2one('siantou.ems.core.option', string='Option',
@@ -100,8 +96,7 @@ class EducationClass(models.Model):
     subject_ids = fields.One2many(
         'siantou.ems.core.subject',
         string='Cours',
-        compute='_compute_subjects',
-        store=False
+        compute='_compute_subjects'
     )
 
     type_cour = fields.Selection([
@@ -121,9 +116,9 @@ class EducationClass(models.Model):
 
     timetable_inactive_date = fields.Date(
         string='Date de désactivation des emplois du temps',
-        readonly=False,
         compute='_compute_timetable_inactive_date',
-        store=False
+        store=True,
+        readonly=False
     )
 
     @api.depends('is_timetable_active')

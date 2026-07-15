@@ -6,7 +6,7 @@ class Country(models.Model):
 
     # code du pays
     code = fields.Char(
-        'Code',
+        string='Code',
         required=True,
     )
     # Nom du pays

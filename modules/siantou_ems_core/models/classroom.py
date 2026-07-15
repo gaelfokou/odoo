@@ -13,7 +13,7 @@ class Campus(models.Model):
 
     # Code
     code = fields.Char(
-        'Code',
+        string='Code',
         required=True
     )
 
@@ -36,7 +36,7 @@ class Building(models.Model):
 
     # Code du bâtiment
     code = fields.Char(
-        'Code',
+        string='Code',
         required=True
     )
 

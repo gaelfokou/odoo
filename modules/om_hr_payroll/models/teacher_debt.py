@@ -51,7 +51,7 @@ class TeacherDebt(models.Model):
     )
 
     amount = fields.Float(
-        'Montant',
+        string='Montant',
         default=0.0,
     )
 
@@ -161,7 +161,7 @@ class PaymentDebt(models.Model):
     )
 
     amount = fields.Float(
-        'Montant',
+        string='Montant',
         default=0.0,
     )
 

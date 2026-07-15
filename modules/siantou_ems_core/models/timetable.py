@@ -37,9 +37,9 @@ class TimetableSubjectHour(models.Model):
     # Date du jour où le cours sera programmé
     start_date = fields.Date(
         string='Date de début',
-        readonly=False,
         compute='_compute_start_date',
-        store=False
+        store=True,
+        readonly=False
     )
 
     @api.depends('group_id')
@@ -53,9 +53,9 @@ class TimetableSubjectHour(models.Model):
     # Date du jour où le cours sera programmé
     end_date = fields.Date(
         string='Date de fin',
-        readonly=False,
         compute='_compute_end_date',
-        store=False
+        store=True,
+        readonly=False
     )
 
     # Jour où le cours est programmé
@@ -74,7 +74,7 @@ class TimetableSubjectHour(models.Model):
 
     # Heure de début du cours
     start_time = fields.Float(
-        'Heure de début',
+        string='Heure de début',
         required=True,
         default=0.0,
         ondelete='cascade',
@@ -83,7 +83,7 @@ class TimetableSubjectHour(models.Model):
 
     # Heure de fin du cours
     end_time = fields.Float(
-        'Heure de fin',
+        string='Heure de fin',
         required=True,
         default=0.0,
         ondelete='cascade',
@@ -268,7 +268,7 @@ class Timetable(models.Model):
     is_custom_hours_credit = fields.Boolean(string='Volume horaire personnalisé ?', default=False)
 
     hours_credit = fields.Float(
-        'Volume horaire',
+        string='Volume horaire',
         compute="_compute_hours_credit",
         store=True
     )
@@ -404,7 +404,7 @@ class Timetable(models.Model):
 
     # Heure de début du cours
     start_time = fields.Float(
-        'Heure de début',
+        string='Heure de début',
         required=True,
         default=0.0,
         ondelete='cascade',
@@ -413,7 +413,7 @@ class Timetable(models.Model):
 
     # Heure de fin du cours
     end_time = fields.Float(
-        'Heure de fin',
+        string='Heure de fin',
         required=True,
         default=0.0,
         ondelete='cascade',
@@ -422,14 +422,14 @@ class Timetable(models.Model):
 
     # Heure de début du cours
     worked_start_time = fields.Float(
-        'Heure de début effectuée',
+        string='Heure de début effectuée',
         default=0.0,
         widget='time'
     )
 
     # Heure de fin du cours
     worked_end_time = fields.Float(
-        'Heure de fin effectuée',
+        string='Heure de fin effectuée',
         default=0.0,
         widget='time'
     )
@@ -490,7 +490,7 @@ class Timetable(models.Model):
 
     # Heure de fin du cours
     worked_time = fields.Float(
-        'Heure effectuée',
+        string='Heure effectuée',
         default=0.0,
         # compute='_compute_worked_time',
         # store=False
@@ -498,12 +498,12 @@ class Timetable(models.Model):
 
     # Taux de l\'enseignant
     rate = fields.Float(
-        'Taux horaire',
+        string='Taux horaire',
         default=0.0,
     )
 
     amount = fields.Float(
-        'Montant',
+        string='Montant',
         default=0.0,
     )
 

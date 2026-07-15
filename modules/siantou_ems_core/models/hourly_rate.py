@@ -57,7 +57,7 @@ class HourlyRate(models.Model):
 
     # Taux
     rate = fields.Float(
-        'Taux',
+        string='Taux',
         default=0.0,
         required=True
     )
@@ -199,7 +199,7 @@ class TeacherHourlyRate(models.Model):
 
     # Taux de l\'enseignant
     rate = fields.Float(
-        'Taux',
+        string='Taux',
         default=0.0,
         required=True
     )

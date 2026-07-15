@@ -372,7 +372,7 @@ class SubjectScore(models.Model):
     sequence = fields.Integer(string='Séquence', required=True, default=1)
 
     score = fields.Float(
-        'Note',
+        string='Note',
         default=0.0,
     )
 

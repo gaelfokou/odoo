@@ -36,7 +36,7 @@ class HrEmployee(models.Model):
 
     # Matricule de l'enseignant
     identifier = fields.Char(
-        'Matricule',
+        string='Matricule',
         # required=True
     )
 
@@ -58,7 +58,7 @@ class HrEmployee(models.Model):
 
     # Quota horaire hebdommadaire de cours pour un enseignant permanent
     weekly_hours_limit = fields.Integer(
-        'Quota horaire hebdommadaire',
+        string='Quota horaire hebdommadaire',
         required=True
     )
 
@@ -542,14 +542,14 @@ class TeacherAvailability(models.Model):
 
     # Heure de début de disponibilité
     start_time = fields.Float(
-        'Heure de début',
+        string='Heure de début',
         required=True,
         widget='time'
     )
 
     # Heure de fin de disponibilité
     end_time = fields.Float(
-        'Heure de fin',
+        string='Heure de fin',
         required=True,
         widget='time'
     )
@@ -582,7 +582,7 @@ class TeacherSubjectPriority(models.Model):
 
     # Priorité de l'enseignant pour ce cours
     priority = fields.Integer(
-        'Priorité',
+        string='Priorité',
         help='Le enseignant avec le nombre le plus élevé est prioritaire (va de 1 à 10)',
         default=1,
         required=True

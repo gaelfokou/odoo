@@ -13,13 +13,13 @@ class OptionOfStudy(models.Model):
 
     # Code du programme
     code = fields.Char(
-        'Code',
+        string='Code',
         required=True
     )
 
     # Nom du programme
     name = fields.Char(
-        "Nom de l'option",
+        string='Nom de l\'option',
         required=True
     )
 
@@ -83,7 +83,7 @@ class SpecialtyOfStudy(models.Model):
 
     # Code du programme
     code = fields.Char(
-        'Code',
+        string='Code',
         required=True
     )
 
@@ -140,7 +140,7 @@ class FieldOfStudy(models.Model):
 
     # Code du programme
     code = fields.Char(
-        'Code',
+        string='Code',
         required=True
     )
 

@@ -34,7 +34,7 @@ class TimetableWizard(models.TransientModel):
 
     # Version à laquelle appartient l'emploi du temps
     group = fields.Char(
-        'Version'
+        string='Version'
     )
 
     # Date du jour où le cours sera programmé

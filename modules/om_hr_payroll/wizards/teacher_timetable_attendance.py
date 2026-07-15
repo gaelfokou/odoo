@@ -148,37 +148,37 @@ class TeacherTimetableAttendance(models.TransientModel):
 
     # Heure de fin du cours
     worked_time = fields.Float(
-        'Heure effectuée',
+        string='Heure effectuée',
         default=0.0,
     )
 
     # Volume horaire du cours
     hours_credit = fields.Float(
-        'Volume horaire du cours',
+        string='Volume horaire du cours',
         default=0.0,
     )
 
     # Volume horaire effectué du cours
     done = fields.Float(
-        'Volume horaire effectué théoriquement',
+        string='Volume horaire effectué théoriquement',
         default=0.0,
     )
 
     # Volume horaire restant du cours
     awaiting = fields.Float(
-        'Volume horaire restant théoriquement',
+        string='Volume horaire restant théoriquement',
         default=0.0,
     )
 
     # Volume horaire effectué du cours
     worked_done = fields.Float(
-        'Volume horaire effectué',
+        string='Volume horaire effectué',
         default=0.0,
     )
 
     # Volume horaire restant du cours
     worked_awaiting = fields.Float(
-        'Volume horaire restant',
+        string='Volume horaire restant',
         default=0.0,
     )
 
@@ -207,12 +207,12 @@ class TeacherTimetableAttendance(models.TransientModel):
 
     # Taux de l\'enseignant
     rate = fields.Float(
-        'Taux horaire',
+        string='Taux horaire',
         default=0.0,
     )
 
     amount = fields.Float(
-        'Montant',
+        string='Montant',
         default=0.0,
     )
 

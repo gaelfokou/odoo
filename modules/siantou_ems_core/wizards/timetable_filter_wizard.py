@@ -200,14 +200,14 @@ class TimetableFilterWizard(models.TransientModel):
 
     # Heure de début du cours
     start_time = fields.Float(
-        'Heure de début',
+        string='Heure de début',
         default=0.0,
         widget='time'
     )
 
     # Heure de fin du cours
     end_time = fields.Float(
-        'Heure de fin',
+        string='Heure de fin',
         default=0.0,
         widget='time'
     )

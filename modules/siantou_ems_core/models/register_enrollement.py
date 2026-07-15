@@ -158,7 +158,7 @@ class SessionRegisterEnrollment(models.Model):
     ]
 
     name = fields.Char(
-        'Name', required=True, readonly=True)
+        string='Name', required=True, readonly=True)
     start_date = fields.Date(
         string='Date de début', store=True, related='session_id.start_date')
     end_date = fields.Date(

@@ -46,7 +46,7 @@ class Subject(models.Model):
 
     # Code du cours
     code = fields.Char(
-        'Code',
+        string='Code',
         required=True
     )
 
@@ -88,7 +88,7 @@ class Subject(models.Model):
 
     # Volume horaire du cours sur un semestre
     hours_credit = fields.Float(
-        'Volume horaire',
+        string='Volume horaire',
         help='Volume horaire du cours sur un semestre',
         default=0.0,
         required=True
