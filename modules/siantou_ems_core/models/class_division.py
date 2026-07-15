@@ -9,6 +9,11 @@ from dateutil.relativedelta import relativedelta
 from odoo.tools import unique
 import logging
 
+TYPE_COUR = {
+    'cj': 'Cours du jour',
+    'cs': 'Cours du soir',
+}
+
 _logger = logging.getLogger(__name__)
 
 class EducationClass(models.Model):
@@ -151,17 +156,42 @@ class EducationClass(models.Model):
     @api.constrains('year_id', 'specialty_id', 'option_id', 'level_id', 'type_cour')
     def _check_unique_year_specialty_option_level_type_cour(self):
         for record in self:
-            classes = self.env['siantou.ems.core.class'].search([
-                ('id', '!=', record.id),
-                ('year_id', '=', record.year_id.id),
-                ('specialty_id', '=', record.specialty_id.id),
-                ('option_id', '=', record.option_id.id),
-                ('level_id', '=', record.level_id.id),
-                ('type_cour', '=', record.type_cour),
-            ])
+            if record.option_id.id:
+                classes = self.env['siantou.ems.core.class'].search([
+                    ('id', '!=', record.id),
+                    ('year_id', '=', record.year_id.id),
+                    ('specialty_id', '=', record.specialty_id.id),
+                    ('option_id', '=', record.option_id.id),
+                    ('level_id', '=', record.level_id.id),
+                    ('type_cour', '=', record.type_cour),
+                ])
+            else:
+                classes = self.env['siantou.ems.core.class'].search([
+                    ('id', '!=', record.id),
+                    ('year_id', '=', record.year_id.id),
+                    ('specialty_id', '=', record.specialty_id.id),
+                    ('option_id', '=', False),
+                    ('level_id', '=', record.level_id.id),
+                    ('type_cour', '=', record.type_cour),
+                ])
             classes = list(classes)
             if len(classes) > 0:
-                raise ValidationError(f"Deux classes de même année académique, spécialité, option, niveau, et type de cours ne peuvent être crées")
+                validation_error_message = """
+                    Deux classes de même année académique, spécialité, option, niveau, et type de cours ne peuvent être crées
+                    -----
+                """
+                for classe in classes:
+                    validation_error_message += f"""
+                        • ID : {classe.id}
+                        Classe : {classe.name}
+                        Année Académique : {classe.year_id.name}
+                        Spécialité : {classe.specialty_id.name}
+                        Option : {classe.option_id.name}
+                        Niveau : {classe.level_id.name}
+                        Type de cours : {TYPE_COUR[classe.type_cour]}
+                        -----
+                    """
+                raise ValidationError(validation_error_message)
 
     @api.depends('specialty_id', 'option_id', 'level_id', 'type_cour')
     def _compute_name(self):
@@ -580,6 +610,26 @@ class EducationClass(models.Model):
                 'default_source_year_id': self.env['siantou.ems.core.year'].search([('is_active', '=', True)], limit=1).id,
             },
         }
+
+    def action_print_subject_pdf(self):
+        active_ids = self.env.context.get('active_ids', [])
+        classes = self.env['siantou.ems.core.class'].browse(active_ids)
+        classes = list(classes)
+        if len(active_ids) == 0:
+            raise UserError('Aucune donnée sélectionnée')
+        report_data = self.env['class.print.wizard'].create({})
+        domains = [
+            ('id', 'in', active_ids)
+        ]
+        data = report_data.print_class_report_data(domains=domains)
+
+        if len(data['docdata']['class_data']) == 0:
+            raise UserError('Aucune donnée trouvée')
+        report_action = self.env.ref('siantou_ems_core.action_report_class')
+        report_action.update({
+            'name': 'Classes PDF',
+        })
+        return report_action.report_action(self, data=data)
 
 class EducationClassGroup(models.Model):
     _name = 'siantou.ems.core.class.group'

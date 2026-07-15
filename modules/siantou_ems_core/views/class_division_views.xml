@@ -44,6 +44,11 @@
                             class="oe_highlight" 
                             display="always"
                             groups="siantou_ems_core.group_ue_open_copy"/>
+                        <button name="action_print_subject_pdf" 
+                            type="object" 
+                            string="Imprimer Cours" 
+                            class="btn-secondary" 
+                            display="always"/>
                     </header>
 					<field name="name"/>
                     <field name="year_id"/>
