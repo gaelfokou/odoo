@@ -36,8 +36,8 @@
                             <page string="filières">
                                 <field name="field_of_study_ids">
                                     <tree>
-                                        <field name="code"/>   
-                                        <field name="name"/>   
+                                        <field name="code"/>
+                                        <field name="name"/>
                                     </tree>
                                 </field>
                             </page>

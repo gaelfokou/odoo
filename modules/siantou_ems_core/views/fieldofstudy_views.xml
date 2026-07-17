@@ -43,8 +43,8 @@
                                 <field name="specialty_ids">
                                     <tree string="">
                                         <field name="code"/>
-                                        <field name="name"/>  
-                                        <field name="field_of_study_id"/>  
+                                        <field name="name"/>
+                                        <field name="field_of_study_id"/>
                                     </tree>
                                 </field>
                             </page>

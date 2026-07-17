@@ -43,7 +43,7 @@
                             </table>
                             <center>
                                 <h2 style="text-decoration:underline;font-size: 15px;margin-top:25px">
-                                    RECU DE CAISSE SCOLARITE N° <span t-esc="payment_id['name']"/> 
+                                    RECU DE CAISSE SCOLARITE N° <span t-esc="payment_id['name']"/>
                                     DU <span t-esc="date"
                                             t-options='{"widget": "date","format": "d/MM/Y"}' />
                                 </h2>
