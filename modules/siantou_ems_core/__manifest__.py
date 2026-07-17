@@ -92,6 +92,7 @@
         'report/student_template.xml',
         'report/classroom_template.xml',
         'report/class_template.xml',
+        'report/class_subject_template.xml',
         'report/subject_template.xml',
         'report/progress_report_template.xml',
         'report/daily_attendance_template.xml',

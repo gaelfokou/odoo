@@ -611,7 +611,7 @@ class EducationClass(models.Model):
             },
         }
 
-    def action_print_subject_pdf(self):
+    def action_print_class_subject_pdf(self):
         active_ids = self.env.context.get('active_ids', [])
         classes = self.env['siantou.ems.core.class'].browse(active_ids)
         classes = list(classes)
@@ -621,11 +621,55 @@ class EducationClass(models.Model):
         domains = [
             ('id', 'in', active_ids)
         ]
-        data = report_data.print_subject_report_data(domains=domains)
+        data = report_data.print_class_subject_report_data(domains=domains)
 
-        if len(data['docdata']['class_data']) == 0:
+        if len(data['docdata']['subject_data']) == 0:
             raise UserError('Aucune donnée trouvée')
-        report_action = self.env.ref('siantou_ems_core.action_report_class')
+
+        subjects = {}
+
+        for d in data['docdata']['subject_data']:
+            key_class = '{}'.format(d['class_id'])
+            key_semester = '{}'.format(d['semester_id'])
+            key_ue = '{}'.format(d['ue_id'])
+            if key_class not in subjects:
+                subjects[key_class] = {}
+                subjects[key_class]['id'] = d['class_id']
+                subjects[key_class]['name'] = d['class_name']
+                subjects[key_class]['data'] = {}
+                subjects[key_class]['data'][key_semester] = {}
+                subjects[key_class]['data'][key_semester]['name'] = d['semester_name']
+                subjects[key_class]['data'][key_semester]['data'] = {}
+                subjects[key_class]['data'][key_semester]['data'][key_ue] = {}
+                subjects[key_class]['data'][key_semester]['data'][key_ue]['code'] = d['ue_code']
+                subjects[key_class]['data'][key_semester]['data'][key_ue]['name'] = d['ue_name']
+                subjects[key_class]['data'][key_semester]['data'][key_ue]['data'] = []
+                subjects[key_class]['data'][key_semester]['data'][key_ue]['data'].append(d)
+            else:
+                if key_semester not in subjects[key_class]['data']:
+                    subjects[key_class]['data'][key_semester] = {}
+                    subjects[key_class]['data'][key_semester]['name'] = d['semester_name']
+                    subjects[key_class]['data'][key_semester]['data'] = {}
+                    subjects[key_class]['data'][key_semester]['data'][key_ue] = {}
+                    subjects[key_class]['data'][key_semester]['data'][key_ue]['code'] = d['ue_code']
+                    subjects[key_class]['data'][key_semester]['data'][key_ue]['name'] = d['ue_name']
+                    subjects[key_class]['data'][key_semester]['data'][key_ue]['data'] = []
+                    subjects[key_class]['data'][key_semester]['data'][key_ue]['data'].append(d)
+                else:
+                    if key_ue not in subjects[key_class]['data'][key_semester]['data']:
+                        subjects[key_class]['data'][key_semester]['data'][key_ue] = {}
+                        subjects[key_class]['data'][key_semester]['data'][key_ue]['code'] = d['ue_code']
+                        subjects[key_class]['data'][key_semester]['data'][key_ue]['name'] = d['ue_name']
+                        subjects[key_class]['data'][key_semester]['data'][key_ue]['data'] = []
+                        subjects[key_class]['data'][key_semester]['data'][key_ue]['data'].append(d)
+                    else:
+                        subjects[key_class]['data'][key_semester]['data'][key_ue]['data'].append(d)
+
+        _logger.info(f'----------- tototototototo subjects {subjects} -----------')
+
+        data['docdata']['subject_data'] = subjects
+
+        report_action = self.env.ref('siantou_ems_core.action_report_class_subject')
         report_action.update({
             'name': 'Cours PDF',
         })
