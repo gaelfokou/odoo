@@ -621,13 +621,13 @@ class EducationClass(models.Model):
         domains = [
             ('id', 'in', active_ids)
         ]
-        data = report_data.print_class_report_data(domains=domains)
+        data = report_data.print_subject_report_data(domains=domains)
 
         if len(data['docdata']['class_data']) == 0:
             raise UserError('Aucune donnée trouvée')
         report_action = self.env.ref('siantou_ems_core.action_report_class')
         report_action.update({
-            'name': 'Classes PDF',
+            'name': 'Cours PDF',
         })
         return report_action.report_action(self, data=data)
 
