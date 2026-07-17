@@ -142,6 +142,11 @@ class ClassFilterWizard(models.TransientModel):
         if self.type_cour:
             domain.append(('type_cour', '=', self.type_cour))
             title.append(TYPE_COUR[self.type_cour])
+        if self.semester_id.id:
+            self.env['ir.config_parameter'].sudo().set_param(f'siantou.semester_user_{self.env.user.id}', self.semester_id.id)
+            title.append(self.semester_id.name)
+        else:
+            self.env['ir.config_parameter'].sudo().set_param(f'siantou.semester_user_{self.env.user.id}', '')
         if self.status:
             if self.status == 'timetable_active':
                 domain.append(('is_timetable_active', '=', True))
