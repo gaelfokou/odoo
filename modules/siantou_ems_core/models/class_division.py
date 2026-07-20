@@ -669,6 +669,22 @@ class EducationClass(models.Model):
 
         data['docdata']['subject_data'] = subjects
 
+        data['docdata']['subject_data'] = dict(sorted(data['docdata']['subject_data'].items(), key=lambda item: item[1]['name'] if item[1]['name'] else ''))
+
+        for key_class in data['docdata']['subject_data'].keys():
+            data['docdata']['subject_data'][key_class]['hours_credit'] = 0.0
+            data['docdata']['subject_data'][key_class]['total_credit'] = 0.0
+            data['docdata']['subject_data'][key_class]['data'] = dict(sorted(data['docdata']['subject_data'][key_class]['data'].items(), key=lambda item: item[1]['name'] if item[1]['name'] else ''))
+            for key_semester in data['docdata']['subject_data'][key_class]['data'].keys():
+                for key_ue in data['docdata']['subject_data'][key_class]['data'][key_semester]['data'].keys():
+                    for subject in data['docdata']['subject_data'][key_class]['data'][key_semester]['data'][key_ue]['data']:
+                        data['docdata']['subject_data'][key_class]['hours_credit'] += subject['hours_credit']
+                        data['docdata']['subject_data'][key_class]['total_credit'] += subject['total_credit']
+
+        for key_class in data['docdata']['subject_data'].keys():
+            data['docdata']['subject_data'][key_class]['hours_credit'] = round(data['docdata']['subject_data'][key_class]['hours_credit'], 2)
+            data['docdata']['subject_data'][key_class]['total_credit'] = round(data['docdata']['subject_data'][key_class]['total_credit'], 2)
+
         report_action = self.env.ref('siantou_ems_core.action_report_class_subject')
         report_action.update({
             'name': 'Cours PDF',

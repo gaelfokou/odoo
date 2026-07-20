@@ -39,80 +39,96 @@
                                 margin: 1px 0px !important;
                             }
                         </style>
-                        <div class="page">
-                            <table class="table table-bordered table-sm text-center">
-                                <thead>
-                                    <tr>
-                                        <th class="text-center" colspan="10" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;">
-                                            <h3>INSTITUT UNIVERSITAIRE SIANTOU</h3>
-                                            <h4>
-                                                <span t-esc="docdata['title']"/>
-                                            </h4>
-                                            <h5 class="text-left">
-                                                <span t-esc="'Filtre :'"/>
-                                                <span t-esc="docdata['filter'] or 'Non spécifié'"/>
-                                            </h5>
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <thead>
-                                    <tr>
-                                        <th class="text-left" colspan="10" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
-                                    </tr>
-                                </thead>
-                                <thead class="thead">
-                                    <tr class="active">
-                                        <th class="text-center">Nom de la classe</th>
-                                        <th class="text-center">École</th>
-                                        <th class="text-center">Cycle</th>
-                                        <th class="text-center">Département</th>
-                                        <th class="text-center">Filière</th>
-                                        <th class="text-center">Niveau</th>
-                                        <th class="text-center">Spécialité</th>
-                                        <th class="text-center">Option</th>
-                                        <th class="text-center">Type de cours</th>
-                                        <th class="text-center">Nombre d'étudiants</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <t t-set="classes" t-value="sorted(docdata['subject_data'], key=lambda item: (item['name'] if item['name'] else '').strip().lower())"/>
-                                    <t t-foreach="classes" t-as="classe">
+                        <t t-set="subject_data" t-value="dict(sorted(docdata['subject_data'].items(), key=lambda item: item[1]['name'] if item[1]['name'] else ''))"/>
+                        <t t-set="classes" t-value="subject_data.keys()"/>
+                        <t t-foreach="classes" t-as="classe">
+                            <div class="page">
+                                <table class="table table-bordered table-sm text-center">
+                                    <thead>
                                         <tr>
-                                            <td class="text-left">
-                                                <span t-esc="classe['name']"/>
+                                            <th class="text-center" colspan="4" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;">
+                                                <h3>INSTITUT UNIVERSITAIRE SIANTOU</h3>
+                                                <h4>
+                                                    <span t-esc="subject_data[classe]['name']"/>
+                                                </h4>
+                                                <h5 class="text-left">
+                                                    <span t-esc="'Filtre :'"/>
+                                                    <span t-esc="docdata['filter'] or 'Non spécifié'"/>
+                                                </h5>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <thead>
+                                        <tr>
+                                            <th class="text-left" colspan="4" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
+                                        </tr>
+                                    </thead>
+                                    <thead class="thead">
+                                        <tr class="active">
+                                            <th class="text-center">Nom du cours</th>
+                                            <th class="text-center">Code</th>
+                                            <th class="text-center">Volume horaire</th>
+                                            <th class="text-center">Crédit</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <t t-set="semester_data" t-value="dict(sorted(subject_data[classe]['data'].items(), key=lambda item: item[1]['name'] if item[1]['name'] else ''))"/>
+                                        <t t-set="semesters" t-value="semester_data.keys()"/>
+                                        <t t-foreach="semesters" t-as="semester">
+                                            <tr>
+                                                <td class="text-left" style="background-color: #f2f2f2;">
+                                                    <span t-esc="semester_data[semester]['name']"/>
+                                                </td>
+                                                <td class="text-center" style="background-color: #f2f2f2;"></td>
+                                                <td class="text-center" style="background-color: #f2f2f2;"></td>
+                                                <td class="text-center" style="background-color: #f2f2f2;"></td>
+                                            </tr>
+                                            <t t-set="ues" t-value="semester_data[semester]['data'].keys()"/>
+                                            <t t-foreach="ues" t-as="ue">
+                                                <tr>
+                                                    <td class="text-left" style="background-color: #f2f2f2;">
+                                                        <span t-esc="semester_data[semester]['data'][ue]['name']"/>
+                                                    </td>
+                                                    <td class="text-center" style="background-color: #f2f2f2;">
+                                                        <span t-esc="semester_data[semester]['data'][ue]['code']"/>
+                                                    </td>
+                                                    <td class="text-center" style="background-color: #f2f2f2;"></td>
+                                                    <td class="text-center" style="background-color: #f2f2f2;"></td>
+                                                </tr>
+                                                <t t-foreach="semester_data[semester]['data'][ue]['data']" t-as="subject">
+                                                    <tr>
+                                                        <td class="text-left">
+                                                            <span t-esc="subject['name']"/>
+                                                        </td>
+                                                        <td class="text-center">
+                                                            <span t-esc="subject['code']"/>
+                                                        </td>
+                                                        <td class="text-center">
+                                                            <span t-esc="subject['hours_credit']"/>
+                                                        </td>
+                                                        <td class="text-center">
+                                                            <span t-esc="subject['total_credit']"/>
+                                                        </td>
+                                                    </tr>
+                                                </t>
+                                            </t>
+                                        </t>
+                                        <tr>
+                                            <td class="text-center" style="background-color: #f2f2f2;">TOTAL</td>
+                                            <td class="text-center" style="background-color: #f2f2f2;"></td>
+                                            <td class="text-center" style="background-color: #f2f2f2;">
+                                                <span t-esc="subject_data[classe]['hours_credit']"/>
                                             </td>
-                                            <td class="text-center">
-                                                <span t-esc="classe['school']"/>
-                                            </td>
-                                            <td class="text-center">
-                                                <span t-esc="classe['cycle']"/>
-                                            </td>
-                                            <td class="text-center">
-                                                <span t-esc="classe['department']"/>
-                                            </td>
-                                            <td class="text-center">
-                                                <span t-esc="classe['field_of_study']"/>
-                                            </td>
-                                            <td class="text-center">
-                                                <span t-esc="classe['level']"/>
-                                            </td>
-                                            <td class="text-center">
-                                                <span t-esc="classe['specialty']"/>
-                                            </td>
-                                            <td class="text-center">
-                                                <span t-esc="classe['option']"/>
-                                            </td>
-                                            <td class="text-center">
-                                                <span t-esc="classe['type_cour']"/>
-                                            </td>
-                                            <td class="text-center">
-                                                <span t-esc="classe['number_of_student']"/>
+                                            <td class="text-center" style="background-color: #f2f2f2;">
+                                                <span t-esc="subject_data[classe]['total_credit']"/>
                                             </td>
                                         </tr>
-                                    </t>
-                                </tbody>
-                            </table>
-                        </div>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <p style="page-break-after:always;"></p>
+                            <br/><br/><br/>
+                        </t>
                     </t>
                 </t>
                 <t t-else="">

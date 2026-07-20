@@ -86,13 +86,26 @@ class ClassPrintWizard(models.TransientModel):
 
         search_classes = self.env['siantou.ems.core.class'].search(domain)
 
+        semester_user = self.env['ir.config_parameter'].sudo().get_param(f'siantou.semester_user_{self.env.user.id}', '')
+        if semester_user:
+            semester_user = int(semester_user)
+
         subjects = []
+        key_subjects = {}
         for search_classe in search_classes:
             for ue_id in search_classe.ue_ids:
                 semester_ids = ue_id.semester_ids.filtered(lambda rec: rec.year_id.id == search_classe.year_id.id)
                 for semester_id in semester_ids:
+                    if semester_user:
+                        if semester_id.id != semester_user:
+                            continue
                     subject_ids = ue_id.subject_ids.filtered(lambda rec: rec.ue_ids.ids == semester_id.ue_ids.ids)
                     for subject_id in subject_ids:
+                        key = '{}-{}'.format(search_classe.id, subject_id.id)
+                        if key not in key_subjects:
+                            key_subjects[key] = subject_id
+                        else:
+                            continue
                         subject = {}
                         subject['id'] = subject_id.id
                         subject['code'] = subject_id.code
