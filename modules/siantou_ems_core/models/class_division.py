@@ -208,7 +208,7 @@ class EducationClass(models.Model):
     )
 
     number_of_subjects_hour = fields.Float(
-        string='Nombre total d\'heures prévues',
+        string='Nombre d\'heures prévues',
         compute='_compute_subjects_call',
         store=True,
     )
