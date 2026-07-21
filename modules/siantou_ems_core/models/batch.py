@@ -42,8 +42,7 @@ class StudentBatch(models.Model):
     student_ids = fields.One2many(
         'oe.school.student',
         string='Étudiants',
-        compute='_compute_students',
-        store=False
+        compute='_compute_students'
     )
 
     @api.depends('class_id')

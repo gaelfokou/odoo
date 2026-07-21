@@ -68,8 +68,7 @@ class TimetableSubjectHour(models.Model):
             ('5', 'Samedi'),
             ('6', 'Dimanche'),
         ], string='Jour de la semaine',
-        compute='_compute_day_of_week',
-        store=False
+        compute='_compute_day_of_week'
     )
 
     # Heure de début du cours
@@ -172,15 +171,13 @@ class Timetable(models.Model):
         'siantou.ems.core.year.semester',
         string='Semestre',
         # default=_default_semester,
-        related='group_id.semester_id',
-        store=False
+        related='group_id.semester_id'
     )
 
     year_id = fields.Many2one(
         'siantou.ems.core.year',
         string='Année académique',
-        related='semester_id.year_id',
-        store=False
+        related='semester_id.year_id'
     )
 
     batch_id = fields.Many2one(
@@ -205,22 +202,19 @@ class Timetable(models.Model):
     field_of_study_id = fields.Many2one(
         'siantou.ems.core.field_of_study',
         string='Filière',
-        related='specialty_id.field_of_study_id',
-        store=False
+        related='specialty_id.field_of_study_id'
     )
 
     cycle_id = fields.Many2one(
         'oe.school.course',
         string='Cursus ou Cycle',
-        related='field_of_study_id.cycle_id',
-        store=False
+        related='field_of_study_id.cycle_id'
     )
 
     department_id = fields.Many2one(
         'hr.department',
         string='Département',
-        related='specialty_id.department_id',
-        store=False
+        related='specialty_id.department_id'
     )
 
     specialty_id = fields.Many2one(
@@ -248,7 +242,6 @@ class Timetable(models.Model):
             ('cs', 'Cours du soir'),
         ], string='Type de cours',
         related='class_id.type_cour',
-        store=False,
     )
 
     ue_id = fields.Many2one(
@@ -398,8 +391,7 @@ class Timetable(models.Model):
             ('5', 'Samedi'),
             ('6', 'Dimanche'),
         ], string='Jour de la semaine',
-        compute='_compute_day_of_week',
-        store=False
+        compute='_compute_day_of_week'
     )
 
     # Heure de début du cours
@@ -521,8 +513,7 @@ class Timetable(models.Model):
     group_parent_id = fields.Many2one(
         'siantou.ems.timetable.group',
         string='Version d\'emploi du temps parent',
-        related='group_id.group_parent_id',
-        store=False
+        related='group_id.group_parent_id'
     )
 
     group_child_id = fields.Many2one(
@@ -531,7 +522,7 @@ class Timetable(models.Model):
         domain="[('is_submit', '=', True), ('semester_id', '=', semester_id), ('status', '=', 'valid')]",
     )
 
-    is_readonly = fields.Boolean(string='Lecture unique ?', compute='_compute_readonly', store=False)
+    is_readonly = fields.Boolean(string='Lecture unique ?', compute='_compute_readonly')
 
     @api.depends('group_id')
     def _compute_readonly(self):
@@ -605,7 +596,6 @@ class Timetable(models.Model):
         ('delay', 'Retard'),
     ], string='Statut',
         related='status',
-        store=False,
         tracking=True
     )
 
@@ -1600,8 +1590,7 @@ class TimetableGroup(models.Model):
     year_id = fields.Many2one(
         'siantou.ems.core.year',
         string='Année académique',
-        related='semester_id.year_id',
-        store=False
+        related='semester_id.year_id'
     )
 
     is_active = fields.Boolean(string='Actif ?', default=False)
@@ -1656,7 +1645,6 @@ class TimetableGroup(models.Model):
         ('draft', 'Brouillon'),
     ], string='Statut',
         related='status',
-        store=False,
         tracking=True
     )
 
@@ -1745,7 +1733,7 @@ class TimetableGroup(models.Model):
             else:
                 record.has_write_access = False
 
-    is_readonly = fields.Boolean(string='Lecture unique ?', compute='_compute_readonly', store=False)
+    is_readonly = fields.Boolean(string='Lecture unique ?', compute='_compute_readonly')
 
     @api.depends('start_date', 'end_date', 'write_user_ids')
     def _compute_readonly(self):

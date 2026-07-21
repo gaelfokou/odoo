@@ -54,55 +54,47 @@ class TeacherTimetableAttendance(models.TransientModel):
     class_id = fields.Many2one(
         'siantou.ems.core.class',
         string='Classe',
-        related='timetable_id.class_id',
-        store=False
+        related='timetable_id.class_id'
     )
 
     class_group_id = fields.Many2one(
         'siantou.ems.core.class.group',
         string='Groupe de classe',
-        related='timetable_id.class_group_id',
-        store=False
+        related='timetable_id.class_group_id'
     )
 
     level_id = fields.Many2one(
         'siantou.ems.core.level',
         string='Niveau',
-        related='class_id.level_id',
-        store=False
+        related='class_id.level_id'
     )
 
     subject_id = fields.Many2one(
         'siantou.ems.core.subject',
         string='Cours',
-        related='timetable_id.subject_id',
-        store=False
+        related='timetable_id.subject_id'
     )
 
     # Enseignant lié à la programmation de cours
     employee_id = fields.Many2one(
         'hr.employee',
         string='Enseignant',
-        related='timetable_id.employee_id',
-        store=False
+        related='timetable_id.employee_id'
     )
 
     identifier = fields.Char(
         string='Matricule',
-        related='employee_id.identifier',
-        store=False
+        related='employee_id.identifier'
     )
 
     is_teacher = fields.Boolean(
         string='Est un enseignant ?',
-        related='employee_id.is_teacher',
-        store=False
+        related='employee_id.is_teacher'
     )
 
     is_permanent = fields.Boolean(
         string='Est un permanent ?',
-        related='employee_id.is_permanent',
-        store=False
+        related='employee_id.is_permanent'
     )
 
     sort_type = fields.Selection([
@@ -114,36 +106,31 @@ class TeacherTimetableAttendance(models.TransientModel):
 
     date = fields.Date(
         string='Date',
-        related='timetable_id.date',
-        store=False
+        related='timetable_id.date'
     )
 
     # Heure de début du cours
     start_time = fields.Float(
         string='Heure de début',
-        related='timetable_id.start_time',
-        store=False
+        related='timetable_id.start_time'
     )
 
     # Heure de fin du cours
     end_time = fields.Float(
         string='Heure de fin',
-        related='timetable_id.end_time',
-        store=False
+        related='timetable_id.end_time'
     )
 
     # Heure de début du cours
     worked_start_time = fields.Float(
         string='Heure de début effectuée',
-        related='timetable_id.worked_start_time',
-        store=False
+        related='timetable_id.worked_start_time'
     )
 
     # Heure de fin du cours
     worked_end_time = fields.Float(
         string='Heure de fin effectuée',
-        related='timetable_id.worked_end_time',
-        store=False
+        related='timetable_id.worked_end_time'
     )
 
     # Heure de fin du cours
@@ -191,8 +178,7 @@ class TeacherTimetableAttendance(models.TransientModel):
         ('exception', 'Exception'),
         ('delay', 'Retard'),
     ], string='Statut',
-        related='timetable_id.status',
-        store=False
+        related='timetable_id.status'
     )
 
     is_paid = fields.Boolean(
@@ -250,8 +236,7 @@ class TeacherTimetableAttendance(models.TransientModel):
             ('5', 'Samedi'),
             ('6', 'Dimanche'),
         ], string='Jour de la semaine',
-        compute='_compute_day_of_week',
-        store=False
+        compute='_compute_day_of_week'
     )
 
     @api.depends('date')

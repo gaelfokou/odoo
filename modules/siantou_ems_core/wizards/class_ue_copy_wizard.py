@@ -64,8 +64,7 @@ class ClassUeCopyWizard(models.TransientModel):
     field_of_study_id = fields.Many2one(
         'siantou.ems.core.field_of_study',
         string='Filière',
-        related='specialty_id.field_of_study_id',
-        store=False
+        related='specialty_id.field_of_study_id'
     )
 
     specialty_id = fields.Many2one(
@@ -98,15 +97,13 @@ class ClassUeCopyWizard(models.TransientModel):
     source_ue_ids = fields.One2many(
         'siantou.ems.core.unite.enseignement',
         string='Unités d\'enseignement source',
-        compute='_compute_source_ues',
-        store=False
+        compute='_compute_source_ues'
     )
 
     destination_ue_ids = fields.One2many(
         'siantou.ems.core.unite.enseignement',
         string='Unités d\'enseignement destination',
-        compute='_compute_destination_ues',
-        store=False
+        compute='_compute_destination_ues'
     )
 
     specialty_id_domain = fields.Binary(compute='_compute_school_domain', default=[])

@@ -25,8 +25,7 @@ class Student(models.Model):
         'student_id',
         string='Candidatures',
         domain="[('student_id', '=', id), ('priority', '=', '1')]",
-        compute='_compute_student_enroll',
-        store=False
+        compute='_compute_student_enroll'
     )
 
     other_student_enroll_ids = fields.One2many(
@@ -34,8 +33,7 @@ class Student(models.Model):
         'student_id',
         string='Autres candidatures',
         domain="[('student_id', '=', id), ('priority', '=', '2')]",
-        compute='_compute_other_student_enroll',
-        store=False
+        compute='_compute_other_student_enroll'
     )
 
     batch_id = fields.Many2one(
@@ -46,8 +44,7 @@ class Student(models.Model):
     batch_ids = fields.One2many(
         'siantou.ems.core.student.batch',
         string='Lots d\'étudiants',
-        compute='_compute_batchs',
-        store=False
+        compute='_compute_batchs'
     )
 
     school_id = fields.Many2one(
@@ -68,8 +65,7 @@ class Student(models.Model):
     field_of_study_id = fields.Many2one(
         'siantou.ems.core.field_of_study',
         string='Filière',
-        related='specialty_id.field_of_study_id',
-        store=False
+        related='specialty_id.field_of_study_id'
     )
 
     specialty_id = fields.Many2one(
@@ -148,8 +144,7 @@ class Student(models.Model):
     partner_id = fields.Many2one(
         'res.partner',
         string='Rest partner',
-        related='user_id.partner_id',
-        store=False
+        related='user_id.partner_id'
     )
 
     status_user = fields.Selection([
@@ -162,8 +157,7 @@ class Student(models.Model):
     timetable_ids = fields.One2many(
         'siantou.ems.timetable.timetable',
         string='Emplois du temps',
-        compute='_compute_timetables',
-        store=False
+        compute='_compute_timetables'
     )
 
     class_id = fields.Many2one(

@@ -18,8 +18,7 @@ class StudentEnrollment(models.Model):
 
     name = fields.Char(
         string="Nom(s) et prénom(s)", 
-        related='student_id.name',
-        store=False
+        related='student_id.name'
     )
 
     registre_id = fields.Many2one(
@@ -55,8 +54,7 @@ class StudentEnrollment(models.Model):
     field_of_study_id = fields.Many2one(
         'siantou.ems.core.field_of_study',
         string='Filière',
-        related='specialty_id.field_of_study_id',
-        store=False
+        related='specialty_id.field_of_study_id'
     )
 
     specialty_id = fields.Many2one(

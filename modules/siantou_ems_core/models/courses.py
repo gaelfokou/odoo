@@ -348,15 +348,13 @@ class SchoolCourseSubject(models.Model):
     year_ids = fields.One2many(
         'siantou.ems.core.year',
         string='Années académiques',
-        compute='_compute_years_call',
-        store=False
+        compute='_compute_years_call'
     )
 
     year_id = fields.Many2one(
         'siantou.ems.core.year',
         string='Année académique active',
-        compute='_compute_years_call',
-        store=False
+        compute='_compute_years_call'
     )
 
     @api.depends('semester_ids')

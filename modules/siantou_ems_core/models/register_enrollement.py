@@ -199,8 +199,7 @@ class SessionRegisterEnrollment(models.Model):
     year_id = fields.Many2one('siantou.ems.core.year',
         'Année académique',
         readonly=True,
-        related='session_id.year_id',
-        store=False
+        related='session_id.year_id'
     )
 
     @api.constrains('start_date', 'end_date')

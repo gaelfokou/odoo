@@ -89,7 +89,6 @@ class RequestTrack(models.Model):
         ('done', 'Traité'),
     ], string='Statut',
         related='status',
-        store=False,
         tracking=True
     )
 

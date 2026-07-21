@@ -172,7 +172,6 @@ class EducationClass(models.Model):
     number_of_subjects_in_program = fields.Integer(
         string='Nombre de cours au programme',
         compute='_compute_subjects_call',
-        store=False,
     )
 
     subjects_out_program_ids = fields.One2many(
@@ -184,7 +183,6 @@ class EducationClass(models.Model):
     number_of_subjects_out_program = fields.Integer(
         string='Nombre de cours hors programme',
         compute='_compute_subjects_call',
-        store=False,
     )
 
     subjects_validated_ids = fields.One2many(
@@ -196,7 +194,6 @@ class EducationClass(models.Model):
     number_of_subjects_validated = fields.Integer(
         string='Nombre de cours validés',
         compute='_compute_subjects_call',
-        store=False,
     )
 
     subjects_not_validated_ids = fields.One2many(
@@ -208,7 +205,6 @@ class EducationClass(models.Model):
     number_of_subjects_not_validated = fields.Integer(
         string='Nombre de cours non validés',
         compute='_compute_subjects_call',
-        store=False,
     )
 
     number_of_subjects_hour = fields.Float(

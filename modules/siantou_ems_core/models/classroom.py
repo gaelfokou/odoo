@@ -99,8 +99,7 @@ class Classroom(models.Model):
     timetable_ids = fields.One2many(
         'siantou.ems.timetable.timetable',
         string='Emplois du temps',
-        compute='_compute_timetables',
-        store=False
+        compute='_compute_timetables'
     )
 
     is_cours_active = fields.Boolean(string='Actif pour les cours ?', default=False)
