@@ -163,28 +163,6 @@ class EducationClass(models.Model):
             else:
                 record.semester_id = None
 
-    subjects_in_program_ids = fields.One2many(
-        'siantou.ems.core.subject',
-        string='Cours au programme',
-        compute='_compute_subjects_call'
-    )
-
-    number_of_subjects_in_program = fields.Integer(
-        string='Nombre de cours au programme',
-        compute='_compute_subjects_call',
-    )
-
-    subjects_out_program_ids = fields.One2many(
-        'siantou.ems.core.subject',
-        string='Cours hors programme',
-        compute='_compute_subjects_call'
-    )
-
-    number_of_subjects_out_program = fields.Integer(
-        string='Nombre de cours hors programme',
-        compute='_compute_subjects_call',
-    )
-
     subjects_validated_ids = fields.One2many(
         'siantou.ems.core.subject',
         string='Cours validés',
@@ -207,6 +185,28 @@ class EducationClass(models.Model):
         compute='_compute_subjects_call',
     )
 
+    subjects_submitted_ids = fields.One2many(
+        'siantou.ems.core.subject',
+        string='Cours soumis',
+        compute='_compute_subjects_call'
+    )
+
+    number_of_subjects_submitted = fields.Integer(
+        string='Nombre de cours soumis',
+        compute='_compute_subjects_call',
+    )
+
+    subjects_not_submitted_ids = fields.One2many(
+        'siantou.ems.core.subject',
+        string='Cours non soumis',
+        compute='_compute_subjects_call'
+    )
+
+    number_of_subjects_not_submitted = fields.Integer(
+        string='Nombre de cours non soumis',
+        compute='_compute_subjects_call',
+    )
+
     number_of_subjects_hour = fields.Float(
         string='Nombre d\'heures prévues',
         compute='_compute_subjects_call',
@@ -217,10 +217,6 @@ class EducationClass(models.Model):
     def _compute_subjects_call(self):
         for record in self:
             record._compute_number_of_subjects_hour()
-            record._compute_subjects_in_program()
-            record._compute_number_of_subjects_in_program()
-            record._compute_subjects_out_program()
-            record._compute_number_of_subjects_out_program()
             record._compute_subjects_validated()
             record._compute_number_of_subjects_validated()
             record._compute_subjects_not_validated()
@@ -234,6 +230,257 @@ class EducationClass(models.Model):
     def _onchange_subjects_call(self):
         for record in self:
             record._compute_subjects_call()
+
+    def _compute_number_of_subjects_hour(self):
+        for record in self:
+            total = 0.0
+            subject_ids = record.subject_ids
+            for subject in subject_ids:
+                total += subject.hours_credit
+
+            total = round(total, 2)
+
+            record.number_of_subjects_hour = total
+
+    def _compute_subjects_validated(self):
+        for record in self:
+            timetables = self.env['siantou.ems.timetable.timetable'].search([
+                ('class_id', '=', record.id),
+                '|',
+                '&', '&',
+                ('group_id.is_active', '=', True),
+                ('group_id.is_submit', '=', False),
+                ('group_id.status', '=', 'valid'),
+                '&', '&', '&',
+                ('group_parent_id.is_active', '=', True),
+                ('group_parent_id.is_submit', '=', False),
+                ('group_parent_id.status', '=', 'valid'),
+                ('group_id.status', '=', 'valid'),
+                ('is_active', '=', True),
+                ('subject_id', 'in', record.subject_ids.ids),
+            ])
+
+            semester_user = self.env['ir.config_parameter'].sudo().get_param(f'siantou.semester_user_{self.env.user.id}', '')
+            if semester_user:
+                semester_user = int(semester_user)
+                timetables = timetables.filtered(lambda rec: rec.semester_id.id == semester_user)
+
+            timetables = list(timetables)
+            timetable_subject_ids = [timetable.subject_id.id for timetable in timetables]
+            timetable_subject_ids = list(set(timetable_subject_ids))
+            subject_ids = record.subject_ids.filtered(lambda rec: rec.id in timetable_subject_ids)
+
+            record.subjects_validated_ids = subject_ids
+
+    def _compute_number_of_subjects_validated(self):
+        for record in self:
+            timetables = self.env['siantou.ems.timetable.timetable'].search([
+                ('class_id', '=', record.id),
+                '|',
+                '&', '&',
+                ('group_id.is_active', '=', True),
+                ('group_id.is_submit', '=', False),
+                ('group_id.status', '=', 'valid'),
+                '&', '&', '&',
+                ('group_parent_id.is_active', '=', True),
+                ('group_parent_id.is_submit', '=', False),
+                ('group_parent_id.status', '=', 'valid'),
+                ('group_id.status', '=', 'valid'),
+                ('is_active', '=', True),
+                ('subject_id', 'in', record.subject_ids.ids),
+            ])
+
+            semester_user = self.env['ir.config_parameter'].sudo().get_param(f'siantou.semester_user_{self.env.user.id}', '')
+            if semester_user:
+                semester_user = int(semester_user)
+                timetables = timetables.filtered(lambda rec: rec.semester_id.id == semester_user)
+
+            timetables = list(timetables)
+            timetable_subject_ids = [timetable.subject_id.id for timetable in timetables]
+            timetable_subject_ids = list(set(timetable_subject_ids))
+            subject_ids = record.subject_ids.filtered(lambda rec: rec.id in timetable_subject_ids)
+
+            record.number_of_subjects_validated = len(subject_ids.ids)
+
+    def _compute_subjects_not_validated(self):
+        for record in self:
+            timetables = self.env['siantou.ems.timetable.timetable'].search([
+                ('class_id', '=', record.id),
+                '|',
+                '&', '&',
+                ('group_id.is_active', '=', True),
+                ('group_id.is_submit', '=', False),
+                ('group_id.status', '=', 'pending'),
+                '&', '&', '&',
+                ('group_parent_id.is_active', '=', True),
+                ('group_parent_id.is_submit', '=', False),
+                ('group_parent_id.status', '=', 'pending'),
+                ('group_id.status', '=', 'pending'),
+                ('is_active', '=', True),
+                ('subject_id', 'in', record.subject_ids.ids),
+            ])
+
+            semester_user = self.env['ir.config_parameter'].sudo().get_param(f'siantou.semester_user_{self.env.user.id}', '')
+            if semester_user:
+                semester_user = int(semester_user)
+                timetables = timetables.filtered(lambda rec: rec.semester_id.id == semester_user)
+
+            timetables = list(timetables)
+            timetable_subject_ids = [timetable.subject_id.id for timetable in timetables]
+            timetable_subject_ids = list(set(timetable_subject_ids))
+            subject_ids = record.subject_ids.filtered(lambda rec: rec.id in timetable_subject_ids)
+
+            record.subjects_not_validated_ids = subject_ids
+
+    def _compute_number_of_subjects_not_validated(self):
+        for record in self:
+            timetables = self.env['siantou.ems.timetable.timetable'].search([
+                ('class_id', '=', record.id),
+                '|',
+                '&', '&',
+                ('group_id.is_active', '=', True),
+                ('group_id.is_submit', '=', False),
+                ('group_id.status', '=', 'pending'),
+                '&', '&', '&',
+                ('group_parent_id.is_active', '=', True),
+                ('group_parent_id.is_submit', '=', False),
+                ('group_parent_id.status', '=', 'pending'),
+                ('group_id.status', '=', 'pending'),
+                ('is_active', '=', True),
+                ('subject_id', 'in', record.subject_ids.ids),
+            ])
+
+            semester_user = self.env['ir.config_parameter'].sudo().get_param(f'siantou.semester_user_{self.env.user.id}', '')
+            if semester_user:
+                semester_user = int(semester_user)
+                timetables = timetables.filtered(lambda rec: rec.semester_id.id == semester_user)
+
+            timetables = list(timetables)
+            timetable_subject_ids = [timetable.subject_id.id for timetable in timetables]
+            timetable_subject_ids = list(set(timetable_subject_ids))
+            subject_ids = record.subject_ids.filtered(lambda rec: rec.id in timetable_subject_ids)
+
+            record.number_of_subjects_not_validated = len(subject_ids.ids)
+
+    def _compute_subjects_submitted(self):
+        for record in self:
+            timetables = self.env['siantou.ems.timetable.timetable'].search([
+                ('class_id', '=', record.id),
+                '|',
+                '&', '&',
+                ('group_id.is_active', '=', True),
+                ('group_id.is_submit', '=', False),
+                ('group_id.status', 'in', ['valid', 'pending']),
+                '&', '&', '&',
+                ('group_parent_id.is_active', '=', True),
+                ('group_parent_id.is_submit', '=', False),
+                ('group_parent_id.status', 'in', ['valid', 'pending']),
+                ('group_id.status', 'in', ['valid', 'pending']),
+                ('is_active', '=', True),
+                ('subject_id', 'in', record.subject_ids.ids),
+            ])
+
+            semester_user = self.env['ir.config_parameter'].sudo().get_param(f'siantou.semester_user_{self.env.user.id}', '')
+            if semester_user:
+                semester_user = int(semester_user)
+                timetables = timetables.filtered(lambda rec: rec.semester_id.id == semester_user)
+
+            timetables = list(timetables)
+            timetable_subject_ids = [timetable.subject_id.id for timetable in timetables]
+            timetable_subject_ids = list(set(timetable_subject_ids))
+            subject_ids = record.subject_ids.filtered(lambda rec: rec.id in timetable_subject_ids)
+
+            record.subjects_submitted_ids = subject_ids
+
+    def _compute_number_of_subjects_submitted(self):
+        for record in self:
+            timetables = self.env['siantou.ems.timetable.timetable'].search([
+                ('class_id', '=', record.id),
+                '|',
+                '&', '&',
+                ('group_id.is_active', '=', True),
+                ('group_id.is_submit', '=', False),
+                ('group_id.status', 'in', ['valid', 'pending']),
+                '&', '&', '&',
+                ('group_parent_id.is_active', '=', True),
+                ('group_parent_id.is_submit', '=', False),
+                ('group_parent_id.status', 'in', ['valid', 'pending']),
+                ('group_id.status', 'in', ['valid', 'pending']),
+                ('is_active', '=', True),
+                ('subject_id', 'in', record.subject_ids.ids),
+            ])
+
+            semester_user = self.env['ir.config_parameter'].sudo().get_param(f'siantou.semester_user_{self.env.user.id}', '')
+            if semester_user:
+                semester_user = int(semester_user)
+                timetables = timetables.filtered(lambda rec: rec.semester_id.id == semester_user)
+
+            timetables = list(timetables)
+            timetable_subject_ids = [timetable.subject_id.id for timetable in timetables]
+            timetable_subject_ids = list(set(timetable_subject_ids))
+            subject_ids = record.subject_ids.filtered(lambda rec: rec.id in timetable_subject_ids)
+
+            record.number_of_subjects_submitted = len(subject_ids.ids)
+
+    def _compute_subjects_not_submitted(self):
+        for record in self:
+            timetables = self.env['siantou.ems.timetable.timetable'].search([
+                ('class_id', '=', record.id),
+                '|',
+                '&', '&',
+                ('group_id.is_active', '=', True),
+                ('group_id.is_submit', '=', False),
+                ('group_id.status', 'in', ['valid', 'pending']),
+                '&', '&', '&',
+                ('group_parent_id.is_active', '=', True),
+                ('group_parent_id.is_submit', '=', False),
+                ('group_parent_id.status', 'in', ['valid', 'pending']),
+                ('group_id.status', 'in', ['valid', 'pending']),
+                ('is_active', '=', True),
+                ('subject_id', 'in', record.subject_ids.ids),
+            ])
+
+            semester_user = self.env['ir.config_parameter'].sudo().get_param(f'siantou.semester_user_{self.env.user.id}', '')
+            if semester_user:
+                semester_user = int(semester_user)
+                timetables = timetables.filtered(lambda rec: rec.semester_id.id == semester_user)
+
+            timetables = list(timetables)
+            timetable_subject_ids = [timetable.subject_id.id for timetable in timetables]
+            timetable_subject_ids = list(set(timetable_subject_ids))
+            subject_ids = record.subject_ids.filtered(lambda rec: rec.id not in timetable_subject_ids)
+
+            record.subjects_not_submitted_ids = subject_ids
+
+    def _compute_number_of_subjects_not_submitted(self):
+        for record in self:
+            timetables = self.env['siantou.ems.timetable.timetable'].search([
+                ('class_id', '=', record.id),
+                '|',
+                '&', '&',
+                ('group_id.is_active', '=', True),
+                ('group_id.is_submit', '=', False),
+                ('group_id.status', 'in', ['valid', 'pending']),
+                '&', '&', '&',
+                ('group_parent_id.is_active', '=', True),
+                ('group_parent_id.is_submit', '=', False),
+                ('group_parent_id.status', 'in', ['valid', 'pending']),
+                ('group_id.status', 'in', ['valid', 'pending']),
+                ('is_active', '=', True),
+                ('subject_id', 'in', record.subject_ids.ids),
+            ])
+
+            semester_user = self.env['ir.config_parameter'].sudo().get_param(f'siantou.semester_user_{self.env.user.id}', '')
+            if semester_user:
+                semester_user = int(semester_user)
+                timetables = timetables.filtered(lambda rec: rec.semester_id.id == semester_user)
+
+            timetables = list(timetables)
+            timetable_subject_ids = [timetable.subject_id.id for timetable in timetables]
+            timetable_subject_ids = list(set(timetable_subject_ids))
+            subject_ids = record.subject_ids.filtered(lambda rec: rec.id not in timetable_subject_ids)
+
+            record.number_of_subjects_not_submitted = len(subject_ids.ids)
 
     type_cour = fields.Selection([
             ('cj', 'Cours du jour'),
@@ -413,11 +660,7 @@ class EducationClass(models.Model):
     @api.onchange('ue_ids')
     def _onchange_subjects(self):
         for record in self:
-            subject_ids = self.env['siantou.ems.core.subject'].search([
-                ('ue_ids', 'in', record.ue_ids.ids)
-            ])
-
-            record.subject_ids = subject_ids
+            record._compute_subjects()
 
     @api.onchange('school_id')
     def _onchange_school(self):

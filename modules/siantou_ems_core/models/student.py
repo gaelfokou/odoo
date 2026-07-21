@@ -371,16 +371,7 @@ class Student(models.Model):
     @api.onchange('student_enroll_ids')
     def _onchange_batchs(self):
         for record in self:
-            batchs = []
-            for student_enroll_id in record.student_enroll_ids:
-                if student_enroll_id.is_active_candidature == True and student_enroll_id.status == "transfer":
-                    batchs.append(student_enroll_id.batch_id.id)
-
-            batch_ids = self.env['siantou.ems.core.student.batch'].search([
-                ('id', 'in', batchs),
-            ])
-
-            record.batch_ids = [(6, 0, batch_ids.ids)]
+            record._compute_batchs()
 
     @staticmethod
     def get_last_name(x):

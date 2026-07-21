@@ -398,22 +398,6 @@ class SchoolCourseSubject(models.Model):
 
             record.year_id = year_id
 
-    @api.onchange('semester_ids')
-    def _onchange_year(self):
-        for record in self:
-            years = []
-            for semester_id in record.semester_ids:
-                if semester_id.year_id.is_active:
-                    years.append(semester_id.year_id.id)
-
-            years = list(set(years))
-
-            year_id = self.env['siantou.ems.core.year'].search([
-                ('id', 'in', years),
-            ], limit=1)
-
-            record.year_id = year_id
-
     syllabus_ids = fields.One2many('siantou.ems.core.syllabus', 'ue_id', string='Syllabus')
 
     total_credit = fields.Integer('Nombre de crédit total', compute='_compute_total_credit', store=True)
