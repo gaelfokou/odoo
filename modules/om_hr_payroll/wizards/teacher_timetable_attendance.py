@@ -263,7 +263,7 @@ class TeacherTimetableAttendance(models.TransientModel):
     @api.onchange('timetable_id')
     def _onchange_name(self):
         for record in self:
-            record.name = record.timetable_id.name
+            record._compute_name()
 
     @api.constrains('start_time', 'end_time')
     def _constrains_time(self):

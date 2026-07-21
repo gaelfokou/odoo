@@ -122,16 +122,7 @@ class HrEmployee(models.Model):
     @api.onchange('last_name', 'first_name')
     def _onchange_name(self):
         for record in self:
-            last_name = record.last_name if record.last_name else ''
-            first_name = record.first_name if record.first_name else ''
-            name = '{} {}'.format(last_name, first_name)
-            while True:
-                if name.find('  ') != -1:
-                    name = name.replace('  ', ' ')
-                else:
-                    break
-            name = name.strip()
-            record.name = name
+            record._compute_name()
 
     @api.constrains('weekly_hours_limit')
     def _check_weekly_hours_limit_permanent(self):

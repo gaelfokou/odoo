@@ -738,24 +738,7 @@ class Timetable(models.Model):
     @api.onchange('class_id', 'class_group_id', 'subject_id')
     def _onchange_name(self):
         for record in self:
-            class_name = record.class_id.name if record.class_id.id else ''
-            subject_name = record.subject_id.name if record.subject_id.id else ''
-            class_group_name = record.class_group_id.name if record.class_group_id.id else ''
-            name = '{} - {} - {}'.format(class_name, subject_name, class_group_name)
-            while True:
-                if name.startswith(' - '):
-                    name = re.sub('^ - ', ' ', name)
-                elif name.endswith(' - '):
-                    name = re.sub(' - $', ' ', name)
-                elif name.find(' -  - ') != -1:
-                    name = name.replace(' -  - ', ' - ')
-                elif name.find('  ') != -1:
-                    name = name.replace('  ', ' ')
-                else:
-                    break
-            name = name.strip()
-            name = name.upper()
-            record.name = name
+            record._compute_name()
 
     @api.depends('group_id', 'school_id')
     def _compute_school_domain(self):
@@ -1799,27 +1782,7 @@ class TimetableGroup(models.Model):
     @api.onchange('group_name', 'is_submit', 'is_active')
     def _onchange_name(self):
         for record in self:
-            name = record.group_name if record.group_name else ''
-            name = name.lower()
-            while True:
-                if name.find('(soumis)') != -1:
-                    name = name.replace('(soumis)', '')
-                elif name.find('(actif)') != -1:
-                    name = name.replace('(actif)', '')
-                else:
-                    break
-            if record.is_submit:
-                name = '{} (soumis)'.format(name)
-            elif record.is_active:
-                name = '{} (actif)'.format(name)
-            while True:
-                if name.find('  ') != -1:
-                    name = name.replace('  ', ' ')
-                else:
-                    break
-            name = name.strip()
-            name = name.upper()
-            record.name = name
+            record._compute_name()
 
     @api.constrains('is_submit', 'is_active')
     def _constrains_default(self):

@@ -143,25 +143,7 @@ class ExamScore(models.Model):
     @api.onchange('semester_id', 'class_id', 'subject_id', 'exam_type')
     def _onchange_name(self):
         for record in self:
-            semester_name = record.semester_id.name if record.semester_id.id else ''
-            class_name = record.class_id.name if record.class_id.id else ''
-            subject_name = record.subject_id.name if record.subject_id.id else ''
-            exam_type_name = record.exam_type
-            name = '{} - {} - {} - {}'.format(semester_name, class_name, subject_name, exam_type_name)
-            while True:
-                if name.startswith(' - '):
-                    name = re.sub('^ - ', ' ', name)
-                elif name.endswith(' - '):
-                    name = re.sub(' - $', ' ', name)
-                elif name.find(' -  - ') != -1:
-                    name = name.replace(' -  - ', ' - ')
-                elif name.find('  ') != -1:
-                    name = name.replace('  ', ' ')
-                else:
-                    break
-            name = name.strip()
-            name = name.upper()
-            record.name = name
+            record._compute_name()
 
     @api.depends('class_id')
     def _compute_class_domain(self):
@@ -412,23 +394,7 @@ class SubjectScore(models.Model):
     @api.onchange('student_id', 'exam_id')
     def _onchange_name(self):
         for record in self:
-            student_name = record.student_id.name if record.student_id.id else ''
-            exam_name = record.exam_id.name if record.exam_id.id else ''
-            name = '{} - {}'.format(student_name, exam_name)
-            while True:
-                if name.startswith(' - '):
-                    name = re.sub('^ - ', ' ', name)
-                elif name.endswith(' - '):
-                    name = re.sub(' - $', ' ', name)
-                elif name.find(' -  - ') != -1:
-                    name = name.replace(' -  - ', ' - ')
-                elif name.find('  ') != -1:
-                    name = name.replace('  ', ' ')
-                else:
-                    break
-            name = name.strip()
-            name = name.upper()
-            record.name = name
+            record._compute_name()
 
     @api.depends('exam_id')
     def _compute_class_domain(self):

@@ -272,6 +272,11 @@ class SchoolSyllabus(models.Model):
         for record in self:
             record.name = record.class_id.name
 
+    @api.onchange('class_id')
+    def _onchange_name(self):
+        for record in self:
+            record._compute_name()
+
     @api.depends('cm','td','tp')
     def _compute_vhp(self):
         for record in self:

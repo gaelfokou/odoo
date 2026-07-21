@@ -76,19 +76,4 @@ class Department(models.Model):
     @api.onchange('department_name', 'school_id')
     def _onchange_name(self):
         for record in self:
-            department_name = record.department_name if record.department_name else ''
-            school_name = record.school_id.name if record.school_id.id else ''
-            name = '{} ({})'.format(department_name, school_name)
-            while True:
-                if name.find('()') != -1:
-                    name = name.replace('()', '')
-                else:
-                    break
-            while True:
-                if name.find('  ') != -1:
-                    name = name.replace('  ', ' ')
-                else:
-                    break
-            name = name.strip()
-            name = name.upper()
-            record.name = name
+            record._compute_name()

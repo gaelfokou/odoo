@@ -96,22 +96,7 @@ class Semester(models.Model):
     @api.onchange('semester_name', 'year_id')
     def _onchange_name(self):
         for record in self:
-            semester_name = record.semester_name if record.semester_name else ''
-            year_name = record.year_id.name if record.year_id.id else ''
-            name = '{} ({})'.format(semester_name, year_name)
-            while True:
-                if name.find('()') != -1:
-                    name = name.replace('()', '')
-                else:
-                    break
-            while True:
-                if name.find('  ') != -1:
-                    name = name.replace('  ', ' ')
-                else:
-                    break
-            name = name.strip()
-            name = name.upper()
-            record.name = name
+            record._compute_name()
 
     # @api.constrains('start_time', 'end_time')
     # def _check_date_overlap(self):

@@ -76,11 +76,42 @@
 			<field name="model">siantou.ems.core.class</field>
             <field name="arch" type="xml">
                 <kanban class="o_kanban_mobile" sample="1">
+                    <header>
+                        <button name="action_reset_filter" 
+                            type="object" 
+                            string="Réinitialiser" 
+                            class="oe_highlight" 
+                            display="always"/>
+                        <button name="action_open_filter" 
+                            type="object" 
+                            string="Filtrer" 
+                            class="oe_highlight" 
+                            display="always"/>
+                        <button name="action_print_pdf" 
+                            type="object" 
+                            string="Imprimer PDF" 
+                            class="oe_highlight" 
+                            display="always"
+                            groups="siantou_ems_core.group_class_print_pdf"/>
+                    </header>
                     <field name="name"/>
                     <field name="cycle_id"/>
                     <field name="department_id"/>
                     <field name="number_of_student"/>
                     <field name="is_timetable_active"/>
+                    <field name="number_of_subjects"/>
+                    <field name="number_of_subjects_validated"/>
+                    <field name="number_of_subjects_not_validated"/>
+                    <field name="number_of_subjects_hour"/>
+                    <field name="number_of_hours"/>
+                    <field name="number_of_worked_hours"/>
+                    <field name="number_of_subjects_submitted"/>
+                    <field name="number_of_subjects_not_submitted"/>
+                    <field name="min_hours_credit"/>
+                    <field name="max_hours_credit"/>
+                    <field name="semester_id"/>
+                    <field name="start_date"/>
+                    <field name="end_date"/>
                     <templates>
                         <t t-name="kanban-box">
                             <div t-attf-class="oe_kanban_global_click">
@@ -120,6 +151,61 @@
                                         <li class="list-group-item d-flex justify-content-between align-items-center">
                                             Emplois du temps actifs ?
                                             <span class="badge rounded-pill text-bg-secondary" style="display: inline-block !important;" t-esc="'Non'"/>
+                                        </li>
+                                    </t>
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        Cours
+                                        <button name="get_subjects" type="object" class="badge rounded-pill text-bg-primary" style="display: inline-block !important;">
+                                            <field name="number_of_subjects"/>
+                                        </button>
+                                    </li>
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        Cours soumis
+                                        <button name="get_subjects_submitted" type="object" class="badge rounded-pill text-bg-primary" style="display: inline-block !important;">
+                                            <field name="number_of_subjects_submitted"/>
+                                        </button>
+                                    </li>
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        Cours non soumis
+                                        <button name="get_subjects_not_submitted" type="object" t-attf-class="badge rounded-pill #{record.number_of_subjects_not_submitted.raw_value &gt; 0 ? 'text-bg-danger' : 'text-bg-success'}"
+                                            style="display: inline-block !important;">
+                                            <field name="number_of_subjects_not_submitted"/>
+                                        </button>
+                                    </li>
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        Cours validés
+                                        <button name="get_subjects_validated" type="object" class="badge rounded-pill text-bg-primary" style="display: inline-block !important;">
+                                            <field name="number_of_subjects_validated"/>
+                                        </button>
+                                    </li>
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        Cours non validés
+                                        <button name="get_subjects_not_validated" type="object" t-attf-class="badge rounded-pill #{record.number_of_subjects_not_validated.raw_value &gt; 0 ? 'text-bg-danger' : 'text-bg-success'}"
+                                            style="display: inline-block !important;">
+                                            <field name="number_of_subjects_not_validated"/>
+                                        </button>
+                                    </li>
+                                    <t t-if="record.semester_id.raw_value">
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            <span>
+                                                <field name="semester_id"/>
+                                            </span>
+                                        </li>
+                                    </t>
+                                    <t t-if="record.start_date.raw_value">
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            Date de début
+                                            <span>
+                                                <field name="start_date"/>
+                                            </span>
+                                        </li>
+                                    </t>
+                                    <t t-if="record.end_date.raw_value">
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            Date de fin
+                                            <span>
+                                                <field name="end_date"/>
+                                            </span>
                                         </li>
                                     </t>
                                 </ul>

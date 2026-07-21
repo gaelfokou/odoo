@@ -9,6 +9,13 @@ from dateutil.relativedelta import relativedelta
 from odoo.tools import unique
 import logging
 
+DATE_FORMAT = '%Y-%m-%d'
+DATE_FORMAT_FR = '%d/%m/%Y'
+DATETIME_FORMAT = '%Y-%m-%d %H:%M:%S'
+DATETIME_FORMAT_FR = '%d/%m/%Y %H:%M'
+TIME_FORMAT = '%H:%M:%S'
+TIME_FORMAT_FR = '%H:%M'
+
 TYPE_COUR = {
     'cj': 'Cours du jour',
     'cs': 'Cours du soir',
@@ -70,6 +77,18 @@ class EducationClass(models.Model):
         compute='_compute_timetables'
     )
 
+    number_of_hours = fields.Float(
+        string='Nombre d\'heures programmées',
+        compute='_compute_hours_call',
+        store=True,
+    )
+
+    number_of_worked_hours = fields.Float(
+        string='Nombre d\'heures effectuées',
+        compute='_compute_hours_call',
+        store=True,
+    )
+
     specialty_id = fields.Many2one('siantou.ems.core.specialty', string='Spécialité',
                                  required=True, help="Spécialité")
 
@@ -104,6 +123,11 @@ class EducationClass(models.Model):
         compute='_compute_subjects'
     )
 
+    number_of_subjects = fields.Integer(
+        string='Nombre de cours',
+        compute='_compute_subjects_call',
+    )
+
     min_hours_credit = fields.Float(
         string='Volume horaire min',
         compute='_compute_hours_credit_call',
@@ -121,6 +145,52 @@ class EducationClass(models.Model):
         string='Semestre',
         compute='_compute_hours_credit_call',
     )
+
+    start_date = fields.Date(
+        string="Date de début",
+        compute='_compute_date_call',
+    )
+
+    end_date = fields.Date(
+        string="Date de fin",
+        compute='_compute_date_call',
+    )
+
+    @api.depends('year_id', 'semester_id')
+    def _compute_date_call(self):
+        for record in self:
+            if record.semester_id.id:
+                record.start_date = record.semester_id.start_time
+                record.end_date = record.semester_id.end_time
+            else:
+                if record.year_id.id:
+                    semester = self.env['siantou.ems.core.year.semester'].search(
+                        [('year_id', '=', record.year_id.id)],
+                        order='start_time asc',
+                        limit=1
+                    )
+                    if semester:
+                        record.start_date = semester.start_time
+                    else:
+                        record.start_date = None
+
+                    semester = self.env['siantou.ems.core.year.semester'].search(
+                        [('year_id', '=', record.year_id.id)],
+                        order='end_time desc',
+                        limit=1
+                    )
+                    if semester:
+                        record.end_date = semester.end_time
+                    else:
+                        record.end_date = None
+                else:
+                    record.start_date = None
+                    record.end_date = None
+
+    @api.onchange('year_id', 'semester_id')
+    def _onchange_date_call(self):
+        for record in self:
+            record._compute_date_call()
 
     @api.depends('subject_ids', 'timetable_ids')
     def _compute_hours_credit_call(self):
@@ -216,6 +286,7 @@ class EducationClass(models.Model):
     @api.depends('subject_ids')
     def _compute_subjects_call(self):
         for record in self:
+            record._compute_number_of_subjects()
             record._compute_number_of_subjects_hour()
             record._compute_subjects_validated()
             record._compute_number_of_subjects_validated()
@@ -230,6 +301,10 @@ class EducationClass(models.Model):
     def _onchange_subjects_call(self):
         for record in self:
             record._compute_subjects_call()
+
+    def _compute_number_of_subjects(self):
+        for record in self:
+            record.number_of_subjects = len(record.subject_ids.ids)
 
     def _compute_number_of_subjects_hour(self):
         for record in self:
@@ -594,22 +669,7 @@ class EducationClass(models.Model):
     @api.onchange('specialty_id', 'option_id', 'level_id', 'type_cour')
     def _onchange_name(self):
         for record in self:
-            specialty_name = record.specialty_id.name if record.specialty_id.id else ''
-            option_name = record.option_id.name if record.option_id.id else ''
-            if option_name != '':
-                option_name = f'- {option_name}'
-            niveau_name = record.level_id.name if record.level_id.id else ''
-            niveau_name = re.sub(r'Niveau ', '', niveau_name)
-            type_cour_name = record.type_cour if record.type_cour == 'cs' else ''
-            name = '{} {} {} {}'.format(specialty_name, option_name, niveau_name, type_cour_name)
-            while True:
-                if name.find('  ') != -1:
-                    name = name.replace('  ', ' ')
-                else:
-                    break
-            name = name.strip()
-            name = name.upper()
-            record.name = name
+            record._compute_name()
 
     @api.depends('student_enroll_ids')
     def _compute_students_call(self):
@@ -648,11 +708,102 @@ class EducationClass(models.Model):
 
             record.number_of_student = len(student_ids.ids)
 
+    @api.depends('timetable_ids')
+    def _compute_hours_call(self):
+        for record in self:
+            record._compute_number_of_hours()
+            record._compute_number_of_worked_hours()
+
+    @api.onchange('timetable_ids')
+    def _onchange_hours_call(self):
+        for record in self:
+            record._compute_hours_call()
+
+    def _compute_number_of_hours(self):
+        for record in self:
+            total = 0.0
+            key_timetables = {}
+            for timetable in record.timetable_ids:
+                if not timetable.date or not timetable.day_of_week or not timetable.employee_id.id:
+                    continue
+
+                end_time = EducationClass.convert_float_to_time(timetable.end_time, has_second=True)
+                start_time = EducationClass.convert_float_to_time(timetable.start_time, has_second=True)
+                key = '{}-{}-{}'.format(timetable.date, start_time, end_time)
+                if key not in key_timetables:
+                    key_timetables[key] = {}
+                    key_timetables[key]['timetable'] = timetable
+                else:
+                    continue
+
+                end_time = EducationClass.convert_float_to_time(timetable.end_time, has_second=True)
+                start_time = EducationClass.convert_float_to_time(timetable.start_time, has_second=True)
+                end_time = datetime.strptime(f"{timetable.date} {end_time}", DATETIME_FORMAT)
+                start_time = datetime.strptime(f"{timetable.date} {start_time}", DATETIME_FORMAT)
+
+                worked_hours = end_time - start_time
+                worked_hours = worked_hours.total_seconds() / 3600.0
+                worked_hours = round(worked_hours, 2)
+
+                if worked_hours < 0.0:
+                    del(key_timetables[key])
+                    continue
+
+                total += worked_hours
+
+            total = round(total, 2)
+
+            record.number_of_hours = total
+
+    def _compute_number_of_worked_hours(self):
+        for record in self:
+            total = 0.0
+            key_timetables = {}
+            timetable_ids = record.timetable_ids.filtered(lambda rec: rec.status in ['present', 'permission'])
+            timetable_ids = list(timetable_ids)
+            for timetable in timetable_ids:
+                if not timetable.date or not timetable.day_of_week or not timetable.employee_id.id:
+                    continue
+
+                end_time = EducationClass.convert_float_to_time(timetable.end_time, has_second=True)
+                start_time = EducationClass.convert_float_to_time(timetable.start_time, has_second=True)
+                key = '{}-{}-{}'.format(timetable.date, start_time, end_time)
+                if key not in key_timetables:
+                    key_timetables[key] = {}
+                    key_timetables[key]['timetable'] = timetable
+                else:
+                    continue
+
+                end_time = EducationClass.convert_float_to_time(timetable.end_time, has_second=True)
+                start_time = EducationClass.convert_float_to_time(timetable.start_time, has_second=True)
+                end_time = datetime.strptime(f"{timetable.date} {end_time}", DATETIME_FORMAT)
+                start_time = datetime.strptime(f"{timetable.date} {start_time}", DATETIME_FORMAT)
+
+                worked_hours = end_time - start_time
+                worked_hours = worked_hours.total_seconds() / 3600.0
+                worked_hours = round(worked_hours, 2)
+
+                if worked_hours < 0.0:
+                    del(key_timetables[key])
+                    continue
+
+                total += worked_hours
+
+            total = round(total, 2)
+
+            record.number_of_worked_hours = total
+
     @api.depends('ue_ids')
     def _compute_subjects(self):
         for record in self:
+            ue_ids = record.ue_ids
+            semester_user = self.env['ir.config_parameter'].sudo().get_param(f'siantou.semester_user_{self.env.user.id}', '')
+            if semester_user:
+                semester_user = int(semester_user)
+                ue_ids = ue_ids.filtered(lambda rec: semester_user in rec.semester_ids.ids)
+
             subject_ids = self.env['siantou.ems.core.subject'].search([
-                ('ue_ids', 'in', record.ue_ids.ids)
+                ('ue_ids', 'in', ue_ids.ids)
             ])
 
             record.subject_ids = subject_ids
@@ -679,6 +830,96 @@ class EducationClass(models.Model):
     def _onchange_specialty(self):
         for record in self:
             record.option_id = None
+
+    def get_subjects_validated(self):
+        domain = [
+            ('id', 'in', self.subjects_validated_ids.ids),
+        ]
+
+        return {
+            'name': 'Cours validés',
+            'type': 'ir.actions.act_window',
+            'res_model': 'siantou.ems.core.subject',
+            'view_mode': 'tree',
+            'domain': domain,
+            'context': {
+                'create': False,
+                'edit': False,
+            },
+            'target': 'main',
+        }
+
+    def get_subjects_not_validated(self):
+        domain = [
+            ('id', 'in', self.subjects_not_validated_ids.ids),
+        ]
+
+        return {
+            'name': 'Cours non validés',
+            'type': 'ir.actions.act_window',
+            'res_model': 'siantou.ems.core.subject',
+            'view_mode': 'tree',
+            'domain': domain,
+            'context': {
+                'create': False,
+                'edit': False,
+            },
+            'target': 'main',
+        }
+
+    def get_subjects(self):
+        domain = [
+            ('id', 'in', self.subject_ids.ids),
+        ]
+
+        return {
+            'name': 'Cours',
+            'type': 'ir.actions.act_window',
+            'res_model': 'siantou.ems.core.subject',
+            'view_mode': 'tree',
+            'domain': domain,
+            'context': {
+                'create': False,
+                'edit': False,
+            },
+            'target': 'main',
+        }
+
+    def get_subjects_submitted(self):
+        domain = [
+            ('id', 'in', self.subjects_submitted_ids.ids),
+        ]
+
+        return {
+            'name': 'Cours soumis',
+            'type': 'ir.actions.act_window',
+            'res_model': 'siantou.ems.core.subject',
+            'view_mode': 'tree',
+            'domain': domain,
+            'context': {
+                'create': False,
+                'edit': False,
+            },
+            'target': 'main',
+        }
+
+    def get_subjects_not_submitted(self):
+        domain = [
+            ('id', 'in', self.subjects_not_submitted_ids.ids),
+        ]
+
+        return {
+            'name': 'Cours non soumis',
+            'type': 'ir.actions.act_window',
+            'res_model': 'siantou.ems.core.subject',
+            'view_mode': 'tree',
+            'domain': domain,
+            'context': {
+                'create': False,
+                'edit': False,
+            },
+            'target': 'main',
+        }
 
     @api.depends('year_id', 'specialty_id', 'option_id', 'level_id', 'type_cour')
     def _compute_timetables(self):
@@ -707,28 +948,8 @@ class EducationClass(models.Model):
 
     @api.onchange('year_id', 'specialty_id', 'option_id', 'level_id', 'type_cour')
     def _onchange_timetables(self):
-        # Recherche des emplois du temps qui correspondent à la spécialité et au niveau
         for record in self:
-            timetables = self.env['siantou.ems.timetable.timetable'].search([
-                ('class_id', '=', record.id),
-                '|',
-                '&',
-                '&',
-                ('group_id.is_active', '=', True),
-                ('group_id.is_submit', '=', False),
-                ('group_id.status', '=', 'valid'),
-                '&',
-                '&',
-                '&',
-                ('group_parent_id.is_active', '=', True),
-                ('group_parent_id.is_submit', '=', False),
-                ('group_parent_id.status', '=', 'valid'),
-                ('group_id.status', '=', 'valid'),
-                ('is_active', '=', True),
-            ])
-
-            # Affecter les emplois du temps trouvés à l'attribut timetable_ids
-            record.timetable_ids = timetables
+            record._compute_timetables()
 
     def write(self, vals):
         res = super(EducationClass, self).write(vals)
@@ -959,7 +1180,10 @@ class EducationClass(models.Model):
         for classe in classes:
             classe._compute_students_call()
             classe._compute_timetables()
+            classe._compute_hours_call()
             classe._compute_subjects()
+            classe._compute_subjects_call()
+            classe._compute_hours_credit_call()
             classe.sudo().write({
                 'specialty_id': classe.specialty_id.id,
             })

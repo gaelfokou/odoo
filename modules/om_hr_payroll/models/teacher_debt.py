@@ -110,6 +110,11 @@ class TeacherDebt(models.Model):
             name = name.upper()
             record.name = name
 
+    @api.onchange('employee_id', 'start_date', 'end_date')
+    def _onchange_name(self):
+        for record in self:
+            record._compute_name()
+
     @api.constrains('start_date', 'end_date')
     def _constrains_date(self):
         for record in self:
@@ -171,6 +176,11 @@ class PaymentDebt(models.Model):
     def _compute_name(self):
         for record in self:
             record.name = record.debt_id.name
+
+    @api.onchange('debt_id')
+    def _onchange_name(self):
+        for record in self:
+            record._compute_name()
 
     @api.constrains('amount')
     def _constrains_amount(self):

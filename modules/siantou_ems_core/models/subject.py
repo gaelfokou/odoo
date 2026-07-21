@@ -373,23 +373,7 @@ class ProgressReport(models.Model):
     @api.onchange('class_id', 'subject_id')
     def _onchange_name(self):
         for record in self:
-            class_name = record.class_id.name if record.class_id.id else ''
-            subject_name = record.subject_id.name if record.subject_id.id else ''
-            name = '{} - {}'.format(class_name, subject_name)
-            while True:
-                if name.startswith(' - '):
-                    name = re.sub('^ - ', ' ', name)
-                elif name.endswith(' - '):
-                    name = re.sub(' - $', ' ', name)
-                elif name.find(' -  - ') != -1:
-                    name = name.replace(' -  - ', ' - ')
-                elif name.find('  ') != -1:
-                    name = name.replace('  ', ' ')
-                else:
-                    break
-            name = name.strip()
-            name = name.upper()
-            record.name = name
+            record._compute_name()
 
     @api.depends('class_id')
     def _compute_class_domain(self):
@@ -915,13 +899,7 @@ class SubjectSession(models.Model):
     @api.onchange('timetable_id', 'report_id')
     def _onchange_name(self):
         for record in self:
-            sessions = self.env['siantou.ems.core.subject.session'].search([
-                ('report_id', '=', record.report_id.id),
-            ])
-            sessions = list(sessions)
-            sessions = len(sessions)
-            name = 'Séance {}'.format(sessions)
-            record.name = name
+            record._compute_name()
 
     @api.depends('report_id')
     def _compute_class_domain(self):

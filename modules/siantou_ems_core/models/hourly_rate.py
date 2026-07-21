@@ -100,27 +100,7 @@ class HourlyRate(models.Model):
     @api.onchange('school_id', 'cycle_id', 'diplome_availability_id', 'level_id', 'type_cour')
     def _onchange_name(self):
         for record in self:
-            school_name = record.school_id.name if record.school_id.id else ''
-            cycle_name = record.cycle_id.name if record.cycle_id.id else ''
-            diplome_availability_name = record.diplome_availability_id.name if record.diplome_availability_id.id else ''
-            niveau_name = record.level_id.name if record.level_id.id else ''
-            niveau_name = re.sub(r'Niveau ', '', niveau_name)
-            type_cour_name = record.type_cour if record.type_cour == 'cs' else ''
-            name = '{} - {} - {} - {} - {}'.format(school_name, cycle_name, diplome_availability_name, niveau_name, type_cour_name)
-            while True:
-                if name.startswith(' - '):
-                    name = re.sub('^ - ', ' ', name)
-                elif name.endswith(' - '):
-                    name = re.sub(' - $', ' ', name)
-                elif name.find(' -  - ') != -1:
-                    name = name.replace(' -  - ', ' - ')
-                elif name.find('  ') != -1:
-                    name = name.replace('  ', ' ')
-                else:
-                    break
-            name = name.strip()
-            name = name.upper()
-            record.name = name
+            record._compute_name()
 
     def update_hourly_rate(self, hourly_rate):
         try:
@@ -250,24 +230,7 @@ class TeacherHourlyRate(models.Model):
     @api.onchange('employee_id', 'subject_id', 'hourly_rate_id')
     def _onchange_name(self):
         for record in self:
-            employee_name = record.employee_id.name if record.employee_id.id else ''
-            subject_name = record.subject_id.name if record.subject_id.id else ''
-            hourly_rate_name = record.hourly_rate_id.name if record.hourly_rate_id.id else ''
-            name = '{} - {} - {}'.format(employee_name, subject_name, hourly_rate_name)
-            while True:
-                if name.startswith(' - '):
-                    name = re.sub('^ - ', ' ', name)
-                elif name.endswith(' - '):
-                    name = re.sub(' - $', ' ', name)
-                elif name.find(' -  - ') != -1:
-                    name = name.replace(' -  - ', ' - ')
-                elif name.find('  ') != -1:
-                    name = name.replace('  ', ' ')
-                else:
-                    break
-            name = name.strip()
-            name = name.upper()
-            record.name = name
+            record._compute_name()
 
     @api.onchange('hourly_rate_id')
     def _onchange_rate(self):
