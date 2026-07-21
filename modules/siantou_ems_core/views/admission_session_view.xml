@@ -50,12 +50,12 @@
                                 <field name="name"/>
                             </group>
                             <group>
-                                <field name="year_id"/>
+                                <field name="year_id" options="{'no_create': True}"/>
                             </group>
                         </group>
                         <group>
                             <!-- <group>
-                                <field name="structure_frais_id"/>
+                                <field name="structure_frais_id" options="{'no_create': True}"/>
                             </group> -->
                             <group>
                                 <field name="cycle_ids" widget="many2many_tags"/>

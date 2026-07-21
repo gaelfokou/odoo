@@ -32,13 +32,13 @@
                                 <field name="name"/>
                             </group>
                             <group>
-                                <field name="cycle_id"/>
+                                <field name="cycle_id" options="{'no_create': True}"/>
                             </group>
                             <group>
-                                <field name="session_id"/>
+                                <field name="session_id" options="{'no_create': True}"/>
                             </group>
                             <group>
-                                <field name="year_id"/>
+                                <field name="year_id" options="{'no_create': True}"/>
                             </group>
                             <!-- <group>
                                 <field name="campus"/>

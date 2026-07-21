@@ -8,6 +8,7 @@
                 <form string="Filtre des classes">
                     <group>
                         <field name="year_id" options="{'no_create': True}"/>
+                        <field name="semester_id" options="{'no_create': True}" domain="[('year_id', '=', year_id)]"/>
                         <field name="school_id" options="{'no_create': True}"/>
                         <field name="field_of_study_id" options="{'no_create': True}" domain="[('school_id', '=', school_id)]"/>
                         <field name="level_id" options="{'no_create': True}"/>
@@ -18,7 +19,6 @@
                         <field name="status"/>
                         <field name="number_of_student" invisible="not status or status not in ['student_more_than_or_equal', 'student_less_than']"/>
                         <!-- <field name="semester_id" invisible="not status or status not in ['timetable_available', 'timetable_not_available']" options="{'no_create': True}" domain="[('year_id', '=', year_id)]"/> -->
-                        <field name="semester_id" options="{'no_create': True}" domain="[('year_id', '=', year_id)]"/>
                     </group>
                     <footer>
                         <button string="Filtrer" type="object" name="action_filter" class="btn-primary"/>
