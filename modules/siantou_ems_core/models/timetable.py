@@ -269,7 +269,7 @@ class Timetable(models.Model):
 
     hours_credit = fields.Float(
         string='Volume horaire',
-        compute="_compute_hours_credit",
+        compute='_compute_hours_credit',
         store=True
     )
 

@@ -104,6 +104,141 @@ class EducationClass(models.Model):
         compute='_compute_subjects'
     )
 
+    min_hours_credit = fields.Float(
+        string='Volume horaire min',
+        compute='_compute_hours_credit_call',
+        store=True,
+    )
+
+    max_hours_credit = fields.Float(
+        string='Volume horaire max',
+        compute='_compute_hours_credit_call',
+        store=True,
+    )
+
+    semester_id = fields.Many2one(
+        'siantou.ems.core.year.semester',
+        string='Semestre',
+        compute='_compute_hours_credit_call',
+    )
+
+    @api.depends('subject_ids', 'timetable_ids')
+    def _compute_hours_credit_call(self):
+        for record in self:
+            record._compute_min_hours_credit()
+            record._compute_max_hours_credit()
+            record._compute_semester()
+
+    @api.onchange('subject_ids', 'timetable_ids')
+    def _onchange_hours_credit_call(self):
+        for record in self:
+            record._compute_hours_credit_call()
+
+    def _compute_min_hours_credit(self):
+        for record in self:
+            semester_user = self.env['ir.config_parameter'].sudo().get_param(f'siantou.semester_user_{self.env.user.id}', '')
+            if semester_user:
+                record.min_hours_credit = 420.0
+            else:
+                record.min_hours_credit = 420.0 * 2
+
+    def _compute_max_hours_credit(self):
+        for record in self:
+            semester_user = self.env['ir.config_parameter'].sudo().get_param(f'siantou.semester_user_{self.env.user.id}', '')
+            if semester_user:
+                record.max_hours_credit = 450.0
+            else:
+                record.max_hours_credit = 450.0 * 2
+
+    def _compute_semester(self):
+        for record in self:
+            semester_user = self.env['ir.config_parameter'].sudo().get_param(f'siantou.semester_user_{self.env.user.id}', '')
+            if semester_user:
+                semester_user = int(semester_user)
+                semester = self.env['siantou.ems.core.year.semester'].search([('id', '=', semester_user)], limit=1)
+                if semester:
+                    record.semester_id = semester
+                else:
+                    record.semester_id = None
+            else:
+                record.semester_id = None
+
+    subjects_in_program_ids = fields.One2many(
+        'siantou.ems.core.subject',
+        string='Cours au programme',
+        compute='_compute_subjects_call'
+    )
+
+    number_of_subjects_in_program = fields.Integer(
+        string='Nombre de cours au programme',
+        compute='_compute_subjects_call',
+        store=False,
+    )
+
+    subjects_out_program_ids = fields.One2many(
+        'siantou.ems.core.subject',
+        string='Cours hors programme',
+        compute='_compute_subjects_call'
+    )
+
+    number_of_subjects_out_program = fields.Integer(
+        string='Nombre de cours hors programme',
+        compute='_compute_subjects_call',
+        store=False,
+    )
+
+    subjects_validated_ids = fields.One2many(
+        'siantou.ems.core.subject',
+        string='Cours validés',
+        compute='_compute_subjects_call'
+    )
+
+    number_of_subjects_validated = fields.Integer(
+        string='Nombre de cours validés',
+        compute='_compute_subjects_call',
+        store=False,
+    )
+
+    subjects_not_validated_ids = fields.One2many(
+        'siantou.ems.core.subject',
+        string='Cours non validés',
+        compute='_compute_subjects_call'
+    )
+
+    number_of_subjects_not_validated = fields.Integer(
+        string='Nombre de cours non validés',
+        compute='_compute_subjects_call',
+        store=False,
+    )
+
+    number_of_subjects_hour = fields.Float(
+        string='Nombre total d\'heures prévues',
+        compute='_compute_subjects_call',
+        store=True,
+    )
+
+    @api.depends('subject_ids')
+    def _compute_subjects_call(self):
+        for record in self:
+            record._compute_number_of_subjects_hour()
+            record._compute_subjects_in_program()
+            record._compute_number_of_subjects_in_program()
+            record._compute_subjects_out_program()
+            record._compute_number_of_subjects_out_program()
+            record._compute_subjects_validated()
+            record._compute_number_of_subjects_validated()
+            record._compute_subjects_not_validated()
+            record._compute_number_of_subjects_not_validated()
+            record._compute_subjects_submitted()
+            record._compute_number_of_subjects_submitted()
+            record._compute_subjects_not_submitted()
+            record._compute_number_of_subjects_not_submitted()
+
+    @api.onchange('subject_ids')
+    def _onchange_subjects_call(self):
+        for record in self:
+            record._compute_subjects_call()
+
     type_cour = fields.Selection([
             ('cj', 'Cours du jour'),
             ('cs', 'Cours du soir'),
