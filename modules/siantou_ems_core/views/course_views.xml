@@ -58,7 +58,7 @@
                                 <field name="level_ids" widget="many2many_tags"/>
                                 <field name="has_supervision"/>
                                 <field name="supervision_id" invisible="has_supervision==False"/>
-                                <field name="sequence_id" readonly="1"/>
+                                <field name="sequence_id" options="{'no_create': True}" readonly="1"/>
                             </group>
                             <group>
                                 <field name="color" widget="color_picker"/>

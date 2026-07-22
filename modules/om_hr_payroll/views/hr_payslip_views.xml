@@ -305,7 +305,7 @@
                             <page string="Accounting Information">
                                 <group>
                                     <group string="Miscellaneous">
-                                        <field name="company_id" readonly="state != 'draft'"
+                                        <field name="company_id" options="{'no_create': True}" readonly="state != 'draft'"
                                                groups="base.group_multi_company"/>
                                         <field name="payslip_run_id" domain="[('state', '=', 'draft')]"
                                                readonly="state != 'draft'"/>

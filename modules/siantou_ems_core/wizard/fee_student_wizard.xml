@@ -7,14 +7,14 @@
             <form string="Paiement des frais d'inscription">
                 <sheet>
                     <group>
-                        <b><field name="student_id" readonly="1"/></b>
+                        <b><field name="student_id" options="{'no_create': True}" readonly="1"/></b>
                     </group>
                     <group>
                         <group>
                             <field name="structure_frais_name" readonly="1"/>
                         </group>
                         <group>
-                            <field name="year_id" readonly="1"/>
+                            <field name="year_id" options="{'no_create': True}" readonly="1"/>
                         </group>
                     </group>
                     <group>
@@ -52,7 +52,7 @@
 
                     <!-- <p>
                         Vous êtes sur le point d'ajouter une pièce comptable d'enregistrement des frais d'inscription de 
-                        <b><field name="student_id" readonly="1"/></b>
+                        <b><field name="student_id" options="{'no_create': True}" readonly="1"/></b>
                     </p>
                     <b>Montant à payer</b> : <field name="amount" readonly="1"/>
                     <group>

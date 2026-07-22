@@ -99,8 +99,8 @@
                             <field name="is_readonly" invisible="1"/>
                             <field name="group_id" options="{'no_create': True}" readonly="is_readonly == True" domain="['|', ('create_uid', '=', uid), '&amp;', ('has_write_access', '=', True), ('write_user_ids', '=', uid)]"/>
                             <field name="batch_id" invisible="1"/>
-                            <field name="semester_id" readonly="1" options="{'no_create': True}"/>
-                            <field name="year_id" readonly="1" options="{'no_create': True}"/>
+                            <field name="semester_id" options="{'no_create': True}" readonly="1"/>
+                            <field name="year_id" options="{'no_create': True}" readonly="1"/>
                             <field name="school_id_domain" invisible="1"/>
                             <field name="school_id" options="{'no_create': True}" readonly="is_readonly == True" domain="school_id_domain"/>
                             <field name="cycle_id"/>
@@ -113,7 +113,7 @@
                             <field name="level_id" options="{'no_create': True}" readonly="is_readonly == True" domain="level_id_domain"/>
                             <field name="class_id" options="{'no_create': True}" readonly="is_readonly == True" domain="[('field_of_study_id', '=', field_of_study_id), ('specialty_id', '=', specialty_id), ('option_id', '=', option_id), ('level_id', '=', level_id), ('year_id', '=', year_id)]"/>
                             <field name="class_group_id" options="{'no_create': True}" readonly="is_readonly == True" domain="[('class_id', '=', class_id)]"/>
-                            <!-- <field name="ue_id" readonly="1" options="{'no_create': True}" domain="[('class_ids', '=', class_id), ('semestre_id', '=', semester_id)]"/> -->
+                            <!-- <field name="ue_id" options="{'no_create': True}" readonly="1" domain="[('class_ids', '=', class_id), ('semestre_id', '=', semester_id)]"/> -->
                             <field name="subject_id_domain" invisible="1"/>
                             <field name="subject_id" options="{'no_create': True}" readonly="is_readonly == True" domain="subject_id_domain"/>
                             <field name="is_custom_hours_credit"/>
