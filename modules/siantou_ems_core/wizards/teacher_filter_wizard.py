@@ -167,7 +167,22 @@ class TeacherFilterWizard(models.TransientModel):
             record.subject_id = None
 
     def action_filter(self):
-        domain = []
+        domain = [
+            '|',
+            '&',
+            '&',
+            ('group_id.is_active', '=', True),
+            ('group_id.is_submit', '=', False),
+            ('group_id.status', '=', 'valid'),
+            '&',
+            '&',
+            '&',
+            ('group_parent_id.is_active', '=', True),
+            ('group_parent_id.is_submit', '=', False),
+            ('group_parent_id.status', '=', 'valid'),
+            ('group_id.status', '=', 'valid'),
+            ('is_active', '=', True),
+        ]
         title = []
         if self.year_id.id:
             domain.append(('year_id', '=', self.year_id.id))

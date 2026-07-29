@@ -119,6 +119,21 @@ class ClassPrintWizard(models.TransientModel):
                         subject['semester_name'] = semester_id.name
                         subject['class_id'] = search_classe.id
                         subject['class_name'] = search_classe.name
+                        subject['employees'] = []
+
+                        timetables = search_classe.timetable_ids.filtered(lambda rec: rec.subject_id.id == subject_id.id and rec.semester_id.id == semester_id.id)
+                        timetables = list(timetables)
+
+                        employee_ids = []
+                        for timetable in timetables:
+                            if timetable.employee_id.id not in employee_ids:
+                                employee = {}
+                                employee['id'] = timetable.employee_id.id
+                                employee['name'] = timetable.employee_id.name if timetable.employee_id.name else ''
+                                employee['identifier'] = timetable.employee_id.identifier if timetable.employee_id.identifier else ''
+                                subject['employees'].append(employee)
+                                employee_ids.append(timetable.employee_id.id)
+
                         subjects.append(subject)
 
         subjects = sorted(subjects, key=self.sort_classe)

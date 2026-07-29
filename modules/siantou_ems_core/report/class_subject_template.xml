@@ -46,7 +46,7 @@
                                 <table class="table table-bordered table-sm text-center">
                                     <thead>
                                         <tr>
-                                            <th class="text-center" colspan="4" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;">
+                                            <th class="text-center" colspan="5" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;">
                                                 <h3>INSTITUT UNIVERSITAIRE SIANTOU</h3>
                                                 <h4>
                                                     <span t-esc="subject_data[classe]['name']"/>
@@ -60,7 +60,7 @@
                                     </thead>
                                     <thead>
                                         <tr>
-                                            <th class="text-left" colspan="4" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
+                                            <th class="text-left" colspan="5" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
                                         </tr>
                                     </thead>
                                     <thead class="thead">
@@ -69,6 +69,7 @@
                                             <th class="text-center">Code</th>
                                             <th class="text-center">Volume horaire</th>
                                             <th class="text-center">Crédit</th>
+                                            <th class="text-center">Enseignants</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -79,6 +80,7 @@
                                                 <td class="text-left" style="background-color: #f2f2f2;">
                                                     <span t-esc="semester_data[semester]['name']"/>
                                                 </td>
+                                                <td class="text-center" style="background-color: #f2f2f2;"></td>
                                                 <td class="text-center" style="background-color: #f2f2f2;"></td>
                                                 <td class="text-center" style="background-color: #f2f2f2;"></td>
                                                 <td class="text-center" style="background-color: #f2f2f2;"></td>
@@ -94,8 +96,10 @@
                                                     </td>
                                                     <td class="text-center" style="background-color: #f2f2f2;"></td>
                                                     <td class="text-center" style="background-color: #f2f2f2;"></td>
+                                                    <td class="text-center" style="background-color: #f2f2f2;"></td>
                                                 </tr>
                                                 <t t-foreach="semester_data[semester]['data'][ue]['data']" t-as="subject">
+                                                    <t t-set="employees" t-value="list(map(lambda rec: rec['identifier'] + ' - ' + rec['name'], subject['employees']))"/>
                                                     <tr>
                                                         <td class="text-left">
                                                             <span t-esc="subject['name']"/>
@@ -108,6 +112,17 @@
                                                         </td>
                                                         <td class="text-center">
                                                             <span t-esc="subject['total_credit']"/>
+                                                        </td>
+                                                        <td class="text-center">
+                                                            <t t-set="n" t-value="len(employees)"/>
+                                                            <t t-set="i" t-value="1"/>
+                                                            <t t-foreach="employees" t-as="employee">
+                                                                <span t-esc="employee"/>
+                                                                <t t-if="i &lt; n">
+                                                                    <br/>
+                                                                    <t t-set="i" t-value="i+1"/>
+                                                                </t>
+                                                            </t>
                                                         </td>
                                                     </tr>
                                                 </t>

@@ -84,7 +84,7 @@ class TeacherDebtPrintWizard(models.TransientModel):
                 key_debts[key] = {}
                 key_debts[key]['id'] = search_debt.employee_id.id
                 key_debts[key]['name'] = search_debt.employee_id.name
-                key_debts[key]['identifier'] = search_debt.employee_id.identifier
+                key_debts[key]['identifier'] = search_debt.employee_id.identifier if search_debt.employee_id.identifier else ''
                 key_debts[key]['data'] = []
                 key_debts[key]['amount'] = 0.0
                 key_debts[key]['rest_amount'] = 0.0
@@ -99,7 +99,7 @@ class TeacherDebtPrintWizard(models.TransientModel):
             debt['end_date'] = search_debt.end_date
             debt['end_date_of_week'] = datetime.strftime(search_debt.end_date, DATE_FORMAT_FR)
             debt['employee_id'] = search_debt.employee_id.id
-            debt['identifier'] = search_debt.employee_id.identifier
+            debt['identifier'] = search_debt.employee_id.identifier if search_debt.employee_id.identifier else ''
             debt['employee_name'] = search_debt.employee_id.name
             debt['amount'] = search_debt.amount
             debt['rest_amount'] = search_debt.rest_amount

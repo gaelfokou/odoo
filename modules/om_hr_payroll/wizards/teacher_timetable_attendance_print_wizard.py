@@ -115,7 +115,7 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
                 key_teacher_timetable_attendances[key] = {}
                 key_teacher_timetable_attendances[key]['id'] = search_teacher_timetable_attendance.employee_id.id
                 key_teacher_timetable_attendances[key]['name'] = search_teacher_timetable_attendance.employee_id.name
-                key_teacher_timetable_attendances[key]['identifier'] = search_teacher_timetable_attendance.employee_id.identifier
+                key_teacher_timetable_attendances[key]['identifier'] = search_teacher_timetable_attendance.employee_id.identifier if search_teacher_timetable_attendance.employee_id.identifier else ''
                 key_teacher_timetable_attendances[key]['data'] = []
                 key_teacher_timetable_attendances[key]['worked_time'] = 0.0
                 key_teacher_timetable_attendances[key]['amount'] = 0.0
@@ -151,7 +151,7 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
             teacher_timetable_attendance['subject_code'] = search_teacher_timetable_attendance.subject_id.code
             teacher_timetable_attendance['subject_shared_subject'] = '(TC)' if search_teacher_timetable_attendance.subject_id.shared_subject else ''
             teacher_timetable_attendance['employee_id'] = search_teacher_timetable_attendance.employee_id.id
-            teacher_timetable_attendance['identifier'] = search_teacher_timetable_attendance.employee_id.identifier
+            teacher_timetable_attendance['identifier'] = search_teacher_timetable_attendance.employee_id.identifier if search_teacher_timetable_attendance.employee_id.identifier else ''
             teacher_timetable_attendance['employee_name'] = search_teacher_timetable_attendance.employee_id.name
             teacher_timetable_attendance['start_time'] = TeacherTimetableAttendancePrintWizard.convert_float_to_time(search_teacher_timetable_attendance.start_time)
             teacher_timetable_attendance['end_time'] = TeacherTimetableAttendancePrintWizard.convert_float_to_time(search_teacher_timetable_attendance.end_time)

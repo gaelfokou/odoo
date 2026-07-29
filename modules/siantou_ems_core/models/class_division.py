@@ -322,11 +322,14 @@ class EducationClass(models.Model):
             timetables = self.env['siantou.ems.timetable.timetable'].search([
                 ('class_id', '=', record.id),
                 '|',
-                '&', '&',
+                '&',
+                '&',
                 ('group_id.is_active', '=', True),
                 ('group_id.is_submit', '=', False),
                 ('group_id.status', '=', 'valid'),
-                '&', '&', '&',
+                '&',
+                '&',
+                '&',
                 ('group_parent_id.is_active', '=', True),
                 ('group_parent_id.is_submit', '=', False),
                 ('group_parent_id.status', '=', 'valid'),
@@ -352,11 +355,14 @@ class EducationClass(models.Model):
             timetables = self.env['siantou.ems.timetable.timetable'].search([
                 ('class_id', '=', record.id),
                 '|',
-                '&', '&',
+                '&',
+                '&',
                 ('group_id.is_active', '=', True),
                 ('group_id.is_submit', '=', False),
                 ('group_id.status', '=', 'valid'),
-                '&', '&', '&',
+                '&',
+                '&',
+                '&',
                 ('group_parent_id.is_active', '=', True),
                 ('group_parent_id.is_submit', '=', False),
                 ('group_parent_id.status', '=', 'valid'),
@@ -382,11 +388,14 @@ class EducationClass(models.Model):
             timetables = self.env['siantou.ems.timetable.timetable'].search([
                 ('class_id', '=', record.id),
                 '|',
-                '&', '&',
+                '&',
+                '&',
                 ('group_id.is_active', '=', True),
                 ('group_id.is_submit', '=', False),
                 ('group_id.status', '=', 'pending'),
-                '&', '&', '&',
+                '&',
+                '&',
+                '&',
                 ('group_parent_id.is_active', '=', True),
                 ('group_parent_id.is_submit', '=', False),
                 ('group_parent_id.status', '=', 'pending'),
@@ -412,11 +421,14 @@ class EducationClass(models.Model):
             timetables = self.env['siantou.ems.timetable.timetable'].search([
                 ('class_id', '=', record.id),
                 '|',
-                '&', '&',
+                '&',
+                '&',
                 ('group_id.is_active', '=', True),
                 ('group_id.is_submit', '=', False),
                 ('group_id.status', '=', 'pending'),
-                '&', '&', '&',
+                '&',
+                '&',
+                '&',
                 ('group_parent_id.is_active', '=', True),
                 ('group_parent_id.is_submit', '=', False),
                 ('group_parent_id.status', '=', 'pending'),
@@ -442,11 +454,14 @@ class EducationClass(models.Model):
             timetables = self.env['siantou.ems.timetable.timetable'].search([
                 ('class_id', '=', record.id),
                 '|',
-                '&', '&',
+                '&',
+                '&',
                 ('group_id.is_active', '=', True),
                 ('group_id.is_submit', '=', False),
                 ('group_id.status', 'in', ['valid', 'pending']),
-                '&', '&', '&',
+                '&',
+                '&',
+                '&',
                 ('group_parent_id.is_active', '=', True),
                 ('group_parent_id.is_submit', '=', False),
                 ('group_parent_id.status', 'in', ['valid', 'pending']),
@@ -472,11 +487,14 @@ class EducationClass(models.Model):
             timetables = self.env['siantou.ems.timetable.timetable'].search([
                 ('class_id', '=', record.id),
                 '|',
-                '&', '&',
+                '&',
+                '&',
                 ('group_id.is_active', '=', True),
                 ('group_id.is_submit', '=', False),
                 ('group_id.status', 'in', ['valid', 'pending']),
-                '&', '&', '&',
+                '&',
+                '&',
+                '&',
                 ('group_parent_id.is_active', '=', True),
                 ('group_parent_id.is_submit', '=', False),
                 ('group_parent_id.status', 'in', ['valid', 'pending']),
@@ -502,11 +520,14 @@ class EducationClass(models.Model):
             timetables = self.env['siantou.ems.timetable.timetable'].search([
                 ('class_id', '=', record.id),
                 '|',
-                '&', '&',
+                '&',
+                '&',
                 ('group_id.is_active', '=', True),
                 ('group_id.is_submit', '=', False),
                 ('group_id.status', 'in', ['valid', 'pending']),
-                '&', '&', '&',
+                '&',
+                '&',
+                '&',
                 ('group_parent_id.is_active', '=', True),
                 ('group_parent_id.is_submit', '=', False),
                 ('group_parent_id.status', 'in', ['valid', 'pending']),
@@ -532,11 +553,14 @@ class EducationClass(models.Model):
             timetables = self.env['siantou.ems.timetable.timetable'].search([
                 ('class_id', '=', record.id),
                 '|',
-                '&', '&',
+                '&',
+                '&',
                 ('group_id.is_active', '=', True),
                 ('group_id.is_submit', '=', False),
                 ('group_id.status', 'in', ['valid', 'pending']),
-                '&', '&', '&',
+                '&',
+                '&',
+                '&',
                 ('group_parent_id.is_active', '=', True),
                 ('group_parent_id.is_submit', '=', False),
                 ('group_parent_id.status', 'in', ['valid', 'pending']),
@@ -1014,6 +1038,29 @@ class EducationClass(models.Model):
         classes = list(classes)
         if len(active_ids) == 0:
             raise UserError('Aucune donnée sélectionnée')
+        report_data = self.env['class.print.wizard'].create({})
+        domains = [
+            ('id', 'in', active_ids)
+        ]
+        data = report_data.print_class_report_data(domains=domains)
+
+        if len(data['docdata']['class_data']) == 0:
+            raise UserError('Aucune donnée trouvée')
+        report_action = self.env.ref('siantou_ems_core.action_report_class')
+        report_action.update({
+            'name': 'Classes PDF',
+        })
+        return report_action.report_action(self, data=data)
+
+    def action_print_kanban_pdf(self):
+        domain = self.env.context.get('active_domain', [])
+        classes = self.env['siantou.ems.core.class'].search(domain)
+        classes = list(classes)
+        active_ids = []
+        for classe in classes:
+            active_ids.append(classe.id)
+        if len(active_ids) == 0:
+            raise UserError('Aucune donnée filtrée')
         report_data = self.env['class.print.wizard'].create({})
         domains = [
             ('id', 'in', active_ids)

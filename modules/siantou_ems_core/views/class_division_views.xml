@@ -87,7 +87,7 @@
                             string="Filtrer" 
                             class="oe_highlight" 
                             display="always"/>
-                        <button name="action_print_pdf" 
+                        <button name="action_print_kanban_pdf" 
                             type="object" 
                             string="Imprimer PDF" 
                             class="oe_highlight" 
