@@ -137,6 +137,7 @@
                                             <td class="text-center" style="background-color: #f2f2f2;">
                                                 <span t-esc="subject_data[classe]['total_credit']"/>
                                             </td>
+                                            <td class="text-center" style="background-color: #f2f2f2;"></td>
                                         </tr>
                                     </tbody>
                                 </table>
