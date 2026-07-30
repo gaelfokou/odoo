@@ -485,11 +485,22 @@ class HrEmployee(models.Model):
         ]
         data = report_data.print_teacher_report_data(domains=domains)
 
+        schools = self.env['siantou.ems.core.school'].search([])
+        for school in schools:
+            if data['docdata']['filter'].find(school.name) != -1:
+                data['docdata']['title'] = '{} {}'.format(data['docdata']['title'], school.name)
+                break
+        levels = self.env['siantou.ems.core.level'].search([])
+        for level in levels:
+            if data['docdata']['filter'].find(level.name) != -1:
+                data['docdata']['title'] = '{} {}'.format(data['docdata']['title'], level.name)
+                break
+
         if len(data['docdata']['teacher_data']) == 0:
             raise UserError('Aucune donnée trouvée')
         report_action = self.env.ref('siantou_ems_core.action_report_teacher')
         report_action.update({
-            'name': 'Enseignants PDF',
+            'name': '{} PDF'.format(data['docdata']['title']),
         })
         return report_action.report_action(self, data=data)
 

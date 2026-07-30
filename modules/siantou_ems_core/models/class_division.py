@@ -1026,6 +1026,7 @@ class EducationClass(models.Model):
 
     def action_reset_filter(self):
         self.env['ir.config_parameter'].sudo().set_param(f'siantou.filter_user_{self.env.user.id}', '')
+        self.env['ir.config_parameter'].sudo().set_param(f'siantou.semester_user_{self.env.user.id}', '')
         action = self.env.ref('siantou_ems_core.action_show_class').read()[0]
         action.update({
             'target': 'main',
@@ -1044,11 +1045,22 @@ class EducationClass(models.Model):
         ]
         data = report_data.print_class_report_data(domains=domains)
 
+        schools = self.env['siantou.ems.core.school'].search([])
+        for school in schools:
+            if data['docdata']['filter'].find(school.name) != -1:
+                data['docdata']['title'] = '{} {}'.format(data['docdata']['title'], school.name)
+                break
+        levels = self.env['siantou.ems.core.level'].search([])
+        for level in levels:
+            if data['docdata']['filter'].find(level.name) != -1:
+                data['docdata']['title'] = '{} {}'.format(data['docdata']['title'], level.name)
+                break
+
         if len(data['docdata']['class_data']) == 0:
             raise UserError('Aucune donnée trouvée')
         report_action = self.env.ref('siantou_ems_core.action_report_class')
         report_action.update({
-            'name': 'Classes PDF',
+            'name': '{} PDF'.format(data['docdata']['title']),
         })
         return report_action.report_action(self, data=data)
 
@@ -1067,11 +1079,22 @@ class EducationClass(models.Model):
         ]
         data = report_data.print_class_report_data(domains=domains)
 
+        schools = self.env['siantou.ems.core.school'].search([])
+        for school in schools:
+            if data['docdata']['filter'].find(school.name) != -1:
+                data['docdata']['title'] = '{} {}'.format(data['docdata']['title'], school.name)
+                break
+        levels = self.env['siantou.ems.core.level'].search([])
+        for level in levels:
+            if data['docdata']['filter'].find(level.name) != -1:
+                data['docdata']['title'] = '{} {}'.format(data['docdata']['title'], level.name)
+                break
+
         if len(data['docdata']['class_data']) == 0:
             raise UserError('Aucune donnée trouvée')
         report_action = self.env.ref('siantou_ems_core.action_report_class')
         report_action.update({
-            'name': 'Classes PDF',
+            'name': '{} PDF'.format(data['docdata']['title']),
         })
         return report_action.report_action(self, data=data)
 
@@ -1268,6 +1291,17 @@ class EducationClass(models.Model):
         ]
         data = report_data.print_class_subject_report_data(domains=domains)
 
+        schools = self.env['siantou.ems.core.school'].search([])
+        for school in schools:
+            if data['docdata']['filter'].find(school.name) != -1:
+                data['docdata']['title'] = '{} {}'.format(data['docdata']['title'], school.name)
+                break
+        levels = self.env['siantou.ems.core.level'].search([])
+        for level in levels:
+            if data['docdata']['filter'].find(level.name) != -1:
+                data['docdata']['title'] = '{} {}'.format(data['docdata']['title'], level.name)
+                break
+
         if len(data['docdata']['subject_data']) == 0:
             raise UserError('Aucune donnée trouvée')
 
@@ -1321,18 +1355,25 @@ class EducationClass(models.Model):
             data['docdata']['subject_data'][key_class]['total_credit'] = 0.0
             data['docdata']['subject_data'][key_class]['data'] = dict(sorted(data['docdata']['subject_data'][key_class]['data'].items(), key=lambda item: item[1]['name'] if item[1]['name'] else ''))
             for key_semester in data['docdata']['subject_data'][key_class]['data'].keys():
+                data['docdata']['subject_data'][key_class]['data'][key_semester]['hours_credit'] = 0.0
+                data['docdata']['subject_data'][key_class]['data'][key_semester]['total_credit'] = 0.0
                 for key_ue in data['docdata']['subject_data'][key_class]['data'][key_semester]['data'].keys():
                     for subject in data['docdata']['subject_data'][key_class]['data'][key_semester]['data'][key_ue]['data']:
                         data['docdata']['subject_data'][key_class]['hours_credit'] += subject['hours_credit']
                         data['docdata']['subject_data'][key_class]['total_credit'] += subject['total_credit']
+                        data['docdata']['subject_data'][key_class]['data'][key_semester]['hours_credit'] += subject['hours_credit']
+                        data['docdata']['subject_data'][key_class]['data'][key_semester]['total_credit'] += subject['total_credit']
 
         for key_class in data['docdata']['subject_data'].keys():
             data['docdata']['subject_data'][key_class]['hours_credit'] = round(data['docdata']['subject_data'][key_class]['hours_credit'], 2)
             data['docdata']['subject_data'][key_class]['total_credit'] = round(data['docdata']['subject_data'][key_class]['total_credit'], 2)
+            for key_semester in data['docdata']['subject_data'][key_class]['data'].keys():
+                data['docdata']['subject_data'][key_class]['data'][key_semester]['hours_credit'] = round(data['docdata']['subject_data'][key_class]['data'][key_semester]['hours_credit'], 2)
+                data['docdata']['subject_data'][key_class]['data'][key_semester]['total_credit'] = round(data['docdata']['subject_data'][key_class]['data'][key_semester]['total_credit'], 2)
 
         report_action = self.env.ref('siantou_ems_core.action_report_class_subject')
         report_action.update({
-            'name': 'Cours PDF',
+            'name': '{} PDF'.format(data['docdata']['title']),
         })
         return report_action.report_action(self, data=data)
 

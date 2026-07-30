@@ -1330,11 +1330,31 @@ class Timetable(models.Model):
         ]
         data = report_data.print_timetable_report_data(domains=domains)
 
+        schools = self.env['siantou.ems.core.school'].search([])
+        for school in schools:
+            if data['docdata']['filter'].find(school.name) != -1:
+                data['docdata']['title'] = '{} {}'.format(data['docdata']['title'], school.name)
+                break
+        years = self.env['siantou.ems.core.year'].search([])
+        for year in years:
+            if data['docdata']['filter'].find(year.name) != -1:
+                classes = self.env['siantou.ems.core.class'].search([('year_id', '=', year.id)])
+                for classe in classes:
+                    if classe.type_cour == 'cs':
+                        if data['docdata']['filter'].find(classe.name) != -1:
+                            data['docdata']['title'] = '{} {}'.format(data['docdata']['title'], classe.name)
+                            break
+                    else:
+                        if data['docdata']['filter'].find(classe.name) != -1 and data['docdata']['filter'].lower().find('cs') == -1:
+                            data['docdata']['title'] = '{} {}'.format(data['docdata']['title'], classe.name)
+                            break
+                break
+
         if len(data['docdata']['timetable_data'].keys()) == 0:
             raise UserError('Aucune donnée trouvée')
         report_action = self.env.ref('siantou_ems_core.action_report_timetable')
         report_action.update({
-            'name': 'Emplois du temps PDF',
+            'name': '{} PDF'.format(data['docdata']['title']),
         })
         return report_action.report_action(self, data=data)
 

@@ -177,6 +177,7 @@ class TimetablePrintWizard(models.TransientModel):
         return {
             'docdata': {
                 'title': 'Emplois du temps',
+                'filter': filter_title,
                 'timetable_data': key_timetables,
                 'is_user': is_user,
             }

@@ -364,6 +364,8 @@ class ProgressReportFilterWizard(models.TransientModel):
 
         if self.school_id.id:
             data['docdata']['title'] = '{} {}'.format(data['docdata']['title'], self.school_id.name)
+        if self.level_id.id:
+            data['docdata']['title'] = '{} {}'.format(data['docdata']['title'], self.level_id.name)
 
         if len(data['docdata']['progress_report_teacher_data'].keys()) == 0:
             raise UserError('Aucune donnée trouvée')
@@ -556,6 +558,8 @@ class ProgressReportFilterWizard(models.TransientModel):
 
         if self.school_id.id:
             data['docdata']['title'] = '{} {}'.format(data['docdata']['title'], self.school_id.name)
+        if self.level_id.id:
+            data['docdata']['title'] = '{} {}'.format(data['docdata']['title'], self.level_id.name)
 
         if print_percentage:
             report_action = self.env.ref('siantou_ems_core.action_report_progress_report_percentage')

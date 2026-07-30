@@ -1001,6 +1001,8 @@ class TimetableFilterWizard(models.TransientModel):
 
         if self.school_id.id:
             data['docdata']['title'] = '{} {}'.format(data['docdata']['title'], self.school_id.name)
+        if self.level_id.id:
+            data['docdata']['title'] = '{} {}'.format(data['docdata']['title'], self.level_id.name)
 
         if len(data['docdata']['timetable_percentage_data'].keys()) == 0:
             raise UserError('Aucune donnée trouvée')
@@ -1484,6 +1486,8 @@ class TimetableFilterWizard(models.TransientModel):
 
         if self.school_id.id:
             data['docdata']['title'] = '{} {}'.format(data['docdata']['title'], self.school_id.name)
+        if self.level_id.id:
+            data['docdata']['title'] = '{} {}'.format(data['docdata']['title'], self.level_id.name)
 
         start_date = datetime.strftime(self.start_date, DATE_FORMAT_FR)
         end_date = datetime.strftime(self.end_date, DATE_FORMAT_FR)
@@ -1892,6 +1896,8 @@ class TimetableFilterWizard(models.TransientModel):
 
         if self.school_id.id:
             data['docdata']['title'] = '{} {}'.format(data['docdata']['title'], self.school_id.name)
+        if self.level_id.id:
+            data['docdata']['title'] = '{} {}'.format(data['docdata']['title'], self.level_id.name)
 
         start_date = datetime.strftime(self.start_date, DATE_FORMAT_FR)
         end_date = datetime.strftime(self.end_date, DATE_FORMAT_FR)
@@ -2224,6 +2230,8 @@ class TimetableFilterWizard(models.TransientModel):
 
         if self.school_id.id:
             data['docdata']['title'] = '{} {}'.format(data['docdata']['title'], self.school_id.name)
+        if self.level_id.id:
+            data['docdata']['title'] = '{} {}'.format(data['docdata']['title'], self.level_id.name)
 
         start_date = datetime.strftime(self.start_date, DATE_FORMAT_FR)
         end_date = datetime.strftime(self.end_date, DATE_FORMAT_FR)

@@ -77,7 +77,7 @@
                                         <t t-set="semesters" t-value="semester_data.keys()"/>
                                         <t t-foreach="semesters" t-as="semester">
                                             <tr>
-                                                <td class="text-left" style="background-color: #f2f2f2;">
+                                                <td class="text-center" style="background-color: #f2f2f2;">
                                                     <span t-esc="semester_data[semester]['name']"/>
                                                 </td>
                                                 <td class="text-center" style="background-color: #f2f2f2;"></td>
@@ -127,9 +127,20 @@
                                                     </tr>
                                                 </t>
                                             </t>
+                                            <tr>
+                                                <td class="text-center" style="background-color: #f2f2f2;">TOTAL SEMESTRIEL</td>
+                                                <td class="text-center" style="background-color: #f2f2f2;"></td>
+                                                <td class="text-center" style="background-color: #f2f2f2;">
+                                                    <span t-esc="semester_data[semester]['hours_credit']"/>
+                                                </td>
+                                                <td class="text-center" style="background-color: #f2f2f2;">
+                                                    <span t-esc="semester_data[semester]['total_credit']"/>
+                                                </td>
+                                                <td class="text-center" style="background-color: #f2f2f2;"></td>
+                                            </tr>
                                         </t>
                                         <tr>
-                                            <td class="text-center" style="background-color: #f2f2f2;">TOTAL</td>
+                                            <td class="text-center" style="background-color: #f2f2f2;">TOTAL ANNUEL</td>
                                             <td class="text-center" style="background-color: #f2f2f2;"></td>
                                             <td class="text-center" style="background-color: #f2f2f2;">
                                                 <span t-esc="subject_data[classe]['hours_credit']"/>
