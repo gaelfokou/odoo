@@ -72,7 +72,6 @@
             parent="menu_siantou_ems_core_configuration"
             action="action_show_quarter"
             groups="siantou_ems_core.group_quarter_admin,base.group_system"
-            sequence="12"
-        />
+            sequence="12"/>
 	</data>
 </odoo>

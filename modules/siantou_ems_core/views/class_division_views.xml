@@ -77,12 +77,12 @@
             <field name="arch" type="xml">
                 <kanban class="o_kanban_mobile" sample="1">
                     <header>
-                        <button name="action_reset_filter" 
+                        <button name="action_reset_filter_kanban" 
                             type="object" 
                             string="Réinitialiser" 
                             class="oe_highlight" 
                             display="always"/>
-                        <button name="action_open_filter" 
+                        <button name="action_open_filter_kanban" 
                             type="object" 
                             string="Filtrer" 
                             class="oe_highlight" 
@@ -294,6 +294,20 @@
         </record>
 
         <record
+                id="action_show_class_dashboard"
+                model="ir.actions.act_window">
+            <field name="name">Tableau de bord des classes</field>
+            <field name="res_model">siantou.ems.core.class</field>
+            <field name="view_mode">kanban,form</field>
+            <field name="domain">[('year_id.is_active', '=', True)]</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Créer une nouvelle classe.
+                </p>
+            </field>
+        </record>
+
+        <record
                 id="action_show_class_2"
                 model="ir.actions.act_window">
             <field name="name">Classes</field>
@@ -314,12 +328,18 @@
                 name="Classes"
                 parent="menu_siantou_ems_core_config_fa"
                 action="action_show_class"
-            sequence="4"/>
+                sequence="4"/>
+        <menuitem
+                id="menu_siantou_ems_core_class_dashboard"
+                name="Tableau de bord des classes"
+                parent="menu_siantou_ems_timetable_planning"
+                action="action_show_class_dashboard"
+                sequence="4"/>
         <menuitem
                 id="menu_siantou_ems_core_class_2"
                 name="Classes"
                 parent="menu_siantou_ems_core_program"
                 action="action_show_class_2"
-            sequence="4"/>
+                sequence="4"/>
 	</data>
 </odoo>

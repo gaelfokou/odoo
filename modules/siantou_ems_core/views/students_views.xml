@@ -182,7 +182,6 @@
         parent="menu_siantou_ems_core_students"
         action="action_show_student"
         groups="siantou_ems_core.group_student_admin,base.group_system"
-        sequence="2"
-    />
+        sequence="2"/>
 
 </odoo>

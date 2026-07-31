@@ -72,7 +72,6 @@
             parent="menu_siantou_ems_core_configuration"
             action="action_show_city"
             groups="siantou_ems_core.group_city_admin,base.group_system"
-            sequence="11"
-        />
+            sequence="11"/>
 	</data>
 </odoo>

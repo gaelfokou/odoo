@@ -2,74 +2,55 @@
 <odoo>
     <!-- Menu principal du module -->
     <menuitem name="US"
-        id="menu_siantou_ems_core"
-        sequence="2"
-    />
-
+            id="menu_siantou_ems_core"
+            sequence="2"/>
     <menuitem
-        id="menu_siantou_ems_core_students"
-        name="Étudiants"
-        parent="menu_siantou_ems_core"
-        sequence="30"
-    />
-
+            id="menu_siantou_ems_core_students"
+            name="Étudiants"
+            parent="menu_siantou_ems_core"
+            sequence="30"/>
     <menuitem
-        id="menu_siantou_ems_core_adminssions"
-        name="Admissions/Candidatures"
-        parent="menu_siantou_ems_core"
-        sequence="35"
-    />
-
+            id="menu_siantou_ems_core_adminssions"
+            name="Admissions/Candidatures"
+            parent="menu_siantou_ems_core"
+            sequence="35"/>
     <!-- Menu principal de gestion des enseignants -->
     <menuitem
             id="menu_siantou_ems_core_employee"
             name="Enseignants"
-			parent="menu_siantou_ems_core"
+            parent="menu_siantou_ems_core"
             sequence = "40"/>
-
     <!-- Menu principal de gestion des Programmes -->
     <menuitem
             id="menu_siantou_ems_timetable_planning"
-            name="Planning"
-			parent="menu_siantou_ems_core"
-            sequence = "45"/>
-
+            name="Planifications"
+            parent="menu_siantou_ems_core"
+            sequence = "60"/>
     <!-- Menu principal de gestion des emplois du temps -->
     <menuitem
             id="menu_siantou_ems_core_program"
             name="Académie"
-			parent="menu_siantou_ems_core"
+            parent="menu_siantou_ems_core"
             sequence = "50"/>
-
-    <menuitem
-            id="menu_siantou_ems_timetable_planning"
-            name="Planifications"
-			parent="menu_siantou_ems_core"
-            sequence = "60"/>
-
     <!-- Menu principal de gestion des configurations -->
     <menuitem
             id="menu_siantou_ems_core_configuration"
             name="Configurations"
-			parent="menu_siantou_ems_core"
+            parent="menu_siantou_ems_core"
             sequence = "100"/>
-
     <menuitem
             id="menu_siantou_ems_core_accessibility"
             name="Accessibilité"
-			parent="menu_siantou_ems_core"
+            parent="menu_siantou_ems_core"
             sequence = "110"/>
-
     <menuitem
             id="menu_siantou_ems_core_config_pe" 
             name="Gestion des programmes d'enseignements" 
             parent="menu_siantou_ems_core_configuration" 
             sequence="2"/>
-
     <menuitem
             id="menu_siantou_ems_core_config_fa" 
             name="Gestion des formations académiques" 
             parent="menu_siantou_ems_core_configuration" 
             sequence="3"/>
-
 </odoo>

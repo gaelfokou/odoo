@@ -1024,10 +1024,37 @@ class EducationClass(models.Model):
             },
         }
 
+    def action_open_filter_kanban(self):
+        view_id = self.env.ref('siantou_ems_core.class_filter_wizard').id
+        return {
+            'name': 'Filtre des classes',
+            'type': 'ir.actions.act_window',
+            'view_type': 'form',
+            'view_mode': 'form',
+            'res_model': 'class.filter.wizard',
+            'views': [(view_id, 'form')],
+            'view_id': view_id,
+            'target': 'new',
+            'context': {
+                'default_year_id': self.env['siantou.ems.core.year'].search([('is_active', '=', True)], limit=1).id,
+                'default_status': None,
+                'default_type_action': 'kanban',
+            },
+        }
+
     def action_reset_filter(self):
         self.env['ir.config_parameter'].sudo().set_param(f'siantou.filter_user_{self.env.user.id}', '')
         self.env['ir.config_parameter'].sudo().set_param(f'siantou.semester_user_{self.env.user.id}', '')
         action = self.env.ref('siantou_ems_core.action_show_class').read()[0]
+        action.update({
+            'target': 'main',
+        })
+        return action
+
+    def action_reset_filter_kanban(self):
+        self.env['ir.config_parameter'].sudo().set_param(f'siantou.filter_user_{self.env.user.id}', '')
+        self.env['ir.config_parameter'].sudo().set_param(f'siantou.semester_user_{self.env.user.id}', '')
+        action = self.env.ref('siantou_ems_core.action_show_class_dashboard').read()[0]
         action.update({
             'target': 'main',
         })

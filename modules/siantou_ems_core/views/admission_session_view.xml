@@ -119,7 +119,6 @@
             parent="menu_siantou_ems_core_adminssions"
             action="action_show_session"
             groups="siantou_ems_core.group_session_admin"
-            sequence="2"
-        />
+            sequence="2"/>
 	</data>
 </odoo>

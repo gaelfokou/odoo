@@ -106,8 +106,7 @@
             id="menu_hr_payroll_structure_view"
             action="action_view_hr_payroll_structure_list_form"
             parent="menu_hr_payroll_configuration"
-            sequence="2"
-    />
+            sequence="2"/>
 
     <record id="hr_salary_rule_category_form" model="ir.ui.view">
         <field name="name">hr.salary.rule.category.form</field>
@@ -252,8 +251,7 @@
             id="menu_action_hr_contribution_register_form"
             action="action_contribution_register_form"
             parent="menu_hr_payroll_configuration"
-            sequence="14"
-    />
+            sequence="14"/>
 
     <!-- Salary Rules -->
 

@@ -92,6 +92,13 @@ class ClassFilterWizard(models.TransientModel):
 
     specialty_id_domain = fields.Binary(compute='_compute_school_domain', default=[])
 
+    type_action = fields.Selection([
+        ('tree', 'Tree'),
+        ('kanban', 'Kanban'),
+    ], string='Type d\'action',
+        # default='tree',
+    )
+
     @api.depends('school_id')
     def _compute_school_domain(self):
         for record in self:
@@ -278,15 +285,43 @@ class ClassFilterWizard(models.TransientModel):
 
         self.env['ir.config_parameter'].sudo().set_param(f'siantou.filter_user_{self.env.user.id}', title)
 
-        view_id = self.env.ref('siantou_ems_core.class_tree_view').id
-        return {
-            'name': title,
-            'type': 'ir.actions.act_window',
-            'view_type': 'form',
-            'view_mode': 'tree,kanban,form',
-            'res_model': 'siantou.ems.core.class',
-            'views': [(view_id, 'tree'), (False, 'kanban'), (False, 'form')],
-            'view_id': view_id,
-            'domain': domain,
-            'target': 'main',
-        }
+        if self.type_action:
+            if self.type_action == 'kanban':
+                view_id = self.env.ref('siantou_ems_core.class_kanban_view').id
+                return {
+                    'name': title,
+                    'type': 'ir.actions.act_window',
+                    'view_type': 'form',
+                    'view_mode': 'kanban,form',
+                    'res_model': 'siantou.ems.core.class',
+                    'views': [(view_id, 'kanban'), (False, 'form')],
+                    'view_id': view_id,
+                    'domain': domain,
+                    'target': 'main',
+                }
+            else:
+                view_id = self.env.ref('siantou_ems_core.class_tree_view').id
+                return {
+                    'name': title,
+                    'type': 'ir.actions.act_window',
+                    'view_type': 'form',
+                    'view_mode': 'tree,kanban,form',
+                    'res_model': 'siantou.ems.core.class',
+                    'views': [(view_id, 'tree'), (False, 'kanban'), (False, 'form')],
+                    'view_id': view_id,
+                    'domain': domain,
+                    'target': 'main',
+                }
+        else:
+            view_id = self.env.ref('siantou_ems_core.class_tree_view').id
+            return {
+                'name': title,
+                'type': 'ir.actions.act_window',
+                'view_type': 'form',
+                'view_mode': 'tree,kanban,form',
+                'res_model': 'siantou.ems.core.class',
+                'views': [(view_id, 'tree'), (False, 'kanban'), (False, 'form')],
+                'view_id': view_id,
+                'domain': domain,
+                'target': 'main',
+            }
