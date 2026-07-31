@@ -99,25 +99,7 @@
                                                 <span t-esc="timetable_percentage_data[key]['name']"/>
                                             </td>
                                             <t t-if="'compare' in docdata">
-                                                <td class="text-center"></td>
-                                                <td class="text-center"></td>
-                                                <td class="text-center"></td>
-                                            </t>
-                                            <t t-else="">
-                                                <t t-if="'cumulative' in docdata">
-                                                    <td class="text-center"></td>
-                                                    <td class="text-center"></td>
-                                                    <td class="text-center"></td>
-                                                </t>
-                                                <t t-else="">
-                                                    <td class="text-center"></td>
-                                                </t>
-                                            </t>
-                                        </tr>
-                                        <tr>
-                                            <td class="text-left" style="background-color: #f2f2f2;"></td>
-                                            <t t-if="'compare' in docdata">
-                                                <td class="text-center" style="background-color: #f2f2f2;">
+                                                <td class="text-center">
                                                     <t t-if="timetable_percentage_data[key]['previous_class'] == 'text-success'">
                                                         <span t-esc="str(timetable_percentage_data[key]['previous_percentage']) + '%'" style="color: green !important;"/>
                                                     </t>
@@ -134,7 +116,7 @@
                                             </t>
                                             <t t-else="">
                                                 <t t-if="'cumulative' in docdata">
-                                                    <td class="text-center" style="background-color: #f2f2f2;">
+                                                    <td class="text-center">
                                                         <t t-if="timetable_percentage_data[key]['week_class'] == 'text-success'">
                                                             <span t-esc="str(timetable_percentage_data[key]['week_percentage']) + '%'" style="color: green !important;"/>
                                                         </t>
@@ -148,7 +130,7 @@
                                                             <span t-esc="str(timetable_percentage_data[key]['week_percentage']) + '%'"/>
                                                         </t>
                                                     </td>
-                                                    <td class="text-center" style="background-color: #f2f2f2;">
+                                                    <td class="text-center">
                                                         <t t-if="timetable_percentage_data[key]['month_class'] == 'text-success'">
                                                             <span t-esc="str(timetable_percentage_data[key]['month_percentage']) + '%'" style="color: green !important;"/>
                                                         </t>
@@ -164,7 +146,7 @@
                                                     </td>
                                                 </t>
                                             </t>
-                                            <td class="text-center" style="background-color: #f2f2f2;">
+                                            <td class="text-center">
                                                 <t t-if="timetable_percentage_data[key]['class'] == 'text-success'">
                                                     <span t-esc="str(timetable_percentage_data[key]['percentage']) + '%'" style="color: green !important;"/>
                                                 </t>
@@ -179,7 +161,7 @@
                                                 </t>
                                             </td>
                                             <t t-if="'compare' in docdata">
-                                                <td class="text-center" style="background-color: #f2f2f2;">
+                                                <td class="text-center">
                                                     <t t-if="timetable_percentage_data[key]['progress_class'] == 'text-success'">
                                                         <span t-esc="timetable_percentage_data[key]['progress']" style="color: green !important;"/>
                                                     </t>
