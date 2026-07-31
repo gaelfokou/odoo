@@ -1577,8 +1577,16 @@ class TimetableFilterWizard(models.TransientModel):
             start_date = datetime.strftime(self.start_date, DATE_FORMAT_FR)
             end_date = datetime.strftime(self.end_date, DATE_FORMAT_FR)
             title.append('{} - {}'.format(start_date, end_date))
-            timetables = timetables.filtered(lambda rec: rec.date and rec.day_of_week and rec.date <= self.end_date)
-            all_timetables = all_timetables.filtered(lambda rec: rec.date and rec.day_of_week and rec.date <= self.end_date)
+            all_timetable_ids = all_timetables.filtered(lambda rec: rec.date and rec.day_of_week and rec.date >= self.start_date and rec.date <= self.end_date)
+            class_ids = []
+            subject_ids = []
+            for all_timetable_id in all_timetable_ids:
+                class_ids.append(all_timetable_id.class_id.id)
+                subject_ids.append(all_timetable_id.subject_id.id)
+            class_ids = list(set(class_ids))
+            subject_ids = list(set(subject_ids))
+            timetables = timetables.filtered(lambda rec: rec.date and rec.day_of_week and rec.date <= self.end_date and rec.class_id.id in class_ids and rec.subject_id.id in subject_ids)
+            all_timetables = all_timetables.filtered(lambda rec: rec.date and rec.day_of_week and rec.date <= self.end_date and rec.class_id.id in class_ids and rec.subject_id.id in subject_ids)
         if self.start_time and self.end_time:
             start_time = TimetableFilterWizard.convert_float_to_time(self.start_time)
             end_time = TimetableFilterWizard.convert_float_to_time(self.end_time)
@@ -2165,6 +2173,7 @@ class TimetableFilterWizard(models.TransientModel):
             timetable_hour_and_cost['hours_credit'] = key_timetables[key]['hours_credit']
             timetable_hour_and_cost['status'] = STATUS_TIMETABLE[key_timetables[key]['timetable'].status]
             key_timetable_hour_and_costs[k]['worked_time'] += timetable_hour_and_cost['worked_time']
+            key_timetable_hour_and_costs[k]['rate'] = timetable_hour_and_cost['rate']
             key_timetable_hour_and_costs[k]['amount'] += timetable_hour_and_cost['amount']
             key_timetable_hour_and_costs[k]['total_amount'] = key_timetable_hour_and_costs[k]['amount']
             key_timetable_hour_and_costs[k]['data'].append(timetable_hour_and_cost)

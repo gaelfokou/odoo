@@ -164,7 +164,7 @@ class TeacherHourlyRate(models.Model):
 
     hourly_rate_id = fields.Many2one(
         'siantou.ems.core.hourly.rate',
-        'Taux horaire',
+        string='Taux horaire',
         required=True,
         ondelete='cascade'
     )

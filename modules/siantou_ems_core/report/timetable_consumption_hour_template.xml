@@ -71,23 +71,23 @@
                                     <t t-set="key_classes" t-value="docdata['timetable_consumption_hour_data'].keys()"/>
                                     <t t-foreach="key_classes" t-as="key_class">
                                         <tr>
-                                            <td class="text-left">
+                                            <td class="text-left" style="background-color: #f2f2f2;">
                                                 <span t-esc="docdata['timetable_consumption_hour_data'][key_class]['name']"/>
                                             </td>
-                                            <td class="text-center"></td>
-                                            <td class="text-center"></td>
+                                            <td class="text-center" style="background-color: #f2f2f2;"></td>
+                                            <td class="text-center" style="background-color: #f2f2f2;"></td>
                                         </tr>
                                         <t t-set="timetable_consumption_hour_data" t-value="dict(sorted(docdata['timetable_consumption_hour_data'][key_class]['data'].items(), key=lambda item: item[1]['percentage'], reverse=True))"/>
                                         <t t-set="keys" t-value="timetable_consumption_hour_data.keys()"/>
                                         <t t-foreach="keys" t-as="key">
                                             <tr>
-                                                <td class="text-left" style="background-color: #f2f2f2;">
+                                                <td class="text-left">
                                                     <span t-esc="timetable_consumption_hour_data[key]['name']"/>
                                                 </td>
-                                                <td class="text-center" style="background-color: #f2f2f2;">
+                                                <td class="text-center">
                                                     <span t-esc="str(timetable_consumption_hour_data[key]['all_worked_time']) + ' / ' + str(timetable_consumption_hour_data[key]['worked_time'])"/>
                                                 </td>
-                                                <td class="text-center" style="background-color: #f2f2f2;">
+                                                <td class="text-center">
                                                     <span t-esc="str(timetable_consumption_hour_data[key]['percentage']) + '%'"/>
                                                 </td>
                                             </tr>

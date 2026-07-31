@@ -74,11 +74,7 @@
                                             <td class="text-left">
                                                 <span t-esc="timetable_percentage_data[key]['name']"/>
                                             </td>
-                                            <td class="text-center"></td>
-                                        </tr>
-                                        <tr>
-                                            <td class="text-left" style="background-color: #f2f2f2;"></td>
-                                            <td class="text-center" style="background-color: #f2f2f2;">
+                                            <td class="text-center">
                                                 <span t-esc="str(timetable_percentage_data[key]['percentage']) + '%'"/>
                                             </td>
                                         </tr>
