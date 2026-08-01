@@ -4,12 +4,11 @@ class Country(models.Model):
     _name = 'siantou.ems.core.country'
     _description = 'Pays'
 
-    # code du pays
     code = fields.Char(
         string='Code',
         required=True,
     )
-    # Nom du pays
+
     name = fields.Char(
         string='Nom',
         required=True,
@@ -24,7 +23,6 @@ class Region(models.Model):
     _name = 'siantou.ems.core.region'
     _description = 'Région'
 
-    # Nom de la région
     name = fields.Char(
         string='Nom',
         required=True,
@@ -43,7 +41,6 @@ class City(models.Model):
     _name = 'siantou.ems.core.city'
     _description = 'Ville'
 
-    # Nom de la ville
     name = fields.Char(
         string='Nom',
         required=True,
@@ -62,7 +59,6 @@ class Quarter(models.Model):
     _name = 'siantou.ems.core.quarter'
     _description = 'Quartier'
 
-    # Nom du quartsier
     name = fields.Char(
         string='Nom',
         required=True,

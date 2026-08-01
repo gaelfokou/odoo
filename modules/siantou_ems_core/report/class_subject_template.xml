@@ -65,8 +65,8 @@
                                     </thead>
                                     <thead class="thead">
                                         <tr class="active">
-                                            <th class="text-center">Nom du cours</th>
                                             <th class="text-center">Code</th>
+                                            <th class="text-center">Nom du cours</th>
                                             <th class="text-center">Volume horaire</th>
                                             <th class="text-center">Crédit</th>
                                             <th class="text-center">Enseignants</th>
@@ -77,10 +77,10 @@
                                         <t t-set="semesters" t-value="semester_data.keys()"/>
                                         <t t-foreach="semesters" t-as="semester">
                                             <tr>
+                                                <td class="text-center" style="background-color: #f2f2f2;"></td>
                                                 <td class="text-center" style="background-color: #f2f2f2;">
                                                     <span t-esc="semester_data[semester]['name']"/>
                                                 </td>
-                                                <td class="text-center" style="background-color: #f2f2f2;"></td>
                                                 <td class="text-center" style="background-color: #f2f2f2;"></td>
                                                 <td class="text-center" style="background-color: #f2f2f2;"></td>
                                                 <td class="text-center" style="background-color: #f2f2f2;"></td>
@@ -88,11 +88,11 @@
                                             <t t-set="ues" t-value="semester_data[semester]['data'].keys()"/>
                                             <t t-foreach="ues" t-as="ue">
                                                 <tr>
-                                                    <td class="text-left" style="background-color: #f2f2f2;">
-                                                        <span t-esc="semester_data[semester]['data'][ue]['name']"/>
-                                                    </td>
                                                     <td class="text-center" style="background-color: #f2f2f2;">
                                                         <span t-esc="semester_data[semester]['data'][ue]['code']"/>
+                                                    </td>
+                                                    <td class="text-left" style="background-color: #f2f2f2;">
+                                                        <span t-esc="semester_data[semester]['data'][ue]['name']"/>
                                                     </td>
                                                     <td class="text-center" style="background-color: #f2f2f2;"></td>
                                                     <td class="text-center" style="background-color: #f2f2f2;"></td>
@@ -101,11 +101,11 @@
                                                 <t t-foreach="semester_data[semester]['data'][ue]['data']" t-as="subject">
                                                     <t t-set="employees" t-value="list(map(lambda rec: rec['identifier'] + ' - ' + rec['name'], subject['employees']))"/>
                                                     <tr>
-                                                        <td class="text-left">
-                                                            <span t-esc="subject['name']"/>
-                                                        </td>
                                                         <td class="text-center">
                                                             <span t-esc="subject['code']"/>
+                                                        </td>
+                                                        <td class="text-left">
+                                                            <span t-esc="subject['name']"/>
                                                         </td>
                                                         <td class="text-center">
                                                             <span t-esc="subject['hours_credit']"/>

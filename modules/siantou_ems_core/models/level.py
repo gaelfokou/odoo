@@ -5,20 +5,17 @@ class Level(models.Model):
     _description = 'Niveaux'
     _inherit=['mail.thread', 'mail.activity.mixin',]
 
-    # Nom du niveau
     name = fields.Char(
         string='Nom',
         required=True,
     )
 
-    # Description du niveau
     description = fields.Text(
         'Description',
     )
 
     cycle_ids = fields.Many2many('oe.school.course', 'course_level_rel', 'level_id', 'cycle_id', string='Cursus ou Cycles')
 
-    # Ensemble des cours du niveau
     class_ids = fields.One2many(
         'siantou.ems.core.class',
         'level_id',

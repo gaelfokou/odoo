@@ -17,7 +17,7 @@ class StudentEnrollment(models.Model):
     _inherit=['mail.thread', 'mail.activity.mixin',]
 
     name = fields.Char(
-        string="Nom(s) et prénom(s)", 
+        string="Nom complet", 
         related='student_id.name'
     )
 

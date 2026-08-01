@@ -10,7 +10,7 @@
             <table class="table table-attendance">
                 <tr>
                     <th>Matricule</th>
-                    <th>Nom(s) et prénom(s)</th>
+                    <th>Nom complet</th>
                     <th>E-mail</th>
                 </tr>
                 <tr t-foreach="state.students" t-as="data" t-key="index" t-att-data-value="data.id">

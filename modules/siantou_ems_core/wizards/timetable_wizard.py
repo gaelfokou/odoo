@@ -13,7 +13,6 @@ class TimetableWizard(models.TransientModel):
     _name = 'siantou.ems.timetable.timetable_wizard'
     _description = 'Assistant de génération automatique de l\'emploi du temps'
 
-    # Semestre pour lequel on souhaite tirer l'emploi du temps
     semester_id = fields.Many2one(
         'siantou.ems.core.year.semester',
         string='Semestre',
@@ -32,17 +31,14 @@ class TimetableWizard(models.TransientModel):
         ondelete='cascade'
     )
 
-    # Version à laquelle appartient l'emploi du temps
     group = fields.Char(
         string='Version'
     )
 
-    # Date du jour où le cours sera programmé
     start_date = fields.Date(
         string='Date de début',
     )
 
-    # Date du jour où le cours sera programmé
     end_date = fields.Date(
         string='Date de fin',
     )

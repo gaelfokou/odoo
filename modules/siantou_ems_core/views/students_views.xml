@@ -63,7 +63,7 @@
                 </header>
                 <sheet>
                     <div class="oe_title">
-                        <label for="name" string="Nom(s) et prénom(s)"/>
+                        <label for="name" string="Nom complet"/>
                         <h1><field name="name"/></h1>
                     </div>
 

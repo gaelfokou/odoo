@@ -12,35 +12,30 @@ _logger = logging.getLogger(__name__)
 class HrEmployee(models.Model):
     _inherit = 'hr.employee'
 
-    name = fields.Char(string="Nom(s) et prénom(s)", compute='_compute_name', store=True)
+    name = fields.Char(string="Nom complet", compute='_compute_name', store=True)
     last_name = fields.Char(string="Nom(s)", required=True)
     first_name = fields.Char(string="Prénom(s)")
 
-    # Variable booléenne pour identifier un enseignant
     is_teacher = fields.Boolean(
         'Est un enseignant ?',
         default=True,
     )
 
-    # Variable booléenne pour identifier un employé permanent
     is_permanent = fields.Boolean(
         'Est un permanent ?',
         default=False,
     )
 
-    # Variable booléenne pour identifier un portail
     is_portal = fields.Boolean(
         'Accéder au portail enseignant ?',
         default=False,
     )
 
-    # Matricule de l'enseignant
     identifier = fields.Char(
         string='Matricule',
         # required=True
     )
 
-    # Les cours que dispense cet enseignant
     subject_ids = fields.Many2many(
         'siantou.ems.core.subject',
         'teacher_subject_rel',
@@ -49,27 +44,23 @@ class HrEmployee(models.Model):
         string='Cours dispensés',
     )
 
-    # Les priorités de chaque cours sur cet enseignant
     subject_priority_ids = fields.One2many(
         'siantou.ems.core.teacher.subject.priority',
         'employee_id',
         'Priorités des cours'
     )
 
-    # Quota horaire hebdommadaire de cours pour un enseignant permanent
     weekly_hours_limit = fields.Integer(
         string='Quota horaire hebdommadaire',
         required=True
     )
 
-    # Disponibilité de l'enseignant
     teacher_availability_ids = fields.One2many(
         'siantou.ems.core.teacher.availability',
         'employee_id',
         'Disponibilité'
     )
 
-    # Relation avec les emplois du temps
     timetable_ids = fields.One2many(
         'siantou.ems.timetable.timetable',
         string='Emplois du temps',
@@ -519,7 +510,6 @@ class TeacherAvailability(models.Model):
     _name = 'siantou.ems.core.teacher.availability'
     _description = 'Disponibilité des enseignants'
 
-    # Enseignant lié
     employee_id = fields.Many2one(
         'hr.employee',
         'Enseignant',
@@ -527,7 +517,6 @@ class TeacherAvailability(models.Model):
         ondelete='cascade'
     )
 
-    # Jour de la semaine
     day_of_week = fields.Selection([
         ('0', 'Lundi'),
         ('1', 'Mardi'),
@@ -541,14 +530,12 @@ class TeacherAvailability(models.Model):
         required=True
     )
 
-    # Heure de début de disponibilité
     start_time = fields.Float(
         string='Heure de début',
         required=True,
         widget='time'
     )
 
-    # Heure de fin de disponibilité
     end_time = fields.Float(
         string='Heure de fin',
         required=True,
@@ -565,7 +552,6 @@ class TeacherSubjectPriority(models.Model):
     _name = 'siantou.ems.core.teacher.subject.priority'
     _description = 'Priorité du enseignant au cours'
 
-    # Enseignant pour lequel on souhaite définir la priorité sur le cours
     employee_id = fields.Many2one(
         'hr.employee',
         'Enseignant',
@@ -573,7 +559,6 @@ class TeacherSubjectPriority(models.Model):
         ondelete='cascade'
     )
 
-    # Cours pour lequel on souhaite définir la priorité de l'enseignant
     subject_id = fields.Many2one(
         'siantou.ems.core.subject',
         string='Cours',
@@ -581,7 +566,6 @@ class TeacherSubjectPriority(models.Model):
         ondelete='cascade'
     )
 
-    # Priorité de l'enseignant pour ce cours
     priority = fields.Integer(
         string='Priorité',
         help='Le enseignant avec le nombre le plus élevé est prioritaire (va de 1 à 10)',

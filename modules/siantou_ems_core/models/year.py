@@ -7,7 +7,6 @@ class Year(models.Model):
     _description = 'Années académiques'
     _inherit=['mail.thread', 'mail.activity.mixin',]
 
-    # Nom de l'année académique
     name = fields.Char(
         string='Nom',
         required=True

@@ -34,7 +34,6 @@ class TimetableSubjectHour(models.Model):
             else:
                 record.start_date = None
 
-    # Date du jour où le cours sera programmé
     start_date = fields.Date(
         string='Date de début',
         compute='_compute_start_date',
@@ -50,7 +49,6 @@ class TimetableSubjectHour(models.Model):
             else:
                 record.end_date = None
 
-    # Date du jour où le cours sera programmé
     end_date = fields.Date(
         string='Date de fin',
         compute='_compute_end_date',
@@ -58,7 +56,6 @@ class TimetableSubjectHour(models.Model):
         readonly=False
     )
 
-    # Jour où le cours est programmé
     day_of_week = fields.Selection([
             ('0', 'Lundi'),
             ('1', 'Mardi'),
@@ -71,7 +68,6 @@ class TimetableSubjectHour(models.Model):
         compute='_compute_day_of_week'
     )
 
-    # Heure de début du cours
     start_time = fields.Float(
         string='Heure de début',
         required=True,
@@ -80,7 +76,6 @@ class TimetableSubjectHour(models.Model):
         widget='time'
     )
 
-    # Heure de fin du cours
     end_time = fields.Float(
         string='Heure de fin',
         required=True,
@@ -344,7 +339,6 @@ class Timetable(models.Model):
                 if total_hours_credit > record.subject_id.hours_credit:
                     raise ValidationError(f"La somme des volumes horaires hebdomadaires doit être inférieure ou égale au volume horaire semestriel {total_hours_credit} / {record.subject_id.hours_credit}")
 
-    # Bâtiment auquel appartient la salle de classe
     building_id = fields.Many2one(
         'siantou.ems.core.building',
         'Bâtiment',
@@ -352,7 +346,6 @@ class Timetable(models.Model):
         ondelete='cascade'
     )
 
-    # Salle liée à la programmation de cours
     classroom_id = fields.Many2one(
         'siantou.ems.core.building.classroom',
         'Salle de classe',
@@ -360,7 +353,6 @@ class Timetable(models.Model):
         ondelete='cascade'
     )
 
-    # Enseignant lié à la programmation de cours
     employee_id = fields.Many2one(
         'hr.employee',
         'Enseignant',
@@ -374,14 +366,12 @@ class Timetable(models.Model):
         else:
             return None
 
-    # Date du jour où le cours sera programmé
     date = fields.Date(
         string='Date',
         required=True,
         default=_default_date,
     )
 
-    # Jour où le cours est programmé
     day_of_week = fields.Selection([
             ('0', 'Lundi'),
             ('1', 'Mardi'),
@@ -394,7 +384,6 @@ class Timetable(models.Model):
         compute='_compute_day_of_week'
     )
 
-    # Heure de début du cours
     start_time = fields.Float(
         string='Heure de début',
         required=True,
@@ -403,7 +392,6 @@ class Timetable(models.Model):
         widget='time'
     )
 
-    # Heure de fin du cours
     end_time = fields.Float(
         string='Heure de fin',
         required=True,
@@ -412,14 +400,12 @@ class Timetable(models.Model):
         widget='time'
     )
 
-    # Heure de début du cours
     worked_start_time = fields.Float(
         string='Heure de début effectuée',
         default=0.0,
         widget='time'
     )
 
-    # Heure de fin du cours
     worked_end_time = fields.Float(
         string='Heure de fin effectuée',
         default=0.0,
@@ -466,21 +452,18 @@ class Timetable(models.Model):
             else:
                 record.end_datetime = None
 
-    # Date et heure de début du cours
     start_datetime = fields.Datetime(
         string='Date et heure de début',
         compute='_compute_start_datetime',
         store=True
     )
 
-    # Date et heure de fin du cours
     end_datetime = fields.Datetime(
         string='Date et heure de fin',
         compute='_compute_end_datetime',
         store=True
     )
 
-    # Heure de fin du cours
     worked_time = fields.Float(
         string='Heure effectuée',
         default=0.0,
@@ -488,7 +471,6 @@ class Timetable(models.Model):
         # store=False
     )
 
-    # Taux de l\'enseignant
     rate = fields.Float(
         string='Taux horaire',
         default=0.0,
@@ -2034,7 +2016,6 @@ class TimetableSlotItem(models.Model):
         ondelete='cascade',
     )
 
-    # Heure de début du cours
     start_time = fields.Float(
         string='Heure de début',
         required=True,
@@ -2042,7 +2023,6 @@ class TimetableSlotItem(models.Model):
         widget='time'
     )
 
-    # Heure de fin du cours
     end_time = fields.Float(
         string='Heure de fin',
         required=True,

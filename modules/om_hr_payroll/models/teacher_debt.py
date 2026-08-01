@@ -38,7 +38,6 @@ class TeacherDebt(models.Model):
         string='Description',
     )
 
-    # Enseignant lié à la programmation de cours
     employee_id = fields.Many2one(
         'hr.employee',
         string='Enseignant',

@@ -44,13 +44,11 @@ class Subject(models.Model):
     _description = 'Cours'
     _inherit=['mail.thread', 'mail.activity.mixin',]
 
-    # Code du cours
     code = fields.Char(
         string='Code',
         required=True
     )
 
-    # Variable booléenne pour savoir si c'est un tronc commun ou pas
     shared_subject = fields.Boolean(
         'Tronc commun',
         default=False
@@ -74,19 +72,16 @@ class Subject(models.Model):
         domain="[('shared_subject', '=', True)]",
     )
 
-    # Variable booléenne pour savoir si c'est une matière fait partie de l'EPS ou pas
     eps_subject = fields.Boolean(
         'Mathière de l\'EPS',
         default=False
     )
 
-    # Nom du cours
     name = fields.Char(
         string='Nom',
         required=True
     )
 
-    # Volume horaire du cours sur un semestre
     hours_credit = fields.Float(
         string='Volume horaire',
         help='Volume horaire du cours sur un semestre',
@@ -152,7 +147,6 @@ class Subject(models.Model):
 
     syllabus_ids = fields.One2many('siantou.ems.core.syllabus', 'subject_id', string='Syllabus')
 
-    # Les enseignants qui dispensent ce cours
     teacher_ids = fields.Many2many(
         'hr.employee',
         'teacher_subject_rel',
@@ -163,7 +157,6 @@ class Subject(models.Model):
         # inverse='_set_teacher_ids'
     )
 
-    # Les priorités de chaque enseignant sur ce cours
     teacher_priority_ids = fields.One2many(
         'siantou.ems.core.teacher.subject.priority',
         'subject_id',

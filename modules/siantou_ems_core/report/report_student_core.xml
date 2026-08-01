@@ -62,7 +62,7 @@
                                         <thead class="thead">
                                             <tr class="active" style="border: 1px solid black;text-align: left;font-size: 12px;">
                                                 <th style="border: 1px solid black;text-align: left;padding: 4px; width: 25%;text-transform:uppercase;">
-                                                    Nom(s) et prénom(s)
+                                                    Nom complet
                                                 </th>
                                                 <th style="border: 1px solid black;text-align: left;padding: 4px; width: 25%;text-transform:uppercase;">
                                                     Code d'enroulement

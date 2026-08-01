@@ -63,7 +63,7 @@
                                 <thead class="thead">
                                     <tr class="active">
                                         <th class="text-center">Matricule</th>
-                                        <th class="text-center">Nom(s) et prénom(s)</th>
+                                        <th class="text-center">Nom complet</th>
                                         <th class="text-center">Nom(s)</th>
                                         <th class="text-center">Prénom(s)</th>
                                         <th class="text-center">E-mail</th>

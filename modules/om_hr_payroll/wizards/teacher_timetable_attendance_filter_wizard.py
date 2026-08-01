@@ -52,7 +52,6 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
     _name = 'teacher.timetable.attendance.filter.wizard'
     _description = 'Filtre des émargements des enseignants'
 
-    # Enseignant lié à la programmation de cours
     employee_id = fields.Many2one(
         'hr.employee',
         'Enseignant',

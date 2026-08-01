@@ -159,19 +159,16 @@ class TimetableFilterWizard(models.TransientModel):
         string='Cours',
     )
 
-    # Bâtiment auquel appartient la salle de classe
     building_id = fields.Many2one(
         'siantou.ems.core.building',
         'Bâtiment',
     )
 
-    # Salle liée à la programmation de cours
     classroom_id = fields.Many2one(
         'siantou.ems.core.building.classroom',
         'Salle de classe',
     )
 
-    # Enseignant lié à la programmation de cours
     employee_id = fields.Many2one(
         'hr.employee',
         'Enseignant',
@@ -195,14 +192,12 @@ class TimetableFilterWizard(models.TransientModel):
         default=_default_end_date,
     )
 
-    # Heure de début du cours
     start_time = fields.Float(
         string='Heure de début',
         default=0.0,
         widget='time'
     )
 
-    # Heure de fin du cours
     end_time = fields.Float(
         string='Heure de fin',
         default=0.0,

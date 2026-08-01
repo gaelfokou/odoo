@@ -75,7 +75,6 @@ class TeacherTimetableAttendance(models.TransientModel):
         related='timetable_id.subject_id'
     )
 
-    # Enseignant lié à la programmation de cours
     employee_id = fields.Many2one(
         'hr.employee',
         string='Enseignant',
@@ -109,61 +108,51 @@ class TeacherTimetableAttendance(models.TransientModel):
         related='timetable_id.date'
     )
 
-    # Heure de début du cours
     start_time = fields.Float(
         string='Heure de début',
         related='timetable_id.start_time'
     )
 
-    # Heure de fin du cours
     end_time = fields.Float(
         string='Heure de fin',
         related='timetable_id.end_time'
     )
 
-    # Heure de début du cours
     worked_start_time = fields.Float(
         string='Heure de début effectuée',
         related='timetable_id.worked_start_time'
     )
 
-    # Heure de fin du cours
     worked_end_time = fields.Float(
         string='Heure de fin effectuée',
         related='timetable_id.worked_end_time'
     )
 
-    # Heure de fin du cours
     worked_time = fields.Float(
         string='Heure effectuée',
         default=0.0,
     )
 
-    # Volume horaire du cours
     hours_credit = fields.Float(
         string='Volume horaire du cours',
         default=0.0,
     )
 
-    # Volume horaire effectué du cours
     done = fields.Float(
         string='Volume horaire effectué théoriquement',
         default=0.0,
     )
 
-    # Volume horaire restant du cours
     awaiting = fields.Float(
         string='Volume horaire restant théoriquement',
         default=0.0,
     )
 
-    # Volume horaire effectué du cours
     worked_done = fields.Float(
         string='Volume horaire effectué',
         default=0.0,
     )
 
-    # Volume horaire restant du cours
     worked_awaiting = fields.Float(
         string='Volume horaire restant',
         default=0.0,
@@ -191,7 +180,6 @@ class TeacherTimetableAttendance(models.TransientModel):
         default=False,
     )
 
-    # Taux de l\'enseignant
     rate = fields.Float(
         string='Taux horaire',
         default=0.0,

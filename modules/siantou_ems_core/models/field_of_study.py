@@ -11,13 +11,11 @@ class OptionOfStudy(models.Model):
         required=True,
     )
 
-    # Code du programme
     code = fields.Char(
         string='Code',
         required=True
     )
 
-    # Nom du programme
     name = fields.Char(
         string='Nom de l\'option',
         required=True
@@ -79,19 +77,16 @@ class SpecialtyOfStudy(models.Model):
         string='Département'
     )
 
-    # Code du programme
     code = fields.Char(
         string='Code',
         required=True
     )
 
-    # Nom du programme
     name = fields.Char(
         string='Nom',
         required=True
     )
 
-    # Ensemble des options de la filière
     option_ids = fields.One2many(
         'siantou.ems.core.option',
         'specialty_id',
@@ -136,13 +131,11 @@ class FieldOfStudy(models.Model):
     _description = 'Filières'
     _inherit=['mail.thread', 'mail.activity.mixin',]
 
-    # Code du programme
     code = fields.Char(
         string='Code',
         required=True
     )
 
-    # Nom du programme
     name = fields.Char(
         string='Nom',
         required=True
@@ -158,7 +151,6 @@ class FieldOfStudy(models.Model):
         string='Cursus ou Cycle',
     )
 
-    # Ensemble des spécialités de la filière
     specialty_ids = fields.One2many(
         'siantou.ems.core.specialty',
         'field_of_study_id',

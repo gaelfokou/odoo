@@ -55,7 +55,6 @@ class HourlyRate(models.Model):
         default='cj',
     )
 
-    # Taux
     rate = fields.Float(
         string='Taux',
         default=0.0,
@@ -145,7 +144,6 @@ class TeacherHourlyRate(models.Model):
         store=True,
     )
 
-    # Enseignant pour lequel on souhaite définir la priorité sur le cours
     employee_id = fields.Many2one(
         'hr.employee',
         'Enseignant',
@@ -154,7 +152,6 @@ class TeacherHourlyRate(models.Model):
         domain=[('is_teacher', '=', True)]
     )
 
-    # Cours pour lequel on souhaite définir la priorité de l'enseignant
     subject_id = fields.Many2one(
         'siantou.ems.core.subject',
         string='Cours',
@@ -176,7 +173,6 @@ class TeacherHourlyRate(models.Model):
         related='hourly_rate_id.type_cour',
     )
 
-    # Taux de l\'enseignant
     rate = fields.Float(
         string='Taux',
         default=0.0,

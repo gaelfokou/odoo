@@ -11,19 +11,16 @@ class Campus(models.Model):
     _name = 'siantou.ems.core.campus'
     _description = 'Campus'
 
-    # Code
     code = fields.Char(
         string='Code',
         required=True
     )
 
-    # Nom
     name = fields.Char(
         string="Nom du campus",
         required=True
     )
 
-    # Université à laquelle appartient ce bâtiment
     company_id = fields.Many2one(
         'res.company',
         required=True,
@@ -34,13 +31,11 @@ class Building(models.Model):
     _name = 'siantou.ems.core.building'
     _description = 'Bâtiment'
 
-    # Code du bâtiment
     code = fields.Char(
         string='Code',
         required=True
     )
 
-    # Nom du bâtiment
     name = fields.Char(
         string="Nom du bâtiment",
         required=True
@@ -62,14 +57,12 @@ class Classroom(models.Model):
     _name = 'siantou.ems.core.building.classroom'
     _description = 'Salles de classe'
 
-    # Code de la salle de classe
     code = fields.Char(
         string='Code',
         required=True,
         help="Code unique pour identifier la salle de classe."
     )
 
-    # Nom de la salle de classe
     name = fields.Char(
         string='Nom',
         required=True,
@@ -78,7 +71,6 @@ class Classroom(models.Model):
         help="Nom descriptif de la salle de classe."
     )
 
-    # Bâtiment auquel appartient la salle de classe
     building_id = fields.Many2one(
         'siantou.ems.core.building',
         string='Bâtiment',
@@ -87,7 +79,6 @@ class Classroom(models.Model):
         help="Bâtiment auquel cette salle de classe est associée."
     )
 
-    # Capacité de la salle de classe
     capacity = fields.Integer(
         string='Capacité',
         required=True,
@@ -95,7 +86,6 @@ class Classroom(models.Model):
         help="Nombre maximal d'étudiants pouvant être accueillis dans cette salle."
     )
 
-    # Relation avec les emplois du temps
     timetable_ids = fields.One2many(
         'siantou.ems.timetable.timetable',
         string='Emplois du temps',

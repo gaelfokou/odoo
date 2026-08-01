@@ -16,7 +16,7 @@ class Student(models.Model):
     _description = 'Étudiant'
     _inherit=['mail.thread', 'mail.activity.mixin',]
 
-    name = fields.Char(string="Nom(s) et prénom(s)", compute='_compute_name', store=True)
+    name = fields.Char(string="Nom complet", compute='_compute_name', store=True)
     last_name = fields.Char(string="Nom(s)", required=True)
     first_name = fields.Char(string="Prénom(s)")
     matricule = fields.Char(string="Matricule")
