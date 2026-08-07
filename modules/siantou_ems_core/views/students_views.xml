@@ -84,7 +84,7 @@
                                     <field name="user_id"/>
                                 </group>
                                 <group colspan="2">
-                                    <field name="nationalite" invisible="is_autre_pays==True"/>
+                                    <field name="nationalite" invisible="is_autre_pays == True"/>
                                     <field name="autre"/>
                                     <field name="is_autre_pays" invisible="1"/>
                                     <field name="region_id"/>

@@ -42,8 +42,11 @@ class EducationClass(models.Model):
         related='field_of_study_id.cycle_id'
     )
 
-    supervision_id = fields.Many2one('oe.school.course.supervision', string='Tutelle académique',
-                                 help="Tutelle académique")
+    supervision_id = fields.Many2one(
+        'oe.school.course.supervision',
+        string='Tutelle académique',
+        related='cycle_id.supervision_id'
+    )
 
     student_enroll_ids = fields.One2many(
         'oe.school.student.enrollment',
