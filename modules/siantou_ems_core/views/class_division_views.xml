@@ -26,10 +26,10 @@
                             class="oe_highlight" 
                             display="always"
                             groups="siantou_ems_core.group_class_print_pdf"/>
-                        <button name="action_update_all_class" 
+                        <!-- <button name="action_update_all_class" 
                             type="object" 
                             string="Mettre à jour les classes" 
-                            class="oe_highlight"/>
+                            class="oe_highlight"/> -->
                         <!-- <button name="action_update_all_student_class" 
                             type="object" 
                             string="Mettre à jour les étudiants et classes" 
