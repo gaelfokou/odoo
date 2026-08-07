@@ -673,7 +673,7 @@ class EducationClass(models.Model):
                     """
                 raise ValidationError(validation_error_message)
 
-    @api.depends('specialty_id', 'option_id', 'level_id', 'type_cour')
+    @api.depends('specialty_id', 'option_id', 'level_id', 'type_cour', 'supervision_id')
     def _compute_name(self):
         for record in self:
             specialty_name = record.specialty_id.name if record.specialty_id.id else ''
@@ -683,7 +683,8 @@ class EducationClass(models.Model):
             niveau_name = record.level_id.name if record.level_id.id else ''
             niveau_name = re.sub(r'Niveau ', '', niveau_name)
             type_cour_name = record.type_cour if record.type_cour == 'cs' else ''
-            name = '{} {} {} {}'.format(specialty_name, option_name, niveau_name, type_cour_name)
+            supervision_name = record.supervision_id.name if record.supervision_id.id else ''
+            name = '{} {} {} {} {}'.format(specialty_name, option_name, niveau_name, type_cour_name, supervision_name)
             while True:
                 if name.find('  ') != -1:
                     name = name.replace('  ', ' ')
@@ -693,7 +694,7 @@ class EducationClass(models.Model):
             name = name.upper()
             record.name = name
 
-    @api.onchange('specialty_id', 'option_id', 'level_id', 'type_cour')
+    @api.onchange('specialty_id', 'option_id', 'level_id', 'type_cour', 'supervision_id')
     def _onchange_name(self):
         for record in self:
             record._compute_name()
@@ -1197,6 +1198,19 @@ class EducationClass(models.Model):
         except Exception as error:
             _logger.info(f'----------- tototototototo Exception {error} -----------')
 
+    def update_class(self, classe):
+        try:
+            classe.sudo().write({
+                'specialty_id': classe.specialty_id.id,
+            })
+            # self.env.cr.commit()
+        except psycopg2.errors.NotNullViolation as error:
+            _logger.info(f'----------- tototototototo Exception {error} -----------')
+        except psycopg2.Error as error:
+            _logger.info(f'----------- tototototototo Exception {error} -----------')
+        except Exception as error:
+            _logger.info(f'----------- tototototototo Exception {error} -----------')
+
     def action_update_all_student_class(self):
         active_ids = self.env.context.get('active_ids', [])
         classes = self.env['siantou.ems.core.class'].browse(active_ids)
@@ -1207,8 +1221,22 @@ class EducationClass(models.Model):
         for classe in classes:
             self.add_number_of_student_class(classe)
 
-        classes = list(classes)
         self.remove_duplicate_student_class(classes)
+
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'reload',
+        }
+
+    def action_update_all_class(self):
+        active_ids = self.env.context.get('active_ids', [])
+        classes = self.env['siantou.ems.core.class'].browse(active_ids)
+        classes = list(classes)
+        if len(active_ids) == 0:
+            raise UserError('Aucune donnée sélectionnée')
+
+        for classe in classes:
+            self.update_class(classe)
 
         return {
             'type': 'ir.actions.client',
