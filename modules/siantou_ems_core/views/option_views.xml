@@ -10,6 +10,8 @@
 					<field name="code"/>
 					<field name="name"/>
                     <field name="specialty_id"/>
+                    <field name="cycle_id"/>
+                    <field name="supervision_id"/>
 				</tree>
 			</field>
 		</record>
@@ -25,7 +27,9 @@
                         </div>
                         <group>
                             <field name="code" placeholder="ex: COM INT"/>
-                            <field name="specialty_id" options="{'create': false, 'create_edit': false}"/>
+                            <field name="specialty_id" options="{'no_create': True}"/>
+                            <field name="cycle_id" options="{'no_create': True}"/>
+                            <field name="supervision_id" options="{'no_create': True}"/>
                         </group>
 					</sheet>
                     <div class="oe_chatter">

@@ -13,6 +13,7 @@
 					<field name="name"/>
                 	<field name="school_id"/>
                     <field name="cycle_id"/>
+                    <field name="supervision_id"/>
                     <!-- <field name="department_id"/> -->
 				</tree>
 			</field>
@@ -35,6 +36,7 @@
                             <group>
                                 <field name="school_id" options="{'no_create': True}"/>
                                 <field name="cycle_id" options="{'no_create': True}"/>
+                                <field name="supervision_id" options="{'no_create': True}"/>
                                 <!-- <field name="department_id" options="{'no_create': True}" domain="[('school_id', '=', school_id)]"/> -->
                             </group>
                         </group>

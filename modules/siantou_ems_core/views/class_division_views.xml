@@ -263,13 +263,13 @@
                                 </field>
                             </page>
                             <page name="subject_ids" string="Cours">
-                                <field name="subject_ids" options="{'create': false, 'create_edit': false}"/>
+                                <field name="subject_ids" options="{'no_create': True}"/>
                             </page>
                             <page name="student_ids" string="Étudiants">
-                                <field name="student_ids" options="{'create': false, 'create_edit': false}"/>
+                                <field name="student_ids" options="{'no_create': True}"/>
                             </page>
                             <page name="timetable_ids" string="Emplois du temps">
-                                <field name="timetable_ids" options="{'create': false, 'create_edit': false}"/>
+                                <field name="timetable_ids" options="{'no_create': True}"/>
                             </page>
                         </notebook>
 					</sheet>

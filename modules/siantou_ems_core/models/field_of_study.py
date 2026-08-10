@@ -11,6 +11,18 @@ class OptionOfStudy(models.Model):
         required=True,
     )
 
+    cycle_id = fields.Many2one(
+        'oe.school.course',
+        string='Cursus ou Cycle',
+        related='specialty_id.cycle_id'
+    )
+
+    supervision_id = fields.Many2one(
+        'oe.school.course.supervision',
+        string='Tutelle académique',
+        related='cycle_id.supervision_id'
+    )
+
     code = fields.Char(
         string='Code',
         required=True
@@ -70,6 +82,12 @@ class SpecialtyOfStudy(models.Model):
         'oe.school.course',
         string='Cursus ou Cycle',
         related='field_of_study_id.cycle_id'
+    )
+
+    supervision_id = fields.Many2one(
+        'oe.school.course.supervision',
+        string='Tutelle académique',
+        related='cycle_id.supervision_id'
     )
 
     department_id = fields.Many2one(
@@ -149,6 +167,12 @@ class FieldOfStudy(models.Model):
     cycle_id = fields.Many2one(
         'oe.school.course',
         string='Cursus ou Cycle',
+    )
+
+    supervision_id = fields.Many2one(
+        'oe.school.course.supervision',
+        string='Tutelle académique',
+        related='cycle_id.supervision_id'
     )
 
     specialty_ids = fields.One2many(
