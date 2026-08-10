@@ -1,10 +1,13 @@
 # -*- coding: utf-8 -*-
 
-from odoo import models, fields, api, tools, _
-from odoo.exceptions import UserError, AccessError
-from random import randint
 import re
-from odoo.exceptions import ValidationError
+from random import randint
+from odoo import models, fields, api, tools, _
+from odoo.exceptions import UserError, ValidationError
+import psycopg2
+from datetime import date, datetime, timedelta, time
+from dateutil.relativedelta import relativedelta
+from odoo.tools import unique
 import logging
 
 _logger = logging.getLogger(__name__)
@@ -35,7 +38,62 @@ class OeSchoolCourse(models.Model):
     def _default_color(self):
         return randint(1, 11)
 
-    name = fields.Char(string='Nom', required=True)
+    cycle_name = fields.Char(
+        string='Nom',
+        required=True
+    )
+
+    name = fields.Char(
+        string='Nom du cycle',
+        compute='_compute_name',
+        store=True,
+    )
+
+    @api.depends('cycle_name', 'supervision_id')
+    def _compute_name(self):
+        for record in self:
+            cycle_name = record.cycle_name if record.cycle_name else ''
+            cycle_name = cycle_name.lower()
+            while True:
+                if cycle_name.find('-') != -1:
+                    cycle_name = cycle_name.replace('-', ' ')
+                else:
+                    break
+            supervision_name = record.supervision_id.name if record.supervision_id.id else ''
+            if supervision_name != '':
+                supervision_name = f'- {supervision_name}'
+            supervisions = self.env['oe.school.course.supervision'].search([])
+            supervisions = list(supervisions)
+            for supervision in supervisions:
+                name = supervision.name
+                name = name.lower()
+                while True:
+                    if cycle_name.find(name) != -1:
+                        cycle_name = cycle_name.replace(name, '')
+                    else:
+                        break
+                names = name.split('/')
+                for name in names:
+                    while True:
+                        if cycle_name.find(name) != -1:
+                            cycle_name = cycle_name.replace(name, '')
+                        else:
+                            break
+            name = '{} {}'.format(cycle_name, supervision_name)
+            while True:
+                if name.find('  ') != -1:
+                    name = name.replace('  ', ' ')
+                else:
+                    break
+            name = name.strip()
+            name = name.upper()
+            record.name = name
+
+    @api.onchange('cycle_name', 'supervision_id')
+    def _onchange_name(self):
+        for record in self:
+            record._compute_name()
+
     code = fields.Char(string='Code', required=True, size=10)
     complete_name = fields.Char(string='Nom complet', compute='_compute_complete_name', recursive=True)
     parent_id = fields.Many2one(
@@ -173,6 +231,34 @@ class OeSchoolCourse(models.Model):
     #         }
     #     })
     #     return action
+
+    def update_cycle(self, cycle):
+        try:
+            cycle.write({
+                'cycle_name': cycle.name,
+            })
+            # self.env.cr.commit()
+        except psycopg2.errors.NotNullViolation as error:
+            _logger.info(f'----------- tototototototo Exception {error} -----------')
+        except psycopg2.Error as error:
+            _logger.info(f'----------- tototototototo Exception {error} -----------')
+        except Exception as error:
+            _logger.info(f'----------- tototototototo Exception {error} -----------')
+
+    def action_update_all_cycle(self):
+        active_ids = self.env.context.get('active_ids', [])
+        cycles = self.env['oe.school.course'].browse(active_ids)
+        cycles = list(cycles)
+        if len(active_ids) == 0:
+            raise UserError('Aucune donnée sélectionnée')
+
+        for cycle in cycles:
+            self.update_cycle(cycle)
+
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'reload',
+        }
 
 class SchoolSyllabus(models.Model):
     _name = 'siantou.ems.core.syllabus'

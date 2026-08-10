@@ -677,13 +677,59 @@ class EducationClass(models.Model):
     def _compute_name(self):
         for record in self:
             specialty_name = record.specialty_id.name if record.specialty_id.id else ''
+            specialty_name = specialty_name.lower()
+            while True:
+                if specialty_name.find('-') != -1:
+                    specialty_name = specialty_name.replace('-', ' ')
+                else:
+                    break
             option_name = record.option_id.name if record.option_id.id else ''
+            option_name = option_name.lower()
+            while True:
+                if option_name.find('-') != -1:
+                    option_name = option_name.replace('-', ' ')
+                else:
+                    break
             if option_name != '':
                 option_name = f'- {option_name}'
             niveau_name = record.level_id.name if record.level_id.id else ''
             niveau_name = re.sub(r'Niveau ', '', niveau_name)
             type_cour_name = record.type_cour if record.type_cour == 'cs' else ''
             supervision_name = record.supervision_id.name if record.supervision_id.id else ''
+            if supervision_name != '':
+                supervision_name = f'- {supervision_name}'
+            supervisions = self.env['oe.school.course.supervision'].search([])
+            supervisions = list(supervisions)
+            for supervision in supervisions:
+                name = supervision.name
+                name = name.lower()
+                while True:
+                    if specialty_name.find(name) != -1:
+                        specialty_name = specialty_name.replace(name, '')
+                    else:
+                        break
+                names = name.split('/')
+                for name in names:
+                    while True:
+                        if specialty_name.find(name) != -1:
+                            specialty_name = specialty_name.replace(name, '')
+                        else:
+                            break
+            for supervision in supervisions:
+                name = supervision.name
+                name = name.lower()
+                while True:
+                    if option_name.find(name) != -1:
+                        option_name = option_name.replace(name, '')
+                    else:
+                        break
+                names = name.split('/')
+                for name in names:
+                    while True:
+                        if option_name.find(name) != -1:
+                            option_name = option_name.replace(name, '')
+                        else:
+                            break
             name = '{} {} {} {} {}'.format(specialty_name, option_name, niveau_name, type_cour_name, supervision_name)
             while True:
                 if name.find('  ') != -1:
@@ -1200,7 +1246,7 @@ class EducationClass(models.Model):
 
     def update_class(self, classe):
         try:
-            classe.sudo().write({
+            classe.write({
                 'specialty_id': classe.specialty_id.id,
             })
             # self.env.cr.commit()

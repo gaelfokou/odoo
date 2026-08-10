@@ -7,6 +7,12 @@
 			<field name="model">oe.school.course</field>
 			<field name="arch" type="xml">
 				<tree string='Cursus ou Cycles'>
+                    <header>
+                        <button name="action_update_all_cycle" 
+                            type="object" 
+                            string="Mettre à jour les cycles" 
+                            class="oe_highlight"/>
+                    </header>
                     <field name="code"/>
 					<field name="name"/>
                     <field name="company_id"/>
@@ -52,8 +58,9 @@
                         </div> -->
                         <group >
                             <group>
-                                <field name="code"/>
                                 <field name="name"/>
+                                <field name="code"/>
+                                <field name="cycle_name"/>
                                 <field name="level_ids" widget="many2many_tags"/>
                                 <field name="has_supervision"/>
                                 <field name="supervision_id" invisible="has_supervision == False"/>
