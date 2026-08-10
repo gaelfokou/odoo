@@ -85,13 +85,13 @@
 			<field name="arch" type="xml">
 				<form string="Emplois du temps">
                     <header>
-                        <button name="state_pending_timetable" class="oe_highlight" invisible="state in ['pending'] or is_readonly == True" string="En attente" type="object"/>
-                        <button name="state_progress_timetable" class="oe_highlight" invisible="state in ['progress'] or is_readonly == True" string="En cours" type="object"/>
-                        <button name="state_present_timetable" class="oe_highlight" invisible="state in ['present'] or is_readonly == True" string="Présent" type="object"/>
-                        <button name="state_absent_timetable" class="oe_highlight" invisible="state in ['absent'] or is_readonly == True" string="Absent" type="object"/>
-                        <button name="state_permission_timetable" class="oe_highlight" invisible="state in ['permission'] or is_readonly == True" string="Permissionnaire" type="object"/>
-                        <button name="state_exception_timetable" class="oe_highlight" invisible="state in ['exception'] or is_readonly == True" string="Exception" type="object"/>
-                        <button name="state_delay_timetable" class="oe_highlight" invisible="state in ['delay'] or is_readonly == True" string="Retardataire" type="object"/>
+                        <button name="state_pending_timetable" class="btn btn-muted" invisible="state in ['pending'] or is_readonly == True" string="En attente" type="object"/>
+                        <button name="state_progress_timetable" class="btn btn-primary" invisible="state in ['progress'] or is_readonly == True" string="En cours" type="object"/>
+                        <button name="state_present_timetable" class="btn btn-success" invisible="state in ['present'] or is_readonly == True" string="Présent" type="object"/>
+                        <button name="state_absent_timetable" class="btn btn-danger" invisible="state in ['absent'] or is_readonly == True" string="Absent" type="object"/>
+                        <button name="state_permission_timetable" class="btn btn-info" invisible="state in ['permission'] or is_readonly == True" string="Permissionnaire" type="object"/>
+                        <button name="state_exception_timetable" class="btn btn-warning" invisible="state in ['exception'] or is_readonly == True" string="Exception" type="object"/>
+                        <button name="state_delay_timetable" class="btn btn-info" invisible="state in ['delay'] or is_readonly == True" string="Retardataire" type="object"/>
                         <field name="state" widget="statusbar" statusbar_visible="pending,progress,present,absent,permission,exception,delay"/>
                     </header>
 					<sheet>

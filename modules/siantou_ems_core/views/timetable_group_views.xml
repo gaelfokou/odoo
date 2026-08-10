@@ -79,10 +79,10 @@
             <field name="arch" type="xml">
                 <form string="Versions d'emploi du temps publiées">
                     <header invisible="is_submit == False">
-                        <button name="state_pending_timetable_group" class="oe_highlight" invisible="state in ['pending'] or is_readonly == True" string="En attente" type="object"/>
-                        <button name="state_valid_timetable_group" class="oe_highlight" invisible="state in ['valid'] or is_readonly == True" string="Valide" type="object"/>
-                        <button name="state_invalid_timetable_group" class="oe_highlight" invisible="state in ['invalid'] or is_readonly == True" string="Invalide" type="object"/>
-                        <button name="state_draft_timetable_group" class="oe_highlight" invisible="state in ['draft'] or is_readonly == True" string="Brouillon" type="object"/>
+                        <button name="state_pending_timetable_group" class="btn btn-muted" invisible="state in ['pending'] or is_readonly == True" string="En attente" type="object"/>
+                        <button name="state_valid_timetable_group" class="btn btn-success" invisible="state in ['valid'] or is_readonly == True" string="Valide" type="object"/>
+                        <button name="state_invalid_timetable_group" class="btn btn-danger" invisible="state in ['invalid'] or is_readonly == True" string="Invalide" type="object"/>
+                        <button name="state_draft_timetable_group" class="btn btn-primary" invisible="state in ['draft'] or is_readonly == True" string="Brouillon" type="object"/>
                         <field name="state" widget="statusbar" statusbar_visible="pending,valid,invalid,draft"/>
                     </header>
 					<sheet>
@@ -127,10 +127,10 @@
             <field name="arch" type="xml">
                 <form string="Versions d'emploi du temps soumises">
                     <header invisible="is_submit == False">
-                        <button name="state_pending_timetable_group" class="oe_highlight" invisible="state in ['pending'] or is_readonly == True" string="En attente" type="object"/>
-                        <button name="state_valid_timetable_group" class="oe_highlight" invisible="state in ['valid'] or is_readonly == True" string="Valide" type="object"/>
-                        <button name="state_invalid_timetable_group" class="oe_highlight" invisible="state in ['invalid'] or is_readonly == True" string="Invalide" type="object"/>
-                        <button name="state_draft_timetable_group" class="oe_highlight" invisible="state in ['draft'] or is_readonly == True" string="Brouillon" type="object"/>
+                        <button name="state_pending_timetable_group" class="btn btn-muted" invisible="state in ['pending'] or is_readonly == True" string="En attente" type="object"/>
+                        <button name="state_valid_timetable_group" class="btn btn-success" invisible="state in ['valid'] or is_readonly == True" string="Valide" type="object"/>
+                        <button name="state_invalid_timetable_group" class="btn btn-danger" invisible="state in ['invalid'] or is_readonly == True" string="Invalide" type="object"/>
+                        <button name="state_draft_timetable_group" class="btn btn-primary" invisible="state in ['draft'] or is_readonly == True" string="Brouillon" type="object"/>
                         <field name="state" widget="statusbar" statusbar_visible="pending,valid,invalid,draft"/>
                     </header>
 					<sheet>
