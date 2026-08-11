@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_calendar_event_form" model="ir.ui.view">
+        <field name="name">calendar.event.view.form</field>
+        <field name="model">siantou.ems.core.calendar.event</field>
+        <field name="arch" type="xml">
+            <form string="Événements">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="is_public_holiday"/>
+                            <field name="is_timetable_active"/>
+                        </group>
+                        <group>
+                            <field name="start_date"/>
+                            <field name="end_date"/>
+                            <field name="formatted_date"/>
+                            <field name="semester_id"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_calendar_event_tree" model="ir.ui.view">
+        <field name="name">calendar.event.view.tree</field>
+        <field name="model">siantou.ems.core.calendar.event</field>
+        <field name="arch" type="xml">
+            <tree string="Événements">
+                <header>
+                    <button name="action_create_all_calendar_event" 
+                        type="object" 
+                        string="Générer les jours fériers" 
+                        class="oe_highlight" 
+                        display="always"/>
+                </header>
+                <field name="name"/>
+                <field name="start_date"/>
+                <field name="end_date"/>
+                <field name="formatted_date"/>
+                <field name="semester_id"/>
+                <field name="is_public_holiday"/>
+                <field name="is_timetable_active"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_show_calendar_event" model="ir.actions.act_window">
+        <field name="name">Événements</field>
+        <field name="res_model">siantou.ems.core.calendar.event</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem
+            id="menu_siantou_ems_core_config_calendar_event"
+            name="Événements"
+            parent="menu_siantou_ems_core_configuration"
+            action="action_show_calendar_event"
+            groups="siantou_ems_core.group_timetable_admin,base.group_system"
+            sequence="2"/>
+</odoo>

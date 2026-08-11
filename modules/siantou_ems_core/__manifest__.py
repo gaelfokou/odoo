@@ -42,7 +42,7 @@
         'views/students_career_views.xml',
         'views/batch_views.xml',
         'views/school_views.xml',
-        'views/calendar_views.xml',
+        'views/calendar_event_views.xml',
         'views/admission_registre_view.xml',
         'views/admission_session_view.xml',
         'views/syllabus_views.xml',
