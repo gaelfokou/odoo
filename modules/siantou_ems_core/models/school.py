@@ -1,4 +1,8 @@
-from odoo import models, fields
+from odoo import models, fields, api, tools, _
+
+import logging
+
+_logger = logging.getLogger(__name__)
 
 class School(models.Model):
     _name = 'siantou.ems.core.school'
@@ -6,13 +10,11 @@ class School(models.Model):
 
     code = fields.Char(
         string='Code',
-        index=True,
         required=True
     )
 
     name = fields.Char(
         string='Nom',
-        index=True,
         required=True
     )
 

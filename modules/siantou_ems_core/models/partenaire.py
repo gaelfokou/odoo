@@ -1,4 +1,4 @@
-from odoo import models, fields
+from odoo import models, fields, api, tools, _
 
 class UniversityPartner(models.Model):
     _name = 'siantou.university.partner'

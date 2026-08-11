@@ -3,6 +3,7 @@ from . import classroom
 from . import field_of_study
 from . import level
 from . import school
+from . import calendar
 from . import semester
 from . import student
 from . import subject

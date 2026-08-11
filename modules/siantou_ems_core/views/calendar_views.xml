@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_calendar_form" model="ir.ui.view">
+        <field name="name">calendar.view.form</field>
+        <field name="model">siantou.ems.core.calendar</field>
+        <field name="arch" type="xml">
+            <form string="Calendriers académiques">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                        </group>
+                        <group>
+                            <field name="name"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_calendar_tree" model="ir.ui.view">
+        <field name="name">calendar.view.tree</field>
+        <field name="model">siantou.ems.core.calendar</field>
+        <field name="arch" type="xml">
+            <tree string="Calendriers académiques">
+                <field name="name"/>
+                <field name="start_date"/>
+                <field name="end_date"/>
+                <field name="formatted_date"/>
+                <field name="semester_id"/>
+                <field name="is_public_holiday"/>
+                <field name="is_timetable_active"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_show_calendar" model="ir.actions.act_window">
+        <field name="name">Calendriers académiques</field>
+        <field name="res_model">siantou.ems.core.calendar</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem
+            id="menu_siantou_ems_core_config_calendar"
+            name="Calendriers académiques"
+            parent="menu_siantou_ems_core_configuration"
+            action="action_show_calendar"
+            groups="siantou_ems_core.group_calendar_admin,base.group_system"
+            sequence="2"/>
+</odoo>
