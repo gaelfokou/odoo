@@ -63,7 +63,7 @@ class OptionOfStudy(models.Model):
 
 class SpecialtyOfStudy(models.Model):
     _name = 'siantou.ems.core.specialty'
-    _description = 'Spécialités'
+    _description = 'Spécialité'
     _inherit=['mail.thread', 'mail.activity.mixin',]
 
     field_of_study_id = fields.Many2one(
@@ -146,7 +146,7 @@ class SpecialtyOfStudy(models.Model):
 
 class FieldOfStudy(models.Model):
     _name = 'siantou.ems.core.field_of_study'
-    _description = 'Filières'
+    _description = 'Filière'
     _inherit=['mail.thread', 'mail.activity.mixin',]
 
     code = fields.Char(
