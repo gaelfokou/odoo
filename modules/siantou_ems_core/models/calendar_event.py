@@ -84,120 +84,18 @@ class CalendarEvent(models.Model):
         for record in self:
             record._compute_formatted_date()
 
-    def create_calendar_event(self, student):
+    def create_calendar_event(self, semester):
         try:
-            ecole = re.sub('[^A-Za-z]+', '', student.school_id.name)
-            ecole = ecole[:4]
-            ecole = ecole.upper()
-            if not student.matricule or not student.matricule.strip():
-                matricule = ecole + self.env['ir.sequence'].next_by_code('oe.school.student')
-                while True:
-                    student_id = self.env['oe.school.student'].search([
-                        ('id', '!=', student.id),
-                        ('matricule', '=', matricule),
-                    ], limit=1)
-                    if student_id:
-                        matricule = ecole + self.env['ir.sequence'].next_by_code('oe.school.student')
-                    else:
-                        break
-            else:
-                matricule = student.matricule
-                while True:
-                    if matricule.find('2024') != -1:
-                        matricule = matricule.replace('2024', '')
-                    else:
-                        break
-                matricule = '{}'.format(matricule)
-            password = matricule
-            if student.email and student.email.strip():
-                email = student.email
-            else:
-                last_name = student.last_name if student.last_name else ''
-                while True:
-                    if last_name.find('  ') != -1:
-                        last_name = last_name.replace('  ', ' ')
-                    else:
-                        break
-                last_name = last_name.strip()
-                last_name = last_name.split(' ')
-                first_name = student.first_name if student.first_name else ''
-                while True:
-                    if first_name.find('  ') != -1:
-                        first_name = first_name.replace('  ', ' ')
-                    else:
-                        break
-                first_name = first_name.strip()
-                first_name = first_name.split(' ')
-                if len(first_name) > 1:
-                    name = '{} {} {}'.format(first_name[0], last_name[0], first_name[1])
-                else:
-                    name = '{} {}'.format(first_name[0], last_name[0])
-                # name = student.name
-                while True:
-                    if name.find('  ') != -1:
-                        name = name.replace('  ', ' ')
-                    else:
-                        break
-                name = name.strip()
-                username = name.lower()
-                username = username.split(' ')
-                username = username[0:3]
-                if len(username) == 1:
-                    username = username[0]
-                elif len(username) == 2:
-                    username = '{}{}'.format(username[0][0:1], username[1])
-                elif len(username) == 3:
-                    username = '{}{}{}'.format(username[0][0:1], username[1], username[2][0:1])
-                email = username + '@siantou.net'
-                i = 0
-                while True:
-                    res_user_id = self.env['res.users'].search([
-                        ('login', '=', email),
-                    ], limit=1)
-                    employee_id = self.env['hr.employee'].search([
-                        ('work_email', '=', email),
-                    ], limit=1)
-                    student_id = self.env['oe.school.student'].search([
-                        ('id', '!=', student.id),
-                        ('email', '=', email),
-                    ], limit=1)
-                    if res_user_id or employee_id or student_id:
-                        i = i + 1
-                        email = username + f'{i}' + '@siantou.net'
-                    else:
-                        break
-            student.write({
-                'matricule': matricule,
-                'email': email,
-            })
-            student.student_enroll_ids.create({
-                'year_id': student.year_id.id,
-                'school_id': student.school_id.id,
-                'cycle_id': student.cycle_id.id,
-                'field_of_study_id': student.field_of_study_id.id,
-                'specialty_id': student.specialty_id.id,
-                'option_id': student.option_id.id,
-                'class_id': student.class_id.id,
-                'type_cour': student.type_cour,
-                'status_univ': student.status_univ,
-                'session_lieu_obt': student.lieu_residence,
-                'dern_etab_freq': student.lieu_residence,
-                'level_id': student.level_id.id,
-                'batch_id': student.batch_id.id,
-                'student_id': student.id,
-            })
-            user_id = self.env['res.users'].search([
-                ('login', '=', email),
+            locale = self.env.context.get('lang') or 'en_US'
+            cm_holidays = holidays.CM(years=range(semester.start_time.year, semester.end_time.year), language=locale)
+            student_id = self.env['oe.school.student'].search([
+                ('id', '!=', student.id),
+                ('matricule', '=', matricule),
             ], limit=1)
-            if user_id:
-                user_id.unlink()
-            group_id = self.env.ref('base.group_portal')
-            user_id = self.env['res.users'].with_context(no_reset_password=True).create({
-                'login': email,
-                'name': student.name,
-                'password': password,
-                'groups_id': [(6, 0, [group_id.id])],
-            })
+            if student_id:
+                matricule = ecole + self.env['ir.sequence'].next_by_code('oe.school.student')
+            else:
+                break
             # self.env.cr.commit()
         except psycopg2.errors.NotNullViolation as error:
             _logger.info(f'----------- tototototototo Exception {error} -----------')
@@ -207,11 +105,15 @@ class CalendarEvent(models.Model):
             _logger.info(f'----------- tototototototo Exception {error} -----------')
 
     def action_create_all_calendar_event(self):
-        student = self.env['oe.school.student'].search([
-            ('id', '=', self.id),
-        ], limit=1)
-        if student:
-            self.create_calendar_event(student)
+        semesters = self.env['siantou.ems.core.year.semester'].search([
+            ('year_id.is_active', '=', True)
+        ])
+        semesters = list(semesters)
+        if len(semesters) == 0:
+            raise UserError(_("Aucun semestre trouvé pour l'année en cours. Veuillez d'abord configurer les semestres."))
+
+        for semester in semesters:
+            self.create_calendar_event(semester)
 
         return {
             'type': 'ir.actions.client',
