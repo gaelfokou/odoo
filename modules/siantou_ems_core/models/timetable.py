@@ -468,7 +468,6 @@ class Timetable(models.Model):
         string='Heure effectuée',
         default=0.0,
         # compute='_compute_worked_time',
-        # store=False
     )
 
     rate = fields.Float(

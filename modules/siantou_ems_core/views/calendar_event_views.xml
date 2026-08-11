@@ -51,6 +51,7 @@
         <field name="name">Événements</field>
         <field name="res_model">siantou.ems.core.calendar.event</field>
         <field name="view_mode">tree,form</field>
+        <field name="domain">[('year_id.is_active', '=', True)]</field>
     </record>
 
     <menuitem

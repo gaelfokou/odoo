@@ -37,6 +37,13 @@ class CalendarEvent(models.Model):
         string='Semestre',
     )
 
+    year_id = fields.Many2one(
+        'siantou.ems.core.year',
+        string='Année académique',
+        related='semester_id.year_id',
+        store=True,
+    )
+
     is_public_holiday = fields.Boolean(string='Est un jour férié ?', default=False)
 
     is_timetable_active = fields.Boolean(string='Emplois du temps actifs ?', default=True)

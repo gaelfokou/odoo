@@ -334,7 +334,7 @@ class ProgressReport(models.Model):
         'Séances de cours'
     )
 
-    percentage = fields.Float(compute='_compute_percentage', store=False, string='Taux de consommation du volume horaire')
+    percentage = fields.Float(compute='_compute_percentage', string='Taux de consommation du volume horaire')
 
     _sql_constraints = [
         ('unique_class_subject', 'unique(class_id, subject_id)', 'Un cours ne peut être lié à une même classe qu\'une seule fois.')
@@ -853,7 +853,6 @@ class SubjectSession(models.Model):
     name = fields.Char(
         string='Séance',
         # compute='_compute_name',
-        # store=False,
     )
 
     description = fields.Text(
