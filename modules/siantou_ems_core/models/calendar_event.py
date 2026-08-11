@@ -87,15 +87,42 @@ class CalendarEvent(models.Model):
     def create_calendar_event(self, semester):
         try:
             locale = self.env.context.get('lang') or 'en_US'
-            cm_holidays = holidays.CM(years=range(semester.start_time.year, semester.end_time.year), language=locale)
-            student_id = self.env['oe.school.student'].search([
-                ('id', '!=', student.id),
-                ('matricule', '=', matricule),
-            ], limit=1)
-            if student_id:
-                matricule = ecole + self.env['ir.sequence'].next_by_code('oe.school.student')
+            if semester.start_time.year == semester.end_time.year:
+                cm_holidays = holidays.CM(years=semester.start_time.year, language=locale)
             else:
-                break
+                cm_holidays = holidays.CM(years=range(semester.start_time.year, semester.end_time.year), language=locale)
+            holiday_dates = {
+                date: name for date, name in sorted(cm_holidays.items()) if date.year >= semester.start_time.year and date.year <= semester.end_time.year  # S'assurer que c'est pour l'année courante
+            }
+            for holiday_date, holiday_name in holiday_dates.items():
+                existing_dates = [event.start_date for event in self.env['siantou.ems.core.calendar.event'].search([
+                    ('start_date', '=', holiday_date),
+                    ('end_date', '=', holiday_date),
+                ])]
+                existing_dates = list(existing_dates)
+                if len(existing_dates) == 0:
+                    if holiday_date >= semester.start_time and holiday_date <= semester.end_time:
+                        self.env['siantou.ems.core.calendar.event'].create({
+                            'name': holiday_name,
+                            'start_date': holiday_date,
+                            'end_date': holiday_date,
+                            'semester_id': semester.id,
+                            'is_public_holiday':True
+                        })
+                    else:
+                        self.env['siantou.ems.core.calendar.event'].create({
+                            'name': holiday_name,
+                            'start_date': holiday_date,
+                            'end_date': holiday_date,
+                            'is_public_holiday':True
+                        })
+
+            _logger.info(f'----------- tototototototo semester.name {semester.name} -----------')
+            _logger.info(f'----------- tototototototo semester.start_time {semester.start_time} -----------')
+            _logger.info(f'----------- tototototototo semester.end_time {semester.end_time} -----------')
+            _logger.info(f'----------- tototototototo len holiday_dates {len(holiday_dates.keys())} -----------')
+            _logger.info(f'----------- tototototototo holiday_dates {list(holiday_dates.values())} -----------')
+
             # self.env.cr.commit()
         except psycopg2.errors.NotNullViolation as error:
             _logger.info(f'----------- tototototototo Exception {error} -----------')
@@ -110,7 +137,7 @@ class CalendarEvent(models.Model):
         ])
         semesters = list(semesters)
         if len(semesters) == 0:
-            raise UserError(_("Aucun semestre trouvé pour l'année en cours. Veuillez d'abord configurer les semestres."))
+            raise UserError(_("Aucun semestre trouvé pour l'année académique active. Veuillez d'abord configurer les semestres."))
 
         for semester in semesters:
             self.create_calendar_event(semester)
