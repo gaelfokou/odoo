@@ -51,8 +51,6 @@
         <field name="name">Événements</field>
         <field name="res_model">siantou.ems.core.calendar.event</field>
         <field name="view_mode">tree,form</field>
-        <field name="domain">[]</field>
-        <!-- <field name="context">{'group_by': 'year_id'}</field> -->
     </record>
 
     <menuitem
