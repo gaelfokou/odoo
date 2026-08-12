@@ -13,6 +13,7 @@ _logger = logging.getLogger(__name__)
 class CalendarEvent(models.Model):
     _name = 'siantou.ems.core.calendar.event'
     _description = 'Événement'
+    _inherit=['mail.thread', 'mail.activity.mixin',]
 
     name = fields.Char(
         string='Nom',

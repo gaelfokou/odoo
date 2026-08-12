@@ -7,19 +7,20 @@
             <form string="Événements">
                 <sheet>
                     <group>
-                        <group>
-                            <field name="name"/>
-                            <field name="is_public_holiday"/>
-                            <field name="is_timetable_active"/>
-                        </group>
-                        <group>
-                            <field name="start_date"/>
-                            <field name="end_date"/>
-                            <field name="formatted_date"/>
-                            <field name="semester_id"/>
-                        </group>
+                        <field name="name"/>
+                        <field name="start_date"/>
+                        <field name="end_date"/>
+                        <field name="formatted_date"/>
+                        <field name="semester_id"/>
+                        <field name="is_public_holiday"/>
+                        <field name="is_timetable_active"/>
                     </group>
                 </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" groups="base.group_user"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
             </form>
         </field>
     </record>
