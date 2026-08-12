@@ -5,6 +5,7 @@ from odoo import models, fields, api, tools, _
 
 _logger = logging.getLogger(__name__)
 
+
 class ProductionDpo(models.Model):
     _name = 'production.pe'
     _description = 'Production du PROGRAMME D\'ENSEIGNEMENT'

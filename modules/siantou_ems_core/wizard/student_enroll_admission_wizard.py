@@ -9,6 +9,7 @@ _logger = logging.getLogger(__name__)
 from odoo import models, fields, api, tools, _
 from odoo.exceptions import ValidationError
 
+
 class StudentEnrollmentAdmissionWizard(models.TransientModel):
     _name = 'siantou.ems.core.student.enrollment.admission.wizard'
     _description = 'modale pour effectuer une admission'

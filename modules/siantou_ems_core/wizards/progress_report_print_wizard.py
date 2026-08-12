@@ -35,6 +35,7 @@ TYPE_COUR = {
 
 _logger = logging.getLogger(__name__)
 
+
 class ProgressReportPrintWizard(models.TransientModel):
     _name = 'progress.report.print.wizard'
     _description = 'Assistant d\'impression des fiches de progression'

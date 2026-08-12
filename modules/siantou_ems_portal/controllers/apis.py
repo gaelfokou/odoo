@@ -47,6 +47,7 @@ STATUS_NOTIFICATION = {
 
 _logger = logging.getLogger(__name__)
 
+
 class ApiAccount(http.Controller):
     @http.route(['/api/timetable', '/api/timetable/page/<int:page>'], type='json', auth='user')
     def api_timetable(self, page=1, search='', search_in='all', view_type='calendar', **kw):

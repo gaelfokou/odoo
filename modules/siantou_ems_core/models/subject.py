@@ -297,6 +297,7 @@ class Subject(models.Model):
         })
         return report_action.report_action(self, data=data)
 
+
 class ProgressReport(models.Model):
     _name = 'siantou.ems.core.progress.report'
     _description = 'Fiche de progression'
@@ -844,6 +845,7 @@ class ProgressReport(models.Model):
         if has_second:
             tm = '{}:00'.format(tm)
         return tm
+
 
 class SubjectSession(models.Model):
     _name = 'siantou.ems.core.subject.session'

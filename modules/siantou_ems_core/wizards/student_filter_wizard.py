@@ -16,6 +16,7 @@ TYPE_COUR = {
 
 _logger = logging.getLogger(__name__)
 
+
 class StudentFilterWizard(models.TransientModel):
     _name = 'student.filter.wizard'
     _description = 'Filtre des étudiants'

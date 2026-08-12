@@ -23,6 +23,7 @@ STATUS_CLASSROOM = {
 
 _logger = logging.getLogger(__name__)
 
+
 class ClassroomFilterWizard(models.TransientModel):
     _name = 'classroom.filter.wizard'
     _description = 'Filtre des salles de classe'

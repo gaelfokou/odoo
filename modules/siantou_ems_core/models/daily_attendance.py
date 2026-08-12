@@ -6,6 +6,7 @@ import logging
 
 _logger = logging.getLogger(__name__)
 
+
 class DailyAttendance(models.Model):
     _inherit = 'daily.attendance'
 

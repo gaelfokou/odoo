@@ -33,6 +33,7 @@ TYPE_COUR = {
 
 _logger = logging.getLogger(__name__)
 
+
 class ClassUeCopyWizard(models.TransientModel):
     _name = 'class.ue.copy.wizard'
     _description = 'Copie des unités d\'enseignement'

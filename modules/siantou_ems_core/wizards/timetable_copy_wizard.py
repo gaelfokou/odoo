@@ -33,6 +33,7 @@ TYPE_COUR = {
 
 _logger = logging.getLogger(__name__)
 
+
 class TimetableCopyWizard(models.TransientModel):
     _name = 'timetable.copy.wizard'
     _description = 'Copie des emplois du temps'

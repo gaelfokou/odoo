@@ -74,6 +74,7 @@ STATUS_SUBJECTSCORE = {
 
 _logger = logging.getLogger(__name__)
 
+
 class Extension(portal.CustomerPortal):
     def check_completed_request(self):
         user = None
@@ -111,6 +112,7 @@ class Extension(portal.CustomerPortal):
             return http.request.redirect('/my/requireddata')
         return super(Extension, self).home(**kw)
 
+
 class Home(WebHome):
     def _login_redirect(self, uid, redirect=None):
         if not redirect and not is_user_internal(uid):
@@ -144,6 +146,7 @@ class Home(WebHome):
                     if not user.city_id.id:
                         redirect = '/my/requireddata'
         return super()._login_redirect(uid, redirect=redirect)
+
 
 class PortalAccount(portal.CustomerPortal):
     def _prepare_home_portal_values(self, counters):

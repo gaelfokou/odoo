@@ -1,5 +1,6 @@
 from odoo import models, fields, api, tools, _
 
+
 class Country(models.Model):
     _name = 'siantou.ems.core.country'
     _description = 'Pays'

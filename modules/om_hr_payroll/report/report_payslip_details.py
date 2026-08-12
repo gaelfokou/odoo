@@ -2,6 +2,7 @@
 
 from odoo import api, models
 
+
 class PayslipDetailsReport(models.AbstractModel):
     _name = 'report.om_hr_payroll.report_payslip_details'
     _description = 'Payslip Details Report'

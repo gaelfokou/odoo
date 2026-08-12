@@ -7,6 +7,7 @@ import logging
 
 _logger = logging.getLogger(__name__)
 
+
 class SessionEnrollment(models.Model):
     _name = 'siantou.session'
     _inherit = 'mail.thread'
@@ -146,6 +147,7 @@ class SessionEnrollment(models.Model):
                         _("Veuillez d'abord valider les candidatures présentent les registres de cette session d'admission"))
             record.state = 'done'
             record.active = True
+
 
 class SessionRegisterEnrollment(models.Model):
     _name = "siantou.session.registre"

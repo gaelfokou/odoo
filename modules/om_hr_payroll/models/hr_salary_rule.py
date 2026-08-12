@@ -4,6 +4,7 @@ from odoo import models, fields, api, tools, _
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools.safe_eval import safe_eval
 
+
 class HrPayrollStructure(models.Model):
     """
     Salary structure used to defined
@@ -52,6 +53,7 @@ class HrPayrollStructure(models.Model):
             parent = parent._get_parent_structure()
         return parent + self
 
+
 class HrContributionRegister(models.Model):
     _name = 'hr.contribution.register'
     _description = 'Contribution Register'
@@ -62,6 +64,7 @@ class HrContributionRegister(models.Model):
     register_line_ids = fields.One2many('hr.payslip.line', 'register_id',
         string='Register Line', readonly=True)
     note = fields.Text(string='Description')
+
 
 class HrSalaryRuleCategory(models.Model):
     _name = 'hr.salary.rule.category'
@@ -79,6 +82,7 @@ class HrSalaryRuleCategory(models.Model):
     def _check_parent_id(self):
         if not self._check_recursion():
             raise ValidationError(_('Error! You cannot create recursive hierarchy of Salary Rule Category.'))
+
 
 class HrSalaryRule(models.Model):
     _name = 'hr.salary.rule'
@@ -234,6 +238,7 @@ class HrSalaryRule(models.Model):
                         %s
                         """
                     ) % (self.name, self.code, repr(ex)))
+
 
 class HrRuleInput(models.Model):
     _name = 'hr.rule.input'

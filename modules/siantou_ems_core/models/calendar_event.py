@@ -9,6 +9,7 @@ import logging
 
 _logger = logging.getLogger(__name__)
 
+
 class CalendarEvent(models.Model):
     _name = 'siantou.ems.core.calendar.event'
     _description = 'Événement'

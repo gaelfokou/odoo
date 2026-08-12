@@ -22,6 +22,7 @@ TIME_FORMAT_FR = '%H:%M'
 
 _logger = logging.getLogger(__name__)
 
+
 class TimetableSubjectHour(models.Model):
     _name = 'siantou.ems.timetable.subject.day.hour'
     _description = 'Jour et heure du cours'
@@ -143,6 +144,7 @@ class TimetableSubjectHour(models.Model):
                 raise ValidationError("Vous devez définir des heures de début et de fin corrects")
             elif record.start_time >= record.end_time:
                 raise ValidationError("L'heure de fin du cours doit être supérieure à l'heure de début du cours")
+
 
 class Timetable(models.Model):
     _name = 'siantou.ems.timetable.timetable'
@@ -2005,6 +2007,7 @@ class TimetableGroup(models.Model):
         except ValueError:
             pass
 
+
 class TimetableSlotItem(models.Model):
     _name = 'siantou.ems.timetable.slotitem'
     _description = 'Plage horaire'
@@ -2058,6 +2061,7 @@ class TimetableSlotItem(models.Model):
                 slotitems = list(slotitems)
                 if len(slotitems) > 0:
                     raise ValidationError(f"La plage horaire entre l'heure de début et l'heure de fin n'est pas disponible")
+
 
 class TimetableSlot(models.Model):
     _name = 'siantou.ems.timetable.slot'

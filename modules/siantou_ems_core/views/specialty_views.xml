@@ -26,7 +26,7 @@
 					<sheet>
                         <div class="oe_title">
                             <label for="name"/>
-                            <h1><field name="name" placeholder="ex: COMMERCE INTERNATIONAL"/></h1>
+                            <h3><field name="name" placeholder="ex: COMMERCE INTERNATIONAL"/></h3>
                         </div>
                         <group>
                             <field name="code" placeholder="ex: COM INT"/>

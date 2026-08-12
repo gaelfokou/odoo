@@ -6,6 +6,7 @@ from datetime import timedelta, datetime, date
 from odoo.exceptions import UserError, ValidationError
 import re
 
+
 class Semester(models.Model):
     _name = 'siantou.ems.core.year.semester'
     _description = 'Semestre'

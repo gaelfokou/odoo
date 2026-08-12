@@ -1,5 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+    <record id="view_school_tree" model="ir.ui.view">
+        <field name="name">school.view.tree</field>
+        <field name="model">siantou.ems.core.school</field>
+        <field name="arch" type="xml">
+            <tree string="Écoles">
+                <field name="code"/>
+                <field name="name"/>
+                <field name="building_ids" widget="many2many_tags"/>
+                <field name="max_students_per_batch"/>
+            </tree>
+        </field>
+    </record>
     <record id="view_school_form" model="ir.ui.view">
         <field name="name">school.view.form</field>
         <field name="model">siantou.ems.core.school</field>
@@ -39,20 +51,12 @@
                         </page>
                     </notebook>
                 </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" groups="base.group_user"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
             </form>
-        </field>
-    </record>
-
-    <record id="view_school_tree" model="ir.ui.view">
-        <field name="name">school.view.tree</field>
-        <field name="model">siantou.ems.core.school</field>
-        <field name="arch" type="xml">
-            <tree string="Écoles">
-                <field name="code"/>
-                <field name="name"/>
-                <field name="building_ids" widget="many2many_tags"/>
-                <field name="max_students_per_batch"/>
-            </tree>
         </field>
     </record>
 

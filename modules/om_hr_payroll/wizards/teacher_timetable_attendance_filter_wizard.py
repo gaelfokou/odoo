@@ -48,6 +48,7 @@ STATUS_ATTENDANCE = {
 
 _logger = logging.getLogger(__name__)
 
+
 class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
     _name = 'teacher.timetable.attendance.filter.wizard'
     _description = 'Filtre des émargements des enseignants'

@@ -1,5 +1,6 @@
 from odoo import models, fields, api, tools, _
 
+
 class UniversityPartner(models.Model):
     _name = 'siantou.university.partner'
     _description = 'Universitées partenaires'

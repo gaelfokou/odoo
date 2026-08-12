@@ -13,6 +13,7 @@ import logging
 
 _logger = logging.getLogger(__name__)
 
+
 class TeacherPrintWizard(models.TransientModel):
     _name = 'teacher.print.wizard'
     _description = 'Assistant d\'impression des enseignants'

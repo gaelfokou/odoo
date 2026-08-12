@@ -39,6 +39,7 @@ PUNCH_TYPE = {
 
 _logger = logging.getLogger(__name__)
 
+
 class DailyAttendanceFilterWizard(models.TransientModel):
     _name = 'daily.attendance.filter.wizard'
     _description = 'Filtre des présences'

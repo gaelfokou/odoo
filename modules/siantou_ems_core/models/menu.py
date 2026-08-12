@@ -5,6 +5,7 @@ import logging
 
 _logger = logging.getLogger(__name__)
 
+
 class Menu(models.Model):
     _inherit = 'ir.ui.menu'
 

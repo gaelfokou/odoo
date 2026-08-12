@@ -64,7 +64,7 @@
                 <sheet>
                     <div class="oe_title">
                         <label for="name" string="Nom complet"/>
-                        <h1><field name="name"/></h1>
+                        <h3><field name="name"/></h3>
                     </div>
 
                     <!-- Informations générales en vue page -->

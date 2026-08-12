@@ -25,6 +25,7 @@ STATUS_CLASS = {
 
 _logger = logging.getLogger(__name__)
 
+
 class SubjectFilterWizard(models.TransientModel):
     _name = 'subject.filter.wizard'
     _description = 'Filtre des subjects'

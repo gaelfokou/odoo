@@ -9,6 +9,7 @@ import logging
 
 _logger = logging.getLogger(__name__)
 
+
 class TimetableWizard(models.TransientModel):
     _name = 'siantou.ems.timetable.timetable_wizard'
     _description = 'Assistant de génération automatique de l\'emploi du temps'

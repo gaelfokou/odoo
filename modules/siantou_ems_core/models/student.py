@@ -11,6 +11,7 @@ import logging
 
 _logger = logging.getLogger(__name__)
 
+
 class Student(models.Model):
     _name = 'oe.school.student'
     _description = 'Étudiant'

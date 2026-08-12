@@ -9,6 +9,7 @@ import logging
 
 _logger = logging.getLogger(__name__)
 
+
 class HrEmployee(models.Model):
     _inherit = 'hr.employee'
 
@@ -506,6 +507,7 @@ class HrEmployee(models.Model):
         data_group['group_dashboard_admin_id'] = group_id.id if group_id else None
         return data_group
 
+
 class TeacherAvailability(models.Model):
     _name = 'siantou.ems.core.teacher.availability'
     _description = 'Disponibilité des enseignants'
@@ -547,6 +549,7 @@ class TeacherAvailability(models.Model):
         for record in self:
             if record.start_time >= record.end_time:
                 raise ValidationError("L'heure de fin doit être supérieure à l'heure de début")
+
 
 class TeacherSubjectPriority(models.Model):
     _name = 'siantou.ems.core.teacher.subject.priority'

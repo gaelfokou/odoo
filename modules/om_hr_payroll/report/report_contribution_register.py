@@ -6,6 +6,7 @@ from dateutil.relativedelta import relativedelta
 from odoo import models, fields, api, tools, _
 from odoo.exceptions import UserError
 
+
 class ContributionRegisterReport(models.AbstractModel):
     _name = 'report.om_om_hr_payroll.report_contribution_register'
     _description = 'Payroll Contribution Register Report'

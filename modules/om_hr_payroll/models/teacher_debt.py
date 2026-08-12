@@ -23,6 +23,7 @@ TYPE_COUR = {
 
 _logger = logging.getLogger(__name__)
 
+
 class TeacherDebt(models.Model):
     _name = 'teacher.debt'
     _description = 'Dette d\'enseignant'
@@ -145,6 +146,7 @@ class TeacherDebt(models.Model):
             'name': '{} PDF'.format(data['docdata']['title']),
         })
         return report_action.report_action(self, data=data)
+
 
 class PaymentDebt(models.Model):
     _name = 'payment.debt'

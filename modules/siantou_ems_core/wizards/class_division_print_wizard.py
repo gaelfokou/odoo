@@ -18,6 +18,7 @@ TYPE_COUR = {
 
 _logger = logging.getLogger(__name__)
 
+
 class ClassPrintWizard(models.TransientModel):
     _name = 'class.print.wizard'
     _description = 'Assistant d\'impression des classes'

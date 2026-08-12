@@ -4,6 +4,7 @@ from odoo import models, fields, api, tools, _
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools.safe_eval import safe_eval
 
+
 class EmployeeSalaryAllowance(models.Model):
     _name = 'employee.salary.allowance'
     _description = 'Prime sur le salaire'

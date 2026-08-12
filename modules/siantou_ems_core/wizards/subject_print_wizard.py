@@ -18,6 +18,7 @@ TYPE_COUR = {
 
 _logger = logging.getLogger(__name__)
 
+
 class SubjectPrintWizard(models.TransientModel):
     _name = 'subject.print.wizard'
     _description = 'Assistant d\'impression des subjects'

@@ -30,6 +30,7 @@ STATUS_PROGRESSREPORT = {
 
 _logger = logging.getLogger(__name__)
 
+
 class ProgressReportFilterWizard(models.TransientModel):
     _name = 'progress.report.filter.wizard'
     _description = 'Filtre des fiches de progression'

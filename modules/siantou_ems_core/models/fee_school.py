@@ -2,6 +2,7 @@ from datetime import datetime
 from odoo import models, fields, api, tools, _
 from odoo.exceptions import UserError, AccessError, ValidationError
 
+
 class FeeSchool(models.Model):
     _name = 'siantou.ems.core.fee.school'
     _description = 'Frais de scolarité'
@@ -48,6 +49,7 @@ class FeeSchool(models.Model):
                 raise ValidationError(
                     _("Journal incorrect: Le journal doit être rédigé dans la même devise que l'entreprise.")
                 )
+
 
 class FeeSchoolLine(models.Model):
     _name = 's.e.core.fee.school.line'

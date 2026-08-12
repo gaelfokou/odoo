@@ -40,6 +40,7 @@ STATUS_TIMETABLE = {
 
 _logger = logging.getLogger(__name__)
 
+
 class TeacherTimetableAttendancePrintWizard(models.TransientModel):
     _name = 'teacher.timetable.attendance.print.wizard'
     _description = 'Assistant d\'impression des émargements des enseignants'

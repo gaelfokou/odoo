@@ -2,6 +2,7 @@ from datetime import datetime
 from odoo import models, fields, api, tools, _
 from odoo.exceptions import UserError, AccessError, ValidationError
 
+
 class FeeEnrollment(models.Model):
     _name = 'siantou.ems.core.fee.enrollment'
     _description = 'Frais d\'inscription'
@@ -53,6 +54,7 @@ class FeeEnrollment(models.Model):
         for record in self:
             if self.search([('id', '!=', record.id), ('is_active', '=', 'True')]):
                 raise ValidationError("Il ne peut y avoir qu'une seule structure de frais d'inscription active à la fois.")
+
 
 class FeeEnrollStudent(models.Model):
     _name = 'siantou.ems.core.fee.student'

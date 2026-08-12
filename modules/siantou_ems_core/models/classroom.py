@@ -7,6 +7,7 @@ import logging
 
 _logger = logging.getLogger(__name__)
 
+
 class Campus(models.Model):
     _name = 'siantou.ems.core.campus'
     _description = 'Campus'
@@ -26,6 +27,7 @@ class Campus(models.Model):
         required=True,
         default=lambda self: self.env.company
     )
+
 
 class Building(models.Model):
     _name = 'siantou.ems.core.building'
@@ -52,6 +54,7 @@ class Building(models.Model):
     device_ids = fields.Many2many('biometric.device.details', 'device_building_rel', 'building_id', 'device_id', string='Biometric Devices')
 
     is_active = fields.Boolean(string='Actif ?', default=True)
+
 
 class Classroom(models.Model):
     _name = 'siantou.ems.core.building.classroom'

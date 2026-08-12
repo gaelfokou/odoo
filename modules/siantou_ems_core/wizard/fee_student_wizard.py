@@ -9,6 +9,7 @@ import logging
 
 _logger = logging.getLogger(__name__)
 
+
 class FeeEnrollmentWizard(models.TransientModel):
     _name = 'siantou.ems.core.fee.enrollment.student'
     _description = 'modale pour valider un paiement'

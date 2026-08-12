@@ -4,9 +4,11 @@ import logging
 
 _logger = logging.getLogger(__name__)
 
+
 class School(models.Model):
     _name = 'siantou.ems.core.school'
     _description = 'École'
+    _inherit=['mail.thread', 'mail.activity.mixin',]
 
     code = fields.Char(
         string='Code',

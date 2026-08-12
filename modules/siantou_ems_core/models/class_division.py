@@ -23,6 +23,7 @@ TYPE_COUR = {
 
 _logger = logging.getLogger(__name__)
 
+
 class EducationClass(models.Model):
     _name = 'siantou.ems.core.class'
     _description = 'Classe'
@@ -1480,6 +1481,7 @@ class EducationClass(models.Model):
             'name': '{} PDF'.format(data['docdata']['title']),
         })
         return report_action.report_action(self, data=data)
+
 
 class EducationClassGroup(models.Model):
     _name = 'siantou.ems.core.class.group'

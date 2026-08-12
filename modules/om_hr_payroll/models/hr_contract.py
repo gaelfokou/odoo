@@ -2,6 +2,7 @@
 
 from odoo import models, fields, api, tools, _
 
+
 class HrContract(models.Model):
     """
     Employee contract based on the visa, work permits
@@ -53,6 +54,7 @@ class HrContract(models.Model):
                 contract[code] = value
             else:
                 contract[code] = 0.0
+
 
 class HrContractAdvantageTemplate(models.Model):
     _name = 'hr.contract.advantage.template'

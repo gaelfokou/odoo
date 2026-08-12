@@ -11,6 +11,7 @@ import logging
 
 _logger = logging.getLogger(__name__)
 
+
 class StudentEnrollment(models.Model):
     _name = 'oe.school.student.enrollment'
     _description = 'Inscriptions des étudiants'
@@ -609,6 +610,7 @@ class StudentEnrollment(models.Model):
 #         'doc_attachment_id', 'attachment_id',
 #         'document_id',
 #         string="Attachment")
+
 
 class StudentEnrollmentAdmission(models.Model):
     _name = 'oe.school.student.enrollment.admission'

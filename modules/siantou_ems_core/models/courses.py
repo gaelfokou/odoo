@@ -17,6 +17,7 @@ _logger = logging.getLogger(__name__)
 #     _description = 'Type de notation'
 #     name = fields.Char(string='Type', required=True)
 
+
 class OeSchoolCourseSupervision(models.Model):
     _name = 'oe.school.course.supervision'
     _description = 'Tutelle académique'
@@ -411,6 +412,7 @@ class SchoolSyllabus(models.Model):
         for record in self:
             if record.te <0:
                 raise ValidationError(f"Le Nombre de Travaux pratique doit être supérieur ou égal à zéro")
+
 
 class SchoolCourseSubject(models.Model):
     _name = 'siantou.ems.core.unite.enseignement'

@@ -9,6 +9,7 @@ import logging
 
 _logger = logging.getLogger(__name__)
 
+
 class HourlyRate(models.Model):
     _name = 'siantou.ems.core.hourly.rate'
     _description = 'Taux horaire'

@@ -55,6 +55,7 @@ CURRENT_MONTH = {
 
 _logger = logging.getLogger(__name__)
 
+
 class Helpers:
     @staticmethod
     def timetable(search='', search_in='all', page=1, view_type='calendar', selected_month='0', cycle_id=None, level_id=None, field_of_study_id=None, specialty_id=None, option_id=None, class_id=None):

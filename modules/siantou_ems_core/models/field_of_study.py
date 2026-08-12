@@ -1,5 +1,6 @@
 from odoo import models, fields, api, tools, _
 
+
 class OptionOfStudy(models.Model):
     _name = 'siantou.ems.core.option'
     _description = 'Option'
@@ -60,6 +61,7 @@ class OptionOfStudy(models.Model):
                     })
 
         return res
+
 
 class SpecialtyOfStudy(models.Model):
     _name = 'siantou.ems.core.specialty'
@@ -143,6 +145,7 @@ class SpecialtyOfStudy(models.Model):
                     })
 
         return res
+
 
 class FieldOfStudy(models.Model):
     _name = 'siantou.ems.core.field_of_study'

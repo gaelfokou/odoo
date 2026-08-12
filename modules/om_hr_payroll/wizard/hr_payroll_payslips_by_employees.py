@@ -3,6 +3,7 @@
 from odoo import models, fields, api, tools, _
 from odoo.exceptions import UserError
 
+
 class HrPayslipEmployees(models.TransientModel):
     _name = 'hr.payslip.employees'
     _description = 'Generate payslips for all selected employees'

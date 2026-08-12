@@ -31,6 +31,7 @@ PUNCH_TYPE = {
 
 _logger = logging.getLogger(__name__)
 
+
 class TeacherPrintWizard(models.TransientModel):
     _name = 'daily.attendance.print.wizard'
     _description = 'Assistant d\'impression des présences'

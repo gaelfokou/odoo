@@ -33,6 +33,7 @@ TYPE_COUR = {
 
 _logger = logging.getLogger(__name__)
 
+
 class TeacherTimetableAttendance(models.TransientModel):
     _name = 'teacher.timetable.attendance'
     _description = 'Émargement d\'enseignant'

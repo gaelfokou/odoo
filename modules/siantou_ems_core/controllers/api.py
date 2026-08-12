@@ -16,8 +16,6 @@ import logging
 _logger = logging.getLogger(__name__)
 
 
-
-
 class DeSchool(http.Controller):
 
     @http.route('/qrcode/<int:stm_line_id>/<int:partner_id>/details', type="http", methods=['GET'], website=True, auth="public")
@@ -352,7 +350,6 @@ class DeSchool(http.Controller):
                 })
             )
 
-
     def generate_code(self):
         # Get the current year
         current_year = datetime.now().year
@@ -363,7 +360,6 @@ class DeSchool(http.Controller):
         nbre = len(student_enroll) + 1
         code = f"{current_year}{letters}0000{nbre}"
         return code
-
 
     def create_enroll_document(self, candidat, file):
         # Création des document pour chaque candidature

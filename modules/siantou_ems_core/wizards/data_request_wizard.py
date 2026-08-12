@@ -6,6 +6,7 @@ import logging
 
 _logger = logging.getLogger(__name__)
 
+
 class DataRequestWizard(models.TransientModel):
     _name = 'siantou.ems.core.data_request_wizard'
     _description = 'Données requises'

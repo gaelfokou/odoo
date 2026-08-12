@@ -1,5 +1,6 @@
 from odoo import models, fields, api, tools, _
 
+
 class StudentBatch(models.Model):
     _name = 'siantou.ems.core.student.batch'
     _description = 'Lot d\'étudiants'

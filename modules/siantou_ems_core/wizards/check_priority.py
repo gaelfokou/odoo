@@ -17,6 +17,7 @@ TIME_FORMAT_FR = '%H:%M'
 
 _logger = logging.getLogger(__name__)
 
+
 class CheckPriority(models.Model):
     _name = 'siantou.ems.timetable.check_priority'
     _description = 'Déterminer la priorité d\'un enseignant sur un autre'

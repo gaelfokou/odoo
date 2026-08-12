@@ -288,6 +288,7 @@ class ExamScore(models.Model):
 
         return res
 
+
 class SubjectScore(models.Model):
     _name = 'siantou.ems.core.subject.score'
     _description = 'Notes d\'examen'

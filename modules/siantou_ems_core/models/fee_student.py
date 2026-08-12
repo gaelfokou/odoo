@@ -2,6 +2,7 @@ from datetime import datetime
 from odoo import models, fields, api, tools, _
 from odoo.exceptions import UserError, AccessError, ValidationError
 
+
 class FeeStruct(models.Model):
     _name = 'siantou.ems.core.fee.struct'
     _description = 'Structuration des frais de scolarité'
@@ -75,6 +76,7 @@ class FeeStruct(models.Model):
 #         for record in self:
 #             if self.search([('id', '!=', record.id), ('date_paie', '=', record.date_paie), ('date_paie', '>=', record.date_paie),]):
 #                 raise ValidationError('Entrer une date supérieur')
+
 
 class FeeStudent(models.Model):
     _name = 'siantou.ems.core.fee.student'

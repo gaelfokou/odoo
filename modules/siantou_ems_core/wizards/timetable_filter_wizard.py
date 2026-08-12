@@ -79,6 +79,7 @@ TYPE_PERCENTAGE = {
 
 _logger = logging.getLogger(__name__)
 
+
 class TimetableFilterWizard(models.TransientModel):
     _name = 'timetable.filter.wizard'
     _description = 'Filtre des emplois du temps'

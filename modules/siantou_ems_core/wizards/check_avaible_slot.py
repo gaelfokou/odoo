@@ -6,6 +6,7 @@ from datetime import datetime, timedelta, time
 
 _logger = logging.getLogger(__name__)
 
+
 class CheckAvailableSlot(models.Model):
     _name = 'siantou.ems.timetable.check_available_slot'
     _description = 'Déterminer un creneau pour un cours'
