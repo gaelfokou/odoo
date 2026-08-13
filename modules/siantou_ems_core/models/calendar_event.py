@@ -178,9 +178,9 @@ class CalendarEvent(models.Model):
             ])
             if event.start_date:
                 if not event.end_date or event.start_date == event.end_date:
-                    timetables.filtered(lambda rec: rec.date and rec.day_of_week and rec.date == event.start_date)
+                    timetables = timetables.filtered(lambda rec: rec.date and rec.day_of_week and rec.date == event.start_date)
                 else:
-                    timetables.filtered(lambda rec: rec.date and rec.day_of_week and rec.date >= event.start_date and rec.date <= event.end_date)
+                    timetables = timetables.filtered(lambda rec: rec.date and rec.day_of_week and rec.date >= event.start_date and rec.date <= event.end_date)
                 timetables = list(timetables)
                 for timetable in timetables:
                     timetable._compute_active_call()
