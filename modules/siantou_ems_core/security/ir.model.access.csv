@@ -86,14 +86,17 @@ hourly_rate_admin,hourly.rate.admin,model_siantou_ems_core_hourly_rate,,1,1,1,1
 teacher_hourly_rate_user,teacher.hourly.rate.user,model_siantou_ems_core_teacher_hourly_rate,,1,0,0,0
 teacher_hourly_rate_admin,teacher.hourly.rate.admin,model_siantou_ems_core_teacher_hourly_rate,,1,1,1,1
 
-exam_score_user,hourly.rate.user,model_siantou_ems_core_exam_score,,1,0,0,0
-exam_score_admin,hourly.rate.admin,model_siantou_ems_core_exam_score,,1,1,1,1
+exam_score_user,exam.score.user,model_siantou_ems_core_exam_score,,1,0,0,0
+exam_score_admin,exam.score.admin,model_siantou_ems_core_exam_score,,1,1,1,1
 
-subject_score_user,teacher.hourly.rate.user,model_siantou_ems_core_subject_score,,1,0,0,0
-subject_score_admin,teacher.hourly.rate.admin,model_siantou_ems_core_subject_score,,1,1,1,1
+subject_score_user,subject.score.user,model_siantou_ems_core_subject_score,,1,0,0,0
+subject_score_admin,subject.score.admin,model_siantou_ems_core_subject_score,,1,1,1,1
 
-request_track_user,hourly.rate.user,model_siantou_ems_core_request_track,,1,0,0,0
-request_track_admin,hourly.rate.admin,model_siantou_ems_core_request_track,,1,1,1,1
+request_track_user,request.track.user,model_siantou_ems_core_request_track,,1,0,0,0
+request_track_admin,request.track.admin,model_siantou_ems_core_request_track,,1,1,1,1
+
+calendar_event_user,calendar.event.user,model_siantou_ems_core_calendar_event,,1,0,0,0
+calendar_event_admin,calendar.event.admin,model_siantou_ems_core_calendar_event,,1,1,1,1
 
 timetable_user,timetable.user,model_siantou_ems_timetable_timetable,siantou_ems_core.group_timetable_user,1,0,0,0
 timetable_admin,timetable.admin,model_siantou_ems_timetable_timetable,siantou_ems_core.group_timetable_admin,1,1,1,1

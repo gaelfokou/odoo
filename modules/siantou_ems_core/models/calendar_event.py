@@ -148,3 +148,22 @@ class CalendarEvent(models.Model):
             'type': 'ir.actions.client',
             'tag': 'reload',
         }
+
+    def action_deactivate_all_calendar_event(self):
+        timetables = self.env['siantou.ems.timetable.timetable'].search([
+            ('is_timetable_active', '=', self.is_timetable_active),
+        ], order='date asc')
+        if self.start_date:
+            if not self.end_date or self.start_date == self.end_date:
+                timetables.filtered(lambda rec: rec.date and rec.day_of_week and rec.date == self.start_date)
+            else:
+                timetables.filtered(lambda rec: rec.date and rec.day_of_week and rec.date >= self.start_date and rec.date <= self.end_date)
+            timetables = list(timetables)
+            for timetable in timetables:
+                timetable.write({
+                    'is_timetable_active': not self.is_timetable_active,
+                    'skip_validation': True,
+                })
+        self.write({
+            'is_timetable_active': not self.is_timetable_active,
+        })

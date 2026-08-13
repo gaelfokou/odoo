@@ -53,4 +53,9 @@
             name="Gestion des formations académiques" 
             parent="menu_siantou_ems_core_configuration" 
             sequence="3"/>
+    <menuitem
+            id="menu_siantou_ems_core_config_calendar" 
+            name="Gestion des chronogrammes"
+            parent="menu_siantou_ems_core_configuration" 
+            sequence="4"/>
 </odoo>
