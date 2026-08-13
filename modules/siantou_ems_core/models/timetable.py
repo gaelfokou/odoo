@@ -383,7 +383,7 @@ class Timetable(models.Model):
             ('5', 'Samedi'),
             ('6', 'Dimanche'),
         ], string='Jour de la semaine',
-        compute='_compute_day_of_week'
+        compute='_compute_public_holiday_call'
     )
 
     start_time = fields.Float(
@@ -610,16 +610,60 @@ class Timetable(models.Model):
 
     is_timetable_active = fields.Boolean(string='Emploi du temps actif ?', default=True)
 
-    @api.depends('is_timetable_active', 'date', 'class_id')
+    is_public_holiday_active = fields.Boolean(string='Est un jour férié actif ?', compute='_compute_public_holiday_call', store=True)
+
+    @api.depends('date')
+    def _compute_public_holiday_call(self):
+        for record in self:
+            record._compute_day_of_week()
+            record._compute_public_holiday_active()
+
+    @api.onchange('date')
+    def _onchange_public_holiday_call(self):
+        for record in self:
+            record._compute_public_holiday_call()
+
+    def _compute_public_holiday_active(self):
+        for record in self:
+            if record.date:
+                is_public_holiday_active = False
+                events = self.env['siantou.ems.core.calendar.event'].search([
+                    ('is_active', '=', False),
+                ], order='start_date asc')
+                events = list(events)
+                for event in events:
+                    if event.start_date:
+                        if not event.end_date or event.start_date == event.end_date:
+                            if record.date and record.day_of_week and record.date == event.start_date:
+                                is_public_holiday_active = True
+                                break
+                        else:
+                            if record.date and record.day_of_week and record.date >= event.start_date and record.date <= event.end_date:
+                                is_public_holiday_active = True
+                                break
+                if is_public_holiday_active:
+                    record.is_public_holiday_active = True
+                else:
+                    record.is_public_holiday_active = False
+            else:
+                record.is_public_holiday_active = False
+
+    @api.depends('is_timetable_active', 'is_public_holiday_active', 'date', 'class_id')
     def _compute_active(self):
         for record in self:
             if record.is_timetable_active and record.class_id.is_timetable_active:
-                record.is_active = True
+                if record.is_public_holiday_active:
+                    record.is_active = False
+                else:
+                    record.is_active = True
             else:
                 if record.is_timetable_active:
                     if record.date and record.class_id.timetable_inactive_date:
                         if record.date < record.class_id.timetable_inactive_date:
-                            record.is_active = True
+                            if record.is_public_holiday_active:
+                                record.is_active = False
+                            else:
+                                record.is_active = True
                         else:
                             record.is_active = False
                     else:
@@ -627,22 +671,10 @@ class Timetable(models.Model):
                 else:
                     record.is_active = False
 
-    @api.onchange('is_timetable_active', 'date', 'class_id')
+    @api.onchange('is_timetable_active', 'is_public_holiday_active', 'date', 'class_id')
     def _onchange_active(self):
         for record in self:
-            if record.is_timetable_active and record.class_id.is_timetable_active:
-                record.is_active = True
-            else:
-                if record.is_timetable_active:
-                    if record.date and record.class_id.timetable_inactive_date:
-                        if record.date < record.class_id.timetable_inactive_date:
-                            record.is_active = True
-                        else:
-                            record.is_active = False
-                    else:
-                        record.is_active = False
-                else:
-                    record.is_active = False
+            record._compute_active()
 
     specialty_id_domain = fields.Binary(compute='_compute_school_domain', default=[])
 
@@ -820,16 +852,7 @@ class Timetable(models.Model):
             record.ue_id = None
             record.subject_id = None
 
-    @api.depends('date')
     def _compute_day_of_week(self):
-        for record in self:
-            if record.date:
-                record.day_of_week = str(record.date.weekday())
-            else:
-                record.day_of_week = None
-
-    @api.onchange('date')
-    def _onchange_day_of_week(self):
         for record in self:
             if record.date:
                 record.day_of_week = str(record.date.weekday())

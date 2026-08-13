@@ -127,6 +127,7 @@
                             <field name="end_time" readonly="is_readonly == True" invisible="id == False or start_time == end_time"/>
                             <field name="status" invisible="1"/>
                             <field name="is_timetable_active" readonly="is_readonly == True" invisible="id == False"/>
+                            <field name="is_public_holiday_active" invisible="id == False"/>
                             <field name="is_active" invisible="id == False"/>
                             <field name="worked_start_time" invisible="not status or status not in ['present', 'permission', 'exception']" readonly="1"/>
                             <field name="worked_end_time" invisible="not status or status not in ['present', 'permission', 'exception']" readonly="1"/>

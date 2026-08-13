@@ -48,7 +48,7 @@ class CalendarEvent(models.Model):
 
     is_public_holiday = fields.Boolean(string='Est un jour férié ?', default=False)
 
-    is_timetable_active = fields.Boolean(string='Emplois du temps actifs ?', default=True)
+    is_active = fields.Boolean(string='Actif ?', default=True)
 
     @api.depends('start_date', 'end_date')
     def _compute_formatted_date(self):
@@ -150,20 +150,57 @@ class CalendarEvent(models.Model):
         }
 
     def action_deactivate_all_calendar_event(self):
-        timetables = self.env['siantou.ems.timetable.timetable'].search([
-            ('is_timetable_active', '=', self.is_timetable_active),
-        ], order='date asc')
-        if self.start_date:
-            if not self.end_date or self.start_date == self.end_date:
-                timetables.filtered(lambda rec: rec.date and rec.day_of_week and rec.date == self.start_date)
-            else:
-                timetables.filtered(lambda rec: rec.date and rec.day_of_week and rec.date >= self.start_date and rec.date <= self.end_date)
-            timetables = list(timetables)
-            for timetable in timetables:
-                timetable.write({
-                    'is_timetable_active': not self.is_timetable_active,
-                    'skip_validation': True,
-                })
         self.write({
-            'is_timetable_active': not self.is_timetable_active,
+            'is_active': not self.is_active,
         })
+
+    def update_calendar_event(self, event):
+        try:
+            timetables = self.env['siantou.ems.timetable.timetable'].search([
+                ('is_public_holiday_active', '!=', event.is_active),
+            ], order='date asc')
+            if event.start_date:
+                if not event.end_date or event.start_date == event.end_date:
+                    timetables.filtered(lambda rec: rec.date and rec.day_of_week and rec.date == event.start_date)
+                else:
+                    timetables.filtered(lambda rec: rec.date and rec.day_of_week and rec.date >= event.start_date and rec.date <= event.end_date)
+                timetables = list(timetables)
+                for timetable in timetables:
+                    timetable._compute_public_holiday_active()
+                    timetable._compute_active()
+                    timetable.write({
+                        'skip_validation': True,
+                    })
+            # self.env.cr.commit()
+        except psycopg2.errors.NotNullViolation as error:
+            _logger.info(f'----------- tototototototo Exception {error} -----------')
+        except psycopg2.Error as error:
+            _logger.info(f'----------- tototototototo Exception {error} -----------')
+        except Exception as error:
+            _logger.info(f'----------- tototototototo Exception {error} -----------')
+
+    @api.model
+    def create(self, vals):
+        res = super(CalendarEvent, self).create(vals)
+
+        if 'is_active' in vals:
+            self.update_calendar_event(res)
+
+        return res
+
+    def write(self, vals):
+        res = super(CalendarEvent, self).write(vals)
+
+        if 'is_active' in vals:
+            events = []
+            if len(self.ids) == 1:
+                event = self.env['siantou.ems.core.calendar.event'].browse(self.id)
+                events.append(event)
+            else:
+                events = self.env['siantou.ems.core.calendar.event'].browse(self.ids)
+                events = list(events)
+
+            for event in events:
+                self.update_calendar_event(event)
+
+        return res
