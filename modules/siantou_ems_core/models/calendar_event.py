@@ -48,7 +48,7 @@ class CalendarEvent(models.Model):
 
     is_public_holiday = fields.Boolean(string='Est un jour férié ?', default=False)
 
-    is_active = fields.Boolean(string='Actif ?', default=True)
+    is_active = fields.Boolean(string='Actif ?', default=False)
 
     @api.depends('start_date', 'end_date')
     def _compute_formatted_date(self):
