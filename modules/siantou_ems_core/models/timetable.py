@@ -132,10 +132,7 @@ class TimetableSubjectHour(models.Model):
     @api.onchange('start_date')
     def _onchange_day_of_week(self):
         for record in self:
-            if record.start_date:
-                record.day_of_week = str(record.start_date.weekday())
-            else:
-                record.day_of_week = None
+            record._compute_day_of_week()
 
     @api.constrains('start_time', 'end_time')
     def _constrains_time(self):
@@ -383,7 +380,7 @@ class Timetable(models.Model):
             ('5', 'Samedi'),
             ('6', 'Dimanche'),
         ], string='Jour de la semaine',
-        compute='_compute_public_holiday_call'
+        compute='_compute_day_of_week'
     )
 
     start_time = fields.Float(
@@ -606,29 +603,29 @@ class Timetable(models.Model):
 
     skip_validation = fields.Boolean('Ignorer la validation ?', default=False)
 
-    is_active = fields.Boolean(string='Actif ?', compute='_compute_active', store=True)
+    is_active = fields.Boolean(string='Actif ?', compute='_compute_active_call', store=True)
 
     is_timetable_active = fields.Boolean(string='Emploi du temps actif ?', default=True)
 
-    is_public_holiday_active = fields.Boolean(string='Est un jour férié actif ?', compute='_compute_public_holiday_call', store=True)
+    is_public_holiday_active = fields.Boolean(string='Est un jour férié actif ?', compute='_compute_active_call', store=True)
 
-    @api.depends('date')
-    def _compute_public_holiday_call(self):
+    @api.depends('is_timetable_active', 'date', 'class_id')
+    def _compute_active_call(self):
         for record in self:
-            record._compute_day_of_week()
             record._compute_public_holiday_active()
+            record._compute_active()
 
-    @api.onchange('date')
-    def _onchange_public_holiday_call(self):
+    @api.onchange('is_timetable_active', 'date', 'class_id')
+    def _onchange_active_call(self):
         for record in self:
-            record._compute_public_holiday_call()
+            record._compute_active_call()
 
     def _compute_public_holiday_active(self):
         for record in self:
             if record.date:
                 is_public_holiday_active = False
                 events = self.env['siantou.ems.core.calendar.event'].search([
-                    ('is_active', '=', False),
+                    ('is_active', '=', True),
                 ], order='start_date asc')
                 events = list(events)
                 for event in events:
@@ -648,7 +645,6 @@ class Timetable(models.Model):
             else:
                 record.is_public_holiday_active = False
 
-    @api.depends('is_timetable_active', 'is_public_holiday_active', 'date', 'class_id')
     def _compute_active(self):
         for record in self:
             if record.is_timetable_active and record.class_id.is_timetable_active:
@@ -670,11 +666,6 @@ class Timetable(models.Model):
                         record.is_active = False
                 else:
                     record.is_active = False
-
-    @api.onchange('is_timetable_active', 'is_public_holiday_active', 'date', 'class_id')
-    def _onchange_active(self):
-        for record in self:
-            record._compute_active()
 
     specialty_id_domain = fields.Binary(compute='_compute_school_domain', default=[])
 
@@ -852,12 +843,18 @@ class Timetable(models.Model):
             record.ue_id = None
             record.subject_id = None
 
+    @api.depends('date')
     def _compute_day_of_week(self):
         for record in self:
             if record.date:
                 record.day_of_week = str(record.date.weekday())
             else:
                 record.day_of_week = None
+
+    @api.onchange('date')
+    def _onchange_day_of_week(self):
+        for record in self:
+            record._compute_day_of_week()
 
     @api.constrains('start_time', 'end_time')
     def _constrains_time(self):
@@ -897,7 +894,6 @@ class Timetable(models.Model):
             if record.class_group_id.id:
                 timetables = self.env['siantou.ems.timetable.timetable'].search([
                     ('id', '!=', record.id),
-                    # ('group_id', 'in', group_ids),
                     ('year_id', '=', record.group_id.semester_id.year_id.id),
                     ('class_id', '=', record.class_id.id),
                     ('class_group_id', '=', record.class_group_id.id),
@@ -906,7 +902,6 @@ class Timetable(models.Model):
             else:
                 timetables = self.env['siantou.ems.timetable.timetable'].search([
                     ('id', '!=', record.id),
-                    # ('group_id', 'in', group_ids),
                     ('year_id', '=', record.group_id.semester_id.year_id.id),
                     ('class_id', '=', record.class_id.id),
                     ('class_group_id', '=', False),
@@ -936,7 +931,6 @@ class Timetable(models.Model):
 
             timetables = self.env['siantou.ems.timetable.timetable'].search([
                 ('id', '!=', record.id),
-                # ('group_id', 'in', group_ids),
                 ('year_id', '=', record.group_id.semester_id.year_id.id),
                 ('employee_id', '=', record.employee_id.id),
                 ('date', '=', record.date),

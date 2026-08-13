@@ -156,9 +156,26 @@ class CalendarEvent(models.Model):
 
     def update_calendar_event(self, event):
         try:
+            if event.is_active:
+                is_active = False
+            else:
+                is_active = True
             timetables = self.env['siantou.ems.timetable.timetable'].search([
-                ('is_public_holiday_active', '!=', event.is_active),
-            ], order='date asc')
+                '|',
+                '&',
+                '&',
+                ('group_id.is_active', '=', True),
+                ('group_id.is_submit', '=', False),
+                ('group_id.status', '=', 'valid'),
+                '&',
+                '&',
+                '&',
+                ('group_parent_id.is_active', '=', True),
+                ('group_parent_id.is_submit', '=', False),
+                ('group_parent_id.status', '=', 'valid'),
+                ('group_id.status', '=', 'valid'),
+                ('is_public_holiday_active', '=', is_active),
+            ])
             if event.start_date:
                 if not event.end_date or event.start_date == event.end_date:
                     timetables.filtered(lambda rec: rec.date and rec.day_of_week and rec.date == event.start_date)
@@ -166,7 +183,7 @@ class CalendarEvent(models.Model):
                     timetables.filtered(lambda rec: rec.date and rec.day_of_week and rec.date >= event.start_date and rec.date <= event.end_date)
                 timetables = list(timetables)
                 for timetable in timetables:
-                    timetable._compute_public_holiday_active()
+                    timetable._compute_active_call()
                     timetable._compute_active()
                     timetable.write({
                         'skip_validation': True,
