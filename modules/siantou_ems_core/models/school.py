@@ -63,7 +63,7 @@ class School(models.Model):
     def write(self, vals):
         res = super(School, self).write(vals)
 
-        if 'name' in vals:
+        if 'name' in vals and vals['name'] and vals['name'].strip():
             schools = []
             if len(self.ids) == 1:
                 school = self.env['siantou.ems.core.school'].browse(self.id)

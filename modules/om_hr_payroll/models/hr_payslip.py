@@ -1449,6 +1449,7 @@ class HrPayslip(models.Model):
             localdict['categories'].dict[category.code] = category.code in localdict['categories'].dict and localdict['categories'].dict[category.code] + amount or amount
             return localdict
 
+
         class BrowsableObject(object):
             def __init__(self, employee_id, dict, env):
                 self.employee_id = employee_id
@@ -1457,6 +1458,7 @@ class HrPayslip(models.Model):
 
             def __getattr__(self, attr):
                 return attr in self.dict and self.dict.__getitem__(attr) or 0.0
+
 
         class InputLine(BrowsableObject):
             """a class that will be used into the python code, mainly for usability purposes"""
@@ -1470,6 +1472,7 @@ class HrPayslip(models.Model):
                     AND hp.date_from >= %s AND hp.date_to <= %s AND hp.id = pi.payslip_id AND pi.code = %s""",
                     (self.employee_id, from_date, to_date, code))
                 return self.env.cr.fetchone()[0] or 0.0
+
 
         class WorkedDays(BrowsableObject):
             """a class that will be used into the python code, mainly for usability purposes"""
@@ -1491,6 +1494,7 @@ class HrPayslip(models.Model):
             def sum_hours(self, code, from_date, to_date=None):
                 res = self._sum(code, from_date, to_date)
                 return res and res[1] or 0.0
+
 
         class Payslips(BrowsableObject):
             """a class that will be used into the python code, mainly for usability purposes"""

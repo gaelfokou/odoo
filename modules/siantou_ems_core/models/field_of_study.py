@@ -41,7 +41,7 @@ class OptionOfStudy(models.Model):
     def write(self, vals):
         res = super(OptionOfStudy, self).write(vals)
 
-        if 'name' in vals:
+        if 'name' in vals and vals['name'] and vals['name'].strip():
             options = []
             if len(self.ids) == 1:
                 option = self.env['siantou.ems.core.option'].browse(self.id)
@@ -125,7 +125,7 @@ class SpecialtyOfStudy(models.Model):
     def write(self, vals):
         res = super(SpecialtyOfStudy, self).write(vals)
 
-        if 'name' in vals:
+        if 'name' in vals and vals['name'] and vals['name'].strip():
             specialties = []
             if len(self.ids) == 1:
                 specialty = self.env['siantou.ems.core.specialty'].browse(self.id)
@@ -202,7 +202,7 @@ class FieldOfStudy(models.Model):
     def write(self, vals):
         res = super(FieldOfStudy, self).write(vals)
 
-        if 'name' in vals:
+        if 'name' in vals and vals['name'] and vals['name'].strip():
             field_of_studies = []
             if len(self.ids) == 1:
                 field_of_study = self.env['siantou.ems.core.field_of_study'].browse(self.id)
