@@ -21,6 +21,7 @@ _logger = logging.getLogger(__name__)
 class OeSchoolCourseSupervision(models.Model):
     _name = 'oe.school.course.supervision'
     _description = 'Tutelle académique'
+    _inherit=['mail.thread', 'mail.activity.mixin',]
 
     name = fields.Char(string='Nom', required=True)
     code = fields.Char(string='Code', required=True)

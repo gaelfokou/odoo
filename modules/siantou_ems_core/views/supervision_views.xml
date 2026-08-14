@@ -9,7 +9,7 @@
 				<tree string='Tutelles académiques'>
                     <field name="code"/>
 					<field name="name"/>
-                    <field name="cycle_ids" widget="many2many_tags"/>
+                    <!-- <field name="cycle_ids" widget="many2many_tags"/> -->
 				</tree>
 			</field>
 		</record>
@@ -23,10 +23,15 @@
                             <group>
                                 <field name="code"/>
                                 <field name="name"/>
-                                <field name="cycle_ids" widget="many2many_tags"/>
+                                <!-- <field name="cycle_ids" widget="many2many_tags"/> -->
                             </group>
                         </group>
 					</sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" groups="base.group_user"/>
+                        <field name="activity_ids"/>
+                        <field name="message_ids"/>
+                    </div>
 				</form>
 			</field>
 		</record>
