@@ -1041,6 +1041,9 @@ class EducationClass(models.Model):
             for classe in classes:
                 timetables = self.env['siantou.ems.timetable.timetable'].search([
                     ('class_id', '=', classe.id),
+                    '|',
+                    ('group_id.is_submit', '=', False),
+                    ('group_parent_id.is_submit', '=', False),
                 ])
                 timetables = list(timetables)
                 for timetable in timetables:

@@ -162,18 +162,8 @@ class CalendarEvent(models.Model):
                 is_active = True
             timetables = self.env['siantou.ems.timetable.timetable'].search([
                 '|',
-                '&',
-                '&',
-                ('group_id.is_active', '=', True),
                 ('group_id.is_submit', '=', False),
-                ('group_id.status', '=', 'valid'),
-                '&',
-                '&',
-                '&',
-                ('group_parent_id.is_active', '=', True),
                 ('group_parent_id.is_submit', '=', False),
-                ('group_parent_id.status', '=', 'valid'),
-                ('group_id.status', '=', 'valid'),
                 ('is_public_holiday_active', '=', is_active),
             ])
             if event.start_date:

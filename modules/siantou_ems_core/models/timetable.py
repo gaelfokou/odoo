@@ -300,6 +300,9 @@ class Timetable(models.Model):
             if record.class_group_id.id:
                 timetables = self.env['siantou.ems.timetable.timetable'].search([
                     ('id', '!=', record.id),
+                    '|',
+                    ('group_id.is_submit', '=', False),
+                    ('group_parent_id.is_submit', '=', False),
                     ('class_id', '=', record.class_id.id),
                     ('subject_id', '=', record.subject_id.id),
                     ('class_group_id', '=', record.class_group_id.id),
@@ -307,6 +310,9 @@ class Timetable(models.Model):
             else:
                 timetables = self.env['siantou.ems.timetable.timetable'].search([
                     ('id', '!=', record.id),
+                    '|',
+                    ('group_id.is_submit', '=', False),
+                    ('group_parent_id.is_submit', '=', False),
                     ('class_id', '=', record.class_id.id),
                     ('subject_id', '=', record.subject_id.id),
                     ('class_group_id', '=', False),
@@ -894,6 +900,9 @@ class Timetable(models.Model):
             if record.class_group_id.id:
                 timetables = self.env['siantou.ems.timetable.timetable'].search([
                     ('id', '!=', record.id),
+                    '|',
+                    ('group_id.is_submit', '=', False),
+                    ('group_parent_id.is_submit', '=', False),
                     ('year_id', '=', record.group_id.semester_id.year_id.id),
                     ('class_id', '=', record.class_id.id),
                     ('class_group_id', '=', record.class_group_id.id),
@@ -902,6 +911,9 @@ class Timetable(models.Model):
             else:
                 timetables = self.env['siantou.ems.timetable.timetable'].search([
                     ('id', '!=', record.id),
+                    '|',
+                    ('group_id.is_submit', '=', False),
+                    ('group_parent_id.is_submit', '=', False),
                     ('year_id', '=', record.group_id.semester_id.year_id.id),
                     ('class_id', '=', record.class_id.id),
                     ('class_group_id', '=', False),
@@ -931,6 +943,9 @@ class Timetable(models.Model):
 
             timetables = self.env['siantou.ems.timetable.timetable'].search([
                 ('id', '!=', record.id),
+                '|',
+                ('group_id.is_submit', '=', False),
+                ('group_parent_id.is_submit', '=', False),
                 ('year_id', '=', record.group_id.semester_id.year_id.id),
                 ('employee_id', '=', record.employee_id.id),
                 ('date', '=', record.date),
@@ -1080,12 +1095,18 @@ class Timetable(models.Model):
                 if class_group:
                     timetables = self.env['siantou.ems.timetable.timetable'].search([
                         ('class_id', '=', classe.id),
+                        '|',
+                        ('group_id.is_submit', '=', False),
+                        ('group_parent_id.is_submit', '=', False),
                         ('subject_id', '=', subject.id),
                         ('class_group_id', '=', class_group.id),
                     ])
                 else:
                     timetables = self.env['siantou.ems.timetable.timetable'].search([
                         ('class_id', '=', classe.id),
+                        '|',
+                        ('group_id.is_submit', '=', False),
+                        ('group_parent_id.is_submit', '=', False),
                         ('subject_id', '=', subject.id),
                         ('class_group_id', '=', False),
                     ])
