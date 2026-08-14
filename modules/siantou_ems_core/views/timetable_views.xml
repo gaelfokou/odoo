@@ -111,7 +111,7 @@
                             <field name="option_id" options="{'no_create': True}" readonly="is_readonly == True" domain="[('specialty_id', '=', specialty_id)]"/>
                             <field name="level_id_domain" invisible="1"/>
                             <field name="level_id" options="{'no_create': True}" readonly="is_readonly == True" domain="level_id_domain"/>
-                            <field name="class_id" options="{'no_create': True}" readonly="is_readonly == True" domain="[('field_of_study_id', '=', field_of_study_id), ('specialty_id', '=', specialty_id), ('option_id', '=', option_id), ('level_id', '=', level_id), ('year_id', '=', year_id)]"/>
+                            <field name="class_id" options="{'no_create': True}" readonly="is_readonly == True" domain="[('specialty_id', '=', specialty_id), ('option_id', '=', option_id), ('level_id', '=', level_id), ('year_id', '=', year_id)]"/>
                             <field name="class_group_id" options="{'no_create': True}" readonly="is_readonly == True" domain="[('class_id', '=', class_id)]"/>
                             <!-- <field name="ue_id" options="{'no_create': True}" readonly="1" domain="[('class_ids', '=', class_id), ('semestre_id', '=', semester_id)]"/> -->
                             <field name="subject_id_domain" invisible="1"/>

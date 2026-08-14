@@ -15,7 +15,7 @@
                         <field name="specialty_id" options="{'no_create': True}" domain="specialty_id_domain"/>
                         <field name="option_id" options="{'no_create': True}" domain="[('specialty_id', '=', specialty_id)]"/>
                         <field name="type_cour" widget="radio"/>
-                        <field name="class_id" options="{'no_create': True}" domain="[('field_of_study_id', '=', field_of_study_id), ('specialty_id', '=', specialty_id), ('option_id', '=', option_id), ('level_id', '=', level_id), ('year_id', '=', year_id), ('type_cour', '=', type_cour)]"/>
+                        <field name="class_id" options="{'no_create': True}" domain="[('specialty_id', '=', specialty_id), ('option_id', '=', option_id), ('level_id', '=', level_id), ('year_id', '=', year_id), ('type_cour', '=', type_cour)]"/>
                         <field name="semester_id" options="{'no_create': True}"/>
                     </group>
                     <footer>
