@@ -1584,6 +1584,7 @@ class Timetable(models.Model):
             },
         }
 
+
 class TimetableGroup(models.Model):
     _name = 'siantou.ems.timetable.group'
     _description = 'Version d\'emploi du temps'

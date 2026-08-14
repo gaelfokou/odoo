@@ -833,6 +833,7 @@ class Student(models.Model):
             'tag': 'reload',
         }
 
+
 class StudentCareer(models.Model):
     _name = 'oe.school.student.career'
     _description = 'Parcours des étudiants'

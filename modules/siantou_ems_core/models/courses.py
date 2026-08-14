@@ -30,6 +30,31 @@ class OeSchoolCourseSupervision(models.Model):
         ('unique_code', 'unique(code)', "Le code de la tutelle académique doit être unique."),
     ]
 
+    def write(self, vals):
+        res = super(OeSchoolCourseSupervision, self).write(vals)
+
+        if 'name' in vals and vals['name'] and vals['name'].strip():
+            supervisions = []
+            if len(self.ids) == 1:
+                supervision = self.env['oe.supervision.course.supervision'].browse(self.id)
+                supervisions.append(supervision)
+            else:
+                supervisions = self.env['oe.supervision.course.supervision'].browse(self.ids)
+                supervisions = list(supervisions)
+
+            for supervision in supervisions:
+                cycles = self.env['oe.school.course'].search([
+                    ('supervision_id', '=', supervision.id),
+                ])
+                cycles = list(cycles)
+                for cycle in cycles:
+                    cycle.write({
+                        'supervision_id': supervision.id,
+                    })
+
+        return res
+
+
 class OeSchoolCourse(models.Model):
     _name = 'oe.school.course'
     _description = 'Cycle'
@@ -260,6 +285,7 @@ class OeSchoolCourse(models.Model):
             'type': 'ir.actions.client',
             'tag': 'reload',
         }
+
 
 class SchoolSyllabus(models.Model):
     _name = 'siantou.ems.core.syllabus'

@@ -32,6 +32,7 @@ STATUS_TRACKREQUEST = {
     'done': 'Traité',
 }
 
+
 class RequestTrack(models.Model):
     _name = 'siantou.ems.core.request.track'
     _description = 'Requête'

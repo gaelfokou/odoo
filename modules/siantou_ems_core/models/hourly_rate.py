@@ -134,6 +134,7 @@ class HourlyRate(models.Model):
             'tag': 'reload',
         }
 
+
 class TeacherHourlyRate(models.Model):
     _name = 'siantou.ems.core.teacher.hourly.rate'
     _description = 'Taux horaire de l\'enseignant'

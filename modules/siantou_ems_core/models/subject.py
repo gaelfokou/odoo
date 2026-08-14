@@ -39,6 +39,7 @@ STATUS_TIMETABLE = {
     'delay': 'Retard',
 }
 
+
 class Subject(models.Model):
     _name = 'siantou.ems.core.subject'
     _description = 'Cours'

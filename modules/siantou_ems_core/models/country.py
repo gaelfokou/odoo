@@ -20,6 +20,7 @@ class Country(models.Model):
         ('unique_name', 'unique(name)', 'Le nom du pays doit être unique.'),
     ]
 
+
 class Region(models.Model):
     _name = 'siantou.ems.core.region'
     _description = 'Région'
@@ -38,6 +39,7 @@ class Region(models.Model):
         ('unique_name', 'unique(name)', 'Le nom de la région doit être unique.'),
     ]
 
+
 class City(models.Model):
     _name = 'siantou.ems.core.city'
     _description = 'Ville'
@@ -55,6 +57,7 @@ class City(models.Model):
     _sql_constraints = [
         ('unique_name', 'unique(name)', 'Le nom de la ville doit être unique.'),
     ]
+
 
 class Quarter(models.Model):
     _name = 'siantou.ems.core.quarter'

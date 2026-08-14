@@ -11,6 +11,7 @@ var siantou_ems_portal_print_timetable_container = null;
 
 const delay = ms => new Promise(res => setTimeout(res, ms));
 
+
 class PrintTimetableComponent extends Component {
 	setup() {
 		// this.orm = useService('orm');

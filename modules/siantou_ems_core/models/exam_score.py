@@ -40,6 +40,7 @@ STATUS_TIMETABLE = {
     'delay': 'Retard',
 }
 
+
 class ExamScore(models.Model):
     _name = 'siantou.ems.core.exam.score'
     _description = 'Fiche d\'examen'
