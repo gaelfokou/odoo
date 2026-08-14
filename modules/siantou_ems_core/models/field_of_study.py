@@ -199,30 +199,6 @@ class FieldOfStudy(models.Model):
         ('unique_code', 'unique(code)', 'Le code de la filière doit être unique.'),
     ]
 
-    def write(self, vals):
-        res = super(FieldOfStudy, self).write(vals)
-
-        if 'name' in vals and vals['name'] and vals['name'].strip():
-            field_of_studies = []
-            if len(self.ids) == 1:
-                field_of_study = self.env['siantou.ems.core.field_of_study'].browse(self.id)
-                field_of_studies.append(field_of_study)
-            else:
-                field_of_studies = self.env['siantou.ems.core.field_of_study'].browse(self.ids)
-                field_of_studies = list(field_of_studies)
-
-            for field_of_study in field_of_studies:
-                classes = self.env['siantou.ems.core.class'].search([
-                    ('field_of_study_id', '=', field_of_study.id),
-                ])
-                classes = list(classes)
-                for classe in classes:
-                    classe.write({
-                        'field_of_study_id': field_of_study.id,
-                    })
-
-        return res
-
     def get_subject_ids_by_level(self):
         # Dictionnaire pour stocker les IDs des cours par niveau
         subject_ids_by_level = {}

@@ -183,9 +183,8 @@ class CalendarEvent(models.Model):
                     timetables = timetables.filtered(lambda rec: rec.date and rec.day_of_week and rec.date >= event.start_date and rec.date <= event.end_date)
                 timetables = list(timetables)
                 for timetable in timetables:
-                    timetable._compute_active_call()
-                    timetable._compute_active()
                     timetable.write({
+                        'date': timetable.date,
                         'skip_validation': True,
                     })
             # self.env.cr.commit()
