@@ -36,10 +36,10 @@ class OeSchoolCourseSupervision(models.Model):
         if 'name' in vals and vals['name'] and vals['name'].strip():
             supervisions = []
             if len(self.ids) == 1:
-                supervision = self.env['oe.supervision.course.supervision'].browse(self.id)
+                supervision = self.env['oe.school.course.supervision'].browse(self.id)
                 supervisions.append(supervision)
             else:
-                supervisions = self.env['oe.supervision.course.supervision'].browse(self.ids)
+                supervisions = self.env['oe.school.course.supervision'].browse(self.ids)
                 supervisions = list(supervisions)
 
             for supervision in supervisions:
