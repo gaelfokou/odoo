@@ -23,6 +23,8 @@ STATUS_CLASS = {
     'student_less_than': 'Étudiants moins de',
     'timetable_active': 'Emplois du temps actifs',
     'timetable_not_active': 'Emplois du temps pas actifs',
+    'class_valid': 'Classes valides',
+    'class_invalid': 'Classes invalides',
 }
 
 _logger = logging.getLogger(__name__)
@@ -40,6 +42,11 @@ class ClassFilterWizard(models.TransientModel):
     school_id = fields.Many2one(
         'siantou.ems.core.school',
         string='École',
+    )
+
+    cycle_id = fields.Many2one(
+        'oe.school.course',
+        string='Cursus ou Cycle',
     )
 
     level_id = fields.Many2one(
@@ -77,6 +84,8 @@ class ClassFilterWizard(models.TransientModel):
         ('student_less_than', 'Étudiants moins de'),
         ('timetable_active', 'Emplois du temps actifs'),
         ('timetable_not_active', 'Emplois du temps pas actifs'),
+        ('class_valid', 'Classes valides'),
+        ('class_invalid', 'Classes invalides'),
     ], string='Statut',
         # default='timetable_available',
     )
@@ -137,6 +146,9 @@ class ClassFilterWizard(models.TransientModel):
         if self.school_id.id:
             domain.append(('school_id', '=', self.school_id.id))
             title.append(self.school_id.name)
+        if self.cycle_id.id:
+            domain.append(('cycle_id', '=', self.cycle_id.id))
+            title.append(self.cycle_id.name)
         if self.level_id.id:
             domain.append(('level_id', '=', self.level_id.id))
             title.append(self.level_id.name)
@@ -275,6 +287,36 @@ class ClassFilterWizard(models.TransientModel):
                 class_ids = list(filter(lambda i: i in student_class_ids, class_ids))
                 title.append(STATUS_CLASS[self.status])
                 title.append('{} étudiant(s)'.format(self.number_of_student))
+            elif self.status == 'class_valid':
+                domain = [
+                    ('id', 'in', class_ids),
+                ]
+                class_ids = []
+                classes = self.env['siantou.ems.core.class'].search(domain)
+                for classe in classes:
+                    if classe.option_id.id:
+                        if classe.cycle_id.id == classe.field_of_study_id.cycle_id.id and classe.cycle_id.id == classe.specialty_id.cycle_id.id and classe.cycle_id.id == classe.option_id.cycle_id.id:
+                            class_ids.append(classe.id)
+                    else:
+                        if classe.cycle_id.id == classe.field_of_study_id.cycle_id.id and classe.cycle_id.id == classe.specialty_id.cycle_id.id:
+                            class_ids.append(classe.id)
+                class_ids = list(set(class_ids))
+                title.append(STATUS_CLASS[self.status])
+            elif self.status == 'class_invalid':
+                domain = [
+                    ('id', 'in', class_ids),
+                ]
+                class_ids = []
+                classes = self.env['siantou.ems.core.class'].search(domain)
+                for classe in classes:
+                    if classe.option_id.id:
+                        if classe.cycle_id.id != classe.field_of_study_id.cycle_id.id or classe.cycle_id.id != classe.specialty_id.cycle_id.id or classe.cycle_id.id != classe.option_id.cycle_id.id:
+                            class_ids.append(classe.id)
+                    else:
+                        if classe.cycle_id.id != classe.field_of_study_id.cycle_id.id or classe.cycle_id.id != classe.specialty_id.cycle_id.id:
+                            class_ids.append(classe.id)
+                class_ids = list(set(class_ids))
+                title.append(STATUS_CLASS[self.status])
         domain = [
             ('id', 'in', class_ids),
         ]
