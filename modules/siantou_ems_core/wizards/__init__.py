@@ -21,4 +21,4 @@ from . import timetable_group_copy_wizard
 from . import timetable_group_move_wizard
 from . import subject_filter_wizard
 from . import progress_report_filter_wizard
-from . import class_ue_copy_wizard
+from . import class_copy_wizard

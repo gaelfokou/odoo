@@ -44,7 +44,7 @@
                             class="oe_highlight"/> -->
                         <button name="action_open_copy" 
                             type="object" 
-                            string="Copier UE" 
+                            string="Copier" 
                             class="oe_highlight" 
                             display="always"
                             groups="siantou_ems_core.group_ue_open_copy"/>
