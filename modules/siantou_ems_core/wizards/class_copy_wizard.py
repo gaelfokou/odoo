@@ -251,7 +251,67 @@ class ClassCopyWizard(models.TransientModel):
             record.destination_ue_ids = []
 
     def action_copy(self):
-        pass
+        domain = [
+            ('year_id', '=', self.source_year_id.id),
+            ('school_id', '=', self.school_id.id),
+        ]
+        if self.level_id.id:
+            domain.append(('level_id', '=', self.level_id.id))
+        if self.specialty_id.id:
+            domain.append(('specialty_id', '=', self.specialty_id.id))
+        if self.option_id.id:
+            domain.append(('option_id', '=', self.option_id.id))
+        if self.type_cour:
+            domain.append(('type_cour', '=', self.type_cour))
+        source_class_ids = self.env['siantou.ems.core.class'].search(domain)
+        source_class_ids = list(source_class_ids)
+        for source_class_id in source_class_ids:
+            if source_class_id.option_id.id:
+                if source_class_id.cycle_id.id == source_class_id.field_of_study_id.cycle_id.id and source_class_id.cycle_id.id == source_class_id.specialty_id.cycle_id.id and source_class_id.cycle_id.id == source_class_id.option_id.cycle_id.id:
+                    destination_class_id = self.env['siantou.ems.core.class'].search([
+                        ('year_id', '=', self.destination_year_id.id),
+                        ('school_id', '=', source_class_id.school_id.id),
+                        ('level_id', '=', source_class_id.level_id.id),
+                        ('field_of_study_id', '=', source_class_id.field_of_study_id.id),
+                        ('specialty_id', '=', source_class_id.specialty_id.id),
+                        ('option_id', '=', source_class_id.option_id.id),
+                        ('type_cour', '=', source_class_id.type_cour),
+                    ], limit=1)
+                    if not destination_class_id:
+                        self.env['siantou.ems.core.class'].create({
+                            'year_id': self.destination_year_id.id,
+                            'school_id': source_class_id.school_id.id,
+                            'level_id': source_class_id.level_id.id,
+                            'field_of_study_id': source_class_id.field_of_study_id.id,
+                            'specialty_id': source_class_id.specialty_id.id,
+                            'option_id': source_class_id.option_id.id,
+                            'type_cour': source_class_id.type_cour,
+                        })
+            else:
+                if source_class_id.cycle_id.id == source_class_id.field_of_study_id.cycle_id.id and source_class_id.cycle_id.id == source_class_id.specialty_id.cycle_id.id:
+                    destination_class_id = self.env['siantou.ems.core.class'].search([
+                        ('year_id', '=', self.destination_year_id.id),
+                        ('school_id', '=', source_class_id.school_id.id),
+                        ('level_id', '=', source_class_id.level_id.id),
+                        ('field_of_study_id', '=', source_class_id.field_of_study_id.id),
+                        ('specialty_id', '=', source_class_id.specialty_id.id),
+                        ('option_id', '=', False),
+                        ('type_cour', '=', source_class_id.type_cour),
+                    ], limit=1)
+                    if not destination_class_id:
+                        self.env['siantou.ems.core.class'].create({
+                            'year_id': self.destination_year_id.id,
+                            'school_id': source_class_id.school_id.id,
+                            'level_id': source_class_id.level_id.id,
+                            'field_of_study_id': source_class_id.field_of_study_id.id,
+                            'specialty_id': source_class_id.specialty_id.id,
+                            'type_cour': source_class_id.type_cour,
+                        })
+
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'reload',
+        }
 
     def action_copy_ue(self):
         source_class_id = self.env['siantou.ems.core.class'].search([('id', '=', self.source_class_id.id)], limit=1)
