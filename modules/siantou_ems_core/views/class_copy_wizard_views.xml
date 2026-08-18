@@ -24,9 +24,9 @@
                         <field name="destination_ue_ids" invisible="not destination_class_id"/>
                     </group>
                     <footer>
-                        <button string="Copier" type="object" name="action_copy" class="btn-primary" invisible="source_class_id or destination_class_id"/>
-                        <button string="Copier les unités d'enseignement" type="object" name="action_copy_ue" class="btn-primary" invisible="not source_class_id or not destination_class_id"/>
-                        <button string="Copier les emplois du temps" type="object" name="action_copy_timetable" class="btn-primary" invisible="not source_class_id or not destination_class_id"/>
+                        <button string="Copier" type="object" name="action_copy" class="btn-primary"/>
+                        <button string="Copier les unités d'enseignement" type="object" name="action_copy_ue" class="btn-primary"/>
+                        <button string="Copier les emplois du temps" type="object" name="action_copy_timetable" class="btn-primary"/>
                         <button string="Annuler" class="btn-secondary" special="cancel"/>
                     </footer>
                 </form>

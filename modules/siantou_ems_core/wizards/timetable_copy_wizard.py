@@ -70,7 +70,6 @@ class TimetableCopyWizard(models.TransientModel):
     level_id = fields.Many2one(
         'siantou.ems.core.level',
         'Niveau',
-        required=True,
     )
 
     field_of_study_id = fields.Many2one(
@@ -97,13 +96,11 @@ class TimetableCopyWizard(models.TransientModel):
     source_class_id = fields.Many2one(
         'siantou.ems.core.class',
         string='Classe source',
-        required=True,
     )
 
     destination_class_id = fields.Many2one(
         'siantou.ems.core.class',
         string='Classe destination',
-        required=True,
     )
 
     source_timetable_ids = fields.One2many(
@@ -348,9 +345,60 @@ class TimetableCopyWizard(models.TransientModel):
             record.destination_timetable_ids = []
 
     def action_copy(self):
-        source_class_id = self.env['siantou.ems.core.class'].search([('id', '=', self.source_class_id.id)], limit=1)
-        if source_class_id:
-            destination_class_id = self.env['siantou.ems.core.class'].search([('id', '=', self.destination_class_id.id)], limit=1)
+        domain = [
+            ('school_id', '=', self.school_id.id),
+        ]
+        if self.level_id.id:
+            domain.append(('level_id', '=', self.level_id.id))
+        if self.specialty_id.id:
+            domain.append(('specialty_id', '=', self.specialty_id.id))
+        if self.option_id.id:
+            domain.append(('option_id', '=', self.option_id.id))
+        if self.type_cour:
+            domain.append(('type_cour', '=', self.type_cour))
+
+        source_domain = [
+            ('year_id', '=', self.source_year_id.id),
+        ]
+        source_domain += domain
+        if self.source_class_id.id:
+            source_domain.append(('id', '=', self.source_class_id.id))
+
+        source_class_ids = self.env['siantou.ems.core.class'].search(source_domain)
+        source_class_ids = list(source_class_ids)
+        for source_class_id in source_class_ids:
+            if source_class_id.option_id.id:
+                if self.destination_class_id.id:
+                    destination_domain = [
+                        ('id', '=', self.destination_class_id.id),
+                    ]
+                else:
+                    destination_domain = [
+                        ('year_id', '=', self.destination_year_id.id),
+                        ('school_id', '=', source_class_id.school_id.id),
+                        ('level_id', '=', source_class_id.level_id.id),
+                        ('field_of_study_id', '=', source_class_id.field_of_study_id.id),
+                        ('specialty_id', '=', source_class_id.specialty_id.id),
+                        ('option_id', '=', source_class_id.option_id.id),
+                        ('type_cour', '=', source_class_id.type_cour),
+                    ]
+            else:
+                if self.destination_class_id.id:
+                    destination_domain = [
+                        ('id', '=', self.destination_class_id.id),
+                    ]
+                else:
+                    destination_domain = [
+                        ('year_id', '=', self.destination_year_id.id),
+                        ('school_id', '=', source_class_id.school_id.id),
+                        ('level_id', '=', source_class_id.level_id.id),
+                        ('field_of_study_id', '=', source_class_id.field_of_study_id.id),
+                        ('specialty_id', '=', source_class_id.specialty_id.id),
+                        ('option_id', '=', False),
+                        ('type_cour', '=', source_class_id.type_cour),
+                    ]
+
+            destination_class_id = self.env['siantou.ems.core.class'].search(destination_domain, limit=1)
             if destination_class_id:
                 if self.subject_id.id:
                     source_ue_ids = self.subject_id.ue_ids.ids
