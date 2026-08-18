@@ -268,45 +268,48 @@ class ClassCopyWizard(models.TransientModel):
         for source_class_id in source_class_ids:
             if source_class_id.option_id.id:
                 if source_class_id.cycle_id.id == source_class_id.field_of_study_id.cycle_id.id and source_class_id.cycle_id.id == source_class_id.specialty_id.cycle_id.id and source_class_id.cycle_id.id == source_class_id.option_id.cycle_id.id:
-                    destination_class_id = self.env['siantou.ems.core.class'].search([
-                        ('year_id', '=', self.destination_year_id.id),
-                        ('school_id', '=', source_class_id.school_id.id),
-                        ('level_id', '=', source_class_id.level_id.id),
-                        ('field_of_study_id', '=', source_class_id.field_of_study_id.id),
-                        ('specialty_id', '=', source_class_id.specialty_id.id),
-                        ('option_id', '=', source_class_id.option_id.id),
-                        ('type_cour', '=', source_class_id.type_cour),
-                    ], limit=1)
-                    if not destination_class_id:
-                        self.env['siantou.ems.core.class'].create({
-                            'year_id': self.destination_year_id.id,
-                            'school_id': source_class_id.school_id.id,
-                            'level_id': source_class_id.level_id.id,
-                            'field_of_study_id': source_class_id.field_of_study_id.id,
-                            'specialty_id': source_class_id.specialty_id.id,
-                            'option_id': source_class_id.option_id.id,
-                            'type_cour': source_class_id.type_cour,
-                        })
+                    if source_class_id.field_of_study_id.id == source_class_id.specialty_id.field_of_study_id.id and source_class_id.field_of_study_id.id == source_class_id.option_id.field_of_study_id.id:
+                        if source_class_id.specialty_id.id == source_class_id.option_id.specialty_id.id:
+                            destination_class_id = self.env['siantou.ems.core.class'].search([
+                                ('year_id', '=', self.destination_year_id.id),
+                                ('school_id', '=', source_class_id.school_id.id),
+                                ('level_id', '=', source_class_id.level_id.id),
+                                ('field_of_study_id', '=', source_class_id.field_of_study_id.id),
+                                ('specialty_id', '=', source_class_id.specialty_id.id),
+                                ('option_id', '=', source_class_id.option_id.id),
+                                ('type_cour', '=', source_class_id.type_cour),
+                            ], limit=1)
+                            if not destination_class_id:
+                                self.env['siantou.ems.core.class'].create({
+                                    'year_id': self.destination_year_id.id,
+                                    'school_id': source_class_id.school_id.id,
+                                    'level_id': source_class_id.level_id.id,
+                                    'field_of_study_id': source_class_id.field_of_study_id.id,
+                                    'specialty_id': source_class_id.specialty_id.id,
+                                    'option_id': source_class_id.option_id.id,
+                                    'type_cour': source_class_id.type_cour,
+                                })
             else:
                 if source_class_id.cycle_id.id == source_class_id.field_of_study_id.cycle_id.id and source_class_id.cycle_id.id == source_class_id.specialty_id.cycle_id.id:
-                    destination_class_id = self.env['siantou.ems.core.class'].search([
-                        ('year_id', '=', self.destination_year_id.id),
-                        ('school_id', '=', source_class_id.school_id.id),
-                        ('level_id', '=', source_class_id.level_id.id),
-                        ('field_of_study_id', '=', source_class_id.field_of_study_id.id),
-                        ('specialty_id', '=', source_class_id.specialty_id.id),
-                        ('option_id', '=', False),
-                        ('type_cour', '=', source_class_id.type_cour),
-                    ], limit=1)
-                    if not destination_class_id:
-                        self.env['siantou.ems.core.class'].create({
-                            'year_id': self.destination_year_id.id,
-                            'school_id': source_class_id.school_id.id,
-                            'level_id': source_class_id.level_id.id,
-                            'field_of_study_id': source_class_id.field_of_study_id.id,
-                            'specialty_id': source_class_id.specialty_id.id,
-                            'type_cour': source_class_id.type_cour,
-                        })
+                    if source_class_id.field_of_study_id.id == source_class_id.specialty_id.field_of_study_id.id:
+                        destination_class_id = self.env['siantou.ems.core.class'].search([
+                            ('year_id', '=', self.destination_year_id.id),
+                            ('school_id', '=', source_class_id.school_id.id),
+                            ('level_id', '=', source_class_id.level_id.id),
+                            ('field_of_study_id', '=', source_class_id.field_of_study_id.id),
+                            ('specialty_id', '=', source_class_id.specialty_id.id),
+                            ('option_id', '=', False),
+                            ('type_cour', '=', source_class_id.type_cour),
+                        ], limit=1)
+                        if not destination_class_id:
+                            self.env['siantou.ems.core.class'].create({
+                                'year_id': self.destination_year_id.id,
+                                'school_id': source_class_id.school_id.id,
+                                'level_id': source_class_id.level_id.id,
+                                'field_of_study_id': source_class_id.field_of_study_id.id,
+                                'specialty_id': source_class_id.specialty_id.id,
+                                'type_cour': source_class_id.type_cour,
+                            })
 
         return {
             'type': 'ir.actions.client',

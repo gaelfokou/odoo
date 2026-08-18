@@ -296,10 +296,13 @@ class ClassFilterWizard(models.TransientModel):
                 for classe in classes:
                     if classe.option_id.id:
                         if classe.cycle_id.id == classe.field_of_study_id.cycle_id.id and classe.cycle_id.id == classe.specialty_id.cycle_id.id and classe.cycle_id.id == classe.option_id.cycle_id.id:
-                            class_ids.append(classe.id)
+                            if classe.field_of_study_id.id == classe.specialty_id.field_of_study_id.id and classe.field_of_study_id.id == classe.option_id.field_of_study_id.id:
+                                if classe.specialty_id.id == classe.option_id.specialty_id.id:
+                                    class_ids.append(classe.id)
                     else:
                         if classe.cycle_id.id == classe.field_of_study_id.cycle_id.id and classe.cycle_id.id == classe.specialty_id.cycle_id.id:
-                            class_ids.append(classe.id)
+                            if classe.field_of_study_id.id == classe.specialty_id.field_of_study_id.id:
+                                class_ids.append(classe.id)
                 class_ids = list(set(class_ids))
                 title.append(STATUS_CLASS[self.status])
             elif self.status == 'class_invalid':
@@ -312,9 +315,20 @@ class ClassFilterWizard(models.TransientModel):
                     if classe.option_id.id:
                         if classe.cycle_id.id != classe.field_of_study_id.cycle_id.id or classe.cycle_id.id != classe.specialty_id.cycle_id.id or classe.cycle_id.id != classe.option_id.cycle_id.id:
                             class_ids.append(classe.id)
+                            continue
+                        if classe.field_of_study_id.id != classe.specialty_id.field_of_study_id.id or classe.field_of_study_id.id != classe.option_id.field_of_study_id.id:
+                            class_ids.append(classe.id)
+                            continue
+                        if classe.specialty_id.id != classe.option_id.specialty_id.id:
+                            class_ids.append(classe.id)
+                            continue
                     else:
                         if classe.cycle_id.id != classe.field_of_study_id.cycle_id.id or classe.cycle_id.id != classe.specialty_id.cycle_id.id:
                             class_ids.append(classe.id)
+                            continue
+                        if classe.field_of_study_id.id != classe.specialty_id.field_of_study_id.id:
+                            class_ids.append(classe.id)
+                            continue
                 class_ids = list(set(class_ids))
                 title.append(STATUS_CLASS[self.status])
         domain = [

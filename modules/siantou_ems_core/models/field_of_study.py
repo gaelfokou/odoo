@@ -12,6 +12,12 @@ class OptionOfStudy(models.Model):
         required=True,
     )
 
+    field_of_study_id = fields.Many2one(
+        'siantou.ems.core.field_of_study',
+        string='Filière',
+        related='specialty_id.field_of_study_id'
+    )
+
     cycle_id = fields.Many2one(
         'oe.school.course',
         string='Cursus ou Cycle',
