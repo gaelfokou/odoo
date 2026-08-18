@@ -38,7 +38,15 @@
                 <xpath expr="//notebook[1]" position="inside">
                     <page string="Cours dispensables" name="subjects"
                         invisible="is_teacher == False">
-                        <field name="subject_ids"/>
+                        <field name="subject_ids">
+                            <tree>
+                                <field name="code"/>
+                                <field name="name"/>
+                                <field name="ue_ids" widget="many2many_tags"/>
+                                <field name="hours_credit"/>
+                                <field name="total_credit"/>
+                            </tree>
+                        </field>
                     </page>
                     <page string="Disponibilité" name="teacher_availability"
                         invisible="is_teacher == False">

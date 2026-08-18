@@ -79,7 +79,7 @@ class StudentEnrollmentAdmissionWizard(models.TransientModel):
             #=========================================================================================================
             """ structure_frais_inscript_id = self.env['siantou.ems.fee.structure'].sudo().search(
                 [
-                    ('field_of_study_ids','in',student_id.field_of_study_id.id),
+                    ('field_of_study_ids', 'in', student_id.field_of_study_id.id),
                     ('level_id', '=', student_id.level_id.id),
                     ('type_paiement', '=', 'pu'),
                     ('type_inclusion_fee', '=', 'fee_inscrip'),
@@ -142,7 +142,7 @@ class StudentEnrollmentAdmissionWizard(models.TransientModel):
             #=========================================================================================================
             """ structure_frais_id = self.env['siantou.ems.fee.structure'].sudo().search(
                 [
-                    ('field_of_study_ids','in',student_id.field_of_study_id.id),
+                    ('field_of_study_ids', 'in', student_id.field_of_study_id.id),
                     ('level_id', '=', student_id.level_id.id),
                     ('type_paiement', '=', 'pt'),
                     ('type_inclusion_fee', '=', 'fee_scol'),
@@ -202,7 +202,7 @@ class StudentEnrollmentAdmissionWizard(models.TransientModel):
             #=========================================================================================================
             """ structure_spec_frais_ids = self.env['siantou.ems.fee.structure'].sudo().search(
                 [
-                    ('field_of_study_ids','in',student_id.field_of_study_id.id),
+                    ('field_of_study_ids', 'in', student_id.field_of_study_id.id),
                     ('level_id', '=', student_id.level_id.id),
                     ('type_paiement', '=', 'pu'),
                     ('type_inclusion_fee', '=', 'fee_spec'),

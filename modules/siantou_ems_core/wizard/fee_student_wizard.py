@@ -119,7 +119,7 @@ class FeeEnrollmentWizard(models.TransientModel):
             try:
                 structure_frais_id = self.env['siantou.ems.fee.structure'].search(
                     [
-                        ('field_of_study_ids','in',student_id.field_of_study_id.id),
+                        ('field_of_study_ids', 'in', student_id.field_of_study_id.id),
                         ('level_id', '=', student_id.level_id.id),
                         ('type_paiement', '=', 'pu'),
                         ('type_inclusion_fee', '=', 'fee_inscrip'),
