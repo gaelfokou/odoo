@@ -74,7 +74,7 @@
                         </field>
                     </group>
                     <footer>
-                        <button string="Copier" type="object" name="action_copy" class="btn-primary"/>
+                        <button string="Copier" type="object" name="action_copy" class="btn-primary" confirm="Êtes-vous sûr de vouloir confirmer la copie ?"/>
                         <button string="Annuler" class="btn-secondary" special="cancel"/>
                     </footer>
                 </form>
