@@ -104,9 +104,9 @@ class Semester(models.Model):
             semesters = self.env['siantou.ems.core.year.semester'].search([('id', '!=', record.id)]).filtered(lambda rec: not (rec.start_time >= record.end_time or rec.end_time <= record.start_time))
             semesters = list(semesters)
             if len(semesters) > 0:
-                raise ValidationError('Les dates des semestres ne peuvent se supperposer')
+                raise ValidationError('Les dates du semestre ne peuvent se chevaucher')
             if not (record.start_time >= record.year_id.start_time and record.start_time <= record.year_id.end_time) or not (record.end_time >= record.year_id.start_time and record.end_time <= record.year_id.end_time):
-                raise ValidationError('Les dates des semestres doivent être dans celles de l\'année académique')
+                raise ValidationError('Les dates du semestre doivent être dans celles de l\'année académique')
             if record.start_time >= record.end_time:
                 raise ValidationError('La date de fin doit être supérieure à la date de début')
 
