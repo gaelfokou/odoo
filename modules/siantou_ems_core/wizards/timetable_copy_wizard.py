@@ -357,12 +357,15 @@ class TimetableCopyWizard(models.TransientModel):
         if self.type_cour:
             domain.append(('type_cour', '=', self.type_cour))
 
-        source_domain = [
-            ('year_id', '=', self.source_year_id.id),
-        ]
-        source_domain += domain
         if self.source_class_id.id:
-            source_domain.append(('id', '=', self.source_class_id.id))
+            source_domain = [
+                ('id', '=', self.source_class_id.id),
+            ]
+        else:
+            source_domain = [
+                ('year_id', '=', self.source_year_id.id),
+            ]
+            source_domain += domain
 
         source_class_ids = self.env['siantou.ems.core.class'].search(source_domain)
         source_class_ids = list(source_class_ids)
