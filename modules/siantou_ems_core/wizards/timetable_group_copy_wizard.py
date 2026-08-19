@@ -168,9 +168,12 @@ class TimetableGroupCopyWizard(models.TransientModel):
                     # })
 
                     for group_id in timetable_id.class_id.group_ids:
-                        class_id.group_ids.create({
+                        group = self.env['siantou.ems.core.class.group'].create({
                             'name': group_id.name,
-                            'class_id': class_id.id,
+                        })
+                        class_ids = [(4, class_id.id)]
+                        group.write({
+                            'class_ids': class_ids,
                         })
 
                     ue_ids = []

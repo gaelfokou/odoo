@@ -405,9 +405,12 @@ class ClassCopyWizard(models.TransientModel):
                         ('class_id', '=', destination_class_id.id),
                     ], limit=1)
                     if not group:
-                        destination_class_id.group_ids.create({
+                        group = self.env['siantou.ems.core.class.group'].create({
                             'name': group_id.name,
-                            'class_id': destination_class_id.id,
+                        })
+                        class_ids = [(4, destination_class_id.id)]
+                        group.write({
+                            'class_ids': class_ids,
                         })
 
                 ue_ids = []
@@ -572,9 +575,12 @@ class ClassCopyWizard(models.TransientModel):
                         ('class_id', '=', destination_class_id.id),
                     ], limit=1)
                     if not group:
-                        destination_class_id.group_ids.create({
+                        group = self.env['siantou.ems.core.class.group'].create({
                             'name': group_id.name,
-                            'class_id': destination_class_id.id,
+                        })
+                        class_ids = [(4, destination_class_id.id)]
+                        group.write({
+                            'class_ids': class_ids,
                         })
 
                 destination_timetable_ids = self.env['siantou.ems.timetable.timetable'].search([('class_id', '=', destination_class_id.id)])
