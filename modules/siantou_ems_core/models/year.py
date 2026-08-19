@@ -1,6 +1,9 @@
 from odoo import models, fields, api, tools, _
 from datetime import timedelta
 from odoo.exceptions import UserError, ValidationError
+import logging
+
+_logger = logging.getLogger(__name__)
 
 
 class Year(models.Model):

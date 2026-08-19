@@ -934,7 +934,7 @@ class Timetable(models.Model):
                         Groupe : {timetable.class_group_id.name}
                         Enseignant : {timetable.employee_id.name}
                         Cours : {timetable.subject_id.name}
-                        Date : {timetable_date}
+                        Date : {datetime.strftime(timetable_date, DATE_FORMAT)}
                         Heure de début : {timetable.start_time}
                         Heure de fin : {timetable.end_time}
                         -----
@@ -965,7 +965,7 @@ class Timetable(models.Model):
                         Groupe : {timetable.class_group_id.name}
                         Enseignant : {timetable.employee_id.name}
                         Cours : {timetable.subject_id.name}
-                        Date : {timetable_date}
+                        Date : {datetime.strftime(timetable_date, DATE_FORMAT)}
                         Heure de début : {timetable.start_time}
                         Heure de fin : {timetable.end_time}
                         -----
