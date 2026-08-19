@@ -45,7 +45,7 @@ class TimetableWizard(models.TransientModel):
     )
 
     @api.constrains('start_date', 'end_date')
-    def _constrains_date(self):
+    def _check_date(self):
         for record in self:
             if record.start_date and record.end_date:
                 if record.start_date > record.end_date:

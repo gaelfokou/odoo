@@ -357,13 +357,13 @@ class TimetableFilterWizard(models.TransientModel):
             record.class_id_domain = domain
 
     @api.constrains('start_date', 'end_date')
-    def _constrains_date(self):
+    def _check_date(self):
         for record in self:
             if record.start_date > record.end_date:
                 raise ValidationError("La date de fin doit être supérieure ou égale à la date de début")
 
     @api.constrains('start_time', 'end_time')
-    def _constrains_time(self):
+    def _check_time(self):
         for record in self:
             if record.start_time < 0.0 or record.end_time < 0.0 or record.start_time > 23.59 or record.end_time > 23.59:
                 raise ValidationError("Vous devez définir des heures de début et de fin corrects")

@@ -79,7 +79,7 @@ class FeeSchoolLine(models.Model):
                 raise ValidationError('Les semestres ne peuvent se superposer')
 
     @api.constrains('date_debut', 'date_fin')
-    def _constrains_date(self):
+    def _check_date(self):
         for record in self:
             if record.date_debut >= record.date_fin:
                 raise ValidationError('La date de fin doit être supérieure à la date de début')

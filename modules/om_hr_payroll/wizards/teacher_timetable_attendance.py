@@ -255,7 +255,7 @@ class TeacherTimetableAttendance(models.TransientModel):
             record._compute_name()
 
     @api.constrains('start_time', 'end_time')
-    def _constrains_time(self):
+    def _check_time(self):
         for record in self:
             if record.start_time < 0.0 or record.end_time < 0.0 or record.start_time > 23.59 or record.end_time > 23.59:
                 raise ValidationError("Vous devez définir des heures de début et de fin corrects")
@@ -263,7 +263,7 @@ class TeacherTimetableAttendance(models.TransientModel):
                 raise ValidationError("L'heure de fin du cours doit être supérieure à l'heure de début du cours")
 
     @api.constrains('status', 'worked_start_time', 'worked_end_time')
-    def _constrains_worked_time(self):
+    def _check_worked_time(self):
         for record in self:
             if record.worked_start_time < 0.0 or record.worked_end_time < 0.0 or record.worked_start_time > 23.59 or record.worked_end_time > 23.59:
                 raise ValidationError("Vous devez définir des heures de début effectuée et de fin effectuée corrects")

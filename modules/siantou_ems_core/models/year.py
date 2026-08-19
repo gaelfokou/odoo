@@ -27,16 +27,12 @@ class Year(models.Model):
     is_active = fields.Boolean(string='Actif ?', default=False)
 
     @api.constrains('start_time', 'end_time')
-    def _check_date_overlap(self):
+    def _check_date(self):
         for record in self:
             years = self.env['siantou.ems.core.year'].search([('id', '!=', record.id)]).filtered(lambda rec: not (rec.start_time >= record.end_time or rec.end_time <= record.start_time))
             years = list(years)
             if len(years) > 0:
-                raise ValidationError('Les années académiques ne peuvent se supperposer')
-
-    @api.constrains('start_time', 'end_time')
-    def _constrains_date(self):
-        for record in self:
+                raise ValidationError('Les dates des années académiques ne peuvent se supperposer')
             if record.start_time >= record.end_time:
                 raise ValidationError('La date de fin doit être supérieure à la date de début')
 

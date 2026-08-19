@@ -624,7 +624,7 @@ class EducationClass(models.Model):
                 record.timetable_inactive_date = date.today()
 
     @api.constrains('is_timetable_active', 'timetable_inactive_date')
-    def _constrains_inactive_date(self):
+    def _check_inactive_date(self):
         for record in self:
             if not record.is_timetable_active:
                 if not record.timetable_inactive_date:

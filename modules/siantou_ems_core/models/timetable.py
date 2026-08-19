@@ -116,7 +116,7 @@ class TimetableSubjectHour(models.Model):
     )
 
     @api.constrains('start_date', 'end_date')
-    def _constrains_date(self):
+    def _check_date(self):
         for record in self:
             if record.start_date > record.end_date:
                 raise ValidationError('La date de fin doit être supérieure ou égale à la date de début')
@@ -135,7 +135,7 @@ class TimetableSubjectHour(models.Model):
             record._compute_day_of_week()
 
     @api.constrains('start_time', 'end_time')
-    def _constrains_time(self):
+    def _check_time(self):
         for record in self:
             if record.start_time < 0.0 or record.end_time < 0.0 or record.start_time > 23.59 or record.end_time > 23.59:
                 raise ValidationError("Vous devez définir des heures de début et de fin corrects")
@@ -289,7 +289,7 @@ class Timetable(models.Model):
                     record.hours_credit = None
 
     @api.constrains('class_id', 'class_group_id', 'subject_id', 'date', 'hours_credit')
-    def _constrains_hours_credit(self):
+    def _check_hours_credit(self):
         for record in self:
             if record.skip_validation:
                 return True
@@ -547,7 +547,7 @@ class Timetable(models.Model):
                 record.is_readonly = False
 
     @api.constrains('date', 'group_id')
-    def _constrains_date(self):
+    def _check_date(self):
         for record in self:
             if record.skip_validation:
                 return True
@@ -863,7 +863,7 @@ class Timetable(models.Model):
             record._compute_day_of_week()
 
     @api.constrains('start_time', 'end_time')
-    def _constrains_time(self):
+    def _check_time(self):
         for record in self:
             if record.skip_validation:
                 return True
@@ -873,7 +873,7 @@ class Timetable(models.Model):
                 raise ValidationError("L'heure de fin du cours doit être supérieure à l'heure de début du cours")
 
     @api.constrains('status', 'worked_start_time', 'worked_end_time')
-    def _constrains_worked_time(self):
+    def _check_worked_time(self):
         for record in self:
             if record.skip_validation:
                 return True
@@ -883,7 +883,7 @@ class Timetable(models.Model):
                 raise ValidationError("L'heure de fin effectuée du cours doit être supérieure à l'heure de début effectuée du cours")
 
     @api.constrains('group_id', 'class_id', 'class_group_id', 'employee_id', 'date', 'start_time', 'end_time')
-    def _constrains_class(self):
+    def _check_class(self):
         for record in self:
             if record.skip_validation:
                 return True
@@ -1727,7 +1727,7 @@ class TimetableGroup(models.Model):
     )
 
     @api.constrains('start_date', 'end_date')
-    def _constrains_date(self):
+    def _check_date(self):
         for record in self:
             if record.start_date > record.end_date:
                 raise ValidationError('La date de fin doit être supérieure ou égale à la date de début')
@@ -1827,7 +1827,7 @@ class TimetableGroup(models.Model):
             record._compute_name()
 
     @api.constrains('is_submit', 'is_active')
-    def _constrains_default(self):
+    def _check_default(self):
         for record in self:
             if record.is_submit:
                 if record.is_active:
@@ -2084,7 +2084,7 @@ class TimetableSlotItem(models.Model):
         return abs(a - b) < tolerance
 
     @api.constrains('start_time', 'end_time')
-    def _constrains_time(self):
+    def _check_time(self):
         for record in self:
             if record.start_time < 0.0 or record.end_time < 0.0 or record.start_time > 23.59 or record.end_time > 23.59:
                 raise ValidationError("Vous devez définir des heures de début et de fin corrects")
@@ -2139,7 +2139,7 @@ class TimetableSlot(models.Model):
     is_active = fields.Boolean(string='Actif ?', default=False)
 
     @api.constrains('is_active')
-    def _constrains_default(self):
+    def _check_default(self):
         for record in self:
             if record.is_active:
                 slots = self.env['siantou.ems.timetable.slot'].search([
