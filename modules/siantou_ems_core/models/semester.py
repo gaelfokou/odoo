@@ -6,7 +6,7 @@ from datetime import timedelta, datetime, date
 from odoo.exceptions import UserError, ValidationError
 import logging
 
-DATE_FORMAT = '%Y-%m-%d'
+DATE_FORMAT_FR = '%d/%m/%Y'
 
 _logger = logging.getLogger(__name__)
 
@@ -110,7 +110,7 @@ class Semester(models.Model):
             if len(semesters) > 0:
                 raise ValidationError('Les dates du semestre ne peuvent se chevaucher')
             if not (record.start_time >= record.year_id.start_time and record.start_time <= record.year_id.end_time) or not (record.end_time >= record.year_id.start_time and record.end_time <= record.year_id.end_time):
-                raise ValidationError(f"Les dates du semestre doivent être dans celles de l'année académique : {datetime.strftime(record.year_id.start_time, DATE_FORMAT)}-{datetime.strftime(record.year_id.end_time, DATE_FORMAT)}")
+                raise ValidationError(f"Les dates du semestre doivent être dans celles de l'année académique : {datetime.strftime(record.year_id.start_time, DATE_FORMAT_FR)}-{datetime.strftime(record.year_id.end_time, DATE_FORMAT_FR)}")
             if record.start_time >= record.end_time:
                 raise ValidationError('La date de fin doit être supérieure à la date de début')
 

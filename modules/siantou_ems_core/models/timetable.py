@@ -926,7 +926,6 @@ class Timetable(models.Model):
                     -----
                 """
                 for timetable in timetables:
-                    timetable_date = datetime.strftime(timetable.date, DATE_FORMAT_FR)
                     validation_error_message += f"""
                         • ID : {timetable.id}
                         Version : {timetable.group_id.name}
@@ -934,7 +933,7 @@ class Timetable(models.Model):
                         Groupe : {timetable.class_group_id.name}
                         Enseignant : {timetable.employee_id.name}
                         Cours : {timetable.subject_id.name}
-                        Date : {datetime.strftime(timetable_date, DATE_FORMAT)}
+                        Date : {datetime.strftime(timetable.date, DATE_FORMAT_FR)}
                         Heure de début : {timetable.start_time}
                         Heure de fin : {timetable.end_time}
                         -----
@@ -957,7 +956,6 @@ class Timetable(models.Model):
                     -----
                 """
                 for timetable in timetables:
-                    timetable_date = datetime.strftime(timetable.date, DATE_FORMAT_FR)
                     validation_error_message += f"""
                         • ID : {timetable.id}
                         Version : {timetable.group_id.name}
@@ -965,7 +963,7 @@ class Timetable(models.Model):
                         Groupe : {timetable.class_group_id.name}
                         Enseignant : {timetable.employee_id.name}
                         Cours : {timetable.subject_id.name}
-                        Date : {datetime.strftime(timetable_date, DATE_FORMAT)}
+                        Date : {datetime.strftime(timetable.date, DATE_FORMAT_FR)}
                         Heure de début : {timetable.start_time}
                         Heure de fin : {timetable.end_time}
                         -----
