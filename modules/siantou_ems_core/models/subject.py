@@ -252,6 +252,21 @@ class Subject(models.Model):
         for subject in subjects:
             self.update_teacher_priority(subject)
 
+        if 'name' in vals and vals['name'] and vals['name'].strip():
+            for subject in subjects:
+                timetables = self.env['siantou.ems.timetable.timetable'].search([
+                    ('subject_id', '=', subject.id),
+                    '|',
+                    ('group_id.is_submit', '=', False),
+                    ('group_parent_id.is_submit', '=', False),
+                ])
+                timetables = list(timetables)
+                for timetable in timetables:
+                    timetable.write({
+                        'subject_id': subject.id,
+                        'skip_validation': True,
+                    })
+
         return res
 
     def action_open_filter(self):

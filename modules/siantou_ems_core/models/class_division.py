@@ -1010,17 +1010,17 @@ class EducationClass(models.Model):
             record._compute_timetables()
 
     def write(self, vals):
+        classes = []
+        if len(self.ids) == 1:
+            classe = self.env['siantou.ems.core.class'].browse(self.id)
+            classes.append(classe)
+        else:
+            classes = self.env['siantou.ems.core.class'].browse(self.ids)
+            classes = list(classes)
+
         res = super(EducationClass, self).write(vals)
 
         if 'is_timetable_active' in vals:
-            classes = []
-            if len(self.ids) == 1:
-                classe = self.env['siantou.ems.core.class'].browse(self.id)
-                classes.append(classe)
-            else:
-                classes = self.env['siantou.ems.core.class'].browse(self.ids)
-                classes = list(classes)
-
             for classe in classes:
                 timetables = self.env['siantou.ems.timetable.timetable'].search([
                     ('class_id', '=', classe.id),
@@ -1043,14 +1043,6 @@ class EducationClass(models.Model):
                     })
 
         if 'name' in vals and vals['name'] and vals['name'].strip():
-            classes = []
-            if len(self.ids) == 1:
-                classe = self.env['siantou.ems.core.class'].browse(self.id)
-                classes.append(classe)
-            else:
-                classes = self.env['siantou.ems.core.class'].browse(self.ids)
-                classes = list(classes)
-
             for classe in classes:
                 timetables = self.env['siantou.ems.timetable.timetable'].search([
                     ('class_id', '=', classe.id),
