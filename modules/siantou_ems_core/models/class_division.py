@@ -168,25 +168,8 @@ class EducationClass(models.Model):
                 record.end_date = record.semester_id.end_time
             else:
                 if record.year_id.id:
-                    semester = self.env['siantou.ems.core.year.semester'].search(
-                        [('year_id', '=', record.year_id.id)],
-                        order='start_time asc',
-                        limit=1
-                    )
-                    if semester:
-                        record.start_date = semester.start_time
-                    else:
-                        record.start_date = None
-
-                    semester = self.env['siantou.ems.core.year.semester'].search(
-                        [('year_id', '=', record.year_id.id)],
-                        order='end_time desc',
-                        limit=1
-                    )
-                    if semester:
-                        record.end_date = semester.end_time
-                    else:
-                        record.end_date = None
+                    record.start_date = record.year_id.start_time
+                    record.end_date = record.year_id.end_time
                 else:
                     record.start_date = None
                     record.end_date = None
