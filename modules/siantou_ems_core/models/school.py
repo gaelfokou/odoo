@@ -61,17 +61,17 @@ class School(models.Model):
     )
 
     def write(self, vals):
+        schools = []
+        if len(self.ids) == 1:
+            school = self.env['siantou.ems.core.school'].browse(self.id)
+            schools.append(school)
+        else:
+            schools = self.env['siantou.ems.core.school'].browse(self.ids)
+            schools = list(schools)
+
         res = super(School, self).write(vals)
 
         if 'name' in vals and vals['name'] and vals['name'].strip():
-            schools = []
-            if len(self.ids) == 1:
-                school = self.env['siantou.ems.core.school'].browse(self.id)
-                schools.append(school)
-            else:
-                schools = self.env['siantou.ems.core.school'].browse(self.ids)
-                schools = list(schools)
-
             for school in schools:
                 departments = self.env['hr.department'].search([
                     ('school_id', '=', school.id),

@@ -167,17 +167,17 @@ class OptionOfStudy(models.Model):
         }
 
     def write(self, vals):
+        options = []
+        if len(self.ids) == 1:
+            option = self.env['siantou.ems.core.option'].browse(self.id)
+            options.append(option)
+        else:
+            options = self.env['siantou.ems.core.option'].browse(self.ids)
+            options = list(options)
+
         res = super(OptionOfStudy, self).write(vals)
 
         if ('name' in vals and vals['name'] and vals['name'].strip()) or ('option_name' in vals and vals['option_name'] and vals['option_name'].strip()):
-            options = []
-            if len(self.ids) == 1:
-                option = self.env['siantou.ems.core.option'].browse(self.id)
-                options.append(option)
-            else:
-                options = self.env['siantou.ems.core.option'].browse(self.ids)
-                options = list(options)
-
             for option in options:
                 classes = self.env['siantou.ems.core.class'].search([
                     ('option_id', '=', option.id),
@@ -366,17 +366,17 @@ class SpecialtyOfStudy(models.Model):
         }
 
     def write(self, vals):
+        specialties = []
+        if len(self.ids) == 1:
+            specialty = self.env['siantou.ems.core.specialty'].browse(self.id)
+            specialties.append(specialty)
+        else:
+            specialties = self.env['siantou.ems.core.specialty'].browse(self.ids)
+            specialties = list(specialties)
+
         res = super(SpecialtyOfStudy, self).write(vals)
 
         if ('name' in vals and vals['name'] and vals['name'].strip()) or ('specialty_name' in vals and vals['specialty_name'] and vals['specialty_name'].strip()):
-            specialties = []
-            if len(self.ids) == 1:
-                specialty = self.env['siantou.ems.core.specialty'].browse(self.id)
-                specialties.append(specialty)
-            else:
-                specialties = self.env['siantou.ems.core.specialty'].browse(self.ids)
-                specialties = list(specialties)
-
             for specialty in specialties:
                 classes = self.env['siantou.ems.core.class'].search([
                     ('specialty_id', '=', specialty.id),

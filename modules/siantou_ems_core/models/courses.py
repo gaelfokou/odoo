@@ -27,17 +27,17 @@ class OeSchoolCourseSupervision(models.Model):
     ]
 
     def write(self, vals):
+        supervisions = []
+        if len(self.ids) == 1:
+            supervision = self.env['oe.school.course.supervision'].browse(self.id)
+            supervisions.append(supervision)
+        else:
+            supervisions = self.env['oe.school.course.supervision'].browse(self.ids)
+            supervisions = list(supervisions)
+
         res = super(OeSchoolCourseSupervision, self).write(vals)
 
         if 'name' in vals and vals['name'] and vals['name'].strip():
-            supervisions = []
-            if len(self.ids) == 1:
-                supervision = self.env['oe.school.course.supervision'].browse(self.id)
-                supervisions.append(supervision)
-            else:
-                supervisions = self.env['oe.school.course.supervision'].browse(self.ids)
-                supervisions = list(supervisions)
-
             for supervision in supervisions:
                 cycles = self.env['oe.school.course'].search([
                     ('supervision_id', '=', supervision.id),

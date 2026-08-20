@@ -195,17 +195,17 @@ class CalendarEvent(models.Model):
         return res
 
     def write(self, vals):
+        events = []
+        if len(self.ids) == 1:
+            event = self.env['siantou.ems.core.calendar.event'].browse(self.id)
+            events.append(event)
+        else:
+            events = self.env['siantou.ems.core.calendar.event'].browse(self.ids)
+            events = list(events)
+
         res = super(CalendarEvent, self).write(vals)
 
         if 'is_active' in vals:
-            events = []
-            if len(self.ids) == 1:
-                event = self.env['siantou.ems.core.calendar.event'].browse(self.id)
-                events.append(event)
-            else:
-                events = self.env['siantou.ems.core.calendar.event'].browse(self.ids)
-                events = list(events)
-
             for event in events:
                 self.update_calendar_event(event)
 
