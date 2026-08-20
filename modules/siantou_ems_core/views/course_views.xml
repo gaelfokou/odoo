@@ -27,21 +27,31 @@
 			<field name="arch" type="xml">
 				<form string='Cursus ou Cycles'>
 					<sheet>
-                        <group >
-                            <group>
-                                <field name="name"/>
-                                <field name="code"/>
-                                <field name="cycle_name"/>
-                                <field name="level_ids" widget="many2many_tags"/>
-                                <field name="has_supervision"/>
-                                <field name="supervision_id" invisible="has_supervision == False"/>
-                                <field name="sequence_id" options="{'no_create': True}" readonly="1"/>
-                            </group>
-                            <group>
-                                <field name="color" widget="color_picker"/>
-                                <field name="company_id" options="{'no_create': True}"/>
-                            </group>
+                        <div class="oe_title">
+                            <label for="name"/>
+                            <h3><field name="name"/></h3>
+                        </div>
+                        <group>
+                            <field name="code"/>
+                            <field name="cycle_name"/>
+                            <field name="level_ids" widget="many2many_tags"/>
+                            <field name="has_supervision"/>
+                            <field name="supervision_id" invisible="has_supervision == False"/>
+                            <field name="sequence_id" options="{'no_create': True}" readonly="1"/>
+                            <field name="color" widget="color_picker"/>
+                            <field name="company_id" options="{'no_create': True}"/>
                         </group>
+                        <notebook>
+                            <page name="field_of_study_ids" string="Filières">
+                                <field name="field_of_study_ids">
+                                    <tree>
+                                        <field name="code"/>
+                                        <field name="name"/>
+                                        <field name="school_id"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
 					</sheet>
                     <div class="oe_chatter">
                         <field name="message_follower_ids" groups="base.group_user"/>

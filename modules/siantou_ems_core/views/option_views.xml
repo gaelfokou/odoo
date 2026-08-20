@@ -23,10 +23,11 @@
 					<sheet>
                         <div class="oe_title">
                             <label for="name"/>
-                            <h3><field name="name" placeholder="ex: COMMERCE INTERNATIONAL"/></h3>
+                            <h3><field name="name"/></h3>
                         </div>
                         <group>
-                            <field name="code" placeholder="ex: COM INT"/>
+                            <field name="code"/>
+                            <field name="option_name"/>
                             <field name="specialty_id" options="{'no_create': True}"/>
                             <field name="cycle_id" options="{'no_create': True}"/>
                             <field name="supervision_id" options="{'no_create': True}"/>

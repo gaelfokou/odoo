@@ -12,11 +12,6 @@ import logging
 
 _logger = logging.getLogger(__name__)
 
-# class CourseGradingType(models.Model):
-#     _name = 'oe.school.course.grading.type'
-#     _description = 'Type de notation'
-#     name = fields.Char(string='Type', required=True)
-
 
 class OeSchoolCourseSupervision(models.Model):
     _name = 'oe.school.course.supervision'
@@ -143,6 +138,12 @@ class OeSchoolCourse(models.Model):
 
     sequence_id = fields.Many2one('ir.sequence', 'Séquence des numéros d\'enregistrement', copy=False, check_company=True)
 
+    field_of_study_ids = fields.One2many(
+        'siantou.ems.core.field_of_study',
+        'cycle_id',
+        string='Filières'
+    )
+
     # department_ids = fields.One2many(
     #     'hr.department',
     #     'cycle_id',
@@ -199,7 +200,6 @@ class OeSchoolCourse(models.Model):
 
     @api.model
     def create(self, vals):
-        _logger.info('**************** Vals ****************  %s', vals)
         sequence = self.env['ir.sequence'].create({
             'name': _('Sequence') + ' ' + vals['name'],
             'padding': 5,
@@ -212,22 +212,20 @@ class OeSchoolCourse(models.Model):
 
     def write(self, vals):
         if 'code' in vals:
-            for record in self:
-                sequence_vals = {
-                    'name': _('Sequence') + ' ' + vals['code'],
-                    'padding': 5,
-                    'prefix': vals['code'],
-                }
-                if record.sequence_id:
-                    record.sequence_id.write(sequence_vals)
-                else:
-                    sequence_vals['company_id'] = vals.get('company_id', record.company_id.id)
-                    sequence = self.env['ir.sequence'].create(sequence_vals)
-                    record.sequence_id = sequence
+            sequence_vals = {
+                'name': _('Sequence') + ' ' + vals['code'],
+                'padding': 5,
+                'prefix': vals['code'],
+            }
+            if self.sequence_id:
+                self.sequence_id.write(sequence_vals)
+            else:
+                sequence_vals['company_id'] = vals.get('company_id', self.company_id.id)
+                sequence = self.env['ir.sequence'].create(sequence_vals)
+                self.sequence_id = sequence
         if 'company_id' in vals:
-            for record in self:
-                if record.sequence_id:
-                    record.sequence_id.company_id = vals.get('company_id')
+            if self.sequence_id:
+                self.sequence_id.company_id = vals.get('company_id')
         return super().write(vals)
 
     # Actions
@@ -261,8 +259,40 @@ class OeSchoolCourse(models.Model):
 
     def update_cycle(self, cycle):
         try:
+            cycle_name = cycle.name if cycle.name else ''
+            cycle_name = cycle_name.lower()
+            while True:
+                if cycle_name.find('-') != -1:
+                    cycle_name = cycle_name.replace('-', ' ')
+                else:
+                    break
+            supervisions = self.env['oe.school.course.supervision'].search([])
+            supervisions = list(supervisions)
+            for supervision in supervisions:
+                name = supervision.name
+                name = name.lower()
+                while True:
+                    if cycle_name.find(name) != -1:
+                        cycle_name = cycle_name.replace(name, '')
+                    else:
+                        break
+                names = name.split('/')
+                for name in names:
+                    while True:
+                        if cycle_name.find(name) != -1:
+                            cycle_name = cycle_name.replace(name, '')
+                        else:
+                            break
+            name = cycle_name
+            while True:
+                if name.find('  ') != -1:
+                    name = name.replace('  ', ' ')
+                else:
+                    break
+            name = name.strip()
+            name = name.upper()
             cycle.write({
-                'cycle_name': cycle.name,
+                'cycle_name': name,
             })
             # self.env.cr.commit()
         except psycopg2.errors.NotNullViolation as error:
