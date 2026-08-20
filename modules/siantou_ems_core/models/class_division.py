@@ -1042,6 +1042,29 @@ class EducationClass(models.Model):
                         'reason': None,
                     })
 
+        if 'name' in vals and vals['name'] and vals['name'].strip():
+            classes = []
+            if len(self.ids) == 1:
+                classe = self.env['siantou.ems.core.class'].browse(self.id)
+                classes.append(classe)
+            else:
+                classes = self.env['siantou.ems.core.class'].browse(self.ids)
+                classes = list(classes)
+
+            for classe in classes:
+                timetables = self.env['siantou.ems.timetable.timetable'].search([
+                    ('class_id', '=', classe.id),
+                    '|',
+                    ('group_id.is_submit', '=', False),
+                    ('group_parent_id.is_submit', '=', False),
+                ])
+                timetables = list(timetables)
+                for timetable in timetables:
+                    timetable.write({
+                        'class_id': classe.id,
+                        'skip_validation': True,
+                    })
+
         return res
 
     def action_open_filter(self):
