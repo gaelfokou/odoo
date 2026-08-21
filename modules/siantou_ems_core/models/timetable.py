@@ -1203,8 +1203,9 @@ class Timetable(models.Model):
 
                 weekly_hours_limit = round(employee.weekly_hours_limit, 2)
 
-                if total_worked_hours > weekly_hours_limit:
-                    raise ValidationError(f"La somme des volumes horaires hebdomadaires programmés doit être inférieure ou égale au quota horaire hebdommadaire {total_worked_hours} / {weekly_hours_limit}")
+                if weekly_hours_limit > 0.0:
+                    if total_worked_hours > weekly_hours_limit:
+                        raise ValidationError(f"La somme des volumes horaires hebdomadaires programmés doit être inférieure ou égale au quota horaire hebdommadaire {total_worked_hours} / {weekly_hours_limit}")
 
         res = super(Timetable, self).create(vals)
 
