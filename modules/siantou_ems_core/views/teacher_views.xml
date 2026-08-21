@@ -22,7 +22,7 @@
                         <field name="is_teacher"/>
                         <field name="is_permanent"/>
                         <field name="identifier"/>
-                        <field name="weekly_hours_limit"/>
+                        <field name="weekly_hours_limit" readonly="0"/>
                         <field name="is_portal" invisible="is_teacher == False"/>
                     </group>
                     <group string="Informations salariales pour les enseignants">

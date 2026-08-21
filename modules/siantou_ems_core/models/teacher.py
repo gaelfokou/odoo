@@ -53,8 +53,22 @@ class HrEmployee(models.Model):
 
     weekly_hours_limit = fields.Integer(
         string='Quota horaire hebdommadaire',
-        required=True
+        compute='_compute_weekly_hours_limit',
+        store=True
     )
+
+    @api.depends('weekly_hours_limit', 'is_permanent')
+    def _compute_weekly_hours_limit(self):
+        for record in self:
+            if record.is_permanent:
+                record.weekly_hours_limit = 24.0
+            else:
+                record.weekly_hours_limit = 0.0
+
+    @api.onchange('weekly_hours_limit', 'is_permanent')
+    def _onchange_weekly_hours_limit(self):
+        for record in self:
+            record._compute_weekly_hours_limit()
 
     teacher_availability_ids = fields.One2many(
         'siantou.ems.core.teacher.availability',
@@ -115,12 +129,6 @@ class HrEmployee(models.Model):
     def _onchange_name(self):
         for record in self:
             record._compute_name()
-
-    @api.constrains('weekly_hours_limit')
-    def _check_weekly_hours_limit_permanent(self):
-        for record in self:
-            if record.is_permanent and record.weekly_hours_limit != 24:
-                raise ValidationError("Vous devez définir le quota horaire hebdommadaire de cours pour un enseignant permanent à 24")
 
     @api.depends('is_teacher')
     def _compute_timetables(self):

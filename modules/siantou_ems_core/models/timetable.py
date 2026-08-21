@@ -27,6 +27,13 @@ class TimetableSubjectHour(models.Model):
     _name = 'siantou.ems.timetable.subject.day.hour'
     _description = 'Jour et heure du cours'
 
+    start_date = fields.Date(
+        string='Date de début',
+        compute='_compute_start_date',
+        store=True,
+        readonly=False
+    )
+
     @api.depends('group_id')
     def _compute_start_date(self):
         for record in self:
@@ -35,9 +42,14 @@ class TimetableSubjectHour(models.Model):
             else:
                 record.start_date = None
 
-    start_date = fields.Date(
-        string='Date de début',
-        compute='_compute_start_date',
+    @api.onchange('group_id')
+    def _onchange_start_date(self):
+        for record in self:
+            record._compute_start_date()
+
+    end_date = fields.Date(
+        string='Date de fin',
+        compute='_compute_end_date',
         store=True,
         readonly=False
     )
@@ -50,12 +62,10 @@ class TimetableSubjectHour(models.Model):
             else:
                 record.end_date = None
 
-    end_date = fields.Date(
-        string='Date de fin',
-        compute='_compute_end_date',
-        store=True,
-        readonly=False
-    )
+    @api.onchange('group_id')
+    def _onchange_end_date(self):
+        for record in self:
+            record._compute_end_date()
 
     day_of_week = fields.Selection([
             ('0', 'Lundi'),
@@ -274,19 +284,10 @@ class Timetable(models.Model):
                 else:
                     record.hours_credit = None
 
-    @api.onchange('subject_id')
+    @api.onchange('subject_id', 'is_custom_hours_credit')
     def _onchange_hours_credit(self):
         for record in self:
-            if record.subject_id.id:
-                if record.is_custom_hours_credit:
-                    record.hours_credit = record.hours_credit
-                else:
-                    record.hours_credit = record.subject_id.hours_credit
-            else:
-                if record.is_custom_hours_credit:
-                    record.hours_credit = record.hours_credit
-                else:
-                    record.hours_credit = None
+            record._compute_hours_credit()
 
     @api.constrains('class_id', 'class_group_id', 'subject_id', 'date', 'hours_credit')
     def _check_hours_credit(self):
@@ -430,12 +431,7 @@ class Timetable(models.Model):
     @api.onchange('date', 'start_time')
     def _onchange_start_datetime(self):
         for record in self:
-            if record.date and record.start_time:
-                start_time = Timetable.convert_float_to_time(record.start_time, has_second=True)
-                datetime_from = datetime.strptime(f"{record.date} {start_time}", DATETIME_FORMAT)
-                record.start_datetime = datetime_from
-            else:
-                record.start_datetime = None
+            record._compute_start_datetime()
 
     @api.depends('date', 'end_time')
     def _compute_end_datetime(self):
@@ -450,12 +446,7 @@ class Timetable(models.Model):
     @api.onchange('date', 'end_time')
     def _onchange_end_datetime(self):
         for record in self:
-            if record.date and record.end_time:
-                end_time = Timetable.convert_float_to_time(record.end_time, has_second=True)
-                datetime_to = datetime.strptime(f"{record.date} {end_time}", DATETIME_FORMAT)
-                record.end_datetime = datetime_to
-            else:
-                record.end_datetime = None
+            record._compute_end_datetime()
 
     start_datetime = fields.Datetime(
         string='Date et heure de début',
@@ -531,20 +522,7 @@ class Timetable(models.Model):
     @api.onchange('group_id')
     def _onchange_readonly(self):
         for record in self:
-            current_date = date.today()
-            if record.group_id.id:
-                if record.group_id.create_uid.id == self.env.user.id:
-                    record.is_readonly = False
-                else:
-                    if self.env.user.id in record.group_id.write_user_ids.ids:
-                        if record.group_id.start_date > current_date or record.group_id.end_date <= current_date:
-                            record.is_readonly = True
-                        else:
-                            record.is_readonly = False
-                    else:
-                        record.is_readonly = True
-            else:
-                record.is_readonly = False
+            record._compute_readonly()
 
     @api.constrains('date', 'group_id')
     def _check_date(self):
@@ -1164,6 +1142,70 @@ class Timetable(models.Model):
                 if total_worked_hours > hours_credit:
                     raise ValidationError(f"La somme des volumes horaires programmés doit être inférieure ou égale au volume horaire semestriel {total_worked_hours} / {hours_credit}")
 
+            if 'employee_id' in vals and 'date' in vals:
+                employee = self.env['hr.employee'].search([('id', '=', vals['employee_id'])], limit=1)
+                current_date = datetime.strptime(vals['date'], DATE_FORMAT)
+                start_date = current_date - timedelta(days=current_date.weekday())
+                end_date = start_date + timedelta(days=6)
+                timetables = self.env['siantou.ems.timetable.timetable'].search([
+                    ('employee_id', '=', employee.id),
+                    '|',
+                    ('group_id.is_submit', '=', False),
+                    ('group_parent_id.is_submit', '=', False),
+                ]).filtered(lambda rec: rec.date and rec.day_of_week and rec.date >= start_date and rec.date <= end_date)
+
+                timetables = list(timetables)
+
+                total_worked_hours = 0.0
+                key_timetables = {}
+                for timetable in timetables:
+                    if not timetable.date or not timetable.day_of_week or not timetable.employee_id.id:
+                        continue
+
+                    end_time = Timetable.convert_float_to_time(timetable.end_time, has_second=True)
+                    start_time = Timetable.convert_float_to_time(timetable.start_time, has_second=True)
+                    key = '{}-{}-{}-{}'.format(timetable.employee_id.id, timetable.date, start_time, end_time)
+                    if key not in key_timetables:
+                        key_timetables[key] = {}
+                        key_timetables[key]['timetable'] = timetable
+                    else:
+                        continue
+
+                    end_time = datetime.strptime(f"{timetable.date} {end_time}", DATETIME_FORMAT)
+                    start_time = datetime.strptime(f"{timetable.date} {start_time}", DATETIME_FORMAT)
+
+                    worked_hours = end_time - start_time
+                    worked_hours = worked_hours.total_seconds() / 3600.0
+                    worked_hours = round(worked_hours, 2)
+
+                    if worked_hours < 0.0:
+                        del(key_timetables[key])
+                        continue
+
+                    weekly_hours_limit = timetable.employee_id.weekly_hours_limit
+
+                    key_timetables[key]['worked_hours'] = worked_hours
+                    key_timetables[key]['weekly_hours_limit'] = weekly_hours_limit
+                    total_worked_hours += key_timetables[key]['worked_hours']
+
+                end_time = Timetable.convert_float_to_time(vals['end_time'], has_second=True)
+                start_time = Timetable.convert_float_to_time(vals['start_time'], has_second=True)
+                end_time = datetime.strptime(f"{vals['date']} {end_time}", DATETIME_FORMAT)
+                start_time = datetime.strptime(f"{vals['date']} {start_time}", DATETIME_FORMAT)
+
+                worked_hours = end_time - start_time
+                worked_hours = worked_hours.total_seconds() / 3600.0
+                worked_hours = round(worked_hours, 2)
+
+                if worked_hours >= 0.0:
+                    total_worked_hours += worked_hours
+                total_worked_hours = round(total_worked_hours, 2)
+
+                weekly_hours_limit = round(employee.weekly_hours_limit, 2)
+
+                if total_worked_hours > weekly_hours_limit:
+                    raise ValidationError(f"La somme des volumes horaires hebdomadaires programmés doit être inférieure ou égale au quota horaire hebdommadaire {total_worked_hours} / {weekly_hours_limit}")
+
         res = super(Timetable, self).create(vals)
 
         self.create_timetable(res)
@@ -1747,14 +1789,7 @@ class TimetableGroup(models.Model):
     @api.onchange('start_date', 'end_date')
     def _onchange_access(self):
         for record in self:
-            current_date = date.today()
-            if record.start_date and record.end_date:
-                if record.start_date > current_date or record.end_date <= current_date:
-                    record.has_write_access = False
-                else:
-                    record.has_write_access = True
-            else:
-                record.has_write_access = False
+            record._compute_access()
 
     is_readonly = fields.Boolean(string='Lecture unique ?', compute='_compute_readonly')
 
@@ -1779,20 +1814,7 @@ class TimetableGroup(models.Model):
     @api.onchange('start_date', 'end_date', 'write_user_ids')
     def _onchange_readonly(self):
         for record in self:
-            current_date = date.today()
-            if record.create_uid.id:
-                if record.create_uid.id == self.env.user.id:
-                    record.is_readonly = False
-                else:
-                    if self.env.user.id in record.write_user_ids.ids:
-                        if record.start_date > current_date or record.end_date <= current_date:
-                            record.is_readonly = True
-                        else:
-                            record.is_readonly = False
-                    else:
-                        record.is_readonly = True
-            else:
-                record.is_readonly = False
+            record._compute_readonly()
 
     @api.depends('group_name', 'is_submit', 'is_active')
     def _compute_name(self):
