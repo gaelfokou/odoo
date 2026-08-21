@@ -60,10 +60,13 @@ class HrEmployee(models.Model):
     @api.depends('weekly_hours_limit', 'is_permanent')
     def _compute_weekly_hours_limit(self):
         for record in self:
-            if record.is_permanent:
-                record.weekly_hours_limit = 24.0
+            if record.weekly_hours_limit:
+                record.weekly_hours_limit = record.weekly_hours_limit
             else:
-                record.weekly_hours_limit = 0.0
+                if record.is_permanent:
+                    record.weekly_hours_limit = 24.0
+                else:
+                    record.weekly_hours_limit = 0.0
 
     @api.onchange('weekly_hours_limit', 'is_permanent')
     def _onchange_weekly_hours_limit(self):
