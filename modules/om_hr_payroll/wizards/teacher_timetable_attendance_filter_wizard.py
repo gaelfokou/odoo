@@ -81,7 +81,7 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
     @api.onchange('is_permanent')
     def _onchange_temporary(self):
         for record in self:
-            record.is_temporary = not record.is_permanent
+            record._compute_temporary()
 
     def _default_start_date(self):
         start_date = date.today().replace(day=1)

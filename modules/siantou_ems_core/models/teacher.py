@@ -57,18 +57,21 @@ class HrEmployee(models.Model):
         store=True
     )
 
-    @api.depends('weekly_hours_limit', 'is_permanent')
+    @api.depends('is_teacher', 'is_permanent')
     def _compute_weekly_hours_limit(self):
         for record in self:
             if record.weekly_hours_limit:
                 record.weekly_hours_limit = record.weekly_hours_limit
             else:
-                if record.is_permanent:
-                    record.weekly_hours_limit = 24.0
+                if record.is_teacher:
+                    if record.is_permanent:
+                        record.weekly_hours_limit = 24.0
+                    else:
+                        record.weekly_hours_limit = 48.0
                 else:
                     record.weekly_hours_limit = 0.0
 
-    @api.onchange('weekly_hours_limit', 'is_permanent')
+    @api.onchange('is_teacher', 'is_permanent')
     def _onchange_weekly_hours_limit(self):
         for record in self:
             record._compute_weekly_hours_limit()
