@@ -30,7 +30,6 @@ class StudentEnrollmentAdmissionWizard(models.TransientModel):
     @api.model
     def default_get(self, fields):
         res = super(StudentEnrollmentAdmissionWizard, self).default_get(fields)
-        # print(self.env.context.get('active_model'))
         if self.env.context.get('active_id'):
             res['student_enroll_id'] = self.env.context.get('active_id')
             _logger.info(f"Student admission ::: {res['student_enroll_id']}")
