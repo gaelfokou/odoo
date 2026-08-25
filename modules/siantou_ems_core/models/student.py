@@ -652,7 +652,7 @@ class Student(models.Model):
                     'name': cycle_id.name,
                 })
                 diplo_requis_ids.append(diplo_requis.id)
-            vals['diplo_requis_ids'] = diplo_requis_ids
+            # vals['diplo_requis_ids'] = diplo_requis_ids
 
             registre_id = self.env['siantou.session.registre'].search([('cycle_id', '=', vals['cycle_id'])], limit=1)
             if registre_id:
