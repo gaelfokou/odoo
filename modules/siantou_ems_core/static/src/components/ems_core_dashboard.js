@@ -51,9 +51,11 @@ export class OwlSalesDashboard extends Component {
                 const has_group_dashboard_admin = await self.user.hasGroup("siantou_ems_core.group_dashboard_admin")
                 console.log("User has_group_dashboard_admin :", has_group_dashboard_admin)
                 const years = await self.orm.searchRead("siantou.ems.core.year", [])
+                console.log("Années académiques :", years)
                 self.state.years = years
                 await years.forEach(async (year) => {
                     if (year.is_active) {
+                        console.log("Année académique active :", year.id)
                         self.state.year.value = year.id;
                     }
                 })
@@ -85,33 +87,42 @@ export class OwlSalesDashboard extends Component {
 		self.orm.call("hr.employee", "get_data_group").then(async function(data) {
 			console.log('----------- tototototototo call data', data)
             if (data.has_group_dashboard_admin) {
-                await self.getDatasCount()
-                await self.getBarChartDatas()
-                await self.getTearcherDatas()
-                await self.getFiliereDatas()
-                await self.getEcoleDatas()
+                await Promise.all([
+                    self.getDatasCount(),
+                    self.getBarChartDatas(),
+                    self.getTearcherDatas(),
+                    self.getFiliereDatas(),
+                    self.getEcoleDatas()
+                ]);
             }
     	})
 	}
 
     async onChangeYear() {
+        console.log("Année académique :", parseInt(this.state.year.value))
         await this.checkGroup()
     }
 
     async getDatasCount() {
-        const classes = await this.orm.searchRead("siantou.ems.core.class", [
-            ["year_id", "=", parseInt(this.state.year.value)]
-        ])
+		let self = this;
+        const [classes, cycleCount, ecoleCount, campusCount, teacherCount, filiereCount] = await Promise.all([
+            self.orm.searchRead("siantou.ems.core.class", [["year_id", "=", parseInt(this.state.year.value)]]),
+            self.orm.searchCount("oe.school.course", []),
+            self.orm.searchCount("siantou.ems.core.school", []),
+            self.orm.searchCount("siantou.ems.core.campus", []),
+            self.orm.searchCount("hr.employee", [["is_teacher", "=", true]]),
+            self.orm.searchCount("siantou.ems.core.field_of_study", [])
+        ]);
         let studentCount = 0
         await classes.forEach(async (classe) => {
             studentCount += classe.number_of_student
         })
-        this.state.students.value = studentCount;
-        this.state.cycles.value = await this.orm.searchCount("oe.school.course", [])
-        this.state.ecoles.value = await this.orm.searchCount("siantou.ems.core.school", [])
-        this.state.campus.value = await this.orm.searchCount("siantou.ems.core.campus", [])
-        this.state.teachers.value = await this.orm.searchCount("hr.employee", [["is_teacher", "=", true]])
-        this.state.filieres.value = await this.orm.searchCount("siantou.ems.core.field_of_study", [])
+        this.state.students.value = studentCount
+        this.state.cycles.value = cycleCount
+        this.state.ecoles.value = ecoleCount
+        this.state.campus.value = campusCount
+        this.state.teachers.value = teacherCount
+        this.state.filieres.value = filiereCount
         console.log('----------- tototototototo years', this.state.years)
         console.log('----------- tototototototo year', this.state.year)
         console.log('----------- tototototototo cycles', this.state.cycles)
@@ -135,15 +146,20 @@ export class OwlSalesDashboard extends Component {
     }
 
     async getTearcherDatas() {
-        const teacher_vac = await this.orm.searchCount("hr.employee", [["is_teacher", "=", true], ["is_permanent", "=", false]])
-        const teacher_perm = await this.orm.searchCount("hr.employee", [["is_permanent", "=", true], ["is_teacher", "=", true]])
-        this.state.doughTearchers.push({
-            name:"Enseignants permanents",
-            value:teacher_perm
-        })
+		let self = this;
+        // const teacher_vac = await this.orm.searchCount("hr.employee", [["is_teacher", "=", true], ["is_permanent", "=", false]])
+        // const teacher_perm = await this.orm.searchCount("hr.employee", [["is_teacher", "=", true], ["is_permanent", "=", true]])
+        const [teacher_vac, teacher_perm] = await Promise.all([
+            self.orm.searchCount("hr.employee", [["is_teacher", "=", true], ["is_permanent", "=", false]]),
+            self.orm.searchCount("hr.employee", [["is_teacher", "=", true], ["is_permanent", "=", true]])
+        ]);
         this.state.doughTearchers.push({
             name:"Enseignants vacataires",
             value:teacher_vac
+        })
+        this.state.doughTearchers.push({
+            name:"Enseignants permanents",
+            value:teacher_perm
         })
         console.log('----------- tototototototo doughTearchers', this.state.doughTearchers)
     }
