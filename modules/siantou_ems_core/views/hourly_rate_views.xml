@@ -27,7 +27,7 @@
             <field name="name">hourly.rate.form</field>
             <field name="model">siantou.ems.core.hourly.rate</field>
             <field name="arch" type="xml">
-                <form string="Taux horaire">
+                <form string="Taux horaire standard">
                     <sheet>
                         <group colspan="2">
                             <field name="name"/>

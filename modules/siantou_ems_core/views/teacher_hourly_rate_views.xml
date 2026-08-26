@@ -20,7 +20,7 @@
             <field name="name">teacher.hourly.rate.form</field>
             <field name="model">siantou.ems.core.teacher.hourly.rate</field>
             <field name="arch" type="xml">
-                <form string="Taux horaire des enseignants">
+                <form string="Taux horaire personnalisé">
                     <sheet>
                         <group colspan="2">
                             <field name="name"/>

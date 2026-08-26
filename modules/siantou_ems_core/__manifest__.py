@@ -132,6 +132,7 @@
         'views/hr_department_views.xml',
         'views/biometric_device_details_views.xml',
         'views/request_track_views.xml',
+        'views/general_setting_views.xml',
     ],
     'license': 'LGPL-3',
     'installable': True,

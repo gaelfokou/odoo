@@ -47,7 +47,8 @@ class RequestTrack(models.Model):
     )
 
     file = fields.Binary(
-        string='Fichier'
+        string='Fichier',
+        attachment=True
     )
 
     file_name = fields.Char(

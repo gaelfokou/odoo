@@ -89,8 +89,7 @@
 
         <!-- Action pour le menu d'affichage des cours -->
         <record
-            id="action_show_progress_report"
-            model="ir.actions.act_window">
+            id="action_show_progress_report" model="ir.actions.act_window">
             <field name="name">Fiches de progression</field>
             <field name="res_model">siantou.ems.core.progress.report</field>
             <field name="view_mode">tree,form</field>
@@ -103,8 +102,7 @@
         </record>
 
         <record
-            id="action_show_progress_report_2"
-            model="ir.actions.act_window">
+            id="action_show_progress_report_2" model="ir.actions.act_window">
             <field name="name">Fiches de progression</field>
             <field name="res_model">siantou.ems.core.progress.report</field>
             <field name="view_mode">tree</field>

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_general_setting_tree" model="ir.ui.view">
+            <field name="name">general.setting.tree</field>
+            <field name="model">siantou.ems.core.general.setting</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Paramètres généraux">
+                    <field name="name"/>
+                    <field name="description"/>
+                    <field name="file_name"/>
+                    <field name="file_path"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_general_setting_form" model="ir.ui.view">
+            <field name="name">general.setting.form</field>
+            <field name="model">siantou.ems.core.general.setting</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Paramètre général">
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="description"/>
+                            <field name="file_name" invisible="1"/>
+                            <field name="file" filename="file_name" options="{'accepted_file_extensions': '.png,.jpg,.jpeg'}"/>
+                            <field name="file_path"/>
+                        </group>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" groups="base.group_user"/>
+                        <field name="activity_ids"/>
+                        <field name="message_ids"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_show_general_setting" model="ir.actions.act_window">
+            <field name="name">Paramètres généraux</field>
+            <field name="res_model">siantou.ems.core.general.setting</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref="view_general_setting_search"/>
+            <field name="view_ids"
+                eval="[(5, 0, 0),
+                (0, 0, {'view_mode': 'tree', 'view_id': ref('view_general_setting_tree')}),
+                (0, 0, {'view_mode': 'form', 'view_id': ref('view_general_setting_form')})]"/>
+        </record>
+
+        <menuitem id="siantou_menu_general_setting"
+                name="Paramètres généraux"
+                parent="menu_siantou_ems_core_config_setting"
+                action="action_show_general_setting"
+                groups="siantou_ems_core.group_general_setting_perm_write"
+            sequence="21"/>
+    </data>
+</odoo>
