@@ -58,4 +58,9 @@
             name="Gestion des chronogrammes"
             parent="menu_siantou_ems_core_configuration" 
             sequence="4"/>
+    <menuitem
+            id="menu_siantou_ems_core_config_setting" 
+            name="Gestion des paramètres"
+            parent="menu_siantou_ems_core_configuration" 
+            sequence="5"/>
 </odoo>
