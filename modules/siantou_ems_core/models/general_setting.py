@@ -44,6 +44,7 @@ class GeneralSetting(models.Model):
     name = fields.Char(
         string='Nom',
         required=True,
+        translate=True,
     )
 
     description = fields.Text(
