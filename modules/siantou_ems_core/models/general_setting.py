@@ -11,29 +11,10 @@ import psycopg2
 import copy
 import base64
 import os
-from odoo.tools.misc import file_path
+# from odoo.tools.misc import file_path
 import logging
 
 _logger = logging.getLogger(__name__)
-
-DATE_FORMAT = '%Y-%m-%d'
-DATE_FORMAT_FR = '%d/%m/%Y'
-DATETIME_FORMAT = '%Y-%m-%d %H:%M:%S'
-DATETIME_FORMAT_FR = '%d/%m/%Y %H:%M'
-TIME_FORMAT = '%H:%M:%S'
-TIME_FORMAT_FR = '%H:%M'
-
-TYPE_TRACKREQUEST = {
-    'academic_information': 'Informations académiques',
-    'exam_score': 'Notes d\'examen',
-}
-
-STATUS_TRACKREQUEST = {
-    'pending': 'En attente',
-    'progress': 'En cours',
-    'rejected': 'Rejeté',
-    'done': 'Traité',
-}
 
 
 class GeneralSetting(models.Model):
@@ -43,12 +24,36 @@ class GeneralSetting(models.Model):
 
     name = fields.Char(
         string='Nom',
+        compute='_compute_name',
+        store=True,
+    )
+
+    ref = fields.Char(
+        string='Référence',
+        required=True,
+    )
+
+    title = fields.Char(
+        string='Titre',
         required=True,
         translate=True,
     )
 
     description = fields.Text(
         'Description',
+        translate=True,
+    )
+
+    phone = fields.Char(
+        string='Numéro de téléphone',
+    )
+
+    email = fields.Char(
+        string='E-mail',
+    )
+
+    site = fields.Char(
+        string='Site web',
     )
 
     file = fields.Binary(
@@ -66,22 +71,36 @@ class GeneralSetting(models.Model):
         store=True,
     )
 
+    _sql_constraints = [
+        ('unique_ref', 'unique(ref)', 'La référence doit être unique.'),
+    ]
+
+    @api.depends('title')
+    def _compute_name(self):
+        for record in self:
+            record.name = record.title if record.title else ''
+
+    @api.onchange('title')
+    def _onchange_name(self):
+        for record in self:
+            record._compute_name()
+
     @api.depends('file', 'file_name')
     def _compute_path(self):
         for record in self:
             if record.file_name:
-                try:
-                    image_path = file_path(file_path=f'siantou_ems_core/static/src/img/{record.file_name}', filter_ext=('.png', '.jpg', '.jpeg'), env=self.env)
-                    record.file_path = f'siantou_ems_core/static/src/img/{record.file_name}'
-                except FileNotFoundError:
-                    module_path = os.path.dirname(os.path.realpath(__file__))
-                    module_path = module_path.replace('/models', '')
-                    module_path = module_path.replace('\\models', '')
-                    image_path = os.path.join(module_path, 'static', 'src', 'img', record.file_name)
+                module_path = os.path.dirname(os.path.realpath(__file__))
+                module_path = os.path.dirname(module_path)
+                file_path = os.path.join(module_path, 'static', 'src', 'img', record.file_name)
+                relative_path = f'/siantou_ems_core/static/src/img/{record.file_name}'
+                if os.path.exists(file_path):
+                    _logger.info(f'----------- tototototototo file_path exists {file_path} -----------')
+                else:
                     file_bytes = base64.b64decode(record.file)
-                    with open(image_path, 'wb') as f:
+                    with open(file_path, 'wb') as f:
                         f.write(file_bytes)
-                        record.file_path = f'siantou_ems_core/static/src/img/{record.file_name}'
+                    _logger.info(f'----------- tototototototo file_path not exists {file_path} -----------')
+                record.file_path = relative_path
             else:
                 record.file_path = None
 
@@ -98,3 +117,52 @@ class GeneralSetting(models.Model):
                 file_name = file_name.lower()
                 if file_name.split('.')[-1] not in ['png', 'jpg', 'jpeg']:
                         raise ValidationError('Impossible de télécharger un fichier différent de .png, .jpg, .jpeg')
+
+    def write(self, vals):
+        settings = []
+        if len(self.ids) == 1:
+            setting = self.env['siantou.ems.core.general.setting'].browse(self.id)
+            settings.append(setting)
+        else:
+            settings = self.env['siantou.ems.core.general.setting'].browse(self.ids)
+            settings = list(settings)
+
+        if 'file_name' in vals:
+            for setting in settings:
+                if setting.file_name and setting.file_name != vals['file_name']:
+                    module_path = os.path.dirname(os.path.realpath(__file__))
+                    module_path = os.path.dirname(module_path)
+                    file_path = os.path.join(module_path, 'static', 'src', 'img', setting.file_name)
+                    if os.path.exists(file_path):
+                        os.remove(file_path)
+                        _logger.info(f'----------- tototototototo remove file_path exists {file_path} -----------')
+                    else:
+                        _logger.info(f'----------- tototototototo remove file_path not exists {file_path} -----------')
+
+        res = super(GeneralSetting, self).write(vals)
+
+        return res
+
+    def unlink(self):
+        settings = []
+        if len(self.ids) == 1:
+            setting = self.env['siantou.ems.core.general.setting'].browse(self.id)
+            settings.append(setting)
+        else:
+            settings = self.env['siantou.ems.core.general.setting'].browse(self.ids)
+            settings = list(settings)
+
+        for setting in settings:
+            if setting.file_name:
+                module_path = os.path.dirname(os.path.realpath(__file__))
+                module_path = os.path.dirname(module_path)
+                file_path = os.path.join(module_path, 'static', 'src', 'img', setting.file_name)
+                if os.path.exists(file_path):
+                    os.remove(file_path)
+                    _logger.info(f'----------- tototototototo remove file_path exists {file_path} -----------')
+                else:
+                    _logger.info(f'----------- tototototototo remove file_path not exists {file_path} -----------')
+
+        setting = super(GeneralSetting, self).unlink()
+
+        return setting

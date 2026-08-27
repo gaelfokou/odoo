@@ -7,10 +7,13 @@
             <field name="type">tree</field>
             <field name="arch" type="xml">
                 <tree string="Paramètres généraux">
-                    <field name="name"/>
+                    <field name="ref"/>
+                    <field name="title"/>
                     <field name="description"/>
+                    <field name="phone"/>
+                    <field name="email"/>
+                    <field name="site"/>
                     <field name="file_name"/>
-                    <field name="file_path"/>
                 </tree>
             </field>
         </record>
@@ -23,11 +26,14 @@
                 <form string="Paramètre général">
                     <sheet>
                         <group>
-                            <field name="name"/>
+                            <field name="ref"/>
+                            <field name="title"/>
                             <field name="description"/>
+                            <field name="phone"/>
+                            <field name="email"/>
+                            <field name="site"/>
                             <field name="file_name" invisible="1"/>
                             <field name="file" filename="file_name" options="{'accepted_file_extensions': '.png,.jpg,.jpeg'}"/>
-                            <field name="file_path"/>
                         </group>
                     </sheet>
                     <div class="oe_chatter">
