@@ -54,7 +54,7 @@ class SessionEnrollment(models.Model):
         required=True, related='year_id.end_time')
     cycle_ids = fields.Many2many(
         'oe.school.course',
-        string='Cycles',
+        string='Cursus ou Cycles',
         required=True,
     )
 
