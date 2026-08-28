@@ -7,7 +7,7 @@
             <field name="type">tree</field>
             <field name="arch" type="xml">
                 <tree string="Paramètres généraux">
-                    <field name="ref"/>
+                    <field name="year_id"/>
                     <field name="title"/>
                     <field name="description"/>
                     <field name="phone"/>
@@ -26,7 +26,7 @@
                 <form string="Paramètre général">
                     <sheet>
                         <group>
-                            <field name="ref"/>
+                            <field name="year_id"/>
                             <field name="title"/>
                             <field name="description"/>
                             <field name="phone"/>

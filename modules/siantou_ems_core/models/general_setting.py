@@ -28,9 +28,9 @@ class GeneralSetting(models.Model):
         store=True,
     )
 
-    ref = fields.Char(
-        string='Référence',
-        required=True,
+    year_id = fields.Many2one(
+        'siantou.ems.core.year',
+        string='Année académique',
     )
 
     title = fields.Char(
@@ -58,6 +58,7 @@ class GeneralSetting(models.Model):
 
     file = fields.Binary(
         string='Logo',
+        required=True,
         attachment=True
     )
 
@@ -72,7 +73,7 @@ class GeneralSetting(models.Model):
     )
 
     _sql_constraints = [
-        ('unique_ref', 'unique(ref)', 'La référence doit être unique.'),
+        ('unique_year_id', 'unique(year_id)', 'L\'année académique doit être unique.'),
     ]
 
     @api.depends('title')
@@ -91,7 +92,10 @@ class GeneralSetting(models.Model):
             if record.file_name:
                 module_path = os.path.dirname(os.path.realpath(__file__))
                 module_path = os.path.dirname(module_path)
-                file_path = os.path.join(module_path, 'static', 'src', 'img', record.file_name)
+                directory_path = os.path.join(module_path, 'static', 'src', 'img', 'upload')
+                if not os.path.exists(directory_path):
+                    os.mkdir(directory_path)
+                file_path = os.path.join(module_path, 'static', 'src', 'img', 'upload', record.file_name)
                 relative_path = f'/siantou_ems_core/static/src/img/{record.file_name}'
                 if os.path.exists(file_path):
                     _logger.info(f'----------- tototototototo file_path exists {file_path} -----------')
@@ -132,7 +136,7 @@ class GeneralSetting(models.Model):
                 if setting.file_name and setting.file_name != vals['file_name']:
                     module_path = os.path.dirname(os.path.realpath(__file__))
                     module_path = os.path.dirname(module_path)
-                    file_path = os.path.join(module_path, 'static', 'src', 'img', setting.file_name)
+                    file_path = os.path.join(module_path, 'static', 'src', 'img', 'upload', setting.file_name)
                     if os.path.exists(file_path):
                         os.remove(file_path)
                         _logger.info(f'----------- tototototototo remove file_path exists {file_path} -----------')
@@ -156,7 +160,7 @@ class GeneralSetting(models.Model):
             if setting.file_name:
                 module_path = os.path.dirname(os.path.realpath(__file__))
                 module_path = os.path.dirname(module_path)
-                file_path = os.path.join(module_path, 'static', 'src', 'img', setting.file_name)
+                file_path = os.path.join(module_path, 'static', 'src', 'img', 'upload', setting.file_name)
                 if os.path.exists(file_path):
                     os.remove(file_path)
                     _logger.info(f'----------- tototototototo remove file_path exists {file_path} -----------')
