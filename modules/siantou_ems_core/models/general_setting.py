@@ -96,7 +96,7 @@ class GeneralSetting(models.Model):
                 if not os.path.exists(directory_path):
                     os.mkdir(directory_path)
                 file_path = os.path.join(module_path, 'static', 'src', 'img', 'upload', record.file_name)
-                relative_path = f'/siantou_ems_core/static/src/img/{record.file_name}'
+                relative_path = f'/siantou_ems_core/static/src/img/upload/{record.file_name}'
                 if not os.path.exists(file_path):
                     file_bytes = base64.b64decode(record.file)
                     with open(file_path, 'wb') as f:
