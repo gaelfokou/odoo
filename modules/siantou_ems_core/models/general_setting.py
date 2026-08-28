@@ -97,13 +97,10 @@ class GeneralSetting(models.Model):
                     os.mkdir(directory_path)
                 file_path = os.path.join(module_path, 'static', 'src', 'img', 'upload', record.file_name)
                 relative_path = f'/siantou_ems_core/static/src/img/{record.file_name}'
-                if os.path.exists(file_path):
-                    _logger.info(f'----------- tototototototo file_path exists {file_path} -----------')
-                else:
+                if not os.path.exists(file_path):
                     file_bytes = base64.b64decode(record.file)
                     with open(file_path, 'wb') as f:
                         f.write(file_bytes)
-                    _logger.info(f'----------- tototototototo file_path not exists {file_path} -----------')
                 record.file_path = relative_path
             else:
                 record.file_path = None
@@ -139,9 +136,6 @@ class GeneralSetting(models.Model):
                     file_path = os.path.join(module_path, 'static', 'src', 'img', 'upload', setting.file_name)
                     if os.path.exists(file_path):
                         os.remove(file_path)
-                        _logger.info(f'----------- tototototototo remove file_path exists {file_path} -----------')
-                    else:
-                        _logger.info(f'----------- tototototototo remove file_path not exists {file_path} -----------')
 
         res = super(GeneralSetting, self).write(vals)
 
@@ -163,9 +157,6 @@ class GeneralSetting(models.Model):
                 file_path = os.path.join(module_path, 'static', 'src', 'img', 'upload', setting.file_name)
                 if os.path.exists(file_path):
                     os.remove(file_path)
-                    _logger.info(f'----------- tototototototo remove file_path exists {file_path} -----------')
-                else:
-                    _logger.info(f'----------- tototototototo remove file_path not exists {file_path} -----------')
 
         setting = super(GeneralSetting, self).unlink()
 
