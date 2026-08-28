@@ -95,6 +95,9 @@ subject_score_admin,subject.score.admin,model_siantou_ems_core_subject_score,,1,
 request_track_user,request.track.user,model_siantou_ems_core_request_track,,1,0,0,0
 request_track_admin,request.track.admin,model_siantou_ems_core_request_track,,1,1,1,1
 
+general_setting_user,general.setting.user,model_siantou_ems_core_general_setting,,1,0,0,0
+general_setting_admin,general.setting.admin,model_siantou_ems_core_general_setting,,1,1,1,1
+
 calendar_event_user,calendar.event.user,model_siantou_ems_core_calendar_event,,1,0,0,0
 calendar_event_admin,calendar.event.admin,model_siantou_ems_core_calendar_event,,1,1,1,1
 
