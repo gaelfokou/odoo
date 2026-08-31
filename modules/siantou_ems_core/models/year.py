@@ -31,6 +31,13 @@ class Year(models.Model):
 
     is_valid = fields.Boolean(string='Valide ?', default=False)
 
+    year_parent_id = fields.Many2one(
+        'siantou.ems.core.year',
+        string='Année académique parent',
+        domain="[('user_id', '=', False), ('is_valid', '=', True)]",
+        ondelete='cascade'
+    )
+
     user_id = fields.Many2one(
         'res.users',
         string='Utilisateur associé',
@@ -84,3 +91,43 @@ class Year(models.Model):
                     years = list(years)
                     if len(years) > 0:
                         raise ValidationError(f'Une année académique est déjà active')
+
+    @api.model
+    def get_years(self, id=None):
+        _logger.info(f'----------- tototototototo id {id} -----------')
+        years = self.env['siantou.ems.core.year'].sudo().search([
+            ('user_id', '=', False),
+            ('is_valid', '=', True),
+        ])
+        for year in years:
+            year_id = self.env['siantou.ems.core.year'].sudo().search([
+                ('start_time', '=', year.start_time),
+                ('end_time', '=', year.end_time),
+                ('user_id', '=', self.env.user.id),
+            ], limit=1)
+            if not year_id:
+                year_id = self.env['siantou.ems.core.year'].sudo().create({
+                    'name': year.name,
+                    'start_time': year.start_time,
+                    'end_time': year.end_time,
+                    'is_active': year.is_active,
+                    'is_valid': year.is_valid,
+                    'year_parent_id': year.id,
+                    'user_id': self.env.user.id,
+                })
+        years = self.env['siantou.ems.core.year'].sudo().search([
+            ('user_id', '=', self.env.user.id),
+            ('is_valid', '=', True),
+        ])
+        if id:
+            for year in years:
+                if year.id != id:
+                    year.sudo().write({
+                        'is_active': False,
+                    })
+            for year in years:
+                if year.id == id:
+                    year.sudo().write({
+                        'is_active': True,
+                    })
+        return years.read()

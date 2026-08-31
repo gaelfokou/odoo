@@ -17,7 +17,7 @@ export class StudentComponent extends Component {
 	setup() {
 		super.setup();
     	this.action = useService("action");
-		this.notificationService = useService("notification");
+		this.notification = useService("notification");
     	this.orm = useService("orm");
         this.state = useState({
             students: [],
@@ -28,17 +28,22 @@ export class StudentComponent extends Component {
 	}
 	async loadData() {
 		let self = this;
-		this.orm.call('oe.school.student', 'get_students', [[]]).then(function(data) {
-			console.log('----------- tototototototo call data', data)
-			self.state.students = data;
-    	});
-		/* this.orm.search('oe.school.student', [[]]).then(function(data) {
-			console.log('----------- tototototototo search data', data)
-			self.state.students = data;
-    	}); */
+        try {
+			await self.orm.call('oe.school.student', 'get_students', [[]]).then(function(students) {
+				console.log('----------- tototototototo students', students)
+				self.state.students = students;
+			});
+			/* self.orm.search('oe.school.student', [[]]).then(function(students) {
+				console.log('----------- tototototototo students', students)
+				self.state.students = students;
+			}); */
+        } catch(error) {
+            console.log("Erreur lors du chargement des données :", error);
+            self.notification.add(`Erreur lors du chargement des données : ${ error.message }`, { type: "danger" });
+        }
 	}
 	showNotification() {
-        this.notificationService.add(_t('Your changes have been saved successfully'), {
+        this.notification.add(_t('Your changes have been saved successfully'), {
             title: "Success",
             type: "success"
         });

@@ -511,7 +511,7 @@ class HrEmployee(models.Model):
         return report_action.report_action(self, data=data)
 
     @api.model
-    def get_data_group(self):
+    def get_user_group(self):
         data_group = {}
         data_group['has_group_dashboard_admin'] = self.env.user.has_group('siantou_ems_core.group_dashboard_admin')
         group = self.env.ref('siantou_ems_core.group_dashboard_admin').id
