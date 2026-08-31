@@ -144,6 +144,8 @@ class OeSchoolCourse(models.Model):
         string='Filières'
     )
 
+    school_ids = fields.Many2many('siantou.ems.core.school', 'course_school_rel', 'cycle_id', 'school_id', string='Écoles')
+
     # department_ids = fields.One2many(
     #     'hr.department',
     #     'cycle_id',

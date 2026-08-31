@@ -16,6 +16,7 @@
                     <field name="code"/>
 					<field name="name"/>
                     <field name="company_id"/>
+                    <field name="school_ids" widget="many2many_tags"/>                    
                     <field name="level_ids" widget="many2many_tags"/>
                     <field name="supervision_id"/>
 				</tree>
@@ -34,6 +35,7 @@
                         <group>
                             <field name="code"/>
                             <field name="cycle_name"/>
+                            <field name="school_ids" widget="many2many_tags"/>                    
                             <field name="level_ids" widget="many2many_tags"/>
                             <field name="has_supervision"/>
                             <field name="supervision_id" invisible="has_supervision == False"/>

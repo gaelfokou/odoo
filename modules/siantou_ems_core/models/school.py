@@ -20,6 +20,12 @@ class School(models.Model):
         required=True
     )
 
+    description = fields.Text(
+        'Description',
+        required=True,
+        translate=True,
+    )
+
     max_students_per_batch = fields.Integer(
         string='Nombre maximal d\'étudiants par lot',
         required=True,
@@ -59,6 +65,8 @@ class School(models.Model):
         'school_id',
         string='Départements'
     )
+
+    cycle_ids = fields.Many2many('oe.school.course', 'course_school_rel', 'school_id', 'cycle_id', string='Cursus ou Cycles')
 
     def write(self, vals):
         schools = []
