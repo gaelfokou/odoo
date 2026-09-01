@@ -1,10 +1,10 @@
 /** @odoo-module */
 
-import { registry } from "@web/core/registry"
-import { KpiCard } from "./kpi_card/kpi_card"
-import { ChartRenderer } from "../chart_renderer/chart_renderer"
-import { useService } from "@web/core/utils/hooks"
-const { Component, useState, onWillStart } = owl
+import { registry } from "@web/core/registry";
+import { KpiCard } from "./kpi_card/kpi_card";
+import { ChartRenderer } from "../chart_renderer/chart_renderer";
+import { useService } from "@web/core/utils/hooks";
+const { Component, useState, onWillStart } = owl;
 
 export class OwlRequestTrackDashboard extends Component {
     setup() {
@@ -69,13 +69,13 @@ export class OwlRequestTrackDashboard extends Component {
         onWillStart(async () => {
             let self = this;
             setTimeout(async function() {
-                await self.getRequestTracks()
+                await self.getRequestTracks();
             }, 2500)
         })
     }
 
     async getRequestTracks() {
-        let self = this
+        let self = this;
         Object.keys(self.state).forEach((key_type_request) => {
             Object.keys(self.state[key_type_request].data).forEach(async (key_status) => {
                 console.log(`${key_type_request} - ${key_status} : ${self.state[key_type_request].data[key_status]}`)
@@ -86,24 +86,24 @@ export class OwlRequestTrackDashboard extends Component {
 
     async viewRequestTracks(type_request, status) {
         console.log(`${type_request} - ${status}`)
-        // let context = {group_by: ['status']}
-        let context = {search_default_group_by_status: 1}
-        let domain = [["type_request", "=", type_request], ["status", "=", status]]
-        let title_request = ''
+        // let context = {group_by: ['status']};
+        let context = {search_default_group_by_status: 1};
+        let domain = [["type_request", "=", type_request], ["status", "=", status]];
+        let title_request = '';
         if (type_request == 'academic_information') {
-            title_request = 'Requêtes informations académiques'
+            title_request = 'Requêtes informations académiques';
         } else if (type_request == 'exam_score') {
-            title_request = 'Requêtes notes d\'examen'
+            title_request = 'Requêtes notes d\'examen';
         }
-        let title_status = ''
+        let title_status = '';
         if (status == 'pending') {
-            title_status = 'en attente'
+            title_status = 'en attente';
         } else if (status == 'progress') {
-            title_status = 'en cours'
+            title_status = 'en cours';
         } else if (status == 'rejected') {
-            title_status = 'rejetées'
+            title_status = 'rejetées';
         } else if (status == 'done') {
-            title_status = 'traitées'
+            title_status = 'traitées';
         }
         let name = `${title_request} ${title_status}`
         let list_view = await this.orm.searchRead("ir.model.data", [["name", "=", "view_request_track_tree"]], ["res_id"])
@@ -122,7 +122,7 @@ export class OwlRequestTrackDashboard extends Component {
     }
 }
 
-OwlRequestTrackDashboard.template = "owl.OwlRequestTrackDashboard"
-OwlRequestTrackDashboard.components = { KpiCard, ChartRenderer }
+OwlRequestTrackDashboard.template = "owl.OwlRequestTrackDashboard";
+OwlRequestTrackDashboard.components = { KpiCard, ChartRenderer };
 
-registry.category("actions").add("owl.request_track_dashboard", OwlRequestTrackDashboard)
+registry.category("actions").add("owl.request_track_dashboard", OwlRequestTrackDashboard);

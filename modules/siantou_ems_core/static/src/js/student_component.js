@@ -30,12 +30,12 @@ export class StudentComponent extends Component {
 		let self = this;
         try {
 			await self.orm.call('oe.school.student', 'get_students', [[]]).then(function(students) {
-				console.log('----------- tototototototo students', students)
 				self.state.students = students;
+				console.log('----------- tototototototo students', students);
 			});
 			/* self.orm.search('oe.school.student', [[]]).then(function(students) {
-				console.log('----------- tototototototo students', students)
 				self.state.students = students;
+				console.log('----------- tototototototo students', students);
 			}); */
         } catch(error) {
             console.log("Erreur lors du chargement des données :", error);
@@ -51,6 +51,6 @@ export class StudentComponent extends Component {
 }
 
 StudentComponent.template = "siantou_ems_core.student_component";
-StudentComponent.components = { Span }
+StudentComponent.components = { Span };
 
 registry.category("actions").add("siantou_ems_core.student_component", StudentComponent);
