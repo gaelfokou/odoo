@@ -45,6 +45,14 @@ class ResUsers(models.Model):
         string='Requêtes',
     )
 
+    active_year_ids = fields.Many2many(
+        'siantou.ems.core.year',
+        'active_user_year_rel',
+        'user_id',
+        'year_id',
+        string='Années académiques actives',
+    )
+
     def create_user_employee_or_student(self, user):
         partner_id = user.partner_id
         company_id = None

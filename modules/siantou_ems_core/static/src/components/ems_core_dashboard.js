@@ -34,7 +34,6 @@ export class OwlSalesDashboard extends Component {
                 value: 0
             },
             years: [],
-            year_parents: {},
             datas: [],
             doughTearchers: [],
             doughFilieres: [],
@@ -72,10 +71,8 @@ export class OwlSalesDashboard extends Component {
                 self.state.years = years;
 				console.log('----------- tototototototo years', years);
                 await years.forEach(async (year) => {
-                    self.state.year_parents[`${year.id}`] = year.year_parent_id[0];
                     if (year.is_active) {
                         self.state.year.value = year.id;
-                        console.log('----------- tototototototo year_parent', year.year_parent_id[0]);
                         console.log('----------- tototototototo year', year.id);
                     }
                 })
@@ -143,7 +140,7 @@ export class OwlSalesDashboard extends Component {
 		let self = this;
         try {
             const [classes, cycleCount, ecoleCount, campusCount, teacherCount, filiereCount] = await Promise.all([
-                self.orm.searchRead("siantou.ems.core.class", [["year_id", "=", self.state.year_parents[`${parseInt(self.state.year.value)}`]]]),
+                self.orm.searchRead("siantou.ems.core.class", [["year_id", "=", parseInt(self.state.year.value)]]),
                 self.orm.searchCount("oe.school.course", []),
                 self.orm.searchCount("siantou.ems.core.school", []),
                 self.orm.searchCount("siantou.ems.core.campus", []),

@@ -12,9 +12,9 @@
                     <field name="name"/>
 					<field name="start_time"/>
 					<field name="end_time"/>
-                    <field name="user_id"/>
                     <field name="is_active"/>
-                    <field name="is_valid"/>
+                    <field name="active_user_ids" widget="many2many_tags"/>
+                    <field name="is_user_active"/>
 				</tree>
 			</field>
 		</record>
@@ -32,9 +32,9 @@
                             <field name="name"/>
                             <field name="start_time"/>
                             <field name="end_time"/>
-                            <field name="user_id"/>
                             <field name="is_active"/>
-                            <field name="is_valid"/>
+                            <field name="active_user_ids" widget="many2many_tags"/>
+                            <field name="is_user_active"/>
                         </group>
 					</sheet>
                     <div class="oe_chatter">
@@ -69,7 +69,6 @@
             <field name="res_model">siantou.ems.core.year</field>
             <field name="search_view_id" ref="year_search_view"/>
             <field name="view_mode">tree,form</field>
-            <field name="domain">['|', ('user_id', '=', False), ('user_id', '=', uid)]</field>
             <field name="help" type="html">
                 <p class="o_view_nocontent_smiling_face">
                     Créer une nouvelle année académique.

@@ -29,105 +29,113 @@ class Year(models.Model):
     # Variable booléenne pour définir une année académique comme étant active (année académique en cours)
     is_active = fields.Boolean(string='Actif ?', default=False)
 
-    is_valid = fields.Boolean(string='Valide ?', default=False)
-
-    year_parent_id = fields.Many2one(
-        'siantou.ems.core.year',
-        string='Année académique parent',
-        domain="[('user_id', '=', False), ('is_valid', '=', True)]",
-        ondelete='cascade'
-    )
-
-    user_id = fields.Many2one(
+    active_user_ids = fields.Many2many(
         'res.users',
-        string='Utilisateur associé',
-        help='Utilisateur associé à cet étudiant'
+        'active_user_year_rel',
+        'year_id',
+        'user_id',
+        string='Utilisateurs associés actifs',
     )
 
-    @api.constrains('start_time', 'end_time', 'user_id')
+    is_user_active = fields.Boolean(string='Utilisateur associé actif ?', compute='_compute_active')
+
+    @api.depends('active_user_ids')
+    def _compute_active(self):
+        for record in self:
+            years = self.env['siantou.ems.core.year'].sudo().search([
+                ('id', '=', record.id),
+                ('active_user_ids', '=', self.env.user.id),
+            ])
+            years = list(years)
+            if len(years) > 0:
+                record.is_user_active = True
+            else:
+                record.is_user_active = False
+
+    @api.onchange('active_user_ids')
+    def _onchange_active(self):
+        for record in self:
+            record._compute_active()
+
+    @api.constrains('start_time', 'end_time')
     def _check_date(self):
         for record in self:
-            if record.user_id.id:
-                years = self.env['siantou.ems.core.year'].search([
-                    ('id', '!=', record.id),
-                    ('user_id', '=', record.user_id.id),
-                ]).filtered(lambda rec: not (rec.start_time >= record.end_time or rec.end_time <= record.start_time))
-                years = list(years)
-                if len(years) > 0:
-                    raise ValidationError(f'Les dates de l\'année académique ne peuvent se chevaucher pour l\'utilisateur {record.user_id.name}')
-                if record.start_time >= record.end_time:
-                    raise ValidationError('La date de fin doit être supérieure à la date de début')
-            else:
-                years = self.env['siantou.ems.core.year'].search([
-                    ('id', '!=', record.id),
-                    ('user_id', '=', False),
-                ]).filtered(lambda rec: not (rec.start_time >= record.end_time or rec.end_time <= record.start_time))
-                years = list(years)
-                if len(years) > 0:
-                    raise ValidationError(f'Les dates de l\'année académique ne peuvent se chevaucher')
-                if record.start_time >= record.end_time:
-                    raise ValidationError('La date de fin doit être supérieure à la date de début')
+            years = self.env['siantou.ems.core.year'].search([
+                ('id', '!=', record.id),
+            ]).filtered(lambda rec: not (rec.start_time >= record.end_time or rec.end_time <= record.start_time))
+            years = list(years)
+            if len(years) > 0:
+                raise ValidationError(f'Les dates de l\'année académique ne peuvent se chevaucher')
+            if record.start_time >= record.end_time:
+                raise ValidationError('La date de fin doit être supérieure à la date de début')
 
-    @api.constrains('is_active', 'user_id')
+    @api.constrains('is_active', 'active_user_ids')
     def _check_unique_active(self):
         for record in self:
-            if record.user_id.id:
-                if record.is_active:
+            if record.is_active:
+                years = self.env['siantou.ems.core.year'].search([
+                    ('id', '!=', record.id),
+                    ('is_active', '=', True),
+                ])
+                years = list(years)
+                if len(years) > 0:
+                    raise ValidationError(f'Une année académique est déjà active')
+            if len(record.active_user_ids.ids) > 0:
+                for active_user_id in record.active_user_ids:
                     years = self.env['siantou.ems.core.year'].search([
                         ('id', '!=', record.id),
-                        ('user_id', '=', record.user_id.id),
-                        ('is_active', '=', True),
+                        ('active_user_ids', '=', active_user_id.id),
                     ])
                     years = list(years)
                     if len(years) > 0:
-                        raise ValidationError(f'Une année académique est déjà active pour l\'utilisateur {record.user_id.name}')
-            else:
-                if record.is_active:
-                    years = self.env['siantou.ems.core.year'].search([
-                        ('id', '!=', record.id),
-                        ('user_id', '=', False),
-                        ('is_active', '=', True),
-                    ])
-                    years = list(years)
-                    if len(years) > 0:
-                        raise ValidationError(f'Une année académique est déjà active')
+                        raise ValidationError(f'Une année académique est déjà active pour l\'utilisateur {active_user_id.name}')
 
     @api.model
     def get_years(self, id=None):
-        _logger.info(f'----------- tototototototo id {id} -----------')
-        years = self.env['siantou.ems.core.year'].sudo().search([
-            ('user_id', '=', False),
-            ('is_valid', '=', True),
-        ])
-        for year in years:
-            year_id = self.env['siantou.ems.core.year'].sudo().search([
-                ('start_time', '=', year.start_time),
-                ('end_time', '=', year.end_time),
-                ('user_id', '=', self.env.user.id),
-            ], limit=1)
-            if not year_id:
-                year_id = self.env['siantou.ems.core.year'].sudo().create({
-                    'name': year.name,
-                    'start_time': year.start_time,
-                    'end_time': year.end_time,
-                    'is_active': year.is_active,
-                    'is_valid': year.is_valid,
-                    'year_parent_id': year.id,
-                    'user_id': self.env.user.id,
-                })
-        years = self.env['siantou.ems.core.year'].sudo().search([
-            ('user_id', '=', self.env.user.id),
-            ('is_valid', '=', True),
-        ])
         if id:
-            for year in years:
-                if year.id != id:
-                    year.sudo().write({
-                        'is_active': False,
-                    })
-            for year in years:
-                if year.id == id:
-                    year.sudo().write({
-                        'is_active': True,
-                    })
-        return years.read()
+            years = self.env['siantou.ems.core.year'].sudo().search([
+                ('id', '=', id),
+                ('active_user_ids', '=', self.env.user.id),
+            ])
+            years = list(years)
+            if len(years) == 0:
+                years = self.env['siantou.ems.core.year'].sudo().search([
+                    ('active_user_ids', '=', self.env.user.id),
+                ])
+                years = list(years)
+                for year in years:
+                    active_user_ids = [(4, active_user_id.id) for active_user_id in year.active_user_ids if active_user_id.id != self.env.user.id]
+                    year.sudo().write({'active_user_ids': active_user_ids })
+                years = self.env['siantou.ems.core.year'].sudo().search([])
+                years = list(years)
+                for year in years:
+                    if year.id == id:
+                        active_user_ids = [(4, active_user_id.id) for active_user_id in year.active_user_ids]
+                        active_user_ids.append((4, self.env.user.id))
+                        year.sudo().write({'active_user_ids': active_user_ids })
+        else:
+            years = self.env['siantou.ems.core.year'].sudo().search([
+                ('active_user_ids', '=', self.env.user.id),
+            ])
+            years = list(years)
+            if len(years) == 0:
+                years = self.env['siantou.ems.core.year'].sudo().search([])
+                years = list(years)
+                for year in years:
+                    if year.is_active:
+                        active_user_ids = [(4, active_user_id.id) for active_user_id in year.active_user_ids]
+                        active_user_ids.append((4, self.env.user.id))
+                        year.sudo().write({'active_user_ids': active_user_ids })
+        data = []
+        years = self.env['siantou.ems.core.year'].sudo().search([])
+        years = list(years)
+        for year in years:
+            key = {}
+            key['id'] = year.id
+            key['name'] = year.name
+            key['start_time'] = year.start_time
+            key['end_time'] = year.end_time
+            key['is_active'] = year.is_user_active
+            data.append(key)
+        # return years.read()
+        return data
