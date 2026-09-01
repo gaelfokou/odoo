@@ -1145,6 +1145,7 @@ class Timetable(models.Model):
             if 'employee_id' in vals and 'date' in vals:
                 employee = self.env['hr.employee'].search([('id', '=', vals['employee_id'])], limit=1)
                 current_date = datetime.strptime(vals['date'], DATE_FORMAT)
+                current_date = current_date.date()
                 start_date = current_date - timedelta(days=current_date.weekday())
                 end_date = start_date + timedelta(days=6)
                 timetables = self.env['siantou.ems.timetable.timetable'].search([
