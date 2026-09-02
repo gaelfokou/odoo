@@ -206,13 +206,14 @@ class Timetable(models.Model):
     field_of_study_id = fields.Many2one(
         'siantou.ems.core.field_of_study',
         string='Filière',
-        related='specialty_id.field_of_study_id'
+        related='class_id.field_of_study_id'
     )
 
     cycle_id = fields.Many2one(
         'oe.school.course',
         string='Cursus ou Cycle',
-        related='field_of_study_id.cycle_id'
+        required=True,
+        ondelete='cascade'
     )
 
     department_id = fields.Many2one(
@@ -224,14 +225,13 @@ class Timetable(models.Model):
     specialty_id = fields.Many2one(
         'siantou.ems.core.specialty',
         string='Spécialité',
-        required=True,
-        ondelete='cascade'
+        related='class_id.specialty_id'
     )
 
     option_id = fields.Many2one(
         'siantou.ems.core.option',
         string='Option',
-        ondelete='cascade'
+        related='class_id.option_id'
     )
 
     class_id = fields.Many2one(
@@ -651,7 +651,7 @@ class Timetable(models.Model):
                 else:
                     record.is_active = False
 
-    specialty_id_domain = fields.Binary(compute='_compute_specialty_domain', default=[])
+    cycle_id_domain = fields.Binary(compute='_compute_cycle_domain', default=[])
 
     subject_id_domain = fields.Binary(compute='_compute_subject_domain', default=[])
 
@@ -659,14 +659,36 @@ class Timetable(models.Model):
 
     level_id_domain = fields.Binary(compute='_compute_level_domain', default=[])
 
-    @api.depends('semester_id')
+    class_id_domain = fields.Binary(compute='_compute_class_domain', default=[])
+
+    @api.depends('year_id', 'school_id', 'level_id', 'cycle_id', 'group_id')
+    def _compute_class_domain(self):
+        for record in self:
+            department_ids = record.group_id.department_ids
+            class_ids = record.group_id.class_ids
+            domain = [
+                ('year_id', '=', record.year_id.id),
+                ('school_id', '=', record.school_id.id),
+                ('level_id', '=', record.level_id.id),
+                ('cycle_id', '=', record.cycle_id.id)
+            ]
+            if len(department_ids.ids) > 0:
+                domain.append(('specialty_id.department_id', 'in', department_ids.ids))
+            if len(class_ids.ids) > 0:
+                domain.append(('id', 'in', class_ids.ids))
+            classes = self.env['siantou.ems.core.class'].search(domain)
+            domain = [
+                ('id', 'in', classes.ids),
+            ]
+            record.class_id_domain = domain
+
+    @api.depends('cycle_id', 'semester_id')
     def _compute_level_domain(self):
         for record in self:
-            domain = []
-            if record.semester_id.id:
-                domain = [
-                    ('semester_ids', '=', record.semester_id.id)
-                ]
+            domain = [
+                ('cycle_ids', '=', record.cycle_id.id),
+                ('semester_ids', '=', record.semester_id.id)
+            ]
             record.level_id_domain = domain
 
     @staticmethod
@@ -730,25 +752,20 @@ class Timetable(models.Model):
         for record in self:
             record._compute_name()
 
-    @api.depends('group_id', 'school_id')
-    def _compute_specialty_domain(self):
+    @api.depends('school_id')
+    def _compute_cycle_domain(self):
         for record in self:
-            department_ids = record.group_id.department_ids
-            domain = []
-            if record.school_id.id:
-                domain.append(('school_id', '=', record.school_id.id))
-            if len(department_ids.ids) > 0:
-                domain.append(('department_id', 'in', department_ids.ids))
-            record.specialty_id_domain = domain
+            cycle_ids = record.school_id.cycle_ids
+            domain = [('id', 'in', cycle_ids.ids)]
+            record.cycle_id_domain = domain
 
     @api.depends('group_id')
     def _compute_school_domain(self):
         for record in self:
-            domain = []
-            if record.group_id.id:
-                domain = [
-                    ('id', 'in', record.group_id.school_ids.ids)
-                ]
+            school_ids = record.group_id.school_ids
+            domain = [
+                ('id', 'in', school_ids.ids)
+            ]
             record.school_id_domain = domain
 
     @api.onchange('group_id')
@@ -782,27 +799,9 @@ class Timetable(models.Model):
             record.ue_id = None
             record.subject_id = None
 
-    @api.onchange('specialty_id')
-    def _onchange_specialty(self):
+    @api.onchange('class_id')
+    def _onchange_class(self):
         for record in self:
-            record.class_id = None
-            record.class_group_id = None
-            record.option_id = None
-            record.ue_id = None
-            record.subject_id = None
-
-    @api.onchange('option_id')
-    def _onchange_option(self):
-        for record in self:
-            record.class_id = None
-            record.class_group_id = None
-            record.ue_id = None
-            record.subject_id = None
-
-    @api.onchange('type_cour')
-    def _onchange_type_cour(self):
-        for record in self:
-            record.class_id = None
             record.class_group_id = None
             record.ue_id = None
             record.subject_id = None
@@ -810,22 +809,13 @@ class Timetable(models.Model):
     @api.depends('class_id', 'semester_id')
     def _compute_subject_domain(self):
         for record in self:
-            domain = []
-            if record.class_id.id:
-                ue_ids = record.class_id.ue_ids
-                if record.semester_id.id:
-                    ue_ids = ue_ids.filtered(lambda rec: record.semester_id.id in rec.semester_ids.ids)
-                domain = [
-                    ('ue_ids', 'in', ue_ids.ids)
-                ]
+            ue_ids = record.class_id.ue_ids
+            if record.semester_id.id:
+                ue_ids = ue_ids.filtered(lambda rec: record.semester_id.id in rec.semester_ids.ids)
+            domain = [
+                ('ue_ids', 'in', ue_ids.ids)
+            ]
             record.subject_id_domain = domain
-
-    @api.onchange('class_id')
-    def _onchange_class(self):
-        for record in self:
-            record.class_group_id = None
-            record.ue_id = None
-            record.subject_id = None
 
     @api.depends('date')
     def _compute_day_of_week(self):
@@ -2055,15 +2045,17 @@ class TimetableGroup(models.Model):
                 'has_write_access': group.has_write_access,
             })
 
-        if not self.env['ir.config_parameter'].sudo().get_param(f'siantou.expiration_date'):
-            self.env['ir.config_parameter'].sudo().set_param(f'siantou.expiration_date', '2026-05-31')
-        expiration_date = self.env['ir.config_parameter'].sudo().get_param(f'siantou.expiration_date', '2026-05-31')
         try:
+            if not self.env['ir.config_parameter'].sudo().get_param(f'siantou.expiration_date'):
+                self.env['ir.config_parameter'].sudo().set_param(f'siantou.expiration_date', '2026-12-31')
+            expiration_date = self.env['ir.config_parameter'].sudo().get_param(f'siantou.expiration_date', '2026-12-31')
             expiration_date = datetime.strptime(f"{expiration_date}", DATE_FORMAT).date()
             if current_date >= expiration_date:
-                year_id = self.env['siantou.ems.core.year'].search([('is_active', '=', True)], limit=1)
-                if year_id:
-                    year_id.sudo().write({'is_active': False})
+                years = self.env['siantou.ems.core.year'].sudo().search([])
+                years = list(years)
+                for year in years:
+                    active_user_ids = [(3, active_user_id.id) for active_user_id in year.active_user_ids]
+                    year.sudo().write({'active_user_ids': active_user_ids, 'is_active': False})
         except ValueError:
             pass
 

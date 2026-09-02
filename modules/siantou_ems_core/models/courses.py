@@ -500,26 +500,26 @@ class SchoolCourseSubject(models.Model):
     year_ids = fields.One2many(
         'siantou.ems.core.year',
         string='Années académiques',
-        compute='_compute_years_call'
+        compute='_compute_class_call'
     )
 
     year_id = fields.Many2one(
         'siantou.ems.core.year',
         string='Année académique active',
-        compute='_compute_years_call'
+        compute='_compute_class_call'
     )
 
     @api.depends('semester_ids')
-    def _compute_years_call(self):
+    def _compute_class_call(self):
         for record in self:
             record._compute_years()
             record._compute_year()
-            record._compute_semester_domain()
+            record._compute_class_domain()
 
     @api.onchange('semester_ids')
-    def _onchange_years_call(self):
+    def _onchange_class_call(self):
         for record in self:
-            record._compute_years_call()
+            record._compute_class_call()
 
     def _compute_years(self):
         for record in self:
@@ -554,9 +554,9 @@ class SchoolCourseSubject(models.Model):
 
     total_credit = fields.Integer('Nombre de crédit total', compute='_compute_total_credit', store=True)
 
-    class_id_domain = fields.Binary(compute='_compute_years_call', default=[])
+    class_id_domain = fields.Binary(compute='_compute_class_call', default=[])
 
-    def _compute_semester_domain(self):
+    def _compute_class_domain(self):
         for record in self:
             semester_ids = record.semester_ids
             domain = []

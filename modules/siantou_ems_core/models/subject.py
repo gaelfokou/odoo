@@ -95,25 +95,25 @@ class Subject(models.Model):
     year_ids = fields.One2many(
         'siantou.ems.core.year',
         string='Années académiques',
-        compute='_compute_years_call'
+        compute='_compute_year_call'
     )
 
     year_id = fields.Many2one(
         'siantou.ems.core.year',
         string='Année académique active',
-        compute='_compute_years_call'
+        compute='_compute_year_call'
     )
 
     @api.depends('ue_ids')
-    def _compute_years_call(self):
+    def _compute_year_call(self):
         for record in self:
             record._compute_years()
             record._compute_year()
 
     @api.onchange('ue_ids')
-    def _onchange_years_call(self):
+    def _onchange_year_call(self):
         for record in self:
-            record._compute_years_call()
+            record._compute_year_call()
 
     def _compute_years(self):
         for record in self:

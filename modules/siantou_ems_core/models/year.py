@@ -104,14 +104,14 @@ class Year(models.Model):
                 ])
                 years = list(years)
                 for year in years:
-                    active_user_ids = [(3, active_user_id.id) for active_user_id in year.active_user_ids]
-                    year.sudo().write({'active_user_ids': active_user_ids })
+                    active_user_ids = [(3, active_user_id.id) for active_user_id in year.active_user_ids if active_user_id.id == self.env.user.id]
+                    year.sudo().write({'active_user_ids': active_user_ids})
                 years = self.env['siantou.ems.core.year'].sudo().search([])
                 years = list(years)
                 for year in years:
                     if year.id == id:
                         active_user_ids = [(4, self.env.user.id)]
-                        year.sudo().write({'active_user_ids': active_user_ids })
+                        year.sudo().write({'active_user_ids': active_user_ids})
         else:
             years = self.env['siantou.ems.core.year'].sudo().search([
                 ('active_user_ids', '=', self.env.user.id),
@@ -123,7 +123,7 @@ class Year(models.Model):
                 for year in years:
                     if year.is_active:
                         active_user_ids = [(4, self.env.user.id)]
-                        year.sudo().write({'active_user_ids': active_user_ids })
+                        year.sudo().write({'active_user_ids': active_user_ids})
         data = []
         years = self.env['siantou.ems.core.year'].sudo().search([])
         years = list(years)

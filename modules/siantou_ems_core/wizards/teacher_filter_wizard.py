@@ -83,7 +83,7 @@ class TeacherFilterWizard(models.TransientModel):
 
     class_id_domain = fields.Binary(compute='_compute_class_domain', default=[])
 
-    @api.depends('year_id', 'school_id', 'level_id', 'field_of_study_id', 'specialty_id', 'option_id', 'type_cour')
+    @api.depends('year_id', 'school_id', 'level_id', 'specialty_id', 'option_id', 'type_cour')
     def _compute_class_domain(self):
         for record in self:
             domain = []
