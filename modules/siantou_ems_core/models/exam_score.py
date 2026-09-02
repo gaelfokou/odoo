@@ -116,7 +116,7 @@ class ExamScore(models.Model):
         ('unique_semester_class_subject_exam_type', 'unique(semester_id, class_id, subject_id, exam_type)', 'Un cours ne peut être lié à une classe et un examen pour un même semestre qu\'une seule fois.')
     ]
 
-    subject_id_domain = fields.Binary(compute='_compute_class_domain', default=[])
+    subject_id_domain = fields.Binary(compute='_compute_subject_domain', default=[])
 
     @api.depends('semester_id', 'class_id', 'subject_id', 'exam_type')
     def _compute_name(self):
@@ -147,7 +147,7 @@ class ExamScore(models.Model):
             record._compute_name()
 
     @api.depends('class_id')
-    def _compute_class_domain(self):
+    def _compute_subject_domain(self):
         for record in self:
             domain = []
             if record.class_id.id:
@@ -366,7 +366,7 @@ class SubjectScore(models.Model):
         default='absent',
     )
 
-    student_id_domain = fields.Binary(compute='_compute_class_domain', default=[])
+    student_id_domain = fields.Binary(compute='_compute_student_domain', default=[])
 
     _sql_constraints = [
         ('unique_sequence', 'unique(sequence)', 'La séquence de la notes des examens doit être unique.'),
@@ -399,7 +399,7 @@ class SubjectScore(models.Model):
             record._compute_name()
 
     @api.depends('exam_id')
-    def _compute_class_domain(self):
+    def _compute_student_domain(self):
         for record in self:
             domain = []
             if record.exam_id.id:

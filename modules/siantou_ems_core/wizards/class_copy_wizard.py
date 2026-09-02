@@ -104,11 +104,11 @@ class ClassCopyWizard(models.TransientModel):
         compute='_compute_destination_ues'
     )
 
-    specialty_id_domain = fields.Binary(compute='_compute_school_domain', default=[])
+    specialty_id_domain = fields.Binary(compute='_compute_specialty_domain', default=[])
 
-    source_class_id_domain = fields.Binary(compute='_compute_all_source_domain', default=[])
+    source_class_id_domain = fields.Binary(compute='_compute_source_class_domain', default=[])
 
-    destination_class_id_domain = fields.Binary(compute='_compute_all_destination_domain', default=[])
+    destination_class_id_domain = fields.Binary(compute='_compute_destination_class_domain', default=[])
 
     @api.depends('source_class_id')
     def _compute_source_ues(self):
@@ -135,7 +135,7 @@ class ClassCopyWizard(models.TransientModel):
             record.destination_ue_ids = record.destination_class_id.ue_ids
 
     @api.depends('school_id')
-    def _compute_school_domain(self):
+    def _compute_specialty_domain(self):
         for record in self:
             domain = []
             if record.school_id.id:
@@ -143,7 +143,7 @@ class ClassCopyWizard(models.TransientModel):
             record.specialty_id_domain = domain
 
     @api.depends('source_year_id', 'level_id', 'school_id', 'specialty_id', 'option_id', 'type_cour')
-    def _compute_all_source_domain(self):
+    def _compute_source_class_domain(self):
         for record in self:
             domain = []
             if record.source_year_id.id:
@@ -169,7 +169,7 @@ class ClassCopyWizard(models.TransientModel):
             record.source_class_id_domain = domain
 
     @api.depends('destination_year_id', 'level_id', 'school_id', 'specialty_id', 'option_id', 'type_cour')
-    def _compute_all_destination_domain(self):
+    def _compute_destination_class_domain(self):
         for record in self:
             domain = []
             if record.destination_year_id.id:

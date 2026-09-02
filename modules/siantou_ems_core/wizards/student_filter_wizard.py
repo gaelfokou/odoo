@@ -62,12 +62,12 @@ class StudentFilterWizard(models.TransientModel):
         string='Classe',
     )
 
-    specialty_id_domain = fields.Binary(compute='_compute_school_domain', default=[])
+    specialty_id_domain = fields.Binary(compute='_compute_specialty_domain', default=[])
 
-    class_id_domain = fields.Binary(compute='_compute_all_domain', default=[])
+    class_id_domain = fields.Binary(compute='_compute_class_domain', default=[])
 
     @api.depends('year_id', 'school_id', 'level_id', 'field_of_study_id', 'specialty_id', 'option_id', 'type_cour')
-    def _compute_all_domain(self):
+    def _compute_class_domain(self):
         for record in self:
             domain = []
             if record.year_id.id:
@@ -93,7 +93,7 @@ class StudentFilterWizard(models.TransientModel):
             record.class_id_domain = domain
 
     @api.depends('school_id')
-    def _compute_school_domain(self):
+    def _compute_specialty_domain(self):
         for record in self:
             domain = []
             if record.school_id.id:

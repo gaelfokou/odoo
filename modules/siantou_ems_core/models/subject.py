@@ -357,7 +357,7 @@ class ProgressReport(models.Model):
         ('unique_class_subject', 'unique(class_id, subject_id)', 'Un cours ne peut être lié à une même classe qu\'une seule fois.')
     ]
 
-    subject_id_domain = fields.Binary(compute='_compute_class_domain', default=[])
+    subject_id_domain = fields.Binary(compute='_compute_subject_domain', default=[])
 
     @api.depends('class_id', 'subject_id')
     def _compute_name(self):
@@ -386,7 +386,7 @@ class ProgressReport(models.Model):
             record._compute_name()
 
     @api.depends('class_id')
-    def _compute_class_domain(self):
+    def _compute_subject_domain(self):
         for record in self:
             domain = []
             if record.class_id.id:
@@ -893,7 +893,7 @@ class SubjectSession(models.Model):
 
     is_update = fields.Boolean('Mise à jour ?', default=False)
 
-    timetable_id_domain = fields.Binary(compute='_compute_class_domain', default=[])
+    timetable_id_domain = fields.Binary(compute='_compute_timetable_domain', default=[])
 
     @api.depends('timetable_id', 'report_id')
     def _compute_name(self):
@@ -912,7 +912,7 @@ class SubjectSession(models.Model):
             record._compute_name()
 
     @api.depends('report_id')
-    def _compute_class_domain(self):
+    def _compute_timetable_domain(self):
         for record in self:
             domain = []
             if record.report_id.id:

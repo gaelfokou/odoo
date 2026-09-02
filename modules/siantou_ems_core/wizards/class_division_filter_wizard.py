@@ -100,7 +100,7 @@ class ClassFilterWizard(models.TransientModel):
         string='Semestre',
     )
 
-    specialty_id_domain = fields.Binary(compute='_compute_school_domain', default=[])
+    specialty_id_domain = fields.Binary(compute='_compute_specialty_domain', default=[])
 
     type_action = fields.Selection([
         ('tree', 'Tree'),
@@ -110,7 +110,7 @@ class ClassFilterWizard(models.TransientModel):
     )
 
     @api.depends('school_id')
-    def _compute_school_domain(self):
+    def _compute_specialty_domain(self):
         for record in self:
             domain = []
             if record.school_id.id:

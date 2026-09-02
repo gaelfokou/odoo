@@ -651,16 +651,16 @@ class Timetable(models.Model):
                 else:
                     record.is_active = False
 
-    specialty_id_domain = fields.Binary(compute='_compute_school_domain', default=[])
+    specialty_id_domain = fields.Binary(compute='_compute_specialty_domain', default=[])
 
-    subject_id_domain = fields.Binary(compute='_compute_class_domain', default=[])
+    subject_id_domain = fields.Binary(compute='_compute_subject_domain', default=[])
 
-    school_id_domain = fields.Binary(compute='_compute_group_domain', default=[])
+    school_id_domain = fields.Binary(compute='_compute_school_domain', default=[])
 
-    level_id_domain = fields.Binary(compute='_compute_semester_domain', default=[])
+    level_id_domain = fields.Binary(compute='_compute_level_domain', default=[])
 
     @api.depends('semester_id')
-    def _compute_semester_domain(self):
+    def _compute_level_domain(self):
         for record in self:
             domain = []
             if record.semester_id.id:
@@ -731,7 +731,7 @@ class Timetable(models.Model):
             record._compute_name()
 
     @api.depends('group_id', 'school_id')
-    def _compute_school_domain(self):
+    def _compute_specialty_domain(self):
         for record in self:
             department_ids = record.group_id.department_ids
             domain = []
@@ -742,7 +742,7 @@ class Timetable(models.Model):
             record.specialty_id_domain = domain
 
     @api.depends('group_id')
-    def _compute_group_domain(self):
+    def _compute_school_domain(self):
         for record in self:
             domain = []
             if record.group_id.id:
@@ -808,7 +808,7 @@ class Timetable(models.Model):
             record.subject_id = None
 
     @api.depends('class_id', 'semester_id')
-    def _compute_class_domain(self):
+    def _compute_subject_domain(self):
         for record in self:
             domain = []
             if record.class_id.id:
@@ -1720,12 +1720,12 @@ class TimetableGroup(models.Model):
 
     department_ids = fields.Many2many('hr.department', 'department_group_rel', 'group_id', 'department_id', string='Départements')
 
-    department_id_domain = fields.Binary(compute='_compute_school_domain', default=[])
+    department_id_domain = fields.Binary(compute='_compute_department_domain', default=[])
 
-    class_id_domain = fields.Binary(compute='_compute_department_domain', default=[])
+    class_id_domain = fields.Binary(compute='_compute_class_domain', default=[])
 
     @api.depends('school_ids')
-    def _compute_school_domain(self):
+    def _compute_department_domain(self):
         for record in self:
             school_ids = record.school_ids
             domain = [
@@ -1734,7 +1734,7 @@ class TimetableGroup(models.Model):
             record.department_id_domain = domain
 
     @api.depends('school_ids', 'department_ids', 'semester_id')
-    def _compute_department_domain(self):
+    def _compute_class_domain(self):
         for record in self:
             school_ids = record.school_ids
             department_ids = record.department_ids
