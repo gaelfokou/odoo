@@ -44,7 +44,7 @@ class HourlyRate(models.Model):
 
     level_id = fields.Many2one(
         'siantou.ems.core.level',
-        'Niveau',
+        string='Niveau',
         required=True,
         ondelete='cascade'
     )

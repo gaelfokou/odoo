@@ -51,7 +51,7 @@ class ClassFilterWizard(models.TransientModel):
 
     level_id = fields.Many2one(
         'siantou.ems.core.level',
-        'Niveau',
+        string='Niveau',
     )
 
     field_of_study_id = fields.Many2one(

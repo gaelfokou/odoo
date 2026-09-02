@@ -113,7 +113,8 @@
                             <field name="level_id" options="{'no_create': True}" readonly="is_readonly == True" domain="level_id_domain"/>
                             <field name="class_id_domain" invisible="1"/>
                             <field name="class_id" options="{'no_create': True}" readonly="is_readonly == True" domain="class_id_domain"/>
-                            <field name="class_group_id" options="{'no_create': True}" readonly="is_readonly == True" domain="[('class_id', '=', class_id)]"/>
+                            <field name="has_group" invisible="1"/>
+                            <field name="class_group_id" options="{'no_create': True}" invisible="not has_group" readonly="is_readonly == True" domain="[('class_id', '=', class_id)]"/>
                             <!-- <field name="ue_id" options="{'no_create': True}" readonly="1" domain="[('class_ids', '=', class_id), ('semestre_id', '=', semester_id)]"/> -->
                             <field name="subject_id_domain" invisible="1"/>
                             <field name="subject_id" options="{'no_create': True}" readonly="is_readonly == True" domain="subject_id_domain"/>

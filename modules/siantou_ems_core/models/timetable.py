@@ -198,7 +198,7 @@ class Timetable(models.Model):
 
     level_id = fields.Many2one(
         'siantou.ems.core.level',
-        'Niveau',
+        string='Niveau',
         required=True,
         ondelete='cascade'
     )
@@ -561,6 +561,11 @@ class Timetable(models.Model):
     ], string='Statut',
         related='status',
         tracking=True
+    )
+
+    has_group = fields.Boolean(
+        'Classe avec groupe',
+        compute='_compute_has_group',
     )
 
     class_group_id = fields.Many2one(

@@ -28,7 +28,7 @@ class TimetableWizard(models.TransientModel):
 
     level_id = fields.Many2one(
         'siantou.ems.core.level',
-        'Niveau',
+        string='Niveau',
         ondelete='cascade'
     )
 
