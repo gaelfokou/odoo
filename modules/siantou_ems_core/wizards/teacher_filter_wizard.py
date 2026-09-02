@@ -26,11 +26,6 @@ class TeacherFilterWizard(models.TransientModel):
         'Année académique',
     )
 
-    department_id = fields.Many2one(
-        'hr.department',
-        string='Département'
-    )
-
     school_id = fields.Many2one(
         'siantou.ems.core.school',
         string='École',
@@ -44,23 +39,37 @@ class TeacherFilterWizard(models.TransientModel):
     field_of_study_id = fields.Many2one(
         'siantou.ems.core.field_of_study',
         string='Filière',
-        related='specialty_id.field_of_study_id'
+        related='class_id.field_of_study_id'
+    )
+
+    cycle_id = fields.Many2one(
+        'oe.school.course',
+        string='Cursus ou Cycle',
+    )
+
+    department_id = fields.Many2one(
+        'hr.department',
+        string='Département',
+        related='specialty_id.department_id'
     )
 
     specialty_id = fields.Many2one(
         'siantou.ems.core.specialty',
         string='Spécialité',
+        related='class_id.specialty_id'
     )
 
     option_id = fields.Many2one(
         'siantou.ems.core.option',
         string='Option',
+        related='class_id.option_id'
     )
 
     type_cour = fields.Selection([
-        ('cj', 'Cours du jour'),
-        ('cs', 'Cours du soir'),
-    ], string='Type de cours')
+            ('cj', 'Cours du jour'),
+            ('cs', 'Cours du soir'),
+        ], string='Type de cours',
+    )
 
     class_id = fields.Many2one(
         'siantou.ems.core.class',
@@ -77,53 +86,68 @@ class TeacherFilterWizard(models.TransientModel):
         string='Diplôme disponible',
     )
 
-    specialty_id_domain = fields.Binary(compute='_compute_specialty_domain', default=[])
+    cycle_id_domain = fields.Binary(compute='_compute_cycle_domain', default=[])
 
     subject_id_domain = fields.Binary(compute='_compute_subject_domain', default=[])
 
     class_id_domain = fields.Binary(compute='_compute_class_domain', default=[])
 
-    @api.depends('year_id', 'school_id', 'level_id', 'specialty_id', 'option_id', 'type_cour')
+    level_id_domain = fields.Binary(compute='_compute_level_domain', default=[])
+
+    @api.depends('cycle_id')
+    def _compute_level_domain(self):
+        for record in self:
+            domain = [
+                ('cycle_ids', '=', record.cycle_id.id),
+            ]
+            record.level_id_domain = domain
+
+    @api.depends('year_id', 'school_id', 'level_id', 'cycle_id', 'type_cour')
     def _compute_class_domain(self):
         for record in self:
-            domain = []
-            if record.year_id.id:
-                domain.append(('year_id', '=', record.year_id.id))
-            if record.school_id.id:
-                domain.append(('school_id', '=', record.school_id.id))
-            if record.level_id.id:
-                domain.append(('level_id', '=', record.level_id.id))
-            if record.specialty_id.id:
-                domain.append(('specialty_id', '=', record.specialty_id.id))
-            if record.option_id.id:
-                domain.append(('option_id', '=', record.option_id.id))
+            domain = [
+                ('year_id', '=', record.year_id.id),
+                ('school_id', '=', record.school_id.id),
+                ('level_id', '=', record.level_id.id),
+                ('cycle_id', '=', record.cycle_id.id)
+            ]
             if record.type_cour:
                 domain.append(('type_cour', '=', record.type_cour))
-            class_ids = []
             classes = self.env['siantou.ems.core.class'].search(domain)
-            for classe in classes:
-                class_ids.append(classe.id)
-            class_ids = list(set(class_ids))
             domain = [
-                ('id', 'in', class_ids),
+                ('id', 'in', classes.ids),
             ]
             record.class_id_domain = domain
 
     @api.depends('school_id')
-    def _compute_specialty_domain(self):
+    def _compute_cycle_domain(self):
         for record in self:
-            domain = []
-            if record.school_id.id:
-                domain.append(('school_id', '=', record.school_id.id))
-            record.specialty_id_domain = domain
+            cycle_ids = record.school_id.cycle_ids
+            domain = [('id', 'in', cycle_ids.ids)]
+            record.cycle_id_domain = domain
+
+    @api.onchange('year_id')
+    def _onchange_year(self):
+        for record in self:
+            record.school_id = None
+            record.cycle_id = None
+            record.level_id = None
+            record.class_id = None
+            record.subject_id = None
 
     @api.onchange('school_id')
     def _onchange_school(self):
         for record in self:
+            record.cycle_id = None
             record.level_id = None
             record.class_id = None
-            record.specialty_id = None
-            record.option_id = None
+            record.subject_id = None
+
+    @api.onchange('cycle_id')
+    def _onchange_cycle(self):
+        for record in self:
+            record.level_id = None
+            record.class_id = None
             record.subject_id = None
 
     @api.onchange('level_id')
@@ -132,23 +156,15 @@ class TeacherFilterWizard(models.TransientModel):
             record.class_id = None
             record.subject_id = None
 
-    @api.onchange('specialty_id')
-    def _onchange_specialty(self):
-        for record in self:
-            record.class_id = None
-            record.option_id = None
-            record.subject_id = None
-
-    @api.onchange('option_id')
-    def _onchange_option(self):
-        for record in self:
-            record.class_id = None
-            record.subject_id = None
-
     @api.onchange('type_cour')
     def _onchange_type_cour(self):
         for record in self:
             record.class_id = None
+            record.subject_id = None
+
+    @api.onchange('class_id')
+    def _onchange_class(self):
+        for record in self:
             record.subject_id = None
 
     @api.depends('class_id')
@@ -161,11 +177,6 @@ class TeacherFilterWizard(models.TransientModel):
                     ('ue_ids', 'in', ue_ids.ids)
                 ]
             record.subject_id_domain = domain
-
-    @api.onchange('class_id')
-    def _onchange_class(self):
-        for record in self:
-            record.subject_id = None
 
     def action_filter(self):
         domain = [
@@ -191,15 +202,12 @@ class TeacherFilterWizard(models.TransientModel):
         if self.school_id.id:
             domain.append(('school_id', '=', self.school_id.id))
             title.append(self.school_id.name)
+        if self.cycle_id.id:
+            domain.append(('cycle_id', '=', self.cycle_id.id))
+            title.append(self.cycle_id.name)
         if self.level_id.id:
             domain.append(('level_id', '=', self.level_id.id))
             title.append(self.level_id.name)
-        if self.specialty_id.id:
-            domain.append(('specialty_id', '=', self.specialty_id.id))
-            title.append(self.specialty_id.name)
-        if self.option_id.id:
-            domain.append(('option_id', '=', self.option_id.id))
-            title.append(self.option_id.name)
         if self.type_cour:
             domain.append(('class_id.type_cour', '=', self.type_cour))
             title.append(TYPE_COUR[self.type_cour])

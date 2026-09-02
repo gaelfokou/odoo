@@ -149,7 +149,6 @@ class TimetableFilterWizard(models.TransientModel):
             ('cj', 'Cours du jour'),
             ('cs', 'Cours du soir'),
         ], string='Type de cours',
-        related='class_id.type_cour',
     )
 
     class_id = fields.Many2one(
@@ -302,7 +301,7 @@ class TimetableFilterWizard(models.TransientModel):
             ]
             record.level_id_domain = domain
 
-    @api.depends('year_id', 'school_id', 'level_id', 'cycle_id', 'group_id')
+    @api.depends('year_id', 'school_id', 'level_id', 'cycle_id', 'group_id', 'type_cour')
     def _compute_class_domain(self):
         for record in self:
             department_ids = record.group_id.department_ids
@@ -317,6 +316,8 @@ class TimetableFilterWizard(models.TransientModel):
                 domain.append(('specialty_id.department_id', 'in', department_ids.ids))
             if len(class_ids.ids) > 0:
                 domain.append(('id', 'in', class_ids.ids))
+            if record.type_cour:
+                domain.append(('type_cour', '=', record.type_cour))
             classes = self.env['siantou.ems.core.class'].search(domain)
             domain = [
                 ('id', 'in', classes.ids),
@@ -336,17 +337,6 @@ class TimetableFilterWizard(models.TransientModel):
                 raise ValidationError("Vous devez définir des heures de début et de fin corrects")
             elif record.start_time > record.end_time:
                 raise ValidationError("L'heure de fin du cours doit être supérieure à l'heure de début du cours")
-
-    @api.onchange('year_id')
-    def _onchange_year(self):
-        for record in self:
-            record.group_id = None
-            record.school_id = None
-            record.level_id = None
-            record.class_id = None
-            record.specialty_id = None
-            record.option_id = None
-            record.subject_id = None
 
     @api.onchange('semester_id')
     def _onchange_semester(self):
@@ -387,34 +377,50 @@ class TimetableFilterWizard(models.TransientModel):
                     domain.append(('is_permanent', '=', False))
             record.employee_id_domain = domain
 
-    @api.onchange('group_id')
-    def _onchange_group(self):
-        for record in self:
-            record.school_id = None
-            record.level_id = None
-            record.class_id = None
-            record.specialty_id = None
-            record.option_id = None
-            record.subject_id = None
-
     @api.onchange('is_permanent', 'is_temporary')
     def _onchange_employee(self):
         for record in self:
             record.employee_id = None
 
+    @api.onchange('group_id')
+    def _onchange_group(self):
+        for record in self:
+            record.school_id = None
+            record.cycle_id = None
+            record.level_id = None
+            record.class_id = None
+            record.subject_id = None
+
     @api.onchange('school_id')
     def _onchange_school(self):
         for record in self:
+            record.cycle_id = None
             record.level_id = None
             record.class_id = None
-            record.specialty_id = None
-            record.option_id = None
+            record.subject_id = None
+
+    @api.onchange('cycle_id')
+    def _onchange_cycle(self):
+        for record in self:
+            record.level_id = None
+            record.class_id = None
             record.subject_id = None
 
     @api.onchange('level_id')
     def _onchange_level(self):
         for record in self:
             record.class_id = None
+            record.subject_id = None
+
+    @api.onchange('type_cour')
+    def _onchange_type_cour(self):
+        for record in self:
+            record.class_id = None
+            record.subject_id = None
+
+    @api.onchange('class_id')
+    def _onchange_class(self):
+        for record in self:
             record.subject_id = None
 
     @api.depends('class_id', 'semester_id')
@@ -427,11 +433,6 @@ class TimetableFilterWizard(models.TransientModel):
                 ('ue_ids', 'in', ue_ids.ids)
             ]
             record.subject_id_domain = domain
-
-    @api.onchange('class_id')
-    def _onchange_class(self):
-        for record in self:
-            record.subject_id = None
 
     def search_filtered(self, rec):
         result = not (rec.start_time >= self.end_time or rec.end_time <= self.start_time)
@@ -446,12 +447,25 @@ class TimetableFilterWizard(models.TransientModel):
         if self.school_id.id:
             domain.append(('school_id', '=', self.school_id.id))
             title.append(self.school_id.name)
-        if self.level_id.id:
-            domain.append(('level_id', '=', self.level_id.id))
-            title.append(self.level_id.name)
         if self.cycle_id.id:
             domain.append(('cycle_id', '=', self.cycle_id.id))
             title.append(self.cycle_id.name)
+        if self.level_id.id:
+            domain.append(('level_id', '=', self.level_id.id))
+            title.append(self.level_id.name)
+        if self.group_id.id:
+            department_ids = self.group_id.department_ids
+            class_ids = self.group_id.class_ids
+            class_domain = []
+            if len(department_ids.ids) > 0:
+                class_domain.append(('specialty_id.department_id', 'in', department_ids.ids))
+            if len(class_ids.ids) > 0:
+                class_domain.append(('id', 'in', class_ids.ids))
+            classes = self.env['siantou.ems.core.class'].search(class_domain)
+            domain.append(('class_id', 'in', classes.ids))
+        if self.type_cour:
+            domain.append(('class_id.type_cour', '=', self.type_cour))
+            title.append(TYPE_COUR[self.type_cour])
         if self.class_id.id:
             domain.append(('class_id', '=', self.class_id.id))
             title.append(self.class_id.name)
@@ -703,12 +717,25 @@ class TimetableFilterWizard(models.TransientModel):
         if self.school_id.id:
             domain.append(('school_id', '=', self.school_id.id))
             title.append(self.school_id.name)
-        if self.level_id.id:
-            domain.append(('level_id', '=', self.level_id.id))
-            title.append(self.level_id.name)
         if self.cycle_id.id:
             domain.append(('cycle_id', '=', self.cycle_id.id))
             title.append(self.cycle_id.name)
+        if self.level_id.id:
+            domain.append(('level_id', '=', self.level_id.id))
+            title.append(self.level_id.name)
+        if self.group_id.id:
+            department_ids = self.group_id.department_ids
+            class_ids = self.group_id.class_ids
+            class_domain = []
+            if len(department_ids.ids) > 0:
+                class_domain.append(('specialty_id.department_id', 'in', department_ids.ids))
+            if len(class_ids.ids) > 0:
+                class_domain.append(('id', 'in', class_ids.ids))
+            classes = self.env['siantou.ems.core.class'].search(class_domain)
+            domain.append(('class_id', 'in', classes.ids))
+        if self.type_cour:
+            domain.append(('class_id.type_cour', '=', self.type_cour))
+            title.append(TYPE_COUR[self.type_cour])
         if self.class_id.id:
             domain.append(('class_id', '=', self.class_id.id))
             title.append(self.class_id.name)
@@ -1040,12 +1067,25 @@ class TimetableFilterWizard(models.TransientModel):
         if self.school_id.id:
             domain.append(('school_id', '=', self.school_id.id))
             title.append(self.school_id.name)
-        if self.level_id.id:
-            domain.append(('level_id', '=', self.level_id.id))
-            title.append(self.level_id.name)
         if self.cycle_id.id:
             domain.append(('cycle_id', '=', self.cycle_id.id))
             title.append(self.cycle_id.name)
+        if self.level_id.id:
+            domain.append(('level_id', '=', self.level_id.id))
+            title.append(self.level_id.name)
+        if self.group_id.id:
+            department_ids = self.group_id.department_ids
+            class_ids = self.group_id.class_ids
+            class_domain = []
+            if len(department_ids.ids) > 0:
+                class_domain.append(('specialty_id.department_id', 'in', department_ids.ids))
+            if len(class_ids.ids) > 0:
+                class_domain.append(('id', 'in', class_ids.ids))
+            classes = self.env['siantou.ems.core.class'].search(class_domain)
+            domain.append(('class_id', 'in', classes.ids))
+        if self.type_cour:
+            domain.append(('class_id.type_cour', '=', self.type_cour))
+            title.append(TYPE_COUR[self.type_cour])
         if self.class_id.id:
             domain.append(('class_id', '=', self.class_id.id))
             title.append(self.class_id.name)
@@ -1398,12 +1438,25 @@ class TimetableFilterWizard(models.TransientModel):
         if self.school_id.id:
             domain.append(('school_id', '=', self.school_id.id))
             title.append(self.school_id.name)
-        if self.level_id.id:
-            domain.append(('level_id', '=', self.level_id.id))
-            title.append(self.level_id.name)
         if self.cycle_id.id:
             domain.append(('cycle_id', '=', self.cycle_id.id))
             title.append(self.cycle_id.name)
+        if self.level_id.id:
+            domain.append(('level_id', '=', self.level_id.id))
+            title.append(self.level_id.name)
+        if self.group_id.id:
+            department_ids = self.group_id.department_ids
+            class_ids = self.group_id.class_ids
+            class_domain = []
+            if len(department_ids.ids) > 0:
+                class_domain.append(('specialty_id.department_id', 'in', department_ids.ids))
+            if len(class_ids.ids) > 0:
+                class_domain.append(('id', 'in', class_ids.ids))
+            classes = self.env['siantou.ems.core.class'].search(class_domain)
+            domain.append(('class_id', 'in', classes.ids))
+        if self.type_cour:
+            domain.append(('class_id.type_cour', '=', self.type_cour))
+            title.append(TYPE_COUR[self.type_cour])
         if self.class_id.id:
             domain.append(('class_id', '=', self.class_id.id))
             title.append(self.class_id.name)
@@ -1807,12 +1860,25 @@ class TimetableFilterWizard(models.TransientModel):
         if self.school_id.id:
             domain.append(('school_id', '=', self.school_id.id))
             title.append(self.school_id.name)
-        if self.level_id.id:
-            domain.append(('level_id', '=', self.level_id.id))
-            title.append(self.level_id.name)
         if self.cycle_id.id:
             domain.append(('cycle_id', '=', self.cycle_id.id))
             title.append(self.cycle_id.name)
+        if self.level_id.id:
+            domain.append(('level_id', '=', self.level_id.id))
+            title.append(self.level_id.name)
+        if self.group_id.id:
+            department_ids = self.group_id.department_ids
+            class_ids = self.group_id.class_ids
+            class_domain = []
+            if len(department_ids.ids) > 0:
+                class_domain.append(('specialty_id.department_id', 'in', department_ids.ids))
+            if len(class_ids.ids) > 0:
+                class_domain.append(('id', 'in', class_ids.ids))
+            classes = self.env['siantou.ems.core.class'].search(class_domain)
+            domain.append(('class_id', 'in', classes.ids))
+        if self.type_cour:
+            domain.append(('class_id.type_cour', '=', self.type_cour))
+            title.append(TYPE_COUR[self.type_cour])
         if self.class_id.id:
             domain.append(('class_id', '=', self.class_id.id))
             title.append(self.class_id.name)

@@ -60,6 +60,12 @@ class ClassFilterWizard(models.TransientModel):
         related='specialty_id.field_of_study_id'
     )
 
+    department_id = fields.Many2one(
+        'hr.department',
+        string='Département',
+        related='specialty_id.department_id'
+    )
+
     specialty_id = fields.Many2one(
         'siantou.ems.core.specialty',
         string='Spécialité',
@@ -100,8 +106,6 @@ class ClassFilterWizard(models.TransientModel):
         string='Semestre',
     )
 
-    specialty_id_domain = fields.Binary(compute='_compute_specialty_domain', default=[])
-
     type_action = fields.Selection([
         ('tree', 'Tree'),
         ('kanban', 'Kanban'),
@@ -109,33 +113,42 @@ class ClassFilterWizard(models.TransientModel):
         # default='tree',
     )
 
-    @api.depends('school_id')
-    def _compute_specialty_domain(self):
+    cycle_id_domain = fields.Binary(compute='_compute_cycle_domain', default=[])
+
+    level_id_domain = fields.Binary(compute='_compute_level_domain', default=[])
+
+    @api.depends('cycle_id')
+    def _compute_level_domain(self):
         for record in self:
-            domain = []
-            if record.school_id.id:
-                domain.append(('school_id', '=', record.school_id.id))
-            record.specialty_id_domain = domain
+            domain = [
+                ('cycle_ids', '=', record.cycle_id.id),
+            ]
+            record.level_id_domain = domain
+
+    @api.depends('school_id')
+    def _compute_cycle_domain(self):
+        for record in self:
+            cycle_ids = record.school_id.cycle_ids
+            domain = [('id', 'in', cycle_ids.ids)]
+            record.cycle_id_domain = domain
 
     @api.onchange('year_id')
     def _onchange_year(self):
         for record in self:
             record.school_id = None
+            record.cycle_id = None
             record.level_id = None
-            record.specialty_id = None
-            record.option_id = None
 
     @api.onchange('school_id')
     def _onchange_school(self):
         for record in self:
+            record.cycle_id = None
             record.level_id = None
-            record.specialty_id = None
-            record.option_id = None
 
-    @api.onchange('specialty_id')
-    def _onchange_specialty(self):
+    @api.onchange('cycle_id')
+    def _onchange_cycle(self):
         for record in self:
-            record.option_id = None
+            record.level_id = None
 
     def action_filter(self):
         domain = []
@@ -152,12 +165,6 @@ class ClassFilterWizard(models.TransientModel):
         if self.level_id.id:
             domain.append(('level_id', '=', self.level_id.id))
             title.append(self.level_id.name)
-        if self.specialty_id.id:
-            domain.append(('specialty_id', '=', self.specialty_id.id))
-            title.append(self.specialty_id.name)
-        if self.option_id.id:
-            domain.append(('option_id', '=', self.option_id.id))
-            title.append(self.option_id.name)
         if self.type_cour:
             domain.append(('type_cour', '=', self.type_cour))
             title.append(TYPE_COUR[self.type_cour])

@@ -14,10 +14,6 @@
                         <field name="school_id" options="{'no_create': True}" domain="school_id_domain"/>
                         <field name="cycle_id_domain" invisible="1"/>
                         <field name="cycle_id" options="{'no_create': True}" domain="cycle_id_domain"/>
-                        <field name="department_id"/>
-                        <field name="field_of_study_id"/>
-                        <field name="specialty_id"/>
-                        <field name="option_id"/>
                         <field name="level_id_domain" invisible="1"/>
                         <field name="level_id" options="{'no_create': True}" domain="level_id_domain"/>
                         <field name="type_cour" widget="radio"/>
