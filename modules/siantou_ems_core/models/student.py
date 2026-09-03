@@ -48,44 +48,9 @@ class Student(models.Model):
         compute='_compute_batchs'
     )
 
-    school_id = fields.Many2one(
-        'siantou.ems.core.school',
-        string='École',
-        required=True
-    )
-
-    cycle_id = fields.Many2one(
-        'oe.school.course',
-        string='Cursus ou Cycle',
-        required=True
-    )
-
     region_id = fields.Many2one("siantou.ems.core.region", string="Région")
     city_id = fields.Many2one('siantou.ems.core.city', string="Ville")
     quarter_id = fields.Many2one('siantou.ems.core.quarter', string="Quartier")
-    field_of_study_id = fields.Many2one(
-        'siantou.ems.core.field_of_study',
-        string='Filière',
-        related='specialty_id.field_of_study_id'
-    )
-
-    specialty_id = fields.Many2one(
-        'siantou.ems.core.specialty',
-        string='Spécialité',
-        required=True
-    )
-
-    option_id = fields.Many2one(
-        'siantou.ems.core.option',
-        string='Option',
-    )
-
-    type_cour = fields.Selection([
-            ('cj', 'Cours du jour'),
-            ('cs', 'Cours du soir'),
-        ], string='Type de cours',
-        default='cj',
-    )
 
     status_univ = fields.Selection([
             ('new', 'Nouveau'),
@@ -118,18 +83,6 @@ class Student(models.Model):
     email = fields.Char(string="E-mail")
     private_email = fields.Char(string="Adresse e-mail privée")
     private_phone = fields.Char(string="Numéro de téléphone privé")
-    level_id = fields.Many2one(
-        'siantou.ems.core.level',
-        string="Niveau",
-        required=True
-    )
-
-    year_id = fields.Many2one(
-        'siantou.ems.core.year',
-        string='Année Académique',
-        required=True,
-        default=lambda self: self.env['siantou.ems.core.year'].search([('is_active', '=', True)], limit=1)
-    )
     # payment_ids = fields.Many2one(
     #     "education.fee.payment",
     #     string="Paiements",
@@ -161,9 +114,66 @@ class Student(models.Model):
         compute='_compute_timetables'
     )
 
+    year_id = fields.Many2one(
+        'siantou.ems.core.year',
+        string='Année académique',
+        default=lambda self: self.env['siantou.ems.core.year'].search([('is_active', '=', True)], limit=1),
+        required=True
+    )
+
+    school_id = fields.Many2one(
+        'siantou.ems.core.school',
+        string='École',
+        required=True
+    )
+
+    level_id = fields.Many2one(
+        'siantou.ems.core.level',
+        string='Niveau',
+        required=True
+    )
+
+    field_of_study_id = fields.Many2one(
+        'siantou.ems.core.field_of_study',
+        string='Filière',
+        related='class_id.field_of_study_id'
+    )
+
+    cycle_id = fields.Many2one(
+        'oe.school.course',
+        string='Cursus ou Cycle',
+        required=True
+    )
+
+    department_id = fields.Many2one(
+        'hr.department',
+        string='Département',
+        related='specialty_id.department_id'
+    )
+
+    specialty_id = fields.Many2one(
+        'siantou.ems.core.specialty',
+        string='Spécialité',
+        related='class_id.specialty_id'
+    )
+
+    option_id = fields.Many2one(
+        'siantou.ems.core.option',
+        string='Option',
+        related='class_id.option_id'
+    )
+
+    type_cour = fields.Selection([
+            ('cj', 'Cours du jour'),
+            ('cs', 'Cours du soir'),
+        ], string='Type de cours',
+        default='cj',
+    )
+
     class_id = fields.Many2one(
         'siantou.ems.core.class',
         string='Classe',
+        required=True
     )
 
     delegate_class_ids = fields.Many2many(
@@ -173,8 +183,6 @@ class Student(models.Model):
         'delegate_class_id',
         string='Délégués de classe',
     )
-
-    specialty_id_domain = fields.Binary(compute='_compute_specialty_domain', default=[])
 
     @api.depends('last_name', 'first_name')
     def _compute_name(self):
@@ -195,29 +203,51 @@ class Student(models.Model):
         for record in self:
             record._compute_name()
 
-    @api.depends('school_id', 'cycle_id')
-    def _compute_specialty_domain(self):
-        for record in self:
-            domain = []
-            if record.school_id.id:
-                domain.append(('school_id', '=', record.school_id.id))
-            if record.cycle_id.id:
-                domain.append(('cycle_id', '=', record.cycle_id.id))
-            field_of_study_ids = self.env['siantou.ems.core.field_of_study'].search(domain)
-            domain = [
-                ('field_of_study_id', 'in', field_of_study_ids.ids)
-            ]
-            record.specialty_id_domain = domain
+    cycle_id_domain = fields.Binary(compute='_compute_cycle_domain', default=[])
+
+    class_id_domain = fields.Binary(compute='_compute_class_domain', default=[])
 
     level_id_domain = fields.Binary(compute='_compute_level_domain', default=[])
 
     @api.depends('cycle_id')
     def _compute_level_domain(self):
         for record in self:
-            domain = []
-            if record.cycle_id.id:
-                domain.append(('id', 'in', record.cycle_id.level_ids.ids))
+            domain = [
+                ('cycle_ids', '=', record.cycle_id.id),
+            ]
             record.level_id_domain = domain
+
+    @api.depends('year_id', 'school_id', 'level_id', 'cycle_id', 'type_cour')
+    def _compute_class_domain(self):
+        for record in self:
+            domain = [
+                ('year_id', '=', record.year_id.id),
+                ('school_id', '=', record.school_id.id),
+                ('level_id', '=', record.level_id.id),
+                ('cycle_id', '=', record.cycle_id.id)
+            ]
+            if record.type_cour:
+                domain.append(('type_cour', '=', record.type_cour))
+            classes = self.env['siantou.ems.core.class'].search(domain)
+            domain = [
+                ('id', 'in', classes.ids),
+            ]
+            record.class_id_domain = domain
+
+    @api.depends('school_id')
+    def _compute_cycle_domain(self):
+        for record in self:
+            cycle_ids = record.school_id.cycle_ids
+            domain = [('id', 'in', cycle_ids.ids)]
+            record.cycle_id_domain = domain
+
+    @api.onchange('year_id')
+    def _onchange_year(self):
+        for record in self:
+            record.school_id = None
+            record.cycle_id = None
+            record.level_id = None
+            record.class_id = None
 
     @api.onchange('school_id')
     def _onchange_school(self):
@@ -225,30 +255,20 @@ class Student(models.Model):
             record.cycle_id = None
             record.level_id = None
             record.class_id = None
-            record.specialty_id = None
-            record.option_id = None
 
     @api.onchange('cycle_id')
     def _onchange_cycle(self):
         for record in self:
             record.level_id = None
             record.class_id = None
-            record.specialty_id = None
-            record.option_id = None
 
     @api.onchange('level_id')
     def _onchange_level(self):
         for record in self:
             record.class_id = None
 
-    @api.onchange('specialty_id')
-    def _onchange_specialty(self):
-        for record in self:
-            record.class_id = None
-            record.option_id = None
-
-    @api.onchange('option_id')
-    def _onchange_option(self):
+    @api.onchange('type_cour')
+    def _onchange_type_cour(self):
         for record in self:
             record.class_id = None
 

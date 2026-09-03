@@ -113,7 +113,7 @@
                             <field name="code_enrol" readonly="1"/>
                         </group>
                         <group>
-                            <field name="registre_id" options="{'no_create': True}" readonly="1"/>
+                            <field name="registre_id" options="{'no_open': True, 'no_create': True}" readonly="1"/>
                         </group>
                     </group>
                     <notebook>
@@ -129,20 +129,18 @@
                             <group col="4" name="academique" string="Informations académiques">
                                 <group colspan="2">
                                     <field name="status_univ" invisible="status_univ == 'new'"/>
-                                    <field name="year_id" options="{'no_create': True}"/>
-                                    <field name="school_id" options="{'no_create': True}"/>
-                                    <field name="cycle_id" options="{'no_create': True}"/>
-                                    <field name="batch_id" options="{'no_create': True}"/>
-                                    <field name="field_of_study_id" options="{'no_create': True}"/>
-                                    <field name="specialty_id_domain" invisible="1"/>
-                                    <field name="specialty_id" options="{'no_create': True}" domain="specialty_id_domain"/>
-                                    <field name="option_id" options="{'no_create': True}" domain="[('specialty_id', '=', specialty_id)]"/>
+                                    <field name="year_id" options="{'no_open': True, 'no_create': True}" readonly="status in ['transfer', 'rej']"/>
+                                    <field name="school_id" options="{'no_open': True, 'no_create': True}" readonly="status in ['transfer', 'rej']"/>
+                                    <field name="cycle_id_domain" invisible="1"/>
+                                    <field name="cycle_id" options="{'no_open': True, 'no_create': True}" readonly="status in ['transfer', 'rej']" domain="cycle_id_domain"/>
+                                    <field name="batch_id" options="{'no_open': True, 'no_create': True}" readonly="status in ['transfer', 'rej']"/>
                                 </group>
                                 <group colspan="2">
                                     <field name="level_id_domain" invisible="1"/>
-                                    <field name="level_id" options="{'no_create': True}" domain="level_id_domain"/>
-                                    <field name="type_cour" widget="radio"/>
-                                    <field name="class_id" options="{'no_create': True}" domain="[('specialty_id', '=', specialty_id), ('option_id', '=', option_id), ('level_id', '=', level_id), ('year_id', '=', year_id), ('type_cour', '=', type_cour)]"/>
+                                    <field name="level_id" options="{'no_open': True, 'no_create': True}" readonly="status in ['transfer', 'rej']" domain="level_id_domain"/>
+                                    <field name="type_cour" widget="radio" readonly="status in ['transfer', 'rej']"/>
+                                    <field name="class_id_domain" invisible="1"/>
+                                    <field name="class_id" options="{'no_open': True, 'no_create': True}" readonly="status in ['transfer', 'rej']" domain="class_id_domain"/>
                                     <field name="nbre_matiere" invisible="status_univ == 'new'"/>
                                     <field name="diplo_requis_ids" widget="many2many_tags"/>
                                     <field name="session_lieu_obt"/>

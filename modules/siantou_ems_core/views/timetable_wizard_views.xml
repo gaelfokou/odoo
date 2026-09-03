@@ -8,9 +8,9 @@
                 <form>
                     <sheet>
                         <group>
-                            <field name="semester_id"/>
-                            <field name="level_id"/>
-                            <field name="field_of_study_id"/>
+                            <field name="semester_id" options="{'no_create': True}"/>
+                            <field name="level_id" options="{'no_create': True}"/>
+                            <field name="field_of_study_id" options="{'no_create': True}"/>
                             <field name="start_date"/>
                             <field name="end_date"/>
                             <field name="group"/>

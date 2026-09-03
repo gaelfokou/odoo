@@ -45,7 +45,7 @@
                         <field name="start_date"/>
                         <field name="end_date"/>
                         <field name="formatted_date"/>
-                        <field name="semester_id"/>
+                        <field name="semester_id" options="{'no_create': True}"/>
                         <field name="is_public_holiday"/>
                         <field name="is_active"/>
                     </group>

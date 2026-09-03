@@ -39,7 +39,7 @@ class Semester(models.Model):
 
     year_id = fields.Many2one(
         'siantou.ems.core.year',
-        'Année académique',
+        string='Année académique',
         help="Année académique à laquelle est lié le semestre",
         required=True,
     )

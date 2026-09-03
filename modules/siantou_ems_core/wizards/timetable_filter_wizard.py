@@ -86,7 +86,7 @@ class TimetableFilterWizard(models.TransientModel):
 
     year_id = fields.Many2one(
         'siantou.ems.core.year',
-        'Année académique',
+        string='Année académique',
         required=True
     )
 
