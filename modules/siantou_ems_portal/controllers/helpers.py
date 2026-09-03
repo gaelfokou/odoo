@@ -61,7 +61,7 @@ class Helpers:
     def timetable(search='', search_in='all', page=1, view_type='calendar', selected_month='0', cycle_id=None, level_id=None, field_of_study_id=None, specialty_id=None, option_id=None, class_id=None):
         searchbar_inputs = {
             'all': {'label': 'Tout', 'input': 'all', 'domain': []},
-            'cycle': {'label': 'Cycle', 'input': 'cycle', 'domain': [('cycle_id.name', 'like', search)]},
+            'cycle': {'label': 'Cursus ou Cycle', 'input': 'cycle', 'domain': [('cycle_id.name', 'like', search)]},
             'niveau': {'label': 'Niveau', 'input': 'niveau', 'domain': [('level_id.name', 'like', search)]},
             'filiere': {'label': 'Filière', 'input': 'filiere', 'domain': [('field_of_study_id.name', 'like', search)]},
             'specialite': {'label': 'Spécialité', 'input': 'specialite', 'domain': [('specialty_id.name', 'like', search)]},
@@ -288,7 +288,7 @@ class Helpers:
     def accountbalance(search='', search_in='all', selected_month='0', cycle_id=None, level_id=None, field_of_study_id=None, specialty_id=None, option_id=None, class_id=None, end_date=None, start_date=None):
         searchbar_inputs = {
             'all': {'label': 'Tout', 'input': 'all', 'domain': []},
-            'cycle': {'label': 'Cycle', 'input': 'cycle', 'domain': [('cycle_id.name', 'like', search)]},
+            'cycle': {'label': 'Cursus ou Cycle', 'input': 'cycle', 'domain': [('cycle_id.name', 'like', search)]},
             'niveau': {'label': 'Niveau', 'input': 'niveau', 'domain': [('level_id.name', 'like', search)]},
             'filiere': {'label': 'Filière', 'input': 'filiere', 'domain': [('field_of_study_id.name', 'like', search)]},
             'specialite': {'label': 'Spécialité', 'input': 'specialite', 'domain': [('specialty_id.name', 'like', search)]},
@@ -376,7 +376,7 @@ class Helpers:
     def consumptionhour(search='', search_in='all', selected_month='0', cycle_id=None, level_id=None, field_of_study_id=None, specialty_id=None, option_id=None, class_id=None):
         searchbar_inputs = {
             'all': {'label': 'Tout', 'input': 'all', 'domain': []},
-            'cycle': {'label': 'Cycle', 'input': 'cycle', 'domain': [('cycle_id.name', 'like', search)]},
+            'cycle': {'label': 'Cursus ou Cycle', 'input': 'cycle', 'domain': [('cycle_id.name', 'like', search)]},
             'niveau': {'label': 'Niveau', 'input': 'niveau', 'domain': [('level_id.name', 'like', search)]},
             'filiere': {'label': 'Filière', 'input': 'filiere', 'domain': [('field_of_study_id.name', 'like', search)]},
             'specialite': {'label': 'Spécialité', 'input': 'specialite', 'domain': [('specialty_id.name', 'like', search)]},
@@ -523,7 +523,7 @@ class Helpers:
     def progressreport(search='', search_in='all', cycle_id=None, level_id=None, field_of_study_id=None, specialty_id=None, option_id=None, class_id=None):
         searchbar_inputs = {
             'all': {'label': 'Tout', 'input': 'all', 'domain': []},
-            'cycle': {'label': 'Cycle', 'input': 'cycle', 'domain': [('cycle_id.name', 'like', search)]},
+            'cycle': {'label': 'Cursus ou Cycle', 'input': 'cycle', 'domain': [('cycle_id.name', 'like', search)]},
             'niveau': {'label': 'Niveau', 'input': 'niveau', 'domain': [('level_id.name', 'like', search)]},
             'filiere': {'label': 'Filière', 'input': 'filiere', 'domain': [('field_of_study_id.name', 'like', search)]},
             'specialite': {'label': 'Spécialité', 'input': 'specialite', 'domain': [('specialty_id.name', 'like', search)]},
@@ -662,7 +662,7 @@ class Helpers:
     def subjectsession(search='', search_in='all', cycle_id=None, level_id=None, field_of_study_id=None, specialty_id=None, option_id=None, class_id=None, class_group_id=None, subject_id=None):
         searchbar_inputs = {
             'all': {'label': 'Tout', 'input': 'all', 'domain': []},
-            'cycle': {'label': 'Cycle', 'input': 'cycle', 'domain': [('cycle_id.name', 'like', search)]},
+            'cycle': {'label': 'Cursus ou Cycle', 'input': 'cycle', 'domain': [('cycle_id.name', 'like', search)]},
             'niveau': {'label': 'Niveau', 'input': 'niveau', 'domain': [('level_id.name', 'like', search)]},
             'filiere': {'label': 'Filière', 'input': 'filiere', 'domain': [('field_of_study_id.name', 'like', search)]},
             'specialite': {'label': 'Spécialité', 'input': 'specialite', 'domain': [('specialty_id.name', 'like', search)]},

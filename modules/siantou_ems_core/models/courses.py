@@ -53,7 +53,7 @@ class OeSchoolCourseSupervision(models.Model):
 
 class OeSchoolCourse(models.Model):
     _name = 'oe.school.course'
-    _description = 'Cycle'
+    _description = 'Cursus ou Cycle'
     _order = 'name'
     _inherit=['mail.thread', 'mail.activity.mixin',]
 
