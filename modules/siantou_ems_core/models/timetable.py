@@ -656,6 +656,20 @@ class Timetable(models.Model):
                 else:
                     record.is_active = False
 
+    @api.depends('class_id')
+    def _compute_has_group(self):
+        for record in self:
+            group_ids = self.env['siantou.ems.core.class.group'].search([
+                ('class_id', '=', record.class_id.id),
+            ])
+
+            record.has_group = len(group_ids.ids) > 0
+
+    @api.onchange('class_id')
+    def _onchange_has_group(self):
+        for record in self:
+            record._compute_has_group()
+
     cycle_id_domain = fields.Binary(compute='_compute_cycle_domain', default=[])
 
     subject_id_domain = fields.Binary(compute='_compute_subject_domain', default=[])
