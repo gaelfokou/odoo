@@ -154,12 +154,15 @@ class TimetableGroupMoveWizard(models.TransientModel):
     @api.depends('source_group_id', 'school_id', 'department_id')
     def _compute_class_domain(self):
         for record in self:
+            department_ids = record.source_group_id.department_ids
             class_ids = record.source_group_id.class_ids
             domain = [
-                ('id', 'in', class_ids.ids),
+                ('school_id', '=', record.school_id.id),
             ]
-            if record.school_id.id:
-                domain.append(('school_id', '=', record.school_id.id))
+            if len(department_ids.ids) > 0:
+                domain.append(('specialty_id.department_id', 'in', department_ids.ids))
+            if len(class_ids.ids) > 0:
+                domain.append(('id', 'in', class_ids.ids))
             if record.department_id.id:
                 domain.append(('specialty_id.department_id', '=', record.department_id.id))
             record.class_id_domain = domain

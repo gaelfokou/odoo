@@ -688,13 +688,15 @@ class Timetable(models.Model):
             domain = [
                 ('year_id', '=', record.year_id.id),
                 ('school_id', '=', record.school_id.id),
-                ('level_id', '=', record.level_id.id),
-                ('cycle_id', '=', record.cycle_id.id)
             ]
             if len(department_ids.ids) > 0:
                 domain.append(('specialty_id.department_id', 'in', department_ids.ids))
             if len(class_ids.ids) > 0:
                 domain.append(('id', 'in', class_ids.ids))
+            if record.level_id.id:
+                domain.append(('level_id', '=', record.level_id.id))
+            if record.cycle_id.id:
+                domain.append(('cycle_id', '=', record.cycle_id.id))
             classes = self.env['siantou.ems.core.class'].search(domain)
             domain = [
                 ('id', 'in', classes.ids),
