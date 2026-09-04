@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-        <record id="class_copy_wizard_form" model="ir.ui.view">
-            <field name="name">class.copy.wizard.form</field>
-            <field name="model">class.copy.wizard</field>
+        <record id="ue_copy_wizard_form" model="ir.ui.view">
+            <field name="name">ue.copy.wizard.form</field>
+            <field name="model">ue.copy.wizard</field>
             <field name="arch" type="xml">
-                <form string="Copie des classes">
+                <form string="Copie des unités d'enseignement">
                     <group>
                         <field name="school_id" options="{'no_create': True}"/>
                         <field name="cycle_id_domain" invisible="1"/>
@@ -31,20 +31,20 @@
         </record>
 
         <!-- Define an action to open the form view -->
-        <record id="action_class_copy_wizard" model="ir.actions.act_window">
-            <field name="name">Copie des classes</field>
-            <field name="res_model">class.copy.wizard</field>
+        <record id="action_ue_copy_wizard" model="ir.actions.act_window">
+            <field name="name">Copie des unités d'enseignement</field>
+            <field name="res_model">ue.copy.wizard</field>
             <field name="view_mode">form</field>
             <field name="target">new</field>
-            <field name="view_id" ref="class_copy_wizard_form"/>
+            <field name="view_id" ref="ue_copy_wizard_form"/>
         </record>
 
         <menuitem
-                id="menu_class_copy_wizard"
-                name="Copie des classes"
+                id="menu_ue_copy_wizard"
+                name="Copie des unités d'enseignement"
                 parent="menu_siantou_ems_core_config_copy"
-                action="action_class_copy_wizard"
+                action="action_ue_copy_wizard"
                 groups="siantou_ems_core.group_ue_open_copy"
-                sequence="1"/>
+                sequence="2"/>
     </data>
 </odoo>

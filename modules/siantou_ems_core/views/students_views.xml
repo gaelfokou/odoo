@@ -175,9 +175,9 @@
     </record>
 
     <menuitem
-        id="menu_siantou_ems_core_students_student"
+        id="menu_siantou_ems_core_student_student"
         name="Étudiants"
-        parent="menu_siantou_ems_core_students"
+        parent="menu_siantou_ems_core_student"
         action="action_show_student"
         groups="siantou_ems_core.group_student_admin,base.group_system"
         sequence="2"/>

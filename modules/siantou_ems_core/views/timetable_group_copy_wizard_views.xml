@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-        <record id="timetable_group_copy_wizard" model="ir.ui.view">
+        <record id="timetable_group_copy_wizard_form" model="ir.ui.view">
             <field name="name">timetable.group.copy.wizard.form</field>
             <field name="model">timetable.group.copy.wizard</field>
             <field name="arch" type="xml">
@@ -23,12 +23,20 @@
         </record>
 
         <!-- Define an action to open the form view -->
-        <record id="action_copy_ue_wizard" model="ir.actions.act_window">
+        <record id="action_timetable_group_copy_wizard" model="ir.actions.act_window">
             <field name="name">Copie des versions d'emploi du temps</field>
             <field name="res_model">timetable.group.copy.wizard</field>
             <field name="view_mode">form</field>
             <field name="target">new</field>
-            <field name="view_id" ref="timetable_group_copy_wizard"/>
+            <field name="view_id" ref="timetable_group_copy_wizard_form"/>
         </record>
+    
+        <menuitem
+                id="menu_timetable_group_copy_wizard"
+                name="Copie des versions d'emploi du temps"
+                parent="menu_siantou_ems_core_config_copy"
+                action="action_timetable_group_copy_wizard"
+                groups="siantou_ems_core.group_timetable_open_copy"
+                sequence="3"/>
     </data>
 </odoo>

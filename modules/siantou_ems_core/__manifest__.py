@@ -116,6 +116,8 @@
         'views/timetable_group_copy_wizard_views.xml',
         'views/timetable_group_move_wizard_views.xml',
         'views/class_copy_wizard_views.xml',
+        'views/ue_copy_wizard_views.xml',
+        'views/data_copy_wizard_views.xml',
         'views/teacher_filter_wizard_views.xml',
         'views/student_filter_wizard_views.xml',
         'views/classroom_filter_wizard_views.xml',

@@ -9,12 +9,12 @@
             <field name="arch" type="xml">
                 <tree>
                     <header>
-                        <button name="action_open_copy" 
+                        <!-- <button name="action_open_copy" 
                             type="object" 
                             string="Copier" 
                             class="oe_highlight" 
                             display="always"
-                            groups="siantou_ems_core.group_timetable_open_copy"/>
+                            groups="siantou_ems_core.group_timetable_open_copy"/> -->
                         <button name="action_open_move" 
                             type="object" 
                             string="Déplacer" 
@@ -45,16 +45,18 @@
             <field name="arch" type="xml">
                 <tree>
                     <header>
-                        <button name="action_open_copy_submit" 
+                        <!-- <button name="action_open_copy_submit" 
                             type="object" 
                             string="Copier" 
                             class="oe_highlight" 
-                            display="always"/>
+                            display="always"
+                            groups="siantou_ems_core.group_timetable_open_copy"/> -->
                         <button name="action_open_move_submit" 
                             type="object" 
                             string="Déplacer" 
                             class="oe_highlight" 
-                            display="always"/>
+                            display="always"
+                            groups="siantou_ems_core.group_timetable_open_move"/>
                     </header>
                     <field name="name"/>
                     <field name="semester_id"/>

@@ -5,7 +5,7 @@
             id="menu_siantou_ems_core"
             sequence="2"/>
     <menuitem
-            id="menu_siantou_ems_core_students"
+            id="menu_siantou_ems_core_student"
             name="Étudiants"
             parent="menu_siantou_ems_core"
             sequence="30"/>
@@ -63,4 +63,9 @@
             name="Gestion des paramètres"
             parent="menu_siantou_ems_core_configuration" 
             sequence="5"/>
+    <menuitem
+            id="menu_siantou_ems_core_config_copy" 
+            name="Gestion des copies"
+            parent="menu_siantou_ems_core_configuration" 
+            sequence="6"/>
 </odoo>

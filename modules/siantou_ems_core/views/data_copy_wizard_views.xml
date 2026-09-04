@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="data_copy_wizard_form" model="ir.ui.view">
+            <field name="name">data.copy.wizard.form</field>
+            <field name="model">data.copy.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Copie des autres données">
+                    <group>
+                        <field name="model_id" options="{'no_create': True}"/>
+                        <field name="source_year_id" options="{'no_create': True}"/>
+                        <field name="destination_year_id" options="{'no_create': True}"/>
+                    </group>
+                    <footer>
+                        <button string="Copier" type="object" name="action_copy" class="btn-primary" confirm="Êtes-vous sûr de vouloir confirmer la copie ?"/>
+                        <button string="Annuler" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <!-- Define an action to open the form view -->
+        <record id="action_data_copy_wizard" model="ir.actions.act_window">
+            <field name="name">Copie des autres données</field>
+            <field name="res_model">data.copy.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="view_id" ref="data_copy_wizard_form"/>
+        </record>
+
+        <menuitem
+                id="menu_data_copy_wizard"
+                name="Copie des autres données"
+                parent="menu_siantou_ems_core_config_copy"
+                action="action_data_copy_wizard"
+                groups="siantou_ems_core.group_ue_open_copy"
+                sequence="5"/>
+    </data>
+</odoo>

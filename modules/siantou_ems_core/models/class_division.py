@@ -1370,7 +1370,7 @@ class EducationClass(models.Model):
         }
 
     def action_open_copy(self):
-        view_id = self.env.ref('siantou_ems_core.class_copy_wizard').id
+        view_id = self.env.ref('siantou_ems_core.class_copy_wizard_form').id
         return {
             'name': 'Copie des classes',
             'type': 'ir.actions.act_window',

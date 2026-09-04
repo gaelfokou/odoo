@@ -201,13 +201,13 @@
         </field>
     </record>
 
-    <!-- <menuitem name="Préinscription" id="menu_siantou_ems_core_students_preinscription" 
+    <!-- <menuitem name="Préinscription" id="menu_siantou_ems_core_student_preinscription" 
             sequence="1"
-            parent="menu_siantou_ems_core_students" 
+            parent="menu_siantou_ems_core_student" 
             action="action_enrollment_history"/> -->
 
     <menuitem
-        id="menu_siantou_ems_core_students_preinscription"
+        id="menu_siantou_ems_core_student_preinscription"
         name="Candidatures"
         parent="menu_siantou_ems_core_adminssions"
         action="action_enrollment_history"

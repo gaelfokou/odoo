@@ -41,13 +41,13 @@
                         <!-- <button name="action_update_dashboard_class" 
                             type="object" 
                             string="Mettre à jour le tableau de bord des classes" 
-                            class="oe_highlight"/> -->
+                            class="oe_highlight"/>
                         <button name="action_open_copy" 
                             type="object" 
                             string="Copier" 
                             class="oe_highlight" 
                             display="always"
-                            groups="siantou_ems_core.group_ue_open_copy"/>
+                            groups="siantou_ems_core.group_ue_open_copy"/> -->
                         <button name="action_print_class_subject_pdf" 
                             type="object" 
                             string="Imprimer Cours" 

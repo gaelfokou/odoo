@@ -69,7 +69,7 @@
         <menuitem
                 id="menu_siantou_ems_core_campus"
                 name="Parcours académique"
-                parent="menu_siantou_ems_core_students"
+                parent="menu_siantou_ems_core_student"
                 action="action_show_student_career"
                 groups="siantou_ems_core.group_student_career_admin,base.group_system"
             sequence="4"/>

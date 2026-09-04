@@ -45,7 +45,7 @@
     </record>
 
     <menuitem
-            id="menu_siantou_ems_core_students_batch"
+            id="menu_siantou_ems_core_student_batch"
             name="Lots d'étudiant"
             parent="menu_siantou_ems_core_configuration"
             groups="siantou_ems_core.group_batch_admin,base.group_system"

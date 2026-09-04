@@ -1618,7 +1618,7 @@ class Timetable(models.Model):
         }
 
     def action_open_copy(self):
-        view_id = self.env.ref('siantou_ems_core.timetable_copy_wizard').id
+        view_id = self.env.ref('siantou_ems_core.timetable_copy_wizard_form').id
         return {
             'name': 'Copie des emplois du temps',
             'type': 'ir.actions.act_window',
@@ -1983,7 +1983,7 @@ class TimetableGroup(models.Model):
         }
 
     def action_open_copy(self):
-        view_id = self.env.ref('siantou_ems_core.timetable_group_copy_wizard').id
+        view_id = self.env.ref('siantou_ems_core.timetable_group_copy_wizard_form').id
         return {
             'name': 'Copie des versions d\'emploi du temps',
             'type': 'ir.actions.act_window',
@@ -2000,7 +2000,7 @@ class TimetableGroup(models.Model):
         }
 
     def action_open_copy_submit(self):
-        view_id = self.env.ref('siantou_ems_core.timetable_group_copy_wizard').id
+        view_id = self.env.ref('siantou_ems_core.timetable_group_copy_wizard_form').id
         return {
             'name': 'Copie des versions d\'emploi du temps',
             'type': 'ir.actions.act_window',

@@ -80,7 +80,7 @@
     <!-- <menuitem
         id="menu_siantou_ems_core_fee_students_preinscription"
         name="testwizard"
-        parent="menu_siantou_ems_core_students"
+        parent="menu_siantou_ems_core_student"
         action="action_fee_enrollment_wizard"
         /> -->
 </odoo>
