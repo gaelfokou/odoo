@@ -710,6 +710,17 @@ class Timetable(models.Model):
             ]
             record.level_id_domain = domain
 
+    @api.depends('class_id', 'semester_id')
+    def _compute_subject_domain(self):
+        for record in self:
+            ue_ids = record.class_id.ue_ids
+            if record.semester_id.id:
+                ue_ids = ue_ids.filtered(lambda rec: record.semester_id.id in rec.semester_ids.ids)
+            domain = [
+                ('ue_ids', 'in', ue_ids.ids)
+            ]
+            record.subject_id_domain = domain
+
     @staticmethod
     def convert_float_to_time(tm, has_second=False):
         tm = str(tm)
@@ -824,17 +835,6 @@ class Timetable(models.Model):
             record.class_group_id = None
             record.ue_id = None
             record.subject_id = None
-
-    @api.depends('class_id', 'semester_id')
-    def _compute_subject_domain(self):
-        for record in self:
-            ue_ids = record.class_id.ue_ids
-            if record.semester_id.id:
-                ue_ids = ue_ids.filtered(lambda rec: record.semester_id.id in rec.semester_ids.ids)
-            domain = [
-                ('ue_ids', 'in', ue_ids.ids)
-            ]
-            record.subject_id_domain = domain
 
     @api.depends('date')
     def _compute_day_of_week(self):

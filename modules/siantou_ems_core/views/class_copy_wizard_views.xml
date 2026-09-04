@@ -8,11 +8,10 @@
                 <form string="Copie des classes">
                     <group>
                         <field name="school_id" options="{'no_create': True}"/>
-                        <field name="field_of_study_id" options="{'no_create': True}" domain="[('school_id', '=', school_id)]"/>
-                        <field name="level_id" options="{'no_create': True}"/>
-                        <field name="specialty_id_domain" invisible="1"/>
-                        <field name="specialty_id" options="{'no_create': True}" domain="specialty_id_domain"/>
-                        <field name="option_id" options="{'no_create': True}" domain="[('specialty_id', '=', specialty_id)]"/>
+                        <field name="cycle_id_domain" invisible="1"/>
+                        <field name="cycle_id" options="{'no_create': True}" domain="cycle_id_domain"/>
+                        <field name="level_id_domain" invisible="1"/>
+                        <field name="level_id" options="{'no_create': True}" domain="level_id_domain"/>
                         <field name="type_cour" widget="radio"/>
                         <field name="source_year_id" options="{'no_create': True}"/>
                         <field name="source_class_id_domain" invisible="1"/>

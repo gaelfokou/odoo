@@ -104,6 +104,7 @@ class TimetableFilterWizard(models.TransientModel):
     school_id = fields.Many2one(
         'siantou.ems.core.school',
         string='École',
+        required=True,
     )
 
     level_id = fields.Many2one(
@@ -377,6 +378,17 @@ class TimetableFilterWizard(models.TransientModel):
                     domain.append(('is_permanent', '=', False))
             record.employee_id_domain = domain
 
+    @api.depends('class_id', 'semester_id')
+    def _compute_subject_domain(self):
+        for record in self:
+            ue_ids = record.class_id.ue_ids
+            if record.semester_id.id:
+                ue_ids = ue_ids.filtered(lambda rec: record.semester_id.id in rec.semester_ids.ids)
+            domain = [
+                ('ue_ids', 'in', ue_ids.ids)
+            ]
+            record.subject_id_domain = domain
+
     @api.onchange('is_permanent', 'is_temporary')
     def _onchange_employee(self):
         for record in self:
@@ -422,17 +434,6 @@ class TimetableFilterWizard(models.TransientModel):
     def _onchange_class(self):
         for record in self:
             record.subject_id = None
-
-    @api.depends('class_id', 'semester_id')
-    def _compute_subject_domain(self):
-        for record in self:
-            ue_ids = record.class_id.ue_ids
-            if record.semester_id.id:
-                ue_ids = ue_ids.filtered(lambda rec: record.semester_id.id in rec.semester_ids.ids)
-            domain = [
-                ('ue_ids', 'in', ue_ids.ids)
-            ]
-            record.subject_id_domain = domain
 
     def search_filtered(self, rec):
         result = not (rec.start_time >= self.end_time or rec.end_time <= self.start_time)

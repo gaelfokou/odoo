@@ -43,6 +43,7 @@ class ProgressReportFilterWizard(models.TransientModel):
     school_id = fields.Many2one(
         'siantou.ems.core.school',
         string='École',
+        required=True,
     )
 
     level_id = fields.Many2one(
@@ -53,23 +54,37 @@ class ProgressReportFilterWizard(models.TransientModel):
     field_of_study_id = fields.Many2one(
         'siantou.ems.core.field_of_study',
         string='Filière',
-        related='specialty_id.field_of_study_id'
+        related='class_id.field_of_study_id'
+    )
+
+    cycle_id = fields.Many2one(
+        'oe.school.course',
+        string='Cursus ou Cycle',
+    )
+
+    department_id = fields.Many2one(
+        'hr.department',
+        string='Département',
+        related='specialty_id.department_id'
     )
 
     specialty_id = fields.Many2one(
         'siantou.ems.core.specialty',
         string='Spécialité',
+        related='class_id.specialty_id'
     )
 
     option_id = fields.Many2one(
         'siantou.ems.core.option',
         string='Option',
+        related='class_id.option_id'
     )
 
     type_cour = fields.Selection([
-        ('cj', 'Cours du jour'),
-        ('cs', 'Cours du soir'),
-    ], string='Type de cours')
+            ('cj', 'Cours du jour'),
+            ('cs', 'Cours du soir'),
+        ], string='Type de cours',
+    )
 
     class_id = fields.Many2one(
         'siantou.ems.core.class',
@@ -88,56 +103,22 @@ class ProgressReportFilterWizard(models.TransientModel):
         # default='progressreport_available',
     )
 
+    cycle_id_domain = fields.Binary(compute='_compute_cycle_domain', default=[])
+
     subject_id_domain = fields.Binary(compute='_compute_subject_domain', default=[])
 
     class_id_domain = fields.Binary(compute='_compute_class_domain', default=[])
 
-    specialty_id_domain = fields.Binary(compute='_compute_specialty_domain', default=[])
-
-    @api.depends('school_id')
-    def _compute_specialty_domain(self):
-        for record in self:
-            domain = []
-            if record.school_id.id:
-                domain.append(('school_id', '=', record.school_id.id))
-            record.specialty_id_domain = domain
+    level_id_domain = fields.Binary(compute='_compute_level_domain', default=[])
 
     @api.depends('class_id')
     def _compute_subject_domain(self):
         for record in self:
-            domain = []
-            if record.class_id.id:
-                ue_ids = record.class_id.ue_ids
-                domain = [
-                    ('ue_ids', 'in', ue_ids.ids)
-                ]
-            record.subject_id_domain = domain
-
-    @api.depends('year_id', 'school_id', 'level_id', 'specialty_id', 'option_id', 'type_cour')
-    def _compute_class_domain(self):
-        for record in self:
-            domain = []
-            if record.year_id.id:
-                domain.append(('year_id', '=', record.year_id.id))
-            if record.school_id.id:
-                domain.append(('school_id', '=', record.school_id.id))
-            if record.level_id.id:
-                domain.append(('level_id', '=', record.level_id.id))
-            if record.specialty_id.id:
-                domain.append(('specialty_id', '=', record.specialty_id.id))
-            if record.option_id.id:
-                domain.append(('option_id', '=', record.option_id.id))
-            if record.type_cour:
-                domain.append(('type_cour', '=', record.type_cour))
-            class_ids = []
-            classes = self.env['siantou.ems.core.class'].search(domain)
-            for classe in classes:
-                class_ids.append(classe.id)
-            class_ids = list(set(class_ids))
+            ue_ids = record.class_id.ue_ids
             domain = [
-                ('id', 'in', class_ids),
+                ('ue_ids', 'in', ue_ids.ids)
             ]
-            record.class_id_domain = domain
+            record.subject_id_domain = domain
 
     @api.onchange('school_id')
     def _onchange_school(self):
@@ -175,18 +156,18 @@ class ProgressReportFilterWizard(models.TransientModel):
         if self.school_id.id:
             domain.append(('school_id', '=', self.school_id.id))
             title.append(self.school_id.name)
+        if self.cycle_id.id:
+            domain.append(('cycle_id', '=', self.cycle_id.id))
+            title.append(self.cycle_id.name)
         if self.level_id.id:
             domain.append(('level_id', '=', self.level_id.id))
             title.append(self.level_id.name)
-        if self.specialty_id.id:
-            domain.append(('specialty_id', '=', self.specialty_id.id))
-            title.append(self.specialty_id.name)
-        if self.option_id.id:
-            domain.append(('option_id', '=', self.option_id.id))
-            title.append(self.option_id.name)
         if self.type_cour:
             domain.append(('type_cour', '=', self.type_cour))
             title.append(TYPE_COUR[self.type_cour])
+        if self.class_id.id:
+            domain.append(('id', '=', self.class_id.id))
+            title.append(self.class_id.name)
 
         class_ids = []
         classes = self.env['siantou.ems.core.class'].search(domain)

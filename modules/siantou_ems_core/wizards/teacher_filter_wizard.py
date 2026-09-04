@@ -29,6 +29,7 @@ class TeacherFilterWizard(models.TransientModel):
     school_id = fields.Many2one(
         'siantou.ems.core.school',
         string='École',
+        required=True,
     )
 
     level_id = fields.Many2one(
@@ -126,6 +127,17 @@ class TeacherFilterWizard(models.TransientModel):
             domain = [('id', 'in', cycle_ids.ids)]
             record.cycle_id_domain = domain
 
+    @api.depends('class_id')
+    def _compute_subject_domain(self):
+        for record in self:
+            domain = []
+            if record.class_id.id:
+                ue_ids = record.class_id.ue_ids
+                domain = [
+                    ('ue_ids', 'in', ue_ids.ids)
+                ]
+            record.subject_id_domain = domain
+
     @api.onchange('year_id')
     def _onchange_year(self):
         for record in self:
@@ -166,17 +178,6 @@ class TeacherFilterWizard(models.TransientModel):
     def _onchange_class(self):
         for record in self:
             record.subject_id = None
-
-    @api.depends('class_id')
-    def _compute_subject_domain(self):
-        for record in self:
-            domain = []
-            if record.class_id.id:
-                ue_ids = record.class_id.ue_ids
-                domain = [
-                    ('ue_ids', 'in', ue_ids.ids)
-                ]
-            record.subject_id_domain = domain
 
     def action_filter(self):
         domain = [

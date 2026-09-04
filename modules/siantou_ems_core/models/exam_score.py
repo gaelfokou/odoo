@@ -118,6 +118,17 @@ class ExamScore(models.Model):
 
     subject_id_domain = fields.Binary(compute='_compute_subject_domain', default=[])
 
+    @api.depends('class_id')
+    def _compute_subject_domain(self):
+        for record in self:
+            domain = []
+            if record.class_id.id:
+                ue_ids = record.class_id.ue_ids
+                domain = [
+                    ('ue_ids', 'in', ue_ids.ids)
+                ]
+            record.subject_id_domain = domain
+
     @api.depends('semester_id', 'class_id', 'subject_id', 'exam_type')
     def _compute_name(self):
         for record in self:
@@ -145,17 +156,6 @@ class ExamScore(models.Model):
     def _onchange_name(self):
         for record in self:
             record._compute_name()
-
-    @api.depends('class_id')
-    def _compute_subject_domain(self):
-        for record in self:
-            domain = []
-            if record.class_id.id:
-                ue_ids = record.class_id.ue_ids
-                domain = [
-                    ('ue_ids', 'in', ue_ids.ids)
-                ]
-            record.subject_id_domain = domain
 
     @api.onchange('class_id')
     def _onchange_class(self):
