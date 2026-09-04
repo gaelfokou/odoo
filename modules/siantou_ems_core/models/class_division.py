@@ -112,7 +112,7 @@ class EducationClass(models.Model):
 
     year_id = fields.Many2one(
         'siantou.ems.core.year',
-        string='Année Académique',
+        string='Année académique',
         default=lambda self: self.env['siantou.ems.core.year'].search([('is_active', '=', True)], limit=1),
         required=True
     )
@@ -648,7 +648,7 @@ class EducationClass(models.Model):
                     validation_error_message += f"""
                         • ID : {classe.id}
                         Classe : {classe.name}
-                        Année Académique : {classe.year_id.name}
+                        Année académique : {classe.year_id.name}
                         Spécialité : {classe.specialty_id.name}
                         Option : {classe.option_id.name}
                         Niveau : {classe.level_id.name}

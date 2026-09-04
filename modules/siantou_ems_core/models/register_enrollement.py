@@ -60,7 +60,7 @@ class SessionEnrollment(models.Model):
 
     year_id = fields.Many2one(
         'siantou.ems.core.year',
-        string='Année Académique',
+        string='Année académique',
         help="Séletionner l'année Académique",
         required=True,
         default=lambda self: self._get_default_acadmic_year()
