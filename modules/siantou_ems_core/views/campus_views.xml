@@ -3,8 +3,7 @@
 	<data>
 		<!-- Affichage en vue liste -->
 		<record
-                id="campus_tree_view"
-                model="ir.ui.view">
+                id="campus_tree_view" model="ir.ui.view">
             <field name="name">campus.tree.view</field>
 			<field name="model">siantou.ems.core.campus</field>
 			<field name="arch" type="xml">
@@ -18,8 +17,7 @@
 
         <!-- Affichage en vue formulaire -->
 		<record
-                id="campus_form_view"
-                model="ir.ui.view">
+                id="campus_form_view" model="ir.ui.view">
 			<field name="name">campus.form.view</field>
 			<field name="model">siantou.ems.core.campus</field>
 			<field name="arch" type="xml">
@@ -37,8 +35,7 @@
 
         <!-- Action pour le menu d'affichage des programmes -->
         <record
-                id="action_show_campus"
-                model="ir.actions.act_window">
+                id="action_show_campus" model="ir.actions.act_window">
             <field name="name">Campus</field>
             <field name="res_model">siantou.ems.core.campus</field>
             <field name="view_mode">tree,form</field>

@@ -3,8 +3,7 @@
 	<data>
 		<!-- Affichage en vue liste -->
 		<record
-                id="student_career_tree_view"
-                model="ir.ui.view">
+                id="student_career_tree_view" model="ir.ui.view">
             <field name="name">student.career.tree.view</field>
 			<field name="model">oe.school.student.career</field>
 			<field name="arch" type="xml">
@@ -22,8 +21,7 @@
 
         <!-- Affichage en vue formulaire -->
 		<record
-                id="student_career_form_view"
-                model="ir.ui.view">
+                id="student_career_form_view" model="ir.ui.view">
 			<field name="name">student.career.form.view</field>
 			<field name="model">oe.school.student.career</field>
 			<field name="arch" type="xml">
@@ -53,8 +51,7 @@
 
         <!-- Action pour le menu d'affichage des programmes -->
         <record
-                id="action_show_student_career"
-                model="ir.actions.act_window">
+                id="action_show_student_career" model="ir.actions.act_window">
             <field name="name">Parcours académique</field>
             <field name="res_model">oe.school.student.career</field>
             <field name="view_mode">tree,form</field>

@@ -3,8 +3,7 @@
 	<data>
 		<!-- Affichage en vue liste -->
 		<record
-                id="syllabus_subject_tree_view"
-                model="ir.ui.view">
+                id="syllabus_subject_tree_view" model="ir.ui.view">
             <field name="name">syllabus.tree.view</field>
 			<field name="model">siantou.ems.core.syllabus.subject</field>
 			<field name="arch" type="xml">
@@ -19,8 +18,7 @@
 
         <!-- Affichage en vue formulaire -->
 		<record
-                id="syllabus_subject_form_view"
-                model="ir.ui.view">
+                id="syllabus_subject_form_view" model="ir.ui.view">
 			<field name="name">syllabus.form.view</field>
 			<field name="model">siantou.ems.core.syllabus.subject</field>
 			<field name="arch" type="xml">

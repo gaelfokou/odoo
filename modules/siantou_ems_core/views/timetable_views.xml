@@ -3,8 +3,7 @@
 	<data>
         <!-- Affichage en vue liste -->
 		<record
-                id="timetable_tree_view"
-                model="ir.ui.view">
+                id="timetable_tree_view" model="ir.ui.view">
             <field name="name">timetable.tree.view</field>
 			<field name="model">siantou.ems.timetable.timetable</field>
 			<field name="arch" type="xml">
@@ -78,8 +77,7 @@
 
         <!-- Affichage en vue formulaire -->
 		<record
-                id="timetable_form_view"
-                model="ir.ui.view">
+                id="timetable_form_view" model="ir.ui.view">
 			<field name="name">timetable.form.view</field>
 			<field name="model">siantou.ems.timetable.timetable</field>
 			<field name="arch" type="xml">
@@ -165,8 +163,7 @@
 
         <!-- Affichage en vue calendrier -->
 		<record
-                id="timetable_calendar_view"
-                model="ir.ui.view">
+                id="timetable_calendar_view" model="ir.ui.view">
             <field name="name">timetable.calendar.view</field>
 			<field name="model">siantou.ems.timetable.timetable</field>
 			<field name="arch" type="xml">
@@ -231,8 +228,7 @@
 
         <!-- Action pour le menu d'affichage des années académiques -->
         <record
-                id="action_show_timetable"
-                model="ir.actions.act_window">
+                id="action_show_timetable" model="ir.actions.act_window">
             <field name="name">Emplois du temps</field>
             <field name="res_model">siantou.ems.timetable.timetable</field>
             <field name="view_mode">tree,calendar,form</field>

@@ -34,6 +34,37 @@ TYPE_COUR = {
 _logger = logging.getLogger(__name__)
 
 
+class TimetableTypeError(models.Model):
+    _name = 'data.copy.type'
+    _description = 'Type de copie des données'
+    _inherit=['mail.thread', 'mail.activity.mixin',]
+
+    name = fields.Char(
+        string='Nom',
+        compute='_compute_name',
+        store=True,
+    )
+
+    model_id = fields.Many2one(
+        'ir.model',
+        string='Model',
+    )
+
+    _sql_constraints = [
+        ('unique_model', 'unique(model_id)', 'Le modèle doit être unique.'),
+    ]
+
+    @api.depends('model_id')
+    def _compute_name(self):
+        for record in self:
+            record.name = record.model_id.name
+
+    @api.onchange('model_id')
+    def _onchange_name(self):
+        for record in self:
+            record._compute_name()
+
+
 class DataCopyWizard(models.TransientModel):
     _name = 'data.copy.wizard'
     _description = 'Copie des autres données'
@@ -50,9 +81,9 @@ class DataCopyWizard(models.TransientModel):
         required=True,
     )
 
-    model_id = fields.Many2one(
-        'ir.model',
-        string='Model',
+    type_id = fields.Many2one(
+        'data.copy.type',
+        string='Type de copie des données',
         required=True,
     )
 

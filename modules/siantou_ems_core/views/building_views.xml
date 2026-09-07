@@ -3,8 +3,7 @@
 	<data>
 		<!-- Affichage en vue liste -->
 		<record
-                id="building_tree_view"
-                model="ir.ui.view">
+                id="building_tree_view" model="ir.ui.view">
             <field name="name">building.tree.view</field>
 			<field name="model">siantou.ems.core.building</field>
 			<field name="arch" type="xml">
@@ -21,8 +20,7 @@
 
         <!-- Affichage en vue formulaire -->
 		<record
-                id="building_form_view"
-                model="ir.ui.view">
+                id="building_form_view" model="ir.ui.view">
 			<field name="name">building.form.view</field>
 			<field name="model">siantou.ems.core.building</field>
 			<field name="arch" type="xml">
@@ -55,8 +53,7 @@
 
         <!-- Action pour le menu d'affichage des programmes -->
         <record
-                id="action_show_building"
-                model="ir.actions.act_window">
+                id="action_show_building" model="ir.actions.act_window">
             <field name="name">Bâtiments</field>
             <field name="res_model">siantou.ems.core.building</field>
             <field name="view_mode">tree,form</field>

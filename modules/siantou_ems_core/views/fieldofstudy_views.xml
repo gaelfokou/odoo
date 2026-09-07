@@ -3,8 +3,7 @@
 	<data>
 		<!-- Affichage en vue liste -->
 		<record
-                id="field_of_study_tree_view"
-                model="ir.ui.view">
+                id="field_of_study_tree_view" model="ir.ui.view">
             <field name="name">field_of_study.tree.view</field>
 			<field name="model">siantou.ems.core.field_of_study</field>
 			<field name="arch" type="xml">
@@ -21,8 +20,7 @@
 
         <!-- Affichage en vue formulaire -->
 		<record
-                id="fieldofstudy_form_view"
-                model="ir.ui.view">
+                id="fieldofstudy_form_view" model="ir.ui.view">
 			<field name="name">field_of_study.form.view</field>
 			<field name="model">siantou.ems.core.field_of_study</field>
 			<field name="arch" type="xml">
@@ -62,8 +60,7 @@
 
         <!-- Action pour le menu s'affichage des programmes -->
         <record
-                id="action_show_field_of_study"
-                model="ir.actions.act_window">
+                id="action_show_field_of_study" model="ir.actions.act_window">
             <field name="name">Filières</field>
             <field name="res_model">siantou.ems.core.field_of_study</field>
             <field name="view_mode">tree,form</field>
@@ -75,8 +72,7 @@
         </record>
 
         <record
-                id="action_show_field_of_study_2"
-                model="ir.actions.act_window">
+                id="action_show_field_of_study_2" model="ir.actions.act_window">
             <field name="name">Filières</field>
             <field name="res_model">siantou.ems.core.field_of_study</field>
             <field name="view_mode">tree</field>

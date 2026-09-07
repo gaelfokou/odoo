@@ -3,8 +3,7 @@
 	<data>
 		<!-- Affichage en vue liste -->
 		<record
-                id="country_tree_view"
-                model="ir.ui.view">
+                id="country_tree_view" model="ir.ui.view">
             <field name="name">country.tree.view</field>
 			<field name="model">siantou.ems.core.country</field>
 			<field name="arch" type="xml">
@@ -17,8 +16,7 @@
 
         <!-- Affichage en vue formulaire -->
 		<record
-                id="country_form_view"
-                model="ir.ui.view">
+                id="country_form_view" model="ir.ui.view">
 			<field name="name">country.form.view</field>
 			<field name="model">siantou.ems.core.country</field>
 			<field name="arch" type="xml">
@@ -49,8 +47,7 @@
 
         <!-- Action pour le menu d'affichage des pays -->
         <record
-                id="action_show_country"
-                model="ir.actions.act_window">
+                id="action_show_country" model="ir.actions.act_window">
             <field name="name">Pays</field>
             <field name="res_model">siantou.ems.core.country</field>
             <field name="search_view_id" ref="country_search_view"/>

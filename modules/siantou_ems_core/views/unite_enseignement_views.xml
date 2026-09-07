@@ -3,8 +3,7 @@
 	<data>
 		<!-- Affichage en vue liste -->
 		<record
-                id="unite_enseignement_tree_view"
-                model="ir.ui.view">
+                id="unite_enseignement_tree_view" model="ir.ui.view">
             <field name="name">unite_enseignement.tree.view</field>
 			<field name="model">siantou.ems.core.unite.enseignement</field>
 			<field name="arch" type="xml">
@@ -27,8 +26,7 @@
 
         <!-- Affichage en vue formulaire -->
 		<record
-                id="unite_enseignement_form_view"
-                model="ir.ui.view">
+                id="unite_enseignement_form_view" model="ir.ui.view">
 			<field name="name">unite_enseignement.form.view</field>
 			<field name="model">siantou.ems.core.unite.enseignement</field>
 			<field name="arch" type="xml">

@@ -3,8 +3,7 @@
 	<data>
 		<!-- Affichage en vue liste -->
 		<record
-                id="partner_tree_view"
-                model="ir.ui.view">
+                id="partner_tree_view" model="ir.ui.view">
             <field name="name">partner.tree.view</field>
 			<field name="model">siantou.university.partner</field>
 			<field name="arch" type="xml">
@@ -17,8 +16,7 @@
 
         <!-- Affichage en vue formulaire -->
 		<record
-                id="partner_form_view"
-                model="ir.ui.view">
+                id="partner_form_view" model="ir.ui.view">
 			<field name="name">partner.form.view</field>
 			<field name="model">siantou.university.partner</field>
 			<field name="arch" type="xml">
@@ -63,8 +61,7 @@
 
         <!-- Action pour le menu d'affichage -->
         <record
-                id="action_show_partenaire"
-                model="ir.actions.act_window">
+                id="action_show_partenaire" model="ir.actions.act_window">
             <field name="name">Partenaires</field>
             <field name="res_model">siantou.university.partner</field>
             <field name="search_view_id" ref="partner_search_view"/>

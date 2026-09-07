@@ -3,8 +3,7 @@
 	<data>
 		<!-- Affichage en vue liste -->
 		<record
-                id="class_tree_view"
-                model="ir.ui.view">
+                id="class_tree_view" model="ir.ui.view">
             <field name="name">siantou_ems_core_class.tree.view</field>
 			<field name="model">siantou.ems.core.class</field>
 			<field name="arch" type="xml">
@@ -222,8 +221,7 @@
 
         <!-- Affichage en vue formulaire -->
 		<record
-                id="class_form_view"
-                model="ir.ui.view">
+                id="class_form_view" model="ir.ui.view">
 			<field name="name">siantou_ems_core_class.form.view</field>
 			<field name="model">siantou.ems.core.class</field>
 			<field name="arch" type="xml">
@@ -292,8 +290,7 @@
 
         <!-- Action pour le menu s'affichage des classes standards -->
         <record
-                id="action_show_class"
-                model="ir.actions.act_window">
+                id="action_show_class" model="ir.actions.act_window">
             <field name="name">Classes</field>
             <field name="res_model">siantou.ems.core.class</field>
             <field name="view_mode">tree,kanban,form</field>
@@ -306,8 +303,7 @@
         </record>
 
         <record
-                id="action_show_class_dashboard"
-                model="ir.actions.act_window">
+                id="action_show_class_dashboard" model="ir.actions.act_window">
             <field name="name">Tableau de bord des classes</field>
             <field name="res_model">siantou.ems.core.class</field>
             <field name="view_mode">kanban,form</field>
@@ -320,8 +316,7 @@
         </record>
 
         <record
-                id="action_show_class_2"
-                model="ir.actions.act_window">
+                id="action_show_class_2" model="ir.actions.act_window">
             <field name="name">Classes</field>
             <field name="res_model">siantou.ems.core.class</field>
             <field name="view_mode">tree</field>

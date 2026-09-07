@@ -172,8 +172,7 @@
 
         <!-- Action pour le menu d'affichage des versions -->
         <record
-                id="action_timetable_group"
-                model="ir.actions.act_window">
+                id="action_timetable_group" model="ir.actions.act_window">
             <field name="name">Versions publiées</field>
             <field name="res_model">siantou.ems.timetable.group</field>
             <field name="view_mode">tree,form</field>
@@ -200,8 +199,7 @@
 
         <!-- Action pour le menu d'affichage des versions -->
         <record
-                id="action_timetable_group_submit"
-                model="ir.actions.act_window">
+                id="action_timetable_group_submit" model="ir.actions.act_window">
             <field name="name">Versions soumises</field>
             <field name="res_model">siantou.ems.timetable.group</field>
             <field name="view_mode">tree,form</field>

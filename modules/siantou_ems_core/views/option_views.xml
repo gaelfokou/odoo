@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 	<data>
-
         <record id="option_tree_view" model="ir.ui.view">
 			<field name="name">option_tree.view</field>
 			<field name="model">siantou.ems.core.option</field>

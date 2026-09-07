@@ -3,8 +3,7 @@
 	<data>
 		<!-- Affichage en vue liste -->
 		<record
-                id="class_group_tree_view"
-                model="ir.ui.view">
+                id="class_group_tree_view" model="ir.ui.view">
             <field name="name">siantou_ems_core_class_group.tree.view</field>
 			<field name="model">siantou.ems.core.class.group</field>
 			<field name="arch" type="xml">
@@ -17,8 +16,7 @@
 
         <!-- Affichage en vue formulaire -->
 		<record
-                id="class_group_form_view"
-                model="ir.ui.view">
+                id="class_group_form_view" model="ir.ui.view">
 			<field name="name">siantou_ems_core_class_group.form.view</field>
 			<field name="model">siantou.ems.core.class.group</field>
 			<field name="arch" type="xml">
@@ -40,8 +38,7 @@
 
         <!-- Action pour le menu s'affichage des classes standards -->
         <record
-                id="action_show_class_group"
-                model="ir.actions.act_window">
+                id="action_show_class_group" model="ir.actions.act_window">
             <field name="name">Groupes de classe</field>
             <field name="res_model">siantou.ems.core.class.group</field>
             <field name="view_mode">tree,form</field>

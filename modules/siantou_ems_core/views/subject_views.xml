@@ -4,8 +4,7 @@
 
         <!-- Affichage en vue liste -->
         <record
-                id="subject_tree_view"
-                model="ir.ui.view">
+                id="subject_tree_view" model="ir.ui.view">
             <field name="name">subject.tree.view</field>
             <field name="model">siantou.ems.core.subject</field>
             <field name="arch" type="xml">
@@ -41,8 +40,7 @@
 
         <!-- Affichage en vue formulaire -->
         <record
-                id="subject_form_view"
-                model="ir.ui.view">
+                id="subject_form_view" model="ir.ui.view">
             <field name="name">subject.form.view</field>
             <field name="model">siantou.ems.core.subject</field>
             <field name="arch" type="xml">

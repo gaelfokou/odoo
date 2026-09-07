@@ -3,8 +3,7 @@
 	<data>
 		<!-- Affichage en vue liste -->
 		<record
-                id="semester_tree_view"
-                model="ir.ui.view">
+                id="semester_tree_view" model="ir.ui.view">
             <field name="name">semester.tree.view</field>
 			<field name="model">siantou.ems.core.year.semester</field>
 			<field name="arch" type="xml">
@@ -21,8 +20,7 @@
 
         <!-- Affichage en vue formulaire -->
 		<record
-                id="semester_form_view"
-                model="ir.ui.view">
+                id="semester_form_view" model="ir.ui.view">
 			<field name="name">semester.form.view</field>
 			<field name="model">siantou.ems.core.year.semester</field>
 			<field name="arch" type="xml">
@@ -64,8 +62,7 @@
 
         <!-- Action pour le menu s'affichage des semestre -->
         <record
-                id="action_show_semester"
-                model="ir.actions.act_window">
+                id="action_show_semester" model="ir.actions.act_window">
             <field name="name">Semestres</field>
             <field name="res_model">siantou.ems.core.year.semester</field>
             <field name="view_mode">tree,form</field>
@@ -78,8 +75,7 @@
         </record>
 
         <record
-                id="action_show_semester_2"
-                model="ir.actions.act_window">
+                id="action_show_semester_2" model="ir.actions.act_window">
             <field name="name">Semestres</field>
             <field name="res_model">siantou.ems.core.year.semester</field>
             <field name="view_mode">tree</field>

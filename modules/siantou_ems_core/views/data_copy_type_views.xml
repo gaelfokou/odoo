@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Affichage en vue liste -->
+		<record
+                id="data_copy_type_tree_view" model="ir.ui.view">
+            <field name="name">timetable.tree.view</field>
+			<field name="model">data.copy.type</field>
+			<field name="arch" type="xml">
+				<tree string="Types de copies des données">
+                    <field name="model_id"/>
+				</tree>
+			</field>
+		</record>
+
+        <!-- Affichage en vue formulaire -->
+        <record id="data_copy_type_form_view" model="ir.ui.view">
+            <field name="name">data.copy.type.form</field>
+            <field name="model">data.copy.type</field>
+            <field name="arch" type="xml">
+                <form string="Types de copies des données">
+                    <group>
+                        <field name="model_id" options="{'no_create': True}"/>
+                    </group>
+                </form>
+            </field>
+        </record>
+
+        <!-- Define an action to open the form view -->
+        <record id="action_data_copy_type" model="ir.actions.act_window">
+            <field name="name">Types de copies des données</field>
+            <field name="res_model">data.copy.type</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_ids"
+                eval="[(5, 0, 0),
+                (0, 0, {'view_mode': 'tree', 'view_id': ref('data_copy_type_tree_view')}),
+                (0, 0, {'view_mode': 'form', 'view_id': ref('data_copy_type_form_view')})]"/>
+            <field name="target">current</field>
+        </record>
+
+        <menuitem
+                id="menu_data_copy_type"
+                name="Types de copies des données"
+                parent="menu_siantou_ems_core_config_copy"
+                action="action_data_copy_type"
+                groups="siantou_ems_core.group_ue_open_copy"
+                sequence="5"/>
+    </data>
+</odoo>
