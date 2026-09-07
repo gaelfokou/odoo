@@ -89,6 +89,12 @@ class DataCopyWizard(models.TransientModel):
 
     def action_copy(self):
         domain = []
+        if self.type_id:
+            domain.append(('id', '=', self.type_id.model_id.id))
+
+        model_id = self.env['ir.model'].sudo().search(domain, limit=1)
+
+        _logger.info(f'----------- tototototototo model {model_id.model} -----------')
 
         return {
             'type': 'ir.actions.client',
