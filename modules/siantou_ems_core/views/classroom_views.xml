@@ -93,9 +93,9 @@
         <menuitem
             id="menu_siantou_ems_core_classroom"
             name="Salles de classe"
-            parent="menu_siantou_ems_core_configuration"
+            parent="menu_siantou_ems_core_config_location"
             action="action_show_classroom"
             groups="siantou_ems_core.group_classroom_admin,base.group_system"
-            sequence="6"/>
+            sequence="3"/>
     </data>
 </odoo>

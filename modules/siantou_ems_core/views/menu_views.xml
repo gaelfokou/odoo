@@ -54,18 +54,23 @@
             parent="menu_siantou_ems_core_configuration" 
             sequence="3"/>
     <menuitem
+            id="menu_siantou_ems_core_config_location" 
+            name="Gestion des emplacements"
+            parent="menu_siantou_ems_core_configuration" 
+            sequence="4"/>
+    <menuitem
             id="menu_siantou_ems_core_config_calendar" 
             name="Gestion des chronogrammes"
             parent="menu_siantou_ems_core_configuration" 
-            sequence="4"/>
+            sequence="5"/>
     <menuitem
             id="menu_siantou_ems_core_config_setting" 
             name="Gestion des paramètres"
             parent="menu_siantou_ems_core_configuration" 
-            sequence="5"/>
+            sequence="6"/>
     <menuitem
             id="menu_siantou_ems_core_config_copy" 
             name="Gestion des copies"
             parent="menu_siantou_ems_core_configuration" 
-            sequence="6"/>
+            sequence="7"/>
 </odoo>

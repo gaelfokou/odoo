@@ -64,7 +64,7 @@
 
         <!-- Menu pour la gestion des filières -->
         <menuitem
-                id="menu_siantou_ems_core_campus"
+                id="menu_siantou_ems_core_student_career"
                 name="Parcours académique"
                 parent="menu_siantou_ems_core_student"
                 action="action_show_student_career"

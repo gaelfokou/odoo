@@ -68,9 +68,9 @@
         <menuitem
                 id="menu_siantou_ems_core_building"
                 name="Bâtiments"
-                parent="menu_siantou_ems_core_configuration"
+                parent="menu_siantou_ems_core_config_location"
                 action="action_show_building"
                 groups="siantou_ems_core.group_building_admin,base.group_system"
-            sequence="5"/>
+            sequence="2"/>
 	</data>
 </odoo>

@@ -29,7 +29,7 @@
                         <field name="description"/>
                         <field name="max_students_per_batch"/>
                         <field name="building_ids" widget="many2many_tags"/>
-                        <field name="cycle_ids" widget="many2many_tags"/>                            
+                        <field name="cycle_ids" widget="many2many_tags"/>
                     </group>
                     <notebook>
                         <page name="department_ids" string="Départements">
