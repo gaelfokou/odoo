@@ -385,19 +385,16 @@ class SchoolSyllabus(models.Model):
     vhp = fields.Integer(
         string='Volume horaire prévue (VHP)',
         compute='_compute_vhp'
-
     )
 
     vht = fields.Integer(
         string='Volume horaire total (VHT)',
         compute='_compute_vht'
-
     )
 
     subject_credit = fields.Integer(
         string='Crédit de la matière',
         compute='_compute_subject_credit'
-
     )
 
     pro_pe_id = fields.Many2one(
