@@ -23,7 +23,7 @@
                         <field name="class_group_id" invisible="not has_group" options="{'no_create': True}" domain="[('class_id', '=', class_id)]"/>
                         <field name="subject_id_domain" invisible="1"/>
                         <field name="subject_id" options="{'no_create': True}" domain="subject_id_domain"/>
-                        <field name="building_id" options="{'no_create': True}"/>
+                        <field name="building_id" options="{'no_create': True}" domain="[('school_ids', '=', school_id)]"/>
                         <field name="classroom_id" options="{'no_create': True}" domain="[('building_id', '=', building_id)]"/>
                         <field name="is_teacher"/>
                         <field name="is_permanent"/>
