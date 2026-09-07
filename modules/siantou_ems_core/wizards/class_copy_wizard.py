@@ -38,15 +38,24 @@ class ClassCopyWizard(models.TransientModel):
     _name = 'class.copy.wizard'
     _description = 'Copie des classes'
 
+    def _default_year(self):
+            year = self.env['siantou.ems.core.year'].sudo().search([
+                ('active_user_ids', '=', self.env.user.id),
+            ], limit=1)
+            if not year:
+                year = self.env['siantou.ems.core.year'].search([('is_active', '=', True)], limit=1)
+            return year
+
     source_year_id = fields.Many2one(
         'siantou.ems.core.year',
-        'Année académique source',
-        required=True,
+        string='Année académique source',
+        default=_default_year,
+        required=True
     )
 
     destination_year_id = fields.Many2one(
         'siantou.ems.core.year',
-        'Année académique destination',
+        string='Année académique destination',
         required=True,
     )
 

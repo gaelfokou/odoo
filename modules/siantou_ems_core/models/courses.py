@@ -135,8 +135,7 @@ class OeSchoolCourse(models.Model):
     has_supervision = fields.Boolean('Est sous tutelle académique', default=False)
     enable_elective = fields.Boolean('Activer la sélection des cours facultatifs')
     color = fields.Integer(default=_default_color)
-
-    sequence_id = fields.Many2one('ir.sequence', 'Séquence des numéros d\'enregistrement', copy=False, check_company=True)
+    # sequence_id = fields.Many2one('ir.sequence', 'Séquence des numéros d\'enregistrement', copy=False, check_company=True)
 
     field_of_study_ids = fields.One2many(
         'siantou.ems.core.field_of_study',
@@ -200,64 +199,30 @@ class OeSchoolCourse(models.Model):
             else:
                 record.complete_name = record.name
 
-    @api.model
-    def create(self, vals):
-        sequence = self.env['ir.sequence'].create({
-            'name': _('Sequence') + ' ' + vals['name'],
-            'padding': 5,
-            'prefix': vals['name'],
-            'company_id': vals.get('company_id'),
-        })
-        vals['sequence_id'] = sequence.id
-        res = super(OeSchoolCourse, self).create(vals)
-        return res
+    # @api.model
+    # def create(self, vals):
+    #     if 'code' in vals and vals['code'] and vals['code'].strip():
+    #         sequence = self.env['ir.sequence'].create({
+    #             'name': _('Sequence') + ' ' + vals['code'],
+    #             'padding': 5,
+    #             'prefix': vals['code'],
+    #             'company_id': vals['company_id'],
+    #         })
+    #         vals['sequence_id'] = sequence.id
+    #     res = super(OeSchoolCourse, self).create(vals)
+    #     return res
 
-    def write(self, vals):
-        if 'code' in vals:
-            sequence_vals = {
-                'name': _('Sequence') + ' ' + vals['code'],
-                'padding': 5,
-                'prefix': vals['code'],
-            }
-            if self.sequence_id:
-                self.sequence_id.write(sequence_vals)
-            else:
-                sequence_vals['company_id'] = vals.get('company_id', self.company_id.id)
-                sequence = self.env['ir.sequence'].create(sequence_vals)
-                self.sequence_id = sequence
-        if 'company_id' in vals:
-            if self.sequence_id:
-                self.sequence_id.company_id = vals.get('company_id')
-        return super().write(vals)
-
-    # Actions
-    # def action_open_batch(self):
-    #     action = self.env.ref('de_school.action_course_batch').read()[0]
-    #     action.update({
-    #         'name': 'Lots',
-    #         'view_mode': 'tree',
-    #         'res_model': 'oe.school.course.batch',
-    #         'type': 'ir.actions.act_window',
-    #         'domain': [('course_id', '=', self.id)],
-    #         'context': {
-    #             'default_course_id': self.id,
-    #         }
-    #     })
-    #     return action
-
-    # def action_open_section(self):
-    #     action = self.env.ref('de_school.action_school_seciton').read()[0]
-    #     action.update({
-    #         'name': 'Sections',
-    #         'view_mode': 'tree',
-    #         'res_model': 'oe.school.course.section',
-    #         'type': 'ir.actions.act_window',
-    #         'domain': [('course_id', '=', self.id)],
-    #         'context': {
-    #             'default_course_id': self.id,
-    #         }
-    #     })
-    #     return action
+    # def write(self, vals):
+    #     if not self.sequence_id:
+    #         sequence = self.env['ir.sequence'].create({
+    #             'name': _('Sequence') + ' ' + self.code,
+    #             'padding': 5,
+    #             'prefix': self.code,
+    #             'company_id': self.company_id.id,
+    #         })
+    #         vals['sequence_id'] = sequence.id
+    #     res = super(OeSchoolCourse, self).write(vals)
+    #     return res
 
     def update_cycle(self, cycle):
         try:
