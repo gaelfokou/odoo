@@ -459,9 +459,21 @@ class SchoolCourseSubject(models.Model):
 
     semester_ids = fields.Many2many('siantou.ems.core.year.semester', 'semester_ue_rel', 'ue_id', 'semester_id', string='Semestres')
 
-    year_ids = fields.One2many(
+    def _default_year(self):
+        year = self.env['siantou.ems.core.year'].sudo().search([
+            ('active_user_ids', '=', self.env.user.id),
+        ], limit=1)
+        if not year:
+            year = self.env['siantou.ems.core.year'].search([('is_active', '=', True)], limit=1)
+        return year
+
+    year_ids = fields.Many2many(
         'siantou.ems.core.year',
+        'year_ue_rel',
+        'ue_id',
+        'year_id',
         string='Années académiques',
+        default=_default_year,
     )
 
     syllabus_ids = fields.One2many('siantou.ems.core.syllabus', 'ue_id', string='Syllabus')

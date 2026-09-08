@@ -38,10 +38,19 @@ class TimetableGroupMoveWizard(models.TransientModel):
     _name = 'timetable.group.move.wizard'
     _description = 'Déplacement des versions d\'emploi du temps'
 
+    def _default_year(self):
+        year = self.env['siantou.ems.core.year'].sudo().search([
+            ('active_user_ids', '=', self.env.user.id),
+        ], limit=1)
+        if not year:
+            year = self.env['siantou.ems.core.year'].search([('is_active', '=', True)], limit=1)
+        return year
+
     year_id = fields.Many2one(
         'siantou.ems.core.year',
         string='Année académique',
-        required=True,
+        default=_default_year,
+        required=True
     )
 
     source_group_id = fields.Many2one(

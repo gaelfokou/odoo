@@ -37,20 +37,20 @@ class Semester(models.Model):
         required=True
     )
 
+    def _default_year(self):
+        year = self.env['siantou.ems.core.year'].sudo().search([
+            ('active_user_ids', '=', self.env.user.id),
+        ], limit=1)
+        if not year:
+            year = self.env['siantou.ems.core.year'].search([('is_active', '=', True)], limit=1)
+        return year
+
     year_id = fields.Many2one(
         'siantou.ems.core.year',
         string='Année académique',
-        help="Année académique à laquelle est lié le semestre",
-        required=True,
+        default=_default_year,
+        required=True
     )
-
-    # class_ids = fields.One2many(
-    #     'siantou.ems.core.class',
-    #     'semestre_id',
-    #     string='Classes',
-    #     help="classe à laquelle est lié le semestre",
-    #     required=True
-    # )
 
     number_of_week = fields.Integer(
         string='Nombre de semaines',

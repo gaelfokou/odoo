@@ -28,9 +28,9 @@
 					<sheet>
                         <group col="4" string="Informations sur le semestre">
                             <group col="2" >
+                                <field name="year_id" options="{'no_create': True}"/>
                                 <field name="semester_name"/>
                                 <field name="start_time"/>
-                                <field name="year_id" options="{'no_create': True}"/>
                             </group>
                             <group colspan="2">
                                 <field name="end_time"/>
@@ -40,7 +40,7 @@
                         </group>
                         <notebook>
                             <page name="ue" string="Unité d'enseignement">
-                                <field name="ue_ids">
+                                <field name="ue_ids" domain="[('year_ids', '=', year_id)]">
                                     <tree>
                                         <field name="code"/>
                                         <field name="name"/>

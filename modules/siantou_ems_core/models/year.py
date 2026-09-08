@@ -39,6 +39,10 @@ class Year(models.Model):
 
     is_user_active = fields.Boolean(string='Utilisateur associé actif ?', compute='_compute_active')
 
+    ue_ids = fields.Many2many('siantou.ems.core.unite.enseignement', 'year_ue_rel', 'year_id', 'ue_id', string='Unités d\'enseignement')
+
+    subject_ids = fields.Many2many('siantou.ems.core.subject', 'year_subject_rel', 'year_id', 'subject_id', string='Cours')
+
     @api.depends('active_user_ids')
     def _compute_active(self):
         for record in self:

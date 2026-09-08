@@ -92,6 +92,23 @@ class Subject(models.Model):
 
     ue_ids = fields.Many2many('siantou.ems.core.unite.enseignement', 'ue_subject_rel', 'subject_id', 'ue_id', string='Unités d\'enseignement')
 
+    def _default_year(self):
+        year = self.env['siantou.ems.core.year'].sudo().search([
+            ('active_user_ids', '=', self.env.user.id),
+        ], limit=1)
+        if not year:
+            year = self.env['siantou.ems.core.year'].search([('is_active', '=', True)], limit=1)
+        return year
+
+    year_ids = fields.Many2many(
+        'siantou.ems.core.year',
+        'year_subject_rel',
+        'subject_id',
+        'year_id',
+        string='Années académiques',
+        default=_default_year,
+    )
+
     syllabus_ids = fields.One2many('siantou.ems.core.syllabus', 'subject_id', string='Syllabus')
 
     teacher_ids = fields.Many2many(

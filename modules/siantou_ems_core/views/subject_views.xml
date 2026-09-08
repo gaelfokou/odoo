@@ -32,6 +32,7 @@
                     <field name="subject_parent_ids" widget="many2many_tags"/>
                     <field name="subject_child_ids" widget="many2many_tags"/>
                     <field name="name"/>
+                    <field name="year_ids" widget="many2many_tags"/>
                     <field name="ue_ids" widget="many2many_tags"/>
                     <field name="hours_credit"/>
                 </tree>
@@ -48,8 +49,9 @@
                     <sheet>
                         <group string="Informations sur le cours" col="4">
                             <group colspan="2">
+                                <field name="year_ids" options="{'no_create': True}" widget="many2many_tags"/>
                                 <field name="code"/>
-                                <field name="ue_ids" widget="many2many_tags"/>
+                                <field name="ue_ids" domain="[('year_ids', 'in', year_ids)]" widget="many2many_tags"/>
                                 <field name="hours_credit"/>
                             </group>
                             <group colspan="2">
@@ -89,7 +91,7 @@
             <field name="name">Cours</field>
             <field name="res_model">siantou.ems.core.subject</field>
             <field name="view_mode">tree,form</field>
-            <field name="domain">[('year_id.active_user_ids', '=', uid)]</field>
+            <field name="domain">[('year_ids.active_user_ids', '=', uid)]</field>
             <field name="help" type="html">
                 <p class="o_view_nocontent_smiling_face">
                     Créer un nouveau cours.
@@ -102,6 +104,7 @@
             <field name="name">Cours</field>
             <field name="res_model">siantou.ems.core.subject</field>
             <field name="view_mode">tree</field>
+            <field name="domain">[('year_ids.active_user_ids', '=', uid)]</field>
             <field name="context">{'create': False, 'edit': False}</field>
             <field name="help" type="html">
                 <p class="o_view_nocontent_smiling_face">

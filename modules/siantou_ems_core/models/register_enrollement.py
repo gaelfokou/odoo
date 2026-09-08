@@ -18,14 +18,6 @@ class SessionEnrollment(models.Model):
          "Cette session existe déja pour cette Année académique!"),
     ]
 
-    def _get_default_acadmic_year(self):
-        """Get the default acedemic year active"""
-        year_id = self.env['siantou.ems.core.year'].search([('is_active', '=', True)], limit=1)
-        if not year_id:
-            raise ValidationError("""Aucune annéé academique activé""")
-        self.name = f"Session_{year_id.name}"
-        return year_id.id
-
     # @api.onchange("year_id")
     @api.depends('year_id')
     def _get_name(self):
@@ -58,12 +50,19 @@ class SessionEnrollment(models.Model):
         required=True,
     )
 
+    def _default_year(self):
+        year = self.env['siantou.ems.core.year'].sudo().search([
+            ('active_user_ids', '=', self.env.user.id),
+        ], limit=1)
+        if not year:
+            year = self.env['siantou.ems.core.year'].search([('is_active', '=', True)], limit=1)
+        return year
+
     year_id = fields.Many2one(
         'siantou.ems.core.year',
         string='Année académique',
-        help="Séletionner l'année Académique",
-        required=True,
-        default=lambda self: self._get_default_acadmic_year()
+        default=_default_year,
+        required=True
     )
 
     is_active = fields.Boolean(string='Actif ?', default=False)
