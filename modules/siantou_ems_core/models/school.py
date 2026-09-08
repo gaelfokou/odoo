@@ -38,12 +38,6 @@ class School(models.Model):
         string='Filières'
     )
 
-    # student_ids = fields.One2many(
-    #     'res.partner',
-    #     'school_id',
-    #     string='Étudiants'
-    # )
-
     student_ids = fields.One2many(
         'oe.school.student',
         'school_id',

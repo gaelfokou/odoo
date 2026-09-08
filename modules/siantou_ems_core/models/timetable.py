@@ -81,16 +81,16 @@ class TimetableSubjectHour(models.Model):
 
     start_time = fields.Float(
         string='Heure de début',
-        required=True,
         default=0.0,
+        required=True,
         ondelete='cascade',
         widget='time'
     )
 
     end_time = fields.Float(
         string='Heure de fin',
-        required=True,
         default=0.0,
+        required=True,
         ondelete='cascade',
         widget='time'
     )
@@ -392,16 +392,16 @@ class Timetable(models.Model):
 
     start_time = fields.Float(
         string='Heure de début',
-        required=True,
         default=0.0,
+        required=True,
         ondelete='cascade',
         widget='time'
     )
 
     end_time = fields.Float(
         string='Heure de fin',
-        required=True,
         default=0.0,
+        required=True,
         ondelete='cascade',
         widget='time'
     )
@@ -2093,15 +2093,15 @@ class TimetableSlotItem(models.Model):
 
     start_time = fields.Float(
         string='Heure de début',
-        required=True,
         default=0.0,
+        required=True,
         widget='time'
     )
 
     end_time = fields.Float(
         string='Heure de fin',
-        required=True,
         default=0.0,
+        required=True,
         widget='time'
     )
 
