@@ -462,62 +462,15 @@ class SchoolCourseSubject(models.Model):
     year_ids = fields.One2many(
         'siantou.ems.core.year',
         string='Années académiques',
-        compute='_compute_class_call'
     )
-
-    year_id = fields.Many2one(
-        'siantou.ems.core.year',
-        string='Année académique active',
-        compute='_compute_class_call'
-    )
-
-    @api.depends('semester_ids')
-    def _compute_class_call(self):
-        for record in self:
-            record._compute_years()
-            record._compute_year()
-            record._compute_class_domain()
-
-    @api.onchange('semester_ids')
-    def _onchange_class_call(self):
-        for record in self:
-            record._compute_class_call()
-
-    def _compute_years(self):
-        for record in self:
-            years = []
-            for semester_id in record.semester_ids:
-                years.append(semester_id.year_id.id)
-
-            years = list(set(years))
-
-            year_ids = self.env['siantou.ems.core.year'].search([
-                ('id', 'in', years),
-            ])
-
-            record.year_ids = year_ids
-
-    def _compute_year(self):
-        for record in self:
-            years = []
-            for semester_id in record.semester_ids:
-                if semester_id.year_id.is_active:
-                    years.append(semester_id.year_id.id)
-
-            years = list(set(years))
-
-            year_id = self.env['siantou.ems.core.year'].search([
-                ('id', 'in', years),
-            ], limit=1)
-
-            record.year_id = year_id
 
     syllabus_ids = fields.One2many('siantou.ems.core.syllabus', 'ue_id', string='Syllabus')
 
     total_credit = fields.Integer('Nombre de crédit total', compute='_compute_total_credit', store=True)
 
-    class_id_domain = fields.Binary(compute='_compute_class_call', default=[])
+    class_id_domain = fields.Binary(compute='_compute_class_domain', default=[])
 
+    @api.depends('semester_ids')
     def _compute_class_domain(self):
         for record in self:
             semester_ids = record.semester_ids
@@ -526,6 +479,11 @@ class SchoolCourseSubject(models.Model):
                 year_ids = [semester_id.year_id.id for semester_id in semester_ids]
                 domain.append(('year_id', 'in', year_ids))
             record.class_id_domain = domain
+
+    @api.onchange('semester_ids')
+    def _onchange_class_domain(self):
+        for record in self:
+            record._compute_class_domain()
 
     _sql_constraints = [
         ('unique_code', 'unique(code)', "Le code de l'unité d'enseignement doit être unique.")

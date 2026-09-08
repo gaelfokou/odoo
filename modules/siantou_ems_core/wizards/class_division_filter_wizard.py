@@ -34,9 +34,19 @@ class ClassFilterWizard(models.TransientModel):
     _name = 'class.filter.wizard'
     _description = 'Filtre des classes'
 
+    def _default_year(self):
+        year = self.env['siantou.ems.core.year'].sudo().search([
+            ('active_user_ids', '=', self.env.user.id),
+        ], limit=1)
+        if not year:
+            year = self.env['siantou.ems.core.year'].search([('is_active', '=', True)], limit=1)
+        return year
+
     year_id = fields.Many2one(
         'siantou.ems.core.year',
         string='Année académique',
+        default=_default_year,
+        required=True
     )
 
     school_id = fields.Many2one(

@@ -92,60 +92,6 @@ class Subject(models.Model):
 
     ue_ids = fields.Many2many('siantou.ems.core.unite.enseignement', 'ue_subject_rel', 'subject_id', 'ue_id', string='Unités d\'enseignement')
 
-    year_ids = fields.One2many(
-        'siantou.ems.core.year',
-        string='Années académiques',
-        compute='_compute_year_call'
-    )
-
-    year_id = fields.Many2one(
-        'siantou.ems.core.year',
-        string='Année académique active',
-        compute='_compute_year_call'
-    )
-
-    @api.depends('ue_ids')
-    def _compute_year_call(self):
-        for record in self:
-            record._compute_years()
-            record._compute_year()
-
-    @api.onchange('ue_ids')
-    def _onchange_year_call(self):
-        for record in self:
-            record._compute_year_call()
-
-    def _compute_years(self):
-        for record in self:
-            years = []
-            for ue_id in record.ue_ids:
-                for semester_id in ue_id.semester_ids:
-                    years.append(semester_id.year_id.id)
-
-            years = list(set(years))
-
-            year_ids = self.env['siantou.ems.core.year'].search([
-                ('id', 'in', years),
-            ])
-
-            record.year_ids = year_ids
-
-    def _compute_year(self):
-        for record in self:
-            years = []
-            for ue_id in record.ue_ids:
-                for semester_id in ue_id.semester_ids:
-                    if semester_id.year_id.is_active:
-                        years.append(semester_id.year_id.id)
-
-            years = list(set(years))
-
-            year_id = self.env['siantou.ems.core.year'].search([
-                ('id', 'in', years),
-            ], limit=1)
-
-            record.year_id = year_id
-
     syllabus_ids = fields.One2many('siantou.ems.core.syllabus', 'subject_id', string='Syllabus')
 
     teacher_ids = fields.Many2many(
