@@ -54,7 +54,7 @@ class HrEmployee(models.Model):
     weekly_hours_limit = fields.Integer(
         string='Quota horaire hebdommadaire',
         compute='_compute_weekly_hours_limit',
-        store=True
+        store=True,
     )
 
     @api.depends('is_teacher', 'is_permanent')

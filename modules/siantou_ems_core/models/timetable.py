@@ -267,7 +267,7 @@ class Timetable(models.Model):
     hours_credit = fields.Float(
         string='Volume horaire',
         compute='_compute_hours_credit',
-        store=True
+        store=True,
     )
 
     @api.depends('subject_id', 'is_custom_hours_credit')
@@ -451,13 +451,13 @@ class Timetable(models.Model):
     start_datetime = fields.Datetime(
         string='Date et heure de début',
         compute='_compute_start_datetime',
-        store=True
+        store=True,
     )
 
     end_datetime = fields.Datetime(
         string='Date et heure de fin',
         compute='_compute_end_datetime',
-        store=True
+        store=True,
     )
 
     worked_time = fields.Float(
@@ -1667,7 +1667,7 @@ class TimetableGroup(models.Model):
     year_id = fields.Many2one(
         'siantou.ems.core.year',
         string='Année académique',
-        related='semester_id.year_id'
+        related='semester_id.year_id',
     )
 
     is_active = fields.Boolean(string='Actif ?', default=False)
@@ -1731,16 +1731,27 @@ class TimetableGroup(models.Model):
 
     department_ids = fields.Many2many('hr.department', 'department_group_rel', 'group_id', 'department_id', string='Départements')
 
+    school_id_domain = fields.Binary(compute='_compute_school_domain', default=[])
+
     department_id_domain = fields.Binary(compute='_compute_department_domain', default=[])
 
     class_id_domain = fields.Binary(compute='_compute_class_domain', default=[])
 
-    @api.depends('school_ids')
+    @api.depends('semester_id')
+    def _compute_school_domain(self):
+        for record in self:
+            domain = [
+                ('year_id', '=', record.semester_id.year_id.id),
+            ]
+            record.school_id_domain = domain
+
+    @api.depends('school_ids', 'semester_id')
     def _compute_department_domain(self):
         for record in self:
             school_ids = record.school_ids
             domain = [
                 ('school_id', 'in', school_ids.ids),
+                ('year_id', '=', record.semester_id.year_id.id),
             ]
             record.department_id_domain = domain
 
