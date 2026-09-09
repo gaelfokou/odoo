@@ -8,7 +8,7 @@
 			<field name="model">data.copy.type</field>
 			<field name="arch" type="xml">
 				<tree string="Types de copies des données">
-                    <field name="model_id"/>
+                    <field name="name"/>
 				</tree>
 			</field>
 		</record>

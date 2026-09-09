@@ -18,11 +18,15 @@ class Campus(models.Model):
     )
 
     name = fields.Char(
-        string="Nom du campus",
+        string='Nom',
         required=True
     )
 
     company_id = fields.Many2one('res.company', string='Company', required=True, default=lambda self: self.env.company)
+
+    _sql_constraints = [
+        ('unique_code', 'unique(code)', 'Le code du campus doit être unique.'),
+    ]
 
 
 class Building(models.Model):
@@ -35,14 +39,14 @@ class Building(models.Model):
     )
 
     name = fields.Char(
-        string="Nom du bâtiment",
+        string='Nom',
         required=True
     )
 
     address_id = fields.Many2one(
         'siantou.ems.core.campus',
+        string='Campus',
         required=True,
-        string="Campus",
     )
 
     school_ids = fields.Many2many('siantou.ems.core.school', 'school_building_rel', 'building_id', 'school_id', string='Écoles')
@@ -51,38 +55,38 @@ class Building(models.Model):
 
     is_active = fields.Boolean(string='Actif ?', default=True)
 
+    _sql_constraints = [
+        ('unique_code', 'unique(code)', 'Le code du bâtiment doit être unique.'),
+    ]
+
 
 class Classroom(models.Model):
     _name = 'siantou.ems.core.building.classroom'
-    _description = 'Salles de classe'
+    _description = 'Salle de classe'
 
     code = fields.Char(
         string='Code',
-        required=True,
-        help="Code unique pour identifier la salle de classe."
+        required=True
     )
 
     name = fields.Char(
         string='Nom',
         required=True,
         index=True,
-        translate=True,
-        help="Nom descriptif de la salle de classe."
+        translate=True
     )
 
     building_id = fields.Many2one(
         'siantou.ems.core.building',
         string='Bâtiment',
         required=True,
-        index=True,
-        help="Bâtiment auquel cette salle de classe est associée."
+        index=True
     )
 
     capacity = fields.Integer(
         string='Capacité',
         required=True,
-        default=60,
-        help="Nombre maximal d'étudiants pouvant être accueillis dans cette salle."
+        default=60
     )
 
     timetable_ids = fields.One2many(

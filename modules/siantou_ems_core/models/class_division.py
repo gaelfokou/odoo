@@ -31,8 +31,7 @@ class EducationClass(models.Model):
 
     name = fields.Char(string='Nom',
                        compute='_compute_name',
-                       store=True,
-                       help="Entrer le nom de la Classe")
+                       store=True)
 
     field_of_study_id = fields.Many2one('siantou.ems.core.field_of_study', string='Filière',
                                  required=True, help="Filière")
@@ -102,8 +101,7 @@ class EducationClass(models.Model):
         related='specialty_id.department_id'
     )
 
-    option_id = fields.Many2one('siantou.ems.core.option', string='Option',
-                                 help="Option")
+    option_id = fields.Many2one('siantou.ems.core.option', string='Option')
 
     level_id = fields.Many2one('siantou.ems.core.level', string='Niveau',
                                  required=True, help="Niveau")
@@ -1497,8 +1495,7 @@ class EducationClassGroup(models.Model):
     _description = 'Groupe de classe'
     _inherit=['mail.thread', 'mail.activity.mixin',]
 
-    name = fields.Char(string='Nom', required=True,
-                       help="Entrer le nom du groupe")
+    name = fields.Char(string='Nom', required=True)
 
     class_id = fields.Many2one(
         'siantou.ems.core.class',

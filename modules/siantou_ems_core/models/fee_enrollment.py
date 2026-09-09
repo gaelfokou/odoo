@@ -33,8 +33,8 @@ class FeeEnrollment(models.Model):
 
     level_ids = fields.Many2many(
         'siantou.ems.core.level',
+        string='Niveaux',
         required=True,
-        string="Niveaux"
     )
 
     montant_paie = fields.Monetary(string="Montant à payer", required=True)

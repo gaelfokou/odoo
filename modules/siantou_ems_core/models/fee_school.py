@@ -28,14 +28,14 @@ class FeeSchool(models.Model):
 
     field_of_study_ids = fields.Many2many(
         'siantou.ems.core.field_of_study',
+        string='Filières',
         required=True,
-        string="Filières"
     )
 
     line_ids = fields.Many2many(
         's.e.core.fee.school.line',
+        string='Frais de scolarité des étudiants',
         required=True,
-        string="Filières"
     )
 
     nbre_tranche = fields.Integer(string="Nombre de tranche", required=True, default=1)
@@ -53,7 +53,7 @@ class FeeSchool(models.Model):
 
 class FeeSchoolLine(models.Model):
     _name = 's.e.core.fee.school.line'
-    _description = 'Gestion des élements de frais de scolarité des étudiants'
+    _description = 'Frais de scolarité des étudiants'
     _order = 'desc name'
 
     name = fields.Char(string='Nom', required=True)

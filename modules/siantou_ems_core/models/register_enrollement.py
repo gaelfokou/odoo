@@ -36,7 +36,7 @@ class SessionEnrollment(models.Model):
     #         record.end_date = record.year_id.end_time
 
     name = fields.Char(
-        string="Nom de la session",
+        string='Nom',
         required=True,
     )
 

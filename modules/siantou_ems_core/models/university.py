@@ -19,7 +19,6 @@ class University(models.Model):
 
     is_university = fields.Boolean(
         string='Est une université',
-        default=True,
-        help='Précise si c\'est une institution d\'enseignement'
+        default=True
     )
 

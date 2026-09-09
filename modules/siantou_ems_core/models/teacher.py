@@ -585,7 +585,6 @@ class TeacherSubjectPriority(models.Model):
 
     priority = fields.Integer(
         string='Priorité',
-        help='Le enseignant avec le nombre le plus élevé est prioritaire (va de 1 à 10)',
         default=1,
         required=True
     )
