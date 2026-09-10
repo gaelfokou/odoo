@@ -57,12 +57,28 @@
             </field>
         </record>
 
+        <record id="hr_department_kanban_action_inherit" model="ir.actions.act_window">
+            <field name="name">Departments</field>
+            <field name="res_model">hr.department</field>
+            <field name="view_mode">kanban,tree,form</field>
+            <field name="search_view_id" ref="hr.view_department_filter"/>
+            <field name="help" type="html">
+              <p class="o_view_nocontent_smiling_face">
+                Create a new department
+              </p><p>
+                Odoo's department structure is used to manage all documents
+                related to employees by departments: expenses, timesheets,
+                time off, recruitments, etc.
+              </p>
+            </field>
+        </record>
+
         <!-- Menu pour la gestion des départements -->
         <menuitem
                 id="menu_siantou_ems_core_program_department"
                 name="Départements"
                 parent="menu_siantou_ems_core_config_fa"
-                action="hr.hr_department_kanban_action"
+                action="hr_department_kanban_action_inherit"
                 groups="siantou_ems_core.group_field_of_study_admin,base.group_system"
             sequence="1"/>
     </data>
