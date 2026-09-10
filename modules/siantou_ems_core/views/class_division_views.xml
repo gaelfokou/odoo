@@ -37,11 +37,11 @@
                             type="object" 
                             string="Mettre à jour les groupes de classe" 
                             class="oe_highlight"/> -->
-                        <!-- <button name="action_update_dashboard_class" 
+                        <button name="action_update_dashboard_class" 
                             type="object" 
                             string="Mettre à jour le tableau de bord des classes" 
                             class="oe_highlight"/>
-                        <button name="action_open_copy" 
+                        <!-- <button name="action_open_copy" 
                             type="object" 
                             string="Copier" 
                             class="oe_highlight" 
