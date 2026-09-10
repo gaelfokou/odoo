@@ -1145,7 +1145,9 @@ class DeSchool(http.Controller):
         timetables = list(timetables)
         for timetable in timetables:
             timetable.write({
+                'year_id': classe.year_id.id,
                 'school_id': classe.school_id.id,
+                'cycle_id': classe.cycle_id.id,
                 'level_id': classe.level_id.id,
                 'specialty_id': classe.specialty_id.id,
                 'option_id': classe.option_id.id,
@@ -1195,7 +1197,9 @@ class DeSchool(http.Controller):
         timetables = list(timetables)
         for timetable in timetables:
             timetable.write({
+                'year_id': new_class.year_id.id,
                 'school_id': new_class.school_id.id,
+                'cycle_id': new_class.cycle_id.id,
                 'level_id': new_class.level_id.id,
                 'specialty_id': new_class.specialty_id.id,
                 'option_id': new_class.option_id.id,
@@ -1233,7 +1237,9 @@ class DeSchool(http.Controller):
         timetables = list(timetables)
         for timetable in timetables:
             timetable.write({
+                'year_id': timetable.class_id.year_id.id,
                 'school_id': timetable.class_id.school_id.id,
+                'cycle_id': timetable.class_id.cycle_id.id,
                 'level_id': timetable.class_id.level_id.id,
                 'specialty_id': timetable.class_id.specialty_id.id,
                 'option_id': timetable.class_id.option_id.id,
