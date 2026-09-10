@@ -40,7 +40,7 @@
                         </group>
                         <notebook>
                             <page name="specialty_ids" string="Spécialités">
-                                <field name="specialty_ids">
+                                <field name="specialty_ids" options="{'no_create': True}">
                                     <tree>
                                         <field name="code"/>
                                         <field name="name"/>

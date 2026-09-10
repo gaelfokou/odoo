@@ -39,7 +39,7 @@
                         </group>
                         <notebook>
                             <page name="option_ids" string="Options">
-                                <field name="option_ids">
+                                <field name="option_ids" options="{'no_create': True}" domain="[('year_id', '=', year_id)]">
                                     <tree>
                                         <field name="code"/>
                                         <field name="name"/>

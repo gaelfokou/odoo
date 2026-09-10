@@ -3,7 +3,7 @@ from odoo import models, fields, api, tools, _
 
 class Level(models.Model):
     _name = 'siantou.ems.core.level'
-    _description = 'Niveaux'
+    _description = 'Niveau'
     _inherit=['mail.thread', 'mail.activity.mixin',]
 
     name = fields.Char(
@@ -38,5 +38,5 @@ class Level(models.Model):
     )
 
     _sql_constraints = [
-        ('unique_name', 'unique(name)', 'Le nom du niveau doit être unique.'),
+        ('unique_code', 'unique(code)', 'Le code du niveau doit être unique.'),
     ]
