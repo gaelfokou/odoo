@@ -32,6 +32,31 @@
             </field>
         </record>
 
+        <record id="view_department_tree_inherit" model="ir.ui.view">
+            <field name="name">hr.department.tree</field>
+            <field name="model">hr.department</field>
+            <field name="inherit_id" ref="hr.view_department_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='name']" position="before">
+                    <field name="code"/>
+                </xpath>
+                <xpath expr="//field[@name='name']" position="after">
+                    <field name="school_id"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="hr_department_view_kanban_inherit" model="ir.ui.view" >
+            <field name="name">hr.department.kanban</field>
+            <field name="model">hr.department</field>
+            <field name="inherit_id" ref="hr.hr_department_view_kanban"/>
+            <field name="arch" type="xml">
+                <xpath expr='//kanban/templates/t[2]/div/div/div/div/a' position="replace">
+                    <a type="edit"><field name="name"/></a>
+                </xpath>
+            </field>
+        </record>
+
         <!-- Menu pour la gestion des départements -->
         <menuitem
                 id="menu_siantou_ems_core_program_department"
