@@ -24,12 +24,12 @@
                     <sheet>
                         <group colspan="2">
                             <field name="name"/>
-                            <field name="employee_id"/>
+                            <field name="employee_id" options="{'no_create': True}"/>
                         </group>
                         <group colspan="2">
                             <field name="hourly_rate_id" options="{'no_create': True}"/>
                             <field name="subject_id_domain" invisible="1"/>
-                            <field name="subject_id" domain="subject_id_domain"/>
+                            <field name="subject_id" options="{'no_create': True}" domain="subject_id_domain"/>
                             <field name="type_cour"/>
                             <field name="rate"/>
                         </group>

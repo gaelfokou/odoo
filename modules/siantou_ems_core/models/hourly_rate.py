@@ -78,10 +78,10 @@ class HourlyRate(models.Model):
             school_name = record.school_id.name if record.school_id.id else ''
             cycle_name = record.cycle_id.name if record.cycle_id.id else ''
             diplome_availability_name = record.diplome_availability_id.name if record.diplome_availability_id.id else ''
-            niveau_name = record.level_id.name if record.level_id.id else ''
-            niveau_name = re.sub(r'Niveau ', '', niveau_name)
+            level_name = record.level_id.name if record.level_id.id else ''
+            level_name = re.sub(r'Niveau ', '', level_name)
             type_cour_name = record.type_cour if record.type_cour == 'cs' else ''
-            name = '{} - {} - {} - {} - {}'.format(school_name, cycle_name, diplome_availability_name, niveau_name, type_cour_name)
+            name = '{} - {} - {} - {} - {}'.format(school_name, cycle_name, diplome_availability_name, level_name, type_cour_name)
             while True:
                 if name.startswith(' - '):
                     name = re.sub('^ - ', ' ', name)

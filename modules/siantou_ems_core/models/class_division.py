@@ -682,8 +682,8 @@ class EducationClass(models.Model):
                     break
             if option_name != '':
                 option_name = f'- {option_name}'
-            niveau_name = record.level_id.name if record.level_id.id else ''
-            niveau_name = re.sub(r'Niveau ', '', niveau_name)
+            level_name = record.level_id.name if record.level_id.id else ''
+            level_name = re.sub(r'Niveau ', '', level_name)
             type_cour_name = record.type_cour if record.type_cour == 'cs' else ''
             supervision_name = record.supervision_id.name if record.supervision_id.id else ''
             if supervision_name != '':
@@ -720,7 +720,7 @@ class EducationClass(models.Model):
                             option_name = option_name.replace(name, '')
                         else:
                             break
-            name = '{} {} {} {} {}'.format(specialty_name, option_name, niveau_name, type_cour_name, supervision_name)
+            name = '{} {} {} {} {}'.format(specialty_name, option_name, level_name, type_cour_name, supervision_name)
             while True:
                 if name.find('  ') != -1:
                     name = name.replace('  ', ' ')

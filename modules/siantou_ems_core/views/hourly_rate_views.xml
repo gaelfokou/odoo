@@ -31,12 +31,12 @@
                     <sheet>
                         <group colspan="2">
                             <field name="name"/>
-                            <field name="school_id"/>
-                            <field name="cycle_id"/>
+                            <field name="school_id" options="{'no_create': True}"/>
+                            <field name="cycle_id" options="{'no_create': True}" domain="[('school_ids', '=', school_id)]"/>
                         </group>
                         <group colspan="2">
-                            <field name="diplome_availability_id"/>
-                            <field name="level_id"/>
+                            <field name="diplome_availability_id" options="{'no_create': True}"/>
+                            <field name="level_id" options="{'no_create': True}" domain="[('cycle_ids', '=', cycle_id)]"/>
                             <field name="type_cour" widget="radio"/>
                             <field name="rate"/>
                         </group>
