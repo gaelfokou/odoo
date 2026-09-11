@@ -977,7 +977,9 @@ class Timetable(models.Model):
                 else:
                     timetable_id = self.env['siantou.ems.timetable.timetable'].create({
                         'department_id': timetable.specialty_id.department_id.id,
+                        'year_id': timetable.year_id.id,
                         'school_id': timetable.school_id.id,
+                        'cycle_id': timetable.cycle_id.id,
                         'level_id': timetable.level_id.id,
                         'specialty_id': timetable.specialty_id.id,
                         'option_id': timetable.option_id.id,
@@ -1030,7 +1032,9 @@ class Timetable(models.Model):
                             target_date = first_timetable.date + timedelta(weeks=week)
                             timetable_id = self.env['siantou.ems.timetable.timetable'].create({
                                 'department_id': first_timetable.specialty_id.department_id.id,
+                                'year_id': first_timetable.year_id.id,
                                 'school_id': first_timetable.school_id.id,
+                                'cycle_id': first_timetable.cycle_id.id,
                                 'level_id': first_timetable.level_id.id,
                                 'specialty_id': first_timetable.specialty_id.id,
                                 'option_id': first_timetable.option_id.id,
@@ -1901,7 +1905,9 @@ class TimetableGroup(models.Model):
                     for timetable_id in group_child_id.timetable_ids:
                         group.timetable_ids.create({
                             'semester_id': timetable_id.semester_id.id,
+                            'year_id': timetable_id.year_id.id,
                             'school_id': timetable_id.school_id.id,
+                            'cycle_id': timetable_id.cycle_id.id,
                             'field_of_study_id': timetable_id.field_of_study_id.id,
                             'level_id': timetable_id.level_id.id,
                             'specialty_id': timetable_id.specialty_id.id,
