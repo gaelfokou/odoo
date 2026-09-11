@@ -243,7 +243,7 @@ class Subject(models.Model):
             'view_id': view_id,
             'target': 'new',
             'context': {
-                'default_year_id': self.env['siantou.ems.core.year'].search([('is_active', '=', True)], limit=1).id,
+                'default_year_id': self._default_year().id,
             },
         }
 
@@ -667,7 +667,7 @@ class ProgressReport(models.Model):
             'view_id': view_id,
             'target': 'new',
             'context': {
-                'default_year_id': self.env['siantou.ems.core.year'].search([('is_active', '=', True)], limit=1).id,
+                'default_year_id': self._default_year().id,
             },
         }
 

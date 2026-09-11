@@ -74,7 +74,7 @@ class DataCopyWizard(models.TransientModel):
                 ('active_user_ids', '=', self.env.user.id),
             ], limit=1)
             if not year:
-                year = self.env['siantou.ems.core.year'].search([('is_active', '=', True)], limit=1)
+                year = self.env['siantou.ems.core.year'].sudo().search([('is_active', '=', True)], limit=1)
             return year
 
     source_year_id = fields.Many2one(

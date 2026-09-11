@@ -118,7 +118,7 @@ class Student(models.Model):
                 ('active_user_ids', '=', self.env.user.id),
             ], limit=1)
             if not year:
-                year = self.env['siantou.ems.core.year'].search([('is_active', '=', True)], limit=1)
+                year = self.env['siantou.ems.core.year'].sudo().search([('is_active', '=', True)], limit=1)
             return year
 
     year_id = fields.Many2one(
@@ -778,7 +778,7 @@ class Student(models.Model):
             'view_id': view_id,
             'target': 'new',
             'context': {
-                'default_year_id': self.env['siantou.ems.core.year'].search([('is_active', '=', True)], limit=1).id,
+                'default_year_id': self._default_year().id,
             },
         }
 
