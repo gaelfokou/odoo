@@ -331,11 +331,9 @@ class UeCopyWizard(models.TransientModel):
                 else:
                     destination_domain = [
                         ('year_id', '=', self.destination_year_id.id),
-                        ('school_id', '=', source_class_id.school_id.id),
-                        ('level_id', '=', source_class_id.level_id.id),
-                        ('field_of_study_id', '=', source_class_id.field_of_study_id.id),
                         ('specialty_id', '=', source_class_id.specialty_id.id),
                         ('option_id', '=', source_class_id.option_id.id),
+                        ('level_id', '=', source_class_id.level_id.id),
                         ('type_cour', '=', source_class_id.type_cour),
                     ]
             else:
@@ -346,11 +344,9 @@ class UeCopyWizard(models.TransientModel):
                 else:
                     destination_domain = [
                         ('year_id', '=', self.destination_year_id.id),
-                        ('school_id', '=', source_class_id.school_id.id),
-                        ('level_id', '=', source_class_id.level_id.id),
-                        ('field_of_study_id', '=', source_class_id.field_of_study_id.id),
                         ('specialty_id', '=', source_class_id.specialty_id.id),
                         ('option_id', '=', False),
+                        ('level_id', '=', source_class_id.level_id.id),
                         ('type_cour', '=', source_class_id.type_cour),
                     ]
 
