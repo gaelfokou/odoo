@@ -2079,9 +2079,7 @@ class TimetableGroup(models.Model):
     def cron_timetable_access(self):
         _logger.info(f'+++++++++++ Cron Timetable Access Executed +++++++++++')
 
-        current_date = date.today()
-
-        _logger.info(f'----------- tototototototo current_date {datetime.strftime(current_date, DATE_FORMAT)} -----------')
+        self.expiration_access()
 
         groups = self.env['siantou.ems.timetable.group'].search([], order='start_date asc')
         groups = list(groups)
@@ -2090,6 +2088,11 @@ class TimetableGroup(models.Model):
             group.sudo().write({
                 'has_write_access': group.has_write_access,
             })
+
+    def expiration_access(self):
+        current_date = date.today()
+
+        _logger.info(f'----------- tototototototo current_date {datetime.strftime(current_date, DATE_FORMAT)} -----------')
 
         try:
             if not self.env['ir.config_parameter'].sudo().get_param(f'siantou.expiration_date'):
