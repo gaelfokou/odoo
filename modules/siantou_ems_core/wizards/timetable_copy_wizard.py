@@ -450,8 +450,8 @@ class TimetableCopyWizard(models.TransientModel):
                                     ('type_cour', '=', source_class_id.type_cour),
                                 ]
             else:
-                if source_class_id.cycle_id.id == source_class_id.field_of_study_id.cycle_id.id and source_class_id.cycle_id.id == source_class_id.specialty_id.cycle_id.id and source_class_id.cycle_id.id == source_class_id.option_id.cycle_id.id:
-                    if source_class_id.field_of_study_id.id == source_class_id.specialty_id.field_of_study_id.id and source_class_id.field_of_study_id.id == source_class_id.option_id.field_of_study_id.id:
+                if source_class_id.cycle_id.id == source_class_id.field_of_study_id.cycle_id.id and source_class_id.cycle_id.id == source_class_id.specialty_id.cycle_id.id:
+                    if source_class_id.field_of_study_id.id == source_class_id.specialty_id.field_of_study_id.id:
                         if self.destination_class_id.id:
                             destination_domain = [
                                 ('id', '=', self.destination_class_id.id),
