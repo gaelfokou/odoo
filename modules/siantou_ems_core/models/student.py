@@ -585,9 +585,15 @@ class Student(models.Model):
             if 'first_name' not in vals or not vals['first_name'] or not vals['first_name'].strip():
                 vals['first_name'] = Student.get_first_name(vals['name'])
 
-        specialty_id = self.env['siantou.ems.core.specialty'].browse(vals['specialty_id'])
-        vals['school_id'] = specialty_id.field_of_study_id.school_id.id
-        vals['field_of_study_id'] = specialty_id.field_of_study_id.id
+        class_id = self.env['siantou.ems.core.class'].search([
+            ('id', '=', vals['class_id']),
+        ], limit=1)
+        if class_id:
+            vals['year_id'] = class_id.year_id.id
+            vals['school_id'] = class_id.school_id.id
+            vals['cycle_id'] = class_id.cycle_id.id
+            vals['level_id'] = class_id.level_id.id
+            vals['type_cour'] = class_id.type_cour
 
         res = super(Student, self).create(vals)
 
@@ -640,10 +646,10 @@ class Student(models.Model):
 
             if not class_id:
                 class_id = self.env['siantou.ems.core.class'].search([
+                    ('year_id', '=', vals['year_id']),
                     ('specialty_id', '=', vals['specialty_id']),
                     ('option_id', '=', vals['option_id']),
                     ('level_id', '=', vals['level_id']),
-                    ('year_id', '=', vals['year_id']),
                     ('type_cour', '=', vals['type_cour']),
                 ], limit=1)
                 if not class_id:

@@ -379,35 +379,18 @@ class StudentEnrollment(models.Model):
 
     @api.model
     def create(self, vals):
-        if 'class_id' not in vals:
-            class_id = None
-        else:
-            class_id = self.env['siantou.ems.core.class'].browse(vals['class_id'])
-
-        specialty_id = self.env['siantou.ems.core.specialty'].browse(vals['specialty_id'])
-        vals['school_id'] = specialty_id.field_of_study_id.school_id.id
-        vals['field_of_study_id'] = specialty_id.field_of_study_id.id
+        class_id = self.env['siantou.ems.core.class'].search([
+            ('id', '=', vals['class_id']),
+        ], limit=1)
+        if class_id:
+            vals['year_id'] = class_id.year_id.id
+            vals['school_id'] = class_id.school_id.id
+            vals['cycle_id'] = class_id.cycle_id.id
+            vals['level_id'] = class_id.level_id.id
+            vals['type_cour'] = class_id.type_cour
 
         if not class_id:
-            class_id = self.env['siantou.ems.core.class'].search([
-                ('specialty_id', '=', vals['specialty_id']),
-                ('option_id', '=', vals['option_id']),
-                ('level_id', '=', vals['level_id']),
-                ('year_id', '=', vals['year_id']),
-                ('type_cour', '=', vals['type_cour']),
-            ], limit=1)
-            if not class_id:
-                raise UserError('Aucune classe trouvée')
-                # class_id = self.env['siantou.ems.core.class'].create({
-                #     'school_id': vals['school_id'],
-                #     'field_of_study_id': vals['field_of_study_id'],
-                #     'specialty_id': vals['specialty_id'],
-                #     'option_id': vals['option_id'],
-                #     'level_id': vals['level_id'],
-                #     'year_id': vals['year_id'],
-                #     'type_cour': vals['type_cour'],
-                # })
-        vals['class_id'] = class_id.id
+            raise UserError('Aucune classe trouvée')
 
         if 'batch_id' not in vals:
             batch_id = self.env['siantou.ems.core.student.batch'].assign_batch(
@@ -484,10 +467,10 @@ class StudentEnrollment(models.Model):
 
             if not class_id:
                 class_id = self.env['siantou.ems.core.class'].search([
+                    ('year_id', '=', vals['year_id']),
                     ('specialty_id', '=', vals['specialty_id']),
                     ('option_id', '=', vals['option_id']),
                     ('level_id', '=', vals['level_id']),
-                    ('year_id', '=', vals['year_id']),
                     ('type_cour', '=', vals['type_cour']),
                 ], limit=1)
                 if not class_id:

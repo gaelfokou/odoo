@@ -158,10 +158,10 @@ class TimetableGroupCopyWizard(models.TransientModel):
                     year = new_years[index_year]
                 start_date = date.fromisocalendar(year, week, day)
                 class_id = self.env['siantou.ems.core.class'].search([
+                    ('year_id', '=', timetable_id.year_id.id),
                     ('specialty_id', '=', timetable_id.specialty_id.id),
                     ('option_id', '=', timetable_id.option_id.id),
                     ('level_id', '=', timetable_id.level_id.id),
-                    ('year_id', '=', self.destination_year_id.id),
                     ('type_cour', '=', timetable_id.type_cour),
                 ], limit=1)
                 if not class_id:
