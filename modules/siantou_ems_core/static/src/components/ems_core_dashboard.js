@@ -136,21 +136,32 @@ export class OwlSalesDashboard extends Component {
         }
     }
 
+    async getStudentCount() {
+		let self = this;
+        let studentCount = 0;
+        try {
+            let classes = await self.orm.searchRead("siantou.ems.core.class", [["year_id", "=", parseInt(self.state.year.value)]]);
+            await classes.forEach(async (classe) => {
+                studentCount += classe.number_of_student;
+            })
+        } catch(error) {
+            console.log("Erreur lors du chargement des données :", error);
+            self.notification.add(`Erreur lors du chargement des données : ${ error.message }`, { type: "danger" });
+        }
+        return studentCount;
+    }
+
     async getDatasCount() {
 		let self = this;
         try {
-            const [classes, cycleCount, ecoleCount, campusCount, teacherCount, filiereCount] = await Promise.all([
-                self.orm.searchRead("siantou.ems.core.class", [["year_id", "=", parseInt(self.state.year.value)]]),
+            const [studentCount, cycleCount, ecoleCount, campusCount, teacherCount, filiereCount] = await Promise.all([
+                self.getStudentCount(),
                 self.orm.searchCount("oe.school.course", []),
                 self.orm.searchCount("siantou.ems.core.school", []),
                 self.orm.searchCount("siantou.ems.core.campus", []),
                 self.orm.searchCount("hr.employee", [["is_teacher", "=", true]]),
                 self.orm.searchCount("siantou.ems.core.field_of_study", [])
             ]);
-            let studentCount = 0;
-            await classes.forEach(async (classe) => {
-                studentCount += classe.number_of_student;
-            })
             self.state.students.value = studentCount;
             self.state.cycles.value = cycleCount;
             self.state.ecoles.value = ecoleCount;
