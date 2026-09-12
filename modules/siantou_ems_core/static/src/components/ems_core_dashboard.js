@@ -49,10 +49,8 @@ export class OwlSalesDashboard extends Component {
         onWillStart(async () => {
             let self = this;
             setTimeout(async function() {
-                const has_group_dashboard_admin = await self.user.hasGroup("siantou_ems_core.group_dashboard_admin")
-                console.log("User has_group_dashboard_admin :", has_group_dashboard_admin);
-                await self.checkGroup();
                 await self.loadYears();
+                await self.checkGroup();
             }, 2500)
         })
 
@@ -86,6 +84,8 @@ export class OwlSalesDashboard extends Component {
     async checkGroup() {
 		let self = this;
         try {
+            const has_group_dashboard_admin = await self.user.hasGroup("siantou_ems_core.group_dashboard_admin")
+            console.log("User has_group_dashboard_admin :", has_group_dashboard_admin);
             const userId = session.uid;
             console.log("User Id :", userId);
             const userData = await self.orm.read("res.users", [userId])
@@ -117,7 +117,7 @@ export class OwlSalesDashboard extends Component {
                         self.getEcoleDatas()
                     ]);
                 }
-                console.log('----------- tototototototo group', group);
+                console.log('----------- tototototototo has_group_dashboard_admin', group.has_group_dashboard_admin);
             })
         } catch(error) {
             console.log("Erreur lors du chargement des données :", error);
