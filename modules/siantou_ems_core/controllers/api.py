@@ -130,7 +130,7 @@ class DeSchool(http.Controller):
         data['amount_total_recu'] = f"{amount_total_recu}  FCFA"
         data['amount_total_restant'] = f"{amount_total_restant} FCFA"
 
-        return http.request.render('siantou_ems_core.render_recu_payment',{'data':data})
+        return http.request.render('siantou_ems_core.render_recu_payment',{'data': data})
 
 
     @http.route('/api/v1/pays', type="http", methods=['GET'], cors="*", website=True, auth="public")
@@ -165,7 +165,7 @@ class DeSchool(http.Controller):
                 json.dumps({
                     'status': 200,
                     "message": "Données récupérées avec succès",
-                    'data':data,
+                    'data': data,
                 })
             )
         else:
@@ -274,7 +274,7 @@ class DeSchool(http.Controller):
                     json.dumps({
                         'status': 200,
                         "message": "Données récupérées avec succès",
-                        'data':data,
+                        'data': data,
                     })
                 )
             else:
@@ -467,7 +467,7 @@ class DeSchool(http.Controller):
             data['annee_acad'] = data['specialites'][0]['annee_acad_id']
 
             if not data['option_id']:
-                data['option_id'] = False
+                data['option_id'] = None
 
             if len(data['specialites']) > 1:
                 specialites = data['specialites'][1:]
@@ -545,7 +545,7 @@ class DeSchool(http.Controller):
                         if etudiant:
                             for specialite in specialites:
                                 if not specialite['option_id']:
-                                    specialite['option_id'] = False
+                                    specialite['option_id'] = None
                                 etudiant.student_enroll_ids.create({
                                     'code_enrol': etudiant.code_enrol,
                                     'year_id': year_id.id,
@@ -573,28 +573,28 @@ class DeSchool(http.Controller):
                         return http.Response(
                             json.dumps({
                                 'status': 'error',
-                                'data':f"L'étudiant {etudiant.name} existe déjà pour l'année académique {year_id.name}",
+                                'data': f"L'étudiant {etudiant.name} existe déjà pour l'année académique {year_id.name}",
                             })
                         )
                 else:
                     return http.Response(
                             json.dumps({
                                 'status': 'error',
-                                'data':"Aucune session d'admission ouverte pour le cycle choisi",
+                                'data': f"Aucune session d'admission ouverte pour le cycle choisi",
                             })
                         )
             else:
                 return http.Response(
                         json.dumps({
                             'status': 'error',
-                            'data':"Aucune session d'admission ouverte pour le cycle choisi",
+                            'data': f"Aucune session d'admission ouverte pour le cycle choisi",
                         })
                     )
         except Exception as e:
             return http.Response(
                 json.dumps({
                     'status': 'error',
-                    'data':f"{e.args}"
+                    'data': f"{e.args}"
                 })
             )
 
@@ -615,7 +615,7 @@ class DeSchool(http.Controller):
             return http.Response(
                 json.dumps({
                     'status': 200,
-                    'data':{
+                    'data': {
                         'id':etudiant.id,
                         'last_name':etudiant.last_name,
                         'first_name':etudiant.first_name,
@@ -638,7 +638,7 @@ class DeSchool(http.Controller):
             return http.Response(
                 json.dumps({
                     'status': 500,
-                    'data':f"Aucune informations trouvés pour ce matricule : {data['matricule']} ",
+                    'data': f"Aucune informations trouvés pour ce matricule : {data['matricule']} ",
                 })
             )
 
@@ -658,7 +658,7 @@ class DeSchool(http.Controller):
             data['annee_acad'] = data['specialites'][0]['annee_acad_id']
 
             if not data['option_id']:
-                data['option_id'] = False
+                data['option_id'] = None
 
             if len(data['specialites']) > 1:
                 specialites = data['specialites'][1:]
@@ -730,7 +730,6 @@ class DeSchool(http.Controller):
                                 data['year_id'] = year_id.id
                                 data['status_univ'] = 'old'
                                 data['type_candidature'] = 'inscript'
-                                # school_id = None
                                 # specialty_id = http.request.env['siantou.ems.core.specialty'].browse(data['specialty_id'])
                                 # if specialty_id:
                                 #     data['school_id'] = specialty_id.field_of_study_id.school_id.id
@@ -747,13 +746,11 @@ class DeSchool(http.Controller):
                                 #     data['class_id'] = class_id.id
                                 # else:
 
-                                data['class_id'] = False
-
                                 etudiant_enrollment = http.request.env['oe.school.student.enrollment'].sudo().create(data)
                                 if etudiant_enrollment:
                                     for specialite in specialites:
                                         if not specialite['option_id']:
-                                            specialite['option_id'] = False
+                                            specialite['option_id'] = None
                                         etudiant_id.student_enroll_ids.create({
                                             'code_enrol': etudiant_id.code_enrol,
                                             'year_id': year_id.id,
@@ -780,7 +777,7 @@ class DeSchool(http.Controller):
                                 return http.Response(
                                     json.dumps({
                                         'status': 'error',
-                                        'data':f"Votre candidature existe déjà pour l'année {etudiant_enrollment.year_id.name}",
+                                        'data': f"Votre candidature existe déjà pour l'année {etudiant_enrollment.year_id.name}",
                                     })
                                 )
                     else:
@@ -813,7 +810,7 @@ class DeSchool(http.Controller):
                             return http.Response(
                                 json.dumps({
                                     'status': 'error',
-                                    'data':f"Une demande d'inscription avec ce matricule : {data['matricule']} existe déjà ",
+                                    'data': f"Une demande d'inscription avec ce matricule : {data['matricule']} existe déjà ",
                                 })
                             )
                     
@@ -821,21 +818,21 @@ class DeSchool(http.Controller):
                     return http.Response(
                             json.dumps({
                                 'status': 'error',
-                                'data':"Aucune session d'admission ouverte",
+                                'data': f"Aucune session d'admission ouverte",
                             })
                         )
             else:
                 return http.Response(
                         json.dumps({
                             'status': 'error',
-                            'data':"Aucune session d'admission ouverte",
+                            'data': f"Aucune session d'admission ouverte",
                         })
                     )
         except Exception as e:
             return http.Response(
                 json.dumps({
                     'status': 'error',
-                    'data':f"{e.args}"
+                    'data': f"{e.args}"
                 })
             )
 
@@ -900,7 +897,7 @@ class DeSchool(http.Controller):
                     json.dumps({
                         'status': 200,
                         "message": "Données récupérées avec succès",
-                        'data':data,
+                        'data': data,
                     })
                 )
             else:
@@ -967,7 +964,6 @@ class DeSchool(http.Controller):
                     # _logger.info("======== etudiant pas encore crée")
 
                     #===== create res partner instance =================
-                    partner = None
                     name = '{} {}'.format(data['last_name'], data['first_name'])
                     check_partner = http.request.env['res.partner'].sudo().search([
                             ("name","=",name)
@@ -1005,28 +1001,28 @@ class DeSchool(http.Controller):
                         return http.Response(
                             json.dumps({
                                 'status': 'error',
-                                'data':f"Dossier de {etudiant.name} pour l'année {year_id.name} existe déjà",
+                                'data': f"Dossier de {etudiant.name} pour l'année {year_id.name} existe déjà",
                             })
                         )
                 else:
                     return http.Response(
                             json.dumps({
                                 'status': 'error',
-                                'data':f"Aucune session d'admission councours ouverte pour le cycle {registre_id.cycle_id.name}",
+                                'data': f"Aucune session d'admission councours ouverte pour le cycle {registre_id.cycle_id.name}",
                             })
                         )
             else:
                 return http.Response(
                         json.dumps({
                             'status': 'error',
-                            'data':f"Aucune session d'admission ouverte pour le cycle  {session_competition_id.cycle_id.name}",
+                            'data': f"Aucune session d'admission ouverte pour le cycle  {session_competition_id.cycle_id.name}",
                         })
                     )
         except Exception as e:
             return http.Response(
                 json.dumps({
                     'status': 'error',
-                    'data':f"{e.args}"
+                    'data': f"{e.args}"
                 })
             )
 
@@ -1095,14 +1091,14 @@ class DeSchool(http.Controller):
                 return http.Response(
                     json.dumps({
                         'status': 'error',
-                        'data':f"L'étudiant {etudiant.name} n'existe pas pour l'année académique {year_id.name}",
+                        'data': f"L'étudiant {etudiant.name} n'existe pas pour l'année académique {year_id.name}",
                     })
                 )
         except Exception as e:
             return http.Response(
                 json.dumps({
                     'status': 'error',
-                    'data':f"{e.args}"
+                    'data': f"{e.args}"
                 })
             )
 
