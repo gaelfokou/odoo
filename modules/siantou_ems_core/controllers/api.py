@@ -465,6 +465,7 @@ class DeSchool(http.Controller):
             data['level_id'] = data['specialites'][0]['niveau_id']
             data['type_cour'] = data['specialites'][0]['type_cour']
             data['annee_acad'] = data['specialites'][0]['annee_acad_id']
+            data['class_id'] = data['specialites'][0]['class_id']
 
             if not data['option_id']:
                 data['option_id'] = None
@@ -656,6 +657,7 @@ class DeSchool(http.Controller):
             data['level_id'] = data['specialites'][0]['niveau_id']
             data['type_cour'] = data['specialites'][0]['type_cour']
             data['annee_acad'] = data['specialites'][0]['annee_acad_id']
+            data['class_id'] = data['specialites'][0]['class_id']
 
             if not data['option_id']:
                 data['option_id'] = None
