@@ -52,7 +52,6 @@ class ClassFilterWizard(models.TransientModel):
     school_id = fields.Many2one(
         'siantou.ems.core.school',
         string='École',
-        required=True,
     )
 
     cycle_id = fields.Many2one(

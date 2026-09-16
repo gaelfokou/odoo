@@ -48,7 +48,6 @@ class SubjectFilterWizard(models.TransientModel):
     school_id = fields.Many2one(
         'siantou.ems.core.school',
         string='École',
-        required=True,
     )
 
     level_id = fields.Many2one(
