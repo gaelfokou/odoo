@@ -62,7 +62,7 @@
                                 <field name="eps_subject" invisible="shared_subject == True"/>
                             </group>
                         </group>
-                        <notebook>
+                        <!-- <notebook>
                             <page name="name" string="Enseignants du cours">
                                 <field name="teacher_ids"/>
                             </page>
@@ -74,7 +74,7 @@
                                     </tree>
                                 </field>
                             </page>
-                        </notebook>
+                        </notebook> -->
                     </sheet>
                     <div class="oe_chatter">
                         <field name="message_follower_ids" groups="base.group_user"/>

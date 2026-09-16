@@ -14,7 +14,7 @@
                     <field name="date"
                         decoration-warning="status in ['pending', 'progress'] and date and date == current_date"
                         decoration-danger="status in ['pending', 'progress'] and date and date &lt; current_date"/>
-                    <field name="create_uid"/>
+                    <field name="create_uid" string="Créé par"/>
                     <field name="user_ids" widget="many2many_tags"/>
                     <field name="note"/>
 					<field name="status" widget="badge"
@@ -49,7 +49,7 @@
                             <field name="date" readonly="id != False and create_uid != uid"/>
                         </group>
                         <group colspan="2">
-                            <field name="create_uid"/>
+                            <field name="create_uid" string="Créé par"/>
                             <field name="user_ids" widget="many2many_tags" readonly="id != False and create_uid != uid"/>
                             <field name="note"/>
                         </group>

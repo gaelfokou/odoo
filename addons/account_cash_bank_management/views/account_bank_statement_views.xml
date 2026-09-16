@@ -69,8 +69,7 @@
                     <sheet>
                         <div class="oe_button_box" name="button_box">
                             <button class="oe_stat_button" name="button_journal_entries"
-                                    string="Journal Entries" type="object"
-                                    invisible="move_line_count == 0" icon="fa-bars"/>
+                                    string="Journal Entries" type="object" invisible="move_line_count == 0" icon="fa-bars"/>
                             <field name="move_line_count" invisible="1"/>
                             <field name="statement_line_count" invisible="1"/>
 

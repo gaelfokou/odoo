@@ -101,7 +101,7 @@
                             <field name="write_user_ids" widget="many2many_tags" readonly="is_readonly == True"/>
                             <field name="school_id_domain" invisible="1"/>
                             <field name="school_ids" widget="many2many_tags" readonly="is_readonly == True" domain="school_id_domain"/>
-                            <field name="create_uid"/>
+                            <field name="create_uid" string="Créé par"/>
                             <field name="start_date" readonly="is_readonly == True"/>
                             <field name="end_date" readonly="is_readonly == True"/>
                             <field name="department_id_domain" invisible="1"/>
@@ -150,7 +150,7 @@
                             <field name="write_user_ids" widget="many2many_tags" readonly="is_readonly == True"/>
                             <field name="school_id_domain" invisible="1"/>
                             <field name="school_ids" widget="many2many_tags" readonly="is_readonly == True" domain="school_id_domain"/>
-                            <field name="create_uid"/>
+                            <field name="create_uid" string="Créé par"/>
                             <field name="start_date" readonly="is_readonly == True"/>
                             <field name="end_date" readonly="is_readonly == True"/>
                             <field name="department_id_domain" invisible="1"/>
