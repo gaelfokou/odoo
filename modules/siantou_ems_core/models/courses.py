@@ -448,8 +448,15 @@ class SchoolCourseSubject(models.Model):
         required=True
     )
 
-    code = fields.Char(string="Code", required=True)
-    name = fields.Char(string="Intitulé de l'unité", required=True)
+    code = fields.Char(
+        string='Code',
+        required=True
+    )
+
+    name = fields.Char(
+        string='Nom',
+        required=True
+    )
 
     class_ids = fields.Many2many('siantou.ems.core.class', 'class_ue_rel', 'ue_id', 'class_id', string='Classes')
 
