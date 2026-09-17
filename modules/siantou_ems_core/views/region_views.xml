@@ -8,6 +8,7 @@
 			<field name="model">siantou.ems.core.region</field>
 			<field name="arch" type="xml">
 				<tree string="Régions" editable="bottom" edit="1">
+                    <field name="code"/>
                     <field name="name"/>
                     <field name="country_id"/>
 				</tree>
@@ -23,6 +24,7 @@
 				<form string="Régions">
 					<sheet>
                         <group>
+                            <field name="code"/>
                             <field name="name"/>
                         </group>
                         <group>

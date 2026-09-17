@@ -8,6 +8,7 @@
 			<field name="model">siantou.ems.core.city</field>
 			<field name="arch" type="xml">
 				<tree string="Villes" editable="bottom" edit="1">
+                    <field name="code"/>
                     <field name="name"/>
                     <field name="region_id"/>
 				</tree>
@@ -23,6 +24,7 @@
 				<form string="Villes">
 					<sheet>
                         <group>
+                            <field name="code"/>
                             <field name="name"/>
                         </group>
                         <group>

@@ -8,6 +8,7 @@
 			<field name="model">siantou.ems.core.quarter</field>
 			<field name="arch" type="xml">
 				<tree string="Quartiers" editable="bottom" edit="1">
+                    <field name="code"/>
                     <field name="name"/>
                     <field name="city_id"/>
 				</tree>
@@ -23,6 +24,7 @@
 				<form string="Quartiers">
 					<sheet>
                         <group>
+                            <field name="code"/>
                             <field name="name"/>
                         </group>
                         <group>
