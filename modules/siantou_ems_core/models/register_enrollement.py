@@ -134,7 +134,7 @@ class SessionEnrollment(models.Model):
                         "state": "application",
                 })
         self.state = 'admission'
-        self.active=True
+        self.active = True
 
     def close_register(self):
         for record in self:
