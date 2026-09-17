@@ -45,9 +45,9 @@ class Region(models.Model):
             code = []
             for i, x in enumerate(name.split(' ')):
                 if i == 0:
-                    code.append(x[:5])
+                    code.append(x[:8])
                 else:
-                    code.append(x[:3])
+                    code.append(x[:4])
             code = ''.join(code)
             code = code.upper()
             record.code = code
@@ -98,9 +98,9 @@ class City(models.Model):
             code = []
             for i, x in enumerate(name.split(' ')):
                 if i == 0:
-                    code.append(x[:5])
+                    code.append(x[:8])
                 else:
-                    code.append(x[:3])
+                    code.append(x[:4])
             code = ''.join(code)
             code = code.upper()
             record.code = code
@@ -151,9 +151,9 @@ class Quarter(models.Model):
             code = []
             for i, x in enumerate(name.split(' ')):
                 if i == 0:
-                    code.append(x[:5])
+                    code.append(x[:8])
                 else:
-                    code.append(x[:3])
+                    code.append(x[:4])
             code = ''.join(code)
             code = code.upper()
             record.code = code
