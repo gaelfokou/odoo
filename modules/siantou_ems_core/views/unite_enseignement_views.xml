@@ -2,8 +2,7 @@
 <odoo>
 	<data>
 		<!-- Affichage en vue liste -->
-		<record
-                id="unite_enseignement_tree_view" model="ir.ui.view">
+		<record id="unite_enseignement_tree_view" model="ir.ui.view">
             <field name="name">unite_enseignement.tree.view</field>
 			<field name="model">siantou.ems.core.unite.enseignement</field>
 			<field name="arch" type="xml">
@@ -26,8 +25,7 @@
 		</record>
 
         <!-- Affichage en vue formulaire -->
-		<record
-                id="unite_enseignement_form_view" model="ir.ui.view">
+		<record id="unite_enseignement_form_view" model="ir.ui.view">
 			<field name="name">unite_enseignement.form.view</field>
 			<field name="model">siantou.ems.core.unite.enseignement</field>
 			<field name="arch" type="xml">
@@ -70,9 +68,7 @@
 		</record>
 
         <!-- Affichage en vue recherche -->
-         <record
-                 id="unite_enseignement_search_view"
-                 model="ir.ui.view">
+         <record id="unite_enseignement_search_view" model="ir.ui.view">
             <field name="name">unite_enseignement.search.view</field>
             <field name="model">siantou.ems.core.unite.enseignement</field>
             <field name="arch" type="xml">

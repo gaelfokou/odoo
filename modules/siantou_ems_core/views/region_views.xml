@@ -2,8 +2,7 @@
 <odoo>
 	<data>
 		<!-- Affichage en vue liste -->
-		<record
-                id="region_tree_view" model="ir.ui.view">
+		<record id="region_tree_view" model="ir.ui.view">
             <field name="name">region.tree.view</field>
 			<field name="model">siantou.ems.core.region</field>
 			<field name="arch" type="xml">
@@ -16,8 +15,7 @@
 		</record>
 
         <!-- Affichage en vue formulaire -->
-		<record
-                id="region_form_view" model="ir.ui.view">
+		<record id="region_form_view" model="ir.ui.view">
 			<field name="name">region.form.view</field>
 			<field name="model">siantou.ems.core.region</field>
 			<field name="arch" type="xml">
@@ -36,9 +34,7 @@
 		</record>
 
         <!-- Affichage en vue recherche -->
-         <record
-                 id="region_search_view"
-                 model="ir.ui.view">
+         <record id="region_search_view" model="ir.ui.view">
             <field name="name">region.search.view</field>
             <field name="model">siantou.ems.core.region</field>
             <field name="arch" type="xml">
@@ -51,8 +47,7 @@
         </record>
 
         <!-- Action pour le menu d'affichage des Régions -->
-        <record
-                id="action_show_region" model="ir.actions.act_window">
+        <record id="action_show_region" model="ir.actions.act_window">
             <field name="name">Régions</field>
             <field name="res_model">siantou.ems.core.region</field>
             <field name="search_view_id" ref="region_search_view"/>

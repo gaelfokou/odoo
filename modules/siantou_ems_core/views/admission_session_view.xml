@@ -98,8 +98,7 @@
         </record>
 
         <!-- Action pour le menu d'affichage des Régions -->
-        <record
-                id="action_show_session" model="ir.actions.act_window">
+        <record id="action_show_session" model="ir.actions.act_window">
             <field name="name">Session d'admission</field>
             <field name="res_model">siantou.session</field>
             <field name="search_view_id" ref="siantou_session_search_view"/>

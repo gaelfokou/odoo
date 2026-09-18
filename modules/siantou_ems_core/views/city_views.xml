@@ -2,8 +2,7 @@
 <odoo>
 	<data>
 		<!-- Affichage en vue liste -->
-		<record
-                id="city_tree_view" model="ir.ui.view">
+		<record id="city_tree_view" model="ir.ui.view">
             <field name="name">city.tree.view</field>
 			<field name="model">siantou.ems.core.city</field>
 			<field name="arch" type="xml">
@@ -16,8 +15,7 @@
 		</record>
 
         <!-- Affichage en vue formulaire -->
-		<record
-                id="city_form_view" model="ir.ui.view">
+		<record id="city_form_view" model="ir.ui.view">
 			<field name="name">city.form.view</field>
 			<field name="model">siantou.ems.core.city</field>
 			<field name="arch" type="xml">
@@ -36,9 +34,7 @@
 		</record>
 
         <!-- Affichage en vue recherche -->
-         <record
-                 id="city_search_view"
-                 model="ir.ui.view">
+         <record id="city_search_view" model="ir.ui.view">
             <field name="name">city.search.view</field>
             <field name="model">siantou.ems.core.city</field>
             <field name="arch" type="xml">
@@ -51,8 +47,7 @@
         </record>
 
         <!-- Action pour le menu d'affichage des Villes -->
-        <record
-                id="action_show_city" model="ir.actions.act_window">
+        <record id="action_show_city" model="ir.actions.act_window">
             <field name="name">Villes</field>
             <field name="res_model">siantou.ems.core.city</field>
             <field name="search_view_id" ref="city_search_view"/>

@@ -2,8 +2,7 @@
 <odoo>
 	<data>
 		<!-- Affichage en vue liste -->
-		<record
-                id="campus_tree_view" model="ir.ui.view">
+		<record id="campus_tree_view" model="ir.ui.view">
             <field name="name">campus.tree.view</field>
 			<field name="model">siantou.ems.core.campus</field>
 			<field name="arch" type="xml">
@@ -16,8 +15,7 @@
 		</record>
 
         <!-- Affichage en vue formulaire -->
-		<record
-                id="campus_form_view" model="ir.ui.view">
+		<record id="campus_form_view" model="ir.ui.view">
 			<field name="name">campus.form.view</field>
 			<field name="model">siantou.ems.core.campus</field>
 			<field name="arch" type="xml">
@@ -34,8 +32,7 @@
 		</record>
 
         <!-- Action pour le menu d'affichage des programmes -->
-        <record
-                id="action_show_campus" model="ir.actions.act_window">
+        <record id="action_show_campus" model="ir.actions.act_window">
             <field name="name">Campus</field>
             <field name="res_model">siantou.ems.core.campus</field>
             <field name="view_mode">tree,form</field>

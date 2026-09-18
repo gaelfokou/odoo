@@ -2,8 +2,7 @@
 <odoo>
 	<data>
 		<!-- Affichage en vue liste -->
-		<record
-                id="country_tree_view" model="ir.ui.view">
+		<record id="country_tree_view" model="ir.ui.view">
             <field name="name">country.tree.view</field>
 			<field name="model">siantou.ems.core.country</field>
 			<field name="arch" type="xml">
@@ -15,8 +14,7 @@
 		</record>
 
         <!-- Affichage en vue formulaire -->
-		<record
-                id="country_form_view" model="ir.ui.view">
+		<record id="country_form_view" model="ir.ui.view">
 			<field name="name">country.form.view</field>
 			<field name="model">siantou.ems.core.country</field>
 			<field name="arch" type="xml">
@@ -32,9 +30,7 @@
 		</record>
 
         <!-- Affichage en vue recherche -->
-         <record
-                 id="country_search_view"
-                 model="ir.ui.view">
+         <record id="country_search_view" model="ir.ui.view">
             <field name="name">country.search.view</field>
             <field name="model">siantou.ems.core.country</field>
             <field name="arch" type="xml">
@@ -46,8 +42,7 @@
         </record>
 
         <!-- Action pour le menu d'affichage des pays -->
-        <record
-                id="action_show_country" model="ir.actions.act_window">
+        <record id="action_show_country" model="ir.actions.act_window">
             <field name="name">Pays</field>
             <field name="res_model">siantou.ems.core.country</field>
             <field name="search_view_id" ref="country_search_view"/>

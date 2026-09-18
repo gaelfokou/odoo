@@ -2,8 +2,7 @@
 <odoo>
     <data>
         <!-- Affichage en vue liste -->
-		<record
-                id="data_copy_type_tree_view" model="ir.ui.view">
+		<record id="data_copy_type_tree_view" model="ir.ui.view">
             <field name="name">timetable.tree.view</field>
 			<field name="model">data.copy.type</field>
 			<field name="arch" type="xml">
