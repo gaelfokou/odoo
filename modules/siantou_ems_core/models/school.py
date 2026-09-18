@@ -21,8 +21,7 @@ class School(models.Model):
     )
 
     description = fields.Text(
-        'Description',
-        required=True,
+        string='Description',
         translate=True,
     )
 

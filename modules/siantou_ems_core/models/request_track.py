@@ -43,7 +43,7 @@ class RequestTrack(models.Model):
     )
 
     description = fields.Text(
-        'Description',
+        string='Description',
     )
 
     file = fields.Binary(

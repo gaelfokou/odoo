@@ -12,7 +12,7 @@ class Level(models.Model):
     )
 
     description = fields.Text(
-        'Description',
+        string='Description',
     )
 
     cycle_ids = fields.Many2many('oe.school.course', 'course_level_rel', 'level_id', 'cycle_id', string='Cursus ou Cycles')

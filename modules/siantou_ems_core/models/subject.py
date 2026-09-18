@@ -836,7 +836,7 @@ class SubjectSession(models.Model):
     )
 
     description = fields.Text(
-        'Description',
+        string='Description',
     )
 
     timetable_id = fields.Many2one(

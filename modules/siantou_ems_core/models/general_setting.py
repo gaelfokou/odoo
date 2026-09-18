@@ -49,7 +49,7 @@ class GeneralSetting(models.Model):
     )
 
     description = fields.Text(
-        'Description',
+        string='Description',
         translate=True,
     )
 
