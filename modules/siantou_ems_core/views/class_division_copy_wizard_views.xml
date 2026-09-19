@@ -8,7 +8,7 @@
                 <form string="Copie des classes">
                     <group>
                         <field name="source_year_id" options="{'no_create': True}"/>
-                        <field name="school_id" options="{'no_create': True}" domain="[('year_id', '=', source_year_id)]"/>
+                        <field name="school_id" options="{'no_create': True}"/>
                         <field name="cycle_id_domain" invisible="1"/>
                         <field name="cycle_id" options="{'no_create': True}" domain="cycle_id_domain"/>
                         <field name="level_id_domain" invisible="1"/>
