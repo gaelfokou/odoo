@@ -61,6 +61,10 @@ class School(models.Model):
 
     cycle_ids = fields.Many2many('oe.school.course', 'course_school_rel', 'school_id', 'cycle_id', string='Cursus ou Cycles')
 
+    _sql_constraints = [
+        ('unique_code', 'unique(code)', "Le code de l'école doit être unique."),
+    ]
+
     def write(self, vals):
         schools = []
         if len(self.ids) == 1:
