@@ -116,7 +116,7 @@ class FeeSpecial(models.Model):
         for rec in self:
             journal_id = rec.fee_structure_id.type_frais_id.category_id.journal_id
             if not journal_id:
-                raise ValidationError("Le journal de paiement n'est pas configuré pour cette structure de frais")
+                raise ValidationError(f"Le journal de paiement n'est pas configuré pour cette structure de frais.")
 
             account_receivable_id = journal_id.default_account_id
             account_revenue_id = journal_id.default_account_id
@@ -124,7 +124,7 @@ class FeeSpecial(models.Model):
             # _logger.info(account_revenue_id)
 
             if not account_receivable_id or not account_revenue_id:
-                raise ValidationError("Les comptes de créance ou de revenus ne sont pas configurés dans le journal. Veuillez vérifier la configuration")
+                raise ValidationError(f"Les comptes de créance ou de revenus ne sont pas configurés dans le journal. Veuillez vérifier la configuration.")
 
             amount = 0
             if rec.fee_structure_id.type_paiement=='pu':
@@ -214,7 +214,7 @@ class FeeSpecial(models.Model):
             limit=1
         )
         if pay_fee:
-            raise ValidationError(f"Un paiement de Mr/Mdme {student_id.name} existe déjà")
+            raise ValidationError(f"$1.")
 
         res = super(FeeSpecial, self).create(vals)
         res.update({

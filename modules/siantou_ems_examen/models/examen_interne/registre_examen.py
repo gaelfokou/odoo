@@ -161,7 +161,7 @@ class ExamenRegistre(models.Model):
                                 }
                             }
             else:
-                raise ValidationError("Veuillez ajouter un type")
+                raise ValidationError(f"Veuillez ajouter un type.")
 
 class ExamenRegistreLine(models.Model):
     _name = 'siantou.ems.examen.registre.line'
@@ -249,7 +249,7 @@ class ExamenRegistreLine(models.Model):
                         }
                     }
                 else:
-                    raise ValidationError("Veuillez ajouter les étudiants")
+                    raise ValidationError(f"Veuillez ajouter les étudiants.")
             else:
                 # Traitement pour les autres types d'examen
                 if rec.class_id:
@@ -276,7 +276,7 @@ class ExamenRegistreLine(models.Model):
                         }
                     }
                 else:
-                    raise ValidationError("Veuillez ajouter les étudiants")
+                    raise ValidationError(f"Veuillez ajouter les étudiants.")
 
     def action_confirm(self):
         """
@@ -310,5 +310,5 @@ class ExamenStudentLine(models.Model):
     def _check_note(self):
         for rec in self:
             if rec.note < 0 or rec.note > 20:
-                raise ValidationError("La note doit être comprise entre 0 et 20")
+                raise ValidationError(f"La note doit être comprise entre 0 et 20.")
 

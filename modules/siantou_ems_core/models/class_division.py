@@ -617,7 +617,7 @@ class EducationClass(models.Model):
         for record in self:
             if not record.is_timetable_active:
                 if not record.timetable_inactive_date:
-                    raise ValidationError(f"La désactivation des emplois du temps doit avoir une date de désactivation")
+                    raise ValidationError(f"La désactivation des emplois du temps doit avoir une date de désactivation.")
 
     # _sql_constraints = [
     #     ('unique_year_specialty_option_level_type_cour', 'unique(year_id,specialty_id,option_id,level_id,type_cour)', 'L\'année académique, la spécialité, l\'option, le niveau, et le type de cours doivent être uniques.'),

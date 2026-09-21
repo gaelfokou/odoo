@@ -100,7 +100,7 @@ class Rattrage(models.Model):
         for rec in self:
             for line in rec.rat_ids:
                 if line.state != "confirm":
-                    raise ValidationError("Veuillez confirmer les U.E")
+                    raise ValidationError(f"Veuillez confirmer les U.E.")
                 for sp in line.rat_sub_parent_ids:
                     if sp.state != "confirm":
                         raise ValidationError("Veuillez confirmer les matières parents !")
@@ -179,7 +179,7 @@ class Rattrage(models.Model):
     #     for rec in self:
     #         for line in rec.rat_ids:
     #             if line.state != "confirm":
-    #                 raise ValidationError("Veuillez confirmer les U.E")
+    #                 raise ValidationError(f"Veuillez confirmer les U.E.")
     #             for emp in line.rat_sub_ids:
     #                 if emp.state != "confirm":
     #                     raise ValidationError("Veuillez confirmer les note introduitent !")
@@ -463,7 +463,7 @@ class RattrapageMatiere(models.Model):
         for rec in self:
             for line in rec.rat_std_ids:
                 if line.note_rattapage < 0 or line.note_rattapage > 20:
-                    raise ValidationError("Une note doit être en te 0-20")
+                    raise ValidationError(f"Une note doit être en te 0-20.")
             rec.state = "confirm"
 
 class RattrapageStudent(models.Model):

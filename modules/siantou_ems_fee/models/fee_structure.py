@@ -156,7 +156,7 @@ class FeeStructure(models.Model):
         #     ('field_of_study_ids','in', field_of_study_ids[0]),
         # ])
         # if structure_frais_id:
-        #     raise ValidationError(f"Il y'a une structure de frais qui existe déjà pour le niveau sélectionné et contenant toutes ou certaines des filières sélectionnées")
+        #     raise ValidationError(f"Il y'a une structure de frais qui existe déjà pour le niveau sélectionné et contenant toutes ou certaines des filières sélectionnées.")
 
         res = super().create(vals)
 

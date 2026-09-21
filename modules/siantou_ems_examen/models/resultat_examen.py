@@ -88,7 +88,7 @@ class ResultatSubjectExamen(models.Model):
             else:
                 rec.exam_subject_domain = []
                 rec.show_field = False
-                # raise ValidationError("Merci de Sélectionner : l'année académique, le semestre, le niveau, le filière")
+                # raise ValidationError(f"Merci de Sélectionner : l'année académique, le semestre, le niveau, le filière.")
 
     @api.onchange('exam_subject_id')
     def onchange_exam_subject_id(self):
@@ -140,7 +140,7 @@ class ResultatSubjectExamen(models.Model):
                             }
                         }
                 else:
-                    raise ValidationError("Codification ou remplissage des notes non trouvé")
+                    raise ValidationError(f"$1.")
 
     def button_print_pdf_resultat(self):
         for rec in self:
@@ -152,7 +152,7 @@ class ResultatSubjectExamen(models.Model):
                         'note':mark_id.note,
                     })
             else:
-                raise ValidationError("Impossible de télécharger le fichier : Notes non trouvés")
+                raise ValidationError(f"Impossible de télécharger le fichier : Notes non trouvés.")
 
             data = {
                 # 'ids':rec.ids,

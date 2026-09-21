@@ -148,9 +148,9 @@ class TimetableSubjectHour(models.Model):
     def _check_time(self):
         for record in self:
             if record.start_time < 0.0 or record.end_time < 0.0 or record.start_time > 23.59 or record.end_time > 23.59:
-                raise ValidationError("Vous devez définir des heures de début et de fin corrects")
+                raise ValidationError(f"Vous devez définir des heures de début et de fin corrects.")
             elif record.start_time >= record.end_time:
-                raise ValidationError("L'heure de fin du cours doit être supérieure à l'heure de début du cours")
+                raise ValidationError(f"L'heure de fin du cours doit être supérieure à l'heure de début du cours.")
 
 
 class Timetable(models.Model):
@@ -857,9 +857,9 @@ class Timetable(models.Model):
             if record.skip_validation:
                 return True
             if record.start_time < 0.0 or record.end_time < 0.0 or record.start_time > 23.59 or record.end_time > 23.59:
-                raise ValidationError("Vous devez définir des heures de début et de fin corrects")
+                raise ValidationError(f"Vous devez définir des heures de début et de fin corrects.")
             elif record.start_time >= record.end_time:
-                raise ValidationError("L'heure de fin du cours doit être supérieure à l'heure de début du cours")
+                raise ValidationError(f"L'heure de fin du cours doit être supérieure à l'heure de début du cours.")
 
     @api.constrains('status', 'worked_start_time', 'worked_end_time')
     def _check_worked_time(self):
@@ -867,9 +867,9 @@ class Timetable(models.Model):
             if record.skip_validation:
                 return True
             if record.worked_start_time < 0.0 or record.worked_end_time < 0.0 or record.worked_start_time > 23.59 or record.worked_end_time > 23.59:
-                raise ValidationError("Vous devez définir des heures de début effectuée et de fin effectuée corrects")
+                raise ValidationError(f"Vous devez définir des heures de début effectuée et de fin effectuée corrects.")
             elif record.status in ['present', 'permission'] and record.worked_start_time > record.worked_end_time:
-                raise ValidationError("L'heure de fin effectuée du cours doit être supérieure à l'heure de début effectuée du cours")
+                raise ValidationError(f"L'heure de fin effectuée du cours doit être supérieure à l'heure de début effectuée du cours.")
 
     @api.constrains('group_id', 'class_id', 'class_group_id', 'employee_id', 'date', 'start_time', 'end_time')
     def _check_class(self):
@@ -1886,7 +1886,7 @@ class TimetableGroup(models.Model):
         for record in self:
             if record.is_submit:
                 if record.is_active:
-                    raise ValidationError(f"Une version d'emploi du temps soumise ne peut être active")
+                    raise ValidationError(f"Une version d'emploi du temps soumise ne peut être active.")
             else:
                 if record.is_active:
                     groups = self.env['siantou.ems.timetable.group'].search([
@@ -1895,7 +1895,7 @@ class TimetableGroup(models.Model):
                     ])
                     groups = list(groups)
                     if len(groups) > 1:
-                        raise ValidationError(f"Deux versions d'emploi du temps sont déjà actives")
+                        raise ValidationError(f"Deux versions d'emploi du temps sont déjà actives.")
 
     def update_timetable_group(self, group):
         try:
@@ -2149,11 +2149,11 @@ class TimetableSlotItem(models.Model):
     def _check_time(self):
         for record in self:
             if record.start_time < 0.0 or record.end_time < 0.0 or record.start_time > 23.59 or record.end_time > 23.59:
-                raise ValidationError("Vous devez définir des heures de début et de fin corrects")
+                raise ValidationError(f"Vous devez définir des heures de début et de fin corrects.")
             elif record.start_time > record.end_time:
-                raise ValidationError("L'heure de fin du cours doit être supérieure à l'heure de début du cours")
+                raise ValidationError(f"L'heure de fin du cours doit être supérieure à l'heure de début du cours.")
             elif not TimetableSlotItem.are_almost_equal(round((record.end_time - record.start_time), 2), round(1.00, 2)):
-                raise ValidationError(f"La plage horaire entre l'heure de début et l'heure de fin ne doit pas être supérieure ou inférieure 1")
+                raise ValidationError(f"La plage horaire entre l'heure de début et l'heure de fin ne doit pas être supérieure ou inférieure 1.")
             else:
                 slotitems = self.env['siantou.ems.timetable.slotitem'].search([
                     ('id', '!=', record.id),
@@ -2161,7 +2161,7 @@ class TimetableSlotItem(models.Model):
                 ]).filtered(lambda rec: not (rec.start_time >= record.end_time or rec.end_time <= record.start_time))
                 slotitems = list(slotitems)
                 if len(slotitems) > 0:
-                    raise ValidationError(f"La plage horaire entre l'heure de début et l'heure de fin n'est pas disponible")
+                    raise ValidationError(f"La plage horaire entre l'heure de début et l'heure de fin n'est pas disponible.")
 
 
 class TimetableSlot(models.Model):
@@ -2210,7 +2210,7 @@ class TimetableSlot(models.Model):
                 ])
                 slots = list(slots)
                 if len(slots) > 0:
-                    raise ValidationError(f"Créneau horaire actif déjà défini")
+                    raise ValidationError(f"Créneau horaire actif déjà défini.")
 
     @api.onchange('department_id')
     def _onchange_department(self):

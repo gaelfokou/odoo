@@ -40,7 +40,7 @@ class TimetableNotification(models.Model):
     def _check_template(self):
         for record in self:
             if not record.template or record.template == '':
-                raise ValidationError("Vous devez définir un template")
+                raise ValidationError(f"Vous devez définir un template.")
 
     @api.model
     def cron_timetable_notification(self):

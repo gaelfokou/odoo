@@ -51,7 +51,7 @@ class TimetableWizard(models.TransientModel):
                 if record.start_date > record.end_date:
                     raise ValidationError('La date de fin doit être supérieure ou égale à la date de début')
                 elif record.start_date + relativedelta(months=1) < record.end_date:
-                    raise ValidationError(f"La plage entre la date de début et la date de fin ne doit pas être supérieure 1 mois")
+                    raise ValidationError(f"La plage entre la date de début et la date de fin ne doit pas être supérieure 1 mois.")
 
     def generate_timetable(self):
         all_groups = {}

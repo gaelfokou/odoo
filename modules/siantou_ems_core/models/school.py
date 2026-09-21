@@ -1,4 +1,5 @@
 from odoo import models, fields, api, tools, _
+from odoo.exceptions import UserError, ValidationError
 
 import logging
 
@@ -62,8 +63,19 @@ class School(models.Model):
     cycle_ids = fields.Many2many('oe.school.course', 'course_school_rel', 'school_id', 'cycle_id', string='Cursus ou Cycles')
 
     _sql_constraints = [
-        ('unique_code', 'unique(code)', "Le code de l'école doit être unique."),
+        ('unique_code', 'unique(code)', 'Le code de l\'école doit être unique.'),
     ]
+
+    @api.constrains('code')
+    def _check_unique_code(self):
+        for record in self:
+            schools = self.env['siantou.ems.core.school'].search([
+                ('id', '!=', record.id),
+                ('code', '=', record.code),
+            ])
+            schools = list(schools)
+            if len(schools) > 0:
+                raise ValidationError(f"Le code de l'école doit être unique.")
 
     def write(self, vals):
         schools = []

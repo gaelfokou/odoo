@@ -539,7 +539,7 @@ class StudentEnrollment(models.Model):
 
         for student_enrol in student_enrols:
             if self.status == "transfer":
-                raise ValidationError("Impossible de supprimer une candidature déjà admise")
+                raise ValidationError(f"Impossible de supprimer une candidature déjà admise.")
             class_id = student_enrol.class_id if student_enrol.class_id.id else None
 
         student_enrol = super(StudentEnrollment, self).unlink()

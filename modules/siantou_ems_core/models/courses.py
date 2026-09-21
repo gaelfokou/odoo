@@ -23,7 +23,7 @@ class OeSchoolCourseSupervision(models.Model):
     cycle_ids = fields.One2many('oe.school.course', 'supervision_id', string='Cursus ou Cycles')
 
     _sql_constraints = [
-        ('unique_code', 'unique(code)', "Le code de la tutelle académique doit être unique."),
+        ('unique_code', 'unique(code)', 'Le code de la tutelle académique doit être unique.'),
     ]
 
     def write(self, vals):
@@ -145,51 +145,9 @@ class OeSchoolCourse(models.Model):
 
     school_ids = fields.Many2many('siantou.ems.core.school', 'course_school_rel', 'cycle_id', 'school_id', string='Écoles')
 
-    # department_ids = fields.One2many(
-    #     'hr.department',
-    #     'cycle_id',
-    #     string='Départements'
-    # )
-
-    # batch_ids = fields.One2many('oe.school.course.batch', 'course_id', string="Lots")
-    # batch_count = fields.Integer(string='Nombre de lot', compute='_compute_course_batch_count')
-
-    # course_subject_line = fields.One2many('oe.school.course.subject.line', 'course_id', string="Cours")
-
-    # use_batch = fields.Boolean(compute='_compute_use_batch_from_company')
-    # use_credit_hours = fields.Char(compute='_compute_use_credit_hours_from_company')
-    # use_batch_subject = fields.Boolean(compute='_compute_use_batch_subject')
-
-    # use_section = fields.Boolean(compute='_compute_use_section_from_company')
-    # section_ids = fields.One2many('oe.school.course.section', 'course_id', string="Sections")
-    # section_count = fields.Integer(string='Nombre de section', compute='_compute_course_section_count')
-
-    # def _compute_use_section_from_company(self):
-    #     for record in self:
-    #         record.use_section = record.company_id.use_section
-
-    # def _compute_course_section_count(self):
-    #     for record in self:
-    #         record.section_count = len(record.section_ids)
-
-    # def _compute_course_batch_count(self):
-    #     for record in self:
-    #         record.batch_count = len(record.batch_ids)
-
-    # def _compute_use_credit_hours_from_company(self):
-    #     for record in self:
-    #         record.use_credit_hours = record.company_id.use_credit_hours
-
-    # def _compute_use_batch_from_company(self):
-    #     for record in self:
-    #         record.use_batch = record.company_id.use_batch
-
-    # def _compute_use_batch_subject(self):
-    #     for record in self:
-    #         if record.use_batch and len(record.batch_ids) > 0:
-    #             record.use_batch_subject = True
-    #         else:
-    #             record.use_batch_subject = False
+    _sql_constraints = [
+        ('unique_code', 'unique(code)', 'Le code du cursus ou cycle doit être unique.'),
+    ]
 
     @api.depends('name', 'parent_id.complete_name')
     def _compute_complete_name(self):
@@ -198,31 +156,6 @@ class OeSchoolCourse(models.Model):
                 record.complete_name = '%s/%s' % (record.parent_id.complete_name, record.name)
             else:
                 record.complete_name = record.name
-
-    # @api.model
-    # def create(self, vals):
-    #     if 'code' in vals and vals['code'] and vals['code'].strip():
-    #         sequence = self.env['ir.sequence'].create({
-    #             'name': _('Sequence') + ' ' + vals['code'],
-    #             'padding': 5,
-    #             'prefix': vals['code'],
-    #             'company_id': vals['company_id'],
-    #         })
-    #         vals['sequence_id'] = sequence.id
-    #     res = super(OeSchoolCourse, self).create(vals)
-    #     return res
-
-    # def write(self, vals):
-    #     if not self.sequence_id:
-    #         sequence = self.env['ir.sequence'].create({
-    #             'name': _('Sequence') + ' ' + self.code,
-    #             'padding': 5,
-    #             'prefix': self.code,
-    #             'company_id': self.company_id.id,
-    #         })
-    #         vals['sequence_id'] = sequence.id
-    #     res = super(OeSchoolCourse, self).write(vals)
-    #     return res
 
     def update_cycle(self, cycle):
         try:
@@ -373,7 +306,7 @@ class SchoolSyllabus(models.Model):
             subject_ids = record.ue_id.subject_ids.filtered(lambda s: s.id == record.subject_id.id)
             subject_ids = list(subject_ids)
             if len(subject_ids) == 0:
-                raise ValidationError(f"Le cours magistral n'existe pas dans l'unité d'enseignement choisi")
+                raise ValidationError(f"Le cours magistral n'existe pas dans l'unité d'enseignement choisi.")
 
     @api.depends('class_id')
     def _compute_name(self):
@@ -414,25 +347,25 @@ class SchoolSyllabus(models.Model):
     def _check_cm_value(self):
         for record in self:
             if record.cm <0:
-                raise ValidationError(f"Le Nombre de Cours magistral doit être supérieur ou égal à zéro")
+                raise ValidationError(f"Le Nombre de Cours magistral doit être supérieur ou égal à zéro.")
 
     @api.constrains('td')
     def _check_td_value(self):
         for record in self:
             if record.td <0:
-                raise ValidationError(f"Le Nombre de Travaux dirigé doit être supérieur ou égal à zéro")
+                raise ValidationError(f"Le Nombre de Travaux dirigé doit être supérieur ou égal à zéro.")
 
     @api.constrains('tp')
     def _check_tp_value(self):
         for record in self:
             if record.tp <0:
-                raise ValidationError(f"Le Nombre de Travaux pratique doit être supérieur ou égal à zéro")
+                raise ValidationError(f"Le Nombre de Travaux pratique doit être supérieur ou égal à zéro.")
 
     @api.constrains('te')
     def _check_tpe_value(self):
         for record in self:
             if record.te <0:
-                raise ValidationError(f"Le Nombre de Travaux pratique doit être supérieur ou égal à zéro")
+                raise ValidationError(f"Le Nombre de Travaux pratique doit être supérieur ou égal à zéro.")
 
 
 class SchoolCourseSubject(models.Model):
@@ -489,6 +422,10 @@ class SchoolCourseSubject(models.Model):
 
     class_id_domain = fields.Binary(compute='_compute_class_domain', default=[])
 
+    _sql_constraints = [
+        ('unique_code', 'unique(code)', 'Le code de l\'unité d\'enseignement doit être unique.')
+    ]
+
     @api.depends('semester_ids')
     def _compute_class_domain(self):
         for record in self:
@@ -503,10 +440,6 @@ class SchoolCourseSubject(models.Model):
     def _onchange_class_domain(self):
         for record in self:
             record._compute_class_domain()
-
-    _sql_constraints = [
-        ('unique_code', 'unique(code)', "Le code de l'unité d'enseignement doit être unique.")
-    ]
 
     @api.depends('subject_ids', 'subject_ids.syllabus_ids.subject_credit')
     def _compute_total_credit(self):

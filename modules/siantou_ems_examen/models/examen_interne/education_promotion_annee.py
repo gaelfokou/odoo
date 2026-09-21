@@ -97,7 +97,7 @@ class AnneeAcademique(models.Model):
         """
         for rec in self:
             if rec.anne_academique_new.id  == rec.anne_academique.id:
-                raise ValidationError("L'anneé atuelle doit être différente de l'année suivante")
+                raise ValidationError(f"L'anneé atuelle doit être différente de l'année suivante.")
 
             for line in rec.note_etudiant_ids:
                 if line.statut == "Valider":

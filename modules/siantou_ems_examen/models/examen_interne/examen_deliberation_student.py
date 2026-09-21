@@ -249,7 +249,7 @@ class ExamenDeliberationStudent(models.Model):
         """Fonction pour confirmer et inscrire les étudiants dans la classe suivante ou dans la même classe pour reprise."""
         for rec in self:
             if rec.anne_academique_new_id.id == rec.year_id.id:
-                raise ValidationError("L'année actuelle doit être différente de l'année suivante")
+                raise ValidationError(f"L'année actuelle doit être différente de l'année suivante.")
 
             student_history = self.env['education.class.history']  # Initialiser le modèle d'historique des étudiants
 

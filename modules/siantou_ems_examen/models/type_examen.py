@@ -24,7 +24,7 @@ class TypeRattrappageExamen(models.Model):
     )
 
     _sql_constraints = [
-        ('unique_name', 'unique(name)', "Ce nom existe déjà")
+        ('unique_name', 'unique(name)', 'Ce nom existe déjà')
     ]
 
     @api.onchange('type_examen_id')

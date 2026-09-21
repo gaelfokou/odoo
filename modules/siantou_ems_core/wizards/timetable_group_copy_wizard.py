@@ -79,7 +79,7 @@ class TimetableGroupCopyWizard(models.TransientModel):
     def _check_date(self):
         for record in self:
             if record.start_date > record.end_date:
-                raise ValidationError("La date de fin doit être supérieure ou égale à la date de début")
+                raise ValidationError(f"La date de fin doit être supérieure ou égale à la date de début.")
 
     @api.onchange('source_year_id')
     def _onchange_group(self):

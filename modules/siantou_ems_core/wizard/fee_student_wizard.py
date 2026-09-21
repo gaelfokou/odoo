@@ -132,7 +132,7 @@ class FeeEnrollmentWizard(models.TransientModel):
                 raise ValidationError(e.args)
 
             if not year_id:
-                raise ValidationError(f"Aucune année active trouvé")
+                raise ValidationError(f"$1.")
 
             if not structure_frais_id:
                 raise ValidationError(f"Aucune structure de frais de paiement disponible pour {student_id.field_of_study_id.name} {student_id.level_id.name} pour l'année {year_id.name}")
@@ -173,13 +173,13 @@ class FeeEnrollmentWizard(models.TransientModel):
         if self.student_id:
             journal_id = self.cash_register_id
             if not journal_id:
-                raise ValidationError("Le journal de paiement n'est pas configuré pour cette structure de frais")
+                raise ValidationError(f"Le journal de paiement n'est pas configuré pour cette structure de frais.")
 
             account_receivable_id = journal_id.default_account_id
             account_revenue_id = journal_id.default_account_id
             # _logger.info(account_revenue_id)
             if not account_receivable_id or not account_revenue_id:
-                raise ValidationError("Les comptes de créance ou de revenus ne sont pas configurés dans le journal. Veuillez vérifier la configuration")
+                raise ValidationError(f"Les comptes de créance ou de revenus ne sont pas configurés dans le journal. Veuillez vérifier la configuration.")
 
             mone_vals = {
                 'move_type': 'out_invoice',

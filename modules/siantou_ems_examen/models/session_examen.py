@@ -69,7 +69,7 @@ class SecretariatExamen(models.Model):
     # )
 
     _sql_constraints = [
-        ('unique_name', 'unique(name)', "Ce nom existe déjà")
+        ('unique_name', 'unique(name)', 'Ce nom existe déjà')
     ]
 
     @api.onchange('type_examen_id', 'year_id')
@@ -144,7 +144,7 @@ class SessionExamen(models.Model):
     exam_count = fields.Integer("Nombre d'examen", compute='_compute_exam')
 
     _sql_constraints = [
-        ('unique_name', 'unique(name)', "Ce nom existe déjà")
+        ('unique_name', 'unique(name)', 'Ce nom existe déjà')
     ]
 
     @api.model
@@ -261,9 +261,9 @@ class SessionExamen(models.Model):
                             })
 
             if not check_syllabus:
-                raise ValidationError("Matière des unitées d'enseignement non configuré")
+                raise ValidationError(f"$1.")
             elif not check_students:
-                raise ValidationError(f"Aucun étudiant trouvé")
+                raise ValidationError(f"$1.")
 
         self.write({'state': 'progress'})
 

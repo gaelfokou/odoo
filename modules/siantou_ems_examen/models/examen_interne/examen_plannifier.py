@@ -158,7 +158,7 @@ class ExamenPlannifier(models.Model):
         for rec in self:
             for line in rec.registre_examen_ids:
                 if line.state != "confirm":
-                    raise ValidationError("Veuillez confirmer les U.E")
+                    raise ValidationError(f"Veuillez confirmer les U.E.")
                 for emp in line.examen_registre_participant_ids:
                     if emp.state != "confirm":
                         raise ValidationError("Veuillez confirmer les notes introduitent !")

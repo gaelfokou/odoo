@@ -119,13 +119,13 @@ class TeacherDebt(models.Model):
     def _check_date(self):
         for record in self:
             if record.start_date > record.end_date:
-                raise ValidationError("La date de fin doit être supérieure ou égale à la date de début")
+                raise ValidationError(f"La date de fin doit être supérieure ou égale à la date de début.")
 
     @api.constrains('amount')
     def _check_amount(self):
         for record in self:
             if record.amount <= 0.0:
-                raise ValidationError("Le montant doit être supérieur à 0")
+                raise ValidationError(f"Le montant doit être supérieur à 0.")
 
     def action_print_pdf(self):
         active_ids = self.env.context.get('active_ids', [])
@@ -187,4 +187,4 @@ class PaymentDebt(models.Model):
     def _check_amount(self):
         for record in self:
             if record.amount <= 0.0:
-                raise ValidationError("Le montant doit être supérieur à 0")
+                raise ValidationError(f"Le montant doit être supérieur à 0.")

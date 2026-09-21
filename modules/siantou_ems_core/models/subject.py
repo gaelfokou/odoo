@@ -140,7 +140,7 @@ class Subject(models.Model):
     def _check_subject_child_ids(self):
         for record in self:
             if record.shared_subject and len(record.subject_child_ids.ids) == 0:
-                raise ValidationError("Les cours en tronc commun doivent être ajoutés")
+                raise ValidationError(f"Les cours en tronc commun doivent être ajoutés.")
 
     @api.onchange('shared_subject')
     def _onchange_shared_subject(self):
@@ -151,7 +151,7 @@ class Subject(models.Model):
     def _check_hours_credit(self):
         for record in self:
             if record.hours_credit <= 0:
-                raise ValidationError("Le volume horaire semestriel doit être supérieur à 0")
+                raise ValidationError(f"Le volume horaire semestriel doit être supérieur à 0.")
 
     @api.depends('syllabus_ids.subject_credit')
     def _compute_credit(self):

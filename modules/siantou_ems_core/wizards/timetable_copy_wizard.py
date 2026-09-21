@@ -477,9 +477,9 @@ class TimetableCopyWizard(models.TransientModel):
                     res = list(set(source_ue_ids) & set(destination_ue_ids))
                     if len(source_ue_ids) > 0:
                         if len(res) == 0:
-                            raise ValidationError(f"L'unité d\'enseignement du cours doit être copiée dans la classe destination")
+                            raise ValidationError(f"L'unité d\'enseignement du cours doit être copiée dans la classe destination.")
                     else:
-                        raise ValidationError(f"Les unités d\'enseignement du cours n'existent pas")
+                        raise ValidationError(f"Les unités d\'enseignement du cours n'existent pas.")
                 else:
                     source_ue_ids = source_class_id.ue_ids.ids
                     if semester_id:
@@ -490,9 +490,9 @@ class TimetableCopyWizard(models.TransientModel):
                     res = list(set(source_ue_ids) & set(destination_ue_ids))
                     if len(source_ue_ids) > 0:
                         if len(source_ue_ids) > len(res):
-                            raise ValidationError(f"Les unités d\'enseignement de la classe source doivent être copiées dans la classe destination")
+                            raise ValidationError(f"Les unités d\'enseignement de la classe source doivent être copiées dans la classe destination.")
                     else:
-                        raise ValidationError(f"Les unités d\'enseignement de la classe source n'existent pas")
+                        raise ValidationError(f"Les unités d\'enseignement de la classe source n'existent pas.")
 
                 for group_id in source_class_id.group_ids:
                     group = self.env['siantou.ems.core.class.group'].search([

@@ -104,7 +104,7 @@ class OptionOfStudy(models.Model):
             record._compute_name()
 
     _sql_constraints = [
-        ('unique_code', 'unique(code)', "Le code de l'option doit être unique."),
+        ('unique_code', 'unique(code)', 'Le code de l\'option doit être unique.'),
     ]
 
     def update_option(self, option):

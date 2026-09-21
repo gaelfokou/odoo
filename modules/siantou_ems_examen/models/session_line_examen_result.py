@@ -92,7 +92,7 @@ class ExamRatingAnonymous(models.Model):
                 ]
 
     def create(self, values):
-        # raise ValidationError("eeeeeee rr")
+        # raise ValidationError(f"eeeeeee rr.")
         res = super(ExamRatingAnonymous, self).create(values)
         res.update({
             'state':'done'
@@ -169,7 +169,7 @@ class ExamRatingAnonymousResult(models.Model):
         )
         for rec in results:
             if rec.state=='add' or rec.state=='create':
-                raise ValidationError(f"Certaines notes dans {anonymous_id.name} ne sont pas fournis")
+                raise ValidationError(f"Certaines notes dans {anonymous_id.name} ne sont pas fournis.")
 
     def create(self, values):
         res = super().create(values)

@@ -68,13 +68,13 @@ class DailyAttendanceFilterWizard(models.TransientModel):
     def _check_punching_day(self):
         for record in self:
             if record.end_punching_day < record.start_punching_day:
-                raise ValidationError("La date de fin doit être supérieure à la date de début")
+                raise ValidationError(f"La date de fin doit être supérieure à la date de début.")
 
     @api.constrains('start_punching_time', 'end_punching_time')
     def _check_punching_time(self):
         for record in self:
             if record.end_punching_time < record.start_punching_time:
-                raise ValidationError("La date de fin doit être supérieure à la date de début")
+                raise ValidationError(f"La date de fin doit être supérieure à la date de début.")
 
     @staticmethod
     def convert_datetime_from_utc(dt):
