@@ -468,8 +468,8 @@ class TeacherTimetableAttendance(models.TransientModel):
 
         for payslip in key_payslips.values():
             if not payslip['timetable_id']:
-                payslip_timetables = timetables.filtered(lambda rec: rec.employee_id.id == payslip['employee_id'] and rec.date == payslip['date'] and rec.start_time == payslip['start_time'] and rec.end_time == payslip['end_time'])
-                payslip_timetables = list(payslip_timetables)
+                payslip_timetables = [timetable for timetable in timetables if ('timetable_id' in timetable and timetable['employee_id'] == payslip['employee_id'] and timetable['date'] == payslip['date'] and TeacherTimetableAttendance.convert_time_to_float(timetable['start_time']) == payslip['start_time'] and TeacherTimetableAttendance.convert_time_to_float(timetable['end_time']) == payslip['end_time'])]
+                # payslip_timetables = list(payslip_timetables)
                 if len(payslip_timetables) > 0:
                     payslip['timetable_id'] = payslip_timetables[0].id
                     timetable_ids.append(payslip['timetable_id'])
@@ -592,4 +592,15 @@ class TeacherTimetableAttendance(models.TransientModel):
         tm = ':'.join(tm)
         if has_second:
             tm = '{}:00'.format(tm)
+        return tm
+
+    @staticmethod
+    def convert_time_to_float(tm):
+        tm = str(tm)
+        tm = tm.split(':')
+        tm = tm[0:2]
+        tm = '.'.join(tm)
+        tm = eval(tm)
+        tm = float(tm)
+        tm = round(tm, 2)
         return tm
