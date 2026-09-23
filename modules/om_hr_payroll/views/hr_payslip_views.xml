@@ -292,8 +292,7 @@
                             </page>
                             <page string="Details By Salary Rule Category">
                                 <field name="details_by_salary_rule_category"
-                                       context="{'search_default_category_id':1}"
-                                       domain="[('appears_on_payslip', '=', True)]">
+                                       context="{'search_default_category_id':1}" domain="[('appears_on_payslip', '=', True)]">
                                     <tree string="Payslip Lines" decoration-info="total == 0">
                                         <field name="category_id"/>
                                         <field name="name"/>

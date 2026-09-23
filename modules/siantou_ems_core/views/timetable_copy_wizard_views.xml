@@ -8,8 +8,8 @@
                 <form string="Copie des emplois du temps">
                     <group>
                         <field name="source_year_id" options="{'no_create': True}"/>
-                        <field name="semester_id" options="{'no_create': True}" domain="[('year_id', '=', source_year_id)]"/>
-                        <field name="group_id" options="{'no_create': True}" domain="['|', '|', ('create_uid', '=', uid), ('read_user_ids', '=', uid), ('write_user_ids', '=', uid)]"/>
+                        <field name="group_id" options="{'no_create': True}" domain="[('year_id', '=', source_year_id), '|', '|', ('create_uid', '=', uid), ('read_user_ids', '=', uid), ('write_user_ids', '=', uid)]"/>
+                        <field name="semester_id"/>
                         <field name="school_id_domain" invisible="1"/>
                         <field name="school_id" options="{'no_create': True}" domain="school_id_domain"/>
                         <field name="cycle_id_domain" invisible="1"/>
