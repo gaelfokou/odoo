@@ -456,12 +456,12 @@ class HrEmployee(models.Model):
         }
 
     def _default_year(self):
-            year = self.env['siantou.ems.core.year'].sudo().search([
-                ('active_user_ids', '=', self.env.user.id),
-            ], limit=1)
-            if not year:
-                year = self.env['siantou.ems.core.year'].sudo().search([('is_active', '=', True)], limit=1)
-            return year
+        year = self.env['siantou.ems.core.year'].sudo().search([
+            ('active_user_ids', '=', self.env.user.id),
+        ], limit=1)
+        if not year:
+            year = self.env['siantou.ems.core.year'].sudo().search([('is_active', '=', True)], limit=1)
+        return year
 
     def action_open_filter(self):
         view_id = self.env.ref('siantou_ems_core.teacher_filter_wizard').id

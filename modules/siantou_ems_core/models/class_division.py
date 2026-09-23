@@ -109,12 +109,12 @@ class EducationClass(models.Model):
     school_id = fields.Many2one('siantou.ems.core.school', string='École', required=True)
 
     def _default_year(self):
-            year = self.env['siantou.ems.core.year'].sudo().search([
-                ('active_user_ids', '=', self.env.user.id),
-            ], limit=1)
-            if not year:
-                year = self.env['siantou.ems.core.year'].sudo().search([('is_active', '=', True)], limit=1)
-            return year
+        year = self.env['siantou.ems.core.year'].sudo().search([
+            ('active_user_ids', '=', self.env.user.id),
+        ], limit=1)
+        if not year:
+            year = self.env['siantou.ems.core.year'].sudo().search([('is_active', '=', True)], limit=1)
+        return year
 
     year_id = fields.Many2one(
         'siantou.ems.core.year',
@@ -1391,7 +1391,7 @@ class EducationClass(models.Model):
             'view_id': view_id,
             'target': 'new',
             'context': {
-                'default_source_year_id': self.env['siantou.ems.core.year'].search([('is_active', '=', True)], limit=1).id,
+                'default_source_year_id': self._default_year().id,
             },
         }
 

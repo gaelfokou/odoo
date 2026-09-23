@@ -39,12 +39,12 @@ class TimetableGroupCopyWizard(models.TransientModel):
     _description = 'Copie des versions d\'emploi du temps'
 
     def _default_year(self):
-            year = self.env['siantou.ems.core.year'].sudo().search([
-                ('active_user_ids', '=', self.env.user.id),
-            ], limit=1)
-            if not year:
-                year = self.env['siantou.ems.core.year'].sudo().search([('is_active', '=', True)], limit=1)
-            return year
+        year = self.env['siantou.ems.core.year'].sudo().search([
+            ('active_user_ids', '=', self.env.user.id),
+        ], limit=1)
+        if not year:
+            year = self.env['siantou.ems.core.year'].sudo().search([('is_active', '=', True)], limit=1)
+        return year
 
     source_year_id = fields.Many2one(
         'siantou.ems.core.year',
