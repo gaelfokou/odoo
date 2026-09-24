@@ -112,15 +112,17 @@ class TeacherFilterWizard(models.TransientModel):
             ]
             record.level_id_domain = domain
 
-    @api.depends('year_id', 'school_id', 'level_id', 'cycle_id', 'type_cour')
+    @api.depends('year_id', 'school_id', 'cycle_id', 'level_id', 'type_cour')
     def _compute_class_domain(self):
         for record in self:
             domain = [
                 ('year_id', '=', record.year_id.id),
                 ('school_id', '=', record.school_id.id),
-                ('level_id', '=', record.level_id.id),
-                ('cycle_id', '=', record.cycle_id.id)
             ]
+            if record.cycle_id.id:
+                domain.append(('cycle_id', '=', record.cycle_id.id))
+            if record.level_id.id:
+                domain.append(('level_id', '=', record.level_id.id))
             if record.type_cour:
                 domain.append(('type_cour', '=', record.type_cour))
             classes = self.env['siantou.ems.core.class'].search(domain)

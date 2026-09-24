@@ -29,14 +29,6 @@ class Level(models.Model):
         string='Lots du niveau'
     )
 
-    semester_ids = fields.Many2many(
-        'siantou.ems.core.year.semester',
-        'semester_level_rel',
-        'level_id',
-        'semester_id',
-        string='Semestres',
-    )
-
     _sql_constraints = [
         ('unique_code', 'unique(code)', 'Le code du niveau doit être unique.'),
     ]

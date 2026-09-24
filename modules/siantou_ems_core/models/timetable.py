@@ -680,7 +680,7 @@ class Timetable(models.Model):
 
     class_id_domain = fields.Binary(compute='_compute_class_domain', default=[])
 
-    @api.depends('year_id', 'school_id', 'level_id', 'cycle_id', 'group_id')
+    @api.depends('year_id', 'school_id', 'cycle_id', 'level_id', 'group_id')
     def _compute_class_domain(self):
         for record in self:
             department_ids = record.group_id.department_ids
@@ -693,22 +693,21 @@ class Timetable(models.Model):
                 domain.append(('specialty_id.department_id', 'in', department_ids.ids))
             if len(class_ids.ids) > 0:
                 domain.append(('id', 'in', class_ids.ids))
-            if record.level_id.id:
-                domain.append(('level_id', '=', record.level_id.id))
             if record.cycle_id.id:
                 domain.append(('cycle_id', '=', record.cycle_id.id))
+            if record.level_id.id:
+                domain.append(('level_id', '=', record.level_id.id))
             classes = self.env['siantou.ems.core.class'].search(domain)
             domain = [
                 ('id', 'in', classes.ids),
             ]
             record.class_id_domain = domain
 
-    @api.depends('cycle_id', 'semester_id')
+    @api.depends('cycle_id')
     def _compute_level_domain(self):
         for record in self:
             domain = [
                 ('cycle_ids', '=', record.cycle_id.id),
-                ('semester_ids', '=', record.semester_id.id)
             ]
             record.level_id_domain = domain
 
@@ -1758,25 +1757,24 @@ class TimetableGroup(models.Model):
 
     class_id_domain = fields.Binary(compute='_compute_class_domain', default=[])
 
-    @api.depends('semester_id')
+    @api.depends('year_id')
     def _compute_school_domain(self):
         for record in self:
             domain = [
-                ('year_id', '=', record.semester_id.year_id.id),
+                ('year_id', '=', record.year_id.id),
             ]
             record.school_id_domain = domain
 
-    @api.depends('school_ids', 'semester_id')
+    @api.depends('school_ids')
     def _compute_department_domain(self):
         for record in self:
             school_ids = record.school_ids
             domain = [
                 ('school_id', 'in', school_ids.ids),
-                ('year_id', '=', record.semester_id.year_id.id),
             ]
             record.department_id_domain = domain
 
-    @api.depends('school_ids', 'department_ids', 'semester_id')
+    @api.depends('school_ids', 'department_ids')
     def _compute_class_domain(self):
         for record in self:
             school_ids = record.school_ids
@@ -1786,8 +1784,6 @@ class TimetableGroup(models.Model):
             ]
             if len(department_ids.ids) > 0:
                 domain.append(('specialty_id.department_id', 'in', department_ids.ids))
-            if record.semester_id.id:
-                domain.append(('year_id', '=', record.semester_id.year_id.id))
             record.class_id_domain = domain
 
     class_ids = fields.Many2many('siantou.ems.core.class', 'class_group_rel', 'group_id', 'class_id', string='Classes')

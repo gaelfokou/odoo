@@ -123,9 +123,6 @@ class TimetableGroupCopyWizard(models.TransientModel):
                     'end_time': end_time,
                     'year_id': self.destination_year_id.id,
                 })
-                level_ids = [(4, level_id.id) for level_id in group_id.semester_id.level_ids]
-                # semester_id.level_ids = level_ids
-                semester_id.write({'level_ids': level_ids })
 
             unique_string = datetime.now().strftime("%Y%m%d%H%M%S")
             name = '{} copie {}'.format(group_id.name, unique_string)

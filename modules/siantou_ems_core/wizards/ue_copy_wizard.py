@@ -142,15 +142,17 @@ class UeCopyWizard(models.TransientModel):
             ]
             record.level_id_domain = domain
 
-    @api.depends('source_year_id', 'school_id', 'level_id', 'cycle_id', 'type_cour')
+    @api.depends('source_year_id', 'school_id', 'cycle_id', 'level_id', 'type_cour')
     def _compute_source_class_domain(self):
         for record in self:
             domain = [
                 ('year_id', '=', record.source_year_id.id),
                 ('school_id', '=', record.school_id.id),
-                ('level_id', '=', record.level_id.id),
-                ('cycle_id', '=', record.cycle_id.id)
             ]
+            if record.cycle_id.id:
+                domain.append(('cycle_id', '=', record.cycle_id.id))
+            if record.level_id.id:
+                domain.append(('level_id', '=', record.level_id.id))
             if record.type_cour:
                 domain.append(('type_cour', '=', record.type_cour))
             classes = self.env['siantou.ems.core.class'].search(domain)
@@ -159,15 +161,17 @@ class UeCopyWizard(models.TransientModel):
             ]
             record.source_class_id_domain = domain
 
-    @api.depends('destination_year_id', 'school_id', 'level_id', 'cycle_id', 'type_cour')
+    @api.depends('destination_year_id', 'school_id', 'cycle_id', 'level_id', 'type_cour')
     def _compute_destination_class_domain(self):
         for record in self:
             domain = [
                 ('year_id', '=', record.destination_year_id.id),
                 ('school_id', '=', record.school_id.id),
-                ('level_id', '=', record.level_id.id),
-                ('cycle_id', '=', record.cycle_id.id)
             ]
+            if record.cycle_id.id:
+                domain.append(('cycle_id', '=', record.cycle_id.id))
+            if record.level_id.id:
+                domain.append(('level_id', '=', record.level_id.id))
             if record.type_cour:
                 domain.append(('type_cour', '=', record.type_cour))
             classes = self.env['siantou.ems.core.class'].search(domain)
@@ -406,9 +410,6 @@ class UeCopyWizard(models.TransientModel):
                                 'end_time': end_time,
                                 'year_id': self.destination_year_id.id,
                             })
-                            level_ids = [(4, level_id.id) for level_id in source_semester_id.level_ids]
-                            # destination_semester_id.level_ids = level_ids
-                            destination_semester_id.write({'level_ids': level_ids })
 
                         destination_semester_ids.append(destination_semester_id)
 

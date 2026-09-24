@@ -155,16 +155,15 @@ class TimetableCopyWizard(models.TransientModel):
 
     level_id_domain = fields.Binary(compute='_compute_level_domain', default=[])
 
-    @api.depends('cycle_id', 'semester_id')
+    @api.depends('cycle_id')
     def _compute_level_domain(self):
         for record in self:
             domain = [
                 ('cycle_ids', '=', record.cycle_id.id),
-                ('semester_ids', '=', record.semester_id.id)
             ]
             record.level_id_domain = domain
 
-    @api.depends('source_year_id', 'school_id', 'level_id', 'cycle_id', 'group_id', 'type_cour')
+    @api.depends('source_year_id', 'school_id', 'cycle_id', 'level_id', 'group_id', 'type_cour')
     def _compute_source_class_domain(self):
         for record in self:
             department_ids = record.group_id.department_ids
@@ -177,10 +176,10 @@ class TimetableCopyWizard(models.TransientModel):
                 domain.append(('specialty_id.department_id', 'in', department_ids.ids))
             if len(class_ids.ids) > 0:
                 domain.append(('id', 'in', class_ids.ids))
-            if record.level_id.id:
-                domain.append(('level_id', '=', record.level_id.id))
             if record.cycle_id.id:
                 domain.append(('cycle_id', '=', record.cycle_id.id))
+            if record.level_id.id:
+                domain.append(('level_id', '=', record.level_id.id))
             if record.type_cour:
                 domain.append(('type_cour', '=', record.type_cour))
             classes = self.env['siantou.ems.core.class'].search(domain)
@@ -189,7 +188,7 @@ class TimetableCopyWizard(models.TransientModel):
             ]
             record.source_class_id_domain = domain
 
-    @api.depends('destination_year_id', 'school_id', 'level_id', 'cycle_id', 'group_id', 'type_cour')
+    @api.depends('destination_year_id', 'school_id', 'cycle_id', 'level_id', 'group_id', 'type_cour')
     def _compute_destination_class_domain(self):
         for record in self:
             department_ids = record.group_id.department_ids
@@ -202,10 +201,10 @@ class TimetableCopyWizard(models.TransientModel):
                 domain.append(('specialty_id.department_id', 'in', department_ids.ids))
             if len(class_ids.ids) > 0:
                 domain.append(('id', 'in', class_ids.ids))
-            if record.level_id.id:
-                domain.append(('level_id', '=', record.level_id.id))
             if record.cycle_id.id:
                 domain.append(('cycle_id', '=', record.cycle_id.id))
+            if record.level_id.id:
+                domain.append(('level_id', '=', record.level_id.id))
             if record.type_cour:
                 domain.append(('type_cour', '=', record.type_cour))
             classes = self.env['siantou.ems.core.class'].search(domain)
@@ -550,9 +549,6 @@ class TimetableCopyWizard(models.TransientModel):
                             'end_time': end_time,
                             'year_id': self.destination_year_id.id,
                         })
-                        level_ids = [(4, level_id.id) for level_id in timetable_id.semester_id.level_ids]
-                        # semester_id.level_ids = level_ids
-                        semester_id.write({'level_ids': level_ids })
 
                     group_id = self.env['siantou.ems.timetable.group'].search([
                         ('group_name', '=', timetable_id.group_id.group_name),
