@@ -2,7 +2,13 @@
 {
     'name': "SIANTOU - EMS Core App",
     'category': 'Education',
-    'version': '17.0.0.0',
+    'summary': 'Module de gestion de l\'université',
+    'description': """
+        Module pour gérer les données de l'université
+    """,
+    'version': '1.0',
+    'author': 'ing_siantou <christianmeli81@gmail.com,gaelfokou.9@gmail.com,lndronana@gmail.com,anoudjom@gmail.com,stephineivy@gmail.com>',
+    'website': 'http://www.siantou.net',
     'depends': ['base', 'web', 'sale', 'board', 'hr', 'account', 'mail'],
     'data': [
         # Fichiers de datas
