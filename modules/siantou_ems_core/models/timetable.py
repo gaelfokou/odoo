@@ -1670,16 +1670,25 @@ class TimetableGroup(models.Model):
         string='Emplois du temps'
     )
 
-    semester_id = fields.Many2one(
-        'siantou.ems.core.year.semester',
-        string='Semestre',
-        required=True
-    )
+    def _default_year(self):
+        year = self.env['siantou.ems.core.year'].sudo().search([
+            ('active_user_ids', '=', self.env.user.id),
+        ], limit=1)
+        if not year:
+            year = self.env['siantou.ems.core.year'].sudo().search([('is_active', '=', True)], limit=1)
+        return year
 
     year_id = fields.Many2one(
         'siantou.ems.core.year',
         string='Année académique',
-        related='semester_id.year_id',
+        default=_default_year,
+        required=True
+    )
+
+    semester_id = fields.Many2one(
+        'siantou.ems.core.year.semester',
+        string='Semestre',
+        required=True
     )
 
     is_active = fields.Boolean(string='Actif ?', default=False)

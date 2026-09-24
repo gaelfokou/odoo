@@ -23,6 +23,7 @@
                             groups="siantou_ems_core.group_timetable_open_move"/>
                     </header>
                     <field name="name"/>
+                    <field name="year_id"/>
                     <field name="semester_id"/>
                     <field name="start_date"/>
                     <field name="end_date"/>
@@ -59,6 +60,7 @@
                             groups="siantou_ems_core.group_timetable_open_move"/>
                     </header>
                     <field name="name"/>
+                    <field name="year_id"/>
                     <field name="semester_id"/>
                     <field name="start_date"/>
                     <field name="end_date"/>
@@ -92,7 +94,8 @@
                             <field name="is_readonly" invisible="1"/>
                             <field name="group_name"/>
                             <field name="description" readonly="is_readonly == True"/>
-                            <field name="semester_id" options="{'no_create': True}" readonly="is_readonly == True"/>
+                            <field name="year_id" options="{'no_create': True}"/>
+                            <field name="semester_id" options="{'no_create': True}" readonly="is_readonly == True" domain="[('year_id', '=', year_id)]"/>
                             <field name="is_submit" invisible="1"/>
                             <field name="group_parent_id" options="{'no_create': True}" invisible="is_submit == False"/>
                             <field name="group_child_ids" options="{'no_create': True}" readonly="id != False" invisible="is_submit == True" widget="many2many_tags"/>
@@ -141,7 +144,8 @@
                             <field name="is_readonly" invisible="1"/>
                             <field name="group_name"/>
                             <field name="description" readonly="is_readonly == True"/>
-                            <field name="semester_id" options="{'no_create': True}" readonly="is_readonly == True"/>
+                            <field name="year_id" options="{'no_create': True}"/>
+                            <field name="semester_id" options="{'no_create': True}" readonly="is_readonly == True" domain="[('year_id', '=', year_id)]"/>
                             <field name="is_submit" invisible="1"/>
                             <field name="group_parent_id" options="{'no_create': True}" invisible="is_submit == False"/>
                             <field name="group_child_ids" options="{'no_create': True}" readonly="id != False" invisible="is_submit == True" widget="many2many_tags"/>
