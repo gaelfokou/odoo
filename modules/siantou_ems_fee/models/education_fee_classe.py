@@ -52,7 +52,7 @@ class EducationFeeClass(models.Model):
 
     @api.model
     def create(self, valeurs):
-        valeurs['name'] = 'SCOLARITE'
+        valeurs['name'] = 'SCOLARITÉ'
         return super(EducationFeeClass, self).create(valeurs)
 
     def action_draft(self):

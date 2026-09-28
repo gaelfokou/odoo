@@ -43,7 +43,7 @@
 
                             <div class="row">
                                 <div class="col-12 text-center">
-                                    <h2>FACTURE SCOLARITE</h2>
+                                    <h2>FACTURE SCOLARITÉ</h2>
                                     <span>N° <span t-field="o.matricule" /><span
                                         t-field="o.class_id.academic_year_id.name" /></span>
                                 </div>

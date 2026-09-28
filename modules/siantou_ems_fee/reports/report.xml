@@ -7,7 +7,7 @@
             <field name="report_type">qweb-pdf</field>
             <field name="report_name">siantou_ems_fee.report_fees_classe</field>
             <field name="report_file">siantou_ems_fee.report_fees_classe</field>
-            <field name="print_report_name">'FRAIS DE SCOLARITE - %s' % (object.name)</field>
+            <field name="print_report_name">'FRAIS DE SCOLARITÉ - %s' % (object.name)</field>
             <field name="binding_model_id" ref="model_education_fee_classe"/>
         </record>
 
@@ -17,7 +17,7 @@
             <field name="report_type">qweb-pdf</field>
             <field name="report_name">siantou_ems_fee.report_student_fees</field>
             <field name="report_file">siantou_ems_fee.report_student_fees</field>
-            <field name="print_report_name">'FACTURE SCOLARITE DE - %s' % (object.name)</field>
+            <field name="print_report_name">'FACTURE SCOLARITÉ DE - %s' % (object.name)</field>
             <field name="binding_model_id" ref="model_education_student"/>
         </record>
     </data>

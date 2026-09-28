@@ -13,7 +13,7 @@
                                     <tr >
                                         <td style="border: none;padding: 4px;text-align: center; width:40%;font-size: 15px;">
                                             INSTITUT UNIVERSITAIRE SIANTOU <br/>
-                                            ECOLE SUPERIEUR DE MANAGEMENT, <br/>
+                                            ÉCOLE SUPERIEUR DE MANAGEMENT, <br/>
                                             DE GESTION ET DE <br/>
                                             <small>
                                                 B.P. : 04 Yaoundé Cameroun <br/>
@@ -43,7 +43,7 @@
                             </table>
                             <center>
                                 <h2 style="text-decoration:underline;font-size: 15px;margin-top:25px">
-                                    RECU DE CAISSE SCOLARITE N° <span t-esc="payment_id['name']"/>
+                                    RECU DE CAISSE SCOLARITÉ N° <span t-esc="payment_id['name']"/>
                                     DU <span t-esc="date"
                                             t-options='{"widget": "date","format": "d/MM/Y"}' />
                                 </h2>

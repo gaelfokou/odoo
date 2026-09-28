@@ -12,7 +12,7 @@
                                     <td style="border: 1px solid;padding: 4px;text-align: center; width:30%; vertical-align:top; font-size: 0.8em;">
                                         INSTITUT UNIVERSITAIRE SIANTOU
                                         <br/>
-                                        ECOLE SUPERIEUR DE MANAGEMENT,
+                                        ÉCOLE SUPERIEUR DE MANAGEMENT,
                                         <br/>
                                         DE GESTION ET DE
                                         <br/>
@@ -57,7 +57,7 @@
                         </table>
                         <center>
                             <b style="text-decoration:underline">
-                                RECU DE CAISSE SCOLARITE N°
+                                RECU DE CAISSE SCOLARITÉ N°
                                 <span t-esc="data['info_entete']['numero_recu']"/>
                                 DU
                                 <span t-esc="data['info_entete']['date']"
