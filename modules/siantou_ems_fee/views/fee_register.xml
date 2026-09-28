@@ -10,7 +10,7 @@
             <field name="model">account.move.line</field>
             <field eval="2" name="priority"/>
             <field name="arch" type="xml">
-                <form string="Journal Item" create="false">
+                <form string="Journal Item" create="0">
                     <sheet>
                         <field name="company_id" invisible="1"/>
                         <field name="parent_state" invisible="1"/>
@@ -151,7 +151,7 @@
             <field name="model">account.move.line</field>
             <field eval="100" name="priority"/>
             <field name="arch" type="xml">
-                <tree string="Journal Items" create="false" edit="false" sample="1">
+                <tree string="Journal Items" create="0" edit="false" sample="1">
                     <field name="date" optional="show"/>
                     <field name="company_id" groups="base.group_multi_company"/>
                     <field name="journal_id"/>
@@ -186,7 +186,7 @@
             <field name="model">account.move.line</field>
             <field eval="1" name="priority"/>
             <field name="arch" type="xml">
-                <tree string="Journal Items" create="false" expand="context.get('expand', False)" multi_edit="1">
+                <tree string="Journal Items" create="0" expand="context.get('expand', False)" multi_edit="1">
                     <field name="date" optional="show" readonly="1"/>
                     <field name="company_id" groups="base.group_multi_company" options="{'no_create': True}"
                            optional="show"/>
