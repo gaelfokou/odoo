@@ -150,7 +150,7 @@
         </template>
 
         <record id="paperformat_fee_payment" model="report.paperformat">
-            <field name="name">Format-Paiement-inscription-étudiant</field>
+            <field name="name">Format-paiement-inscription-étudiant</field>
             <field name="default" eval="True"/>
             <field name="format">custom</field>
             <field name="page_height">210</field>
