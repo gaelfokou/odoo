@@ -7,7 +7,7 @@ const { Component, onWillStart, useRef, onMounted } = owl
 export class ChartRenderer extends Component {
     setup() {
         this.chartRef = useRef("chart")
-        onWillStart(async ()=>{
+        onWillStart(async () => {
             await loadJS("https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js")
         })
 
@@ -19,14 +19,14 @@ export class ChartRenderer extends Component {
         {
           type: this.props.type,
           data: {
-            labels: this.props.datas.map(d=>d.name),
-              datasets: [
-                {
-                  label: 'Données',
-                  data: this.props.datas.map(d=>d.value),
-                  borderWidth: 1
-                }
-              ]
+            labels: this.props.datas.map(d => d.name),
+            datasets: [
+              {
+                label: 'Données',
+                data: this.props.datas.map(d => d.value),
+                borderWidth: 1
+              }
+            ]
           },
           options: {
             scales: {

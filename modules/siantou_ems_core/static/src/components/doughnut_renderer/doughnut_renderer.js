@@ -7,7 +7,7 @@ const { Component, onWillStart, useRef, onMounted } = owl
 export class DoughnutRenderer extends Component {
     setup() {
       this.doughRef = useRef("doughRef")
-      onWillStart(async ()=>{
+      onWillStart(async () => {
           await loadJS("https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js")
       })
       onMounted(()=>this.renderChart())
@@ -18,14 +18,14 @@ export class DoughnutRenderer extends Component {
           {
             type: this.props.type,
             data: {
-              labels: this.props.datas.map(d=>d.name),
-                datasets: [
-                  {
-                    label: 'Effectif',
-                    data: this.props.datas.map(d=>d.value),
-                    hoverOffset: 4
-                  }
-                ]
+              labels: this.props.datas.map(d => d.name),
+              datasets: [
+                {
+                  label: 'Effectif',
+                  data: this.props.datas.map(d => d.value),
+                  hoverOffset: 4
+                }
+              ]
             },
             options: {
               responsive: true,
