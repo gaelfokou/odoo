@@ -63,7 +63,7 @@ export class OwlRequestTrackDashboard extends Component {
             }
         })
 
-        this.orm = useService("orm")
+        this.orm = useService("orm");
         this.action = useService("action")
 
         onWillStart(async () => {

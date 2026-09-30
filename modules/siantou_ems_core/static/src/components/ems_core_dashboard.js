@@ -42,9 +42,9 @@ export class OwlSalesDashboard extends Component {
             groupData: null
         })
 
-        this.orm = useService("orm")
-        this.user = useService("user")
-        this.notification = useService("notification")
+        this.orm = useService("orm");
+        this.user = useService("user");
+        this.notification = useService("notification");
 
         onWillStart(async () => {
             let self = this;
@@ -127,6 +127,12 @@ export class OwlSalesDashboard extends Component {
 
     async onChangeYear() {
 		let self = this;
+        self.state.students.value = 0;
+        self.state.cycles.value = 0;
+        self.state.ecoles.value = 0;
+        self.state.campus.value = 0;
+        self.state.teachers.value = 0;
+        self.state.filieres.value = 0;
         try {
             await self.loadYears();
             await self.loadAllData();
