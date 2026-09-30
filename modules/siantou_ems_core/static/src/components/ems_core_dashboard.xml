@@ -38,13 +38,13 @@
                         <div class="col-md-4 m-0 p-0">
                             <div class="shadow-sm border m-2 p-4 bg-white">
                                 <div class="d-flex align-items-center justify-content-between">
-                                    <h3 class="text-primary fw-bold">Enseignants</h3>
+                                    <h3 class="text-primary fw-bold">Effectif par enseignant</h3>
                                     <div class="px-3 py-1 bg-primary cursor-pointer">
                                         <span class="fa fa-arrow-right text-white"/>
                                     </div>
                                 </div>
                                 <t t-if="state.doughTearchers.length > 0">
-                                    <DoughnutRenderer type="'doughnut'" title="'Enseignants'" datas="state.doughTearchers"/>
+                                    <DoughnutRenderer type="'doughnut'" title="'Effectif par enseignant'" datas="state.doughTearchers"/>
                                 </t>
                             </div>
                         </div>
@@ -56,8 +56,8 @@
                                         <span class="fa fa-arrow-right text-white"/>
                                     </div>
                                 </div>
-                                <t t-if="state.doughEcoles.length > 0">
-                                    <DoughnutRenderer type="'doughnut'" title="'Effectif par école'" datas="state.doughEcoles"/>
+                                <t t-if="state.dataSchools.length > 0">
+                                    <DoughnutRenderer type="'doughnut'" title="'Effectif par école'" datas="state.dataSchools"/>
                                 </t>
                             </div>
                         </div>

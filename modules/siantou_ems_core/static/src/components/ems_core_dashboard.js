@@ -37,7 +37,7 @@ export class OwlSalesDashboard extends Component {
             datas: [],
             doughTearchers: [],
             doughFilieres: [],
-            doughEcoles: [],
+            dataSchools: [],
             userData: null,
             groupData: null
         })
@@ -114,7 +114,7 @@ export class OwlSalesDashboard extends Component {
                         self.getBarChartDatas(),
                         self.getTearcherDatas(),
                         self.getFiliereDatas(),
-                        self.getEcoleDatas()
+                        self.getSchoolsDatas()
                     ]);
                 }
                 console.log('----------- tototototototo has_group_dashboard_admin', group.has_group_dashboard_admin);
@@ -187,8 +187,8 @@ export class OwlSalesDashboard extends Component {
             await cycles.forEach(async (cycle) => {
                 let studentCount = await this.orm.searchCount("oe.school.student", [["cycle_id", "=", cycle.id]])
                 this.state.datas.push({
-                    name:cycle.name,
-                    value:studentCount
+                    name: cycle.name,
+                    value: studentCount
                 })
             })
         } catch(error) {
@@ -208,11 +208,11 @@ export class OwlSalesDashboard extends Component {
             ]);
             self.state.doughTearchers.push({
                 name:"Enseignants vacataires",
-                value:teacher_vac
+                value: teacher_vac
             })
             self.state.doughTearchers.push({
                 name:"Enseignants permanents",
-                value:teacher_perm
+                value: teacher_perm
             })
         } catch(error) {
             console.log("Erreur lors du chargement des données :", error);
@@ -231,8 +231,8 @@ export class OwlSalesDashboard extends Component {
                     nbre += classe.student_ids.length;
                 })
                 this.state.doughFilieres.push({
-                    name:filiere.name,
-                    value:nbre
+                    name: filiere.name,
+                    value: nbre
                 })
             })
         } catch(error) {
@@ -241,22 +241,19 @@ export class OwlSalesDashboard extends Component {
         }
     }
 
-    async getEcoleDatas() {
+    async getSchoolsDatas() {
 		let self = this;
         try {
             const ecoles = await this.orm.searchRead("siantou.ems.core.school", [])
             await ecoles.forEach(async (ecole) => {
                 let nbre = 0;
-                const filieres = await this.orm.searchRead("siantou.ems.core.field_of_study", [["school_id", "=", ecole.id]])
-                await filieres.forEach(async (filiere) => {
-                    const classes = await this.orm.searchRead("siantou.ems.core.class", [["field_of_study_id", "=", filiere.id]])
-                    await classes.forEach(async (classe) => {
-                        nbre += classe.student_ids.length;
-                    })
+                const classes = await self.orm.searchRead("siantou.ems.core.class", [["school_id", "=", ecole.id]]);
+                await classes.forEach(async (classe) => {
+                    nbre += classe.number_of_student;
                 })
-                this.state.doughEcoles.push({
-                    name:ecole.name,
-                    value:nbre
+                this.state.dataSchools.push({
+                    name: ecole.name,
+                    value: nbre
                 })
             })
         } catch(error) {
