@@ -86,7 +86,9 @@
                                         <span class="fa fa-arrow-right text-white"/>
                                     </div>
                                 </div>
-                                <ChartRenderer type="'bar'" title="'Effectif par cyle'" datas="state.datas"/>
+                                <t t-if="state.datas.length > 0">
+                                    <ChartRenderer type="'bar'" title="'Effectif par cyle'" datas="state.datas"/>
+                                </t>
                             </div>
                         </div>
                     </div>
