@@ -153,7 +153,7 @@
                                 invisible="state != 'draft'"
                                 class="oe_highlight"/>
                         <button string="Refund" name="refund_sheet"
-                                invisible="state not in ('confirm','done')"  type='object'/>
+                                invisible="state not in ('confirm','done')" type='object'/>
                         <button string="Set to Draft" name="action_payslip_draft" type="object"
                                 invisible="state != 'cancel'"/>
                         <button string="Compute Sheet" name="compute_sheet" type="object" invisible="state != 'draft'"

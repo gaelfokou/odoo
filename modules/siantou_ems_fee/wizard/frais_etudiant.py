@@ -6,7 +6,7 @@ _logger = logging.getLogger("Logger ==========")
 
 # class RapportFraisEtudiant(models.TransientModel):
 # 	_name = 'wizard.frais.etudiant'
-# 	_description = "Impression de la liste des Étudiant"
+# 	_description = '$1'
 
 # 	classe_ids = fields.Many2many('siantou.ems.core.field_of_study, string='Classes', required=True)
 # 	frais = fields.Selection([('glo', 'Global'), ('cat', 'Par Catégorie')],
@@ -22,7 +22,7 @@ _logger = logging.getLogger("Logger ==========")
 
 class ScolariteEtudiant(models.TransientModel):
 	_name = 'wizard.etudiant.scolarite'
-	_description = "Impression de la liste des Étudiant"
+	_description = '$1'
 
 	student_id = fields.Many2one('oe.school.student', string='Étudiant',create=False,required=True)
 	scolarite = fields.Selection([('normal', 'Normale'), ('reprise', 'Avec reprise'),
