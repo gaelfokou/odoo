@@ -707,7 +707,7 @@
                                     </th>
                                 </tr>
                             </thead>
-                            <t t-set="semesters" t-value="examscores[classe]['data'].keys()"/>
+                            <t t-set="semesters" t-value="dict(sorted(examscores[classe]['data'].items(), key=lambda item: item[1]['name'] if item[1]['name'] else ''))"/>
                             <t t-foreach="semesters" t-as="semester">
                                 <tbody>
                                     <tr>

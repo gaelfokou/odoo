@@ -686,16 +686,23 @@ class PortalAccount(portal.CustomerPortal):
                                                     all_examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['data']['rcc_note'] = d['rcc_note']
                                                     all_examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['data']['rcc_status'] = d['rcc_status']
         for key_class in all_examscores.keys():
+            all_examscores[key_class]['data'] = dict(sorted(all_examscores[key_class]['data'].items(), key=lambda item: item[1]['name'] if item[1]['name'] else ''))
             for key_semester in all_examscores[key_class]['data'].keys():
                 for key_student in all_examscores[key_class]['data'][key_semester]['data'].keys():
                     for key_subject in all_examscores[key_class]['data'][key_semester]['data'][key_student]['data'].keys():
-                        for d in all_examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['data']:
-                            d['exam_type'] = TYPE_EXAMSCORE[d['exam_type']]
-                            d['status'] = STATUS_EXAMSCORE[d['status']]
-                            d['cc_status'] = STATUS_SUBJECTSCORE[d['cc_status']] if d['cc_status'] else None
-                            d['sn_status'] = STATUS_SUBJECTSCORE[d['sn_status']] if d['sn_status'] else None
-                            d['rcc_status'] = STATUS_SUBJECTSCORE[d['rcc_status']] if d['rcc_status'] else None
-                            d['rsn_status'] = STATUS_SUBJECTSCORE[d['rsn_status']] if d['rsn_status'] else None
+                        for k, v in all_examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['data'].items():
+                            if k == 'exam_type':
+                                all_examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['data'][k] = TYPE_EXAMSCORE[v]
+                            elif k == 'status':
+                                all_examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['data'][k] = STATUS_EXAMSCORE[v]
+                            elif k == 'cc_status':
+                                all_examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['data'][k] = STATUS_SUBJECTSCORE[v] if v else None
+                            elif k == 'sn_status':
+                                all_examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['data'][k] = STATUS_SUBJECTSCORE[v] if v else None
+                            elif k == 'rcc_status':
+                                all_examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['data'][k] = STATUS_SUBJECTSCORE[v] if v else None
+                            elif k == 'rsn_status':
+                                all_examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['data'][k] = STATUS_SUBJECTSCORE[v] if v else None
         return http.request.render('siantou_ems_portal.siantou_ems_portal_examscore_views',
         {
             'examscores': all_examscores,
