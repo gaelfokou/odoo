@@ -67,7 +67,7 @@ export class OwlRequestTrackDashboard extends Component {
         this.action = useService("action")
 
         onWillStart(async () => {
-            let self = this;
+            const self = this;
             setTimeout(async function() {
                 await self.getRequestTracks();
             }, 2500)
@@ -75,7 +75,7 @@ export class OwlRequestTrackDashboard extends Component {
     }
 
     async getRequestTracks() {
-        let self = this;
+        const self = this;
         Object.keys(self.state).forEach((key_type_request) => {
             Object.keys(self.state[key_type_request].data).forEach(async (key_status) => {
                 console.log(`${key_type_request} - ${key_status} : ${self.state[key_type_request].data[key_status]}`)

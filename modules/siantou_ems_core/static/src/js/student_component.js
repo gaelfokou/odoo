@@ -27,7 +27,7 @@ export class StudentComponent extends Component {
         })
 	}
 	async loadData() {
-		let self = this;
+		const self = this;
         try {
 			await self.orm.call('oe.school.student', 'get_students', [[]]).then(function(students) {
 				self.state.students = students;
