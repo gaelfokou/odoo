@@ -690,19 +690,12 @@ class PortalAccount(portal.CustomerPortal):
             for key_semester in all_examscores[key_class]['data'].keys():
                 for key_student in all_examscores[key_class]['data'][key_semester]['data'].keys():
                     for key_subject in all_examscores[key_class]['data'][key_semester]['data'][key_student]['data'].keys():
-                        for k, v in all_examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['data'].items():
-                            if k == 'exam_type':
-                                all_examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['data'][k] = TYPE_EXAMSCORE[v]
-                            elif k == 'status':
-                                all_examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['data'][k] = STATUS_EXAMSCORE[v]
-                            elif k == 'cc_status':
-                                all_examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['data'][k] = STATUS_SUBJECTSCORE[v] if v else None
-                            elif k == 'sn_status':
-                                all_examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['data'][k] = STATUS_SUBJECTSCORE[v] if v else None
-                            elif k == 'rcc_status':
-                                all_examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['data'][k] = STATUS_SUBJECTSCORE[v] if v else None
-                            elif k == 'rsn_status':
-                                all_examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['data'][k] = STATUS_SUBJECTSCORE[v] if v else None
+                        all_examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['data']['exam_type'] = TYPE_EXAMSCORE[all_examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['data']['exam_type']]
+                        all_examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['data']['status'] = STATUS_EXAMSCORE[all_examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['data']['status']]
+                        all_examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['data']['cc_status'] = STATUS_SUBJECTSCORE[all_examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['data']['cc_status']] if all_examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['data']['cc_status'] else None
+                        all_examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['data']['sn_status'] = STATUS_SUBJECTSCORE[all_examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['data']['sn_status']] if all_examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['data']['sn_status'] else None
+                        all_examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['data']['rcc_status'] = STATUS_SUBJECTSCORE[all_examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['data']['rcc_status']] if all_examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['data']['rcc_status'] else None
+                        all_examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['data']['rsn_status'] = STATUS_SUBJECTSCORE[all_examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['data']['rsn_status']] if all_examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['data']['rsn_status'] else None
         return http.request.render('siantou_ems_portal.siantou_ems_portal_examscore_views',
         {
             'examscores': all_examscores,
