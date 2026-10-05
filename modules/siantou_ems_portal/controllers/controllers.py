@@ -485,14 +485,14 @@ class PortalAccount(portal.CustomerPortal):
             total_structure_amount += schoolfee['structure_frais_amount_total']
             total_rest_amount = total_structure_amount - total_amount
         return http.request.render('siantou_ems_portal.siantou_ems_portal_schoolfee_views',
-                                {
-                                    'schoolfees': schoolfees,
-                                    'page_name': 'schoolfee',
-                                    'schoolfee': 0,
-                                    'total_amount': total_amount,
-                                    'total_structure_amount': total_structure_amount,
-                                    'total_rest_amount': total_rest_amount,
-                                })
+        {
+            'schoolfees': schoolfees,
+            'page_name': 'schoolfee',
+            'schoolfee': 0,
+            'total_amount': total_amount,
+            'total_structure_amount': total_structure_amount,
+            'total_rest_amount': total_rest_amount,
+        })
 
     @http.route(['/my/examscore'], type='http', auth="user", website=True)
     def portal_examscore(self, search='', search_in='all', **kw):
@@ -686,10 +686,10 @@ class PortalAccount(portal.CustomerPortal):
                                                     all_examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['data']['rcc_note'] = d['rcc_note']
                                                     all_examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['data']['rcc_status'] = d['rcc_status']
         for key_class in all_examscores.keys():
-            for key_semester in examscores[key_class]['data'].keys():
-                for key_student in examscores[key_class]['data'][key_semester]['data'].keys():
-                    for key_subject in examscores[key_class]['data'][key_semester]['data'][key_student]['data'].keys():
-                        for d in examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['data']:
+            for key_semester in all_examscores[key_class]['data'].keys():
+                for key_student in all_examscores[key_class]['data'][key_semester]['data'].keys():
+                    for key_subject in all_examscores[key_class]['data'][key_semester]['data'][key_student]['data'].keys():
+                        for d in all_examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['data']:
                             d['exam_type'] = TYPE_EXAMSCORE[d['exam_type']]
                             d['status'] = STATUS_EXAMSCORE[d['status']]
                             d['cc_status'] = STATUS_SUBJECTSCORE[d['cc_status']] if d['cc_status'] else None
@@ -697,11 +697,11 @@ class PortalAccount(portal.CustomerPortal):
                             d['rcc_status'] = STATUS_SUBJECTSCORE[d['rcc_status']] if d['rcc_status'] else None
                             d['rsn_status'] = STATUS_SUBJECTSCORE[d['rsn_status']] if d['rsn_status'] else None
         return http.request.render('siantou_ems_portal.siantou_ems_portal_examscore_views',
-                                {
-                                    'examscores': all_examscores,
-                                    'page_name': 'examscore',
-                                    'examscore': 0,
-                                })
+        {
+            'examscores': all_examscores,
+            'page_name': 'examscore',
+            'examscore': 0,
+        })
 
     @http.route(['/my/paymenthistory'], type='http', auth="user", website=True)
     def portal_paymenthistory(self, search='', search_in='all', **kw):
@@ -729,13 +729,13 @@ class PortalAccount(portal.CustomerPortal):
         total_amount = round(total_amount, 2)
         total_number_of_hours = round(total_number_of_hours, 2)
         return http.request.render('siantou_ems_portal.siantou_ems_portal_paymenthistory_views',
-                                {
-                                    'paymenthistories': paymenthistories,
-                                    'page_name': 'paymenthistory',
-                                    'paymenthistory': 0,
-                                    'total_amount': total_amount,
-                                    'total_number_of_hours': total_number_of_hours,
-                                })
+        {
+            'paymenthistories': paymenthistories,
+            'page_name': 'paymenthistory',
+            'paymenthistory': 0,
+            'total_amount': total_amount,
+            'total_number_of_hours': total_number_of_hours,
+        })
 
     @http.route(['/my/accountbalance'], type='http', auth="user", website=True)
     def portal_accountbalance(self, search='', search_in='all', selected_month='0', **kw):
@@ -1017,16 +1017,16 @@ class PortalAccount(portal.CustomerPortal):
         total_number_of_hours = round(total_number_of_hours, 2)
         accountbalances = Helpers.format_accountbalance(accountbalances)
         return http.request.render('siantou_ems_portal.siantou_ems_portal_accountbalance_views',
-                                {
-                                    'accountbalances': accountbalances,
-                                    'page_name': 'accountbalance',
-                                    'accountbalance': 0,
-                                    'total_rate': total_rate,
-                                    'total_number_of_hours': total_number_of_hours,
-                                    'accountbalance_selected_month': accountbalance_selected_month,
-                                    'search_month': search_month,
-                                    'is_user_permanent': is_user_permanent,
-                                })
+        {
+            'accountbalances': accountbalances,
+            'page_name': 'accountbalance',
+            'accountbalance': 0,
+            'total_rate': total_rate,
+            'total_number_of_hours': total_number_of_hours,
+            'accountbalance_selected_month': accountbalance_selected_month,
+            'search_month': search_month,
+            'is_user_permanent': is_user_permanent,
+        })
 
     @http.route(['/my/consumptionhour'], type='http', auth="user", website=True)
     def portal_consumptionhour(self, search='', search_in='all', selected_month='0', **kw):
@@ -1092,13 +1092,13 @@ class PortalAccount(portal.CustomerPortal):
             consumptionhours.append(consumptionhour)
         consumptionhours = Helpers.format_consumptionhour(consumptionhours)
         return http.request.render('siantou_ems_portal.siantou_ems_portal_consumptionhour_views',
-                                {
-                                    'consumptionhours': consumptionhours,
-                                    'page_name': 'consumptionhour',
-                                    'consumptionhour': 0,
-                                    'consumptionhour_selected_month': consumptionhour_selected_month,
-                                    'search_month': search_month,
-                                })
+        {
+            'consumptionhours': consumptionhours,
+            'page_name': 'consumptionhour',
+            'consumptionhour': 0,
+            'consumptionhour_selected_month': consumptionhour_selected_month,
+            'search_month': search_month,
+        })
 
     @http.route(['/my/progressreport'], type='http', auth="user", website=True)
     def portal_progressreport(self, search='', search_in='all', **kw):
@@ -1169,11 +1169,11 @@ class PortalAccount(portal.CustomerPortal):
             progressreports.append(progressreport)
         progressreports = Helpers.format_progressreport(progressreports)
         return http.request.render('siantou_ems_portal.siantou_ems_portal_progressreport_views',
-                                {
-                                    'progressreports': progressreports,
-                                    'page_name': 'progressreport',
-                                    'progressreport': 0,
-                                })
+        {
+            'progressreports': progressreports,
+            'page_name': 'progressreport',
+            'progressreport': 0,
+        })
 
     @http.route(['/my/subjectsession/<int:classe>/<int:subject>/list', '/my/subjectsession/<int:classe>/<int:group>/<int:subject>/list'], type='http', auth="user", website=True)
     def portal_subjectsession_list(self, classe=None, group=None, subject=None, search='', search_in='all', **kw):
@@ -1266,13 +1266,13 @@ class PortalAccount(portal.CustomerPortal):
             subjectsessions.append(subjectsession)
         subjectsessions = Helpers.format_subjectsession(subjectsessions)
         return http.request.render('siantou_ems_portal.siantou_ems_portal_subjectsession_list_views',
-                                {
-                                    'subjectsessions': subjectsessions,
-                                    'page_name': 'subjectsession_list',
-                                    'subjectsession_list': 0,
-                                    'is_user': is_user,
-                                    'params': params,
-                                })
+        {
+            'subjectsessions': subjectsessions,
+            'page_name': 'subjectsession_list',
+            'subjectsession_list': 0,
+            'is_user': is_user,
+            'params': params,
+        })
 
     @http.route(['/my/subjectsession/<int:classe>/<int:subject>/download'], type='http', auth="user", website=True)
     def portal_subjectsession_download(self, classe=None, subject=None, search='', search_in='all', **kw):
@@ -1424,16 +1424,16 @@ class PortalAccount(portal.CustomerPortal):
         description = None
         timetable_id = None
         return http.request.render('siantou_ems_portal.siantou_ems_portal_subjectsession_new_views',
-                                {
-                                    'subjectsessions': subjectsessions,
-                                    'page_name': 'subjectsession_new',
-                                    'subjectsession_new': 0,
-                                    'params': params,
-                                    'name': '',
-                                    'description': '',
-                                    'all_timetables': all_timetables,
-                                    'timetable': timetable_id,
-                                })
+        {
+            'subjectsessions': subjectsessions,
+            'page_name': 'subjectsession_new',
+            'subjectsession_new': 0,
+            'params': params,
+            'name': '',
+            'description': '',
+            'all_timetables': all_timetables,
+            'timetable': timetable_id,
+        })
 
     @http.route(['/my/subjectsession/create'], type='http', auth="user", website=True, methods=['POST'])
     def portal_subjectsession_create(self, **kw):
@@ -1625,14 +1625,14 @@ class PortalAccount(portal.CustomerPortal):
         name = session_id.name
         description = session_id.description
         return http.request.render('siantou_ems_portal.siantou_ems_portal_subjectsession_edit_views',
-                                {
-                                    'subjectsessions': subjectsessions,
-                                    'page_name': 'subjectsession_edit',
-                                    'subjectsession_edit': 0,
-                                    'params': params,
-                                    'name': name,
-                                    'description': description,
-                                })
+        {
+            'subjectsessions': subjectsessions,
+            'page_name': 'subjectsession_edit',
+            'subjectsession_edit': 0,
+            'params': params,
+            'name': name,
+            'description': description,
+        })
 
     @http.route(['/my/subjectsession/update'], type='http', auth="user", website=True, methods=['POST'])
     def portal_subjectsession_update(self, **kw):
@@ -1793,11 +1793,11 @@ class PortalAccount(portal.CustomerPortal):
             notification['status'] = STATUS_NOTIFICATION[search_notification.status]
             notifications.append(notification)
         return http.request.render('siantou_ems_portal.siantou_ems_portal_notification_views',
-                                {
-                                    'notifications': notifications,
-                                    'page_name': 'notification',
-                                    'notification': 0,
-                                })
+        {
+            'notifications': notifications,
+            'page_name': 'notification',
+            'notification': 0,
+        })
 
     @http.route(['/my/requireddata'], type='http', auth="user", website=True)
     def portal_requireddata(self, **kw):
@@ -1845,19 +1845,19 @@ class PortalAccount(portal.CustomerPortal):
             city_id = user.city_id.id
             quarter_id = user.quarter_id.id
         return http.request.render('siantou_ems_portal.siantou_ems_portal_requireddata_views',
-                                {
-                                    'phone': private_phone,
-                                    'email': private_email,
-                                    'birthday': date_naissance,
-                                    'all_countries': all_countries,
-                                    'country': nationalite,
-                                    'all_cities': all_cities,
-                                    'city': city_id,
-                                    'all_quarters': all_quarters,
-                                    'quarter': quarter_id,
-                                    'page_name': 'requireddata',
-                                    'requireddata': 0,
-                                })
+        {
+            'phone': private_phone,
+            'email': private_email,
+            'birthday': date_naissance,
+            'all_countries': all_countries,
+            'country': nationalite,
+            'all_cities': all_cities,
+            'city': city_id,
+            'all_quarters': all_quarters,
+            'quarter': quarter_id,
+            'page_name': 'requireddata',
+            'requireddata': 0,
+        })
 
     @http.route(['/my/requireddata/create'], type='http', auth="user", website=True, methods=['POST'])
     def portal_requireddata_create(self, **kw):
