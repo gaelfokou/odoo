@@ -132,7 +132,7 @@ class FeeEnrollmentWizard(models.TransientModel):
                 raise ValidationError(e.args)
 
             if not year_id:
-                raise ValidationError(f"$1.")
+                raise ValidationError(f'Aucune année active trouvée.')
 
             if not structure_frais_id:
                 raise ValidationError(f"Aucune structure de frais de paiement disponible pour {student_id.field_of_study_id.name} {student_id.level_id.name} pour l'année {year_id.name}")

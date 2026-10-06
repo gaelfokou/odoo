@@ -214,7 +214,7 @@ class FeeSpecial(models.Model):
             limit=1
         )
         if pay_fee:
-            raise ValidationError(f"$1.")
+            raise ValidationError(f'Un paiement de Mr/Mdme {student_id.name} existe déjà.')
 
         res = super(FeeSpecial, self).create(vals)
         res.update({

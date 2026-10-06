@@ -7,7 +7,7 @@ from odoo.exceptions import ValidationError
 class EducationFeeClass(models.Model):
     _name = 'siantou.ems.fee.classe'
     _inherit = ['mail.thread', 'mail.activity.mixin']
-    _description = '$1'
+    _description = 'Generation des factures par filière et niveau'
 
     name = fields.Char('Libellé', default="/")
     date = fields.Date('Date de génération', required=True, readonly=True)

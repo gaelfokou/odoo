@@ -382,9 +382,9 @@ class FeePayment(models.Model):
             limit=1
         )
         if pay_fee:
-            raise ValidationError(f"$1.")
+            raise ValidationError(f'Un paiement de Mr/Mdme {student_id.name} existe déjà.')
 
-        if vals['amount']<=0:
+        if vals['amount'] <= 0:
             raise ValidationError(f"Le montant versé doit être supérieur à 0.")
 
         if structure_frais_id.amount_total<vals['amount']:

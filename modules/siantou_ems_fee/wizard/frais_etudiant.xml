@@ -5,7 +5,7 @@
 		<field name="name">assistant.liste.candidat</field>
 		<field name="model">wizard.frais.etudiant</field>
 		<field name="arch" type="xml">
-			<form string="Imprimer liste des Étudiants">
+			<form string="Imprimer liste des étudiants">
 				<group>
 					<field name ="frais"/>
 				</group>
@@ -38,7 +38,7 @@
         <!-- <menuitem name="Frais de scolarité"
                 id="menu_frais_scolarite" parent="siantou.ems.fee.menu_application_reports" sequence="15"/> -->
                         <!-- <menuitem action="assistant_frais_des_candidat" parent="menu_frais_scolarite"
-                                id="menu_frais_etudiant" name="Liste des Étudiants" sequence="10"/> -->
+                                id="menu_frais_etudiant" name="Liste des étudiants" sequence="10"/> -->
 
 	<record model="ir.ui.view" id="fscolarite_form_view">
 		<field name="name">assistant.etudiant.scolarite</field>
