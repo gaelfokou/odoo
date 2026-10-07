@@ -49,7 +49,7 @@ class TeacherDebtPrintWizard(models.TransientModel):
         data = self.print_debt_report_data()
 
         if len(data['docdata']['debt_data'].keys()) == 0:
-            raise UserError("Aucune donnée trouvée")
+            raise UserError(f'Aucune donnée trouvée.')
         report_action = self.env.ref('om_hr_payroll.action_report_debt')
         report_action.update({
             'name': '{} PDF'.format(data['docdata']['title']),

@@ -44,7 +44,7 @@ class ProgressReportPrintWizard(models.TransientModel):
         data = self.print_progress_report_data()
 
         if len(data['docdata']['report_data']) == 0:
-            raise UserError("Aucune donnée trouvée")
+            raise UserError(f'Aucune donnée trouvée.')
         report_action = self.env.ref('siantou_ems_core.action_report_progress_report')
         report_action.update({
             'name': 'Fiches de progression PDF',

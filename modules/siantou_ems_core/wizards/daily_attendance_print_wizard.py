@@ -40,7 +40,7 @@ class TeacherPrintWizard(models.TransientModel):
         data = self.print_daily_attendance_report_data()
 
         if len(data['docdata']['daily_attendance_data']) == 0:
-            raise UserError("Aucune donnée trouvée")
+            raise UserError(f'Aucune donnée trouvée.')
         report_action = self.env.ref('siantou_ems_core.action_report_daily_attendance')
         report_action.update({
             'name': 'Présences PDF',

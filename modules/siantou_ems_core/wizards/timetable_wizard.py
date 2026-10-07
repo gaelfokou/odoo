@@ -312,19 +312,19 @@ class TimetableWizard(models.TransientModel):
                     new_group.unlink()
 
         if not check_classe:
-            raise UserError("Aucune classe trouvée")
+            raise UserError(f'Aucune classe trouvée.')
         elif not check_specialties:
-            raise UserError("Aucune spécialité trouvée dans les classes")
+            raise UserError(f'Aucune spécialité trouvée dans les classes.')
         elif not check_ue:
             raise UserError("Aucun unité d'enseignement trouvé dans les classes")
         elif not check_subject:
-            raise UserError("Aucun cours trouvé")
+            raise UserError(f'Aucun cours trouvé.')
         elif not check_batch:
-            raise UserError("Aucun étudiant trouvé")
+            raise UserError(f'Aucun étudiant trouvé.')
         elif check_hours_credit == 0:
-            raise UserError("Aucun volume horaire semestriel trouvé")
+            raise UserError(f'Aucun volume horaire semestriel trouvé.')
         elif check_weekly_hours_credit == 0:
-            raise UserError("Aucun volume horaire hebdomadaire trouvé")
+            raise UserError(f'Aucun volume horaire hebdomadaire trouvé.')
         elif not check_classroom_slot:
             raise UserError("Aucune salle de classe et/ou créneau horaire trouvé")
 

@@ -49,7 +49,7 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
         data = self.print_teacher_timetable_attendance_report_data()
 
         if len(data['docdata']['teacher_timetable_attendance_data'].keys()) == 0:
-            raise UserError("Aucune donnée trouvée")
+            raise UserError(f'Aucune donnée trouvée.')
         key = list(data['docdata']['teacher_timetable_attendance_data'].keys())[0]
         start_date = datetime.strftime(data['docdata']['teacher_timetable_attendance_data'][key]['start_date'], DATE_FORMAT_FR)
         end_date = datetime.strftime(data['docdata']['teacher_timetable_attendance_data'][key]['end_date'], DATE_FORMAT_FR)
@@ -63,7 +63,7 @@ class TeacherTimetableAttendancePrintWizard(models.TransientModel):
         data = self.print_teacher_timetable_attendance_report_data(resume=True)
 
         if len(data['docdata']['teacher_timetable_attendance_data'].keys()) == 0:
-            raise UserError("Aucune donnée trouvée")
+            raise UserError(f'Aucune donnée trouvée.')
         key = list(data['docdata']['teacher_timetable_attendance_data'].keys())[0]
         start_date = datetime.strftime(data['docdata']['teacher_timetable_attendance_data'][key]['start_date'], DATE_FORMAT_FR)
         end_date = datetime.strftime(data['docdata']['teacher_timetable_attendance_data'][key]['end_date'], DATE_FORMAT_FR)
