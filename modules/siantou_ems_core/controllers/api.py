@@ -639,7 +639,7 @@ class DeSchool(http.Controller):
             return http.Response(
                 json.dumps({
                     'status': 500,
-                    'data': f"Aucune informations trouvés pour ce matricule : {data['matricule']} ",
+                    'data': f"Aucune informations trouvées pour ce matricule : {data['matricule']} ",
                 })
             )
 

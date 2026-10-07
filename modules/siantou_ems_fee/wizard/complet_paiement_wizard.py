@@ -77,7 +77,7 @@ class FeeToCompleteFeePaymentWizard(models.TransientModel):
                 limit=1
             )
             if not year_id:
-                raise ValidationError(f'Aucune année active trouvé.')
+                raise ValidationError(f'Aucune année active trouvée.')
             if not payment_id:
                 raise ValidationError(f"Aucune paiement disponible pour {payment_id.student_id.name} pour l'année {year_id.name}")
 
