@@ -193,7 +193,7 @@ class FeePayment(models.Model):
 
             rest_diff = structure_frais_scol_id.amount_total-rec.amount
             if rec.amount<=0:
-                raise ValidationError(f"Le montant versé doit être supérieur à 0.")
+                raise ValidationError(f'Le montant versé doit être supérieur à 0.')
 
             if rest_diff<0:
                 raise ValidationError(f"Le montant versé doit être inférieur ou égal à {structure_frais_scol_id.amount_total}")
@@ -385,7 +385,7 @@ class FeePayment(models.Model):
             raise ValidationError(f'Un paiement de Mr/Mdme {student_id.name} existe déjà.')
 
         if vals['amount'] <= 0:
-            raise ValidationError(f"Le montant versé doit être supérieur à 0.")
+            raise ValidationError(f'Le montant versé doit être supérieur à 0.')
 
         if structure_frais_id.amount_total<vals['amount']:
             raise ValidationError(f"Le montant versé doit être inférieur ou égal à {structure_frais_id.amount_total}")

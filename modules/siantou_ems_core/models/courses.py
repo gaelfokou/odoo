@@ -347,25 +347,25 @@ class SchoolSyllabus(models.Model):
     def _check_cm_value(self):
         for record in self:
             if record.cm <0:
-                raise ValidationError(f"Le Nombre de Cours magistral doit être supérieur ou égal à zéro.")
+                raise ValidationError(f'Le Nombre de Cours magistral doit être supérieur ou égal à zéro.')
 
     @api.constrains('td')
     def _check_td_value(self):
         for record in self:
             if record.td <0:
-                raise ValidationError(f"Le Nombre de Travaux dirigé doit être supérieur ou égal à zéro.")
+                raise ValidationError(f'Le Nombre de Travaux dirigé doit être supérieur ou égal à zéro.')
 
     @api.constrains('tp')
     def _check_tp_value(self):
         for record in self:
             if record.tp <0:
-                raise ValidationError(f"Le Nombre de Travaux pratique doit être supérieur ou égal à zéro.")
+                raise ValidationError(f'Le Nombre de Travaux pratique doit être supérieur ou égal à zéro.')
 
     @api.constrains('te')
     def _check_tpe_value(self):
         for record in self:
             if record.te <0:
-                raise ValidationError(f"Le Nombre de Travaux pratique doit être supérieur ou égal à zéro.")
+                raise ValidationError(f'Le Nombre de Travaux pratique doit être supérieur ou égal à zéro.')
 
 
 class SchoolCourseSubject(models.Model):

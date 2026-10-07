@@ -605,7 +605,7 @@ class TeacherSubjectPriority(models.Model):
     def _check_priority(self):
         for record in self:
             if record.priority < 1 or record.priority > 10:
-                raise ValidationError(f"La priorité va de 1 à 10.")
+                raise ValidationError(f'La priorité va de 1 à 10.')
 
     # Fonction pour obtenir la liste des enseignants par priorité décroissante
     def get_teachers_by_priority(self, subject_id):

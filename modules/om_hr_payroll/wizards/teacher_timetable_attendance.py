@@ -258,7 +258,7 @@ class TeacherTimetableAttendance(models.TransientModel):
     def _check_time(self):
         for record in self:
             if record.start_time < 0.0 or record.end_time < 0.0 or record.start_time > 23.59 or record.end_time > 23.59:
-                raise ValidationError(f"Vous devez définir des heures de début et de fin corrects.")
+                raise ValidationError(f'Vous devez définir des heures de début et de fin corrects.')
             elif record.start_time > record.end_time:
                 raise ValidationError(f"L'heure de fin du cours doit être supérieure à l'heure de début du cours.")
 
@@ -266,7 +266,7 @@ class TeacherTimetableAttendance(models.TransientModel):
     def _check_worked_time(self):
         for record in self:
             if record.worked_start_time < 0.0 or record.worked_end_time < 0.0 or record.worked_start_time > 23.59 or record.worked_end_time > 23.59:
-                raise ValidationError(f"Vous devez définir des heures de début effectuée et de fin effectuée corrects.")
+                raise ValidationError(f'Vous devez définir des heures de début effectuée et de fin effectuée corrects.')
             elif record.status in ['present', 'permission'] and record.worked_start_time > record.worked_end_time:
                 raise ValidationError(f"L'heure de fin effectuée du cours doit être supérieure à l'heure de début effectuée du cours.")
 

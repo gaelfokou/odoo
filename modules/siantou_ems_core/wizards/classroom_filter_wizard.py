@@ -55,7 +55,7 @@ class ClassroomFilterWizard(models.TransientModel):
     def _check_time(self):
         for record in self:
             if record.start_time < 0.0 or record.end_time < 0.0 or record.start_time > 23.59 or record.end_time > 23.59:
-                raise ValidationError(f"Vous devez définir des heures de début et de fin corrects.")
+                raise ValidationError(f'Vous devez définir des heures de début et de fin corrects.')
             elif record.start_time > record.end_time:
                 raise ValidationError(f"L'heure de fin du cours doit être supérieure à l'heure de début du cours.")
 
