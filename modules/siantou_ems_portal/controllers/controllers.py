@@ -484,8 +484,7 @@ class PortalAccount(portal.CustomerPortal):
             total_amount += schoolfee['amount']
             total_structure_amount += schoolfee['structure_frais_amount_total']
             total_rest_amount = total_structure_amount - total_amount
-        return http.request.render('siantou_ems_portal.siantou_ems_portal_schoolfee_views',
-        {
+        return http.request.render('siantou_ems_portal.siantou_ems_portal_schoolfee_views', {
             'schoolfees': schoolfees,
             'page_name': 'schoolfee',
             'schoolfee': 0,
@@ -696,8 +695,7 @@ class PortalAccount(portal.CustomerPortal):
                         all_examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['data']['sn_status'] = STATUS_SUBJECTSCORE[all_examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['data']['sn_status']] if all_examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['data']['sn_status'] else None
                         all_examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['data']['rcc_status'] = STATUS_SUBJECTSCORE[all_examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['data']['rcc_status']] if all_examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['data']['rcc_status'] else None
                         all_examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['data']['rsn_status'] = STATUS_SUBJECTSCORE[all_examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['data']['rsn_status']] if all_examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['data']['rsn_status'] else None
-        return http.request.render('siantou_ems_portal.siantou_ems_portal_examscore_views',
-        {
+        return http.request.render('siantou_ems_portal.siantou_ems_portal_examscore_views', {
             'examscores': all_examscores,
             'page_name': 'examscore',
             'examscore': 0,
@@ -728,8 +726,7 @@ class PortalAccount(portal.CustomerPortal):
             total_number_of_hours += paymenthistory['number_of_hours']
         total_amount = round(total_amount, 2)
         total_number_of_hours = round(total_number_of_hours, 2)
-        return http.request.render('siantou_ems_portal.siantou_ems_portal_paymenthistory_views',
-        {
+        return http.request.render('siantou_ems_portal.siantou_ems_portal_paymenthistory_views', {
             'paymenthistories': paymenthistories,
             'page_name': 'paymenthistory',
             'paymenthistory': 0,
@@ -1016,8 +1013,7 @@ class PortalAccount(portal.CustomerPortal):
         total_rate = round(total_rate, 2)
         total_number_of_hours = round(total_number_of_hours, 2)
         accountbalances = Helpers.format_accountbalance(accountbalances)
-        return http.request.render('siantou_ems_portal.siantou_ems_portal_accountbalance_views',
-        {
+        return http.request.render('siantou_ems_portal.siantou_ems_portal_accountbalance_views', {
             'accountbalances': accountbalances,
             'page_name': 'accountbalance',
             'accountbalance': 0,
@@ -1091,8 +1087,7 @@ class PortalAccount(portal.CustomerPortal):
             consumptionhour['status'] = search_consumptionhour.status
             consumptionhours.append(consumptionhour)
         consumptionhours = Helpers.format_consumptionhour(consumptionhours)
-        return http.request.render('siantou_ems_portal.siantou_ems_portal_consumptionhour_views',
-        {
+        return http.request.render('siantou_ems_portal.siantou_ems_portal_consumptionhour_views', {
             'consumptionhours': consumptionhours,
             'page_name': 'consumptionhour',
             'consumptionhour': 0,
@@ -1168,8 +1163,7 @@ class PortalAccount(portal.CustomerPortal):
             progressreport['sessions'] = sessions
             progressreports.append(progressreport)
         progressreports = Helpers.format_progressreport(progressreports)
-        return http.request.render('siantou_ems_portal.siantou_ems_portal_progressreport_views',
-        {
+        return http.request.render('siantou_ems_portal.siantou_ems_portal_progressreport_views', {
             'progressreports': progressreports,
             'page_name': 'progressreport',
             'progressreport': 0,
@@ -1265,8 +1259,7 @@ class PortalAccount(portal.CustomerPortal):
             subjectsession['sessions'] = sessions
             subjectsessions.append(subjectsession)
         subjectsessions = Helpers.format_subjectsession(subjectsessions)
-        return http.request.render('siantou_ems_portal.siantou_ems_portal_subjectsession_list_views',
-        {
+        return http.request.render('siantou_ems_portal.siantou_ems_portal_subjectsession_list_views', {
             'subjectsessions': subjectsessions,
             'page_name': 'subjectsession_list',
             'subjectsession_list': 0,
@@ -1423,8 +1416,7 @@ class PortalAccount(portal.CustomerPortal):
         name = None
         description = None
         timetable_id = None
-        return http.request.render('siantou_ems_portal.siantou_ems_portal_subjectsession_new_views',
-        {
+        return http.request.render('siantou_ems_portal.siantou_ems_portal_subjectsession_new_views', {
             'subjectsessions': subjectsessions,
             'page_name': 'subjectsession_new',
             'subjectsession_new': 0,
@@ -1624,8 +1616,7 @@ class PortalAccount(portal.CustomerPortal):
         params['session_name'] = timetable['date'] + ' ' + timetable['start_time'] + '-' + timetable['end_time']
         name = session_id.name
         description = session_id.description
-        return http.request.render('siantou_ems_portal.siantou_ems_portal_subjectsession_edit_views',
-        {
+        return http.request.render('siantou_ems_portal.siantou_ems_portal_subjectsession_edit_views', {
             'subjectsessions': subjectsessions,
             'page_name': 'subjectsession_edit',
             'subjectsession_edit': 0,
@@ -1792,8 +1783,7 @@ class PortalAccount(portal.CustomerPortal):
             notification['message'] = search_notification.message
             notification['status'] = STATUS_NOTIFICATION[search_notification.status]
             notifications.append(notification)
-        return http.request.render('siantou_ems_portal.siantou_ems_portal_notification_views',
-        {
+        return http.request.render('siantou_ems_portal.siantou_ems_portal_notification_views', {
             'notifications': notifications,
             'page_name': 'notification',
             'notification': 0,
@@ -1844,8 +1834,7 @@ class PortalAccount(portal.CustomerPortal):
             nationalite = user.nationalite.id
             city_id = user.city_id.id
             quarter_id = user.quarter_id.id
-        return http.request.render('siantou_ems_portal.siantou_ems_portal_requireddata_views',
-        {
+        return http.request.render('siantou_ems_portal.siantou_ems_portal_requireddata_views', {
             'phone': private_phone,
             'email': private_email,
             'birthday': date_naissance,

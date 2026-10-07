@@ -15,8 +15,7 @@ export class ChartRenderer extends Component {
     }
 
     renderChart() {
-        new Chart(this.chartRef.el,
-        {
+        new Chart(this.chartRef.el, {
           type: this.props.type,
           data: {
             labels: this.props.datas.map(d => d.name),

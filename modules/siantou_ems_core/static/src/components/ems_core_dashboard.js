@@ -48,17 +48,13 @@ export class OwlSalesDashboard extends Component {
 
         onWillStart(async () => {
             const self = this;
-            setTimeout(async function() {
-                await self.loadYears();
-                await self.checkGroup();
-            }, 2500)
+            await self.loadYears();
+            await self.checkGroup();
         })
 
         onMounted(async () => {
     		const self = this;
-            setTimeout(async function() {
-                await self.loadAllData();
-            }, 2500)
+            await self.loadAllData();
         })
     }
 

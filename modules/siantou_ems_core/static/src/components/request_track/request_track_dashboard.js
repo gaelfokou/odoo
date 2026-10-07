@@ -68,9 +68,7 @@ export class OwlRequestTrackDashboard extends Component {
 
         onWillStart(async () => {
             const self = this;
-            setTimeout(async function() {
-                await self.getRequestTracks();
-            }, 2500)
+            await self.getRequestTracks();
         })
     }
 
