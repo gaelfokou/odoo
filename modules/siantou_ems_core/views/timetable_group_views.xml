@@ -100,10 +100,10 @@
                             <field name="group_parent_id" options="{'no_create': True}" invisible="is_submit == False"/>
                             <field name="group_child_ids" options="{'no_create': True}" readonly="id != False" invisible="is_submit == True" widget="many2many_tags"/>
                             <field name="is_active" readonly="is_readonly == True or is_submit == True"/>
-                            <field name="read_user_ids" widget="many2many_tags" readonly="is_readonly == True"/>
-                            <field name="write_user_ids" widget="many2many_tags" readonly="is_readonly == True"/>
+                            <field name="read_user_ids" readonly="is_readonly == True" widget="many2many_tags"/>
+                            <field name="write_user_ids" readonly="is_readonly == True" widget="many2many_tags"/>
                             <field name="school_id_domain" invisible="1"/>
-                            <field name="school_ids" widget="many2many_tags" readonly="is_readonly == True" domain="school_id_domain"/>
+                            <field name="school_ids" readonly="is_readonly == True" domain="school_id_domain" widget="many2many_tags"/>
                             <field name="create_uid" string="Créé par"/>
                             <field name="start_date" readonly="is_readonly == True"/>
                             <field name="end_date" readonly="is_readonly == True"/>
@@ -150,10 +150,10 @@
                             <field name="group_parent_id" options="{'no_create': True}" invisible="is_submit == False"/>
                             <field name="group_child_ids" options="{'no_create': True}" readonly="id != False" invisible="is_submit == True" widget="many2many_tags"/>
                             <field name="is_active" readonly="is_readonly == True or is_submit == True"/>
-                            <field name="read_user_ids" widget="many2many_tags" readonly="is_readonly == True"/>
-                            <field name="write_user_ids" widget="many2many_tags" readonly="is_readonly == True"/>
+                            <field name="read_user_ids" readonly="is_readonly == True" widget="many2many_tags"/>
+                            <field name="write_user_ids" readonly="is_readonly == True" widget="many2many_tags"/>
                             <field name="school_id_domain" invisible="1"/>
-                            <field name="school_ids" widget="many2many_tags" readonly="is_readonly == True" domain="school_id_domain"/>
+                            <field name="school_ids" readonly="is_readonly == True" domain="school_id_domain" widget="many2many_tags"/>
                             <field name="create_uid" string="Créé par"/>
                             <field name="start_date" readonly="is_readonly == True"/>
                             <field name="end_date" readonly="is_readonly == True"/>

@@ -50,7 +50,7 @@
                         </group>
                         <group colspan="2">
                             <field name="create_uid" string="Créé par"/>
-                            <field name="user_ids" widget="many2many_tags" readonly="id != False and create_uid != uid"/>
+                            <field name="user_ids" readonly="id != False and create_uid != uid" widget="many2many_tags"/>
                             <field name="note"/>
                         </group>
                     </sheet>

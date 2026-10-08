@@ -11,7 +11,7 @@
             <field name="subject">Notification Absence</field>
             <field name="body_html" type="html">
                 <div style="margin: 0px; padding: 0px;">
-                    <div style="justify-content: center;background-color: #714B67; padding:0.6rem;padding-left: 35px;text-decoration: none; color: #fff; border-radius: 5px; font-size:13px;width:40%">
+                    <div style="justify-content: center;background-color: #714B67; padding:0.6rem;padding-left: 35px;text-decoration: none; color: #fff; border-radius: 5px; font-size: 13px;width:40%">
                         <h2>
                             Bonjour / Bonsoir,
                             <t t-out="object.employee_id.name"/>
@@ -40,7 +40,7 @@
             <field name="subject">Notification Rappel</field>
             <field name="body_html" type="html">
                 <div style="margin: 0px; padding: 0px;">
-                    <div style="justify-content: center;background-color: #714B67; padding:0.6rem;padding-left: 35px;text-decoration: none; color: #fff; border-radius: 5px; font-size:13px;width:40%">
+                    <div style="justify-content: center;background-color: #714B67; padding:0.6rem;padding-left: 35px;text-decoration: none; color: #fff; border-radius: 5px; font-size: 13px;width:40%">
                         <h2>
                             Bonjour / Bonsoir,
                             <t t-out="object.employee_id.name"/>
@@ -69,7 +69,7 @@
             <field name="subject">Notification Retard</field>
             <field name="body_html" type="html">
                 <div style="margin: 0px; padding: 0px;">
-                    <div style="justify-content: center;background-color: #714B67; padding:0.6rem;padding-left: 35px;text-decoration: none; color: #fff; border-radius: 5px; font-size:13px;width:40%">
+                    <div style="justify-content: center;background-color: #714B67; padding:0.6rem;padding-left: 35px;text-decoration: none; color: #fff; border-radius: 5px; font-size: 13px;width:40%">
                         <h2>
                             Bonjour / Bonsoir,
                             <t t-out="object.employee_id.name"/>
@@ -98,7 +98,7 @@
             <field name="subject">Notification Exception</field>
             <field name="body_html" type="html">
                 <div style="margin: 0px; padding: 0px;">
-                    <div style="justify-content: center;background-color: #714B67; padding:0.6rem;padding-left: 35px;text-decoration: none; color: #fff; border-radius: 5px; font-size:13px;width:40%">
+                    <div style="justify-content: center;background-color: #714B67; padding:0.6rem;padding-left: 35px;text-decoration: none; color: #fff; border-radius: 5px; font-size: 13px;width:40%">
                         <h2>
                             Bonjour / Bonsoir,
                             <t t-out="object.employee_id.name"/>
@@ -127,7 +127,7 @@
             <field name="subject">Notification Poinçonnement</field>
             <field name="body_html" type="html">
                 <div style="margin: 0px; padding: 0px;">
-                    <div style="justify-content: center;background-color: #714B67; padding:0.6rem;padding-left: 35px;text-decoration: none; color: #fff; border-radius: 5px; font-size:13px;width:40%">
+                    <div style="justify-content: center;background-color: #714B67; padding:0.6rem;padding-left: 35px;text-decoration: none; color: #fff; border-radius: 5px; font-size: 13px;width:40%">
                         <h2>
                             Bonjour / Bonsoir,
                             <t t-out="object.employee_id.name"/>

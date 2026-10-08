@@ -165,11 +165,11 @@
                            attrs="{'readonly':[('parent_state','=','posted')]}"/> -->
                     <!-- <field name="analytic_tag_ids" widget="many2many_tags" groups="analytic.group_analytic_tags"
                            optional="hide"/> -->
-                    <field name="tax_ids" widget="many2many_tags" width="0.5" optional="show"/>
+                    <field name="tax_ids" width="0.5" optional="show" widget="many2many_tags"/>
                     <field name="debit" sum="Total Debit"/>
                     <field name="credit" sum="Total Credit"/>
                     <field name="amount_currency" groups="base.group_multi_currency" optional="hide"/>
-                    <field name="tax_tag_ids" widget="many2many_tags" width="0.5" optional="hide"/>
+                    <field name="tax_tag_ids" width="0.5" optional="hide" widget="many2many_tags"/>
                     <field name="matching_number" optional="show"/>
                     <field name="reconcile_model_id" invisible="1"/>
                     <field name="reconciled" invisible="1"/>
@@ -212,7 +212,7 @@
                     <field name="currency_id" readonly="1" invisible="1"/>
                     <field name="company_currency_id" invisible="1"/>
                     <field name="parent_state" invisible="1"/>
-                    <field name="tax_ids" widget="many2many_tags" width="0.5" optional="hide" readonly="1"/>
+                    <field name="tax_ids" width="0.5" optional="hide" readonly="1" widget="many2many_tags"/>
                     <field name="tax_tag_ids" widget="many2many_tags" width="0.5" optional="hide" string="Tax Grids"
                            options="{'no_create': True}"
                            domain="[('applicability', '=', 'taxes')]"/>
@@ -665,21 +665,21 @@
                     </header>
                     <!-- Invoice outstanding credits -->
                     <div groups="account.group_account_invoice,account.group_account_readonly"
-                         class="alert alert-warning" role="alert" style="margin-bottom:0px;"
+                         class="alert alert-warning" role="alert" style="margin-bottom: 0px;"
                          attrs="{'invisible': ['|', ('state', '!=', 'draft'), ('tax_lock_date_message', '=', False)]}">
                         <field name="tax_lock_date_message" nolabel="1"/>
                     </div>
                     <div groups="account.group_account_invoice,account.group_account_readonly"
-                         class="alert alert-info" role="alert" style="margin-bottom:0px;"
+                         class="alert alert-info" role="alert" style="margin-bottom: 0px;"
                          attrs="{'invisible': ['|', '|', ('move_type', 'not in', ('out_invoice', 'out_refund')), ('invoice_has_outstanding', '=', False), ('payment_state', 'not in', ('not_paid', 'partial'))]}">
                         You have <bold><a class="alert-link" href="#outstanding" role="button">outstanding payments</a></bold> for this customer. You can allocate them to mark this invoice as paid.
                     </div>
                     <div groups="account.group_account_invoice,account.group_account_readonly"
-                         class="alert alert-info" role="alert" style="margin-bottom:0px;"
+                         class="alert alert-info" role="alert" style="margin-bottom: 0px;"
                          attrs="{'invisible': ['|', '|', ('move_type', 'not in', ('in_invoice', 'in_refund')), ('invoice_has_outstanding', '=', False), ('payment_state', 'not in', ('not_paid', 'partial'))]}">
                         You have <bold><a class="alert-link" href="#outstanding" role="button">outstanding debits</a></bold> for this vendor. You can allocate them to mark this bill as paid.
                     </div>
-                    <div class="alert alert-info" role="alert" style="margin-bottom:0px;"
+                    <div class="alert alert-info" role="alert" style="margin-bottom: 0px;"
                          attrs="{'invisible': ['|', ('state', '!=', 'draft'), ('auto_post', '=', False)]}">
                         This move is configured to be posted automatically at the accounting date: <field name="date" readonly="1"/>.
                     </div>
@@ -1108,7 +1108,7 @@
                                                attrs="{'invisible': [('display_type', 'in', ('line_section', 'line_note'))]}"/>
 <!--                                        <field name="tax_fiscal_country_id" invisible="1"/>-->
 <!--                                        ('country_id', '=', tax_fiscal_country_id),-->
-                                        <field name="tax_tag_ids" widget="many2many_tags" string="Tax Grids" optional="show" domain="[('applicability', '=', 'taxes')]"/>
+                                        <field name="tax_tag_ids" string="Tax Grids" optional="show" domain="[('applicability', '=', 'taxes')]" widget="many2many_tags"/>
 
                                         <!-- Buttons -->
                                         <button name="action_automatic_entry"

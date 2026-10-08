@@ -68,12 +68,12 @@
                             </tbody>
                         </table>
                         <center>
-                            <h2 style="text-decoration:underline;text-transform:uppercase;font-size: 15px;margin-top:25px">
+                            <h2 style="text-decoration:underline;text-transform:uppercase;font-size: 15px;margin-top: 25px">
                                 RECU DE CAISSE SCOLARITÉ N° <span t-esc="payment_id['name']" /> 
                                 DU <span t-esc="date"
                                         t-options='{"widget": "date","format": "d/MM/Y"}' />
                             </h2>
-                            <h4 style="font-size: 12px;margin-top:15px">
+                            <h4 style="font-size: 12px;margin-top: 15px">
                                 Année académique :
                                 <span t-esc="payment_id['year']" />
                             </h4>
@@ -84,7 +84,7 @@
                             </span>
                         </center>
 
-                        <div class="row" style="margin-top:25px">
+                        <div class="row" style="margin-top: 25px">
                             <div class="col-sm-12">
                                 <h3 style="text-decoration:underline;text-transform:uppercase;font-size: 15px;">I. Identification de l'étudiant</h3>
                                 <table classe="table table-striped"
