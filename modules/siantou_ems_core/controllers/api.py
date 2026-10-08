@@ -39,7 +39,7 @@ class DeSchool(http.Controller):
         annee_academique = enrollement.year_id
         if not enrollement.year_id:
             annee_academique = stm_line_obj._get_annee_academique_courante()
-        
+
         data['info_etudiant'] = {
             'nom': enrollement.partner_id.display_name,
             'specialite': "%s" % (enrollement.class_id.name),
@@ -48,7 +48,7 @@ class DeSchool(http.Controller):
             'ecole': enrollement.school_id.name,
             'cycle': enrollement.cycle_id.name,
         }
-        
+
         date = stm_line_obj.date 
         if date and date==now.date():
             date = date.strftime("%d/%m/%Y")
@@ -105,12 +105,12 @@ class DeSchool(http.Controller):
                         if moratoire_line_id.date_echeance >= now.date():
                             is_moratoire = True
                             info_ligne['moratoire'] = moratoire_line_id.date_echeance.strftime("%d/%m/%Y")
-                
+
                 amount_total_restant += redevance.amount_residual
                 data['lignes_de_recouvrements'].append(info_ligne)
 
 
-        
+
         for redevance in redevances_non_payees:
             if redevance.ref:
                 amount_total_restant += redevance.amount_residual
@@ -126,7 +126,7 @@ class DeSchool(http.Controller):
                             }
                             info_ligne['moratoire'] = moratoire_line_id.date_echeance.strftime("%d/%m/%Y")
                             data['lignes_de_recouvrements'].append(info_ligne)
-        
+
         data['amount_total_recu'] = f"{amount_total_recu}  FCFA"
         data['amount_total_restant'] = f"{amount_total_restant} FCFA"
 
@@ -610,7 +610,7 @@ class DeSchool(http.Controller):
             ],
             limit=1
         )
-        
+
         # _logger.info(f"=========== etudiant :: {etudiant}")
         if etudiant:
             return http.Response(
@@ -815,7 +815,7 @@ class DeSchool(http.Controller):
                                     'data': f"Une demande d'inscription avec ce matricule : {data['matricule']} existe déjà ",
                                 })
                             )
-                    
+
                 else:
                     return http.Response(
                             json.dumps({
@@ -979,7 +979,7 @@ class DeSchool(http.Controller):
                     else:
                         partner = check_partner
                     data['partner_id'] = partner.id
-                    
+
                     # _logger.info(f"=============  data :: {data}")
                     etudiant = http.request.env['oe.school.student.enrollment.competition'].sudo().search([
                         ('last_name', '=', data['last_name']),
@@ -1044,7 +1044,7 @@ class DeSchool(http.Controller):
                 [('is_active', '=', True),],
                 limit=1
             )
- 
+
             etudiant = http.request.env['oe.school.student'].sudo().search([
                 ('id', '=', data['id']),
                 ('matricule', '=', data['matricule']),
