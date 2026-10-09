@@ -1506,3 +1506,28 @@ class EducationClassGroup(models.Model):
         string='Classe',
         ondelete='cascade'
     )
+
+    level_id = fields.Many2one(
+        'siantou.ems.core.level',
+        string='Niveau',
+        related='class_id.level_id'
+    )
+
+    specialty_id = fields.Many2one(
+        'siantou.ems.core.specialty',
+        string='Spécialité',
+        related='class_id.specialty_id'
+    )
+
+    option_id = fields.Many2one(
+        'siantou.ems.core.option',
+        string='Option',
+        related='class_id.option_id'
+    )
+
+    type_cour = fields.Selection([
+            ('cj', 'Cours du jour'),
+            ('cs', 'Cours du soir'),
+        ], string='Type de cours',
+        related='class_id.type_cour',
+    )
