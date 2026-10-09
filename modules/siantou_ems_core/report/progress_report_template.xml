@@ -41,7 +41,7 @@
                         </style>
                         <t t-set="reports" t-value="docdata['report_data']"/>
                         <t t-foreach="reports" t-as="report">
-                            <div class="page">
+                            <div class="page" style="width: 100%;">
                                 <table class="table table-bordered table-sm text-center">
                                     <thead>
                                         <tr>

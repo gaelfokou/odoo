@@ -4,7 +4,7 @@
     <template id="report_recu_payment">
         <t t-call="web.html_container">
             <t t-call="account_cash_bank_management.external_layout">
-                <div class="page">
+                <div class="page" style="width: 100%;">
                     <div class="container">
                         <table classe="table table-striped" style="width: 100%;">
                             <tbody>

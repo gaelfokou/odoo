@@ -6,7 +6,7 @@
               type="text/less"/>
         <t t-call="its_lehas_templates.external_layout_proforma">
             <t t-set="doc" t-value="doc.with_context({'lang':doc.partner_id.lang})"/>
-            <div class="page">
+            <div class="page" style="width: 100%;">
                 <table style="width: 100%; margin-top: 20px; border-collapse: separate; width: 100%; margin-bottom: 20px; border: 0px;">
                     <style>
                         .custom-paragraph {

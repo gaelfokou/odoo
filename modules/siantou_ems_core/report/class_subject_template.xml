@@ -42,7 +42,7 @@
                         <t t-set="subject_data" t-value="dict(sorted(docdata['subject_data'].items(), key=lambda item: item[1]['name'] if item[1]['name'] else ''))"/>
                         <t t-set="classes" t-value="subject_data.keys()"/>
                         <t t-foreach="classes" t-as="classe">
-                            <div class="page">
+                            <div class="page" style="width: 100%;">
                                 <table class="table table-bordered table-sm text-center">
                                     <thead>
                                         <tr>

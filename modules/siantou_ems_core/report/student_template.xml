@@ -39,7 +39,7 @@
                                 margin: 1px 0px !important;
                             }
                         </style>
-                        <div class="page">
+                        <div class="page" style="width: 100%;">
                             <table class="table table-bordered table-sm text-center">
                                 <thead>
                                     <tr>
