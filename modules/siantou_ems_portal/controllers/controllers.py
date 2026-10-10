@@ -443,7 +443,7 @@ class PortalAccount(portal.CustomerPortal):
         http.request.env['ir.config_parameter'].sudo().set_param(f'siantou.filter_user_{http.request.env.user.id}', title)
 
         report_name = 'siantou_ems_core.template_report_timetable'
-        report_action = 'siantou_ems_core.action_report_timetable'
+        report_action = 'siantou_ems_core.action_report_timetable_calendar'
         pdf_report = http.request.env['ir.actions.report'].sudo()._get_report_from_name(report_action)
         report_data = http.request.env['timetable.print.wizard'].sudo().create({})
         domain = [

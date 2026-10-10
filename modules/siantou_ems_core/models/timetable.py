@@ -1404,7 +1404,13 @@ class Timetable(models.Model):
         })
         return action
 
-    def action_print_pdf(self):
+    def action_print_calendar_pdf(self):
+        return self.action_print_pdf(print_type='calendar')
+
+    def action_print_list_pdf(self):
+        return self.action_print_pdf(print_type='list')
+
+    def action_print_pdf(self, print_type='calendar'):
         active_ids = self.env.context.get('active_ids', [])
         if len(active_ids) == 0:
             raise UserError('Aucune donnée sélectionnée')
@@ -1412,7 +1418,7 @@ class Timetable(models.Model):
         domains = [
             ('id', 'in', active_ids)
         ]
-        data = report_data.print_timetable_report_data(domains=domains)
+        data = report_data.print_timetable_report_data(domains=domains, print_type=print_type)
 
         schools = self.env['siantou.ems.core.school'].search([])
         for school in schools:
@@ -1436,7 +1442,10 @@ class Timetable(models.Model):
 
         if len(data['docdata']['timetable_data'].keys()) == 0:
             raise UserError('Aucune donnée trouvée')
-        report_action = self.env.ref('siantou_ems_core.action_report_timetable')
+        if print_type == 'calendar':
+            report_action = self.env.ref('siantou_ems_core.action_report_timetable_calendar')
+        else:
+            report_action = self.env.ref('siantou_ems_core.action_report_timetable_list')
         report_action.update({
             'name': '{} PDF'.format(data['docdata']['title']),
         })

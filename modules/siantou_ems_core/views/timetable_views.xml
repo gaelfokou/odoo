@@ -23,9 +23,15 @@
                             string="Filtrer" 
                             class="oe_highlight" 
                             display="always"/>
-                        <button name="action_print_pdf" 
+                        <button name="action_print_calendar_pdf" 
                             type="object" 
-                            string="Imprimer PDF" 
+                            string="Imprimer calendrier PDF" 
+                            class="oe_highlight" 
+                            display="always"
+                            groups="siantou_ems_core.group_timetable_print_pdf"/>
+                        <button name="action_print_list_pdf" 
+                            type="object" 
+                            string="Imprimer liste PDF" 
                             class="oe_highlight" 
                             display="always"
                             groups="siantou_ems_core.group_timetable_print_pdf"/>

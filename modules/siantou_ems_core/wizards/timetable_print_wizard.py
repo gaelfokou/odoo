@@ -58,13 +58,13 @@ class TimetablePrintWizard(models.TransientModel):
 
         if len(data['docdata']['timetable_data'].keys()) == 0:
             raise UserError(f'Aucune donnée trouvée.')
-        report_action = self.env.ref('siantou_ems_core.action_report_timetable')
+        report_action = self.env.ref('siantou_ems_core.action_report_timetable_calendar')
         report_action.update({
             'name': 'Emplois du temps PDF',
         })
         return report_action.report_action(self, data=data)
 
-    def print_timetable_report_data(self, domains=None):
+    def print_timetable_report_data(self, domains=None, print_type='calendar'):
         domain = []
 
         if domains:
@@ -88,90 +88,138 @@ class TimetablePrintWizard(models.TransientModel):
 
         key_timetables = {}
         info_timetables = {}
-        for search_timetable in search_timetables:
-            if not search_timetable.date or not search_timetable.day_of_week or not search_timetable.employee_id.id:
-                continue
-            if is_user:
-                key = '{}-{}'.format(search_timetable.semester_id.id, search_timetable.employee_id.id)
-                semester = '{}'.format(search_timetable.semester_id.name)
-                study = '{}'.format(search_timetable.employee_id.name)
-            else:
-                if search_timetable.class_group_id.id:
-                    key = '{}-{}-{}'.format(search_timetable.semester_id.id, search_timetable.class_id.id, search_timetable.class_group_id.id)
+        if print_type == 'calendar':
+            for search_timetable in search_timetables:
+                if not search_timetable.date or not search_timetable.day_of_week or not search_timetable.employee_id.id:
+                    continue
+                if is_user:
+                    key = '{}-{}'.format(search_timetable.semester_id.id, search_timetable.employee_id.id)
                     semester = '{}'.format(search_timetable.semester_id.name)
-                    study = '{} ({})'.format(search_timetable.class_id.name, search_timetable.class_group_id.name)
+                    study = '{}'.format(search_timetable.employee_id.name)
                 else:
-                    key = '{}-{}'.format(search_timetable.semester_id.id, search_timetable.class_id.id)
-                    semester = '{}'.format(search_timetable.semester_id.name)
-                    study = '{}'.format(search_timetable.class_id.name)
-            if key not in key_timetables:
-                key_timetables[key] = []
-                info_timetables[key] = {}
-                info_timetables[key]['semester'] = semester
-                info_timetables[key]['study'] = study
-                info_timetables[key]['filter'] = filter_title
-            timetable = {}
-            timetable['id'] = search_timetable.id
-            timetable['date'] = search_timetable.date
-            timetable['date_of_week'] = datetime.strftime(search_timetable.date, DATE_FORMAT_FR)
-            timetable['semester_name'] = search_timetable.semester_id.name
-            timetable['cycle_id'] = search_timetable.cycle_id.id
-            timetable['cycle_name'] = search_timetable.cycle_id.name
-            timetable['level_id'] = search_timetable.level_id.id
-            timetable['level_name'] = search_timetable.level_id.name
-            timetable['field_of_study_id'] = search_timetable.field_of_study_id.id
-            timetable['field_of_study_name'] = search_timetable.field_of_study_id.name
-            timetable['specialty_id'] = search_timetable.specialty_id.id
-            timetable['specialty_name'] = search_timetable.specialty_id.name
-            timetable['option_id'] = search_timetable.option_id.id
-            timetable['option_name'] = search_timetable.option_id.name
-            timetable['class_id'] = search_timetable.class_id.id
-            timetable['class_name'] = search_timetable.class_id.name
-            timetable['class_group_id'] = search_timetable.class_group_id.id if search_timetable.class_group_id.id else None
-            timetable['class_group_name'] = search_timetable.class_group_id.name if search_timetable.class_group_id.id else ''
-            timetable['department_id'] = search_timetable.department_id.id
-            timetable['department_name'] = search_timetable.department_id.name
-            timetable['school_id'] = search_timetable.school_id.id
-            timetable['school_name'] = search_timetable.school_id.name
-            timetable['subject_id'] = search_timetable.subject_id.id
-            timetable['subject_name'] = search_timetable.subject_id.name
-            timetable['subject_code'] = search_timetable.subject_id.code
-            timetable['subject_hours_credit'] = search_timetable.subject_id.hours_credit
-            timetable['subject_shared_subject'] = '(TC)' if search_timetable.subject_id.shared_subject else ''
-            timetable['classroom_name'] = search_timetable.classroom_id.name
-            timetable['building_name'] = search_timetable.classroom_id.building_id.name
-            timetable['batch_name'] = search_timetable.batch_id.name
-            timetable['employee_name'] = search_timetable.employee_id.name
-            timetable['day_of_week'] = CURRENT_WEEKDAY[search_timetable.day_of_week]
-            timetable['start_time'] = search_timetable.start_time
-            timetable['end_time'] = search_timetable.end_time
-            timetable['worked_start_time'] = search_timetable.worked_start_time
-            timetable['worked_end_time'] = search_timetable.worked_end_time
-            timetable['reason'] = search_timetable.reason
-            timetable['status'] = STATUS_TIMETABLE[search_timetable.status]
-            key_timetables[key].append(timetable)
+                    if search_timetable.class_group_id.id:
+                        key = '{}-{}-{}'.format(search_timetable.semester_id.id, search_timetable.class_id.id, search_timetable.class_group_id.id)
+                        semester = '{}'.format(search_timetable.semester_id.name)
+                        study = '{} ({})'.format(search_timetable.class_id.name, search_timetable.class_group_id.name)
+                    else:
+                        key = '{}-{}'.format(search_timetable.semester_id.id, search_timetable.class_id.id)
+                        semester = '{}'.format(search_timetable.semester_id.name)
+                        study = '{}'.format(search_timetable.class_id.name)
+                if key not in key_timetables:
+                    key_timetables[key] = []
+                    info_timetables[key] = {}
+                    info_timetables[key]['semester'] = semester
+                    info_timetables[key]['study'] = study
+                    info_timetables[key]['filter'] = filter_title
+                timetable = {}
+                timetable['id'] = search_timetable.id
+                timetable['date'] = search_timetable.date
+                timetable['date_of_week'] = datetime.strftime(search_timetable.date, DATE_FORMAT_FR)
+                timetable['semester_name'] = search_timetable.semester_id.name
+                timetable['cycle_id'] = search_timetable.cycle_id.id
+                timetable['cycle_name'] = search_timetable.cycle_id.name
+                timetable['level_id'] = search_timetable.level_id.id
+                timetable['level_name'] = search_timetable.level_id.name
+                timetable['field_of_study_id'] = search_timetable.field_of_study_id.id
+                timetable['field_of_study_name'] = search_timetable.field_of_study_id.name
+                timetable['specialty_id'] = search_timetable.specialty_id.id
+                timetable['specialty_name'] = search_timetable.specialty_id.name
+                timetable['option_id'] = search_timetable.option_id.id
+                timetable['option_name'] = search_timetable.option_id.name
+                timetable['class_id'] = search_timetable.class_id.id
+                timetable['class_name'] = search_timetable.class_id.name
+                timetable['class_group_id'] = search_timetable.class_group_id.id if search_timetable.class_group_id.id else None
+                timetable['class_group_name'] = search_timetable.class_group_id.name if search_timetable.class_group_id.id else ''
+                timetable['department_id'] = search_timetable.department_id.id
+                timetable['department_name'] = search_timetable.department_id.name
+                timetable['school_id'] = search_timetable.school_id.id
+                timetable['school_name'] = search_timetable.school_id.name
+                timetable['subject_id'] = search_timetable.subject_id.id
+                timetable['subject_name'] = search_timetable.subject_id.name
+                timetable['subject_code'] = search_timetable.subject_id.code
+                timetable['subject_hours_credit'] = search_timetable.subject_id.hours_credit
+                timetable['subject_shared_subject'] = '(TC)' if search_timetable.subject_id.shared_subject else ''
+                timetable['classroom_name'] = search_timetable.classroom_id.name
+                timetable['building_name'] = search_timetable.classroom_id.building_id.name
+                timetable['batch_name'] = search_timetable.batch_id.name
+                timetable['employee_name'] = search_timetable.employee_id.name
+                timetable['day_of_week'] = CURRENT_WEEKDAY[search_timetable.day_of_week]
+                timetable['start_time'] = search_timetable.start_time
+                timetable['end_time'] = search_timetable.end_time
+                timetable['worked_start_time'] = search_timetable.worked_start_time
+                timetable['worked_end_time'] = search_timetable.worked_end_time
+                timetable['reason'] = search_timetable.reason
+                timetable['status'] = STATUS_TIMETABLE[search_timetable.status]
+                key_timetables[key].append(timetable)
 
-        for key in key_timetables.keys():
-            key_timetables[key] = TimetablePrintWizard.format_timetable(key_timetables[key])
-            for monday in key_timetables[key].keys():
-                for i, timetable in enumerate(key_timetables[key][monday]['Heure']):
-                    tm = timetable.split('-')
-                    tm[0] = TimetablePrintWizard.convert_float_to_time(tm[0])
-                    tm[1] = TimetablePrintWizard.convert_float_to_time(tm[1])
-                    key_timetables[key][monday]['Heure'][i] = '{}-{}'.format(tm[0], tm[1])
-                hours = [(i[0] + 1) for i in sorted(enumerate(key_timetables[key][monday]['Heure']), key=lambda x: x[1])]
-                key_timetables[key][monday]['Heure'] = TimetablePrintWizard.sort_by_indexes(key_timetables[key][monday]['Heure'], hours)
-                key_timetables[key][monday]['Lundi'] = TimetablePrintWizard.sort_by_indexes(key_timetables[key][monday]['Lundi'], hours)
-                key_timetables[key][monday]['Mardi'] = TimetablePrintWizard.sort_by_indexes(key_timetables[key][monday]['Mardi'], hours)
-                key_timetables[key][monday]['Mercredi'] = TimetablePrintWizard.sort_by_indexes(key_timetables[key][monday]['Mercredi'], hours)
-                key_timetables[key][monday]['Jeudi'] = TimetablePrintWizard.sort_by_indexes(key_timetables[key][monday]['Jeudi'], hours)
-                key_timetables[key][monday]['Vendredi'] = TimetablePrintWizard.sort_by_indexes(key_timetables[key][monday]['Vendredi'], hours)
-                key_timetables[key][monday]['Samedi'] = TimetablePrintWizard.sort_by_indexes(key_timetables[key][monday]['Samedi'], hours)
-                key_timetables[key][monday]['Dimanche'] = TimetablePrintWizard.sort_by_indexes(key_timetables[key][monday]['Dimanche'], hours)
-            key_timetables[key] = TimetablePrintWizard.paginate_calendar(key_timetables[key], page_size=len(key_timetables[key].keys()))
-            key_timetables[key]['semester'] = info_timetables[key]['semester']
-            key_timetables[key]['study'] = info_timetables[key]['study']
-            key_timetables[key]['filter'] = info_timetables[key]['filter']
+            for key in key_timetables.keys():
+                key_timetables[key] = TimetablePrintWizard.format_timetable(key_timetables[key])
+                for monday in key_timetables[key].keys():
+                    for i, timetable in enumerate(key_timetables[key][monday]['Heure']):
+                        tm = timetable.split('-')
+                        tm[0] = TimetablePrintWizard.convert_float_to_time(tm[0])
+                        tm[1] = TimetablePrintWizard.convert_float_to_time(tm[1])
+                        key_timetables[key][monday]['Heure'][i] = '{}-{}'.format(tm[0], tm[1])
+                    hours = [(i[0] + 1) for i in sorted(enumerate(key_timetables[key][monday]['Heure']), key=lambda x: x[1])]
+                    key_timetables[key][monday]['Heure'] = TimetablePrintWizard.sort_by_indexes(key_timetables[key][monday]['Heure'], hours)
+                    key_timetables[key][monday]['Lundi'] = TimetablePrintWizard.sort_by_indexes(key_timetables[key][monday]['Lundi'], hours)
+                    key_timetables[key][monday]['Mardi'] = TimetablePrintWizard.sort_by_indexes(key_timetables[key][monday]['Mardi'], hours)
+                    key_timetables[key][monday]['Mercredi'] = TimetablePrintWizard.sort_by_indexes(key_timetables[key][monday]['Mercredi'], hours)
+                    key_timetables[key][monday]['Jeudi'] = TimetablePrintWizard.sort_by_indexes(key_timetables[key][monday]['Jeudi'], hours)
+                    key_timetables[key][monday]['Vendredi'] = TimetablePrintWizard.sort_by_indexes(key_timetables[key][monday]['Vendredi'], hours)
+                    key_timetables[key][monday]['Samedi'] = TimetablePrintWizard.sort_by_indexes(key_timetables[key][monday]['Samedi'], hours)
+                    key_timetables[key][monday]['Dimanche'] = TimetablePrintWizard.sort_by_indexes(key_timetables[key][monday]['Dimanche'], hours)
+                key_timetables[key] = TimetablePrintWizard.paginate_calendar(key_timetables[key], page_size=len(key_timetables[key].keys()))
+                key_timetables[key]['semester'] = info_timetables[key]['semester']
+                key_timetables[key]['study'] = info_timetables[key]['study']
+                key_timetables[key]['filter'] = info_timetables[key]['filter']
+        else:
+            for search_timetable in search_timetables:
+                if not search_timetable.date or not search_timetable.day_of_week or not search_timetable.employee_id.id:
+                    continue
+                key = '{}'.format(search_timetable.employee_id.id)
+                if key not in key_timetables:
+                    key_timetables[key] = []
+                timetable = {}
+                timetable['id'] = search_timetable.id
+                timetable['date'] = search_timetable.date
+                timetable['date_of_week'] = datetime.strftime(search_timetable.date, DATE_FORMAT_FR)
+                timetable['semester_name'] = search_timetable.semester_id.name
+                timetable['cycle_id'] = search_timetable.cycle_id.id
+                timetable['cycle_name'] = search_timetable.cycle_id.name
+                timetable['level_id'] = search_timetable.level_id.id
+                timetable['level_name'] = search_timetable.level_id.name
+                timetable['field_of_study_id'] = search_timetable.field_of_study_id.id
+                timetable['field_of_study_name'] = search_timetable.field_of_study_id.name
+                timetable['specialty_id'] = search_timetable.specialty_id.id
+                timetable['specialty_name'] = search_timetable.specialty_id.name
+                timetable['option_id'] = search_timetable.option_id.id
+                timetable['option_name'] = search_timetable.option_id.name
+                timetable['class_id'] = search_timetable.class_id.id
+                timetable['class_name'] = search_timetable.class_id.name
+                timetable['class_group_id'] = search_timetable.class_group_id.id if search_timetable.class_group_id.id else None
+                timetable['class_group_name'] = search_timetable.class_group_id.name if search_timetable.class_group_id.id else ''
+                timetable['department_id'] = search_timetable.department_id.id
+                timetable['department_name'] = search_timetable.department_id.name
+                timetable['school_id'] = search_timetable.school_id.id
+                timetable['school_name'] = search_timetable.school_id.name
+                timetable['subject_id'] = search_timetable.subject_id.id
+                timetable['subject_name'] = search_timetable.subject_id.name
+                timetable['subject_code'] = search_timetable.subject_id.code
+                timetable['subject_hours_credit'] = search_timetable.subject_id.hours_credit
+                timetable['subject_shared_subject'] = '(TC)' if search_timetable.subject_id.shared_subject else ''
+                timetable['classroom_name'] = search_timetable.classroom_id.name
+                timetable['building_name'] = search_timetable.classroom_id.building_id.name
+                timetable['batch_name'] = search_timetable.batch_id.name
+                timetable['employee_name'] = search_timetable.employee_id.name
+                timetable['day_of_week'] = CURRENT_WEEKDAY[search_timetable.day_of_week]
+                timetable['start_time'] = search_timetable.start_time
+                timetable['end_time'] = search_timetable.end_time
+                timetable['worked_start_time'] = search_timetable.worked_start_time
+                timetable['worked_end_time'] = search_timetable.worked_end_time
+                timetable['reason'] = search_timetable.reason
+                timetable['status'] = STATUS_TIMETABLE[search_timetable.status]
+                key_timetables[key].append(timetable)
 
         _logger.info(f'----------- tototototototo key_timetables {key_timetables} -----------')
 
@@ -181,6 +229,7 @@ class TimetablePrintWizard(models.TransientModel):
                 'filter': filter_title,
                 'timetable_data': key_timetables,
                 'is_user': is_user,
+                'print_type': print_type,
             }
         }
 

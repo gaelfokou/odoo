@@ -157,7 +157,7 @@ class ApiAccount(http.Controller):
             is_user = 'is_student'
         if is_user:
             report_name = 'siantou_ems_core.template_report_timetable'
-            report_action = 'siantou_ems_core.action_report_timetable'
+            report_action = 'siantou_ems_core.action_report_timetable_calendar'
             pdf_report = http.request.env['ir.actions.report'].sudo()._get_report_from_name(report_action)
             report_data = http.request.env['timetable.print.wizard'].sudo().create({})
             domain = [
