@@ -1442,10 +1442,12 @@ class Timetable(models.Model):
 
         if len(data['docdata']['timetable_data'].keys()) == 0:
             raise UserError('Aucune donnée trouvée')
+
         if print_type == 'calendar':
             report_action = self.env.ref('siantou_ems_core.action_report_timetable_calendar')
         else:
             report_action = self.env.ref('siantou_ems_core.action_report_timetable_list')
+
         report_action.update({
             'name': '{} PDF'.format(data['docdata']['title']),
         })

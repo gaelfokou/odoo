@@ -16,6 +16,11 @@ DATETIME_FORMAT_FR = '%d/%m/%Y %H:%M'
 TIME_FORMAT = '%H:%M:%S'
 TIME_FORMAT_FR = '%H:%M'
 
+TYPE_COUR = {
+    'cj': 'Cours du jour',
+    'cs': 'Cours du soir',
+}
+
 CURRENT_WEEKDAY = {
     '0': 'Lundi',
     '1': 'Mardi',
@@ -237,6 +242,7 @@ class PortalAccount(portal.CustomerPortal):
             timetable['specialty_name'] = search_timetable.specialty_id.name
             timetable['option_id'] = search_timetable.option_id.id
             timetable['option_name'] = search_timetable.option_id.name
+            timetable['type_cour'] = TYPE_COUR[search_timetable.type_cour]
             timetable['class_id'] = search_timetable.class_id.id
             timetable['class_name'] = search_timetable.class_id.name
             timetable['class_group_id'] = search_timetable.class_group_id.id if search_timetable.class_group_id.id else None
@@ -350,6 +356,7 @@ class PortalAccount(portal.CustomerPortal):
             timetable['specialty_name'] = search_timetable.specialty_id.name
             timetable['option_id'] = search_timetable.option_id.id
             timetable['option_name'] = search_timetable.option_id.name
+            timetable['type_cour'] = TYPE_COUR[search_timetable.type_cour]
             timetable['class_id'] = search_timetable.class_id.id
             timetable['class_name'] = search_timetable.class_id.name
             timetable['class_group_id'] = search_timetable.class_group_id.id if search_timetable.class_group_id.id else None

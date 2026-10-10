@@ -18,6 +18,11 @@ DATETIME_FORMAT_FR = '%d/%m/%Y %H:%M'
 TIME_FORMAT = '%H:%M:%S'
 TIME_FORMAT_FR = '%H:%M'
 
+TYPE_COUR = {
+    'cj': 'Cours du jour',
+    'cs': 'Cours du soir',
+}
+
 CURRENT_WEEKDAY = {
     '0': 'Lundi',
     '1': 'Mardi',
@@ -126,6 +131,7 @@ class TimetablePrintWizard(models.TransientModel):
                 timetable['specialty_name'] = search_timetable.specialty_id.name
                 timetable['option_id'] = search_timetable.option_id.id
                 timetable['option_name'] = search_timetable.option_id.name
+                timetable['type_cour'] = TYPE_COUR[search_timetable.type_cour]
                 timetable['class_id'] = search_timetable.class_id.id
                 timetable['class_name'] = search_timetable.class_id.name
                 timetable['class_group_id'] = search_timetable.class_group_id.id if search_timetable.class_group_id.id else None
@@ -177,9 +183,12 @@ class TimetablePrintWizard(models.TransientModel):
             for search_timetable in search_timetables:
                 if not search_timetable.date or not search_timetable.day_of_week or not search_timetable.employee_id.id:
                     continue
-                key = '{}'.format(search_timetable.employee_id.id)
+                key = '{}'.format(search_timetable.class_id.id)
                 if key not in key_timetables:
-                    key_timetables[key] = []
+                    key_timetables[key] = {}
+                    key_timetables[key]['id'] = search_timetable.class_id.id
+                    key_timetables[key]['name'] = search_timetable.class_id.name
+                    key_timetables[key]['data'] = []
                 timetable = {}
                 timetable['id'] = search_timetable.id
                 timetable['date'] = search_timetable.date
@@ -195,6 +204,7 @@ class TimetablePrintWizard(models.TransientModel):
                 timetable['specialty_name'] = search_timetable.specialty_id.name
                 timetable['option_id'] = search_timetable.option_id.id
                 timetable['option_name'] = search_timetable.option_id.name
+                timetable['type_cour'] = TYPE_COUR[search_timetable.type_cour]
                 timetable['class_id'] = search_timetable.class_id.id
                 timetable['class_name'] = search_timetable.class_id.name
                 timetable['class_group_id'] = search_timetable.class_group_id.id if search_timetable.class_group_id.id else None
@@ -213,13 +223,15 @@ class TimetablePrintWizard(models.TransientModel):
                 timetable['batch_name'] = search_timetable.batch_id.name
                 timetable['employee_name'] = search_timetable.employee_id.name
                 timetable['day_of_week'] = CURRENT_WEEKDAY[search_timetable.day_of_week]
-                timetable['start_time'] = search_timetable.start_time
-                timetable['end_time'] = search_timetable.end_time
-                timetable['worked_start_time'] = search_timetable.worked_start_time
-                timetable['worked_end_time'] = search_timetable.worked_end_time
+                timetable['start_time'] = TimetablePrintWizard.convert_float_to_time(search_timetable.start_time)
+                timetable['end_time'] = TimetablePrintWizard.convert_float_to_time(search_timetable.end_time)
+                timetable['worked_start_time'] = TimetablePrintWizard.convert_float_to_time(search_timetable.worked_start_time)
+                timetable['worked_end_time'] = TimetablePrintWizard.convert_float_to_time(search_timetable.worked_end_time)
                 timetable['reason'] = search_timetable.reason
                 timetable['status'] = STATUS_TIMETABLE[search_timetable.status]
-                key_timetables[key].append(timetable)
+                key_timetables[key]['data'].append(timetable)
+
+            key_timetables = dict(sorted(key_timetables.items(), key=lambda item: item[1]['name'] if item[1]['name'] else ''))
 
         _logger.info(f'----------- tototototototo key_timetables {key_timetables} -----------')
 
