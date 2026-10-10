@@ -1404,11 +1404,11 @@ class Timetable(models.Model):
         })
         return action
 
-    def action_print_calendar_pdf(self):
-        return self.action_print_pdf(print_type='calendar')
-
     def action_print_list_pdf(self):
         return self.action_print_pdf(print_type='list')
+
+    def action_print_calendar_pdf(self):
+        return self.action_print_pdf(print_type='calendar')
 
     def action_print_pdf(self, print_type='calendar'):
         active_ids = self.env.context.get('active_ids', [])
