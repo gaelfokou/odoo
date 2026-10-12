@@ -54,7 +54,7 @@
                         border-collapse: collapse;
                         width: 100%;
                     }
-                    .table .thead th, .table td {
+                    .table .thead th, .table .tbody td {
                         border: 1px solid lightgrey !important;
                         padding: 4px 4px !important;
                         margin: 2px 4px !important;
@@ -320,7 +320,7 @@
                         border-collapse: collapse;
                         width: 100%;
                     }
-                    .table .thead th, .table td {
+                    .table .thead th, .table .tbody td {
                         border: 1px solid lightgrey !important;
                         padding: 4px 4px !important;
                         margin: 2px 4px !important;
@@ -508,7 +508,7 @@
                         border-collapse: collapse;
                         width: 100%;
                     }
-                    .table .thead th, .table td {
+                    .table .thead th, .table .tbody td {
                         border: 1px solid lightgrey !important;
                         padding: 4px 4px !important;
                         margin: 2px 4px !important;
@@ -651,7 +651,7 @@
                         border-collapse: collapse;
                         width: 100%;
                     }
-                    .table .thead th, .table td {
+                    .table .thead th, .table .tbody td {
                         border: 1px solid lightgrey !important;
                         padding: 4px 4px !important;
                         margin: 2px 4px !important;
@@ -816,7 +816,7 @@
                         border-collapse: collapse;
                         width: 100%;
                     }
-                    .table .thead th, .table td {
+                    .table .thead th, .table .tbody td {
                         border: 1px solid lightgrey !important;
                         padding: 4px 4px !important;
                         margin: 2px 4px !important;
@@ -955,7 +955,7 @@
                         border-collapse: collapse;
                         width: 100%;
                     }
-                    .table .thead th, .table td {
+                    .table .thead th, .table .tbody td {
                         border: 1px solid lightgrey !important;
                         padding: 4px 4px !important;
                         margin: 2px 4px !important;
@@ -1136,7 +1136,7 @@
                         border-collapse: collapse;
                         width: 100%;
                     }
-                    .table .thead th, .table td {
+                    .table .thead th, .table .tbody td {
                         border: 1px solid lightgrey !important;
                         padding: 4px 4px !important;
                         margin: 2px 4px !important;
@@ -1299,7 +1299,7 @@
                         border-collapse: collapse;
                         width: 100%;
                     }
-                    .table .thead th, .table td {
+                    .table .thead th, .table .tbody td {
                         border: 1px solid lightgrey !important;
                         padding: 4px 4px !important;
                         margin: 2px 4px !important;
@@ -1436,7 +1436,7 @@
                         border-collapse: collapse;
                         width: 100%;
                     }
-                    .table .thead th, .table td {
+                    .table .thead th, .table .tbody td {
                         border: 1px solid lightgrey !important;
                         padding: 4px 4px !important;
                         margin: 2px 4px !important;
@@ -1586,7 +1586,7 @@
                         border-collapse: collapse;
                         width: 100%;
                     }
-                    .table .thead th, .table td {
+                    .table .thead th, .table .tbody td {
                         border: 1px solid lightgrey !important;
                         padding: 4px 4px !important;
                         margin: 2px 4px !important;
@@ -1700,7 +1700,7 @@
                         border-collapse: collapse;
                         width: 100%;
                     }
-                    .table .thead th, .table td {
+                    .table .thead th, .table .tbody td {
                         border: 1px solid lightgrey !important;
                         padding: 4px 4px !important;
                         margin: 2px 4px !important;
@@ -1798,7 +1798,7 @@
                         border-collapse: collapse;
                         width: 100%;
                     }
-                    .table .thead th, .table td {
+                    .table .thead th, .table .tbody td {
                         border: 1px solid lightgrey !important;
                         padding: 4px 4px !important;
                         margin: 2px 4px !important;
@@ -2006,7 +2006,7 @@
                         border-collapse: collapse;
                         width: 100%;
                     }
-                    .table .thead th, .table td {
+                    .table .thead th, .table .tbody td {
                         border: 1px solid lightgrey !important;
                         padding: 4px 4px !important;
                         margin: 2px 4px !important;
@@ -2123,7 +2123,7 @@
                         border-collapse: collapse;
                         width: 100%;
                     }
-                    .table .thead th, .table td {
+                    .table .thead th, .table .tbody td {
                         border: 1px solid lightgrey !important;
                         padding: 4px 4px !important;
                         margin: 2px 4px !important;
