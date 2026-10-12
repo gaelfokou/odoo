@@ -303,7 +303,7 @@
                             <table class="table table-bordered table-sm text-center">
                                 <thead>
                                     <tr>
-                                        <th class="text-center" colspan="18" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;">
+                                        <th class="text-center" colspan="21" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;">
                                             <h3>INSTITUT UNIVERSITAIRE SIANTOU</h3>
                                             <h4>
                                                 <span t-esc="docdata['title']"/>
@@ -317,7 +317,7 @@
                                 </thead>
                                 <thead>
                                     <tr>
-                                        <th class="text-left" colspan="18" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
+                                        <th class="text-left" colspan="21" style="box-shadow: inset 0 0 0 9999px transparent; border-style: hidden;"><br/></th>
                                     </tr>
                                 </thead>
                                 <thead class="thead">
@@ -332,6 +332,9 @@
                                         <th class="text-center">Option</th>
                                         <th class="text-center">Type de cours</th>
                                         <th class="text-center">Classe</th>
+                                        <th class="text-center">Cours</th>
+                                        <th class="text-center">Bâtiment</th>
+                                        <th class="text-center">Salle de classe</th>
                                         <th class="text-center">Enseignant</th>
                                         <th class="text-center">Date</th>
                                         <th class="text-center">Jour de la semaine</th>
@@ -378,6 +381,15 @@
                                                 </td>
                                                 <td class="text-center">
                                                     <span t-esc="timetable['class_name']"/>
+                                                </td>
+                                                <td class="text-center">
+                                                    <span t-esc="timetable['subject_name']"/>
+                                                </td>
+                                                <td class="text-center">
+                                                    <span t-esc="timetable['building_name']"/>
+                                                </td>
+                                                <td class="text-center">
+                                                    <span t-esc="timetable['classroom_name']"/>
                                                 </td>
                                                 <td class="text-center">
                                                     <span t-esc="timetable['employee_name']"/>
