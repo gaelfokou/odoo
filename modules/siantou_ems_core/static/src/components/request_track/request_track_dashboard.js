@@ -74,8 +74,8 @@ export class OwlRequestTrackDashboard extends Component {
 
     async getRequestTracks() {
         const self = this;
-        Object.keys(self.state).forEach((key_type_request) => {
-            Object.keys(self.state[key_type_request].data).forEach(async (key_status) => {
+        Object.keys(self.state).map((key_type_request, i) => {
+            Object.keys(self.state[key_type_request].data).map(async (key_status, j) => {
                 console.log(`${key_type_request} - ${key_status} : ${self.state[key_type_request].data[key_status]}`)
                 self.state[key_type_request].data[key_status].value = await this.orm.searchCount("siantou.ems.core.request.track", [["type_request", "=", key_type_request], ["status", "=", key_status]])
             })
