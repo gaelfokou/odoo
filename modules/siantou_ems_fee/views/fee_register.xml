@@ -746,8 +746,8 @@
                         </div>
                         <group>
                             <group>
-                                <field name="student_id" options="{'no_create_edit': True, 'no_create': True}" required="1" placeholder="Search student by Name or Number"/>
-                                <field name="class_division_id" options="{'no_create_edit': True, 'no_create': True}" required="1"/>
+                                <field name="student_id" options="{'no_create': True}" required="1" placeholder="Search student by Name or Number"/>
+                                <field name="class_division_id" options="{'no_create': True}" required="1"/>
                                 <field name="partner_id" invisible="1"
                                        context="{'search_default_customer':1, 'show_address': 1, 'default_company_type': 'company'}"
                                        options='{"always_reload": True, "no_quick_create": True}'/>
