@@ -51,7 +51,7 @@
                                         <div style="height: 100%;width: 100%;font-size: 15px;position:relative">
                                             <img src="siantou_ems_fee/static/src/img/logo.png" 
                                                 alt="logo"
-                                                style="width: 140px; height: 140px;position: fixed; top: 70px; left: 40%; right:0;z-index: -1;opacity:0.8"/>
+                                                style="width: 140px; height: 140px;position: fixed; top: 70px; left: 40%; right: 0;z-index: -1;opacity:0.8"/>
                                         </div>
                                     </td>
                                     <td style="border: none;padding: 4px; text-align: center; width:30%;font-size: 15px;">
