@@ -159,7 +159,7 @@
                                                 </t>
                                                 <br/>
                                                 <span t-esc="record['subject_name']"/>
-                                                <span t-esc="' (' + record['subject_code'] + ')'"/>
+                                                <span t-esc="'(' + record['subject_code'] + ')'"/>
                                                 <br/>
                                                 <span t-esc="record['classroom_name']"/>
                                                 <span t-esc="'/ ' + record['building_name']"/>
@@ -178,7 +178,7 @@
                                                 </t>
                                                 <br/>
                                                 <span t-esc="record['subject_name']"/>
-                                                <span t-esc="' (' + record['subject_code'] + ')'"/>
+                                                <span t-esc="'(' + record['subject_code'] + ')'"/>
                                                 <br/>
                                                 <span t-esc="record['classroom_name']"/>
                                                 <span t-esc="'/ ' + record['building_name']"/>
@@ -197,7 +197,7 @@
                                                 </t>
                                                 <br/>
                                                 <span t-esc="record['subject_name']"/>
-                                                <span t-esc="' (' + record['subject_code'] + ')'"/>
+                                                <span t-esc="'(' + record['subject_code'] + ')'"/>
                                                 <br/>
                                                 <span t-esc="record['classroom_name']"/>
                                                 <span t-esc="'/ ' + record['building_name']"/>
@@ -216,7 +216,7 @@
                                                 </t>
                                                 <br/>
                                                 <span t-esc="record['subject_name']"/>
-                                                <span t-esc="' (' + record['subject_code'] + ')'"/>
+                                                <span t-esc="'(' + record['subject_code'] + ')'"/>
                                                 <br/>
                                                 <span t-esc="record['classroom_name']"/>
                                                 <span t-esc="'/ ' + record['building_name']"/>
@@ -235,7 +235,7 @@
                                                 </t>
                                                 <br/>
                                                 <span t-esc="record['subject_name']"/>
-                                                <span t-esc="' (' + record['subject_code'] + ')'"/>
+                                                <span t-esc="'(' + record['subject_code'] + ')'"/>
                                                 <br/>
                                                 <span t-esc="record['classroom_name']"/>
                                                 <span t-esc="'/ ' + record['building_name']"/>
@@ -254,7 +254,7 @@
                                                 </t>
                                                 <br/>
                                                 <span t-esc="record['subject_name']"/>
-                                                <span t-esc="' (' + record['subject_code'] + ')'"/>
+                                                <span t-esc="'(' + record['subject_code'] + ')'"/>
                                                 <br/>
                                                 <span t-esc="record['classroom_name']"/>
                                                 <span t-esc="'/ ' + record['building_name']"/>
@@ -402,6 +402,7 @@
                                     </td>
                                     <td class="text-left">
                                         <span t-esc="record['subject_name']"/>
+                                        <span t-esc="'(' + record['subject_code'] + ')'"/>
                                     </td>
                                     <td class="text-left">
                                         <span t-esc="record['classroom_name']"/>
@@ -728,6 +729,7 @@
                                                 </td>
                                                 <td class="text-left">
                                                     <span t-esc="examscores[classe]['data'][semester]['data'][student]['data'][subject]['data']['subject_name']"/>
+                                                    <span t-esc="'(' + examscores[classe]['data'][semester]['data'][student]['data'][subject]['data']['subject_code'] + ')'"/>
                                                 </td>
                                                 <td class="text-center">
                                                     <span t-esc="examscores[classe]['data'][semester]['data'][student]['data'][subject]['data']['cc_note']"/>
