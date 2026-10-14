@@ -625,6 +625,7 @@ class PortalAccount(portal.CustomerPortal):
                                 all_examscores[key_class]['data'][key_semester]['data'][key_student]['data'] = {}
                                 all_examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject] = {}
                                 all_examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['name'] = d['subject_name']
+                                all_examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['code'] = d['subject_code']
                                 all_examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['data'] = d
                             else:
                                 if key_semester not in all_examscores[key_class]['data']:
@@ -636,6 +637,7 @@ class PortalAccount(portal.CustomerPortal):
                                     all_examscores[key_class]['data'][key_semester]['data'][key_student]['data'] = {}
                                     all_examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject] = {}
                                     all_examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['name'] = d['subject_name']
+                                    all_examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['code'] = d['subject_code']
                                     all_examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['data'] = d
                                 else:
                                     if key_student not in all_examscores[key_class]['data'][key_semester]['data']:
@@ -644,11 +646,13 @@ class PortalAccount(portal.CustomerPortal):
                                         all_examscores[key_class]['data'][key_semester]['data'][key_student]['data'] = {}
                                         all_examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject] = {}
                                         all_examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['name'] = d['subject_name']
+                                        all_examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['code'] = d['subject_code']
                                         all_examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['data'] = d
                                     else:
                                         if key_subject not in all_examscores[key_class]['data'][key_semester]['data'][key_student]['data']:
                                             all_examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject] = {}
                                             all_examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['name'] = d['subject_name']
+                                            all_examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['code'] = d['subject_code']
                                             all_examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['data'] = d
                                         else:
                                             if all_examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['data']['exam_type'] == 'cc':

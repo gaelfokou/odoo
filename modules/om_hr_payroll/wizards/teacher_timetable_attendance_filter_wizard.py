@@ -660,6 +660,7 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
                 consumptionhours[key_class]['data'] = {}
                 consumptionhours[key_class]['data'][key_subject] = {}
                 consumptionhours[key_class]['data'][key_subject]['name'] = d['subject_name']
+                consumptionhours[key_class]['data'][key_subject]['code'] = d['subject_code']
                 consumptionhours[key_class]['data'][key_subject]['data'] = {
                     'hours_credit': 0.0,
                     'done': [],
@@ -672,6 +673,7 @@ class TeacherTimetableAttendanceFilterWizard(models.TransientModel):
                 if key_subject not in consumptionhours[key_class]['data']:
                     consumptionhours[key_class]['data'][key_subject] = {}
                     consumptionhours[key_class]['data'][key_subject]['name'] = d['subject_name']
+                    consumptionhours[key_class]['data'][key_subject]['code'] = d['subject_code']
                     consumptionhours[key_class]['data'][key_subject]['data'] = {
                         'hours_credit': 0.0,
                         'done': [],

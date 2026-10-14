@@ -478,12 +478,14 @@ class ProgressReport(models.Model):
                     progressreports[key_class]['data'] = {}
                     progressreports[key_class]['data'][key_subject] = {}
                     progressreports[key_class]['data'][key_subject]['name'] = d['subject_name']
+                    progressreports[key_class]['data'][key_subject]['code'] = d['subject_code']
                     progressreports[key_class]['data'][key_subject]['data'] = []
                     progressreports[key_class]['data'][key_subject]['data'].append(d)
                 else:
                     if key_subject not in progressreports[key_class]['data']:
                         progressreports[key_class]['data'][key_subject] = {}
                         progressreports[key_class]['data'][key_subject]['name'] = d['subject_name']
+                        progressreports[key_class]['data'][key_subject]['code'] = d['subject_code']
                         progressreports[key_class]['data'][key_subject]['data'] = []
                         progressreports[key_class]['data'][key_subject]['data'].append(d)
                     else:
@@ -624,12 +626,14 @@ class ProgressReport(models.Model):
                     progressreports[key_class]['data'] = {}
                     progressreports[key_class]['data'][key_subject] = {}
                     progressreports[key_class]['data'][key_subject]['name'] = d['subject_name']
+                    progressreports[key_class]['data'][key_subject]['code'] = d['subject_code']
                     progressreports[key_class]['data'][key_subject]['data'] = []
                     progressreports[key_class]['data'][key_subject]['data'].append(d)
                 else:
                     if key_subject not in progressreports[key_class]['data']:
                         progressreports[key_class]['data'][key_subject] = {}
                         progressreports[key_class]['data'][key_subject]['name'] = d['subject_name']
+                        progressreports[key_class]['data'][key_subject]['code'] = d['subject_code']
                         progressreports[key_class]['data'][key_subject]['data'] = []
                         progressreports[key_class]['data'][key_subject]['data'].append(d)
                     else:

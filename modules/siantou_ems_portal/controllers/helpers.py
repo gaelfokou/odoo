@@ -1031,12 +1031,14 @@ class Helpers:
                 accountbalances[key_class]['data'] = {}
                 accountbalances[key_class]['data'][key_subject] = {}
                 accountbalances[key_class]['data'][key_subject]['name'] = d['subject_name']
+                accountbalances[key_class]['data'][key_subject]['code'] = d['subject_code']
                 accountbalances[key_class]['data'][key_subject]['data'] = []
                 accountbalances[key_class]['data'][key_subject]['data'].append(d)
             else:
                 if key_subject not in accountbalances[key_class]['data']:
                     accountbalances[key_class]['data'][key_subject] = {}
                     accountbalances[key_class]['data'][key_subject]['name'] = d['subject_name']
+                    accountbalances[key_class]['data'][key_subject]['code'] = d['subject_code']
                     accountbalances[key_class]['data'][key_subject]['data'] = []
                     accountbalances[key_class]['data'][key_subject]['data'].append(d)
                 else:
@@ -1082,6 +1084,7 @@ class Helpers:
                 consumptionhours[key_class]['data'] = {}
                 consumptionhours[key_class]['data'][key_subject] = {}
                 consumptionhours[key_class]['data'][key_subject]['name'] = d['subject_name']
+                consumptionhours[key_class]['data'][key_subject]['code'] = d['subject_code']
                 consumptionhours[key_class]['data'][key_subject]['data'] = {
                     'hours_credit': 0.0,
                     'done': [],
@@ -1094,6 +1097,7 @@ class Helpers:
                 if key_subject not in consumptionhours[key_class]['data']:
                     consumptionhours[key_class]['data'][key_subject] = {}
                     consumptionhours[key_class]['data'][key_subject]['name'] = d['subject_name']
+                    consumptionhours[key_class]['data'][key_subject]['code'] = d['subject_code']
                     consumptionhours[key_class]['data'][key_subject]['data'] = {
                         'hours_credit': 0.0,
                         'done': [],
@@ -1174,12 +1178,14 @@ class Helpers:
                 progressreports[key_class]['data'] = {}
                 progressreports[key_class]['data'][key_subject] = {}
                 progressreports[key_class]['data'][key_subject]['name'] = d['subject_name']
+                progressreports[key_class]['data'][key_subject]['code'] = d['subject_code']
                 progressreports[key_class]['data'][key_subject]['data'] = []
                 progressreports[key_class]['data'][key_subject]['data'].append(d)
             else:
                 if key_subject not in progressreports[key_class]['data']:
                     progressreports[key_class]['data'][key_subject] = {}
                     progressreports[key_class]['data'][key_subject]['name'] = d['subject_name']
+                    progressreports[key_class]['data'][key_subject]['code'] = d['subject_code']
                     progressreports[key_class]['data'][key_subject]['data'] = []
                     progressreports[key_class]['data'][key_subject]['data'].append(d)
                 else:
@@ -1231,6 +1237,7 @@ class Helpers:
                 examscores[key_class]['data'][key_semester]['data'][key_student]['data'] = {}
                 examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject] = {}
                 examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['name'] = d['subject_name']
+                examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['code'] = d['subject_code']
                 examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['data'] = []
                 examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['data'].append(d)
             else:
@@ -1243,6 +1250,7 @@ class Helpers:
                     examscores[key_class]['data'][key_semester]['data'][key_student]['data'] = {}
                     examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject] = {}
                     examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['name'] = d['subject_name']
+                    examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['code'] = d['subject_code']
                     examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['data'] = []
                     examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['data'].append(d)
                 else:
@@ -1252,12 +1260,14 @@ class Helpers:
                         examscores[key_class]['data'][key_semester]['data'][key_student]['data'] = {}
                         examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject] = {}
                         examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['name'] = d['subject_name']
+                        examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['code'] = d['subject_code']
                         examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['data'] = []
                         examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['data'].append(d)
                     else:
                         if key_subject not in examscores[key_class]['data'][key_semester]['data'][key_student]['data']:
                             examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject] = {}
                             examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['name'] = d['subject_name']
+                            examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['code'] = d['subject_code']
                             examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['data'] = []
                             examscores[key_class]['data'][key_semester]['data'][key_student]['data'][key_subject]['data'].append(d)
                         else:
