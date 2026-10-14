@@ -10,6 +10,7 @@ from dateutil.relativedelta import relativedelta
 import pytz
 import logging
 import copy
+from math import trunc
 
 DATE_FORMAT = '%Y-%m-%d'
 DATE_FORMAT_FR = '%d/%m/%Y'
@@ -1500,3 +1501,10 @@ class Helpers:
             return datetime.strftime(obj, TIME_FORMAT_FR)
         else:
             return obj
+
+    @staticmethod
+    def truncate(number, decimals=0):
+        if decimals == 0:
+            return trunc(number)
+        factor = 10.0 ** decimals
+        return trunc(number * factor) / factor
