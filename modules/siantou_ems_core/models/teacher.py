@@ -542,15 +542,15 @@ class TeacherAvailability(models.Model):
     )
 
     day_of_week = fields.Selection([
-        ('0', 'Lundi'),
-        ('1', 'Mardi'),
-        ('2', 'Mercredi'),
-        ('3', 'Jeudi'),
-        ('4', 'Vendredi'),
-        ('5', 'Samedi'),
-        ('6', 'Dimanche'),
-    ],
-        'Jour de la semaine',
+            ('0', 'Lundi'),
+            ('1', 'Mardi'),
+            ('2', 'Mercredi'),
+            ('3', 'Jeudi'),
+            ('4', 'Vendredi'),
+            ('5', 'Samedi'),
+            ('6', 'Dimanche'),
+        ],
+        string='Jour de la semaine',
         required=True
     )
 

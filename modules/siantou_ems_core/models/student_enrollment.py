@@ -50,7 +50,8 @@ class StudentEnrollment(models.Model):
             ('inscrip', 'Inscrit'),
             ('rej', 'Candidature rejeté'),
             ('transfer', 'Candidature accepté'),
-        ], string='Statut',
+        ],
+        string='Statut',
         default='inscrip',
     )
 
@@ -135,7 +136,8 @@ class StudentEnrollment(models.Model):
     type_cour = fields.Selection([
             ('cj', 'Cours du jour'),
             ('cs', 'Cours du soir'),
-        ], string='Type de cours',
+        ],
+        string='Type de cours',
         default='cj',
     )
 
@@ -423,9 +425,7 @@ class StudentEnrollment(models.Model):
         res = super(StudentEnrollment, self).create(vals)
 
         if 'class_id' in vals:
-            classe = self.env['siantou.ems.core.class'].search([
-                ('id', '=', vals['class_id']),
-            ], limit=1)
+            classe = self.env['siantou.ems.core.class'].search([('id', '=', vals['class_id'])], limit=1)
             if classe:
                 classe._compute_students_call()
                 classe.sudo().write({
@@ -517,9 +517,7 @@ class StudentEnrollment(models.Model):
         res = super(StudentEnrollment, self).write(vals)
 
         if 'class_id' in vals:
-            classe = self.env['siantou.ems.core.class'].search([
-                ('id', '=', vals['class_id']),
-            ], limit=1)
+            classe = self.env['siantou.ems.core.class'].search([('id', '=', vals['class_id'])], limit=1)
             if classe:
                 classe._compute_students_call()
                 classe.sudo().write({

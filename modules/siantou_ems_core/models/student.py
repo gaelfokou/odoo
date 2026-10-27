@@ -55,7 +55,8 @@ class Student(models.Model):
     status_univ = fields.Selection([
             ('new', 'Nouveau'),
             ('old', 'Ancien'),
-        ], string='Statut universitaire',
+        ],
+        string='Statut universitaire',
         default='old',
     )
 
@@ -103,7 +104,8 @@ class Student(models.Model):
     status_user = fields.Selection([
             ('new', 'Jamais connecté'),
             ('active', 'Confirmé'),
-        ], string='Statut',
+        ],
+        string='Statut',
         related='user_id.state',
     )
 
@@ -173,7 +175,8 @@ class Student(models.Model):
     type_cour = fields.Selection([
             ('cj', 'Cours du jour'),
             ('cs', 'Cours du soir'),
-        ], string='Type de cours',
+        ],
+        string='Type de cours',
         default='cj',
     )
 
@@ -604,9 +607,7 @@ class Student(models.Model):
         self.create_student_user(res)
 
         if 'class_id' in vals:
-            classe = self.env['siantou.ems.core.class'].search([
-                ('id', '=', vals['class_id']),
-            ], limit=1)
+            classe = self.env['siantou.ems.core.class'].search([('id', '=', vals['class_id'])], limit=1)
             if classe:
                 classe._compute_students_call()
                 classe.sudo().write({
@@ -698,9 +699,7 @@ class Student(models.Model):
         res = super(Student, self).write(vals)
 
         if 'class_id' in vals:
-            classe = self.env['siantou.ems.core.class'].search([
-                ('id', '=', vals['class_id']),
-            ], limit=1)
+            classe = self.env['siantou.ems.core.class'].search([('id', '=', vals['class_id'])], limit=1)
             if classe:
                 classe._compute_students_call()
                 classe.sudo().write({

@@ -63,7 +63,8 @@ class FeeEnrollmentWizard(models.TransientModel):
         [
             ('bank', 'Virement bancaire'),
             ('cash', 'Paiement en espèce(Cash)')
-        ], string='Mode de paiement',
+        ],
+        string='Mode de paiement',
         # default="cash",
         required=True
     )

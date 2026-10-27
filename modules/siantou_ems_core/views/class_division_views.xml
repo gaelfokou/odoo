@@ -224,6 +224,14 @@
 			<field name="model">siantou.ems.core.class</field>
 			<field name="arch" type="xml">
 				<form string="Classes">
+                    <header>
+                        <button name="action_print_student_score_xlsx" 
+                            type="object" 
+                            string="Imprimer les notes XLSX" 
+                            class="oe_highlight" 
+                            display="always"
+                            groups="siantou_ems_core.group_class_print_pdf"/>
+                    </header>
 					<sheet>
                         <group>
                             <group>

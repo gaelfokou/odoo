@@ -1151,6 +1151,7 @@ class DeSchool(http.Controller):
                 'option_id': classe.option_id.id,
                 'class_id': classe.id,
                 'subject_id': new_subject.id,
+                'date': timetable.date,
                 'skip_validation': True,
             })
         body = {
@@ -1202,6 +1203,7 @@ class DeSchool(http.Controller):
                 'specialty_id': new_class.specialty_id.id,
                 'option_id': new_class.option_id.id,
                 'class_id': new_class.id,
+                'date': timetable.date,
                 'skip_validation': True,
             })
         body = {
@@ -1241,7 +1243,7 @@ class DeSchool(http.Controller):
                 'level_id': timetable.class_id.level_id.id,
                 'specialty_id': timetable.class_id.specialty_id.id,
                 'option_id': timetable.class_id.option_id.id,
-                'class_id': timetable.class_id.id,
+                'date': timetable.date,
                 'skip_validation': True,
             })
         body = {

@@ -75,8 +75,10 @@ class TimetableSubjectHour(models.Model):
             ('4', 'Vendredi'),
             ('5', 'Samedi'),
             ('6', 'Dimanche'),
-        ], string='Jour de la semaine',
-        compute='_compute_day_of_week'
+        ],
+        string='Jour de la semaine',
+        compute='_compute_day_of_week',
+        store=True
     )
 
     start_time = fields.Float(
@@ -244,7 +246,8 @@ class Timetable(models.Model):
     type_cour = fields.Selection([
             ('cj', 'Cours du jour'),
             ('cs', 'Cours du soir'),
-        ], string='Type de cours',
+        ],
+        string='Type de cours',
         related='class_id.type_cour',
     )
 
@@ -386,8 +389,10 @@ class Timetable(models.Model):
             ('4', 'Vendredi'),
             ('5', 'Samedi'),
             ('6', 'Dimanche'),
-        ], string='Jour de la semaine',
-        compute='_compute_day_of_week'
+        ],
+        string='Jour de la semaine',
+        compute='_compute_day_of_week',
+        store=True
     )
 
     start_time = fields.Float(
@@ -1226,9 +1231,7 @@ class Timetable(models.Model):
         self.create_timetable(res)
 
         if 'class_id' in vals:
-            classe = self.env['siantou.ems.core.class'].search([
-                ('id', '=', vals['class_id']),
-            ], limit=1)
+            classe = self.env['siantou.ems.core.class'].search([('id', '=', vals['class_id'])], limit=1)
             if classe:
                 classe._compute_timetables()
                 classe.sudo().write({
@@ -1274,9 +1277,7 @@ class Timetable(models.Model):
         res = super(Timetable, self).write(vals)
 
         if 'class_id' in vals:
-            classe = self.env['siantou.ems.core.class'].search([
-                ('id', '=', vals['class_id']),
-            ], limit=1)
+            classe = self.env['siantou.ems.core.class'].search([('id', '=', vals['class_id'])], limit=1)
             if classe:
                 classe._compute_timetables()
                 classe.sudo().write({

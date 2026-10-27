@@ -224,8 +224,10 @@ class TeacherTimetableAttendance(models.TransientModel):
             ('4', 'Vendredi'),
             ('5', 'Samedi'),
             ('6', 'Dimanche'),
-        ], string='Jour de la semaine',
-        compute='_compute_day_of_week'
+        ],
+        string='Jour de la semaine',
+        compute='_compute_day_of_week',
+        store=True
     )
 
     @api.depends('date')

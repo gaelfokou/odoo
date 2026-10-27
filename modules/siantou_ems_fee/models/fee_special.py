@@ -74,7 +74,8 @@ class FeeSpecial(models.Model):
             ('no_create', "Encours de création"),
             ('create', 'Crée et attente de validation'),
             ('validate', 'Validé'),
-        ], string='Statut',
+        ],
+        string='Statut',
         default='no_create',
         tracking=True
     )

@@ -6,8 +6,10 @@ from odoo.exceptions import UserError, ValidationError
 import psycopg2
 from datetime import date, datetime, timedelta, time
 from dateutil.relativedelta import relativedelta
-from odoo.tools import unique
+from odoo.tools import date_utils
 import logging
+import copy
+import json
 
 DATE_FORMAT = '%Y-%m-%d'
 DATE_FORMAT_FR = '%d/%m/%Y'
@@ -19,6 +21,25 @@ TIME_FORMAT_FR = '%H:%M'
 TYPE_COUR = {
     'cj': 'Cours du jour',
     'cs': 'Cours du soir',
+}
+
+TYPE_EXAMSCORE = {
+    'cc': 'Contrôle continu',
+    'sn': 'Session normale',
+    'rcc': 'Rattrapage contrôle continu',
+    'rsn': 'Rattrapage session normale',
+}
+
+STATUS_EXAMSCORE = {
+    'start': 'Début',
+    'start_write': 'Début saisie',
+    'end_write': 'Fin saisie',
+    'end': 'Fin',
+}
+
+STATUS_SUBJECTSCORE = {
+    'present': 'Présent',
+    'absent': 'Absent',
 }
 
 _logger = logging.getLogger(__name__)
@@ -577,7 +598,8 @@ class EducationClass(models.Model):
     type_cour = fields.Selection([
             ('cj', 'Cours du jour'),
             ('cs', 'Cours du soir'),
-        ], string='Type de cours',
+        ],
+        string='Type de cours',
         default='cj',
     )
 
@@ -1122,6 +1144,11 @@ class EducationClass(models.Model):
         })
         return action
 
+    def action_print_student_score_xlsx(self):
+        classe = self.env['siantou.ems.core.class'].search([('id', '=', self.id)], limit=1)
+        if classe:
+            pass
+
     def action_print_pdf(self):
         active_ids = self.env.context.get('active_ids', [])
         classes = self.env['siantou.ems.core.class'].browse(active_ids)
@@ -1528,6 +1555,7 @@ class EducationClassGroup(models.Model):
     type_cour = fields.Selection([
             ('cj', 'Cours du jour'),
             ('cs', 'Cours du soir'),
-        ], string='Type de cours',
+        ],
+        string='Type de cours',
         related='class_id.type_cour',
     )

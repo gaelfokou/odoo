@@ -113,7 +113,8 @@ class TimetableCopyWizard(models.TransientModel):
     type_cour = fields.Selection([
             ('cj', 'Cours du jour'),
             ('cs', 'Cours du soir'),
-        ], string='Type de cours',
+        ],
+        string='Type de cours',
     )
 
     source_class_id = fields.Many2one(
