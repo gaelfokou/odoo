@@ -214,7 +214,6 @@ class ClassFilterWizard(models.TransientModel):
                     ('group_parent_id.is_submit', '=', False),
                     ('group_parent_id.status', '=', 'valid'),
                     ('group_id.status', '=', 'valid'),
-                    ('is_active', '=', True),
                 ]
                 if self.semester_id.id:
                     domain.append(('semester_id', '=', self.semester_id.id))
@@ -242,7 +241,6 @@ class ClassFilterWizard(models.TransientModel):
                     ('group_parent_id.is_submit', '=', False),
                     ('group_parent_id.status', '=', 'valid'),
                     ('group_id.status', '=', 'valid'),
-                    ('is_active', '=', True),
                 ]
                 if self.semester_id.id:
                     domain.append(('semester_id', '=', self.semester_id.id))
