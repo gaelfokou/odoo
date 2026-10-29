@@ -1243,6 +1243,7 @@ class DeSchool(http.Controller):
                 'level_id': timetable.class_id.level_id.id,
                 'specialty_id': timetable.class_id.specialty_id.id,
                 'option_id': timetable.class_id.option_id.id,
+                'class_id': timetable.class_id.id,
                 'date': timetable.date,
                 'skip_validation': True,
             })

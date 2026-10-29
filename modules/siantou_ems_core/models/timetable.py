@@ -1234,6 +1234,7 @@ class Timetable(models.Model):
             classe = self.env['siantou.ems.core.class'].search([('id', '=', vals['class_id'])], limit=1)
             if classe:
                 classe._compute_timetables()
+                classe._compute_hours_call()
                 classe.sudo().write({
                     'specialty_id': classe.specialty_id.id,
                 })
@@ -1280,6 +1281,7 @@ class Timetable(models.Model):
             classe = self.env['siantou.ems.core.class'].search([('id', '=', vals['class_id'])], limit=1)
             if classe:
                 classe._compute_timetables()
+                classe._compute_hours_call()
                 classe.sudo().write({
                     'specialty_id': classe.specialty_id.id,
                 })
@@ -1352,6 +1354,7 @@ class Timetable(models.Model):
             ], limit=1)
             if classe:
                 classe._compute_timetables()
+                classe._compute_hours_call()
                 classe.sudo().write({
                     'specialty_id': classe.specialty_id.id,
                 })
