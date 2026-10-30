@@ -68,7 +68,7 @@
                             </tbody>
                         </table>
                         <center>
-                            <h2 style="text-decoration:underline;text-transform:uppercase;font-size: 15px;margin-top: 25px">
+                            <h2 style="text-decoration:underline;text-transform: uppercase;font-size: 15px;margin-top: 25px">
                                 RECU DE CAISSE SCOLARITÉ N° <span t-esc="payment_id['name']" /> 
                                 DU <span t-esc="date"
                                         t-options='{"widget": "date","format": "d/MM/Y"}' />
@@ -86,22 +86,22 @@
 
                         <div class="row" style="margin-top: 25px">
                             <div class="col-sm-12">
-                                <h3 style="text-decoration:underline;text-transform:uppercase;font-size: 15px;">I. Identification de l'étudiant</h3>
+                                <h3 style="text-decoration:underline;text-transform: uppercase;font-size: 15px;">I. Identification de l'étudiant</h3>
                                 <table classe="table table-striped"
                                                 style="width: 100%;">
                                     <thead>
                                         <tr
                                             style="border: 1px solid black;text-align: left;font-size: 12px;">
-                                            <th style="border: 1px solid black;text-align: left;padding: 4px; width: 25%;text-transform:uppercase;">
+                                            <th style="border: 1px solid black;text-align: left;padding: 4px; width: 25%;text-transform: uppercase;">
                                                 Nom(s) et prénom(s)
                                             </th>
-                                            <th style="border: 1px solid black;text-align: left;padding: 4px; width: 25%;text-transform:uppercase;">
+                                            <th style="border: 1px solid black;text-align: left;padding: 4px; width: 25%;text-transform: uppercase;">
                                                 Matricule
                                             </th>
-                                            <th style="border: 1px solid black;text-align: left;padding: 4px; width: 25%;text-transform:uppercase;">
+                                            <th style="border: 1px solid black;text-align: left;padding: 4px; width: 25%;text-transform: uppercase;">
                                                 Filière
                                             </th>
-                                            <th style="border: 1px solid black;text-align: left;padding: 4px; width: 25%;text-transform:uppercase;">
+                                            <th style="border: 1px solid black;text-align: left;padding: 4px; width: 25%;text-transform: uppercase;">
                                                 Niveau académique
                                             </th>
                                         </tr>
@@ -126,16 +126,16 @@
                             </div>
                         </div>
                         <div class="row mt-3">
-                            <h3 style="text-decoration:underline;text-transform:uppercase;margin:15px 0px;font-size: 15px;">II. Information du paiement</h3>
+                            <h3 style="text-decoration:underline;text-transform: uppercase;margin:15px 0px;font-size: 15px;">II. Information du paiement</h3>
                             <div class="col-12">
                                 <table classe="table table-striped"
                                     style="width: 100%;">
                                     <thead>
                                         <tr
                                             style="border: 1px solid black;text-align: left;font-size: 12px;">
-                                            <th style="border: 1px solid black;text-align: left;padding: 4px; width: 50%;text-transform:uppercase;">Libellé</th>
-                                            <th style="border: 1px solid black;text-align: left;padding: 4px; width: 25%;text-transform:uppercase;">PERÇUE</th>
-                                            <th style="border: 1px solid black;text-align: left;padding: 4px; width: 25%;text-transform:uppercase;">Date de paiement</th>
+                                            <th style="border: 1px solid black;text-align: left;padding: 4px; width: 50%;text-transform: uppercase;">Libellé</th>
+                                            <th style="border: 1px solid black;text-align: left;padding: 4px; width: 25%;text-transform: uppercase;">PERÇUE</th>
+                                            <th style="border: 1px solid black;text-align: left;padding: 4px; width: 25%;text-transform: uppercase;">Date de paiement</th>
                                             <!-- <th style="border: 1px solid black;padding: 4px">Reste
                                                 à payer</th> -->
                                         </tr>
@@ -157,7 +157,7 @@
                                         <tr style="border: 1px solid black; background-color:floralwhite;font-size: 12px;">
                                             <td colspan="4"
                                                 style="text-align: center; border: 1px solid black;padding: 4px;font-size: 12px;">
-                                                <h4 style="text-align: center; padding: 4px;font-size: 12px;text-transform:uppercase;">
+                                                <h4 style="text-align: center; padding: 4px;font-size: 12px;text-transform: uppercase;">
                                                     <b>
                                                         Montant total versé : 
                                                         <t t-esc="'{0:,.0f}'.format(int(amount_total)).replace(',', ' ')" />

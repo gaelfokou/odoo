@@ -1473,20 +1473,6 @@ class EducationClass(models.Model):
         })
         return report_action.report_action(self, data=data)
 
-    def add_number_of_student_class(self, classe):
-        try:
-            classe._compute_students_call()
-            classe.sudo().write({
-                'specialty_id': classe.specialty_id.id,
-            })
-            # self.env.cr.commit()
-        except psycopg2.errors.NotNullViolation as error:
-            _logger.info(f'----------- tototototototo Exception {error} -----------')
-        except psycopg2.Error as error:
-            _logger.info(f'----------- tototototototo Exception {error} -----------')
-        except Exception as error:
-            _logger.info(f'----------- tototototototo Exception {error} -----------')
-
     def sort_ue_class(self, classe):
         n = len(classe.ue_ids.ids)
         return n
@@ -1495,7 +1481,7 @@ class EducationClass(models.Model):
         n = len(classe.student_ids.ids)
         return n
 
-    def remove_duplicate_student_class(self, classes):
+    def remove_duplicate_class(self, classes):
         try:
             exist_classes = {}
             for classe in classes:
@@ -1519,19 +1505,27 @@ class EducationClass(models.Model):
                         else:
                             for student_id in classe.student_ids:
                                 student_id.write({
-                                    'class_id': exist_classe.id,
+                                    'year_id': exist_classe.year_id.id,
+                                    'school_id': exist_classe.school_id.id,
+                                    'cycle_id': exist_classe.cycle_id.id,
+                                    'field_of_study_id': exist_classe.field_of_study_id.id,
                                     'specialty_id': exist_classe.specialty_id.id,
-                                    'field_of_study_id': exist_classe.specialty_id.field_of_study_id.id,
-                                    'cycle_id': exist_classe.specialty_id.field_of_study_id.cycle_id.id,
-                                    'school_id': exist_classe.specialty_id.field_of_study_id.school_id.id,
+                                    'option_id': exist_classe.option_id.id,
+                                    'class_id': exist_classe.id,
+                                    'type_cour': exist_classe.type_cour,
+                                    'level_id': exist_classe.level_id.id,
                                 })
                             for student_enroll_id in classe.student_enroll_ids:
                                 student_enroll_id.write({
-                                    'class_id': exist_classe.id,
+                                    'year_id': exist_classe.year_id.id,
+                                    'school_id': exist_classe.school_id.id,
+                                    'cycle_id': exist_classe.cycle_id.id,
+                                    'field_of_study_id': exist_classe.field_of_study_id.id,
                                     'specialty_id': exist_classe.specialty_id.id,
-                                    'field_of_study_id': exist_classe.specialty_id.field_of_study_id.id,
-                                    'cycle_id': exist_classe.specialty_id.field_of_study_id.cycle_id.id,
-                                    'school_id': exist_classe.specialty_id.field_of_study_id.school_id.id,
+                                    'option_id': exist_classe.option_id.id,
+                                    'class_id': exist_classe.id,
+                                    'type_cour': exist_classe.type_cour,
+                                    'level_id': exist_classe.level_id.id,
                                 })
                             classe.unlink()
             # self.env.cr.commit()
@@ -1542,45 +1536,14 @@ class EducationClass(models.Model):
         except Exception as error:
             _logger.info(f'----------- tototototototo Exception {error} -----------')
 
-    def update_class(self, classe):
-        try:
-            classe.write({
-                'specialty_id': classe.specialty_id.id,
-            })
-            # self.env.cr.commit()
-        except psycopg2.errors.NotNullViolation as error:
-            _logger.info(f'----------- tototototototo Exception {error} -----------')
-        except psycopg2.Error as error:
-            _logger.info(f'----------- tototototototo Exception {error} -----------')
-        except Exception as error:
-            _logger.info(f'----------- tototototototo Exception {error} -----------')
-
-    def action_update_all_student_class(self):
+    def action_remove_all_duplicate_class(self):
         active_ids = self.env.context.get('active_ids', [])
         classes = self.env['siantou.ems.core.class'].browse(active_ids)
         classes = list(classes)
         if len(active_ids) == 0:
             raise UserError('Aucune donnée sélectionnée')
 
-        for classe in classes:
-            self.add_number_of_student_class(classe)
-
-        self.remove_duplicate_student_class(classes)
-
-        return {
-            'type': 'ir.actions.client',
-            'tag': 'reload',
-        }
-
-    def action_update_all_class(self):
-        active_ids = self.env.context.get('active_ids', [])
-        classes = self.env['siantou.ems.core.class'].browse(active_ids)
-        classes = list(classes)
-        if len(active_ids) == 0:
-            raise UserError('Aucune donnée sélectionnée')
-
-        for classe in classes:
-            self.update_class(classe)
+        self.remove_duplicate_class(classes)
 
         return {
             'type': 'ir.actions.client',
