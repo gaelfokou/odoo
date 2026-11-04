@@ -464,3 +464,30 @@ class SchoolCourseSubject(models.Model):
             'type': 'ir.actions.client',
             'tag': 'reload',
         }
+
+    def write(self, vals):
+        ues = []
+        if len(self.ids) == 1:
+            ue = self.env['siantou.ems.core.unite.enseignement'].browse(self.id)
+            ues.append(ue)
+        else:
+            ues = self.env['siantou.ems.core.unite.enseignement'].browse(self.ids)
+            ues = list(ues)
+
+        res = super(SchoolCourseSubject, self).write(vals)
+
+        if 'subject_ids' in vals:
+            for ue in ues:
+                classes = self.env['siantou.ems.core.class'].search([
+                    ('ue_ids', '=', ue.id),
+                ])
+                classes = list(classes)
+                for classe in classes:
+                    classe._compute_subjects()
+                    classe._compute_subjects_call()
+                    classe._compute_hours_credit_call()
+                    classe.sudo().write({
+                        'specialty_id': classe.specialty_id.id,
+                    })
+
+        return res
