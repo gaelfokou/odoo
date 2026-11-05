@@ -269,7 +269,7 @@ class PortalAccount(portal.CustomerPortal):
             timetable['status'] = STATUS_TIMETABLE[search_timetable.status]
             timetables.append(timetable)
         if view_type == 'calendar':
-            timetables = Helpers.format_timetable(timetables)
+            timetables = Helpers.format_timetable(timetables, hours=[])
             for monday in timetables.keys():
                 for i, timetable in enumerate(timetables[monday]['Heure']):
                     tm = timetable.split('-')
@@ -383,7 +383,7 @@ class PortalAccount(portal.CustomerPortal):
             timetable['status'] = STATUS_TIMETABLE[search_timetable.status]
             timetables.append(timetable)
         if view_type == 'calendar':
-            timetables = Helpers.format_timetable(timetables)
+            timetables = Helpers.format_timetable(timetables, hours=[])
             for monday in timetables.keys():
                 for i, timetable in enumerate(timetables[monday]['Heure']):
                     tm = timetable.split('-')

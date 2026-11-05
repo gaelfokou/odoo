@@ -159,7 +159,7 @@ class TimetablePrintWizard(models.TransientModel):
                 key_timetables[key].append(timetable)
 
             for key in key_timetables.keys():
-                key_timetables[key] = TimetablePrintWizard.format_timetable(key_timetables[key])
+                key_timetables[key] = TimetablePrintWizard.format_timetable(key_timetables[key], hours=[])
                 for monday in key_timetables[key].keys():
                     for i, timetable in enumerate(key_timetables[key][monday]['Heure']):
                         tm = timetable.split('-')
