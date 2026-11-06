@@ -62,8 +62,23 @@ class School(models.Model):
 
     cycle_ids = fields.Many2many('oe.school.course', 'course_school_rel', 'school_id', 'cycle_id', string='Cursus ou Cycles')
 
+    def _default_year(self):
+        year = self.env['siantou.ems.core.year'].sudo().search([
+            ('active_user_ids', '=', self.env.user.id),
+        ], limit=1)
+        if not year:
+            year = self.env['siantou.ems.core.year'].sudo().search([('is_active', '=', True)], limit=1)
+        return year
+
+    year_id = fields.Many2one(
+        'siantou.ems.core.year',
+        string='Année académique',
+        default=_default_year,
+        required=True
+    )
+
     _sql_constraints = [
-        ('unique_code', 'unique(code)', 'Le code de l\'école doit être unique.'),
+        ('unique_code_year', 'unique(code, year_id)', 'Le code d\'une école ne peut être lié à une même année académique qu\'une seule fois.')
     ]
 
     @api.constrains('code')
