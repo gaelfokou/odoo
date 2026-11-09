@@ -17,12 +17,12 @@ class Semester(models.Model):
     _inherit=['mail.thread', 'mail.activity.mixin',]
 
     semester_name = fields.Char(
-        string='Nom',
+        string='Nom du semestre',
         required=True
     )
 
     name = fields.Char(
-        string='Nom du semestre',
+        string='Nom',
         compute='_compute_name',
         store=True,
     )

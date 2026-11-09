@@ -76,12 +76,12 @@ class OeSchoolCourse(models.Model):
         return randint(1, 11)
 
     cycle_name = fields.Char(
-        string='Nom',
+        string='Nom du cycle',
         required=True
     )
 
     name = fields.Char(
-        string='Nom du cycle',
+        string='Nom',
         compute='_compute_name',
         store=True,
     )
@@ -278,6 +278,14 @@ class OeSchoolCourse(models.Model):
                         })
                         for option_id in specialty_id.option_ids:
                             option_id.write({
+                                'specialty_id': specialty_id.id,
+                            })
+                        classes = self.env['siantou.ems.core.class'].search([
+                            ('specialty_id', '=', specialty_id.id),
+                        ])
+                        classes = list(classes)
+                        for classe in classes:
+                            classe.write({
                                 'specialty_id': specialty_id.id,
                             })
 

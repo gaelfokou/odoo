@@ -48,12 +48,12 @@ class OptionOfStudy(models.Model):
     )
 
     option_name = fields.Char(
-        string='Nom',
+        string='Nom de l\'option',
         required=True
     )
 
     name = fields.Char(
-        string='Nom de l\'option',
+        string='Nom',
         compute='_compute_name',
         store=True,
     )
@@ -251,12 +251,12 @@ class SpecialtyOfStudy(models.Model):
     )
 
     specialty_name = fields.Char(
-        string='Nom',
+        string='Nom de la spécialité',
         required=True
     )
 
     name = fields.Char(
-        string='Nom de la spécialité',
+        string='Nom',
         compute='_compute_name',
         store=True,
     )
@@ -431,12 +431,12 @@ class FieldOfStudy(models.Model):
     )
 
     field_of_study_name = fields.Char(
-        string='Nom',
+        string='Nom de la filière',
         required=True
     )
 
     name = fields.Char(
-        string='Nom de la filière',
+        string='Nom',
         compute='_compute_name',
         store=True,
     )

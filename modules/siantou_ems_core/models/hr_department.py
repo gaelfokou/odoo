@@ -9,12 +9,12 @@ class Department(models.Model):
     _inherit = 'hr.department'
 
     department_name = fields.Char(
-        string='Nom',
+        string='Nom du département',
         required=True
     )
 
     name = fields.Char(
-        string='Nom du département',
+        string='Nom',
         compute='_compute_name',
         store=True,
     )

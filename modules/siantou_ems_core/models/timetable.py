@@ -1668,12 +1668,12 @@ class TimetableGroup(models.Model):
     _description = 'Version d\'emploi du temps'
 
     group_name = fields.Char(
-        string='Nom',
+        string='Nom de la version',
         required=True
     )
 
     name = fields.Char(
-        string='Nom de la version',
+        string='Nom',
         compute='_compute_name',
         store=True,
     )
