@@ -8,6 +8,7 @@
 				<tree string="Cours">
 					<field name="code"/>
 					<field name="name"/>
+                    <field name="year_id"/>
                     <field name="specialty_id"/>
                     <field name="cycle_id"/>
                     <field name="supervision_id"/>
@@ -25,6 +26,7 @@
                             <h3><field name="name"/></h3>
                         </div>
                         <group>
+                            <field name="year_id" options="{'no_create': True}"/>
                             <field name="code"/>
                             <field name="option_name"/>
                             <field name="specialty_id" options="{'no_create': True}"/>
@@ -56,6 +58,7 @@
             <field name="name">Options</field>
             <field name="res_model">siantou.ems.core.option</field>
             <field name="view_mode">tree,form</field>
+            <field name="domain">[('year_id.active_user_ids', '=', uid)]</field>            
             <field name="search_view_id" ref="view_option_filter"/>
             <field name="help" type="html">
                 <p class="o_view_nocontent_smiling_face">
@@ -68,6 +71,7 @@
             <field name="name">Options</field>
             <field name="res_model">siantou.ems.core.option</field>
             <field name="view_mode">tree</field>
+            <field name="domain">[('year_id.active_user_ids', '=', uid)]</field>            
             <field name="context">{'create': False, 'edit': False}</field>
             <field name="search_view_id" ref="view_option_filter"/>
             <field name="help" type="html">

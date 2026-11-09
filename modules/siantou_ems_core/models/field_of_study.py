@@ -103,8 +103,23 @@ class OptionOfStudy(models.Model):
         for record in self:
             record._compute_name()
 
+    def _default_year(self):
+        year = self.env['siantou.ems.core.year'].sudo().search([
+            ('active_user_ids', '=', self.env.user.id),
+        ], limit=1)
+        if not year:
+            year = self.env['siantou.ems.core.year'].sudo().search([('is_active', '=', True)], limit=1)
+        return year
+
+    year_id = fields.Many2one(
+        'siantou.ems.core.year',
+        string='Année académique',
+        default=_default_year,
+        required=True
+    )
+
     _sql_constraints = [
-        ('unique_code', 'unique(code)', 'Le code de l\'option doit être unique.'),
+        ('unique_code_year', 'unique(code, year_id)', 'Le code d\'une option ne peut être lié à une même année académique qu\'une seule fois.')
     ]
 
     def update_option(self, option):
@@ -302,8 +317,23 @@ class SpecialtyOfStudy(models.Model):
         string='Créneau horaire',
     )
 
+    def _default_year(self):
+        year = self.env['siantou.ems.core.year'].sudo().search([
+            ('active_user_ids', '=', self.env.user.id),
+        ], limit=1)
+        if not year:
+            year = self.env['siantou.ems.core.year'].sudo().search([('is_active', '=', True)], limit=1)
+        return year
+
+    year_id = fields.Many2one(
+        'siantou.ems.core.year',
+        string='Année académique',
+        default=_default_year,
+        required=True
+    )
+
     _sql_constraints = [
-        ('unique_code', 'unique(code)', 'Le code de la spécialité doit être unique.'),
+        ('unique_code_year', 'unique(code, year_id)', 'Le code d\'une spécialité ne peut être lié à une même année académique qu\'une seule fois.')
     ]
 
     def update_specialty(self, specialty):
@@ -489,8 +519,23 @@ class FieldOfStudy(models.Model):
         string='Département'
     )
 
+    def _default_year(self):
+        year = self.env['siantou.ems.core.year'].sudo().search([
+            ('active_user_ids', '=', self.env.user.id),
+        ], limit=1)
+        if not year:
+            year = self.env['siantou.ems.core.year'].sudo().search([('is_active', '=', True)], limit=1)
+        return year
+
+    year_id = fields.Many2one(
+        'siantou.ems.core.year',
+        string='Année académique',
+        default=_default_year,
+        required=True
+    )
+
     _sql_constraints = [
-        ('unique_code', 'unique(code)', 'Le code de la filière doit être unique.'),
+        ('unique_code_year', 'unique(code, year_id)', 'Le code d\'une filière ne peut être lié à une même année académique qu\'une seule fois.')
     ]
 
     def get_subject_ids_by_level(self):

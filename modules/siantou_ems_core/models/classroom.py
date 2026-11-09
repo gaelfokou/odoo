@@ -24,8 +24,23 @@ class Campus(models.Model):
 
     company_id = fields.Many2one('res.company', string='Company', required=True, default=lambda self: self.env.company)
 
+    def _default_year(self):
+        year = self.env['siantou.ems.core.year'].sudo().search([
+            ('active_user_ids', '=', self.env.user.id),
+        ], limit=1)
+        if not year:
+            year = self.env['siantou.ems.core.year'].sudo().search([('is_active', '=', True)], limit=1)
+        return year
+
+    year_id = fields.Many2one(
+        'siantou.ems.core.year',
+        string='Année académique',
+        default=_default_year,
+        required=True
+    )
+
     _sql_constraints = [
-        ('unique_code', 'unique(code)', 'Le code du campus doit être unique.'),
+        ('unique_code_year', 'unique(code, year_id)', 'Le code d\'un campus ne peut être lié à une même année académique qu\'une seule fois.')
     ]
 
 

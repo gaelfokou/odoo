@@ -61,6 +61,7 @@
         <field name="name">Écoles</field>
         <field name="res_model">siantou.ems.core.school</field>
         <field name="view_mode">tree,form</field>
+        <field name="domain">[('year_id.active_user_ids', '=', uid)]</field>        
     </record>
 
     <menuitem

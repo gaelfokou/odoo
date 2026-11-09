@@ -15,6 +15,7 @@
                 <xpath expr="//group[1]/group[1]" position="inside">
                     <field name="department_name"/>
                     <field name="code"/>
+                    <field name="year_id" options="{'no_create': True}"/>
                     <field name="school_id" options="{'no_create': True}"/>
                     <!-- <field name="cycle_id" options="{'no_create': True}"/> -->
                 </xpath>
@@ -41,6 +42,7 @@
                     <field name="code"/>
                 </xpath>
                 <xpath expr="//field[@name='name']" position="after">
+                    <field name="year_id"/>
                     <field name="school_id"/>
                 </xpath>
             </field>
@@ -52,7 +54,7 @@
             <field name="inherit_id" ref="hr.hr_department_view_kanban"/>
             <field name="arch" type="xml">
                 <xpath expr='//kanban/templates/t[2]/div/div/div/div/a' position="replace">
-                    <a type="edit"><field name="name"/></a>
+                    <a type="edit"><field name="name"/> <field name="year_id"/></a>
                 </xpath>
             </field>
         </record>
@@ -61,6 +63,7 @@
             <field name="name">Departments</field>
             <field name="res_model">hr.department</field>
             <field name="view_mode">kanban,tree,form</field>
+            <field name="domain">[('year_id.active_user_ids', '=', uid)]</field>            
             <field name="search_view_id" ref="hr.view_department_filter"/>
             <field name="help" type="html">
               <p class="o_view_nocontent_smiling_face">

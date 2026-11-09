@@ -9,6 +9,7 @@
 				<tree string="Campus" editable="bottom" edit="1">
                     <field name="code"/>
 					<field name="name"/>
+                    <field name="year_id"/>
                     <field name="company_id"/>
 				</tree>
 			</field>
@@ -22,6 +23,7 @@
 				<form string="Bâtiment">
 					<sheet>
                         <group>
+                            <field name="year_id" options="{'no_create': True}"/>
                             <field name="code"/>
                             <field name="name"/>
                             <field name="company_id"/>
@@ -36,6 +38,7 @@
             <field name="name">Campus</field>
             <field name="res_model">siantou.ems.core.campus</field>
             <field name="view_mode">tree,form</field>
+            <field name="domain">[('year_id.active_user_ids', '=', uid)]</field>            
             <field name="help" type="html">
                 <p class="o_view_nocontent_smiling_face">
                     Créer un nouveau campus.

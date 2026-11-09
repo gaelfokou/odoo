@@ -86,6 +86,15 @@ class OeSchoolCourse(models.Model):
         store=True,
     )
 
+    type_course = fields.Selection([
+            ('fr', 'Francophone'),
+            ('en', 'Anglephone'),
+        ],
+        string="Type cursus ou cycle",
+        required=True,
+        default="fr"
+    )
+
     @api.depends('cycle_name', 'supervision_id')
     def _compute_name(self):
         for record in self:
@@ -147,7 +156,6 @@ class OeSchoolCourse(models.Model):
     level_ids = fields.Many2many('siantou.ems.core.level', 'course_level_rel', 'cycle_id', 'level_id', string='Niveaux')
     diplo_requis_ids = fields.Many2many('oe.school.course.degree', 'course_degree_rel', 'cycle_id', 'diplo_requis_id', string='Diplômes requis')
     supervision_id = fields.Many2one('oe.school.course.supervision', string='Tutelle académique')
-    has_supervision = fields.Boolean('Est sous tutelle académique', default=False)
     enable_elective = fields.Boolean('Activer la sélection des cours facultatifs')
     color = fields.Integer(default=_default_color)
     # sequence_id = fields.Many2one('ir.sequence', 'Séquence des numéros d\'enregistrement', copy=False, check_company=True)
@@ -246,6 +254,34 @@ class OeSchoolCourse(models.Model):
             'type': 'ir.actions.client',
             'tag': 'reload',
         }
+
+    def write(self, vals):
+        cycles = []
+        if len(self.ids) == 1:
+            cycle = self.env['oe.school.course'].browse(self.id)
+            cycles.append(cycle)
+        else:
+            cycles = self.env['oe.school.course'].browse(self.ids)
+            cycles = list(cycles)
+
+        res = super(OeSchoolCourse, self).write(vals)
+
+        if 'supervision_id' in vals:
+            for cycle in cycles:
+                for field_of_study_id in cycle.field_of_study_ids:
+                    field_of_study_id.write({
+                        'cycle_id': cycle.id,
+                    })
+                    for specialty_id in field_of_study_id.specialty_ids:
+                        specialty_id.write({
+                            'field_of_study_id': field_of_study_id.id,
+                        })
+                        for option_id in specialty_id.option_ids:
+                            option_id.write({
+                                'specialty_id': specialty_id.id,
+                            })
+
+        return res
 
 
 class SchoolSyllabus(models.Model):
@@ -485,7 +521,6 @@ class SchoolCourseSubject(models.Model):
 
     def action_update_semester(self):
         ue_ids = self.env['siantou.ems.core.unite.enseignement'].search([])
-
         for ue_id in ue_ids:
             semester_ids = [(4, ue_id.semestre_id.id)]
             ue_id.write({'semester_ids': semester_ids })
