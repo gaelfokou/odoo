@@ -39,33 +39,33 @@
             <field name="name">company.search.form</field>
             <field name="model">res.company</field>
             <field name="arch" type="xml">
-                <search string="Universités">
-                    <field name="name" string="Université"/>
-                    <filter string="Universités" name="university" domain="[('is_university', '=', True)]"/>
+                <search string="Établissements">
+                    <field name="name" string="Établissement"/>
+                    <filter string="Établissements" name="university" domain="[('is_university', '=', True)]"/>
                 </search>
             </field>
         </record>
 
         <record id="action_school_setup" model="ir.actions.act_window">
-            <field name="name">Université</field>
+            <field name="name">Établissements</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">res.company</field>
             <field name="view_mode">tree,kanban,form</field>
             <field name="search_view_id" ref="view_company_search_form"/>
-            <field name="context">{'search_default_institutes': 1, 'default_is_university':1}</field>
+            <field name="context">{'search_default_institutes': 1, 'default_is_university': 1}</field>
             <field name="help" type="html">
               <p class="o_view_nocontent_smiling_face">
-                Créer une nouvelle université.
+                Créer une nouvelle établissement.
               </p>
             </field>
         </record>
 
         <menuitem
                 id="menu_siantou_ems_core_config_university"
-                name="Universités"
+                name="Établissements"
                 parent="menu_siantou_ems_core_configuration"
                 action="action_school_setup"
                 groups="siantou_ems_core.group_university_admin,base.group_system"
-            sequence="1"/>
+                sequence="1"/>
 	</data>
 </odoo>

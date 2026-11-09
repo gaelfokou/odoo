@@ -197,8 +197,8 @@
         <menuitem
             id="menu_siantou_ems_timetable_group" 
             name="Versions d'emploi du temps publiées"
-            parent="menu_siantou_ems_timetable_planning" 
-            action="action_timetable_group" 
+            parent="menu_siantou_ems_timetable_planning"
+            action="action_timetable_group"
             groups="siantou_ems_core.group_timetable_admin,base.group_system"
             sequence="2"/>
 
@@ -223,8 +223,8 @@
         <menuitem
             id="menu_siantou_ems_timetable_group_submit" 
             name="Versions d'emploi du temps soumises"
-            parent="menu_siantou_ems_timetable_planning" 
-            action="action_timetable_group_submit" 
+            parent="menu_siantou_ems_timetable_planning"
+            action="action_timetable_group_submit"
             groups="siantou_ems_core.group_timetable_admin,base.group_system"
             sequence="2"/>
 	</data>

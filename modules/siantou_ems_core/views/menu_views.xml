@@ -19,58 +19,58 @@
             id="menu_siantou_ems_core_employee"
             name="Enseignants"
             parent="menu_siantou_ems_core"
-            sequence = "40"/>
+            sequence="40"/>
     <!-- Menu principal de gestion des Programmes -->
     <menuitem
             id="menu_siantou_ems_timetable_planning"
             name="Planifications"
             parent="menu_siantou_ems_core"
-            sequence = "60"/>
+            sequence="60"/>
     <!-- Menu principal de gestion des emplois du temps -->
     <menuitem
             id="menu_siantou_ems_core_program"
             name="Académie"
             parent="menu_siantou_ems_core"
-            sequence = "50"/>
+            sequence="50"/>
     <!-- Menu principal de gestion des configurations -->
     <menuitem
             id="menu_siantou_ems_core_configuration"
             name="Configurations"
             parent="menu_siantou_ems_core"
-            sequence = "100"/>
+            sequence="100"/>
     <menuitem
             id="menu_siantou_ems_core_accessibility"
             name="Accessibilité"
             parent="menu_siantou_ems_core"
-            sequence = "110"/>
+            sequence="110"/>
     <menuitem
             id="menu_siantou_ems_core_config_pe" 
             name="Gestion des programmes d'enseignements" 
-            parent="menu_siantou_ems_core_configuration" 
+            parent="menu_siantou_ems_core_configuration"
             sequence="2"/>
     <menuitem
             id="menu_siantou_ems_core_config_fa" 
             name="Gestion des formations académiques" 
-            parent="menu_siantou_ems_core_configuration" 
+            parent="menu_siantou_ems_core_configuration"
             sequence="3"/>
     <menuitem
             id="menu_siantou_ems_core_config_location" 
             name="Gestion des emplacements"
-            parent="menu_siantou_ems_core_configuration" 
+            parent="menu_siantou_ems_core_configuration"
             sequence="4"/>
     <menuitem
             id="menu_siantou_ems_core_config_calendar" 
             name="Gestion des chronogrammes"
-            parent="menu_siantou_ems_core_configuration" 
+            parent="menu_siantou_ems_core_configuration"
             sequence="5"/>
     <menuitem
             id="menu_siantou_ems_core_config_setting" 
             name="Gestion des paramètres"
-            parent="menu_siantou_ems_core_configuration" 
+            parent="menu_siantou_ems_core_configuration"
             sequence="6"/>
     <menuitem
             id="menu_siantou_ems_core_config_copy" 
             name="Gestion des copies"
-            parent="menu_siantou_ems_core_configuration" 
+            parent="menu_siantou_ems_core_configuration"
             sequence="7"/>
 </odoo>

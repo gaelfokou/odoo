@@ -83,12 +83,12 @@
 
         <menuitem name="Options" 
             id="menu_school_option"
-            parent="menu_siantou_ems_core_config_fa" 
+            parent="menu_siantou_ems_core_config_fa"
             action="action_show_option"
             sequence="3"/>
         <menuitem name="Options" 
             id="menu_school_option_2"
-            parent="menu_siantou_ems_core_program" 
+            parent="menu_siantou_ems_core_program"
             action="action_show_option_2"
             sequence="3"/>
     </data>

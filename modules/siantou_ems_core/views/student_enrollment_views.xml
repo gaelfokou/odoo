@@ -203,7 +203,7 @@
 
     <!-- <menuitem name="Préinscription" id="menu_siantou_ems_core_student_preinscription" 
             sequence="1"
-            parent="menu_siantou_ems_core_student" 
+            parent="menu_siantou_ems_core_student"
             action="action_enrollment_history"/> -->
 
     <menuitem
