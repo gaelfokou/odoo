@@ -40,7 +40,7 @@ class Campus(models.Model):
     )
 
     _sql_constraints = [
-        ('unique_code_year', 'unique(code, year_id)', 'Le code d\'un campus ne peut être lié à une même année académique qu\'une seule fois.')
+        ('unique_code_year', 'unique(code,year_id)', 'Le code d\'un campus ne peut être lié à une même année académique qu\'une seule fois.')
     ]
 
 
@@ -70,8 +70,23 @@ class Building(models.Model):
 
     is_active = fields.Boolean(string='Actif ?', default=True)
 
+    def _default_year(self):
+        year = self.env['siantou.ems.core.year'].sudo().search([
+            ('active_user_ids', '=', self.env.user.id),
+        ], limit=1)
+        if not year:
+            year = self.env['siantou.ems.core.year'].sudo().search([('is_active', '=', True)], limit=1)
+        return year
+
+    year_id = fields.Many2one(
+        'siantou.ems.core.year',
+        string='Année académique',
+        default=_default_year,
+        required=True
+    )
+
     _sql_constraints = [
-        ('unique_code', 'unique(code)', 'Le code du bâtiment doit être unique.'),
+        ('unique_code_year', 'unique(code,year_id)', 'Le code d\'un bâtiment ne peut être lié à une même année académique qu\'une seule fois.')
     ]
 
 
@@ -114,8 +129,23 @@ class Classroom(models.Model):
 
     is_examen_active = fields.Boolean(string='Actif pour les examens ?', default=False)
 
+    def _default_year(self):
+        year = self.env['siantou.ems.core.year'].sudo().search([
+            ('active_user_ids', '=', self.env.user.id),
+        ], limit=1)
+        if not year:
+            year = self.env['siantou.ems.core.year'].sudo().search([('is_active', '=', True)], limit=1)
+        return year
+
+    year_id = fields.Many2one(
+        'siantou.ems.core.year',
+        string='Année académique',
+        default=_default_year,
+        required=True
+    )
+
     _sql_constraints = [
-        ('unique_code', 'unique(code)', 'Le code de la salle de classe doit être unique.'),
+        ('unique_code_year', 'unique(code,year_id)', 'Le code d\'une salle de classe ne peut être lié à une même année académique qu\'une seule fois.')
     ]
 
     @api.constrains('capacity')

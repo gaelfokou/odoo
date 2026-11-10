@@ -122,7 +122,7 @@ class ExamScore(models.Model):
     )
 
     _sql_constraints = [
-        ('unique_semester_class_subject_exam_type', 'unique(semester_id, class_id, subject_id, exam_type)', 'Un cours ne peut être lié à une classe et un examen pour un même semestre qu\'une seule fois.')
+        ('unique_semester_class_subject_exam_type', 'unique(semester_id,class_id,subject_id,exam_type)', 'Un cours ne peut être lié à une classe et un examen pour un même semestre qu\'une seule fois.')
     ]
 
     subject_id_domain = fields.Binary(compute='_compute_subject_domain', default=[])

@@ -69,7 +69,7 @@ class Year(models.Model):
             ]).filtered(lambda rec: not (rec.start_time >= record.end_time or rec.end_time <= record.start_time))
             years = list(years)
             if len(years) > 0:
-                raise ValidationError(f'Les dates de l\'année académique ne peuvent se chevaucher')
+                raise ValidationError(f'Les dates des années académiques ne peuvent se chevaucher')
             if record.start_time >= record.end_time:
                 raise ValidationError('La date de fin doit être supérieure à la date de début')
 

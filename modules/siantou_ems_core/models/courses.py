@@ -38,7 +38,7 @@ class OeSchoolCourseSupervision(models.Model):
     )
 
     _sql_constraints = [
-        ('unique_code_year', 'unique(code, year_id)', 'Le code d\'une tutelle académique ne peut être lié à une même année académique qu\'une seule fois.')
+        ('unique_code_year', 'unique(code,year_id)', 'Le code d\'une tutelle académique ne peut être lié à une même année académique qu\'une seule fois.')
     ]
 
     def write(self, vals):
@@ -184,7 +184,7 @@ class OeSchoolCourse(models.Model):
     )
 
     _sql_constraints = [
-        ('unique_code_year', 'unique(code, year_id)', 'Le code d\'un cursus ou cycle ne peut être lié à une même année académique qu\'une seule fois.')
+        ('unique_code_year', 'unique(code,year_id)', 'Le code d\'un cursus ou cycle ne peut être lié à une même année académique qu\'une seule fois.')
     ]
 
     @api.depends('name', 'parent_id.complete_name')
@@ -473,6 +473,12 @@ class SchoolCourseSubject(models.Model):
 
     semester_ids = fields.Many2many('siantou.ems.core.year.semester', 'semester_ue_rel', 'ue_id', 'semester_id', string='Semestres')
 
+    syllabus_ids = fields.One2many('siantou.ems.core.syllabus', 'ue_id', string='Syllabus')
+
+    total_credit = fields.Integer('Nombre de crédit total', compute='_compute_total_credit', store=True)
+
+    class_id_domain = fields.Binary(compute='_compute_class_domain', default=[])
+
     def _default_year(self):
         year = self.env['siantou.ems.core.year'].sudo().search([
             ('active_user_ids', '=', self.env.user.id),
@@ -481,33 +487,23 @@ class SchoolCourseSubject(models.Model):
             year = self.env['siantou.ems.core.year'].sudo().search([('is_active', '=', True)], limit=1)
         return year
 
-    year_ids = fields.Many2many(
+    year_id = fields.Many2one(
         'siantou.ems.core.year',
-        'year_ue_rel',
-        'ue_id',
-        'year_id',
-        string='Années académiques',
+        string='Année académique',
         default=_default_year,
+        required=True
     )
 
-    syllabus_ids = fields.One2many('siantou.ems.core.syllabus', 'ue_id', string='Syllabus')
-
-    total_credit = fields.Integer('Nombre de crédit total', compute='_compute_total_credit', store=True)
-
-    class_id_domain = fields.Binary(compute='_compute_class_domain', default=[])
-
     _sql_constraints = [
-        ('unique_code', 'unique(code)', 'Le code de l\'unité d\'enseignement doit être unique.')
+        ('unique_code_year', 'unique(code,year_id)', 'Le code d\'une unité d\'enseignement ne peut être lié à une même année académique qu\'une seule fois.')
     ]
 
-    @api.depends('semester_ids')
+    @api.depends('year_id')
     def _compute_class_domain(self):
         for record in self:
-            semester_ids = record.semester_ids
-            domain = []
-            if len(semester_ids.ids) > 0:
-                year_ids = [semester_id.year_id.id for semester_id in semester_ids]
-                domain.append(('year_id', 'in', year_ids))
+            domain = [
+                ('year_id', '=', record.year_id.id),
+            ]
             record.class_id_domain = domain
 
     @api.onchange('semester_ids')

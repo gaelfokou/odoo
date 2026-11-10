@@ -119,7 +119,7 @@ class OptionOfStudy(models.Model):
     )
 
     _sql_constraints = [
-        ('unique_code_year', 'unique(code, year_id)', 'Le code d\'une option ne peut être lié à une même année académique qu\'une seule fois.')
+        ('unique_code_year', 'unique(code,year_id)', 'Le code d\'une option ne peut être lié à une même année académique qu\'une seule fois.')
     ]
 
     def update_option(self, option):
@@ -333,7 +333,7 @@ class SpecialtyOfStudy(models.Model):
     )
 
     _sql_constraints = [
-        ('unique_code_year', 'unique(code, year_id)', 'Le code d\'une spécialité ne peut être lié à une même année académique qu\'une seule fois.')
+        ('unique_code_year', 'unique(code,year_id)', 'Le code d\'une spécialité ne peut être lié à une même année académique qu\'une seule fois.')
     ]
 
     def update_specialty(self, specialty):
@@ -535,7 +535,7 @@ class FieldOfStudy(models.Model):
     )
 
     _sql_constraints = [
-        ('unique_code_year', 'unique(code, year_id)', 'Le code d\'une filière ne peut être lié à une même année académique qu\'une seule fois.')
+        ('unique_code_year', 'unique(code,year_id)', 'Le code d\'une filière ne peut être lié à une même année académique qu\'une seule fois.')
     ]
 
     def get_subject_ids_by_level(self):

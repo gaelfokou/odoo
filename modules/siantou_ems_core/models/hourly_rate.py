@@ -69,8 +69,23 @@ class HourlyRate(models.Model):
         'Taux horaires de l\'enseignant'
     )
 
+    def _default_year(self):
+        year = self.env['siantou.ems.core.year'].sudo().search([
+            ('active_user_ids', '=', self.env.user.id),
+        ], limit=1)
+        if not year:
+            year = self.env['siantou.ems.core.year'].sudo().search([('is_active', '=', True)], limit=1)
+        return year
+
+    year_id = fields.Many2one(
+        'siantou.ems.core.year',
+        string='Année académique',
+        default=_default_year,
+        required=True
+    )
+
     _sql_constraints = [
-        ('unique_school_cycle_level_diplome_availability', 'unique(school_id,cycle_id,level_id,diplome_availability_id)', 'L\'école, le cursus ou cycle, le niveau, et le diplôme doivent être uniques.'),
+        ('unique_school_cycle_level_diplome_availability_year', 'unique(school_id,cycle_id,level_id,diplome_availability_id,year_id)', 'L\'école, le cursus ou cycle, le niveau, le diplôme, et l\'année académique doivent être uniques.'),
     ]
 
     @api.depends('school_id', 'cycle_id', 'diplome_availability_id', 'level_id', 'type_cour')
@@ -183,8 +198,23 @@ class TeacherHourlyRate(models.Model):
         required=True
     )
 
+    def _default_year(self):
+        year = self.env['siantou.ems.core.year'].sudo().search([
+            ('active_user_ids', '=', self.env.user.id),
+        ], limit=1)
+        if not year:
+            year = self.env['siantou.ems.core.year'].sudo().search([('is_active', '=', True)], limit=1)
+        return year
+
+    year_id = fields.Many2one(
+        'siantou.ems.core.year',
+        string='Année académique',
+        default=_default_year,
+        required=True
+    )
+
     _sql_constraints = [
-        ('unique_employee_subject_hourly_rate', 'unique(employee_id,subject_id,hourly_rate_id)', 'L\enseignant, le cours, et le taux horaire doivent être uniques.'),
+        ('unique_employee_subject_hourly_rate_year', 'unique(employee_id,subject_id,hourly_rate_id,year_id)', 'L\'enseignant, le cours, le taux horaire, et l\'année académique doivent être uniques.'),
     ]
 
     subject_id_domain = fields.Binary(compute='_compute_subject_domain', default=[])

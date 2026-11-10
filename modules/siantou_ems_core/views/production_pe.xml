@@ -35,22 +35,20 @@
                     <notebook>
                         <page name="programme_ids" string="Lignes du programme d'enseignement">
                             <field name="syllabus_ids" domain="[('class_id', '=', class_id)]">
-                                <tree 
-                                editable="bottom"
-                                >
-                                <field name="class_id"/>
-                                <field name="ue_id"/>
-                                <field name="subject_id"/>
-                                <field name="cm"/>
-                                <field name="td"/>
-                                <field name="vhp"/>
-                                <field name="tp"/>
-                                <field name="te"/>
-                                <field name="vht"/>
-                                <field name="pourcentage_exam" attrs="{'invisible': [('note_sn', '=', 'not_sn')]}"/>
-                                <field name="pourcentage_cc"/>
-                                <field name="pourcentage_presence"/>
-                                <field name="subject_credit"/>
+                                <tree editable="bottom">
+                                    <field name="class_id"/>
+                                    <field name="ue_id"/>
+                                    <field name="subject_id"/>
+                                    <field name="cm"/>
+                                    <field name="td"/>
+                                    <field name="vhp"/>
+                                    <field name="tp"/>
+                                    <field name="te"/>
+                                    <field name="vht"/>
+                                    <field name="pourcentage_exam" attrs="{'invisible': [('note_sn', '=', 'not_sn')]}"/>
+                                    <field name="pourcentage_cc"/>
+                                    <field name="pourcentage_presence"/>
+                                    <field name="subject_credit"/>
                                 </tree>
                             </field>
                         </page>

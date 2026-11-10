@@ -316,7 +316,7 @@ class ProgressReport(models.Model):
     percentage = fields.Float(compute='_compute_percentage', string='Taux de consommation du volume horaire')
 
     _sql_constraints = [
-        ('unique_class_subject', 'unique(class_id, subject_id)', 'Un cours ne peut être lié à une même classe qu\'une seule fois.')
+        ('unique_class_subject', 'unique(class_id,subject_id)', 'Un cours ne peut être lié à une même classe qu\'une seule fois.')
     ]
 
     subject_id_domain = fields.Binary(compute='_compute_subject_domain', default=[])

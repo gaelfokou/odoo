@@ -65,7 +65,7 @@ class Department(models.Model):
     )
 
     _sql_constraints = [
-        ('unique_code_year', 'unique(code, year_id)', 'Le code d\'un département ne peut être lié à une même année académique qu\'une seule fois.')
+        ('unique_code_year', 'unique(code,year_id)', 'Le code d\'un département ne peut être lié à une même année académique qu\'une seule fois.')
     ]
 
     @api.depends('department_name', 'school_id')

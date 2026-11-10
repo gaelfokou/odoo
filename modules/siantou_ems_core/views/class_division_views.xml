@@ -253,7 +253,7 @@
                         </group>
                         <notebook>
                             <page name="unite_enseignement" string="Unité d'enseignements">
-                                <field name="ue_ids" domain="[('year_ids', '=', year_id)]">
+                                <field name="ue_ids" domain="[('year_id', '=', year_id)]">
                                     <tree>
                                         <field name="code"/>
                                         <field name="name"/>

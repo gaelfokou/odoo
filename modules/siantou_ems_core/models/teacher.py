@@ -596,7 +596,7 @@ class TeacherSubjectPriority(models.Model):
     )
 
     _sql_constraints = [
-        ('unique_teacher_subject', 'unique(employee_id, subject_id)', 'Un enseignant ne peut être lié à un même cours qu\'une seule fois.')
+        ('unique_teacher_subject', 'unique(employee_id,subject_id)', 'Un enseignant ne peut être lié à un même cours qu\'une seule fois.')
     ]
 
     @api.constrains('priority')

@@ -49,7 +49,7 @@
                             <group colspan="2">
                                 <field name="year_ids" options="{'no_create': True}" widget="many2many_tags"/>
                                 <field name="code"/>
-                                <field name="ue_ids" domain="[('year_ids', 'in', year_ids)]" widget="many2many_tags"/>
+                                <field name="ue_ids" domain="[('year_id', 'in', year_ids)]" widget="many2many_tags"/>
                                 <field name="hours_credit"/>
                             </group>
                             <group colspan="2">

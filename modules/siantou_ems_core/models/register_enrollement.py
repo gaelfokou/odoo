@@ -13,9 +13,9 @@ class SessionEnrollment(models.Model):
     _inherit = 'mail.thread'
     _description = 'Session d\'admission'
     _order = 'id desc'
+
     _sql_constraints = [
-        ('uniq_session', 'unique(name, year_id,campus)',
-         "Cette session existe déja pour cette Année académique!"),
+        ('uniq_session', 'unique(name,campus,year_id)', 'Cette session existe déja pour cette année académique.'),
     ]
 
     # @api.onchange("year_id")
@@ -154,9 +154,9 @@ class SessionRegisterEnrollment(models.Model):
     _inherit = 'mail.thread'
     _description = 'Registre d\'admission'
     _order = 'id desc'
+
     _sql_constraints = [
-        ('uniq_registre', 'unique(name,field_of_study_id, year_id,campus)',
-         "Cette session existe déja pour cette année académique!"),
+        ('uniq_registre', 'unique(name,field_of_study_id,campus,year_id)', 'Cette session existe déja pour cette année académique.'),
     ]
 
     name = fields.Char(

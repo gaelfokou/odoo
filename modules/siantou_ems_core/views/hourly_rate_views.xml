@@ -13,6 +13,7 @@
                             class="oe_highlight"/>
                     </header>
                     <!-- <field name="name"/> -->
+                    <field name="year_id"/>
                     <field name="school_id"/>
                     <field name="cycle_id"/>
                     <field name="diplome_availability_id"/>
@@ -30,6 +31,7 @@
                 <form string="Taux horaire standard">
                     <sheet>
                         <group colspan="2">
+                            <field name="year_id" options="{'no_create': True}"/>
                             <field name="name"/>
                             <field name="school_id" options="{'no_create': True}"/>
                             <field name="cycle_id" options="{'no_create': True}" domain="[('school_ids', '=', school_id)]"/>
@@ -54,6 +56,7 @@
             <field name="name">Taux horaires standards</field>
             <field name="res_model">siantou.ems.core.hourly.rate</field>
             <field name="view_mode">tree,form</field>
+            <field name="domain">[('year_id.active_user_ids', '=', uid)]</field>            
         </record>
 
         <menuitem id="siantou_menu_hourly_rate"
