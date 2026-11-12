@@ -15,8 +15,23 @@ class Country(models.Model):
         required=True,
     )
 
+    def _default_year(self):
+        year = self.env['siantou.ems.core.year'].sudo().search([
+            ('active_user_ids', '=', self.env.user.id),
+        ], limit=1)
+        if not year:
+            year = self.env['siantou.ems.core.year'].sudo().search([('is_active', '=', True)], limit=1)
+        return year
+
+    year_id = fields.Many2one(
+        'siantou.ems.core.year',
+        string='Année académique',
+        default=_default_year,
+        required=True
+    )
+
     _sql_constraints = [
-        ('unique_code', 'unique(code)', 'Le code du pays doit être unique.'),
+        ('unique_code_year', 'unique(code,year_id)', 'Le code d\'un pays ne peut être lié à une même année académique qu\'une seule fois.')
     ]
 
 
@@ -68,8 +83,23 @@ class Region(models.Model):
         required=True,
     )
 
+    def _default_year(self):
+        year = self.env['siantou.ems.core.year'].sudo().search([
+            ('active_user_ids', '=', self.env.user.id),
+        ], limit=1)
+        if not year:
+            year = self.env['siantou.ems.core.year'].sudo().search([('is_active', '=', True)], limit=1)
+        return year
+
+    year_id = fields.Many2one(
+        'siantou.ems.core.year',
+        string='Année académique',
+        default=_default_year,
+        required=True
+    )
+
     _sql_constraints = [
-        ('unique_code', 'unique(code)', 'Le code de la région doit être unique.'),
+        ('unique_code_year', 'unique(code,year_id)', 'Le code d\'une région ne peut être lié à une même année académique qu\'une seule fois.')
     ]
 
 
@@ -121,8 +151,23 @@ class City(models.Model):
         required=True,
     )
 
+    def _default_year(self):
+        year = self.env['siantou.ems.core.year'].sudo().search([
+            ('active_user_ids', '=', self.env.user.id),
+        ], limit=1)
+        if not year:
+            year = self.env['siantou.ems.core.year'].sudo().search([('is_active', '=', True)], limit=1)
+        return year
+
+    year_id = fields.Many2one(
+        'siantou.ems.core.year',
+        string='Année académique',
+        default=_default_year,
+        required=True
+    )
+
     _sql_constraints = [
-        ('unique_code', 'unique(code)', 'Le code de la ville doit être unique.'),
+        ('unique_code_year', 'unique(code,year_id)', 'Le code d\'une ville ne peut être lié à une même année académique qu\'une seule fois.')
     ]
 
 
@@ -174,6 +219,21 @@ class Quarter(models.Model):
         required=True,
     )
 
+    def _default_year(self):
+        year = self.env['siantou.ems.core.year'].sudo().search([
+            ('active_user_ids', '=', self.env.user.id),
+        ], limit=1)
+        if not year:
+            year = self.env['siantou.ems.core.year'].sudo().search([('is_active', '=', True)], limit=1)
+        return year
+
+    year_id = fields.Many2one(
+        'siantou.ems.core.year',
+        string='Année académique',
+        default=_default_year,
+        required=True
+    )
+
     _sql_constraints = [
-        ('unique_code', 'unique(code)', 'Le code du quartier doit être unique.'),
+        ('unique_code_year', 'unique(code,year_id)', 'Le code d\'un quartier ne peut être lié à une même année académique qu\'une seule fois.')
     ]

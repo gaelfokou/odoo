@@ -91,23 +91,6 @@ class Subject(models.Model):
 
     ue_ids = fields.Many2many('siantou.ems.core.unite.enseignement', 'ue_subject_rel', 'subject_id', 'ue_id', string='Unités d\'enseignement')
 
-    def _default_year(self):
-        year = self.env['siantou.ems.core.year'].sudo().search([
-            ('active_user_ids', '=', self.env.user.id),
-        ], limit=1)
-        if not year:
-            year = self.env['siantou.ems.core.year'].sudo().search([('is_active', '=', True)], limit=1)
-        return year
-
-    year_ids = fields.Many2many(
-        'siantou.ems.core.year',
-        'year_subject_rel',
-        'subject_id',
-        'year_id',
-        string='Années académiques',
-        default=_default_year,
-    )
-
     syllabus_ids = fields.One2many('siantou.ems.core.syllabus', 'subject_id', string='Syllabus')
 
     teacher_ids = fields.Many2many(
@@ -132,8 +115,23 @@ class Subject(models.Model):
         store=True,
     )
 
+    def _default_year(self):
+        year = self.env['siantou.ems.core.year'].sudo().search([
+            ('active_user_ids', '=', self.env.user.id),
+        ], limit=1)
+        if not year:
+            year = self.env['siantou.ems.core.year'].sudo().search([('is_active', '=', True)], limit=1)
+        return year
+
+    year_id = fields.Many2one(
+        'siantou.ems.core.year',
+        string='Année académique',
+        default=_default_year,
+        required=True
+    )
+
     _sql_constraints = [
-        ('unique_code', 'unique(code)', 'Le code du cours doit être unique.'),
+        ('unique_code_year', 'unique(code,year_id)', 'Le code d\'un cours ne peut être lié à une même année académique qu\'une seule fois.')
     ]
 
     @api.constrains('subject_child_ids')
@@ -314,6 +312,14 @@ class ProgressReport(models.Model):
     )
 
     percentage = fields.Float(compute='_compute_percentage', string='Taux de consommation du volume horaire')
+
+    def _default_year(self):
+        year = self.env['siantou.ems.core.year'].sudo().search([
+            ('active_user_ids', '=', self.env.user.id),
+        ], limit=1)
+        if not year:
+            year = self.env['siantou.ems.core.year'].sudo().search([('is_active', '=', True)], limit=1)
+        return year
 
     _sql_constraints = [
         ('unique_class_subject', 'unique(class_id,subject_id)', 'Un cours ne peut être lié à une même classe qu\'une seule fois.')

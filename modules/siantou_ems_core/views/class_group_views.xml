@@ -8,6 +8,7 @@
 			<field name="arch" type="xml">
 				<tree string="Groupes de classe">
 					<field name="name"/>
+                    <field name="year_id"/>
                     <field name="class_id"/>
 				</tree>
 			</field>
@@ -21,6 +22,7 @@
 				<form string="Groupes de classe">
 					<sheet>
                         <group>
+                            <field name="year_id" options="{'no_create': True}"/>
                             <field name="name"/>
                             <field name="class_id"/>
                         </group>
@@ -39,6 +41,7 @@
             <field name="name">Groupes de classe</field>
             <field name="res_model">siantou.ems.core.class.group</field>
             <field name="view_mode">tree,form</field>
+            <field name="domain">[('year_id.active_user_ids', '=', uid)]</field>                
         </record>
 
         <!-- Menu pour la gestion des classes -->
