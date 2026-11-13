@@ -47,7 +47,7 @@
                         </group>
                         <notebook>
                             <page name="subject_ids" string="Cours">
-                                <field name="subject_ids" domain="[('year_id', '=', year_id)]">
+                                <field name="subject_ids" options="{'no_create': True}" domain="[('year_id', '=', year_id)]">
                                     <tree editable="bottom">
                                         <field name="code"/>
                                         <field name="name"/>

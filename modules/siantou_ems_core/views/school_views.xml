@@ -30,21 +30,21 @@
                         <field name="code"/>
                         <field name="description"/>
                         <field name="max_students_per_batch"/>
-                        <field name="building_ids" widget="many2many_tags"/>
-                        <field name="cycle_ids" widget="many2many_tags"/>
+                        <field name="building_ids" options="{'no_create': True}" domain="[('year_id', '=', year_id)]" widget="many2many_tags"/>
+                        <field name="cycle_ids" options="{'no_create': True}" domain="[('year_id', '=', year_id)]" widget="many2many_tags"/>
                     </group>
                     <notebook>
                         <page name="department_ids" string="Départements">
-                            <field name="department_ids"/>
+                            <field name="department_ids" options="{'no_create': True}" domain="[('year_id', '=', year_id)]"/>
                         </page>
                         <page name="field_of_study_ids" string="Filières">
-                            <field name="field_of_study_ids"/>
+                            <field name="field_of_study_ids" options="{'no_create': True}" domain="[('year_id', '=', year_id)]"/>
                         </page>
                         <page name="student_ids" string="Étudiants">
-                            <field name="student_ids"/>
+                            <field name="student_ids" options="{'no_create': True}" domain="[('year_id', '=', year_id)]"/>
                         </page>
                         <page name="batch_ids" string="Lots">
-                            <field name="batch_ids"/>
+                            <field name="batch_ids" options="{'no_create': True}"/>
                         </page>
                     </notebook>
                 </sheet>

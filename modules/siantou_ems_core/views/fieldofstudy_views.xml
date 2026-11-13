@@ -33,14 +33,14 @@
                             <field name="year_id" options="{'no_create': True}"/>
                             <field name="code"/>
                             <field name="field_of_study_name"/>
-                            <field name="school_id" options="{'no_create': True}"/>
-                            <field name="cycle_id" options="{'no_create': True}"/>
-                            <field name="supervision_id" options="{'no_create': True}"/>
+                            <field name="school_id" options="{'no_create': True}" domain="[('year_id', '=', year_id)]"/>
+                            <field name="cycle_id" options="{'no_create': True}" domain="[('year_id', '=', year_id)]"/>
+                            <field name="supervision_id" options="{'no_create': True}" domain="[('year_id', '=', year_id)]"/>
                             <!-- <field name="department_id" options="{'no_create': True}" domain="[('school_id', '=', school_id)]"/> -->
                         </group>
                         <notebook>
                             <page name="specialty_ids" string="Spécialités">
-                                <field name="specialty_ids" options="{'no_create': True}">
+                                <field name="specialty_ids" options="{'no_create': True}" domain="[('year_id', '=', year_id)]">
                                     <tree>
                                         <field name="code"/>
                                         <field name="name"/>

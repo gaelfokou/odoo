@@ -30,8 +30,8 @@
                             <field name="code"/>
                             <field name="name"/>
                             <field name="is_active"/>
-                            <field name="address_id"/>
-                            <field name="school_ids" widget="many2many_tags">
+                            <field name="address_id" options="{'no_create': True}" domain="[('year_id', '=', year_id)]"/>
+                            <field name="school_ids" options="{'no_create': True}" domain="[('year_id', '=', year_id)]" widget="many2many_tags">
                                 <tree>
                                     <field name="code"/>
                                     <field name="name"/>

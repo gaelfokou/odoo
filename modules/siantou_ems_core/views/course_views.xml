@@ -38,9 +38,9 @@
                             <field name="year_id" options="{'no_create': True}"/>
                             <field name="code"/>
                             <field name="cycle_name"/>
-                            <field name="school_ids" widget="many2many_tags"/>
-                            <field name="level_ids" widget="many2many_tags"/>
-                            <field name="supervision_id" options="{'no_create': True}"/>
+                            <field name="school_ids" options="{'no_create': True}" domain="[('year_id', '=', year_id)]" widget="many2many_tags"/>
+                            <field name="level_ids" options="{'no_create': True}" domain="[('year_id', '=', year_id)]" widget="many2many_tags"/>
+                            <field name="supervision_id" options="{'no_create': True}" domain="[('year_id', '=', year_id)]"/>
                             <field name="type_course"/>
                             <!-- <field name="sequence_id" options="{'no_create': True}" readonly="1"/> -->
                             <field name="color" widget="color_picker"/>
@@ -48,7 +48,7 @@
                         </group>
                         <notebook>
                             <page name="field_of_study_ids" string="Filières">
-                                <field name="field_of_study_ids">
+                                <field name="field_of_study_ids" options="{'no_create': True}" domain="[('year_id', '=', year_id)]">
                                     <tree>
                                         <field name="code"/>
                                         <field name="name"/>

@@ -17,7 +17,7 @@
                     <field name="department_name"/>
                     <field name="code"/>
                     <field name="year_id" options="{'no_create': True}"/>
-                    <field name="school_id" options="{'no_create': True}"/>
+                    <field name="school_id" options="{'no_create': True}" domain="[('year_id', '=', year_id)]"/>
                     <!-- <field name="cycle_id" options="{'no_create': True}"/> -->
                 </xpath>
                 <xpath expr="//group[1]" position="inside">

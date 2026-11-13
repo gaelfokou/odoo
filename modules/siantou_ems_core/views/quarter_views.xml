@@ -28,7 +28,7 @@
                             <field name="name"/>
                         </group>
                         <group>
-                            <field name="city_id"/>
+                            <field name="city_id" options="{'no_create': True}" domain="[('year_id', '=', year_id)]"/>
                         </group>
 					</sheet>
 				</form>

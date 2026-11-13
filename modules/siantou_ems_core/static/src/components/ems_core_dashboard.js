@@ -129,6 +129,11 @@ export class OwlSalesDashboard extends Component {
         self.state.campus.value = 0;
         self.state.teachers.value = 0;
         self.state.filieres.value = 0;
+        self.state.datas = [];
+        self.state.doughTearchers = [];
+        self.state.doughTearchers = [];
+        self.state.doughFilieres = [];
+        self.state.dataSchools = [];
         try {
             await self.loadYears();
             await self.loadAllData();
@@ -158,11 +163,11 @@ export class OwlSalesDashboard extends Component {
         try {
             const [studentCount, cycleCount, ecoleCount, campusCount, teacherCount, filiereCount] = await Promise.all([
                 self.getStudentCount(),
-                self.orm.searchCount("oe.school.course", []),
-                self.orm.searchCount("siantou.ems.core.school", []),
-                self.orm.searchCount("siantou.ems.core.campus", []),
+                self.orm.searchCount("oe.school.course", [["year_id", "=", parseInt(self.state.year.value)]]),
+                self.orm.searchCount("siantou.ems.core.school", [["year_id", "=", parseInt(self.state.year.value)]]),
+                self.orm.searchCount("siantou.ems.core.campus", [["year_id", "=", parseInt(self.state.year.value)]]),
                 self.orm.searchCount("hr.employee", [["is_teacher", "=", true]]),
-                self.orm.searchCount("siantou.ems.core.field_of_study", [])
+                self.orm.searchCount("siantou.ems.core.field_of_study", [["year_id", "=", parseInt(self.state.year.value)]])
             ]);
             self.state.students.value = studentCount;
             self.state.cycles.value = cycleCount;
@@ -179,10 +184,10 @@ export class OwlSalesDashboard extends Component {
     async getBarChartDatas() {
 		const self = this;
         try {
-            const cycles = await this.orm.searchRead("oe.school.course", [])
+            const cycles = await self.orm.searchRead("oe.school.course", [["year_id", "=", parseInt(self.state.year.value)]])
             await cycles.map(async (cycle, i) => {
-                let studentCount = await this.orm.searchCount("oe.school.student", [["cycle_id", "=", cycle.id]])
-                this.state.datas.push({
+                let studentCount = await self.orm.searchCount("oe.school.student", [["cycle_id", "=", cycle.id]])
+                self.state.datas.push({
                     name: cycle.name,
                     value: studentCount
                 })
@@ -219,14 +224,14 @@ export class OwlSalesDashboard extends Component {
     async getFiliereDatas() {
 		const self = this;
         try {
-            const filieres = await this.orm.searchRead("siantou.ems.core.field_of_study", [])
+            const filieres = await this.orm.searchRead("siantou.ems.core.field_of_study", [["year_id", "=", parseInt(self.state.year.value)]])
             await filieres.map(async (filiere, i) => {
                 const classes = await this.orm.searchRead("siantou.ems.core.class", [["field_of_study_id", "=", filiere.id]])
                 let nbre = 0;
                 await classes.map(async (classe, i) => {
                     nbre += classe.student_ids.length;
                 })
-                this.state.doughFilieres.push({
+                self.state.doughFilieres.push({
                     name: filiere.name,
                     value: nbre
                 })
@@ -240,14 +245,14 @@ export class OwlSalesDashboard extends Component {
     async getSchoolsDatas() {
 		const self = this;
         try {
-            const ecoles = await this.orm.searchRead("siantou.ems.core.school", [])
+            const ecoles = await self.orm.searchRead("siantou.ems.core.school", [["year_id", "=", parseInt(self.state.year.value)]])
             await ecoles.map(async (ecole, i) => {
                 let nbre = 0;
                 const classes = await self.orm.searchRead("siantou.ems.core.class", [["school_id", "=", ecole.id]]);
                 await classes.map(async (classe, i) => {
                     nbre += classe.number_of_student;
                 })
-                this.state.dataSchools.push({
+                self.state.dataSchools.push({
                     name: ecole.name,
                     value: nbre
                 })

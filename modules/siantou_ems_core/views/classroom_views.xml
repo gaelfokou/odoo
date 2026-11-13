@@ -50,7 +50,7 @@
                                     <field name="year_id" options="{'no_create': True}"/>                                   
                                     <field name="code"/>
                                     <field name="name"/>
-                                    <field name="building_id"/>
+                                    <field name="building_id" options="{'no_create': True}" domain="[('year_id', '=', year_id)]"/>
                                     <field name="capacity"/>
                                     <field name="is_cours_active"/>
                                     <field name="is_examen_active"/>
